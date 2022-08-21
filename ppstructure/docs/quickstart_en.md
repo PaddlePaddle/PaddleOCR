@@ -7,16 +7,16 @@
     - [2.1.2 layout analysis + table recognition](#212-layout-analysis--table-recognition)
     - [2.1.3 layout analysis](#213-layout-analysis)
     - [2.1.4 table recognition](#214-table-recognition)
-    - [2.1.5 DocVQA](#215-docvqa)
+    - [2.1.5 DocVQA](#215-dockie)
   - [2.2 Use by code](#22-use-by-code)
     - [2.2.1 image orientation + layout analysis + table recognition](#221-image-orientation--layout-analysis--table-recognition)
     - [2.2.2 layout analysis + table recognition](#222-layout-analysis--table-recognition)
     - [2.2.3 layout analysis](#223-layout-analysis)
     - [2.2.4 table recognition](#224-table-recognition)
-    - [2.2.5 DocVQA](#225-docvqa)
+    - [2.2.5 DocVQA](#225-dockie)
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
-    - [2.3.2 DocVQA](#232-docvqa)
+    - [2.3.2 DocVQA](#232-dockie)
   - [2.4 Parameter Description](#24-parameter-description)
 
 
@@ -64,7 +64,7 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 <a name="215"></a>
 #### 2.1.5 DocVQA
 
-Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
+Please refer to: [Documentation Visual Q&A](../kie/README.md) .
 
 <a name="22"></a>
 ### 2.2 Use by code
@@ -172,7 +172,7 @@ for line in result:
 <a name="225"></a>
 #### 2.2.5 DocVQA
 
-Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
+Please refer to: [Documentation Visual Q&A](../kie/README.md) .
 
 <a name="23"></a>
 ### 2.3 Result description
@@ -210,7 +210,7 @@ After the recognition is completed, each image will have a directory with the sa
 <a name="232"></a>
 #### 2.3.2 DocVQA
 
-Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
+Please refer to: [Documentation Visual Q&A](../kie/README.md) .
 
 <a name="24"></a>
 ### 2.4 Parameter Description
@@ -226,10 +226,10 @@ Please refer to: [Documentation Visual Q&A](../vqa/README.md) .
 | layout_dict_path  | The dictionary path of layout analysis model| ../ppocr/utils/dict/layout_publaynet_dict.txt |
 | layout_score_threshold  | The box threshold path of layout analysis model| 0.5|
 | layout_nms_threshold  | The nms threshold path of layout analysis model| 0.5|
-| vqa_algorithm  | vqa model algorithm| LayoutXLM|
+| kie_algorithm  | kie model algorithm| LayoutXLM|
 | ser_model_dir  | Ser model inference model path| None|
 | ser_dict_path  | The dictionary path of Ser model| ../train_data/XFUND/class_list_xfun.txt|
-| mode | structure or vqa  | structure   |
+| mode | structure or kie  | structure   |
 | image_orientation | Whether to perform image orientation classification in forward  | False   |
 | layout | Whether to perform layout analysis in forward  | True   |
 | table  | Whether to perform table recognition in forward  | True   |

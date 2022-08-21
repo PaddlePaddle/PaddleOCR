@@ -7,17 +7,17 @@
 - [3. 特性](#3)
 - [4. 效果展示](#4)
   - [4.1 版面分析和表格识别](#41)
-  - [4.2 DocVQA](#42)
+  - [4.2 关键信息抽取](#42)
 - [5. 快速体验](#5)
 - [6. PP-Structure 介绍](#6)
   - [6.1 版面分析+表格识别](#61)
     - [6.1.1 版面分析](#611)
     - [6.1.2 表格识别](#612)
-  - [6.2 DocVQA](#62)
+  - [6.2 关键信息抽取](#62)
 - [7. 模型库](#7)
   - [7.1 版面分析模型](#71)
   - [7.2 OCR和表格识别模型](#72)
-  - [7.3 DocVQA 模型](#73)
+  - [7.3 关键信息抽取模型](#73)
 
 <a name="1"></a>
 ## 1. 简介
@@ -25,8 +25,8 @@ PP-Structure是一个可用于复杂文档结构分析和处理的OCR工具包�
 
 <a name="2"></a>
 ## 2. 近期更新
-* 2022.02.12 DocVQA增加LayoutLMv2模型。
-* 2021.12.07 新增[DOC-VQA任务SER和RE](vqa/README.md)。
+* 2022.02.12 KIE增加LayoutLMv2模型。
+* 2021.12.07 新增[关键信息抽取任务SER和RE](kie/README.md)。
 
 <a name="3"></a>
 ## 3. 特性
@@ -37,7 +37,7 @@ PP-Structure的主要特性如下：
 - 支持表格区域进行结构化分析，最终结果输出Excel文件
 - 支持python whl包和命令行两种方式，简单易用
 - 支持版面分析和表格结构化两类任务自定义训练
-- 支持文档视觉问答(Document Visual Question Answering，DocVQA)任务-语义实体识别(Semantic Entity Recognition，SER)和关系抽取(Relation Extraction，RE)
+- 支持基于多模态的关键信息抽取(Key Information Extraction，KIE)任务-语义实体识别(Semantic Entity Recognition，SER)和关系抽取(Relation Extraction，RE)
 
 <a name="4"></a>
 ## 4. 效果展示
@@ -50,11 +50,11 @@ PP-Structure的主要特性如下：
 图中展示了版面分析+表格识别的整体流程，图片先有版面分析划分为图像、文本、标题和表格四种区域，然后对图像、文本和标题三种区域进行OCR的检测识别，对表格进行表格识别，其中图像还会被存储下来以便使用。
 
 <a name="42"></a>
-### 4.2 DOC-VQA
+### 4.2 关键信息抽取
 
 * SER
 
-![](./docs/vqa/result_ser/zh_val_0_ser.jpg) | ![](./docs/vqa/result_ser/zh_val_42_ser.jpg)
+![](./docs/kie/result_ser/zh_val_0_ser.jpg) | ![](./docs/kie/result_ser/zh_val_42_ser.jpg)
 ---|---
 
 图中不同颜色的框表示不同的类别，对于XFUN数据集，有`QUESTION`, `ANSWER`, `HEADER` 3种类别
@@ -67,7 +67,7 @@ PP-Structure的主要特性如下：
 
 * RE
 
-![](./docs/vqa/result_re/zh_val_21_re.jpg) | ![](./docs/vqa/result_re/zh_val_40_re.jpg)
+![](./docs/kie/result_re/zh_val_21_re.jpg) | ![](./docs/kie/result_re/zh_val_40_re.jpg)
 ---|---
 
 
@@ -99,9 +99,9 @@ PP-Structure的主要特性如下：
 表格识别将表格图片转换为excel文档，其中包含对于表格文本的检测和识别以及对于表格结构和单元格坐标的预测，详细说明参考[文档](table/README_ch.md)。
 
 <a name="62"></a>
-### 6.2 DocVQA
+### 6.2 关键信息抽取
 
-DocVQA指文档视觉问答，其中包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](vqa/README.md)。
+关键信息抽取包括语义实体识别 (Semantic Entity Recognition, SER) 和关系抽取 (Relation Extraction, RE) 任务。基于 SER 任务，可以完成对图像中的文本识别与分类；基于 RE 任务，可以完成对图象中的文本内容的关系提取，如判断问题对(pair)，详细说明参考[文档](kie/README.md)。
 
 <a name="7"></a>
 ## 7. 模型库
@@ -126,7 +126,7 @@ PP-Structure系列模型列表（更新中）
 
 
 <a name="73"></a>
-### 7.3 DocVQA 模型
+### 7.3 KIE 模型
 
 |模型名称|模型简介|模型大小|下载地址|
 | --- | --- | --- | --- |

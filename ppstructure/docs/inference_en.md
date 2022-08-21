@@ -73,9 +73,9 @@ mkdir inference && cd inference
 wget https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar && tar xf PP-Layout_v1.0_ser_pretrained.tar
 cd ..
 
-python3 predict_system.py --model_name_or_path=vqa/PP-Layout_v1.0_ser_pretrained/ \
-                          --mode=vqa \
-                          --image_dir=vqa/images/input/zh_val_0.jpg  \
+python3 predict_system.py --model_name_or_path=kie/PP-Layout_v1.0_ser_pretrained/ \
+                          --mode=kie \
+                          --image_dir=kie/images/input/zh_val_0.jpg  \
                           --vis_font_path=../doc/fonts/simfang.ttf
 ```
-After the operation is completed, each image will store the visualized image in the `vqa` directory under the directory specified by the `output` field, and the image name is the same as the input image name.
+After the operation is completed, each image will store the visualized image in the `kie` directory under the directory specified by the `output` field, and the image name is the same as the input image name.

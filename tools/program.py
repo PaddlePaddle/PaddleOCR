@@ -173,7 +173,7 @@ def to_float32(preds):
             elif isinstance(preds[k], paddle.Tensor):
                 preds[k] = preds[k].astype(paddle.float32)
     elif isinstance(preds, paddle.Tensor):
-            preds = preds.astype(paddle.float32)
+        preds = preds.astype(paddle.float32)
     return preds
 
 
@@ -278,11 +278,13 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                custom_black_list = config['Global'].get('amp_custom_black_list',[])
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=custom_black_list):
+                custom_black_list = config['Global'].get(
+                    'amp_custom_black_list', [])
+                with paddle.amp.auto_cast(
+                        level=amp_level, custom_black_list=custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
-                    elif model_type in ["kie", 'vqa']:
+                    elif model_type in ["kie"]:
                         preds = model(batch)
                     else:
                         preds = model(images)
@@ -295,7 +297,7 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                elif model_type in ["kie", 'vqa', 'sr']:
+                elif model_type in ["kie", 'sr']:
                     preds = model(batch)
                 else:
                     preds = model(images)
@@ -499,7 +501,7 @@ def eval(model,
                 with paddle.amp.auto_cast(level='O2'):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
-                    elif model_type in ["kie", 'vqa']:
+                    elif model_type in ["kie"]:
                         preds = model(batch)
                     elif model_type in ['sr']:
                         preds = model(batch)
@@ -511,7 +513,7 @@ def eval(model,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                elif model_type in ["kie", 'vqa']:
+                elif model_type in ["kie"]:
                     preds = model(batch)
                 elif model_type in ['sr']:
                     preds = model(batch)
@@ -529,11 +531,12 @@ def eval(model,
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            if model_type in ['kie']:
-                eval_class(preds, batch_numpy)
-            elif model_type in ['table', 'vqa']:
-                post_result = post_process_class(preds, batch_numpy)
-                eval_class(post_result, batch_numpy)
+            if model_type in ['table', 'kie']:
+                if post_process_class is None:
+                    eval_class(preds, batch_numpy)
+                else:
+                    post_result = post_process_class(preds, batch_numpy)
+                    eval_class(post_result, batch_numpy)
             elif model_type in ['sr']:
                 eval_class(preds, batch_numpy)
             else:

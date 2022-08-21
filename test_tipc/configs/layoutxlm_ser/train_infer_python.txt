@@ -9,7 +9,7 @@ Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=4|whole_train_whole_infer=8
 Architecture.Backbone.checkpoints:null
 train_model_name:latest
-train_infer_img_dir:ppstructure/docs/vqa/input/zh_val_42.jpg
+train_infer_img_dir:ppstructure/docs/kie/input/zh_val_42.jpg
 null:null
 ##
 trainer:norm_train
@@ -37,7 +37,7 @@ export2:null
 infer_model:null
 infer_export:null
 infer_quant:False
-inference:ppstructure/vqa/predict_vqa_token_ser.py  --vqa_algorithm=LayoutXLM  --ser_dict_path=train_data/XFUND/class_list_xfun.txt --output=output
+inference:ppstructure/kie/predict_kie_token_ser.py  --kie_algorithm=LayoutXLM  --ser_dict_path=train_data/XFUND/class_list_xfun.txt --output=output
 --use_gpu:True|False
 --enable_mkldnn:False
 --cpu_threads:6
@@ -45,7 +45,7 @@ inference:ppstructure/vqa/predict_vqa_token_ser.py  --vqa_algorithm=LayoutXLM  -
 --use_tensorrt:False
 --precision:fp32
 --ser_model_dir:
---image_dir:./ppstructure/docs/vqa/input/zh_val_42.jpg
+--image_dir:./ppstructure/docs/kie/input/zh_val_42.jpg
 null:null
 --benchmark:False
 null:null
