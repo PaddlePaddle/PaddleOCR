@@ -32,7 +32,7 @@ import tools.infer.utility as utility
 import tools.infer.predict_rec as predict_rec
 import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image
 logger = get_logger()
@@ -120,11 +120,14 @@ def sorted_boxes(dt_boxes):
     _boxes = list(sorted_boxes)
 
     for i in range(num_boxes - 1):
-        if abs(_boxes[i + 1][0][1] - _boxes[i][0][1]) < 10 and \
-                (_boxes[i + 1][0][0] < _boxes[i][0][0]):
-            tmp = _boxes[i]
-            _boxes[i] = _boxes[i + 1]
-            _boxes[i + 1] = tmp
+        for j in range(i, 0, -1):
+            if abs(_boxes[j + 1][0][1] - _boxes[j][0][1]) < 10 and \
+                    (_boxes[j + 1][0][0] < _boxes[j][0][0]):
+                tmp = _boxes[j]
+                _boxes[j] = _boxes[j + 1]
+                _boxes[j + 1] = tmp
+            else:
+                break
     return _boxes
 
 
@@ -156,7 +159,7 @@ def main(args):
     count = 0
     for idx, image_file in enumerate(image_file_list):
 
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:

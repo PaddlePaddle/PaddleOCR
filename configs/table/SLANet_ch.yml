@@ -1,25 +1,26 @@
 Global:
-  use_gpu: true
+  use_gpu: True
   epoch_num: 400
   log_smooth_window: 20
-  print_batch_step: 5
-  save_model_dir: ./output/table_mv3/
+  print_batch_step: 20
+  save_model_dir: ./output/SLANet_ch
   save_epoch_step: 400
-  # evaluation is run every 400 iterations after the 0th iteration
-  eval_batch_step: [0, 400]
+  # evaluation is run every 331 iterations after the 0th iteration
+  eval_batch_step: [0, 331]
   cal_metric_during_train: True
-  pretrained_model:
-  checkpoints:
-  save_inference_dir:
+  pretrained_model: 
+  checkpoints: 
+  save_inference_dir: ./output/SLANet_ch/infer
   use_visualdl: False
-  infer_img: ppstructure/docs/table/table.jpg
-  save_res_path: output/table_mv3
+  infer_img: doc/table/table.jpg
   # for data or label process
-  character_dict_path: ppocr/utils/dict/table_structure_dict.txt
+  character_dict_path: ppocr/utils/dict/table_structure_dict_ch.txt
   character_type: en
   max_text_length: &max_text_length 500
-  box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
+  box_format: &box_format xyxyxyxy # 'xywh', 'xyxy', 'xyxyxyxy'
   infer_mode: False
+  use_sync_bn: True
+  save_res_path: output/infer
 
 Optimizer:
   name: Adam
@@ -34,48 +35,57 @@ Optimizer:
 
 Architecture:
   model_type: table
-  algorithm: TableAttn
+  algorithm: SLANet
   Backbone:
-    name: MobileNetV3
+    name: PPLCNet
     scale: 1.0
-    model_name: small
-    disable_se: true
+    pretrained: True
+    use_ssld: True
+  Neck:
+    name: CSPPAN
+    out_channels: 96
   Head:
-    name: TableAttentionHead
+    name: SLAHead
     hidden_size: 256
-    loc_type: 2
     max_text_length: *max_text_length
-    loc_reg_num: &loc_reg_num 4
+    loc_reg_num: &loc_reg_num 8
 
 Loss:
-  name: TableAttentionLoss
-  structure_weight: 100.0
-  loc_weight: 10000.0
+  name: SLALoss
+  structure_weight: 1.0
+  loc_weight: 2.0
+  loc_loss: smooth_l1
 
 PostProcess:
   name: TableLabelDecode
+  merge_no_span_structure: &merge_no_span_structure True
 
 Metric:
   name: TableMetric
   main_indicator: acc
-  compute_bbox_metric: false # cost many time, set False for training
+  compute_bbox_metric: False
+  loc_reg_num: *loc_reg_num
+  box_format: *box_format
+  del_thead_tbody: True
 
 Train:
   dataset:
     name: PubTabDataSet
-    data_dir: train_data/table/pubtabnet/train/
-    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
+    data_dir: train_data/table/train/
+    label_file_list: [train_data/table/train.txt]
     transforms:
-      - DecodeImage: # load image
+      - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: False
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: False
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
       - TableBoxEncode:
+          in_box_format: *box_format
+          out_box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:
@@ -97,19 +107,21 @@ Train:
 Eval:
   dataset:
     name: PubTabDataSet
-    data_dir: train_data/table/pubtabnet/val/
-    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_val.jsonl]
+     data_dir: train_data/table/val/
+    label_file_list: [train_data/table/val.txt]
     transforms:
-      - DecodeImage: # load image
+      - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: False
+          merge_no_span_structure: *merge_no_span_structure
           replace_empty_cell_token: False
           loc_reg_num: *loc_reg_num
           max_text_length: *max_text_length
       - TableBoxEncode:
+          in_box_format: *box_format
+          out_box_format: *box_format
       - ResizeTableImage:
           max_len: 488
       - NormalizeImage:

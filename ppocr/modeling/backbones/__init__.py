@@ -52,17 +52,15 @@ def build_backbone(config, model_type):
         support_dict = ['ResNet']
     elif model_type == 'kie':
         from .kie_unet_sdmgr import Kie_backbone
-        support_dict = ['Kie_backbone']
+        from .vqa_layoutlm import LayoutLMForSer, LayoutLMv2ForSer, LayoutLMv2ForRe, LayoutXLMForSer, LayoutXLMForRe
+        support_dict = [
+            'Kie_backbone', 'LayoutLMForSer', 'LayoutLMv2ForSer',
+            'LayoutLMv2ForRe', 'LayoutXLMForSer', 'LayoutXLMForRe'
+        ]
     elif model_type == 'table':
         from .table_resnet_vd import ResNet
         from .table_mobilenet_v3 import MobileNetV3
         support_dict = ['ResNet', 'MobileNetV3']
-    elif model_type == 'vqa':
-        from .vqa_layoutlm import LayoutLMForSer, LayoutLMv2ForSer, LayoutLMv2ForRe, LayoutXLMForSer, LayoutXLMForRe
-        support_dict = [
-            'LayoutLMForSer', 'LayoutLMv2ForSer', 'LayoutLMv2ForRe',
-            'LayoutXLMForSer', 'LayoutXLMForRe'
-        ]
     else:
         raise NotImplementedError
 

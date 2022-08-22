@@ -11,11 +11,13 @@ Global:
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: ppstructure/docs/vqa/input/zh_val_21.jpg
+  infer_img: ppstructure/docs/kie/input/zh_val_21.jpg
   save_res_path: ./output/re/xfund_zh/with_gt
+  kie_rec_model_dir: 
+  kie_det_model_dir:
 
 Architecture:
-  model_type: vqa
+  model_type: kie
   algorithm: &algorithm "LayoutXLM"
   Transform:
   Backbone:
