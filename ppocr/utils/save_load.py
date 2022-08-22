@@ -194,6 +194,9 @@ def save_model(model,
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+
+    is_nlp_model = config['Architecture']["model_type"] == 'kie' and config[
+        "Architecture"]["algorithm"] not in ["SDMGR"]
     if is_nlp_model is not True:
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
