@@ -54,7 +54,7 @@ class BaseRecLabelDecode(object):
         pred_re = []
         c_current = ''
         for c in pred:
-            if c in self.character[79:]:
+            if not bool(re.search('[a-zA-Z0-9 ]', c)):
                 if c_current != '':
                     pred_re.append(c_current)
                 pred_re.append(c)
