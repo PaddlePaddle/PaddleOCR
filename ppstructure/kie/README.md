@@ -246,7 +246,7 @@ For training, evaluation and inference tutorial for text recognition models, ple
 
 If you want to finish the KIE tasks in your scene, and don't know what to prepare,  please refer to [End cdoc](../../doc/doc_en/recognition.md).
 
-关于怎样在自己的场景中完成关键信息抽取任务，请参考：[Guide to End-to-end KIE](./how_to_do_kie_en.md)。
+To complete the key information extraction task in your own scenario from data preparation to model selection, please refer to: [Guide to End-to-end KIE](./how_to_do_kie_en.md)。
 
 
 ## 5. Reference

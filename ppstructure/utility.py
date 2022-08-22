@@ -38,7 +38,7 @@ def init_args():
     parser.add_argument(
         "--layout_dict_path",
         type=str,
-        default="../ppocr/utils/dict/layout_dict/layout_pubalynet_dict.txt")
+        default="../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt")
     parser.add_argument(
         "--layout_score_threshold",
         type=float,
@@ -84,13 +84,18 @@ def init_args():
         type=str2bool,
         default=True,
         help='In the forward, whether the non-table area is recognition by ocr')
+    # param for recovery
     parser.add_argument(
         "--recovery",
-        type=bool,
+        type=str2bool,
         default=False,
         help='Whether to enable layout of recovery')
     parser.add_argument(
-        "--save_pdf", type=bool, default=False, help='Whether to save pdf file')
+        "--save_pdf",
+        type=str2bool,
+        default=False,
+        help='Whether to save pdf file')
+
     return parser
 
 

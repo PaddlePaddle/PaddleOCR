@@ -636,4 +636,6 @@ def main():
 
             for item in result:
                 item.pop('img')
+                item.pop('res')
                 logger.info(item)
+            logger.info('result save to {}'.format(args.output))

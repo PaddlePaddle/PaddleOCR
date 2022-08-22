@@ -6,10 +6,12 @@ English | [简体中文](README_ch.md)
     - [2.1 Installation dependencies](#2.1)
     - [2.2 Install PaddleOCR](#2.2)
   - [3. Quick Start](#3)
+    - [3.1 Download models](#3.1)
+    - [3.2 Layout recovery](#3.2)
 
 <a name="1"></a>
 
-## 1.  Introduction
+## 1. Introduction
 
 Layout recovery means that after OCR recognition, the content is still arranged like the original document pictures, and the paragraphs are output to word document in the same order.
 
@@ -17,8 +19,9 @@ Layout recovery combines [layout analysis](../layout/README.md)、[table recogni
 The following figure shows the result：
 
 <div align="center">
-<img src="../docs/table/recovery.jpg"  width = "700" />
+<img src="../docs/recovery/recovery.jpg"  width = "700" />
 </div>
+
 <a name="2"></a>
 
 ## 2. Install
@@ -33,14 +36,14 @@ The following figure shows the result：
 python3 -m pip install --upgrade pip
 
 # GPU installation
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu" -i https://mirror.baidu.com/pypi/simple
 
 # CPU installation
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle" -i https://mirror.baidu.com/pypi/simple
 
 ````
 
-For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/install/quick).
+For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/install/pip/macos-pip_en.html).
 
 <a name="2.2"></a>
 
@@ -67,38 +70,61 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 ## 3. Quick Start
 
-```python
+<a name="3.1"></a>
+### 3.1 Download models
+
+If input is English document, download English models:
+
+```bash
 cd PaddleOCR/ppstructure
 
 # download model
 mkdir inference && cd inference
 # Download the detection model of the ultra-lightweight English PP-OCRv3 model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
+https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
 # Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf  ch_PP-OCRv3_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
 # Download the ultra-lightweight English table inch model and unzip it
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 # Download the layout model of publaynet dataset and unzip it
-wget 
-https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar picodet_lcnet_x1_0_layout_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar && tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
 cd ..
-# run
+```
+If input is Chinese document，download Chinese models:
+[Chinese and English ultra-lightweight PP-OCRv3 model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/README.md#pp-ocr-series-model-listupdate-on-september-8th)、[表格识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#22-表格识别模型)、[版面分析模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#1-版面分析模型)
+
+<a name="3.2"></a>
+### 3.2 Layout recovery
+
+
+```bash
 python3 predict_system.py \
     --image_dir=./docs/table/1.png \
     --det_model_dir=inference/en_PP-OCRv3_det_infer \
-    --rec_model_dir=inference/en_PP-OCRv3_rec_infe \
+    --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
     --rec_char_dict_path=../ppocr/utils/en_dict.txt \
-    --output=../output/ \
-    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+    --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
-    --table_max_len=488 \
-    --layout_model_dir=inference/picodet_lcnet_x1_0_layout_infer \
+    --layout_model_dir=inference/picodet_lcnet_x1_0_fgd_layout_infer \
     --layout_dict_path=../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt \
     --vis_font_path=../doc/fonts/simfang.ttf \
     --recovery=True \
-		--save_pdf=False
+    --save_pdf=False \
+    --output=../output/
 ```
 
-After running, the docx  of each picture will be saved in the directory specified by the output field
+After running, the docx of each picture will be saved in the directory specified by the output field
 
-Recovery table to Word code[table_process.py] reference：https://github.com/pqzx/html2docx.git
+Field：
+
+- image_dir：test file测试文件， can be picture, picture directory, pdf file, pdf file directory
+- det_model_dir：OCR detection model path
+- rec_model_dir：OCR recognition model path
+- rec_char_dict_path：OCR recognition dict path. If the Chinese model is used, change to "../ppocr/utils/ppocr_keys_v1.txt". And if you trained the model on your own dataset, change to the trained dictionary
+- table_model_dir：tabel recognition model path
+- table_char_dict_path：tabel recognition dict path. If the Chinese model is used, no need to change
+- layout_model_dir：layout analysis model path
+- layout_dict_path：layout analysis dict path. If the Chinese model is used, change to "../ppocr/utils/dict/layout_dict/layout_cdla_dict.txt"
+- recovery：whether to enable layout of recovery, default False
+- save_pdf：when recovery file, whether to save pdf file, default False
+- output：save the recovery result path

@@ -225,23 +225,24 @@ def create_predictor(args, mode, logger):
                     min_subgraph_size,  # skip the minmum trt subgraph
                     use_calib_mode=False)
 
-            # collect shape
-            if args.shape_info_filename is not None:
-                if not os.path.exists(args.shape_info_filename):
-                    config.collect_shape_range_info(args.shape_info_filename)
-                    logger.info(
-                        f"collect dynamic shape info into : {args.shape_info_filename}"
-                    )
+                # collect shape
+                if args.shape_info_filename is not None:
+                    if not os.path.exists(args.shape_info_filename):
+                        config.collect_shape_range_info(
+                            args.shape_info_filename)
+                        logger.info(
+                            f"collect dynamic shape info into : {args.shape_info_filename}"
+                        )
+                    else:
+                        logger.info(
+                            f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again."
+                        )
+                    config.enable_tuned_tensorrt_dynamic_shape(
+                        args.shape_info_filename, True)
                 else:
                     logger.info(
-                        f"dynamic shape info file( {args.shape_info_filename} ) already exists, not need to generate again."
+                        f"when using tensorrt, dynamic shape is a suggested option, you can use '--shape_info_filename=shape.txt' for offline dygnamic shape tuning"
                     )
-                config.enable_tuned_tensorrt_dynamic_shape(
-                    args.shape_info_filename, True)
-            else:
-                logger.info(
-                    f"when using tensorrt, dynamic shape is a suggested option, you can use '--shape_info_filename=shape.txt' for offline dygnamic shape tuning"
-                )
 
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
