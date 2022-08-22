@@ -191,7 +191,8 @@ def train(config,
           logger,
           log_writer=None,
           scaler=None,
-          amp_level='O2'):
+          amp_level='O2',
+          amp_custom_black_list=[]):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -277,8 +278,7 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                custom_black_list = config['Global'].get('amp_custom_black_list',[])
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=custom_black_list):
+                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:
@@ -383,7 +383,9 @@ def train(config,
                     eval_class,
                     model_type,
                     extra_input=extra_input,
-                    scaler=scaler)
+                    scaler=scaler,
+                    amp_level=amp_level,
+                    amp_custom_black_list=amp_custom_black_list)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -474,7 +476,9 @@ def eval(model,
          eval_class,
          model_type=None,
          extra_input=False,
-         scaler=None):
+         scaler=None,
+         amp_level='O2',
+         amp_custom_black_list = []):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -495,7 +499,7 @@ def eval(model,
 
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level='O2'):
+                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie", 'vqa']:

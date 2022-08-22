@@ -138,9 +138,7 @@ def main(config, device, logger, vdl_writer):
 
     # build metric
     eval_class = build_metric(config['Metric'])
-    # load pretrain model
-    pre_best_model_dict = load_model(config, model, optimizer,
-                                     config['Architecture']["model_type"])
+    
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(
@@ -148,6 +146,7 @@ def main(config, device, logger, vdl_writer):
 
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list',[])
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
@@ -166,12 +165,16 @@ def main(config, device, logger, vdl_writer):
     else:
         scaler = None
 
+    # load pretrain model
+    pre_best_model_dict = load_model(config, model, optimizer,
+                                     config['Architecture']["model_type"])
+                                     
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,amp_level)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,amp_level, amp_custom_black_list)
 
 
 def test_reader(config, device, logger):
