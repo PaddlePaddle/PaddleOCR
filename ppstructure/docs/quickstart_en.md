@@ -7,7 +7,7 @@
     - [2.1.2 layout analysis + table recognition](#212-layout-analysis--table-recognition)
     - [2.1.3 layout analysis](#213-layout-analysis)
     - [2.1.4 table recognition](#214-table-recognition)
-    - [2.1.5 DocVQA](#215-dockie)
+    - [2.1.5 Key Information Extraction](#215-Key-Information-Extraction)
     - [2.1.6 layout recovery](#216-layout-recovery)
   - [2.2 Use by code](#22-use-by-code)
     - [2.2.1 image orientation + layout analysis + table recognition](#221-image-orientation--layout-analysis--table-recognition)
@@ -15,10 +15,11 @@
     - [2.2.3 layout analysis](#223-layout-analysis)
     - [2.2.4 table recognition](#224-table-recognition)
     - [2.2.5 DocVQA](#225-dockie)
+    - [2.2.5 Key Information Extraction](#225-Key-Information-Extraction)
     - [2.2.6 layout recovery](#226-layout-recovery)  
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
-    - [2.3.2 DocVQA](#232-dockie)
+    - [2.3.2 Key Information Extraction](#232-Key-Information-Extraction)
   - [2.4 Parameter Description](#24-parameter-description)
 
 
@@ -28,14 +29,14 @@
 ```bash
 # Install paddleocr, version 2.6 is recommended
 pip3 install "paddleocr>=2.6"
-# Install the DocVQA dependency package paddlenlp (if you do not use the DocVQA, you can skip it)
-pip3 install paddlenlp
+# Install the KIE dependency packages (if you do not use the KIE, you can skip it)
+pip install -r kie/requirements.txt
 # Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
 pip3 install paddleclas
-
 ```
 
 <a name="2"></a>
+
 ## 2. Use
 
 <a name="21"></a>
@@ -66,9 +67,9 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 ```
 
 <a name="215"></a>
-#### 2.1.5 DocVQA
+#### 2.1.5 Key Information Extraction
 
-Please refer to: [Documentation Visual Q&A](../kie/README.md) .
+Please refer to: [Key Information Extraction](../kie/README.md) .
 
 <a name="216"></a>
 #### 2.1.6 layout recovery
@@ -130,7 +131,7 @@ for line in result:
 
 from PIL import Image
 
-font_path = 'PaddleOCR/doc/fonts/simfang.ttf' # PaddleOCR下提供字体包
+font_path = 'PaddleOCR/doc/fonts/simfang.ttf' # font provieded in PaddleOCR
 image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
@@ -180,9 +181,9 @@ for line in result:
 ```
 
 <a name="225"></a>
-#### 2.2.5 DocVQA
+#### 2.2.5 Key Information Extraction
 
-Please refer to: [Documentation Visual Q&A](../kie/README.md) .
+Please refer to: [Key Information Extraction](../kie/README.md) .
 
 <a name="226"></a>
 #### 2.2.6 layout recovery
@@ -244,9 +245,9 @@ After the recognition is completed, each image will have a directory with the sa
   ```
 
 <a name="232"></a>
-#### 2.3.2 DocVQA
+#### 2.3.2 Key Information Extraction
 
-Please refer to: [Documentation Visual Q&A](../kie/README.md) .
+Please refer to: [Key Information Extraction](../kie/README.md) .
 
 <a name="24"></a>
 ### 2.4 Parameter Description
