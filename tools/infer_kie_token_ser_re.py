@@ -39,7 +39,7 @@ from ppocr.utils.visual import draw_re_results
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, load_vqa_bio_label_maps, print_dict
 from tools.program import ArgsParser, load_config, merge_config
-from tools.infer_vqa_token_ser import SerPredictor
+from tools.infer_kie_token_ser import SerPredictor
 
 
 class ReArgsParser(ArgsParser):
