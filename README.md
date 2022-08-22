@@ -31,6 +31,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 - **🔥2022.5.9 Release PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - Release [PP-OCRv3](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
     - Release [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
+    - Released the OCR industry landing toolset: Open up 22 kinds of training and deployment software and hardware environments and methods, covering 90% of the training and deployment environment needs of enterprises.
     - Release interactive e-book [*"Dive into OCR"*](./doc/doc_en/ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
 - 2021.12.21 Release PaddleOCR [release/2.4](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.4)
     - Release 1 text detection algorithm ([PSENet](./doc/doc_en/algorithm_det_psenet_en.md)), 3 text recognition algorithms ([NRTR](./doc/doc_en/algorithm_rec_nrtr_en.md)、[SEED](./doc/doc_en/algorithm_rec_seed_en.md)、[SAR](./doc/doc_en/algorithm_rec_nrtr_en.md)).
