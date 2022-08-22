@@ -28,7 +28,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 近期更新
 
 - **🔥2022.7 发布[OCR场景应用集合](./applications)**
-  - 发布OCR场景应用集合，包含数码管、液晶屏、车牌、高精度SVTR模型等**7个垂直模型**，覆盖通用，制造、金融、交通行业的主要OCR垂直应用。
+  - 发布OCR场景应用集合，包含数码管、液晶屏、车牌、高精度SVTR模型等**7个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
   
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)：速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
@@ -67,7 +67,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="开源社区"></a>
 ## 开源社区
-- **项目合作📑：** 如果您是企业开发者且有明确的OCR垂直应用需求，填写[问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)后可免费与官方团队展开不同层次的合作。
+- **项目合作📑：** 如果您是企业开发者且有明确的OCR垂类应用需求，填写[问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)后可免费与官方团队展开不同层次的合作。
 - **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
   - **获取PaddleOCR最新发版解说《OCR超强技术详解与产业应用实战》系列直播课回放链接**
   - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
@@ -98,7 +98,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 | 金融 | 通用表单识别 | 多模态通用表单结构化提取           | [多模态表单识别](./applications/多模态表单识别.md)           | [下载链接](./applications/README.md#模型下载) |
 | 交通 | 车牌识别     | 多角度图像处理、轻量模型、端侧部署 | [轻量级车牌识别](./applications/轻量级车牌识别.md)           | [下载链接](./applications/README.md#模型下载) |
 
-- 更多制造、金融、交通行业的主要OCR垂直应用模型（如电表、液晶屏、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
+- 更多制造、金融、交通行业的主要OCR垂类应用模型（如电表、液晶屏、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
 
 <a name="文档教程"></a>
 
@@ -150,7 +150,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 数据集
     - [通用中英文OCR数据集](doc/doc_ch/dataset/datasets.md)
     - [手写中文OCR数据集](doc/doc_ch/dataset/handwritten_datasets.md)
-    - [垂直多语言OCR数据集](doc/doc_ch/dataset/vertical_and_multilingual_datasets.md)
+    - [垂类多语言OCR数据集](doc/doc_ch/dataset/vertical_and_multilingual_datasets.md)
     - [版面分析数据集](doc/doc_ch/dataset/layout_datasets.md)
     - [表格识别数据集](doc/doc_ch/dataset/table_datasets.md)
     - [DocVQA数据集](doc/doc_ch/dataset/docvqa_datasets.md)
