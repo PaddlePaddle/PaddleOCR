@@ -108,7 +108,7 @@ PP-Structure Series Model List (Updating)
 | --- | --- | --- | --- |
 |ch_PP-OCRv3_det_slim|[New] slim quantization with distillation lightweight model, supporting Chinese, English, multilingual text detection| 1.1M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_distill_train.tar)|
 |ch_PP-OCRv3_rec_slim |[New] Slim qunatization with distillation lightweight model, supporting Chinese, English text recognition| 4.9M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_train.tar) |
-|ch_ppstructure_mobile_v2.0_SLANet|Chinese table recognition model trained on PubTabNet dataset based on SLANet|9.3M|[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_train.tar) |
+|ch_ppstructure_mobile_v2.0_SLANet|Chinese table recognition model based on SLANet|9.3M|[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_train.tar) |
 
 ### 7.3 KIE model
 
