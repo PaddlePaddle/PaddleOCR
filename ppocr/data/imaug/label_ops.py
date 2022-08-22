@@ -918,7 +918,10 @@ class VQATokenLabelEncode(object):
 
             text = info["text"]
             encode_res = self.tokenizer.encode(
-                text, pad_to_max_seq_len=False, return_attention_mask=True)
+                text,
+                pad_to_max_seq_len=False,
+                return_attention_mask=True,
+                return_token_type_ids=True)
 
             if not self.add_special_ids:
                 # TODO: use tok.all_special_ids to remove
