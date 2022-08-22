@@ -24,7 +24,7 @@ from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
 from docx.enum.table import WD_TABLE_ALIGNMENT
 
-from table_process import HtmlToDocx
+from ppstructure.recovery.table_process import HtmlToDocx
 
 from ppocr.utils.logging import get_logger
 logger = get_logger()
@@ -69,7 +69,7 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf):
             new_table = deepcopy(table)
             new_table.alignment = WD_TABLE_ALIGNMENT.CENTER
             paragraph.add_run().element.addnext(new_table._tbl)
-            
+
         else:
             paragraph = doc.add_paragraph()
             paragraph_format = paragraph.paragraph_format
@@ -86,10 +86,10 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf):
 
     # save to pdf
     if save_pdf:
-        pdf = os.path.join(save_folder, '{}.pdf'.format(img_name))
+        pdf_path = os.path.join(save_folder, '{}.pdf'.format(img_name))
         from docx2pdf import convert
         convert(docx_path, pdf_path)
-        logger.info('pdf save to {}'.format(pdf))
+        logger.info('pdf save to {}'.format(pdf_path))
 
 
 def sorted_layout_boxes(res, w):
@@ -112,7 +112,7 @@ def sorted_layout_boxes(res, w):
     res_left = []
     res_right = []
     i = 0
-    
+
     while True:
         if i >= num_boxes:
             break
@@ -137,7 +137,7 @@ def sorted_layout_boxes(res, w):
             res_left = []
             res_right = []
             break
-        elif _boxes[i]['bbox'][0] < w / 4 and _boxes[i]['bbox'][2] < 3*w / 4:
+        elif _boxes[i]['bbox'][0] < w / 4 and _boxes[i]['bbox'][2] < 3 * w / 4:
             _boxes[i]['layout'] = 'double'
             res_left.append(_boxes[i])
             i += 1
