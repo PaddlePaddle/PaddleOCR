@@ -4,7 +4,7 @@
   - [1.1 layout analysis + table recognition](#1.1)
   - [1.2 layout analysis](#1.2)
   - [1.3 table recognition](#1.3)
-- [2. DocVQA](#2)
+- [2. KIE](#2)
 
 <a name="1"></a>
 ## 1. Structure
@@ -63,19 +63,22 @@ python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv2_det_slim_quant_i
 After the operation is completed, each image will have a directory with the same name in the `structure` directory under the directory specified by the `output` field. Each table in the image will be stored as an excel. The filename of excel is their coordinates in the image.
 
 <a name="2"></a>
-## 2. DocVQA
+## 2. KIE
 
 ```bash
 cd ppstructure
 
-# download model
 mkdir inference && cd inference
-wget https://paddleocr.bj.bcebos.com/pplayout/PP-Layout_v1.0_ser_pretrained.tar && tar xf PP-Layout_v1.0_ser_pretrained.tar
+# download model
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
 cd ..
-
-python3 predict_system.py --model_name_or_path=vqa/PP-Layout_v1.0_ser_pretrained/ \
-                          --mode=vqa \
-                          --image_dir=vqa/images/input/zh_val_0.jpg  \
-                          --vis_font_path=../doc/fonts/simfang.ttf
+python3 kie/predict_kie_token_ser.py \
+  --kie_algorithm=LayoutXLM \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../ppocr/utils/dict/kie_dict/xfund_class_list.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
 ```
-After the operation is completed, each image will store the visualized image in the `vqa` directory under the directory specified by the `output` field, and the image name is the same as the input image name.
+
+After the operation is completed, each image will store the visualized image in the `kie` directory under the directory specified by the `output` field, and the image name is the same as the input image name.

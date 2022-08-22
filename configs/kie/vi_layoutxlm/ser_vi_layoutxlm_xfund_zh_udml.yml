@@ -11,12 +11,12 @@ Global:
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: ppstructure/docs/vqa/input/zh_val_42.jpg
+  infer_img: ppstructure/docs/kie/input/zh_val_42.jpg
   save_res_path: ./output/ser_layoutxlm_xfund_zh/res
 
 
 Architecture:
-  model_type: &model_type "vqa"
+  model_type: &model_type "kie"
   name: DistillationModel
   algorithm: Distillation
   Models:

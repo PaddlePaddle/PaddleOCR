@@ -107,7 +107,7 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ../
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/vqa/requirements.txt
+        pip install -r ppstructure/kie/requirements.txt
         pip install paddlenlp\>=2.3.5 --force-reinstall -i https://mirrors.aliyun.com/pypi/simple/
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
@@ -221,7 +221,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/vqa/requirements.txt
+        pip install -r ppstructure/kie/requirements.txt
         pip install paddlenlp\>=2.3.5 --force-reinstall -i https://mirrors.aliyun.com/pypi/simple/
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar

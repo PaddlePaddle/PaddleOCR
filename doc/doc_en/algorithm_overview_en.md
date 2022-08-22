@@ -1,17 +1,17 @@
-# OCR Algorithms
+# Algorithms
 
-- [1. Two-stage Algorithms](#1)
+- [1. Two-stage OCR Algorithms](#1)
   - [1.1 Text Detection Algorithms](#11)
   - [1.2 Text Recognition Algorithms](#12)
-- [2. End-to-end Algorithms](#2)
+- [2. End-to-end OCR Algorithms](#2)
 - [3. Table Recognition Algorithms](#3)
-
+- [4. Key Information Extraction Algorithms](#4)
 
 This tutorial lists the OCR algorithms supported by PaddleOCR, as well as the models and metrics of each algorithm on **English public datasets**. It is mainly used for algorithm introduction and algorithm performance comparison. For more models on other datasets including Chinese, please refer to [PP-OCR v2.0 models list](./models_list_en.md).
 
 <a name="1"></a>
 
-## 1. Two-stage Algorithms
+## 1. Two-stage OCR Algorithms
 
 <a name="11"></a>
 
@@ -98,10 +98,11 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 
 <a name="2"></a>
 
-## 2. End-to-end Algorithms
+## 2. End-to-end OCR Algorithms
 
 Supported end-to-end algorithms (Click the link to get the tutorial):
 - [x]  [PGNet](./algorithm_e2e_pgnet_en.md)
+
 
 <a name="3"></a>
 ## 3. Table Recognition Algorithms
@@ -114,3 +115,34 @@ On the PubTabNet dataset, the algorithm result is as follows:
 |Model|Backbone|Config|Acc|Download link|
 |---|---|---|---|---|
 |TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
+
+
+<a name="4"></a>
+
+## 4. Key Information Extraction Algorithms
+
+Supported KIE algorithms (Click the link to get the tutorial):
+
+- [x]  [VI-LayoutXLM](./algorithm_kie_vi_laoutxlm_en.md)
+- [x]  [LayoutLM](./algorithm_kie_laoutxlm_en.md)
+- [x]  [LayoutLMv2](./algorithm_kie_laoutxlm_en.md)
+- [x]  [LayoutXLM](./algorithm_kie_laoutxlm_en.md)
+- [x]  [SDMGR](./algorithm_kie_sdmgr_en.md)
+
+On wildreceipt dataset, the algorithm result is as follows:
+
+|Model|Backbone|Config|Hmean|Download link|
+| --- | --- | --- | --- | --- |
+|SDMGR|VGG6|[configs/kie/sdmgr/kie_unet_sdmgr.yml](../../configs/kie/sdmgr/kie_unet_sdmgr.yml)|86.7%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/kie_vgg16.tar)|
+
+On XFUND_zh dataset, the algorithm result is as follows:
+
+|Model|Backbone|Task|Config|Hmean|Download link|
+| --- | --- |  --- | --- | --- | --- |
+|VI-LayoutXLM| VI-LayoutXLM-base | SER | [ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|**93.19%**|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)|
+|LayoutXLM| LayoutXLM-base | SER | [ser_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml)|90.38%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)|
+|LayoutLM| LayoutLM-base | SER | [ser_layoutlm_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutlm_xfund_zh.yml)|77.31%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLM_xfun_zh.tar)|
+|LayoutLMv2| LayoutLMv2-base | SER | [ser_layoutlmv2_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutlmv2_xfund_zh.yml)|85.44%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutLMv2_xfun_zh.tar)|
+|VI-LayoutXLM| VI-LayoutXLM-base | RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|**83.92%**|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)|
+|LayoutXLM| LayoutXLM-base | RE | [re_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml)|74.83%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)|
+|LayoutLMv2| LayoutLMv2-base | RE | [re_layoutlmv2_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutlmv2_xfund_zh.yml)|67.77%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutLMv2_xfun_zh.tar)|

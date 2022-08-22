@@ -74,7 +74,7 @@ class StructureSystem(object):
                 else:
                     self.table_system = TableSystem(args)
 
-        elif self.mode == 'vqa':
+        elif self.mode == 'kie':
             raise NotImplementedError
 
     def __call__(self, img, img_idx=0, return_ocr_result_in_table=False):
@@ -85,7 +85,7 @@ class StructureSystem(object):
             'table_match': 0,
             'det': 0,
             'rec': 0,
-            'vqa': 0,
+            'kie': 0,
             'all': 0
         }
         start = time.time()
@@ -174,7 +174,7 @@ class StructureSystem(object):
             end = time.time()
             time_dict['all'] = end - start
             return res_list, time_dict
-        elif self.mode == 'vqa':
+        elif self.mode == 'kie':
             raise NotImplementedError
         return None, None
 
@@ -233,7 +233,7 @@ def main(args):
                 save_structure_res(res, save_folder, img_name)
                 draw_img = draw_structure_result(img, res, args.vis_font_path)
                 img_save_path = os.path.join(save_folder, img_name, 'show.jpg')
-            elif structure_sys.mode == 'vqa':
+            elif structure_sys.mode == 'kie':
                 raise NotImplementedError
                 # draw_img = draw_ser_results(img, res, args.vis_font_path)
                 # img_save_path = os.path.join(save_folder, img_name + '.jpg')
@@ -263,7 +263,7 @@ def main(args):
                                                      args.vis_font_path)
                     img_save_path = os.path.join(save_folder, img_name,
                                                  'show_{}.jpg'.format(index))
-                elif structure_sys.mode == 'vqa':
+                elif structure_sys.mode == 'kie':
                     raise NotImplementedError
                     # draw_img = draw_ser_results(img, res, args.vis_font_path)
                     # img_save_path = os.path.join(save_folder, img_name + '.jpg')

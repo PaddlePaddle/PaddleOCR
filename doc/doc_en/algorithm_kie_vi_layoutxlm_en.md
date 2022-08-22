@@ -1,53 +1,46 @@
-# 关键信息抽取算法-VI-LayoutXLM
+# KIE Algorithm - VI-LayoutXLM
 
-- [1. 算法简介](#1-算法简介)
-- [2. 环境配置](#2-环境配置)
-- [3. 模型训练、评估、预测](#3-模型训练评估预测)
-- [4. 推理部署](#4-推理部署)
-  - [4.1 Python推理](#41-python推理)
-  - [4.2 C++推理部署](#42-c推理部署)
-  - [4.3 Serving服务化部署](#43-serving服务化部署)
-  - [4.4 更多推理部署](#44-更多推理部署)
+
+- [1. Introduction](#1-introduction)
+- [2. Environment](#2-environment)
+- [3. Model Training / Evaluation / Prediction](#3-model-training--evaluation--prediction)
+- [4. Inference and Deployment](#4-inference-and-deployment)
+  - [4.1 Python Inference](#41-python-inference)
+  - [4.2 C++ Inference](#42-c-inference)
+  - [4.3 Serving](#43-serving)
+  - [4.4 More](#44-more)
 - [5. FAQ](#5-faq)
-- [引用](#引用)
+- [Citation](#Citation)
 
 
-<a name="1"></a>
+## 1. Introduction
 
-## 1. 算法简介
+VI-LayoutXLM is improved based on LayoutXLM. In the process of downstream finetuning, the visual backbone network module is removed, and the model infernce speed is further improved on the basis of almost lossless accuracy.
 
-VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去除视觉骨干网络模块，最终精度基本无损的情况下，模型推理速度进一步提升。
+On XFUND_zh dataset, the algorithm reproduction Hmean is as follows.
 
-在XFUND_zh数据集上，算法复现效果如下：
-
-|模型|骨干网络|任务|配置文件|hmean|下载链接|
+|Model|Backbone|Task |Cnnfig|Hmean|Download link|
 | --- | --- |---| --- | --- | --- |
-|VI-LayoutXLM |VI-LayoutXLM-base | SER |[ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|93.19%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)/[推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar)|
-|VI-LayoutXLM |VI-LayoutXLM-base |RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|83.92%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)/[推理模型(coming soon)]()|
-
-<a name="2"></a>
-
-## 2. 环境配置
-请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目代码。
+|VI-LayoutXLM |VI-LayoutXLM-base | SER |[ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|93.19%|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)/[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar)|
+|VI-LayoutXLM |VI-LayoutXLM-base |RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|83.92%|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)/[inference model(coming soon)]()|
 
 
-<a name="3"></a>
-
-## 3. 模型训练、评估、预测
-
-请参考[关键信息抽取教程](./kie.md)。PaddleOCR对代码进行了模块化，训练不同的关键信息抽取模型只需要**更换配置文件**即可。
+Please refer to ["Environment Preparation"](./environment_en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
 
 
-<a name="4"></a>
-## 4. 推理部署
+## 3. Model Training / Evaluation / Prediction
 
-<a name="4-1"></a>
+Please refer to [KIE tutorial](./kie_en.md)。PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different models.
 
-### 4.1 Python推理
 
-**注：** 目前RE任务推理过程仍在适配中，下面以SER任务为例，介绍基于VI-LayoutXLM模型的关键信息抽取过程。
+## 4. Inference and Deployment
 
-首先将训练得到的模型转换成inference model。以VI-LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
+### 4.1 Python Inference
+
+**Note:** Currently, the RE model inference process is still in the process of adaptation. We take SER model as an example to introduce the KIE process based on VI-LayoutXLM model.
+
+First, we need to export the trained model into inference model. Take VI-LayoutXLM model trained on XFUND_zh as an example ([trained model download link](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)). Use the following command to export.
+
 
 ``` bash
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar
@@ -55,7 +48,8 @@ tar -xf ser_vi_layoutxlm_xfund_pretrained.tar
 python3 tools/export_model.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./ser_vi_layoutxlm_xfund_pretrained/best_accuracy Global.save_inference_dir=./inference/ser_vi_layoutxlm_infer
 ```
 
-VI-LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
+Use the following command to infer using VI-LayoutXLM SER model.
+
 
 ```bash
 cd ppstructure
@@ -68,33 +62,29 @@ python3 kie/predict_kie_token_ser.py \
   --ocr_order_method="tb-yx"
 ```
 
-SER可视化结果默认保存到`./output`文件夹里面，结果示例如下：
+The SER visualization results are saved in the `./output` folder by default. The results are as follows.
+
 
 <div align="center">
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 
-<a name="4-2"></a>
-### 4.2 C++推理部署
+### 4.2 C++ Inference
 
-暂不支持
+Not supported
 
-<a name="4-3"></a>
-### 4.3 Serving服务化部署
+### 4.3 Serving
 
-暂不支持
+Not supported
 
-<a name="4-4"></a>
-### 4.4 更多推理部署
+### 4.4 More
 
-暂不支持
-
-<a name="5"></a>
+Not supported
 
 ## 5. FAQ
 
-## 引用
+## Citation
 
 
 ```bibtex

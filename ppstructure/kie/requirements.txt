@@ -1,0 +1,7 @@
+sentencepiece
+yacs
+seqeval
+git+https://github.com/PaddlePaddle/PaddleNLP
+pypandoc
+attrdict
+python_docx
