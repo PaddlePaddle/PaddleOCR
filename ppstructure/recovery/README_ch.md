@@ -78,7 +78,7 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 如果输入为英文文档类型，下载英文模型
 
-```
+```bash
 cd PaddleOCR/ppstructure
 
 # 下载模型
@@ -104,7 +104,7 @@ cd ..
 
 使用下载的模型恢复给定文档的版面，以英文模型为例，执行如下命令：
 
-```python
+```bash
 python3 predict_system.py \
     --image_dir=./docs/table/1.png \
     --det_model_dir=inference/en_PP-OCRv3_det_infer \

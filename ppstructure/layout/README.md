@@ -175,7 +175,7 @@ cd pretrained_model
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout.pdparams
 ```
 
-下载更多[版面分析模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#1-%E7%89%88%E9%9D%A2%E5%88%86%E6%9E%90%E6%A8%A1%E5%9E%8B)（中文CDLA数据集预训练模型、表格预训练模型）
+下载更多[版面分析模型](../docs/models_list.md)（中文CDLA数据集预训练模型、表格预训练模型）
 
 ### 4.1. 启动训练
 

@@ -6,6 +6,8 @@ English | [简体中文](README_ch.md)
     - [2.1 Installation dependencies](#2.1)
     - [2.2 Install PaddleOCR](#2.2)
   - [3. Quick Start](#3)
+    - [3.1 Download models](#3.1)
+    - [3.2 Layout recovery](#3.2)
 
 <a name="1"></a>
 
@@ -17,8 +19,9 @@ Layout recovery combines [layout analysis](../layout/README.md)、[table recogni
 The following figure shows the result：
 
 <div align="center">
-<img src="../docs/table/recovery.jpg"  width = "700" />
+<img src="../docs/recovery/recovery.jpg"  width = "700" />
 </div>
+
 <a name="2"></a>
 
 ## 2. Install
@@ -68,11 +71,11 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 ## 3. Quick Start
 
 <a name="3.1"></a>
-### 3.1 下载模型
+### 3.1 Download models
 
 If input is English document, download English models:
 
-```python
+```bash
 cd PaddleOCR/ppstructure
 
 # download model
@@ -91,7 +94,7 @@ If input is Chinese document，download Chinese models:
 [Chinese and English ultra-lightweight PP-OCRv3 model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/README.md#pp-ocr-series-model-listupdate-on-september-8th)、[表格识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#22-表格识别模型)、[版面分析模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#1-版面分析模型)
 
 <a name="3.2"></a>
-### 3.2 版面恢复
+### 3.2 Layout recovery
 
 
 ```bash
