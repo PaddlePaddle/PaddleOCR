@@ -58,6 +58,8 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
+            [paddle.static.InputSpec(
+                shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
