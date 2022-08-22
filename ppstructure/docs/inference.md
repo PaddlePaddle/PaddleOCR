@@ -1,18 +1,18 @@
 # 基于Python预测引擎推理
 
-- [1. Structure](#1)
+- [1. 版面信息抽取](#1)
   - [1.1 版面分析+表格识别](#1.1)
   - [1.2 版面分析](#1.2)
   - [1.3 表格识别](#1.3)
 - [2. 关键信息抽取](#2)
 
 <a name="1"></a>
-## 1. Structure
+## 1. 版面信息抽取
 进入`ppstructure`目录
 
 ```bash
 cd ppstructure
-````
+```
 下载模型
 ```bash
 mkdir inference && cd inference
