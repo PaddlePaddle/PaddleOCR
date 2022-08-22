@@ -39,8 +39,8 @@
 |算法|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
 | --- | --- | --- | ---|
 | EDD<sup>[2]</sup> |x| 88.3% |x|
-| TableRec-RARE(ours) |73.8%| 95.3% |1550ms|
-| SLANet(ours) | 76.2%|	95.85% |766ms|
+| TableRec-RARE(ours) | 71.73%| 93.88% |779ms|
+| SLANet(ours) |76.31%|	95.89%|766ms|
 
 性能指标解释如下：
 - Acc: 模型对每张图像里表格结构的识别准确率，错一个token就算错误。
@@ -64,16 +64,16 @@ cd PaddleOCR/ppstructure
 # 下载模型
 mkdir inference && cd inference
 # 下载PP-OCRv3文本检测模型并解压
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.tar && tar xf ch_PP-OCRv3_det_slim_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
 # 下载PP-OCRv3文本识别模型并解压
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar && tar xf ch_PP-OCRv3_rec_slim_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
 # 下载PP-Structurev2表格识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 # 执行表格识别
 python table/predict_table.py \
-    --det_model_dir=inference/ch_PP-OCRv3_det_slim_infer \
-    --rec_model_dir=inference/ch_PP-OCRv3_rec_slim_infer  \
+    --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+    --rec_model_dir=inference/ch_PP-OCRv3_rec_infer  \
     --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
     --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \

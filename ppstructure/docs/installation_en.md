@@ -2,7 +2,7 @@
 
 - [1. PaddlePaddle 和 PaddleOCR](#1)
 - [2. Install other dependencies](#2)
-  - [2.1  VQA](#21)
+  - [2.1 KIE](#21)
 
 
 <a name="1"></a>
@@ -14,17 +14,11 @@ Please refer to [PaddleOCR installation documentation](../../doc/doc_en/installa
 ## 2. Install other dependencies
 
 <a name="21"></a>
-### 2.1  VQA
+### 2.1  KIE
 
 * paddleocr
 
 ```bash
-pip3 install paddleocr
-```
-
-* PaddleNLP
-```bash
-git clone https://github.com/PaddlePaddle/PaddleNLP -b develop
-cd PaddleNLP
-pip3 install -e .
+pip install paddleocr -U
+pip install -r ./kie/requirements.txt
 ```

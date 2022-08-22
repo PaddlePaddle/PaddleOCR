@@ -11,16 +11,18 @@ Global:
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: ppstructure/docs/vqa/input/zh_val_42.jpg
+  infer_img: ppstructure/docs/kie/input/zh_val_42.jpg
   # if you want to predict using the groundtruth ocr info,
   # you can use the following config
   # infer_img: train_data/XFUND/zh_val/val.json
   # infer_mode: False
 
   save_res_path: ./output/ser/xfund_zh/res
+  kie_rec_model_dir: 
+  kie_det_model_dir:
 
 Architecture:
-  model_type: vqa
+  model_type: kie
   algorithm: &algorithm "LayoutXLM"
   Transform:
   Backbone:

@@ -30,7 +30,7 @@ import paddle
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 
 logger = get_logger()
 
@@ -68,7 +68,7 @@ class TextRecognizer(object):
                 'name': 'SARLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
-            }   
+            }
         elif self.rec_algorithm == "VisionLAN":
             postprocess_params = {
                 'name': 'VLLabelDecode',
@@ -399,7 +399,9 @@ class TextRecognizer(object):
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == "RobustScanner":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
-                        img_list[indices[ino]], self.rec_image_shape, width_downsample_ratio=0.25)
+                        img_list[indices[ino]],
+                        self.rec_image_shape,
+                        width_downsample_ratio=0.25)
                     norm_img = norm_img[np.newaxis, :]
                     valid_ratio = np.expand_dims(valid_ratio, axis=0)
                     valid_ratios = []
@@ -484,12 +486,8 @@ class TextRecognizer(object):
             elif self.rec_algorithm == "RobustScanner":
                 valid_ratios = np.concatenate(valid_ratios)
                 word_positions_list = np.concatenate(word_positions_list)
-                inputs = [
-                    norm_img_batch,
-                    valid_ratios,
-                    word_positions_list
-                ]
-                
+                inputs = [norm_img_batch, valid_ratios, word_positions_list]
+
                 if self.use_onnx:
                     input_dict = {}
                     input_dict[self.input_tensor.name] = norm_img_batch
@@ -555,7 +553,7 @@ def main(args):
             res = text_recognizer([img] * int(args.rec_batch_num))
 
     for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:
