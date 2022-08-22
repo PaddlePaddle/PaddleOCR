@@ -8,12 +8,15 @@
     - [2.1.3 layout analysis](#213-layout-analysis)
     - [2.1.4 table recognition](#214-table-recognition)
     - [2.1.5 Key Information Extraction](#215-Key-Information-Extraction)
+    - [2.1.6 layout recovery](#216-layout-recovery)
   - [2.2 Use by code](#22-use-by-code)
     - [2.2.1 image orientation + layout analysis + table recognition](#221-image-orientation--layout-analysis--table-recognition)
     - [2.2.2 layout analysis + table recognition](#222-layout-analysis--table-recognition)
     - [2.2.3 layout analysis](#223-layout-analysis)
     - [2.2.4 table recognition](#224-table-recognition)
+    - [2.2.5 DocVQA](#225-dockie)
     - [2.2.5 Key Information Extraction](#225-Key-Information-Extraction)
+    - [2.2.6 layout recovery](#226-layout-recovery)  
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
     - [2.3.2 Key Information Extraction](#232-Key-Information-Extraction)
@@ -24,14 +27,16 @@
 ## 1. Install package
 
 ```bash
-# Install paddleocr, version 2.5+ is recommended
-pip3 install "paddleocr>=2.5"
+# Install paddleocr, version 2.6 is recommended
+pip3 install "paddleocr>=2.6"
 # Install the KIE dependency packages (if you do not use the KIE, you can skip it)
 pip install -r kie/requirements.txt
-
+# Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
+pip3 install paddleclas
 ```
 
 <a name="2"></a>
+
 ## 2. Use
 
 <a name="21"></a>
@@ -65,6 +70,12 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 #### 2.1.5 Key Information Extraction
 
 Please refer to: [Key Information Extraction](../kie/README.md) .
+
+<a name="216"></a>
+#### 2.1.6 layout recovery
+```bash
+paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true
+```
 
 <a name="22"></a>
 ### 2.2 Use by code
@@ -174,6 +185,32 @@ for line in result:
 
 Please refer to: [Key Information Extraction](../kie/README.md) .
 
+<a name="226"></a>
+#### 2.2.6 layout recovery
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+from paddelocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+
+table_engine = PPStructure(layout=False, show_log=True)
+
+save_folder = './output'
+img_path = 'PaddleOCR/ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+
+h, w, _ = img.shape
+res = sorted_layout_boxes(res, w)
+convert_info_docx(img, result, save_folder, os.path.basename(img_path).split('.')[0])
+```
+
 <a name="23"></a>
 ### 2.3 Result description
 
@@ -235,6 +272,7 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 | table  | Whether to perform table recognition in forward  | True   |
 | ocr    | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False| True |
 | recovery    | Whether to perform layout recovery in forward| False |
+| save_pdf    | Whether to convert docx to pdf when recovery| False |
 | structure_version |  Structure version, optional PP-structure and PP-structurev2  | PP-structure |
 
 Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl.md)

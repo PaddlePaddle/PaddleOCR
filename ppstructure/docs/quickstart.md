@@ -8,15 +8,21 @@
     - [2.1.3 版面分析](#213-版面分析)
     - [2.1.4 表格识别](#214-表格识别)
     - [2.1.5 关键信息抽取](#215-关键信息抽取)
+    - [2.1.6 版面恢复](#216-版面恢复)
   - [2.2 代码使用](#22-代码使用)
-    - [2.2.1 图像方向分类版面分析表格识别](#221-图像方向分类版面分析表格识别)
+
+    - [2.2.1 图像方向+分类版面分析+表格识别](#221-图像方向分类版面分析表格识别)
     - [2.2.2 版面分析+表格识别](#222-版面分析表格识别)
     - [2.2.3 版面分析](#223-版面分析)
     - [2.2.4 表格识别](#224-表格识别)
+
     - [2.2.5 关键信息抽取](#225-关键信息抽取)
+    - [2.2.6 版面恢复](#226-版面恢复)
+
   - [2.3 返回结果说明](#23-返回结果说明)
     - [2.3.1 版面分析+表格识别](#231-版面分析表格识别)
     - [2.3.2 关键信息抽取](#232-关键信息抽取)
+
   - [2.4 参数说明](#24-参数说明)
 
 
@@ -24,11 +30,12 @@
 ## 1. 安装依赖包
 
 ```bash
-# 安装 paddleocr，推荐使用2.5+版本
-pip3 install "paddleocr>=2.5"
+# 安装 paddleocr，推荐使用2.6版本
+pip3 install "paddleocr>=2.6"
 # 安装 关键信息抽取 依赖包（如不需要KIE功能，可跳过）
 pip install -r kie/requirements.txt
-
+# 安装 图像方向分类依赖包paddleclas（如不需要图像方向分类功能，可跳过）
+pip3 install paddleclas
 ```
 
 <a name="2"></a>
@@ -62,15 +69,24 @@ paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/table.jpg --type=structur
 ```
 
 <a name="215"></a>
-#### 2.1.5 关键信息抽取
 
+#### 2.1.5 关键信息抽取
 请参考：[关键信息抽取教程](../kie/README_ch.md)。
 
+<a name="216"></a>
+
+#### 2.1.6 版面恢复
+
+```bash
+paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true
+```
+
 <a name="22"></a>
+
 ### 2.2 代码使用
 
 <a name="221"></a>
-#### 2.2.1 图像方向分类版面分析表格识别
+#### 2.2.1 图像方向分类+版面分析+表格识别
 
 ```python
 import os
@@ -149,6 +165,7 @@ for line in result:
 ```
 
 <a name="224"></a>
+
 #### 2.2.4 表格识别
 
 ```python
@@ -173,6 +190,33 @@ for line in result:
 #### 2.2.5 关键信息抽取
 
 请参考：[关键信息抽取教程](../kie/README_ch.md)。
+
+<a name="226"></a>
+
+#### 2.2.6 版面恢复
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+from paddelocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+
+table_engine = PPStructure(layout=False, show_log=True)
+
+save_folder = './output'
+img_path = 'PaddleOCR/ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+
+h, w, _ = img.shape
+res = sorted_layout_boxes(res, w)
+convert_info_docx(img, result, save_folder, os.path.basename(img_path).split('.')[0])
+```
 
 <a name="23"></a>
 ### 2.3 返回结果说明
@@ -235,6 +279,7 @@ dict 里各个字段说明如下
 | table  | 前向中是否执行表格识别  | True   |
 | ocr    | 对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False| True |
 | recovery    | 前向中是否执行版面恢复| False |
+| save_pdf | 版面恢复导出docx文件的同时，是否导出pdf文件 | False |
 | structure_version |  模型版本，可选 PP-structure和PP-structurev2  | PP-structure |
 
 大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
