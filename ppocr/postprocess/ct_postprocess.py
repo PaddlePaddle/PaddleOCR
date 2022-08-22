@@ -31,10 +31,14 @@ import pyclipper
 
 class CTPostProcess(object):
     """
-    The post process for Differentiable Binarization (DB).
+    The post process for Centripetal Text (CT).
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, min_score=0.88, min_area=16, bbox_type='poly', **kwargs):
+        self.min_score = min_score
+        self.min_area = min_area
+        self.bbox_type = bbox_type
+
         self.coord = np.zeros((2, 300, 300), dtype=np.int32)
         for i in range(300):
             for j in range(300):
@@ -47,16 +51,10 @@ class CTPostProcess(object):
 
     def __call__(self, outs, batch):
         imgs = batch[0]
-        out = self._upsample(outs, imgs.shape, 4)
-
         img_meta = batch[1]
         img_path = batch[2][0]
 
-        min_score = 0.88  #最好可配置
-        min_area = 16
-        bbox_type = 'poly'
-        #print(list(img_meta.keys()))
-
+        out = self._upsample(outs, imgs.shape, 4)
         outputs = dict()
 
         score = F.sigmoid(out[:, 0, :, :])
@@ -69,11 +67,11 @@ class CTPostProcess(object):
 
         label_num, label_kernel = cv2.connectedComponents(
             kernel, connectivity=4)
-        # print(label_num, np.max(label_kernel))
-        # exit()
+
         for i in range(1, label_num):
             ind = (label_kernel == i)
-            if ind.sum() < 10:  #个数太少，归为背景类
+            if ind.sum(
+            ) < 10:  # pixel number less than 10, treated as background
                 label_kernel[ind] = 0
 
         label = np.zeros_like(label_kernel)
@@ -85,15 +83,13 @@ class CTPostProcess(object):
             points + 10. / 4. * loc[:, pixels[1], pixels[0]].T).astype(np.int32)
         off_points[:, 0] = np.clip(off_points[:, 0], 0, label.shape[1] - 1)
         off_points[:, 1] = np.clip(off_points[:, 1], 0, label.shape[0] - 1)
-        # print(off_points[100,:], pixels[:,100])
-        # exit()
+
         label[pixels[1], pixels[0]] = label_kernel[off_points[:, 1],
                                                    off_points[:, 0]]
         label[label_kernel > 0] = label_kernel[label_kernel > 0]
 
         score_pocket = [0.0]
         for i in range(1, label_num):
-            # ind = ((label_kernel == i) & (label == i))
             ind = (label_kernel == i)
             if ind.sum() == 0:
                 score_pocket.append(0.0)
@@ -118,19 +114,19 @@ class CTPostProcess(object):
             ind = (label == i)
             points = np.array(np.where(ind)).transpose((1, 0))
 
-            if points.shape[0] < min_area:
+            if points.shape[0] < self.min_area:
                 continue
 
             score_i = score_pocket[i]
-            if score_i < min_score:
+            if score_i < self.min_score:
                 continue
 
-            if bbox_type == 'rect':
+            if self.bbox_type == 'rect':
                 rect = cv2.minAreaRect(points[:, ::-1])
                 bbox = cv2.boxPoints(rect) * scale
                 z = bbox.mean(0)
                 bbox = z + (bbox - z) * 0.85
-            elif bbox_type == 'poly':
+            elif self.bbox_type == 'poly':
                 binary = np.zeros(label.shape, dtype='uint8')
                 binary[ind] = 1
                 try:
@@ -139,24 +135,15 @@ class CTPostProcess(object):
                 except BaseException:
                     contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
                                                    cv2.CHAIN_APPROX_SIMPLE)
-                # contour = contours[0]
-                # epsilon = 0.01 * cv2.arcLength(contour, True)
-                # approx = cv2.approxPolyDP(contour, epsilon, True)
-                # bbox = approx * scale
+
                 bbox = contours[0] * scale
 
             bbox = bbox.astype('int32')
-            #print(bbox.shape)
             bboxes.append(bbox.reshape(-1, 2)[:, ::-1].reshape(-1))
             scores.append(score_i)
-        # print(len(bboxes), len(scores), bboxes[0], scores[0])
-        # exit()
+
         image_name, _ = osp.splitext(osp.basename(img_path))
 
-        #outputs.update(dict(bboxes=bboxes, scores=scores))
         outputs.update(dict(bboxes=bboxes, input_id=image_name))
-
-        # self.vis(img_meta, score.copy(), kernel.copy(), label_kernel.copy(), label.copy(), outputs, loc.copy())
-        # embed()
 
         return outputs

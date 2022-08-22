@@ -14,6 +14,7 @@
 
 import numpy as np
 import scipy.io as io
+import Polygon as plg
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
 
 
@@ -269,7 +270,112 @@ def get_socre_B(gt_dir, img_id, pred_dict):
     return single_data
 
 
-def combine_results(all_data):
+def get_score_C(gt_dir, input_id, pred_bboxes):
+    """
+    get score for CentripetalText (CT) prediction.
+    """
+
+    def get_union(pD, pG):
+        areaA = pD.area()
+        areaB = pG.area()
+        return areaA + areaB - get_intersection(pD, pG)
+
+    def get_intersection(pD, pG):
+        pInt = pD & pG
+        if len(pInt) == 0:
+            return 0
+        return pInt.area()
+
+    def gt_reading_mod(gt_dir, gt_id):
+        """This helper reads groundtruths from mat files"""
+        gt_id = gt_id.split('.')[0]
+        gt = io.loadmat('%s/poly_gt_%s.mat' % (gt_dir, gt_id))
+        gt = gt['polygt']
+        return gt
+
+    def detection_filtering(detections, groundtruths, threshold=0.5):
+        for gt_id, gt in enumerate(groundtruths):
+            if (gt[5] == '#') and (gt[1].shape[1] > 1):
+                gt_x = np.squeeze(gt[1]).astype('int32')
+                gt_y = np.squeeze(gt[3]).astype('int32')
+
+                gt_p = np.concatenate((np.array(gt_x), np.array(gt_y)))
+                gt_p = gt_p.reshape(2, -1).transpose()
+                gt_p = plg.Polygon(gt_p)
+
+                for det_id, detection in enumerate(detections):
+                    det_y = detection[0::2]
+                    det_x = detection[1::2]
+
+                    det_p = np.concatenate((np.array(det_x), np.array(det_y)))
+                    det_p = det_p.reshape(2, -1).transpose()
+                    det_p = plg.Polygon(det_p)
+
+                    try:
+                        det_gt_iou = get_intersection(det_p,
+                                                      gt_p) / det_p.area()
+                    except:
+                        print(det_x, det_y, gt_x, gt_y)
+                    if det_gt_iou > threshold:
+                        detections[det_id] = []
+
+                detections[:] = [item for item in detections if item != []]
+        return detections
+
+    def sigma_calculation(det_p, gt_p):
+        """
+        sigma = inter_area / gt_area
+        """
+        return get_intersection(det_p, gt_p) / gt_p.area()
+
+    def tau_calculation(det_p, gt_p):
+        """
+        tau = inter_area / det_area
+        """
+        return get_intersection(det_p, gt_p) / det_p.area()
+
+    detections = pred_bboxes
+
+    groundtruths = gt_reading_mod(gt_dir, input_id)
+    detections = detection_filtering(
+        detections, groundtruths)  # filters detections overlapping with DC area
+    dc_id = np.where(groundtruths[:, 5] == '#')
+    groundtruths = np.delete(groundtruths, (dc_id), (0))
+
+    local_sigma_table = np.zeros((groundtruths.shape[0], len(detections)))
+    local_tau_table = np.zeros((groundtruths.shape[0], len(detections)))
+
+    for gt_id, gt in enumerate(groundtruths):
+        if len(detections) > 0:
+            for det_id, detection in enumerate(detections):
+                gt_x = np.squeeze(gt[1]).astype('int32')
+                gt_y = np.squeeze(gt[3]).astype('int32')
+
+                gt_p = np.concatenate((np.array(gt_x), np.array(gt_y)))
+                gt_p = gt_p.reshape(2, -1).transpose()
+                gt_p = plg.Polygon(gt_p)
+
+                det_y = detection[0::2]
+                det_x = detection[1::2]
+
+                det_p = np.concatenate((np.array(det_x), np.array(det_y)))
+
+                det_p = det_p.reshape(2, -1).transpose()
+                det_p = plg.Polygon(det_p)
+
+                local_sigma_table[gt_id, det_id] = sigma_calculation(det_p,
+                                                                     gt_p)
+                local_tau_table[gt_id, det_id] = tau_calculation(det_p, gt_p)
+
+    data = {}
+    data['sigma'] = local_sigma_table
+    data['global_tau'] = local_tau_table
+    data['global_pred_str'] = ''
+    data['global_gt_str'] = ''
+    return data
+
+
+def combine_results(all_data, rec_flag=True):
     tr = 0.7
     tp = 0.6
     fsc_k = 0.8
@@ -278,6 +384,7 @@ def combine_results(all_data):
     global_tau = []
     global_pred_str = []
     global_gt_str = []
+
     for data in all_data:
         global_sigma.append(data['sigma'])
         global_tau.append(data['global_tau'])
@@ -294,7 +401,7 @@ def combine_results(all_data):
     def one_to_one(local_sigma_table, local_tau_table,
                    local_accumulative_recall, local_accumulative_precision,
                    global_accumulative_recall, global_accumulative_precision,
-                   gt_flag, det_flag, idy):
+                   gt_flag, det_flag, idy, rec_flag):
         hit_str_num = 0
         for gt_id in range(num_gt):
             gt_matching_qualified_sigma_candidates = np.where(
@@ -328,14 +435,15 @@ def combine_results(all_data):
                 gt_flag[0, gt_id] = 1
                 matched_det_id = np.where(local_sigma_table[gt_id, :] > tr)
                 # recg start
-                gt_str_cur = global_gt_str[idy][gt_id]
-                pred_str_cur = global_pred_str[idy][matched_det_id[0].tolist()[
-                    0]]
-                if pred_str_cur == gt_str_cur:
-                    hit_str_num += 1
-                else:
-                    if pred_str_cur.lower() == gt_str_cur.lower():
+                if rec_flag:
+                    gt_str_cur = global_gt_str[idy][gt_id]
+                    pred_str_cur = global_pred_str[idy][matched_det_id[0]
+                                                        .tolist()[0]]
+                    if pred_str_cur == gt_str_cur:
                         hit_str_num += 1
+                    else:
+                        if pred_str_cur.lower() == gt_str_cur.lower():
+                            hit_str_num += 1
                 # recg end
                 det_flag[0, matched_det_id] = 1
         return local_accumulative_recall, local_accumulative_precision, global_accumulative_recall, global_accumulative_precision, gt_flag, det_flag, hit_str_num
@@ -343,7 +451,7 @@ def combine_results(all_data):
     def one_to_many(local_sigma_table, local_tau_table,
                     local_accumulative_recall, local_accumulative_precision,
                     global_accumulative_recall, global_accumulative_precision,
-                    gt_flag, det_flag, idy):
+                    gt_flag, det_flag, idy, rec_flag):
         hit_str_num = 0
         for gt_id in range(num_gt):
             # skip the following if the groundtruth was matched
@@ -374,6 +482,22 @@ def combine_results(all_data):
                         gt_flag[0, gt_id] = 1
                         det_flag[0, qualified_tau_candidates] = 1
                         # recg start
+                        if rec_flag:
+                            gt_str_cur = global_gt_str[idy][gt_id]
+                            pred_str_cur = global_pred_str[idy][
+                                qualified_tau_candidates[0].tolist()[0]]
+                            if pred_str_cur == gt_str_cur:
+                                hit_str_num += 1
+                            else:
+                                if pred_str_cur.lower() == gt_str_cur.lower():
+                                    hit_str_num += 1
+                        # recg end
+                elif (np.sum(local_sigma_table[gt_id, qualified_tau_candidates])
+                      >= tr):
+                    gt_flag[0, gt_id] = 1
+                    det_flag[0, qualified_tau_candidates] = 1
+                    # recg start
+                    if rec_flag:
                         gt_str_cur = global_gt_str[idy][gt_id]
                         pred_str_cur = global_pred_str[idy][
                             qualified_tau_candidates[0].tolist()[0]]
@@ -382,20 +506,6 @@ def combine_results(all_data):
                         else:
                             if pred_str_cur.lower() == gt_str_cur.lower():
                                 hit_str_num += 1
-                        # recg end
-                elif (np.sum(local_sigma_table[gt_id, qualified_tau_candidates])
-                      >= tr):
-                    gt_flag[0, gt_id] = 1
-                    det_flag[0, qualified_tau_candidates] = 1
-                    # recg start
-                    gt_str_cur = global_gt_str[idy][gt_id]
-                    pred_str_cur = global_pred_str[idy][
-                        qualified_tau_candidates[0].tolist()[0]]
-                    if pred_str_cur == gt_str_cur:
-                        hit_str_num += 1
-                    else:
-                        if pred_str_cur.lower() == gt_str_cur.lower():
-                            hit_str_num += 1
                     # recg end
 
                     global_accumulative_recall = global_accumulative_recall + fsc_k
@@ -409,7 +519,7 @@ def combine_results(all_data):
     def many_to_one(local_sigma_table, local_tau_table,
                     local_accumulative_recall, local_accumulative_precision,
                     global_accumulative_recall, global_accumulative_precision,
-                    gt_flag, det_flag, idy):
+                    gt_flag, det_flag, idy, rec_flag):
         hit_str_num = 0
         for det_id in range(num_det):
             # skip the following if the detection was matched
@@ -440,6 +550,30 @@ def combine_results(all_data):
                         gt_flag[0, qualified_sigma_candidates] = 1
                         det_flag[0, det_id] = 1
                         # recg start
+                        if rec_flag:
+                            pred_str_cur = global_pred_str[idy][det_id]
+                            gt_len = len(qualified_sigma_candidates[0])
+                            for idx in range(gt_len):
+                                ele_gt_id = qualified_sigma_candidates[
+                                    0].tolist()[idx]
+                                if ele_gt_id not in global_gt_str[idy]:
+                                    continue
+                                gt_str_cur = global_gt_str[idy][ele_gt_id]
+                                if pred_str_cur == gt_str_cur:
+                                    hit_str_num += 1
+                                    break
+                                else:
+                                    if pred_str_cur.lower() == gt_str_cur.lower(
+                                    ):
+                                        hit_str_num += 1
+                                    break
+                        # recg end
+                elif (np.sum(local_tau_table[qualified_sigma_candidates,
+                                             det_id]) >= tp):
+                    det_flag[0, det_id] = 1
+                    gt_flag[0, qualified_sigma_candidates] = 1
+                    # recg start
+                    if rec_flag:
                         pred_str_cur = global_pred_str[idy][det_id]
                         gt_len = len(qualified_sigma_candidates[0])
                         for idx in range(gt_len):
@@ -454,27 +588,7 @@ def combine_results(all_data):
                             else:
                                 if pred_str_cur.lower() == gt_str_cur.lower():
                                     hit_str_num += 1
-                                break
-                        # recg end
-                elif (np.sum(local_tau_table[qualified_sigma_candidates,
-                                             det_id]) >= tp):
-                    det_flag[0, det_id] = 1
-                    gt_flag[0, qualified_sigma_candidates] = 1
-                    # recg start
-                    pred_str_cur = global_pred_str[idy][det_id]
-                    gt_len = len(qualified_sigma_candidates[0])
-                    for idx in range(gt_len):
-                        ele_gt_id = qualified_sigma_candidates[0].tolist()[idx]
-                        if ele_gt_id not in global_gt_str[idy]:
-                            continue
-                        gt_str_cur = global_gt_str[idy][ele_gt_id]
-                        if pred_str_cur == gt_str_cur:
-                            hit_str_num += 1
-                            break
-                        else:
-                            if pred_str_cur.lower() == gt_str_cur.lower():
-                                hit_str_num += 1
-                                break
+                                    break
                     # recg end
 
                     global_accumulative_recall = global_accumulative_recall + num_qualified_sigma_candidates * fsc_k
@@ -504,7 +618,7 @@ def combine_results(all_data):
         gt_flag, det_flag, hit_str_num = one_to_one(local_sigma_table, local_tau_table,
                                                     local_accumulative_recall, local_accumulative_precision,
                                                     global_accumulative_recall, global_accumulative_precision,
-                                                    gt_flag, det_flag, idx)
+                                                    gt_flag, det_flag, idx, rec_flag)
 
         hit_str_count += hit_str_num
         #######then check for one-to-many case##########
@@ -512,14 +626,14 @@ def combine_results(all_data):
         gt_flag, det_flag, hit_str_num = one_to_many(local_sigma_table, local_tau_table,
                                                      local_accumulative_recall, local_accumulative_precision,
                                                      global_accumulative_recall, global_accumulative_precision,
-                                                     gt_flag, det_flag, idx)
+                                                     gt_flag, det_flag, idx, rec_flag)
         hit_str_count += hit_str_num
         #######then check for many-to-one case##########
         local_accumulative_recall, local_accumulative_precision, global_accumulative_recall, global_accumulative_precision, \
         gt_flag, det_flag, hit_str_num = many_to_one(local_sigma_table, local_tau_table,
                                                      local_accumulative_recall, local_accumulative_precision,
                                                      global_accumulative_recall, global_accumulative_precision,
-                                                     gt_flag, det_flag, idx)
+                                                     gt_flag, det_flag, idx, rec_flag)
         hit_str_count += hit_str_num
 
     try:
