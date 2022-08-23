@@ -286,11 +286,17 @@ MODEL_URLS = {
                 }
             },
             'layout': {
-                'ch': {
+                'en': {
                     'url':
-                    'https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar',
+                    'https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar',
                     'dict_path':
                     'ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt'
+                },
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer.tar',
+                    'dict_path':
+                    'ppocr/utils/dict/layout_dict/layout_cdla_dict.txt'
                 }
             }
         }
@@ -633,6 +639,20 @@ def main():
         elif args.type == 'structure':
             result = engine(img_path)
             save_structure_res(result, args.output, img_name)
+
+            if args.recovery:
+                try:
+                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                    img = cv2.imread(img_path)
+                    h, w, _ = img.shape
+                    res = sorted_layout_boxes(result, w)
+                    convert_info_docx(img, res, args.output, img_name,
+                                      args.save_pdf)
+                except Exception as ex:
+                    logger.error(
+                        "error in layout recovery image:{}, err msg: {}".format(
+                            img_name, ex))
+                    continue
 
             for item in result:
                 item.pop('img')

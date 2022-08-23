@@ -29,10 +29,17 @@
 ```bash
 # Install paddleocr, version 2.6 is recommended
 pip3 install "paddleocr>=2.6"
-# Install the KIE dependency packages (if you do not use the KIE, you can skip it)
-pip install -r kie/requirements.txt
+
 # Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
 pip3 install paddleclas
+
+# Install the KIE dependency packages (if you do not use the KIE, you can skip it)
+pip3 install -r ppstructure/kie/requirements.txt
+
+# Install the layout recovery dependency packages (if you do not use the layout recovery, you can skip it)
+pip3 install -r ppstructure/recovery/requirements.txt
+
+
 ```
 
 <a name="2"></a>
@@ -73,8 +80,11 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 
 <a name="216"></a>
 #### 2.1.6 layout recovery
-```bash
+```
+# Chinese pic
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true
+# English pic
+paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>
@@ -192,12 +202,15 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 import os
 import cv2
 from paddleocr import PPStructure,save_structure_res
-from paddelocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
 
-table_engine = PPStructure(layout=False, show_log=True)
+# Chinese image
+table_engine = PPStructure(recovery=True)
+# English image
+# table_engine = PPStructure(recovery=True, lang='en')
 
 save_folder = './output'
-img_path = 'PaddleOCR/ppstructure/docs/table/1.png'
+img_path = 'ppstructure/docs/table/1.png'
 img = cv2.imread(img_path)
 result = table_engine(img)
 save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
@@ -207,8 +220,8 @@ for line in result:
     print(line)
 
 h, w, _ = img.shape
-res = sorted_layout_boxes(res, w)
-convert_info_docx(img, result, save_folder, os.path.basename(img_path).split('.')[0])
+res = sorted_layout_boxes(result, w)
+convert_info_docx(img, res, save_folder, os.path.basename(img_path).split('.')[0])
 ```
 
 <a name="23"></a>

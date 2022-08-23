@@ -77,7 +77,7 @@ class StructureSystem(object):
         elif self.mode == 'kie':
             raise NotImplementedError
 
-    def __call__(self, img, img_idx=0, return_ocr_result_in_table=False):
+    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
             'image_orientation': 0,
             'layout': 0,

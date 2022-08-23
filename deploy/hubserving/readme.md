@@ -20,7 +20,7 @@ PaddleOCR提供2种服务部署方式：
 
 # 基于PaddleHub Serving的服务部署
 
-hubserving服务部署目录下包括文本检测、文本方向分类，文本识别、文本检测+文本方向分类+文本识别3阶段串联，表格识别和PP-Structure六种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
+hubserving服务部署目录下包括文本检测、文本方向分类，文本识别、文本检测+文本方向分类+文本识别3阶段串联，表格识别、PP-Structure和版面分析七种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：
 ```
 deploy/hubserving/
   └─  ocr_cls     文本方向分类模块服务包
@@ -29,6 +29,7 @@ deploy/hubserving/
   └─  ocr_system  文本检测+文本方向分类+文本识别串联服务包
   └─  structure_table  表格识别服务包
   └─  structure_system  PP-Structure服务包
+  └─  structure_layout  版面分析服务包
 ```
 
 每个服务包下包含3个文件。以2阶段串联服务包为例，目录如下：
@@ -43,6 +44,7 @@ deploy/hubserving/ocr_system/
 
 * 2022.05.05 新增PP-OCRv3检测和识别模型。
 * 2022.03.30 新增PP-Structure和表格识别两种服务。
+* 2022.08.23 新增版面分析服务。
 
 ## 2. 快速启动服务
 以下步骤以检测+识别2阶段串联服务为例，如果只需要检测服务或识别服务，替换相应文件路径即可。
@@ -59,9 +61,9 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 检测模型：./inference/ch_PP-OCRv3_det_infer/
 识别模型：./inference/ch_PP-OCRv3_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
-版面分析模型：./inference/layout_infer/
+版面分析模型：./inference/picodet_lcnet_x1_0_fgd_layout_infer/
 表格结构识别模型：./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
-```  
+```
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
 
@@ -87,6 +89,9 @@ hub install deploy/hubserving/structure_table/
 
 # 或，安装PP-Structure服务模块：  
 hub install deploy/hubserving/structure_system/
+
+# 或，安装版面分析服务模块：  
+hub install deploy/hubserving/structure_layout/
 ```
 
 * 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
@@ -108,6 +113,9 @@ hub install deploy\hubserving\structure_table\
 
 # 或，安装PP-Structure服务模块：  
 hub install deploy\hubserving\structure_system\
+
+# 或，安装版面分析服务模块：
+hub install deploy\hubserving\structure_layout\
 ```
 
 ### 2.4 启动服务
@@ -118,7 +126,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
                     --port XXXX \
                     --use_multiprocess \
                     --workers \
-```  
+```
 
 **参数：**  
 
@@ -168,7 +176,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 ```shell
 export CUDA_VISIBLE_DEVICES=3
 hub serving start -c deploy/hubserving/ocr_system/config.json
-```  
+```
 
 ## 3. 发送预测请求
 配置好服务端，可使用以下命令发送预测请求，获取预测结果:  
@@ -185,6 +193,7 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 `http://127.0.0.1:8868/predict/ocr_system`  
 `http://127.0.0.1:8869/predict/structure_table`  
 `http://127.0.0.1:8870/predict/structure_system`  
+`http://127.0.0.1:8870/predict/structure_layout`  
 - **image_dir**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
 - **visualize**：是否可视化结果，默认为False  
 - **output**：可视化结果保存路径，默认为`./hubserving_result`
@@ -203,17 +212,19 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 |text_region|list|文本位置坐标|
 |html|str|表格的html字符串|
 |regions|list|版面分析+表格识别+OCR的结果，每一项为一个list，包含表示区域坐标的`bbox`，区域类型的`type`和区域结果的`res`三个字段|
+|layout|list|版面分析的结果，每一项一个dict，包含版面区域坐标的`bbox`，区域类型的`label`|
 
 不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
 
-| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system |
-|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |---  |
-|angle| | ✔ | | ✔ | ||
-|text| | |✔|✔| | ✔ |
-|confidence| |✔ |✔| | | ✔|
-|text_region| ✔| | |✔ | | ✔|
-|html| | | | |✔ |✔|
-|regions| | | | |✔ |✔ |
+| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | Structure_layout |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |  ---  |  ---  |
+|angle| | ✔ | | ✔ | |||
+|text| | |✔|✔| | ✔ |  |
+|confidence| |✔ |✔| | | ✔| |
+|text_region| ✔| | |✔ | | ✔| |
+|html| | | | |✔ |✔||
+|regions| | | | |✔ |✔ | |
+|layout| | | | | | | ✔ |
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
