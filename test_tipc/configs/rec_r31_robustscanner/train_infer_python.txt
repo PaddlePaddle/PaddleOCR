@@ -1,6 +1,6 @@
 ===========================train_params===========================
 model_name:rec_r31_robustscanner
-python:python
+python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
