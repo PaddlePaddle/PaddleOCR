@@ -51,8 +51,15 @@ class CTPostProcess(object):
 
     def __call__(self, outs, batch):
         imgs = batch[0]
-        img_meta = batch[1]
-        img_path = batch[2][0]
+
+        # img_meta = batch[1]
+        # img_path = batch[2][0]
+        # org_img_size = img_meta['org_img_size'][0]
+        # img_size = img_meta['img_size'][0]    
+
+        org_img_size = batch[1][0]
+        img_size = batch[2][0]
+        img_path = batch[3][0]
 
         out = self._upsample(outs, imgs.shape, 4)
         outputs = dict()
@@ -96,10 +103,6 @@ class CTPostProcess(object):
                 continue
             score_i = np.mean(score[ind])
             score_pocket.append(score_i)
-
-        # image size
-        org_img_size = img_meta['org_img_size'][0]
-        img_size = img_meta['img_size'][0]
 
         label_num = np.max(label) + 1
         label = cv2.resize(

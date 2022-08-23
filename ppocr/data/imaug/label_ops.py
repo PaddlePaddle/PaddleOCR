@@ -1217,6 +1217,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         dict_character = ['</s>'] + dict_character
         return dict_character
 
+
 class SPINLabelEncode(AttnLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1229,6 +1230,7 @@ class SPINLabelEncode(AttnLabelEncode):
         super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char)
         self.lower = lower
+
     def add_special_char(self, dict_character):
         self.beg_str = "sos"
         self.end_str = "eos"
@@ -1248,4 +1250,32 @@ class SPINLabelEncode(AttnLabelEncode):
 
         padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
-        return data 
+        return data
+
+
+class CTLabelEncode(object):
+    def __init__(self, **kwargs):
+        pass
+
+    def __call__(self, data):
+        img = data['image']
+        label = data['label']
+
+        h, w = img.shape[0:2]
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts = [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            point_num = len(box) // 2
+            box = np.array(box) / ([w * 1.0, h * 1.0] * point_num)
+            txt = label[bno]['transcription']
+            boxes.append(box)
+            txts.append(txt)
+
+        if len(boxes) == 0:
+            return None
+
+        data['polys'] = boxes
+        data['texts'] = txts
+        return data
