@@ -160,6 +160,8 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     ln -s ./icdar2015_lite ./icdar2015
     wget -nc -P ./ic15_data/ https://paddleocr.bj.bcebos.com/dataset/rec_gt_train_lite.txt --no-check-certificate
     wget -nc -P ./ic15_data/ https://paddleocr.bj.bcebos.com/dataset/rec_gt_test_lite.txt --no-check-certificate
+    mv ic15_data/rec_gt_train_lite.txt ic15_data/rec_gt_train.txt
+    mv ic15_data/rec_gt_test_lite.txt ic15_data/rec_gt_test.txt
     cd ../
     cd ./inference && tar xf rec_inference.tar && cd ../
     if [ ${model_name} == "ch_PP-OCRv2_det" ] || [ ${model_name} == "ch_PP-OCRv2_det_PACT" ]; then
