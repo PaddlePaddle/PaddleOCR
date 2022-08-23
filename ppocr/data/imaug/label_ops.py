@@ -1269,8 +1269,9 @@ class CTLabelEncode(object):
             box = label[bno]['points']
             point_num = len(box) // 2
             box = np.array(box) / ([w * 1.0, h * 1.0] * point_num)
-            txt = label[bno]['transcription']
+
             boxes.append(box)
+            txt = label[bno]['transcription']
             txts.append(txt)
 
         if len(boxes) == 0:

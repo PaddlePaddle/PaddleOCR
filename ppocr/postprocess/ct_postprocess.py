@@ -46,22 +46,24 @@ class CTPostProcess(object):
                 self.coord[1, i, j] = i
 
     def _upsample(self, x, size, scale=1):
-        _, _, H, W = size
+        H, W, _ = size
         return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
 
     def __call__(self, outs, batch):
-        imgs = batch[0]
+        img_meta = batch
 
         # img_meta = batch[1]
         # img_path = batch[2][0]
         # org_img_size = img_meta['org_img_size'][0]
-        # img_size = img_meta['img_size'][0]    
+        # img_size = img_meta['img_size'][0]
 
-        org_img_size = batch[1][0]
-        img_size = batch[2][0]
-        img_path = batch[3][0]
+        org_img_size = img_meta['org_img_size'][0]
+        img_size = img_meta['img_size'][0]
+        img_path = img_meta['img_path'][0]
+        img_shape = img_meta['img_shape'][0]
 
-        out = self._upsample(outs, imgs.shape, 4)
+        #out = self._upsample(outs, imgs.shape, 4)
+        out = self._upsample(outs, img_shape, 4)
         outputs = dict()
 
         score = F.sigmoid(out[:, 0, :, :])

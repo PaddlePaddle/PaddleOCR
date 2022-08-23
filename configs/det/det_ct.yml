@@ -6,9 +6,9 @@ Global:
   save_model_dir: ./output/det_ct/
   save_epoch_step: 10
   # evaluation is run every 2000 iterations
-  eval_batch_step: [0,2000]
+  eval_batch_step: [0,1000]
   cal_metric_during_train: False
-  pretrained_model: ../PaddleOCR.bck1/pretrain_models/ResNet18_pretrained.pdparams #./pretrain_models/ResNet50_vd_ssld_pretrained
+  pretrained_model: ../PaddleOCR.bck1/pretrain_models/ResNet18_vd_pretrained.pdparams
   checkpoints:
   save_inference_dir:
   use_visualdl: False
@@ -20,7 +20,7 @@ Architecture:
   algorithm: CT
   Transform:
   Backbone:
-    name: ResNet
+    name: ResNet_vd
     layers: 18
   Neck:
     name: CTNECK
@@ -37,11 +37,10 @@ Optimizer:
   name: Adam
   lr:
     name: Linear #PolynomialDecay
-    learning_rate: 0.001 #1e-3
+    learning_rate: 0.001
     end_lr: 0.
     epochs: 600
     step_each_epoch: 1254
-    #decay_steps: 752400 #max_iter_num
     power: 0.9
 
 PostProcess:
@@ -49,18 +48,12 @@ PostProcess:
 
 Metric:
   name: CTMetric
-  gt_dir: '/workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Groundtruth/Polygon/Test/'
-  main_indicator: f_score #Hmean
+  file: ./Test.list
+  main_indicator: f_score
 
 Train:
   dataset:
     name: SimpleDataSet
-    # data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/Train/
-    # label_file_list:
-    #   - /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Groundtruth/Polygon/Train
-    # data_dir: data/total_text/train/
-    # label_file_list:
-    #   - data/total_text/train/train.txt
     data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/
     label_file_list:
       - ./Train.list
@@ -72,28 +65,26 @@ Train:
       - CTLabelEncode: # Class handling label
       - RandomScale:
       - MakeShrink:
-      - RandomHorizontalFlip:
-      - RandomRotate:
-      - RandomCropPadding:
-      - GetCentripetalShift:
-      - ColorJitterNormalize: 
+      - GroupRandomHorizontalFlip:
+      - GroupRandomRotate:
+      - GroupRandomCropPadding:
+      - MakeCentripetalShift:
+      - ColorJitter:
+          brightness: 0.125
+          saturation: 0.5 
+      - ToCHWImage: 
+      - NormalizeImage:
       - KeepKeys:
           keep_keys: ['image', 'gt_kernel', 'training_mask', 'gt_instance', 'gt_kernel_instance', 'training_mask_distance', 'gt_distance'] # the order of the dataloader list
   loader:
     shuffle: True
     drop_last: True
     batch_size_per_card: 4
-    num_workers: 8 #4
+    num_workers: 8
 
 Eval:
   dataset:
     name: SimpleDataSet
-    # data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/Train/
-    # label_file_list:
-    #   - /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Groundtruth/Polygon/Train
-    # data_dir: data/total_text/test/
-    # label_file_list:
-    #   - data/total_text/test/test.txt
     data_dir: /workspace/huangjun12/PaddleProject/OCR/CentripetalText/0.WellTrained/data/total_text/Images/
     label_file_list:
       - ./Test.list
@@ -103,10 +94,10 @@ Eval:
           img_mode: RGB
           channel_first: False
       - ScaleAlignedShort:
-      - ColorJitterNormalize:
-          cj: False
+      - ToCHWImage: 
+      - NormalizeImage:
       - KeepKeys:
-          keep_keys: ['image', 'org_img_size', 'img_size', 'img_path'] # the order of the dataloader list          
+          keep_keys: ['image', 'img_meta'] # the order of the dataloader list          
   loader:
     shuffle: False
     drop_last: False
