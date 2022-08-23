@@ -40,8 +40,8 @@ infer_quant:False
 inference:tools/infer/predict_rec.py
 --use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:6
---rec_batch_num:1|6
+--cpu_threads:1
+--rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32
 --rec_model_dir:
