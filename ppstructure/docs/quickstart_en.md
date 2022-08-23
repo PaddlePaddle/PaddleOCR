@@ -85,6 +85,8 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true
 # English pic
 paddleocr --image_dir=PaddleOCR/ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+# pdf file
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>

@@ -20,16 +20,16 @@ PaddleOCR provides 2 service deployment methods:
 
 # Service deployment based on PaddleHub Serving  
 
-The hubserving service deployment directory includes seven service packages: text detection, text angle class, text recognition, text detection+text angle class+text recognition three-stage series connection, table recognition, PP-Structure and layout analysis. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
+The hubserving service deployment directory includes seven service packages: text detection, text angle class, text recognition, text detection+text angle class+text recognition three-stage series connection, layout analysis, table recognition and PP-Structure. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
 ```
 deploy/hubserving/
   └─  ocr_det     text detection module service package
   └─  ocr_cls     text angle class module service package
   └─  ocr_rec     text recognition module service package
   └─  ocr_system  text detection+text angle class+text recognition three-stage series connection service package
+  └─  structure_layout  layout analysis service package
   └─  structure_table  table recognition service package
   └─  structure_system  PP-Structure service package
-  └─  structure_layout  layout analysis service package
 ```
 
 Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:  

@@ -562,7 +562,7 @@ class PPStructure(StructureSystem):
             params.table_model_dir,
             os.path.join(BASE_DIR, 'whl', 'table'), table_model_config['url'])
         layout_model_config = get_model_config(
-            'STRUCTURE', params.structure_version, 'layout', 'ch')
+            'STRUCTURE', params.structure_version, 'layout', lang)
         params.layout_model_dir, layout_url = confirm_model_dir_url(
             params.layout_model_dir,
             os.path.join(BASE_DIR, 'whl', 'layout'), layout_model_config['url'])
@@ -584,7 +584,7 @@ class PPStructure(StructureSystem):
         logger.debug(params)
         super().__init__(params)
 
-    def __call__(self, img, return_ocr_result_in_table=False):
+    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         if isinstance(img, str):
             # download net image
             if img.startswith('http'):
@@ -602,7 +602,8 @@ class PPStructure(StructureSystem):
         if isinstance(img, np.ndarray) and len(img.shape) == 2:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
-        res, _ = super().__call__(img, return_ocr_result_in_table)
+        res, _ = super().__call__(
+            img, return_ocr_result_in_table, img_idx=img_idx)
         return res
 
 
@@ -637,25 +638,54 @@ def main():
                 for line in result:
                     logger.info(line)
         elif args.type == 'structure':
-            result = engine(img_path)
-            save_structure_res(result, args.output, img_name)
+            img, flag_gif, flag_pdf = check_and_read(img_path)
+            if not flag_gif and not flag_pdf:
+                img = cv2.imread(img_path)
 
-            if args.recovery:
-                try:
-                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
-                    img = cv2.imread(img_path)
+            if not flag_pdf:
+                if img is None:
+                    logger.error("error in loading image:{}".format(image_file))
+                    continue
+                img_paths = [[img_path, img]]
+            else:
+                img_paths = []
+                for index, pdf_img in enumerate(img):
+                    os.makedirs(
+                        os.path.join(args.output, img_name), exist_ok=True)
+                    pdf_img_path = os.path.join(args.output, img_name, img_name
+                                                + '_' + str(index) + '.jpg')
+                    cv2.imwrite(pdf_img_path, pdf_img)
+                    img_paths.append([pdf_img_path, pdf_img])
+
+            all_res = []
+            for index, (new_img_path, img) in enumerate(img_paths):
+                logger.info('processing {}/{} page:'.format(index + 1,
+                                                            len(img_paths)))
+                new_img_name = os.path.basename(new_img_path).split('.')[0]
+                result = engine(new_img_path, img_idx=index)
+                save_structure_res(result, args.output, img_name, index)
+
+                if args.recovery and result != []:
+                    from copy import deepcopy
+                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes
                     h, w, _ = img.shape
-                    res = sorted_layout_boxes(result, w)
-                    convert_info_docx(img, res, args.output, img_name,
+                    result_cp = deepcopy(result)
+                    result_sorted = sorted_layout_boxes(result_cp, w)
+                    all_res += result_sorted
+
+                for item in result:
+                    item.pop('img')
+                    item.pop('res')
+                    logger.info(item)
+                logger.info('result save to {}'.format(args.output))
+
+            if args.recovery and all_res != []:
+                try:
+                    from ppstructure.recovery.recovery_to_doc import convert_info_docx
+                    convert_info_docx(img, all_res, args.output, img_name,
                                       args.save_pdf)
                 except Exception as ex:
                     logger.error(
                         "error in layout recovery image:{}, err msg: {}".format(
                             img_name, ex))
                     continue
-
-            for item in result:
-                item.pop('img')
-                item.pop('res')
-                logger.info(item)
-            logger.info('result save to {}'.format(args.output))

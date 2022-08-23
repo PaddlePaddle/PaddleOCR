@@ -102,6 +102,8 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
 # 英文测试图
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+# pdf测试文件
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>
