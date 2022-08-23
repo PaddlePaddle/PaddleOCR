@@ -76,6 +76,14 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
     <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
 </div>
 
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186095702-9acef674-12af-4d09-97fc-abf4ab32600e.png" width="600">
+</div>
+
 * RE
 
 图中红色框表示`问题`，蓝色框表示`答案`，`问题`和`答案`之间使用绿色线连接。
@@ -87,6 +95,14 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
 </div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
+</div>  
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186095641-5843b4da-34d7-4c1c-943a-b1036a859fe3.png" width="600">
+</div> 
 
 <a name="4"></a>
 ## 4. 快速体验
