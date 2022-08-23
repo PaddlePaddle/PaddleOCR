@@ -113,18 +113,19 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [Quick Start](./ppstructure/docs/quickstart_en.md)
     - [Model Zoo](./ppstructure/docs/models_list_en.md)
     - [Model training](./doc/doc_en/training_en.md)  
-        - [Layout Parser](./ppstructure/layout/README.md)
+        - [Layout Analysis](./ppstructure/layout/README.md)
         - [Table Recognition](./ppstructure/table/README.md)
-        - [DocVQA](./ppstructure/vqa/README.md)
-        - [Key Information Extraction](./ppstructure/docs/kie_en.md)
+        - [Key Information Extraction](./ppstructure/kie/README.md)
     - [Inference and Deployment](./deploy/README.md)
         - [Python Inference](./ppstructure/docs/inference_en.md)
-        - [C++ Inference]()
+        - [C++ Inference](./deploy/cpp_infer/readme.md)
         - [Serving](./deploy/pdserving/README.md)
-- [Academic algorithms](./doc/doc_en/algorithms_en.md)
+- [Academic Algorithms](./doc/doc_en/algorithm_overview_en.md)
     - [Text detection](./doc/doc_en/algorithm_overview_en.md)
     - [Text recognition](./doc/doc_en/algorithm_overview_en.md)
-    - [End-to-end](./doc/doc_en/algorithm_overview_en.md)
+    - [End-to-end OCR](./doc/doc_en/algorithm_overview_en.md)
+    - [Table Recognition](./doc/doc_en/algorithm_overview_en.md)
+    - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)    
     - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
@@ -135,9 +136,9 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [General OCR Datasets(Chinese/English)](doc/doc_en/dataset/datasets_en.md)
     - [HandWritten_OCR_Datasets(Chinese)](doc/doc_en/dataset/handwritten_datasets_en.md)
     - [Various OCR Datasets(multilingual)](doc/doc_en/dataset/vertical_and_multilingual_datasets_en.md)
-    - [layout analysis](doc/doc_en/dataset/layout_datasets_en.md)
-    - [table recognition](doc/doc_en/dataset/table_datasets_en.md)
-    - [DocVQA](doc/doc_en/dataset/docvqa_datasets_en.md)
+    - [Layout Analysis](doc/doc_en/dataset/layout_datasets_en.md)
+    - [Table Recognition](doc/doc_en/dataset/table_datasets_en.md)
+    - [Key Information Extraction](doc/doc_en/dataset/kie_datasets_en.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - [Visualization](#Visualization)
 - [Community](#Community)
@@ -176,7 +177,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 </details>
 
 <details open>
-<summary>PP-Structure</summary>
+<summary>PP-Structurev2</summary>
 
 - layout analysis + table recognition  
 <div align="center">
@@ -185,12 +186,28 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 - SER (Semantic entity recognition)
 <div align="center">
-    <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
+    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+</div>
+    
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
 </div>
 
 - RE (Relation Extraction)
 <div align="center">
-    <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
+    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
+</div>   
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
 </div>
 
 </details>

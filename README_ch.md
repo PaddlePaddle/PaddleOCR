@@ -213,14 +213,30 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - SER（语义实体识别）  
 <div align="center">
-    <img src="./ppstructure/docs/vqa/result_ser/zh_val_0_ser.jpg" width="800">
+    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
 </div>
 
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
+</div>
+    
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+</div>
+    
 - RE（关系提取）
 <div align="center">
-    <img src="./ppstructure/docs/vqa/result_re/zh_val_21_re.jpg" width="800">
+    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
 </div>
 
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
+</div>
+    
 </details>
 
 <a name="许可证书"></a>

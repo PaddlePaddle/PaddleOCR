@@ -1,120 +1,115 @@
 English | [简体中文](README_ch.md)
 
 - [1. Introduction](#1-introduction)
-- [2. Update log](#2-update-log)
-- [3. Features](#3-features)
-- [4. Results](#4-results)
-  - [4.1 Layout analysis and table recognition](#41-layout-analysis-and-table-recognition)
-  - [4.2 KIE](#42-kie)
-- [5. Quick start](#5-quick-start)
-- [6. PP-Structure System](#6-pp-structure-system)
-  - [6.1 Layout analysis and table recognition](#61-layout-analysis-and-table-recognition)
-    - [6.1.1 Layout analysis](#611-layout-analysis)
-    - [6.1.2 Table recognition](#612-table-recognition)
-  - [6.2 KIE](#62-kie)
-- [7. Model List](#7-model-list)
-  - [7.1 Layout analysis model](#71-layout-analysis-model)
-  - [7.2 OCR and table recognition model](#72-ocr-and-table-recognition-model)
-  - [7.3 KIE model](#73-kie-model)
+- [2. Features](#2-features)
+- [3. Results](#3-results)
+  - [3.1 Layout analysis and table recognition](#31-layout-analysis-and-table-recognition)
+  - [3.2 Layout Recovery](#32-layout-recovery)
+  - [3.3 KIE](#33-kie)
+- [4. Quick start](#4-quick-start)
+- [5. Model List](#5-model-list)
 
 ## 1. Introduction
 
-PP-Structure is an OCR toolkit that can be used for document analysis and processing with complex structures, designed to help developers better complete document understanding tasks
+PP-Structure is an intelligent document analysis system developed by the PaddleOCR team, which aims to help developers better complete tasks related to document understanding such as layout analysis and table recognition.
 
-## 2. Update log
-* 2022.02.12 KIE add LayoutLMv2 model。
-* 2021.12.07 add [KIE SER and RE tasks](kie/README.md)。
+The pipeline of PP-Structurev2 system is shown below. The document image first passes through the image direction correction module to identify the direction of the entire image and complete the direction correction. Then, two tasks of layout information analysis and key information extraction can be completed.
 
-## 3. Features
+- In the layout analysis task, the image first goes through the layout analysis model to divide the image into different areas such as text, table, and figure, and then analyze these areas separately. For example, the table area is sent to the form recognition module for structured recognition, and the text area is sent to the OCR engine for text recognition. Finally, the layout recovery module restores it to a word or pdf file with the same layout as the original image;
+- In the key information extraction task, the OCR engine is first used to extract the text content, and then the SER(semantic entity recognition) module obtains the semantic entities in the image, and finally the RE(relationship extraction) module obtains the correspondence between the semantic entities, thereby extracting the required key information.
+<img src="./docs/ppstructurev2_pipeline.png" width="100%"/>
 
-The main features of PP-Structure are as follows:
+More technical details: 👉 [PP-Structurev2 Technical Report](docs/PP-Structurev2_introduction.md)
 
-- Support the layout analysis of documents, divide the documents into 5 types of areas **text, title, table, image and list** (conjunction with Layout-Parser)
-- Support to extract the texts from the text, title, picture and list areas (used in conjunction with PP-OCR)
-- Support to extract excel files from the table areas
-- Support python whl package and command line usage, easy to use
-- Support custom training for layout analysis and table structure tasks
-- Support Document Key Information Extraction (KIE) tasks: Semantic Entity Recognition (SER) and Relation Extraction (RE)
+PP-Structurev2 supports independent use or flexible collocation of each module. For example, you can use layout analysis alone or table recognition alone. Click the corresponding link below to get the tutorial for each independent module:
 
-## 4. Results
+- [Layout Analysis](layout/README.md)
+- [Table Recognition](table/README.md)
+- [Key Information Extraction](kie/README.md)
+- [Layout Recovery](recovery/README.md)
 
-### 4.1 Layout analysis and table recognition
+## 2. Features
 
-<img src="docs/table/ppstructure.GIF" width="100%"/>
+The main features of PP-Structurev2 are as follows:
+- Support layout analysis of documents in the form of images/pdfs, which can be divided into areas such as **text, titles, tables, figures, formulas, etc.**;
+- Support common Chinese and English **table detection** tasks;
+- Support structured table recognition, and output the final result to **Excel file**;
+- Support multimodal-based Key Information Extraction (KIE) tasks - **Semantic Entity Recognition** (SER) and **Relation Extraction (RE);
+- Support **layout recovery**, that is, restore the document in word or pdf format with the same layout as the original image;
+- Support customized training and multiple inference deployment methods such as python whl package quick start;
+- Connect with the semi-automatic data labeling tool PPOCRLabel, which supports the labeling of layout analysis, table recognition, and SER.
+
+## 3. Results
+
+PP-Structurev2 supports the independent use or flexible collocation of each module. For example, layout analysis can be used alone, or table recognition can be used alone. Only the visualization effects of several representative usage methods are shown here.
+
+### 3.1 Layout analysis and table recognition
 
 The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
+<img src="docs/table/ppstructure.GIF" width="100%"/>
 
-### 4.2 KIE
+### 3.2 Layout recovery
+
+The following figure shows the effect of layout recovery based on the results of layout analysis and table recognition in the previous section.
+<img src="./docs/recovery/recovery.jpg" width="100%"/>
+
+### 3.3 KIE
 
 * SER
-*
-![](docs/kie/result_ser/zh_val_0_ser.jpg) | ![](docs/kie/result_ser/zh_val_42_ser.jpg)
----|---
 
-Different colored boxes in the figure represent different categories. For xfun dataset, there are three categories: query, answer and header:
+Different colored boxes in the figure represent different categories. 
 
-* Dark purple: header
-* Light purple: query
-* Army green: answer
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+</div>
 
-The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186095702-9acef674-12af-4d09-97fc-abf4ab32600e.png" width="600">
+</div>
 
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539141-68e71c75-5cf7-4529-b2ca-219d29fa5f68.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
+</div>
 
 * RE
 
-![](docs/kie/result_re/zh_val_21_re.jpg) | ![](docs/kie/result_re/zh_val_40_re.jpg)
----|---
+In the figure, the red box represents `Question`, the blue box represents `Answer`, and `Question` and `Answer` are connected by green lines.
 
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
+</div>  
 
-In the figure, the red box represents the question, the blue box represents the answer, and the question and answer are connected by green lines. The corresponding category and OCR recognition results are also marked at the top left of the OCR detection box.
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186095641-5843b4da-34d7-4c1c-943a-b1036a859fe3.png" width="600">
+</div> 
 
-## 5. Quick start
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
+</div>
 
-Start from [Quick Installation](./docs/quickstart.md)
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
+</div>
 
-## 6. PP-Structure System
+## 4. Quick start
 
-### 6.1 Layout analysis and table recognition
+Start from [Quick Start](./docs/quickstart_en.md).
 
-![pipeline](docs/table/pipeline.jpg)
+## 5. Model List
 
-In PP-Structure, the image will be divided into 5 types of areas **text, title, image list and table**. For the first 4 types of areas, directly use PP-OCR system to complete the text detection and recognition. For the table area, after the table structuring process, the table in image is converted into an Excel file with the same table style.
+Some tasks need to use both the structured analysis models and the OCR models. For example, the table recognition task needs to use the table recognition model for structured analysis, and the OCR model to recognize the text in the table. Please select the appropriate models according to your specific needs.
 
-#### 6.1.1 Layout analysis
+For structural analysis related model downloads, please refer to:
+- [PP-Structure Model Zoo](./docs/models_list_en.md)
 
-Layout analysis classifies image by region, including the use of Python scripts of layout analysis tools, extraction of designated category detection boxes, performance indicators, and custom training layout analysis models. For details, please refer to [document](layout/README.md).
+For OCR related model downloads, please refer to:
+- [PP-OCR Model Zoo](../doc/doc_en/models_list_en.md)
 
-#### 6.1.2 Table recognition
-
-Table recognition converts table images into excel documents, which include the detection and recognition of table text and the prediction of table structure and cell coordinates. For detailed instructions, please refer to [document](table/README.md)
-
-### 6.2 KIE
-
-Multi-modal based Key Information Extraction (KIE) methods include Semantic Entity Recognition (SER) and Relation Extraction (RE) tasks. Based on SER task, text recognition and classification in images can be completed. Based on THE RE task, we can extract the relation of the text content in the image, such as judge the problem pair. For details, please refer to [document](kie/README.md)
-
-## 7. Model List
-
-PP-Structure Series Model List (Updating)
-
-### 7.1 Layout analysis model
-
-|model name|description|download|label_map|
-| --- | --- | --- |--- |
-| ppyolov2_r50vd_dcn_365e_publaynet | The layout analysis model trained on the PubLayNet dataset can divide image into 5 types of areas **text, title, table, picture, and list** | [PubLayNet](https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar) | {0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}|
-
-### 7.2 OCR and table recognition model
-
-|model name|description|model size|download|
-| --- | --- | --- | --- |
-|ch_PP-OCRv3_det| [New] Lightweight model, supporting Chinese, English, multilingual text detection | 3.8M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar)|
-|ch_PP-OCRv3_rec| [New] Lightweight model, supporting Chinese, English, multilingual text recognition | 12.4M |[inference model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
-|ch_ppstructure_mobile_v2.0_SLANet|Chinese table recognition model based on SLANet|9.3M|[inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar) / [trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_train.tar) |
-
-### 7.3 KIE model
-
-|model name|description|model size|download|
-| --- | --- | --- | --- |
-|ser_LayoutXLM_xfun_zhd|SER model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar) |
-|re_LayoutXLM_xfun_zh|RE model trained on xfun Chinese dataset based on LayoutXLM|1.4G|[inference model coming soon]() / [trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar) |
-
-If you need to use other models, you can download the model in [PPOCR model_list](../doc/doc_en/models_list_en.md) and  [PPStructure model_list](./docs/models_list.md)
