@@ -2,14 +2,15 @@ English | [简体中文](README_ch.md)
 
 # Table Recognition
 
-- [1. pipeline](#1-pipeline)
-- [2. Performance](#2-performance)
-- [3. Result](#3-result)
-- [4. How to use](#4-how-to-use)
-  - [4.1 Quick start](#41-quick-start)
-  - [4.2 Train](#42-train)
-  - [4.3 Calculate TEDS](#43-calculate-teds)
-- [5. Reference](#5-reference)
+- [Table Recognition](#table-recognition)
+  - [1. pipeline](#1-pipeline)
+  - [2. Performance](#2-performance)
+  - [3. Result](#3-result)
+  - [4. How to use](#4-how-to-use)
+    - [4.1 Quick start](#41-quick-start)
+    - [4.2 Training, Evaluation and Inference](#42-training-evaluation-and-inference)
+    - [4.3 Calculate TEDS](#43-calculate-teds)
+  - [5. Reference](#5-reference)
 
 
 ## 1. pipeline
@@ -51,6 +52,8 @@ The performance indicators are explained as follows:
 
 ### 4.1 Quick start
 
+PP-Structure currently provides table recognition models in both Chinese and English. For the model link, see [models_list](../docs/models_list.md). The following takes the Chinese table recognition model as an example to introduce how to recognize a table.
+
 Use the following commands to quickly complete the identification of a table.
 
 ```python
@@ -83,7 +86,7 @@ After the operation is completed, the excel table of each image will be saved to
 1. If you want to use the English table recognition model, you need to download the English text detection and recognition model and the English table recognition model in [models_list](../docs/models_list_en.md), and replace `table_structure_dict_ch.txt` with `table_structure_dict.txt`.
 2. To use the TableRec-RARE model, you need to replace `table_structure_dict_ch.txt` with `table_structure_dict.txt`, and add parameter `--merge_no_span_structure=False`
 
-### 4.2 Train
+### 4.2 Training, Evaluation and Inference
 
 The training, evaluation and inference process of the text detection model can be referred to [detection](../../doc/doc_en/detection_en.md)
 
@@ -124,11 +127,11 @@ Evaluate on the PubLatNet dataset using the English model
 cd PaddleOCR/ppstructure
 # Download the model
 mkdir inference && cd inference
-# Download the detection model of the ultra-lightweight table English OCR model and unzip it
+# Download the text detection model trained on the PubTabNet dataset and unzip it
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
-# Download the recognition model of the ultra-lightweight table English OCR model and unzip it
+# Download the text recognition model trained on the PubTabNet dataset and unzip it
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
-# Download the PP-Structurev2 English table recognition model and unzip it
+# Download the table recognition model trained on the PubTabNet dataset and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 

@@ -7,7 +7,7 @@
 - [3. 效果演示](#3-效果演示)
 - [4. 使用](#4-使用)
   - [4.1 快速开始](#41-快速开始)
-  - [4.2 训练](#42-训练)
+  - [4.2 模型训练、评估与推理](#42-模型训练评估与推理)
   - [4.3 计算TEDS](#43-计算teds)
 - [5. Reference](#5-reference)
 
@@ -57,6 +57,8 @@
 
 ### 4.1 快速开始
 
+PP-Structure目前提供了中英文两种语言的表格识别模型，模型链接见 [models_list](../docs/models_list.md)。下面以中文表格识别模型为例，介绍如何识别一张表格。
+
 使用如下命令即可快速完成一张表格的识别。
 ```python
 cd PaddleOCR/ppstructure
@@ -83,10 +85,10 @@ python table/predict_table.py \
 运行完成后，每张图片的excel表格会保存到output字段指定的目录下，同时在该目录下回生产一个html文件，用于可视化查看单元格坐标和识别的表格。
 
 **NOTE**
-1. 如果想使用英文模型，需要在[models_list](../docs/models_list.md)中下载英文文字检测识别模型和英文表格识别模型，同时替换`table_structure_dict_ch.txt`为`table_structure_dict.txt`即可。
+1. 如果想使用英文模型，需要在 [models_list](../docs/models_list.md) 中下载英文文字检测识别模型和英文表格识别模型，同时替换`table_structure_dict_ch.txt`为`table_structure_dict.txt`即可。
 2. 如需使用TableRec-RARE模型，需要替换`table_structure_dict_ch.txt`为`table_structure_dict.txt`，同时参数`--merge_no_span_structure=False`
 
-### 4.2 训练
+### 4.2 模型训练、评估与推理
 
 文本检测模型的训练、评估和推理流程可参考 [detection](../../doc/doc_ch/detection.md)
 
@@ -128,11 +130,11 @@ python3 table/eval_table.py \
 cd PaddleOCR/ppstructure
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级表格英文OCR模型的检测模型并解压
+# 下载基于PubTabNet数据集训练的文本检测模型并解压
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
-# 下载超轻量级表格英文OCR模型的识别模型并解压
+# 下载基于PubTabNet数据集训练的文本识别模型并解压
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
-# 下载PP-Structurev2英文表格识别模型并解压
+# 下载基于PubTabNet数据集训练的表格识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 
