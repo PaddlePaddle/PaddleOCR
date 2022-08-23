@@ -40,7 +40,7 @@ infer_quant:False
 inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/ic15_dict.txt --rec_image_shape="3,32,128" --rec_algorithm="ABINet"
 --use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:1
+--cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32

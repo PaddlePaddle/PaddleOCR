@@ -40,7 +40,7 @@ infer_quant:False
 inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/dict/spin_dict.txt --use_space_char=False --rec_image_shape="3,32,100" --rec_algorithm="SPIN"
 --use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:1
+--cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32

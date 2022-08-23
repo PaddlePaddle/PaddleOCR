@@ -40,7 +40,7 @@ infer_quant:False
 inference:ppstructure/kie/predict_kie_token_ser.py  --kie_algorithm=LayoutXLM  --ser_dict_path=train_data/XFUND/class_list_xfun.txt --output=output --ocr_order_method=tb-yx
 --use_gpu:True|False
 --enable_mkldnn:False
---cpu_threads:1
+--cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32
