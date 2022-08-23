@@ -2,15 +2,14 @@ English | [简体中文](README_ch.md)
 
 # Table Recognition
 
-- [Table Recognition](#table-recognition)
-  - [1. pipeline](#1-pipeline)
-  - [2. Performance](#2-performance)
-  - [3. Result](#3-result)
-  - [4. How to use](#4-how-to-use)
-    - [4.1 Quick start](#41-quick-start)
-    - [4.2 Training, Evaluation and Inference](#42-training-evaluation-and-inference)
-    - [4.3 Calculate TEDS](#43-calculate-teds)
-  - [5. Reference](#5-reference)
+- [1. pipeline](#1-pipeline)
+- [2. Performance](#2-performance)
+- [3. Result](#3-result)
+- [4. How to use](#4-how-to-use)
+  - [4.1 Quick start](#41-quick-start)
+  - [4.2 Training, Evaluation and Inference](#42-training-evaluation-and-inference)
+  - [4.3 Calculate TEDS](#43-calculate-teds)
+- [5. Reference](#5-reference)
 
 
 ## 1. pipeline
