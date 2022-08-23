@@ -79,6 +79,10 @@ python3.7 table/predict_table.py \
 
 After the operation is completed, the excel table of each image will be saved to the directory specified by the output field, and an html file will be produced in the directory to visually view the cell coordinates and the recognized table.
 
+**NOTE**
+1. If you want to use the English table recognition model, you need to download the English text detection and recognition model and the English table recognition model in [models_list](../docs/models_list_en.md), and replace `table_structure_dict_ch.txt` with `table_structure_dict.txt`.
+2. To use the TableRec-RARE model, you need to replace `table_structure_dict_ch.txt` with `table_structure_dict.txt`, and add parameter `--merge_no_span_structure=False`
+
 ### 4.2 Train
 
 The training, evaluation and inference process of the text detection model can be referred to [detection](../../doc/doc_en/detection_en.md)
@@ -114,9 +118,35 @@ python3 table/eval_table.py \
     --gt_path=path/to/gt.txt
 ```
 
-If the PubLatNet eval dataset is used, it will be output
+Evaluate on the PubLatNet dataset using the English model
+
 ```bash
-teds: 94.98
+cd PaddleOCR/ppstructure
+# Download the model
+mkdir inference && cd inference
+# Download the detection model of the ultra-lightweight table English OCR model and unzip it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
+# Download the recognition model of the ultra-lightweight table English OCR model and unzip it
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
+# Download the PP-Structurev2 English table recognition model and unzip it
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
+cd ..
+
+python3 table/eval_table.py \
+    --det_model_dir=inference/en_ppocr_mobile_v2.0_table_det_infer \
+    --rec_model_dir=inference/en_ppocr_mobile_v2.0_table_rec_infer \
+    --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
+    --image_dir=train_data/table/pubtabnet/val/ \
+    --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --det_limit_side_len=736 \
+    --det_limit_type=min \
+    --gt_path=path/to/gt.txt
+```
+
+output is
+```bash
+teds: 95.89
 ```
 
 ## 5. Reference
