@@ -422,3 +422,5 @@ RE任务的可视化结果如下所示。
 * [14] Xu Y, Li M, Cui L, et al. Layoutlm: Pre-training of text and layout for document image understanding[C]//Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining. 2020: 1192-1200.
 * [15] Xu Y, Xu Y, Lv T, et al. LayoutLMv2: Multi-modal pre-training for visually-rich document understanding[J]. arXiv preprint arXiv:2012.14740, 2020.
 * [16] Xu Y, Lv T, Cui L, et al. Layoutxlm: Multimodal pre-training for multilingual visually-rich document understanding[J]. arXiv preprint arXiv:2104.08836, 2021.
+* [17] Xu Y, Lv T, Cui L, et al. XFUND: A Benchmark Dataset for Multilingual Visually Rich Form Understanding[C]//Findings of the Association for Computational Linguistics: ACL 2022. 2022: 3214-3224.
+* [18] Jaume G, Ekenel H K, Thiran J P. Funsd: A dataset for form understanding in noisy scanned documents[C]//2019 International Conference on Document Analysis and Recognition Workshops (ICDARW). IEEE, 2019, 2: 1-6.
