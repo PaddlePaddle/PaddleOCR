@@ -1,29 +1,18 @@
 - [1. 简介](#1-简介)
-
 - [2. 安装](#2-安装)
-
   - [2.1 安装PaddlePaddle](#21-安装paddlepaddle)
   - [2.2 安装PaddleDetection](#22-安装paddledetection)
-
 - [3. 数据准备](#3-数据准备)
-
   - [3.1 英文数据集](#31-英文数据集)
   - [3.2 更多数据集](#32-更多数据集)
-
 - [4. 开始训练](#4-开始训练)
-
   - [4.1 启动训练](#41-启动训练)
   - [4.2 FGD蒸馏训练](#42-FGD蒸馏训练)
-
 - [5. 模型评估与预测](#5-模型评估与预测)
-
   - [5.1 指标评估](#51-指标评估)
   - [5.2 测试版面分析结果](#52-测试版面分析结果)
-
 - [6 模型导出与预测](#6-模型导出与预测)
-
   - [6.1 模型导出](#61-模型导出)
-
   - [6.2 模型推理](#62-模型推理)
 
 # 版面分析
@@ -63,7 +52,7 @@ python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simp
 git clone https://github.com/PaddlePaddle/PaddleDetection.git
 ```
 
-- **（2）安装其他依赖 **
+- **（2）安装其他依赖**
 
 ```bash
 cd PaddleDetection
@@ -138,7 +127,7 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 
   ```
   {
-  
+
       'segmentation':             # 物体的分割标注
       'area': 60518.099043117836, # 物体的区域面积
       'iscrowd': 0,               # iscrowd
@@ -166,14 +155,16 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 
 提供了训练脚本、评估脚本和预测脚本，本节将以PubLayNet预训练模型为例进行讲解。
 
-如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型，并跳过本部分。
+如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型(PubLayNet数据集)，并跳过本部分。
 
 ```
 mkdir pretrained_model
 cd pretrained_model
-# 下载并解压PubLayNet预训练模型
+# 下载PubLayNet预训练模型
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout.pdparams
 ```
+
+下载更多[版面分析模型](../docs/models_list.md)（中文CDLA数据集预训练模型、表格预训练模型）
 
 ### 4.1. 启动训练
 
@@ -184,7 +175,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_
 如果你希望训练自己的数据集，需要修改配置文件中的数据配置、类别数。
 
 
-以`configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml` 为例，修改的内容如下所示。
+以`configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml` 为例，修改的内容如下所示。
 
 ```yaml
 metric: COCO
@@ -223,15 +214,19 @@ TestDataset:
 # 训练日志会自动保存到 log 目录中
 
 # 单卡训练
+export CUDA_VISIBLE_DEVICES=0
 python3 tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
 	--eval
 
 # 多卡训练，通过--gpus参数指定卡号
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
 	--eval
 ```
+
+**注意：**如果训练时显存out memory，将TrainReader中batch_size调小，同时LearningRate中base_lr等比例减小。发布的config均由8卡训练得到，如果改变GPU卡数为1，那么base_lr需要减小8倍。
 
 正常启动训练后，会看到以下log输出：
 
@@ -254,9 +249,11 @@ PaddleDetection支持了基于FGD([Focal and Global Knowledge Distillation for D
 更换数据集，修改【TODO】配置中的数据配置、类别数，具体可以参考4.1。启动训练：
 
 ```bash
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+# 单卡训练
+export CUDA_VISIBLE_DEVICES=0
+python3 tools/train.py \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
 	--eval
 ```
 
@@ -267,13 +264,13 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
 
 ### 5.1. 指标评估
 
-训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。
+训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。
 
 ```bash
 # GPU 评估， weights 为待测权重
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
-	-o weigths=./output/picodet_lcnet_x1_0_layout/best_model
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+	-o weights=./output/picodet_lcnet_x1_0_layout/best_model
 ```
 
 会输出以下信息，打印出mAP、AP0.5等信息。
@@ -299,8 +296,8 @@ python3 tools/eval.py \
 
 ```
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
 	-o weights=output/picodet_lcnet_x2_5_layout/best_model
 ```
 
@@ -311,18 +308,17 @@ python3 tools/eval.py \
 ### 5.2. 测试版面分析结果
 
 
-预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml` 完成了模型的训练过程。
+预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml` 完成了模型的训练过程。
 
-使用 PaddleDetection 训练好的模型，您可以使用如下命令进行中文模型预测。
-
+使用 PaddleDetection 训练好的模型，您可以使用如下命令进行模型预测。
 
 ```bash
 python3 tools/infer.py \
-    -c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
     -o weights='output/picodet_lcnet_x1_0_layout/best_model.pdparams' \
     --infer_img='docs/images/layout.jpg' \
     --output_dir=output_dir/ \
-    --draw_threshold=0.4
+    --draw_threshold=0.5
 ```
 
 - `--infer_img`: 推理单张图片，也可以通过`--infer_dir`推理文件中的所有图片。
@@ -335,14 +331,13 @@ python3 tools/infer.py \
 
 ```
 python3 tools/infer.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x2_5_layout.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
 	-o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
 	--infer_img='docs/images/layout.jpg' \
 	--output_dir=output_dir/ \
-	--draw_threshold=0.4
+	--draw_threshold=0.5
 ```
-
 
 
 ## 6. 模型导出与预测
@@ -356,7 +351,7 @@ inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，�
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/layout_detection/picodet_lcnet_x1_0_layout.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
 	-o weights=output/picodet_lcnet_x1_0_layout/best_model \
 	--output_dir=output_inference/
 ```
@@ -377,8 +372,8 @@ FGD蒸馏模型转inference模型步骤如下：
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/publayernet_lcnet_x1_5/picodet_student.yml \
-	--slim_config configs/picodet/legacy_model/application/publayernet_lcnet_x1_5/picodet_teacher.yml \
+	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
 	-o weights=./output/picodet_lcnet_x2_5_layout/best_model \
 	--output_dir=output_inference/
 ```
@@ -404,7 +399,7 @@ python3 deploy/python/infer.py \
 ------------------------------------------
 -----------  Model Configuration -----------
 Model Arch: PicoDet
-Transform Order: 
+Transform Order:
 --transform op: Resize
 --transform op: NormalizeImage
 --transform op: Permute
@@ -466,4 +461,3 @@ preprocess_time(ms): 2172.50, inference_time(ms): 11.90, postprocess_time(ms): 1
   year={2022}
 }
 ```
-

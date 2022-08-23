@@ -1,7 +1,9 @@
-## DocVQA dataset
-Here are the common DocVQA datasets, which are being updated continuously. Welcome to contribute datasets~
+## Key Imnformation Extraction dataset
+
+Here are the common DocVQA datasets, which are being updated continuously. Welcome to contribute datasets.
 - [FUNSD dataset](#funsd)
 - [XFUND dataset](#xfund)
+- [wildreceipt dataset](#wildreceipt数据集)
 
 <a name="funsd"></a>
 #### 1. FUNSD dataset
@@ -25,3 +27,21 @@ Here are the common DocVQA datasets, which are being updated continuously. Welco
 </div>
 
 - **Download address**: https://github.com/doc-analysis/XFUND/releases/tag/v1.0
+
+<a name="wildreceipt"></a>
+
+## 3. wildreceipt dataset
+
+- **Data source**: https://arxiv.org/abs/2103.14470
+- **Data introduction**: XFUND is an English receipt dataset, which contains 26 different categories. There are 1267 training images and 472 evaluation images, in which 50,000 textlines and boxes are annotated. Part of the image and the annotation box visualization are shown below.
+
+<div align="center">
+    <img src="../../datasets/wildreceipt_demo/2769.jpeg" width="500">
+    <img src="../../datasets/wildreceipt_demo/1bbe854b8817dedb8585e0732089fd1f752d2cec.jpeg" width="500">
+</div>
+
+**Note：** Boxes with category `Ignore` or `Others` are not visualized here.
+
+- **Download address**：
+    - Offical dataset: [link](https://download.openmmlab.com/mmocr/data/wildreceipt.tar)
+    - Dataset converted for PaddleOCR training process: [link](https://paddleocr.bj.bcebos.com/ppstructure/dataset/wildreceipt.tar)

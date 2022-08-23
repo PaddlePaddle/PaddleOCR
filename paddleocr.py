@@ -35,7 +35,7 @@ from tools.infer import predict_system
 from ppocr.utils.logging import get_logger
 
 logger = get_logger()
-from ppocr.utils.utility import check_and_read_gif, get_image_file_list
+from ppocr.utils.utility import check_and_read, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
@@ -289,7 +289,8 @@ MODEL_URLS = {
                 'ch': {
                     'url':
                     'https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar',
-                    'dict_path': 'ppocr/utils/dict/layout_publaynet_dict.txt'
+                    'dict_path':
+                    'ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt'
                 }
             }
         }
@@ -490,7 +491,7 @@ class PaddleOCR(predict_system.TextSystem):
                 download_with_progressbar(img, 'tmp.jpg')
                 img = 'tmp.jpg'
             image_file = img
-            img, flag = check_and_read_gif(image_file)
+            img, flag, _ = check_and_read(image_file)
             if not flag:
                 with open(image_file, 'rb') as f:
                     np_arr = np.frombuffer(f.read(), dtype=np.uint8)
@@ -584,7 +585,7 @@ class PPStructure(StructureSystem):
                 download_with_progressbar(img, 'tmp.jpg')
                 img = 'tmp.jpg'
             image_file = img
-            img, flag = check_and_read_gif(image_file)
+            img, flag, _ = check_and_read(image_file)
             if not flag:
                 with open(image_file, 'rb') as f:
                     np_arr = np.frombuffer(f.read(), dtype=np.uint8)
@@ -635,4 +636,6 @@ def main():
 
             for item in result:
                 item.pop('img')
+                item.pop('res')
                 logger.info(item)
+            logger.info('result save to {}'.format(args.output))

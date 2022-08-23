@@ -75,6 +75,8 @@ class SerPredictor(object):
         self.ocr_engine = PaddleOCR(
             use_angle_cls=False,
             show_log=False,
+            rec_model_dir=global_config.get("kie_rec_model_dir", None),
+            det_model_dir=global_config.get("kie_det_model_dir", None),
             use_gpu=global_config['use_gpu'])
 
         # create data ops

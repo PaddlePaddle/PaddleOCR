@@ -30,7 +30,7 @@ import paddle
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 
 logger = get_logger()
 
@@ -120,7 +120,7 @@ def main(args):
             res = text_recognizer([img] * int(args.sr_batch_num))
 
     for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = Image.open(image_file).convert("RGB")
         if img is None:

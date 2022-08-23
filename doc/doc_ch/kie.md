@@ -64,7 +64,7 @@ zh_train_1.jpg   [{"transcription": "中国人体器官捐献", "label": "other"
 
 验证集构建方式与训练集相同。
 
-* 字典文件
+**（3）字典文件**
 
 训练集与验证集中的文本行包含标签信息，所有标签的列表存在字典文件中（如`class_list.txt`），字典文件中的每一行表示为一个类别名称。
 
@@ -103,7 +103,7 @@ HEADER
 
 ## 1.3. 数据下载
 
-如果你没有本地数据集，可以从[XFUND](https://github.com/doc-analysis/XFUND)或者[FUNSD](https://guillaumejaume.github.io/FUNSD/)官网下载数据，然后使用XFUND与FUNSD的处理脚本([XFUND](../../ppstructure/vqa/tools/trans_xfun_data.py), [FUNSD](../../ppstructure/vqa/tools/trans_funsd_label.py))，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。
+如果你没有本地数据集，可以从[XFUND](https://github.com/doc-analysis/XFUND)或者[FUNSD](https://guillaumejaume.github.io/FUNSD/)官网下载数据，然后使用XFUND与FUNSD的处理脚本([XFUND](../../ppstructure/kie/tools/trans_xfun_data.py), [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py))，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。
 
 更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](./dataset/kie_datasets.md)。
 
@@ -209,7 +209,7 @@ Architecture:
     num_classes: &num_classes 7
 
 PostProcess:
-  name: VQASerTokenLayoutLMPostProcess
+  name: kieSerTokenLayoutLMPostProcess
   # 修改字典文件的路径为你自定义的数据集的字典路径
   class_path: &class_path train_data/XFUND/class_list_xfun.txt
 
@@ -347,25 +347,25 @@ output/ser_vi_layoutxlm_xfund_zh/
 
 
 ```bash
-python3 tools/infer_vqa_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.infer_img=./ppstructure/docs/vqa/input/zh_val_42.jpg
+python3 tools/infer_kie_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 ```
 
 预测图片如下所示，图片会存储在`Global.save_res_path`路径中。
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 预测过程中，默认会加载PP-OCRv3的检测识别模型，用于OCR的信息抽取，如果希望加载预先获取的OCR结果，可以使用下面的方式进行预测，指定`Global.infer_img`为标注文件，其中包含图片路径以及OCR信息，同时指定`Global.infer_mode`为False，表示此时不使用OCR预测引擎。
 
 ```bash
-python3 tools/infer_vqa_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.infer_img=./train_data/XFUND/zh_val/val.json Global.infer_mode=False
+python3 tools/infer_kie_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.infer_img=./train_data/XFUND/zh_val/val.json Global.infer_mode=False
 ```
 
 对于上述图片，如果使用标注的OCR结果进行信息抽取，预测结果如下。
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_ser_with_gt_ocr/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_ser_with_gt_ocr/zh_val_42_ser.jpg" width="800">
 </div>
 
 可以看出，部分检测框信息更加准确，但是整体信息抽取识别结果基本一致。
@@ -375,20 +375,26 @@ python3 tools/infer_vqa_token_ser.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxl
 
 
 ```bash
-python3 ./tools/infer_vqa_token_ser_re.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_udml_xfund_zh/re_layoutxlm_xfund_zh_v4_udml/best_accuracy/ Global.infer_img=./train_data/XFUND/zh_val/image/ -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o_ser Architecture.Backbone.checkpoints=pretrain_models/ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
+python3 ./tools/infer_kie_token_ser_re.py \
+  -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
+  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_udml_xfund_zh/best_accuracy/ \
+  Global.infer_img=./train_data/XFUND/zh_val/image/ \
+  -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
+  -o_ser Architecture.Backbone.checkpoints=pretrain_models/ \
+  ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
 ```
 
 预测结果如下所示。
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_re/zh_val_42_re.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_re/zh_val_42_re.jpg" width="800">
 </div>
 
 
 如果希望使用标注或者预先获取的OCR信息进行关键信息抽取，同上，可以指定`Global.infer_mode`为False，指定`Global.infer_img`为标注文件。
 
 ```bash
-python3 ./tools/infer_vqa_token_ser_re.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_udml_xfund_zh/re_layoutxlm_xfund_zh_v4_udml/best_accuracy/ Global.infer_img=./train_data/XFUND/zh_val/val.json Global.infer_mode=False -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o_ser Architecture.Backbone.checkpoints=pretrain_models/ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
+python3 ./tools/infer_kie_token_ser_re.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_udml_xfund_zh/re_layoutxlm_xfund_zh_v4_udml/best_accuracy/ Global.infer_img=./train_data/XFUND/zh_val/val.json Global.infer_mode=False -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o_ser Architecture.Backbone.checkpoints=pretrain_models/ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
 ```
 
 其中`c_ser`表示SER的配置文件，`o_ser` 后面需要加上待修改的SER模型与配置文件，如预训练权重等。
@@ -397,7 +403,7 @@ python3 ./tools/infer_vqa_token_ser_re.py -c configs/kie/vi_layoutxlm/re_vi_layo
 预测结果如下所示。
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_re_with_gt_ocr/zh_val_42_re.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_re_with_gt_ocr/zh_val_42_re.jpg" width="800">
 </div>
 
 可以看出，直接使用标注的OCR结果的RE预测结果要更加准确一些。
@@ -417,8 +423,8 @@ inference 模型（`paddle.jit.save`保存的模型）
 ```bash
 # -c 后面设置训练算法的yml配置文件
 # -o 配置可选参数
-# Global.pretrained_model 参数设置待转换的训练模型地址。
-# Global.save_inference_dir参数设置转换的模型将保存的地址。
+# Architecture.Backbone.checkpoints 参数设置待转换的训练模型地址
+# Global.save_inference_dir 参数设置转换的模型将保存的地址
 
 python3 tools/export_model.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/ser_vi_layoutxlm_xfund_zh/best_accuracy Global.save_inference_dir=./inference/ser_vi_layoutxlm
 ```
@@ -440,10 +446,10 @@ VI-LayoutXLM模型基于SER任务进行推理，可以执行如下命令：
 
 ```bash
 cd ppstructure
-python3 vqa/predict_vqa_token_ser.py \
-  --vqa_algorithm=LayoutXLM \
+python3 kie/predict_kie_token_ser.py \
+  --kie_algorithm=LayoutXLM \
   --ser_model_dir=../inference/ser_vi_layoutxlm \
-  --image_dir=./docs/vqa/input/zh_val_42.jpg \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
   --ocr_order_method="tb-yx"
@@ -452,7 +458,7 @@ python3 vqa/predict_vqa_token_ser.py \
 可视化SER结果结果默认保存到`./output`文件夹里面。结果示例如下：
 
 <div align="center">
-    <img src="../../ppstructure/docs/vqa/result_ser/zh_val_42_ser.jpg" width="800">
+    <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
 

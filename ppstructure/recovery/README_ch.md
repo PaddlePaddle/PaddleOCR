@@ -8,19 +8,22 @@
   - [2.2 安装PaddleOCR](#2.2)
 
 - [3. 使用](#3)
+  - [3.1 下载模型](#3.1)
+  - [3.2 版面恢复](#3.2)
 
 
 <a name="1"></a>
 
-## 1.  简介
+## 1. 简介
 
 版面恢复就是在OCR识别后，内容仍然像原文档图片那样排列着，段落不变、顺序不变的输出到word文档中等。
 
-版面恢复结合了[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，下图展示了版面恢复的结果：
+版面恢复结合了[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持pdf文档、文档图片格式的输入文件，下图展示了版面恢复的结果：
 
 <div align="center">
-<img src="../docs/table/recovery.jpg"  width = "700" />
+<img src="../docs/recovery/recovery.jpg"  width = "700" />
 </div>
+
 <a name="2"></a>
 
 ## 2. 安装
@@ -35,20 +38,14 @@
 python3 -m pip install --upgrade pip
 
 # GPU安装
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu" -i https://mirror.baidu.com/pypi/simple
 
 # CPU安装
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle" -i https://mirror.baidu.com/pypi/simple
 
 ```
 
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
-
-* **(2)安装依赖**
-
-```bash
-python3 -m pip install -r ppstructure/recovery/requirements.txt
-```
 
 <a name="2.2"></a>
 
@@ -75,23 +72,66 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 ## 3. 使用
 
-恢复给定文档的版面：
+<a name="3.1"></a>
 
-```python
+### 3.1 下载模型
+
+如果输入为英文文档类型，下载英文模型
+
+```bash
 cd PaddleOCR/ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超英文轻量级PP-OCRv3模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
-# 下载英文轻量级PP-OCRv3模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf  ch_PP-OCRv3_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+# 下载英文超轻量PP-OCRv3检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
+# 下载英文超轻量PP-OCRv3识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
+# 下载英文表格识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
+# 下载英文版面分析模型
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar && tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
 cd ..
-# 执行预测
-python3 predict_system.py --det_model_dir=inference/en_PP-OCRv3_det_infer --rec_model_dir=inference/en_PP-OCRv3_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --rec_char_dict_path=../ppocr/utils/en_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --output ./output/table --rec_image_shape=3,48,320 --vis_font_path=../doc/fonts/simfang.ttf --recovery=True --image_dir=./docs/table/1.png
 ```
 
-运行完成后，每张图片的docx文档会保存到output字段指定的目录下
+如果输入为中文文档类型，在下述链接中下载中文模型即可：
 
+[PP-OCRv3中英文超轻量文本检测和识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/README_ch.md#pp-ocr%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E5%88%97%E8%A1%A8%E6%9B%B4%E6%96%B0%E4%B8%AD)、[表格识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#22-表格识别模型)、[版面分析模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#1-版面分析模型)
+
+<a name="3.2"></a>
+
+### 3.2 版面恢复
+
+使用下载的模型恢复给定文档的版面，以英文模型为例，执行如下命令：
+
+```bash
+python3 predict_system.py \
+    --image_dir=./docs/table/1.png \
+    --det_model_dir=inference/en_PP-OCRv3_det_infer \
+    --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
+    --rec_char_dict_path=../ppocr/utils/en_dict.txt \
+    --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --layout_model_dir=inference/picodet_lcnet_x1_0_fgd_layout_infer \
+    --layout_dict_path=../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt \
+    --vis_font_path=../doc/fonts/simfang.ttf \
+    --recovery=True \
+    --save_pdf=False \
+    --output=../output/
+```
+
+运行完成后，恢复版面的docx文档会保存到`output`字段指定的目录下
+
+字段含义：
+
+- image_dir：测试文件，可以是图片、图片目录、pdf文件、pdf文件目录
+- det_model_dir：OCR检测模型路径
+- rec_model_dir：OCR识别模型路径
+- rec_char_dict_path：OCR识别字典，如果更换为中文模型，需要更改为"../ppocr/utils/ppocr_keys_v1.txt"，如果您在自己的数据集上训练的模型，则更改为训练的字典的文件
+- table_model_dir：表格识别模型路径
+- table_char_dict_path：表格识别字典，如果更换为中文模型，不需要更换字典
+- layout_model_dir：版面分析模型路径
+- layout_dict_path：版面分析字典，如果更换为中文模型，需要更改为"../ppocr/utils/dict/layout_dict/layout_cdla_dict.txt"
+- recovery：是否进行版面恢复，默认False
+- save_pdf：进行版面恢复导出docx文档的同时，是否保存为pdf文件，默认为False
+- output：版面恢复结果保存路径
