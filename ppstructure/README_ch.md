@@ -21,7 +21,7 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 - 关键信息抽取任务中，首先使用OCR引擎提取文本内容，然后由语义实体识别模块获取图像中的语义实体，最后经关系抽取模块获取语义实体之间的对应关系，从而提取需要的关键信息。
 <img src="./docs/ppstructurev2_pipeline.png" width="100%"/>
 
-更多技术细节：👉 [PP-Structurev2技术报告]()
+更多技术细节：👉 [PP-Structurev2技术报告](docs/PP-Structurev2_introduction.md)
 
 PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，点击下面相应链接获取各个独立模块的使用教程：
 

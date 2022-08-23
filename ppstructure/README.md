@@ -19,7 +19,7 @@ The pipeline of PP-Structurev2 system is shown below. The document image first p
 - In the key information extraction task, the OCR engine is first used to extract the text content, and then the SER(semantic entity recognition) module obtains the semantic entities in the image, and finally the RE(relationship extraction) module obtains the correspondence between the semantic entities, thereby extracting the required key information.
 <img src="./docs/ppstructurev2_pipeline.png" width="100%"/>
 
-More technical details: 👉 [PP-Structurev2 Technical Report]()
+More technical details: 👉 [PP-Structurev2 Technical Report](docs/PP-Structurev2_introduction.md)
 
 PP-Structurev2 supports independent use or flexible collocation of each module. For example, you can use layout analysis alone or table recognition alone. Click the corresponding link below to get the tutorial for each independent module:
 
@@ -36,8 +36,8 @@ The main features of PP-Structurev2 are as follows:
 - Support structured table recognition, and output the final result to **Excel file**;
 - Support multimodal-based Key Information Extraction (KIE) tasks - **Semantic Entity Recognition** (SER) and **Relation Extraction (RE);
 - Support **layout recovery**, that is, restore the document in word or pdf format with the same layout as the original image;
-- Support customized training and multiple inference deployment methods such as python whl package quick use;
-- Connected with the semi-automatic data labeling tool PPOCRLabel, which supports the labeling of layout analysis, table recognition, and SER.
+- Support customized training and multiple inference deployment methods such as python whl package quick start;
+- Connect with the semi-automatic data labeling tool PPOCRLabel, which supports the labeling of layout analysis, table recognition, and SER.
 
 ## 3. Results
 
