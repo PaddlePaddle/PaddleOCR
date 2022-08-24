@@ -21,7 +21,7 @@ English | [简体中文](README_ch.md)
 
 ## 1. Introduction
 
-Layout analysis refers to the regional division of documents in the form of pictures and the positioning of key areas, such as text, title, table, picture, etc. The layout analysis algorithm is based on the lightweight model PP-picodet of [PaddeDetection]( https://github.com/PaddlePaddle/PaddleDetection )
+Layout analysis refers to the regional division of documents in the form of pictures and the positioning of key areas, such as text, title, table, picture, etc. The layout analysis algorithm is based on the lightweight model PP-picodet of [PaddleDetection]( https://github.com/PaddlePaddle/PaddleDetection )
 
 <div align="center">
     <img src="../docs/layout/layout.png" width="800">
@@ -39,10 +39,10 @@ Layout analysis refers to the regional division of documents in the form of pict
 python3 -m pip install --upgrade pip
 
 # GPU Install
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu>=2.3" -i https://mirror.baidu.com/pypi/simple
 
 # CPU Install
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle>=2.3" -i https://mirror.baidu.com/pypi/simple
 ```
 For more requirements, please refer to the instructions in the [Install file](https://www.paddlepaddle.org.cn/install/quick)。
 
@@ -106,7 +106,7 @@ Uncompressed **directory structure：**
 | `train.json`   | Training set annotation files | -       |
 | `val.json`     | Validation set dimension files | -       |
 
-**标注格式：**
+**Data Annotation**
 
 The JSON file contains the annotations of all images, and the data is stored in a dictionary nested manner.Contains the following keys：
 
@@ -142,15 +142,15 @@ The JSON file contains the annotations of all images, and the data is stored in 
 
 ### 3.2. More datasets
 
-We provide CDLA(Chinese layout analysis)、TableBank(Table layout analysis)etc. data set download links，process to the JSON format of the above annotation file，that is, the training can be conducted in the same way。
+We provide CDLA(Chinese layout analysis), TableBank(Table layout analysis)etc. data set download links，process to the JSON format of the above annotation file，that is, the training can be conducted in the same way。
 
 | dataset                                                      | 简介                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [cTDaR2019_cTDaR](https://cndplab-founder.github.io/cTDaR2019/) | For form detection (TRACKA) and form identification (TRACKB).Image types include historical data sets (beginning with cTDaR_t0, such as CTDAR_T00872.jpg) and modern data sets (beginning with cTDaR_t1, CTDAR_T10482.jpg). |
 | [IIIT-AR-13K](http://cvit.iiit.ac.in/usodi/iiitar13k.php)    | Data sets constructed by manually annotating figures or pages from publicly available annual reports, containing 5 categories:table, figure, natural image, logo, and signature. |
 | [TableBank](https://github.com/doc-analysis/TableBank)       | For table detection and recognition of large datasets, including Word and Latex document formats |
-| [CDLA](https://github.com/buptlihang/CDLA)                   | Chinese document layout analysis data set, for Chinese literature (paper) scenarios, including 10 categories:Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
-| [DocBank](https://github.com/doc-analysis/DocBank)           | Large-scale dataset (500K document pages) constructed using weakly supervised methods for document layout analysis, containing 12 categories:Author、Caption、Date、Equation、Figure、Footer、List、Paragraph、Reference、Section、Table、Title |
+| [CDLA](https://github.com/buptlihang/CDLA)                   | Chinese document layout analysis data set, for Chinese literature (paper) scenarios, including 10 categories:Table, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation |
+| [DocBank](https://github.com/doc-analysis/DocBank)           | Large-scale dataset (500K document pages) constructed using weakly supervised methods for document layout analysis, containing 12 categories:Author, Caption, Date, Equation, Figure, Footer, List, Paragraph, Reference, Section, Table, Title |
 
 
 ## 4. Start training
@@ -168,7 +168,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
 ```
 
-If the test image is Chinese, the pre-trained model of Chinese CDLA dataset can be downloaded to identify 10 types of document regions：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation，Download the training model and inference model of Model 'picodet_lcnet_x1_0_fgd_layout_cdla' in [layout analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)。If only the table area in the image is detected, you can download the pre-trained model of the table dataset, and download the training model and inference model of the 'picodet_LCnet_x1_0_FGd_layout_table' model in [Layout Analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)
+If the test image is Chinese, the pre-trained model of Chinese CDLA dataset can be downloaded to identify 10 types of document regions：Table, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation，Download the training model and inference model of Model 'picodet_lcnet_x1_0_fgd_layout_cdla' in [layout analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)。If only the table area in the image is detected, you can download the pre-trained model of the table dataset, and download the training model and inference model of the 'picodet_LCnet_x1_0_FGd_layout_table' model in [Layout Analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)
 
 ### 4.1. Train
 
@@ -428,7 +428,7 @@ preprocess_time(ms): 2172.50, inference_time(ms): 11.90, postprocess_time(ms): 1
 
 - Model：model structure
 - Transform Order：Preprocessing operation
-- class_id、confidence、left_top、right_bottom：Indicates category id, confidence level, upper left coordinate, lower right coordinate, respectively
+- class_id, confidence, left_top, right_bottom：Indicates category id, confidence level, upper left coordinate, lower right coordinate, respectively
 - save result to：Save path of visual layout analysis results, default save to ./output folder
 - inference time info：Inference time, where preprocess_time represents the preprocessing time, Inference_time represents the model prediction time, and postprocess_time represents the post-processing time
 
