@@ -127,10 +127,10 @@ On the PubTabNet dataset, the algorithm result is as follows:
 
 Supported KIE algorithms (Click the link to get the tutorial):
 
-- [x]  [VI-LayoutXLM](./algorithm_kie_vi_laoutxlm_en.md)
-- [x]  [LayoutLM](./algorithm_kie_laoutxlm_en.md)
-- [x]  [LayoutLMv2](./algorithm_kie_laoutxlm_en.md)
-- [x]  [LayoutXLM](./algorithm_kie_laoutxlm_en.md)
+- [x]  [VI-LayoutXLM](./algorithm_kie_vi_layoutxlm_en.md)
+- [x]  [LayoutLM](./algorithm_kie_layoutxlm_en.md)
+- [x]  [LayoutLMv2](./algorithm_kie_layoutxlm_en.md)
+- [x]  [LayoutXLM](./algorithm_kie_layoutxlm_en.md)
 - [x]  [SDMGR](./algorithm_kie_sdmgr_en.md)
 
 On wildreceipt dataset, the algorithm result is as follows:
