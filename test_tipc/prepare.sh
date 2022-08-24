@@ -160,6 +160,8 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     ln -s ./icdar2015_lite ./icdar2015
     wget -nc -P ./ic15_data/ https://paddleocr.bj.bcebos.com/dataset/rec_gt_train_lite.txt --no-check-certificate
     wget -nc -P ./ic15_data/ https://paddleocr.bj.bcebos.com/dataset/rec_gt_test_lite.txt --no-check-certificate
+    mv ic15_data/rec_gt_train_lite.txt ic15_data/rec_gt_train.txt
+    mv ic15_data/rec_gt_test_lite.txt ic15_data/rec_gt_test.txt
     cd ../
     cd ./inference && tar xf rec_inference.tar && cd ../
     if [ ${model_name} == "ch_PP-OCRv2_det" ] || [ ${model_name} == "ch_PP-OCRv2_det_PACT" ]; then
@@ -221,7 +223,6 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
         pip install -r ppstructure/kie/requirements.txt
-        pip install paddlenlp\>=2.3.5 --force-reinstall -i https://mirrors.aliyun.com/pypi/simple/
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         cd ../

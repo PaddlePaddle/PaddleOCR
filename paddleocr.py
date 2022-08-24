@@ -652,8 +652,9 @@ def main():
                 for index, pdf_img in enumerate(img):
                     os.makedirs(
                         os.path.join(args.output, img_name), exist_ok=True)
-                    pdf_img_path = os.path.join(args.output, img_name, img_name
-                                                + '_' + str(index) + '.jpg')
+                    pdf_img_path = os.path.join(
+                        args.output, img_name,
+                        img_name + '_' + str(index) + '.jpg')
                     cv2.imwrite(pdf_img_path, pdf_img)
                     img_paths.append([pdf_img_path, pdf_img])
 
