@@ -674,12 +674,6 @@ def main():
                     result_sorted = sorted_layout_boxes(result_cp, w)
                     all_res += result_sorted
 
-                for item in result:
-                    item.pop('img')
-                    item.pop('res')
-                    logger.info(item)
-                logger.info('result save to {}'.format(args.output))
-
             if args.recovery and all_res != []:
                 try:
                     from ppstructure.recovery.recovery_to_doc import convert_info_docx
@@ -690,3 +684,9 @@ def main():
                         "error in layout recovery image:{}, err msg: {}".format(
                             img_name, ex))
                     continue
+            
+            for item in all_res:
+                item.pop('img')
+                item.pop('res')
+                logger.info(item)
+            logger.info('result save to {}'.format(args.output))
