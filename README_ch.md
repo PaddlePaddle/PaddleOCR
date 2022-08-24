@@ -36,8 +36,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - **🔥2022.8 发布 [OCR场景应用集合](./applications)**
   - 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
   
-- **2022.8 新增实现[7种前沿算法](doc/doc_ch/algorithm_overview.md)**
-  - 文本检测：[FCENet](doc/doc_ch/algorithm_det_fcenet.md)
+- **2022.8 新增实现[8种前沿算法](doc/doc_ch/algorithm_overview.md)**
+  - 文本检测：[FCENet](doc/doc_ch/algorithm_det_fcenet.md), [DB++](doc/doc_ch/algorithm_det_db.md)
   - 文本识别：[ViTSTR](doc/doc_ch/algorithm_rec_vitstr.md), [ABINet](doc/doc_ch/algorithm_rec_abinet.md), [VisionLAN](doc/doc_ch/algorithm_rec_visionlan.md), [SPIN](doc/doc_ch/algorithm_rec_spin.md), [RobustScanner](doc/doc_ch/algorithm_rec_robustscanner.md)
   - 表格识别：[TableMaster](doc/doc_ch/algorithm_table_master.md)
   
