@@ -1,23 +1,24 @@
 English | [简体中文](README_ch.md)
 
+# Layout analysis
+
 - [1. Introduction](#1-Introduction)
 - [2. Install](#2-Install)
-  - [2.1 Install PaddlePaddle](#21-Install paddlepaddle)
-  - [2.2 Install PaddleDetection](#22-Install paddledetection)
-- [3. Data preparation](#3-Data preparation)
-  - [3.1 English data set](#31-English data set)
-  - [3.2 More datasets](#32-More datasets)
-- [4. Start training](#4-Start training)
+  - [2.1 Install PaddlePaddle](#21-Install-paddlepaddle)
+  - [2.2 Install PaddleDetection](#22-Install-paddledetection)
+- [3. Data preparation](#3-Data-preparation)
+  - [3.1 English data set](#31-English-data-set)
+  - [3.2 More datasets](#32-More-datasets)
+- [4. Start training](#4-Start-training)
   - [4.1 Train](#41-Train)
-  - [4.2 FGD Distillation training](#42-FGD Distillation training)
-- [5. Model evaluation and prediction](#5-Model evaluation and prediction)
-  - [5.1 Indicator evaluation](#51-Indicator evaluation)
-  - [5.2 Test layout analysis results](#52-Test layout analysis results)
-- [6 Model export and inference](#6-Model export and inference)
-  - [6.1 Model export](#61-Model export)
-  - [6.2 Model inference](#62-Model inference)
+  - [4.2 FGD Distillation training](#42-FGD-Distillation-training)
+- [5. Model evaluation and prediction](#5-Model-evaluation-and-prediction)
+  - [5.1 Indicator evaluation](#51-Indicator-evaluation)
+  - [5.2 Test layout analysis results](#52-Test-layout-analysis-results)
+- [6 Model export and inference](#6-Model-export-and-inference)
+  - [6.1 Model export](#61-Model-export)
+  - [6.2 Model inference](#62-Model-inference)
 
-# Layout analysis
 
 ## 1. Introduction
 
