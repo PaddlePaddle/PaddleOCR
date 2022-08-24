@@ -1,9 +1,10 @@
-## Key Imnformation Extraction dataset
+## Key Information Extraction dataset
 
-Here are the common DocVQA datasets, which are being updated continuously. Welcome to contribute datasets.
+Here are the common datasets key information extraction, which are being updated continuously. Welcome to contribute datasets.
+
 - [FUNSD dataset](#funsd)
 - [XFUND dataset](#xfund)
-- [wildreceipt dataset](#wildreceipt数据集)
+- [wildreceipt dataset](#wildreceipt-dataset)
 
 <a name="funsd"></a>
 #### 1. FUNSD dataset
@@ -20,7 +21,8 @@ Here are the common DocVQA datasets, which are being updated continuously. Welco
 <a name="xfund"></a>
 #### 2. XFUND dataset
 - **Data source**: https://github.com/doc-analysis/XFUND
-- **Data introduction**: XFUND is a multilingual form comprehension dataset, which contains form data in 7 different languages, and all are manually annotated in the form of key-value pairs. The data for each language contains 199 form data, which are divided into 149 training sets and 50 test sets. Part of the image and the annotation box visualization are shown below:
+- **Data introduction**: XFUND is a multilingual form comprehension dataset, which contains form data in 7 different languages, and all are manually annotated in the form of key-value pairs. The data for each language contains 199 form data, which are divided into 149 training sets and 50 test sets. Part of the image and the annotation box visualization are shown below.
+
 <div align="center">
     <img src="../../datasets/xfund_demo/gt_zh_train_0.jpg" width="500">
     <img src="../../datasets/xfund_demo/gt_zh_train_1.jpg" width="500">

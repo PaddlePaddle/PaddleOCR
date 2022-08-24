@@ -349,6 +349,13 @@ class TextRecognizer(object):
         for beg_img_no in range(0, img_num, batch_num):
             end_img_no = min(img_num, beg_img_no + batch_num)
             norm_img_batch = []
+            if self.rec_algorithm == "SRN":
+                encoder_word_pos_list = []
+                gsrm_word_pos_list = []
+                gsrm_slf_attn_bias1_list = []
+                gsrm_slf_attn_bias2_list = []
+            if self.rec_algorithm == "SAR":
+                valid_ratios = []
             imgC, imgH, imgW = self.rec_image_shape[:3]
             max_wh_ratio = imgW / imgH
             # max_wh_ratio = 0
@@ -357,22 +364,16 @@ class TextRecognizer(object):
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
             for ino in range(beg_img_no, end_img_no):
-
                 if self.rec_algorithm == "SAR":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
                         img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     valid_ratio = np.expand_dims(valid_ratio, axis=0)
-                    valid_ratios = []
                     valid_ratios.append(valid_ratio)
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == "SRN":
                     norm_img = self.process_image_srn(
                         img_list[indices[ino]], self.rec_image_shape, 8, 25)
-                    encoder_word_pos_list = []
-                    gsrm_word_pos_list = []
-                    gsrm_slf_attn_bias1_list = []
-                    gsrm_slf_attn_bias2_list = []
                     encoder_word_pos_list.append(norm_img[1])
                     gsrm_word_pos_list.append(norm_img[2])
                     gsrm_slf_attn_bias1_list.append(norm_img[3])

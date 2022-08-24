@@ -1,13 +1,13 @@
 # Python Inference
 
-- [1. Structure](#1)
+- [1. Layout Structured Analysis](#1)
   - [1.1 layout analysis + table recognition](#1.1)
   - [1.2 layout analysis](#1.2)
   - [1.3 table recognition](#1.3)
-- [2. KIE](#2)
+- [2. Key Information Extraction](#2)
 
 <a name="1"></a>
-## 1. Structure
+## 1. Layout Structured Analysis
 Go to the `ppstructure` directory
 
 ```bash
@@ -70,7 +70,7 @@ python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv3_det_infer \
 After the operation is completed, each image will have a directory with the same name in the `structure` directory under the directory specified by the `output` field. Each table in the image will be stored as an excel. The filename of excel is their coordinates in the image.
 
 <a name="2"></a>
-## 2. KIE
+## 2. Key Information Extraction
 
 ```bash
 cd ppstructure

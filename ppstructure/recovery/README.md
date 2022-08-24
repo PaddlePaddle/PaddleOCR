@@ -8,6 +8,7 @@ English | [简体中文](README_ch.md)
   - [3. Quick Start](#3)
     - [3.1 Download models](#3.1)
     - [3.2 Layout recovery](#3.2)
+  - [4. More](#4)
 
 <a name="1"></a>
 
@@ -15,11 +16,14 @@ English | [简体中文](README_ch.md)
 
 Layout recovery means that after OCR recognition, the content is still arranged like the original document pictures, and the paragraphs are output to word document in the same order.
 
-Layout recovery combines [layout analysis](../layout/README.md)、[table recognition](../table/README.md) to better recover images, tables, titles, etc.
-The following figure shows the result：
+Layout recovery combines [layout analysis](../layout/README.md)、[table recognition](../table/README.md) to better recover images, tables, titles, etc. supports input files in PDF and document image formats in Chinese and English. The following figure shows the effect of restoring the layout of English and Chinese documents:
 
 <div align="center">
 <img src="../docs/recovery/recovery.jpg"  width = "700" />
+</div>
+
+<div align="center">
+<img src="../docs/recovery/recovery_ch.jpg"  width = "800" />
 </div>
 
 <a name="2"></a>
@@ -35,7 +39,7 @@ The following figure shows the result：
 ```bash
 python3 -m pip install --upgrade pip
 
-# GPU installation
+# If you have cuda9 or cuda10 installed on your machine, please run the following command to install
 python3 -m pip install "paddlepaddle-gpu" -i https://mirror.baidu.com/pypi/simple
 
 # CPU installation
@@ -62,6 +66,8 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **(2) Install recovery's `requirements`**
 
+The layout restoration is exported as docx and PDF files, so python-docx and docx2pdf API need to be installed, and fitz and PyMuPDF apis need to be installed to process the input files in pdf format.
+
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
 ````
@@ -69,6 +75,16 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 <a name="3"></a>
 
 ## 3. Quick Start
+
+Through layout analysis, we divided the image/PDF documents into regions, located the key regions, such as text, table, picture, etc., and recorded the location, category, and regional pixel value information of each region. Different regions are processed separately, where:
+
+- OCR detection and recognition is performed in the text area, and the coordinates of the OCR detection box and the text content information are added on the basis of the previous information
+
+- The table area identifies tables and records html and text information of tables
+- Save the image directly
+
+We can restore the test picture through the layout information, OCR detection and recognition structure, table information, and saved pictures.
+
 
 <a name="3.1"></a>
 ### 3.1 Download models
@@ -85,9 +101,11 @@ https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && ta
 # Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
 # Download the ultra-lightweight English table inch model and unzip it
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar
+tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 # Download the layout model of publaynet dataset and unzip it
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar && tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
+tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
 cd ..
 ```
 If input is Chinese document，download Chinese models:
@@ -128,3 +146,15 @@ Field：
 - recovery：whether to enable layout of recovery, default False
 - save_pdf：when recovery file, whether to save pdf file, default False
 - output：save the recovery result path
+
+<a name="4"></a>
+
+## 4. More
+
+For training, evaluation and inference tutorial for text detection models, please refer to [text detection doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/detection.md).
+
+For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md).
+
+For training, evaluation and inference tutorial for layout analysis models, please refer to [layout analysis doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/layout/README_ch.md)
+
+For training, evaluation and inference tutorial for table recognition models, please refer to [table recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/table/README_ch.md)

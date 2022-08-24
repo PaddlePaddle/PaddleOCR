@@ -51,10 +51,14 @@ pip3 install "paddleocr>=2.6"
 pip3 install paddleclas
 
 # 安装 关键信息抽取 依赖包（如不需要KIE功能，可跳过）
-pip3 install -r kie/requirements.txt
+pip3 install -r ppstructure/kie/requirements.txt
+
+# 安装 版面恢复 依赖包（如不需要版面恢复功能，可跳过）
+pip3 install -r ppstructure/recovery/requirements.txt
 ```
 
 <a name="2"></a>
+
 ## 2. 便捷使用
 
 <a name="21"></a>
@@ -94,7 +98,12 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 #### 2.1.6 版面恢复
 
 ```bash
+# 中文测试图
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
+# 英文测试图
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+# pdf测试文件
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>
@@ -215,9 +224,12 @@ for line in result:
 import os
 import cv2
 from paddleocr import PPStructure,save_structure_res
-from paddelocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
 
-table_engine = PPStructure(layout=False, show_log=True)
+# 中文测试图
+table_engine = PPStructure(recovery=True)
+# 英文测试图
+# table_engine = PPStructure(recovery=True, lang='en')
 
 save_folder = './output'
 img_path = 'ppstructure/docs/table/1.png'
@@ -230,8 +242,8 @@ for line in result:
     print(line)
 
 h, w, _ = img.shape
-res = sorted_layout_boxes(res, w)
-convert_info_docx(img, result, save_folder, os.path.basename(img_path).split('.')[0])
+res = sorted_layout_boxes(result, w)
+convert_info_docx(img, res, save_folder, os.path.basename(img_path).split('.')[0])
 ```
 
 <a name="23"></a>

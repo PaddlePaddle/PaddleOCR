@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import cv2
 import os
-import pypandoc
 from copy import deepcopy
 
 from docx import Document
@@ -30,7 +28,7 @@ from ppocr.utils.logging import get_logger
 logger = get_logger()
 
 
-def convert_info_docx(img, res, save_folder, img_name, save_pdf):
+def convert_info_docx(img, res, save_folder, img_name, save_pdf=False):
     doc = Document()
     doc.styles['Normal'].font.name = 'Times New Roman'
     doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')

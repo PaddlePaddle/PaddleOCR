@@ -10,6 +10,7 @@
 - [3. 使用](#3)
   - [3.1 下载模型](#3.1)
   - [3.2 版面恢复](#3.2)
+- [4. 更多](#4)
 
 
 <a name="1"></a>
@@ -18,10 +19,13 @@
 
 版面恢复就是在OCR识别后，内容仍然像原文档图片那样排列着，段落不变、顺序不变的输出到word文档中等。
 
-版面恢复结合了[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持pdf文档、文档图片格式的输入文件，下图展示了版面恢复的结果：
+版面恢复结合了[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件，下图分别展示了英文文档和中文文档版面恢复的效果：
 
 <div align="center">
 <img src="../docs/recovery/recovery.jpg"  width = "700" />
+</div>
+<div align="center">
+<img src="../docs/recovery/recovery_ch.jpg"  width = "800" />
 </div>
 
 <a name="2"></a>
@@ -37,10 +41,10 @@
 ```bash
 python3 -m pip install --upgrade pip
 
-# GPU安装
+# 您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
 python3 -m pip install "paddlepaddle-gpu" -i https://mirror.baidu.com/pypi/simple
 
-# CPU安装
+# 您的机器是CPU，请运行以下命令安装
 python3 -m pip install "paddlepaddle" -i https://mirror.baidu.com/pypi/simple
 
 ```
@@ -64,6 +68,8 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **（2）安装recovery的`requirements`**
 
+版面恢复导出为docx、pdf文件，所以需要安装python-docx、docx2pdf API，同时处理pdf格式的输入文件，需要安装fitz、PyMuPDF API。
+
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
 ```
@@ -72,11 +78,20 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 ## 3. 使用
 
+我们通过版面分析对图片/pdf形式的文档进行区域划分，定位其中的关键区域，如文字、表格、图片等，记录每个区域的位置、类别、区域像素值信息。对不同的区域分别处理，其中：
+
+- 文字区域直接进行OCR检测和识别，在之前信息基础上增加OCR检测框坐标和文本内容信息
+
+- 表格区域进行表格识别，记录表格html和文字信息
+- 图片直接保存
+
+我们通过版面信息、OCR检测和识别结构、表格信息、保存的图片，对测试图片进行恢复即可。
+
 <a name="3.1"></a>
 
 ### 3.1 下载模型
 
-如果输入为英文文档类型，下载英文模型
+如果输入为英文文档类型，下载OCR检测和识别、版面分析、表格识别的英文模型
 
 ```bash
 cd PaddleOCR/ppstructure
@@ -88,9 +103,11 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar 
 # 下载英文超轻量PP-OCRv3识别模型并解压
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
 # 下载英文表格识别模型并解压
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar
+tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 # 下载英文版面分析模型
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar && tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
+tar xf picodet_lcnet_x1_0_fgd_layout_infer.tar
 cd ..
 ```
 
@@ -135,3 +152,15 @@ python3 predict_system.py \
 - recovery：是否进行版面恢复，默认False
 - save_pdf：进行版面恢复导出docx文档的同时，是否保存为pdf文件，默认为False
 - output：版面恢复结果保存路径
+
+<a name="4"></a>
+
+## 4. 更多
+
+关于OCR检测模型的训练评估与推理，请参考：[文本检测教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/detection.md)
+
+关于OCR识别模型的训练评估与推理，请参考：[文本识别教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md)
+
+关于版面分析模型的训练评估与推理，请参考：[版面分析教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/layout/README_ch.md)
+
+关于表格识别模型的训练评估与推理，请参考：[表格识别教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/table/README_ch.md)

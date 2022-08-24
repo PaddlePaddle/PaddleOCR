@@ -160,11 +160,13 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 ```
 mkdir pretrained_model
 cd pretrained_model
-# 下载PubLayNet预训练模型
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout.pdparams
+# 下载PubLayNet预训练模型（直接体验模型评估、预测、动转静）
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout.pdparams
+# 下载PubLaynet推理模型（直接体验模型推理）
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
 ```
 
-下载更多[版面分析模型](../docs/models_list.md)（中文CDLA数据集预训练模型、表格预训练模型）
+如果测试图片为中文，可以下载中文CDLA数据集的预训练模型，识别10类文档区域：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation，在[版面分析模型](../docs/models_list.md)中下载`picodet_lcnet_x1_0_fgd_layout_cdla`模型的训练模型和推理模型。如果只检测图片中的表格区域，可以下载表格数据集的预训练模型，在[版面分析模型](../docs/models_list.md)中下载`picodet_lcnet_x1_0_fgd_layout_table`模型的训练模型和推理模型。
 
 ### 4.1. 启动训练
 
@@ -216,14 +218,14 @@ TestDataset:
 # 单卡训练
 export CUDA_VISIBLE_DEVICES=0
 python3 tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --eval
 
 # 多卡训练，通过--gpus参数指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --eval
 ```
 
 **注意：**如果训练时显存out memory，将TrainReader中batch_size调小，同时LearningRate中base_lr等比例减小。发布的config均由8卡训练得到，如果改变GPU卡数为1，那么base_lr需要减小8倍。
@@ -252,9 +254,9 @@ PaddleDetection支持了基于FGD([Focal and Global Knowledge Distillation for D
 # 单卡训练
 export CUDA_VISIBLE_DEVICES=0
 python3 tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    --eval
 ```
 
 - `-c`: 指定模型配置文件。
@@ -269,8 +271,8 @@ python3 tools/train.py \
 ```bash
 # GPU 评估， weights 为待测权重
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	-o weights=./output/picodet_lcnet_x1_0_layout/best_model
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    -o weights=./output/picodet_lcnet_x1_0_layout/best_model
 ```
 
 会输出以下信息，打印出mAP、AP0.5等信息。
@@ -292,13 +294,13 @@ python3 tools/eval.py \
 [08/15 07:07:09] ppdet.engine INFO: Best test bbox ap is 0.935.
 ```
 
-使用FGD蒸馏模型进行评估：
+若使用**提供的预训练模型进行评估**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，执行如下命令进行评估：
 
 ```
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights=output/picodet_lcnet_x2_5_layout/best_model
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights=output/picodet_lcnet_x2_5_layout/best_model
 ```
 
 - `-c`: 指定模型配置文件。
@@ -325,18 +327,16 @@ python3 tools/infer.py \
 - `--output_dir`: 指定可视化结果保存路径。
 - `--draw_threshold`:指定绘制结果框的NMS阈值。
 
-预测图片如下所示，图片会存储在`output_dir`路径中。
-
-使用FGD蒸馏模型进行测试：
+若使用**提供的预训练模型进行预测**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，执行如下命令进行预测：
 
 ```
 python3 tools/infer.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
-	--infer_img='docs/images/layout.jpg' \
-	--output_dir=output_dir/ \
-	--draw_threshold=0.5
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
+    --infer_img='docs/images/layout.jpg' \
+    --output_dir=output_dir/ \
+    --draw_threshold=0.5
 ```
 
 
@@ -351,9 +351,9 @@ inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，�
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	-o weights=output/picodet_lcnet_x1_0_layout/best_model \
-	--output_dir=output_inference/
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    -o weights=output/picodet_lcnet_x1_0_layout/best_model \
+    --output_dir=output_inference/
 ```
 
 * 如无需导出后处理，请指定：`-o export.benchmark=True`（如果-o已出现过，此处删掉-o）
@@ -368,27 +368,27 @@ output_inference/picodet_lcnet_x1_0_layout/
     └── model.pdmodel           # inference模型的模型结构文件
 ```
 
-FGD蒸馏模型转inference模型步骤如下：
+若使用**提供的预训练模型转Inference模型**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，模型转inference模型步骤如下：
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights=./output/picodet_lcnet_x2_5_layout/best_model \
-	--output_dir=output_inference/
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights=./output/picodet_lcnet_x2_5_layout/best_model \
+    --output_dir=output_inference/
 ```
 
 
 
 ### 6.2 模型推理
 
-版面恢复任务进行推理，可以执行如下命令：
+若使用**提供的推理训练模型推理**，或使用**FGD蒸馏训练的模型**，更换`model_dir`推理模型路径，执行如下命令进行推理：
 
 ```bash
 python3 deploy/python/infer.py \
-	--model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
-	--image_file=docs/images/layout.jpg \
-	--device=CPU
+    --model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
+    --image_file=docs/images/layout.jpg \
+    --device=CPU
 ```
 
 - --device：指定GPU、CPU设备
