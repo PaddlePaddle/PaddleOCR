@@ -28,7 +28,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 近期更新
 
 - **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  - 发布[PP-Structurev2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)和[PDF转Word]()；
+  - 发布[PP-Structurev2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
   - [版面分析](./ppstructure/layout)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
   - [表格识别](./ppstructure/table)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
   - [关键信息抽取](./ppstructure/kie)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
