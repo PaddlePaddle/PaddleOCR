@@ -1,10 +1,11 @@
 # PDF2WORD
 
-PDF2WORD是PaddleOCR社区开发者@whj 基于PP-Structure智能文档分析系统实现的PDF转换word应用程序，提供可直接安装的exe，方便windows用户运行
+PDF2WORD是PaddleOCR社区开发者@whj 基于PP-Structure智能文档分析模型实现的PDF转换Word应用程序，提供可直接安装的exe，方便windows用户运行
 
 <div align="center">
-    <img src="./doc/imgs_results/PP-OCRv3/en/en_4.png" width="800">
+    <img src="./doc/imgs_results/PP-OCRv3/en/en_4.png" width="200">
 </div>
+
 
 ## 1.使用
 
@@ -16,17 +17,15 @@ PDF2WORD是PaddleOCR社区开发者@whj 基于PP-Structure智能文档分析系�
 
 ### 脚本运行
 
-首次运行需要将
+首次运行需要将切换路径到 `/ppstructure/pdf2word` ，然后运行代码
 
 ```
 python pdf2word.py
 ```
 
-
-
 ## 2.自行打包
 
-PDF2WORD应用程序通过[QPT](https://github.com/QPT-Family/QPT)工具打包实现，若您修改了界面代码需要重新打包，请在 `ppstructure` 文件夹下运行下方指令
+PDF2WORD应用程序通过[QPT](https://github.com/QPT-Family/QPT)工具打包实现，若您修改了界面代码需要重新打包，请在 `PaddleOCR` 文件夹下运行下方指令
 
 ```
 cd ./
@@ -34,9 +33,11 @@ mv ./ppstructure/pdf2word .. -r
 python GenEXE.py
 ```
 
-
-
 ## 3.软件下载
 
 如需获取已打包程序，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群免费获取20G OCR学习大礼包，内含OCR场景应用集合（包含数码管、液晶屏、车牌、高精度SVTR模型等7个垂类模型）、《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/50011306/186369636-35f2008b-df5a-4784-b1f5-cebebcb2b7a5.jpg"  width = "150" height = "150" />
+</div>
 
