@@ -1,4 +1,4 @@
-# DB and DB++
+# DB && DB++
 
 - [1. Introduction](#1)
 - [2. Environment](#2)

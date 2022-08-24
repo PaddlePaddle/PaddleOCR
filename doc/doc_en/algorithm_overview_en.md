@@ -17,7 +17,7 @@ This tutorial lists the OCR algorithms supported by PaddleOCR, as well as the mo
 ### 1.1 Text Detection Algorithms
 
 Supported text detection algorithms (Click the link to get the tutorial):
-- [x]  [DB and DB++](./algorithm_det_db_en.md)
+- [x]  [DB && DB++](./algorithm_det_db_en.md)
 - [x]  [EAST](./algorithm_det_east_en.md)
 - [x]  [SAST](./algorithm_det_sast_en.md)
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
