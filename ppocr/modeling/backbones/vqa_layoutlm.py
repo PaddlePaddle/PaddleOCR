@@ -36,7 +36,7 @@ pretrained_model_dict = {
     },
     LayoutLMv2Model: {
         "base": "layoutlmv2-base-uncased",
-        "vi": "vi-layoutlmv2-backbone-base-uncased",
+        "vi": "vi-layoutlmv2-base-uncased",
     },
 }
 
