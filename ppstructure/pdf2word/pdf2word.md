@@ -1,6 +1,6 @@
-# PDF2WORD
+# PDF2Word
 
-PDF2WORD是PaddleOCR社区开发者[whjdark](https://github.com/whjdark) 基于PP-Structure智能文档分析模型实现的PDF转换Word应用程序，提供可直接安装的exe，方便windows用户运行
+PDF2Word是PaddleOCR社区开发者[whjdark](https://github.com/whjdark) 基于PP-Structure智能文档分析模型实现的PDF转换Word应用程序，提供可直接安装的exe，方便windows用户运行
 
 ## 1.使用
 
