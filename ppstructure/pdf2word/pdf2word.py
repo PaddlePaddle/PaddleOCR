@@ -21,7 +21,7 @@ from ppstructure.predict_system import StructureSystem, save_structure_res
 from ppstructure.utility import parse_args, draw_structure_result
 from ppocr.utils.network import download_with_progressbar
 from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
-from ScreenShotWidget import ScreenShotWidget
+# from ScreenShotWidget import ScreenShotWidget
 
 __APPNAME__ = "pdf2word"
 __VERSION__ = "0.1.1"
@@ -181,7 +181,7 @@ class APP_Image2Doc(QWidget):
 
         # settings
         self.imagePaths = []
-        self.screenShotWg = ScreenShotWidget()
+        # self.screenShotWg = ScreenShotWidget()
         self.screenShot = None
         self.save_pdf = False
         self.output_dir = None
@@ -358,17 +358,17 @@ class APP_Image2Doc(QWidget):
             self.pb.setRange(0, len(self.imagePaths))
             self.pb.setValue(0)
 
-    def screenShotSlot(self):
-        '''
-        选定图像文件和截图的转换过程只能同时进行一个
-        截图只能同时转换一个
-        '''
-        self.screenShotWg.start()
-        if self.screenShotWg.captureImage:
-            self.screenShot = self.screenShotWg.captureImage
-            self.imagePaths.clear() # discard openfile temp list
-            self.pb.setRange(0, 1)
-            self.pb.setValue(0)
+    # def screenShotSlot(self):
+    #     '''
+    #     选定图像文件和截图的转换过程只能同时进行一个
+    #     截图只能同时转换一个
+    #     '''
+    #     self.screenShotWg.start()
+    #     if self.screenShotWg.captureImage:
+    #         self.screenShot = self.screenShotWg.captureImage
+    #         self.imagePaths.clear() # discard openfile temp list
+    #         self.pb.setRange(0, 1)
+    #         self.pb.setValue(0)
 
     def handleStartSignal(self, lang):
         if self.screenShot: # for screenShot
