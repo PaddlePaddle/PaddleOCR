@@ -1,5 +1,4 @@
 python-docx
 docx2pdf
-fitz
-PyMuPDF==1.16.14
+PyMuPDF
 beautifulsoup4

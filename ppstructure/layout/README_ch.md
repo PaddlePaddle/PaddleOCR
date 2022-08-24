@@ -1,3 +1,7 @@
+简体中文 | [English](README.md)
+
+# 版面分析
+
 - [1. 简介](#1-简介)
 - [2. 安装](#2-安装)
   - [2.1 安装PaddlePaddle](#21-安装paddlepaddle)
@@ -14,8 +18,6 @@
 - [6 模型导出与预测](#6-模型导出与预测)
   - [6.1 模型导出](#61-模型导出)
   - [6.2 模型推理](#62-模型推理)
-
-# 版面分析
 
 ## 1. 简介
 
@@ -37,10 +39,10 @@
 python3 -m pip install --upgrade pip
 
 # GPU安装
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu>=2.3" -i https://mirror.baidu.com/pypi/simple
 
 # CPU安装
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle>=2.3" -i https://mirror.baidu.com/pypi/simple
 ```
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 

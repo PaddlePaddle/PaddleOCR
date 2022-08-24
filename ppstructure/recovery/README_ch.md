@@ -68,7 +68,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **（2）安装recovery的`requirements`**
 
-版面恢复导出为docx、pdf文件，所以需要安装python-docx、docx2pdf API，同时处理pdf格式的输入文件，需要安装fitz、PyMuPDF API。
+版面恢复导出为docx、pdf文件，所以需要安装python-docx、docx2pdf API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。
 
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
