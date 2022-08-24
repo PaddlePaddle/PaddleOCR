@@ -77,7 +77,7 @@ class StructureSystem(object):
         elif self.mode == 'kie':
             raise NotImplementedError
 
-    def __call__(self, img, img_idx=0, return_ocr_result_in_table=False):
+    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
             'image_orientation': 0,
             'layout': 0,
@@ -227,65 +227,39 @@ def main(args):
             if img is None:
                 logger.error("error in loading image:{}".format(image_file))
                 continue
-            res, time_dict = structure_sys(img)
+            imgs = [img]
+        else:
+            imgs = img
 
-            if structure_sys.mode == 'structure':
-                save_structure_res(res, save_folder, img_name)
+        all_res = []
+        for index, img in enumerate(imgs):
+            res, time_dict = structure_sys(img, img_idx=index)
+            if structure_sys.mode == 'structure' and res != []:
+                save_structure_res(res, save_folder, img_name, index)
                 draw_img = draw_structure_result(img, res, args.vis_font_path)
-                img_save_path = os.path.join(save_folder, img_name, 'show.jpg')
+                img_save_path = os.path.join(save_folder, img_name,
+                                             'show_{}.jpg'.format(index))
             elif structure_sys.mode == 'kie':
                 raise NotImplementedError
                 # draw_img = draw_ser_results(img, res, args.vis_font_path)
                 # img_save_path = os.path.join(save_folder, img_name + '.jpg')
-            cv2.imwrite(img_save_path, draw_img)
-            logger.info('result save to {}'.format(img_save_path))
-            if args.recovery:
-                try:
-                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
-                    h, w, _ = img.shape
-                    res = sorted_layout_boxes(res, w)
-                    convert_info_docx(img, res, save_folder, img_name,
-                                      args.save_pdf)
-                except Exception as ex:
-                    logger.error(
-                        "error in layout recovery image:{}, err msg: {}".format(
-                            image_file, ex))
-                    continue
-        else:
-            pdf_imgs = img
-            all_res = []
-            for index, img in enumerate(pdf_imgs):
+            if res != []:
+                cv2.imwrite(img_save_path, draw_img)
+                logger.info('result save to {}'.format(img_save_path))
+            if args.recovery and res != []:
+                from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                h, w, _ = img.shape
+                res = sorted_layout_boxes(res, w)
+                all_res += res
 
-                res, time_dict = structure_sys(img, index)
-                if structure_sys.mode == 'structure' and res != []:
-                    save_structure_res(res, save_folder, img_name, index)
-                    draw_img = draw_structure_result(img, res,
-                                                     args.vis_font_path)
-                    img_save_path = os.path.join(save_folder, img_name,
-                                                 'show_{}.jpg'.format(index))
-                elif structure_sys.mode == 'kie':
-                    raise NotImplementedError
-                    # draw_img = draw_ser_results(img, res, args.vis_font_path)
-                    # img_save_path = os.path.join(save_folder, img_name + '.jpg')
-                if res != []:
-                    cv2.imwrite(img_save_path, draw_img)
-                    logger.info('result save to {}'.format(img_save_path))
-                if args.recovery and res != []:
-                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
-                    h, w, _ = img.shape
-                    res = sorted_layout_boxes(res, w)
-                    all_res += res
-
-            if args.recovery and all_res != []:
-                try:
-                    convert_info_docx(img, all_res, save_folder, img_name,
-                                      args.save_pdf)
-                except Exception as ex:
-                    logger.error(
-                        "error in layout recovery image:{}, err msg: {}".format(
-                            image_file, ex))
-                    continue
-
+        if args.recovery and all_res != []:
+            try:
+                convert_info_docx(img, all_res, save_folder, img_name,
+                                  args.save_pdf)
+            except Exception as ex:
+                logger.error("error in layout recovery image:{}, err msg: {}".
+                             format(image_file, ex))
+                continue
         logger.info("Predict time : {:.3f}s".format(time_dict['all']))
 
 

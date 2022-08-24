@@ -54,6 +54,9 @@ pip3 install paddleclas
 
 # Install the KIE dependency packages (if you do not use the KIE, you can skip it)
 pip3 install -r kie/requirements.txt
+
+# Install the layout recovery dependency packages (if you do not use the layout recovery, you can skip it)
+pip3 install -r recovery/requirements.txt
 ```
 
 <a name="2"></a>
@@ -88,14 +91,15 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 ```
 
 <a name="215"></a>
+
 #### 2.1.5 Key Information Extraction
 
 Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Key Information Extraction](../kie/README.md).
 
 <a name="216"></a>
 #### 2.1.6 layout recovery
-```bash
-paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
+```
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>
@@ -213,9 +217,12 @@ Key information extraction does not currently support use by the whl package. Fo
 import os
 import cv2
 from paddleocr import PPStructure,save_structure_res
-from paddelocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
 
-table_engine = PPStructure(layout=False, show_log=True)
+# Chinese image
+table_engine = PPStructure(recovery=True)
+# English image
+# table_engine = PPStructure(recovery=True, lang='en')
 
 save_folder = './output'
 img_path = 'ppstructure/docs/table/1.png'
@@ -228,8 +235,8 @@ for line in result:
     print(line)
 
 h, w, _ = img.shape
-res = sorted_layout_boxes(res, w)
-convert_info_docx(img, result, save_folder, os.path.basename(img_path).split('.')[0])
+res = sorted_layout_boxes(result, w)
+convert_info_docx(img, res, save_folder, os.path.basename(img_path).split('.')[0])
 ```
 
 <a name="23"></a>
