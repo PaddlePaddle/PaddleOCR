@@ -160,3 +160,5 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --de
 After executing the command, the recognition result image is as follows:
 
 ![](../imgs_results/system_res_00018069_v3.jpg)
+
+For more configuration and explanation of inference parameters, please refer to：[Model Inference Parameters Explained Tutorial](./inference_args_en.md)。
