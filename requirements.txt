@@ -1,6 +1,6 @@
 shapely
 scikit-image
-imgaug==0.4.0
+imgaug
 pyclipper
 lmdb
 tqdm
