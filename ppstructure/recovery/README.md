@@ -66,7 +66,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **(2) Install recovery's `requirements`**
 
-The layout restoration is exported as docx and PDF files, so python-docx and docx2pdf API need to be installed, and fitz and PyMuPDF apis need to be installed to process the input files in pdf format.
+The layout restoration is exported as docx and PDF files, so python-docx and docx2pdf API need to be installed, and PyMuPDF api([requires Python >= 3.7](https://pypi.org/project/PyMuPDF/)) need to be installed to process the input files in pdf format.
 
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
