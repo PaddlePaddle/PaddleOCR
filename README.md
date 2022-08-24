@@ -35,8 +35,8 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 - **🔥2022.8 Release [OCR scene application collection](./applications/README_en.md)**
     - Release **9 vertical models** such as digital tube, LCD screen, license plate, handwriting recognition model, high-precision SVTR model, etc, covering the main OCR vertical applications in general, manufacturing, finance, and transportation industries.
 
-- **2022.8 Add implementation of [7 cutting-edge algorithms](doc/doc_en/algorithm_overview_en.md)**
-  - Text Detection: [FCENet](doc/doc_en/algorithm_det_fcenet_en.md)
+- **2022.8 Add implementation of [8 cutting-edge algorithms](doc/doc_en/algorithm_overview_en.md)**
+  - Text Detection: [FCENet](doc/doc_en/algorithm_det_fcenet_en.md), [DB++](doc/doc_en/algorithm_det_db_en.md)
   - Text Recognition: [ViTSTR](doc/doc_en/algorithm_rec_vitstr_en.md), [ABINet](doc/doc_en/algorithm_rec_abinet_en.md), [VisionLAN](doc/doc_en/algorithm_rec_visionlan_en.md), [SPIN](doc/doc_en/algorithm_rec_spin_en.md), [RobustScanner](doc/doc_en/algorithm_rec_robustscanner_en.md)
   - Table Recognition: [TableMaster](doc/doc_en/algorithm_table_master_en.md)
   
