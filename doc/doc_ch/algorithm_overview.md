@@ -129,10 +129,10 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 
 已支持的关键信息抽取算法列表（戳链接获取使用教程）：
 
-- [x]  [VI-LayoutXLM](./algorithm_kie_vi_laoutxlm.md)
-- [x]  [LayoutLM](./algorithm_kie_laoutxlm.md)
-- [x]  [LayoutLMv2](./algorithm_kie_laoutxlm.md)
-- [x]  [LayoutXLM](./algorithm_kie_laoutxlm.md)
+- [x]  [VI-LayoutXLM](./algorithm_kie_vi_layoutxlm.md)
+- [x]  [LayoutLM](./algorithm_kie_layoutxlm.md)
+- [x]  [LayoutLMv2](./algorithm_kie_layoutxlm.md)
+- [x]  [LayoutXLM](./algorithm_kie_layoutxlm.md)
 - [x]  [SDMGR](././algorithm_kie_sdmgr.md)
 
 在wildreceipt发票公开数据集上，算法复现效果如下：
