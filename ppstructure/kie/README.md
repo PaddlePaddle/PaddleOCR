@@ -244,8 +244,6 @@ For training, evaluation and inference tutorial for text detection models, pleas
 
 For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](../../doc/doc_en/recognition.md).
 
-If you want to finish the KIE tasks in your scene, and don't know what to prepare,  please refer to [End cdoc](../../doc/doc_en/recognition.md).
-
 To complete the key information extraction task in your own scenario from data preparation to model selection, please refer to: [Guide to End-to-end KIE](./how_to_do_kie_en.md)。
 
 
