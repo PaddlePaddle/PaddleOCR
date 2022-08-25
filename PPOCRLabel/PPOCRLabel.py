@@ -2335,10 +2335,7 @@ class MainWindow(QMainWindow):
                     bbox = np.array(region['res']['boxes'][i])
                     rec_text = region['res']['rec_res'][i][0]
 
-                    # polys to rectangles
-                    x1, y1 = np.min(bbox[0::2]), np.min(bbox[::1])
-                    x2, y2 = np.max(bbox[0::2]), np.max(bbox[::1])
-                    rext_bbox = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+                    rext_bbox = [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]
 
                     # save bbox to shape
                     shape = Shape(label=rec_text, line_color=DEFAULT_LINE_COLOR, key_cls=None)
