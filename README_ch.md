@@ -28,13 +28,18 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 近期更新
 
 - **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  - 发布[PP-Structurev2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
-  - [版面分析](./ppstructure/layout)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
-  - [表格识别](./ppstructure/table)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
-  - [关键信息抽取](./ppstructure/kie)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
+  - 发布[PP-Structurev2](./ppstructure/README_ch.md)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery/README_ch.md)，支持**一行命令完成PDF转Word**；
+  - [版面分析](./ppstructure/layout/README_ch.md)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
+  - [表格识别](./ppstructure/table/README_ch.md)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
+  - [关键信息抽取](./ppstructure/kie/README_ch.md)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
   
 - **🔥2022.8 发布 [OCR场景应用集合](./applications)**
   - 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
+  
+- **2022.8 新增实现[8种前沿算法](doc/doc_ch/algorithm_overview.md)**
+  - 文本检测：[FCENet](doc/doc_ch/algorithm_det_fcenet.md), [DB++](doc/doc_ch/algorithm_det_db.md)
+  - 文本识别：[ViTSTR](doc/doc_ch/algorithm_rec_vitstr.md), [ABINet](doc/doc_ch/algorithm_rec_abinet.md), [VisionLAN](doc/doc_ch/algorithm_rec_visionlan.md), [SPIN](doc/doc_ch/algorithm_rec_spin.md), [RobustScanner](doc/doc_ch/algorithm_rec_robustscanner.md)
+  - 表格识别：[TableMaster](doc/doc_ch/algorithm_table_master.md)
   
 - **2022.5.9 发布 PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
