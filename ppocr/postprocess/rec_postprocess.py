@@ -24,7 +24,7 @@ class BaseRecLabelDecode(object):
     def __init__(self, character_dict_path=None, use_space_char=False):
         self.beg_str = "sos"
         self.end_str = "eos"
-
+        self.reverse = False
         self.character_str = []
         if character_dict_path is None:
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -38,17 +38,14 @@ class BaseRecLabelDecode(object):
             if use_space_char:
                 self.character_str.append(" ")
             dict_character = list(self.character_str)
+            if 'arabic' in character_dict_path:
+                self.reverse = True
 
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):
             self.dict[char] = i
         self.character = dict_character
-
-        if 'arabic' in character_dict_path:
-            self.reverse = True
-        else:
-            self.reverse = False
 
     def pred_reverse(self, pred):
         pred_re = []
