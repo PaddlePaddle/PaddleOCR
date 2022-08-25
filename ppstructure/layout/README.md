@@ -3,21 +3,22 @@ English | [简体中文](README_ch.md)
 # Layout analysis
 
 - [1. Introduction](#1-Introduction)
-- [2. Install](#2-Install)
-  - [2.1 Install PaddlePaddle](#21-Install-paddlepaddle)
-  - [2.2 Install PaddleDetection](#22-Install-paddledetection)
-- [3. Data preparation](#3-Data-preparation)
-  - [3.1 English data set](#31-English-data-set)
-  - [3.2 More datasets](#32-More-datasets)
-- [4. Start training](#4-Start-training)
-  - [4.1 Train](#41-Train)
-  - [4.2 FGD Distillation training](#42-FGD-Distillation-training)
-- [5. Model evaluation and prediction](#5-Model-evaluation-and-prediction)
-  - [5.1 Indicator evaluation](#51-Indicator-evaluation)
-  - [5.2 Test layout analysis results](#52-Test-layout-analysis-results)
-- [6 Model export and inference](#6-Model-export-and-inference)
-  - [6.1 Model export](#61-Model-export)
-  - [6.2 Model inference](#62-Model-inference)
+- [2. Quick start](#3-Quick-start)
+- [3. Install](#3-Install)
+  - [3.1 Install PaddlePaddle](#31-Install-paddlepaddle)
+  - [3.2 Install PaddleDetection](#32-Install-paddledetection)
+- [4. Data preparation](#4-Data-preparation)
+  - [4.1 English data set](#41-English-data-set)
+  - [4.2 More datasets](#42-More-datasets)
+- [5. Start training](#5-Start-training)
+  - [5.1 Train](#51-Train)
+  - [5.2 FGD Distillation training](#52-FGD-Distillation-training)
+- [6. Model evaluation and prediction](#6-Model-evaluation-and-prediction)
+  - [6.1 Indicator evaluation](#61-Indicator-evaluation)
+  - [6.2 Test layout analysis results](#62-Test-layout-analysis-results)
+- [7 Model export and inference](#7-Model-export-and-inference)
+  - [7.1 Model export](#71-Model-export)
+  - [7.2 Model inference](#72-Model-inference)
 
 
 ## 1. Introduction
@@ -28,11 +29,12 @@ Layout analysis refers to the regional division of documents in the form of pict
     <img src="../docs/layout/layout.png" width="800">
 </div>
 
+## 2. Quick start
+PP-Structure currently provides layout analysis models in Chinese, English and table documents. For the model link, see [models_list](../docs/models_list_en.md). The whl package is also provided for quick use, see [quickstart](../docs/quickstart_en.md) for details.
 
+## 3. Install
 
-## 2. Install
-
-### 2.1. Install PaddlePaddle
+### 3.1. Install PaddlePaddle
 
 - **（1) Install PaddlePaddle**
 
@@ -47,7 +49,7 @@ python3 -m pip install "paddlepaddle>=2.3" -i https://mirror.baidu.com/pypi/simp
 ```
 For more requirements, please refer to the instructions in the [Install file](https://www.paddlepaddle.org.cn/install/quick)。
 
-### 2.2. Install PaddleDetection
+### 3.2. Install PaddleDetection
 
 - **（1）Download PaddleDetection Source code**
 
@@ -62,11 +64,11 @@ cd PaddleDetection
 python3 -m pip install -r requirements.txt
 ```
 
-## 3. Data preparation
+## 4. Data preparation
 
 If you want to experience the prediction process directly, you can skip data preparation and download the pre-training model.
 
-### 3.1. English data set
+### 4.1. English data set
 
 Download document analysis data set [PubLayNet](https://developer.ibm.com/exchanges/data/all/publaynet/)（Dataset 96G），contains 5 classes：`{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}`
 
@@ -141,7 +143,7 @@ The JSON file contains the annotations of all images, and the data is stored in 
   }
   ```
 
-### 3.2. More datasets
+### 4.2. More datasets
 
 We provide CDLA(Chinese layout analysis), TableBank(Table layout analysis)etc. data set download links，process to the JSON format of the above annotation file，that is, the training can be conducted in the same way。
 
@@ -154,7 +156,7 @@ We provide CDLA(Chinese layout analysis), TableBank(Table layout analysis)etc. d
 | [DocBank](https://github.com/doc-analysis/DocBank)           | Large-scale dataset (500K document pages) constructed using weakly supervised methods for document layout analysis, containing 12 categories:Author, Caption, Date, Equation, Figure, Footer, List, Paragraph, Reference, Section, Table, Title |
 
 
-## 4. Start training
+## 5. Start training
 
 Training scripts, evaluation scripts, and prediction scripts are provided, and the PubLayNet pre-training model is used as an example in this section.
 
@@ -171,7 +173,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_
 
 If the test image is Chinese, the pre-trained model of Chinese CDLA dataset can be downloaded to identify 10 types of document regions：Table, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation，Download the training model and inference model of Model 'picodet_lcnet_x1_0_fgd_layout_cdla' in [layout analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)。If only the table area in the image is detected, you can download the pre-trained model of the table dataset, and download the training model and inference model of the 'picodet_LCnet_x1_0_FGd_layout_table' model in [Layout Analysis model](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md)
 
-### 4.1. Train
+### 5.1. Train
 
 Train:
 
@@ -247,7 +249,7 @@ After starting training normally, you will see the following log output:
 
 **Note that the configuration file for prediction / evaluation must be consistent with the training.**
 
-### 4.2.  FGD Distillation Training
+### 5.2.  FGD Distillation Training
 
 PaddleDetection supports FGD-based [Focal and Global Knowledge Distillation for Detectors]( https://arxiv.org/abs/2111.11837v1)  The training process of the target detection model of distillation, FGD distillation is divided into two parts `Focal` and `Global`.     `Focal` Distillation separates the foreground and background of the image, allowing the student model to focus on the key pixels of the foreground and background features of the teacher model respectively;`  Global`Distillation section reconstructs the relationships between different pixels and transfers them from the teacher to the student to compensate for the global information lost in `Focal`Distillation.
 
@@ -265,9 +267,9 @@ python3 tools/train.py \
 - `-c`: Specify the model configuration file.
 - `--slim_config`:  Specify the compression policy profile.
 
-## 5. Model evaluation and prediction
+## 6. Model evaluation and prediction
 
-### 5.1. Indicator evaluation
+### 6.1. Indicator evaluation
 
  Model parameters in training are saved by default in `output/picodet_ Lcnet_ X1_ 0_ Under the layout` directory. When evaluating indicators, you need to set `weights` to point to the saved parameter file.Assessment datasets can be accessed via `configs/picodet/legacy_ Model/application/layout_ Analysis/picodet_ Lcnet_ X1_ 0_ Layout. Yml` . Modify `EvalDataset`  : `img_dir`,`anno_ Path`and`dataset_dir` setting.
 
@@ -310,7 +312,7 @@ python3 tools/eval.py \
 - `--slim_config`:  Specify the distillation policy profile.
 - `-o weights`: Specify the model path trained by the distillation algorithm.
 
-### 5.2. Test Layout Analysis Results
+### 6.2. Test Layout Analysis Results
 
 
 The profile predicted to be used must be consistent with the training, for example, if you pass `python3 tools/train'. Py-c configs/picodet/legacy_ Model/application/layout_ Analysis/picodet_ Lcnet_ X1_ 0_ Layout. Yml` completed the training process for the model.
@@ -343,10 +345,10 @@ python3 tools/infer.py \
 ```
 
 
-## 6. Model Export and Inference
+## 7. Model Export and Inference
 
 
-### 6.1 Model Export
+### 7.1 Model Export
 
 The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
 
@@ -385,7 +387,7 @@ python3 tools/export_model.py \
     --output_dir=output_inference/
 ```
 
-### 6.2 Model inference
+### 7.2 Model inference
 
 Replace model_with the provided inference training model for inference or the FGD distillation training `model_dir`Inference model path, execute the following commands for inference:
 

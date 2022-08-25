@@ -6,7 +6,6 @@
 - [2. 安装](#2)
   - [2.1 安装依赖](#2.1)
   - [2.2 安装PaddleOCR](#2.2)
-
 - [3. 使用](#3)
   - [3.1 下载模型](#3.1)
   - [3.2 版面恢复](#3.2)
@@ -27,7 +26,6 @@
 <div align="center">
 <img src="../docs/recovery/recovery_ch.jpg"  width = "800" />
 </div>
-
 <a name="2"></a>
 
 ## 2. 安装
@@ -86,6 +84,8 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 - 图片直接保存
 
 我们通过版面信息、OCR检测和识别结构、表格信息、保存的图片，对测试图片进行恢复即可。
+
+提供如下代码实现版面恢复，也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
 
 <a name="3.1"></a>
 
