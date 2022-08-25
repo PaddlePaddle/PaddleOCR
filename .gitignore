@@ -18,7 +18,8 @@ log/
 *~
 *.vscode
 *.idea
-
+PaddleOCR/applications/
+PaddleOCR/test_tipc
 *.log
 .clang-format
 .clang_format.hook
