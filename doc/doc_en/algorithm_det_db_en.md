@@ -1,4 +1,4 @@
-# DB
+# DB && DB++
 
 - [1. Introduction](#1)
 - [2. Environment](#2)
@@ -21,13 +21,23 @@ Paper:
 > Liao, Minghui and Wan, Zhaoyi and Yao, Cong and Chen, Kai and Bai, Xiang
 > AAAI, 2020
 
+> [Real-Time Scene Text Detection with Differentiable Binarization and Adaptive Scale Fusion](https://arxiv.org/abs/2202.10304)
+> Liao, Minghui and Zou, Zhisheng and Wan, Zhaoyi and Yao, Cong and Bai, Xiang
+> TPAMI, 2022
+
 On the ICDAR2015 dataset, the text detection result is as follows:
 
 |Model|Backbone|Configuration|Precision|Recall|Hmean|Download|
 | --- | --- | --- | --- | --- | --- | --- |
 |DB|ResNet50_vd|[configs/det/det_r50_vd_db.yml](../../configs/det/det_r50_vd_db.yml)|86.41%|78.72%|82.38%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|[configs/det/det_mv3_db.yml](../../configs/det/det_mv3_db.yml)|77.29%|73.08%|75.12%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
+|DB++|ResNet50|[configs/det/det_r50_db++_ic15.yml](../../configs/det/det_r50_db++_ic15.yml)|90.89%|82.66%|86.58%|[pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams)/[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_db%2B%2B_icdar15_train.tar)|
 
+On the TD_TR dataset, the text detection result is as follows:
+
+|Model|Backbone|Configuration|Precision|Recall|Hmean|Download|
+| --- | --- | --- | --- | --- | --- | --- |
+|DB++|ResNet50|[configs/det/det_r50_db++_td_tr.yml](../../configs/det/det_r50_db++_td_tr.yml)|92.92%|86.48%|89.58%|[pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams)/[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_db%2B%2B_td_tr_train.tar)|
 
 <a name="2"></a>
 ## 2. Environment
@@ -95,5 +105,13 @@ More deployment schemes supported for DB:
   number={07},
   pages={11474--11481},
   year={2020}
+}
+
+@article{liao2022real,
+  title={Real-Time Scene Text Detection with Differentiable Binarization and Adaptive Scale Fusion},
+  author={Liao, Minghui and Zou, Zhisheng and Wan, Zhaoyi and Yao, Cong and Bai, Xiang},
+  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  year={2022},
+  publisher={IEEE}
 }
 ```
