@@ -39,15 +39,15 @@ from ppocr.utils.utility import check_and_read, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
-from ppstructure.predict_system import StructureSystem, save_structure_res
+from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
-    'save_structure_res', 'download_with_progressbar'
+    'save_structure_res', 'download_with_progressbar', 'to_excel'
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.6'
+VERSION = '2.6.0.1'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
