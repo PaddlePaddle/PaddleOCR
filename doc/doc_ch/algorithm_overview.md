@@ -24,7 +24,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 ### 1.1 文本检测算法
 
 已支持的文本检测算法列表（戳链接获取使用教程）：
-- [x]  [DB](./algorithm_det_db.md)
+- [x]  [DB与DB++](./algorithm_det_db.md)
 - [x]  [EAST](./algorithm_det_east.md)
 - [x]  [SAST](./algorithm_det_sast.md)
 - [x]  [PSENet](./algorithm_det_psenet.md)
@@ -41,6 +41,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
 |PSE|ResNet50_vd|85.81%|79.53%|82.55%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
 |PSE|MobileNetV3|82.20%|70.48%|75.89%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
+|DB++|ResNet50|90.89%|82.66%|86.58%|[合成数据预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams)/[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_db%2B%2B_icdar15_train.tar)|
 
 在Total-text文本检测公开数据集上，算法效果如下：
 
@@ -129,10 +130,10 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 
 已支持的关键信息抽取算法列表（戳链接获取使用教程）：
 
-- [x]  [VI-LayoutXLM](./algorithm_kie_vi_laoutxlm.md)
-- [x]  [LayoutLM](./algorithm_kie_laoutxlm.md)
-- [x]  [LayoutLMv2](./algorithm_kie_laoutxlm.md)
-- [x]  [LayoutXLM](./algorithm_kie_laoutxlm.md)
+- [x]  [VI-LayoutXLM](./algorithm_kie_vi_layoutxlm.md)
+- [x]  [LayoutLM](./algorithm_kie_layoutxlm.md)
+- [x]  [LayoutLMv2](./algorithm_kie_layoutxlm.md)
+- [x]  [LayoutXLM](./algorithm_kie_layoutxlm.md)
 - [x]  [SDMGR](././algorithm_kie_sdmgr.md)
 
 在wildreceipt发票公开数据集上，算法复现效果如下：
