@@ -27,7 +27,7 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.checkpoints:
-norm_export:tools/export_model.py -c configs/table/SLANet.yml -o
+norm_export:tools/export_model.py -c test_tipc/configs/slanet/SLANet.yml -o
 quant_export:
 fpgm_export: 
 distill_export:null
