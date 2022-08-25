@@ -12,20 +12,18 @@ from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QProgressBar, \
 from qtpy.QtCore import Signal, QThread, QObject
 from qtpy.QtGui import QImage, QPixmap, QIcon
 
-file = os.path.dirname(os.path.abspath(__file__))
-root = os.path.abspath(os.path.join(file, '../../'))
-sys.path.append(file)
-sys.path.insert(0, root)
-
 from ppstructure.predict_system import StructureSystem, save_structure_res
 from ppstructure.utility import parse_args, draw_structure_result
 from ppocr.utils.network import download_with_progressbar
 from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
-# from ScreenShotWidget import ScreenShotWidget
+#from ScreenShotWidget import ScreenShotWidget
 
 __APPNAME__ = "pdf2word"
 __VERSION__ = "0.1.1"
-
+file = os.path.dirname(os.path.abspath(__file__))
+root = os.path.abspath(file)
+sys.path.append(file)
+sys.path.insert(0, root)
 URLs_EN = {
     # 下载超英文轻量级PP-OCRv3模型的检测模型并解压
     "en_PP-OCRv3_det_infer": "https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar",
@@ -92,6 +90,7 @@ def readImage(image_file) -> list:
                 img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
                 img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
                 imgs.append(img)
+                print("read PDF: {}/{}".format(pg, pdf.pageCount))
     else:
         img = cv2.imread(image_file, cv2.IMREAD_COLOR)
         if img is not None:
@@ -167,7 +166,6 @@ class Worker(QThread):
                 else:
                     break
             self.endsignal.emit()
-            self.exec()
         except Exception as e:
             print(e)
             raise
@@ -181,7 +179,7 @@ class APP_Image2Doc(QWidget):
 
         # settings
         self.imagePaths = []
-#         self.screenShotWg = ScreenShotWidget()
+        # self.screenShotWg = ScreenShotWidget()
         self.screenShot = None
         self.save_pdf = False
         self.output_dir = None
@@ -210,7 +208,6 @@ class APP_Image2Doc(QWidget):
         self._thread = Worker(predictors, self.save_pdf, self.vis_font_path)
         self._thread.progressBarValue.connect(self.handleProgressBarSingal)
         self._thread.endsignal.connect(self.handleEndsignalSignal)
-        self._thread.finished.connect(QObject.deleteLater)
         self.time_start = 0  # save start time
 
     def setupUi(self):
@@ -274,6 +271,7 @@ class APP_Image2Doc(QWidget):
             print("Try downloading file: {}".format(url))
             tarname = url.split('/')[-1]
             tarpath = os.path.join(model_path, tarname)
+            print(tarpath)
             if os.path.exists(tarpath):
                 print("File have already exist. skip")
             else:
