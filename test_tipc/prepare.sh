@@ -108,6 +108,7 @@ if [ ${MODE} = "benchmark_train" ];then
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
         pip install -r ppstructure/kie/requirements.txt
+        pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         # expand gt.txt 10 times
@@ -230,6 +231,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
         pip install -r ppstructure/kie/requirements.txt
+        pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         cd ../
