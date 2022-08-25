@@ -2285,7 +2285,7 @@ class MainWindow(QMainWindow):
         '''
             Table Recegnition
         '''
-        from paddleocr.ppstructure.table.predict_table import to_excel
+        from paddleocr import to_excel
 
         import time
 
@@ -2309,7 +2309,7 @@ class MainWindow(QMainWindow):
         # ONLY SUPPORT ONE TABLE in one image
         hasTable = False
         for region in res:
-            if region['type'] == 'Table':
+            if region['type'] == 'table':
                 if region['res']['boxes'] is None:
                     msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                     QMessageBox.information(self, "Information", msg)
@@ -2336,8 +2336,8 @@ class MainWindow(QMainWindow):
                     rec_text = region['res']['rec_res'][i][0]
 
                     # polys to rectangles
-                    x1, y1 = np.min(bbox[:, 0]), np.min(bbox[:, 1])
-                    x2, y2 = np.max(bbox[:, 0]), np.max(bbox[:, 1])
+                    x1, y1 = np.min(bbox[0::2]), np.min(bbox[::1])
+                    x2, y2 = np.max(bbox[0::2]), np.max(bbox[::1])
                     rext_bbox = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
 
                     # save bbox to shape
