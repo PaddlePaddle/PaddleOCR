@@ -45,6 +45,27 @@ class BaseRecLabelDecode(object):
             self.dict[char] = i
         self.character = dict_character
 
+        if 'arabic' in character_dict_path:
+            self.reverse = True
+        else:
+            self.reverse = False
+
+    def pred_reverse(self, pred):
+        pred_re = []
+        c_current = ''
+        for c in pred:
+            if not bool(re.search('[a-zA-Z0-9 :*./%+-]', c)):
+                if c_current != '':
+                    pred_re.append(c_current)
+                pred_re.append(c)
+                c_current = ''
+            else:
+                c_current += c
+        if c_current != '':
+            pred_re.append(c_current)
+
+        return ''.join(pred_re[::-1])
+
     def add_special_char(self, dict_character):
         return dict_character
 
@@ -73,6 +94,10 @@ class BaseRecLabelDecode(object):
                 conf_list = [0]
 
             text = ''.join(char_list)
+
+            if self.reverse:  # for arabic rec
+                text = self.pred_reverse(text)
+
             result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 

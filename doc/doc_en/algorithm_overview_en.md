@@ -22,7 +22,7 @@ Developers are welcome to contribute more algorithms! Please refer to [add new a
 ### 1.1 Text Detection Algorithms
 
 Supported text detection algorithms (Click the link to get the tutorial):
-- [x]  [DB](./algorithm_det_db_en.md)
+- [x]  [DB && DB++](./algorithm_det_db_en.md)
 - [x]  [EAST](./algorithm_det_east_en.md)
 - [x]  [SAST](./algorithm_det_sast_en.md)
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
@@ -39,6 +39,7 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
 |PSE|ResNet50_vd|85.81%|79.53%|82.55%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
 |PSE|MobileNetV3|82.20%|70.48%|75.89%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
+|DB++|ResNet50|90.89%|82.66%|86.58%|[pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams)/[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_db%2B%2B_icdar15_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
 
@@ -127,10 +128,10 @@ On the PubTabNet dataset, the algorithm result is as follows:
 
 Supported KIE algorithms (Click the link to get the tutorial):
 
-- [x]  [VI-LayoutXLM](./algorithm_kie_vi_laoutxlm_en.md)
-- [x]  [LayoutLM](./algorithm_kie_laoutxlm_en.md)
-- [x]  [LayoutLMv2](./algorithm_kie_laoutxlm_en.md)
-- [x]  [LayoutXLM](./algorithm_kie_laoutxlm_en.md)
+- [x]  [VI-LayoutXLM](./algorithm_kie_vi_layoutxlm_en.md)
+- [x]  [LayoutLM](./algorithm_kie_layoutxlm_en.md)
+- [x]  [LayoutLMv2](./algorithm_kie_layoutxlm_en.md)
+- [x]  [LayoutXLM](./algorithm_kie_layoutxlm_en.md)
 - [x]  [SDMGR](./algorithm_kie_sdmgr_en.md)
 
 On wildreceipt dataset, the algorithm result is as follows:

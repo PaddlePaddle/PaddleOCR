@@ -29,14 +29,14 @@ __all__ = ["LayoutXLMForSer", "LayoutLMForSer"]
 pretrained_model_dict = {
     LayoutXLMModel: {
         "base": "layoutxlm-base-uncased",
-        "vi": "layoutxlm-wo-backbone-base-uncased",
+        "vi": "vi-layoutxlm-base-uncased",
     },
     LayoutLMModel: {
         "base": "layoutlm-base-uncased",
     },
     LayoutLMv2Model: {
         "base": "layoutlmv2-base-uncased",
-        "vi": "layoutlmv2-wo-backbone-base-uncased",
+        "vi": "vi-layoutlmv2-base-uncased",
     },
 }
 
