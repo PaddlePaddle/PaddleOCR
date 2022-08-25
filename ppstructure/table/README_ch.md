@@ -57,7 +57,9 @@
 
 ### 4.1 快速开始
 
-PP-Structure目前提供了中英文两种语言的表格识别模型，模型链接见 [models_list](../docs/models_list.md)。下面以中文表格识别模型为例，介绍如何识别一张表格。
+PP-Structure目前提供了中英文两种语言的表格识别模型，模型链接见 [models_list](../docs/models_list.md)。也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
+
+下面以中文表格识别模型为例，介绍如何识别一张表格。
 
 使用如下命令即可快速完成一张表格的识别。
 ```python

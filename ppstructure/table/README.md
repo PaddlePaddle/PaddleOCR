@@ -51,7 +51,9 @@ The performance indicators are explained as follows:
 
 ### 4.1 Quick start
 
-PP-Structure currently provides table recognition models in both Chinese and English. For the model link, see [models_list](../docs/models_list.md). The following takes the Chinese table recognition model as an example to introduce how to recognize a table.
+PP-Structure currently provides table recognition models in both Chinese and English. For the model link, see [models_list](../docs/models_list.md). The whl package is also provided for quick use, see [quickstart](../docs/quickstart_en.md) for details.
+
+The following takes the Chinese table recognition model as an example to introduce how to recognize a table.
 
 Use the following commands to quickly complete the identification of a table.
 
