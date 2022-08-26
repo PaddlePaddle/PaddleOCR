@@ -481,7 +481,7 @@ def eval(model,
                 post_result = post_process_class(preds, batch_numpy)
                 eval_class(post_result, batch_numpy)
             else:
-                post_result = post_process_class(preds, batch_numpy)  #TODO
+                post_result = post_process_class(preds, batch_numpy[1])  #TODO
                 eval_class(post_result, batch_numpy)
 
             pbar.update(1)

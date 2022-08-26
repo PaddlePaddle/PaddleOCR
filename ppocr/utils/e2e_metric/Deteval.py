@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import json
 import numpy as np
 import scipy.io as io
 import Polygon as plg
@@ -270,10 +271,24 @@ def get_socre_B(gt_dir, img_id, pred_dict):
     return single_data
 
 
-def get_score_C(gt_dir, input_id, pred_bboxes):
+def get_score_C(gt_label, text, pred_bboxes):
     """
     get score for CentripetalText (CT) prediction.
     """
+
+    def gt_reading_mod(gt_label, text):
+        """This helper reads groundtruths from mat files"""
+        # label = json.loads(gt_label)
+        groundtruths = []
+        nbox = len(gt_label)
+        for i in range(nbox):
+            label = {"transcription": text[i][0], "points": gt_label[i].numpy()}
+            # print(gt_label[i],  text[i][0])
+            # exit()
+            groundtruths.append(label)
+        #print(len(groundtruths))
+
+        return groundtruths
 
     def get_union(pD, pG):
         areaA = pD.area()
@@ -286,21 +301,13 @@ def get_score_C(gt_dir, input_id, pred_bboxes):
             return 0
         return pInt.area()
 
-    def gt_reading_mod(gt_dir, gt_id):
-        """This helper reads groundtruths from mat files"""
-        gt_id = gt_id.split('.')[0]
-        gt = io.loadmat('%s/poly_gt_%s.mat' % (gt_dir, gt_id))
-        gt = gt['polygt']
-        return gt
-
     def detection_filtering(detections, groundtruths, threshold=0.5):
-        for gt_id, gt in enumerate(groundtruths):
-            if (gt[5] == '#') and (gt[1].shape[1] > 1):
-                gt_x = np.squeeze(gt[1]).astype('int32')
-                gt_y = np.squeeze(gt[3]).astype('int32')
-
-                gt_p = np.concatenate((np.array(gt_x), np.array(gt_y)))
-                gt_p = gt_p.reshape(2, -1).transpose()
+        for gt in groundtruths:
+            #point_num = len(gt['points'])//2
+            point_num = gt['points'].shape[1] // 2
+            if gt['transcription'] == '###' and (point_num > 1):
+                gt_p = np.array(gt['points']).reshape(point_num,
+                                                      2).astype('int32')
                 gt_p = plg.Polygon(gt_p)
 
                 for det_id, detection in enumerate(detections):
@@ -315,7 +322,7 @@ def get_score_C(gt_dir, input_id, pred_bboxes):
                         det_gt_iou = get_intersection(det_p,
                                                       gt_p) / det_p.area()
                     except:
-                        print(det_x, det_y, gt_x, gt_y)
+                        print(det_x, det_y, gt_p)
                     if det_gt_iou > threshold:
                         detections[det_id] = []
 
@@ -326,33 +333,49 @@ def get_score_C(gt_dir, input_id, pred_bboxes):
         """
         sigma = inter_area / gt_area
         """
+        if gt_p.area() == 0.:
+            return 0
         return get_intersection(det_p, gt_p) / gt_p.area()
 
     def tau_calculation(det_p, gt_p):
         """
         tau = inter_area / det_area
         """
+        if det_p.area() == 0.:
+            return 0
         return get_intersection(det_p, gt_p) / det_p.area()
 
-    detections = pred_bboxes
+    detections = []  #pred_bboxes
 
-    groundtruths = gt_reading_mod(gt_dir, input_id)
+    for item in pred_bboxes:
+        detections.append(item[:, ::-1].reshape(-1))
+
+    groundtruths = gt_reading_mod(gt_label, text)
+    # print(groundtruths)
+    # exit()
+
     detections = detection_filtering(
         detections, groundtruths)  # filters detections overlapping with DC area
-    dc_id = np.where(groundtruths[:, 5] == '#')
-    groundtruths = np.delete(groundtruths, (dc_id), (0))
 
-    local_sigma_table = np.zeros((groundtruths.shape[0], len(detections)))
-    local_tau_table = np.zeros((groundtruths.shape[0], len(detections)))
+    for idx in range(len(groundtruths) - 1, -1, -1):
+        #NOTE: source code use 'orin' to indicate '#', here we use 'anno',
+        # which may cause slight drop in fscore, about 0.12
+        if groundtruths[idx]['transcription'] == '###':
+            #print(groundtruths[idx])
+            #groundtruths.remove(groundtruths[idx])
+            groundtruths.pop(idx)
+
+    local_sigma_table = np.zeros((len(groundtruths), len(detections)))
+    local_tau_table = np.zeros((len(groundtruths), len(detections)))
 
     for gt_id, gt in enumerate(groundtruths):
         if len(detections) > 0:
             for det_id, detection in enumerate(detections):
-                gt_x = np.squeeze(gt[1]).astype('int32')
-                gt_y = np.squeeze(gt[3]).astype('int32')
+                #point_num = len(gt['points'])//2
+                point_num = gt['points'].shape[1] // 2
 
-                gt_p = np.concatenate((np.array(gt_x), np.array(gt_y)))
-                gt_p = gt_p.reshape(2, -1).transpose()
+                gt_p = np.array(gt['points']).reshape(point_num,
+                                                      2).astype('int32')
                 gt_p = plg.Polygon(gt_p)
 
                 det_y = detection[0::2]

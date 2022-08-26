@@ -276,15 +276,24 @@ class CTLoss(nn.Layer):
         self.kernel_loss = DiceLoss()
         self.loc_loss = SmoothL1Loss(beta=0.1, loss_weight=0.05)
 
-    def _upsample(self, x, size, scale=1):
-        _, _, H, W = size
-        return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
+    # def _upsample(self, x, size, scale=1):
+    #     _, _, H, W = size
+    #     return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
 
-    def forward(self, out, batch):
+    # def _upsample(self, x, scale=1):
+    #     return F.upsample(x, scale_factor=scale, mode='bilinear')
+
+    def forward(self, preds, batch):
         imgs = batch[0]
+        #print(preds)
+        out = preds['maps']
         gt_kernels, training_masks, gt_instances, gt_kernel_instances, training_mask_distances, gt_distances = batch[
             1:]
-        out = self._upsample(out, imgs.shape)
+        # print('==1==', out.shape)
+        # out = self._upsample(out, imgs.shape)
+        # out = self._upsample(out, scale=4)
+        # print('==2==', out.shape)
+        # exit()
         # output
         # out: 4,3,640,640
         # gt_kernels = torch.rand(4, 640, 640).long(), 单词区域收缩得到的kernel区域，不区分实例。背景0，单词区域1

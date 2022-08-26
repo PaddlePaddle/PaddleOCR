@@ -34,10 +34,10 @@ class CTPostProcess(object):
     The post process for Centripetal Text (CT).
     """
 
-    def __init__(self, min_score=0.88, min_area=16, bbox_type='poly', **kwargs):
+    def __init__(self, min_score=0.88, min_area=16, box_type='poly', **kwargs):
         self.min_score = min_score
         self.min_area = min_area
-        self.bbox_type = bbox_type
+        self.box_type = box_type
 
         self.coord = np.zeros((2, 300, 300), dtype=np.int32)
         for i in range(300):
@@ -45,108 +45,135 @@ class CTPostProcess(object):
                 self.coord[0, i, j] = j
                 self.coord[1, i, j] = i
 
-    def _upsample(self, x, size, scale=1):
-        _, _, H, W = size
-        return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
+    # def _upsample(self, x, size, scale=1):
+    #     H, W, _ = size
+    #     print('====1===',x.shape, size)
+    #     return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
 
-    def __call__(self, outs, batch):
-        imgs = batch[0]
+    # def _upsample(self, x, scale=1):
+    #     return F.upsample(x, scale_factor=scale, mode='bilinear')
 
-        # img_meta = batch[1]
-        # img_path = batch[2][0]
-        # org_img_size = img_meta['org_img_size'][0]
-        # img_size = img_meta['img_size'][0]    
+    def __call__(self, preds, batch):
+        # print(batch.shape)
+        # print(outs.shape)
+        outs = preds['maps']
+        out_scores = preds['score']
 
-        org_img_size = batch[1][0]
-        img_size = batch[2][0]
-        img_path = batch[3][0]
+        if isinstance(outs, paddle.Tensor):
+            outs = outs.numpy()
+        if isinstance(out_scores, paddle.Tensor):
+            out_scores = out_scores.numpy()
 
-        out = self._upsample(outs, imgs.shape, 4)
-        outputs = dict()
+        batch_size = outs.shape[0]
+        boxes_batch = []
+        for idx in range(batch_size):
+            bboxes = []
+            scores = []
 
-        score = F.sigmoid(out[:, 0, :, :])
-        kernel = out[:, 0, :, :] > 0.2
-        loc = paddle.cast(out[:, 1:, :, :], "float32")
+            img_shape = batch[idx]
 
-        score = score.numpy()[0].astype(np.float32)
-        kernel = kernel.numpy()[0].astype(np.uint8)
-        loc = loc.numpy()[0].astype(np.float32)
+            org_img_size = img_shape[:3]
+            img_shape = img_shape[3:]
+            img_size = img_shape[:2]
 
-        label_num, label_kernel = cv2.connectedComponents(
-            kernel, connectivity=4)
+            out = np.expand_dims(outs[idx], axis=0)
+            # print('===', out.shape)
+            # # out = self._upsample(out, img_shape, 4)
+            # print('===', out.shape)
+            outputs = dict()
 
-        for i in range(1, label_num):
-            ind = (label_kernel == i)
-            if ind.sum(
-            ) < 10:  # pixel number less than 10, treated as background
-                label_kernel[ind] = 0
+            # print(out.shape)
+            score = np.expand_dims(
+                out_scores[idx], axis=0)  #F.sigmoid(out[:, 0, :, :])
 
-        label = np.zeros_like(label_kernel)
-        h, w = label_kernel.shape
-        pixels = self.coord[:, :h, :w].reshape(2, -1)
-        points = pixels.transpose([1, 0]).astype(np.float32)
+            kernel = out[:, 0, :, :] > 0.2
+            # loc = paddle.cast(out[:, 1:, :, :], "float32")
+            loc = out[:, 1:, :, :].astype("float32")
 
-        off_points = (
-            points + 10. / 4. * loc[:, pixels[1], pixels[0]].T).astype(np.int32)
-        off_points[:, 0] = np.clip(off_points[:, 0], 0, label.shape[1] - 1)
-        off_points[:, 1] = np.clip(off_points[:, 1], 0, label.shape[0] - 1)
+            score = score[0].astype(np.float32)
+            kernel = kernel[0].astype(np.uint8)
+            loc = loc[0].astype(np.float32)
 
-        label[pixels[1], pixels[0]] = label_kernel[off_points[:, 1],
-                                                   off_points[:, 0]]
-        label[label_kernel > 0] = label_kernel[label_kernel > 0]
+            #print(score.shape, kernel.shape, loc.shape)
+            label_num, label_kernel = cv2.connectedComponents(
+                kernel, connectivity=4)
 
-        score_pocket = [0.0]
-        for i in range(1, label_num):
-            ind = (label_kernel == i)
-            if ind.sum() == 0:
-                score_pocket.append(0.0)
-                continue
-            score_i = np.mean(score[ind])
-            score_pocket.append(score_i)
+            #print(label_num, label_kernel.shape)
 
-        label_num = np.max(label) + 1
-        label = cv2.resize(
-            label, (img_size[1], img_size[0]), interpolation=cv2.INTER_NEAREST)
+            for i in range(1, label_num):
+                ind = (label_kernel == i)
+                if ind.sum(
+                ) < 10:  # pixel number less than 10, treated as background
+                    label_kernel[ind] = 0
 
-        scale = (float(org_img_size[1]) / float(img_size[1]),
-                 float(org_img_size[0]) / float(img_size[0]))
+            label = np.zeros_like(label_kernel)
+            h, w = label_kernel.shape
+            pixels = self.coord[:, :h, :w].reshape(2, -1)
+            points = pixels.transpose([1, 0]).astype(np.float32)
 
-        bboxes = []
-        scores = []
-        for i in range(1, label_num):
-            ind = (label == i)
-            points = np.array(np.where(ind)).transpose((1, 0))
+            off_points = (points + 10. / 4. * loc[:, pixels[1], pixels[0]].T
+                          ).astype(np.int32)
+            off_points[:, 0] = np.clip(off_points[:, 0], 0, label.shape[1] - 1)
+            off_points[:, 1] = np.clip(off_points[:, 1], 0, label.shape[0] - 1)
 
-            if points.shape[0] < self.min_area:
-                continue
+            label[pixels[1], pixels[0]] = label_kernel[off_points[:, 1],
+                                                       off_points[:, 0]]
+            label[label_kernel > 0] = label_kernel[label_kernel > 0]
 
-            score_i = score_pocket[i]
-            if score_i < self.min_score:
-                continue
+            score_pocket = [0.0]
+            for i in range(1, label_num):
+                ind = (label_kernel == i)
+                if ind.sum() == 0:
+                    score_pocket.append(0.0)
+                    continue
+                score_i = np.mean(score[ind])
+                score_pocket.append(score_i)
 
-            if self.bbox_type == 'rect':
-                rect = cv2.minAreaRect(points[:, ::-1])
-                bbox = cv2.boxPoints(rect) * scale
-                z = bbox.mean(0)
-                bbox = z + (bbox - z) * 0.85
-            elif self.bbox_type == 'poly':
-                binary = np.zeros(label.shape, dtype='uint8')
-                binary[ind] = 1
-                try:
-                    _, contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
-                                                      cv2.CHAIN_APPROX_SIMPLE)
-                except BaseException:
-                    contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL,
-                                                   cv2.CHAIN_APPROX_SIMPLE)
+            label_num = np.max(label) + 1
+            label = cv2.resize(
+                label, (img_size[1], img_size[0]),
+                interpolation=cv2.INTER_NEAREST)
 
-                bbox = contours[0] * scale
+            scale = (float(org_img_size[1]) / float(img_size[1]),
+                     float(org_img_size[0]) / float(img_size[0]))
 
-            bbox = bbox.astype('int32')
-            bboxes.append(bbox.reshape(-1, 2)[:, ::-1].reshape(-1))
-            scores.append(score_i)
+            for i in range(1, label_num):
+                ind = (label == i)
+                points = np.array(np.where(ind)).transpose((1, 0))
 
-        image_name, _ = osp.splitext(osp.basename(img_path))
+                if points.shape[0] < self.min_area:
+                    continue
 
-        outputs.update(dict(bboxes=bboxes, input_id=image_name))
+                score_i = score_pocket[i]
+                if score_i < self.min_score:
+                    continue
 
-        return outputs
+                if self.box_type == 'rect':
+                    rect = cv2.minAreaRect(points[:, ::-1])
+                    bbox = cv2.boxPoints(rect) * scale
+                    z = bbox.mean(0)
+                    bbox = z + (bbox - z) * 0.85
+                elif self.box_type == 'poly':
+                    binary = np.zeros(label.shape, dtype='uint8')
+                    binary[ind] = 1
+                    try:
+                        _, contours, _ = cv2.findContours(
+                            binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    except BaseException:
+                        contours, _ = cv2.findContours(
+                            binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+                    bbox = contours[0] * scale
+
+                bbox = bbox.astype('int32')
+                bboxes.append(bbox.reshape(-1, 2))  #.reshape(-1))
+                scores.append(score_i)
+
+            boxes_batch.append({'points': bboxes})
+
+            #print(len(bboxes), bboxes[0].shape, len(scores), scores[0])
+            #image_name, _ = osp.splitext(osp.basename(img_path))
+
+            #outputs.update(dict(bboxes=bboxes)) #, input_id=image_name))
+
+        return boxes_batch

@@ -340,6 +340,7 @@ class ResNet_vd(nn.Layer):
                 self.stages.append(nn.Sequential(*block_list))
 
     def forward(self, inputs):
+        print(inputs.shape)
         y = self.conv1_1(inputs)
         y = self.conv1_2(y)
         y = self.conv1_3(y)

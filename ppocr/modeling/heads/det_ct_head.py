@@ -57,6 +57,9 @@ class CT_Head(nn.Layer):
     #     _, _, H, W = size
     #     return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
 
+    def _upsample(self, x, scale=1):
+        return F.upsample(x, scale_factor=scale, mode='bilinear')
+
     def forward(self, f, targets=None):
         # f:   [4, 512, 160, 160]
         out = self.conv1(f)
@@ -64,9 +67,13 @@ class CT_Head(nn.Layer):
         out = self.conv2(out)
         # out: [4, 3, 160, 160]
         #print(out.shape)
-        # if self.training: #拿不到imgs
-        #     out = self._upsample(out, imgs.shape)
-        # else:
+        if self.training:
+            out = self._upsample(out, scale=4)
+            return {'maps': out}
+            #out = self._upsample(out, imgs.shape)
+        else:
+            score = F.sigmoid(out[:, 0, :, :])
+            return {'maps': out, 'score': score}
         #     out = self._upsample(out, imgs.shape, 4)
 
-        return out
+        # return out

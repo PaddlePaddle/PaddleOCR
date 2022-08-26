@@ -102,6 +102,7 @@ def main():
             if isinstance(post_result, dict):
                 det_box_json = {}
                 for k in post_result.keys():
+                    # print(k, post_result[k])
                     boxes = post_result[k][0]['points']
                     dt_boxes_list = []
                     for box in boxes:

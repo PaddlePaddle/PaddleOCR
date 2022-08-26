@@ -139,17 +139,15 @@ def load_pretrained_params(model, path):
     state_dict = model.state_dict()
     new_state_dict = {}
     for k1 in params.keys():
-        new_k1 = "backbone." + k1
-        if new_k1 not in state_dict.keys():
+        if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:
-            if list(state_dict[new_k1].shape) == list(params[k1].shape):
-                new_state_dict[new_k1] = params[k1]
+            if list(state_dict[k1].shape) == list(params[k1].shape):
+                new_state_dict[k1] = params[k1]
             else:
                 logger.warning(
                     "The shape of model params {} {} not matched with loaded params {} {} !".
-                    format(new_k1, state_dict[new_k1].shape, k1, params[k1]
-                           .shape))
+                    format(k1, state_dict[k1].shape, k1, params[k1].shape))
     model.set_state_dict(new_state_dict)
     logger.info("load pretrain successful from {}".format(path))
     return model

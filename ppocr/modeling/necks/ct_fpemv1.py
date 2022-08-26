@@ -129,8 +129,13 @@ class FPEM_v1(nn.Layer):
         self.smooth_layer4_2 = Conv_BN_ReLU(planes, planes)
 
     def _upsample_add(self, x, y):
-        _, _, H, W = y.shape
-        return F.upsample(x, size=(H, W), mode='bilinear') + y
+        #print(x.shape, y.shape)
+        #_, _, H, W = y.shape
+        #return F.upsample(x, size=(H, W), mode='bilinear') + y
+        return F.upsample(x, scale_factor=2, mode='bilinear') + y
+        # a = F.upsample(x, size=(H, W), mode='bilinear')
+        # b = a + y
+        # return b
 
     def forward(self, f1, f2, f3, f4):
         # 自顶向下
@@ -161,9 +166,9 @@ class CTNECK(nn.Layer):
         self.fpem1 = FPEM_v1(in_channels=(64, 128, 256, 512), out_channels=128)
         self.fpem2 = FPEM_v1(in_channels=(64, 128, 256, 512), out_channels=128)
 
-    def _upsample(self, x, size, scale=1):
-        _, _, H, W = size
-        return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
+    def _upsample(self, x, scale=1):
+        #return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
+        return F.upsample(x, scale_factor=scale, mode='bilinear')
 
     def forward(self, f):
         # # reduce channel
@@ -182,8 +187,9 @@ class CTNECK(nn.Layer):
         f2 = f2_1 + f2_2
         f3 = f3_1 + f3_2
         f4 = f4_1 + f4_2
-        f2 = self._upsample(f2, f1.shape)
-        f3 = self._upsample(f3, f1.shape)
-        f4 = self._upsample(f4, f1.shape)
+        #print('====', f3.shape, f4.shape, f2.shape, f1.shape)
+        f2 = self._upsample(f2, scale=2)
+        f3 = self._upsample(f3, scale=4)
+        f4 = self._upsample(f4, scale=8)
         ff = paddle.concat((f1, f2, f3, f4), 1)  # 4,512, 160,160
         return ff
