@@ -1,10 +1,10 @@
 [English](README.md) | 简体中文
 
-# 版面恢复使用说明
+# 版面恢复
 
 - [1. 简介](#1)
 - [2. 安装](#2)
-  - [2.1 安装依赖](#2.1)
+  - [2.1 安装PaddlePaddle](#2.1)
   - [2.2 安装PaddleOCR](#2.2)
 - [3. 使用](#3)
   - [3.1 下载模型](#3.1)
@@ -32,9 +32,7 @@
 
 <a name="2.1"></a>
 
-### 2.1 安装依赖
-
-- **（1) 安装PaddlePaddle**
+### 2.1 安装PaddlePaddle
 
 ```bash
 python3 -m pip install --upgrade pip
