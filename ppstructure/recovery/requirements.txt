@@ -1,3 +1,4 @@
-opencv-contrib-python==4.4.0.46
-pypandoc
 python-docx
+docx2pdf
+PyMuPDF
+beautifulsoup4

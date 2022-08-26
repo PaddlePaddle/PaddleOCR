@@ -1,0 +1,7 @@
+sentencepiece
+yacs
+seqeval
+pypandoc
+attrdict
+python_docx
+https://paddleocr.bj.bcebos.com/ppstructure/whl/paddlenlp-2.3.0.dev0-py3-none-any.whl

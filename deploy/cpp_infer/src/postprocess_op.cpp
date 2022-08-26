@@ -17,8 +17,8 @@
 
 namespace PaddleOCR {
 
-void PostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
-                                   float unclip_ratio, float &distance) {
+void DBPostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
+                                     float unclip_ratio, float &distance) {
   int pts_num = 4;
   float area = 0.0f;
   float dist = 0.0f;
@@ -35,8 +35,8 @@ void PostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
   distance = area * unclip_ratio / dist;
 }
 
-cv::RotatedRect PostProcessor::UnClip(std::vector<std::vector<float>> box,
-                                      const float &unclip_ratio) {
+cv::RotatedRect DBPostProcessor::UnClip(std::vector<std::vector<float>> box,
+                                        const float &unclip_ratio) {
   float distance = 1.0;
 
   GetContourArea(box, unclip_ratio, distance);
@@ -67,7 +67,7 @@ cv::RotatedRect PostProcessor::UnClip(std::vector<std::vector<float>> box,
   return res;
 }
 
-float **PostProcessor::Mat2Vec(cv::Mat mat) {
+float **DBPostProcessor::Mat2Vec(cv::Mat mat) {
   auto **array = new float *[mat.rows];
   for (int i = 0; i < mat.rows; ++i)
     array[i] = new float[mat.cols];
@@ -81,7 +81,7 @@ float **PostProcessor::Mat2Vec(cv::Mat mat) {
 }
 
 std::vector<std::vector<int>>
-PostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
+DBPostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
   std::vector<std::vector<int>> box = pts;
   std::sort(box.begin(), box.end(), XsortInt);
 
@@ -99,7 +99,7 @@ PostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
   return rect;
 }
 
-std::vector<std::vector<float>> PostProcessor::Mat2Vector(cv::Mat mat) {
+std::vector<std::vector<float>> DBPostProcessor::Mat2Vector(cv::Mat mat) {
   std::vector<std::vector<float>> img_vec;
   std::vector<float> tmp;
 
@@ -113,20 +113,20 @@ std::vector<std::vector<float>> PostProcessor::Mat2Vector(cv::Mat mat) {
   return img_vec;
 }
 
-bool PostProcessor::XsortFp32(std::vector<float> a, std::vector<float> b) {
+bool DBPostProcessor::XsortFp32(std::vector<float> a, std::vector<float> b) {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
-bool PostProcessor::XsortInt(std::vector<int> a, std::vector<int> b) {
+bool DBPostProcessor::XsortInt(std::vector<int> a, std::vector<int> b) {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
-std::vector<std::vector<float>> PostProcessor::GetMiniBoxes(cv::RotatedRect box,
-                                                            float &ssid) {
+std::vector<std::vector<float>>
+DBPostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
   ssid = std::max(box.size.width, box.size.height);
 
   cv::Mat points;
@@ -160,8 +160,8 @@ std::vector<std::vector<float>> PostProcessor::GetMiniBoxes(cv::RotatedRect box,
   return array;
 }
 
-float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
-                                     cv::Mat pred) {
+float DBPostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
+                                       cv::Mat pred) {
   int width = pred.cols;
   int height = pred.rows;
   std::vector<float> box_x;
@@ -206,8 +206,8 @@ float PostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
   return score;
 }
 
-float PostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
-                                  cv::Mat pred) {
+float DBPostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
+                                    cv::Mat pred) {
   auto array = box_array;
   int width = pred.cols;
   int height = pred.rows;
@@ -244,7 +244,7 @@ float PostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
   return score;
 }
 
-std::vector<std::vector<std::vector<int>>> PostProcessor::BoxesFromBitmap(
+std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
     const cv::Mat pred, const cv::Mat bitmap, const float &box_thresh,
     const float &det_db_unclip_ratio, const std::string &det_db_score_mode) {
   const int min_size = 3;
@@ -321,9 +321,9 @@ std::vector<std::vector<std::vector<int>>> PostProcessor::BoxesFromBitmap(
   return boxes;
 }
 
-std::vector<std::vector<std::vector<int>>>
-PostProcessor::FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
-                               float ratio_h, float ratio_w, cv::Mat srcimg) {
+std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
+    std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
+    float ratio_w, cv::Mat srcimg) {
   int oriimg_h = srcimg.rows;
   int oriimg_w = srcimg.cols;
 
@@ -350,6 +350,79 @@ PostProcessor::FilterTagDetRes(std::vector<std::vector<std::vector<int>>> boxes,
     root_points.push_back(boxes[n]);
   }
   return root_points;
+}
+
+void TablePostProcessor::init(std::string label_path) {
+  this->label_list_ = Utility::ReadDict(label_path);
+  this->label_list_.insert(this->label_list_.begin(), this->beg);
+  this->label_list_.push_back(this->end);
+}
+
+void TablePostProcessor::Run(
+    std::vector<float> &loc_preds, std::vector<float> &structure_probs,
+    std::vector<float> &rec_scores, std::vector<int> &loc_preds_shape,
+    std::vector<int> &structure_probs_shape,
+    std::vector<std::vector<std::string>> &rec_html_tag_batch,
+    std::vector<std::vector<std::vector<std::vector<int>>>> &rec_boxes_batch,
+    std::vector<int> &width_list, std::vector<int> &height_list) {
+  for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; batch_idx++) {
+    // image tags and boxs
+    std::vector<std::string> rec_html_tags;
+    std::vector<std::vector<std::vector<int>>> rec_boxes;
+
+    float score = 0.f;
+    int count = 0;
+    float char_score = 0.f;
+    int char_idx = 0;
+
+    // step
+    for (int step_idx = 0; step_idx < structure_probs_shape[1]; step_idx++) {
+      std::string html_tag;
+      std::vector<std::vector<int>> rec_box;
+      // html tag
+      int step_start_idx = (batch_idx * structure_probs_shape[1] + step_idx) *
+                           structure_probs_shape[2];
+      char_idx = int(Utility::argmax(
+          &structure_probs[step_start_idx],
+          &structure_probs[step_start_idx + structure_probs_shape[2]]));
+      char_score = float(*std::max_element(
+          &structure_probs[step_start_idx],
+          &structure_probs[step_start_idx + structure_probs_shape[2]]));
+      html_tag = this->label_list_[char_idx];
+
+      if (step_idx > 0 && html_tag == this->end) {
+        break;
+      }
+      if (html_tag == this->beg) {
+        continue;
+      }
+      count += 1;
+      score += char_score;
+      rec_html_tags.push_back(html_tag);
+      // box
+      if (html_tag == "<td>" || html_tag == "<td" || html_tag == "<td></td>") {
+        for (int point_idx = 0; point_idx < loc_preds_shape[2];
+             point_idx += 2) {
+          std::vector<int> point(2, 0);
+          step_start_idx = (batch_idx * structure_probs_shape[1] + step_idx) *
+                               loc_preds_shape[2] +
+                           point_idx;
+          point[0] = int(loc_preds[step_start_idx] * width_list[batch_idx]);
+          point[1] =
+              int(loc_preds[step_start_idx + 1] * height_list[batch_idx]);
+          rec_box.push_back(point);
+        }
+        rec_boxes.push_back(rec_box);
+      }
+    }
+    score /= count;
+    if (isnan(score) || rec_boxes.size() == 0) {
+      score = -1;
+    }
+    rec_scores.push_back(score);
+    rec_boxes_batch.push_back(rec_boxes);
+    rec_html_tag_batch.push_back(rec_html_tags);
+  }
 }
 
 } // namespace PaddleOCR

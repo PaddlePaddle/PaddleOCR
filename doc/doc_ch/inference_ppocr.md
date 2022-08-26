@@ -158,3 +158,5 @@ python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --de
 执行命令后，识别结果图像如下：
 
 ![](../imgs_results/system_res_00018069_v3.jpg)
+
+更多关于推理超参数的配置与解释，请参考：[模型推理超参数解释教程](./inference_args.md)。
