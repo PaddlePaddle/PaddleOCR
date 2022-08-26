@@ -1,17 +1,18 @@
 English | [简体中文](README_ch.md)
 
-- [1. Introduction](#1-introduction)
+# Key Information Extraction (KIE)
 
-- [2. Accuracy and performance](#2-Accuracy-and-performance)
-- [3. Visualization](#3-Visualization)
+- [1. Introduction](#1-introduction)
+- [2. Performance](#2-performance)
+- [3. Visualization](#3-visualization)
   - [3.1 SER](#31-ser)
   - [3.2 RE](#32-re)
 - [4. Usage](#4-usage)
-  - [4.1 Prepare for the environment](#41-Prepare-for-the-environment)
-  - [4.2 Quick start](#42-Quick-start)
-  - [4.3 More](#43-More)
-- [5. Reference](#5-Reference)
-- [6. License](#6-License)
+  - [4.1 Prepare for the environment](#41-prepare-for-the-environment)
+  - [4.2 Quick start](#42-quick-start)
+  - [4.3 More](#43-more)
+- [5. Reference](#5-reference)
+- [6. License](#6-license)
 
 
 ## 1. Introduction
@@ -31,7 +32,7 @@ The main features of the key information extraction module in PP-Structure are a
 - Support SER model export and inference using PaddleInference.
 
 
-## 2. Accuracy and performance
+## 2. Performance
 
 We evaluate the methods on the Chinese dataset of [XFUND](https://github.com/doc-analysis/XFUND), and the performance is as follows
 
