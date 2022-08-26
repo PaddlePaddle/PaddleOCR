@@ -172,16 +172,16 @@ If you want to use OCR engine to obtain end-to-end prediction results, you can u
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
@@ -193,18 +193,18 @@ If you want to load the text detection and recognition results collected before,
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 #### 4.2.3 Inference using PaddleInference
