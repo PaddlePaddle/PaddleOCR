@@ -3,7 +3,7 @@ English | [简体中文](README_ch.md)
 # Layout analysis
 
 - [1. Introduction](#1-Introduction)
-- [2. Quick start](#3-Quick-start)
+- [2. Quick start](#2-Quick-start)
 - [3. Install](#3-Install)
   - [3.1 Install PaddlePaddle](#31-Install-paddlepaddle)
   - [3.2 Install PaddleDetection](#32-Install-paddledetection)
