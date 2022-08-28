@@ -546,7 +546,7 @@ def eval(model,
             elif model_type in ['sr']:
                 eval_class(preds, batch_numpy)
             else:
-                post_result = post_process_class(preds, batch_numpy[1])  #TODO
+                post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
 
             pbar.update(1)

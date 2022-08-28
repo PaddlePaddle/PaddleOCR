@@ -170,9 +170,6 @@ class TextDetector(object):
                 logger=logger)
 
     def order_points_clockwise(self, pts):
-        # pts = np.expand_dims(pts, axis=1)
-        #pts = pts.reshape((-1, 2))
-        #print('====2====',pts)
         rect = np.zeros((4, 2), dtype="float32")
         s = pts.sum(axis=1)
         rect[0] = pts[np.argmin(s)]
@@ -190,7 +187,6 @@ class TextDetector(object):
         return points
 
     def filter_tag_det_res(self, dt_boxes, image_shape):
-        #print('=======', len(dt_boxes), dt_boxes[0].shape, image_shape)
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
         for box in dt_boxes:
@@ -208,7 +204,6 @@ class TextDetector(object):
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
         for box in dt_boxes:
-            #box = box.reshape((-1, 2))
             box = self.clip_det_res(box, img_height, img_width)
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
@@ -262,7 +257,6 @@ class TextDetector(object):
             for i, output in enumerate(outputs):
                 preds['level_{}'.format(i)] = output
         elif self.det_algorithm == "CT":
-            #print('====1==22====', outputs[1].shape)
             preds['maps'] = outputs[0]
             preds['score'] = outputs[1]
         else:

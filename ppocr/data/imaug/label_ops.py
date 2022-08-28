@@ -1402,17 +1402,14 @@ class CTLabelEncode(object):
         pass
 
     def __call__(self, data):
-        # img = data['image']
         label = data['label']
 
-        # h, w = img.shape[0:2]
         label = json.loads(label)
         nBox = len(label)
         boxes, txts = [], []
         for bno in range(0, nBox):
             box = label[bno]['points']
-            #point_num = len(box) // 2
-            box = np.array(box)  # / ([w * 1.0, h * 1.0] * point_num)
+            box = np.array(box)
 
             boxes.append(box)
             txt = label[bno]['transcription']

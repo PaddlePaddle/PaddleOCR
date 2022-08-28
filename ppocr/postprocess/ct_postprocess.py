@@ -13,13 +13,13 @@
 # limitations under the License.
 """
 This code is refered from:
-https://github.com/WenmuZhou/DBNet.pytorch/blob/master/post_processing/seg_detector_representer.py
+https://github.com/shengtao96/CentripetalText/blob/main/test.py
 """
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import paddle.nn.functional as F
 import os
 import os.path as osp
 import numpy as np
@@ -45,17 +45,7 @@ class CTPostProcess(object):
                 self.coord[0, i, j] = j
                 self.coord[1, i, j] = i
 
-    # def _upsample(self, x, size, scale=1):
-    #     H, W, _ = size
-    #     print('====1===',x.shape, size)
-    #     return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
-
-    # def _upsample(self, x, scale=1):
-    #     return F.upsample(x, scale_factor=scale, mode='bilinear')
-
     def __call__(self, preds, batch):
-        # print(batch.shape)
-        # print(outs.shape)
         outs = preds['maps']
         out_scores = preds['score']
 
@@ -77,28 +67,19 @@ class CTPostProcess(object):
             img_size = img_shape[:2]
 
             out = np.expand_dims(outs[idx], axis=0)
-            # print('===', out.shape)
-            # # out = self._upsample(out, img_shape, 4)
-            # print('===', out.shape)
             outputs = dict()
 
-            # print(out.shape)
-            score = np.expand_dims(
-                out_scores[idx], axis=0)  #F.sigmoid(out[:, 0, :, :])
+            score = np.expand_dims(out_scores[idx], axis=0)
 
             kernel = out[:, 0, :, :] > 0.2
-            # loc = paddle.cast(out[:, 1:, :, :], "float32")
             loc = out[:, 1:, :, :].astype("float32")
 
             score = score[0].astype(np.float32)
             kernel = kernel[0].astype(np.uint8)
             loc = loc[0].astype(np.float32)
 
-            #print(score.shape, kernel.shape, loc.shape)
             label_num, label_kernel = cv2.connectedComponents(
                 kernel, connectivity=4)
-
-            #print(label_num, label_kernel.shape)
 
             for i in range(1, label_num):
                 ind = (label_kernel == i)
@@ -166,14 +147,9 @@ class CTPostProcess(object):
                     bbox = contours[0] * scale
 
                 bbox = bbox.astype('int32')
-                bboxes.append(bbox.reshape(-1, 2))  #.reshape(-1))
+                bboxes.append(bbox.reshape(-1, 2))
                 scores.append(score_i)
 
             boxes_batch.append({'points': bboxes})
-
-            #print(len(bboxes), bboxes[0].shape, len(scores), scores[0])
-            #image_name, _ = osp.splitext(osp.basename(img_path))
-
-            #outputs.update(dict(bboxes=bboxes)) #, input_id=image_name))
 
         return boxes_batch

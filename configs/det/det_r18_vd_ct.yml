@@ -13,7 +13,7 @@ Global:
   save_inference_dir:
   use_visualdl: False
   infer_img: doc/imgs_en/img_10.jpg
-  save_res_path: ./output/det_db/predicts_db.txt
+  save_res_path: ./output/det_ct/predicts_ct.txt
 
 Architecture:
   model_type: det
@@ -23,7 +23,7 @@ Architecture:
     name: ResNet_vd
     layers: 18
   Neck:
-    name: CTNECK
+    name: CTFPN
   Head:
     name: CT_Head
     in_channels: 512
@@ -35,8 +35,8 @@ Loss:
 
 Optimizer:
   name: Adam
-  lr:
-    name: Linear #PolynomialDecay
+  lr:  #PolynomialDecay
+    name: Linear 
     learning_rate: 0.001
     end_lr: 0.
     epochs: 600

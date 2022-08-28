@@ -129,21 +129,15 @@ class FPEM_v1(nn.Layer):
         self.smooth_layer4_2 = Conv_BN_ReLU(planes, planes)
 
     def _upsample_add(self, x, y):
-        #print(x.shape, y.shape)
-        #_, _, H, W = y.shape
-        #return F.upsample(x, size=(H, W), mode='bilinear') + y
         return F.upsample(x, scale_factor=2, mode='bilinear') + y
-        # a = F.upsample(x, size=(H, W), mode='bilinear')
-        # b = a + y
-        # return b
 
     def forward(self, f1, f2, f3, f4):
-        # 自顶向下
+        # up-down
         f3 = self.smooth_layer3_1(self.dwconv3_1(self._upsample_add(f4, f3)))
         f2 = self.smooth_layer2_1(self.dwconv2_1(self._upsample_add(f3, f2)))
         f1 = self.smooth_layer1_1(self.dwconv1_1(self._upsample_add(f2, f1)))
 
-        # 自底向上
+        # down-up
         f2 = self.smooth_layer2_2(self.dwconv2_2(self._upsample_add(f2, f1)))
         f3 = self.smooth_layer3_2(self.dwconv3_2(self._upsample_add(f3, f2)))
         f4 = self.smooth_layer4_2(self.dwconv4_2(self._upsample_add(f4, f3)))
@@ -151,13 +145,11 @@ class FPEM_v1(nn.Layer):
         return f1, f2, f3, f4
 
 
-class CTNECK(nn.Layer):
+class CTFPN(nn.Layer):
     def __init__(self, in_channels, out_channel=128):
-        super(CTNECK, self).__init__()
+        super(CTFPN, self).__init__()
         self.out_channels = out_channel * 4
-        #in_channels = (64, 128, 256, 512) #自己会算
 
-        # in_channels = neck.in_channels
         self.reduce_layer1 = Conv_BN_ReLU(in_channels[0], 128)
         self.reduce_layer2 = Conv_BN_ReLU(in_channels[1], 128)
         self.reduce_layer3 = Conv_BN_ReLU(in_channels[2], 128)
@@ -167,29 +159,27 @@ class CTNECK(nn.Layer):
         self.fpem2 = FPEM_v1(in_channels=(64, 128, 256, 512), out_channels=128)
 
     def _upsample(self, x, scale=1):
-        #return F.upsample(x, size=(H // scale, W // scale), mode='bilinear')
         return F.upsample(x, scale_factor=scale, mode='bilinear')
 
     def forward(self, f):
         # # reduce channel
-        f1 = self.reduce_layer1(f[0])  # 4,64,160,160    --> 4, 128, 160, 160
-        f2 = self.reduce_layer2(f[1])  # 4, 128, 80, 80  --> 4, 128, 80, 80
-        f3 = self.reduce_layer3(f[2])  # 4, 256, 40, 40  --> 4, 128, 40, 40
-        f4 = self.reduce_layer4(f[3])  # 4, 512, 20, 20  --> 4, 128, 20, 20
+        f1 = self.reduce_layer1(f[0])  # N,64,160,160    --> N, 128, 160, 160
+        f2 = self.reduce_layer2(f[1])  # N, 128, 80, 80  --> N, 128, 80, 80
+        f3 = self.reduce_layer3(f[2])  # N, 256, 40, 40  --> N, 128, 40, 40
+        f4 = self.reduce_layer4(f[3])  # N, 512, 20, 20  --> N, 128, 20, 20
 
-        # # FPEM
+        # FPEM
         f1_1, f2_1, f3_1, f4_1 = self.fpem1(f1, f2, f3, f4)
-        f1_2, f2_2, f3_2, f4_2 = self.fpem2(f1_1, f2_1, f3_1, f4_1)  #shape同上
-        #print(f1_2.shape, f2_2.shape, f3_2.shape, f4_2.shape)
+        f1_2, f2_2, f3_2, f4_2 = self.fpem2(f1_1, f2_1, f3_1, f4_1)
 
-        # # FFM
+        # FFM
         f1 = f1_1 + f1_2
         f2 = f2_1 + f2_2
         f3 = f3_1 + f3_2
         f4 = f4_1 + f4_2
-        #print('====', f3.shape, f4.shape, f2.shape, f1.shape)
+
         f2 = self._upsample(f2, scale=2)
         f3 = self._upsample(f3, scale=4)
         f4 = self._upsample(f4, scale=8)
-        ff = paddle.concat((f1, f2, f3, f4), 1)  # 4,512, 160,160
+        ff = paddle.concat((f1, f2, f3, f4), 1)  # N,512, 160,160
         return ff

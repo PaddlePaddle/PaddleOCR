@@ -17,14 +17,13 @@ import cv2
 import random
 import pyclipper
 import paddle
-import numpy as np
 
+import numpy as np
 import Polygon as plg
 import scipy.io as scio
-import paddle.vision.transforms as transforms
 
 from PIL import Image
-from paddle.io import Dataset
+import paddle.vision.transforms as transforms
 
 
 class RandomScale():
@@ -111,22 +110,11 @@ class MakeShrink():
         gt_instance = np.zeros(img.shape[0:2], dtype='uint8')  # h,w
         training_mask = np.ones(img.shape[0:2], dtype='uint8')
         training_mask_distance = np.ones(img.shape[0:2], dtype='uint8')
-        #if len(bboxes) > 0:
-        for i in range(len(bboxes)):
-            #scale and reshape to [-1, 2]
-            # bboxes[i] = np.reshape(
-            #     bboxes[i] * ([img.shape[1], img.shape[0]] *
-            #                  (bboxes[i].shape[0] // 2)),
-            #     (bboxes[i].shape[0] // 2, 2)).astype('int32')
 
+        for i in range(len(bboxes)):
             bboxes[i] = np.reshape(bboxes[i] * (
                 [scale_factor[0], scale_factor[1]] * (bboxes[i].shape[0] // 2)),
                                    (bboxes[i].shape[0] // 2, 2)).astype('int32')
-        # print(bboxes)
-        # exit()
-
-        np.save('./save_bbox/{}.npy'.format(data['img_path'].split('/')[-1]
-                                            .split('.')[0]), np.array(bboxes))
 
         for i in range(len(bboxes)):
             #different value for different bbox

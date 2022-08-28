@@ -278,15 +278,11 @@ def get_score_C(gt_label, text, pred_bboxes):
 
     def gt_reading_mod(gt_label, text):
         """This helper reads groundtruths from mat files"""
-        # label = json.loads(gt_label)
         groundtruths = []
         nbox = len(gt_label)
         for i in range(nbox):
             label = {"transcription": text[i][0], "points": gt_label[i].numpy()}
-            # print(gt_label[i],  text[i][0])
-            # exit()
             groundtruths.append(label)
-        #print(len(groundtruths))
 
         return groundtruths
 
@@ -303,7 +299,6 @@ def get_score_C(gt_label, text, pred_bboxes):
 
     def detection_filtering(detections, groundtruths, threshold=0.5):
         for gt in groundtruths:
-            #point_num = len(gt['points'])//2
             point_num = gt['points'].shape[1] // 2
             if gt['transcription'] == '###' and (point_num > 1):
                 gt_p = np.array(gt['points']).reshape(point_num,
@@ -345,14 +340,12 @@ def get_score_C(gt_label, text, pred_bboxes):
             return 0
         return get_intersection(det_p, gt_p) / det_p.area()
 
-    detections = []  #pred_bboxes
+    detections = []
 
     for item in pred_bboxes:
         detections.append(item[:, ::-1].reshape(-1))
 
     groundtruths = gt_reading_mod(gt_label, text)
-    # print(groundtruths)
-    # exit()
 
     detections = detection_filtering(
         detections, groundtruths)  # filters detections overlapping with DC area
@@ -361,8 +354,6 @@ def get_score_C(gt_label, text, pred_bboxes):
         #NOTE: source code use 'orin' to indicate '#', here we use 'anno',
         # which may cause slight drop in fscore, about 0.12
         if groundtruths[idx]['transcription'] == '###':
-            #print(groundtruths[idx])
-            #groundtruths.remove(groundtruths[idx])
             groundtruths.pop(idx)
 
     local_sigma_table = np.zeros((len(groundtruths), len(detections)))
@@ -371,7 +362,6 @@ def get_score_C(gt_label, text, pred_bboxes):
     for gt_id, gt in enumerate(groundtruths):
         if len(detections) > 0:
             for det_id, detection in enumerate(detections):
-                #point_num = len(gt['points'])//2
                 point_num = gt['points'].shape[1] // 2
 
                 gt_p = np.array(gt['points']).reshape(point_num,

@@ -26,9 +26,10 @@ def build_neck(config):
     from .fce_fpn import FCEFPN
     from .pren_fpn import PRENFPN
     from .csp_pan import CSPPAN
+    from .ct_fpn import CTFPN
     support_dict = [
         'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
-        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTNECK'
+        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN'
     ]
 
     module_name = config.pop('name')

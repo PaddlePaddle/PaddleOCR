@@ -45,16 +45,12 @@ class CTMetric(object):
         self.results = []  # clear results
 
     def __call__(self, preds, batch, **kwargs):
-        #input_id = preds['input_id']
-        #lable = self.file_dict[input_id]
-        #print('===ba2', len(batch[2]), batch[2][1])
-        #print('===ba3',len(batch[3]), batch[3][1])
-        # only support bs=1 now, as the label length of different sample is Unequal 
+        # NOTE: only support bs=1 now, as the label length of different sample is Unequal 
+        assert len(
+            preds) == 1, "CentripetalText test now only suuport batch_size=1."
         label = batch[2]
         text = batch[3]
         pred = preds[0]['points']
-        # print(pred.shape)
-        # #[:, ::-1]
         result = get_score_C(label, text, pred)
 
         self.results.append(result)

@@ -120,8 +120,6 @@ def main(config, device, logger, vdl_writer):
 
     model = build_model(config['Architecture'])
 
-    if config['Global']['distributed']:
-        model = paddle.DataParallel(model)
     use_sync_bn = config["Global"].get("use_sync_bn", False)
     if use_sync_bn:
         model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
