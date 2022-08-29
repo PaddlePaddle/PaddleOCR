@@ -94,14 +94,11 @@ Loss:
       - ["Student", "Student2"]
       maps_name: "thrink_maps"
       weight: 1.0
-      # act: None
       model_name_pairs: ["Student", "Student2"]
       key: maps
   - DistillationDBLoss:
       weight: 1.0
       model_name_list: ["Student", "Student2"]
-      # key: maps
-      # name: DBLoss
       balance_loss: true
       main_loss_type: DiceLoss
       alpha: 5
@@ -191,7 +188,6 @@ Eval:
           channel_first: False
       - DetLabelEncode: # Class handling label
       - DetResizeForTest:
-#           image_shape: [736, 1280]
       - NormalizeImage:
           scale: 1./255.
           mean: [0.485, 0.456, 0.406]
