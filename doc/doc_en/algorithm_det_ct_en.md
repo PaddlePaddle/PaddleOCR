@@ -38,7 +38,7 @@ Please prepare your environment referring to [prepare the environment](./environ
 ## 3. Model Training / Evaluation / Prediction
 
 
-The above CT model is trained using the Total-Text text detection public dataset. For the download of the dataset, please refer to [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset). PaddleOCR format annotation download link [tt_train.list](TODO), [tt_val.list](TODO).
+The above CT model is trained using the Total-Text text detection public dataset. For the download of the dataset, please refer to [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset). PaddleOCR format annotation download link [train.txt](TODO), [test.txt](TODO).
 
 
 Please refer to [text detection training tutorial](./detection_en.md). PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different detection models.

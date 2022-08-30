@@ -37,7 +37,7 @@
 <a name="3"></a>
 ## 3. 模型训练、评估、预测
 
-CT模型使用Total-Text文本检测公开数据集训练得到，数据集下载可参考 [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset), 我们将标签文件转成了paddleocr格式，转换好的标签文件下载参考[tt_train.list](TODO), [tt_val.list](TODO)。
+CT模型使用Total-Text文本检测公开数据集训练得到，数据集下载可参考 [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset), 我们将标签文件转成了paddleocr格式，转换好的标签文件下载参考[train.txt](TODO), [text.txt](TODO)。
 
 请参考[文本检测训练教程](./detection.md)。PaddleOCR对代码进行了模块化，训练不同的检测模型只需要**更换配置文件**即可。
 

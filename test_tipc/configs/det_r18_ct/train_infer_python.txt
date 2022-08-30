@@ -9,7 +9,7 @@ Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_lite_infer=4
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./train_data/total_text/
+train_infer_img_dir:./train_data/total_text/test/rgb/
 null:null
 ##
 trainer:norm_train
