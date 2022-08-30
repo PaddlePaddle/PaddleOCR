@@ -7,8 +7,8 @@ tqdm
 numpy
 visualdl
 rapidfuzz
-opencv-contrib-python
 opencv-python
+opencv-contrib-python
 cython
 lxml
 premailer
