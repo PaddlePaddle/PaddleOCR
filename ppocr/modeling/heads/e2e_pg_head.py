@@ -66,7 +66,7 @@ class PGHead(nn.Layer):
     """
     """
 
-    def __init__(self, in_channels, **kwargs):
+    def __init__(self, in_channels, tcc_channels=37, **kwargs):
         super(PGHead, self).__init__()
         self.conv_f_score1 = ConvBNLayer(
             in_channels=in_channels,
@@ -178,7 +178,7 @@ class PGHead(nn.Layer):
             name="conv_f_char{}".format(5))
         self.conv3 = nn.Conv2D(
             in_channels=256,
-            out_channels=37,
+            out_channels=tcc_channels,
             kernel_size=3,
             stride=1,
             padding=1,

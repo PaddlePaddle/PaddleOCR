@@ -31,11 +31,12 @@ class PGPostProcess(object):
     """
 
     def __init__(self, character_dict_path, valid_set, score_thresh, mode,
-                 **kwargs):
+                 tcc_type, **kwargs):
         self.character_dict_path = character_dict_path
         self.valid_set = valid_set
         self.score_thresh = score_thresh
         self.mode = mode
+        self.tcc_type = tcc_type
 
         # c++ la-nms is faster, but only support python 3.5
         self.is_python35 = False
@@ -43,8 +44,13 @@ class PGPostProcess(object):
             self.is_python35 = True
 
     def __call__(self, outs_dict, shape_list):
-        post = PGNet_PostProcess(self.character_dict_path, self.valid_set,
-                                 self.score_thresh, outs_dict, shape_list)
+        post = PGNet_PostProcess(
+            self.character_dict_path,
+            self.valid_set,
+            self.score_thresh,
+            outs_dict,
+            shape_list,
+            tcc_type=self.tcc_type)
         if self.mode == 'fast':
             data = post.pg_postprocess_fast()
         else:
