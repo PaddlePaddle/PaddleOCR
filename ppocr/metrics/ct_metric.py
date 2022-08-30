@@ -24,22 +24,10 @@ from ppocr.utils.e2e_metric.Deteval import combine_results, get_score_C
 
 
 class CTMetric(object):
-    def __init__(self, file, main_indicator, delimiter='\t', **kwargs):
+    def __init__(self, main_indicator, delimiter='\t', **kwargs):
         self.delimiter = delimiter
         self.main_indicator = main_indicator
-        self.global_sigma = []
-        self.global_tau = []
-        self.file_dict = {}
         self.reset()
-        with open(file, "r") as f:
-            lines = f.readlines()
-
-        for data_line in lines:
-            substr = data_line.strip("\n").split(self.delimiter)
-            file_path = substr[0]
-            file_name = file_path.split(os.sep)[-1].split('.')[0]
-            label = substr[1]
-            self.file_dict[file_name] = label
 
     def reset(self):
         self.results = []  # clear results

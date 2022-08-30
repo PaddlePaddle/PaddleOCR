@@ -1,1 +1,0 @@
-python3.7 tools/eval.py -c configs/det/det_ct.yml  -o Global.checkpoints="output/det_ct/iter_epoch_580"
