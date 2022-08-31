@@ -1,14 +1,15 @@
 English | [简体中文](README_ch.md)
 
-- [Getting Started](#getting-started)
-  - [1.  Introduction](#1)
-  - [2. Install](#2)
-    - [2.1 Installation dependencies](#2.1)
+# Layout Recovery
+
+- [1. Introduction](#1)
+- [2. Install](#2)
+    - [2.1 Install PaddlePaddle](#2.1)
     - [2.2 Install PaddleOCR](#2.2)
-  - [3. Quick Start](#3)
+- [3. Quick Start](#3)
     - [3.1 Download models](#3.1)
     - [3.2 Layout recovery](#3.2)
-  - [4. More](#4)
+- [4. More](#4)
 
 <a name="1"></a>
 
@@ -25,16 +26,13 @@ Layout recovery combines [layout analysis](../layout/README.md)、[table recogni
 <div align="center">
 <img src="../docs/recovery/recovery_ch.jpg"  width = "800" />
 </div>
-
 <a name="2"></a>
 
 ## 2. Install
 
 <a name="2.1"></a>
 
-### 2.1 Install dependencies
-
-- **(1) Install PaddlePaddle**
+### 2.1 Install PaddlePaddle
 
 ```bash
 python3 -m pip install --upgrade pip
@@ -44,7 +42,6 @@ python3 -m pip install "paddlepaddle-gpu" -i https://mirror.baidu.com/pypi/simpl
 
 # CPU installation
 python3 -m pip install "paddlepaddle" -i https://mirror.baidu.com/pypi/simple
-
 ````
 
 For more requirements, please refer to the instructions in [Installation Documentation](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/install/pip/macos-pip_en.html).
@@ -84,6 +81,8 @@ Through layout analysis, we divided the image/PDF documents into regions, locate
 - Save the image directly
 
 We can restore the test picture through the layout information, OCR detection and recognition structure, table information, and saved pictures.
+
+The whl package is also provided  for quick use, see [quickstart](../docs/quickstart_en.md) for details.
 
 
 <a name="3.1"></a>
@@ -151,10 +150,10 @@ Field：
 
 ## 4. More
 
-For training, evaluation and inference tutorial for text detection models, please refer to [text detection doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/detection.md).
+For training, evaluation and inference tutorial for text detection models, please refer to [text detection doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/detection_en.md).
 
-For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/recognition.md).
+For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/recognition_en.md).
 
-For training, evaluation and inference tutorial for layout analysis models, please refer to [layout analysis doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/layout/README_ch.md)
+For training, evaluation and inference tutorial for layout analysis models, please refer to [layout analysis doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/layout/README.md)
 
-For training, evaluation and inference tutorial for table recognition models, please refer to [table recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/table/README_ch.md)
+For training, evaluation and inference tutorial for table recognition models, please refer to [table recognition doc](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/table/README.md)
