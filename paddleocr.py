@@ -414,6 +414,33 @@ def get_model_config(type, version, model_type, lang):
     return model_urls[version][model_type][lang]
 
 
+def img_decode(content: bytes):
+    np_arr = np.frombuffer(content, dtype=np.uint8)
+    return cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+
+def check_img(img):
+    if isinstance(img, bytes):
+        img = img_decode(img)
+    if isinstance(img, str):
+        # download net image
+        if is_link(img):
+            download_with_progressbar(img, 'tmp.jpg')
+            img = 'tmp.jpg'
+        image_file = img
+        img, flag, _ = check_and_read(image_file)
+        if not flag:
+            with open(image_file, 'rb') as f:
+                img = img_decode(f.read())
+        if img is None:
+            logger.error("error in loading image:{}".format(image_file))
+            return None
+    if isinstance(img, np.ndarray) and len(img.shape) == 2:
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
+    return img
+
+
 class PaddleOCR(predict_system.TextSystem):
     def __init__(self, **kwargs):
         """
@@ -482,7 +509,7 @@ class PaddleOCR(predict_system.TextSystem):
             rec: use text recognition or not. If false, only det will be exec. Default is True
             cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
         """
-        assert isinstance(img, (np.ndarray, list, str))
+        assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
@@ -491,22 +518,8 @@ class PaddleOCR(predict_system.TextSystem):
                 'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
             )
 
-        if isinstance(img, str):
-            # download net image
-            if img.startswith('http'):
-                download_with_progressbar(img, 'tmp.jpg')
-                img = 'tmp.jpg'
-            image_file = img
-            img, flag, _ = check_and_read(image_file)
-            if not flag:
-                with open(image_file, 'rb') as f:
-                    np_arr = np.frombuffer(f.read(), dtype=np.uint8)
-                    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-            if img is None:
-                logger.error("error in loading image:{}".format(image_file))
-                return None
-        if isinstance(img, np.ndarray) and len(img.shape) == 2:
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        img = check_img(img)
+
         if det and rec:
             dt_boxes, rec_res, _ = self.__call__(img, cls)
             return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
@@ -585,23 +598,7 @@ class PPStructure(StructureSystem):
         super().__init__(params)
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
-        if isinstance(img, str):
-            # download net image
-            if img.startswith('http'):
-                download_with_progressbar(img, 'tmp.jpg')
-                img = 'tmp.jpg'
-            image_file = img
-            img, flag, _ = check_and_read(image_file)
-            if not flag:
-                with open(image_file, 'rb') as f:
-                    np_arr = np.frombuffer(f.read(), dtype=np.uint8)
-                    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-            if img is None:
-                logger.error("error in loading image:{}".format(image_file))
-                return None
-        if isinstance(img, np.ndarray) and len(img.shape) == 2:
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-
+        img = check_img(img)
         res, _ = super().__call__(
             img, return_ocr_result_in_table, img_idx=img_idx)
         return res
@@ -644,7 +641,7 @@ def main():
 
             if not flag_pdf:
                 if img is None:
-                    logger.error("error in loading image:{}".format(image_file))
+                    logger.error("error in loading image:{}".format(img_path))
                     continue
                 img_paths = [[img_path, img]]
             else:
