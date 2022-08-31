@@ -23,3 +23,8 @@
 - [E-book: *Dive Into OCR* (PDF)](https://paddleocr.bj.bcebos.com/ebook/Dive_into_OCR.pdf)
 - [Notebook (.ipynb)](https://github.com/PaddleOCR-Community/Dive-into-OCR)
 - [Videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l7h1cua5ayvgmb8r958l" alt="trackgit-views" />
+</a>
+
