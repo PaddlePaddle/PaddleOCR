@@ -20,6 +20,6 @@
 
 
 ## Address
-- [E-book: *Dive Into OCR* ](https://paddleocr.bj.bcebos.com/ebook/Dive_into_OCR.pdf)
-- [Jupyter notebook](https://github.com/PaddleOCR-Community/Dive-into-OCR)
+- [E-book: *Dive Into OCR* (PDF)](https://paddleocr.bj.bcebos.com/ebook/Dive_into_OCR.pdf)
+- [Notebook (.ipynb)](https://github.com/PaddleOCR-Community/Dive-into-OCR)
 - [Videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
