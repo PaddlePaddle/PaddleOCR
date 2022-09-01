@@ -221,6 +221,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_rec_FPGM" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_ppocr_mobile_v2.0_rec_train.tar && cd ../
+        ${python_name} -m pip install paddleslim
     fi
     if [ ${model_name} == "det_mv3_east_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
