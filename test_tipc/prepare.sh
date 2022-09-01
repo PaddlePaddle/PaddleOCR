@@ -21,7 +21,10 @@ model_name=$(func_parser_value "${lines[1]}")
 trainer_list=$(func_parser_value "${lines[14]}")
 
 if [ ${MODE} = "benchmark_train" ];then
-    pip install -r requirements.txt
+    python_name_list=$(func_parser_value "${lines[2]}")
+    array=(${python_name_list}) 
+    python_name=${array[0]}
+    ${python_name} -m pip install -r requirements.txt
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
         rm -rf ./train_data/icdar2015
@@ -107,8 +110,8 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ../
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/kie/requirements.txt
-        pip install opencv-python -U
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         # expand gt.txt 10 times
@@ -122,6 +125,10 @@ if [ ${MODE} = "benchmark_train" ];then
 fi
 
 if [ ${MODE} = "lite_train_lite_infer" ];then
+    python_name_list=$(func_parser_value "${lines[2]}")
+    array=(${python_name_list}) 
+    python_name=${array[0]}
+    ${python_name} -m pip install -r requirements.txt
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -230,8 +237,8 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/kie/requirements.txt
-        pip install opencv-python -U
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         cd ../
