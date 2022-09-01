@@ -31,6 +31,6 @@ RUN tar xf /PaddleOCR/inference/{file}.tar -C /PaddleOCR/inference/
 ADD {link} /PaddleOCR/inference/
 RUN tar xf /PaddleOCR/inference/{file}.tar -C /PaddleOCR/inference/
 
-EXPOSE 8868
+EXPOSE 8866
 
 CMD ["/bin/bash","-c","hub install deploy/hubserving/ocr_system/ && hub serving start -m ocr_system"]
