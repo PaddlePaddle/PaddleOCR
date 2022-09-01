@@ -25,6 +25,7 @@ if [ ${MODE} = "benchmark_train" ];then
     array=(${python_name_list}) 
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
+    ${python_name} -m pip install git+https://github.com/LDOUBLEV/AutoLog
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
         rm -rf ./train_data/icdar2015
@@ -129,6 +130,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     array=(${python_name_list}) 
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
+    ${python_name} -m pip install git+https://github.com/LDOUBLEV/AutoLog
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -646,6 +648,7 @@ if [ ${MODE} = "serving_infer" ];then
     ${python_name} -m pip install paddle-serving-server-gpu
     ${python_name} -m pip install paddle_serving_client
     ${python_name} -m pip install paddle-serving-app
+    ${python_name} -m pip install git+https://github.com/LDOUBLEV/AutoLog
     # wget model
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_det_KL" ] || [ ${model_name} == "ch_ppocr_mobile_v2.0_rec_KL" ] ; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/tipc_fake_model/ch_ppocr_mobile_v2.0_det_klquant_infer.tar --no-check-certificate
