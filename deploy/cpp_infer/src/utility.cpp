@@ -268,11 +268,12 @@ cv::Mat Utility::crop_image(cv::Mat &img, std::vector<int> &area) {
 
 void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
   std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
-
-  for (int i = 0; i < ocr_result.size() - 1; i++) {
-    if (abs(ocr_result[i + 1].box[0][1] - ocr_result[i].box[0][1]) < 10 &&
-        (ocr_result[i + 1].box[0][0] < ocr_result[i].box[0][0])) {
-      std::swap(ocr_result[i], ocr_result[i + 1]);
+  if (ocr_result.size() > 0) {
+    for (int i = 0; i < ocr_result.size() - 1; i++) {
+      if (abs(ocr_result[i + 1].box[0][1] - ocr_result[i].box[0][1]) < 10 &&
+          (ocr_result[i + 1].box[0][0] < ocr_result[i].box[0][0])) {
+        std::swap(ocr_result[i], ocr_result[i + 1]);
+      }
     }
   }
 }
