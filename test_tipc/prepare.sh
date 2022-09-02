@@ -32,6 +32,13 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ./train_data/ && tar xf icdar2015_benckmark.tar
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
+        if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" ]];then
+            # expand gt.txt 2 times
+            cd ./train_data/icdar2015/text_localization
+            for i in `seq 2`;do cp train_icdar2015_label.txt dup$i.txt;done
+            cat dup* > train_icdar2015_label.txt && rm -rf dup*
+            cd ../../../
+        fi
     fi
     if [[ ${model_name} =~ "ch_ppocr_server_v2_0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         rm -rf ./train_data/icdar2015
