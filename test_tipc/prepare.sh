@@ -25,7 +25,6 @@ if [ ${MODE} = "benchmark_train" ];then
     array=(${python_name_list}) 
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
-    ${python_name} -m pip install git+https://github.com/LDOUBLEV/AutoLog
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
         rm -rf ./train_data/icdar2015
@@ -95,6 +94,13 @@ if [ ${MODE} = "benchmark_train" ];then
     if [[ ${model_name} == "en_table_structure" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf en_ppocr_mobile_v2.0_table_structure_train.tar  && cd ../
+        rm -rf ./train_data/pubtabnet
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf pubtabnet_benckmark.tar
+        ln -s ./pubtabnet_benckmark ./pubtabnet
+        cd ../
+    fi
+    if [[ ${model_name} == "slanet" ]];then
         rm -rf ./train_data/pubtabnet
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
         cd ./train_data/ && tar xf pubtabnet_benckmark.tar
