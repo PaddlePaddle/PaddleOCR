@@ -225,6 +225,8 @@ class DetResizeForTest(object):
     def __call__(self, data):
         img = data['image']
         src_h, src_w, _ = img.shape
+        if sum([src_h, src_w]) < 64:
+            img = self.image_padding(img)
 
         if self.resize_type == 0:
             # img, shape = self.resize_image_type0(img)
@@ -237,6 +239,12 @@ class DetResizeForTest(object):
         data['image'] = img
         data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
         return data
+
+    def image_padding(self, im, value=0):
+        h, w, c = im.shape
+        im_pad = np.zeros((max(32, h), max(32, w), c), np.uint8) + value
+        im_pad[:h, :w, :] = im
+        return im_pad
 
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
