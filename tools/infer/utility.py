@@ -16,6 +16,8 @@ import argparse
 import os
 import sys
 import platform
+
+import PIL.Image
 import cv2
 import numpy as np
 import paddle
@@ -449,7 +451,7 @@ def draw_ocr_box_txt(image,
 
 def draw_ocr_box_txt2(image,
                       boxes,
-                      txts,
+                      txts=None,
                       scores=None,
                       drop_score=0.5,
                       font_path="./doc/fonts/simfang.ttf"):
@@ -457,14 +459,15 @@ def draw_ocr_box_txt2(image,
     img_left = image.copy()
     img_right = np.ones((h, w, 3), dtype=np.uint8) * 255
     import random
-
     random.seed(0)
+
     draw_left = ImageDraw.Draw(img_left)
+    if txts is None or len(txts) != len(boxes):
+        txts = [None] * len(boxes)
     for idx, (box, txt) in enumerate(zip(boxes, txts)):
         if scores is not None and scores[idx] < drop_score:
             continue
-        color = (random.randint(0, 255), random.randint(0, 255),
-                 random.randint(0, 255))
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw_left.polygon(box, fill=color)
         img_right_text = draw_box_txt_fine((w, h), box, txt, font_path)
         pts = np.array(box, np.int32).reshape((-1, 1, 2))
@@ -477,22 +480,23 @@ def draw_ocr_box_txt2(image,
     return np.array(img_show)
 
 
-def draw_box_txt_fine(img_size, box, txt, font_path):
+def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
     box_height = int(math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][1])**2))
     box_width = int(math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][1])**2))
-    img_text = Image.new('RGB', (box_width, box_height), (255, 255, 255))
-    draw_text = ImageDraw.Draw(img_text)
+
     if box_height > 2 * box_width and box_height > 30:
-        font_size = max(int(box_width * 0.9), 10)
-        font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-        cur_y = 0
-        for c in txt:
-            draw_text.text((0, cur_y), c, fill=(0, 0, 0), font=font)
-            cur_y += font.getsize(c)[1]
+        img_text = Image.new('RGB', (box_height, box_width), (255, 255, 255))
+        draw_text = ImageDraw.Draw(img_text)
+        if txt:
+            font = create_font(txt, (box_height, box_width), font_path)
+            draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
+        img_text = img_text.transpose(PIL.Image.ROTATE_270)
     else:
-        font_size = max(int(box_height * 0.8), 10)
-        font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-        draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
+        img_text = Image.new('RGB', (box_width, box_height), (255, 255, 255))
+        draw_text = ImageDraw.Draw(img_text)
+        if txt:
+            font = create_font(txt, (box_width, box_height), font_path)
+            draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
 
     pts1 = np.float32([[0, 0], [box_width, 0], [box_width, box_height], [0, box_height]])
     pts2 = np.array(box, dtype=np.float32)
@@ -504,6 +508,16 @@ def draw_box_txt_fine(img_size, box, txt, font_path):
                                          borderMode=cv2.BORDER_CONSTANT,
                                          borderValue=(255, 255, 255))
     return img_right_text
+
+
+def create_font(txt, sz, font_path="./doc/fonts/simfang.ttf"):
+    font_size = int(sz[1] * 0.99)
+    font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+    length = font.getsize(txt)[0]
+    if length > sz[0]:
+        font_size = int(font_size * sz[0] / length)
+        font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+    return font
 
 
 def str_count(s):
