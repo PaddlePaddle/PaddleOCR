@@ -95,7 +95,7 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 
 <a name="216"></a>
 
-#### 2.1.6 版面恢复
+#### 2.1.6 版面恢复（PDF转Word）
 
 ```bash
 # 中文测试图
