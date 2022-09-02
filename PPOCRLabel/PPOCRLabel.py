@@ -2536,10 +2536,27 @@ class MainWindow(QMainWindow):
             imgid += 1
 
         # save json
-        with open("{}/annotation.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid:
-            fid.write(json.dumps(json_results, ensure_ascii=False))
+        with open("{}/train.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid_train, \
+            open("{}/val.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid_val, \
+            open("{}/test.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid_test:
+            for json_result in json_results:
+                if json_result['split'] == 'train':
+                    fid_train.write(json.dumps(json_result, ensure_ascii=False))
+                    fid_train.write('\n')
+                elif json_result['split'] == 'val':
+                    fid_val.write(json.dumps(json_result, ensure_ascii=False))
+                    fid_val.write('\n')
+                else:
+                    fid_test.write(json.dumps(json_result, ensure_ascii=False))
+                    fid_test.write('\n')
         
-        msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
+        # delete empty json
+        for split_type in ['train', 'val', 'test']:
+            json_file = '{}/{}.json'.format(self.lastOpenDir, split_type)
+            if not os.path.getsize(json_file):
+                os.remove(json_file)
+        
+        msg = 'JSON sucessfully saved in {}/train.json and/or val.json and/or test.json'.format(self.lastOpenDir)
         QMessageBox.information(self, "Information", msg)
 
     def autolcm(self):
