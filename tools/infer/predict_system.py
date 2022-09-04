@@ -34,7 +34,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image
+from tools.infer.utility import draw_ocr_box_txt2, get_rotate_crop_image
 logger = get_logger()
 
 
@@ -189,7 +189,7 @@ def main(args):
             txts = [rec_res[i][0] for i in range(len(rec_res))]
             scores = [rec_res[i][1] for i in range(len(rec_res))]
 
-            draw_img = draw_ocr_box_txt(
+            draw_img = draw_ocr_box_txt2(
                 image,
                 boxes,
                 txts,
