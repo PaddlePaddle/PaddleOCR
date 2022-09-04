@@ -23,6 +23,7 @@ from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
 import time
+import random
 from ppocr.utils.logging import get_logger
 
 
@@ -404,7 +405,6 @@ def draw_ocr_box_txt(image,
     h, w = image.height, image.width
     img_left = image.copy()
     img_right = np.ones((h, w, 3), dtype=np.uint8) * 255
-    import random
     random.seed(0)
 
     draw_left = ImageDraw.Draw(img_left)
