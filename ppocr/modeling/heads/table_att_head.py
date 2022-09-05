@@ -166,6 +166,7 @@ class SLAHead(nn.Layer):
         self.max_text_length = max_text_length
         self.emb = self._char_to_onehot
         self.num_embeddings = out_channels
+        self.loc_reg_num = loc_reg_num
 
         # structure
         self.structure_attention_cell = AttentionGRUCell(
@@ -213,15 +214,17 @@ class SLAHead(nn.Layer):
         fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
-        structure_preds = []
-        loc_preds = []
+        structure_preds = paddle.zeros((batch_size, self.max_text_length + 1, self.num_embeddings))
+        loc_preds = paddle.zeros((batch_size, self.max_text_length + 1, self.loc_reg_num))
+        structure_preds.stop_gradient = True
+        loc_preds.stop_gradient = True
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
                 hidden, structure_step, loc_step = self._decode(structure[:, i],
                                                                 fea, hidden)
-                structure_preds.append(structure_step)
-                loc_preds.append(loc_step)
+                structure_preds[:, i, :] = structure_step
+                loc_preds[:, i, :] = loc_step
         else:
             pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
             max_text_length = paddle.to_tensor(self.max_text_length)
@@ -231,10 +234,8 @@ class SLAHead(nn.Layer):
                 hidden, structure_step, loc_step = self._decode(pre_chars, fea,
                                                                 hidden)
                 pre_chars = structure_step.argmax(axis=1, dtype="int32")
-                structure_preds.append(structure_step)
-                loc_preds.append(loc_step)
-        structure_preds = paddle.stack(structure_preds, axis=1)
-        loc_preds = paddle.stack(loc_preds, axis=1)
+                structure_preds[:, i, :] = structure_step
+                loc_preds[:, i, :] = loc_step
         if not self.training:
             structure_preds = F.softmax(structure_preds)
         return {'structure_probs': structure_preds, 'loc_preds': loc_preds}
