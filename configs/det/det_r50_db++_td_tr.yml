@@ -54,6 +54,7 @@ PostProcess:
   box_thresh: 0.5
   max_candidates: 1000
   unclip_ratio: 1.5
+  use_polygon: false
 Metric:
   name: DetMetric
   main_indicator: hmean
