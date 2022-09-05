@@ -25,7 +25,6 @@ if [ ${MODE} = "benchmark_train" ];then
     array=(${python_name_list}) 
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
-    ${python_name} -m pip install git+https://github.com/LDOUBLEV/AutoLog
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
         rm -rf ./train_data/icdar2015
@@ -33,6 +32,13 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ./train_data/ && tar xf icdar2015_benckmark.tar
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
+        if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" ]];then
+            # expand gt.txt 2 times
+            cd ./train_data/icdar2015/text_localization
+            for i in `seq 2`;do cp train_icdar2015_label.txt dup$i.txt;done
+            cat dup* > train_icdar2015_label.txt && rm -rf dup*
+            cd ../../../
+        fi
     fi
     if [[ ${model_name} =~ "ch_ppocr_server_v2_0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         rm -rf ./train_data/icdar2015
@@ -95,6 +101,13 @@ if [ ${MODE} = "benchmark_train" ];then
     if [[ ${model_name} == "en_table_structure" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf en_ppocr_mobile_v2.0_table_structure_train.tar  && cd ../
+        rm -rf ./train_data/pubtabnet
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf pubtabnet_benckmark.tar
+        ln -s ./pubtabnet_benckmark ./pubtabnet
+        cd ../
+    fi
+    if [[ ${model_name} == "slanet" ]];then
         rm -rf ./train_data/pubtabnet
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
         cd ./train_data/ && tar xf pubtabnet_benckmark.tar
@@ -704,8 +717,7 @@ fi
 if [ ${MODE} = "paddle2onnx_infer" ];then
     # prepare serving env
     python_name=$(func_parser_value "${lines[2]}")
-    ${python_name} -m pip install paddle2onnx
-    ${python_name} -m pip install onnxruntime
+    ${python_name} -m pip install paddle2onnx onnxruntime onnx
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
