@@ -54,7 +54,7 @@ PostProcess:
   box_thresh: 0.6
   max_candidates: 1000
   unclip_ratio: 1.5
-  use_polygon: false
+  use_polygon: false # if true, the model is used for arbitrary-shape text dataset.
 Metric:
   name: DetMetric
   main_indicator: hmean

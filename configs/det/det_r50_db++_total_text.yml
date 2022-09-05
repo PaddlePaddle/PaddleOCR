@@ -4,7 +4,7 @@ Global:
   epoch_num: 1000
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/det_r50_td_tr/
+  save_model_dir: ./output/det_r50_total_text/
   save_epoch_step: 200
   eval_batch_step:
   - 0
@@ -14,7 +14,7 @@ Global:
   checkpoints: null
   save_inference_dir: null
   use_visualdl: false
-  infer_img: doc/imgs_en/img_10.jpg
+  infer_img: ./train_data/total_text/train/rgb/
   save_res_path: ./checkpoints/det_db/predicts_db.txt
 Architecture:
   model_type: det
@@ -51,22 +51,20 @@ Optimizer:
 PostProcess:
   name: DBPostProcess
   thresh: 0.3
-  box_thresh: 0.5
+  box_thresh: 0.6
   max_candidates: 1000
-  unclip_ratio: 1.5
-  use_polygon: false # if true, the model is used for arbitrary-shape text dataset.
+  unclip_ratio: 2.0
+  use_polygon: true # if true, the model is used for arbitrary-shape text dataset.
 Metric:
   name: DetMetric
   main_indicator: hmean
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/                                                                                 
+    data_dir: ./train_data/total_text/                                                                                 
     label_file_list:                                                                                            
-    - ./train_data/TD_TR/TD500/train_gt_labels.txt                                                           
-    - ./train_data/TD_TR/TR400/gt_labels.txt                                                                 
+    - ./train_data/total_text/train_gt_labels.txt                                                         
     ratio_list:                                                                                                 
-    - 1.0                                                                                                       
     - 1.0 
     transforms:
     - DecodeImage:
@@ -128,9 +126,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/                                                                          
+    data_dir: ./train_data/total_text/                                                                 
     label_file_list:                                                                                            
-    - ./train_data/TD_TR/TD500/test_gt_labels.txt
+    - ./train_data/total_text/test_gt_labels.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -138,8 +136,8 @@ Eval:
     - DetLabelEncode: null
     - DetResizeForTest:
         image_shape:
-        - 736
-        - 736
+        - 800
+        - 800
         keep_ratio: True
     - NormalizeImage:
         scale: 1./255.
