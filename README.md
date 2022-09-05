@@ -25,30 +25,26 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
 
-## Recent updates
+## 📣 Recent updates
 - **🔥2022.8.24 Release PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
   - Release [PP-Structurev2](./ppstructure/)，with functions and performance fully upgraded, adapted to Chinese scenes, and new support for [Layout Recovery](./ppstructure/recovery) and **one line command to convert PDF to Word**;
   - [Layout Analysis](./ppstructure/layout) optimization: model storage reduced by 95%, while speed increased by 11 times, and the average CPU time-cost is only 41ms;
   - [Table Recognition](./ppstructure/table) optimization: 3 optimization strategies are designed, and the model accuracy is improved by 6% under comparable time consumption;
   - [Key Information Extraction](./ppstructure/kie) optimization：a visual-independent model structure is designed, the accuracy of semantic entity recognition is increased by 2.8%, and the accuracy of relation extraction is increased by 9.1%.
-  
 - **🔥2022.8 Release [OCR scene application collection](./applications/README_en.md)**
     - Release **9 vertical models** such as digital tube, LCD screen, license plate, handwriting recognition model, high-precision SVTR model, etc, covering the main OCR vertical applications in general, manufacturing, finance, and transportation industries.
-
 - **2022.8 Add implementation of [8 cutting-edge algorithms](doc/doc_en/algorithm_overview_en.md)**
   - Text Detection: [FCENet](doc/doc_en/algorithm_det_fcenet_en.md), [DB++](doc/doc_en/algorithm_det_db_en.md)
   - Text Recognition: [ViTSTR](doc/doc_en/algorithm_rec_vitstr_en.md), [ABINet](doc/doc_en/algorithm_rec_abinet_en.md), [VisionLAN](doc/doc_en/algorithm_rec_visionlan_en.md), [SPIN](doc/doc_en/algorithm_rec_spin_en.md), [RobustScanner](doc/doc_en/algorithm_rec_robustscanner_en.md)
   - Table Recognition: [TableMaster](doc/doc_en/algorithm_table_master_en.md)
-  
 - **2022.5.9 Release PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - Release [PP-OCRv3](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
     - Release [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
     - Release interactive e-book [*"Dive into OCR"*](./doc/doc_en/ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
-
 - [more](./doc/doc_en/update_en.md)
 
 
-## Features
+## 🌟 Features
 
 PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](./doc/doc_en/ppocr_introduction_en.md) and [PP-Structure](./ppstructure/README.md) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
@@ -59,7 +55,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 > It is recommended to start with the “quick experience” in the document tutorial
 
 
-## Quick Experience
+## ⚡ Quick Experience
 
 - Web online experience for the ultra-lightweight OCR: [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 - Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
@@ -67,22 +63,24 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 
 <a name="book"></a>
-## E-book: *Dive Into OCR*
-- [Dive Into OCR 📚](./doc/doc_en/ocr_book_en.md)
-
+## 📚 E-book: *Dive Into OCR*
+- [Dive Into OCR ](./doc/doc_en/ocr_book_en.md)
 
 <a name="Community"></a>
-## Community
 
-- **Join us**👬: Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
+## 👫 Community
 
+- For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
+
+- For Chinese develops, Scan the QR code below with your Wechat, you can join the official technical discussion group. For richer community content, please refer to [中文README](README_ch.md), looking forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
 </div>
+
 <a name="Supported-Chinese-model-list"></a>
 
-## PP-OCR Series Model List（Update on September 8th）
+## 🛠️ PP-OCR Series Model List（Update on September 8th）
 
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -97,7 +95,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 - For a new language request, please refer to [Guideline for new language_requests](#language_requests).
 - For structural document analysis models, please refer to [PP-Structure models](./ppstructure/docs/models_list_en.md).
 
-## Tutorials
+## 📖 Tutorials
 - [Environment Preparation](./doc/doc_en/environment_en.md)
 - [PP-OCR 🔥](./doc/doc_en/ppocr_introduction_en.md)
     - [Quick Start](./doc/doc_en/quickstart_en.md)
@@ -158,7 +156,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 
 <a name="Visualization"></a>
-## Visualization [more](./doc/doc_en/visualization_en.md)
+## 👀 Visualization [more](./doc/doc_en/visualization_en.md)
 
 <details open>
 <summary>PP-OCRv3 Chinese model</summary>
@@ -197,7 +195,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
 </div>
-    
+
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
 </div>
@@ -222,7 +220,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 </details>
 
 <a name="language_requests"></a>
-## Guideline for New Language Requests
+## 🇺🇳 Guideline for New Language Requests
 
 If you want to request a new language support, a PR with 1 following files are needed：
 
@@ -235,5 +233,5 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 
 
 <a name="LICENSE"></a>
-## License
+## 📄 License
 This project is released under <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
