@@ -33,7 +33,7 @@ class PGProcessTrain(object):
                  min_crop_size=24,
                  min_text_size=4,
                  max_text_size=512,
-                 tcc_type='v3',
+                 point_gather_mode='v3',
                  **kwargs):
         self.tcl_len = tcl_len
         self.max_text_length = max_text_length
@@ -45,7 +45,7 @@ class PGProcessTrain(object):
         self.min_text_size = min_text_size
         self.max_text_size = max_text_size
         self.use_resize = use_resize
-        self.tcc_type = tcc_type
+        self.point_gather_mode = point_gather_mode
         self.Lexicon_Table = self.get_dict(character_dict_path)
         self.pad_num = len(self.Lexicon_Table)
         self.img_id = 0
@@ -531,7 +531,7 @@ class PGProcessTrain(object):
                 average_shrink_height = self.calculate_average_height(
                     stcl_quads)
 
-                if self.tcc_type == 'v3':
+                if self.point_gather_mode == 'v3':
                     self.f_direction = direction_map[:, :, :-1].copy()
                     pos_res = self.fit_and_gather_tcl_points_v3(
                         min_area_quad,
@@ -545,7 +545,7 @@ class PGProcessTrain(object):
                         continue
                     pos_l, pos_m = pos_res[0], pos_res[1]
 
-                elif self.tcc_type == 'v2':
+                elif self.point_gather_mode == 'v2':
                     pos_l, pos_m = self.fit_and_gather_tcl_points_v2(
                         min_area_quad,
                         poly,

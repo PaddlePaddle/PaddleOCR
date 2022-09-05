@@ -91,9 +91,9 @@ def ctc_greedy_decoder(probs_seq, blank=95, keep_blank_in_idxs=True):
 def instance_ctc_greedy_decoder(gather_info,
                                 logits_map,
                                 pts_num=4,
-                                tcc_type='v3'):
+                                point_gather_mode='v3'):
     _, _, C = logits_map.shape
-    if tcc_type == 'v3':
+    if point_gather_mode == 'v3':
         insert_num = 0
         gather_info = np.array(gather_info)
         length = len(gather_info) - 1
@@ -130,7 +130,7 @@ def ctc_decoder_for_image(gather_info_list,
                           logits_map,
                           Lexicon_Table,
                           pts_num=6,
-                          tcc_type='v3'):
+                          point_gather_mode='v3'):
     """
     CTC decoder using multiple processes.
     """
@@ -140,7 +140,7 @@ def ctc_decoder_for_image(gather_info_list,
         if len(gather_info) < pts_num:
             continue
         dst_str, xys_list = instance_ctc_greedy_decoder(
-            gather_info, logits_map, pts_num=pts_num, tcc_type='v3')
+            gather_info, logits_map, pts_num=pts_num, point_gather_mode='v3')
         dst_str_readable = ''.join([Lexicon_Table[idx] for idx in dst_str])
         if len(dst_str_readable) < 2:
             continue
@@ -383,7 +383,7 @@ def generate_pivot_list_fast(p_score,
                              f_direction,
                              Lexicon_Table,
                              score_thresh=0.5,
-                             tcc_type='v3'):
+                             point_gather_mode='v3'):
     """
     return center point and end point of TCL instance; filter with the char maps;
     """
@@ -414,7 +414,7 @@ def generate_pivot_list_fast(p_score,
         all_pos_yxs,
         logits_map=p_char_maps,
         Lexicon_Table=Lexicon_Table,
-        tcc_type='v3')
+        point_gather_mode='v3')
     return keep_yxs_list, decoded_str
 
 

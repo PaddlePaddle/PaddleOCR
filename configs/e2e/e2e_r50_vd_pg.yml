@@ -33,7 +33,7 @@ Architecture:
     name: PGFPN
   Head:
     name: PGHead
-    tcc_channels: 37 # the length of character dict 
+    character_dict_path: ppocr/utils/ic15_dict.txt # the same as Global:character_dict_path
 
 Loss:
   name: PGLoss
@@ -58,7 +58,7 @@ PostProcess:
   name: PGPostProcess
   score_thresh: 0.5
   mode: fast   # fast or slow two ways
-  tcc_type: v3 # same as PGProcessTrain: tcc_type
+  point_gather_mode: v3 # same as PGProcessTrain: point_gather_mode
 
 Metric:
   name: E2EMetric
@@ -85,7 +85,7 @@ Train:
           min_crop_size: 24
           min_text_size: 4
           max_text_size: 512
-          tcc_type: v3 # two ways, v2 is original code, v3 is updated code
+          point_gather_mode: v3 # two ways, v2 is original code, v3 is updated code
       - KeepKeys:
           keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
   loader:

@@ -34,13 +34,13 @@ class PGNet_PostProcess(object):
                  score_thresh,
                  outs_dict,
                  shape_list,
-                 tcc_type='v3'):
+                 point_gather_mode='v3'):
         self.Lexicon_Table = get_dict(character_dict_path)
         self.valid_set = valid_set
         self.score_thresh = score_thresh
         self.outs_dict = outs_dict
         self.shape_list = shape_list
-        self.tcc_type = tcc_type
+        self.point_gather_mode = point_gather_mode
 
     def pg_postprocess_fast(self):
         p_score = self.outs_dict['f_score']
@@ -65,7 +65,7 @@ class PGNet_PostProcess(object):
             p_direction,
             self.Lexicon_Table,
             score_thresh=self.score_thresh,
-            tcc_type=self.tcc_type)
+            point_gather_mode=self.point_gather_mode)
         poly_list, keep_str_list = restore_poly(instance_yxs_list, seq_strs,
                                                 p_border, ratio_w, ratio_h,
                                                 src_w, src_h, self.valid_set)
