@@ -52,6 +52,7 @@ def split_regions(axis):
             region = axis[min_axis:i]
             min_axis = i
             regions.append(region)
+    regions.append(axis[min_axis:])  # 添加的一行
     return regions
 
 
