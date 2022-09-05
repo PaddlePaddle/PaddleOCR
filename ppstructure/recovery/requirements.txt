@@ -1,4 +1,4 @@
 python-docx
 docx2pdf
-PyMuPDF
+"PyMuPDF==1.18.7"
 beautifulsoup4
