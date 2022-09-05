@@ -717,8 +717,7 @@ fi
 if [ ${MODE} = "paddle2onnx_infer" ];then
     # prepare serving env
     python_name=$(func_parser_value "${lines[2]}")
-    ${python_name} -m pip install paddle2onnx
-    ${python_name} -m pip install onnxruntime
+    ${python_name} -m pip install paddle2onnx onnxruntime onnx
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
