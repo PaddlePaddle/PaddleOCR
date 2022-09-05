@@ -33,7 +33,7 @@ class PGProcessTrain(object):
                  min_crop_size=24,
                  min_text_size=4,
                  max_text_size=512,
-                 point_gather_mode='v3',
+                 point_gather_mode=None,
                  **kwargs):
         self.tcl_len = tcl_len
         self.max_text_length = max_text_length
@@ -531,7 +531,7 @@ class PGProcessTrain(object):
                 average_shrink_height = self.calculate_average_height(
                     stcl_quads)
 
-                if self.point_gather_mode == 'v3':
+                if self.point_gather_mode == 'align':
                     self.f_direction = direction_map[:, :, :-1].copy()
                     pos_res = self.fit_and_gather_tcl_points_v3(
                         min_area_quad,
@@ -545,7 +545,7 @@ class PGProcessTrain(object):
                         continue
                     pos_l, pos_m = pos_res[0], pos_res[1]
 
-                elif self.point_gather_mode == 'v2':
+                else:
                     pos_l, pos_m = self.fit_and_gather_tcl_points_v2(
                         min_area_quad,
                         poly,

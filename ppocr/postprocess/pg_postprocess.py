@@ -30,8 +30,13 @@ class PGPostProcess(object):
     The post process for PGNet.
     """
 
-    def __init__(self, character_dict_path, valid_set, score_thresh, mode,
-                 point_gather_mode, **kwargs):
+    def __init__(self,
+                 character_dict_path,
+                 valid_set,
+                 score_thresh,
+                 mode,
+                 point_gather_mode=None,
+                 **kwargs):
         self.character_dict_path = character_dict_path
         self.valid_set = valid_set
         self.score_thresh = score_thresh

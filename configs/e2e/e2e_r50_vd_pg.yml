@@ -58,7 +58,7 @@ PostProcess:
   name: PGPostProcess
   score_thresh: 0.5
   mode: fast   # fast or slow two ways
-  point_gather_mode: v3 # same as PGProcessTrain: point_gather_mode
+  point_gather_mode: align # same as PGProcessTrain: point_gather_mode
 
 Metric:
   name: E2EMetric
@@ -85,7 +85,7 @@ Train:
           min_crop_size: 24
           min_text_size: 4
           max_text_size: 512
-          point_gather_mode: v3 # two ways, v2 is original code, v3 is updated code
+          point_gather_mode: align # two mode: align and none, align mode is better than none mode
       - KeepKeys:
           keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
   loader:

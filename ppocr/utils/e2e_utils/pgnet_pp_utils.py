@@ -34,7 +34,7 @@ class PGNet_PostProcess(object):
                  score_thresh,
                  outs_dict,
                  shape_list,
-                 point_gather_mode='v3'):
+                 point_gather_mode=None):
         self.Lexicon_Table = get_dict(character_dict_path)
         self.valid_set = valid_set
         self.score_thresh = score_thresh
