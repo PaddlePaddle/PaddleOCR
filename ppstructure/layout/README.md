@@ -3,7 +3,7 @@ English | [简体中文](README_ch.md)
 # Layout analysis
 
 - [1. Introduction](#1-Introduction)
-- [2. Quick start](#3-Quick-start)
+- [2. Quick start](#2-Quick-start)
 - [3. Install](#3-Install)
   - [3.1 Install PaddlePaddle](#31-Install-paddlepaddle)
   - [3.2 Install PaddleDetection](#32-Install-paddledetection)
@@ -12,11 +12,11 @@ English | [简体中文](README_ch.md)
   - [4.2 More datasets](#42-More-datasets)
 - [5. Start training](#5-Start-training)
   - [5.1 Train](#51-Train)
-  - [5.2 FGD Distillation training](#52-FGD-Distillation-training)
+  - [5.2 FGD Distillation training](#52-Fgd-distillation-training)
 - [6. Model evaluation and prediction](#6-Model-evaluation-and-prediction)
   - [6.1 Indicator evaluation](#61-Indicator-evaluation)
   - [6.2 Test layout analysis results](#62-Test-layout-analysis-results)
-- [7 Model export and inference](#7-Model-export-and-inference)
+- [7. Model export and inference](#7-Model-export-and-inference)
   - [7.1 Model export](#71-Model-export)
   - [7.2 Model inference](#72-Model-inference)
 
@@ -249,7 +249,7 @@ After starting training normally, you will see the following log output:
 
 **Note that the configuration file for prediction / evaluation must be consistent with the training.**
 
-### 5.2.  FGD Distillation Training
+### 5.2. FGD Distillation Training
 
 PaddleDetection supports FGD-based [Focal and Global Knowledge Distillation for Detectors]( https://arxiv.org/abs/2111.11837v1)  The training process of the target detection model of distillation, FGD distillation is divided into two parts `Focal` and `Global`.     `Focal` Distillation separates the foreground and background of the image, allowing the student model to focus on the key pixels of the foreground and background features of the teacher model respectively;`  Global`Distillation section reconstructs the relationships between different pixels and transfers them from the teacher to the student to compensate for the global information lost in `Focal`Distillation.
 

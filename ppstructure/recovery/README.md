@@ -1,14 +1,15 @@
 English | [简体中文](README_ch.md)
 
-- [Getting Started](#getting-started)
-  - [1.  Introduction](#1)
-  - [2. Install](#2)
-    - [2.1 Installation dependencies](#2.1)
+# Layout Recovery
+
+- [1. Introduction](#1)
+- [2. Install](#2)
+    - [2.1 Install PaddlePaddle](#2.1)
     - [2.2 Install PaddleOCR](#2.2)
-  - [3. Quick Start](#3)
+- [3. Quick Start](#3)
     - [3.1 Download models](#3.1)
     - [3.2 Layout recovery](#3.2)
-  - [4. More](#4)
+- [4. More](#4)
 
 <a name="1"></a>
 
@@ -31,9 +32,7 @@ Layout recovery combines [layout analysis](../layout/README.md)、[table recogni
 
 <a name="2.1"></a>
 
-### 2.1 Install dependencies
-
-- **(1) Install PaddlePaddle**
+### 2.1 Install PaddlePaddle
 
 ```bash
 python3 -m pip install --upgrade pip
