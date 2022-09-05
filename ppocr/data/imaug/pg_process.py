@@ -15,6 +15,8 @@
 import math
 import cv2
 import numpy as np
+from skimage.morphology._skeletonize import thin
+from ppocr.utils.e2e_utils.extract_textpoint_fast import sort_and_expand_with_direction_v2
 
 __all__ = ['PGProcessTrain']
 
@@ -26,17 +28,24 @@ class PGProcessTrain(object):
                  max_text_nums,
                  tcl_len,
                  batch_size=14,
+                 use_resize=True,
+                 use_random_crop=False,
                  min_crop_size=24,
                  min_text_size=4,
                  max_text_size=512,
+                 point_gather_mode=None,
                  **kwargs):
         self.tcl_len = tcl_len
         self.max_text_length = max_text_length
         self.max_text_nums = max_text_nums
         self.batch_size = batch_size
-        self.min_crop_size = min_crop_size
+        if use_random_crop is True:
+            self.min_crop_size = min_crop_size
+            self.use_random_crop = use_random_crop
         self.min_text_size = min_text_size
         self.max_text_size = max_text_size
+        self.use_resize = use_resize
+        self.point_gather_mode = point_gather_mode
         self.Lexicon_Table = self.get_dict(character_dict_path)
         self.pad_num = len(self.Lexicon_Table)
         self.img_id = 0
@@ -282,6 +291,95 @@ class PGProcessTrain(object):
         pos_m[:keep] = 1.0
         return pos_l, pos_m
 
+    def fit_and_gather_tcl_points_v3(self,
+                                     min_area_quad,
+                                     poly,
+                                     max_h,
+                                     max_w,
+                                     fixed_point_num=64,
+                                     img_id=0,
+                                     reference_height=3):
+        """
+        Find the center point of poly as key_points, then fit and gather.
+        """
+        det_mask = np.zeros((int(max_h / self.ds_ratio),
+                             int(max_w / self.ds_ratio))).astype(np.float32)
+
+        # score_big_map
+        cv2.fillPoly(det_mask,
+                     np.round(poly / self.ds_ratio).astype(np.int32), 1.0)
+        det_mask = cv2.resize(
+            det_mask, dsize=None, fx=self.ds_ratio, fy=self.ds_ratio)
+        det_mask = np.array(det_mask > 1e-3, dtype='float32')
+
+        f_direction = self.f_direction
+        skeleton_map = thin(det_mask.astype(np.uint8))
+        instance_count, instance_label_map = cv2.connectedComponents(
+            skeleton_map.astype(np.uint8), connectivity=8)
+
+        ys, xs = np.where(instance_label_map == 1)
+        pos_list = list(zip(ys, xs))
+        if len(pos_list) < 3:
+            return None
+        pos_list_sorted = sort_and_expand_with_direction_v2(
+            pos_list, f_direction, det_mask)
+
+        pos_list_sorted = np.array(pos_list_sorted)
+        length = len(pos_list_sorted) - 1
+        insert_num = 0
+        for index in range(length):
+            stride_y = np.abs(pos_list_sorted[index + insert_num][0] -
+                              pos_list_sorted[index + 1 + insert_num][0])
+            stride_x = np.abs(pos_list_sorted[index + insert_num][1] -
+                              pos_list_sorted[index + 1 + insert_num][1])
+            max_points = int(max(stride_x, stride_y))
+
+            stride = (pos_list_sorted[index + insert_num] -
+                      pos_list_sorted[index + 1 + insert_num]) / (max_points)
+            insert_num_temp = max_points - 1
+
+            for i in range(int(insert_num_temp)):
+                insert_value = pos_list_sorted[index + insert_num] - (i + 1
+                                                                      ) * stride
+                insert_index = index + i + 1 + insert_num
+                pos_list_sorted = np.insert(
+                    pos_list_sorted, insert_index, insert_value, axis=0)
+            insert_num += insert_num_temp
+
+        pos_info = np.array(pos_list_sorted).reshape(-1, 2).astype(
+            np.float32)  # xy-> yx
+
+        point_num = len(pos_info)
+        if point_num > fixed_point_num:
+            keep_ids = [
+                int((point_num * 1.0 / fixed_point_num) * x)
+                for x in range(fixed_point_num)
+            ]
+            pos_info = pos_info[keep_ids, :]
+
+        keep = int(min(len(pos_info), fixed_point_num))
+        reference_width = (np.abs(poly[0, 0, 0] - poly[-1, 1, 0]) +
+                           np.abs(poly[0, 3, 0] - poly[-1, 2, 0])) // 2
+        if np.random.rand() < 1:
+            dh = (np.random.rand(keep) - 0.5) * reference_height
+            offset = np.random.rand() - 0.5
+            dw = np.array([[0, offset * reference_width * 0.2]])
+            random_float_h = np.array([1, 0]).reshape([1, 2]) * dh.reshape(
+                [keep, 1])
+            random_float_w = dw.repeat(keep, axis=0)
+            pos_info += random_float_h
+            pos_info += random_float_w
+            pos_info[:, 0] = np.clip(pos_info[:, 0], 0, max_h - 1)
+            pos_info[:, 1] = np.clip(pos_info[:, 1], 0, max_w - 1)
+
+        # padding to fixed length
+        pos_l = np.zeros((self.tcl_len, 3), dtype=np.int32)
+        pos_l[:, 0] = np.ones((self.tcl_len, )) * img_id
+        pos_m = np.zeros((self.tcl_len, 1), dtype=np.float32)
+        pos_l[:keep, 1:] = np.round(pos_info).astype(np.int32)
+        pos_m[:keep] = 1.0
+        return pos_l, pos_m
+
     def generate_direction_map(self, poly_quads, n_char, direction_map):
         """
         """
@@ -334,6 +432,7 @@ class PGProcessTrain(object):
         """
         Generate polygon.
         """
+        self.ds_ratio = ds_ratio
         score_map_big = np.zeros(
             (
                 h,
@@ -384,7 +483,6 @@ class PGProcessTrain(object):
                 text_label = text_strs[poly_idx]
                 text_label = self.prepare_text_label(text_label,
                                                      self.Lexicon_Table)
-
                 text_label_index_list = [[self.Lexicon_Table.index(c_)]
                                          for c_ in text_label
                                          if c_ in self.Lexicon_Table]
@@ -432,14 +530,30 @@ class PGProcessTrain(object):
                 # pos info
                 average_shrink_height = self.calculate_average_height(
                     stcl_quads)
-                pos_l, pos_m = self.fit_and_gather_tcl_points_v2(
-                    min_area_quad,
-                    poly,
-                    max_h=h,
-                    max_w=w,
-                    fixed_point_num=64,
-                    img_id=self.img_id,
-                    reference_height=average_shrink_height)
+
+                if self.point_gather_mode == 'align':
+                    self.f_direction = direction_map[:, :, :-1].copy()
+                    pos_res = self.fit_and_gather_tcl_points_v3(
+                        min_area_quad,
+                        stcl_quads,
+                        max_h=h,
+                        max_w=w,
+                        fixed_point_num=64,
+                        img_id=self.img_id,
+                        reference_height=average_shrink_height)
+                    if pos_res is None:
+                        continue
+                    pos_l, pos_m = pos_res[0], pos_res[1]
+
+                else:
+                    pos_l, pos_m = self.fit_and_gather_tcl_points_v2(
+                        min_area_quad,
+                        poly,
+                        max_h=h,
+                        max_w=w,
+                        fixed_point_num=64,
+                        img_id=self.img_id,
+                        reference_height=average_shrink_height)
 
                 label_l = text_label_index_list
                 if len(text_label_index_list) < 2:
@@ -770,27 +884,41 @@ class PGProcessTrain(object):
         text_polys[:, :, 0] *= asp_wx
         text_polys[:, :, 1] *= asp_hy
 
-        h, w, _ = im.shape
-        if max(h, w) > 2048:
-            rd_scale = 2048.0 / max(h, w)
-            im = cv2.resize(im, dsize=None, fx=rd_scale, fy=rd_scale)
-            text_polys *= rd_scale
-        h, w, _ = im.shape
-        if min(h, w) < 16:
-            return None
+        if self.use_resize is True:
+            ori_h, ori_w, _ = im.shape
+            if max(ori_h, ori_w) < 200:
+                ratio = 200 / max(ori_h, ori_w)
+                im = cv2.resize(im, (int(ori_w * ratio), int(ori_h * ratio)))
+                text_polys[:, :, 0] *= ratio
+                text_polys[:, :, 1] *= ratio
 
-        # no background
-        im, text_polys, text_tags, hv_tags, text_strs = self.crop_area(
-            im,
-            text_polys,
-            text_tags,
-            hv_tags,
-            text_strs,
-            crop_background=False)
+            if max(ori_h, ori_w) > 512:
+                ratio = 512 / max(ori_h, ori_w)
+                im = cv2.resize(im, (int(ori_w * ratio), int(ori_h * ratio)))
+                text_polys[:, :, 0] *= ratio
+                text_polys[:, :, 1] *= ratio
+        elif self.use_random_crop is True:
+            h, w, _ = im.shape
+            if max(h, w) > 2048:
+                rd_scale = 2048.0 / max(h, w)
+                im = cv2.resize(im, dsize=None, fx=rd_scale, fy=rd_scale)
+                text_polys *= rd_scale
+            h, w, _ = im.shape
+            if min(h, w) < 16:
+                return None
+
+            # no background
+            im, text_polys, text_tags, hv_tags, text_strs = self.crop_area(
+                im,
+                text_polys,
+                text_tags,
+                hv_tags,
+                text_strs,
+                crop_background=False)
 
         if text_polys.shape[0] == 0:
             return None
-        # # continue for all ignore case
+        # continue for all ignore case
         if np.sum((text_tags * 1.0)) >= text_tags.size:
             return None
         new_h, new_w, _ = im.shape
