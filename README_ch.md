@@ -28,11 +28,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 📣 近期更新
 
 - 💼 **2022.9.5 飞桨智慧金融行业系列直播课** 
-
   - PaddleOCR发布四大范例：印章弯曲文本检测与识别、扫描版合同关键信息抽取、通用卡证结构化信息提取、中文表格识别与属性分析
-
   - 9月6日起每周二、周四19点直播，扫码免费加入微信群获取直播链接，与行业专家深度交流 
-
     <div align="center">
     <img src="https://user-images.githubusercontent.com/50011306/188440561-d99fce4f-f6ef-4ec0-be7e-47a70b91633a.jpg"  width = "150" height = "150" />
     </div>
