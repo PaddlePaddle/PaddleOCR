@@ -216,6 +216,8 @@ class SLAHead(nn.Layer):
         hidden = paddle.zeros((batch_size, self.hidden_size))
         structure_preds = paddle.zeros((batch_size, self.max_text_length + 1, self.num_embeddings))
         loc_preds = paddle.zeros((batch_size, self.max_text_length + 1, self.loc_reg_num))
+        structure_preds.stop_gradient = True
+        loc_preds.stop_gradient = True
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
@@ -223,6 +225,7 @@ class SLAHead(nn.Layer):
                                                                 fea, hidden)
                 structure_preds[:, i, :] = structure_step
                 loc_preds[:, i, :] = loc_step
+        else:
             pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
             max_text_length = paddle.to_tensor(self.max_text_length)
             # for export
