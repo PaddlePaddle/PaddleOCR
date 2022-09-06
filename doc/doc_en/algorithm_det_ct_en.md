@@ -26,7 +26,7 @@ On the Total-Text dataset, the text detection result is as follows:
 
 |Model|Backbone|Configuration|Precision|Recall|Hmean|Download|
 | --- | --- | --- | --- | --- | --- | --- |
-|DB|ResNet18_vd|[configs/det/det_r18_vd_ct.yml](../../configs/det/det_r18_vd_ct.yml)|88.68%|81.70%|85.05%|[trained model](TODO)|
+|DB|ResNet18_vd|[configs/det/det_r18_vd_ct.yml](../../configs/det/det_r18_vd_ct.yml)|88.68%|81.70%|85.05%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)|
 
 
 <a name="2"></a>
@@ -38,7 +38,7 @@ Please prepare your environment referring to [prepare the environment](./environ
 ## 3. Model Training / Evaluation / Prediction
 
 
-The above CT model is trained using the Total-Text text detection public dataset. For the download of the dataset, please refer to [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset). PaddleOCR format annotation download link [train.txt](TODO), [test.txt](TODO).
+The above CT model is trained using the Total-Text text detection public dataset. For the download of the dataset, please refer to [Total-Text-Dataset](https://github.com/cs-chan/Total-Text-Dataset/tree/master/Dataset). PaddleOCR format annotation download link [train.txt](https://paddleocr.bj.bcebos.com/dataset/ct_tipc/train.txt), [test.txt](https://paddleocr.bj.bcebos.com/dataset/ct_tipc/test.txt).
 
 
 Please refer to [text detection training tutorial](./detection_en.md). PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different detection models.
@@ -48,10 +48,10 @@ Please refer to [text detection training tutorial](./detection_en.md). PaddleOCR
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-First, convert the model saved in the CT text detection training process into an inference model. Taking the model based on the Resnet18_vd backbone network and trained on the Total Text English dataset as example ([model download link](TODO)), you can use the following command to convert:
+First, convert the model saved in the CT text detection training process into an inference model. Taking the model based on the Resnet18_vd backbone network and trained on the Total Text English dataset as example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)), you can use the following command to convert:
 
 ```shell
-python3 tools/export_model.py -c configs/det/det_r18_vd_ct.yml -o Global.pretrained_model=./TODOn/best_accuracy  Global.save_inference_dir=./inference/det_ct
+python3 tools/export_model.py -c configs/det/det_r18_vd_ct.yml -o Global.pretrained_model=./det_r18_ct_train/best_accuracy  Global.save_inference_dir=./inference/det_ct
 ```
 
 CT text detection model inference, you can execute the following command:

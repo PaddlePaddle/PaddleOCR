@@ -236,7 +236,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     fi
     if [ ${model_name} == "det_r18_ct" ]; then
         wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
-        wget -nc -P ./train_data/ https://TODO/total_text_lite2.tar --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ct_tipc/total_text_lite2.tar --no-check-certificate
         cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
     fi
 

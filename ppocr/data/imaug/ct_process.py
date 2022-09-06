@@ -95,8 +95,6 @@ class MakeShrink():
 
                 shrinked_bboxes.append(shrinked_bbox)
             except Exception as e:
-                print(type(shrinked_bbox), shrinked_bbox)
-                print('area:', area, 'peri:', peri)
                 shrinked_bboxes.append(bbox)
 
         return shrinked_bboxes

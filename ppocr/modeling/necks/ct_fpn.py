@@ -64,9 +64,9 @@ class Conv_BN_ReLU(nn.Layer):
         return self.relu(self.bn(self.conv(x)))
 
 
-class FPEM_v1(nn.Layer):
+class FPEM(nn.Layer):
     def __init__(self, in_channels, out_channels):
-        super(FPEM_v1, self).__init__()
+        super(FPEM, self).__init__()
         planes = out_channels
         self.dwconv3_1 = nn.Conv2D(
             planes,
@@ -155,8 +155,8 @@ class CTFPN(nn.Layer):
         self.reduce_layer3 = Conv_BN_ReLU(in_channels[2], 128)
         self.reduce_layer4 = Conv_BN_ReLU(in_channels[3], 128)
 
-        self.fpem1 = FPEM_v1(in_channels=(64, 128, 256, 512), out_channels=128)
-        self.fpem2 = FPEM_v1(in_channels=(64, 128, 256, 512), out_channels=128)
+        self.fpem1 = FPEM(in_channels=(64, 128, 256, 512), out_channels=128)
+        self.fpem2 = FPEM(in_channels=(64, 128, 256, 512), out_channels=128)
 
     def _upsample(self, x, scale=1):
         return F.upsample(x, scale_factor=scale, mode='bilinear')
