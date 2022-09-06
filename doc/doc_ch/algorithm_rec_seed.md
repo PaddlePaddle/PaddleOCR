@@ -78,23 +78,34 @@ python3 tools/infer_rec.py -c configs/rec/rec_resnet_stn_bilstm_att.yml -o Globa
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-coming soon
+首先将SEED文本识别训练过程中保存的模型，转换成inference model。（ [模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) )，可以使用如下命令进行转换：
+
+```
+python3 tools/export_model.py -c configs/rec/rec_resnet_stn_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=seed_infer
+```
+
+SEED文本识别模型推理，可以执行如下命令：
+
+```
+python3 tools/infer/predict_rec.py --rec_model_dir=seed_infer --image_dir=doc/imgs_words_en/word_10.png --rec_algorithm="SEED" --rec_char_dict_path=ppocr/utils/EN_symbol_dict.txt --rec_image_shape="3,64,256" --use_space_char=False
+```
+
 
 
 <a name="4-2"></a>
 ### 4.2 C++推理
 
-coming soon
+暂不支持
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
 
-coming soon
+暂不支持
 
 <a name="4-4"></a>
 ### 4.4 更多推理部署
 
-coming soon
+暂不支持
 
 <a name="5"></a>
 ## 5. FAQ
