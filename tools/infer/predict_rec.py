@@ -100,6 +100,12 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char,
                 "rm_symbol": True
             }
+        elif self.rec_algorithm == "SEED":
+            postprocess_params = {
+                'name': 'SEEDLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -161,6 +167,7 @@ class TextRecognizer(object):
             if resized_w > self.rec_image_shape[2]:
                 resized_w = self.rec_image_shape[2]
             imgW = self.rec_image_shape[2]
+
         resized_image = cv2.resize(img, (resized_w, imgH))
         resized_image = resized_image.astype('float32')
         resized_image = resized_image.transpose((2, 0, 1)) / 255
@@ -396,6 +403,11 @@ class TextRecognizer(object):
                 elif self.rec_algorithm == "ABINet":
                     norm_img = self.resize_norm_img_abinet(
                         img_list[indices[ino]], self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm == "SEED":
+                    norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
+                                                         self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm == "RobustScanner":

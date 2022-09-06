@@ -307,6 +307,11 @@ class SEEDLabelDecode(BaseRecLabelDecode):
             label = self.decode(label, is_remove_duplicate=False)
             return text, label
         """
+        tmp = {}
+        if isinstance(preds, list):
+            tmp["rec_pred"] = preds[1]
+            tmp["rec_pred_scores"] = preds[0]
+            preds = tmp
         preds_idx = preds["rec_pred"]
         if isinstance(preds_idx, paddle.Tensor):
             preds_idx = preds_idx.numpy()
