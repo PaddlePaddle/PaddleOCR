@@ -279,7 +279,9 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
@@ -479,7 +481,7 @@ def eval(model,
          extra_input=False,
          scaler=None,
          amp_level='O2',
-         amp_custom_black_list = []):
+         amp_custom_black_list=[]):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -500,7 +502,9 @@ def eval(model,
 
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
@@ -645,12 +649,12 @@ def preprocess(is_train=False):
         'Gestalt', 'SLANet', 'RobustScanner'
     ]
 
+    check_device(use_gpu, use_xpu)
     if use_xpu:
         device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
     else:
         device = 'gpu:{}'.format(dist.ParallelEnv()
                                  .dev_id) if use_gpu else 'cpu'
-    check_device(use_gpu, use_xpu)
 
     device = paddle.set_device(device)
 
