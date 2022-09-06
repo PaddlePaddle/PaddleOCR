@@ -2449,13 +2449,13 @@ class MainWindow(QMainWindow):
             export PPLabel and CSV to JSON (PubTabNet)
         '''
         import pandas as pd
-        from libs.dataPartitionDialog import DataPartitionDialog
+        # from libs.dataPartitionDialog import DataPartitionDialog
 
         # data partition user input
-        partitionDialog = DataPartitionDialog(parent=self)
-        partitionDialog.exec()
-        if partitionDialog.getStatus() == False:
-            return
+        # partitionDialog = DataPartitionDialog(parent=self)
+        # partitionDialog.exec()
+        # if partitionDialog.getStatus() == False:
+        #     return
 
         # automatically save annotations
         self.saveFilestate()
@@ -2479,27 +2479,32 @@ class MainWindow(QMainWindow):
                     else:
                         labeldict[file] = []
 
-        train_split, val_split, test_split = partitionDialog.getDataPartition()
-        # check validate
-        if train_split + val_split + test_split > 100:
-            msg = "The sum of training, validation and testing data should be less than 100%"
-            QMessageBox.information(self, "Information", msg)
-            return
-        print(train_split, val_split, test_split)
-        train_split, val_split, test_split = float(train_split) / 100., float(val_split) / 100., float(test_split) / 100.
-        train_id = int(len(labeldict) * train_split)
-        val_id = int(len(labeldict) * (train_split + val_split))
-        print('Data partition: train:', train_id, 
-              'validation:',  val_id - train_id,
-              'test:', len(labeldict) - val_id)
+        # train_split, val_split, test_split = partitionDialog.getDataPartition()
+        # # check validate
+        # if train_split + val_split + test_split > 100:
+        #     msg = "The sum of training, validation and testing data should be less than 100%"
+        #     QMessageBox.information(self, "Information", msg)
+        #     return
+        # print(train_split, val_split, test_split)
+        # train_split, val_split, test_split = float(train_split) / 100., float(val_split) / 100., float(test_split) / 100.
+        # train_id = int(len(labeldict) * train_split)
+        # val_id = int(len(labeldict) * (train_split + val_split))
+        # print('Data partition: train:', train_id, 
+        #       'validation:',  val_id - train_id,
+        #       'test:', len(labeldict) - val_id)
 
-        TableRec_excel_dir = os.path.join(self.lastOpenDir, 'tableRec_excel_output')
-        json_results = []
-        imgid = 0
+        TableRec_excel_dir = os.path.join(
+            self.lastOpenDir, 'tableRec_excel_output')
+        # json_results = []
+        # imgid = 0
+        # save txt
+        fid = open(
+            "{}/gt.txt".format(self.lastOpenDir), "w", encoding='utf-8')
         for image_path in labeldict.keys():
             # load csv annotations
             filename, _ = os.path.splitext(os.path.basename(image_path))
-            csv_path = os.path.join(TableRec_excel_dir, filename + '.xlsx')
+            csv_path = os.path.join(
+                TableRec_excel_dir, filename + '.xlsx')
             if not os.path.exists(csv_path):
                 continue
 
@@ -2519,27 +2524,39 @@ class MainWindow(QMainWindow):
             for anno in labeldict[image_path]:
                 tokens = list(anno['transcription'])
                 obb = anno['points']
-                hbb = OBB2HBB(np.array(obb)).tolist()
-                cells.append({'tokens': tokens, 'bbox': hbb})
+                hbb = OBB2HBB(np.array(obb))
+                cells.append({
+                    'tokens': tokens, 
+                    'bbox': [hbb]
+                    })
             
             # data split
-            if imgid < train_id:
-                split = 'train'
-            elif imgid < val_id:
-                split = 'val'
-            else:
-                split = 'test'
+            # if imgid < train_id:
+            #     split = 'train'
+            # elif imgid < val_id:
+            #     split = 'val'
+            # else:
+            #     split = 'test'
 
-            #  save dict
-            html = {'structure': {'tokens': token_list}, 'cells': cells}
-            json_results.append({'filename': os.path.basename(image_path), 'split': split, 'imgid': imgid, 'html': html})
-            imgid += 1
-
-        # save json
-        with open("{}/annotation.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid:
-            fid.write(json.dumps(json_results, ensure_ascii=False))
-        
-        msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
+            # 构造标注信息
+            html = {
+                'structure': {
+                    'tokens': token_list
+                    }, 
+                'cells': cells
+                }
+            d = {
+                'filename': os.path.basename(image_path), 
+                'html': html
+                }
+            d['gt'] = rebuild_html_from_ppstructure_label(d)
+            # imgid += 1
+            fid.write('{}\n'.format(
+                json.dumps(
+                    d, ensure_ascii=False)))
+        # convert to PP-Structure label format
+        fid.close()
+        msg = 'JSON sucessfully saved in {}/gt.txt'.format(self.lastOpenDir)
         QMessageBox.information(self, "Information", msg)
 
     def autolcm(self):
