@@ -62,6 +62,8 @@ class AsterHead(nn.Layer):
         else:
             rec_pred, rec_pred_scores = self.decoder.beam_search(
                 x, self.beam_width, self.eos, embedding_vectors)
+            rec_pred_scores.stop_gradient = True
+            rec_pred.stop_gradient = True
             return_dict['rec_pred'] = rec_pred
             return_dict['rec_pred_scores'] = rec_pred_scores
             return_dict['embedding_vectors'] = embedding_vectors
