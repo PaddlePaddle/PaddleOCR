@@ -97,7 +97,6 @@ def export_single_model(model,
             paddle.static.InputSpec(
                 shape=[None, 3, 32, 128], dtype="float32"),
         ]
-        # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["NRTR", "SPIN"]:
         other_shape = [
@@ -115,16 +114,18 @@ def export_single_model(model,
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
             paddle.static.InputSpec(
-                shape=[None, 3, 48, 160], dtype="float32"),
-
-            [
+                shape=[None, 3, 48, 160], dtype="float32"), [
+                    paddle.static.InputSpec(
+                        shape=[None, ], dtype="float32"),
+                    paddle.static.InputSpec(
+                        shape=[None, max_text_length], dtype="int64")
+                ]
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "SEED":
+        other_shape = [
             paddle.static.InputSpec(
-                    shape=[None, ], 
-                    dtype="float32"),
-            paddle.static.InputSpec(
-                    shape=[None, max_text_length], 
-                    dtype="int64")
-            ]
+                shape=[None, 3, 64, 256], dtype="float32")
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:

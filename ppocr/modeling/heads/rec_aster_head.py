@@ -62,10 +62,11 @@ class AsterHead(nn.Layer):
         else:
             rec_pred, rec_pred_scores = self.decoder.beam_search(
                 x, self.beam_width, self.eos, embedding_vectors)
+            rec_pred_scores.stop_gradient = True
+            rec_pred.stop_gradient = True
             return_dict['rec_pred'] = rec_pred
             return_dict['rec_pred_scores'] = rec_pred_scores
             return_dict['embedding_vectors'] = embedding_vectors
-
         return return_dict
 
 
@@ -114,36 +115,12 @@ class AttentionRecognitionHead(nn.Layer):
                 y_prev = paddle.full(
                     shape=[batch_size], fill_value=self.num_classes)
             else:
+
                 y_prev = targets[:, i - 1]
             output, state = self.decoder(x, state, y_prev)
             outputs.append(output)
         outputs = paddle.concat([_.unsqueeze(1) for _ in outputs], 1)
         return outputs
-
-    # inference stage.
-    def sample(self, x):
-        x, _, _ = x
-        batch_size = x.size(0)
-        # Decoder
-        state = paddle.zeros([1, batch_size, self.sDim])
-
-        predicted_ids, predicted_scores = [], []
-        for i in range(self.max_len_labels):
-            if i == 0:
-                y_prev = paddle.full(
-                    shape=[batch_size], fill_value=self.num_classes)
-            else:
-                y_prev = predicted
-
-            output, state = self.decoder(x, state, y_prev)
-            output = F.softmax(output, axis=1)
-            score, predicted = output.max(1)
-            predicted_ids.append(predicted.unsqueeze(1))
-            predicted_scores.append(score.unsqueeze(1))
-        predicted_ids = paddle.concat([predicted_ids, 1])
-        predicted_scores = paddle.concat([predicted_scores, 1])
-        # return predicted_ids.squeeze(), predicted_scores.squeeze()
-        return predicted_ids, predicted_scores
 
     def beam_search(self, x, beam_width, eos, embed):
         def _inflate(tensor, times, dim):
@@ -153,7 +130,7 @@ class AttentionRecognitionHead(nn.Layer):
             return output
 
         # https://github.com/IBM/pytorch-seq2seq/blob/fede87655ddce6c94b38886089e05321dc9802af/seq2seq/models/TopKDecoder.py
-        batch_size, l, d = x.shape
+        batch_size, l, d = paddle.shape(x)
         x = paddle.tile(
             paddle.transpose(
                 x.unsqueeze(1), perm=[1, 0, 2, 3]), [beam_width, 1, 1, 1])
@@ -166,21 +143,22 @@ class AttentionRecognitionHead(nn.Layer):
 
         pos_index = paddle.reshape(
             paddle.arange(batch_size) * beam_width, shape=[-1, 1])
-
         # Initialize the scores
+
         sequence_scores = paddle.full(
-            shape=[batch_size * beam_width, 1], fill_value=-float('Inf'))
-        index = [i * beam_width for i in range(0, batch_size)]
-        sequence_scores[index] = 0.0
+            shape=[batch_size, beam_width], fill_value=-float('Inf'))
+        sequence_scores[:, 0] = 0.0
+        sequence_scores = paddle.reshape(
+            sequence_scores, shape=[batch_size * beam_width, 1])
 
         # Initialize the input vector
         y_prev = paddle.full(
             shape=[batch_size * beam_width], fill_value=self.num_classes)
 
         # Store decisions for backtracking
-        stored_scores = list()
-        stored_predecessors = list()
-        stored_emitted_symbols = list()
+        stored_scores = []
+        stored_predecessors = []
+        stored_emitted_symbols = []
 
         for i in range(self.max_len_labels):
             output, state = self.decoder(inflated_encoder_feats, state, y_prev)
@@ -194,15 +172,16 @@ class AttentionRecognitionHead(nn.Layer):
                 paddle.reshape(sequence_scores, [batch_size, -1]),
                 beam_width,
                 axis=1)
-
             # Reshape input = (bk, 1) and sequence_scores = (bk, 1)
             y_prev = paddle.reshape(
-                candidates % self.num_classes, shape=[batch_size * beam_width])
+                candidates % self.num_classes, shape=[batch_size, beam_width])
+            y_prev = paddle.reshape(y_prev, shape=[batch_size * beam_width])
             sequence_scores = paddle.reshape(
                 scores, shape=[batch_size * beam_width, 1])
 
             # Update fields for next timestep
-            pos_index = paddle.expand_as(pos_index, candidates)
+            pos_index = paddle.expand(pos_index, paddle.shape(candidates))
+
             predecessors = paddle.cast(
                 candidates / self.num_classes + pos_index, dtype='int64')
             predecessors = paddle.reshape(
@@ -213,13 +192,13 @@ class AttentionRecognitionHead(nn.Layer):
             # Update sequence socres and erase scores for <eos> symbol so that they aren't expanded
             stored_scores.append(sequence_scores.clone())
             y_prev = paddle.reshape(y_prev, shape=[-1, 1])
-            eos_prev = paddle.full_like(y_prev, fill_value=eos)
+
+            eos_prev = paddle.full(paddle.shape(y_prev), fill_value=eos)
             mask = eos_prev == y_prev
+            mask = paddle.cast(mask, 'int64')
             mask = paddle.nonzero(mask)
-            if mask.dim() > 0:
-                sequence_scores = sequence_scores.numpy()
-                mask = mask.numpy()
-                sequence_scores[mask] = -float('inf')
+            if len(mask) > 0:
+                sequence_scores[:] = -float('inf')
                 sequence_scores = paddle.to_tensor(sequence_scores)
 
             # Cache results for backtracking
@@ -228,11 +207,12 @@ class AttentionRecognitionHead(nn.Layer):
             stored_emitted_symbols.append(y_prev)
 
         # Do backtracking to return the optimal values
-        #====== backtrak ======#
+        # ====== backtrak ======#
         # Initialize return variables given different types
-        p = list()
-        l = [[self.max_len_labels] * beam_width for _ in range(batch_size)
-             ]  # Placeholder for lengths of top-k sequences
+        p = []
+
+        # Placeholder for lengths of top-k sequences
+        l = paddle.full([batch_size, beam_width], self.max_len_labels)
 
         # the last step output of the beams are not sorted
         # thus they are sorted here
@@ -244,14 +224,18 @@ class AttentionRecognitionHead(nn.Layer):
         # initialize the sequence scores with the sorted last step beam scores
         s = sorted_score.clone()
 
-        batch_eos_found = [0] * batch_size  # the number of EOS found
+        batch_eos_found = paddle.zeros(
+            [batch_size], dtype='int32')  # the number of EOS found
         # in the backward loop below for each batch
         t = self.max_len_labels - 1
+
         # initialize the back pointer with the sorted order of the last step beams.
         # add pos_index for indexing variable with b*k as the first dimension.
         t_predecessors = paddle.reshape(
-            sorted_idx + pos_index.expand_as(sorted_idx),
+            sorted_idx + pos_index.expand(paddle.shape(sorted_idx)),
             shape=[batch_size * beam_width])
+
+        tmp_beam_width = beam_width
         while t >= 0:
             # Re-order the variables with the back pointer
             current_symbol = paddle.index_select(
@@ -261,26 +245,32 @@ class AttentionRecognitionHead(nn.Layer):
             eos_indices = stored_emitted_symbols[t] == eos
             eos_indices = paddle.nonzero(eos_indices)
 
+            stored_predecessors_t = stored_predecessors[t]
+            stored_emitted_symbols_t = stored_emitted_symbols[t]
+            stored_scores_t = stored_scores[t]
+            t_plus = t + 1
+
             if eos_indices.dim() > 0:
-                for i in range(eos_indices.shape[0] - 1, -1, -1):
+                for j in range(eos_indices.shape[0] - 1, -1, -1):
                     # Indices of the EOS symbol for both variables
                     # with b*k as the first dimension, and b, k for
                     # the first two dimensions
-                    idx = eos_indices[i]
-                    b_idx = int(idx[0] / beam_width)
+                    idx = eos_indices[j]
+                    b_idx = int(idx[0] / tmp_beam_width)
                     # The indices of the replacing position
                     # according to the replacement strategy noted above
-                    res_k_idx = beam_width - (batch_eos_found[b_idx] %
-                                              beam_width) - 1
+                    res_k_idx = tmp_beam_width - (batch_eos_found[b_idx] %
+                                                  tmp_beam_width) - 1
                     batch_eos_found[b_idx] += 1
-                    res_idx = b_idx * beam_width + res_k_idx
+                    res_idx = b_idx * tmp_beam_width + res_k_idx
 
                     # Replace the old information in return variables
                     # with the new ended sequence information
-                    t_predecessors[res_idx] = stored_predecessors[t][idx[0]]
-                    current_symbol[res_idx] = stored_emitted_symbols[t][idx[0]]
-                    s[b_idx, res_k_idx] = stored_scores[t][idx[0], 0]
-                    l[b_idx][res_k_idx] = t + 1
+
+                    t_predecessors[res_idx] = stored_predecessors_t[idx[0]]
+                    current_symbol[res_idx] = stored_emitted_symbols_t[idx[0]]
+                    s[b_idx, res_k_idx] = stored_scores_t[idx[0], 0]
+                    l[b_idx][res_k_idx] = t_plus
 
             # record the back tracked results
             p.append(current_symbol)
@@ -289,24 +279,30 @@ class AttentionRecognitionHead(nn.Layer):
         # Sort and re-order again as the added ended sequences may change
         # the order (very unlikely)
         s, re_sorted_idx = s.topk(beam_width)
+
         for b_idx in range(batch_size):
-            l[b_idx] = [
-                l[b_idx][k_idx.item()] for k_idx in re_sorted_idx[b_idx, :]
-            ]
+            tmp_tensor = paddle.full_like(l[b_idx], 0)
+            for k_idx in re_sorted_idx[b_idx]:
+                tmp_tensor[k_idx] = l[b_idx][k_idx]
+            l[b_idx] = tmp_tensor
 
         re_sorted_idx = paddle.reshape(
-            re_sorted_idx + pos_index.expand_as(re_sorted_idx),
+            re_sorted_idx + pos_index.expand(paddle.shape(re_sorted_idx)),
             [batch_size * beam_width])
 
         # Reverse the sequences and re-order at the same time
         # It is reversed because the backtracking happens in reverse time order
-        p = [
-            paddle.reshape(
-                paddle.index_select(step, re_sorted_idx, 0),
-                shape=[batch_size, beam_width, -1]) for step in reversed(p)
-        ]
-        p = paddle.concat(p, -1)[:, 0, :]
-        return p, paddle.ones_like(p)
+        reversed_p = p[::-1]
+
+        q = []
+        for step in reversed_p:
+            q.append(
+                paddle.reshape(
+                    paddle.index_select(step, re_sorted_idx, 0),
+                    shape=[batch_size, beam_width, -1]))
+
+        q = paddle.concat(q, -1)[:, 0, :]
+        return q, paddle.ones_like(q)
 
 
 class AttentionUnit(nn.Layer):
@@ -385,8 +381,8 @@ class DecoderUnit(nn.Layer):
         yProj = self.tgt_embedding(yPrev)
 
         concat_context = paddle.concat([yProj, context], 1)
-        concat_context = paddle.squeeze(concat_context, 1)
         sPrev = paddle.squeeze(sPrev, 0)
+
         output, state = self.gru(concat_context, sPrev)
         output = paddle.squeeze(output, axis=1)
         output = self.fc(output)

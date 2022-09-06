@@ -50,7 +50,7 @@ Architecture:
     name: AsterHead  # AttentionHead
     sDim: 512
     attDim: 512
-    max_len_labels: 100
+    max_len_labels: 20
 
 Loss:
   name: AsterLoss
