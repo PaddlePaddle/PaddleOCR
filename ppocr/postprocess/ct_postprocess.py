@@ -25,7 +25,6 @@ import os.path as osp
 import numpy as np
 import cv2
 import paddle
-from shapely.geometry import Polygon
 import pyclipper
 
 
