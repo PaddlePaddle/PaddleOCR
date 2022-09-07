@@ -108,6 +108,8 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ../
     fi
     if [[ ${model_name} == "slanet" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf en_ppstructure_mobile_v2.0_SLANet_train.tar  && cd ../
         rm -rf ./train_data/pubtabnet
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
         cd ./train_data/ && tar xf pubtabnet_benckmark.tar
