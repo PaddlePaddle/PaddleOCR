@@ -2506,7 +2506,7 @@ class MainWindow(QMainWindow):
                     'tokens': tokens, 
                     'bbox': anno['points']
                     })
-            
+
             # 构造标注信息
             html = {
                 'structure': {
@@ -2518,8 +2518,8 @@ class MainWindow(QMainWindow):
                 'filename': os.path.basename(image_path), 
                 'html': html
                 }
+            # 重构HTML
             d['gt'] = rebuild_html_from_ppstructure_label(d)
-            # imgid += 1
             fid.write('{}\n'.format(
                 json.dumps(
                     d, ensure_ascii=False)))
