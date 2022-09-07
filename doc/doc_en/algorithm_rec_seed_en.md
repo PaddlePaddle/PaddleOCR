@@ -77,7 +77,17 @@ python3 tools/infer_rec.py -c configs/rec/rec_resnet_stn_bilstm_att.yml -o Globa
 <a name="4-1"></a>
 ### 4.1 Python Inference
 
-Not support
+First, the model saved during the SEED text recognition training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) ), you can use the following command to convert:
+
+```
+python3 tools/export_model.py -c configs/rec/rec_resnet_stn_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=seed_infer
+```
+
+For SEED text recognition model inference, the following commands can be executed:
+
+```
+python3 tools/infer/predict_rec.py --rec_model_dir=seed_infer --image_dir=doc/imgs_words_en/word_10.png --rec_algorithm="SEED" --rec_char_dict_path=ppocr/utils/EN_symbol_dict.txt --rec_image_shape="3,64,256" --use_space_char=False
+```
 
 <a name="4-2"></a>
 ### 4.2 C++ Inference

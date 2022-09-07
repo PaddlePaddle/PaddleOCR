@@ -67,8 +67,6 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 - [Dive Into OCR ](./doc/doc_en/ocr_book_en.md)
 
 <a name="Community"></a>
-## Community
-
 ## 👫 Community
 
 - For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
