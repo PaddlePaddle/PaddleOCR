@@ -2523,11 +2523,9 @@ class MainWindow(QMainWindow):
             cells = []
             for anno in labeldict[image_path]:
                 tokens = list(anno['transcription'])
-                obb = anno['points']
-                hbb = OBB2HBB(np.array(obb))
                 cells.append({
                     'tokens': tokens, 
-                    'bbox': [hbb]
+                    'bbox': anno['points']
                     })
             
             # data split

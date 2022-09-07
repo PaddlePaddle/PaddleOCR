@@ -176,18 +176,6 @@ def boxPad(box, imgShape, pad : int) -> np.array:
     return box
 
 
-def OBB2HBB(obb) -> list:
-    """
-    Convert Oriented Bounding Box to Horizontal Bounding Box.
-    """
-    x1 = float(min(obb[:, 0]))
-    y1 = float(min(obb[:, 1]))
-    x2 = float(max(obb[:, 0]))
-    y2 = float(max(obb[:, 1]))
-    hbb = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-    return hbb
-
-
 def expand_list(merged, html_list):
     '''
     Fill blanks according to merged cells
