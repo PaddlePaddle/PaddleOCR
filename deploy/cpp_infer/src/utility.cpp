@@ -73,9 +73,10 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
   for (int n = 0; n < structure_result.cell_box.size(); n++) {
     if (structure_result.cell_box[n].size() == 8) {
       cv::Point rook_points[4];
-      for (int m = 0; m < 4; m++) {
-        rook_points[m] = cv::Point(int(structure_result.cell_box[n][m]),
-                                   int(structure_result.cell_box[n][m + 1]));
+      for (int m = 0; m < structure_result.cell_box[n].size(); m += 2) {
+        rook_points[m / 2] =
+            cv::Point(int(structure_result.cell_box[n][m]),
+                      int(structure_result.cell_box[n][m + 1]));
       }
       const cv::Point *ppt[1] = {rook_points};
       int npt[] = {4};
