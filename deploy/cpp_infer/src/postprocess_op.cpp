@@ -352,8 +352,21 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
   return root_points;
 }
 
-void TablePostProcessor::init(std::string label_path) {
+void TablePostProcessor::init(std::string label_path,
+                              bool merge_no_span_structure) {
   this->label_list_ = Utility::ReadDict(label_path);
+  if (merge_no_span_structure) {
+    this->label_list_.push_back("<td></td>");
+    std::vector<std::string>::iterator it;
+    for (it = this->label_list_.begin(); it != this->label_list_.end();) {
+      if (*it == "<td>") {
+        it = this->label_list_.erase(it);
+      } else {
+        ++it;
+      }
+    }
+  }
+  // add_special_char
   this->label_list_.insert(this->label_list_.begin(), this->beg);
   this->label_list_.push_back(this->end);
 }
@@ -363,12 +376,12 @@ void TablePostProcessor::Run(
     std::vector<float> &rec_scores, std::vector<int> &loc_preds_shape,
     std::vector<int> &structure_probs_shape,
     std::vector<std::vector<std::string>> &rec_html_tag_batch,
-    std::vector<std::vector<std::vector<std::vector<int>>>> &rec_boxes_batch,
+    std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
     std::vector<int> &width_list, std::vector<int> &height_list) {
   for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; batch_idx++) {
     // image tags and boxs
     std::vector<std::string> rec_html_tags;
-    std::vector<std::vector<std::vector<int>>> rec_boxes;
+    std::vector<std::vector<int>> rec_boxes;
 
     float score = 0.f;
     int count = 0;
@@ -378,7 +391,7 @@ void TablePostProcessor::Run(
     // step
     for (int step_idx = 0; step_idx < structure_probs_shape[1]; step_idx++) {
       std::string html_tag;
-      std::vector<std::vector<int>> rec_box;
+      std::vector<int> rec_box;
       // html tag
       int step_start_idx = (batch_idx * structure_probs_shape[1] + step_idx) *
                            structure_probs_shape[2];
@@ -399,17 +412,19 @@ void TablePostProcessor::Run(
       count += 1;
       score += char_score;
       rec_html_tags.push_back(html_tag);
+
       // box
       if (html_tag == "<td>" || html_tag == "<td" || html_tag == "<td></td>") {
-        for (int point_idx = 0; point_idx < loc_preds_shape[2];
-             point_idx += 2) {
-          std::vector<int> point(2, 0);
+        for (int point_idx = 0; point_idx < loc_preds_shape[2]; point_idx++) {
           step_start_idx = (batch_idx * structure_probs_shape[1] + step_idx) *
                                loc_preds_shape[2] +
                            point_idx;
-          point[0] = int(loc_preds[step_start_idx] * width_list[batch_idx]);
-          point[1] =
-              int(loc_preds[step_start_idx + 1] * height_list[batch_idx]);
+          float point = loc_preds[step_start_idx];
+          if (point_idx % 2 == 0) {
+            point = int(point * width_list[batch_idx]);
+          } else {
+            point = int(point * height_list[batch_idx]);
+          }
           rec_box.push_back(point);
         }
         rec_boxes.push_back(rec_box);

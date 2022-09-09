@@ -54,15 +54,12 @@ private:
              std::vector<double> &time_info_det,
              std::vector<double> &time_info_rec,
              std::vector<double> &time_info_cls);
-  std::string
-  rebuild_table(std::vector<std::string> rec_html_tags,
-                std::vector<std::vector<std::vector<int>>> rec_boxes,
-                std::vector<OCRPredictResult> &ocr_result);
+  std::string rebuild_table(std::vector<std::string> rec_html_tags,
+                            std::vector<std::vector<int>> rec_boxes,
+                            std::vector<OCRPredictResult> &ocr_result);
 
-  float iou(std::vector<std::vector<int>> &box1,
-            std::vector<std::vector<int>> &box2);
-  float dis(std::vector<std::vector<int>> &box1,
-            std::vector<std::vector<int>> &box2);
+  float iou(std::vector<int> &box1, std::vector<int> &box2);
+  float dis(std::vector<int> &box1, std::vector<int> &box2);
 
   static bool comparison_dis(const std::vector<float> &dis1,
                              const std::vector<float> &dis2) {

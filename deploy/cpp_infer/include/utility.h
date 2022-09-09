@@ -42,6 +42,7 @@ struct OCRPredictResult {
 
 struct StructurePredictResult {
   std::vector<int> box;
+  std::vector<std::vector<int>> cell_box;
   std::string type;
   std::vector<OCRPredictResult> text_res;
   std::string html;
@@ -54,6 +55,10 @@ public:
 
   static void VisualizeBboxes(const cv::Mat &srcimg,
                               const std::vector<OCRPredictResult> &ocr_result,
+                              const std::string &save_path);
+
+  static void VisualizeBboxes(const cv::Mat &srcimg,
+                              const StructurePredictResult &structure_result,
                               const std::string &save_path);
 
   template <class ForwardIterator>
@@ -80,6 +85,9 @@ public:
   static cv::Mat crop_image(cv::Mat &img, std::vector<int> &area);
 
   static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result);
+
+  static std::vector<int> xyxyxyxy2xyxy(std::vector<std::vector<int>> &box);
+  static std::vector<int> xyxyxyxy2xyxy(std::vector<int> &box);
 
 private:
   static bool comparison_box(const OCRPredictResult &result1,
