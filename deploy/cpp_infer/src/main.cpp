@@ -120,6 +120,7 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
       engine.structure(cv_all_img_names, false, FLAGS_table);
   for (int i = 0; i < cv_all_img_names.size(); i++) {
     cout << "predict img: " << cv_all_img_names[i] << endl;
+    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     for (int j = 0; j < structure_results[i].size(); j++) {
       std::cout << j << "\ttype: " << structure_results[i][j].type
                 << ", region: [";
@@ -129,6 +130,11 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
                 << structure_results[i][j].box[3] << "], res: ";
       if (structure_results[i][j].type == "table") {
         std::cout << structure_results[i][j].html << std::endl;
+        std::string file_name = Utility::basename(cv_all_img_names[i]);
+
+        Utility::VisualizeBboxes(srcimg, structure_results[i][j],
+                                 FLAGS_output + "/" + std::to_string(j) + "_" +
+                                     file_name);
       } else {
         Utility::print_result(structure_results[i][j].text_res);
       }

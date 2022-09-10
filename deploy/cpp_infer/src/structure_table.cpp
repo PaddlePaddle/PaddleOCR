@@ -20,7 +20,7 @@ void StructureTableRecognizer::Run(
     std::vector<cv::Mat> img_list,
     std::vector<std::vector<std::string>> &structure_html_tags,
     std::vector<float> &structure_scores,
-    std::vector<std::vector<std::vector<std::vector<int>>>> &structure_boxes,
+    std::vector<std::vector<std::vector<int>>> &structure_boxes,
     std::vector<double> &times) {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
@@ -89,8 +89,7 @@ void StructureTableRecognizer::Run(
     auto postprocess_start = std::chrono::steady_clock::now();
     std::vector<std::vector<std::string>> structure_html_tag_batch;
     std::vector<float> structure_score_batch;
-    std::vector<std::vector<std::vector<std::vector<int>>>>
-        structure_boxes_batch;
+    std::vector<std::vector<std::vector<int>>> structure_boxes_batch;
     this->post_processor_.Run(loc_preds, structure_probs, structure_score_batch,
                               predict_shape0, predict_shape1,
                               structure_html_tag_batch, structure_boxes_batch,

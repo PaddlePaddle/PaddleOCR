@@ -27,7 +27,7 @@ PaddleStructure::PaddleStructure() {
         FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
-        FLAGS_table_max_len);
+        FLAGS_table_max_len, FLAGS_merge_no_span_structure);
   }
 };
 
@@ -42,7 +42,7 @@ PaddleStructure::structure(std::vector<cv::String> cv_all_img_names,
   std::vector<std::vector<StructurePredictResult>> structure_results;
 
   if (!Utility::PathExists(FLAGS_output) && FLAGS_det) {
-    mkdir(FLAGS_output.c_str(), 0777);
+    Utility::CreateDir(FLAGS_output);
   }
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
     std::vector<StructurePredictResult> structure_result;
@@ -84,7 +84,7 @@ void PaddleStructure::table(cv::Mat img,
   // predict structure
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
-  std::vector<std::vector<std::vector<std::vector<int>>>> structure_boxes;
+  std::vector<std::vector<std::vector<int>>> structure_boxes;
   std::vector<double> structure_imes;
   std::vector<cv::Mat> img_list;
   img_list.push_back(img);
@@ -103,20 +103,15 @@ void PaddleStructure::table(cv::Mat img,
     this->det(img_list[i], ocr_result, time_info_det);
     // crop image
     std::vector<cv::Mat> rec_img_list;
+    std::vector<int> ocr_box;
     for (int j = 0; j < ocr_result.size(); j++) {
-      int x_collect[4] = {ocr_result[j].box[0][0], ocr_result[j].box[1][0],
-                          ocr_result[j].box[2][0], ocr_result[j].box[3][0]};
-      int y_collect[4] = {ocr_result[j].box[0][1], ocr_result[j].box[1][1],
-                          ocr_result[j].box[2][1], ocr_result[j].box[3][1]};
-      int left = int(*std::min_element(x_collect, x_collect + 4));
-      int right = int(*std::max_element(x_collect, x_collect + 4));
-      int top = int(*std::min_element(y_collect, y_collect + 4));
-      int bottom = int(*std::max_element(y_collect, y_collect + 4));
-      std::vector<int> box{max(0, left - expand_pixel),
-                           max(0, top - expand_pixel),
-                           min(img_list[i].cols, right + expand_pixel),
-                           min(img_list[i].rows, bottom + expand_pixel)};
-      cv::Mat crop_img = Utility::crop_image(img_list[i], box);
+      ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[j].box);
+      ocr_box[0] = max(0, ocr_box[0] - expand_pixel);
+      ocr_box[1] = max(0, ocr_box[1] - expand_pixel),
+      ocr_box[2] = min(img_list[i].cols, ocr_box[2] + expand_pixel);
+      ocr_box[3] = min(img_list[i].rows, ocr_box[3] + expand_pixel);
+
+      cv::Mat crop_img = Utility::crop_image(img_list[i], ocr_box);
       rec_img_list.push_back(crop_img);
     }
     // rec
@@ -125,38 +120,37 @@ void PaddleStructure::table(cv::Mat img,
     html = this->rebuild_table(structure_html_tags[i], structure_boxes[i],
                                ocr_result);
     structure_result.html = html;
+    structure_result.cell_box = structure_boxes[i];
     structure_result.html_score = structure_scores[i];
   }
 };
 
-std::string PaddleStructure::rebuild_table(
-    std::vector<std::string> structure_html_tags,
-    std::vector<std::vector<std::vector<int>>> structure_boxes,
-    std::vector<OCRPredictResult> &ocr_result) {
+std::string
+PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
+                               std::vector<std::vector<int>> structure_boxes,
+                               std::vector<OCRPredictResult> &ocr_result) {
   // match text in same cell
   std::vector<std::vector<string>> matched(structure_boxes.size(),
                                            std::vector<std::string>());
 
+  std::vector<int> ocr_box;
+  std::vector<int> structure_box;
   for (int i = 0; i < ocr_result.size(); i++) {
+    ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[i].box);
+    ocr_box[0] -= 1;
+    ocr_box[1] -= 1;
+    ocr_box[2] += 1;
+    ocr_box[3] += 1;
     std::vector<std::vector<float>> dis_list(structure_boxes.size(),
                                              std::vector<float>(3, 100000.0));
     for (int j = 0; j < structure_boxes.size(); j++) {
-      int x_collect[4] = {ocr_result[i].box[0][0], ocr_result[i].box[1][0],
-                          ocr_result[i].box[2][0], ocr_result[i].box[3][0]};
-      int y_collect[4] = {ocr_result[i].box[0][1], ocr_result[i].box[1][1],
-                          ocr_result[i].box[2][1], ocr_result[i].box[3][1]};
-      int left = int(*std::min_element(x_collect, x_collect + 4));
-      int right = int(*std::max_element(x_collect, x_collect + 4));
-      int top = int(*std::min_element(y_collect, y_collect + 4));
-      int bottom = int(*std::max_element(y_collect, y_collect + 4));
-      std::vector<std::vector<int>> box(2, std::vector<int>(2, 0));
-      box[0][0] = left - 1;
-      box[0][1] = top - 1;
-      box[1][0] = right + 1;
-      box[1][1] = bottom + 1;
-
-      dis_list[j][0] = this->dis(box, structure_boxes[j]);
-      dis_list[j][1] = 1 - this->iou(box, structure_boxes[j]);
+      if (structure_boxes[i].size() == 8) {
+        structure_box = Utility::xyxyxyxy2xyxy(structure_boxes[j]);
+      } else {
+        structure_box = structure_boxes[j];
+      }
+      dis_list[j][0] = this->dis(ocr_box, structure_box);
+      dis_list[j][1] = 1 - this->iou(ocr_box, structure_box);
       dis_list[j][2] = j;
     }
     // find min dis idx
@@ -164,6 +158,7 @@ std::string PaddleStructure::rebuild_table(
               PaddleStructure::comparison_dis);
     matched[dis_list[0][2]].push_back(ocr_result[i].text);
   }
+
   // get pred html
   std::string html_str = "";
   int td_tag_idx = 0;
@@ -221,19 +216,18 @@ std::string PaddleStructure::rebuild_table(
   return html_str;
 }
 
-float PaddleStructure::iou(std::vector<std::vector<int>> &box1,
-                           std::vector<std::vector<int>> &box2) {
-  int area1 = max(0, box1[1][0] - box1[0][0]) * max(0, box1[1][1] - box1[0][1]);
-  int area2 = max(0, box2[1][0] - box2[0][0]) * max(0, box2[1][1] - box2[0][1]);
+float PaddleStructure::iou(std::vector<int> &box1, std::vector<int> &box2) {
+  int area1 = max(0, box1[2] - box1[0]) * max(0, box1[3] - box1[1]);
+  int area2 = max(0, box2[2] - box2[0]) * max(0, box2[3] - box2[1]);
 
   // computing the sum_area
   int sum_area = area1 + area2;
 
   // find the each point of intersect rectangle
-  int x1 = max(box1[0][0], box2[0][0]);
-  int y1 = max(box1[0][1], box2[0][1]);
-  int x2 = min(box1[1][0], box2[1][0]);
-  int y2 = min(box1[1][1], box2[1][1]);
+  int x1 = max(box1[0], box2[0]);
+  int y1 = max(box1[1], box2[1]);
+  int x2 = min(box1[2], box2[2]);
+  int y2 = min(box1[3], box2[3]);
 
   // judge if there is an intersect
   if (y1 >= y2 || x1 >= x2) {
@@ -244,17 +238,16 @@ float PaddleStructure::iou(std::vector<std::vector<int>> &box1,
   }
 }
 
-float PaddleStructure::dis(std::vector<std::vector<int>> &box1,
-                           std::vector<std::vector<int>> &box2) {
-  int x1_1 = box1[0][0];
-  int y1_1 = box1[0][1];
-  int x2_1 = box1[1][0];
-  int y2_1 = box1[1][1];
+float PaddleStructure::dis(std::vector<int> &box1, std::vector<int> &box2) {
+  int x1_1 = box1[0];
+  int y1_1 = box1[1];
+  int x2_1 = box1[2];
+  int y2_1 = box1[3];
 
-  int x1_2 = box2[0][0];
-  int y1_2 = box2[0][1];
-  int x2_2 = box2[1][0];
-  int y2_2 = box2[1][1];
+  int x1_2 = box2[0];
+  int y1_2 = box2[1];
+  int x2_2 = box2[2];
+  int y2_2 = box2[3];
 
   float dis =
       abs(x1_2 - x1_1) + abs(y1_2 - y1_1) + abs(x2_2 - x2_1) + abs(y2_2 - y2_1);

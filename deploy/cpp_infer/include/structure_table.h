@@ -44,7 +44,8 @@ public:
       const int &gpu_mem, const int &cpu_math_library_num_threads,
       const bool &use_mkldnn, const string &label_path,
       const bool &use_tensorrt, const std::string &precision,
-      const int &table_batch_num, const int &table_max_len) {
+      const int &table_batch_num, const int &table_max_len,
+      const bool &merge_no_span_structure) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -55,7 +56,7 @@ public:
     this->table_batch_num_ = table_batch_num;
     this->table_max_len_ = table_max_len;
 
-    this->post_processor_.init(label_path);
+    this->post_processor_.init(label_path, merge_no_span_structure);
     LoadModel(model_dir);
   }
 
@@ -65,7 +66,7 @@ public:
   void Run(std::vector<cv::Mat> img_list,
            std::vector<std::vector<std::string>> &rec_html_tags,
            std::vector<float> &rec_scores,
-           std::vector<std::vector<std::vector<std::vector<int>>>> &rec_boxes,
+           std::vector<std::vector<std::vector<int>>> &rec_boxes,
            std::vector<double> &times);
 
 private:

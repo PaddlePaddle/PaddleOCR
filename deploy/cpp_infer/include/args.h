@@ -54,6 +54,7 @@ DECLARE_string(table_model_dir);
 DECLARE_int32(table_max_len);
 DECLARE_int32(table_batch_num);
 DECLARE_string(table_char_dict_path);
+DECLARE_bool(merge_no_span_structure);
 // forward related
 DECLARE_bool(det);
 DECLARE_bool(rec);
