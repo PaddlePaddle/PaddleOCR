@@ -114,7 +114,7 @@ def merge_config(config, opts):
     return config
 
 
-def check_device(use_gpu, use_xpu=False):
+def check_device(use_gpu, use_xpu=False, use_npu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
@@ -134,24 +134,8 @@ def check_device(use_gpu, use_xpu=False):
         if use_xpu and not paddle.device.is_compiled_with_xpu():
             print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
-    except Exception as e:
-        pass
-
-
-def check_xpu(use_xpu):
-    """
-    Log error and exit when set use_xpu=true in paddlepaddle
-    cpu/gpu version.
-    """
-    err = "Config use_xpu cannot be set as true while you are " \
-          "using paddlepaddle cpu/gpu version ! \nPlease try: \n" \
-          "\t1. Install paddlepaddle-xpu to run model on XPU \n" \
-          "\t2. Set use_xpu as false in config file to run " \
-          "model on CPU/GPU"
-
-    try:
-        if use_xpu and not paddle.is_compiled_with_xpu():
-            print(err)
+        if use_npu and not paddle.device.is_compiled_with_npu():
+            print(err.format("use_npu", "npu", "npu", "use_npu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -279,7 +263,9 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
@@ -479,7 +465,7 @@ def eval(model,
          extra_input=False,
          scaler=None,
          amp_level='O2',
-         amp_custom_black_list = []):
+         amp_custom_black_list=[]):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -500,7 +486,9 @@ def eval(model,
 
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level=amp_level, custom_black_list=amp_custom_black_list):
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
@@ -627,14 +615,9 @@ def preprocess(is_train=False):
     logger = get_logger(log_file=log_file)
 
     # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
+    use_gpu = config['Global'].get('use_gpu', False)
     use_xpu = config['Global'].get('use_xpu', False)
-
-    # check if set use_xpu=True in paddlepaddle cpu/gpu version
-    use_xpu = False
-    if 'use_xpu' in config['Global']:
-        use_xpu = config['Global']['use_xpu']
-    check_xpu(use_xpu)
+    use_npu = config['Global'].get('use_npu', False)
 
     alg = config['Architecture']['algorithm']
     assert alg in [
@@ -647,10 +630,12 @@ def preprocess(is_train=False):
 
     if use_xpu:
         device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+    elif use_npu:
+        device = 'npu:{0}'.format(os.getenv('FLAGS_selected_npus', 0))
     else:
         device = 'gpu:{}'.format(dist.ParallelEnv()
                                  .dev_id) if use_gpu else 'cpu'
-    check_device(use_gpu, use_xpu)
+    check_device(use_gpu, use_xpu, use_npu)
 
     device = paddle.set_device(device)
 
