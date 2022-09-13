@@ -36,6 +36,7 @@ def init_args():
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_xpu", type=str2bool, default=False)
+    parser.add_argument("--use_npu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -245,6 +246,8 @@ def create_predictor(args, mode, logger):
                         f"when using tensorrt, dynamic shape is a suggested option, you can use '--shape_info_filename=shape.txt' for offline dygnamic shape tuning"
                     )
 
+        elif args.use_npu:
+            config.enable_npu()
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
@@ -413,7 +416,8 @@ def draw_ocr_box_txt(image,
     for idx, (box, txt) in enumerate(zip(boxes, txts)):
         if scores is not None and scores[idx] < drop_score:
             continue
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        color = (random.randint(0, 255), random.randint(0, 255),
+                 random.randint(0, 255))
         draw_left.polygon(box, fill=color)
         img_right_text = draw_box_txt_fine((w, h), box, txt, font_path)
         pts = np.array(box, np.int32).reshape((-1, 1, 2))
@@ -427,8 +431,10 @@ def draw_ocr_box_txt(image,
 
 
 def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
-    box_height = int(math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][1])**2))
-    box_width = int(math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][1])**2))
+    box_height = int(
+        math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][1])**2))
+    box_width = int(
+        math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][1])**2))
 
     if box_height > 2 * box_width and box_height > 30:
         img_text = Image.new('RGB', (box_height, box_width), (255, 255, 255))
@@ -444,15 +450,19 @@ def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
             font = create_font(txt, (box_width, box_height), font_path)
             draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
 
-    pts1 = np.float32([[0, 0], [box_width, 0], [box_width, box_height], [0, box_height]])
+    pts1 = np.float32(
+        [[0, 0], [box_width, 0], [box_width, box_height], [0, box_height]])
     pts2 = np.array(box, dtype=np.float32)
     M = cv2.getPerspectiveTransform(pts1, pts2)
 
     img_text = np.array(img_text, dtype=np.uint8)
-    img_right_text = cv2.warpPerspective(img_text, M, img_size,
-                                         flags=cv2.INTER_NEAREST,
-                                         borderMode=cv2.BORDER_CONSTANT,
-                                         borderValue=(255, 255, 255))
+    img_right_text = cv2.warpPerspective(
+        img_text,
+        M,
+        img_size,
+        flags=cv2.INTER_NEAREST,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=(255, 255, 255))
     return img_right_text
 
 
