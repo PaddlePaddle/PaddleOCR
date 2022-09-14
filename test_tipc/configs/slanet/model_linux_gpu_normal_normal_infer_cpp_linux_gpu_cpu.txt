@@ -1,0 +1,20 @@
+===========================cpp_infer_params===========================
+model_name:slanet
+use_opencv:True
+infer_model:./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
+infer_quant:False
+inference:./deploy/cpp_infer/build/ppocr --det_model_dir=./inference/ch_PP-OCRv3_det_infer --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer --output=./output/table --type=structure --table=True --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --table_char_dict_path=./ppocr/utils/dict/table_structure_dict_ch.txt
+--use_gpu:True|False
+--enable_mkldnn:False
+--cpu_threads:6
+--rec_batch_num:6
+--use_tensorrt:False
+--precision:fp32
+--table_model_dir:
+--image_dir:./ppstructure/docs/table/table.jpg
+null:null
+--benchmark:True
+--det:True
+--rec:True
+--cls:False
+--use_angle_cls:False
