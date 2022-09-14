@@ -577,6 +577,12 @@ if [[ ${model_name} =~ "KL" ]]; then
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
         cd ./train_data/ && tar xf pubtabnet.tar && cd ../
     fi
+    if [[ ${model_name} =~ "layoutxlm_ser_KL" ]]; then
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+        cd ./train_data/ && tar xf XFUND.tar && cd ../
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ser_LayoutXLM_xfun_zh_infer.tar & cd ../
+    fi
 fi
 
 if [ ${MODE} = "cpp_infer" ];then
@@ -681,6 +687,12 @@ if [ ${MODE} = "cpp_infer" ];then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && tar xf ch_det_data_50.tar && cd ../
     fi 
+    elif [ ${model_name} = "en_table_structure_KL" ];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
+    fi
 fi
 
 if [ ${MODE} = "serving_infer" ];then
