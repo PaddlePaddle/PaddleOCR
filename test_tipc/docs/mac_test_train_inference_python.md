@@ -33,12 +33,7 @@ Mac端无GPU，环境准备只需要Python环境即可，安装PaddlePaddle等�
     ```
 - 安装autolog（规范化日志输出工具）
     ```
-    git clone https://github.com/LDOUBLEV/AutoLog
-    cd AutoLog
-    pip install -r requirements.txt
-    python setup.py bdist_wheel
-    pip install ./dist/auto_log-1.2.0-py3-none-any.whl
-    cd ../
+    pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
     ```
 - 安装PaddleSlim (可选)
    ```
