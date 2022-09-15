@@ -502,7 +502,7 @@ def resize_norm_img_chinese(img, image_shape):
     max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
-    max_wh_ratio = max(max_wh_ratio, ratio)
+    max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
     imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW

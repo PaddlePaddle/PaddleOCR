@@ -37,6 +37,46 @@ from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 import tools.program as program
+from PIL import Image, ImageDraw, ImageFont
+import math
+
+
+def draw_e2e_res_for_chinese(image,
+                             boxes,
+                             txts,
+                             config,
+                             img_name,
+                             font_path="./doc/simfang.ttf"):
+    h, w = image.height, image.width
+    img_left = image.copy()
+    img_right = Image.new('RGB', (w, h), (255, 255, 255))
+
+    import random
+
+    random.seed(0)
+    draw_left = ImageDraw.Draw(img_left)
+    draw_right = ImageDraw.Draw(img_right)
+    for idx, (box, txt) in enumerate(zip(boxes, txts)):
+        box = np.array(box)
+        box = [tuple(x) for x in box]
+        color = (random.randint(0, 255), random.randint(0, 255),
+                 random.randint(0, 255))
+        draw_left.polygon(box, fill=color)
+        draw_right.polygon(box, outline=color)
+        font = ImageFont.truetype(font_path, 15, encoding="utf-8")
+        draw_right.text([box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
+    img_left = Image.blend(image, img_left, 0.5)
+    img_show = Image.new('RGB', (w * 2, h), (255, 255, 255))
+    img_show.paste(img_left, (0, 0, w, h))
+    img_show.paste(img_right, (w, 0, w * 2, h))
+
+    save_e2e_path = os.path.dirname(config['Global'][
+        'save_res_path']) + "/e2e_results/"
+    if not os.path.exists(save_e2e_path):
+        os.makedirs(save_e2e_path)
+    save_path = os.path.join(save_e2e_path, os.path.basename(img_name))
+    cv2.imwrite(save_path, np.array(img_show)[:, :, ::-1])
+    logger.info("The e2e Image saved in {}".format(save_path))
 
 
 def draw_e2e_res(dt_boxes, strs, config, img, img_name):
@@ -113,7 +153,19 @@ def main():
             otstr = file + "\t" + json.dumps(dt_boxes_json) + "\n"
             fout.write(otstr.encode())
             src_img = cv2.imread(file)
-            draw_e2e_res(points, strs, config, src_img, file)
+            if global_config['infer_visual_type'] == 'EN':
+                draw_e2e_res(points, strs, config, src_img, file)
+            elif global_config['infer_visual_type'] == 'CN':
+                src_img = Image.fromarray(
+                    cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB))
+                draw_e2e_res_for_chinese(
+                    src_img,
+                    points,
+                    strs,
+                    config,
+                    file,
+                    font_path="./doc/fonts/simfang.ttf")
+
     logger.info("success!")
 
 

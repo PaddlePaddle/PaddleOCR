@@ -55,8 +55,10 @@ DEFINE_int32(rec_img_w, 320, "rec image width");
 DEFINE_string(table_model_dir, "", "Path of table struture inference model.");
 DEFINE_int32(table_max_len, 488, "max len size of input image.");
 DEFINE_int32(table_batch_num, 1, "table_batch_num.");
+DEFINE_bool(merge_no_span_structure, true,
+            "Whether merge <td> and </td> to <td></td>");
 DEFINE_string(table_char_dict_path,
-              "../../ppocr/utils/dict/table_structure_dict.txt",
+              "../../ppocr/utils/dict/table_structure_dict_ch.txt",
               "Path of dictionary.");
 
 // ocr forward related

@@ -8,7 +8,7 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 
 | 算法名称 | 模型名称 | 单机单卡 | 单机多卡 | 多机多卡 | 模型压缩（单机多卡） |
 |  :----  |   :----  |    :----  |  :----   |  :----   |  :----   |
-|  DB  | ch_ppocr_mobile_v2.0_det| 正常训练 <br> 混合精度 | - | - | 正常训练：FPGM裁剪、PACT量化 <br> 离线量化（无需训练） |
+|  DB  | ch_ppocr_mobile_v2_0_det| 正常训练 <br> 混合精度 | - | - | 正常训练：FPGM裁剪、PACT量化 |
 
 
 - 预测相关：基于训练是否使用量化，可以将训练产出的模型可以分为`正常模型`和`量化模型`，这两类模型对应的预测功能汇总如下：
@@ -29,19 +29,14 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 
 
 ### 2.1 安装依赖
-- 安装PaddlePaddle >= 2.0
+- 安装PaddlePaddle >= 2.3
 - 安装PaddleOCR依赖
     ```
     pip install  -r ../requirements.txt
     ```
 - 安装autolog（规范化日志输出工具）
     ```
-    git clone https://github.com/LDOUBLEV/AutoLog
-    cd AutoLog
-    pip  install -r requirements.txt
-    python setup.py bdist_wheel
-    pip  install ./dist/auto_log-1.0.0-py3-none-any.whl
-    cd ../
+    pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
     ```
 - 安装PaddleSlim (可选)
    ```
@@ -51,54 +46,46 @@ Windows端基础训练预测功能测试的主程序为`test_train_inference_pyt
 
 
 ### 2.2 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_train_inference_python.sh`进行测试，最终在```test_tipc/output```目录下生成`python_infer_*.log`格式的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_train_inference_python.sh`进行测试，最终在```test_tipc/output```目录下生成`,model_name/lite_train_lite_infer/*.log`格式的日志文件。
 
 
-`test_train_inference_python.sh`包含5种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
+`test_train_inference_python.sh`包含基础链条的4种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
 
 - 模式1：lite_train_lite_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_lite_infer'
 ```  
 
 - 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'lite_train_whole_infer'
 ```  
 
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
 # 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer' '1'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_infer' '1'
 ```  
 
 - 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_windows_gpu_normal_normal_infer_python_windows_cpu_gpu.txt  'whole_train_whole_infer'
 ```  
-
-- 模式5：klquant_whole_infer，测试离线量化；
-```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/model_linux_gpu_normal_normal_infer_python_windows_gpu_cpu.txt  'klquant_whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det_KL/model_linux_gpu_normal_normal_infer_python_windows_gpu_cpu.txt  'klquant_whole_infer'
-```
-
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
 ```
-test_tipc/output/
+test_tipc/output/model_name/lite_train_lite_infer/
 |- results_python.log    # 运行指令状态的日志
 |- norm_train_gpus_0_autocast_null/  # GPU 0号卡上正常训练的训练日志和模型保存文件夹
-|- pact_train_gpus_0_autocast_null/  # GPU 0号卡上量化训练的训练日志和模型保存文件夹
 ......
-|- python_infer_cpu_usemkldnn_True_threads_1_batchsize_1.log  # CPU上开启Mkldnn线程数设置为1，测试batch_size=1条件下的预测运行日志
-|- python_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log # GPU上开启TensorRT，测试batch_size=1的半精度预测日志
+|- python_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_1.log  # CPU上关闭Mkldnn线程数设置为6，测试batch_size=1条件下的fp32精度预测运行日志
+|- python_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log # GPU上关闭TensorRT，测试batch_size=1的fp32精度预测日志
 ......
 ```
 

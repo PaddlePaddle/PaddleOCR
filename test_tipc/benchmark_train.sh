@@ -1,12 +1,6 @@
 #!/bin/bash
 source test_tipc/common_func.sh
 
-# set env
-python=python
-export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
-export frame_version=${str_tmp%%.post*}
-export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
-
 # run benchmark sh 
 # Usage:
 # bash run_benchmark_train.sh config.txt params
@@ -86,6 +80,13 @@ dataline=`cat $FILENAME`
 IFS=$'\n'
 lines=(${dataline})
 model_name=$(func_parser_value "${lines[1]}")
+python_name=$(func_parser_value "${lines[2]}")
+
+# set env
+python=${python_name}
+export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
+export frame_version=${str_tmp%%.post*}
+export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
 
 # 获取benchmark_params所在的行数
 line_num=`grep -n "train_benchmark_params" $FILENAME  | cut -d ":" -f 1`

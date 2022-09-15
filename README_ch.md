@@ -135,7 +135,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [推理部署](./deploy/README_ch.md)
         - [基于Python预测引擎推理](./ppstructure/docs/inference.md)
         - [基于C++预测引擎推理](./deploy/cpp_infer/readme_ch.md)
-        - [服务化部署](./deploy/pdserving/README_CN.md)
+        - [服务化部署](./deploy/hubserving/readme.md)
 - [前沿算法与模型🚀](./doc/doc_ch/algorithm_overview.md)
     - [文本检测算法](./doc/doc_ch/algorithm_overview.md)
     - [文本识别算法](./doc/doc_ch/algorithm_overview.md)

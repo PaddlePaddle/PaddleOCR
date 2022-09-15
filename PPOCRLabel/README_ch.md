@@ -1,10 +1,14 @@
 [English](README.md) | 简体中文
 
-# PPOCRLabel
+# PPOCRLabelv2
 
 PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置PP-OCR模型对数据自动标注和重新识别。使用Python3和PyQT5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PaddleOCR检测和识别模型的训练。
 
-<img src="./data/gif/steps.gif" width="100%"/>
+|                      常规标注                       |                    表格标注                    |
+| :-------------------------------------------------: | :--------------------------------------------: |
+|  <img src="./data/gif/steps_en.gif" width="80%"/>   | <img src="./data/gif/table.gif" width="100%"/> |
+|                 **不规则文本标注**                  |                **关键信息标注**                |
+| <img src="./data/gif/multi-point.gif" width="80%"/> |  <img src="./data/gif/kie.gif" width="100%"/>  |
 
 #### 近期更新
 - 2022.05：**新增表格标注**，使用方法见下方`2.2 表格标注`（by [whjdark](https://github.com/peterh0323); [Evezerest](https://github.com/Evezerest))
