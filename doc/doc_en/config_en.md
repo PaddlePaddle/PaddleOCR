@@ -28,7 +28,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      epoch_num           |    Maximum training epoch number             |       500        |                \                 |
 |      log_smooth_window   |    Log queue length, the median value in the queue each time will be printed           |       20          |                \                 |
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
-|      save_model_dir      |    Set model save path        |  output/{算法名称}  |                \                 |
+|      save_model_dir      |    Set model save path        |  output/{algorithm_name}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
 |      eval_batch_step     |    Set the model evaluation interval        | 2000 or [1000, 2000]        | running evaluation every 2000 iters or evaluation is run every 2000 iterations after the 1000th iteration   |
 |      cal_metric_during_train     |    Set whether to evaluate the metric during the training process. At this time, the metric of the model under the current batch is evaluated        |       true         |                \                 |
