@@ -112,6 +112,8 @@ void Classifier::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      config.CollectShapeRangeInfo("./trt_shape.txt");
+      config.EnableTunedTensorRtDynamicShape("./trt_shape.txt", true);
     }
   } else {
     config.DisableGpu();
