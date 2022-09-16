@@ -147,9 +147,11 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
-      config.EnableTensorRtEngine(1 << 20, 10, 15, precision, false, false);
-      config.CollectShapeRangeInfo("./trt_shape.txt");
-      config.EnableTunedTensorRtDynamicShape("./trt_shape.txt", true);
+      if (!Utility::PathExists("./trt_rec_shape.txt")){
+        config.CollectShapeRangeInfo("./trt_rec_shape.txt");
+      } else { 
+        config.EnableTunedTensorRtDynamicShape("./trt_rec_shape.txt", true);
+      }
       
     }
   } else {

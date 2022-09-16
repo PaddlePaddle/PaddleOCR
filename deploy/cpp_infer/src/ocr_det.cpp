@@ -33,8 +33,11 @@ void DBDetector::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 30, 1, 20, precision, false, false);
-      config.CollectShapeRangeInfo("./trt_shape.txt");
-      config.EnableTunedTensorRtDynamicShape("./trt_shape.txt", true);
+      if (!Utility::PathExists("./trt_det_shape.txt")){
+        config.CollectShapeRangeInfo("./trt_det_shape.txt");
+      } else { 
+        config.EnableTunedTensorRtDynamicShape("./trt_det_shape.txt", true);
+      }
       
     }
   } else {
