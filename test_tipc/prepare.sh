@@ -274,6 +274,11 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./train_data/ && tar xf XFUND.tar
         cd ../
     fi
+    if [ ${model_name} == "det_r18_ct" ]; then
+        wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ct_tipc/total_text_lite2.tar --no-check-certificate
+        cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
+    fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams --no-check-certificate

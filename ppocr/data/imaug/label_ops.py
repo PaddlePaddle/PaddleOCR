@@ -1395,3 +1395,29 @@ class VLLabelEncode(BaseRecLabelEncode):
         data['label_res'] = np.array(label_res)
         data['label_sub'] = np.array(label_sub)
         return data
+
+
+class CTLabelEncode(object):
+    def __init__(self, **kwargs):
+        pass
+
+    def __call__(self, data):
+        label = data['label']
+
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts = [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            box = np.array(box)
+
+            boxes.append(box)
+            txt = label[bno]['transcription']
+            txts.append(txt)
+
+        if len(boxes) == 0:
+            return None
+
+        data['polys'] = boxes
+        data['texts'] = txts
+        return data
