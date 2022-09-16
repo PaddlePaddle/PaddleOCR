@@ -99,6 +99,8 @@ The following table also provides a series of models that can be deployed on mob
 
 |Version|Introduction|Model size|Detection model|Text Direction model|Recognition model|Paddle-Lite branch|
 |---|---|---|---|---|---|---|
+|PP-OCRv3|extra-lightweight chinese OCR optimized model|16.2M|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.nb)|v2.10|
+|PP-OCRv3(slim)|extra-lightweight chinese OCR optimized model|5.9M|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.nb)|v2.10|
 |PP-OCRv2|extra-lightweight chinese OCR optimized model|11M|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_det_infer_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_rec_infer_opt.nb)|v2.10|
 |PP-OCRv2(slim)|extra-lightweight chinese OCR optimized model|4.6M|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_det_slim_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[download link](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_rec_slim_opt.nb)|v2.10|
 
@@ -134,17 +136,16 @@ Introduction to paddle_lite_opt parameters:
 The following takes the ultra-lightweight Chinese model of PaddleOCR as an example to introduce the use of the compiled opt file to complete the conversion of the inference model to the Paddle-Lite optimized model
 
 ```
-# 【[Recommendation] Download the Chinese and English inference model of PP-OCRv2
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar && tar xf  ch_PP-OCRv2_det_slim_quant_infer.tar
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar && tar xf  ch_PP-OCRv2_rec_slim_quant_infer.tar
+# 【[Recommendation] Download the Chinese and English inference model of PP-OCRv3
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.tar && tar xf  ch_PP-OCRv3_det_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar && tar xf  ch_PP-OCRv2_rec_slim_quant_infer.tar
 wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # Convert detection model
-./opt --model_file=./ch_PP-OCRv2_det_slim_quant_infer/inference.pdmodel  --param_file=./ch_PP-OCRv2_det_slim_quant_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv2_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+paddle_lite_opt --model_file=./ch_PP-OCRv3_det_slim_infer/inference.pdmodel  --param_file=./ch_PP-OCRv3_det_slim_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv3_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # Convert recognition model
-./opt --model_file=./ch_PP-OCRv2_rec_slim_quant_infer/inference.pdmodel  --param_file=./ch_PP-OCRv2_rec_slim_quant_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv2_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+paddle_lite_opt --model_file=./ch_PP-OCRv3_rec_slim_infer/inference.pdmodel  --param_file=./ch_PP-OCRv3_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv3_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # Convert angle classifier model
-./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
-
+paddle_lite_opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 ```
 
 After the conversion is successful, there will be more files ending with `.nb` in the inference model directory, which is the successfully converted model file.
@@ -197,15 +198,15 @@ Some preparatory work is required first.
  cp ../../../cxx/lib/libpaddle_light_api_shared.so ./debug/
  ```
 
-Prepare the test image, taking PaddleOCR/doc/imgs/11.jpg as an example, copy the image file to the demo/cxx/ocr/debug/ folder. Prepare the model files optimized by the lite opt tool, ch_det_mv3_db_opt.nb, ch_rec_mv3_crnn_opt.nb, and place them under the demo/cxx/ocr/debug/ folder.
+Prepare the test image, taking PaddleOCR/doc/imgs/11.jpg as an example, copy the image file to the demo/cxx/ocr/debug/ folder. Prepare the model files optimized by the lite opt tool, ch_PP-OCRv3_det_slim_opt.nb , ch_PP-OCRv3_rec_slim_opt.nb , and place them under the demo/cxx/ocr/debug/ folder.
 
 The structure of the OCR demo is as follows after the above command is executed:
 
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_PP-OCRv2_det_slim_opt.nb           Detection model
-|   |--ch_PP-OCRv2_rec_slim_opt.nb           Recognition model
+|   |--ch_PP-OCRv3_det_slim_opt.nb           Detection model
+|   |--ch_PP-OCRv3_rec_slim_opt.nb           Recognition model
 |   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           Text direction classification model
 |   |--11.jpg                           Image for OCR
 |   |--ppocr_keys_v1.txt                Dictionary file
@@ -240,7 +241,7 @@ det_db_thresh  0.3        # Used to filter the binarized image of DB prediction,
 det_db_box_thresh  0.5    # DDB post-processing filter box threshold, if there is a missing box detected, it can be reduced as appropriate
 det_db_unclip_ratio  1.6  # Indicates the compactness of the text box, the smaller the value, the closer the text box to the text
 use_direction_classify  0  # Whether to use the direction classifier, 0 means not to use, 1 means to use
-rec_image_height  32      # The height of the input image of the recognition model, the PP-OCRv3 model needs to be set to 48, and the PP-OCRv2 model needs to be set to 32
+rec_image_height  48      # The height of the input image of the recognition model, the PP-OCRv3 model needs to be set to 48, and the PP-OCRv2 model needs to be set to 32
 ```
 
  5. Run Model on phone
@@ -260,14 +261,14 @@ After the above steps are completed, you can use adb to push the file to the pho
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
  # The use of ocr_db_crnn is:
  # ./ocr_db_crnn Mode Detection model file Orientation classifier model file Recognition model file  Hardware  Precision  Threads Batchsize  Test image path Dictionary file path
- ./ocr_db_crnn system ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+ ./ocr_db_crnn system ch_PP-OCRv3_det_slim_opt.nb  ch_PP-OCRv3_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
 # precision can be INT8 for quantitative model or FP32 for normal model.
 
 # Only using detection model
-./ocr_db_crnn  det ch_PP-OCRv2_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
+./ocr_db_crnn  det ch_PP-OCRv3_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
 
 # Only using recognition model
-./ocr_db_crnn  rec ch_PP-OCRv2_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
+./ocr_db_crnn  rec ch_PP-OCRv3_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
  ```
 
 If you modify the code, you need to recompile and push to the phone.
