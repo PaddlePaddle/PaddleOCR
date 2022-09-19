@@ -227,10 +227,7 @@ def create_predictor(args, mode, logger):
                     use_calib_mode=False)
 
                 # collect shape
-                model_name = os.path.basename(
-                    model_dir[:-1]) if model_dir.endswith(
-                        "/") else os.path.basename(model_dir)
-                trt_shape_f = f"{mode}_{model_name}.txt"
+                trt_shape_f = os.path.join(model_dir, f"{mode}_trt_dynamic_shape.txt")
 
                 if not os.path.exists(trt_shape_f):
                     config.collect_shape_range_info(trt_shape_f)
