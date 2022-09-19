@@ -123,7 +123,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [Inference and Deployment](./deploy/README.md)
         - [Python Inference](./ppstructure/docs/inference_en.md)
         - [C++ Inference](./deploy/cpp_infer/readme.md)
-        - [Serving](./deploy/pdserving/README.md)
+        - [Serving](./deploy/hubserving/readme_en.md)
 - [Academic Algorithms](./doc/doc_en/algorithm_overview_en.md)
     - [Text detection](./doc/doc_en/algorithm_overview_en.md)
     - [Text recognition](./doc/doc_en/algorithm_overview_en.md)
