@@ -119,6 +119,12 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
+
+    use_sync_bn = config["Global"].get("use_sync_bn", False)
+    if use_sync_bn:
+        model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+        logger.info('convert_sync_batchnorm')
+
     model = apply_to_static(model, config, logger)
 
     # build loss
@@ -133,15 +139,15 @@ def main(config, device, logger, vdl_writer):
 
     # build metric
     eval_class = build_metric(config['Metric'])
-    # load pretrain model
-    pre_best_model_dict = load_model(config, model, optimizer,
-                                     config['Architecture']["model_type"])
+
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(
             len(valid_dataloader)))
 
     use_amp = config["Global"].get("use_amp", False)
+    amp_level = config["Global"].get("amp_level", 'O2')
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
@@ -154,17 +160,26 @@ def main(config, device, logger, vdl_writer):
         scaler = paddle.amp.GradScaler(
             init_loss_scaling=scale_loss,
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
-        model, optimizer = paddle.amp.decorate(
-            models=model, optimizers=optimizer, level='O2', master_weight=True)
+        if amp_level == "O2":
+            model, optimizer = paddle.amp.decorate(
+                models=model,
+                optimizers=optimizer,
+                level=amp_level,
+                master_weight=True)
     else:
         scaler = None
+
+    # load pretrain model
+    pre_best_model_dict = load_model(config, model, optimizer,
+                                     config['Architecture']["model_type"])
 
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
+                  amp_level, amp_custom_black_list)
 
 
 def test_reader(config, device, logger):

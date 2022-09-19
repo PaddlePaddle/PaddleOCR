@@ -54,13 +54,15 @@ def load_model(config, model, optimizer=None, model_type='det'):
     pretrained_model = global_config.get('pretrained_model')
     best_model_dict = {}
     is_float16 = False
+    is_nlp_model = model_type == 'kie' and config["Architecture"][
+        "algorithm"] not in ["SDMGR"]
 
-    if model_type == 'vqa':
-        # NOTE: for vqa model, resume training is not supported now
+    if is_nlp_model is True:
+        # NOTE: for kie model dsitillation, resume training is not supported now
         if config["Architecture"]["algorithm"] in ["Distillation"]:
             return best_model_dict
         checkpoints = config['Architecture']['Backbone']['checkpoints']
-        # load vqa method metric
+        # load kie method metric
         if checkpoints:
             if os.path.exists(os.path.join(checkpoints, 'metric.states')):
                 with open(os.path.join(checkpoints, 'metric.states'),
@@ -102,8 +104,9 @@ def load_model(config, model, optimizer=None, model_type='det'):
                 continue
             pre_value = params[key]
             if pre_value.dtype == paddle.float16:
-                pre_value = pre_value.astype(paddle.float32)
                 is_float16 = True
+            if pre_value.dtype != value.dtype:
+                pre_value = pre_value.astype(value.dtype)
             if list(value.shape) == list(pre_value.shape):
                 new_state_dict[key] = pre_value
             else:
@@ -148,16 +151,21 @@ def load_pretrained_params(model, path):
         "The {}.pdparams does not exists!".format(path)
 
     params = paddle.load(path + '.pdparams')
+
     state_dict = model.state_dict()
+
     new_state_dict = {}
     is_float16 = False
+
     for k1 in params.keys():
+
         if k1 not in state_dict.keys():
             logger.warning("The pretrained params {} not in model".format(k1))
         else:
             if params[k1].dtype == paddle.float16:
-                params[k1] = params[k1].astype(paddle.float32)
                 is_float16 = True
+            if params[k1].dtype != state_dict[k1].dtype:
+                params[k1] = params[k1].astype(state_dict[k1].dtype)
             if list(state_dict[k1].shape) == list(params[k1].shape):
                 new_state_dict[k1] = params[k1]
             else:
@@ -187,12 +195,14 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    if config['Architecture']["model_type"] != 'vqa':
-        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
-    if config['Architecture']["model_type"] != 'vqa':
+    paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+
+    is_nlp_model = config['Architecture']["model_type"] == 'kie' and config[
+        "Architecture"]["algorithm"] not in ["SDMGR"]
+    if is_nlp_model is not True:
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
-    else:  # for vqa system, we follow the save/load rules in NLP
+    else:  # for kie system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
             arch = model._layers
         else:

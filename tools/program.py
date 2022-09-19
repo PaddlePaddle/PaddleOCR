@@ -25,6 +25,8 @@ import datetime
 import paddle
 import paddle.distributed as dist
 from tqdm import tqdm
+import cv2
+import numpy as np
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
@@ -112,7 +114,7 @@ def merge_config(config, opts):
     return config
 
 
-def check_device(use_gpu, use_xpu=False):
+def check_device(use_gpu, use_xpu=False, use_npu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
@@ -132,24 +134,8 @@ def check_device(use_gpu, use_xpu=False):
         if use_xpu and not paddle.device.is_compiled_with_xpu():
             print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
-    except Exception as e:
-        pass
-
-
-def check_xpu(use_xpu):
-    """
-    Log error and exit when set use_xpu=true in paddlepaddle
-    cpu/gpu version.
-    """
-    err = "Config use_xpu cannot be set as true while you are " \
-          "using paddlepaddle cpu/gpu version ! \nPlease try: \n" \
-          "\t1. Install paddlepaddle-xpu to run model on XPU \n" \
-          "\t2. Set use_xpu as false in config file to run " \
-          "model on CPU/GPU"
-
-    try:
-        if use_xpu and not paddle.is_compiled_with_xpu():
-            print(err)
+        if use_npu and not paddle.device.is_compiled_with_npu():
+            print(err.format("use_npu", "npu", "npu", "use_npu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -160,18 +146,18 @@ def to_float32(preds):
         for k in preds:
             if isinstance(preds[k], dict) or isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
     elif isinstance(preds, list):
         for k in range(len(preds)):
             if isinstance(preds[k], dict):
                 preds[k] = to_float32(preds[k])
             elif isinstance(preds[k], list):
                 preds[k] = to_float32(preds[k])
-            else:
-                preds[k] = paddle.to_tensor(preds[k], dtype='float32')
-    else:
-        preds = paddle.to_tensor(preds, dtype='float32')
+            elif isinstance(preds[k], paddle.Tensor):
+                preds[k] = preds[k].astype(paddle.float32)
+    elif isinstance(preds, paddle.Tensor):
+        preds = preds.astype(paddle.float32)
     return preds
 
 
@@ -188,7 +174,9 @@ def train(config,
           pre_best_model_dict,
           logger,
           log_writer=None,
-          scaler=None):
+          scaler=None,
+          amp_level='O2',
+          amp_custom_black_list=[]):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -228,7 +216,8 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
-        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN"
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN",
+        "RobustScanner"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -262,6 +251,7 @@ def train(config,
                 config, 'Train', device, logger, seed=epoch)
             max_iter = len(train_dataloader) - 1 if platform.system(
             ) == "Windows" else len(train_dataloader)
+
         for idx, batch in enumerate(train_dataloader):
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
@@ -273,10 +263,12 @@ def train(config,
                 model_average = True
             # use amp
             if scaler:
-                with paddle.amp.auto_cast(level='O2'):
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
-                    elif model_type in ["kie", 'vqa']:
+                    elif model_type in ["kie"]:
                         preds = model(batch)
                     else:
                         preds = model(images)
@@ -289,7 +281,7 @@ def train(config,
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])
-                elif model_type in ["kie", 'vqa']:
+                elif model_type in ["kie", 'sr']:
                     preds = model(batch)
                 else:
                     preds = model(images)
@@ -297,11 +289,12 @@ def train(config,
                 avg_loss = loss['loss']
                 avg_loss.backward()
                 optimizer.step()
+
             optimizer.clear_grad()
 
             if cal_metric_during_train and epoch % calc_epoch_interval == 0:  # only rec and cls need
                 batch = [item.numpy() for item in batch]
-                if model_type in ['kie']:
+                if model_type in ['kie', 'sr']:
                     eval_class(preds, batch)
                 elif model_type in ['table']:
                     post_result = post_process_class(preds, batch)
@@ -347,8 +340,8 @@ def train(config,
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
-                       '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                       'ips: {:.5f} samples/s, eta: {}'.format(
+                    '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
+                    'ips: {:.5f} samples/s, eta: {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
@@ -376,7 +369,10 @@ def train(config,
                     post_process_class,
                     eval_class,
                     model_type,
-                    extra_input=extra_input)
+                    extra_input=extra_input,
+                    scaler=scaler,
+                    amp_level=amp_level,
+                    amp_custom_black_list=amp_custom_black_list)
                 cur_metric_str = 'cur metric, {}'.format(', '.join(
                     ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
                 logger.info(cur_metric_str)
@@ -466,7 +462,10 @@ def eval(model,
          post_process_class,
          eval_class,
          model_type=None,
-         extra_input=False):
+         extra_input=False,
+         scaler=None,
+         amp_level='O2',
+         amp_custom_black_list=[]):
     model.eval()
     with paddle.no_grad():
         total_frame = 0.0
@@ -478,17 +477,41 @@ def eval(model,
             leave=True)
         max_iter = len(valid_dataloader) - 1 if platform.system(
         ) == "Windows" else len(valid_dataloader)
+        sum_images = 0
         for idx, batch in enumerate(valid_dataloader):
             if idx >= max_iter:
                 break
             images = batch[0]
             start = time.time()
-            if model_type == 'table' or extra_input:
-                preds = model(images, data=batch[1:])
-            elif model_type in ["kie", 'vqa']:
-                preds = model(batch)
+
+            # use amp
+            if scaler:
+                with paddle.amp.auto_cast(
+                        level=amp_level,
+                        custom_black_list=amp_custom_black_list):
+                    if model_type == 'table' or extra_input:
+                        preds = model(images, data=batch[1:])
+                    elif model_type in ["kie"]:
+                        preds = model(batch)
+                    elif model_type in ['sr']:
+                        preds = model(batch)
+                        sr_img = preds["sr_img"]
+                        lr_img = preds["lr_img"]
+                    else:
+                        preds = model(images)
+                preds = to_float32(preds)
             else:
-                preds = model(images)
+                if model_type == 'table' or extra_input:
+                    preds = model(images, data=batch[1:])
+                elif model_type in ["kie"]:
+                    preds = model(batch)
+                elif model_type in ['sr']:
+                    preds = model(batch)
+                    sr_img = preds["sr_img"]
+                    lr_img = preds["lr_img"]
+                else:
+                    preds = model(images)
+
             batch_numpy = []
             for item in batch:
                 if isinstance(item, paddle.Tensor):
@@ -498,17 +521,21 @@ def eval(model,
             # Obtain usable results from post-processing methods
             total_time += time.time() - start
             # Evaluate the results of the current batch
-            if model_type in ['kie']:
+            if model_type in ['table', 'kie']:
+                if post_process_class is None:
+                    eval_class(preds, batch_numpy)
+                else:
+                    post_result = post_process_class(preds, batch_numpy)
+                    eval_class(post_result, batch_numpy)
+            elif model_type in ['sr']:
                 eval_class(preds, batch_numpy)
-            elif model_type in ['table', 'vqa']:
-                post_result = post_process_class(preds, batch_numpy)
-                eval_class(post_result, batch_numpy)
             else:
                 post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
 
             pbar.update(1)
             total_frame += len(images)
+            sum_images += 1
         # Get final metric，eg. acc or hmean
         metric = eval_class.get_metric()
 
@@ -588,29 +615,27 @@ def preprocess(is_train=False):
     logger = get_logger(log_file=log_file)
 
     # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global']['use_gpu']
+    use_gpu = config['Global'].get('use_gpu', False)
     use_xpu = config['Global'].get('use_xpu', False)
-
-    # check if set use_xpu=True in paddlepaddle cpu/gpu version
-    use_xpu = False
-    if 'use_xpu' in config['Global']:
-        use_xpu = config['Global']['use_xpu']
-    check_xpu(use_xpu)
+    use_npu = config['Global'].get('use_npu', False)
 
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN'
+        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
+        'Gestalt', 'SLANet', 'RobustScanner', 'CT'
     ]
 
     if use_xpu:
         device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+    elif use_npu:
+        device = 'npu:{0}'.format(os.getenv('FLAGS_selected_npus', 0))
     else:
         device = 'gpu:{}'.format(dist.ParallelEnv()
                                  .dev_id) if use_gpu else 'cpu'
-    check_device(use_gpu, use_xpu)
+    check_device(use_gpu, use_xpu, use_npu)
 
     device = paddle.set_device(device)
 

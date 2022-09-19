@@ -26,8 +26,7 @@ from .make_pse_gt import MakePseGt
 
 from .rec_img_aug import BaseDataAugmentation, RecAug, RecConAug, RecResizeImg, ClsResizeImg, \
     SRNRecResizeImg, GrayRecResizeImg, SARRecResizeImg, PRENResizeImg, \
-    ABINetRecResizeImg, SVTRRecResizeImg, ABINetRecAug, VLRecResizeImg, SPINRecResizeImg
-
+    ABINetRecResizeImg, SVTRRecResizeImg, ABINetRecAug, VLRecResizeImg, SPINRecResizeImg, RobustScannerRecResizeImg
 from .ssl_img_aug import SSLRotateResize
 from .randaugment import RandAugment
 from .copy_paste import CopyPaste
@@ -44,6 +43,7 @@ from .vqa import *
 
 from .fce_aug import *
 from .fce_targets import FCENetTargets
+from .ct_process import *
 
 
 def transform(data, ops=None):

@@ -24,7 +24,7 @@ class BaseRecLabelDecode(object):
     def __init__(self, character_dict_path=None, use_space_char=False):
         self.beg_str = "sos"
         self.end_str = "eos"
-
+        self.reverse = False
         self.character_str = []
         if character_dict_path is None:
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -38,12 +38,30 @@ class BaseRecLabelDecode(object):
             if use_space_char:
                 self.character_str.append(" ")
             dict_character = list(self.character_str)
+            if 'arabic' in character_dict_path:
+                self.reverse = True
 
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
         for i, char in enumerate(dict_character):
             self.dict[char] = i
         self.character = dict_character
+
+    def pred_reverse(self, pred):
+        pred_re = []
+        c_current = ''
+        for c in pred:
+            if not bool(re.search('[a-zA-Z0-9 :*./%+-]', c)):
+                if c_current != '':
+                    pred_re.append(c_current)
+                pred_re.append(c)
+                c_current = ''
+            else:
+                c_current += c
+        if c_current != '':
+            pred_re.append(c_current)
+
+        return ''.join(pred_re[::-1])
 
     def add_special_char(self, dict_character):
         return dict_character
@@ -73,6 +91,10 @@ class BaseRecLabelDecode(object):
                 conf_list = [0]
 
             text = ''.join(char_list)
+
+            if self.reverse:  # for arabic rec
+                text = self.pred_reverse(text)
+
             result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
@@ -780,7 +802,7 @@ class VLLabelDecode(BaseRecLabelDecode):
             ) + length[i])].topk(1)[0][:, 0]
             preds_prob = paddle.exp(
                 paddle.log(preds_prob).sum() / (preds_prob.shape[0] + 1e-6))
-            text.append((preds_text, preds_prob))
+            text.append((preds_text, preds_prob.numpy()[0]))
         if label is None:
             return text
         label = self.decode(label)

@@ -32,49 +32,13 @@ void DBDetector::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
-      config.EnableTensorRtEngine(1 << 20, 1, 20, precision, false, false);
-      std::map<std::string, std::vector<int>> min_input_shape = {
-          {"x", {1, 3, 50, 50}},
-          {"conv2d_92.tmp_0", {1, 120, 20, 20}},
-          {"conv2d_91.tmp_0", {1, 24, 10, 10}},
-          {"conv2d_59.tmp_0", {1, 96, 20, 20}},
-          {"nearest_interp_v2_1.tmp_0", {1, 256, 10, 10}},
-          {"nearest_interp_v2_2.tmp_0", {1, 256, 20, 20}},
-          {"conv2d_124.tmp_0", {1, 256, 20, 20}},
-          {"nearest_interp_v2_3.tmp_0", {1, 64, 20, 20}},
-          {"nearest_interp_v2_4.tmp_0", {1, 64, 20, 20}},
-          {"nearest_interp_v2_5.tmp_0", {1, 64, 20, 20}},
-          {"elementwise_add_7", {1, 56, 2, 2}},
-          {"nearest_interp_v2_0.tmp_0", {1, 256, 2, 2}}};
-      std::map<std::string, std::vector<int>> max_input_shape = {
-          {"x", {1, 3, this->max_side_len_, this->max_side_len_}},
-          {"conv2d_92.tmp_0", {1, 120, 400, 400}},
-          {"conv2d_91.tmp_0", {1, 24, 200, 200}},
-          {"conv2d_59.tmp_0", {1, 96, 400, 400}},
-          {"nearest_interp_v2_1.tmp_0", {1, 256, 200, 200}},
-          {"nearest_interp_v2_2.tmp_0", {1, 256, 400, 400}},
-          {"conv2d_124.tmp_0", {1, 256, 400, 400}},
-          {"nearest_interp_v2_3.tmp_0", {1, 64, 400, 400}},
-          {"nearest_interp_v2_4.tmp_0", {1, 64, 400, 400}},
-          {"nearest_interp_v2_5.tmp_0", {1, 64, 400, 400}},
-          {"elementwise_add_7", {1, 56, 400, 400}},
-          {"nearest_interp_v2_0.tmp_0", {1, 256, 400, 400}}};
-      std::map<std::string, std::vector<int>> opt_input_shape = {
-          {"x", {1, 3, 640, 640}},
-          {"conv2d_92.tmp_0", {1, 120, 160, 160}},
-          {"conv2d_91.tmp_0", {1, 24, 80, 80}},
-          {"conv2d_59.tmp_0", {1, 96, 160, 160}},
-          {"nearest_interp_v2_1.tmp_0", {1, 256, 80, 80}},
-          {"nearest_interp_v2_2.tmp_0", {1, 256, 160, 160}},
-          {"conv2d_124.tmp_0", {1, 256, 160, 160}},
-          {"nearest_interp_v2_3.tmp_0", {1, 64, 160, 160}},
-          {"nearest_interp_v2_4.tmp_0", {1, 64, 160, 160}},
-          {"nearest_interp_v2_5.tmp_0", {1, 64, 160, 160}},
-          {"elementwise_add_7", {1, 56, 40, 40}},
-          {"nearest_interp_v2_0.tmp_0", {1, 256, 40, 40}}};
-
-      config.SetTRTDynamicShapeInfo(min_input_shape, max_input_shape,
-                                    opt_input_shape);
+      config.EnableTensorRtEngine(1 << 30, 1, 20, precision, false, false);
+      if (!Utility::PathExists("./trt_det_shape.txt")){
+        config.CollectShapeRangeInfo("./trt_det_shape.txt");
+      } else { 
+        config.EnableTunedTensorRtDynamicShape("./trt_det_shape.txt", true);
+      }
+      
     }
   } else {
     config.DisableGpu();
@@ -109,7 +73,8 @@ void DBDetector::Run(cv::Mat &img,
   img.copyTo(srcimg);
 
   auto preprocess_start = std::chrono::steady_clock::now();
-  this->resize_op_.Run(img, resize_img, this->max_side_len_, ratio_h, ratio_w,
+  this->resize_op_.Run(img, resize_img, this->limit_type_,
+                       this->limit_side_len_, ratio_h, ratio_w,
                        this->use_tensorrt_);
 
   this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,

@@ -89,12 +89,13 @@ class PGLoss(nn.Layer):
         tcl_pos = paddle.reshape(tcl_pos, [-1, 3])
         tcl_pos = paddle.cast(tcl_pos, dtype=int)
         f_tcl_char = paddle.gather_nd(f_char, tcl_pos)
-        f_tcl_char = paddle.reshape(f_tcl_char,
-                                    [-1, 64, 37])  # len(Lexicon_Table)+1
-        f_tcl_char_fg, f_tcl_char_bg = paddle.split(f_tcl_char, [36, 1], axis=2)
+        f_tcl_char = paddle.reshape(
+            f_tcl_char, [-1, 64, self.pad_num + 1])  # len(Lexicon_Table)+1
+        f_tcl_char_fg, f_tcl_char_bg = paddle.split(
+            f_tcl_char, [self.pad_num, 1], axis=2)
         f_tcl_char_bg = f_tcl_char_bg * tcl_mask + (1.0 - tcl_mask) * 20.0
         b, c, l = tcl_mask.shape
-        tcl_mask_fg = paddle.expand(x=tcl_mask, shape=[b, c, 36 * l])
+        tcl_mask_fg = paddle.expand(x=tcl_mask, shape=[b, c, self.pad_num * l])
         tcl_mask_fg.stop_gradient = True
         f_tcl_char_fg = f_tcl_char_fg * tcl_mask_fg + (1.0 - tcl_mask_fg) * (
             -20.0)

@@ -30,13 +30,15 @@ from .table_metric import TableMetric
 from .kie_metric import KIEMetric
 from .vqa_token_ser_metric import VQASerTokenMetric
 from .vqa_token_re_metric import VQAReTokenMetric
+from .sr_metric import SRMetric
+from .ct_metric import CTMetric
 
 
 def build_metric(config):
     support_dict = [
         "DetMetric", "DetFCEMetric", "RecMetric", "ClsMetric", "E2EMetric",
         "DistillationMetric", "TableMetric", 'KIEMetric', 'VQASerTokenMetric',
-        'VQAReTokenMetric'
+        'VQAReTokenMetric', 'SRMetric', 'CTMetric'
     ]
 
     config = copy.deepcopy(config)

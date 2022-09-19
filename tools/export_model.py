@@ -58,6 +58,8 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
+            [paddle.static.InputSpec(
+                shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
@@ -76,6 +78,12 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 64, 512], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["model_type"] == "sr":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 16, 64], dtype="float32")
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "ViTSTR":
@@ -103,6 +111,22 @@ def export_single_model(model,
                 shape=[None, 3, 64, 256], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "RobustScanner":
+        max_text_length = arch_config["Head"]["max_text_length"]
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 48, 160], dtype="float32"),
+
+            [
+            paddle.static.InputSpec(
+                    shape=[None, ], 
+                    dtype="float32"),
+            paddle.static.InputSpec(
+                    shape=[None, max_text_length], 
+                    dtype="int64")
+            ]
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [
             paddle.static.InputSpec(
@@ -116,13 +140,13 @@ def export_single_model(model,
             paddle.static.InputSpec(
                 shape=[None, 3, 224, 224], dtype="int64"),  # image
         ]
-        if arch_config["algorithm"] == "LayoutLM":
+        if model.backbone.use_visual_backbone is False:
             input_spec.pop(4)
         model = to_static(model, input_spec=[input_spec])
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
-            infer_shape = [3, 48, -1]  # for rec model, H must be 32
+            infer_shape = [3, 32, -1]  # for rec model, H must be 32
             if "Transform" in arch_config and arch_config[
                     "Transform"] is not None and arch_config["Transform"][
                         "name"] == "TPS":
@@ -134,6 +158,8 @@ def export_single_model(model,
             infer_shape = [3, 488, 488]
             if arch_config["algorithm"] == "TableMaster":
                 infer_shape = [3, 480, 480]
+            if arch_config["algorithm"] == "SLANet":
+                infer_shape = [3, -1, -1]
         model = to_static(
             model,
             input_spec=[
@@ -195,6 +221,9 @@ def main():
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
 
+    # for sr algorithm
+    if config["Architecture"]["model_type"] == "sr":
+        config['Architecture']["Transform"]['infer_mode'] = True
     model = build_model(config["Architecture"])
     load_model(config, model, model_type=config['Architecture']["model_type"])
     model.eval()

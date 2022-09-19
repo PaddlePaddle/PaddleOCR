@@ -12,9 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import cv2
 import os
-import pypandoc
 from copy import deepcopy
 
 from docx import Document
@@ -22,21 +20,23 @@ from docx import shared
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
+from docx.enum.table import WD_TABLE_ALIGNMENT
+
+from ppstructure.recovery.table_process import HtmlToDocx
 
 from ppocr.utils.logging import get_logger
 logger = get_logger()
 
 
-def convert_info_docx(img, res, save_folder, img_name):
+def convert_info_docx(img, res, save_folder, img_name, save_pdf=False):
     doc = Document()
     doc.styles['Normal'].font.name = 'Times New Roman'
     doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     doc.styles['Normal'].font.size = shared.Pt(6.5)
-    h, w, _ = img.shape
 
-    res = sorted_layout_boxes(res, w)
     flag = 1
     for i, region in enumerate(res):
+        img_idx = region['img_idx']
         if flag == 2 and region['layout'] == 'single':
             section = doc.add_section(WD_SECTION.CONTINUOUS)
             section._sectPr.xpath('./w:cols')[0].set(qn('w:num'), '1')
@@ -46,10 +46,10 @@ def convert_info_docx(img, res, save_folder, img_name):
             section._sectPr.xpath('./w:cols')[0].set(qn('w:num'), '2')
             flag = 2
 
-        if region['type'] == 'Figure':
+        if region['type'].lower() == 'figure':
             excel_save_folder = os.path.join(save_folder, img_name)
             img_path = os.path.join(excel_save_folder,
-                                    '{}.jpg'.format(region['bbox']))
+                                    '{}_{}.jpg'.format(region['bbox'], img_idx))
             paragraph_pic = doc.add_paragraph()
             paragraph_pic.alignment = WD_ALIGN_PARAGRAPH.CENTER
             run = paragraph_pic.add_run("")
@@ -57,39 +57,37 @@ def convert_info_docx(img, res, save_folder, img_name):
                 run.add_picture(img_path, width=shared.Inches(5))
             elif flag == 2:
                 run.add_picture(img_path, width=shared.Inches(2))
-        elif region['type'] == 'Title':
+        elif region['type'].lower() == 'title':
             doc.add_heading(region['res'][0]['text'])
-        elif region['type'] == 'Text':
+        elif region['type'].lower() == 'table':
+            paragraph = doc.add_paragraph()
+            new_parser = HtmlToDocx()
+            new_parser.table_style = 'TableGrid'
+            table = new_parser.handle_table(html=region['res']['html'])
+            new_table = deepcopy(table)
+            new_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+            paragraph.add_run().element.addnext(new_table._tbl)
+
+        else:
             paragraph = doc.add_paragraph()
             paragraph_format = paragraph.paragraph_format
             for i, line in enumerate(region['res']):
                 if i == 0:
                     paragraph_format.first_line_indent = shared.Inches(0.25)
                 text_run = paragraph.add_run(line['text'] + ' ')
-                text_run.font.size = shared.Pt(9)
-        elif region['type'] == 'Table':
-            pypandoc.convert(
-                source=region['res']['html'],
-                format='html',
-                to='docx',
-                outputfile='tmp.docx')
-            tmp_doc = Document('tmp.docx')
-            paragraph = doc.add_paragraph()
-
-            table = tmp_doc.tables[0]
-            new_table = deepcopy(table)
-            new_table.style = doc.styles['Table Grid']
-            from docx.enum.table import WD_TABLE_ALIGNMENT
-            new_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-            paragraph.add_run().element.addnext(new_table._tbl)
-            os.remove('tmp.docx')
-        else:
-            continue
+                text_run.font.size = shared.Pt(10)
 
     # save to docx
     docx_path = os.path.join(save_folder, '{}.docx'.format(img_name))
     doc.save(docx_path)
     logger.info('docx save to {}'.format(docx_path))
+
+    # save to pdf
+    if save_pdf:
+        pdf_path = os.path.join(save_folder, '{}.pdf'.format(img_name))
+        from docx2pdf import convert
+        convert(docx_path, pdf_path)
+        logger.info('pdf save to {}'.format(pdf_path))
 
 
 def sorted_layout_boxes(res, w):
@@ -112,7 +110,7 @@ def sorted_layout_boxes(res, w):
     res_left = []
     res_right = []
     i = 0
-    
+
     while True:
         if i >= num_boxes:
             break
@@ -137,7 +135,7 @@ def sorted_layout_boxes(res, w):
             res_left = []
             res_right = []
             break
-        elif _boxes[i]['bbox'][0] < w / 4 and _boxes[i]['bbox'][2] < 3*w / 4:
+        elif _boxes[i]['bbox'][0] < w / 4 and _boxes[i]['bbox'][2] < 3 * w / 4:
             _boxes[i]['layout'] = 'double'
             res_left.append(_boxes[i])
             i += 1

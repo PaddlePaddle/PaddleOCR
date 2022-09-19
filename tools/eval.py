@@ -23,6 +23,7 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, __dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
 
+import paddle
 from ppocr.data import build_dataloader
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
@@ -73,7 +74,7 @@ def main():
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "VisionLAN"]
+    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "VisionLAN", "RobustScanner"]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -86,6 +87,30 @@ def main():
     else:
         model_type = None
 
+    # build metric
+    eval_class = build_metric(config['Metric'])
+    # amp
+    use_amp = config["Global"].get("use_amp", False)
+    amp_level = config["Global"].get("amp_level", 'O2')
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list',[])
+    if use_amp:
+        AMP_RELATED_FLAGS_SETTING = {
+            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
+            'FLAGS_max_inplace_grad_add': 8,
+        }
+        paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
+        scale_loss = config["Global"].get("scale_loss", 1.0)
+        use_dynamic_loss_scaling = config["Global"].get(
+            "use_dynamic_loss_scaling", False)
+        scaler = paddle.amp.GradScaler(
+            init_loss_scaling=scale_loss,
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+        if amp_level == "O2":
+            model = paddle.amp.decorate(
+                models=model, level=amp_level, master_weight=True)
+    else:
+        scaler = None
+
     best_model_dict = load_model(
         config, model, model_type=config['Architecture']["model_type"])
     if len(best_model_dict):
@@ -93,11 +118,9 @@ def main():
         for k, v in best_model_dict.items():
             logger.info('{}:{}'.format(k, v))
 
-    # build metric
-    eval_class = build_metric(config['Metric'])
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, extra_input)
+                          eval_class, model_type, extra_input, scaler, amp_level, amp_custom_black_list)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))

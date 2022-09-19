@@ -40,12 +40,25 @@ struct OCRPredictResult {
   int cls_label = -1;
 };
 
+struct StructurePredictResult {
+  std::vector<int> box;
+  std::vector<std::vector<int>> cell_box;
+  std::string type;
+  std::vector<OCRPredictResult> text_res;
+  std::string html;
+  float html_score = -1;
+};
+
 class Utility {
 public:
   static std::vector<std::string> ReadDict(const std::string &path);
 
   static void VisualizeBboxes(const cv::Mat &srcimg,
                               const std::vector<OCRPredictResult> &ocr_result,
+                              const std::string &save_path);
+
+  static void VisualizeBboxes(const cv::Mat &srcimg,
+                              const StructurePredictResult &structure_result,
                               const std::string &save_path);
 
   template <class ForwardIterator>
@@ -68,6 +81,25 @@ public:
   static void CreateDir(const std::string &path);
 
   static void print_result(const std::vector<OCRPredictResult> &ocr_result);
+
+  static cv::Mat crop_image(cv::Mat &img, std::vector<int> &area);
+
+  static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result);
+
+  static std::vector<int> xyxyxyxy2xyxy(std::vector<std::vector<int>> &box);
+  static std::vector<int> xyxyxyxy2xyxy(std::vector<int> &box);
+
+private:
+  static bool comparison_box(const OCRPredictResult &result1,
+                             const OCRPredictResult &result2) {
+    if (result1.box[0][1] < result2.box[0][1]) {
+      return true;
+    } else if (result1.box[0][1] == result2.box[0][1]) {
+      return result1.box[0][0] < result2.box[0][0];
+    } else {
+      return false;
+    }
+  }
 };
 
 } // namespace PaddleOCR

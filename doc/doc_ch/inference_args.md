@@ -15,7 +15,7 @@
 |  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |
 |  crop_res_save_dir | str | "./output" | 保存OCR识别出来的文本图像路径 |
 |  use_mp | bool | False | 是否开启多进程预测  |
-|  total_process_num | int | 6 | 开启的进城数，`use_mp`为`True`时生效  |
+|  total_process_num | int | 6 | 开启的进程数，`use_mp`为`True`时生效  |
 |  process_id | int | 0 | 当前进程的id号，无需自己修改  |
 |  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |
 |  save_log_path | str | "./log_output/" | 开启`benchmark`时，日志结果的保存文件夹 |
@@ -39,10 +39,10 @@
 
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
-|  det_algorithm | str | "DB" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`  |
+|  det_algorithm | str | "DB" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`, `DB++`, `FCE`  |
 |  det_model_dir | str | xx | 检测inference模型路径 |
 |  det_limit_side_len | int | 960 | 检测的图像边长限制 |
-|  det_limit_type | str | "max" | 检测的变成限制类型，目前支持`min`, `max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |
+|  det_limit_type | str | "max" | 检测的边长限制类型，目前支持`min`和`max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |
 
 其中，DB算法相关参数如下
 
@@ -85,9 +85,9 @@ PSE算法相关参数如下
 
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
-|  rec_algorithm | str | "CRNN" | 文本识别算法名称，目前支持`CRNN`, `SRN`, `RARE`, `NETR`, `SAR` |
+|  rec_algorithm | str | "CRNN" | 文本识别算法名称，目前支持`CRNN`, `SRN`, `RARE`, `NETR`, `SAR`, `ViTSTR`, `ABINet`, `VisionLAN`, `SPIN`, `RobustScanner`, `SVTR`, `SVTR_LCNet` |
 |  rec_model_dir | str | 无，如果使用识别模型，该项是必填项 | 识别inference模型路径 |
-|  rec_image_shape | list | [3, 32, 320] | 识别时的图像尺寸， |
+|  rec_image_shape | list | [3, 48, 320] | 识别时的图像尺寸 |
 |  rec_batch_num | int | 6 | 识别的batch size |
 |  max_text_length | int | 25 | 识别结果最大长度，在`SRN`中有效 |
 |  rec_char_dict_path | str | "./ppocr/utils/ppocr_keys_v1.txt" | 识别的字符字典文件 |

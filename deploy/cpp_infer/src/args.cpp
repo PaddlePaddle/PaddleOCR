@@ -30,7 +30,8 @@ DEFINE_string(
     "Perform ocr or structure, the value is selected in ['ocr','structure'].");
 // detection related
 DEFINE_string(det_model_dir, "", "Path of det inference model.");
-DEFINE_int32(max_side_len, 960, "max_side_len of input image.");
+DEFINE_string(limit_type, "max", "limit_type of input image.");
+DEFINE_int32(limit_side_len, 960, "limit_side_len of input image.");
 DEFINE_double(det_db_thresh, 0.3, "Threshold of det_db_thresh.");
 DEFINE_double(det_db_box_thresh, 0.6, "Threshold of det_db_box_thresh.");
 DEFINE_double(det_db_unclip_ratio, 1.5, "Threshold of det_db_unclip_ratio.");
@@ -50,7 +51,18 @@ DEFINE_string(rec_char_dict_path, "../../ppocr/utils/ppocr_keys_v1.txt",
 DEFINE_int32(rec_img_h, 48, "rec image height");
 DEFINE_int32(rec_img_w, 320, "rec image width");
 
+// structure model related
+DEFINE_string(table_model_dir, "", "Path of table struture inference model.");
+DEFINE_int32(table_max_len, 488, "max len size of input image.");
+DEFINE_int32(table_batch_num, 1, "table_batch_num.");
+DEFINE_bool(merge_no_span_structure, true,
+            "Whether merge <td> and </td> to <td></td>");
+DEFINE_string(table_char_dict_path,
+              "../../ppocr/utils/dict/table_structure_dict_ch.txt",
+              "Path of dictionary.");
+
 // ocr forward related
 DEFINE_bool(det, true, "Whether use det in forward.");
 DEFINE_bool(rec, true, "Whether use rec in forward.");
 DEFINE_bool(cls, false, "Whether use cls in forward.");
+DEFINE_bool(table, false, "Whether use table structure in forward.");

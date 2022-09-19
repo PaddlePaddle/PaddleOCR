@@ -27,7 +27,7 @@ import sys
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 import json
@@ -127,6 +127,9 @@ class TextDetector(object):
             postprocess_params["beta"] = args.beta
             postprocess_params["fourier_degree"] = args.fourier_degree
             postprocess_params["box_type"] = args.det_fce_box_type
+        elif self.det_algorithm == "CT":
+            pre_process_list[0] = {'ScaleAlignedShort': {'short_size': 640}}
+            postprocess_params['name'] = 'CTPostProcess'
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
@@ -253,6 +256,9 @@ class TextDetector(object):
         elif self.det_algorithm == 'FCE':
             for i, output in enumerate(outputs):
                 preds['level_{}'.format(i)] = output
+        elif self.det_algorithm == "CT":
+            preds['maps'] = outputs[0]
+            preds['score'] = outputs[1]
         else:
             raise NotImplementedError
 
@@ -260,7 +266,7 @@ class TextDetector(object):
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
         if (self.det_algorithm == "SAST" and self.det_sast_polygon) or (
-                self.det_algorithm in ["PSE", "FCE"] and
+                self.det_algorithm in ["PSE", "FCE", "CT"] and
                 self.postprocess_op.box_type == 'poly'):
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
@@ -289,7 +295,7 @@ if __name__ == "__main__":
         os.makedirs(draw_img_save)
     save_results = []
     for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:

@@ -176,18 +176,6 @@ def boxPad(box, imgShape, pad : int) -> np.array:
     return box
 
 
-def OBB2HBB(obb) -> np.array:
-    """
-    Convert Oriented Bounding Box to Horizontal Bounding Box.
-    """
-    hbb = np.zeros(4, dtype=np.int32)
-    hbb[0] = min(obb[:, 0])
-    hbb[1] = min(obb[:, 1])
-    hbb[2] = max(obb[:, 0])
-    hbb[3] = max(obb[:, 1])
-    return hbb
-
-
 def expand_list(merged, html_list):
     '''
     Fill blanks according to merged cells
@@ -230,6 +218,26 @@ def convert_token(html_list):
     token_list.append("</tbody>")
 
     return token_list
+
+
+def rebuild_html_from_ppstructure_label(label_info):
+        from html import escape
+        html_code = label_info['html']['structure']['tokens'].copy()
+        to_insert = [
+            i for i, tag in enumerate(html_code) if tag in ('<td>', '>')
+        ]
+        for i, cell in zip(to_insert[::-1], label_info['html']['cells'][::-1]):
+            if cell['tokens']:
+                cell = [
+                    escape(token) if len(token) == 1 else token
+                    for token in cell['tokens']
+                ]
+                cell = ''.join(cell)
+                html_code.insert(i + 1, cell)
+        html_code = ''.join(html_code)
+        html_code = '<html><body><table>{}</table></body></html>'.format(
+            html_code)
+        return html_code
 
 
 def stepsInfo(lang='en'):

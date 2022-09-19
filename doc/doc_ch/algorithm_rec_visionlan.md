@@ -101,7 +101,7 @@ python3 tools/export_model.py -c configs/rec/rec_r45_visionlan.yml -o Global.pre
 执行如下命令进行模型推理：
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' --rec_model_dir='./inference/rec_r45_visionlan/' --rec_algorithm='VisionLAN' --rec_image_shape='3,64,256' --rec_char_dict_path='./ppocr/utils/dict36.txt'
+python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' --rec_model_dir='./inference/rec_r45_visionlan/' --rec_algorithm='VisionLAN' --rec_image_shape='3,64,256' --rec_char_dict_path='./ppocr/utils/ic15_dict.txt' --use_space_char=False
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/imgs_words_en/'。
 ```
 
@@ -110,7 +110,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words/en/word_2.png' 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 结果如下：
 ```shell
-Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.97076982)
+Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.9999493)
 ```
 
 **注意**：

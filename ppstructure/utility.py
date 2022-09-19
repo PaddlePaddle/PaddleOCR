@@ -28,32 +28,47 @@ def init_args():
     parser.add_argument("--table_algorithm", type=str, default='TableAttn')
     parser.add_argument("--table_model_dir", type=str)
     parser.add_argument(
+        "--merge_no_span_structure", type=str2bool, default=True)
+    parser.add_argument(
         "--table_char_dict_path",
         type=str,
-        default="../ppocr/utils/dict/table_structure_dict.txt")
+        default="../ppocr/utils/dict/table_structure_dict_ch.txt")
     # params for layout
+    parser.add_argument("--layout_model_dir", type=str)
     parser.add_argument(
-        "--layout_path_model",
+        "--layout_dict_path",
         type=str,
-        default="lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config")
+        default="../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt")
     parser.add_argument(
-        "--layout_label_map",
-        type=ast.literal_eval,
-        default=None,
-        help='label map according to ppstructure/layout/README_ch.md')
-    # params for vqa
-    parser.add_argument("--vqa_algorithm", type=str, default='LayoutXLM')
+        "--layout_score_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of score.")
+    parser.add_argument(
+        "--layout_nms_threshold",
+        type=float,
+        default=0.5,
+        help="Threshold of nms.")
+    # params for kie
+    parser.add_argument("--kie_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
     parser.add_argument(
         "--ser_dict_path",
         type=str,
         default="../train_data/XFUND/class_list_xfun.txt")
+    # need to be None or tb-yx
+    parser.add_argument("--ocr_order_method", type=str, default=None)
     # params for inference
     parser.add_argument(
         "--mode",
         type=str,
         default='structure',
-        help='structure and vqa is supported')
+        help='structure and kie is supported')
+    parser.add_argument(
+        "--image_orientation",
+        type=bool,
+        default=False,
+        help='Whether to enable image orientation recognition')
     parser.add_argument(
         "--layout",
         type=str2bool,
@@ -69,11 +84,18 @@ def init_args():
         type=str2bool,
         default=True,
         help='In the forward, whether the non-table area is recognition by ocr')
+    # param for recovery
     parser.add_argument(
         "--recovery",
-        type=bool,
+        type=str2bool,
         default=False,
         help='Whether to enable layout of recovery')
+    parser.add_argument(
+        "--save_pdf",
+        type=str2bool,
+        default=False,
+        help='Whether to save pdf file')
+
     return parser
 
 
@@ -87,7 +109,7 @@ def draw_structure_result(image, result, font_path):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []
     for region in result:
-        if region['type'] == 'Table':
+        if region['type'] == 'table':
             pass
         else:
             for text_result in region['res']:

@@ -171,6 +171,9 @@ inference/
 |-- cls
 |   |--inference.pdiparams
 |   |--inference.pdmodel
+|-- table
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
 
@@ -275,6 +278,17 @@ Specifically,
     --cls=true \
 ```
 
+
+##### 7. table
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --table_model_dir=inference/table \
+    --image_dir=../../ppstructure/docs/table/table.jpg \
+    --type=structure \
+    --table=true
+```
+
 More parameters are as follows,
 
 - Common parameters
@@ -293,9 +307,9 @@ More parameters are as follows,
 
 |parameter|data type|default|meaning|
 | :---: | :---: | :---: | :---: |
-|det|bool|true|前向是否执行文字检测|
-|rec|bool|true|前向是否执行文字识别|
-|cls|bool|false|前向是否执行文字方向分类|
+|det|bool|true|Whether to perform text detection in the forward direction|
+|rec|bool|true|Whether to perform text recognition in the forward direction|
+|cls|bool|false|Whether to perform text direction classification in the forward direction|
 
 
 - Detection related parameters
@@ -329,6 +343,16 @@ More parameters are as follows,
 |rec_img_h|int|48|image height of recognition|
 |rec_img_w|int|320|image width of recognition|
 
+- Table recognition related parameters
+
+|parameter|data type|default|meaning|
+| :---: | :---: | :---: | :---: |
+|table_model_dir|string|-|Address of table recognition inference model|
+|table_char_dict_path|string|../../ppocr/utils/dict/table_structure_dict.txt|dictionary file|
+|table_max_len|int|488|The size of the long side of the input image of the table recognition model, the final input image size of the network is（table_max_len，table_max_len）|
+|merge_no_span_structure|bool|true|Whether to merge <td> and </td> to <td></td|
+
+
 * Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../../doc/doc_en/recognition_en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 
 
@@ -344,6 +368,12 @@ predict img: ../../doc/imgs/12.jpg
 The detection visualized image saved in ./output//12.jpg
 ```
 
+- table
+
+```bash
+predict img: ../../ppstructure/docs/table/table.jpg
+0       type: table, region: [0,0,371,293], res: <html><body><table><thead><tr><td>Methods</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>SegLink [26]</td><td>70.0</td><td>86.0</td><td>77.0</td><td>8.9</td></tr><tr><td>PixelLink [4]</td><td>73.2</td><td>83.0</td><td>77.8</td><td>-</td></tr><tr><td>TextSnake [18]</td><td>73.9</td><td>83.2</td><td>78.3</td><td>1.1</td></tr><tr><td>TextField [37]</td><td>75.9</td><td>87.4</td><td>81.3</td><td>5.2 </td></tr><tr><td>MSR[38]</td><td>76.7</td><td>87.4</td><td>81.7</td><td>-</td></tr><tr><td>FTSN [3]</td><td>77.1</td><td>87.6</td><td>82.0</td><td>-</td></tr><tr><td>LSE[30]</td><td>81.7</td><td>84.2</td><td>82.9</td><td>-</td></tr><tr><td>CRAFT [2]</td><td>78.2</td><td>88.2</td><td>82.9</td><td>8.6</td></tr><tr><td>MCN [16]</td><td>79</td><td>88</td><td>83</td><td>-</td></tr><tr><td>ATRR[35]</td><td>82.1</td><td>85.2</td><td>83.6</td><td>-</td></tr><tr><td>PAN [34]</td><td>83.8</td><td>84.4</td><td>84.1</td><td>30.2</td></tr><tr><td>DB[12]</td><td>79.2</td><td>91.5</td><td>84.9</td><td>32.0</td></tr><tr><td>DRRG [41]</td><td>82.30</td><td>88.05</td><td>85.08</td><td>-</td></tr><tr><td>Ours (SynText)</td><td>80.68</td><td>85.40</td><td>82.97</td><td>12.68</td></tr><tr><td>Ours (MLT-17)</td><td>84.54</td><td>86.62</td><td>85.57</td><td>12.31</td></tr></tbody></table></body></html>
+```
 
 <a name="3"></a>
 ## 3. FAQ

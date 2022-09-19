@@ -65,6 +65,37 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
             << std::endl;
 }
 
+void Utility::VisualizeBboxes(const cv::Mat &srcimg,
+                              const StructurePredictResult &structure_result,
+                              const std::string &save_path) {
+  cv::Mat img_vis;
+  srcimg.copyTo(img_vis);
+  for (int n = 0; n < structure_result.cell_box.size(); n++) {
+    if (structure_result.cell_box[n].size() == 8) {
+      cv::Point rook_points[4];
+      for (int m = 0; m < structure_result.cell_box[n].size(); m += 2) {
+        rook_points[m / 2] =
+            cv::Point(int(structure_result.cell_box[n][m]),
+                      int(structure_result.cell_box[n][m + 1]));
+      }
+      const cv::Point *ppt[1] = {rook_points};
+      int npt[] = {4};
+      cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
+    } else if (structure_result.cell_box[n].size() == 4) {
+      cv::Point rook_points[2];
+      rook_points[0] = cv::Point(int(structure_result.cell_box[n][0]),
+                                 int(structure_result.cell_box[n][1]));
+      rook_points[1] = cv::Point(int(structure_result.cell_box[n][2]),
+                                 int(structure_result.cell_box[n][3]));
+      cv::rectangle(img_vis, rook_points[0], rook_points[1], CV_RGB(0, 255, 0),
+                    2, 8, 0);
+    }
+  }
+
+  cv::imwrite(save_path, img_vis);
+  std::cout << "The table visualized image saved in " + save_path << std::endl;
+}
+
 // list all files under a directory
 void Utility::GetAllFiles(const char *dir_name,
                           std::vector<std::string> &all_inputs) {
@@ -248,4 +279,66 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
     std::cout << std::endl;
   }
 }
+
+cv::Mat Utility::crop_image(cv::Mat &img, std::vector<int> &area) {
+  cv::Mat crop_im;
+  int crop_x1 = std::max(0, area[0]);
+  int crop_y1 = std::max(0, area[1]);
+  int crop_x2 = std::min(img.cols - 1, area[2] - 1);
+  int crop_y2 = std::min(img.rows - 1, area[3] - 1);
+
+  crop_im = cv::Mat::zeros(area[3] - area[1], area[2] - area[0], 16);
+  cv::Mat crop_im_window =
+      crop_im(cv::Range(crop_y1 - area[1], crop_y2 + 1 - area[1]),
+              cv::Range(crop_x1 - area[0], crop_x2 + 1 - area[0]));
+  cv::Mat roi_img =
+      img(cv::Range(crop_y1, crop_y2 + 1), cv::Range(crop_x1, crop_x2 + 1));
+  crop_im_window += roi_img;
+  return crop_im;
+}
+
+void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
+  std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
+  if (ocr_result.size() > 0) {
+    for (int i = 0; i < ocr_result.size() - 1; i++) {
+      for (int j = i; j > 0; j--) {
+        if (abs(ocr_result[j + 1].box[0][1] - ocr_result[j].box[0][1]) < 10 &&
+            (ocr_result[j + 1].box[0][0] < ocr_result[j].box[0][0])) {
+          std::swap(ocr_result[i], ocr_result[i + 1]);
+        }
+      }
+    }
+  }
+}
+
+std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) {
+  int x_collect[4] = {box[0][0], box[1][0], box[2][0], box[3][0]};
+  int y_collect[4] = {box[0][1], box[1][1], box[2][1], box[3][1]};
+  int left = int(*std::min_element(x_collect, x_collect + 4));
+  int right = int(*std::max_element(x_collect, x_collect + 4));
+  int top = int(*std::min_element(y_collect, y_collect + 4));
+  int bottom = int(*std::max_element(y_collect, y_collect + 4));
+  std::vector<int> box1(4, 0);
+  box1[0] = left;
+  box1[1] = top;
+  box1[2] = right;
+  box1[3] = bottom;
+  return box1;
+}
+
+std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<int> &box) {
+  int x_collect[4] = {box[0], box[2], box[4], box[6]};
+  int y_collect[4] = {box[1], box[3], box[5], box[7]};
+  int left = int(*std::min_element(x_collect, x_collect + 4));
+  int right = int(*std::max_element(x_collect, x_collect + 4));
+  int top = int(*std::min_element(y_collect, y_collect + 4));
+  int bottom = int(*std::max_element(y_collect, y_collect + 4));
+  std::vector<int> box1(4, 0);
+  box1[0] = left;
+  box1[1] = top;
+  box1[2] = right;
+  box1[3] = bottom;
+  return box1;
+}
+
 } // namespace PaddleOCR

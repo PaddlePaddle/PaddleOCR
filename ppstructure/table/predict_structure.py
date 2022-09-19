@@ -16,7 +16,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
@@ -29,7 +29,7 @@ import tools.infer.utility as utility
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.visual import draw_rectangle
 from ppstructure.utility import parse_args
 
@@ -68,17 +68,20 @@ def build_pre_process_list(args):
 
 class TableStructurer(object):
     def __init__(self, args):
+        self.use_onnx = args.use_onnx
         pre_process_list = build_pre_process_list(args)
         if args.table_algorithm not in ['TableMaster']:
             postprocess_params = {
                 'name': 'TableLabelDecode',
                 "character_dict_path": args.table_char_dict_path,
+                'merge_no_span_structure': args.merge_no_span_structure
             }
         else:
             postprocess_params = {
                 'name': 'TableMasterLabelDecode',
                 "character_dict_path": args.table_char_dict_path,
-                'box_shape': 'pad'
+                'box_shape': 'pad',
+                'merge_no_span_structure': args.merge_no_span_structure
             }
 
         self.preprocess_op = create_operators(pre_process_list)
@@ -87,6 +90,7 @@ class TableStructurer(object):
             utility.create_predictor(args, 'table', logger)
 
     def __call__(self, img):
+        starttime = time.time()
         ori_im = img.copy()
         data = {'image': img}
         data = transform(data, self.preprocess_op)
@@ -95,14 +99,17 @@ class TableStructurer(object):
             return None, 0
         img = np.expand_dims(img, axis=0)
         img = img.copy()
-        starttime = time.time()
-
-        self.input_tensor.copy_from_cpu(img)
-        self.predictor.run()
-        outputs = []
-        for output_tensor in self.output_tensors:
-            output = output_tensor.copy_to_cpu()
-            outputs.append(output)
+        if self.use_onnx:
+            input_dict = {}
+            input_dict[self.input_tensor.name] = img
+            outputs = self.predictor.run(self.output_tensors, input_dict)
+        else:
+            self.input_tensor.copy_from_cpu(img)
+            self.predictor.run()
+            outputs = []
+            for output_tensor in self.output_tensors:
+                output = output_tensor.copy_to_cpu()
+                outputs.append(output)
 
         preds = {}
         preds['structure_probs'] = outputs[1]
@@ -126,13 +133,12 @@ def main(args):
     table_structurer = TableStructurer(args)
     count = 0
     total_time = 0
-    use_xywh = args.table_algorithm in ['TableMaster']
     os.makedirs(args.output, exist_ok=True)
     with open(
             os.path.join(args.output, 'infer.txt'), mode='w',
             encoding='utf-8') as f_w:
         for image_file in image_file_list:
-            img, flag = check_and_read_gif(image_file)
+            img, flag, _ = check_and_read(image_file)
             if not flag:
                 img = cv2.imread(image_file)
             if img is None:
@@ -146,7 +152,10 @@ def main(args):
             f_w.write("result: {}, {}\n".format(structure_str_list,
                                                 bbox_list_str))
 
-            img = draw_rectangle(image_file, bbox_list, use_xywh)
+            if len(bbox_list) > 0 and len(bbox_list[0]) == 4:
+                img = draw_rectangle(image_file, bbox_list)
+            else:
+                img = utility.draw_boxes(img, bbox_list)
             img_save_path = os.path.join(args.output,
                                          os.path.basename(image_file))
             cv2.imwrite(img_save_path, img)
