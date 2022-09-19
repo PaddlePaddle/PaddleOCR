@@ -88,7 +88,6 @@ private:
 
   // post-process
   PicodetPostProcessor post_processor_;
-
-}; // class StructureTableRecognizer
+};
 
 } // namespace PaddleOCR

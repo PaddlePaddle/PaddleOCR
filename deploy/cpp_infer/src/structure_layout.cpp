@@ -120,6 +120,11 @@ void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      if (!Utility::PathExists("./trt_layout_shape.txt")) {
+        config.CollectShapeRangeInfo("./trt_layout_shape.txt");
+      } else {
+        config.EnableTunedTensorRtDynamicShape("./trt_layout_shape.txt", true);
+      }
     }
   } else {
     config.DisableGpu();
