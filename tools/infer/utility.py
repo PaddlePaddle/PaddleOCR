@@ -228,7 +228,7 @@ def create_predictor(args, mode, logger):
 
                 # collect shape
                 model_name = os.path.basename(model_dir[:-1]) if model_dir.endswith("/") else os.path.basename(model_dir)
-                trt_shape_f = f"{mode}_{model_name}"
+                trt_shape_f = f"{mode}_{model_name}.txt"
                 if trt_shape_f is not None:
                     if not os.path.exists(trt_shape_f):
                         config.collect_shape_range_info(trt_shape_f)
