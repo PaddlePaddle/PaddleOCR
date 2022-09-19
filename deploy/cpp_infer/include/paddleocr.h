@@ -43,21 +43,26 @@ class PPOCR {
 public:
   explicit PPOCR();
   ~PPOCR();
-  std::vector<std::vector<OCRPredictResult>>
-  ocr(std::vector<cv::String> cv_all_img_names, bool det = true,
-      bool rec = true, bool cls = true);
+
+  std::vector<std::vector<OCRPredictResult>> ocr(std::vector<cv::Mat> img_list,
+                                                 bool det = true,
+                                                 bool rec = true,
+                                                 bool cls = true);
+  std::vector<OCRPredictResult> ocr(cv::Mat img, bool det, bool rec, bool cls);
+
+  void reset_timer();
+  void benchmark_log(int img_num);
 
 protected:
-  void det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
-           std::vector<double> &times);
+  std::vector<double> time_info_det = {0, 0, 0};
+  std::vector<double> time_info_rec = {0, 0, 0};
+  std::vector<double> time_info_cls = {0, 0, 0};
+
+  void det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results);
   void rec(std::vector<cv::Mat> img_list,
-           std::vector<OCRPredictResult> &ocr_results,
-           std::vector<double> &times);
+           std::vector<OCRPredictResult> &ocr_results);
   void cls(std::vector<cv::Mat> img_list,
-           std::vector<OCRPredictResult> &ocr_results,
-           std::vector<double> &times);
-  void log(std::vector<double> &det_times, std::vector<double> &rec_times,
-           std::vector<double> &cls_times, int img_num);
+           std::vector<OCRPredictResult> &ocr_results);
 
 private:
   DBDetector *detector_ = nullptr;

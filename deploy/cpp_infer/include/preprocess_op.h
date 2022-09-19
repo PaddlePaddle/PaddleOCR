@@ -82,4 +82,10 @@ public:
                    const int max_len = 488);
 };
 
+class Resize {
+public:
+  virtual void Run(const cv::Mat &img, cv::Mat &resize_img, const int h,
+                   const int w);
+};
+
 } // namespace PaddleOCR

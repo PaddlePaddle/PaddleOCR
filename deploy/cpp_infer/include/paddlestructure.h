@@ -31,6 +31,7 @@
 
 #include <include/paddleocr.h>
 #include <include/preprocess_op.h>
+#include <include/structure_layout.h>
 #include <include/structure_table.h>
 #include <include/utility.h>
 
@@ -42,23 +43,31 @@ class PaddleStructure : public PPOCR {
 public:
   explicit PaddleStructure();
   ~PaddleStructure();
-  std::vector<std::vector<StructurePredictResult>>
-  structure(std::vector<cv::String> cv_all_img_names, bool layout = false,
-            bool table = true);
+
+  std::vector<StructurePredictResult> structure(cv::Mat img,
+                                                bool layout = false,
+                                                bool table = true,
+                                                bool ocr = false);
+
+  void reset_timer();
+  void benchmark_log(int img_num);
 
 private:
-  StructureTableRecognizer *recognizer_ = nullptr;
+  std::vector<double> time_info_table = {0, 0, 0};
+  std::vector<double> time_info_layout = {0, 0, 0};
 
-  void table(cv::Mat img, StructurePredictResult &structure_result,
-             std::vector<double> &time_info_table,
-             std::vector<double> &time_info_det,
-             std::vector<double> &time_info_rec,
-             std::vector<double> &time_info_cls);
+  StructureTableRecognizer *table_model_ = nullptr;
+  StructureLayoutRecognizer *layout_model_ = nullptr;
+
+  void layout(cv::Mat img,
+              std::vector<StructurePredictResult> &structure_result);
+
+  void table(cv::Mat img, StructurePredictResult &structure_result);
+
   std::string rebuild_table(std::vector<std::string> rec_html_tags,
                             std::vector<std::vector<int>> rec_boxes,
                             std::vector<OCRPredictResult> &ocr_result);
 
-  float iou(std::vector<int> &box1, std::vector<int> &box2);
   float dis(std::vector<int> &box1, std::vector<int> &box2);
 
   static bool comparison_dis(const std::vector<float> &dis1,

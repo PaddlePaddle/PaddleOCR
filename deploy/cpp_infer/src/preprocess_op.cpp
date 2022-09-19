@@ -175,4 +175,9 @@ void TablePadImg::Run(const cv::Mat &img, cv::Mat &resize_img,
                      cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
 }
 
+void Resize::Run(const cv::Mat &img, cv::Mat &resize_img, const int h,
+                 const int w) {
+  cv::resize(img, resize_img, cv::Size(w, h));
+}
+
 } // namespace PaddleOCR
