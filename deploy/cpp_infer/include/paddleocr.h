@@ -48,7 +48,8 @@ public:
                                                  bool det = true,
                                                  bool rec = true,
                                                  bool cls = true);
-  std::vector<OCRPredictResult> ocr(cv::Mat img, bool det, bool rec, bool cls);
+  std::vector<OCRPredictResult> ocr(cv::Mat img, bool det = true,
+                                    bool rec = true, bool cls = true);
 
   void reset_timer();
   void benchmark_log(int img_num);
