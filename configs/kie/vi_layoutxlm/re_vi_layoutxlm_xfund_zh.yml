@@ -73,6 +73,7 @@ Train:
       - VQAReTokenRelation:
       - VQAReTokenChunk:
           max_seq_len: *max_seq_len
+      - TensorizeEntitiesRelations:
       - Resize:
           size: [224,224]
       - NormalizeImage:
@@ -88,7 +89,6 @@ Train:
     drop_last: False
     batch_size_per_card: 2
     num_workers: 4
-    collate_fn: ListCollator
 
 Eval:
   dataset:
@@ -112,6 +112,7 @@ Eval:
       - VQAReTokenRelation:
       - VQAReTokenChunk:
           max_seq_len: *max_seq_len
+      - TensorizeEntitiesRelations:
       - Resize:
           size: [224,224]
       - NormalizeImage:
@@ -127,5 +128,3 @@ Eval:
     drop_last: False
     batch_size_per_card: 8
     num_workers: 8
-    collate_fn: ListCollator
-

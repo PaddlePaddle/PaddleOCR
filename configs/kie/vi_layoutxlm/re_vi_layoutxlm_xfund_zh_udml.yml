@@ -116,6 +116,7 @@ Train:
       - VQAReTokenRelation:
       - VQAReTokenChunk:
           max_seq_len: *max_seq_len
+      - TensorizeEntitiesRelations:
       - Resize:
           size: [224,224]
       - NormalizeImage:
@@ -155,6 +156,7 @@ Eval:
       - VQAReTokenRelation:
       - VQAReTokenChunk:
           max_seq_len: *max_seq_len
+      - TensorizeEntitiesRelations:
       - Resize:
           size: [224,224]
       - NormalizeImage:
