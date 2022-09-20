@@ -16,7 +16,7 @@
 #include <include/paddleocr.h>
 
 #include "auto_log/autolog.h"
-#include <numeric>
+
 namespace PaddleOCR {
 
 PPOCR::PPOCR() {
@@ -44,8 +44,71 @@ PPOCR::PPOCR() {
   }
 };
 
-void PPOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
-                std::vector<double> &times) {
+std::vector<std::vector<OCRPredictResult>>
+PPOCR::ocr(std::vector<cv::Mat> img_list, bool det, bool rec, bool cls) {
+  std::vector<std::vector<OCRPredictResult>> ocr_results;
+
+  if (!det) {
+    std::vector<OCRPredictResult> ocr_result;
+    ocr_result.resize(img_list.size());
+    if (cls && this->classifier_ != nullptr) {
+      this->cls(img_list, ocr_result);
+      for (int i = 0; i < img_list.size(); i++) {
+        if (ocr_result[i].cls_label % 2 == 1 &&
+            ocr_result[i].cls_score > this->classifier_->cls_thresh) {
+          cv::rotate(img_list[i], img_list[i], 1);
+        }
+      }
+    }
+    if (rec) {
+      this->rec(img_list, ocr_result);
+    }
+    for (int i = 0; i < ocr_result.size(); ++i) {
+      std::vector<OCRPredictResult> ocr_result_tmp;
+      ocr_result_tmp.push_back(ocr_result[i]);
+      ocr_results.push_back(ocr_result_tmp);
+    }
+  } else {
+    for (int i = 0; i < img_list.size(); ++i) {
+      std::vector<OCRPredictResult> ocr_result =
+          this->ocr(img_list[i], true, rec, cls);
+      ocr_results.push_back(ocr_result);
+    }
+  }
+  return ocr_results;
+}
+
+std::vector<OCRPredictResult> PPOCR::ocr(cv::Mat img, bool det, bool rec,
+                                         bool cls) {
+
+  std::vector<OCRPredictResult> ocr_result;
+  // det
+  this->det(img, ocr_result);
+  // crop image
+  std::vector<cv::Mat> img_list;
+  for (int j = 0; j < ocr_result.size(); j++) {
+    cv::Mat crop_img;
+    crop_img = Utility::GetRotateCropImage(img, ocr_result[j].box);
+    img_list.push_back(crop_img);
+  }
+  // cls
+  if (cls && this->classifier_ != nullptr) {
+    this->cls(img_list, ocr_result);
+    for (int i = 0; i < img_list.size(); i++) {
+      if (ocr_result[i].cls_label % 2 == 1 &&
+          ocr_result[i].cls_score > this->classifier_->cls_thresh) {
+        cv::rotate(img_list[i], img_list[i], 1);
+      }
+    }
+  }
+  // rec
+  if (rec) {
+    this->rec(img_list, ocr_result);
+  }
+  return ocr_result;
+}
+
+void PPOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results) {
   std::vector<std::vector<std::vector<int>>> boxes;
   std::vector<double> det_times;
 
@@ -58,14 +121,13 @@ void PPOCR::det(cv::Mat img, std::vector<OCRPredictResult> &ocr_results,
   }
   // sort boex from top to bottom, from left to right
   Utility::sorted_boxes(ocr_results);
-  times[0] += det_times[0];
-  times[1] += det_times[1];
-  times[2] += det_times[2];
+  this->time_info_det[0] += det_times[0];
+  this->time_info_det[1] += det_times[1];
+  this->time_info_det[2] += det_times[2];
 }
 
 void PPOCR::rec(std::vector<cv::Mat> img_list,
-                std::vector<OCRPredictResult> &ocr_results,
-                std::vector<double> &times) {
+                std::vector<OCRPredictResult> &ocr_results) {
   std::vector<std::string> rec_texts(img_list.size(), "");
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
@@ -75,14 +137,13 @@ void PPOCR::rec(std::vector<cv::Mat> img_list,
     ocr_results[i].text = rec_texts[i];
     ocr_results[i].score = rec_text_scores[i];
   }
-  times[0] += rec_times[0];
-  times[1] += rec_times[1];
-  times[2] += rec_times[2];
+  this->time_info_rec[0] += rec_times[0];
+  this->time_info_rec[1] += rec_times[1];
+  this->time_info_rec[2] += rec_times[2];
 }
 
 void PPOCR::cls(std::vector<cv::Mat> img_list,
-                std::vector<OCRPredictResult> &ocr_results,
-                std::vector<double> &times) {
+                std::vector<OCRPredictResult> &ocr_results) {
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
   std::vector<double> cls_times;
@@ -92,125 +153,43 @@ void PPOCR::cls(std::vector<cv::Mat> img_list,
     ocr_results[i].cls_label = cls_labels[i];
     ocr_results[i].cls_score = cls_scores[i];
   }
-  times[0] += cls_times[0];
-  times[1] += cls_times[1];
-  times[2] += cls_times[2];
+  this->time_info_cls[0] += cls_times[0];
+  this->time_info_cls[1] += cls_times[1];
+  this->time_info_cls[2] += cls_times[2];
 }
 
-std::vector<std::vector<OCRPredictResult>>
-PPOCR::ocr(std::vector<cv::String> cv_all_img_names, bool det, bool rec,
-           bool cls) {
-  std::vector<double> time_info_det = {0, 0, 0};
-  std::vector<double> time_info_rec = {0, 0, 0};
-  std::vector<double> time_info_cls = {0, 0, 0};
-  std::vector<std::vector<OCRPredictResult>> ocr_results;
+void PPOCR::reset_timer() {
+  this->time_info_det = {0, 0, 0};
+  this->time_info_rec = {0, 0, 0};
+  this->time_info_cls = {0, 0, 0};
+}
 
-  if (!det) {
-    std::vector<OCRPredictResult> ocr_result;
-    // read image
-    std::vector<cv::Mat> img_list;
-    for (int i = 0; i < cv_all_img_names.size(); ++i) {
-      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-      if (!srcimg.data) {
-        std::cerr << "[ERROR] image read failed! image path: "
-                  << cv_all_img_names[i] << endl;
-        exit(1);
-      }
-      img_list.push_back(srcimg);
-      OCRPredictResult res;
-      ocr_result.push_back(res);
-    }
-    if (cls && this->classifier_ != nullptr) {
-      this->cls(img_list, ocr_result, time_info_cls);
-      for (int i = 0; i < img_list.size(); i++) {
-        if (ocr_result[i].cls_label % 2 == 1 &&
-            ocr_result[i].cls_score > this->classifier_->cls_thresh) {
-          cv::rotate(img_list[i], img_list[i], 1);
-        }
-      }
-    }
-    if (rec) {
-      this->rec(img_list, ocr_result, time_info_rec);
-    }
-    for (int i = 0; i < cv_all_img_names.size(); ++i) {
-      std::vector<OCRPredictResult> ocr_result_tmp;
-      ocr_result_tmp.push_back(ocr_result[i]);
-      ocr_results.push_back(ocr_result_tmp);
-    }
-  } else {
-    if (!Utility::PathExists(FLAGS_output) && FLAGS_det) {
-      Utility::CreateDir(FLAGS_output);
-    }
-
-    for (int i = 0; i < cv_all_img_names.size(); ++i) {
-      std::vector<OCRPredictResult> ocr_result;
-      if (!FLAGS_benchmark) {
-        cout << "predict img: " << cv_all_img_names[i] << endl;
-      }
-
-      cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-      if (!srcimg.data) {
-        std::cerr << "[ERROR] image read failed! image path: "
-                  << cv_all_img_names[i] << endl;
-        exit(1);
-      }
-      // det
-      this->det(srcimg, ocr_result, time_info_det);
-      // crop image
-      std::vector<cv::Mat> img_list;
-      for (int j = 0; j < ocr_result.size(); j++) {
-        cv::Mat crop_img;
-        crop_img = Utility::GetRotateCropImage(srcimg, ocr_result[j].box);
-        img_list.push_back(crop_img);
-      }
-
-      // cls
-      if (cls && this->classifier_ != nullptr) {
-        this->cls(img_list, ocr_result, time_info_cls);
-        for (int i = 0; i < img_list.size(); i++) {
-          if (ocr_result[i].cls_label % 2 == 1 &&
-              ocr_result[i].cls_score > this->classifier_->cls_thresh) {
-            cv::rotate(img_list[i], img_list[i], 1);
-          }
-        }
-      }
-      // rec
-      if (rec) {
-        this->rec(img_list, ocr_result, time_info_rec);
-      }
-      ocr_results.push_back(ocr_result);
-    }
-  }
-  if (FLAGS_benchmark) {
-    this->log(time_info_det, time_info_rec, time_info_cls,
-              cv_all_img_names.size());
-  }
-  return ocr_results;
-} // namespace PaddleOCR
-
-void PPOCR::log(std::vector<double> &det_times, std::vector<double> &rec_times,
-                std::vector<double> &cls_times, int img_num) {
-  if (det_times[0] + det_times[1] + det_times[2] > 0) {
+void PPOCR::benchmark_log(int img_num) {
+  if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
+      0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,
                            FLAGS_enable_mkldnn, FLAGS_cpu_threads, 1, "dynamic",
-                           FLAGS_precision, det_times, img_num);
+                           FLAGS_precision, this->time_info_det, img_num);
     autolog_det.report();
   }
-  if (rec_times[0] + rec_times[1] + rec_times[2] > 0) {
+  if (this->time_info_rec[0] + this->time_info_rec[1] + this->time_info_rec[2] >
+      0) {
     AutoLogger autolog_rec("ocr_rec", FLAGS_use_gpu, FLAGS_use_tensorrt,
                            FLAGS_enable_mkldnn, FLAGS_cpu_threads,
                            FLAGS_rec_batch_num, "dynamic", FLAGS_precision,
-                           rec_times, img_num);
+                           this->time_info_rec, img_num);
     autolog_rec.report();
   }
-  if (cls_times[0] + cls_times[1] + cls_times[2] > 0) {
+  if (this->time_info_cls[0] + this->time_info_cls[1] + this->time_info_cls[2] >
+      0) {
     AutoLogger autolog_cls("ocr_cls", FLAGS_use_gpu, FLAGS_use_tensorrt,
                            FLAGS_enable_mkldnn, FLAGS_cpu_threads,
                            FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
-                           cls_times, img_num);
+                           this->time_info_cls, img_num);
     autolog_cls.report();
   }
 }
+
 PPOCR::~PPOCR() {
   if (this->detector_ != nullptr) {
     delete this->detector_;

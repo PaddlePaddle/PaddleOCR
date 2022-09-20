@@ -16,14 +16,19 @@
 #include <include/paddlestructure.h>
 
 #include "auto_log/autolog.h"
-#include <numeric>
-#include <sys/stat.h>
 
 namespace PaddleOCR {
 
 PaddleStructure::PaddleStructure() {
+  if (FLAGS_layout) {
+    this->layout_model_ = new StructureLayoutRecognizer(
+        FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
+        FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_layout_dict_path,
+        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_layout_score_threshold,
+        FLAGS_layout_nms_threshold);
+  }
   if (FLAGS_table) {
-    this->recognizer_ = new StructureTableRecognizer(
+    this->table_model_ = new StructureTableRecognizer(
         FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
@@ -31,68 +36,63 @@ PaddleStructure::PaddleStructure() {
   }
 };
 
-std::vector<std::vector<StructurePredictResult>>
-PaddleStructure::structure(std::vector<cv::String> cv_all_img_names,
-                           bool layout, bool table) {
-  std::vector<double> time_info_det = {0, 0, 0};
-  std::vector<double> time_info_rec = {0, 0, 0};
-  std::vector<double> time_info_cls = {0, 0, 0};
-  std::vector<double> time_info_table = {0, 0, 0};
+std::vector<StructurePredictResult>
+PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
+  cv::Mat img;
+  srcimg.copyTo(img);
 
-  std::vector<std::vector<StructurePredictResult>> structure_results;
+  std::vector<StructurePredictResult> structure_results;
 
-  if (!Utility::PathExists(FLAGS_output) && FLAGS_det) {
-    Utility::CreateDir(FLAGS_output);
+  if (layout) {
+    this->layout(img, structure_results);
+  } else {
+    StructurePredictResult res;
+    res.type = "table";
+    res.box = std::vector<float>(4, 0.0);
+    res.box[2] = img.cols;
+    res.box[3] = img.rows;
+    structure_results.push_back(res);
   }
-  for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    std::vector<StructurePredictResult> structure_result;
-    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-    if (!srcimg.data) {
-      std::cerr << "[ERROR] image read failed! image path: "
-                << cv_all_img_names[i] << endl;
-      exit(1);
+  cv::Mat roi_img;
+  for (int i = 0; i < structure_results.size(); i++) {
+    // crop image
+    roi_img = Utility::crop_image(img, structure_results[i].box);
+    if (structure_results[i].type == "table" && table) {
+      this->table(roi_img, structure_results[i]);
+    } else if (ocr) {
+      structure_results[i].text_res = this->ocr(roi_img, true, true, false);
     }
-    if (layout) {
-    } else {
-      StructurePredictResult res;
-      res.type = "table";
-      res.box = std::vector<int>(4, 0);
-      res.box[2] = srcimg.cols;
-      res.box[3] = srcimg.rows;
-      structure_result.push_back(res);
-    }
-    cv::Mat roi_img;
-    for (int i = 0; i < structure_result.size(); i++) {
-      // crop image
-      roi_img = Utility::crop_image(srcimg, structure_result[i].box);
-      if (structure_result[i].type == "table") {
-        this->table(roi_img, structure_result[i], time_info_table,
-                    time_info_det, time_info_rec, time_info_cls);
-      }
-    }
-    structure_results.push_back(structure_result);
   }
+
   return structure_results;
 };
 
+void PaddleStructure::layout(
+    cv::Mat img, std::vector<StructurePredictResult> &structure_result) {
+  std::vector<double> layout_times;
+  this->layout_model_->Run(img, structure_result, layout_times);
+
+  this->time_info_layout[0] += layout_times[0];
+  this->time_info_layout[1] += layout_times[1];
+  this->time_info_layout[2] += layout_times[2];
+}
+
 void PaddleStructure::table(cv::Mat img,
-                            StructurePredictResult &structure_result,
-                            std::vector<double> &time_info_table,
-                            std::vector<double> &time_info_det,
-                            std::vector<double> &time_info_rec,
-                            std::vector<double> &time_info_cls) {
+                            StructurePredictResult &structure_result) {
   // predict structure
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
   std::vector<std::vector<std::vector<int>>> structure_boxes;
-  std::vector<double> structure_imes;
+  std::vector<double> structure_times;
   std::vector<cv::Mat> img_list;
   img_list.push_back(img);
-  this->recognizer_->Run(img_list, structure_html_tags, structure_scores,
-                         structure_boxes, structure_imes);
-  time_info_table[0] += structure_imes[0];
-  time_info_table[1] += structure_imes[1];
-  time_info_table[2] += structure_imes[2];
+
+  this->table_model_->Run(img_list, structure_html_tags, structure_scores,
+                          structure_boxes, structure_times);
+
+  this->time_info_table[0] += structure_times[0];
+  this->time_info_table[1] += structure_times[1];
+  this->time_info_table[2] += structure_times[2];
 
   std::vector<OCRPredictResult> ocr_result;
   std::string html;
@@ -100,22 +100,22 @@ void PaddleStructure::table(cv::Mat img,
 
   for (int i = 0; i < img_list.size(); i++) {
     // det
-    this->det(img_list[i], ocr_result, time_info_det);
+    this->det(img_list[i], ocr_result);
     // crop image
     std::vector<cv::Mat> rec_img_list;
     std::vector<int> ocr_box;
     for (int j = 0; j < ocr_result.size(); j++) {
       ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[j].box);
-      ocr_box[0] = max(0, ocr_box[0] - expand_pixel);
-      ocr_box[1] = max(0, ocr_box[1] - expand_pixel),
-      ocr_box[2] = min(img_list[i].cols, ocr_box[2] + expand_pixel);
-      ocr_box[3] = min(img_list[i].rows, ocr_box[3] + expand_pixel);
+      ocr_box[0] = std::max(0, ocr_box[0] - expand_pixel);
+      ocr_box[1] = std::max(0, ocr_box[1] - expand_pixel),
+      ocr_box[2] = std::min(img_list[i].cols, ocr_box[2] + expand_pixel);
+      ocr_box[3] = std::min(img_list[i].rows, ocr_box[3] + expand_pixel);
 
       cv::Mat crop_img = Utility::crop_image(img_list[i], ocr_box);
       rec_img_list.push_back(crop_img);
     }
     // rec
-    this->rec(rec_img_list, ocr_result, time_info_rec);
+    this->rec(rec_img_list, ocr_result);
     // rebuild table
     html = this->rebuild_table(structure_html_tags[i], structure_boxes[i],
                                ocr_result);
@@ -130,8 +130,8 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
                                std::vector<std::vector<int>> structure_boxes,
                                std::vector<OCRPredictResult> &ocr_result) {
   // match text in same cell
-  std::vector<std::vector<string>> matched(structure_boxes.size(),
-                                           std::vector<std::string>());
+  std::vector<std::vector<std::string>> matched(structure_boxes.size(),
+                                                std::vector<std::string>());
 
   std::vector<int> ocr_box;
   std::vector<int> structure_box;
@@ -150,7 +150,7 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
         structure_box = structure_boxes[j];
       }
       dis_list[j][0] = this->dis(ocr_box, structure_box);
-      dis_list[j][1] = 1 - this->iou(ocr_box, structure_box);
+      dis_list[j][1] = 1 - Utility::iou(ocr_box, structure_box);
       dis_list[j][2] = j;
     }
     // find min dis idx
@@ -216,28 +216,6 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
   return html_str;
 }
 
-float PaddleStructure::iou(std::vector<int> &box1, std::vector<int> &box2) {
-  int area1 = max(0, box1[2] - box1[0]) * max(0, box1[3] - box1[1]);
-  int area2 = max(0, box2[2] - box2[0]) * max(0, box2[3] - box2[1]);
-
-  // computing the sum_area
-  int sum_area = area1 + area2;
-
-  // find the each point of intersect rectangle
-  int x1 = max(box1[0], box2[0]);
-  int y1 = max(box1[1], box2[1]);
-  int x2 = min(box1[2], box2[2]);
-  int y2 = min(box1[3], box2[3]);
-
-  // judge if there is an intersect
-  if (y1 >= y2 || x1 >= x2) {
-    return 0.0;
-  } else {
-    int intersect = (x2 - x1) * (y2 - y1);
-    return intersect / (sum_area - intersect + 0.00000001);
-  }
-}
-
 float PaddleStructure::dis(std::vector<int> &box1, std::vector<int> &box2) {
   int x1_1 = box1[0];
   int y1_1 = box1[1];
@@ -253,12 +231,64 @@ float PaddleStructure::dis(std::vector<int> &box1, std::vector<int> &box2) {
       abs(x1_2 - x1_1) + abs(y1_2 - y1_1) + abs(x2_2 - x2_1) + abs(y2_2 - y2_1);
   float dis_2 = abs(x1_2 - x1_1) + abs(y1_2 - y1_1);
   float dis_3 = abs(x2_2 - x2_1) + abs(y2_2 - y2_1);
-  return dis + min(dis_2, dis_3);
+  return dis + std::min(dis_2, dis_3);
+}
+
+void PaddleStructure::reset_timer() {
+  this->time_info_det = {0, 0, 0};
+  this->time_info_rec = {0, 0, 0};
+  this->time_info_cls = {0, 0, 0};
+  this->time_info_table = {0, 0, 0};
+  this->time_info_layout = {0, 0, 0};
+}
+
+void PaddleStructure::benchmark_log(int img_num) {
+  if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
+      0) {
+    AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,
+                           FLAGS_enable_mkldnn, FLAGS_cpu_threads, 1, "dynamic",
+                           FLAGS_precision, this->time_info_det, img_num);
+    autolog_det.report();
+  }
+  if (this->time_info_rec[0] + this->time_info_rec[1] + this->time_info_rec[2] >
+      0) {
+    AutoLogger autolog_rec("ocr_rec", FLAGS_use_gpu, FLAGS_use_tensorrt,
+                           FLAGS_enable_mkldnn, FLAGS_cpu_threads,
+                           FLAGS_rec_batch_num, "dynamic", FLAGS_precision,
+                           this->time_info_rec, img_num);
+    autolog_rec.report();
+  }
+  if (this->time_info_cls[0] + this->time_info_cls[1] + this->time_info_cls[2] >
+      0) {
+    AutoLogger autolog_cls("ocr_cls", FLAGS_use_gpu, FLAGS_use_tensorrt,
+                           FLAGS_enable_mkldnn, FLAGS_cpu_threads,
+                           FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
+                           this->time_info_cls, img_num);
+    autolog_cls.report();
+  }
+  if (this->time_info_table[0] + this->time_info_table[1] +
+          this->time_info_table[2] >
+      0) {
+    AutoLogger autolog_table("table", FLAGS_use_gpu, FLAGS_use_tensorrt,
+                             FLAGS_enable_mkldnn, FLAGS_cpu_threads,
+                             FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
+                             this->time_info_table, img_num);
+    autolog_table.report();
+  }
+  if (this->time_info_layout[0] + this->time_info_layout[1] +
+          this->time_info_layout[2] >
+      0) {
+    AutoLogger autolog_layout("layout", FLAGS_use_gpu, FLAGS_use_tensorrt,
+                              FLAGS_enable_mkldnn, FLAGS_cpu_threads,
+                              FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
+                              this->time_info_layout, img_num);
+    autolog_layout.report();
+  }
 }
 
 PaddleStructure::~PaddleStructure() {
-  if (this->recognizer_ != nullptr) {
-    delete this->recognizer_;
+  if (this->table_model_ != nullptr) {
+    delete this->table_model_;
   }
 };
 

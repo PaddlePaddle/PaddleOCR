@@ -41,12 +41,13 @@ struct OCRPredictResult {
 };
 
 struct StructurePredictResult {
-  std::vector<int> box;
+  std::vector<float> box;
   std::vector<std::vector<int>> cell_box;
   std::string type;
   std::vector<OCRPredictResult> text_res;
   std::string html;
   float html_score = -1;
+  float confidence;
 };
 
 class Utility {
@@ -82,12 +83,19 @@ public:
 
   static void print_result(const std::vector<OCRPredictResult> &ocr_result);
 
-  static cv::Mat crop_image(cv::Mat &img, std::vector<int> &area);
+  static cv::Mat crop_image(cv::Mat &img, const std::vector<int> &area);
+  static cv::Mat crop_image(cv::Mat &img, const std::vector<float> &area);
 
   static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result);
 
   static std::vector<int> xyxyxyxy2xyxy(std::vector<std::vector<int>> &box);
   static std::vector<int> xyxyxyxy2xyxy(std::vector<int> &box);
+
+  static float fast_exp(float x);
+  static std::vector<float>
+  activation_function_softmax(std::vector<float> &src);
+  static float iou(std::vector<int> &box1, std::vector<int> &box2);
+  static float iou(std::vector<float> &box1, std::vector<float> &box2);
 
 private:
   static bool comparison_box(const OCRPredictResult &result1,

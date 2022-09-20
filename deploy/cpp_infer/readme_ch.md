@@ -184,6 +184,9 @@ inference/
 |-- table
 |   |--inference.pdiparams
 |   |--inference.pdmodel
+|-- layout
+|   |--inference.pdiparams
+|   |--inference.pdmodel
 ```
 
 <a name="22"></a>
@@ -288,7 +291,30 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --cls=true \
 ```
 
-##### 7. 表格识别
+##### 7. 版面分析+表格识别
+```shell
+./build/ppocr --det_model_dir=inference/det_db \
+    --rec_model_dir=inference/rec_rcnn \
+    --table_model_dir=inference/table \
+    --image_dir=../../ppstructure/docs/table/table.jpg \
+    --layout_model_dir=inference/layout \
+    --type=structure \
+    --table=true \
+    --layout=true
+```
+
+##### 8. 版面分析
+```shell
+./build/ppocr --layout_model_dir=inference/layout \
+    --image_dir=../../ppstructure/docs/table/1.png \
+    --type=structure \
+    --table=false \
+    --layout=true \
+    --det=false \
+    --rec=false
+```
+
+##### 9. 表格识别
 ```shell
 ./build/ppocr --det_model_dir=inference/det_db \
     --rec_model_dir=inference/rec_rcnn \
@@ -352,12 +378,22 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 |rec_img_w|int|320|文字识别模型输入图像宽度|
 
 
+- 版面分析模型相关
+
+|参数名称|类型|默认参数|意义|
+| :---: | :---: | :---: | :---: |
+|layout_model_dir|string|-|版面分析模型inference model地址|
+|layout_dict_path|string|../../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt|字典文件|
+|layout_score_threshold|float|0.5|检测框的分数阈值|
+|layout_nms_threshold|float|0.5|nms的阈值|
+
+
 - 表格识别模型相关
 
 |参数名称|类型|默认参数|意义|
 | :---: | :---: | :---: | :---: |
 |table_model_dir|string|-|表格识别模型inference model地址|
-|table_char_dict_path|string|../../ppocr/utils/dict/table_structure_dict.txt|字典文件|
+|table_char_dict_path|string|../../ppocr/utils/dict/table_structure_dict_ch.txt|字典文件|
 |table_max_len|int|488|表格识别模型输入图像长边大小，最终网络输入图像大小为（table_max_len，table_max_len）|
 |merge_no_span_structure|bool|true|是否合并<td> 和 </td> 为<td></td>|
 
@@ -378,11 +414,51 @@ predict img: ../../doc/imgs/12.jpg
 The detection visualized image saved in ./output//12.jpg
 ```
 
-- table
+- layout+table
 
 ```bash
-predict img: ../../ppstructure/docs/table/table.jpg
-0       type: table, region: [0,0,371,293], res: <html><body><table><thead><tr><td>Methods</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>SegLink [26]</td><td>70.0</td><td>86.0</td><td>77.0</td><td>8.9</td></tr><tr><td>PixelLink [4]</td><td>73.2</td><td>83.0</td><td>77.8</td><td>-</td></tr><tr><td>TextSnake [18]</td><td>73.9</td><td>83.2</td><td>78.3</td><td>1.1</td></tr><tr><td>TextField [37]</td><td>75.9</td><td>87.4</td><td>81.3</td><td>5.2 </td></tr><tr><td>MSR[38]</td><td>76.7</td><td>87.4</td><td>81.7</td><td>-</td></tr><tr><td>FTSN [3]</td><td>77.1</td><td>87.6</td><td>82.0</td><td>-</td></tr><tr><td>LSE[30]</td><td>81.7</td><td>84.2</td><td>82.9</td><td>-</td></tr><tr><td>CRAFT [2]</td><td>78.2</td><td>88.2</td><td>82.9</td><td>8.6</td></tr><tr><td>MCN [16]</td><td>79</td><td>88</td><td>83</td><td>-</td></tr><tr><td>ATRR[35]</td><td>82.1</td><td>85.2</td><td>83.6</td><td>-</td></tr><tr><td>PAN [34]</td><td>83.8</td><td>84.4</td><td>84.1</td><td>30.2</td></tr><tr><td>DB[12]</td><td>79.2</td><td>91.5</td><td>84.9</td><td>32.0</td></tr><tr><td>DRRG [41]</td><td>82.30</td><td>88.05</td><td>85.08</td><td>-</td></tr><tr><td>Ours (SynText)</td><td>80.68</td><td>85.40</td><td>82.97</td><td>12.68</td></tr><tr><td>Ours (MLT-17)</td><td>84.54</td><td>86.62</td><td>85.57</td><td>12.31</td></tr></tbody></table></body></html>
+predict img: ../../ppstructure/docs/table/1.png
+0       type: text, region: [12,729,410,848], score: 0.781044, res: count of ocr result is : 7
+********** print ocr result **********
+0       det boxes: [[4,1],[79,1],[79,12],[4,12]] rec text: CTW1500. rec score: 0.769472
+...
+6       det boxes: [[4,99],[391,99],[391,112],[4,112]] rec text: sate-of-the-artmethods[12.34.36l.ourapproachachieves rec score: 0.90414
+********** end print ocr result **********
+1       type: text, region: [69,342,342,359], score: 0.703666, res: count of ocr result is : 1
+********** print ocr result **********
+0       det boxes: [[8,2],[269,2],[269,13],[8,13]] rec text: Table6.Experimentalresults on CTW-1500 rec score: 0.890454
+********** end print ocr result **********
+2       type: text, region: [70,316,706,332], score: 0.659738, res: count of ocr result is : 2
+********** print ocr result **********
+0       det boxes: [[373,2],[630,2],[630,11],[373,11]] rec text: oroposals.andthegreencontoursarefinal rec score: 0.919729
+1       det boxes: [[8,3],[357,3],[357,11],[8,11]] rec text: Visualexperimentalresultshebluecontoursareboundar rec score: 0.915963
+********** end print ocr result **********
+3       type: text, region: [489,342,789,359], score: 0.630538, res: count of ocr result is : 1
+********** print ocr result **********
+0       det boxes: [[8,2],[294,2],[294,14],[8,14]] rec text: Table7.Experimentalresults onMSRA-TD500 rec score: 0.942251
+********** end print ocr result **********
+4       type: text, region: [444,751,841,848], score: 0.607345, res: count of ocr result is : 5
+********** print ocr result **********
+0       det boxes: [[19,3],[389,3],[389,17],[19,17]] rec text: Inthispaper,weproposeanovel adaptivebound rec score: 0.941031
+1       det boxes: [[4,22],[390,22],[390,36],[4,36]] rec text: aryproposalnetworkforarbitraryshapetextdetection rec score: 0.960172
+2       det boxes: [[4,42],[392,42],[392,56],[4,56]] rec text: whichadoptanboundaryproposalmodeltogeneratecoarse rec score: 0.934647
+3       det boxes: [[4,61],[389,61],[389,75],[4,75]] rec text: ooundaryproposals,andthenadoptanadaptiveboundary rec score: 0.946296
+4       det boxes: [[5,80],[387,80],[387,93],[5,93]] rec text: leformationmodelcombinedwithGCNandRNNtoper rec score: 0.952401
+********** end print ocr result **********
+5       type: title, region: [444,705,564,724], score: 0.785429, res: count of ocr result is : 1
+********** print ocr result **********
+0       det boxes: [[6,2],[113,2],[113,14],[6,14]] rec text: 5.Conclusion rec score: 0.856903
+********** end print ocr result **********
+6       type: table, region: [14,360,402,711], score: 0.963643, res: <html><body><table><thead><tr><td>Methods</td><td>Ext</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>TextSnake [18]</td><td>Syn</td><td>85.3</td><td>67.9</td><td>75.6</td><td></td></tr><tr><td>CSE [17]</td><td>MiLT</td><td>76.1</td><td>78.7</td><td>77.4</td><td>0.38</td></tr><tr><td>LOMO[40]</td><td>Syn</td><td>76.5</td><td>85.7</td><td>80.8</td><td>4.4</td></tr><tr><td>ATRR[35]</td><td>Sy-</td><td>80.2</td><td>80.1</td><td>80.1</td><td>-</td></tr><tr><td>SegLink++ [28]</td><td>Syn</td><td>79.8</td><td>82.8</td><td>81.3</td><td>-</td></tr><tr><td>TextField [37]</td><td>Syn</td><td>79.8</td><td>83.0</td><td>81.4</td><td>6.0</td></tr><tr><td>MSR[38]</td><td>Syn</td><td>79.0</td><td>84.1</td><td>81.5</td><td>4.3</td></tr><tr><td>PSENet-1s [33]</td><td>MLT</td><td>79.7</td><td>84.8</td><td>82.2</td><td>3.9</td></tr><tr><td>DB [12]</td><td>Syn</td><td>80.2</td><td>86.9</td><td>83.4</td><td>22.0</td></tr><tr><td>CRAFT [2]</td><td>Syn</td><td>81.1</td><td>86.0</td><td>83.5</td><td>-</td></tr><tr><td>TextDragon [5]</td><td>MLT+</td><td>82.8</td><td>84.5</td><td>83.6</td><td></td></tr><tr><td>PAN [34]</td><td>Syn</td><td>81.2</td><td>86.4</td><td>83.7</td><td>39.8</td></tr><tr><td>ContourNet [36]</td><td></td><td>84.1</td><td>83.7</td><td>83.9</td><td>4.5</td></tr><tr><td>DRRG [41]</td><td>MLT</td><td>83.02</td><td>85.93</td><td>84.45</td><td>-</td></tr><tr><td>TextPerception[23]</td><td>Syn</td><td>81.9</td><td>87.5</td><td>84.6</td><td></td></tr><tr><td>Ours</td><td> Syn</td><td>80.57</td><td>87.66</td><td>83.97</td><td>12.08</td></tr><tr><td>Ours</td><td></td><td>81.45</td><td>87.81</td><td>84.51</td><td>12.15</td></tr><tr><td>Ours</td><td>MLT</td><td>83.60</td><td>86.45</td><td>85.00</td><td>12.21</td></tr></tbody></table></body></html>
+The table visualized image saved in ./output//6_1.png
+7       type: table, region: [462,359,820,657], score: 0.953917, res: <html><body><table><thead><tr><td>Methods</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>SegLink [26]</td><td>70.0</td><td>86.0</td><td>77.0</td><td>8.9</td></tr><tr><td>PixelLink [4]</td><td>73.2</td><td>83.0</td><td>77.8</td><td>-</td></tr><tr><td>TextSnake [18]</td><td>73.9</td><td>83.2</td><td>78.3</td><td>1.1</td></tr><tr><td>TextField [37]</td><td>75.9</td><td>87.4</td><td>81.3</td><td>5.2 </td></tr><tr><td>MSR[38]</td><td>76.7</td><td>87.4</td><td>81.7</td><td>-</td></tr><tr><td>FTSN[3]</td><td>77.1</td><td>87.6</td><td>82.0</td><td>:</td></tr><tr><td>LSE[30]</td><td>81.7</td><td>84.2</td><td>82.9</td><td></td></tr><tr><td>CRAFT [2]</td><td>78.2</td><td>88.2</td><td>82.9</td><td>8.6</td></tr><tr><td>MCN [16]</td><td>79</td><td>88</td><td>83</td><td>-</td></tr><tr><td>ATRR[35]</td><td>82.1</td><td>85.2</td><td>83.6</td><td>-</td></tr><tr><td>PAN [34]</td><td>83.8</td><td>84.4</td><td>84.1</td><td>30.2</td></tr><tr><td>DB[12]</td><td>79.2</td><td>91.5</td><td>84.9</td><td>32.0</td></tr><tr><td>DRRG [41]</td><td>82.30</td><td>88.05</td><td>85.08</td><td>-</td></tr><tr><td>Ours (SynText)</td><td>80.68</td><td>85.40</td><td>82.97</td><td>12.68</td></tr><tr><td>Ours (MLT-17)</td><td>84.54</td><td>86.62</td><td>85.57</td><td>12.31</td></tr></tbody></table></body></html>
+The table visualized image saved in ./output//7_1.png
+8       type: figure, region: [14,3,836,310], score: 0.969443, res: count of ocr result is : 26
+********** print ocr result **********
+0       det boxes: [[506,14],[539,15],[539,22],[506,21]] rec text: E rec score: 0.318073
+...
+25      det boxes: [[680,290],[759,288],[759,303],[680,305]] rec text: (d) CTW1500 rec score: 0.95911
+********** end print ocr result **********
 ```
 
 <a name="3"></a>
