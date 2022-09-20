@@ -32,7 +32,7 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->cls_batch_num_) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = min(img_num, beg_img_no + this->cls_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + this->cls_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     // preprocess
     std::vector<cv::Mat> norm_img_batch;
@@ -97,7 +97,7 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
 }
 
 void Classifier::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
@@ -112,9 +112,9 @@ void Classifier::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
-      if (!Utility::PathExists("./trt_cls_shape.txt")){
+      if (!Utility::PathExists("./trt_cls_shape.txt")) {
         config.CollectShapeRangeInfo("./trt_cls_shape.txt");
-      } else { 
+      } else {
         config.EnableTunedTensorRtDynamicShape("./trt_cls_shape.txt", true);
       }
     }
@@ -136,6 +136,6 @@ void Classifier::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePredictor(config);
+  this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR

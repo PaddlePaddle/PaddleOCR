@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <include/clipper.h>
 #include <include/postprocess_op.h>
 
 namespace PaddleOCR {
@@ -352,6 +351,25 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
   return root_points;
 }
 
+void TablePostProcessor::init(std::string label_path,
+                              bool merge_no_span_structure) {
+  this->label_list_ = Utility::ReadDict(label_path);
+  if (merge_no_span_structure) {
+    this->label_list_.push_back("<td></td>");
+    std::vector<std::string>::iterator it;
+    for (it = this->label_list_.begin(); it != this->label_list_.end();) {
+      if (*it == "<td>") {
+        it = this->label_list_.erase(it);
+      } else {
+        ++it;
+      }
+    }
+  }
+  // add_special_char
+  this->label_list_.insert(this->label_list_.begin(), this->beg);
+  this->label_list_.push_back(this->end);
+}
+
 void TablePostProcessor::Run(
     std::vector<float> &loc_preds, std::vector<float> &structure_probs,
     std::vector<float> &rec_scores, std::vector<int> &loc_preds_shape,
@@ -412,13 +430,24 @@ void TablePostProcessor::Run(
       }
     }
     score /= count;
-    if (isnan(score) || rec_boxes.size() == 0) {
+    if (std::isnan(score) || rec_boxes.size() == 0) {
       score = -1;
     }
     rec_scores.push_back(score);
     rec_boxes_batch.push_back(rec_boxes);
     rec_html_tag_batch.push_back(rec_html_tags);
   }
+}
+
+void PicodetPostProcessor::init(std::string label_path,
+                                const double score_threshold,
+                                const double nms_threshold,
+                                const std::vector<int> &fpn_stride) {
+  this->label_list_ = Utility::ReadDict(label_path);
+  this->score_threshold_ = score_threshold;
+  this->nms_threshold_ = nms_threshold;
+  this->num_class_ = label_list_.size();
+  this->fpn_stride_ = fpn_stride;
 }
 
 void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
@@ -469,12 +498,10 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
     }
     this->nms(bbox_results[i], this->nms_threshold_);
     for (auto box : bbox_results[i]) {
-      box.box_float[0] = box.box_float[0] / scale_factor_w;
-      box.box_float[2] = box.box_float[2] / scale_factor_w;
-      box.box_float[1] = box.box_float[1] / scale_factor_h;
-      box.box_float[3] = box.box_float[3] / scale_factor_h;
-      box.box = {(int)box.box_float[0], (int)box.box_float[1],
-                 (int)box.box_float[2], (int)box.box_float[3]};
+      box.box[0] = box.box[0] / scale_factor_w;
+      box.box[2] = box.box[2] / scale_factor_w;
+      box.box[1] = box.box[1] / scale_factor_h;
+      box.box[3] = box.box[3] / scale_factor_h;
       results.push_back(box);
     }
   }
@@ -501,13 +528,13 @@ PicodetPostProcessor::disPred2Bbox(std::vector<float> bbox_pred, int label,
     dis_pred[i] = dis;
   }
 
-  float xmin_float = (std::max)(ct_x - dis_pred[0], .0f);
-  float ymin_float = (std::max)(ct_y - dis_pred[1], .0f);
-  float xmax_float = (std::min)(ct_x + dis_pred[2], (float)im_shape[1]);
-  float ymax_float = (std::min)(ct_y + dis_pred[3], (float)im_shape[0]);
+  float xmin = (std::max)(ct_x - dis_pred[0], .0f);
+  float ymin = (std::max)(ct_y - dis_pred[1], .0f);
+  float xmax = (std::min)(ct_x + dis_pred[2], (float)im_shape[1]);
+  float ymax = (std::min)(ct_y + dis_pred[3], (float)im_shape[0]);
 
   StructurePredictResult result_item;
-  result_item.box_float = {xmin_float, ymin_float, xmax_float, ymax_float};
+  result_item.box = {xmin, ymin, xmax, ymax};
   result_item.type = this->label_list_[label];
   result_item.confidence = score;
 
@@ -530,8 +557,7 @@ void PicodetPostProcessor::nms(std::vector<StructurePredictResult> &input_boxes,
       if (picked[j] == 0) {
         continue;
       }
-      float iou =
-          Utility::iou(input_boxes[i].box_float, input_boxes[j].box_float);
+      float iou = Utility::iou(input_boxes[i].box, input_boxes[j].box);
       if (iou > nms_threshold) {
         picked[j] = 0;
       }

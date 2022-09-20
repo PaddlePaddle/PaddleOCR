@@ -66,7 +66,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
 }
 
 void Utility::VisualizeBboxes(const cv::Mat &srcimg,
-                              StructurePredictResult &structure_result,
+                              const StructurePredictResult &structure_result,
                               const std::string &save_path) {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
@@ -281,7 +281,7 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
   }
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img, std::vector<int> &box) {
+cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) {
   cv::Mat crop_im;
   int crop_x1 = std::max(0, box[0]);
   int crop_y1 = std::max(0, box[1]);
@@ -296,6 +296,12 @@ cv::Mat Utility::crop_image(cv::Mat &img, std::vector<int> &box) {
       img(cv::Range(crop_y1, crop_y2 + 1), cv::Range(crop_x1, crop_x2 + 1));
   crop_im_window += roi_img;
   return crop_im;
+}
+
+cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<float> &box) {
+  std::vector<int> box_int = {(int)box[0], (int)box[1], (int)box[2],
+                              (int)box[3]};
+  return crop_image(img, box_int);
 }
 
 void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {

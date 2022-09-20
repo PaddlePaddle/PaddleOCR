@@ -14,26 +14,11 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
 #include "paddle_api.h"
 #include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
 
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
-#include <include/utility.h>
-
-using namespace paddle_infer;
 
 namespace PaddleOCR {
 
@@ -42,7 +27,7 @@ public:
   explicit StructureLayoutRecognizer(
       const std::string &model_dir, const bool &use_gpu, const int &gpu_id,
       const int &gpu_mem, const int &cpu_math_library_num_threads,
-      const bool &use_mkldnn, const string &label_path,
+      const bool &use_mkldnn, const std::string &label_path,
       const bool &use_tensorrt, const std::string &precision,
       const double &layout_score_threshold,
       const double &layout_nms_threshold) {
@@ -66,7 +51,7 @@ public:
            std::vector<double> &times);
 
 private:
-  std::shared_ptr<Predictor> predictor_;
+  std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   bool use_gpu_ = false;
   int gpu_id_ = 0;

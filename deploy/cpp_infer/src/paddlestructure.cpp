@@ -16,8 +16,6 @@
 #include <include/paddlestructure.h>
 
 #include "auto_log/autolog.h"
-#include <numeric>
-#include <sys/stat.h>
 
 namespace PaddleOCR {
 
@@ -50,7 +48,7 @@ PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
   } else {
     StructurePredictResult res;
     res.type = "table";
-    res.box = std::vector<int>(4, 0);
+    res.box = std::vector<float>(4, 0.0);
     res.box[2] = img.cols;
     res.box[3] = img.rows;
     structure_results.push_back(res);
@@ -108,10 +106,10 @@ void PaddleStructure::table(cv::Mat img,
     std::vector<int> ocr_box;
     for (int j = 0; j < ocr_result.size(); j++) {
       ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[j].box);
-      ocr_box[0] = max(0, ocr_box[0] - expand_pixel);
-      ocr_box[1] = max(0, ocr_box[1] - expand_pixel),
-      ocr_box[2] = min(img_list[i].cols, ocr_box[2] + expand_pixel);
-      ocr_box[3] = min(img_list[i].rows, ocr_box[3] + expand_pixel);
+      ocr_box[0] = std::max(0, ocr_box[0] - expand_pixel);
+      ocr_box[1] = std::max(0, ocr_box[1] - expand_pixel),
+      ocr_box[2] = std::min(img_list[i].cols, ocr_box[2] + expand_pixel);
+      ocr_box[3] = std::min(img_list[i].rows, ocr_box[3] + expand_pixel);
 
       cv::Mat crop_img = Utility::crop_image(img_list[i], ocr_box);
       rec_img_list.push_back(crop_img);
@@ -132,8 +130,8 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
                                std::vector<std::vector<int>> structure_boxes,
                                std::vector<OCRPredictResult> &ocr_result) {
   // match text in same cell
-  std::vector<std::vector<string>> matched(structure_boxes.size(),
-                                           std::vector<std::string>());
+  std::vector<std::vector<std::string>> matched(structure_boxes.size(),
+                                                std::vector<std::string>());
 
   std::vector<int> ocr_box;
   std::vector<int> structure_box;
@@ -233,7 +231,7 @@ float PaddleStructure::dis(std::vector<int> &box1, std::vector<int> &box2) {
       abs(x1_2 - x1_1) + abs(y1_2 - y1_1) + abs(x2_2 - x2_1) + abs(y2_2 - y2_1);
   float dis_2 = abs(x1_2 - x1_1) + abs(y1_2 - y1_1);
   float dis_3 = abs(x2_2 - x2_1) + abs(y2_2 - y2_1);
-  return dis + min(dis_2, dis_3);
+  return dis + std::min(dis_2, dis_3);
 }
 
 void PaddleStructure::reset_timer() {

@@ -94,7 +94,7 @@ void StructureLayoutRecognizer::Run(cv::Mat img,
 }
 
 void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  paddle_infer::Config config;
   if (Utility::PathExists(model_dir + "/inference.pdmodel") &&
       Utility::PathExists(model_dir + "/inference.pdiparams")) {
     config.SetModel(model_dir + "/inference.pdmodel",
@@ -105,7 +105,7 @@ void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
                     model_dir + "/model.pdiparams");
   } else {
     std::cerr << "[ERROR] not find model.pdiparams or inference.pdiparams in "
-              << model_dir << endl;
+              << model_dir << std::endl;
     exit(1);
   }
 
@@ -144,6 +144,6 @@ void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePredictor(config);
+  this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR

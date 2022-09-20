@@ -16,7 +16,7 @@
 #include <include/paddleocr.h>
 
 #include "auto_log/autolog.h"
-#include <numeric>
+
 namespace PaddleOCR {
 
 PPOCR::PPOCR() {

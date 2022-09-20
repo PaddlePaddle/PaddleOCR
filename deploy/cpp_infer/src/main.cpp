@@ -75,7 +75,8 @@ void check_params() {
   }
   if (FLAGS_precision != "fp32" && FLAGS_precision != "fp16" &&
       FLAGS_precision != "int8") {
-    cout << "precison should be 'fp32'(default), 'fp16' or 'int8'. " << endl;
+    std::cout << "precison should be 'fp32'(default), 'fp16' or 'int8'. "
+              << std::endl;
     exit(1);
   }
 }
@@ -93,7 +94,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names) {
     cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!img.data) {
       std::cerr << "[ERROR] image read failed! image path: "
-                << cv_all_img_names[i] << endl;
+                << cv_all_img_names[i] << std::endl;
       continue;
     }
     img_list.push_back(img);
@@ -104,7 +105,7 @@ void ocr(std::vector<cv::String> &cv_all_img_names) {
       ocr.ocr(img_list, FLAGS_det, FLAGS_rec, FLAGS_cls);
 
   for (int i = 0; i < img_names.size(); ++i) {
-    cout << "predict img: " << cv_all_img_names[i] << endl;
+    std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
     Utility::print_result(ocr_results[i]);
     if (FLAGS_visualize && FLAGS_det) {
       std::string file_name = Utility::basename(img_names[i]);
@@ -126,11 +127,11 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
   }
 
   for (int i = 0; i < cv_all_img_names.size(); i++) {
-    cout << "predict img: " << cv_all_img_names[i] << endl;
+    std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
     cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!img.data) {
       std::cerr << "[ERROR] image read failed! image path: "
-                << cv_all_img_names[i] << endl;
+                << cv_all_img_names[i] << std::endl;
       continue;
     }
 
@@ -156,14 +157,14 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
                                        "_" + file_name);
         }
       } else {
-        cout << "count of ocr result is : "
-             << structure_results[j].text_res.size() << endl;
+        std::cout << "count of ocr result is : "
+                  << structure_results[j].text_res.size() << std::endl;
         if (structure_results[j].text_res.size() > 0) {
-          cout << "********** print ocr result "
-               << "**********" << endl;
+          std::cout << "********** print ocr result "
+                    << "**********" << std::endl;
           Utility::print_result(structure_results[j].text_res);
-          cout << "********** end print ocr result "
-               << "**********" << endl;
+          std::cout << "********** end print ocr result "
+                    << "**********" << std::endl;
         }
       }
     }
@@ -180,13 +181,13 @@ int main(int argc, char **argv) {
 
   if (!Utility::PathExists(FLAGS_image_dir)) {
     std::cerr << "[ERROR] image path not exist! image_dir: " << FLAGS_image_dir
-              << endl;
+              << std::endl;
     exit(1);
   }
 
   std::vector<cv::String> cv_all_img_names;
   cv::glob(FLAGS_image_dir, cv_all_img_names);
-  std::cout << "total images num: " << cv_all_img_names.size() << endl;
+  std::cout << "total images num: " << cv_all_img_names.size() << std::endl;
 
   if (!Utility::PathExists(FLAGS_output)) {
     Utility::CreateDir(FLAGS_output);
@@ -196,6 +197,6 @@ int main(int argc, char **argv) {
   } else if (FLAGS_type == "structure") {
     structure(cv_all_img_names);
   } else {
-    std::cout << "only value in ['ocr','structure'] is supported" << endl;
+    std::cout << "only value in ['ocr','structure'] is supported" << std::endl;
   }
 }

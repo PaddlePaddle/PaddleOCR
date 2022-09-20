@@ -14,23 +14,8 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
 #include "include/clipper.h"
 #include "include/utility.h"
-
-using namespace std;
 
 namespace PaddleOCR {
 
@@ -92,23 +77,7 @@ private:
 
 class TablePostProcessor {
 public:
-  void init(std::string label_path, bool merge_no_span_structure = true) {
-    this->label_list_ = Utility::ReadDict(label_path);
-    if (merge_no_span_structure) {
-      this->label_list_.push_back("<td></td>");
-      std::vector<std::string>::iterator it;
-      for (it = this->label_list_.begin(); it != this->label_list_.end();) {
-        if (*it == "<td>") {
-          it = this->label_list_.erase(it);
-        } else {
-          ++it;
-        }
-      }
-    }
-    // add_special_char
-    this->label_list_.insert(this->label_list_.begin(), this->beg);
-    this->label_list_.push_back(this->end);
-  }
+  void init(std::string label_path, bool merge_no_span_structure = true);
   void Run(std::vector<float> &loc_preds, std::vector<float> &structure_probs,
            std::vector<float> &rec_scores, std::vector<int> &loc_preds_shape,
            std::vector<int> &structure_probs_shape,
@@ -126,13 +95,7 @@ class PicodetPostProcessor {
 public:
   void init(std::string label_path, const double score_threshold = 0.4,
             const double nms_threshold = 0.5,
-            const std::vector<int> &fpn_stride = {8, 16, 32, 64}) {
-    this->label_list_ = Utility::ReadDict(label_path);
-    this->score_threshold_ = score_threshold;
-    this->nms_threshold_ = nms_threshold;
-    this->num_class_ = label_list_.size();
-    this->fpn_stride_ = fpn_stride;
-  }
+            const std::vector<int> &fpn_stride = {8, 16, 32, 64});
   void Run(std::vector<StructurePredictResult> &results,
            std::vector<std::vector<float>> outs, std::vector<int> ori_shape,
            std::vector<int> resize_shape, int eg_max);

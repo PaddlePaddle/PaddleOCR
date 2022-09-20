@@ -14,28 +14,9 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include "paddle_api.h"
-#include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
 #include <include/ocr_cls.h>
 #include <include/ocr_det.h>
 #include <include/ocr_rec.h>
-#include <include/preprocess_op.h>
-#include <include/utility.h>
-
-using namespace paddle_infer;
 
 namespace PaddleOCR {
 
