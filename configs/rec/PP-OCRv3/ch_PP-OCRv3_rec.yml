@@ -88,6 +88,7 @@ Train:
         prob: 0.5
         ext_data_num: 2
         image_shape: [48, 320, 3]
+        max_text_length: *max_text_length
     - RecAug:
     - MultiLabelEncode:
     - RecResizeImg:
