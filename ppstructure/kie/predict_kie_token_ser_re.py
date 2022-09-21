@@ -64,7 +64,10 @@ class SerRePredictor(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        preds = dict(loss=outputs[0], pred_relations=outputs[1])
+        preds = dict(
+            loss=outputs[1],
+            pred_relations=outputs[2],
+            hidden_states=outputs[0], )
 
         post_result = self.postprocess_op(
             preds,

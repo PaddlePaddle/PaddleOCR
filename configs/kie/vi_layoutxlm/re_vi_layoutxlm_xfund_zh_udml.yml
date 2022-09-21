@@ -57,14 +57,16 @@ Loss:
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states_5
+      key: hidden_states
+      index: 5
       name: "loss_5"
   - DistillationVQADistanceLoss:
       weight: 0.5
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states_8
+      key: hidden_states
+      index: 8
       name: "loss_8"
 
 
@@ -126,7 +128,7 @@ Train:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox','attention_mask', 'token_type_ids', 'image', 'entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox','attention_mask', 'token_type_ids', 'entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
@@ -166,7 +168,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False

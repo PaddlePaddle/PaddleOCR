@@ -83,7 +83,7 @@ Train:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox','attention_mask', 'token_type_ids', 'image', 'entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox','attention_mask', 'token_type_ids', 'entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: True
     drop_last: False
@@ -122,7 +122,7 @@ Eval:
           order: 'hwc'
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'image', 'entities', 'relations'] # dataloader will return list in this order
+          keep_keys: [ 'input_ids', 'bbox', 'attention_mask', 'token_type_ids', 'entities', 'relations'] # dataloader will return list in this order
   loader:
     shuffle: False
     drop_last: False

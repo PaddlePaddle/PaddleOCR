@@ -32,7 +32,7 @@ class VQAReTokenLayoutLMPostProcess(object):
             return self._infer(pred_relations, *args, **kwargs)
 
     def _metric(self, pred_relations, label):
-        return pred_relations, label[6], label[5]
+        return pred_relations, label[-1], label[-2]
 
     def _infer(self, pred_relations, *args, **kwargs):
         ser_results = kwargs['ser_results']
