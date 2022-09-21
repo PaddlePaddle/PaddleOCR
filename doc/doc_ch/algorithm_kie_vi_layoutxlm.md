@@ -45,7 +45,7 @@ VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去�
 
 ### 4.1 Python推理
 
--SER
+- SER
 
 首先将训练得到的模型转换成inference model。以VI-LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
 
@@ -74,7 +74,7 @@ SER可视化结果默认保存到`./output`文件夹里面，结果示例如下�
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
--RE
+- RE
 
 首先将训练得到的模型转换成inference model。以VI-LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
 

@@ -203,7 +203,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layou
 cd ..
 ```
 
--SER
+- SER
 
 执行下面的命令进行预测。
 
@@ -220,7 +220,7 @@ python3 kie/predict_kie_token_ser.py \
 
 可视化结果保存在`output`目录下。
 
--RE
+- RE
 
 执行下面的命令进行预测。
 

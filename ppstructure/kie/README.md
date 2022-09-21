@@ -219,7 +219,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layou
 cd ..
 ```
 
--SER
+- SER
 
 Use the following command for inference.
 
@@ -237,7 +237,7 @@ python3 kie/predict_kie_token_ser.py \
 
 The visual results and text file will be saved in directory `output`.
 
--RE
+- RE
 
 Use the following command for inference.
 
