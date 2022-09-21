@@ -254,8 +254,7 @@ def main(args):
 
         if args.recovery and all_res != []:
             try:
-                convert_info_docx(img, all_res, save_folder, img_name,
-                                  args.save_pdf)
+                convert_info_docx(img, all_res, save_folder, img_name)
             except Exception as ex:
                 logger.error("error in layout recovery image:{}, err msg: {}".
                              format(image_file, ex))

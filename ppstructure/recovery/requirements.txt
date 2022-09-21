@@ -1,4 +1,3 @@
 python-docx
-docx2pdf
 PyMuPDF
 beautifulsoup4

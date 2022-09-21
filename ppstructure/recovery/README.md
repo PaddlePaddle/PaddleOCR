@@ -82,8 +82,11 @@ Through layout analysis, we divided the image/PDF documents into regions, locate
 
 We can restore the test picture through the layout information, OCR detection and recognition structure, table information, and saved pictures.
 
-The whl package is also provided  for quick use, see [quickstart](../docs/quickstart_en.md) for details.
+The whl package is also provided  for quick use, follow the above code, for more infomation please refer to [quickstart](../docs/quickstart_en.md) for details.
 
+```bash
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+```
 
 <a name="3.1"></a>
 ### 3.1 Download models
