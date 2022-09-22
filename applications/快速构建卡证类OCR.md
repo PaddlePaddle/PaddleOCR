@@ -1,5 +1,35 @@
 # 快速构建卡证类OCR
 
+
+- [快速构建卡证类OCR](#快速构建卡证类ocr)
+  - [1. 金融行业卡证识别应用](#1-金融行业卡证识别应用)
+    - [1.1 金融行业中的OCR相关技术](#11-金融行业中的ocr相关技术)
+    - [1.2 金融行业中的卡证识别场景介绍](#12-金融行业中的卡证识别场景介绍)
+    - [1.3 OCR落地挑战](#13-ocr落地挑战)
+  - [2. 卡证识别技术解析](#2-卡证识别技术解析)
+    - [2.1 卡证分类模型](#21-卡证分类模型)
+    - [2.2 卡证识别模型](#22-卡证识别模型)
+  - [3. OCR技术拆解](#3-ocr技术拆解)
+    - [3.1技术流程](#31技术流程)
+    - [3.2 OCR技术拆解---卡证分类](#32-ocr技术拆解---卡证分类)
+      - [卡证分类：数据、模型准备](#卡证分类数据模型准备)
+      - [卡证分类---修改配置文件](#卡证分类---修改配置文件)
+      - [卡证分类---训练](#卡证分类---训练)
+    - [3.2 OCR技术拆解---卡证识别](#32-ocr技术拆解---卡证识别)
+      - [身份证识别：检测+分类](#身份证识别检测分类)
+      - [数据标注](#数据标注)
+  - [4 . 项目实践](#4--项目实践)
+    - [4.1 环境准备](#41-环境准备)
+    - [4.2 配置文件修改](#42-配置文件修改)
+    - [4.3 代码修改](#43-代码修改)
+      - [4.3.1 数据读取](#431-数据读取)
+      - [4.3.2  head修改](#432--head修改)
+      - [4.3.3 修改loss](#433-修改loss)
+      - [4.3.4 后处理](#434-后处理)
+    - [4.4. 模型启动](#44-模型启动)
+  - [5 总结](#5-总结)
+  - [References](#references)
+
 ## 1. 金融行业卡证识别应用
 
 ### 1.1 金融行业中的OCR相关技术
@@ -89,7 +119,7 @@
 
 A  使用爬虫获取无标注数据，将相同类别的放在同一文件夹下，文件名从0开始命名。具体格式如下图所示。
 
-	注：卡证类数据，建议每个类别数据量在500张以上
+​    注：卡证类数据，建议每个类别数据量在500张以上
 ![](https://ai-studio-static-online.cdn.bcebos.com/6f875b6e695e4fe5aedf427beb0d4ce8064ad7cc33c44faaad59d3eb9732639d)
 
 
@@ -127,7 +157,7 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 ```
 ![](https://ai-studio-static-online.cdn.bcebos.com/06af09bde845449ba0a676410f4daa1cdc3983ac95034bdbbafac3b7fd94042f)
 
-	注：日志中显示了训练结果和评估结果（训练时可以设置固定轮数评估一次）
+​    注：日志中显示了训练结果和评估结果（训练时可以设置固定轮数评估一次）
 
 
 ### 3.2 OCR技术拆解---卡证识别
@@ -147,7 +177,7 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 
 * OCR技术拆解---OCR工具库
 
-	PaddleOCR是一个丰富、领先且实用的OCR工具库，助力开发者训练出更好的模型并应用落地
+    PaddleOCR是一个丰富、领先且实用的OCR工具库，助力开发者训练出更好的模型并应用落地
 
 ![](https://ai-studio-static-online.cdn.bcebos.com/16c5e16d53b8428c95129cac4f5520204d869910247943e494d854227632e882)
 
@@ -161,7 +191,7 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 
 ####  身份证识别：检测+分类
 
-> 	方法：基于现有的dbnet检测模型，加入分类方法。检测同时进行分类，从一定程度上优化识别流程
+>   方法：基于现有的dbnet检测模型，加入分类方法。检测同时进行分类，从一定程度上优化识别流程
 
 ![](https://ai-studio-static-online.cdn.bcebos.com/e1e798c87472477fa0bfca0da12bb0c180845a3e167a4761b0d26ff4330a5ccb)
 
@@ -185,9 +215,11 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 
 ![](https://ai-studio-static-online.cdn.bcebos.com/89f42eccd600439fa9e28c97ccb663726e4e54ce3a854825b4c3b7d554ea21df)
 
-	注：两者只有标注有差别，训练参数数据集都相同
+​    注：两者只有标注有差别，训练参数数据集都相同
 
 ## 4 . 项目实践
+
+AIStudio项目链接：[快速构建卡证类OCR](https://aistudio.baidu.com/aistudio/projectdetail/4459116)
 
 ### 4.1 环境准备
 
@@ -199,8 +231,6 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 2）获取并解压预训练模型，如果要使用其他模型可以从模型库里自主选择合适模型。
 ```
 !wget -P work/pre_trained/   https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar 
-```
-```
 !tar -vxf /home/aistudio/work/pre_trained/ch_PP-OCRv3_det_distill_train.tar -C /home/aistudio/work/pre_trained
 ```
 3） 安装必要依赖
@@ -218,9 +248,9 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 
   注：在上述的配置文件的Global变量中需要添加以下两个参数：
 
-      label_list 为标签表
-     num_classes 为分类数
-     上述两个参数根据实际的情况配置即可
+​      label_list 为标签表
+​     num_classes 为分类数
+​     上述两个参数根据实际的情况配置即可
 
 
 ![](https://ai-studio-static-online.cdn.bcebos.com/0b056be24f374812b61abf43305774767ae122c8479242f98aa0799b7bfc81d4)
@@ -729,8 +759,6 @@ class DBPostProcess(object):
 其他命令：
 ```
 !python /home/aistudio/work/PaddleOCR/tools/eval.py  -c  /home/aistudio/work/PaddleOCR/configs/det/det_mv3_db.yml
-```
-```
 !python /home/aistudio/work/PaddleOCR/tools/infer_det.py  -c  /home/aistudio/work/PaddleOCR/configs/det/det_mv3_db.yml 
 ```
 模型推理
@@ -752,6 +780,3 @@ class DBPostProcess(object):
 2 https://github.com/PaddlePaddle/PaddleClas
 
 3 https://blog.csdn.net/YY007H/article/details/124491217
-
-
-
