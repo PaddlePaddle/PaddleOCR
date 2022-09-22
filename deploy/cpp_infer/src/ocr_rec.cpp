@@ -37,7 +37,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->rec_batch_num_) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = min(img_num, beg_img_no + this->rec_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + this->rec_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     int imgH = this->rec_image_shape_[1];
     int imgW = this->rec_image_shape_[2];
@@ -46,7 +46,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       int h = img_list[indices[ino]].rows;
       int w = img_list[indices[ino]].cols;
       float wh_ratio = w * 1.0 / h;
-      max_wh_ratio = max(max_wh_ratio, wh_ratio);
+      max_wh_ratio = std::max(max_wh_ratio, wh_ratio);
     }
 
     int batch_width = imgW;
@@ -60,7 +60,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       norm_img_batch.push_back(resize_img);
-      batch_width = max(resize_img.cols, batch_width);
+      batch_width = std::max(resize_img.cols, batch_width);
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
@@ -115,7 +115,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
         last_index = argmax_idx;
       }
       score /= count;
-      if (isnan(score)) {
+      if (std::isnan(score)) {
         continue;
       }
       rec_texts[indices[beg_img_no + m]] = str_res;
@@ -130,7 +130,6 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
 }
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) {
-  //   AnalysisConfig config;
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
@@ -147,12 +146,11 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
       if (this->precision_ == "int8") {
         precision = paddle_infer::Config::Precision::kInt8;
       }
-      if (!Utility::PathExists("./trt_rec_shape.txt")){
+      if (!Utility::PathExists("./trt_rec_shape.txt")) {
         config.CollectShapeRangeInfo("./trt_rec_shape.txt");
-      } else { 
+      } else {
         config.EnableTunedTensorRtDynamicShape("./trt_rec_shape.txt", true);
       }
-      
     }
   } else {
     config.DisableGpu();
@@ -177,7 +175,7 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   //   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePredictor(config);
+  this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 
 } // namespace PaddleOCR

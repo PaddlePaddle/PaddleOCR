@@ -22,15 +22,15 @@
 
 namespace PaddleOCR {
 
-class StructureTableRecognizer {
+class StructureLayoutRecognizer {
 public:
-  explicit StructureTableRecognizer(
+  explicit StructureLayoutRecognizer(
       const std::string &model_dir, const bool &use_gpu, const int &gpu_id,
       const int &gpu_mem, const int &cpu_math_library_num_threads,
       const bool &use_mkldnn, const std::string &label_path,
       const bool &use_tensorrt, const std::string &precision,
-      const int &table_batch_num, const int &table_max_len,
-      const bool &merge_no_span_structure) {
+      const double &layout_score_threshold,
+      const double &layout_nms_threshold) {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -38,20 +38,16 @@ public:
     this->use_mkldnn_ = use_mkldnn;
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
-    this->table_batch_num_ = table_batch_num;
-    this->table_max_len_ = table_max_len;
 
-    this->post_processor_.init(label_path, merge_no_span_structure);
+    this->post_processor_.init(label_path, layout_score_threshold,
+                               layout_nms_threshold);
     LoadModel(model_dir);
   }
 
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<cv::Mat> img_list,
-           std::vector<std::vector<std::string>> &rec_html_tags,
-           std::vector<float> &rec_scores,
-           std::vector<std::vector<std::vector<int>>> &rec_boxes,
+  void Run(cv::Mat img, std::vector<StructurePredictResult> &result,
            std::vector<double> &times);
 
 private:
@@ -62,7 +58,6 @@ private:
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
-  int table_max_len_ = 488;
 
   std::vector<float> mean_ = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale_ = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
@@ -70,17 +65,14 @@ private:
 
   bool use_tensorrt_ = false;
   std::string precision_ = "fp32";
-  int table_batch_num_ = 1;
 
   // pre-process
-  TableResizeImg resize_op_;
+  Resize resize_op_;
   Normalize normalize_op_;
-  PermuteBatch permute_op_;
-  TablePadImg pad_op_;
+  Permute permute_op_;
 
   // post-process
-  TablePostProcessor post_processor_;
-
-}; // class StructureTableRecognizer
+  PicodetPostProcessor post_processor_;
+};
 
 } // namespace PaddleOCR

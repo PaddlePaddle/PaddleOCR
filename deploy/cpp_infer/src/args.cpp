@@ -51,6 +51,13 @@ DEFINE_string(rec_char_dict_path, "../../ppocr/utils/ppocr_keys_v1.txt",
 DEFINE_int32(rec_img_h, 48, "rec image height");
 DEFINE_int32(rec_img_w, 320, "rec image width");
 
+// layout model related
+DEFINE_string(layout_model_dir, "", "Path of table layout inference model.");
+DEFINE_string(layout_dict_path,
+              "../../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt",
+              "Path of dictionary.");
+DEFINE_double(layout_score_threshold, 0.5, "Threshold of score.");
+DEFINE_double(layout_nms_threshold, 0.5, "Threshold of nms.");
 // structure model related
 DEFINE_string(table_model_dir, "", "Path of table struture inference model.");
 DEFINE_int32(table_max_len, 488, "max len size of input image.");
@@ -66,3 +73,4 @@ DEFINE_bool(det, true, "Whether use det in forward.");
 DEFINE_bool(rec, true, "Whether use rec in forward.");
 DEFINE_bool(cls, false, "Whether use cls in forward.");
 DEFINE_bool(table, false, "Whether use table structure in forward.");
+DEFINE_bool(layout, false, "Whether use layout analysis in forward.");

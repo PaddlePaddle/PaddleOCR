@@ -92,11 +92,6 @@ def init_args():
         type=str2bool,
         default=False,
         help='Whether to enable layout of recovery')
-    parser.add_argument(
-        "--save_pdf",
-        type=str2bool,
-        default=False,
-        help='Whether to save pdf file')
 
     return parser
 
@@ -110,7 +105,38 @@ def draw_structure_result(image, result, font_path):
     if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []
+
+    img_layout = image.copy()
+    draw_layout = ImageDraw.Draw(img_layout)
+    text_color = (255, 255, 255)
+    text_background_color = (80, 127, 255)
+    catid2color = {}
+    font_size = 15
+    font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+
     for region in result:
+        if region['type'] not in catid2color:
+            box_color = (random.randint(0, 255), random.randint(0, 255),
+                         random.randint(0, 255))
+            catid2color[region['type']] = box_color
+        else:
+            box_color = catid2color[region['type']]
+        box_layout = region['bbox']
+        draw_layout.rectangle(
+            [(box_layout[0], box_layout[1]), (box_layout[2], box_layout[3])],
+            outline=box_color,
+            width=3)
+        text_w, text_h = font.getsize(region['type'])
+        draw_layout.rectangle(
+            [(box_layout[0], box_layout[1]),
+             (box_layout[0] + text_w, box_layout[1] + text_h)],
+            fill=text_background_color)
+        draw_layout.text(
+            (box_layout[0], box_layout[1]),
+            region['type'],
+            fill=text_color,
+            font=font)
+
         if region['type'] == 'table':
             pass
         else:
@@ -118,6 +144,7 @@ def draw_structure_result(image, result, font_path):
                 boxes.append(np.array(text_result['text_region']))
                 txts.append(text_result['text'])
                 scores.append(text_result['confidence'])
+
     im_show = draw_ocr_box_txt(
-        image, boxes, txts, scores, font_path=font_path, drop_score=0)
+        img_layout, boxes, txts, scores, font_path=font_path, drop_score=0)
     return im_show
