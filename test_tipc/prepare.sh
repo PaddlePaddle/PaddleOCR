@@ -519,10 +519,18 @@ elif [ ${MODE} = "whole_infer" ];then
         cd ./inference/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar & cd ../
     fi
     if [[ ${model_name} =~ "en_table_structure" ]];then
-        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
-        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
+
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
+        if [ ${model_name} == "en_table_structure" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+        elif [ ${model_name} == "en_table_structure_PACT" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_slim_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_slim_infer.tar
+        fi
+        cd ../
     fi
     if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
