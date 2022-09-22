@@ -31,7 +31,7 @@ The prediction result is saved as `./output/sdmgr_kie/predicts_kie.txt`, and the
 The visualization results are shown in the figure below:
 
 <div align="center">
-    <img src="./imgs/0.png" width="800">
+    <img src="../../ppstructure/docs/imgs/sdmgr_result.png" width="800">
 </div>
 
 ## 2. Model Training
