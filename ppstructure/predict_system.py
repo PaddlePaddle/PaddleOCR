@@ -100,7 +100,8 @@ class StructureSystem(object):
                 '180': cv2.ROTATE_180,
                 '270': cv2.ROTATE_90_CLOCKWISE
             }
-            img = cv2.rotate(img, cv_rotate_code[angle])
+            if angle in cv_rotate_code:
+                img = cv2.rotate(img, cv_rotate_code[angle])
             toc = time.time()
             time_dict['image_orientation'] = toc - tic
         if self.mode == 'structure':

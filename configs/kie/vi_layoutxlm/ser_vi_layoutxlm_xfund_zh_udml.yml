@@ -70,14 +70,16 @@ Loss:
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states_5
+      key: hidden_states
+      index: 5
       name: "loss_5"
   - DistillationVQADistanceLoss:
       weight: 0.5
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states_8
+      key: hidden_states
+      index: 8
       name: "loss_8"
   
   

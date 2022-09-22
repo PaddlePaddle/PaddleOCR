@@ -209,16 +209,17 @@ python3 ./tools/infer_kie_token_ser_re.py \
 
 #### 4.2.3 Inference using PaddleInference
 
-At present, only SER model supports inference using PaddleInference.
-
 Firstly, download the inference SER inference model.
-
 
 ```bash
 mkdir inference
 cd inference
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar && tar -xf re_vi_layoutxlm_xfund_infer.tar
+cd ..
 ```
+
+- SER
 
 Use the following command for inference.
 
@@ -228,6 +229,26 @@ cd ppstructure
 python3 kie/predict_kie_token_ser.py \
   --kie_algorithm=LayoutXLM \
   --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+The visual results and text file will be saved in directory `output`.
+
+- RE
+
+Use the following command for inference.
+
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --use_visual_backbone=False \
   --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \

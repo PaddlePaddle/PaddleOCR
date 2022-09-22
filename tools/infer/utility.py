@@ -162,6 +162,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.table_model_dir
     elif mode == 'ser':
         model_dir = args.ser_model_dir
+    elif mode == 're':
+        model_dir = args.re_model_dir
     elif mode == "sr":
         model_dir = args.sr_model_dir
     elif mode == 'layout':
@@ -227,7 +229,8 @@ def create_predictor(args, mode, logger):
                     use_calib_mode=False)
 
                 # collect shape
-                trt_shape_f = os.path.join(model_dir, f"{mode}_trt_dynamic_shape.txt")
+                trt_shape_f = os.path.join(model_dir,
+                                           f"{mode}_trt_dynamic_shape.txt")
 
                 if not os.path.exists(trt_shape_f):
                     config.collect_shape_range_info(trt_shape_f)
@@ -262,6 +265,8 @@ def create_predictor(args, mode, logger):
         config.disable_glog_info()
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
+        if mode == 're':
+            config.delete_pass("simplify_with_basic_ops_pass")
         if mode == 'table':
             config.delete_pass("fc_fuse_pass")  # not supported for table
         config.switch_use_feed_fetch_ops(False)

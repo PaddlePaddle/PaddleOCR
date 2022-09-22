@@ -102,16 +102,18 @@ class SerPredictor(object):
         ori_im = img.copy()
         data = {'image': img}
         data = transform(data, self.preprocess_op)
-        img = data[0]
-        if img is None:
+        if data[0] is None:
             return None, 0
-        img = np.expand_dims(img, axis=0)
-        img = img.copy()
         starttime = time.time()
 
+        for idx in range(len(data)):
+            if isinstance(data[idx], np.ndarray):
+                data[idx] = np.expand_dims(data[idx], axis=0)
+            else:
+                data[idx] = [data[idx]]
+
         for idx in range(len(self.input_tensor)):
-            expand_input = np.expand_dims(data[idx], axis=0)
-            self.input_tensor[idx].copy_from_cpu(expand_input)
+            self.input_tensor[idx].copy_from_cpu(data[idx])
 
         self.predictor.run()
 
@@ -122,9 +124,9 @@ class SerPredictor(object):
         preds = outputs[0]
 
         post_result = self.postprocess_op(
-            preds, segment_offset_ids=[data[6]], ocr_infos=[data[7]])
+            preds, segment_offset_ids=data[6], ocr_infos=data[7])
         elapse = time.time() - starttime
-        return post_result, elapse
+        return post_result, data, elapse
 
 
 def main(args):
@@ -145,7 +147,7 @@ def main(args):
             if img is None:
                 logger.info("error in loading image:{}".format(image_file))
                 continue
-            ser_res, elapse = ser_predictor(img)
+            ser_res, _, elapse = ser_predictor(img)
             ser_res = ser_res[0]
 
             res_str = '{}\t{}\n'.format(

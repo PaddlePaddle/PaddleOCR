@@ -52,6 +52,8 @@ def init_args():
     # params for kie
     parser.add_argument("--kie_algorithm", type=str, default='LayoutXLM')
     parser.add_argument("--ser_model_dir", type=str)
+    parser.add_argument("--re_model_dir", type=str)
+    parser.add_argument("--use_visual_backbone", type=str2bool, default=True)
     parser.add_argument(
         "--ser_dict_path",
         type=str,
