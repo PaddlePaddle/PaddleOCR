@@ -14,23 +14,8 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
 #include "include/clipper.h"
 #include "include/utility.h"
-
-using namespace std;
 
 namespace PaddleOCR {
 
@@ -104,6 +89,29 @@ private:
   std::vector<std::string> label_list_;
   std::string end = "eos";
   std::string beg = "sos";
+};
+
+class PicodetPostProcessor {
+public:
+  void init(std::string label_path, const double score_threshold = 0.4,
+            const double nms_threshold = 0.5,
+            const std::vector<int> &fpn_stride = {8, 16, 32, 64});
+  void Run(std::vector<StructurePredictResult> &results,
+           std::vector<std::vector<float>> outs, std::vector<int> ori_shape,
+           std::vector<int> resize_shape, int eg_max);
+  std::vector<int> fpn_stride_ = {8, 16, 32, 64};
+
+private:
+  StructurePredictResult disPred2Bbox(std::vector<float> bbox_pred, int label,
+                                      float score, int x, int y, int stride,
+                                      std::vector<int> im_shape, int reg_max);
+  void nms(std::vector<StructurePredictResult> &input_boxes,
+           float nms_threshold);
+
+  std::vector<std::string> label_list_;
+  double score_threshold_ = 0.4;
+  double nms_threshold_ = 0.5;
+  int num_class_ = 5;
 };
 
 } // namespace PaddleOCR

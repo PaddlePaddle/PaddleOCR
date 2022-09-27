@@ -40,7 +40,6 @@ def init_args():
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
-    parser.add_argument("--shape_info_filename", type=str, default=None)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
 
@@ -163,6 +162,8 @@ def create_predictor(args, mode, logger):
         model_dir = args.table_model_dir
     elif mode == 'ser':
         model_dir = args.ser_model_dir
+    elif mode == 're':
+        model_dir = args.re_model_dir
     elif mode == "sr":
         model_dir = args.sr_model_dir
     elif mode == 'layout':
@@ -228,22 +229,19 @@ def create_predictor(args, mode, logger):
                     use_calib_mode=False)
 
                 # collect shape
-                trt_shape_f = f"{os.path.dirname(args.shape_info_filename)}/{mode}_{os.path.basename(args.shape_info_filename)}"
-                if trt_shape_f is not None:
-                    if not os.path.exists(trt_shape_f):
-                        config.collect_shape_range_info(trt_shape_f)
-                        logger.info(
-                            f"collect dynamic shape info into : {trt_shape_f}"
-                        )
-                    else:
-                        logger.info(
-                            f"dynamic shape info file( {trt_shape_f} ) already exists, not need to generate again."
-                        )
-                    config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f, True)
-                else:
+                trt_shape_f = os.path.join(model_dir,
+                                           f"{mode}_trt_dynamic_shape.txt")
+
+                if not os.path.exists(trt_shape_f):
+                    config.collect_shape_range_info(trt_shape_f)
                     logger.info(
-                        f"when using tensorrt, dynamic shape is a suggested option, you can use '--shape_info_filename=shape.txt' for offline dygnamic shape tuning"
-                    )
+                        f"collect dynamic shape info into : {trt_shape_f}")
+                try:
+                    config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f,
+                                                               True)
+                except Exception as E:
+                    logger.info(E)
+                    logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
 
         elif args.use_npu:
             config.enable_npu()
@@ -267,6 +265,8 @@ def create_predictor(args, mode, logger):
         config.disable_glog_info()
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
+        if mode == 're':
+            config.delete_pass("simplify_with_basic_ops_pass")
         if mode == 'table':
             config.delete_pass("fc_fuse_pass")  # not supported for table
         config.switch_use_feed_fetch_ops(False)

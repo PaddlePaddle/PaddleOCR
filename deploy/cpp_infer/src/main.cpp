@@ -65,9 +65,18 @@ void check_params() {
       exit(1);
     }
   }
+  if (FLAGS_layout) {
+    if (FLAGS_layout_model_dir.empty() || FLAGS_image_dir.empty()) {
+      std::cout << "Usage[layout]: ./ppocr "
+                << "--layout_model_dir=/PATH/TO/LAYOUT_INFERENCE_MODEL/ "
+                << "--image_dir=/PATH/TO/INPUT/IMAGE/" << std::endl;
+      exit(1);
+    }
+  }
   if (FLAGS_precision != "fp32" && FLAGS_precision != "fp16" &&
       FLAGS_precision != "int8") {
-    cout << "precison should be 'fp32'(default), 'fp16' or 'int8'. " << endl;
+    std::cout << "precison should be 'fp32'(default), 'fp16' or 'int8'. "
+              << std::endl;
     exit(1);
   }
 }
@@ -75,70 +84,93 @@ void check_params() {
 void ocr(std::vector<cv::String> &cv_all_img_names) {
   PPOCR ocr = PPOCR();
 
-  std::vector<std::vector<OCRPredictResult>> ocr_results =
-      ocr.ocr(cv_all_img_names, FLAGS_det, FLAGS_rec, FLAGS_cls);
+  if (FLAGS_benchmark) {
+    ocr.reset_timer();
+  }
 
+  std::vector<cv::Mat> img_list;
+  std::vector<cv::String> img_names;
   for (int i = 0; i < cv_all_img_names.size(); ++i) {
-    if (FLAGS_benchmark) {
-      cout << cv_all_img_names[i] << '\t';
-      if (FLAGS_rec && FLAGS_det) {
-        Utility::print_result(ocr_results[i]);
-      } else if (FLAGS_det) {
-        for (int n = 0; n < ocr_results[i].size(); n++) {
-          for (int m = 0; m < ocr_results[i][n].box.size(); m++) {
-            cout << ocr_results[i][n].box[m][0] << ' '
-                 << ocr_results[i][n].box[m][1] << ' ';
-          }
-        }
-        cout << endl;
-      } else {
-        Utility::print_result(ocr_results[i]);
-      }
-    } else {
-      cout << cv_all_img_names[i] << "\n";
-      Utility::print_result(ocr_results[i]);
-      if (FLAGS_visualize && FLAGS_det) {
-        cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-        if (!srcimg.data) {
-          std::cerr << "[ERROR] image read failed! image path: "
-                    << cv_all_img_names[i] << endl;
-          exit(1);
-        }
-        std::string file_name = Utility::basename(cv_all_img_names[i]);
-
-        Utility::VisualizeBboxes(srcimg, ocr_results[i],
-                                 FLAGS_output + "/" + file_name);
-      }
-      cout << "***************************" << endl;
+    cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
+    if (!img.data) {
+      std::cerr << "[ERROR] image read failed! image path: "
+                << cv_all_img_names[i] << std::endl;
+      continue;
     }
+    img_list.push_back(img);
+    img_names.push_back(cv_all_img_names[i]);
+  }
+
+  std::vector<std::vector<OCRPredictResult>> ocr_results =
+      ocr.ocr(img_list, FLAGS_det, FLAGS_rec, FLAGS_cls);
+
+  for (int i = 0; i < img_names.size(); ++i) {
+    std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
+    Utility::print_result(ocr_results[i]);
+    if (FLAGS_visualize && FLAGS_det) {
+      std::string file_name = Utility::basename(img_names[i]);
+      cv::Mat srcimg = img_list[i];
+      Utility::VisualizeBboxes(srcimg, ocr_results[i],
+                               FLAGS_output + "/" + file_name);
+    }
+  }
+  if (FLAGS_benchmark) {
+    ocr.benchmark_log(cv_all_img_names.size());
   }
 }
 
 void structure(std::vector<cv::String> &cv_all_img_names) {
   PaddleOCR::PaddleStructure engine = PaddleOCR::PaddleStructure();
-  std::vector<std::vector<StructurePredictResult>> structure_results =
-      engine.structure(cv_all_img_names, false, FLAGS_table);
-  for (int i = 0; i < cv_all_img_names.size(); i++) {
-    cout << "predict img: " << cv_all_img_names[i] << endl;
-    cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
-    for (int j = 0; j < structure_results[i].size(); j++) {
-      std::cout << j << "\ttype: " << structure_results[i][j].type
-                << ", region: [";
-      std::cout << structure_results[i][j].box[0] << ","
-                << structure_results[i][j].box[1] << ","
-                << structure_results[i][j].box[2] << ","
-                << structure_results[i][j].box[3] << "], res: ";
-      if (structure_results[i][j].type == "table") {
-        std::cout << structure_results[i][j].html << std::endl;
-        std::string file_name = Utility::basename(cv_all_img_names[i]);
 
-        Utility::VisualizeBboxes(srcimg, structure_results[i][j],
-                                 FLAGS_output + "/" + std::to_string(j) + "_" +
-                                     file_name);
+  if (FLAGS_benchmark) {
+    engine.reset_timer();
+  }
+
+  for (int i = 0; i < cv_all_img_names.size(); i++) {
+    std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
+    cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
+    if (!img.data) {
+      std::cerr << "[ERROR] image read failed! image path: "
+                << cv_all_img_names[i] << std::endl;
+      continue;
+    }
+
+    std::vector<StructurePredictResult> structure_results = engine.structure(
+        img, FLAGS_layout, FLAGS_table, FLAGS_det && FLAGS_rec);
+
+    for (int j = 0; j < structure_results.size(); j++) {
+      std::cout << j << "\ttype: " << structure_results[j].type
+                << ", region: [";
+      std::cout << structure_results[j].box[0] << ","
+                << structure_results[j].box[1] << ","
+                << structure_results[j].box[2] << ","
+                << structure_results[j].box[3] << "], score: ";
+      std::cout << structure_results[j].confidence << ", res: ";
+
+      if (structure_results[j].type == "table") {
+        std::cout << structure_results[j].html << std::endl;
+        if (structure_results[j].cell_box.size() > 0 && FLAGS_visualize) {
+          std::string file_name = Utility::basename(cv_all_img_names[i]);
+
+          Utility::VisualizeBboxes(img, structure_results[j],
+                                   FLAGS_output + "/" + std::to_string(j) +
+                                       "_" + file_name);
+        }
       } else {
-        Utility::print_result(structure_results[i][j].text_res);
+        std::cout << "count of ocr result is : "
+                  << structure_results[j].text_res.size() << std::endl;
+        if (structure_results[j].text_res.size() > 0) {
+          std::cout << "********** print ocr result "
+                    << "**********" << std::endl;
+          Utility::print_result(structure_results[j].text_res);
+          std::cout << "********** end print ocr result "
+                    << "**********" << std::endl;
+        }
       }
     }
+  }
+  if (FLAGS_benchmark) {
+    engine.benchmark_log(cv_all_img_names.size());
   }
 }
 
@@ -149,19 +181,22 @@ int main(int argc, char **argv) {
 
   if (!Utility::PathExists(FLAGS_image_dir)) {
     std::cerr << "[ERROR] image path not exist! image_dir: " << FLAGS_image_dir
-              << endl;
+              << std::endl;
     exit(1);
   }
 
   std::vector<cv::String> cv_all_img_names;
   cv::glob(FLAGS_image_dir, cv_all_img_names);
-  std::cout << "total images num: " << cv_all_img_names.size() << endl;
+  std::cout << "total images num: " << cv_all_img_names.size() << std::endl;
 
+  if (!Utility::PathExists(FLAGS_output)) {
+    Utility::CreateDir(FLAGS_output);
+  }
   if (FLAGS_type == "ocr") {
     ocr(cv_all_img_names);
   } else if (FLAGS_type == "structure") {
     structure(cv_all_img_names);
   } else {
-    std::cout << "only value in ['ocr','structure'] is supported" << endl;
+    std::cout << "only value in ['ocr','structure'] is supported" << std::endl;
   }
 }

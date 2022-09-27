@@ -23,7 +23,7 @@ English | [简体中文](README_ch.md)
 
 ## 1. Introduction
 
-Layout analysis refers to the regional division of documents in the form of pictures and the positioning of key areas, such as text, title, table, picture, etc. The layout analysis algorithm is based on the lightweight model PP-picodet of [PaddleDetection]( https://github.com/PaddlePaddle/PaddleDetection )
+Layout analysis refers to the regional division of documents in the form of pictures and the positioning of key areas, such as text, title, table, picture, etc. The layout analysis algorithm is based on the lightweight model PP-picodet of [PaddleDetection]( https://github.com/PaddlePaddle/PaddleDetection ), including English layout analysis, Chinese layout analysis and table layout analysis models.  English layout analysis models can detect document layout elements such as text, title, table, figure, list. Chinese layout analysis models can detect document layout elements such as text, figure, figure caption, table, table caption, header, footer, reference, and equation. Table layout analysis models can detect table regions.
 
 <div align="center">
     <img src="../docs/layout/layout.png" width="800">
@@ -152,7 +152,7 @@ We provide CDLA(Chinese layout analysis), TableBank(Table layout analysis)etc. d
 | [cTDaR2019_cTDaR](https://cndplab-founder.github.io/cTDaR2019/) | For form detection (TRACKA) and form identification (TRACKB).Image types include historical data sets (beginning with cTDaR_t0, such as CTDAR_T00872.jpg) and modern data sets (beginning with cTDaR_t1, CTDAR_T10482.jpg). |
 | [IIIT-AR-13K](http://cvit.iiit.ac.in/usodi/iiitar13k.php)    | Data sets constructed by manually annotating figures or pages from publicly available annual reports, containing 5 categories:table, figure, natural image, logo, and signature. |
 | [TableBank](https://github.com/doc-analysis/TableBank)       | For table detection and recognition of large datasets, including Word and Latex document formats |
-| [CDLA](https://github.com/buptlihang/CDLA)                   | Chinese document layout analysis data set, for Chinese literature (paper) scenarios, including 10 categories:Table, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation |
+| [CDLA](https://github.com/buptlihang/CDLA)                   | Chinese document layout analysis data set, for Chinese literature (paper) scenarios, including 10 categories:Text, Title, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation |
 | [DocBank](https://github.com/doc-analysis/DocBank)           | Large-scale dataset (500K document pages) constructed using weakly supervised methods for document layout analysis, containing 12 categories:Author, Caption, Date, Equation, Figure, Footer, List, Paragraph, Reference, Section, Table, Title |
 
 
@@ -175,7 +175,7 @@ If the test image is Chinese, the pre-trained model of Chinese CDLA dataset can 
 
 ### 5.1. Train
 
-Train:
+Start training with the PaddleDetection [layout analysis profile](https://github.com/PaddlePaddle/PaddleDetection/tree/release/2.5/configs/picodet/legacy_model/application/layout_analysis)
 
 * Modify Profile
 

@@ -83,7 +83,16 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 我们通过版面信息、OCR检测和识别结构、表格信息、保存的图片，对测试图片进行恢复即可。
 
-提供如下代码实现版面恢复，也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
+提供如下代码实现版面恢复，也提供了whl包的形式方便快速使用，代码如下，更多信息详见 [quickstart](../docs/quickstart.md)。
+
+```bash
+# 中文测试图
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
+# 英文测试图
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+# pdf测试文件
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
+```
 
 <a name="3.1"></a>
 

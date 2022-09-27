@@ -34,7 +34,7 @@ void StructureTableRecognizer::Run(
        beg_img_no += this->table_batch_num_) {
     // preprocess
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = min(img_num, beg_img_no + this->table_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     std::vector<cv::Mat> norm_img_batch;
     std::vector<int> width_list;
@@ -118,7 +118,7 @@ void StructureTableRecognizer::Run(
 }
 
 void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
@@ -133,6 +133,11 @@ void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      if (!Utility::PathExists("./trt_table_shape.txt")) {
+        config.CollectShapeRangeInfo("./trt_table_shape.txt");
+      } else {
+        config.EnableTunedTensorRtDynamicShape("./trt_table_shape.txt", true);
+      }
     }
   } else {
     config.DisableGpu();
@@ -152,6 +157,6 @@ void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePredictor(config);
+  this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR
