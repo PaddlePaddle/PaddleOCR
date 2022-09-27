@@ -149,6 +149,8 @@ class AttentionLSTM(nn.Layer):
         else:
             targets = paddle.zeros(shape=[batch_size], dtype="int32")
             probs = None
+            char_onehots = None
+            alpha = None
 
             for i in range(num_steps):
                 char_onehots = self._char_to_onehot(
