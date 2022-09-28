@@ -81,11 +81,6 @@ class CNTMetric(object):
         self.eps = 1e-5
         self.reset()
 
-    def _normalize_text(self, text):
-        text = ''.join(
-            filter(lambda x: x in (string.digits + string.ascii_letters), text))
-        return text.lower()
-
     def __call__(self, pred_label, *args, **kwargs):
         preds, labels = pred_label
         correct_num = 0
@@ -102,7 +97,6 @@ class CNTMetric(object):
         """
         return metrics {
                  'acc': 0,
-                 'norm_edit_dis': 0,
             }
         """
         acc = 1.0 * self.correct_num / (self.all_num + self.eps)
