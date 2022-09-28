@@ -794,6 +794,9 @@ if [ ${MODE} = "paddle2onnx_infer" ];then
     elif [[ ${model_name} =~ "slanet" ]];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar --no-check-certificate
         cd ./inference/ && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar && cd ../
+    elif [[ ${model_name} =~ "en_table_structure" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && cd ../
     fi
     
     # wget data

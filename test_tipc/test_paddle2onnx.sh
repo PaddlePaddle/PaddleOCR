@@ -105,7 +105,7 @@ function func_paddle2onnx(){
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
         status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_rec_log}"
-    elif [ ${model_name} = "slanet" ]; then
+    elif [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
         # trans det
         set_dirname=$(func_set_params "--model_dir" "${det_infer_model_dir_value}")
         set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
@@ -130,7 +130,7 @@ function func_paddle2onnx(){
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
-            elif [[ ${model_name} =~ "det" ]] || [ ${model_name} = "slanet" ]; then
+            elif [[ ${model_name} =~ "det" ]] || [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
             elif [[ ${model_name} =~ "rec" ]]; then
@@ -149,7 +149,7 @@ function func_paddle2onnx(){
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
-            elif [[ ${model_name} =~ "det" ]]|| [ ${model_name} = "slanet" ]; then
+            elif [[ ${model_name} =~ "det" ]]|| [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
             elif [[ ${model_name} =~ "rec" ]]; then
