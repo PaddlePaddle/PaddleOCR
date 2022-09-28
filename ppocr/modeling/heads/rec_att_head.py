@@ -169,7 +169,8 @@ class AttentionLSTM(nn.Layer):
                 next_input = probs_step.argmax(axis=1)
 
                 targets = next_input
-
+        if not self.training:
+            probs = paddle.nn.functional.softmax(probs, axis=2)
         return probs
 
 
