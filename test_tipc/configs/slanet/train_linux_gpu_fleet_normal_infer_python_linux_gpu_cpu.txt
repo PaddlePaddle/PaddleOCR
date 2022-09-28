@@ -13,7 +13,7 @@ train_infer_img_dir:./ppstructure/docs/table/table.jpg
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c test_tipc/configs/slanet/SLANet.yml
+norm_train:tools/train.py -c test_tipc/configs/slanet/SLANet.yml -o
 pact_train:null
 fpgm_train:null
 distill_train:null
