@@ -7,6 +7,7 @@
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
 |  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |
+|  page_num | int | 0 | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页 |
 |  vis_font_path | str | "./doc/fonts/simfang.ttf" | 用于可视化的字体路径 |
 |  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |
 |  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |
