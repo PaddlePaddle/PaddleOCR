@@ -2715,6 +2715,10 @@ class MainWindow(QMainWindow):
 
             self._update_shape_color(shape)
             self.keyDialog.addLabelHistory(key_text)
+            
+            # save changed shape
+            self.singleLabel(shape)
+            self.setDirty()
 
     def undoShapeEdit(self):
         self.canvas.restoreShape()
