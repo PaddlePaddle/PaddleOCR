@@ -12,7 +12,7 @@ Global:
   checkpoints:
   save_inference_dir: ./output/SLANet/infer
   use_visualdl: False
-  infer_img: doc/table/table.jpg
+  infer_img: ppstructure/docs/table/table.jpg
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en

@@ -158,8 +158,7 @@ def main(config, device, logger, vdl_writer):
 
     pre_best_model_dict = dict()
     # load fp32 model to begin quantization
-    if config["Global"]["pretrained_model"] is not None:
-        pre_best_model_dict = load_model(config, model)
+    pre_best_model_dict = load_model(config, model, None, config['Architecture']["model_type"])
 
     freeze_params = False
     if config['Architecture']["algorithm"] in ["Distillation"]:
@@ -184,8 +183,7 @@ def main(config, device, logger, vdl_writer):
         model=model)
 
     # resume PACT training process
-    if config["Global"]["checkpoints"] is not None:
-        pre_best_model_dict = load_model(config, model, optimizer)
+    pre_best_model_dict = load_model(config, model, optimizer, config['Architecture']["model_type"])
 
     # build metric
     eval_class = build_metric(config['Metric'])

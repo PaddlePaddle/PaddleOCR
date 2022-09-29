@@ -22,7 +22,7 @@
 ### 1. 安装PaddleSlim
 
 ```bash
-pip3 install paddleslim==2.2.2
+pip3 install paddleslim==2.3.2
 ```
 
 ### 2. 准备训练好的模型
@@ -33,17 +33,7 @@ PaddleOCR提供了一系列训练好的[模型](../../../doc/doc_ch/models_list.
 量化训练包括离线量化训练和在线量化训练，在线量化训练效果更好，需加载预训练模型，在定义好量化策略后即可对模型进行量化。
 
 
-量化训练的代码位于slim/quantization/quant.py 中，比如训练检测模型，训练指令如下：
-```bash
-python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model='your trained model'   Global.save_model_dir=./output/quant_model
-
-# 比如下载提供的训练模型
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar
-tar -xf ch_ppocr_mobile_v2.0_det_train.tar
-python deploy/slim/quantization/quant.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model=./ch_ppocr_mobile_v2.0_det_train/best_accuracy   Global.save_model_dir=./output/quant_model
-```
-
-模型蒸馏和模型量化可以同时使用，以PPOCRv3检测模型为例：
+量化训练的代码位于slim/quantization/quant.py 中，比如训练检测模型，以PPOCRv3检测模型为例，训练指令如下：
 ```
 # 下载检测预训练模型：
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
@@ -58,7 +48,7 @@ python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
 ```bash
-python deploy/slim/quantization/export_model.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
+python deploy/slim/quantization/export_model.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
 ```
 
 ### 5. 量化模型部署

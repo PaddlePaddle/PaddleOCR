@@ -114,7 +114,7 @@ python3 table/eval_table.py \
     --det_model_dir=path/to/det_model_dir \
     --rec_model_dir=path/to/rec_model_dir \
     --table_model_dir=path/to/table_model_dir \
-    --image_dir=../doc/table/1.png \
+    --image_dir=docs/table/table.jpg \
     --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
     --det_limit_side_len=736 \
@@ -145,6 +145,7 @@ python3 table/eval_table.py \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
     --det_limit_side_len=736 \
     --det_limit_type=min \
+    --rec_image_shape=3,32,320 \
     --gt_path=path/to/gt.txt
 ```
 

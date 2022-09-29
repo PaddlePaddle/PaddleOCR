@@ -21,7 +21,10 @@ model_name=$(func_parser_value "${lines[1]}")
 trainer_list=$(func_parser_value "${lines[14]}")
 
 if [ ${MODE} = "benchmark_train" ];then
-    pip install -r requirements.txt
+    python_name_list=$(func_parser_value "${lines[2]}")
+    array=(${python_name_list}) 
+    python_name=${array[0]}
+    ${python_name} -m pip install -r requirements.txt
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
         rm -rf ./train_data/icdar2015
@@ -29,6 +32,13 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ./train_data/ && tar xf icdar2015_benckmark.tar
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
+        if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" ]];then
+            # expand gt.txt 2 times
+            cd ./train_data/icdar2015/text_localization
+            for i in `seq 2`;do cp train_icdar2015_label.txt dup$i.txt;done
+            cat dup* > train_icdar2015_label.txt && rm -rf dup*
+            cd ../../../
+        fi
     fi
     if [[ ${model_name} =~ "ch_ppocr_server_v2_0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         rm -rf ./train_data/icdar2015
@@ -97,6 +107,15 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./pubtabnet_benckmark ./pubtabnet
         cd ../
     fi
+    if [[ ${model_name} == "slanet" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf en_ppstructure_mobile_v2.0_SLANet_train.tar  && cd ../
+        rm -rf ./train_data/pubtabnet
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf pubtabnet_benckmark.tar
+        ln -s ./pubtabnet_benckmark ./pubtabnet
+        cd ../
+    fi
     if [[ ${model_name} == "det_r50_dcn_fce_ctw_v2_0" ]]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar && cd ../
@@ -107,8 +126,8 @@ if [ ${MODE} = "benchmark_train" ];then
         cd ../
     fi
     if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/kie/requirements.txt
-        pip install opencv-python -U
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         # expand gt.txt 10 times
@@ -122,6 +141,11 @@ if [ ${MODE} = "benchmark_train" ];then
 fi
 
 if [ ${MODE} = "lite_train_lite_infer" ];then
+    python_name_list=$(func_parser_value "${lines[2]}")
+    array=(${python_name_list}) 
+    python_name=${array[0]}
+    ${python_name} -m pip install -r requirements.txt
+    ${python_name} -m pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -212,6 +236,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_rec_FPGM" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_ppocr_mobile_v2.0_rec_train.tar && cd ../
+        ${python_name} -m pip install paddleslim
+    fi
+    if [ ${model_name} == "ch_ppocr_mobile_v2_0_det_FPGM" ]; then
+        ${python_name} -m pip install paddleslim
     fi
     if [ ${model_name} == "det_mv3_east_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
@@ -229,12 +257,27 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_r32_gaspin_bilstm_att_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
     fi
-    if [ ${model_name} == "layoutxlm_ser" ] || [ ${model_name} == "vi_layoutxlm_ser" ]; then
-        pip install -r ppstructure/kie/requirements.txt
-        pip install opencv-python -U
+    if [ ${model_name} == "layoutxlm_ser" ]; then
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         cd ../
+
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf ser_LayoutXLM_xfun_zh.tar  && cd ../
+    fi
+    if [ ${model_name} == "vi_layoutxlm_ser" ]; then
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+        cd ./train_data/ && tar xf XFUND.tar
+        cd ../
+    fi
+    if [ ${model_name} == "det_r18_ct" ]; then
+        wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ct_tipc/total_text_lite2.tar --no-check-certificate
+        cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
     fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
@@ -304,9 +347,18 @@ elif [ ${MODE} = "lite_train_whole_infer" ];then
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
     fi
 elif [ ${MODE} = "whole_infer" ];then
+    python_name_list=$(func_parser_value "${lines[2]}")
+    array=(${python_name_list}) 
+    python_name=${array[0]}
+    ${python_name} -m pip install paddleslim --force-reinstall
+    ${python_name} -m pip install -r requirements.txt
     wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
     wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar --no-check-certificate
     cd ./inference && tar xf rec_inference.tar  && tar xf ch_det_data_50.tar && cd ../
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+    cd ./train_data/ && tar xf XFUND.tar && cd ../
+    head -n 2 train_data/XFUND/zh_val/val.json > train_data/XFUND/zh_val/val_lite.json
+    mv train_data/XFUND/zh_val/val_lite.json train_data/XFUND/zh_val/val.json
     if [ ${model_name} = "ch_ppocr_mobile_v2_0_det" ]; then
         eval_model_name="ch_ppocr_mobile_v2.0_det_train"
         rm -rf ./train_data/icdar2015
@@ -467,10 +519,24 @@ elif [ ${MODE} = "whole_infer" ];then
         cd ./inference/ && tar xf det_r50_dcn_fce_ctw_v2.0_train.tar & cd ../
     fi
     if [[ ${model_name} =~ "en_table_structure" ]];then
-        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
-        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
+
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
+        if [ ${model_name} == "en_table_structure" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+        elif [ ${model_name} == "en_table_structure_PACT" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_slim_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_slim_infer.tar
+        fi
+        cd ../
+    fi
+    if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U 
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ser_LayoutXLM_xfun_zh_infer.tar & cd ../
     fi
 fi
 
@@ -523,6 +589,12 @@ if [[ ${model_name} =~ "KL" ]]; then
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet.tar --no-check-certificate
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
         cd ./train_data/ && tar xf pubtabnet.tar && cd ../
+    fi
+    if [[ ${model_name} =~ "layoutxlm_ser_KL" ]]; then
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
+        cd ./train_data/ && tar xf XFUND.tar && cd ../
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ser_LayoutXLM_xfun_zh_infer.tar & cd ../
     fi
 fi
 
@@ -627,7 +699,25 @@ if [ ${MODE} = "cpp_infer" ];then
         wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar  --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar  --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && tar xf ch_det_data_50.tar && cd ../
-    fi 
+    elif [[ ${model_name} =~ "en_table_structure" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
+
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
+        if [ ${model_name} == "en_table_structure" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+        elif [ ${model_name} == "en_table_structure_PACT" ]; then
+            wget -nc https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_slim_infer.tar --no-check-certificate
+            tar xf en_ppocr_mobile_v2.0_table_structure_slim_infer.tar
+        fi
+        cd ../
+    elif [[ ${model_name} =~ "slanet" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && cd ../
+    fi
 fi
 
 if [ ${MODE} = "serving_infer" ];then
@@ -639,6 +729,7 @@ if [ ${MODE} = "serving_infer" ];then
     ${python_name} -m pip install paddle-serving-server-gpu
     ${python_name} -m pip install paddle_serving_client
     ${python_name} -m pip install paddle-serving-app
+    ${python_name} -m pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
     # wget model
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_det_KL" ] || [ ${model_name} == "ch_ppocr_mobile_v2.0_rec_KL" ] ; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/tipc_fake_model/ch_ppocr_mobile_v2.0_det_klquant_infer.tar --no-check-certificate
@@ -690,8 +781,7 @@ fi
 if [ ${MODE} = "paddle2onnx_infer" ];then
     # prepare serving env
     python_name=$(func_parser_value "${lines[2]}")
-    ${python_name} -m pip install paddle2onnx
-    ${python_name} -m pip install onnxruntime
+    ${python_name} -m pip install paddle2onnx onnxruntime onnx
     # wget model
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0" ]]; then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar --no-check-certificate
@@ -709,6 +799,12 @@ if [ ${MODE} = "paddle2onnx_infer" ];then
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar --no-check-certificate
         wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar --no-check-certificate
         cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && cd ../
+    elif [[ ${model_name} =~ "slanet" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar && cd ../
+    elif [[ ${model_name} =~ "en_table_structure" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar && cd ../
     fi
     
     # wget data

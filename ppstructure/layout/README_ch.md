@@ -22,7 +22,7 @@
 
 ## 1. 简介
 
-版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发。
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发，包含英文、中文、表格版面分析3类模型。其中，英文模型支持Text、Title、Tale、Figure、List5类区域的检测，中文模型支持Text、Title、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation10类区域的检测，表格版面分析支持Table区域的检测，版面分析效果如下图所示：
 
 <div align="center">
     <img src="../docs/layout/layout.png" width="800">
@@ -152,7 +152,7 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [cTDaR2019_cTDaR](https://cndplab-founder.github.io/cTDaR2019/) | 用于表格检测(TRACKA)和表格识别(TRACKB)。图片类型包含历史数据集(以cTDaR_t0开头，如cTDaR_t00872.jpg)和现代数据集(以cTDaR_t1开头，cTDaR_t10482.jpg)。 |
 | [IIIT-AR-13K](http://cvit.iiit.ac.in/usodi/iiitar13k.php)    | 手动注释公开的年度报告中的图形或页面而构建的数据集，包含5类：table, figure, natural image, logo, and signature |
-| [CDLA](https://github.com/buptlihang/CDLA)                   | 中文文档版面分析数据集，面向中文文献类（论文）场景，包含10类：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
+| [CDLA](https://github.com/buptlihang/CDLA)                   | 中文文档版面分析数据集，面向中文文献类（论文）场景，包含10类：Text、Title、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
 | [TableBank](https://github.com/doc-analysis/TableBank)       | 用于表格检测和识别大型数据集，包含Word和Latex2种文档格式     |
 | [DocBank](https://github.com/doc-analysis/DocBank)           | 使用弱监督方法构建的大规模数据集(500K文档页面)，用于文档布局分析，包含12类：Author、Caption、Date、Equation、Figure、Footer、List、Paragraph、Reference、Section、Table、Title |
 
@@ -161,7 +161,7 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 
 提供了训练脚本、评估脚本和预测脚本，本节将以PubLayNet预训练模型为例进行讲解。
 
-如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型(PubLayNet数据集)，并跳过本部分。
+如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型(PubLayNet数据集)，并跳过5.1和5.2。
 
 ```
 mkdir pretrained_model
@@ -176,7 +176,7 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_
 
 ### 5.1. 启动训练
 
-开始训练:
+使用PaddleDetection[版面分析配置文件](https://github.com/PaddlePaddle/PaddleDetection/tree/release/2.5/configs/picodet/legacy_model/application/layout_analysis)启动训练
 
 * 修改配置文件
 

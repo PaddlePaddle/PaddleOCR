@@ -14,3 +14,5 @@ lxml
 premailer
 openpyxl
 attrdict
+Polygon3
+PyMuPDF==1.18.7

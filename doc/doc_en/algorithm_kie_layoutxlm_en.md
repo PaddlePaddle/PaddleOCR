@@ -28,7 +28,7 @@ On XFUND_zh dataset, the algorithm reproduction Hmean is as follows.
 |Model|Backbone|Task |Cnnfig|Hmean|Download link|
 | --- | --- |--|--- | --- | --- |
 |LayoutXLM|LayoutXLM-base|SER |[ser_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml)|90.38%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)/[inference model](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh_infer.tar)|
-|LayoutXLM|LayoutXLM-base|RE | [re_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml)|74.83%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)/[inference model(coming soon)]()|
+|LayoutXLM|LayoutXLM-base|RE | [re_layoutxlm_xfund_zh.yml](../../configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml)|74.83%|[trained model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)/[inference model](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh_infer.tar)|
 
 
 ## 2. Environment
@@ -46,7 +46,7 @@ Please refer to [KIE tutorial](./kie_en.md)。PaddleOCR has modularized the code
 
 ### 4.1 Python Inference
 
-**Note:** Currently, the RE model inference process is still in the process of adaptation. We take SER model as an example to introduce the KIE process based on LayoutXLM model.
+- SER
 
 First, we need to export the trained model into inference model. Take LayoutXLM model trained on XFUND_zh as an example ([trained model download link](https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar)). Use the following command to export.
 
@@ -54,7 +54,7 @@ First, we need to export the trained model into inference model. Take LayoutXLM 
 ``` bash
 wget https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar
 tar -xf ser_LayoutXLM_xfun_zh.tar
-python3 tools/export_model.py -c configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./ser_LayoutXLM_xfun_zh/best_accuracy Global.save_inference_dir=./inference/ser_layoutxlm
+python3 tools/export_model.py -c configs/kie/layoutlm_series/ser_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./ser_LayoutXLM_xfun_zh Global.save_inference_dir=./inference/ser_layoutxlm_infer
 ```
 
 Use the following command to infer using LayoutXLM SER model.
@@ -74,6 +74,38 @@ The SER visualization results are saved in the `./output` directory by default. 
 
 <div align="center">
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
+</div>
+
+
+- RE
+
+First, we need to export the trained model into inference model. Take LayoutXLM model trained on XFUND_zh as an example ([trained model download link](https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar)). Use the following command to export.
+
+
+``` bash
+wget https://paddleocr.bj.bcebos.com/pplayout/re_LayoutXLM_xfun_zh.tar
+tar -xf re_LayoutXLM_xfun_zh.tar
+python3 tools/export_model.py -c configs/kie/layoutlm_series/re_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./re_LayoutXLM_xfun_zh Global.save_inference_dir=./inference/re_layoutxlm_infer
+```
+
+Use the following command to infer using LayoutXLM RE model.
+
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_layoutxlm_infer \
+  --ser_model_dir=../inference/ser_layoutxlm_infer \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf
+```
+The RE visualization results are saved in the `./output` directory by default. The results are as follows.
+
+
+<div align="center">
+    <img src="../../ppstructure/docs/kie/result_re/zh_val_42_re.jpg" width="800">
 </div>
 
 

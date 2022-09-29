@@ -218,8 +218,12 @@ class LayoutXLMForRe(NLPBaseModel):
     def forward(self, x):
         if self.use_visual_backbone is True:
             image = x[4]
+            entities = x[5]
+            relations = x[6]
         else:
             image = None
+            entities = x[4]
+            relations = x[5]
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
@@ -229,6 +233,6 @@ class LayoutXLMForRe(NLPBaseModel):
             position_ids=None,
             head_mask=None,
             labels=None,
-            entities=x[5],
-            relations=x[6])
+            entities=entities,
+            relations=relations)
         return x

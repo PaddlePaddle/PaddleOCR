@@ -172,16 +172,16 @@ If you want to use OCR engine to obtain end-to-end prediction results, you can u
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
@@ -193,32 +193,33 @@ If you want to load the text detection and recognition results collected before,
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 #### 4.2.3 Inference using PaddleInference
 
-At present, only SER model supports inference using PaddleInference.
-
 Firstly, download the inference SER inference model.
-
 
 ```bash
 mkdir inference
 cd inference
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar && tar -xf re_vi_layoutxlm_xfund_infer.tar
+cd ..
 ```
+
+- SER
 
 Use the following command for inference.
 
@@ -228,6 +229,26 @@ cd ppstructure
 python3 kie/predict_kie_token_ser.py \
   --kie_algorithm=LayoutXLM \
   --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+The visual results and text file will be saved in directory `output`.
+
+- RE
+
+Use the following command for inference.
+
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --use_visual_backbone=False \
   --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
