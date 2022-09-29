@@ -282,44 +282,67 @@ if __name__ == "__main__":
     args = utility.parse_args()
     image_file_list = get_image_file_list(args.image_dir)
     text_detector = TextDetector(args)
-    count = 0
     total_time = 0
-    draw_img_save = "./inference_results"
+    draw_img_save_dir = args.draw_img_save_dir
+    os.makedirs(draw_img_save_dir, exist_ok=True)
 
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
         for i in range(2):
             res = text_detector(img)
 
-    if not os.path.exists(draw_img_save):
-        os.makedirs(draw_img_save)
     save_results = []
-    for image_file in image_file_list:
-        img, flag, _ = check_and_read(image_file)
-        if not flag:
+    for idx, image_file in enumerate(image_file_list):
+        img, flag_gif, flag_pdf = check_and_read(image_file)
+        if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)
-        if img is None:
-            logger.info("error in loading image:{}".format(image_file))
-            continue
-        st = time.time()
-        dt_boxes, _ = text_detector(img)
-        elapse = time.time() - st
-        if count > 0:
+        if not flag_pdf:
+            if img is None:
+                logger.debug("error in loading image:{}".format(image_file))
+                continue
+            imgs = [img]
+        else:
+            page_num = args.page_num
+            if page_num > len(img) or page_num == 0:
+                page_num = len(img)
+            imgs = img[:page_num]
+        for index, img in enumerate(imgs):
+            st = time.time()
+            dt_boxes, _ = text_detector(img)
+            elapse = time.time() - st
             total_time += elapse
-        count += 1
-        save_pred = os.path.basename(image_file) + "\t" + str(
-            json.dumps([x.tolist() for x in dt_boxes])) + "\n"
-        save_results.append(save_pred)
-        logger.info(save_pred)
-        logger.info("The predict time of {}: {}".format(image_file, elapse))
-        src_im = utility.draw_text_det_res(dt_boxes, image_file)
-        img_name_pure = os.path.split(image_file)[-1]
-        img_path = os.path.join(draw_img_save,
-                                "det_res_{}".format(img_name_pure))
-        cv2.imwrite(img_path, src_im)
-        logger.info("The visualized image saved in {}".format(img_path))
+            if len(imgs) > 1:
+                save_pred = os.path.basename(image_file) + '_' + str(
+                    index) + "\t" + str(
+                        json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+            else:
+                save_pred = os.path.basename(image_file) + "\t" + str(
+                    json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+            save_results.append(save_pred)
+            logger.info(save_pred)
+            if len(imgs) > 1:
+                logger.info("{}_{} The predict time of {}: {}".format(
+                    idx, index, image_file, elapse))
+            else:
+                logger.info("{} The predict time of {}: {}".format(
+                    idx, image_file, elapse))
 
-    with open(os.path.join(draw_img_save, "det_results.txt"), 'w') as f:
+            src_im = utility.draw_text_det_res(dt_boxes, img)
+
+            if flag_gif:
+                save_file = image_file[:-3] + "png"
+            elif flag_pdf:
+                save_file = image_file.replace('.pdf',
+                                               '_' + str(index) + '.png')
+            else:
+                save_file = image_file
+            img_path = os.path.join(
+                draw_img_save_dir,
+                "det_res_{}".format(os.path.basename(save_file)))
+            cv2.imwrite(img_path, src_im)
+            logger.info("The visualized image saved in {}".format(img_path))
+
+    with open(os.path.join(draw_img_save_dir, "det_results.txt"), 'w') as f:
         f.writelines(save_results)
         f.close()
     if args.benchmark:

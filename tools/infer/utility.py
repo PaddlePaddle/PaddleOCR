@@ -45,6 +45,7 @@ def init_args():
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
+    parser.add_argument("--page_num", type=int, default=0)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_limit_side_len", type=float, default=960)
@@ -337,12 +338,11 @@ def draw_e2e_res(dt_boxes, strs, img_path):
     return src_im
 
 
-def draw_text_det_res(dt_boxes, img_path):
-    src_im = cv2.imread(img_path)
+def draw_text_det_res(dt_boxes, img):
     for box in dt_boxes:
         box = np.array(box).astype(np.int32).reshape(-1, 2)
-        cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-    return src_im
+        cv2.polylines(img, [box], True, color=(255, 255, 0), thickness=2)
+    return img
 
 
 def resize_img(img, input_size=600):
