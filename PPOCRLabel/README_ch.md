@@ -104,9 +104,9 @@ python PPOCRLabel.py --lang ch
 编译与安装新的whl包，其中1.0.2为版本号，可在 `setup.py` 中指定新版本。
 
 ```bash
-cd PaddleOCR/PPOCRLabel
+cd ./PPOCRLabel
 python3 setup.py bdist_wheel 
-pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
+pip3 install dist/PPOCRLabel-2.1.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
 ```
 
 
