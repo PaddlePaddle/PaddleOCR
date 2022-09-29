@@ -7,6 +7,7 @@ When using PaddleOCR for model inference, you can customize the modification par
 | parameters | type | default | implication |
 | :--: | :--: | :--: | :--: |
 |  image_dir | str | None, must be specified explicitly | Image or folder path |
+|  page_num | int | 0 | Valid when the input type is pdf file, specify to predict the previous page_num pages, all pages are predicted by default |
 |  vis_font_path | str | "./doc/fonts/simfang.ttf" | font path for visualization |
 |  drop_score | float | 0.5 | Results with a recognition score less than this value will be discarded and will not be returned as results |
 |  use_pdserving | bool | False | Whether to use Paddle Serving for prediction |
