@@ -338,15 +338,11 @@ def draw_e2e_res(dt_boxes, strs, img_path):
     return src_im
 
 
-def draw_text_det_res(dt_boxes, img_path, flag_pdf=False):
-    if not flag_pdf:
-        src_im = cv2.imread(img_path)
-    else:
-        src_im = img_path
+def draw_text_det_res(dt_boxes, img):
     for box in dt_boxes:
         box = np.array(box).astype(np.int32).reshape(-1, 2)
-        cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-    return src_im
+        cv2.polylines(img, [box], True, color=(255, 255, 0), thickness=2)
+    return img
 
 
 def resize_img(img, input_size=600):

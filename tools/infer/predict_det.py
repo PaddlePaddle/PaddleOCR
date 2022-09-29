@@ -326,11 +326,9 @@ if __name__ == "__main__":
             else:
                 logger.info("{} The predict time of {}: {}".format(
                     idx, image_file, elapse))
-            if flag_pdf:
-                src_im = utility.draw_text_det_res(dt_boxes, img, flag_pdf)
-            else:
-                src_im = utility.draw_text_det_res(dt_boxes, image_file,
-                                                   flag_pdf)
+
+            src_im = utility.draw_text_det_res(dt_boxes, img)
+
             if flag_gif:
                 save_file = image_file[:-3] + "png"
             elif flag_pdf:
