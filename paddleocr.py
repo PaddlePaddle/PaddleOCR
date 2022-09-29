@@ -480,10 +480,11 @@ class PaddleOCR(predict_system.TextSystem):
             params.rec_image_shape = "3, 48, 320"
         else:
             params.rec_image_shape = "3, 32, 320"
-        # download model
-        maybe_download(params.det_model_dir, det_url)
-        maybe_download(params.rec_model_dir, rec_url)
-        maybe_download(params.cls_model_dir, cls_url)
+        # download model if using paddle infer
+        if not params.use_onnx:
+            maybe_download(params.det_model_dir, det_url)
+            maybe_download(params.rec_model_dir, rec_url)
+            maybe_download(params.cls_model_dir, cls_url)
 
         if params.det_algorithm not in SUPPORT_DET_MODEL:
             logger.error('det_algorithm must in {}'.format(SUPPORT_DET_MODEL))
