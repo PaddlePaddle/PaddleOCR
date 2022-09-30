@@ -115,4 +115,6 @@ class BaseModel(nn.Layer):
             else:
                 return {final_name: x}
         else:
-            return x
+            pred_idx = x.argmax(axis=2)
+            preds_prob = x.max(axis=2)
+            return pred_idx, preds_prob

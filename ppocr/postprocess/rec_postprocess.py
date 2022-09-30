@@ -112,7 +112,14 @@ class CTCLabelDecode(BaseRecLabelDecode):
 
     def __call__(self, preds, label=None, *args, **kwargs):
         if isinstance(preds, tuple) or isinstance(preds, list):
-            preds = preds[-1]
+            if preds[0].ndim <= 2:
+                preds_idx = preds[0]
+                preds_prob = preds[1]
+                text = self.decode(
+                    preds_idx, preds_prob, is_remove_duplicate=True)
+                return text
+            else:
+                preds = preds[-1]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
         preds_idx = preds.argmax(axis=2)
