@@ -30,7 +30,7 @@ from copy import deepcopy
 
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
-from tools.infer.predict_system import TextSystem
+from paddleocr.tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
 from ppstructure.utility import parse_args, draw_structure_result
