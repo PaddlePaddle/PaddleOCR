@@ -27,7 +27,7 @@ import time
 import traceback
 import paddle
 
-import tools.infer.utility as utility
+import paddleocr.tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.utility import get_image_file_list, check_and_read
