@@ -97,7 +97,8 @@ def main():
             elif config['Architecture']['algorithm'] == "SAR":
                 op[op_name]['keep_keys'] = ['image', 'valid_ratio']
             elif config['Architecture']['algorithm'] == "RobustScanner":
-                op[op_name]['keep_keys'] = ['image', 'valid_ratio', 'word_positons']
+                op[op_name][
+                    'keep_keys'] = ['image', 'valid_ratio', 'word_positons']
             else:
                 op[op_name]['keep_keys'] = ['image']
         transforms.append(op)
@@ -136,9 +137,10 @@ def main():
             if config['Architecture']['algorithm'] == "RobustScanner":
                 valid_ratio = np.expand_dims(batch[1], axis=0)
                 word_positons = np.expand_dims(batch[2], axis=0)
-                img_metas = [paddle.to_tensor(valid_ratio),
-                            paddle.to_tensor(word_positons),
-                            ]
+                img_metas = [
+                    paddle.to_tensor(valid_ratio),
+                    paddle.to_tensor(word_positons),
+                ]
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":
@@ -160,6 +162,10 @@ def main():
                             "score": float(post_result[key][0][1]),
                         }
                 info = json.dumps(rec_info, ensure_ascii=False)
+            elif isinstance(post_result, list) and isinstance(post_result[0],
+                                                              int):
+                # for RFLearning CNT branch 
+                info = str(post_result[0])
             else:
                 if len(post_result[0]) >= 2:
                     info = post_result[0][0] + "\t" + str(post_result[0][1])

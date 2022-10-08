@@ -103,7 +103,6 @@ class RFLHead(nn.Layer):
             else:
                 seq_outputs = self.seq_head(seq_inputs, None,
                                             self.batch_max_legnth)
+            return cnt_outputs, seq_outputs
         else:
-            seq_outputs = None
-
-        return cnt_outputs, seq_outputs
+            return cnt_outputs
