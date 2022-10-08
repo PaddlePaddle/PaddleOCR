@@ -43,7 +43,6 @@ Architecture:
   Head:
     name: TableAttentionHead
     hidden_size: 256
-    loc_type: 2
     max_text_length: *max_text_length
     loc_reg_num: &loc_reg_num 4
 
