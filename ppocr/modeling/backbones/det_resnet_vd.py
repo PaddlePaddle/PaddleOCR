@@ -16,6 +16,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+
 import paddle
 from paddle import ParamAttr
 import paddle.nn as nn
@@ -24,6 +26,8 @@ import paddle.nn.functional as F
 from paddle.vision.ops import DeformConv2D
 from paddle.regularizer import L2Decay
 from paddle.nn.initializer import Normal, Constant, XavierUniform
+
+from ppocr.utils.logging import get_logger
 
 __all__ = ["ResNet_vd", "ConvBNLayer", "DeformableConvV2"]
 
@@ -246,6 +250,7 @@ class ResNet_vd(nn.Layer):
                  layers=50,
                  dcn_stage=None,
                  out_indices=None,
+                 pretrained_model=None,
                  **kwargs):
         super(ResNet_vd, self).__init__()
 
@@ -338,6 +343,30 @@ class ResNet_vd(nn.Layer):
                 if block in self.out_indices:
                     self.out_channels.append(num_filters[block])
                 self.stages.append(nn.Sequential(*block_list))
+
+        if pretrained_model is not None:
+            self.load_pretrained_params(pretrained_model)
+
+    def load_pretrained_params(self, path):
+        logger = get_logger()
+        if path.endswith('.pdparams'):
+            path = path.replace('.pdparams', '')
+        assert os.path.exists(path + ".pdparams"), \
+            "The {}.pdparams does not exists!".format(path)
+
+        params = paddle.load(path + '.pdparams')
+        state_dict = self.state_dict()
+        new_state_dict = {}
+
+        for k1, k2 in zip(state_dict.keys(), params.keys()):
+            if list(state_dict[k1].shape) == list(params[k2].shape):
+                new_state_dict[k1] = params[k2]
+            else:
+                logger.info(
+                    f"The shape of model params {k1} {state_dict[k1].shape} not matched with loaded params {k2} {params[k2].shape} !"
+                )
+        self.set_state_dict(new_state_dict)
+        logger.info(f"loaded backbone pretrained_model successful from {path}")
 
     def forward(self, inputs):
         y = self.conv1_1(inputs)
