@@ -100,6 +100,8 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char,
                 "rm_symbol": True
             }
+        elif self.rec_algorithm == "PREN":
+            postprocess_params = {'name': 'PRENLabelDecode'}
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -384,7 +386,7 @@ class TextRecognizer(object):
                                                          self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
-                elif self.rec_algorithm == "VisionLAN":
+                elif self.rec_algorithm in ["VisionLAN", "PREN"]:
                     norm_img = self.resize_norm_img_vl(img_list[indices[ino]],
                                                        self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
