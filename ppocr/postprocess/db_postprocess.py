@@ -38,7 +38,7 @@ class DBPostProcess(object):
                  unclip_ratio=2.0,
                  use_dilation=False,
                  score_mode="fast",
-                 use_polygon=False,
+                 box_type='quad',
                  **kwargs):
         self.thresh = thresh
         self.box_thresh = box_thresh
@@ -46,7 +46,7 @@ class DBPostProcess(object):
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
         self.score_mode = score_mode
-        self.use_polygon = use_polygon
+        self.box_type = box_type
         assert score_mode in [
             "slow", "fast"
         ], "Score mode must be in [slow, fast] but got: {}".format(score_mode)
@@ -233,12 +233,14 @@ class DBPostProcess(object):
                     self.dilation_kernel)
             else:
                 mask = segmentation[batch_index]
-            if self.use_polygon is True:
+            if self.box_type == 'quad':
                 boxes, scores = self.polygons_from_bitmap(pred[batch_index],
                                                           mask, src_w, src_h)
-            else:
+            elif self.box_type == 'poly':
                 boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
                                                        src_w, src_h)
+            else:
+                raise ValueError("box_type can only be one of ['quad', 'poly']")
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
@@ -254,7 +256,7 @@ class DistillationDBPostProcess(object):
                  unclip_ratio=1.5,
                  use_dilation=False,
                  score_mode="fast",
-                 use_polygon=False,
+                 box_type='quad',
                  **kwargs):
         self.model_name = model_name
         self.key = key
@@ -265,7 +267,7 @@ class DistillationDBPostProcess(object):
             unclip_ratio=unclip_ratio,
             use_dilation=use_dilation,
             score_mode=score_mode,
-            use_polygon=use_polygon)
+            box_type=box_type)
 
     def __call__(self, predicts, shape_list):
         results = {}
