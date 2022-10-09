@@ -41,7 +41,7 @@
 <a name="3-1"></a>
 ### 3.1 模型训练
 
-请参考[文本识别训练教程](./recognition.md)。PaddleOCR对代码进行了模块化，训练`RFL`识别模型时需要**更换配置文件**为`RFL`的[配置文件](../../configs/rec/rec_resnet_rfl_att.yml)。
+PaddleOCR对代码进行了模块化，训练`RFL`识别模型时需要**更换配置文件**为`RFL`的[配置文件](../../configs/rec/rec_resnet_rfl_att.yml)。
 
 #### 启动训练
 

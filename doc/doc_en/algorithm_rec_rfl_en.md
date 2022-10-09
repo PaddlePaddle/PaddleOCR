@@ -36,7 +36,7 @@ Please refer to ["Environment Preparation"](./environment_en.md) to configure th
 <a name="3"></a>
 ## 3. Model Training / Evaluation / Prediction
 
-Please refer to [Text Recognition Tutorial](./recognition_en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
+PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
 
 Training:
 
