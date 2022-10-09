@@ -192,6 +192,8 @@ class TextDetector(object):
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
         for box in dt_boxes:
+            if type(box) is list:
+                box = np.array(box)
             box = self.order_points_clockwise(box)
             box = self.clip_det_res(box, img_height, img_width)
             rect_width = int(np.linalg.norm(box[0] - box[1]))
