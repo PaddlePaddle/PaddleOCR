@@ -50,7 +50,6 @@ class SerRePredictor(object):
             utility.create_predictor(args, 're', logger)
 
     def __call__(self, img):
-        ori_im = img.copy()
         starttime = time.time()
         ser_results, ser_inputs, _ = self.ser_engine(img)
         re_input, entity_idx_dict_batch = make_input(ser_inputs, ser_results)
