@@ -46,9 +46,8 @@ deploy/hubserving/ocr_system/
 
 * 2022.10.09 add KIE services.
 * 2022.08.23 add layout analysis services.
-* 2022.05.05 add PP-OCRv3 text detection and recognition services.
 * 2022.03.30 add PP-Structure and table recognition services.
-* 2022.08.23 add layout analysis services.
+* 2022.05.05 add PP-OCRv3 text detection and recognition services.
 
 
 ## 2. Quick start service
