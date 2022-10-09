@@ -268,7 +268,7 @@ class TextDetector(object):
 
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        print("det_boxes", dt_boxes)
+
         if (self.det_algorithm == "SAST" and self.det_sast_polygon) or (
                 self.det_algorithm in ["PSE", "FCE", "CT"] and
                 self.postprocess_op.box_type == 'poly'):
