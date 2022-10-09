@@ -25,12 +25,14 @@ from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
-
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # draw result
 from PIL import Image
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -60,11 +62,14 @@ from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR(lang='en') # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path, cls=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # draw result
 from PIL import Image
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -94,8 +99,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang='en') # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
 result = ocr.ocr(img_path, det=False, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 Output will be a list, each item contains recognition text and confidence
@@ -109,12 +116,14 @@ from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR() # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path,rec=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # draw result
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
@@ -141,8 +150,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR(lang='en') # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
 result = ocr.ocr(img_path, det=False, cls=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 Output will be a list, each item contains recognition text and confidence
@@ -156,8 +167,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True) # need to run only once to load model into memory
 img_path = 'PaddleOCR/doc/imgs_words_en/word_10.png'
 result = ocr.ocr(img_path, det=False, rec=False, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 Output will be a list, each item contains classification result and confidence
@@ -183,6 +196,11 @@ Output will be a list, each item contains bounding box, text and recognition con
 [[[403.0, 346.0], [1204.0, 348.0], [1204.0, 384.0], [402.0, 383.0]], ('We would like to thank all the designers and', 0.9761400818824768)]
 [[[403.0, 396.0], [1204.0, 398.0], [1204.0, 434.0], [402.0, 433.0]], ('contributors who have been involved in the', 0.9791957139968872)]
 ......
+```
+
+pdf file is also supported, you can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
+```bash
+paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
 ```
 
 * detection and recognition
@@ -253,11 +271,14 @@ from paddleocr import PaddleOCR,draw_ocr
 ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_model_dir}', rec_char_dict_path='{your_rec_char_dict_path}', cls_model_dir='{your_cls_model_dir}', use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs_en/img_12.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # draw result
 from PIL import Image
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -283,11 +304,14 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to download and load model into memory
 img_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # show result
 from PIL import Image
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -312,12 +336,14 @@ img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
 # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), If your own training model supports grayscale images, you can uncomment this line
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # show result
 from PIL import Image
-
+result = result[0]
 download_with_progressbar(img_path, 'tmp.jpg')
 image = Image.open('tmp.jpg').convert('RGB')
 boxes = [line[0] for line in result]
@@ -327,15 +353,66 @@ im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+## 5 PDF file
+- Use by command line
 
+you can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
+```bash
+paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
+```
+- Use by code
 
-## 5 Parameter Description
+```python
+from paddleocr import PaddleOCR, draw_ocr
+
+# Paddleocr supports Chinese, English, French, German, Korean and Japanese.
+# You can set the parameter `lang` as `ch`, `en`, `fr`, `german`, `korean`, `japan`
+# to switch the language model in order.
+ocr = PaddleOCR(use_angle_cls=True, lang="ch"， page_num=2)  # need to run only once to download and load model into memory
+img_path = './xxx.pdf'
+result = ocr.ocr(img_path, cls=True)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
+
+# draw result
+import fitz
+from PIL import Image
+import cv2
+import numpy as np
+imgs = []
+with fitz.open(img_path) as pdf:
+    for pg in range(0, pdf.pageCount):
+        page = pdf[pg]
+        mat = fitz.Matrix(2, 2)
+        pm = page.getPixmap(matrix=mat, alpha=False)
+        # if width or height > 2000 pixels, don't enlarge the image
+        if pm.width > 2000 or pm.height > 2000:
+            pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+
+        img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        imgs.append(img)
+for idx in range(len(result)):
+    res = result[idx]
+    image = imgs[idx]
+    boxes = [line[0] for line in res]
+    txts = [line[1][0] for line in res]
+    scores = [line[1][1] for line in res]
+    im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
+    im_show = Image.fromarray(im_show)
+    im_show.save('result_page_{}.jpg'.format(idx))
+```
+
+## 6 Parameter Description
 
 | Parameter                    | Description                                                                                                                                                                                                                 | Default value                  |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
 | use_gpu                 | use GPU or not                                                                                                                                                                                                          | TRUE                    |
 | gpu_mem                 | GPU memory size used for initialization                                                                                                                                                                                              | 8000M                   |
 | image_dir               | The images path or folder path for predicting when used by the command line                                                                                                                                                                           |                         |
+| page_num               | Valid when the input type is pdf file, specify to predict the previous page_num pages, all pages are predicted by default                                                                                                                                                                           |          0               |
 | det_algorithm           | Type of detection algorithm selected                                                                                                                                                                                                   | DB                      |
 | det_model_dir           | the text detection inference model folder. There are two ways to transfer parameters, 1. None: Automatically download the built-in model to `~/.paddleocr/det`; 2. The path of the inference model converted by yourself, the model and params files must be included in the model path | None           |
 | det_max_side_len        | The maximum size of the long side of the image. When the long side exceeds this value, the long side will be resized to this size, and the short side will be scaled proportionally                                                                                                                         | 960                     |
