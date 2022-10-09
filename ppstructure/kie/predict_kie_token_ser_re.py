@@ -50,7 +50,6 @@ class SerRePredictor(object):
             utility.create_predictor(args, 're', logger)
 
     def __call__(self, img):
-        ori_im = img.copy()
         starttime = time.time()
         ser_results, ser_inputs, _ = self.ser_engine(img)
         re_input, entity_idx_dict_batch = make_input(ser_inputs, ser_results)
@@ -64,10 +63,7 @@ class SerRePredictor(object):
         for output_tensor in self.output_tensors:
             output = output_tensor.copy_to_cpu()
             outputs.append(output)
-        preds = dict(
-            loss=outputs[1],
-            pred_relations=outputs[2],
-            hidden_states=outputs[0], )
+        preds = dict(loss=outputs[0], pred_relations=outputs[1])
 
         post_result = self.postprocess_op(
             preds,
