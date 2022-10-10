@@ -8,7 +8,7 @@ Need to prepare PaddleOCR, Paddle2ONNX model conversion environment, and ONNXRun
 
 ###  PaddleOCR
 
-Clone the PaddleOCR warehouse, use the release/2.6 branch, and install it.
+Clone the PaddleOCR repository, use the release/2.6 branch, and install it.
 
 ```
 git clone  -b release/2.6 https://github.com/PaddlePaddle/PaddleOCR.git
