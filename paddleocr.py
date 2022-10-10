@@ -47,7 +47,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.6.0.1'
+VERSION = '2.6.0.2'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -428,8 +428,8 @@ def check_img(img):
             download_with_progressbar(img, 'tmp.jpg')
             img = 'tmp.jpg'
         image_file = img
-        img, flag, _ = check_and_read(image_file)
-        if not flag:
+        img, flag_gif, flag_pdf = check_and_read(image_file)
+        if not flag_gif and not flag_pdf:
             with open(image_file, 'rb') as f:
                 img = img_decode(f.read())
         if img is None:
@@ -500,6 +500,7 @@ class PaddleOCR(predict_system.TextSystem):
         logger.debug(params)
         # init det_model and rec_model
         super().__init__(params)
+        self.page_num = params.page_num
 
     def ocr(self, img, det=True, rec=True, cls=True):
         """
@@ -520,24 +521,43 @@ class PaddleOCR(predict_system.TextSystem):
             )
 
         img = check_img(img)
-
-        if det and rec:
-            dt_boxes, rec_res, _ = self.__call__(img, cls)
-            return [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
-        elif det and not rec:
-            dt_boxes, elapse = self.text_detector(img)
-            if dt_boxes is None:
-                return None
-            return [box.tolist() for box in dt_boxes]
+        # for infer pdf file
+        if isinstance(img, list):
+            if self.page_num > len(img) or self.page_num == 0:
+                self.page_num = len(img)
+            imgs = img[:self.page_num]
         else:
-            if not isinstance(img, list):
-                img = [img]
-            if self.use_angle_cls and cls:
-                img, cls_res, elapse = self.text_classifier(img)
-                if not rec:
-                    return cls_res
-            rec_res, elapse = self.text_recognizer(img)
-            return rec_res
+            imgs = [img]
+        if det and rec:
+            ocr_res = []
+            for idx, img in enumerate(imgs):
+                dt_boxes, rec_res, _ = self.__call__(img, cls)
+                tmp_res = [[box.tolist(), res]
+                           for box, res in zip(dt_boxes, rec_res)]
+                ocr_res.append(tmp_res)
+            return ocr_res
+        elif det and not rec:
+            ocr_res = []
+            for idx, img in enumerate(imgs):
+                dt_boxes, elapse = self.text_detector(img)
+                tmp_res = [box.tolist() for box in dt_boxes]
+                ocr_res.append(tmp_res)
+            return ocr_res
+        else:
+            ocr_res = []
+            cls_res = []
+            for idx, img in enumerate(imgs):
+                if not isinstance(img, list):
+                    img = [img]
+                if self.use_angle_cls and cls:
+                    img, cls_res_tmp, elapse = self.text_classifier(img)
+                    if not rec:
+                        cls_res.append(cls_res_tmp)
+                rec_res, elapse = self.text_recognizer(img)
+                ocr_res.append(rec_res)
+            if not rec:
+                return cls_res
+            return ocr_res
 
 
 class PPStructure(StructureSystem):
@@ -547,6 +567,7 @@ class PPStructure(StructureSystem):
         assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "structure_version must in {}, but get {}".format(
             SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version)
         params.use_gpu = check_gpu(params.use_gpu)
+        params.mode = 'structure'
 
         if not params.show_log:
             logger.setLevel(logging.INFO)
@@ -633,8 +654,10 @@ def main():
                                 rec=args.rec,
                                 cls=args.use_angle_cls)
             if result is not None:
-                for line in result:
-                    logger.info(line)
+                for idx in range(len(result)):
+                    res = result[idx]
+                    for line in res:
+                        logger.info(line)
         elif args.type == 'structure':
             img, flag_gif, flag_pdf = check_and_read(img_path)
             if not flag_gif and not flag_pdf:
@@ -682,7 +705,7 @@ def main():
                         "error in layout recovery image:{}, err msg: {}".format(
                             img_name, ex))
                     continue
-            
+
             for item in all_res:
                 item.pop('img')
                 item.pop('res')

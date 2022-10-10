@@ -30,6 +30,7 @@ from copy import deepcopy
 
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
+from ppocr.utils.visual import draw_ser_results, draw_re_results
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
@@ -75,7 +76,8 @@ class StructureSystem(object):
                     self.table_system = TableSystem(args)
 
         elif self.mode == 'kie':
-            raise NotImplementedError
+            from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
+            self.kie_predictor = SerRePredictor(args)
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
@@ -176,7 +178,10 @@ class StructureSystem(object):
             time_dict['all'] = end - start
             return res_list, time_dict
         elif self.mode == 'kie':
-            raise NotImplementedError
+            re_res, elapse = self.kie_predictor(img)
+            time_dict['kie'] = elapse
+            time_dict['all'] = elapse
+            return re_res[0], time_dict
         return None, None
 
 
@@ -235,15 +240,32 @@ def main(args):
         all_res = []
         for index, img in enumerate(imgs):
             res, time_dict = structure_sys(img, img_idx=index)
+            img_save_path = os.path.join(save_folder, img_name,
+                                         'show_{}.jpg'.format(index))
+            os.makedirs(os.path.join(save_folder, img_name), exist_ok=True)
             if structure_sys.mode == 'structure' and res != []:
-                save_structure_res(res, save_folder, img_name, index)
                 draw_img = draw_structure_result(img, res, args.vis_font_path)
-                img_save_path = os.path.join(save_folder, img_name,
-                                             'show_{}.jpg'.format(index))
+                save_structure_res(res, save_folder, img_name, index)
             elif structure_sys.mode == 'kie':
-                raise NotImplementedError
-                # draw_img = draw_ser_results(img, res, args.vis_font_path)
-                # img_save_path = os.path.join(save_folder, img_name + '.jpg')
+                if structure_sys.kie_predictor.predictor is not None:
+                    draw_img = draw_re_results(
+                        img, res, font_path=args.vis_font_path)
+                else:
+                    draw_img = draw_ser_results(
+                        img, res, font_path=args.vis_font_path)
+
+                with open(
+                        os.path.join(save_folder, img_name,
+                                     'res_{}_kie.txt'.format(index)),
+                        'w',
+                        encoding='utf8') as f:
+                    res_str = '{}\t{}\n'.format(
+                        image_file,
+                        json.dumps(
+                            {
+                                "ocr_info": res
+                            }, ensure_ascii=False))
+                    f.write(res_str)
             if res != []:
                 cv2.imwrite(img_save_path, draw_img)
                 logger.info('result save to {}'.format(img_save_path))

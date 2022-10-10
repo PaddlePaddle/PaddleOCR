@@ -39,6 +39,7 @@ from .rec_pren_loss import PRENLoss
 from .rec_multi_loss import MultiLoss
 from .rec_vl_loss import VLLoss
 from .rec_spin_att_loss import SPINAttentionLoss
+from .rec_rfl_loss import RFLLoss
 
 # cls loss
 from .cls_loss import ClsLoss
@@ -70,7 +71,7 @@ def build_loss(config):
         'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
         'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'StrokeFocusLoss',
-        'SLALoss', 'CTLoss', 'DRRGLoss'
+        'SLALoss', 'CTLoss', 'RFLLoss', 'DRRGLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')
