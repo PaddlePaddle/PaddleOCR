@@ -63,7 +63,7 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 <a name="电子印章数据集"></a>
 #### 6、电子印章数据集
 - **数据来源**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
-- **数据简介**：共包含10000张图像，训练集8000图，测试集2000图。数据集是用程序合成的，并不涉及隐私安全，主要用于印章弯曲文本的训练与检测。
+- **数据简介**：共包含10000张图像，训练集8000图，测试集2000图。数据集是用程序合成的，并不涉及隐私安全，主要用于印章弯曲文本的训练与检测。由开发者[jingsongliujing](https://github.com/jingsongliujing)贡献
 - **下载地址**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
 
 ## 参考文献
