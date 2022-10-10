@@ -30,7 +30,7 @@ from copy import deepcopy
 
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
-from ppocr.utils.visual import draw_re_results
+from ppocr.utils.visual import draw_ser_results, draw_re_results
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
@@ -180,6 +180,7 @@ class StructureSystem(object):
         elif self.mode == 'kie':
             re_res, elapse = self.kie_predictor(img)
             time_dict['kie'] = elapse
+            time_dict['all'] = elapse
             return re_res[0], time_dict
         return None, None
 
@@ -246,8 +247,12 @@ def main(args):
                 draw_img = draw_structure_result(img, res, args.vis_font_path)
                 save_structure_res(res, save_folder, img_name, index)
             elif structure_sys.mode == 'kie':
-                draw_img = draw_re_results(
-                    img, res, font_path=args.vis_font_path)
+                if structure_sys.kie_predictor.predictor is not None:
+                    draw_img = draw_re_results(
+                        img, res, font_path=args.vis_font_path)
+                else:
+                    draw_img = draw_ser_results(
+                        img, res, font_path=args.vis_font_path)
 
                 with open(
                         os.path.join(save_folder, img_name,

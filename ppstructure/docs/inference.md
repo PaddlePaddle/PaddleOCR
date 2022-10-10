@@ -81,13 +81,14 @@ mkdir inference && cd inference
 # 下载SER XFUND 模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
 cd ..
-python3 kie/predict_kie_token_ser.py \
+python3 predict_system.py \
   --kie_algorithm=LayoutXLM \
-  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=./inference/ser_vi_layoutxlm_xfund_infer \
   --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../ppocr/utils/dict/kie_dict/xfund_class_list.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
-  --ocr_order_method="tb-yx"
+  --ocr_order_method="tb-yx" \
+  --mode=kie
 ```
 
 运行完成后，每张图片会在`output`字段指定的目录下的`kie`目录下存放可视化之后的图片，图片名和输入图片名一致。

@@ -82,13 +82,14 @@ mkdir inference && cd inference
 # download model
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
 cd ..
-python3 kie/predict_kie_token_ser.py \
+python3 predict_system.py \
   --kie_algorithm=LayoutXLM \
-  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=./inference/ser_vi_layoutxlm_xfund_infer \
   --image_dir=./docs/kie/input/zh_val_42.jpg \
   --ser_dict_path=../ppocr/utils/dict/kie_dict/xfund_class_list.txt \
   --vis_font_path=../doc/fonts/simfang.ttf \
-  --ocr_order_method="tb-yx"
+  --ocr_order_method="tb-yx" \
+  --mode=kie
 ```
 
 After the operation is completed, each image will store the visualized image in the `kie` directory under the directory specified by the `output` field, and the image name is the same as the input image name.
