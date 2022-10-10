@@ -29,12 +29,10 @@ import tools.infer.utility as utility
 from tools.infer_kie_token_ser_re import make_input
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.visual import draw_re_results
+from ppocr.utils.visual import draw_ser_results, draw_re_results
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppstructure.utility import parse_args
 from ppstructure.kie.predict_kie_token_ser import SerPredictor
-
-from paddleocr import PaddleOCR
 
 logger = get_logger()
 
@@ -43,15 +41,20 @@ class SerRePredictor(object):
     def __init__(self, args):
         self.use_visual_backbone = args.use_visual_backbone
         self.ser_engine = SerPredictor(args)
-
-        postprocess_params = {'name': 'VQAReTokenLayoutLMPostProcess'}
-        self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors, self.config = \
-            utility.create_predictor(args, 're', logger)
+        if args.re_model_dir is not None:
+            postprocess_params = {'name': 'VQAReTokenLayoutLMPostProcess'}
+            self.postprocess_op = build_post_process(postprocess_params)
+            self.predictor, self.input_tensor, self.output_tensors, self.config = \
+                utility.create_predictor(args, 're', logger)
+        else:
+            self.predictor = None
 
     def __call__(self, img):
         starttime = time.time()
-        ser_results, ser_inputs, _ = self.ser_engine(img)
+        ser_results, ser_inputs, ser_elapse = self.ser_engine(img)
+        if self.predictor is None:
+            return ser_results, ser_elapse
+
         re_input, entity_idx_dict_batch = make_input(ser_inputs, ser_results)
         if self.use_visual_backbone == False:
             re_input.pop(4)
@@ -79,7 +82,7 @@ class SerRePredictor(object):
 
 def main(args):
     image_file_list = get_image_file_list(args.image_dir)
-    ser_predictor = SerRePredictor(args)
+    ser_re_predictor = SerRePredictor(args)
     count = 0
     total_time = 0
 
@@ -95,7 +98,7 @@ def main(args):
             if img is None:
                 logger.info("error in loading image:{}".format(image_file))
                 continue
-            re_res, elapse = ser_predictor(img)
+            re_res, elapse = ser_re_predictor(img)
             re_res = re_res[0]
 
             res_str = '{}\t{}\n'.format(
@@ -105,14 +108,20 @@ def main(args):
                         "ocr_info": re_res,
                     }, ensure_ascii=False))
             f_w.write(res_str)
-
-            img_res = draw_re_results(
-                image_file, re_res, font_path=args.vis_font_path)
-
-            img_save_path = os.path.join(
-                args.output,
-                os.path.splitext(os.path.basename(image_file))[0] +
-                "_ser_re.jpg")
+            if ser_re_predictor.predictor is not None:
+                img_res = draw_re_results(
+                    image_file, re_res, font_path=args.vis_font_path)
+                img_save_path = os.path.join(
+                    args.output,
+                    os.path.splitext(os.path.basename(image_file))[0] +
+                    "_ser_re.jpg")
+            else:
+                img_res = draw_ser_results(
+                    image_file, re_res, font_path=args.vis_font_path)
+                img_save_path = os.path.join(
+                    args.output,
+                    os.path.splitext(os.path.basename(image_file))[0] +
+                    "_ser.jpg")
 
             cv2.imwrite(img_save_path, img_res)
             logger.info("save vis result to {}".format(img_save_path))
