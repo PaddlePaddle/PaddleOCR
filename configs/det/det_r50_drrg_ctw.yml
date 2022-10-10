@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 1260 iterations
   eval_batch_step: [37800, 1260]
   cal_metric_during_train: False
-  pretrained_model:
+  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained.pdparams 
   checkpoints: 
   save_inference_dir: 
   use_visualdl: False
@@ -23,8 +23,6 @@ Architecture:
   Backbone:
     name: ResNet_vd
     layers: 50
-    pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained.pdparams 
-  
   Neck:
     name: FPN_UNet
     in_channels: [256, 512, 1024, 2048]
