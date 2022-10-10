@@ -41,7 +41,7 @@ img_label
    'imgid': 0,								 		# 图像的index
    'html': {
      'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, 			# 表格的HTML字符串
-     'cell': [
+     'cells': [
        {
          'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], 	# 表格中的单个文本
          'bbox': [x0, y0, x1, y1]  							# 表格中的单个文本的坐标
