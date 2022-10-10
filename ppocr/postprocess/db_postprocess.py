@@ -233,10 +233,10 @@ class DBPostProcess(object):
                     self.dilation_kernel)
             else:
                 mask = segmentation[batch_index]
-            if self.box_type == 'quad':
+            if self.box_type == 'poly':
                 boxes, scores = self.polygons_from_bitmap(pred[batch_index],
                                                           mask, src_w, src_h)
-            elif self.box_type == 'poly':
+            elif self.box_type == 'quad':
                 boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
                                                        src_w, src_h)
             else:
