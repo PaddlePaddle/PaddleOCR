@@ -28,7 +28,7 @@ python3.7 -m pip install paddle2onnx
 
 - install ONNXRuntime
 ```
-# 建议安装 1.9.0 版本，可根据环境更换版本号
+# It is recommended to install version 1.9.0, and the version number can be changed according to the environment
 python3.7 -m pip install onnxruntime==1.9.0
 ```
 
