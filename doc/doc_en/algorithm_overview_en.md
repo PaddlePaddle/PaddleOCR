@@ -76,6 +76,7 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [VisionLAN](./algorithm_rec_visionlan_en.md)
 - [x]  [SPIN](./algorithm_rec_spin_en.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner_en.md)
+- [x]  [RFL](./algorithm_rec_rfl_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -99,7 +100,7 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |VisionLAN|Resnet45| 90.30% | rec_r45_visionlan | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar) |
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
-
+|RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl.tar) |
 
 <a name="2"></a>
 

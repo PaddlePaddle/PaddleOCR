@@ -100,6 +100,12 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char,
                 "rm_symbol": True
             }
+        elif self.rec_algorithm == 'RFL':
+            postprocess_params = {
+                'name': 'RFLLabelDecode',
+                "character_dict_path": None,
+                "use_space_char": args.use_space_char
+            }
         elif self.rec_algorithm == "PREN":
             postprocess_params = {'name': 'PRENLabelDecode'}
         self.postprocess_op = build_post_process(postprocess_params)
@@ -145,6 +151,16 @@ class TextRecognizer(object):
             else:
                 norm_img = norm_img.astype(np.float32) / 128. - 1.
             return norm_img
+        elif self.rec_algorithm == 'RFL':
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            resized_image = cv2.resize(
+                img, (imgW, imgH), interpolation=cv2.INTER_CUBIC)
+            resized_image = resized_image.astype('float32')
+            resized_image = resized_image / 255
+            resized_image = resized_image[np.newaxis, :]
+            resized_image -= 0.5
+            resized_image /= 0.5
+            return resized_image
 
         assert imgC == img.shape[2]
         imgW = int((imgH * max_wh_ratio))

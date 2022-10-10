@@ -27,9 +27,11 @@ def build_neck(config):
     from .pren_fpn import PRENFPN
     from .csp_pan import CSPPAN
     from .ct_fpn import CTFPN
+    from .rf_adaptor import RFAdaptor
     support_dict = [
         'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
-        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN'
+        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN',
+        'RFAdaptor'
     ]
 
     module_name = config.pop('name')
