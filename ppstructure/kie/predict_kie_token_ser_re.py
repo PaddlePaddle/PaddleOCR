@@ -34,8 +34,6 @@ from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppstructure.utility import parse_args
 from ppstructure.kie.predict_kie_token_ser import SerPredictor
 
-from paddleocr import PaddleOCR
-
 logger = get_logger()
 
 

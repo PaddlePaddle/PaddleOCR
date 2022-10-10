@@ -567,6 +567,7 @@ class PPStructure(StructureSystem):
         assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "structure_version must in {}, but get {}".format(
             SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version)
         params.use_gpu = check_gpu(params.use_gpu)
+        params.mode = 'structure'
 
         if not params.show_log:
             logger.setLevel(logging.INFO)
