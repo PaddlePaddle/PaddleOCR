@@ -36,22 +36,26 @@ class RFLLoss(nn.Layer):
 
         self.total_loss = {}
         total_loss = 0.0
+        if isinstance(predicts, tuple) or isinstance(predicts, list):
+            cnt_outputs, seq_outputs = predicts
+        else:
+            cnt_outputs, seq_outputs = predicts, None
         # batch [image, label, length, cnt_label]
-        if predicts[0] is not None:
-            cnt_loss = self.cnt_loss(predicts[0],
+        if cnt_outputs is not None:
+            cnt_loss = self.cnt_loss(cnt_outputs,
                                      paddle.cast(batch[3], paddle.float32))
             self.total_loss['cnt_loss'] = cnt_loss
             total_loss += cnt_loss
 
-        if predicts[1] is not None:
+        if seq_outputs is not None:
             targets = batch[1].astype("int64")
             label_lengths = batch[2].astype('int64')
-            batch_size, num_steps, num_classes = predicts[1].shape[0], predicts[
-                1].shape[1], predicts[1].shape[2]
-            assert len(targets.shape) == len(list(predicts[1].shape)) - 1, \
+            batch_size, num_steps, num_classes = seq_outputs.shape[
+                0], seq_outputs.shape[1], seq_outputs.shape[2]
+            assert len(targets.shape) == len(list(seq_outputs.shape)) - 1, \
                 "The target's shape and inputs's shape is [N, d] and [N, num_steps]"
 
-            inputs = predicts[1][:, :-1, :]
+            inputs = seq_outputs[:, :-1, :]
             targets = targets[:, 1:]
 
             inputs = paddle.reshape(inputs, [-1, inputs.shape[-1]])

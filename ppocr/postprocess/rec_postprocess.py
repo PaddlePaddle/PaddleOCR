@@ -287,12 +287,13 @@ class RFLLabelDecode(BaseRecLabelDecode):
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
-        if len(preds) == 2:
-            cnt_pred, preds = preds
-            if isinstance(preds, paddle.Tensor):
-                preds = preds.numpy()
-            preds_idx = preds.argmax(axis=2)
-            preds_prob = preds.max(axis=2)
+        # if seq_outputs is not None:
+        if isinstance(preds, tuple) or isinstance(preds, list):
+            cnt_outputs, seq_outputs = preds
+            if isinstance(seq_outputs, paddle.Tensor):
+                seq_outputs = seq_outputs.numpy()
+            preds_idx = seq_outputs.argmax(axis=2)
+            preds_prob = seq_outputs.max(axis=2)
             text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
 
             if label is None:
@@ -301,11 +302,11 @@ class RFLLabelDecode(BaseRecLabelDecode):
             return text, label
 
         else:
-            cnt_pred = preds
-            if isinstance(cnt_pred, paddle.Tensor):
-                cnt_pred = cnt_pred.numpy()
+            cnt_outputs = preds
+            if isinstance(cnt_outputs, paddle.Tensor):
+                cnt_outputs = cnt_outputs.numpy()
             cnt_length = []
-            for lens in cnt_pred:
+            for lens in cnt_outputs:
                 length = round(np.sum(lens))
                 cnt_length.append(length)
             if label is None:
