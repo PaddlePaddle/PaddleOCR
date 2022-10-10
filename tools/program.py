@@ -114,7 +114,7 @@ def merge_config(config, opts):
     return config
 
 
-def check_device(use_gpu, use_xpu=False, use_npu=False):
+def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
@@ -136,6 +136,9 @@ def check_device(use_gpu, use_xpu=False, use_npu=False):
             sys.exit(1)
         if use_npu and not paddle.device.is_compiled_with_npu():
             print(err.format("use_npu", "npu", "npu", "use_npu"))
+            sys.exit(1)
+        if use_mlu and not paddle.device.is_compiled_with_mlu():
+            print(err.format("use_mlu", "mlu", "mlu", "use_mlu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -618,6 +621,7 @@ def preprocess(is_train=False):
     use_gpu = config['Global'].get('use_gpu', False)
     use_xpu = config['Global'].get('use_xpu', False)
     use_npu = config['Global'].get('use_npu', False)
+    use_mlu = config['Global'].get('use_mlu', False)
 
     alg = config['Architecture']['algorithm']
     assert alg in [
@@ -632,10 +636,12 @@ def preprocess(is_train=False):
         device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
     elif use_npu:
         device = 'npu:{0}'.format(os.getenv('FLAGS_selected_npus', 0))
+    elif use_mlu:
+        device = 'mlu:{0}'.format(os.getenv('FLAGS_selected_mlus', 0))
     else:
         device = 'gpu:{}'.format(dist.ParallelEnv()
                                  .dev_id) if use_gpu else 'cpu'
-    check_device(use_gpu, use_xpu, use_npu)
+    check_device(use_gpu, use_xpu, use_npu, use_mlu)
 
     device = paddle.set_device(device)
 
