@@ -25,7 +25,7 @@ On the CTW1500 dataset, the text detection result is as follows:
 
 |Model|Backbone|Configuration|Precision|Recall|Hmean|Download|
 | --- | --- | --- | --- | --- | --- | --- |
-| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](../../configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[trained model](drrg_model)|
+| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](../../configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw.tar)|
 
 <a name="2"></a>
 ## 2. Environment

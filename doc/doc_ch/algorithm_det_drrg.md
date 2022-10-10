@@ -23,7 +23,7 @@
 
 | 模型  |骨干网络|配置文件|precision|recall|Hmean|下载链接|
 |-----| --- | --- | --- | --- | --- | --- |
-| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](../../configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[训练模型](drrg_model)|
+| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](../../configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
