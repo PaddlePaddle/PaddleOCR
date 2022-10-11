@@ -24,7 +24,7 @@ def read_params():
 
     # params for layout parser model
     cfg.layout_model_dir = ''
-    cfg.layout_dict_path = './ppocr/utils/dict/layout_publaynet_dict.txt'
+    cfg.layout_dict_path = './ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt'
     cfg.layout_score_threshold = 0.5
     cfg.layout_nms_threshold = 0.5
 
