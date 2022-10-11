@@ -94,7 +94,7 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 
 #### 2.1.5 Key Information Extraction
 
-Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Key Information Extraction](../kie/README.md).
+Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [inference document](./inference_en.md).
 
 <a name="216"></a>
 #### 2.1.6 layout recovery
