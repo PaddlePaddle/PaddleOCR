@@ -698,8 +698,7 @@ def main():
             if args.recovery and all_res != []:
                 try:
                     from ppstructure.recovery.recovery_to_doc import convert_info_docx
-                    convert_info_docx(img, all_res, args.output, img_name,
-                                      args.save_pdf)
+                    convert_info_docx(img, all_res, args.output, img_name)
                 except Exception as ex:
                     logger.error(
                         "error in layout recovery image:{}, err msg: {}".format(
