@@ -13,7 +13,7 @@ train_infer_img_dir:ppstructure/docs/kie/input/zh_val_42.jpg
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c ./configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o
+norm_train:tools/train.py -c ./configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o 
 pact_train:null
 fpgm_train:null
 distill_train:null
