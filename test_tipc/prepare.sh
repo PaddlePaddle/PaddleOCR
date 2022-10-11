@@ -532,6 +532,18 @@ elif [ ${MODE} = "whole_infer" ];then
         fi
         cd ../
     fi
+    if [[ ${model_name} =~ "slanet" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && cd ../
+    fi
+    if [[ ${model_name} =~ "vi_layoutxlm_ser" ]]; then
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U 
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ser_vi_layoutxlm_xfund_infer.tar & cd ../
+    fi
     if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
         ${python_name} -m pip install opencv-python -U 
