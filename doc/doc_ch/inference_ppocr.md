@@ -11,6 +11,7 @@
     - [2.3 多语言模型的推理](#23-多语言模型的推理)
   - [3. 方向分类模型推理](#3-方向分类模型推理)
   - [4. 文本检测、方向分类和文字识别串联推理](#4-文本检测方向分类和文字识别串联推理)
+  - [5. TensorRT推理](5-TensorRT推理)
 
 <a name="文本检测模型推理"></a>
 
@@ -40,16 +41,15 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_m
 
 如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置det_limit_side_len 为想要的值，比如1216：
 
-```
+```bash
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 如果想使用CPU进行预测，执行命令如下
 
-```
+```bash
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"  --use_gpu=False
 ```
-
 
 
 <a name="文本识别模型推理"></a>
@@ -163,3 +163,32 @@ python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir=".
 ![](../imgs_results/system_res_00018069_v3.jpg)
 
 更多关于推理超参数的配置与解释，请参考：[模型推理超参数解释教程](./inference_args.md)。
+
+
+## 5. TensorRT推理
+
+Paddle Inference 采用子图的形式集成 TensorRT，针对 GPU 推理场景，TensorRT 可对一些子图进行优化，包括 OP 的横向和纵向融合，过滤冗余的 OP，并为 OP 自动选择最优的 kernel，加快推理速度。
+
+如果希望使用Paddle Inference进行TRT推理，一般需要2个步骤。
+
+* （1）收集该模型关于特定数据集的动态shape信息，并存储到文件中。
+* （2）加载动态shape信息文件，进行TRT推理。
+
+以文本检测模型为例，首先使用下面的命令，生成动态shape文件，最终会在`ch_PP-OCRv3_det_infer`目录下面生成`det_trt_dynamic_shape.txt`的文件，该文件即存储了动态shape信息的文件。
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+上面的推理过程仅用于收集动态shape信息，没有用TRT进行推理。
+
+运行完成以后，再使用下面的命令，进行TRT推理。
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+**注意：**
+
+* 如果在第一步中，已经存在动态shape信息文件，则无需重新收集，直接预测，即使用TRT推理；如果希望重新生成动态shape信息文件，则需要先将模型目录下的动态shape信息文件删掉，再重新生成。
+* 动态shape信息文件一般情况下仅需生成一次。在实际部署过程中，建议首先在线下验证集或者测试集合上生成好，之后可以直接加载该文件进行线上TRT推理。
