@@ -184,9 +184,6 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_di
 
 The above command is only used to collect dynamic shape information, and TRT is not used during inference.
 
-上面的推理过程仅用于手机动态shape信息，没有用TRT进行推理。
-
-
 Then, you can use the following command to perform TRT inference.
 
 
