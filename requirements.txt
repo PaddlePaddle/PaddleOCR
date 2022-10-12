@@ -13,6 +13,6 @@ cython
 lxml
 premailer
 openpyxl
-attrdict
+attrdict3
 Polygon3
 PyMuPDF==1.18.7
