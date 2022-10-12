@@ -42,7 +42,7 @@ inference:ppstructure/table/predict_table.py --det_model_dir=./inference/en_ppoc
 --enable_mkldnn:False
 --cpu_threads:6
 --rec_batch_num:1
---use_tensorrt:False
+--use_tensorrt:True
 --precision:fp32
 --table_model_dir:
 --image_dir:./ppstructure/docs/table/table.jpg

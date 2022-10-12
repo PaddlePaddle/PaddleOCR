@@ -16,6 +16,6 @@ inference:ppstructure/table/predict_table.py --det_model_dir=./inference/ch_PP-O
 --table_model_dir:
 --image_dir:./ppstructure/docs/table/table.jpg
 null:null
---benchmark:False
+--benchmark:True
 null:null
 null:null

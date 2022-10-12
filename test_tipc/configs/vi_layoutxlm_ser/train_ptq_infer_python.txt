@@ -16,6 +16,6 @@ inference:ppstructure/kie/predict_kie_token_ser.py  --kie_algorithm=LayoutXLM  -
 --ser_model_dir:
 --image_dir:./ppstructure/docs/kie/input/zh_val_42.jpg
 null:null
---benchmark:False
+--benchmark:True
 null:null
 null:null
