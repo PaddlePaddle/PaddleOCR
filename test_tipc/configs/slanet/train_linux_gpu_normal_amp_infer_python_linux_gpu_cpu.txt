@@ -47,7 +47,7 @@ inference:ppstructure/table/predict_table.py --det_model_dir=./inference/en_ppoc
 --table_model_dir:
 --image_dir:./ppstructure/docs/table/table.jpg
 null:null
---benchmark:False
+--benchmark:True
 null:null
 ===========================infer_benchmark_params==========================
 random_infer_input:[{float32,[3,488,488]}]
