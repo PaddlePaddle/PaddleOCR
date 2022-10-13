@@ -101,7 +101,7 @@ python PPOCRLabel.py --lang ch
 
 #### 1.2.3 本地构建whl包并安装
 
-编译与安装新的whl包，其中1.0.2为版本号，可在 `setup.py` 中指定新版本。
+编译与安装新的whl包，其中2.1.2为版本号，可在 `setup.py` 中指定新版本。
 
 ```bash
 cd ./PPOCRLabel

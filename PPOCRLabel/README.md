@@ -103,7 +103,7 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 ```
 
 #### 1.2.3 Build and Install the Whl Package Locally
-Compile and install a new whl package, where 1.0.2 is the version number, you can specify the new version in 'setup.py'.
+Compile and install a new whl package, where 2.1.2 is the version number, you can specify the new version in 'setup.py'.
 ```bash
 cd ./PPOCRLabel
 python3 setup.py bdist_wheel
