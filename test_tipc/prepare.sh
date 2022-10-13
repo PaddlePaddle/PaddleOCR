@@ -360,7 +360,8 @@ elif [ ${MODE} = "whole_infer" ];then
     wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar --no-check-certificate
     cd ./inference && tar xf rec_inference.tar  && tar xf ch_det_data_50.tar && cd ../
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
-    cd ./train_data/ && tar xf XFUND.tar && cd ../
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet.tar --no-check-certificate
+    cd ./train_data/ && tar xf XFUND.tar && tar xf pubtabnet.tar && cd ../
     head -n 2 train_data/XFUND/zh_val/val.json > train_data/XFUND/zh_val/val_lite.json
     mv train_data/XFUND/zh_val/val_lite.json train_data/XFUND/zh_val/val.json
     if [ ${model_name} = "ch_ppocr_mobile_v2_0_det" ]; then
