@@ -86,13 +86,20 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **(2) Install recovery `requirements`**
 
-The layout restoration is exported as docx files, so python-docx API need to be installed, and PyMuPDF api([requires Python >= 3.7](https://pypi.org/project/PyMuPDF/)) need to be installed to process the input files in pdf format. And if using pdf parse method, we need to install pdf2docx api.
+The layout restoration is exported as docx files, so python-docx API need to be installed, and PyMuPDF api([requires Python >= 3.7](https://pypi.org/project/PyMuPDF/)) need to be installed to process the input files in pdf format.
 
 Install all the libraries by running the following command:
 
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
 ````
+
+ And if using pdf parse method, we need to install pdf2docx api.
+
+```bash
+wget https://paddleocr.bj.bcebos.com/whl/pdf2docx-0.0.0-py3-none-any.whl
+pip3 install pdf2docx-0.0.0-py3-none-any.whl
+```
 
 <a name="3"></a>
 
