@@ -70,16 +70,14 @@ Loss:
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states
-      index: 5
+      key: hidden_states_5
       name: "loss_5"
   - DistillationVQADistanceLoss:
       weight: 0.5
       mode: "l2"
       model_name_pairs:
         - ["Student", "Teacher"]
-      key: hidden_states
-      index: 8
+      key: hidden_states_8
       name: "loss_8"
   
   
@@ -182,4 +180,3 @@ Eval:
     drop_last: False
     batch_size_per_card: 8
     num_workers: 4
-
