@@ -465,6 +465,36 @@ class RobustScannerRecResizeImg(object):
         return data
 
 
+class GrayImageChannelFormat(object):
+    """
+    format gray scale image's channel: (3,h,w) -> (1,h,w)
+    Args:
+        normalize: True/False 
+            when True convert image dynamic range [0,255]->[0,1]
+        inverse: inverse gray image 
+    """
+
+    def __init__(self, normalize=True, inverse=False, **kwargs):
+        self.normalize = normalize
+        self.inverse = inverse
+
+    def __call__(self, data):
+        img = data['image']
+        img_single_channel = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_single_channel = np.expand_dims(img_single_channel, 0)
+
+        if self.normalize:
+            img_single_channel = img_single_channel / 255.0
+
+        if self.inverse:
+            data['image'] = np.abs(img_single_channel - 1).astype('float32')
+        else:
+            data['image'] = img_single_channel.astype('float32')
+
+        data['src_image'] = img
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]

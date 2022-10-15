@@ -37,6 +37,7 @@ from ppocr.data.simple_dataset import SimpleDataSet
 from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
+from ppocr.data.hmer_dataset import HMERDataSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 
@@ -55,7 +56,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
 
     support_dict = [
         'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR'
+        'LMDBDataSetSR', 'HMERDataSet'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(

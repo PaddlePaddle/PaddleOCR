@@ -123,6 +123,17 @@ def export_single_model(model,
                 ]
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "CAN":
+        other_shape = [[
+            paddle.static.InputSpec(
+                shape=[None, 1, None, None],
+                dtype="float32"), paddle.static.InputSpec(
+                    shape=[None, 1, None, None], dtype="float32"),
+            paddle.static.InputSpec(
+                shape=[None, arch_config['Head']['max_text_length']],
+                dtype="int64")
+        ]]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [
             paddle.static.InputSpec(
