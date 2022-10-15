@@ -1,4 +1,4 @@
-# RobustScanner
+# CAN
 
 - [1. Introduction](#1)
 - [2. Environment](#2)
@@ -77,7 +77,7 @@ python3 tools/export_model.py -c configs/rec/rec_d28_can.yml -o Global.save_infe
 For RobustScanner text recognition model inference, the following commands can be executed:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_hme/hme_01.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_image_shape="1, 132, 519" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_hme/hme_01.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_image_shape="1, 100, 100" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
 ```
 
 <a name="4-2"></a>
