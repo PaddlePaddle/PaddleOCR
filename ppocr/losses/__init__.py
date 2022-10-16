@@ -59,6 +59,7 @@ from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
 
 # sr loss
 from .stroke_focus_loss import StrokeFocusLoss
+from .text_focus_loss import TextFocusLoss
 
 
 def build_loss(config):
@@ -68,7 +69,7 @@ def build_loss(config):
         'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
         'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'StrokeFocusLoss',
-        'SLALoss'
+        'SLALoss', 'TextFocusLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')
