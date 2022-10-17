@@ -66,7 +66,6 @@ Loss:
 
 PostProcess:
   name: CANLabelDecode
-  character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
 
 Metric:
   name: CANMetric
@@ -76,6 +75,7 @@ Train:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/CROHME_lite/training/images/
+    label_file_list: ["./train_data/CROHME_lite/training/labels.txt"]
     transforms:
       - DecodeImage:
           channel_first: False
@@ -86,11 +86,9 @@ Train:
       - GrayImageChannelFormat: 
           inverse: True
       - CANLabelEncode:
-          character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
           lower: False
       - KeepKeys:
           keep_keys: ['image', 'label']
-    label_file_list: ["./train_data/CROHME_lite/training/labels.txt"]
   loader:
     shuffle: True
     batch_size_per_card: 8
@@ -102,6 +100,7 @@ Eval:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/CROHME_lite/evaluation/images/
+    label_file_list: ["./train_data/CROHME_lite/evaluation/labels.txt"]
     transforms: 
       - DecodeImage:
           channel_first: False
@@ -112,11 +111,9 @@ Eval:
       - GrayImageChannelFormat:
           inverse: True
       - CANLabelEncode:
-          character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
           lower: False
       - KeepKeys:
           keep_keys: ['image', 'label']
-    label_file_list: ["./train_data/CROHME_lite/evaluation/labels.txt"]
   loader:
     shuffle: False
     drop_last: False
