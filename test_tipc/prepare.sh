@@ -164,7 +164,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar --no-check-certificate
         cd ./inference/ && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar && cd ../
     fi
-    if [ ${model_name} == "slanet" ];then
+    if [[ ${model_name} =~ "slanet" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf en_ppstructure_mobile_v2.0_SLANet_train.tar  && cd ../
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar --no-check-certificate
@@ -267,12 +267,16 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pplayout/ser_LayoutXLM_xfun_zh.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ser_LayoutXLM_xfun_zh.tar  && cd ../
     fi
-    if [ ${model_name} == "vi_layoutxlm_ser" ]; then
+    if [[ ${model_name} =~ "vi_layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
         ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
         cd ./train_data/ && tar xf XFUND.tar
         cd ../
+        if [ ${model_name} == "vi_layoutxlm_ser_PACT" ]; then
+            wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar --no-check-certificate
+            cd ./pretrain_models/ && tar xf ser_vi_layoutxlm_xfund_pretrained.tar  && cd ../
+        fi
     fi
     if [ ${model_name} == "det_r18_ct" ]; then
         wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
@@ -356,7 +360,8 @@ elif [ ${MODE} = "whole_infer" ];then
     wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar --no-check-certificate
     cd ./inference && tar xf rec_inference.tar  && tar xf ch_det_data_50.tar && cd ../
     wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
-    cd ./train_data/ && tar xf XFUND.tar && cd ../
+    wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/pubtabnet.tar --no-check-certificate
+    cd ./train_data/ && tar xf XFUND.tar && tar xf pubtabnet.tar && cd ../
     head -n 2 train_data/XFUND/zh_val/val.json > train_data/XFUND/zh_val/val_lite.json
     mv train_data/XFUND/zh_val/val_lite.json train_data/XFUND/zh_val/val.json
     if [ ${model_name} = "ch_ppocr_mobile_v2_0_det" ]; then
@@ -531,6 +536,18 @@ elif [ ${MODE} = "whole_infer" ];then
             tar xf en_ppocr_mobile_v2.0_table_structure_slim_infer.tar
         fi
         cd ../
+    fi
+    if [[ ${model_name} =~ "slanet" ]];then
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar --no-check-certificate
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar && cd ../
+    fi
+    if [[ ${model_name} =~ "vi_layoutxlm_ser" ]]; then
+        ${python_name} -m pip install -r ppstructure/kie/requirements.txt
+        ${python_name} -m pip install opencv-python -U 
+        wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar --no-check-certificate
+        cd ./inference/ && tar xf ser_vi_layoutxlm_xfund_infer.tar & cd ../
     fi
     if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt

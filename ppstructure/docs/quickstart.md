@@ -227,7 +227,7 @@ for line in result:
 <a name="225"></a>
 #### 2.2.5 关键信息抽取
 
-关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[关键信息抽取教程](../kie/README_ch.md)。
+关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[inference文档](./inference.md)。
 
 <a name="226"></a>
 

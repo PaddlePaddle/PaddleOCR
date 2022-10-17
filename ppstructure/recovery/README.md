@@ -6,8 +6,8 @@ English | [简体中文](README_ch.md)
 - [2. Install](#2)
     - [2.1 Install PaddlePaddle](#2.1)
     - [2.2 Install PaddleOCR](#2.2)
-- [3. Quick Start using PDF parse](#3)
-- [4. Quick Start using OCR](#4)
+- [3. Quick Start using standard PDF parse](#3)
+- [4. Quick Start using image format PDF parse ](#4)
     - [4.1 Download models](#4.1)
     - [4.2 Layout recovery](#4.2)
 - [5. More](#5)
@@ -19,18 +19,18 @@ English | [简体中文](README_ch.md)
 The layout recovery module is used to restore the image or pdf to an
 editable Word file consistent with the original image layout.
 
-Two layout recovery methods are provided:
+Two layout recovery methods are provided, you can choose by PDF format:
 
-- PDF parse: Python based PDF to word library [pdf2docx] (https://github.com/dothinking/pdf2docx) is optimized, the method extracts data from PDF with PyMuPDF, then parse layout with rule, finally, generate docx with python-docx.
+- **Standard PDF parse(the input is standard PDF)**: Python based PDF to word library [pdf2docx] (https://github.com/dothinking/pdf2docx) is optimized, the method extracts data from PDF with PyMuPDF, then parse layout with rule, finally, generate docx with python-docx.
 
-- OCR: Layout recovery combines [layout analysis](../layout/README.md)、[table recognition](../table/README.md) to better recover images, tables, titles, etc. supports input files in PDF and document image formats in Chinese and English.
+- **Image format PDF parse(the input can be standard PDF or image format PDF)**: Layout recovery combines [layout analysis](../layout/README.md)、[table recognition](../table/README.md) to better recover images, tables, titles, etc. supports input files in PDF and document image formats in Chinese and English.
 
 The input formats and application scenarios of the two methods are as follows:
 
 |  method   | input formats |                      application scenarios/problem                       |
 | :-----: | :----------: | :----------------------------------------------------------: |
-| PDF parse |     pdf      | Advantages: Better recovery for non-paper documents, each page remains on the same page after restoration<br>Disadvantages: English characters in some Chinese documents are garbled, some contents are still beyond the current page, the whole page content is restored to the table format, and the recovery effect of some pictures is not good |
-| OCR technique |  pdf、picture   | Advantages: More suitable for paper document content recovery,  OCR recognition effect is more good<br>Disadvantages: Currently, the recovery is based on rules, the effect of content typesetting (spacing, fonts, etc.) need to be further improved, and the effect of layout recovery depends on layout analysis |
+| Standard PDF parse |     pdf      | Advantages: Better recovery for non-paper documents, each page remains on the same page after restoration<br>Disadvantages: English characters in some Chinese documents are garbled, some contents are still beyond the current page, the whole page content is restored to the table format, and the recovery effect of some pictures is not good |
+| Image format PDF parse( |  pdf、picture   | Advantages: More suitable for paper document content recovery,  OCR recognition effect is more good<br>Disadvantages: Currently, the recovery is based on rules, the effect of content typesetting (spacing, fonts, etc.) need to be further improved, and the effect of layout recovery depends on layout analysis |
 
 The following figure shows the effect of restoring the layout of documents by using PDF parse:
 
@@ -103,7 +103,7 @@ pip3 install pdf2docx-0.0.0-py3-none-any.whl
 
 <a name="3"></a>
 
-## 3. Quick Start using PDF parse
+## 3. Quick Start using standard PDF parse
 
 `use_pdf2docx_api` use PDF parse for layout recovery, The whl package is also provided  for quick use, follow the above code, for more infomation please refer to [quickstart](../docs/quickstart_en.md) for details.
 
@@ -124,7 +124,7 @@ python3 predict_system.py \
 ```
 
 <a name="4"></a>
-## 4. Quick Start using OCR
+## 4. Quick Start using image format PDF parse
 
 Through layout analysis, we divided the image/PDF documents into regions, located the key regions, such as text, table, picture, etc., and recorded the location, category, and regional pixel value information of each region. Different regions are processed separately, where:
 

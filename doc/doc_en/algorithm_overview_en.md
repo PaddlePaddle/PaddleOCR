@@ -27,6 +27,7 @@ Supported text detection algorithms (Click the link to get the tutorial):
 - [x]  [SAST](./algorithm_det_sast_en.md)
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
 - [x]  [FCENet](./algorithm_det_fcenet_en.md)
+- [x]  [DRRG](./algorithm_det_drrg_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -52,6 +53,7 @@ On CTW1500 dataset, the text detection result is as follows:
 |Model|Backbone|Precision|Recall|Hmean| Download link|
 | --- | --- | --- | --- | --- |---|  
 |FCE|ResNet50_dcn|88.39%|82.18%|85.27%| [trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar) |
+|DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw.tar)|
 
 **Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from:
 * [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
@@ -100,7 +102,7 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |VisionLAN|Resnet45| 90.30% | rec_r45_visionlan | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar) |
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
-|RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl.tar) |
+|RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
 
 <a name="2"></a>
 

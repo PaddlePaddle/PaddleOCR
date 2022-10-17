@@ -18,13 +18,13 @@ cd ppstructure
 下载模型
 ```bash
 mkdir inference && cd inference
-# 下载PP-Structurev2版面分析模型并解压
+# 下载PP-StructureV2版面分析模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar xf picodet_lcnet_x1_0_layout_infer.tar
 # 下载PP-OCRv3文本检测模型并解压
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
 # 下载PP-OCRv3文本识别模型并解压
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
-# 下载PP-Structurev2表格识别模型并解压
+# 下载PP-StructureV2表格识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 ```
