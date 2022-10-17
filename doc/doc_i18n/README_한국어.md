@@ -1,7 +1,7 @@
 English | [简体中文](README_ch.md)
 
 <p align="center">
- <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
+ <img src="../PaddleOCR_log.png" align="middle" width = "600"/>
 <p align="center">
 <p align="left">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>

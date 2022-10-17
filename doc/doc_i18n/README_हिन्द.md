@@ -1,7 +1,7 @@
 English | [简体中文](README_ch.md)
 
 <p align="center">
- <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
+ <img src="../PaddleOCR_log.png" align="middle" width = "600"/>
 <p align="center">
 <p align="left">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
@@ -12,6 +12,7 @@ English | [简体中文](README_ch.md)
     <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
     <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
 </p>
+
 
 ## प्रस्तावना
 पैडलओसीआर का उद्देश्य बहुभाषी,शानदार , ओसीआर और व्यावहारिक ओसीआरउपकरण बनाना है जो यूजर्स को बेहतर मॉडलों  के लिए प्रशिक्षित करने और उन्हें व्यवहार में लागू करने में मदद करते हैं।
@@ -24,10 +25,10 @@ English | [简体中文](README_ch.md)
 </div>
 
 
-
 <div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
+    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
+
 
 ## 📣 हाल के अद्यतन
 - **🔥2022.8.24 रिलीज Paddleओसीआर [रिलीज/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
