@@ -141,14 +141,15 @@ class Worker(QThread):
             res = sorted_layout_boxes(res, w)
             all_res += res
 
-        try:
-            convert_info_docx(img, all_res, self.outputDir, img_name, self.save_pdf)
-        except Exception as ex:
-            print(self,
-                "error in layout recovery image:{}, err msg: {}".format(
-                img_name, ex))
-
-        print('result save to {}'.format(self.outputDir)) 
+            if all_res != []:
+                try:
+                    convert_info_docx(img, all_res, self.outputDir, img_name)
+                except Exception as ex:
+                    print.error("error in layout recovery image:{}, err msg: {}".
+                                format(img_name, ex))
+                    continue
+            print("Predict time : {:.3f}s".format(time_dict['all']))
+            print('result save to {}'.format(self.outputDir)) 
 
     def run(self):
         try:
@@ -428,6 +429,9 @@ class APP_Image2Doc(QWidget):
 
 
 def main():
+    import os
+    os.environ["KMP_DUPLICATE_LIB_OK"] = 'TRUE'
+
     app = QApplication(sys.argv)
 
     window = APP_Image2Doc()  # 创建对象
