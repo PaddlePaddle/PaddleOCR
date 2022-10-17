@@ -1,7 +1,7 @@
 ===========================train_params===========================
 model_name:rec_d28_can
-python:python3.7
-gpu_list:0|0,1
+python:python
+gpu_list:0|0
 Global.use_gpu:True|True
 Global.auto_cast:null
 Global.epoch_num:lite_train_lite_infer=2|whole_train_whole_infer=240

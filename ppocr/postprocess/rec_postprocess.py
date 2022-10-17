@@ -899,12 +899,12 @@ class VLLabelDecode(BaseRecLabelDecode):
         return text, label
 
 
-class SeqLabelDecode(BaseRecLabelDecode):
+class CANLabelDecode(BaseRecLabelDecode):
     """ Convert between latex-symbol and symbol-index """
 
     def __init__(self, character_dict_path=None, use_space_char=False,
                  **kwargs):
-        super(SeqLabelDecode, self).__init__(character_dict_path,
+        super(CANLabelDecode, self).__init__(character_dict_path,
                                              use_space_char)
 
     def decode(self, text_index, preds_prob=None):

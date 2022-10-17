@@ -262,7 +262,6 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./pretrain_models/ && tar xf can_train.tar && cd ../
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
         cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
-
     fi
     if [ ${model_name} == "layoutxlm_ser" ]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt

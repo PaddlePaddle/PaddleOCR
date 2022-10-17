@@ -42,7 +42,6 @@ Architecture:
     bottleneck: True
     use_dropout: True
     input_channel: 1 
-    
   Head:
     name: CANHead
     in_channel: 684
@@ -66,8 +65,8 @@ Loss:
   name: CANLoss
 
 PostProcess:
-  name: SeqLabelDecode
-  character: 111
+  name: CANLabelDecode
+  character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
 
 Metric:
   name: CANMetric
@@ -75,15 +74,18 @@ Metric:
 
 Train:
   dataset:
-    name: PGDataSet
+    name: SimpleDataSet
     data_dir: ./train_data/CROHME/training/images/
     transforms:
       - DecodeImage:
           channel_first: False
+      - NormalizeImage:
+          mean: [0,0,0]
+          std: [1,1,1]
+          order: 'hwc'
       - GrayImageChannelFormat: 
-          normalize: True
           inverse: True
-      - SeqLabelEncode:
+      - CANLabelEncode:
           character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
           lower: False
       - KeepKeys:
@@ -98,15 +100,18 @@ Train:
 
 Eval:
   dataset:
-    name: PGDataSet
+    name: SimpleDataSet
     data_dir: ./train_data/CROHME/evaluation/images/
     transforms: 
       - DecodeImage:
           channel_first: False
+      - NormalizeImage:
+          mean: [0,0,0]
+          std: [1,1,1]
+          order: 'hwc'
       - GrayImageChannelFormat:
-          normalize: True
           inverse: True
-      - SeqLabelEncode:
+      - CANLabelEncode:
           character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
           lower: False
       - KeepKeys:

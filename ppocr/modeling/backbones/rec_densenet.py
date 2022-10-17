@@ -1,3 +1,21 @@
+# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import math
 import paddle
 import paddle.nn as nn
@@ -5,14 +23,6 @@ import paddle.nn.functional as F
 
 
 class Bottleneck(nn.Layer):
-    '''
-        ratio: 16
-        growthRate: 24
-        reduction: 0.5
-        bottleneck: True
-        use_dropout: True
-    '''
-
     def __init__(self, nChannels, growthRate, use_dropout):
         super(Bottleneck, self).__init__()
         interChannels = 4 * growthRate
@@ -78,11 +88,7 @@ class DenseNet(nn.Layer):
     def __init__(self, growthRate, reduction, bottleneck, use_dropout,
                  input_channel, **kwargs):
         super(DenseNet, self).__init__()
-        '''
-          ratio: 16
-          growthRate: 24
-          reduction: 0.5
-        '''
+
         nDenseBlocks = 16
         nChannels = 2 * growthRate
 

@@ -1479,14 +1479,14 @@ class CTLabelEncode(object):
         return data
 
 
-class SeqLabelEncode(BaseRecLabelEncode):
+class CANLabelEncode(BaseRecLabelEncode):
     def __init__(self,
                  character_dict_path,
                  max_text_length=100,
                  use_space_char=False,
                  lower=True,
                  **kwargs):
-        super(SeqLabelEncode, self).__init__(
+        super(CANLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower)
 
     def encode(self, text_seq):

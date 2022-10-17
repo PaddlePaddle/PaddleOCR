@@ -111,7 +111,7 @@ class TextRecognizer(object):
         elif self.rec_algorithm == "CAN":
             self.inverse = args.rec_image_inverse
             postprocess_params = {
-                'name': 'SeqLabelDecode',
+                'name': 'CANLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
