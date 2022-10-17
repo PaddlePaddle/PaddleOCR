@@ -241,6 +241,9 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_det_FPGM" ]; then
         ${python_name} -m pip install paddleslim
     fi
+    if [ ${model_name} == "det_r50_vd_pse_v2_0" ]; then
+        wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
+    fi
     if [ ${model_name} == "det_mv3_east_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_mv3_east_v2.0_train.tar && cd ../
