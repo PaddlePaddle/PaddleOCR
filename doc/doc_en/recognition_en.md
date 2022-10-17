@@ -26,7 +26,7 @@
 
 ### 1.1 DataSet Preparation
 
-To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets.md) .
+To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets_en.md) .
 
 PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
 
