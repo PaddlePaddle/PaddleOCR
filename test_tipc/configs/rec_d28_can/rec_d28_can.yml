@@ -5,14 +5,14 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/rec/can/
   save_epoch_step: 1
-  # evaluation is run every 1105 iterations
+  # evaluation is run every 1105 iterations (1 epoch)(batch_size = 8)
   eval_batch_step: [0, 1105]
   cal_metric_during_train: True
-  pretrained_model: ./output/rec/can/CAN
-  checkpoints: ./output/rec/can/CAN
-  save_inference_dir: ./inference/rec_d28_can/
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
   use_visualdl: False
-  infer_img: doc/imgs_hme/hme_01.jpeg
+  infer_img: doc/datasets/crohme_demo/hme_00.jpg
   # for data or label process
   character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
   max_text_length: 36
@@ -75,37 +75,43 @@ Metric:
 
 Train:
   dataset:
-    name: HMERDataSet
-    data_dir: ./train_data/CROHME/training/images/
+    name: PGDataSet
+    data_dir: ./train_data/CROHME_lite/training/images/
     transforms:
       - DecodeImage:
           channel_first: False
       - GrayImageChannelFormat: 
           normalize: True
           inverse: True
+      - SeqLabelEncode:
+          character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
+          lower: False
       - KeepKeys:
           keep_keys: ['image', 'label']
-    label_file_list: ["./train_data/CROHME/training/labels.json"]
+    label_file_list: ["./train_data/CROHME_lite/training/labels.txt"]
   loader:
     shuffle: True
-    batch_size_per_card: 2
-    drop_last: True
-    num_workers: 1
+    batch_size_per_card: 8
+    drop_last: False
+    num_workers: 4
     collate_fn: DyMaskCollator
 
 Eval:
   dataset:
-    name: HMERDataSet
-    data_dir: ./train_data/CROHME/evaluation/images/
+    name: PGDataSet
+    data_dir: ./train_data/CROHME_lite/evaluation/images/
     transforms: 
       - DecodeImage:
           channel_first: False
       - GrayImageChannelFormat:
           normalize: True
           inverse: True
+      - SeqLabelEncode:
+          character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
+          lower: False
       - KeepKeys:
           keep_keys: ['image', 'label']
-    label_file_list: ["./train_data/CROHME/evaluation/labels.json"]
+    label_file_list: ["./train_data/CROHME_lite/evaluation/labels.txt"]
   loader:
     shuffle: False
     drop_last: False

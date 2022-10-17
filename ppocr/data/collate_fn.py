@@ -95,8 +95,8 @@ class DyMaskCollator(object):
                 1] > max_height else max_height
             max_width = item[0].shape[2] if item[0].shape[
                 2] > max_width else max_width
-            max_length = item[1].shape[0] if item[1].shape[
-                0] > max_length else max_length
+            max_length = len(item[1]) if len(item[
+                1]) > max_length else max_length
             proper_items.append(item)
 
         images, image_masks = np.zeros(
@@ -111,7 +111,7 @@ class DyMaskCollator(object):
             _, h, w = proper_items[i][0].shape
             images[i][:, :h, :w] = proper_items[i][0]
             image_masks[i][:, :h, :w] = 1
-            l = proper_items[i][1].shape[0]
+            l = len(proper_items[i][1])
             labels[i][:l] = proper_items[i][1]
             label_masks[i][:l] = 1
 

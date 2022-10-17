@@ -25,7 +25,7 @@ Using CROHME handwrittem mathematical expression recognition datasets for traini
 
 |Model|Backbone|config|exprate|Download link|
 | --- | --- | --- | --- | --- |
-|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|coming soon|
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[trained model](https://paddleocr.bj.bcebos.com/contribution/can_train.tar)|
 
 <a name="2"></a>
 ## 2. Environment
@@ -53,14 +53,14 @@ Evaluation:
 
 ```
 # GPU evaluation
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_d28_can.yml -o Global.pretrained_model=./rec_d28_can_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_d28_can.yml -o Global.pretrained_model=./rec_d28_can_train/CAN
 ```
 
 Prediction:
 
 ```
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.attdecoder.is_train=False Global.infer_img='./doc/imgs_hme/hme_01.jpg' Global.pretrained_model=./rec_d28_can_train/best_accuracy
+python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.attdecoder.is_train=False Global.infer_img='./doc/crohme_demo/hme_00.jpg' Global.pretrained_model=./rec_d28_can_train/CAN
 ```
 
 <a name="4"></a>
@@ -68,16 +68,20 @@ python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.a
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-First, the model saved during the RobustScanner text recognition training process is converted into an inference model. you can use the following command to convert:
+First, the model saved during the CAN handwritten mathematical expression recognition training process is converted into an inference model. you can use the following command to convert:
 
 ```
 python3 tools/export_model.py -c configs/rec/rec_d28_can.yml -o Global.save_inference_dir=./inference/rec_d28_can/ Architecture.Head.attdecoder.is_train=False
+
+# The default output max length of the model is 36. If you need to predict a longer sequence, please specify its output sequence as an appropriate value when exporting the model, as: Architecture.Head.max_ text_ length=72
 ```
 
-For RobustScanner text recognition model inference, the following commands can be executed:
+For CAN handwritten mathematical expression recognition model inference, the following commands can be executed:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_hme/hme_01.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_image_shape="1, 100, 100" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
+python3 tools/infer/predict_rec.py --image_dir="./doc/crohme_demo/hme_00.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
+
+# If you need to predict on a picture with black characters on a white background, please set: -- rec_ image_ inverse=False
 ```
 
 <a name="4-2"></a>

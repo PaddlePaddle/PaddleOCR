@@ -1,4 +1,4 @@
-# 手写数学公式识别算法-ABINet
+# 手写数学公式识别算法-CAN
 
 - [1. 算法简介](#1)
 - [2. 环境配置](#2)
@@ -27,7 +27,7 @@
 
 |模型    |骨干网络|配置文件|ExpRate|下载链接|
 | ----- | ----- | ----- | ----- | ----- |
-|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[训练模型](https://paddleocr.bj.bcebos.com/contribution/can_train.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -60,16 +60,21 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 python3 tools/train.py -c configs/rec/rec_d28_can.yml
 -o Train.dataset.transforms.GrayImageChannelFormat.inverse=False
 ```
+- 默认每训练1个epoch（1105次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
+```
+python3 tools/train.py -c configs/rec/rec_d28_can.yml
+-o Global.eval_batch_step=[0, {length_of_dataset//batch_size}]
+```
 
 #
 <a name="3-2"></a>
 ### 3.2 评估
 
-可下载已训练完成的[模型文件](#model)，使用如下命令进行评估：
+可下载已训练完成的[模型文件](https://paddleocr.bj.bcebos.com/contribution/can_train.tar)，使用如下命令进行评估：
 
 ```shell
-# 注意将pretrained_model的路径设置为本地路径。
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_d28_can.yml -o Global.pretrained_model=./rec_d28_can_train/best_accuracy
+# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_d28_can.yml -o Global.pretrained_model=./rec_d28_can_train/CAN
 ```
 
 <a name="3-3"></a>
@@ -78,9 +83,9 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec
 使用如下命令进行单张图片预测：
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.attdecoder.is_train=False Global.infer_img='./doc/imgs_hme/hme_01.jpg' Global.pretrained_model=./rec_d28_can_train/best_accuracy
+python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.attdecoder.is_train=False Global.infer_img='./doc/datasets/crohme_demo/hme_00.jpg' Global.pretrained_model=./rec_d28_can_train/CAN
 
-# 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/imgs_hme/'。
+# 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/datasets/crohme_demo/'。
 ```
 
 
@@ -89,17 +94,16 @@ python3 tools/infer_rec.py -c configs/rec/rec_d28_can.yml -o Architecture.Head.a
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/rec_d28_can_train.tar) )，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/contribution/can_train.tar) )，可以使用如下命令进行转换：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/export_model.py -c configs/rec/rec_d28_can.yml -o Global.save_inference_dir=./inference/rec_d28_can/ Architecture.Head.attdecoder.is_train=False
+python3 tools/export_model.py -c configs/rec/rec_d28_can.yml -o Global.pretrained_model=./rec_d28_can_train/CAN Global.save_inference_dir=./inference/rec_d28_can/ Architecture.Head.attdecoder.is_train=False
 
 # 目前的静态图模型默认的输出长度最大为36，如果您需要预测更长的序列，请在导出模型时指定其输出序列为合适的值，例如 Architecture.Head.max_text_length=72
 ```
 **注意：**
 - 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
-- 如果您修改了训练时的输入大小，请修改`tools/export_model.py`文件中的对应ABINet的`infer_shape`。
 
 转换成功后，在目录下有三个文件：
 ```
@@ -112,18 +116,18 @@ python3 tools/export_model.py -c configs/rec/rec_d28_can.yml -o Global.save_infe
 执行如下命令进行模型推理：
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_hme/hme_01.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
+python3 tools/infer/predict_rec.py --image_dir="./doc/datasets/crohme_demo/hme_00.jpg" --rec_algorithm="CAN" --rec_batch_num=1 --rec_model_dir="./inference/rec_d28_can/" --rec_char_dict_path="./ppocr/utils/dict/latex_symbol_dict.txt"
 
-# 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/imgs_hme/'。
+# 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/datasets/crohme_demo/'。
 
 # 如果您需要在白底黑字的图片上进行预测，请设置 --rec_image_inverse=False
 ```
 
-![测试图片样例](../imgs_hme/hme_00.jpg)
+![测试图片样例](../datasets/crohme_demo/hme_00.jpg)
 
 执行命令后，上面图像的预测结果（识别的文本）会打印到屏幕上，示例如下：
 ```shell
-Predicts of ./doc/imgs_hme/hme_03.jpg:['x _ { k } x x _ { k } + y _ { k } y x _ { k }', []]
+Predicts of ./doc/imgs_hme/hme_00.jpg:['x _ { k } x x _ { k } + y _ { k } y x _ { k }', []]
 ```
 
 

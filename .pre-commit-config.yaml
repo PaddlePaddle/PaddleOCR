@@ -1,11 +1,10 @@
-repos:
 -   repo: https://github.com/PaddlePaddle/mirrors-yapf.git
-    rev: 0d79c0c469bab64f7229c9aca2b1186ef47f0e37
+    sha: 0d79c0c469bab64f7229c9aca2b1186ef47f0e37
     hooks:
     -   id: yapf
         files: \.py$
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: a11d9314b22d8f8c7556443875b731ef05965464
+    sha: a11d9314b22d8f8c7556443875b731ef05965464
     hooks:
     -   id: check-merge-conflict
     -   id: check-symlinks
@@ -16,7 +15,7 @@ repos:
     -   id: trailing-whitespace
         files: \.md$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.0.1
+    sha: v1.0.1
     hooks:
     -   id: forbid-crlf
         files: \.md$

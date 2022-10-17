@@ -1,6 +1,6 @@
 ===========================train_params===========================
 model_name:rec_d28_can
-python:python
+python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
@@ -9,7 +9,7 @@ Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=8
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./doc/imgs_hme
+train_infer_img_dir:./doc/datasets/crohme_demo
 null:null
 ##
 trainer:norm_train
@@ -37,15 +37,15 @@ export2:null
 train_model:./inference/rec_d28_can_train/best_accuracy
 infer_export:tools/export_model.py -c test_tipc/configs/rec_d28_can/rec_d28_can.yml -o
 infer_quant:False
-inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/dict/latex_symbol_dict.txt --rec_image_shape="1,100,100" --rec_algorithm="CAN"
+inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/dict/latex_symbol_dict.txt --rec_algorithm="CAN"
 --use_gpu:True|False
 --enable_mkldnn:False
 --cpu_threads:6
 --rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32
---rec_model_dir:./output/
---image_dir:./doc/imgs_hme
+--rec_model_dir:
+--image_dir:./doc/datasets/crohme_demo
 --save_log_path:./test/output/
 --benchmark:True
 null:null
