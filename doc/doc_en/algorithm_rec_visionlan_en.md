@@ -120,7 +120,7 @@ Not supported
 ## 5. FAQ
 
 1. Note that the MJSynth and SynthText datasets come from [VisionLAN repo](https://github.com/wangyuxin87/VisionLAN).
-2. We use the pre-trained model provided by the VisionLAN authors for finetune training.
+2. We use the pre-trained model provided by the VisionLAN authors for finetune training. The dictionary for the pre-trained model is 'ppocr/utils/ic15_dict.txt'.
 
 ## Citation
 
