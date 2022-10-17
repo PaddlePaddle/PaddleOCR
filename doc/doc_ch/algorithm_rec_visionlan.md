@@ -139,7 +139,7 @@ Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.9999493)
 ## 5. FAQ
 
 1. MJSynth和SynthText两种数据集来自于[VisionLAN源repo](https://github.com/wangyuxin87/VisionLAN) 。
-2. 我们使用VisionLAN作者提供的预训练模型进行finetune训练。
+2. 我们使用VisionLAN作者提供的预训练模型进行finetune训练，预训练模型配套字典为'ppocr/utils/ic15_dict.txt'。
 
 ## 引用
 
