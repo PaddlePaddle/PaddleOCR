@@ -27,7 +27,7 @@
 
 |模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
 |---|---|---|---|---|---|
-|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_tbsrn_transformer.yml](../../configs/sr/sr_tbsrn_transformer.yml)|[训练模型](https://paddleocr.bj.bcebos.com/sr_tbsrn_transformer_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/Telescope_train.tar)|
 
 
 <a name="2"></a>
@@ -46,10 +46,10 @@
 
 ```
 #单卡训练（训练周期长，不建议）
-python3 tools/train.py -c configs/sr/sr_tbsrn_transformer.yml
+python3 tools/train.py -c configs/sr/sr_telescope.yml
 
 #多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/sr/sr_tbsrn_transformer.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/sr/sr_telescope.yml
 
 ```
 
@@ -57,14 +57,14 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ```
 # GPU 评估， Global.pretrained_model 为待测权重
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
 - 预测：
 
 ```
 # 预测使用的配置文件必须与训练一致
-python3 tools/infer_sr.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
+python3 tools/infer_sr.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
 ```
 
 ![](../imgs_words_en/word_52.png)
@@ -79,9 +79,9 @@ python3 tools/infer_sr.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretr
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Telescope 训练的[模型](https://paddleocr.bj.bcebos.com/sr_tbsrn_transformer_train.tar) 为例，可以使用如下命令进行转换：
+首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Telescope 训练的[模型](https://paddleocr.bj.bcebos.com/Telescope_train.tar) 为例，可以使用如下命令进行转换：
 ```shell
-python3 tools/export_model.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
+python3 tools/export_model.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
 ```
 Text-Telescope 文本超分模型推理，可以执行如下命令：
 ```

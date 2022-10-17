@@ -28,7 +28,7 @@ Referring to the [FudanOCR](https://github.com/FudanVI/FudanOCR/tree/main/scene-
 
 |Model|Backbone|config|Acc|Download link|
 |---|---|---|---|---|---|
-|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_tbsrn_transformer.yml](../../configs/sr/sr_tbsrn_transformer.yml)|[train model](https://paddleocr.bj.bcebos.com/sr_tbsrn_transformer_train.tar)|
+|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/Telescope_train.tar)|
 
 
 <a name="2"></a>
@@ -48,11 +48,11 @@ Specifically, after the data preparation is completed, the training can be start
 ```
 #Single GPU training (long training period, not recommended)
 
-python3 tools/train.py -c configs/sr/sr_tbsrn_transformer.yml
+python3 tools/train.py -c configs/sr/sr_telescope.yml
 
 #Multi GPU training, specify the gpu number through the --gpus parameter
 
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/sr/sr_tbsrn_transformer.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/sr/sr_telescope.yml
 
 ```
 
@@ -61,7 +61,7 @@ Evaluation:
 
 ```
 # GPU evaluation
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
 ```
 
 Prediction:
@@ -69,7 +69,7 @@ Prediction:
 ```
 # The configuration file used for prediction must match the training
 
-python3 tools/infer_sr.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
+python3 tools/infer_sr.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
 ```
 
 ![](../imgs_words_en/word_52.png)
@@ -84,10 +84,10 @@ After executing the command, the super-resolution result of the above image is a
 <a name="4-1"></a>
 ### 4.1 Python Inference
 
-First, the model saved during the training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/sr_tbsrn_transformer_train.tar) ), you can use the following command to convert:
+First, the model saved during the training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/Telescope_train.tar) ), you can use the following command to convert:
 
 ```shell
-python3 tools/export_model.py -c configs/sr/sr_tbsrn_transformer.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
+python3 tools/export_model.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
 ```
 
 For Text-Telescope super-resolution model inference, the following commands can be executed:
