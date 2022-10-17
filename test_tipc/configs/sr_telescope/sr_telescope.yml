@@ -1,6 +1,6 @@
 Global:
   use_gpu: true
-  epoch_num: 100
+  epoch_num: 2
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: ./output/sr/sr_telescope/
