@@ -56,6 +56,7 @@ PaddleOCR поддерживает множество передовых алг�
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186171245-40abc4d7-904f-4949-ade1-250f86ed3a90.png">
 </div>
+
 ## ⚡ Быстрый опыт
 
 ```bash
