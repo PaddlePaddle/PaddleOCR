@@ -28,8 +28,9 @@ Referring to the [FudanOCR](https://github.com/FudanVI/FudanOCR/tree/main/scene-
 
 |Model|Backbone|config|Acc|Download link|
 |---|---|---|---|---|---|
-|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/Telescope_train.tar)|
+|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz)|
 
+The [TextZoom dataset](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) comes from two superfraction data sets, RealSR and SR-RAW, both of which contain LR-HR pairs. TextZoom has 17367 pairs of training data and 4373 pairs of test data.
 
 <a name="2"></a>
 ## 2. Environment
@@ -84,7 +85,7 @@ After executing the command, the super-resolution result of the above image is a
 <a name="4-1"></a>
 ### 4.1 Python Inference
 
-First, the model saved during the training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/Telescope_train.tar) ), you can use the following command to convert:
+First, the model saved during the training process is converted into an inference model. ( [Model download link](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz) ), you can use the following command to convert:
 
 ```shell
 python3 tools/export_model.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out

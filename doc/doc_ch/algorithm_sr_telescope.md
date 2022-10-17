@@ -27,8 +27,9 @@
 
 |模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
 |---|---|---|---|---|---|
-|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/Telescope_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz)|
 
+[TextZoom数据集](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) 来自两个超分数据集RealSR和SR-RAW，两个数据集都包含LR-HR对，TextZoom有17367对训数据和4373对测试数据。
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -79,7 +80,7 @@ python3 tools/infer_sr.py -c configs/sr/sr_telescope.yml -o Global.pretrained_mo
 <a name="4-1"></a>
 ### 4.1 Python推理
 
-首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Telescope 训练的[模型](https://paddleocr.bj.bcebos.com/Telescope_train.tar) 为例，可以使用如下命令进行转换：
+首先将文本超分训练过程中保存的模型，转换成inference model。以 Text-Telescope 训练的[模型](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz) 为例，可以使用如下命令进行转换：
 ```shell
 python3 tools/export_model.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.save_inference_dir=./inference/sr_out
 ```
