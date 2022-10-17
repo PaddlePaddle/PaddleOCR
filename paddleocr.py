@@ -512,6 +512,7 @@ class PaddleOCR(predict_system.TextSystem):
             cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
+        img_is_list = isinstance(img, list)
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
@@ -535,14 +536,14 @@ class PaddleOCR(predict_system.TextSystem):
                 tmp_res = [[box.tolist(), res]
                            for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
-            return ocr_res
+            return ocr_res if img_is_list else ocr_res[0]
         elif det and not rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
                 dt_boxes, elapse = self.text_detector(img)
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
-            return ocr_res
+            return ocr_res if img_is_list else ocr_res[0]
         else:
             ocr_res = []
             cls_res = []
@@ -556,8 +557,8 @@ class PaddleOCR(predict_system.TextSystem):
                 rec_res, elapse = self.text_recognizer(img)
                 ocr_res.append(rec_res)
             if not rec:
-                return cls_res
-            return ocr_res
+                return cls_res if img_is_list else cls_res[0]
+            return ocr_res if img_is_list else ocr_res[0]
 
 
 class PPStructure(StructureSystem):
