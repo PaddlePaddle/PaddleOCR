@@ -7,8 +7,11 @@ import functools
 import cv2
 import platform
 import numpy as np
+import fitz
+from PIL import Image
+from pdf2docx.converter import Converter
 from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QProgressBar, \
-                           QGridLayout, QMessageBox, QLabel, QFileDialog
+                           QGridLayout, QMessageBox, QLabel, QFileDialog, QCheckBox
 from qtpy.QtCore import Signal, QThread, QObject
 from qtpy.QtGui import QImage, QPixmap, QIcon
 
@@ -17,6 +20,7 @@ root = os.path.abspath(os.path.join(file, '../../'))
 sys.path.append(file)
 sys.path.insert(0, root)
 
+
 from ppstructure.predict_system import StructureSystem, save_structure_res
 from ppstructure.utility import parse_args, draw_structure_result
 from ppocr.utils.network import download_with_progressbar
@@ -24,7 +28,7 @@ from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_in
 # from ScreenShotWidget import ScreenShotWidget
 
 __APPNAME__ = "pdf2word"
-__VERSION__ = "0.1.1"
+__VERSION__ = "0.2.1"
 
 URLs_EN = {
     # 下载超英文轻量级PP-OCRv3模型的检测模型并解压
@@ -75,9 +79,7 @@ def QImageToCvMat(incomingImage) -> np.array:
 
 
 def readImage(image_file) -> list:
-    if os.path.basename(image_file)[-3:] in ['pdf']:
-        import fitz
-        from PIL import Image
+    if os.path.basename(image_file)[-3:] == 'pdf':
         imgs = []
         with fitz.open(image_file) as pdf:
             for pg in range(0, pdf.pageCount):
@@ -102,17 +104,21 @@ def readImage(image_file) -> list:
 
 class Worker(QThread):
     progressBarValue = Signal(int)
+    progressBarRange = Signal(int)
     endsignal = Signal()
     loopFlag = True
 
-    def __init__(self, predictors, save_pdf, vis_font_path):
+    def __init__(self, predictors, save_pdf, vis_font_path, use_pdf2docx_api):
         super(Worker, self).__init__()
         self.predictors = predictors
         self.save_pdf = save_pdf
         self.vis_font_path = vis_font_path
         self.lang = 'EN'
         self.imagePaths = []
+        self.use_pdf2docx_api = use_pdf2docx_api
         self.outputDir = None
+        self.totalPageCnt = 0
+        self.pageCnt = 0
         self.setStackSize(1024*1024)
 
     def setImagePath(self, imagePaths):
@@ -123,51 +129,82 @@ class Worker(QThread):
 
     def setOutputDir(self, outputDir):
         self.outputDir = outputDir
+    
+    def setPDF2DOCX(self, enabled):
+        self.use_pdf2docx_api = enabled
 
-    def predictAndSave(self, imgs, img_name):
+    def resetPageCnt(self):
+        self.pageCnt = 0
+
+    def resetTotalPageCnt(self):
+        self.totalPageCnt = 0
+
+    def ppocrPrecitor(self, imgs, img_name):
         all_res = []
+        # update progress bar ranges
+        self.totalPageCnt += len(imgs)
+        self.progressBarRange.emit(self.totalPageCnt)
+        # processing pages
         for index, img in enumerate(imgs):
             res, time_dict = self.predictors[self.lang](img)
 
             # save output
             save_structure_res(res, self.outputDir, img_name)
-            draw_img = draw_structure_result(img, res, self.vis_font_path)
-            img_save_path = os.path.join(self.outputDir, img_name, 'show_{}.jpg'.format(index))
-            if res != []:
-                cv2.imwrite(img_save_path, draw_img)
+            # draw_img = draw_structure_result(img, res, self.vis_font_path)
+            # img_save_path = os.path.join(self.outputDir, img_name, 'show_{}.jpg'.format(index))
+            # if res != []:
+            #     cv2.imwrite(img_save_path, draw_img)
 
             # recovery
             h, w, _ = img.shape
             res = sorted_layout_boxes(res, w)
             all_res += res
+            self.pageCnt += 1
+            self.progressBarValue.emit(self.pageCnt)
 
-        try:
-            convert_info_docx(img, all_res, self.outputDir, img_name, self.save_pdf)
-        except Exception as ex:
-            print(self,
-                "error in layout recovery image:{}, err msg: {}".format(
-                img_name, ex))
-
+        if all_res != []:
+            try:
+                convert_info_docx(imgs, all_res, self.outputDir, img_name)
+            except Exception as ex:
+                print("error in layout recovery image:{}, err msg: {}".
+                    format(img_name, ex))
+        print("Predict time : {:.3f}s".format(time_dict['all']))
         print('result save to {}'.format(self.outputDir)) 
 
     def run(self):
+        self.resetPageCnt()
+        self.resetTotalPageCnt()
         try:
-            findex = 0
             os.makedirs(self.outputDir, exist_ok=True)
             for i, image_file in enumerate(self.imagePaths):
-                if self.loopFlag == True:
+                if not self.loopFlag:
+                    break
+                # using use_pdf2docx_api for PDF parsing
+                if self.use_pdf2docx_api \
+                    and os.path.basename(image_file)[-3:] == 'pdf':
+                    self.totalPageCnt += 1
+                    self.progressBarRange.emit(self.totalPageCnt)
+                    print('===============using use_pdf2docx_api===============')
+                    img_name = os.path.basename(image_file).split('.')[0]
+                    docx_file = os.path.join(
+                        self.outputDir, '{}.docx'.format(img_name))
+                    cv = Converter(image_file)
+                    cv.convert(docx_file)
+                    cv.close()
+                    print('docx save to {}'.format(docx_file))
+                    self.pageCnt += 1
+                    self.progressBarValue.emit(self.pageCnt)
+                else:
+                    # using PPOCR for PDF/Image parsing
                     imgs = readImage(image_file)
                     if len(imgs) == 0:
                         continue
                     img_name = os.path.basename(image_file).split('.')[0]
                     os.makedirs(os.path.join(self.outputDir, img_name), exist_ok=True)
-                    self.predictAndSave(imgs, img_name)
-                    findex += 1
-                    self.progressBarValue.emit(findex)
-                else:
-                    break
+                    self.ppocrPrecitor(imgs, img_name)
+                # file processed
             self.endsignal.emit()
-            self.exec()
+            # self.exec()
         except Exception as e:
             print(e)
             raise
@@ -176,7 +213,7 @@ class Worker(QThread):
 class APP_Image2Doc(QWidget):
     def __init__(self):
         super().__init__()
-        self.setFixedHeight(90)
+        self.setFixedHeight(120)
         self.setFixedWidth(400)
 
         # settings
@@ -187,6 +224,7 @@ class APP_Image2Doc(QWidget):
         self.output_dir = None
         self.vis_font_path = os.path.join(root,
                 "doc", "fonts", "simfang.ttf")
+        self.use_pdf2docx_api = False
 
         # ProgressBar
         self.pb = QProgressBar()
@@ -207,10 +245,11 @@ class APP_Image2Doc(QWidget):
         }
 
         # 设置工作进程
-        self._thread = Worker(predictors, self.save_pdf, self.vis_font_path)
-        self._thread.progressBarValue.connect(self.handleProgressBarSingal)
+        self._thread = Worker(predictors, self.save_pdf, self.vis_font_path, self.use_pdf2docx_api)
+        self._thread.progressBarValue.connect(self.handleProgressBarUpdateSingal)
         self._thread.endsignal.connect(self.handleEndsignalSignal)
-        self._thread.finished.connect(QObject.deleteLater)
+        # self._thread.finished.connect(QObject.deleteLater)
+        self._thread.progressBarRange.connect(self.handleProgressBarRangeSingal)
         self.time_start = 0  # save start time
 
     def setupUi(self):
@@ -246,12 +285,16 @@ class APP_Image2Doc(QWidget):
         layout.addWidget(self.showResultButton, 0, 3, 1, 1)
         self.showResultButton.clicked.connect(self.handleShowResultSignal)
 
+        self.checkBox = QCheckBox('使用PDF解析器进行转换', self)
+        layout.addWidget(self.checkBox, 2, 0, 1, 4)
+        self.checkBox.stateChanged.connect(self.handleCBChangeSignal)
+
         # ProgressBar
-        layout.addWidget(self.pb, 2, 0, 1, 4)
+        layout.addWidget(self.pb, 3, 0, 1, 4)
         # time estimate label
         self.timeEstLabel = QLabel(
             ("Time Left: --"))
-        layout.addWidget(self.timeEstLabel, 3, 0, 1, 4)
+        layout.addWidget(self.timeEstLabel, 4, 0, 1, 4)
 
         self.setLayout(layout)
 
@@ -355,7 +398,6 @@ class APP_Image2Doc(QWidget):
         if len(selectedFiles) > 0:
             self.imagePaths = selectedFiles
             self.screenShot = None # discard screenshot temp image
-            self.pb.setRange(0, len(self.imagePaths))
             self.pb.setValue(0)
 
     # def screenShotSlot(self):
@@ -390,6 +432,7 @@ class APP_Image2Doc(QWidget):
             self.openFileButton.setEnabled(False)
             self.startCNButton.setEnabled(False)
             self.startENButton.setEnabled(False)
+            self.checkBox.setEnabled(False)
             # 启动工作进程
             self._thread.start()
             self.time_start = time.time() # log start time
@@ -411,7 +454,7 @@ class APP_Image2Doc(QWidget):
             QMessageBox.information(self, 
                 u'Information', "输出文件不存在")
 
-    def handleProgressBarSingal(self, i):
+    def handleProgressBarUpdateSingal(self, i):
         self.pb.setValue(i)
         # calculate time left of recognition
         lenbar = self.pb.maximum()
@@ -419,12 +462,19 @@ class APP_Image2Doc(QWidget):
         time_left = str(datetime.timedelta(seconds=avg_time * (lenbar - i))).split(".")[0]  # Remove microseconds
         self.timeEstLabel.setText(f"Time Left: {time_left}")  # show time left
 
+    def handleProgressBarRangeSingal(self, max):
+        self.pb.setRange(0, max)
+
     def handleEndsignalSignal(self):
         # enble buttons
         self.openFileButton.setEnabled(True)
         self.startCNButton.setEnabled(True)
         self.startENButton.setEnabled(True)
+        self.checkBox.setEnabled(True)
         QMessageBox.information(self, u'Information', "转换结束")
+
+    def handleCBChangeSignal(self):
+        self._thread.setPDF2DOCX(self.checkBox.isChecked())
 
 
 def main():
