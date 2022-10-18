@@ -24,7 +24,6 @@ def build_head(config):
     from .det_fce_head import FCEHead
     from .e2e_pg_head import PGHead
     from .det_ct_head import CT_Head
-    from .det_drrg_head import DRRGHead
 
     # rec head
     from .rec_ctc_head import CTCHead
@@ -58,6 +57,10 @@ def build_head(config):
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
         'DRRGHead'
     ]
+
+    if config['name'] == 'DRRGHead':
+        from .det_drrg_head import DRRGHead
+        support_dict.append('DRRGHead')
 
     #table head
 
