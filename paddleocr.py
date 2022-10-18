@@ -663,6 +663,16 @@ def main():
             if not flag_gif and not flag_pdf:
                 img = cv2.imread(img_path)
 
+            if args.recovery and args.use_pdf2docx_api and flag_pdf:
+                from pdf2docx.converter import Converter
+                docx_file = os.path.join(args.output,
+                                         '{}.docx'.format(img_name))
+                cv = Converter(img_path)
+                cv.convert(docx_file)
+                cv.close()
+                logger.info('docx save to {}'.format(docx_file))
+                continue
+
             if not flag_pdf:
                 if img is None:
                     logger.error("error in loading image:{}".format(img_path))
