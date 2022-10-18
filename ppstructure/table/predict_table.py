@@ -58,6 +58,7 @@ def expand(pix, det_box, shape):
 
 class TableSystem(object):
     def __init__(self, args, text_detector=None, text_recognizer=None):
+        self.args = args
         if not args.show_log:
             logger.setLevel(logging.INFO)
 
@@ -99,13 +100,18 @@ class TableSystem(object):
         result = dict()
         time_dict = {'det': 0, 'rec': 0, 'table': 0, 'all': 0, 'match': 0}
         start = time.time()
-
+        if self.args.benchmark:
+            self.autolog.times.start()
         structure_res, elapse = self._structure(copy.deepcopy(img))
+        if self.benchmark:
+            self.autolog.times.stamp()
         result['cell_bbox'] = structure_res[1].tolist()
         time_dict['table'] = elapse
 
         dt_boxes, rec_res, det_elapse, rec_elapse = self._ocr(
             copy.deepcopy(img))
+        if self.benchmark:
+            self.autolog.times.stamp()
         time_dict['det'] = det_elapse
         time_dict['rec'] = rec_elapse
 
@@ -118,24 +124,18 @@ class TableSystem(object):
         toc = time.time()
         time_dict['match'] = toc - tic
         result['html'] = pred_html
-        if self.benchmark:
-            self.autolog.times.end(stamp=True)
         end = time.time()
         time_dict['all'] = end - start
         if self.benchmark:
-            self.autolog.times.stamp()
+            self.autolog.times.end(stamp=True)
         return result, time_dict
 
     def _structure(self, img):
-        if self.benchmark:
-            self.autolog.times.start()
         structure_res, elapse = self.table_structurer(copy.deepcopy(img))
         return structure_res, elapse
 
     def _ocr(self, img):
         h, w = img.shape[:2]
-        if self.benchmark:
-            self.autolog.times.stamp()
         dt_boxes, det_elapse = self.text_detector(copy.deepcopy(img))
         dt_boxes = sorted_boxes(dt_boxes)
 
@@ -233,7 +233,7 @@ def main(args):
     f_html.close()
 
     if args.benchmark:
-        text_sys.autolog.report()
+        table_sys.autolog.report()
 
 
 if __name__ == "__main__":

@@ -146,6 +146,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
     ${python_name} -m pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
+    ${python_name} -m pip install paddleslim==2.3.4
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -260,7 +261,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_r32_gaspin_bilstm_att_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
     fi
-    if [ ${model_name} == "layoutxlm_ser" ]; then
+    if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
         ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate
