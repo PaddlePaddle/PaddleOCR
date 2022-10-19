@@ -146,6 +146,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
     ${python_name} -m pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
+    ${python_name} -m pip install paddleslim==2.3.4
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
@@ -241,6 +242,9 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [ ${model_name} == "ch_ppocr_mobile_v2_0_det_FPGM" ]; then
         ${python_name} -m pip install paddleslim
     fi
+    if [ ${model_name} == "det_r50_vd_pse_v2_0" ]; then
+        wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
+    fi
     if [ ${model_name} == "det_mv3_east_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf det_mv3_east_v2.0_train.tar && cd ../
@@ -263,7 +267,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
         cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
     fi
-    if [ ${model_name} == "layoutxlm_ser" ]; then
+    if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
         ${python_name} -m pip install opencv-python -U
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/ppstructure/dataset/XFUND.tar --no-check-certificate

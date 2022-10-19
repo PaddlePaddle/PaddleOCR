@@ -141,7 +141,7 @@ Predicts of ./doc/imgs_hme/hme_00.jpg:['x _ { k } x x _ { k } + y _ { k } y x _ 
 <a name="4-2"></a>
 ### 4.2 C++推理部署
 
-由于C++预处理后处理还未支持ABINet，所以暂未支持
+由于C++预处理后处理还未支持CAN，所以暂未支持
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
