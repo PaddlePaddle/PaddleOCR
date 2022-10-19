@@ -261,12 +261,6 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/rec_r32_gaspin_bilstm_att_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf rec_r32_gaspin_bilstm_att_train.tar && cd ../
     fi
-    if [ ${model_name} == "rec_d28_can" ]; then
-        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/can_train.tar --no-check-certificate
-        cd ./pretrain_models/ && tar xf can_train.tar && cd ../
-        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
-        cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
-    fi
     if [[ ${model_name} =~ "layoutxlm_ser" ]]; then
         ${python_name} -m pip install -r ppstructure/kie/requirements.txt
         ${python_name} -m pip install opencv-python -U
@@ -292,6 +286,12 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/pretrained/ResNet18_vd_pretrained.pdparams  --no-check-certificate
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ct_tipc/total_text_lite2.tar --no-check-certificate
         cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
+    fi
+    if [ ${model_name} == "rec_d28_can" ]; then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/can_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf can_train.tar && cd ../
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
+        cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
     fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
