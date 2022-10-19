@@ -14,6 +14,7 @@
 from .paddle_ocr import *
 
 __version__ = paddle_ocr.VERSION
+
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
     'save_structure_res', 'download_with_progressbar', 'sorted_layout_boxes',
