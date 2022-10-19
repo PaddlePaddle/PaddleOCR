@@ -896,3 +896,36 @@ class VLLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class CANLabelDecode(BaseRecLabelDecode):
+    """ Convert between latex-symbol and symbol-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(CANLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+
+    def decode(self, text_index, preds_prob=None):
+        result_list = []
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            seq_end = text_index[batch_idx].argmin(0)
+            idx_list = text_index[batch_idx][:seq_end].tolist()
+            symbol_list = [self.character[idx] for idx in idx_list]
+            probs = []
+            if preds_prob is not None:
+                probs = preds_prob[batch_idx][:len(symbol_list)].tolist()
+
+            result_list.append([' '.join(symbol_list), probs])
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        pred_prob, _, _, _ = preds
+        preds_idx = pred_prob.argmax(axis=2)
+
+        text = self.decode(preds_idx)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label

@@ -273,6 +273,8 @@ def train(config,
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
                         preds = model(batch)
+                    elif algorithm in ['CAN']:
+                        preds = model(batch[:3])
                     else:
                         preds = model(images)
                 preds = to_float32(preds)
@@ -286,6 +288,8 @@ def train(config,
                     preds = model(images, data=batch[1:])
                 elif model_type in ["kie", 'sr']:
                     preds = model(batch)
+                elif algorithm in ['CAN']:
+                    preds = model(batch[:3])
                 else:
                     preds = model(images)
                 loss = loss_class(preds, batch)
@@ -302,6 +306,9 @@ def train(config,
                 elif model_type in ['table']:
                     post_result = post_process_class(preds, batch)
                     eval_class(post_result, batch)
+                elif algorithm in ['CAN']:
+                    model_type = 'can'
+                    eval_class(preds[0], batch[2:], epoch_reset=(idx == 0))
                 else:
                     if config['Loss']['name'] in ['MultiLoss', 'MultiLoss_v2'
                                                   ]:  # for multi head loss
@@ -496,6 +503,8 @@ def eval(model,
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
                         preds = model(batch)
+                    elif model_type in ['can']:
+                        preds = model(batch[:3])
                     elif model_type in ['sr']:
                         preds = model(batch)
                         sr_img = preds["sr_img"]
@@ -508,6 +517,8 @@ def eval(model,
                     preds = model(images, data=batch[1:])
                 elif model_type in ["kie"]:
                     preds = model(batch)
+                elif model_type in ['can']:
+                    preds = model(batch[:3])
                 elif model_type in ['sr']:
                     preds = model(batch)
                     sr_img = preds["sr_img"]
@@ -532,6 +543,8 @@ def eval(model,
                     eval_class(post_result, batch_numpy)
             elif model_type in ['sr']:
                 eval_class(preds, batch_numpy)
+            elif model_type in ['can']:
+                eval_class(preds[0], batch_numpy[2:], epoch_reset=(idx == 0))
             else:
                 post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
@@ -629,7 +642,7 @@ def preprocess(is_train=False):
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
-        'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG'
+        'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG', 'CAN'
     ]
 
     if use_xpu:

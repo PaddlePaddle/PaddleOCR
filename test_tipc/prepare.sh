@@ -287,6 +287,10 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ct_tipc/total_text_lite2.tar --no-check-certificate
         cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
     fi
+    if [ ${model_name} == "rec_d28_can" ]; then
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
+        cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
+    fi
 
 elif [ ${MODE} = "whole_train_whole_infer" ];then
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams --no-check-certificate
