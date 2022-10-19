@@ -146,7 +146,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     python_name=${array[0]}
     ${python_name} -m pip install -r requirements.txt
     ${python_name} -m pip install https://paddleocr.bj.bcebos.com/libs/auto_log-1.2.0-py3-none-any.whl
-    ${python_name} -m pip install paddleslim==2.3.4
+    ${python_name} -m pip install paddleslim
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate

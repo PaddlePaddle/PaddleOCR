@@ -55,7 +55,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ```
 
 **注意：**
-- 我们提供的数据集，即`CROHME数据集`将手写公式存储为黑底白字的格式，若您自行准备的数据集与之相反，即以白底黑字模式存储，请在训练时做出如下修改
+- 我们提供的数据集，即[`CROHME数据集`](https://paddleocr.bj.bcebos.com/dataset/CROHME.tar)将手写公式存储为黑底白字的格式，若您自行准备的数据集与之相反，即以白底黑字模式存储，请在训练时做出如下修改
 ```
 python3 tools/train.py -c configs/rec/rec_d28_can.yml
 -o Train.dataset.transforms.GrayImageChannelFormat.inverse=False
