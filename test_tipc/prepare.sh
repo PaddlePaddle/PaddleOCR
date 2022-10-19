@@ -288,8 +288,6 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         cd ./train_data && tar xf total_text_lite2.tar && ln -s total_text_lite2 total_text && cd ../
     fi
     if [ ${model_name} == "rec_d28_can" ]; then
-        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/contribution/can_train.tar --no-check-certificate
-        cd ./pretrain_models/ && tar xf can_train.tar && cd ../
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/CROHME_lite.tar --no-check-certificate
         cd ./train_data/ && tar xf CROHME_lite.tar && cd ../
     fi
