@@ -20,13 +20,13 @@ download model
 
 ```bash
 mkdir inference && cd inference
-# Download the PP-Structurev2 layout analysis model and unzip it
+# Download the PP-StructureV2 layout analysis model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar xf picodet_lcnet_x1_0_layout_infer.tar
 # Download the PP-OCRv3 text detection model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
 # Download the PP-OCRv3 text recognition model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
-# Download the PP-Structurev2 form recognition model and unzip it
+# Download the PP-StructureV2 form recognition model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 ```

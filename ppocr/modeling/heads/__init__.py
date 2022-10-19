@@ -54,8 +54,13 @@ def build_head(config):
         'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
-        'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead'
+        'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
+        'DRRGHead'
     ]
+
+    if config['name'] == 'DRRGHead':
+        from .det_drrg_head import DRRGHead
+        support_dict.append('DRRGHead')
 
     #table head
 

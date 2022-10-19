@@ -93,6 +93,11 @@ def init_args():
         type=str2bool,
         default=False,
         help='Whether to enable layout of recovery')
+    parser.add_argument(
+        "--use_pdf2docx_api",
+        type=str2bool,
+        default=False,
+        help='Whether to use pdf2docx api')
 
     return parser
 

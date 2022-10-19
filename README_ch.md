@@ -28,14 +28,14 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## 近期更新
 
 - **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  - 发布[PP-Structurev2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
+  - 发布[PP-StructureV2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
   - [版面分析](./ppstructure/layout)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
   - [表格识别](./ppstructure/table)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
   - [关键信息抽取](./ppstructure/kie)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
-  
+
 - **🔥2022.8 发布 [OCR场景应用集合](./applications)**
   - 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
-  
+
 - **2022.5.9 发布 PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
     - 发布半自动标注工具[PPOCRLabelv2](./PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
@@ -220,11 +220,11 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
 </div>
-    
+
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
 </div>
-    
+
 - RE（关系提取）
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
@@ -237,7 +237,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
 </div>
-    
+
 </details>
 
 <a name="许可证书"></a>

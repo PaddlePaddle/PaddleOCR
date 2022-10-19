@@ -42,7 +42,7 @@
 
 ## 2. 关键信息抽取任务流程
 
-PaddleOCR中实现了LayoutXLM等算法（基于Token），同时，在PP-Structurev2中，对LayoutXLM多模态预训练模型的网络结构进行简化，去除了其中的Visual backbone部分，设计了视觉无关的VI-LayoutXLM模型，同时引入符合人类阅读顺序的排序逻辑以及UDML知识蒸馏策略，最终同时提升了关键信息抽取模型的精度与推理速度。
+PaddleOCR中实现了LayoutXLM等算法（基于Token），同时，在PP-StructureV2中，对LayoutXLM多模态预训练模型的网络结构进行简化，去除了其中的Visual backbone部分，设计了视觉无关的VI-LayoutXLM模型，同时引入符合人类阅读顺序的排序逻辑以及UDML知识蒸馏策略，最终同时提升了关键信息抽取模型的精度与推理速度。
 
 下面介绍怎样基于PaddleOCR完成关键信息抽取任务。
 
@@ -115,7 +115,7 @@ Train:
 
 数据量方面，一般来说，对于比较固定的场景，**50张**左右的训练图片即可达到可以接受的效果，可以使用[PPOCRLabel](../../PPOCRLabel/README_ch.md)完成KIE的标注过程。
 
-模型方面，推荐使用PP-Structurev2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
+模型方面，推荐使用PP-StructureV2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
 
 
 #### 2.2.2 SER + RE
@@ -145,7 +145,7 @@ Train:
 
 数据量方面，一般来说，对于比较固定的场景，**50张**左右的训练图片即可达到可以接受的效果，可以使用PPOCRLabel完成KIE的标注过程。
 
-模型方面，推荐使用PP-Structurev2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
+模型方面，推荐使用PP-StructureV2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
 
 
 ## 3. 参考文献
