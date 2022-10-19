@@ -107,7 +107,6 @@ class BaseRecLabelEncode(object):
         self.beg_str = "sos"
         self.end_str = "eos"
         self.lower = lower
-        self.use_default_dict = False
 
         if character_dict_path is None:
             logger = get_logger()
@@ -117,11 +116,8 @@ class BaseRecLabelEncode(object):
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
             self.lower = True
-            self.use_default_dict = True
         else:
             self.character_str = []
-            if 'ppocr/utils/ic15_dict.txt' in character_dict_path:
-                self.use_default_dict = True
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
@@ -1404,9 +1400,6 @@ class VLLabelEncode(BaseRecLabelEncode):
                  **kwargs):
         super(VLLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower)
-        if self.use_default_dict:
-            self.character = self.character[10:] + self.character[
-                1:10] + [self.character[0]]
         self.dict = {}
         for i, char in enumerate(self.character):
             self.dict[char] = i
