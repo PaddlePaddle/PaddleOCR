@@ -27,7 +27,7 @@
 
 |模型    |骨干网络|配置文件|ExpRate|下载链接|
 | ----- | ----- | ----- | ----- | ----- |
-|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[训练模型](https://paddleocr.bj.bcebos.com/contribution/can_train.tar)|
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
