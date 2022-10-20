@@ -62,7 +62,7 @@ PaddleOCRは、OCRに関連するさまざまな最先端のアルゴリズム�
 ```bash
 pip3 install paddlepaddle # for gpu user please install paddlepaddle-gpu
 pip3 install paddleocr
-paddleocr --image_dir ../imgs_en/254.jpg --lang=en # change for i18n abbr
+paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 ```
 
 >Python環境がない場合は [環境の準備](../doc_en/environment_en.md)に従ってください。[チュートリアル](#Tutorials) から始めることをお勧めします。

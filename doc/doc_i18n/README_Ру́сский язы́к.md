@@ -62,7 +62,7 @@ PaddleOCR поддерживает множество передовых алг�
 ```bash
 pip3 install paddlepaddle # for gpu user please install paddlepaddle-gpu
 pip3 install paddleocr
-paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en # change for i18n abbr
+paddleocr --image_dir /your/test/image.jpg --lang=ru
 ```
 
 > Если у вас нет среды Python, выполните [Подготовка среды](../doc_en/environment_en.md). Мы рекомендуем вам начать с [Учебники](#Tutorials).

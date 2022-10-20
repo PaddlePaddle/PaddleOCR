@@ -59,7 +59,7 @@ PaddleOCR은 사용자들이 보다 나은 모델을 훈련하여 실전에 투�
 ```bash
 pip3 install paddlepaddle # for gpu user please install paddlepaddle-gpu
 pip3 install paddleocr
-paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en # change for i18n abbr
+paddleocr --image_dir /your/test/image.jpg --lang=korean
 ```
 
 >만일 당신이 파이톤 환경이 없다면 [환경 준비]를 따르기 바람(../doc_en/environment_en.md). 우리는 당신이[사용지침 프로그램]으로 시작할 것을 권장합니다.(#Tutorials).
