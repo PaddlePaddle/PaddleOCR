@@ -141,6 +141,11 @@ def main():
                     paddle.to_tensor(valid_ratio),
                     paddle.to_tensor(word_positons),
                 ]
+            if config['Architecture']['algorithm'] == "CAN":
+                image_mask = paddle.ones(
+                    (np.expand_dims(
+                        batch[0], axis=0).shape), dtype='float32')
+                label = paddle.ones((1, 36), dtype='int64')
             images = np.expand_dims(batch[0], axis=0)
             images = paddle.to_tensor(images)
             if config['Architecture']['algorithm'] == "SRN":
@@ -149,6 +154,8 @@ def main():
                 preds = model(images, img_metas)
             elif config['Architecture']['algorithm'] == "RobustScanner":
                 preds = model(images, img_metas)
+            elif config['Architecture']['algorithm'] == "CAN":
+                preds = model([images, image_mask, label])
             else:
                 preds = model(images)
             post_result = post_process_class(preds)

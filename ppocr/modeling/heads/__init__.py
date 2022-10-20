@@ -24,7 +24,6 @@ def build_head(config):
     from .det_fce_head import FCEHead
     from .e2e_pg_head import PGHead
     from .det_ct_head import CT_Head
-    from .det_drrg_head import DRRGHead
 
     # rec head
     from .rec_ctc_head import CTCHead
@@ -40,6 +39,7 @@ def build_head(config):
     from .rec_robustscanner_head import RobustScannerHead
     from .rec_visionlan_head import VLHead
     from .rec_rfl_head import RFLHead
+    from .rec_can_head import CANHead
 
     # cls head
     from .cls_head import ClsHead
@@ -56,8 +56,12 @@ def build_head(config):
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead'
+        'DRRGHead', 'CANHead'
     ]
+
+    if config['name'] == 'DRRGHead':
+        from .det_drrg_head import DRRGHead
+        support_dict.append('DRRGHead')
 
     #table head
 

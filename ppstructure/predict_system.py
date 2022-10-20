@@ -216,15 +216,25 @@ def main(args):
     image_file_list = image_file_list
     image_file_list = image_file_list[args.process_id::args.total_process_num]
 
-    structure_sys = StructureSystem(args)
+    if not args.use_pdf2docx_api:
+        structure_sys = StructureSystem(args)
+        save_folder = os.path.join(args.output, structure_sys.mode)
+        os.makedirs(save_folder, exist_ok=True)
     img_num = len(image_file_list)
-    save_folder = os.path.join(args.output, structure_sys.mode)
-    os.makedirs(save_folder, exist_ok=True)
 
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag_gif, flag_pdf = check_and_read(image_file)
         img_name = os.path.basename(image_file).split('.')[0]
+
+        if args.recovery and args.use_pdf2docx_api and flag_pdf:
+            from pdf2docx.converter import Converter
+            docx_file = os.path.join(args.output, '{}.docx'.format(img_name))
+            cv = Converter(image_file)
+            cv.convert(docx_file)
+            cv.close()
+            logger.info('docx save to {}'.format(docx_file))
+            continue
 
         if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)

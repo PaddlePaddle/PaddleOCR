@@ -98,7 +98,21 @@ Key information extraction does not currently support use by the whl package. Fo
 
 <a name="216"></a>
 #### 2.1.6 layout recovery
+
+Two layout recovery methods are provided,  For detailed usage tutorials, please refer to: [Layout Recovery](../recovery/README.md).
+
+- PDF parse
+- OCR
+
+Recovery by using PDF parse (only support pdf as input):
+
+```bash
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
 ```
+
+Recovery by using OCR：
+
+```bash
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 ```
 

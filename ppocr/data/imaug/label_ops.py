@@ -1400,8 +1400,6 @@ class VLLabelEncode(BaseRecLabelEncode):
                  **kwargs):
         super(VLLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower)
-        self.character = self.character[10:] + self.character[
-            1:10] + [self.character[0]]
         self.dict = {}
         for i, char in enumerate(self.character):
             self.dict[char] = i
@@ -1476,4 +1474,33 @@ class CTLabelEncode(object):
 
         data['polys'] = boxes
         data['texts'] = txts
+        return data
+
+
+class CANLabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 character_dict_path,
+                 max_text_length=100,
+                 use_space_char=False,
+                 lower=True,
+                 **kwargs):
+        super(CANLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char, lower)
+
+    def encode(self, text_seq):
+        text_seq_encoded = []
+        for text in text_seq:
+            if text not in self.character:
+                continue
+            text_seq_encoded.append(self.dict.get(text))
+        if len(text_seq_encoded) == 0:
+            return None
+        return text_seq_encoded
+
+    def __call__(self, data):
+        label = data['label']
+        if isinstance(label, str):
+            label = label.strip().split()
+        label.append(self.end_str)
+        data['label'] = self.encode(label)
         return data

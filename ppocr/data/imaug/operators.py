@@ -498,3 +498,27 @@ class ResizeNormalize(object):
         img_numpy = np.array(img).astype("float32")
         img_numpy = img_numpy.transpose((2, 0, 1)) / 255
         return img_numpy
+
+
+class GrayImageChannelFormat(object):
+    """
+    format gray scale image's channel: (3,h,w) -> (1,h,w)
+    Args:
+        inverse: inverse gray image 
+    """
+
+    def __init__(self, inverse=False, **kwargs):
+        self.inverse = inverse
+
+    def __call__(self, data):
+        img = data['image']
+        img_single_channel = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_expanded = np.expand_dims(img_single_channel, 0)
+
+        if self.inverse:
+            data['image'] = np.abs(img_expanded - 1)
+        else:
+            data['image'] = img_expanded
+
+        data['src_image'] = img
+        return data
