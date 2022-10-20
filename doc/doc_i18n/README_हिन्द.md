@@ -141,13 +141,13 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
     - [अन्य डेटा एनोटेशन टूल](../doc_en/data_annotation_en.md)
     - [अन्य डेटा सिंथेसिस टूल](../doc_en/data_synthesis_en.md)
 - डेटा सेट
-    - [सामान्य ओसीआर डेटासेट (चीनी/अंग्रेज़ी)](doc/doc_en/dataset/datasets_en.md)
-    - [हस्तलिखित_ओसीआर_डेटासेट (चीनी)](doc/doc_en/dataset/handwritten_datasets_en.md)
+    - [सामान्य ओसीआर डेटासेट (चीनी/अंग्रेज़ी)](../doc_en/dataset/datasets_en.md)
+    - [हस्तलिखित_ओसीआर_डेटासेट (चीनी)](../doc_en/dataset/handwritten_datasets_en.md)
     - [विभिन्न ओसीआर 
-    डेटासेट (बहुभाषी)](doc/doc_en/dataset/vertical_and_multilingual_datasets_en.md)
-    - [लेआउट एनालाइस](doc/doc_en/dataset/layout_datasets_en.md)
-    - [टेबल रिकोगनाइजेशन](doc/doc_en/dataset/table_datasets_en.md)
-    - [की इंफॉर्मेशन एक्स्ट्रेक्शन](doc/doc_en/dataset/kie_datasets_en.md)
+    डेटासेट (बहुभाषी)](../doc_en/dataset/vertical_and_multilingual_datasets_en.md)
+    - [लेआउट एनालाइस](../doc_en/dataset/layout_datasets_en.md)
+    - [टेबल रिकोगनाइजेशन](../doc_en/dataset/table_datasets_en.md)
+    - [की इंफॉर्मेशन एक्स्ट्रेक्शन](../doc_en/dataset/kie_datasets_en.md)
 - [कोड संरचना](../doc_en/tree_en.md)
 - [विसुमलाइजेशन](#Visualization)
 - [कम्युनिटी](#Community)
@@ -168,29 +168,29 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 
 <a name="विसुमलाइजेशन"></a>
 
-## 👀 विज़ुअलाइज़ेशन [अधिक] (../doc_en/visualization_en.md)
+## 👀 विज़ुअलाइज़ेशन [अधिक](../doc_en/visualization_en.md)
 
 <details open>
 <summary>PP-OCRv3 बहुभाषी मॉडल</summary>
 <div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
 </div>
 </details>
 
 <details open>
 <summary>PP-OCRv3 अंग्रेजी मॉडल</summary>
 <div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_2.png" width="800">
 </div>
 </details>
 <details open>
 <summary>PP-OCRv3 चीनी मॉडल</summary>
 <div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
 
@@ -198,7 +198,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 <summary>PP-Structurev2</summary>
 1. लेआउट एनालाइस + टेबल रिकोगनाइजेशन
 <div align="center">
-    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
+    <img src="../../ppstructure/docs/table/ppstructure.GIF" width="800">
 </div>
 2. SER (सिमेंटिक एंटिटी रिकोगनाइजेशन)
 <div align="center">
@@ -221,6 +221,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
     <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
 </div>
 </details>
+
 <a name="लाइसेंस"></a>
 
 ## 📄 लाइसेंस

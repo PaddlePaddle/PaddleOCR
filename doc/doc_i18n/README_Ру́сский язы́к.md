@@ -54,8 +54,10 @@ PaddleOCR стремится создавать многоязычные, пот
 PaddleOCR поддерживает множество передовых алгоритмов, связанных с распознаванием текста, и разработала промышленные модели/решения. [PP-OCR](../doc_en/ppocr_introduction_en.md) и [PP-Structure](./ppstructure/README.md) на этой основе и пройти весь процесс производства данных, обучения модели, сжатия, логического вывода и развертывания.
 
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/50011306/196920011-0fc8170f-f2eb-42d4-9666-435647f83548.png">
+    <img src="https://user-images.githubusercontent.com/50011306/196963669-f53b0ee5-3cb4-481c-b73c-97c4b3e2efb8.png">
 </div>
+
+
 
 
 ## ⚡ Быстрый опыт

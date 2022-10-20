@@ -51,8 +51,9 @@ PaddleOCR은 사용자들이 보다 나은 모델을 훈련하여 실전에 투�
 패들OCR은 OCR 관련 다양한 첨단 알고리즘 지원  [PP-OCR](../doc_en/ppocr_introduction_en.md) 및 [PP-Structure](../../ppstructure/README.md)  이를 기반으로, 그리고 전체 데이터 생산 처리, 모델 훈련, 압축, 추론 및 배치를 통해 획득.
 
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/50011306/195770559-1f107881-d821-4426-90cd-fe81b9ae78e7.png">
+    <img src="https://user-images.githubusercontent.com/50011306/196963392-6cd1b251-109b-49c3-9b3d-ccf203dcec49.png">
 </div>
+
 
 ## ⚡ 신속한 경험
 
@@ -176,18 +177,19 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
 <details open>
 <summary>PP-OCRv3 영어 모델</summary>
 <div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="../imgs_results/PP-OCRv3/en/en_2.png" width="800">
 </div>
 </details>
 <details open>
 <summary>PP-OCRv3 중국어 모델</summary>
 <div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
+
 
 <details open>
 <summary>PP-Structurev2</summary>
