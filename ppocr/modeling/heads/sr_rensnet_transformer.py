@@ -15,18 +15,12 @@
 This code is refer from:
 https://github.com/FudanVI/FudanOCR/blob/main/text-gestalt/loss/transformer_english_decomposition.py
 """
+import copy
+import math
+
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
-import math, copy
-import numpy as np
-
-# stroke-level alphabet
-alphabet = '0123456789'
-
-
-def get_alphabet_len():
-    return len(alphabet)
 
 
 def subsequent_mask(size):
@@ -373,10 +367,10 @@ class Encoder(nn.Layer):
 
 
 class Transformer(nn.Layer):
-    def __init__(self, in_channels=1):
+    def __init__(self, in_channels=1, alphabet='0123456789'):
         super(Transformer, self).__init__()
-
-        word_n_class = get_alphabet_len()
+        self.alphabet = alphabet
+        word_n_class = self.get_alphabet_len()
         self.embedding_word_with_upperword = Embeddings(512, word_n_class)
         self.pe = PositionalEncoding(dim=512, dropout=0.1, max_len=5000)
 
@@ -387,6 +381,9 @@ class Transformer(nn.Layer):
         for p in self.parameters():
             if p.dim() > 1:
                 nn.initializer.XavierNormal(p)
+
+    def get_alphabet_len(self):
+        return len(self.alphabet)
 
     def forward(self, image, text_length, text_input, attention_map=None):
         if image.shape[1] == 3:
@@ -415,7 +412,7 @@ class Transformer(nn.Layer):
 
         if self.training:
             total_length = paddle.sum(text_length)
-            probs_res = paddle.zeros([total_length, get_alphabet_len()])
+            probs_res = paddle.zeros([total_length, self.get_alphabet_len()])
             start = 0
 
             for index, length in enumerate(text_length):
