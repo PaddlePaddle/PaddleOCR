@@ -16,7 +16,7 @@ Here are the commonly used table recognition datasets, which are being updated c
 | WTW Chinese scene table dataset |https://github.com/wangwen-whu/WTW-Dataset| Conversion is required to load with [pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)|
 
 ## 1. PubTabNet
-- **Data Introduction**：The training set of the PubTabNet dataset contains 500,000 images and the validation set contains 9000 images. Part of the image visualization is shown below.
+- **Data Introduction**：The training set of the PubTabNet dataset contains 500,000 images and the validation set contains 9,115 images. Part of the image visualization is shown below.
 
 <div align="center">
     <img src="../../datasets/table_PubTabNet_demo/PMC524509_007_00.png" width="500">

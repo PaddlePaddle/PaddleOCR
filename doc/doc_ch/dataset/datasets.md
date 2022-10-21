@@ -32,7 +32,7 @@
 <a name="中文街景文字识别"></a>
 #### 3、中文街景文字识别
 - **数据来源**：https://aistudio.baidu.com/aistudio/competition/detail/8
-- **数据简介**：ICDAR2019-LSVT行识别任务，共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：  
+- **数据简介**：ICDAR2019-LSVT行识别任务，共包括29w张图片，其中21w张图片作为训练集（带标注），8w张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：  
     ![](../../datasets/ch_street_rec_1.png)  
     (a) 标注：魅派集成吊顶  
     ![](../../datasets/ch_street_rec_2.png)  
@@ -44,9 +44,9 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 #### 4、中文文档文字识别
 - **数据来源**：https://github.com/YCG09/chinese_ocr  
 - **数据简介**：  
-    - 共约364万张图片，按照99:1划分成训练集和验证集。
+    - 共约364w张图片，按照99:1划分成训练集和验证集。
     - 数据利用中文语料库（新闻 + 文言文），通过字体、大小、灰度、模糊、透视、拉伸等变化随机生成
-    - 包含汉字、英文字母、数字和标点共5990个字符（字符集合：https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt ）
+    - 包含汉字、英文字母、数字和标点共5,990个字符（字符集合：https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt ）
     - 每个样本固定10个字符，字符随机截取自语料库中的句子
     - 图片分辨率统一为280x32  
     ![](../../datasets/ch_doc1.jpg)  
@@ -56,14 +56,14 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 <a name="ICDAR2019-ArT"></a>
 #### 5、ICDAR2019-ArT
 - **数据来源**：https://ai.baidu.com/broad/introduction?dataset=art
-- **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
+- **数据简介**：共包含10,166张图像，训练集5,603图，测试集4,563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](../../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
 
 <a name="电子印章数据集"></a>
 #### 6、电子印章数据集
 - **数据来源**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
-- **数据简介**：共包含10000张图像，训练集8000图，测试集2000图。数据集是用程序合成的，并不涉及隐私安全，主要用于印章弯曲文本的训练与检测。由开发者[jingsongliujing](https://github.com/jingsongliujing)贡献
+- **数据简介**：共包含10,000张图像，训练集8,000图，测试集2,000图。数据集是用程序合成的，并不涉及隐私安全，主要用于印章弯曲文本的训练与检测。由开发者[jingsongliujing](https://github.com/jingsongliujing)贡献
 - **下载地址**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
 
 ## 参考文献

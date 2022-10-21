@@ -20,7 +20,7 @@ Here we have sorted out the commonly used handwritten OCR dataset datasets, whic
 
 - **Data source**: [https://www.nist.gov/srd/nist-special-database-19](https://www.nist.gov/srd/nist-special-database-19)
 
-- **Data introduction**: NIST19 dataset is suitable for handwritten document and character recognition model training. It is extracted from the handwritten sample form of 3600 authors and contains 810000 character images in total. Nine of them are shown below.
+- **Data introduction**: NIST19 dataset is suitable for handwritten document and character recognition model training. It is extracted from the handwritten sample form of 3,600 authors and contains 810,000 character images in total. Nine of them are shown below.
 
     ![](../../datasets/nist_demo.png)
 

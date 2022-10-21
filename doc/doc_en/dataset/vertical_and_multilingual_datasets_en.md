@@ -11,7 +11,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
 
 - **Data source**：[https://github.com/detectRecog/CCPD](https://github.com/detectRecog/CCPD)
 
-- **Data introduction**: It contains more than 250000 vehicle license plate images and vehicle license plate detection and recognition information labeling. It contains the following license plate image information in different scenes.
+- **Data introduction**: It contains more than 250,000 vehicle license plate images and vehicle license plate detection and recognition information labeling. It contains the following license plate image information in different scenes.
     * CCPD-Base: General license plate picture
     * CCPD-DB: The brightness of license plate area is bright, dark or uneven
     * CCPD-FN: The license plate is farther or closer to the camera location
@@ -71,7 +71,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
 - **Data source**: [https://rrc.cvc.uab.es/?ch=15&com=downloads](https://rrc.cvc.uab.es/?ch=15&com=downloads)
 
 - **Data introduction**: Multi language detection dataset MLT contains both language recognition and detection tasks.
-    * In the detection task, the training set contains 10000 images in 10 languages, and each language contains 1000 training images. The test set contains 10000 images.
+    * In the detection task, the training set contains 10,000 images in 10 languages, and each language contains 1,000 training images. The test set contains 10,000 images.
     * In the recognition task, the training set contains 111998 samples.
 
 

@@ -12,7 +12,7 @@
 
 #### 1、publaynet数据集
 - **数据来源**：https://github.com/ibm-aur-nlp/PubLayNet
-- **数据简介**：publaynet数据集的训练集合中包含35万张图像，验证集合中包含1.1万张图像。总共包含5个类别，分别是： `text, title, list, table, figure`。部分图像以及标注框可视化如下所示。
+- **数据简介**：publaynet数据集的训练集合中包含35w张图像，验证集合中包含1.1w张图像。总共包含5个类别，分别是： `text, title, list, table, figure`。部分图像以及标注框可视化如下所示。
 
 <div align="center">
     <img src="../../datasets/publaynet_demo/gt_PMC3724501_00006.jpg" width="500">
@@ -27,7 +27,7 @@
 
 #### 2、CDLA数据集
 - **数据来源**：https://github.com/buptlihang/CDLA
-- **数据简介**：CDLA据集的训练集合中包含5000张图像，验证集合中包含1000张图像。总共包含10个类别，分别是： `Text, Title, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation`。部分图像以及标注框可视化如下所示。
+- **数据简介**：CDLA据集的训练集合中包含5,000张图像，验证集合中包含1,000张图像。总共包含10个类别，分别是： `Text, Title, Figure, Figure caption, Table, Table caption, Header, Footer, Reference, Equation`。部分图像以及标注框可视化如下所示。
 
 <div align="center">
     <img src="../../datasets/CDLA_demo/val_0633.jpg" width="500">
@@ -42,7 +42,7 @@
 
 #### 3、TableBank数据集
 - **数据来源**：https://doc-analysis.github.io/tablebank-page/index.html
-- **数据简介**：TableBank数据集包含Latex（训练集187199张，验证集7265张，测试集5719张）与Word（训练集73383张，验证集2735张，测试集2281张）两种类别的文档。仅包含`Table` 1个类别。部分图像以及标注框可视化如下所示。
+- **数据简介**：TableBank数据集包含Latex（训练集187,199张，验证集7,265张，测试集5,719张）与Word（训练集73,383张，验证集2,735张，测试集2,281张）两种类别的文档。仅包含`Table` 1个类别。部分图像以及标注框可视化如下所示。
 
 <div align="center">
     <img src="../../datasets/tablebank_demo/004.png" height="700">
