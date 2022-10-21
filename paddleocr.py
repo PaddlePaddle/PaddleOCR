@@ -47,7 +47,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.6.0.2'
+VERSION = '2.6.0.3'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -567,6 +567,7 @@ class PPStructure(StructureSystem):
         assert params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION, "structure_version must in {}, but get {}".format(
             SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version)
         params.use_gpu = check_gpu(params.use_gpu)
+        params.mode = 'structure'
 
         if not params.show_log:
             logger.setLevel(logging.INFO)
@@ -662,6 +663,16 @@ def main():
             if not flag_gif and not flag_pdf:
                 img = cv2.imread(img_path)
 
+            if args.recovery and args.use_pdf2docx_api and flag_pdf:
+                from pdf2docx.converter import Converter
+                docx_file = os.path.join(args.output,
+                                         '{}.docx'.format(img_name))
+                cv = Converter(img_path)
+                cv.convert(docx_file)
+                cv.close()
+                logger.info('docx save to {}'.format(docx_file))
+                continue
+
             if not flag_pdf:
                 if img is None:
                     logger.error("error in loading image:{}".format(img_path))
@@ -697,8 +708,7 @@ def main():
             if args.recovery and all_res != []:
                 try:
                     from ppstructure.recovery.recovery_to_doc import convert_info_docx
-                    convert_info_docx(img, all_res, args.output, img_name,
-                                      args.save_pdf)
+                    convert_info_docx(img, all_res, args.output, img_name)
                 except Exception as ex:
                     logger.error(
                         "error in layout recovery image:{}, err msg: {}".format(

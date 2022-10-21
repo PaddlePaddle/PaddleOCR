@@ -99,7 +99,7 @@ def export_single_model(model,
         ]
         # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] in ["NRTR", "SPIN"]:
+    elif arch_config["algorithm"] in ["NRTR", "SPIN", 'RFL']:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 1, 32, 100], dtype="float32"),
@@ -122,6 +122,17 @@ def export_single_model(model,
                         shape=[None, max_text_length], dtype="int64")
                 ]
         ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "CAN":
+        other_shape = [[
+            paddle.static.InputSpec(
+                shape=[None, 1, None, None],
+                dtype="float32"), paddle.static.InputSpec(
+                    shape=[None, 1, None, None], dtype="float32"),
+            paddle.static.InputSpec(
+                shape=[None, arch_config['Head']['max_text_length']],
+                dtype="int64")
+        ]]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [

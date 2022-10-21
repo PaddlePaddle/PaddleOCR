@@ -41,7 +41,7 @@ The json format of each line is:
    'imgid': 0,# index of image
    'html': {
      'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, # HTML string of the table
-     'cell': [
+     'cells': [
        {
          'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], # text in cell
          'bbox': [x0, y0, x1, y1] # bbox of cell

@@ -30,6 +30,8 @@ deploy/hubserving/
   └─  structure_layout  layout analysis service package
   └─  structure_table  table recognition service package
   └─  structure_system  PP-Structure service package
+  └─  kie_ser  KIE(SER) service package
+  └─  kie_ser_re  KIE(SER+RE) service package
 ```
 
 Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:  
@@ -42,9 +44,10 @@ deploy/hubserving/ocr_system/
 ```
 ## 1. Update
 
-* 2022.05.05 add PP-OCRv3 text detection and recognition models.
-* 2022.03.30 add PP-Structure and table recognition services。
-* 2022.08.23 add layout analysis services。
+* 2022.10.09 add KIE services.
+* 2022.08.23 add layout analysis services.
+* 2022.03.30 add PP-Structure and table recognition services.
+* 2022.05.05 add PP-OCRv3 text detection and recognition services.
 
 
 ## 2. Quick start service
@@ -65,6 +68,8 @@ text recognition model: ./inference/ch_PP-OCRv3_rec_infer/
 text angle classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
 layout parse model: ./inference/picodet_lcnet_x1_0_fgd_layout_infer/
 tanle recognition: ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
+KIE(SER): ./inference/ser_vi_layoutxlm_xfund_infer/
+KIE(SER+RE): ./inference/re_vi_layoutxlm_xfund_infer/
 ```  
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
@@ -92,8 +97,11 @@ hub install deploy/hubserving/structure_table/
 # Or install PP-Structure service module
 hub install deploy/hubserving/structure_system/
 
-# Or install layout analysis service module
-hub install deploy/hubserving/structure_layout/
+# Or install KIE(SER) service module
+hub install deploy/hubserving/kie_ser/
+
+# Or install KIE(SER+RE) service module
+hub install deploy/hubserving/kie_ser_re/
 ```
 
 * On Windows platform, the examples are as follows.
@@ -118,6 +126,12 @@ hub install deploy\hubserving\structure_system\
 
 # Or install layout analysis service module
 hub install deploy\hubserving\structure_layout\
+
+# Or install KIE(SER) service module
+hub install deploy\hubserving\kie_ser\
+
+# Or install KIE(SER+RE) service module
+hub install deploy\hubserving\kie_ser_re\
 ```
 
 ### 2.4 Start service
@@ -201,6 +215,8 @@ For example, if using the configuration file to start the text angle classificat
 `http://127.0.0.1:8869/predict/structure_table`  
 `http://127.0.0.1:8870/predict/structure_system`  
 `http://127.0.0.1:8870/predict/structure_layout`  
+`http://127.0.0.1:8871/predict/kie_ser`  
+`http://127.0.0.1:8872/predict/kie_ser_re`
 - **image_dir**：Test image path, can be a single image path or an image directory path
 - **visualize**：Whether to visualize the results, the default value is False
 - **output**：The floder to save Visualization result, default value is `./hubserving_result`
@@ -225,15 +241,17 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 
 The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
 
-| field name/module name | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | structure_layout |
-|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |---  |---  |
-|angle| | ✔ | | ✔ | || |
-|text| | |✔|✔| | ✔ | |
-|confidence| |✔ |✔| | | ✔| |
-|text_region| ✔| | |✔ | | ✔| |
-|html| | | | |✔ |✔| |
-|regions| | | | |✔ |✔ | |
-|layout| | | | | | |✔ |
+| field name/module name | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | structure_layout | kie_ser | kie_re |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |  ---  |  ---  | ---  |  ---  |
+|angle| | ✔ | | ✔ | |||
+|text| | |✔|✔| | ✔ |  | ✔ | ✔ |
+|confidence| |✔ |✔| | | ✔| |✔ | ✔ |
+|text_region| ✔| | |✔ | | ✔| |✔ | ✔ |
+|html| | | | |✔ |✔||| |
+|regions| | | | |✔ |✔ | || |
+|layout| | | | | | | ✔ || |
+|ser_res| | | | | | |  |  ✔ | |
+|re_res| | | | | | |  | |  ✔ |
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 

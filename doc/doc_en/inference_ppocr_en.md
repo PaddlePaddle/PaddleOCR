@@ -12,6 +12,7 @@ This article introduces the use of the Python inference engine for the PP-OCR mo
     - [3. Multilingual Model Inference](#3-multilingual-model-inference)
   - [Angle Classification Model Inference](#angle-classification-model-inference)
   - [Text Detection Angle Classification and Recognition Inference Concatenation](#text-detection-angle-classification-and-recognition-inference-concatenation)
+  - [TensorRT Inference](TensorRT-Inference)
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 
@@ -84,9 +85,9 @@ For English recognition model inference, you can execute the following commands,
 
 ```
 # download en model：
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
-tar xf en_PP-OCRv3_det_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
+tar xf en_PP-OCRv3_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
 
 ![](../imgs_words/en/word_1.png)
@@ -163,3 +164,34 @@ After executing the command, the recognition result image is as follows:
 ![](../imgs_results/system_res_00018069_v3.jpg)
 
 For more configuration and explanation of inference parameters, please refer to：[Model Inference Parameters Explained Tutorial](./inference_args_en.md)。
+
+
+## TensorRT Inference
+
+Paddle Inference ensembles TensorRT using subgraph mode. For GPU deployment scenarios, TensorRT can optimize some subgraphs, including horizontal and vertical integration of OPs, filter redundant OPs, and automatically select the optimal OP kernels for to speed up inference.
+
+You need to do the following 2 steps for inference using TRT.
+
+* (1) Collect the dynamic shape information of the model about a specific dataset and store it in a file.
+* (2) Load the dynamic shape information file for TRT inference.
+
+
+Taking the text detection model as an example. Firstly, you can use the following command to generate a dynamic shape file, which will eventually be named as `det_trt_dynamic_shape.txt` and stored in the `ch_PP-OCRv3_det_infer` folder.
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+The above command is only used to collect dynamic shape information, and TRT is not used during inference.
+
+Then, you can use the following command to perform TRT inference.
+
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+**Note:**
+
+* In the first step, if the dynamic shape information file already exists, it does not need to be collected again. If you want to regenerate the dynamic shape information file, you need to delete the dynamic shape information file in the model folder firstly, and then regenerate it.
+* In general, dynamic shape information file only needs to be generated once. In the actual deployment process, it is recommended that the dynamic shape information file can be generated on offline validation set or test set, and then the file can be directly loaded for online TRT inference.

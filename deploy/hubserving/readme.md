@@ -30,6 +30,8 @@ deploy/hubserving/
   └─  structure_layout  版面分析服务包
   └─  structure_table  表格识别服务包
   └─  structure_system  PP-Structure服务包
+  └─  kie_ser  关键信息抽取-SER服务包
+  └─  kie_ser_re  关键信息抽取-SER+RE服务包
 ```
 
 每个服务包下包含3个文件。以2阶段串联服务包为例，目录如下：
@@ -42,6 +44,7 @@ deploy/hubserving/ocr_system/
 ```
 ## 1. 近期更新
 
+* 2022.10.09 新增关键信息抽取服务。
 * 2022.08.23 新增版面分析服务。
 * 2022.05.05 新增PP-OCRv3检测和识别模型。
 * 2022.03.30 新增PP-Structure和表格识别两种服务。
@@ -57,12 +60,15 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 
 ### 2.2 下载推理模型
 安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv3模型，默认模型路径为：
+
 ```
 检测模型：./inference/ch_PP-OCRv3_det_infer/
 识别模型：./inference/ch_PP-OCRv3_rec_infer/
 方向分类器：./inference/ch_ppocr_mobile_v2.0_cls_infer/
 版面分析模型：./inference/picodet_lcnet_x1_0_fgd_layout_infer/
 表格结构识别模型：./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
+关键信息抽取SER模型：./inference/ser_vi_layoutxlm_xfund_infer/
+关键信息抽取RE模型：./inference/re_vi_layoutxlm_xfund_infer/
 ```
 
 **模型路径可在`params.py`中查看和修改。** 更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
@@ -92,6 +98,12 @@ hub install deploy/hubserving/structure_system/
 
 # 或，安装版面分析服务模块：  
 hub install deploy/hubserving/structure_layout/
+
+# 或，安装关键信息抽取SER服务模块：  
+hub install deploy/hubserving/kie_ser/
+
+# 或，安装关键信息抽取SER+RE服务模块：  
+hub install deploy/hubserving/kie_ser_re/
 ```
 
 * 在Windows环境下(文件夹的分隔符为`\`)，安装示例如下：
@@ -116,6 +128,12 @@ hub install deploy\hubserving\structure_system\
 
 # 或，安装版面分析服务模块：
 hub install deploy\hubserving\structure_layout\
+
+# 或，安装关键信息抽取SER服务模块：  
+hub install deploy\hubserving\kie_ser\
+
+# 或，安装关键信息抽取SER+RE服务模块：  
+hub install deploy\hubserving\kie_ser_re\
 ```
 
 ### 2.4 启动服务
@@ -194,6 +212,8 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 `http://127.0.0.1:8869/predict/structure_table`  
 `http://127.0.0.1:8870/predict/structure_system`  
 `http://127.0.0.1:8870/predict/structure_layout`  
+`http://127.0.0.1:8871/predict/kie_ser`  
+`http://127.0.0.1:8872/predict/kie_ser_re`
 - **image_dir**：测试图像路径，可以是单张图片路径，也可以是图像集合目录路径  
 - **visualize**：是否可视化结果，默认为False  
 - **output**：可视化结果保存路径，默认为`./hubserving_result`
@@ -216,15 +236,18 @@ hub serving start -c deploy/hubserving/ocr_system/config.json
 
 不同模块返回的字段不同，如，文本识别服务模块返回结果不含`text_region`字段，具体信息如下：
 
-| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | Structure_layout |
-|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |  ---  |  ---  |
+| 字段名/模块名 | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | Structure_layout | kie_ser | kie_re |
+|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |  ---  |  ---  | ---  |  ---  |
 |angle| | ✔ | | ✔ | |||
-|text| | |✔|✔| | ✔ |  |
-|confidence| |✔ |✔| | | ✔| |
-|text_region| ✔| | |✔ | | ✔| |
-|html| | | | |✔ |✔||
-|regions| | | | |✔ |✔ | |
-|layout| | | | | | | ✔ |
+|text| | |✔|✔| | ✔ |  | ✔ | ✔ |
+|confidence| |✔ |✔| | | ✔| |✔ | ✔ |
+|text_region| ✔| | |✔ | | ✔| |✔ | ✔ |
+|html| | | | |✔ |✔||| |
+|regions| | | | |✔ |✔ | || |
+|layout| | | | | | | ✔ || |
+|ser_res| | | | | | |  |  ✔ | |
+|re_res| | | | | | |  | |  ✔ |
+
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 

@@ -45,16 +45,10 @@
 
 ```bash
 # 安装 paddleocr，推荐使用2.6版本
-pip3 install "paddleocr>=2.6"
+pip3 install "paddleocr>=2.6.0.3"
 
 # 安装 图像方向分类依赖包paddleclas（如不需要图像方向分类功能，可跳过）
 pip3 install paddleclas>=2.4.3
-
-# 安装 关键信息抽取 依赖包（如不需要KIE功能，可跳过）
-pip3 install -r ppstructure/kie/requirements.txt
-
-# 安装 版面恢复 依赖包（如不需要版面恢复功能，可跳过）
-pip3 install -r ppstructure/recovery/requirements.txt
 ```
 
 <a name="2"></a>
@@ -96,6 +90,19 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 <a name="216"></a>
 
 #### 2.1.6 版面恢复
+
+版面恢复分为2种方法，详细介绍请参考：[版面恢复教程](../recovery/README_ch.md)：
+
+- PDF解析
+- OCR技术
+
+通过PDF解析(只支持pdf格式的输入)：
+
+```bash
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+```
+
+通过OCR技术：
 
 ```bash
 # 中文测试图
@@ -214,7 +221,7 @@ for line in result:
 <a name="225"></a>
 #### 2.2.5 关键信息抽取
 
-关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[关键信息抽取教程](../kie/README_ch.md)。
+关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[inference文档](./inference.md)。
 
 <a name="226"></a>
 

@@ -74,7 +74,9 @@ def main():
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input_models = ["SRN", "NRTR", "SAR", "SEED", "SVTR", "VisionLAN", "RobustScanner"]
+    extra_input_models = [
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "VisionLAN", "RobustScanner"
+    ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
         for key in config['Architecture']["Models"]:
@@ -83,7 +85,10 @@ def main():
     else:
         extra_input = config['Architecture']['algorithm'] in extra_input_models
     if "model_type" in config['Architecture'].keys():
-        model_type = config['Architecture']['model_type']
+        if config['Architecture']['algorithm'] == 'CAN':
+            model_type = 'can'
+        else:
+            model_type = config['Architecture']['model_type']
     else:
         model_type = None
 
@@ -92,7 +97,7 @@ def main():
     # amp
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
-    amp_custom_black_list = config['Global'].get('amp_custom_black_list',[])
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
@@ -120,7 +125,8 @@ def main():
 
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, extra_input, scaler, amp_level, amp_custom_black_list)
+                          eval_class, model_type, extra_input, scaler,
+                          amp_level, amp_custom_black_list)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
