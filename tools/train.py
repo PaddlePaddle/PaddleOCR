@@ -18,7 +18,6 @@ from __future__ import print_function
 
 import os
 import sys
-
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
@@ -161,12 +160,16 @@ def main(config, device, logger, vdl_writer):
             init_loss_scaling=scale_loss,
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
         if amp_level == "O2":
+            print("============ use amp o2 ============")
             model, optimizer = paddle.amp.decorate(
                 models=model,
                 optimizers=optimizer,
                 level=amp_level,
                 master_weight=True)
+        else:
+            print("============ use amp o1 ============")
     else:
+        print("============ use fp32 ============")
         scaler = None
 
     # load pretrain model
