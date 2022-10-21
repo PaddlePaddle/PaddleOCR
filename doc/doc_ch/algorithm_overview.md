@@ -55,7 +55,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |模型|骨干网络|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- |  
 |FCE|ResNet50_dcn|88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
-|DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw.tar)|
+|DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
 
 **说明：** SAST模型训练额外加入了icdar2013、icdar2017、COCO-Text、ArT等公开数据集进行调优。PaddleOCR用到的经过整理格式的英文公开数据集下载：
 * [百度云地址](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (提取码: 2bpi)

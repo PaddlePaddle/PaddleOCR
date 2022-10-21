@@ -45,16 +45,10 @@
 
 ```bash
 # 安装 paddleocr，推荐使用2.6版本
-pip3 install "paddleocr>=2.6"
+pip3 install "paddleocr>=2.6.0.3"
 
 # 安装 图像方向分类依赖包paddleclas（如不需要图像方向分类功能，可跳过）
 pip3 install paddleclas>=2.4.3
-
-# 安装 关键信息抽取 依赖包（如不需要KIE功能，可跳过）
-pip3 install -r ppstructure/kie/requirements.txt
-
-# 安装 版面恢复 依赖包（如不需要版面恢复功能，可跳过）
-pip3 install -r ppstructure/recovery/requirements.txt
 ```
 
 <a name="2"></a>

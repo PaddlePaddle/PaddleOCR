@@ -28,7 +28,7 @@ Referring to the [FudanOCR](https://github.com/FudanVI/FudanOCR/tree/main/scene-
 
 |Model|Backbone|config|Acc|Download link|
 |---|---|---|---|---|---|
-|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz)|
+|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
 
 The [TextZoom dataset](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) comes from two superfraction data sets, RealSR and SR-RAW, both of which contain LR-HR pairs. TextZoom has 17367 pairs of training data and 4373 pairs of test data.
 
@@ -127,8 +127,8 @@ Not supported
 ```bibtex
 @INPROCEEDINGS{9578891,
   author={Chen, Jingye and Li, Bin and Xue, Xiangyang},
-  booktitle={2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
-  title={Scene Text Telescope: Text-Focused Scene Image Super-Resolution}, 
+  booktitle={2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  title={Scene Text Telescope: Text-Focused Scene Image Super-Resolution},
   year={2021},
   volume={},
   number={},
