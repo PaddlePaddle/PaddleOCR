@@ -149,10 +149,11 @@ def main(config, device, logger, vdl_writer):
     amp_level = config["Global"].get("amp_level", 'O2')
     amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     if use_amp:
-        AMP_RELATED_FLAGS_SETTING = {
-            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
-            'FLAGS_max_inplace_grad_add': 8,
-        }
+        AMP_RELATED_FLAGS_SETTING = {'FLAGS_max_inplace_grad_add': 8, }
+        if paddle.is_compiled_with_cuda():
+            AMP_RELATED_FLAGS_SETTING.update({
+                'FLAGS_cudnn_batchnorm_spatial_persistent': 1
+            })
         paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["Global"].get("scale_loss", 1.0)
         use_dynamic_loss_scaling = config["Global"].get(

@@ -44,6 +44,7 @@
 | SAST   |det_r50_vd_sast_totaltext_v2.0 | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | Rosetta|rec_mv3_none_none_ctc_v2.0     | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | Rosetta|rec_r34_vd_none_none_ctc_v2.0  | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| CAN    |rec_d28_can                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | CRNN   |rec_mv3_none_bilstm_ctc_v2.0   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | CRNN   |rec_r34_vd_none_bilstm_ctc_v2.0| 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | StarNet|rec_mv3_tps_bilstm_ctc_v2.0    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
