@@ -7,14 +7,14 @@ In OCR recognition, CRNN is a text recognition algorithm widely applied in the i
 Focal Loss was proposed by the paper, "[Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002)". When the loss was first proposed, it was mainly to solve the problem of a serious imbalance in the ratio of positive and negative samples in one-stage target detection. This loss function reduces the weight of a large number of simple negative samples in training and also can be understood as a kind of difficult sample mining.
 The form of the loss function is as follows:
 
-<div align="center"> 
-<img src="./focal_loss_formula.png" width = "600" /> 
+<div align="center">
+<img src="./focal_loss_formula.png" width = "600" />
 </div>
 
 Among them, y' is the output of the activation function, and the value is between 0-1. It adds a modulation factor (1-y’)^&gamma; and a balance factor &alpha; on the basis of the original cross-entropy loss. When &alpha; = 1, y = 1, the comparison between the loss function and the cross-entropy loss is shown in the following figure:
 
-<div align="center"> 
-<img src="./focal_loss_image.png" width = "600" /> 
+<div align="center">
+<img src="./focal_loss_image.png" width = "600" />
 </div>
 
 
@@ -23,16 +23,16 @@ As can be seen from the above figure, when &gamma; > 0, the adjustment coeffici
 
 For the classic CTC algorithm, suppose a certain feature sequence (f<sub>1</sub>, f<sub>2</sub>, ......f<sub>t</sub>), after CTC decoding, the probability that the result is equal to label is y', then the probability that the CTC decoding result is not equal to label is (1-y'); it is not difficult to find that the CTCLoss value and y' have the following relationship:
 
-<div align="center"> 
-<img src="./equation_ctcloss.png" width = "250" /> 
+<div align="center">
+<img src="./equation_ctcloss.png" width = "250" />
 </div>
 
 
 
 Combining the idea of Focal Loss, assigning larger weights to difficult samples and smaller weights to simple samples can make the network focus more on the mining of difficult samples and further improve the accuracy of recognition. Therefore, we propose Focal-CTC Loss. Its definition is as follows:
 
-<div align="center"> 
-<img src="./equation_focal_ctc.png" width = "500" /> 
+<div align="center">
+<img src="./equation_focal_ctc.png" width = "500" />
 </div>
 
 
@@ -50,15 +50,15 @@ A-CTC Loss is short for CTC Loss + ACE Loss. Among them, ACE Loss was proposed b
 The advantages and disadvantages of the OCR recognition algorithm summarized by the predecessors are shown in the following figure:
 
 <div align="center">
-<img src="./rec_algo_compare.png" width = "1000" /> 
+<img src="./rec_algo_compare.png" width = "1000" />
 </div>
 
 
-Although ACELoss does handle 2D predictions, as shown in the figure above, and has advantages in memory usage and inference speed, in practice, we found that using ACELoss alone, the recognition effect is not as good as CTCLoss. Consequently, we tried to combine CTCLoss and ACELoss, and CTCLoss is the mainstay while ACELoss acts as an auxiliary supervision loss. This attempt has achieved better results. On our internal experimental data set, compared to using CTCLoss alone, the recognition accuracy can be improved by about 1%.
+Although ACELoss does handle 2D predictions, as shown in the figure above, and has advantages in memory usage and inference speed, in practice, we found that using ACELoss alone, the recognition effect is not as good as CTCLoss. Consequently, we tried to combine CTCLoss and ACELoss, and CTCLoss is the mainstay while ACELoss acts as an auxiliary supervision loss. This attempt has achieved better results. On our internal experimental data set, compared to using CTCLoss alone, the recognition accuracy can be improved by about 1.00%.
 A_CTC Loss is defined as follows:
 
 <div align="center">
-<img src="./equation_a_ctc.png" width = "300" /> 
+<img src="./equation_a_ctc.png" width = "300" />
 </div>
 
 
@@ -76,7 +76,7 @@ In the task of Chinese OCR recognition, through the analysis of bad cases, we fo
 By trying Arcmargin, Cosmargin and other methods, we finally found that Centerloss can help further improve the accuracy of recognition. C_CTC Loss is defined as follows:
 
 <div align="center">
-<img src="./equation_c_ctc.png" width = "300" /> 
+<img src="./equation_c_ctc.png" width = "300" />
 </div>
 
 In the experiment, we set λ=0.25. See the center_loss implementation code: [center_loss.py](../../ppocr/losses/center_loss.py)
@@ -103,7 +103,7 @@ For the above three solutions, we conducted training and evaluation based on Bai
 
 | algorithm | Focal_CTC | A_CTC | C-CTC |
 | :-------- | :-------- | ----: | :---: |
-| gain      | +0.3%     | +0.7% | +1.7% |
+| gain      | +0.30%     | +0.70% | +1.70% |
 
 Based on the above experimental conclusions, we adopted the C-CTC strategy in PP-OCRv2. It is worth mentioning that, because PP-OCRv2 deals with the recognition task of 6625 Chinese characters, the character set is relatively large and there are many similar characters, so the C-CTC solution brings a significant improvement on this task. But if you switch to other OCR recognition tasks, the conclusion may be different. You can try Focal-CTC, A-CTC, C-CTC, and the combined solution EnhancedCTC. We believe it will bring different degrees of improvement.
 

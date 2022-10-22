@@ -184,7 +184,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 ![](../imgs_results/det_res_img_10_db.jpg)
 
-**注意**：由于ICDAR2015数据集只有1000张训练图像，且主要针对英文场景，所以上述模型对中文文本图像检测效果会比较差。
+**注意**：由于ICDAR2015数据集只有1,000张训练图像，且主要针对英文场景，所以上述模型对中文文本图像检测效果会比较差。
 
 <a name="EAST文本检测模型推理"></a>
 ### 3. EAST文本检测模型推理

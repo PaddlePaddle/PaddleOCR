@@ -129,9 +129,9 @@ There are several experiences for reference when constructing the data set:
 
     A: The general height is 32, the longest width is selected, there are two methods:
 
-    (1) Calculate the aspect ratio distribution of training sample images. The selection of the maximum aspect ratio considers 80% of the training samples.
+    (1) Calculate the aspect ratio distribution of training sample images. The selection of the maximum aspect ratio considers 80.00% of the training samples.
 
-    (2) Count the number of texts in training samples. The selection of the longest number of characters considers the training sample that satisfies 80%. Then the aspect ratio of Chinese characters is approximately considered to be 1, and that of English is 3:1, and the longest width is estimated.
+    (2) Count the number of texts in training samples. The selection of the longest number of characters considers the training sample that satisfies 80.00%. Then the aspect ratio of Chinese characters is approximately considered to be 1, and that of English is 3:1, and the longest width is estimated.
 
 **Q**: During the recognition training, the accuracy of the training set has reached 90, but the accuracy of the verification set has been kept at 70, what should I do?
 

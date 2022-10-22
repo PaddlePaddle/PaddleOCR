@@ -141,11 +141,11 @@ PaddleOCR已经提供了PP-OCR系列模型，部分模型展示如下表所示�
 
 | 模型简介                              | 模型名称                | 推荐场景        | 检测模型                                                     | 方向分类器                                                   | 识别模型                                                     |
 | ------------------------------------- | ----------------------- | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 中英文超轻量PP-OCRv3模型（16.2M）     | ch_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
-| 英文超轻量PP-OCRv3模型（13.4M）       | en_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
-| 中英文超轻量PP-OCRv2模型（13.0M）     | ch_PP-OCRv2_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
-| 中英文超轻量PP-OCR mobile模型（9.4M） | ch_ppocr_mobile_v2.0_xx | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar) |
-| 中英文通用PP-OCR server模型（143.4M） | ch_ppocr_server_v2.0_xx | 服务器端        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
+| 中英文超轻量PP-OCRv3模型（16.20M）     | ch_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
+| 英文超轻量PP-OCRv3模型（13.40M）       | en_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
+| 中英文超轻量PP-OCRv2模型（13.00M）     | ch_PP-OCRv2_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar) |
+| 中英文超轻量PP-OCR mobile模型（9.40M） | ch_ppocr_mobile_v2.0_xx | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar) |
+| 中英文通用PP-OCR server模型（143.40M） | ch_ppocr_server_v2.0_xx | 服务器端        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [预训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar) |
 
 更多模型下载（包括多语言），可以参[考PP-OCR系列模型下载](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/doc/doc_ch/models_list.md)
 
@@ -223,7 +223,7 @@ python tools/eval.py \
 ## **4.3 预训练模型+fine-tune**
 
 
-基于预训练模型，在生成的1500图片上进行fine-tune训练和评估，其中train数据1200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
+基于预训练模型，在生成的1,500图片上进行fine-tune训练和评估，其中train数据1,200张，val数据300张，修改配置文件`configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml`中的以下字段：
 ```
 Global.epoch_num: 这里设置为1，方便快速跑通，实际中根据数据量调整该值
 Global.save_model_dir：模型保存路径
@@ -266,12 +266,12 @@ python3 tools/eval.py \
 | 序号 | 方案 | hmean  |  效果提升  |   实验分析  |
 | -------- | -------- | -------- | -------- | -------- |
 |   1 |  PP-OCRv3英文超轻量检测预训练模型   | 64.64%     |     -     |    提供的预训练模型具有泛化能力       |
-|   2 | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding    |  72.13%  |+7.5% | padding可以提升尺寸较小图片的检测效果|
-|   3 | PP-OCRv3英文超轻量检测预训练模型  + fine-tune   | 100% |  +27.9%     | fine-tune会提升垂类场景效果 |
+|   2 | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding    |  72.13%  |+7.50% | padding可以提升尺寸较小图片的检测效果|
+|   3 | PP-OCRv3英文超轻量检测预训练模型  + fine-tune   | 100.00% |  +27.90%     | fine-tune会提升垂类场景效果 |
 
 
 ```
-注：上述实验结果均是在1500张图片（1200张训练集，300张测试集）上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
+注：上述实验结果均是在1,500张图片（1,200张训练集，300张测试集）上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
 ```
 
 # 5. 文本识别
@@ -334,7 +334,7 @@ python3 tools/eval.py \
 
 1） **方案2**：预训练模型 + **fine-tune**
 
-- 在预训练模型的基础上进行fine-tune，使用1500张PCB进行训练和评估，其中训练集1200张，验证集300张。
+- 在预训练模型的基础上进行fine-tune，使用1,500张PCB进行训练和评估，其中训练集1,200张，验证集300张。
 
 
 2） **方案3**：预训练模型 + fine-tune + **公开通用识别数据集**
@@ -420,12 +420,12 @@ python3 tools/eval.py \
 | 序号 | 方案 | acc    |  效果提升  |   实验分析  |
 | -------- | -------- | -------- | -------- | -------- |
 |   1 | PP-OCRv3中英文超轻量识别预训练模型直接评估 | 46.67%     |     -     |    提供的预训练模型具有泛化能力       |
-|   2 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune   |  42.02%  |-4.6% | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试)|
-|   3 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集   | 77% |  +30%     | 在数据量不足的情况下，可以考虑补充公开数据训练 |
-|   4 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量   | 99.99% |  +23%     | 如果能获取更多数据量的情况，可以通过增加数据量提升效果 |
+|   2 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune   |  42.02%  |-4.60% | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试)|
+|   3 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集   | 77.00% |  +30.00%     | 在数据量不足的情况下，可以考虑补充公开数据训练 |
+|   4 | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量   | 99.99% |  +23.00%     | 如果能获取更多数据量的情况，可以通过增加数据量提升效果 |
 
 ```
-注：上述实验结果均是在1500张图片（1200张训练集，300张测试集）、2W张图片、添加公开通用识别数据集上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
+注：上述实验结果均是在1,500张图片（1,200张训练集，300张测试集）、2W张图片、添加公开通用识别数据集上训练、评估的得到，AIstudio只提供了100张数据，所以指标有所差异属于正常，只要策略有效、规律相同即可。
 ```
 
 # 6. 模型导出
@@ -614,27 +614,27 @@ python3 tools/end2end/eval_end2end.py ./save_gt_label/ ./save_PPOCRV2_infer/
 | 序号 | 方案                                                     | hmean  | 效果提升 | 实验分析                              |
 | ---- | -------------------------------------------------------- | ------ | -------- | ------------------------------------- |
 | 1    | PP-OCRv3英文超轻量检测预训练模型直接评估                 | 64.64% | -        | 提供的预训练模型具有泛化能力          |
-| 2    | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding直接评估 | 72.13% | +7.5%    | padding可以提升尺寸较小图片的检测效果 |
-| 3    | PP-OCRv3英文超轻量检测预训练模型  + fine-tune            | 100%   | +27.9%   | fine-tune会提升垂类场景效果           |
+| 2    | PP-OCRv3英文超轻量检测预训练模型 + 验证集padding直接评估 | 72.13% | +7.50%    | padding可以提升尺寸较小图片的检测效果 |
+| 3    | PP-OCRv3英文超轻量检测预训练模型  + fine-tune            | 100.00%   | +27.90%   | fine-tune会提升垂类场景效果           |
 
 * 识别
 
 | 序号 | 方案                                                         | acc    | 效果提升 | 实验分析                                                     |
 | ---- | ------------------------------------------------------------ | ------ | -------- | ------------------------------------------------------------ |
 | 1    | PP-OCRv3中英文超轻量识别预训练模型直接评估                   | 46.67% | -        | 提供的预训练模型具有泛化能力                                 |
-| 2    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune               | 42.02% | -4.6%    | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试) |
-| 3    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集 | 77%    | +30%     | 在数据量不足的情况下，可以考虑补充公开数据训练               |
-| 4    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 99.99% | +23%     | 如果能获取更多数据量的情况，可以通过增加数据量提升效果       |
+| 2    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune               | 42.02% | -4.60%    | 在数据量不足的情况，反而比预训练模型效果低(也可以通过调整超参数再试试) |
+| 3    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 公开通用识别数据集 | 77.00%    | +30.00%     | 在数据量不足的情况下，可以考虑补充公开数据训练               |
+| 4    | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 99.99% | +23.00%     | 如果能获取更多数据量的情况，可以通过增加数据量提升效果       |
 
 * 端到端
 
 | det                                           | rec                                                          | fmeasure |
 | --------------------------------------------- | ------------------------------------------------------------ | -------- |
-| PP-OCRv3英文超轻量检测预训练模型  + fine-tune | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 93.3%    |
+| PP-OCRv3英文超轻量检测预训练模型  + fine-tune | PP-OCRv3中英文超轻量识别预训练模型 + fine-tune + 增加PCB图像数量 | 93.30%    |
 
 *结论*
 
-PP-OCRv3的检测模型在未经过fine-tune的情况下，在PCB数据集上也有64.64%的精度，说明具有泛化能力。验证集padding之后，精度提升7.5%，在图片尺寸较小的情况，我们可以通过padding的方式提升检测效果。经过 fine-tune 后能够极大的提升检测效果，精度达到100%。
+PP-OCRv3的检测模型在未经过fine-tune的情况下，在PCB数据集上也有64.64%的精度，说明具有泛化能力。验证集padding之后，精度提升7.50%，在图片尺寸较小的情况，我们可以通过padding的方式提升检测效果。经过 fine-tune 后能够极大的提升检测效果，精度达到100.00%。
 
 PP-OCRv3的识别模型方案1和方案2对比可以发现，当数据量不足的情况，预训练模型精度可能比fine-tune效果还要高，所以我们可以先尝试预训练模型直接评估。如果在数据量不足的情况下想进一步提升模型效果，可以通过添加公开通用识别数据集，识别效果提升30%，非常有效。最后如果我们能够采集足够多的真实场景数据集，可以通过增加数据量提升模型效果，精度达到99.99%。
 

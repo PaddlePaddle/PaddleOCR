@@ -7,7 +7,7 @@ Here we have sorted out the commonly used handwritten OCR dataset datasets, whic
 ## Institute of automation, Chinese Academy of Sciences - handwritten Chinese dataset
 - **Data source**:http://www.nlpr.ia.ac.cn/databases/handwriting/Download.html
 - **Data introduction**:
-    * It includes online and offline handwritten data,`HWDB1.0~1.2` has totally 3895135 handwritten single character samples, which belong to 7356 categories (7185 Chinese characters and 171 English letters, numbers and symbols);`HWDB2.0~2.2` has totally 5091 pages of images, which are divided into 52230 text lines and 1349414 words. All text and text samples are stored as grayscale images. Some sample words are shown below.
+    * It includes online and offline handwritten data,`HWDB1.0~1.2` has totally 3,895,135 handwritten single character samples, which belong to 7,356 categories (7,185 Chinese characters and 171 English letters, numbers and symbols);`HWDB2.0~2.2` has totally 5,091 pages of images, which are divided into 52,230 text lines and 1,349,414 words. All text and text samples are stored as grayscale images. Some sample words are shown below.
 
         ![](../../datasets/CASIA_0.jpg)
 

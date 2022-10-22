@@ -21,13 +21,13 @@ PaddleOCR has completed the adaptation to Windows and MAC systems. Two points sh
     2. When downloading the inference model, if wget is not installed, you can directly click the model link or copy the link address to the browser to download, then extract and place it in the corresponding directory.
 
 7. **The difference between ultra-lightweight model and General OCR model**  
-At present, PaddleOCR has opensourced two Chinese models, namely 8.6M ultra-lightweight Chinese model and general Chinese OCR model. The comparison information between the two is as follows:
+At present, PaddleOCR has opensourced two Chinese models, namely 8.60M ultra-lightweight Chinese model and general Chinese OCR model. The comparison information between the two is as follows:
     - Similarities: Both use the same **algorithm** and **training data**；  
     - Differences: The difference lies in **backbone network** and **channel parameters**, the ultra-lightweight model uses MobileNetV3 as the backbone network, the general model uses Resnet50_vd as the detection model backbone, and Resnet34_vd as the recognition model backbone. You can compare the two model training configuration files to see the differences in parameters.
 
 |Model|Backbone|Detection configuration file|Recognition configuration file|
 |-|-|-|-|
-|8.6M ultra-lightweight Chinese OCR model|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
+|8.60M ultra-lightweight Chinese OCR model|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |General Chinese OCR model|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
 8. **Is there a plan to opensource a model that only recognizes numbers or only English + numbers?**  

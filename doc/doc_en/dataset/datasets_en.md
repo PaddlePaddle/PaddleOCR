@@ -46,7 +46,7 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 - **Introduction**：  
     - A total of 3.64 million pictures are divided into training set and validation set according to 99:1.
     - Using Chinese corpus (news + classical Chinese), the data is randomly generated through changes in font, size, grayscale, blur, perspective, stretching, etc.
-    - 5990 characters including Chinese characters, English letters, numbers and punctuation（Characters set: https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt ）
+    - 5,990 characters including Chinese characters, English letters, numbers and punctuation（Characters set: https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt ）
     - Each sample is fixed with 10 characters, and the characters are randomly intercepted from the sentences in the corpus
     - Image resolution is 280x32  
     ![](../../datasets/ch_doc1.jpg)  

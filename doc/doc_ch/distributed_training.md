@@ -2,7 +2,7 @@
 
 ## 简介
 
-* 分布式训练的高性能，是飞桨的核心优势技术之一，在分类任务上，分布式训练可以达到几乎线性的加速比。OCR训练任务中往往包含大量训练数据，以识别为例，ppocrv2.0模型在训练时使用了1800W数据，如果使用单机训练，会非常耗时。因此，PaddleOCR中使用分布式训练接口完成训练任务，同时支持单机训练与多机训练。更多关于分布式训练的方法与文档可以参考：[分布式训练快速开始教程](https://fleet-x.readthedocs.io/en/latest/paddle_fleet_rst/parameter_server/ps_quick_start.html)。
+* 分布式训练的高性能，是飞桨的核心优势技术之一，在分类任务上，分布式训练可以达到几乎线性的加速比。OCR训练任务中往往包含大量训练数据，以识别为例，ppocrv2.0模型在训练时使用了1,800W数据，如果使用单机训练，会非常耗时。因此，PaddleOCR中使用分布式训练接口完成训练任务，同时支持单机训练与多机训练。更多关于分布式训练的方法与文档可以参考：[分布式训练快速开始教程](https://fleet-x.readthedocs.io/en/latest/paddle_fleet_rst/parameter_server/ps_quick_start.html)。
 
 ## 使用方法
 
@@ -45,14 +45,14 @@ python3 -m paddle.distributed.launch \
 
 | 模型   | 配置  | 数据集   | 单机8卡耗时/精度 | 2机8卡耗时/精度 | 加速比 |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  26W中文数据集 | 2.50d/66.7%   | 1.67d/67.0%  | **1.5** |
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  26W中文数据集 | 2.50d/66.70%   | 1.67d/67.00%  | **1.5** |
 
 
 * 在3机8卡V100的机器上进行模型训练，不同模型的精度、训练耗时、多机加速比情况如下所示。
 
 | 模型   | 配置  | 数据集   | 单机8卡耗时/精度 | 3机8卡耗时/精度 | 加速比 |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SLANet | [SLANet.yml](../../configs/table/SLANet.yml) |  PubTabNet | 49.8h/76.2%   | 19.75h/74.77%  | **2.52** |
+| SLANet | [SLANet.yml](../../configs/table/SLANet.yml) |  PubTabNet | 49.80h/76.20%   | 19.75h/74.77%  | **2.52** |
 
 
     > 注意：这里3机8卡训练时，单卡batch size相比于单机8卡不变，学习率乘以2 (默认乘以3的话，精度仅有73.42%)
@@ -63,8 +63,8 @@ python3 -m paddle.distributed.launch \
 
 | 模型   | 配置  | 数据集   | 单机8卡耗时/精度 | 4机8卡耗时/精度 | 加速比 |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.0%  | **3.5** |
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.00%  | **3.5** |
 
 
 * **注意**
-    * 在训练的GPU卡数过多时，精度会稍微有所损失（1%左右），此时可以尝试通过添加warmup或者适当增加迭代轮数来弥补精度损失。
+    * 在训练的GPU卡数过多时，精度会稍微有所损失（1.00%左右），此时可以尝试通过添加warmup或者适当增加迭代轮数来弥补精度损失。

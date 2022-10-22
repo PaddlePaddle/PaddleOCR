@@ -2,7 +2,7 @@
 # PaddleOCR DB/EAST/PSE 算法训练benchmark测试
 
 PaddleOCR/benchmark目录下的文件用于获取并分析训练日志。
-训练采用icdar2015数据集，包括1000张训练图像和500张测试图像。模型配置采用resnet18_vd作为backbone，分别训练batch_size=8和batch_size=16的情况。
+训练采用icdar2015数据集，包括1,000张训练图像和500张测试图像。模型配置采用resnet18_vd作为backbone，分别训练batch_size=8和batch_size=16的情况。
 
 ## 运行训练benchmark
 

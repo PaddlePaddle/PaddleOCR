@@ -92,7 +92,7 @@ PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入�
 
 默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse),随机数据增强(RandAugment)。
 
-训练过程中除随机数据增强外每种扰动方式以50%的概率被选择，具体代码实现请参考：
+训练过程中除随机数据增强外每种扰动方式以50.00%的概率被选择，具体代码实现请参考：
 [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 [randaugment.py](../../ppocr/data/imaug/randaugment.py)
 
@@ -101,7 +101,7 @@ PaddleOCR提供了多种数据增强方式，如果您希望在训练时加入�
 <a name="训练"></a>
 ## 4. 训练
 
-PaddleOCR支持训练和评估交替进行, 可以在 `configs/cls/cls_mv3.yml` 中修改 `eval_batch_step` 设置评估频率，默认每1000个iter评估一次。训练过程中将会保存如下内容：
+PaddleOCR支持训练和评估交替进行, 可以在 `configs/cls/cls_mv3.yml` 中修改 `eval_batch_step` 设置评估频率，默认每1,000个iter评估一次。训练过程中将会保存如下内容：
 ```bash
 ├── best_accuracy.pdopt # 最佳模型的优化器参数
 ├── best_accuracy.pdparams # 最佳模型的参数

@@ -34,9 +34,9 @@ There are 9 optimization strategies for text detection and recognition models in
 
 In terms of effect, when the speed is comparable, the accuracy of various scenes is greatly improved:
 
-- In Chinese scenarios, PP-OCRv3 outperforms PP-OCRv2 by more than 5%.
-- In English scenarios, PP-OCRv3 outperforms PP-OCRv2 by more than 11%.
-- In multi-language scenarios, models for more than 80 languages are optimized, the average accuracy is increased by more than 5%.
+- In Chinese scenarios, PP-OCRv3 outperforms PP-OCRv2 by more than 5.00%.
+- In English scenarios, PP-OCRv3 outperforms PP-OCRv2 by more than 11.00%.
+- In multi-language scenarios, models for more than 80 languages are optimized, the average accuracy is increased by more than 5.00%.
 
 
 <a name="2"></a>
@@ -55,20 +55,20 @@ The ablation experiments are as follows:
 
 |ID|Strategy|Model Size|Hmean|The Inference Time（cpu + mkldnn)|
 |-|-|-|-|-|
-|baseline teacher|PP-OCR server|49.00M|83.20%|171ms|
-|teacher1|DB-R50-LK-PAN|124.00M|85.00%|396ms|
-|teacher2|DB-R50-LK-PAN-DML|124.00M|86.00%|396ms|
-|baseline student|PP-OCRv2|3.00M|83.20%|117ms|
-|student0|DB-MV3-RSE-FPN|3.60M|84.50%|124ms|
-|student1|DB-MV3-CML（teacher2）|3.00M|84.30%|117ms|
-|student2|DB-MV3-RSE-FPN-CML（teacher2）|3.60M|85.40%|124ms|
+|baseline teacher|PP-OCR server|49.00M|83.20%|171.00ms|
+|teacher1|DB-R50-LK-PAN|124.00M|85.00%|396.00ms|
+|teacher2|DB-R50-LK-PAN-DML|124.00M|86.00%|396.00ms|
+|baseline student|PP-OCRv2|3.00M|83.20%|117.00ms|
+|student0|DB-MV3-RSE-FPN|3.60M|84.50%|124.00ms|
+|student1|DB-MV3-CML（teacher2）|3.00M|84.30%|117.00ms|
+|student2|DB-MV3-RSE-FPN-CML（teacher2）|3.60M|85.40%|124.00ms|
 
 Testing environment: Intel Gold 6148 CPU, with MKLDNN acceleration enabled during inference.
 
 
 **(1) LK-PAN: A PAN structure with large receptive field**
 
-LK-PAN (Large Kernel PAN) is a lightweight [PAN](https://arxiv.org/pdf/1803.01534.pdf) structure with larger receptive field. The main idea is to change the convolution kernel size in the path augmentation of the PAN structure from `3*3` to `9*9`. By increasing the convolution kernel size, the receptive field of each position of the feature map is improved, making it easier to detect text in large fonts and text with extreme aspect ratios. Using LK-PAN, the hmean of the teacher model can be improved from 83.2% to 85.0%.
+LK-PAN (Large Kernel PAN) is a lightweight [PAN](https://arxiv.org/pdf/1803.01534.pdf) structure with larger receptive field. The main idea is to change the convolution kernel size in the path augmentation of the PAN structure from `3*3` to `9*9`. By increasing the convolution kernel size, the receptive field of each position of the feature map is improved, making it easier to detect text in large fonts and text with extreme aspect ratios. Using LK-PAN, the hmean of the teacher model can be improved from 83.20% to 85.00%.
 
 <div align="center">
     <img src="../ppocr_v3/LKPAN.png" width="1000">
@@ -77,7 +77,7 @@ LK-PAN (Large Kernel PAN) is a lightweight [PAN](https://arxiv.org/pdf/1803.0153
 
 **(2) DML: Deep Mutual Learning Strategy for Teacher Model**
 
-[DML](https://arxiv.org/abs/1706.00384)(Deep Mutual Learning), as shown in the figure below, can effectively improve the accuracy of the text detection model by learning from each other with two models with the same structure. The DML strategy is adopted in the teacher model training, and the hmean is increased from 85% to 86%. By updating the teacher model of CML in PP-OCRv2 to the above-mentioned higher-precision one, the hmean of the student model can be further improved from 83.2% to 84.3%.
+[DML](https://arxiv.org/abs/1706.00384)(Deep Mutual Learning), as shown in the figure below, can effectively improve the accuracy of the text detection model by learning from each other with two models with the same structure. The DML strategy is adopted in the teacher model training, and the hmean is increased from 85.00% to 86.00%. By updating the teacher model of CML in PP-OCRv2 to the above-mentioned higher-precision one, the hmean of the student model can be further improved from 83.20% to 84.30%.
 
 
 <div align="center">
@@ -89,7 +89,7 @@ LK-PAN (Large Kernel PAN) is a lightweight [PAN](https://arxiv.org/pdf/1803.0153
 
 RSE-FPN (Residual Squeeze-and-Excitation FPN) is shown in the figure below. RSE-FPN introduces residual attention mechanism by replacing the convolutional layer in the FPN with RSEConv, to improve the representation ability of the feature map.
 
-Considering that the features of some channels will be suppressed if the convolution layer in FPN is directly replaced with SEblock, as the number of FPN channels in the detection model of PP-OCRv2 is 96, which is very small. The introduction of residual structure in RSEConv can alleviate the above problems and improve the text detection effect. By updating the FPN structure of the student model of CML to RSE-FPN, the hmean of the student model can be further improved from 84.3% to 85.4%.
+Considering that the features of some channels will be suppressed if the convolution layer in FPN is directly replaced with SEblock, as the number of FPN channels in the detection model of PP-OCRv2 is 96, which is very small. The introduction of residual structure in RSEConv can alleviate the above problems and improve the text detection effect. By updating the FPN structure of the student model of CML to RSE-FPN, the hmean of the student model can be further improved from 84.30% to 85.40%.
 
 <div align="center">
     <img src=".././ppocr_v3/RSEFPN.png" width="1000">
@@ -101,13 +101,13 @@ Considering that the features of some channels will be suppressed if the convolu
 
 The recognition module of PP-OCRv3 is optimized based on the text recognition algorithm [SVTR](https://arxiv.org/abs/2205.00159). RNN is abandoned in SVTR, and the context information of the text line image is more effectively mined by introducing the Transformers structure, thereby improving the text recognition ability.
 
-The recognition accuracy of SVTR_tiny outperforms PP-OCRv2 recognition model by 5.3%, while the prediction speed nearly 11 times slower. It takes nearly 100ms to predict a text line on CPU. Therefore, as shown in the figure below, PP-OCRv3 adopts the following six optimization strategies to accelerate the recognition model.
+The recognition accuracy of SVTR_tiny outperforms PP-OCRv2 recognition model by 5.30%, while the prediction speed nearly 11 times slower. It takes nearly 100.00ms to predict a text line on CPU. Therefore, as shown in the figure below, PP-OCRv3 adopts the following six optimization strategies to accelerate the recognition model.
 
 <div align="center">
     <img src="../ppocr_v3/v3_rec_pipeline.png" width=800>
 </div>
 
-Based on the above strategy, compared with PP-OCRv2, the PP-OCRv3 recognition model further improves the accuracy by 4.6% with comparable speed. The ablation experiments are as follows:
+Based on the above strategy, compared with PP-OCRv2, the PP-OCRv3 recognition model further improves the accuracy by 4.60% with comparable speed. The ablation experiments are as follows:
 
 | ID | strategy |  Model size | accuracy | prediction speed（CPU + MKLDNN)|
 |-----|-----|--------|----| --- |
@@ -125,7 +125,7 @@ Note: When testing the speed, the input image shape of Experiment 01-03 is (3, 3
 
 **（1）SVTR_LCNet：Lightweight Text Recognition Network**
 
-SVTR_LCNet is a lightweight text recognition network fused by Transformer-based network [SVTR](https://arxiv.org/abs/2205.00159) and lightweight CNN-based network [PP-LCNet](https://arxiv.org/abs/2109.15099). The prediction speed of SVTR_LCNet is 20% faster than that of PP-OCRv2 recognizer while the effect is slightly worse because the distillation strategy is not adopted. In addition, the height of the input image is further increased from 32 to 48, which makes the prediction speed slightly slower, but the model effect greatly improved. The recognition accuracy reaches 73.98% (+2.08%), which is close to the accuracy of PP-OCRv2 recognizer trained with the distillation strategy.
+SVTR_LCNet is a lightweight text recognition network fused by Transformer-based network [SVTR](https://arxiv.org/abs/2205.00159) and lightweight CNN-based network [PP-LCNet](https://arxiv.org/abs/2109.15099). The prediction speed of SVTR_LCNet is 20.00% faster than that of PP-OCRv2 recognizer while the effect is slightly worse because the distillation strategy is not adopted. In addition, the height of the input image is further increased from 32 to 48, which makes the prediction speed slightly slower, but the model effect greatly improved. The recognition accuracy reaches 73.98% (+2.08%), which is close to the accuracy of PP-OCRv2 recognizer trained with the distillation strategy.
 
 SVTR_Tiny network structure is as follows：
 
@@ -136,19 +136,19 @@ SVTR_Tiny network structure is as follows：
 Due to the limited model structure supported by the MKLDNN acceleration library, SVTR is 10 times slower than PP-OCRv2 on CPU+MKLDNN. PP-OCRv3 expects to improve the accuracy of the model without bringing additional inference time. Through analysis, it is found that the main time-consuming module of SVTR_Tiny structure is Mixing Block, so we have carried out a series of optimizations to the structure of SVTR_Tiny (for detailed speed data, please refer to the ablation experiment table below):
 
 
-1. Replace the first half of the SVTR network with the first three stages of PP-LCNet, retain 4 Global Mixing Blocks, the accuracy is 76%, and the speedup is 69%. The network structure is as follows:
+1. Replace the first half of the SVTR network with the first three stages of PP-LCNet, retain 4 Global Mixing Blocks, the accuracy is 76.00%, and the speedup is 69.00%. The network structure is as follows:
 
 <div align="center">
     <img src="../ppocr_v3/svtr_g4.png" width=800>
 </div>
 
-2. Reduce the number of Global Mixing Blocks from 4 to 2, the accuracy is 72.9%, and the speedup is 69%. The network structure is as follows:
+2. Reduce the number of Global Mixing Blocks from 4 to 2, the accuracy is 72.90%, and the speedup is 69.00%. The network structure is as follows:
 
 <div align="center">
     <img src="../ppocr_v3/svtr_g2.png" width=800>
 </div>
 
-3. The experiment found that the prediction speed of the Global Mixing Block is related to the shape of the input features. Therefore, after moving the position of the Global Mixing Block to the back of pooling layer, the accuracy dropped to 71.9%, and the speed surpassed the PP-OCRv2-baseline based on the CNN structure by 22%. The network structure is as follows:
+3. The experiment found that the prediction speed of the Global Mixing Block is related to the shape of the input features. Therefore, after moving the position of the Global Mixing Block to the back of pooling layer, the accuracy dropped to 71.90%, and the speed surpassed the PP-OCRv2-baseline based on the CNN structure by 22.00%. The network structure is as follows:
 
 <div align="center">
     <img src="../ppocr_v3/LCNet_SVTR_en.png" width=800>
@@ -169,7 +169,7 @@ Note: When testing the speed, the input image shape of 01-05 are all (3, 32, 320
 
 **（2）GTC：Attention guides CTC training strategy**
 
-[GTC](https://arxiv.org/pdf/2002.01276.pdf) (Guided Training of CTC), using the Attention module to guide the training of CTC to fuse multiple features is an effective strategy to improve text recognition accuracy. No more time-consuming is added in the inference process as the Attention module is completely removed during prediction. The accuracy of the recognition model is further improved to 75.8% (+1.82%). The training process is as follows:
+[GTC](https://arxiv.org/pdf/2002.01276.pdf) (Guided Training of CTC), using the Attention module to guide the training of CTC to fuse multiple features is an effective strategy to improve text recognition accuracy. No more time-consuming is added in the inference process as the Attention module is completely removed during prediction. The accuracy of the recognition model is further improved to 75.80% (+1.82%). The training process is as follows:
 
 <div align="center">
     <img src="../ppocr_v3/GTC_en.png" width=800>
@@ -177,7 +177,7 @@ Note: When testing the speed, the input image shape of 01-05 are all (3, 32, 320
 
 **（3）TextConAug：Data Augmentation Strategy for Mining Text Context Information**
 
-TextConAug is a data augmentation strategy for mining textual context information. The main idea comes from the paper [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf), in which the author proposes data augmentation strategy ConAug to concat 2 different images in a batch to form new images and perform self-supervised comparative learning. PP-OCRv3 applies this method to supervised learning tasks, and designs the TextConAug data augmentation method, which can enrich the context information of training data and improve the diversity of training data. Using this strategy, the accuracy of the recognition model is further improved to 76.3% (+0.5%). The schematic diagram of TextConAug is as follows:
+TextConAug is a data augmentation strategy for mining textual context information. The main idea comes from the paper [ConCLR](https://www.cse.cuhk.edu.hk/~byu/papers/C139-AAAI2022-ConCLR.pdf), in which the author proposes data augmentation strategy ConAug to concat 2 different images in a batch to form new images and perform self-supervised comparative learning. PP-OCRv3 applies this method to supervised learning tasks, and designs the TextConAug data augmentation method, which can enrich the context information of training data and improve the diversity of training data. Using this strategy, the accuracy of the recognition model is further improved to 76.30% (+0.50%). The schematic diagram of TextConAug is as follows:
 
 <div align="center">
     <img src="../ppocr_v3/recconaug.png" width=800>
@@ -186,7 +186,7 @@ TextConAug is a data augmentation strategy for mining textual context informatio
 
 **（4）TextRotNet：Self-Supervised Pre-trained Model**
 
-TextRotNet is a pre-trained model trained with a large amount of unlabeled text line data in a self-supervised manner, refered to the paper [STR-Fewer-Labels](https://github.com/ku21fan/STR-Fewer-Labels). This model can initialize the weights of SVTR_LCNet, which helps the text recognition model to converge to a better position. Using this strategy, the accuracy of the recognition model is further improved to 76.9% (+0.6%). The TextRotNet training process is shown in the following figure:
+TextRotNet is a pre-trained model trained with a large amount of unlabeled text line data in a self-supervised manner, refered to the paper [STR-Fewer-Labels](https://github.com/ku21fan/STR-Fewer-Labels). This model can initialize the weights of SVTR_LCNet, which helps the text recognition model to converge to a better position. Using this strategy, the accuracy of the recognition model is further improved to 76.90% (+0.60%). The TextRotNet training process is shown in the following figure:
 
 <div align="center">
     <img src="../ppocr_v3/SSL.png" width="500">
@@ -195,12 +195,12 @@ TextRotNet is a pre-trained model trained with a large amount of unlabeled text 
 
 **（5）UDML：Unified-Deep Mutual Learning**
 
-UDML (Unified-Deep Mutual Learning) is a strategy proposed in PP-OCRv2 which is very effective to improve the model accuracy. In PP-OCRv3, for two different structures SVTR_LCNet and Attention, the feature map of PP-LCNet, the output of the SVTR module and the output of the Attention module between them are simultaneously supervised and trained. Using this strategy, the accuracy of the recognition model is further improved to 78.4% (+1.5%).
+UDML (Unified-Deep Mutual Learning) is a strategy proposed in PP-OCRv2 which is very effective to improve the model accuracy. In PP-OCRv3, for two different structures SVTR_LCNet and Attention, the feature map of PP-LCNet, the output of the SVTR module and the output of the Attention module between them are simultaneously supervised and trained. Using this strategy, the accuracy of the recognition model is further improved to 78.40% (+1.50%).
 
 
 **（6）UIM：Unlabeled Images Mining**
 
-UIM (Unlabeled Images Mining) is a very simple unlabeled data mining strategy. The main idea is to use a high-precision text recognition model to predict unlabeled images to obtain pseudo-labels, and select samples with high prediction confidence as training data for training lightweight models. Using this strategy, the accuracy of the recognition model is further improved to 79.4% (+1%). In practice, we use the full data set to train the high-precision SVTR_Tiny model (acc=82.5%) for data mining. [SVTR_Tiny model download and tutorial](../../applications/高精度中文识别模型.md).
+UIM (Unlabeled Images Mining) is a very simple unlabeled data mining strategy. The main idea is to use a high-precision text recognition model to predict unlabeled images to obtain pseudo-labels, and select samples with high prediction confidence as training data for training lightweight models. Using this strategy, the accuracy of the recognition model is further improved to 79.40% (+1.00%). In practice, we use the full data set to train the high-precision SVTR_Tiny model (acc=82.50%) for data mining. [SVTR_Tiny model download and tutorial](../../applications/高精度中文识别模型.md).
 
 <div align="center">
     <img src="../ppocr_v3/UIM.png" width="500">
@@ -210,7 +210,7 @@ UIM (Unlabeled Images Mining) is a very simple unlabeled data mining strategy. T
 
 ## 4. End-to-end Evaluation
 
-With the optimization strategies mentioned above, PP-OCRv3 outperforms PP-OCRv2 by 5% in terms of end-to-end Hmean for Chinese scenarios with comparable speed. The specific metrics are shown as follows.
+With the optimization strategies mentioned above, PP-OCRv3 outperforms PP-OCRv2 by 5.00% in terms of end-to-end Hmean for Chinese scenarios with comparable speed. The specific metrics are shown as follows.
 
 | Model | Hmean |  Model Size (M) | Time Cost (CPU, ms) | Time Cost (T4 GPU, ms) |
 |-----|-----|--------|----| --- |
@@ -224,14 +224,14 @@ Testing environment:
 - CPU: Intel Gold 6148, and MKLDNN acceleration is enabled during CPU inference.
 
 
-In addition to Chinese scenarios, the recognition model for English is also optimized with an increasement of 11% for end-to-end Hmean, which is shown as follows.
+In addition to Chinese scenarios, the recognition model for English is also optimized with an increasement of 11.00% for end-to-end Hmean, which is shown as follows.
 
 | Model | Recall |  Precision | Hmean |
 |-----|-----|--------|----|
 | PP-OCR_en | 38.99% | 45.91% | 42.17%  |
 | PP-OCRv3_en | 50.95% | 55.53% | 53.14% |
 
-At the same time, recognition models for more than 80 language are also upgraded. The accuracy of the four language families with evaluation sets is increased by more than 5% on average, which is shown as follows.
+At the same time, recognition models for more than 80 language are also upgraded. The accuracy of the four language families with evaluation sets is increased by more than 5.00% on average, which is shown as follows.
 
 | Model | Latin | Arabic | Japanese | Korean |
 |-----|-----|--------|----| --- |

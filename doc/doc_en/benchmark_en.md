@@ -1,8 +1,8 @@
-# Benchmark 
+# Benchmark
 
 This document gives the performance of the series models for Chinese and English recognition.
 
-## Test Data 
+## Test Data
 
 We collected 300 images for different real application scenarios to evaluate the overall OCR system, including contract samples, license plates, nameplates, train tickets, test sheets, forms, certificates, street view images, business cards, digital meter, etc. The following figure shows some images of the test set.
 
@@ -36,6 +36,6 @@ Compares the time-consuming on CPU and T4 GPU (ms):
 |:-:|:-:|:-:|
 | PP-OCRv2      | 330  | 111 |
 | PP-OCR mobile | 356  | 116|
-| PP-OCR server | 1056 | 200 |
+| PP-OCR server | 1,056 | 200 |
 
 More indicators of PP-OCR series models can be referred to [PP-OCR Benchmark](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_en/benchmark_en.md)

@@ -26,7 +26,7 @@
 本demo运行在TVM提供的docker环境上，在该环境中已经安装好的必须的软件
 
 
-在非docker环境中，需要手动安装如下依赖项: 
+在非docker环境中，需要手动安装如下依赖项:
 
 - 软件可通过[安装脚本](https://github.com/apache/tvm/blob/main/docker/install/ubuntu_install_ethosu_driver_stack.sh)一键安装
   - [Fixed Virtual Platform (FVP) based on Arm(R) Corstone(TM)-300 software](https://developer.arm.com/tools-and-software/open-source-software/arm-platforms-software/arm-ecosystem-fvps)
@@ -86,9 +86,9 @@ export PATH=/opt/arm/FVP_Corstone_SSE-300/models/Linux64_GCC-6.4:/opt/arm/cmake/
 模型描述
 -----------------
 
-在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/PP-OCRv3_introduction.md)的英文识别模型。由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3原始文本识别模型的基础上进行适配，最终模型大小为2.7M。
+在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/PP-OCRv3_introduction.md)的英文识别模型。由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3原始文本识别模型的基础上进行适配，最终模型大小为2.70M。
 
 PP-OCRv3是[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)发布的PP-OCR系列模型的第三个版本，该系列模型具有以下特点：
-   - 超轻量级OCR系统：检测（3.6M）+方向分类器（1.4M）+识别（12M）=17.0M。
-   - 支持80多种多语言识别模型，包括英文、中文、法文、德文、阿拉伯文、韩文、日文等。 
+   - 超轻量级OCR系统：检测（3.60M）+方向分类器（1.40M）+识别（12.00M）=17.00M。
+   - 支持80多种多语言识别模型，包括英文、中文、法文、德文、阿拉伯文、韩文、日文等。
    - 支持竖排文本识别，长文本识别。

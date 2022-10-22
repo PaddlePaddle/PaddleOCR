@@ -69,7 +69,7 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img623.jpg" --det_
 
 ![](../imgs_results/det_res_img623_fce.jpg)
 
-**注意**：由于CTW1500数据集只有1000张训练图像，且主要针对英文场景，所以上述模型对中文文本图像检测效果会比较差。
+**注意**：由于CTW1500数据集只有1,000张训练图像，且主要针对英文场景，所以上述模型对中文文本图像检测效果会比较差。
 
 <a name="4-2"></a>
 ### 4.2 C++推理

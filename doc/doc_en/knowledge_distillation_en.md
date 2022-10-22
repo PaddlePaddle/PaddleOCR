@@ -54,8 +54,8 @@ The algorithm of knowledge distillation is integrated in PaddleOCR. Specifically
 - Support all model-related environments such as knowledge distillation training, prediction, evaluation, and export, which is convenient for use and deployment.
 
 Through knowledge distillation, in the common Chinese and English text recognition task, without adding any time-consuming prediction,
-the accuracy of the model can be improved by more than 3%. Combining the learning rate adjustment strategy and the model structure fine-tuning strategy,
-the final improvement is more than 5%.
+the accuracy of the model can be improved by more than 3.00%. Combining the learning rate adjustment strategy and the model structure fine-tuning strategy,
+the final improvement is more than 5.00%.
 
 <a name="2"></a>
 ## 2. Configuration File Analysis
@@ -608,7 +608,7 @@ Model Structure
 There are three ways to fine-tune the detection distillation task:
 - `ch_PP-OCRv3_det_distill.yml`, The teacher model is set to the model provided by PaddleOCR or the large model you have trained.
 - `ch_PP-OCRv3_det_cml.yml`, Use cml distillation. Similarly, the Teacher model is set to the model provided by PaddleOCR or the large model you have trained.
-- `ch_PP-OCRv3_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.7% on the data set used by PaddleOCR.
+- `ch_PP-OCRv3_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.70% on the data set used by PaddleOCR.
 
 In fine-tune, you need to set the pre-trained model to be loaded in the `pretrained` parameter of the network structure.
 
