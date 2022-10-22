@@ -213,8 +213,8 @@ class Worker(QThread):
 class APP_Image2Doc(QWidget):
     def __init__(self):
         super().__init__()
-        self.setFixedHeight(100)
-        self.setFixedWidth(420)
+        # self.setFixedHeight(100)
+        # self.setFixedWidth(520)
 
         # settings
         self.imagePaths = []
@@ -481,7 +481,7 @@ class APP_Image2Doc(QWidget):
 
     def handleThreadException(self, message):
         self._thread.quit()
-        QMessageBox.information(self, message)
+        QMessageBox.information(self, 'Error', message)
 
 
 def main():
