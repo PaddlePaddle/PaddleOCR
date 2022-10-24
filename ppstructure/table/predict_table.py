@@ -60,12 +60,16 @@ class TableSystem(object):
         self.args = args
         if not args.show_log:
             logger.setLevel(logging.INFO)
-        args.benchmark = False
+        benchmark_tmp = False
+        if args.benchmark:
+            benchmark_tmp = args.benchmark
+            args.benchmark = False
         self.text_detector = predict_det.TextDetector(copy.deepcopy(
             args)) if text_detector is None else text_detector
         self.text_recognizer = predict_rec.TextRecognizer(copy.deepcopy(
             args)) if text_recognizer is None else text_recognizer
-        args.benchmark = True
+        if benchmark_tmp:
+            args.benchmark = True
         self.table_structurer = predict_strture.TableStructurer(args)
         if args.table_algorithm in ['TableMaster']:
             self.match = TableMasterMatcher()
