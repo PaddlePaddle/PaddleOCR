@@ -1,4 +1,4 @@
-English | [简体中文](README_ch.md)
+[English](../../README.md) | [简体中文](../../README_ch.md) | हिन्दी | [日本語](./README_日本語.md) | [한국인](./README_한국어.md) | [Pу́сский язы́к](./README_Ру́сский язы́к.md)
 
 <p align="center">
  <img src="../PaddleOCR_log.png" align="middle" width = "600"/>
