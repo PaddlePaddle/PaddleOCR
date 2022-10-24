@@ -25,7 +25,7 @@ Using CROHME handwrittem mathematical expression recognition datasets for traini
 
 |Model|Backbone|config|exprate|Download link|
 | --- | --- | --- | --- | --- |
-|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
 
 <a name="2"></a>
 ## 2. Environment

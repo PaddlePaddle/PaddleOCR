@@ -16,11 +16,11 @@
 
 现实场景中包含大量的文档图像，它们以图片等非结构化形式存储。基于文档图像的结构化分析与信息抽取对于数据的数字化存储以及产业的数字化转型至关重要。基于该考虑，PaddleOCR自研并发布了PP-Structure智能文档分析系统，旨在帮助开发者更好的完成版面分析、表格识别、关键信息抽取等文档理解相关任务。
 
-近期，PaddleOCR团队针对PP-Structurev1的版面分析、表格识别、关键信息抽取模块，进行了共计8个方面的升级，同时新增整图方向矫正、文档复原等功能，打造出一个全新的、效果更优的文档分析系统：PP-StructureV2。
+近期，PaddleOCR团队针对PP-StructureV1的版面分析、表格识别、关键信息抽取模块，进行了共计8个方面的升级，同时新增整图方向矫正、文档复原等功能，打造出一个全新的、效果更优的文档分析系统：PP-StructureV2。
 
 ## 2. 简介
 
-PP-StructureV2在PP-Structurev1的基础上进一步改进，主要有以下3个方面升级：
+PP-StructureV2在PP-StructureV1的基础上进一步改进，主要有以下3个方面升级：
 
  * **系统功能升级** ：新增图像矫正和版面复原模块，图像转word/pdf、关键信息抽取能力全覆盖！
  * **系统性能优化** ：
@@ -52,7 +52,7 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 	* TB-YX：考虑阅读顺序的文本行排序逻辑
 	* UDML：联合互学习知识蒸馏策略
 
-最终，与PP-Structurev1相比：
+最终，与PP-StructureV1相比：
 
 - 版面分析模型参数量减少95.6%，推理速度提升11倍，精度提升0.4%；
 - 表格识别预测耗时不变，模型精度提升6%，端到端TEDS提升2%；
@@ -74,17 +74,17 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 
 ### 4.1 版面分析
 
-版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等，PP-Structurev1使用了PaddleDetection中开源的高效检测算法PP-YOLOv2完成版面分析的任务。
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等，PP-StructureV1使用了PaddleDetection中开源的高效检测算法PP-YOLOv2完成版面分析的任务。
 
 在PP-StructureV2中，我们发布基于PP-PicoDet的轻量级版面分析模型，并针对版面分析场景定制图像尺度，同时使用FGD知识蒸馏算法，进一步提升模型精度。最终CPU上`41ms`即可完成版面分析过程(仅包含模型推理时间，数据预处理耗时大约50ms左右)。在公开数据集PubLayNet 上，消融实验如下：
 
 | 实验序号 | 策略                          | 模型存储(M) | mAP     | CPU预测耗时(ms) |
 |:------:|:------:|:------:|:------:|:------:|
-| 1    |  PP-YOLOv2(640*640)  |  221  | 93.6% |  512  |
-| 2    | PP-PicoDet-LCNet2.5x(640*640) |  29.7 | 92.5% |53.2|
-| 3    | PP-PicoDet-LCNet2.5x(800*608) |   29.7  | 94.2% |83.1 |
-| 4    | PP-PicoDet-LCNet1.0x(800*608) |    9.7  | 93.5% | 41.2|
-| 5    | PP-PicoDet-LCNet1.0x(800*608) + FGD |  9.7  | 94% |41.2|
+| 1    |  PP-YOLOv2(640*640)  |  221.0  | 93.60% |  512.00  |
+| 2    | PP-PicoDet-LCNet2.5x(640*640) |  29.7 | 92.50% |53.20|
+| 3    | PP-PicoDet-LCNet2.5x(800*608) |   29.7  | 94.20% |83.10 |
+| 4    | PP-PicoDet-LCNet1.0x(800*608) |    9.7  | 93.50% | 41.20|
+| 5    | PP-PicoDet-LCNet1.0x(800*608) + FGD |  9.7  | 94.00% |41.20|
 
 * 测试条件
 	* paddle版本：2.3.0
@@ -94,8 +94,8 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 
 | 模型                | mAP | CPU预测耗时   |
 |-------------------|-----------|------------|
-| layoutparser (Detectron2)   | 88.98%    | 2.9s    |
-| PP-StructureV2 (PP-PicoDet) | **94%**    |   41.2ms   |
+| layoutparser (Detectron2)   | 88.98%    | 2.90s    |
+| PP-StructureV2 (PP-PicoDet) | **94.00%**    |   41.20ms   |
 
 [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet)数据集是一个大型的文档图像数据集，包含Text、Title、Tale、Figure、List，共5个类别。数据集中包含335,703张训练集、11,245张验证集和11,405张测试集。训练数据与标注示例图如下所示：
 
@@ -108,7 +108,7 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 
 **（1）轻量级版面分析模型PP-PicoDet**
 
-`PP-PicoDet`是PaddleDetection中提出的轻量级目标检测模型，通过使用PP-LCNet骨干网络、CSP-PAN特征融合模块、SimOTA标签分配方法等优化策略，最终在CPU与移动端具有卓越的性能。我们将PP-Structurev1中采用的PP-YOLOv2模型替换为`PP-PicoDet`，同时针对版面分析场景优化预测尺度，从针对目标检测设计的`640*640`调整为更适配文档图像的`800*608`，在`1.0x`配置下，模型精度与PP-YOLOv2相当，CPU平均预测速度可提升11倍。
+`PP-PicoDet`是PaddleDetection中提出的轻量级目标检测模型，通过使用PP-LCNet骨干网络、CSP-PAN特征融合模块、SimOTA标签分配方法等优化策略，最终在CPU与移动端具有卓越的性能。我们将PP-StructureV1中采用的PP-YOLOv2模型替换为`PP-PicoDet`，同时针对版面分析场景优化预测尺度，从针对目标检测设计的`640*640`调整为更适配文档图像的`800*608`，在`1.0x`配置下，模型精度与PP-YOLOv2相当，CPU平均预测速度可提升11倍。
 
 **（1）FGD知识蒸馏**
 
@@ -130,10 +130,10 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 | 实验序号 | 策略             |  mAP     |
 |:------:|:------:|:------:|
-| 1    |  PP-YOLOv2 |  84.7% |
-| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  87.8% |
-| 3    |  PP-PicoDet-LCNet1.0x(800*608) | 84.5% |
-| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  86.8% |
+| 1    |  PP-YOLOv2 |  84.70% |
+| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  87.80% |
+| 3    |  PP-PicoDet-LCNet1.0x(800*608) | 84.50% |
+| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  86.80% |
 
 
 **（2）表格版面分析**
@@ -144,10 +144,10 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 | 实验序号 | 策略            |  mAP     |
 |:------:|:------:|:------:|
-| 1    |  PP-YOLOv2  |91.3% |
-| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  95.9% |
-| 3    |  PP-PicoDet-LCNet1.0x(800*608) |   95.2% |
-| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  95.7% |
+| 1    |  PP-YOLOv2  |91.30% |
+| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  95.90% |
+| 3    |  PP-PicoDet-LCNet1.0x(800*608) |   95.20% |
+| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  95.70% |
 
 表格检测效果示意图如下：
 
@@ -157,7 +157,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 ### 4.2 表格识别
 
-基于深度学习的表格识别算法种类丰富，PP-Structurev1中，我们基于文本识别算法RARE研发了端到端表格识别算法TableRec-RARE，模型输出为表格结构的HTML表示，进而可以方便地转化为Excel文件。PP-StructureV2中，我们对模型结构和损失函数等5个方面进行升级，提出了 SLANet (Structure Location Alignment Network) ，模型结构如下图所示：
+基于深度学习的表格识别算法种类丰富，PP-StructureV1中，我们基于文本识别算法RARE研发了端到端表格识别算法TableRec-RARE，模型输出为表格结构的HTML表示，进而可以方便地转化为Excel文件。PP-StructureV2中，我们对模型结构和损失函数等5个方面进行升级，提出了 SLANet (Structure Location Alignment Network) ，模型结构如下图所示：
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185940811-089c9265-4be9-4776-b365-6d1125606b4b.png" width="1200">
@@ -170,7 +170,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 |TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
 |+PP-LCNet|	74.71% |94.37%	|778ms|	8.7M|
 |+CSP-PAN|	75.68%| 94.72%	|708ms|	9.3M|
-|+SLAHead|	77.7%|94.85%|	766ms|	9.2M|
+|+SLAHead|	77.70%|94.85%|	766ms|	9.2M|
 |+MergeToken|	76.31%|	95.89%|766ms|	9.2M|
 
 * 测试环境
@@ -181,7 +181,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 |策略|Acc|TEDS|推理速度(CPU+MKLDNN)|模型大小|
 |---|---|---|---|---|
-|TableMaster|77.9%|96.12%|2144ms|253M|
+|TableMaster|77.90%|96.12%|2144ms|253.0M|
 |TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
 |SLANet|76.31%|	95.89%|766ms|9.2M|
 
@@ -218,7 +218,7 @@ PP-StructureV2中，我们参考TableMaster中的token处理方法，将`<td>`�
 除了上述模型策略的升级外，本次升级还开源了中文表格识别模型。在实际应用场景中，表格图像存在着各种各样的倾斜角度（PubTabNet数据集不存在该问题），因此在中文模型中，我们将单元格坐标回归的点数从2个（左上，右下）增加到4个(左上，右上，右下，左下)。在内部测试集上，模型升级前后指标如下：
 |模型|acc|
 |---|---|
-|TableRec-RARE|44.3%|
+|TableRec-RARE|44.30%|
 |SLANet|59.35%|
 
 可视化结果如下，左为输入图像，右为识别的html表格
@@ -307,8 +307,8 @@ LayoutLMv2以及LayoutXLM中引入视觉骨干网络，用于提取视觉特征�
 |-----------------|----------|---------|--------|
 | LayoutLMv2      | 0.76     | 84.20%  | -      |
 | VI-LayoutLMv2 | 0.42     | 82.10%  | -2.10% |
-| LayoutXLM       | 1.4      | 89.50%  | -      |
-| VI-LayouXLM   | 1.1      | 90.46%  | +0.96%  |
+| LayoutXLM       | 1.40     | 89.50%  | -      |
+| VI-LayouXLM   | 1.10      | 90.46%  | +0.96%  |
 
 同时，基于XFUND数据集，VI-LayoutXLM在RE任务上的精度也进一步提升了`1.06%`。
 
