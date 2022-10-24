@@ -51,20 +51,22 @@ def draw_ser_results(image,
             bbox = trans_poly_to_bbox(ocr_info["points"])
         draw_box_txt(bbox, text, draw, font, font_size, color)
 
-    img_new = Image.blend(image, img_new, 0.5)
+    img_new = Image.blend(image, img_new, 0.7)
     return np.array(img_new)
 
 
 def draw_box_txt(bbox, text, draw, font, font_size, color):
+
     # draw ocr results outline
     bbox = ((bbox[0], bbox[1]), (bbox[2], bbox[3]))
     draw.rectangle(bbox, fill=color)
 
     # draw ocr results
-    start_y = max(0, bbox[0][1] - font_size)
     tw = font.getsize(text)[0]
+    th = font.getsize(text)[1]
+    start_y = max(0, bbox[0][1] - th)
     draw.rectangle(
-        [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1, start_y + font_size)],
+        [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1, start_y + th)],
         fill=(0, 0, 255))
     draw.text((bbox[0][0] + 1, start_y), text, fill=(255, 255, 255), font=font)
 
