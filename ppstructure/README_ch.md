@@ -78,7 +78,7 @@ PP-StructureV2支持各个模块独立使用或灵活搭配，如，可以单独
 </div>
 
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
 </div>
 
 <div align="center">
