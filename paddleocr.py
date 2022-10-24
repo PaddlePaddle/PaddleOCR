@@ -53,8 +53,8 @@ BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
 DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
 SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3']
-DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-Structurev2'
-SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-Structure', 'PP-Structurev2']
+DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-StructureV2'
+SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-Structure', 'PP-StructureV2']
 MODEL_URLS = {
     'OCR': {
         'PP-OCRv3': {
@@ -272,7 +272,7 @@ MODEL_URLS = {
                 }
             }
         },
-        'PP-Structurev2': {
+        'PP-StructureV2': {
             'table': {
                 'en': {
                     'url':
@@ -326,10 +326,10 @@ def parse_args(mMain=True):
         "--structure_version",
         type=str,
         choices=SUPPORT_STRUCTURE_MODEL_VERSION,
-        default='PP-Structurev2',
+        default='PP-StructureV2',
         help='Model version, the current model support list is as follows:'
         ' 1. PP-Structure Support en table structure model.'
-        ' 2. PP-Structurev2 Support ch and en table structure model.')
+        ' 2. PP-StructureV2 Support ch and en table structure model.')
 
     for action in parser._actions:
         if action.dest in [
