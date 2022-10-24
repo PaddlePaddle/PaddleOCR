@@ -172,7 +172,7 @@ After adding the above synthetic data for training, the accuracy of the recognit
 | Scenario | Characters | Raw Data | Test Data | Only Use Raw Data</br>Recognition Accuracy | New Synthetic Data | Simultaneous Use of Synthetic Data</br>Recognition Accuracy | Index Improvement |
 | -------- | ---------- | -------- | -------- | -------------------------- | ------------ | ---------------------- | -------- |
 | Metal surface | English and numbers | 2203     | 650      | 59.38%                     | 20000        | 75.46%                 | 16.00%      |
-| Random background | Korean       | 5,631     | 1230     | 30.12%                     | 100000       | 50.57%                 | 20.00%      |
+| Random background | Korean       | 5631     | 1230     | 30.12%                     | 100000       | 50.57%                 | 20.00%      |
 
 <a name="Code_structure"></a>
 ### Code Structure
