@@ -26,8 +26,15 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 </div>
 
 ## 📣 Recent updates
+- 💥 **Live Preview: Oct 24 - Oct 26, China Standard Time, 20:30**, Engineers@PaddleOCR will show PP-StructureV2 optimization strategy for 3 days.
+  - Scan the QR code below using WeChat, follow the PaddlePaddle official account and fill out the questionnaire to join the WeChat group, get the live link and 20G OCR learning materials (including PDF2Word application, 10 models in vertical scenarios, etc.)
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/50011306/196944258-0eb82df1-d730-4b96-a350-c1d370fdc2b1.jpg"  width = "150" height = "150" />
+</div>
+
 - **🔥2022.8.24 Release PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  - Release [PP-Structurev2](./ppstructure/)，with functions and performance fully upgraded, adapted to Chinese scenes, and new support for [Layout Recovery](./ppstructure/recovery) and **one line command to convert PDF to Word**;
+  - Release [PP-StructureV2](./ppstructure/)，with functions and performance fully upgraded, adapted to Chinese scenes, and new support for [Layout Recovery](./ppstructure/recovery) and **one line command to convert PDF to Word**;
   - [Layout Analysis](./ppstructure/layout) optimization: model storage reduced by 95%, while speed increased by 11 times, and the average CPU time-cost is only 41ms;
   - [Table Recognition](./ppstructure/table) optimization: 3 optimization strategies are designed, and the model accuracy is improved by 6% under comparable time consumption;
   - [Key Information Extraction](./ppstructure/kie) optimization：a visual-independent model structure is designed, the accuracy of semantic entity recognition is increased by 2.8%, and the accuracy of relation extraction is increased by 9.1%.
@@ -131,7 +138,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [Text recognition](./doc/doc_en/algorithm_overview_en.md)
     - [End-to-end OCR](./doc/doc_en/algorithm_overview_en.md)
     - [Table Recognition](./doc/doc_en/algorithm_overview_en.md)
-    - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)    
+    - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)  
     - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
@@ -183,7 +190,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 </details>
 
 <details open>
-<summary>PP-Structurev2</summary>
+<summary>PP-StructureV2</summary>
 
 - layout analysis + table recognition  
 <div align="center">
@@ -192,7 +199,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 - SER (Semantic entity recognition)
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
 </div>
 
 <div align="center">
@@ -206,7 +213,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 - RE (Relation Extraction)
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>   
+</div>  
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">

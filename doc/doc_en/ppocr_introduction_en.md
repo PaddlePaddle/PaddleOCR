@@ -64,7 +64,7 @@ For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/
 For the performance comparison between PP-OCR series models, please check the [benchmark](./benchmark_en.md) documentation.
 
 <a name="4"></a>
-## 4. Visualization [more](./visualization.md)
+## 4. Visualization [more](./visualization_en.md)
 
 <details open>
 <summary>PP-OCRv3 Chinese model</summary>

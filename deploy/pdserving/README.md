@@ -42,7 +42,7 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
-1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_ch/installation.md).
+1. Please prepare PaddleOCR operating environment reference [link](../../doc/doc_en/installation_en.md).
    Download the corresponding paddlepaddle whl package according to the environment, it is recommended to install version 2.2.2.
 
 2. The steps of PaddleServing operating environment prepare are as follows:
