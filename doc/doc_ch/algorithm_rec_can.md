@@ -60,7 +60,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 python3 tools/train.py -c configs/rec/rec_d28_can.yml
 -o Train.dataset.transforms.GrayImageChannelFormat.inverse=False
 ```
-- 默认每训练1个epoch（1,105次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
+- 默认每训练1个epoch（1105次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
 ```
 python3 tools/train.py -c configs/rec/rec_d28_can.yml
 -o Global.eval_batch_step=[0, {length_of_dataset//batch_size}]
