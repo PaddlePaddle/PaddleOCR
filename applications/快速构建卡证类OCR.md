@@ -84,11 +84,6 @@
 
 * 模型来自模型库PaddleClas，它是一个图像识别和图像分类任务的工具集，助力使用者训练出更好的视觉模型和应用落地。
 
-
-![](https://ai-studio-static-online.cdn.bcebos.com/606d1afaf0d0484a99b1d39895d394b22f24e74591514796859a9ea3a2799b78)
-
-
-
 ### 2.2 卡证识别模型
 
 * 检测：DBNet  识别：SVRT
@@ -178,8 +173,6 @@ C [下载预训练模型 ](https://github.com/PaddlePaddle/PaddleClas/blob/relea
 * OCR技术拆解---OCR工具库
 
     PaddleOCR是一个丰富、领先且实用的OCR工具库，助力开发者训练出更好的模型并应用落地
-
-![](https://ai-studio-static-online.cdn.bcebos.com/16c5e16d53b8428c95129cac4f5520204d869910247943e494d854227632e882)
 
 
 身份证识别：用现有的方法识别
