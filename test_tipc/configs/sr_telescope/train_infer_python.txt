@@ -4,12 +4,12 @@ python:python3.7
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:null
-Global.epoch_num:lite_train_lite_infer=2|whole_train_whole_infer=300
+Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=300
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=16|whole_train_whole_infer=16
 Global.pretrained_model:null
 train_model_name:latest
-train_infer_img_dir:./inference/sr_inference
+train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:norm_train
@@ -21,7 +21,7 @@ null:null
 null:null
 ##
 ===========================eval_params===========================
-eval:tools/eval.py -c test_tipc/configs/sr_telescope/sr_telescope.yml -o
+eval:null
 null:null
 ##
 ===========================infer_params===========================
@@ -44,8 +44,8 @@ inference:tools/infer/predict_sr.py --sr_image_shape="1,32,128" --rec_algorithm=
 --rec_batch_num:1
 --use_tensorrt:False
 --precision:fp32
---rec_model_dir:
---image_dir:./inference/sr_inference
+--sr_model_dir:
+--image_dir:./inference/rec_inference
 --save_log_path:./test/output/
 --benchmark:True
 null:null

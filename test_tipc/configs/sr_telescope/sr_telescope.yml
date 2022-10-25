@@ -51,7 +51,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSetSR
-    data_dir: ./train_data/TextZoom/train
+    data_dir: ./train_data/TextZoom/test
     transforms:
       - SRResize:
           imgH: 32

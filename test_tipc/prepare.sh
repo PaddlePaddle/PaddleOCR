@@ -150,6 +150,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     # pretrain lite train data
     wget -nc -P  ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
     wget -nc -P ./pretrain_models/  https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
+    cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     if [[ ${model_name} =~ "ch_PP-OCRv2_det" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_PP-OCRv2_det_distill_train.tar && cd ../
@@ -179,7 +180,6 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf table_structure_tablemaster_train.tar  && cd ../
     fi
-    cd ./pretrain_models/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     rm -rf ./train_data/icdar2015
     rm -rf ./train_data/ic15_data
     rm -rf ./train_data/pubtabnet
