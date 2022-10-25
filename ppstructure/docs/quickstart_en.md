@@ -91,9 +91,9 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [inference document](./inference_en.md).
 
 <a name="216"></a>
-#### 2.1.6 layout recovery
+#### 2.1.6 layout recovery(PDF to Word)
 
-Two layout recovery methods are provided,  For detailed usage tutorials, please refer to: [Layout Recovery](../recovery/README.md).
+Two layout recovery methods are provided, For detailed usage tutorials, please refer to: [Layout Recovery](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/recovery/README.md).
 
 - PDF parse
 - OCR
