@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-[English](README.md) | 简体中文
-=======
 [English](README.md) | 简体中文 | [हिन्दी](./doc/doc_i18n/README_हिन्द.md) | [日本語](./doc/doc_i18n/README_日本語.md) | [한국인](./doc/doc_i18n/README_한국어.md) | [Pу́сский язы́к](./doc/doc_i18n/README_Ру́сский_язы́к.md)
->>>>>>> 4d16bf8... update README_Ру́сский_язы́к
 
 <p align="center">
  <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
@@ -31,12 +27,17 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 近期更新
 
+- **💥 直播预告：10.24-10.26日每晚8点半**，PaddleOCR研发团队详解PP-StructureV2优化策略。微信扫描下方二维码，关注公众号并填写问卷后进入官方交流群，获取直播链接与20G重磅OCR学习大礼包（内含PDF转Word应用程序、10种垂类模型、《动手学OCR》电子书等）
+  
+  
+  
 - **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
+  
   - 发布[PP-StructureV2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
   - [版面分析](./ppstructure/layout)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
   - [表格识别](./ppstructure/table)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
   - [关键信息抽取](./ppstructure/kie)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
-
+  
 - **🔥2022.8 发布 [OCR场景应用集合](./applications)**
   - 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
 
