@@ -25,21 +25,30 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
 </div>
 
-## 近期更新
+## 📣 近期更新
 
 - **💥 直播预告：10.24-10.26日每晚8点半**，PaddleOCR研发团队详解PP-StructureV2优化策略。微信扫描下方二维码，关注公众号并填写问卷后进入官方交流群，获取直播链接与20G重磅OCR学习大礼包（内含PDF转Word应用程序、10种垂类模型、《动手学OCR》电子书等）
-  
-  
-  
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/50011306/196944258-0eb82df1-d730-4b96-a350-c1d370fdc2b1.jpg"  width = "150" height = "150" />
+</div>
+
 - **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  
-  - 发布[PP-StructureV2](./ppstructure/)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery)，支持**一行命令完成PDF转Word**；
-  - [版面分析](./ppstructure/layout)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
-  - [表格识别](./ppstructure/table)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
-  - [关键信息抽取](./ppstructure/kie)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
-  
+  - 发布[PP-StructureV2](./ppstructure/README_ch.md)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/recovery/README_ch.md)，支持**一行命令完成PDF转Word**；
+  - [版面分析](./ppstructure/layout/README_ch.md)模型优化：模型存储减少95%，速度提升11倍，平均CPU耗时仅需41ms；
+  - [表格识别](./ppstructure/table/README_ch.md)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
+  - [关键信息抽取](./ppstructure/kie/README_ch.md)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
+
 - **🔥2022.8 发布 [OCR场景应用集合](./applications)**
+
   - 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
+
+
+- **2022.8 新增实现[8种前沿算法](doc/doc_ch/algorithm_overview.md)**
+  - 文本检测：[FCENet](doc/doc_ch/algorithm_det_fcenet.md), [DB++](doc/doc_ch/algorithm_det_db.md)
+  - 文本识别：[ViTSTR](doc/doc_ch/algorithm_rec_vitstr.md), [ABINet](doc/doc_ch/algorithm_rec_abinet.md), [VisionLAN](doc/doc_ch/algorithm_rec_visionlan.md), [SPIN](doc/doc_ch/algorithm_rec_spin.md), [RobustScanner](doc/doc_ch/algorithm_rec_robustscanner.md)
+  - 表格识别：[TableMaster](doc/doc_ch/algorithm_table_master.md)
+
 
 - **2022.5.9 发布 PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
@@ -49,7 +58,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 > [更多](./doc/doc_ch/update.md)
 
-## 特性
+## 🌟 特性
 
 支持多种OCR相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)和[PP-Structure](./ppstructure/README_ch.md)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
@@ -60,25 +69,26 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 > 上述内容的使用方法建议从文档教程中的快速开始体验
 
 
-## 快速开始
+## ⚡ 快速开始
 
 - 在线网站体验：超轻量PP-OCR mobile模型体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 
 <a name="电子书"></a>
-## 《动手学OCR》电子书
-- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
+## 📚《动手学OCR》电子书
+- [《动手学OCR》电子书](./doc/doc_ch/ocr_book.md)
 
 
 <a name="开源社区"></a>
-## 开源社区
-- **项目合作📑：** 如果您是企业开发者且有明确的OCR垂类应用需求，填写[问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)后可免费与官方团队展开不同层次的合作。
-- **加入社区👬：** 微信扫描二维码并填写问卷之后，加入交流群领取福利
-  - **获取PaddleOCR最新发版解说《OCR超强技术详解与产业应用实战》系列直播课回放链接**
-  - **10G重磅OCR学习大礼包：**《动手学OCR》电子书，配套讲解视频和notebook项目；66篇OCR相关顶会前沿论文打包放送，包括CVPR、AAAI、IJCAI、ICCV等；PaddleOCR历次发版直播课视频；OCR社区优秀开发者项目分享视频。
-- **社区项目**🏅️：[社区项目](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。
-- **社区常规赛**🎁：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
+## 👫 开源社区
+- **📑项目合作：** 如果您是企业开发者且有明确的OCR垂类应用需求，填写[问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)后可免费与官方团队展开不同层次的合作。
+- **👫加入社区：** 微信扫描二维码并填写问卷之后，加入交流群领取20G重磅OCR学习大礼包
+  - **包括《动手学OCR》电子书** ，配套讲解视频和notebook项目；PaddleOCR历次发版直播课视频；
+  - **OCR场景应用模型集合：** 包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等垂类模型，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
+  - PDF2Word应用程序；OCR社区优秀开发者项目分享视频。
+- **🏅️社区项目**：[社区项目](./doc/doc_ch/thirdparty.md)文档中包含了社区用户**使用PaddleOCR开发的各种工具、应用**以及**为PaddleOCR贡献的功能、优化的文档与代码**等，是官方为社区开发者打造的荣誉墙，也是帮助优质项目宣传的广播站。  
+- **🎁社区常规赛**：社区常规赛是面向OCR开发者的积分赛事，覆盖文档、代码、模型和应用四大类型，以季度为单位评选并发放奖励，赛题详情与报名方法可参考[链接](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
@@ -87,7 +97,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 
 <a name="模型下载"></a>
-## PP-OCR系列模型列表（更新中）
+## 🛠️ PP-OCR系列模型列表（更新中）
 
 | 模型简介                              | 模型名称                | 推荐场景        | 检测模型                                                     | 方向分类器                                                   | 识别模型                                                     |
 | ------------------------------------- | ----------------------- | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -108,7 +118,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="文档教程"></a>
 
-## 文档教程
+## 📖 文档教程
 
 - [运行环境准备](./doc/doc_ch/environment.md)
 - [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
@@ -174,7 +184,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="效果展示"></a>
 
-## 效果展示 [more](./doc/doc_ch/visualization.md)
+## 👀 效果展示 [more](./doc/doc_ch/visualization.md)
 
 <details open>
 <summary>PP-OCRv3 中文模型</summary>
