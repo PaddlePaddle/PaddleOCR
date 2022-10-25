@@ -1396,7 +1396,7 @@ class VLLabelEncode(BaseRecLabelEncode):
                  max_text_length,
                  character_dict_path=None,
                  use_space_char=False,
-                 lower=True,
+                 lower=False,
                  **kwargs):
         super(VLLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower)
