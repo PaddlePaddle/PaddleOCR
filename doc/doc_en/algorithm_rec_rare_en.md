@@ -25,8 +25,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Models|Backbone Networks|Configuration Files|Avg Accuracy|Download Links|
 | --- | --- | --- | --- | --- |
-|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](../../configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.6%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
-|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](../../configs/rec/rec_mv3_tps_bilstm_att.yml)|82.5%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
+|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](../../configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.60%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
+|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](../../configs/rec/rec_mv3_tps_bilstm_att.yml)|82.50%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
 
 
 <a name="2"></a>

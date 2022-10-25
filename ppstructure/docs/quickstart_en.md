@@ -47,16 +47,10 @@ For more software version requirements, please refer to the instructions in [Ins
 
 ```bash
 # Install paddleocr, version 2.6 is recommended
-pip3 install "paddleocr>=2.6"
+pip3 install "paddleocr>=2.6.0.3"
 
 # Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
 pip3 install paddleclas>=2.4.3
-
-# Install the KIE dependency packages (if you do not use the KIE, you can skip it)
-pip3 install -r kie/requirements.txt
-
-# Install the layout recovery dependency packages (if you do not use the layout recovery, you can skip it)
-pip3 install -r recovery/requirements.txt
 ```
 
 <a name="2"></a>

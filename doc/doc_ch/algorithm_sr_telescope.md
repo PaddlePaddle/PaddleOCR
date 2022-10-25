@@ -27,7 +27,7 @@
 
 |模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
 |---|---|---|---|---|---|
-|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/Telescope_train.tar.gz)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
 
 [TextZoom数据集](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) 来自两个超分数据集RealSR和SR-RAW，两个数据集都包含LR-HR对，TextZoom有17367对训数据和4373对测试数据。
 
@@ -118,8 +118,8 @@ python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=
 ```bibtex
 @INPROCEEDINGS{9578891,
   author={Chen, Jingye and Li, Bin and Xue, Xiangyang},
-  booktitle={2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
-  title={Scene Text Telescope: Text-Focused Scene Image Super-Resolution}, 
+  booktitle={2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  title={Scene Text Telescope: Text-Focused Scene Image Super-Resolution},
   year={2021},
   volume={},
   number={},

@@ -132,10 +132,6 @@ void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
 
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
-  if (resize_w < imgW) {
-    cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0, imgW - resize_w,
-                       cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
-  }
 }
 
 void TableResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
