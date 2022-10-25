@@ -45,6 +45,11 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
 
       this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                               this->is_scale_);
+      if (resize_img.cols < cls_image_shape[2]) {
+        cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
+                           cls_image_shape[2] - resize_img.cols,
+                           cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
+      }
       norm_img_batch.push_back(resize_img);
     }
     std::vector<float> input(batch_num * cls_image_shape[0] *
