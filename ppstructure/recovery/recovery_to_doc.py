@@ -60,9 +60,10 @@ def convert_info_docx(img, res, save_folder, img_name):
         elif region['type'].lower() == 'title':
             doc.add_heading(region['res'][0]['text'])
         elif region['type'].lower() == 'table':
-            parser = HtmlToDocx()
-            parser.table_style = 'TableGrid'
-            parser.handle_table(region['res']['html'], doc)
+            if region['res']:
+                parser = HtmlToDocx()
+                parser.table_style = 'TableGrid'
+                parser.handle_table(region['res']['html'], doc)
         else:
             paragraph = doc.add_paragraph()
             paragraph_format = paragraph.paragraph_format
