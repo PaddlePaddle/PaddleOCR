@@ -34,7 +34,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image
+from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image, get_minarea_rect_crop
 logger = get_logger()
 
 
@@ -80,7 +80,10 @@ class TextSystem(object):
 
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
-            img_crop = get_rotate_crop_image(ori_im, tmp_box)
+            if self.args.det_box_type == "quad":
+                img_crop = get_rotate_crop_image(ori_im, tmp_box)
+            else:
+                img_crop = get_minarea_rect_crop(ori_im, tmp_box)
             img_crop_list.append(img_crop)
         if self.use_angle_cls and cls:
             img_crop_list, angle_list, elapse = self.text_classifier(
