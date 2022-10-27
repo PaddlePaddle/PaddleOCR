@@ -80,7 +80,7 @@ class TextSystem(object):
 
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
-            if args.det_box_type == "quad":
+            if self.args.det_box_type == "quad":
                 img_crop = get_rotate_crop_image(ori_im, tmp_box)
             else:
                 img_crop = get_minarea_rect_crop(ori_im, tmp_box)
