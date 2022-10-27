@@ -438,7 +438,25 @@ inference/ser_vi_layoutxlm/
     └── inference.pdmodel           # inference模型的模型结构文件
 ```
 
-RE任务的动转静过程适配中，敬请期待。
+信息抽取模型中的RE任务转inference模型步骤如下：
+
+``` bash
+# -c 后面设置训练算法的yml配置文件
+# -o 配置可选参数
+# Architecture.Backbone.checkpoints 参数设置待转换的训练模型地址
+# Global.save_inference_dir 参数设置转换的模型将保存的地址
+
+python3 tools/export_model.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/re_vi_layoutxlm_xfund_zh/best_accuracy Global.save_inference_dir=./inference/re_vi_layoutxlm
+```
+
+转换成功后，在目录下有三个文件：
+
+```
+inference/re_vi_layoutxlm/
+    ├── inference.pdiparams         # inference模型的参数文件
+    ├── inference.pdiparams.info    # inference模型的参数信息，可忽略
+    └── inference.pdmodel           # inference模型的模型结构文件
+```
 
 ## 4.2 模型推理
 
@@ -461,6 +479,26 @@ python3 kie/predict_kie_token_ser.py \
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
+VI-LayoutXLM模型基于RE任务进行推理，可以执行如下命令：
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm \
+  --ser_model_dir=../inference/ser_vi_layoutxlm \
+  --use_visual_backbone=False \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+RE可视化结果默认保存到`./output`文件夹里面，结果示例如下：
+
+<div align="center">
+    <img src="../../ppstructure/docs/kie/result_re/zh_val_42_re.jpg" width="800">
+</div>
 
 # 5. FAQ
 
