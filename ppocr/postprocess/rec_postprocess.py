@@ -891,7 +891,7 @@ class VLLabelDecode(BaseRecLabelDecode):
             ) + length[i])].topk(1)[0][:, 0]
             preds_prob = paddle.exp(
                 paddle.log(preds_prob).sum() / (preds_prob.shape[0] + 1e-6))
-            text.append((preds_text, preds_prob.numpy()[0]))
+            text.append((preds_text, float(preds_prob)))
         if label is None:
             return text
         label = self.decode(label)
