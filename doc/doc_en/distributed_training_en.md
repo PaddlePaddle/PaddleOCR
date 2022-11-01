@@ -47,14 +47,14 @@ python3 -m paddle.distributed.launch \
 
 | Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 3x8 GPU training time / Accuracy | Acceleration ratio  |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  260k Chinese dataset | 2.50d/66.7%   | 1.67d/67.0%  | **1.5** |
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  260k Chinese dataset | 2.50d/66.70%   | 1.67d/67.00%  | **1.5** |
 
 
 * We conducted model training on 3x8 V100 GPUs. Accuracy, training time, and multi machine acceleration ratio of different models are shown below.
 
 | Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 3x8 GPU training time / Accuracy | Acceleration ratio  |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SLANet | [SLANet.yml](../../configs/table/SLANet.yml) |  PubTabNet | 49.8h/76.2%   | 19.75h/74.77%  | **2.52** |
+| SLANet | [SLANet.yml](../../configs/table/SLANet.yml) |  PubTabNet | 49.80h/76.20%   | 19.75h/74.77%  | **2.52** |
 
 
     > Note: when training with 3x8 GPUs, the single card batch size is unchanged compared with the 1x8 GPUs' training process, and the learning rate is multiplied by 2 (if it is multiplied by 3 by default, the accuracy is only 73.42%).
@@ -65,4 +65,4 @@ python3 -m paddle.distributed.launch \
 
 | Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 4x8 GPU training time / Accuracy | Acceleration ratio  |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.0%  | **3.5** |
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.00%  | **3.5** |

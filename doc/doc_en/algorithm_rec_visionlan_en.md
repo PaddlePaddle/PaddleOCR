@@ -25,7 +25,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|VisionLAN|ResNet45|[rec_r45_visionlan.yml](../../configs/rec/rec_r45_visionlan.yml)|90.3%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar)|
+|VisionLAN|ResNet45|[rec_r45_visionlan.yml](../../configs/rec/rec_r45_visionlan.yml)|90.30%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar)|
 
 <a name="2"></a>
 ## 2. Environment

@@ -29,7 +29,7 @@ The results of detection and recognition are as follows:
 #### Test environment: NVIDIA Tesla V100-SXM2-16GB
 |PGNetA|det_precision|det_recall|det_f_score|e2e_precision|e2e_recall|e2e_f_score|FPS|download|
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-|Paper|85.30|86.80|86.1|-|-|61.7|38.20 (size=640)|-|
+|Paper|85.30|86.80|86.10|-|-|61.70|38.20 (size=640)|-|
 |Ours|87.03|82.48|84.69|61.71|58.43|60.03|48.73 (size=768)|[download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/pgnet/en_server_pgnetA.tar)|
 
 *note：PGNet in PaddleOCR optimizes the prediction speed, and can significantly improve the end-to-end prediction speed within the acceptable range of accuracy reduction*
