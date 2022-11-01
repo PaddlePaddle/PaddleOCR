@@ -15,7 +15,11 @@
 import json
 import numpy as np
 import scipy.io as io
-import Polygon as plg
+try:
+    import Polygon as plg
+except:
+    check_install("Polygon3")
+    import Polygon as plg
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
 
 

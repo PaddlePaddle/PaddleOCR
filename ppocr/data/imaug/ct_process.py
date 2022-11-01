@@ -19,7 +19,13 @@ import pyclipper
 import paddle
 
 import numpy as np
-import Polygon as plg
+from ppocr.utils.utility import check_install
+try:
+    import Polygon as plg
+except:
+    check_install("Polygon3")
+    import Polygon as plg
+
 import scipy.io as scio
 
 from PIL import Image
