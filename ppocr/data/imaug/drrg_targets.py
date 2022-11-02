@@ -18,6 +18,8 @@ https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/textdet_t
 
 import cv2
 import numpy as np
+from ppocr.utils.utility import check_install
+check_install('lanms', 'lanms-neo')
 from lanms import merge_quadrangle_n9 as la_nms
 from numpy.linalg import norm
 
