@@ -134,21 +134,22 @@ def set_seed(seed=1024):
     paddle.seed(seed)
 
 
-def check_install(module_name):
+def check_install(module_name, install_name):
     spec = importlib.util.find_spec(module_name)
     if spec is None:
         print(f'Warnning! The {module_name} module is NOT installed')
         print(
-            f'Try install {module_name} module automatically. You can also try to install manually.'
+            f'Try install {module_name} module automatically. You can also try to install manually by pip install {install_name}.'
         )
         python = sys.executable
         try:
             subprocess.check_call(
-                [python, '-m', 'pip', 'install', 'requests'],
+                [python, '-m', 'pip', 'install', install_name],
                 stdout=subprocess.DEVNULL)
             print(f'The {module_name} module is now installed')
         except subprocess.CalledProcessError as exc:
-            print(f"Install {module_name} failed, please install manually")
+            raise Exception(
+                f"Install {module_name} failed, please install manually")
     else:
         print(f"{module_name} has been installed.")
 
