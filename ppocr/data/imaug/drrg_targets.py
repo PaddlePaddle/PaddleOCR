@@ -19,8 +19,6 @@ https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/textdet_t
 import cv2
 import numpy as np
 from ppocr.utils.utility import check_install
-check_install('lanms', 'lanms-neo')
-from lanms import merge_quadrangle_n9 as la_nms
 from numpy.linalg import norm
 
 
@@ -545,6 +543,8 @@ class DRRGTargets(object):
 
         score = np.ones((text_comps.shape[0], 1), dtype=np.float32)
         text_comps = np.hstack([text_comps, score])
+        check_install('lanms', 'lanms-neo')
+        from lanms import merge_quadrangle_n9 as la_nms
         text_comps = la_nms(text_comps, self.text_comp_nms_thr)
 
         if text_comps.shape[0] >= 1:

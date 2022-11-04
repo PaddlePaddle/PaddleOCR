@@ -21,9 +21,6 @@ import paddle
 import numpy as np
 from ppocr.utils.utility import check_install
 
-check_install('Polygon', 'Polygon3')
-import Polygon as plg
-
 import scipy.io as scio
 
 from PIL import Image
@@ -74,6 +71,8 @@ class MakeShrink():
         return peri
 
     def shrink(self, bboxes, rate, max_shr=20):
+        check_install('Polygon', 'Polygon3')
+        import Polygon as plg
         rate = rate * rate
         shrinked_bboxes = []
         for bbox in bboxes:
