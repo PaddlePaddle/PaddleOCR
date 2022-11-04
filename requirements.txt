@@ -13,7 +13,7 @@ cython
 lxml
 premailer
 openpyxl
-attrdict
+attrdict3
 Polygon3
 lanms-neo==1.0.2
 PyMuPDF==1.19.0
