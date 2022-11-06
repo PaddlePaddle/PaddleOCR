@@ -4,12 +4,12 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_pp-OCRv2_distillation_fp16_o1_all_matmul_without_conv2d
+  save_model_dir: ./output/o1_log/step1_matmulv2_matmul
   save_epoch_step: 3
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
   pretrained_model:
-  checkpoints: #./output/rec_pp-OCRv2_distillation_fp32/best_accuracy.pdparams
+  checkpoints: #./output/o1_log/step1_matmulv2_matmul/best_accuracy.pdparams
   save_inference_dir:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
@@ -22,7 +22,8 @@ Global:
   use_amp: True
   amp_level: O1
   #amp_custom_black_list: ['depthwise_conv2d','batch_norm','cast','conv2d','full_batch_size_like','hard_swish','matmul','matmul_v2','pool2d','squeeze','transpose']
-  amp_custom_black_list: ['depthwise_conv2d','batch_norm','cast','full_batch_size_like','hard_swish','matmul','matmul_v2','pool2d','squeeze','transpose']
+  #step1:只剩下depthwise_conv2d + matmul + matmul_v2
+  amp_custom_black_list: ['depthwise_conv2d','matmul','matmul_v2']
 
 Optimizer:
   name: Adam

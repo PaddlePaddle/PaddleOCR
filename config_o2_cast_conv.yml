@@ -4,7 +4,7 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/fp16_o2_all_black_with_decorate_without_conv
+  save_model_dir: ./output/o2_step7
   save_epoch_step: 3
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
@@ -21,9 +21,46 @@ Global:
   save_res_path: ./output/rec/predicts_pp-OCRv2_distillation.txt
   use_amp: True
   amp_level: O2
-  #amp_custom_black_list: ['depthwise_conv2d','adam_','squeeze2','elementwise_add','add_n','batch_norm','elementwise_mul','reshape2','cast','check_finite_and_unscale','conv2d','full_batch_size_like','hard_sigmoid','hard_swish','matmul','matmul_v2','multiply','pool2d','relu','reshape','scale','squeeze','transpose','sum','transpose2','adam_','add_n','cast','check_finite_and_unscale','hardsigmoid','scale','fill_constant_batch_size_like']
-  #// O2_step1_without_conv2d
-  amp_custom_black_list: ['depthwise_conv2d','adam_','squeeze2','elementwise_add','add_n','batch_norm','elementwise_mul','reshape2','cast','check_finite_and_unscale','full_batch_size_like','hard_sigmoid','hard_swish','matmul','matmul_v2','multiply','pool2d','relu','reshape','scale','squeeze','transpose','sum','transpose2','adam_','add_n','cast','check_finite_and_unscale','hardsigmoid','scale','fill_constant_batch_size_like']
+#  #amp_custom_black_list: ['depthwise_conv2d','adam_','squeeze2','elementwise_add','add_n','batch_norm','elementwise_mul','reshape2','cast','check_finite_and_unscale','conv2d','full_batch_size_like','hard_sigmoid','hard_swish','matmul','matmul_v2','multiply','pool2d','relu','reshape','scale','squeeze','transpose','sum','transpose2','adam_','add_n','cast','check_finite_and_unscale','hardsigmoid','scale','fill_constant_batch_size_like']
+#  #// O2_step1_without_conv2d
+#  amp_custom_black_list: ['depthwise_conv2d',
+#                          'fill_constant_batch_size_like',
+#                          'full_batch_size_like',
+#                          'cast',
+#                          'transpose',
+#                          'transpose2',
+#                          'squeeze',
+#                          'squeeze2',
+#                          'check_finite_and_unscale',
+#                          'scale',
+#                          'adam_',
+#                          'add_n',
+#                          'depthwise_conv2d',
+#                          'batch_norm',
+#                          'elementwise_mul',
+#                          'hard_sigmoid',
+#                          'hard_swish',
+#                          'matmul',
+#                          'matmul_v2',
+#                          'multiply',
+#                          'pool2d',
+#                          'relu',
+#                          'sum',
+#                          'hardsigmoid']
+#step6
+#  amp_custom_black_list: ['depthwise_conv2d',
+#                          'matmul',
+#                          'matmul_v2',
+#                          'elementwise_add',
+#                          'elementwise_mul',
+#                          'multiply',
+#                          'hard_sigmoid',
+#                          'sum']
+#step7
+  amp_custom_black_list: ['depthwise_conv2d',
+                          'matmul',
+                          'matmul_v2',
+                          'elementwise_add']
 Optimizer:
   name: Adam
   beta1: 0.9
