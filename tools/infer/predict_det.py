@@ -58,6 +58,9 @@ class TextDetector(object):
                 'keep_keys': ['image', 'shape']
             }
         }]
+        if args.det_db_image_shape != "None":
++            pre_process_list[0]['DetResizeForTest']['image_shape'] = [int(v) for v in args.det_db_image_shape.split(",")]
+
         postprocess_params = {}
         if self.det_algorithm == "DB":
             postprocess_params['name'] = 'DBPostProcess'
