@@ -103,7 +103,9 @@ function func_serving(){
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
-            ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
+            #ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
+            ${python_list[0]} ${web_service_py} stop
+            sleep 5s
         else
             server_log_path="${LOG_PATH}/cpp_server_gpu.log"
             web_service_cpp_cmd="nohup ${python_list[0]} ${web_service_py} --model ${det_server_value} ${rec_server_value} ${op_key} ${op_value} ${port_key} ${port_value} ${gpu_key} ${gpu_id} > ${server_log_path} 2>&1 &"
@@ -115,7 +117,8 @@ function func_serving(){
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}" 
             status_check $last_status "${cpp_client_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
-            ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
+            #ps ux | grep -i ${port_value} | awk '{print $2}' | xargs kill -s 9
+            ${python_list[0]} ${web_service_py} stop
         fi
     done
 }
