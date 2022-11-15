@@ -11,9 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from .paddleocr import *
+from .paddle_ocr import *
 
-__version__ = paddleocr.VERSION
+__version__ = paddle_ocr.VERSION
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
     'save_structure_res', 'download_with_progressbar', 'sorted_layout_boxes',

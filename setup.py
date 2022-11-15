@@ -14,7 +14,7 @@
 
 from setuptools import setup
 from io import open
-from paddleocr import VERSION
+from paddle_ocr import VERSION
 
 def load_requirements(file_list=None):
     if file_list is None:
@@ -39,7 +39,7 @@ setup(
     packages=['paddleocr'],
     package_dir={'paddleocr': ''},
     include_package_data=True,
-    entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
+    entry_points={"console_scripts": ["paddleocr= paddleocr.paddle_ocr:main"]},
     version=VERSION,
     install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
     license='Apache License 2.0',
