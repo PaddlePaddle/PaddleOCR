@@ -19,6 +19,9 @@ import cv2
 import random
 import numpy as np
 import paddle
+import importlib.util
+import sys
+import subprocess
 
 
 def print_dict(d, logger, delimiter=0):
@@ -129,6 +132,26 @@ def set_seed(seed=1024):
     random.seed(seed)
     np.random.seed(seed)
     paddle.seed(seed)
+
+
+def check_install(module_name, install_name):
+    spec = importlib.util.find_spec(module_name)
+    if spec is None:
+        print(f'Warnning! The {module_name} module is NOT installed')
+        print(
+            f'Try install {module_name} module automatically. You can also try to install manually by pip install {install_name}.'
+        )
+        python = sys.executable
+        try:
+            subprocess.check_call(
+                [python, '-m', 'pip', 'install', install_name],
+                stdout=subprocess.DEVNULL)
+            print(f'The {module_name} module is now installed')
+        except subprocess.CalledProcessError as exc:
+            raise Exception(
+                f"Install {module_name} failed, please install manually")
+    else:
+        print(f"{module_name} has been installed.")
 
 
 class AverageMeter:
