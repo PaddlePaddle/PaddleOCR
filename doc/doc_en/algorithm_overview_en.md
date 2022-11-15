@@ -3,6 +3,8 @@
 - [1. Two-stage OCR Algorithms](#1)
   - [1.1 Text Detection Algorithms](#11)
   - [1.2 Text Recognition Algorithms](#12)
+  - [1.3 Text Super-Resolution Algorithms](#13)
+  - [1.4 Formula Recognition Algorithm](#14)
 - [2. End-to-end OCR Algorithms](#2)
 - [3. Table Recognition Algorithms](#3)
 - [4. Key Information Extraction Algorithms](#4)
@@ -104,6 +106,36 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
 
+<a name="13"></a>
+
+### 1.3 Text Super-Resolution Algorithms
+
+Supported text super-resolution algorithms (Click the link to get the tutorial):
+- [x]  [Text Gestalt](./algorithm_sr_gestalt.md)
+- [x]  [Text Telescope](./algorithm_sr_telescope.md)
+
+On the TextZoom public dataset, the effect of the algorithm is as follows:
+
+|Model|Backbone|PSNR_Avg|SSIM_Avg|Config|Download link|
+|---|---|---|---|---|---|
+|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](../../configs/sr/sr_tsrn_transformer_strock.yml)|[trained model](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[trained model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+
+<a name="14"></a>
+
+### 1.4 Formula Recognition Algorithm
+
+Supported formula recognition algorithms (Click the link to get the tutorial):
+
+- [x]  [CAN](./algorithm_rec_can.md.md)
+
+On the CROHME handwritten formula dataset, the effect of the algorithm is as follows:
+
+|Model    |Backbone|Config|ExpRate|Download link|
+| ----- | ----- | ----- | ----- | ----- |
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
+
+
 <a name="2"></a>
 
 ## 2. End-to-end OCR Algorithms
@@ -122,7 +154,7 @@ On the PubTabNet dataset, the algorithm result is as follows:
 
 |Model|Backbone|Config|Acc|Download link|
 |---|---|---|---|---|
-|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
 
 
 <a name="4"></a>
