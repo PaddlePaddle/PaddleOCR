@@ -3,6 +3,8 @@
 - [1. 两阶段OCR算法](#1)
   - [1.1 文本检测算法](#11)
   - [1.2 文本识别算法](#12)
+  - [1.3 文本超分辨率算法](#13)
+  - [1.4 公式识别算法](#14)
 - [2. 端到端OCR算法](#2)
 - [3. 表格识别算法](#3)
 - [4. 关键信息抽取算法](#4)
@@ -106,6 +108,34 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
+
+
+<a name="13"></a>
+
+### 1.3 文本超分辨率算法
+已支持的文本超分辨率算法列表（戳链接获取使用教程）：
+- [x]  [Text Gestalt](./algorithm_sr_gestalt.md)
+- [x]  [Text Telescope](./algorithm_sr_telescope.md)
+
+在TextZoom公开数据集上，算法效果如下：
+
+|模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
+|---|---|---|---|---|---|
+|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](../../configs/sr/sr_tsrn_transformer_strock.yml)|[训练模型](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+
+<a name="14"></a>
+
+### 1.4 公式识别算法
+
+已支持的公式识别算法列表（戳链接获取使用教程）：
+- [x]  [CAN](./algorithm_rec_can.md.md)
+
+在CROHME手写公式数据集上，算法效果如下：
+
+|模型    |骨干网络|配置文件|ExpRate|下载链接|
+| ----- | ----- | ----- | ----- | ----- |
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
 
 <a name="2"></a>
 
