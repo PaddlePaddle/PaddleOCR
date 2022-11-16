@@ -79,7 +79,7 @@ class TextSystem(object):
         dt_boxes = sorted_boxes(dt_boxes)
 
         for bno in range(len(dt_boxes)):
-            tmp_box = copy.deepcopy(dt_boxes[bno])
+            tmp_box = np.float32(copy.deepcopy(dt_boxes[bno]))
             if self.args.det_box_type == "quad":
                 img_crop = get_rotate_crop_image(ori_im, tmp_box)
             else:
