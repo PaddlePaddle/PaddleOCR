@@ -436,7 +436,7 @@ class ArgsParser(ArgumentParser):
         return v
 
     def _parse_opt(self, opts, conf_path):
-        f = open(conf_path)
+        f = open(conf_path, encoding='utf-8')
         config = yaml.load(f, Loader=yaml.Loader)
         if not opts:
             return config
