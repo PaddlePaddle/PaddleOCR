@@ -229,7 +229,8 @@ def main(args):
 
         if args.recovery and args.use_pdf2docx_api and flag_pdf:
             from pdf2docx.converter import Converter
-            docx_file = os.path.join(args.output, '{}.docx'.format(img_name))
+            docx_file = os.path.join(args.output,
+                                     '{}_api.docx'.format(img_name))
             cv = Converter(image_file)
             cv.convert(docx_file)
             cv.close()
