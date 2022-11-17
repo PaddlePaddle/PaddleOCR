@@ -278,8 +278,6 @@ class HtmlToDocx(HTMLParser):
                 cell_col += colspan
             cell_row += 1
 
-        doc.save('1.docx')
-
     def handle_data(self, data):
         if self.skip:
             return
