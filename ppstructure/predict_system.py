@@ -229,6 +229,7 @@ def main(args):
 
         if args.recovery and args.use_pdf2docx_api and flag_pdf:
             from pdf2docx.converter import Converter
+            os.makedirs(args.output, exist_ok=True)
             docx_file = os.path.join(args.output,
                                      '{}_api.docx'.format(img_name))
             cv = Converter(image_file)
