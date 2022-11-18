@@ -1,12 +1,16 @@
 # E-book: *Dive Into OCR*
 
-"Dive Into OCR" is a textbook that combines OCR theory and practice, written by the PaddleOCR team, Chen Zhineng, a Pre-tenure Professor at Fudan University, Huang Wenhui, a senior expert in the field of vision at China Mobile Research Institute, and other industry-university-research colleagues, as well as OCR developers. The main features are as follows:
+"Dive Into OCR" is a textbook that combines OCR theory and practice, written by the PaddleOCR community. The main features are as follows:
 
 - OCR full-stack technology covering text detection, recognition and document analysis
 - Closely integrate theory and practice, cross the code implementation gap, and supporting instructional videos
 - Jupyter Notebook textbook, flexibly modifying code for instant results
 
 ## Structure
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/50011306/187578511-9f3c351e-b68c-4359-a6e5-475810993c61.png"  width = "500" />
+</div>
 
 - The first part is the preliminary knowledge of the book, including the knowledge index and resource links needed in the process of positioning and using the book content of the book
 
@@ -16,6 +20,11 @@
 
 
 ## Address
-- [E-book: *Dive Into OCR* (link generating)]()
-- [Jupyter notebook](../../notebook/notebook_en/)
-- [videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
+- [E-book: *Dive Into OCR* (PDF)](https://paddleocr.bj.bcebos.com/ebook/Dive_into_OCR.pdf)
+- [Notebook (.ipynb)](https://github.com/PaddleOCR-Community/Dive-into-OCR)
+- [Videos (Chinese only)](https://aistudio.baidu.com/aistudio/education/group/info/25207)
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l7h1cua5ayvgmb8r958l" alt="trackgit-views" />
+</a>
+
