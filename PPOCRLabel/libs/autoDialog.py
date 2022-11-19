@@ -51,7 +51,7 @@ class Worker(QThread):
                         pass
                     else:
                         strs = ''
-                        for res in self.result_dic:
+                        for res in self.result_dic[0]:
                             chars = res[1][0]
                             cond = res[1][1]
                             posi = res[0]

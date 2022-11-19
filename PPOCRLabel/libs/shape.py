@@ -239,7 +239,7 @@ class Shape(object):
         self._highlightIndex = None
 
     def copy(self):
-        shape = Shape("%s" % self.label)
+        shape = Shape("%s" % self.label[0])
         shape.points = [p for p in self.points]
         shape.center = self.center
         shape.direction = self.direction
