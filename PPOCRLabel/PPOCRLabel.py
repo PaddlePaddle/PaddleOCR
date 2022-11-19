@@ -1097,8 +1097,8 @@ class MainWindow(QMainWindow):
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
         shape.paintIdx = self.displayIndexOption.isChecked()
-
-        item = HashableQListWidgetItem(shape.label)
+        # check shape label tpye, tuple or str
+        item = HashableQListWidgetItem(label2str(shape.label))
         # current difficult checkbox is disenble
         # item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
         # item.setCheckState(Qt.Unchecked) if shape.difficult else item.setCheckState(Qt.Checked)

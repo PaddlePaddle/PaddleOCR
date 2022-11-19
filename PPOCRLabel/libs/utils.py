@@ -324,3 +324,16 @@ def keysInfo(lang='en'):
               "Notice:For Mac users, use the 'Command' key instead of the 'Ctrl' key"
 
     return msg
+def label2str(label):
+    """
+    convert label to str
+    Args:
+        label:
+
+    Returns:
+
+    """
+    if isinstance(label, str):
+        return label
+    else:
+        return label[0]

@@ -17,7 +17,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, QPointF, QPoint
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPixmap
 from PyQt5.QtWidgets import QWidget, QMenu, QApplication
 from libs.shape import Shape
-from libs.utils import distance
+from libs.utils import distance, label2str
 
 CURSOR_DEFAULT = Qt.ArrowCursor
 CURSOR_POINT = Qt.PointingHandCursor
@@ -237,7 +237,7 @@ class Canvas(QWidget):
                     self.hShape.highlightClear()
                 self.hVertex, self.hShape = None, shape
                 self.setToolTip(
-                    "Click & drag to move shape '%s'" % shape.label)
+                    "Click & drag to move shape '%s'" % label2str(shape.label))
                 self.setStatusTip(self.toolTip())
                 self.overrideCursor(CURSOR_GRAB)
                 self.update()
