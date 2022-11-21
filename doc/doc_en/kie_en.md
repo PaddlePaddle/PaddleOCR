@@ -457,14 +457,31 @@ inference/ser_vi_layoutxlm/
     └── inference.pdmodel           # The program file of recognition
 ```
 
-Export of RE model is also in adaptation.
+The RE model can be converted to the inference model using the following command.
 
+
+```bash
+# -c Set the training algorithm yml configuration file.
+# -o Set optional parameters.
+# Architecture.Backbone.checkpoints Set the training model address.
+# Global.save_inference_dir Set the address where the converted model will be saved.
+python3 tools/export_model.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./output/re_vi_layoutxlm_xfund_zh/best_accuracy Global.save_inference_dir=./inference/re_vi_layoutxlm
+```
+
+After the conversion is successful, there are three files in the model save directory:
+
+```
+inference/re_vi_layoutxlm/
+    ├── inference.pdiparams         # The parameter file of recognition inference model
+    ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
+    └── inference.pdmodel           # The program file of recognition
+```
 ## 4.2 Model inference
 
 The VI layoutxlm model performs reasoning based on the ser task, and can execute the following commands:
 
 
-Using the following command to infer the VI-LayoutXLM model.
+Using the following command to infer the VI-LayoutXLM SER model.
 
 ```bash
 cd ppstructure
@@ -483,6 +500,26 @@ The visualized result will be saved in `./output`, which is shown as follows.
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
+Using the following command to infer the VI-LayoutXLM RE model.
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm \
+  --ser_model_dir=../inference/ser_vi_layoutxlm \
+  --use_visual_backbone=False \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+The visualized result will be saved in `./output`, which is shown as follows.
+
+<div align="center">
+    <img src="../../ppstructure/docs/kie/result_re/zh_val_42_re.jpg" width="800">
+</div>
 
 # 5. FAQ
 
