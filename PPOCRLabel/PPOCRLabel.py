@@ -1177,7 +1177,7 @@ class MainWindow(QMainWindow):
             # print('rm empty label')
             return
         item = self.shapesToItems[shape]
-        item.setText(shape.label[0])
+        item.setText(shape.label)
         self.updateComboBox()
 
         # ADD:
@@ -1617,8 +1617,9 @@ class MainWindow(QMainWindow):
                 key_cls = 'None' if not self.kie_mode else box.get('key_cls', 'None')
                 shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
-        self.loadLabels(shapes)
-        self.canvas.verified = False
+        if shapes != []:
+            self.loadLabels(shapes)
+            self.canvas.verified = False
 
     def validFilestate(self, filePath):
         if filePath not in self.fileStatedict.keys():
@@ -2203,7 +2204,7 @@ class MainWindow(QMainWindow):
                     msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                     QMessageBox.information(self, "Information", msg)
                     return
-                result = self.ocr.ocr(img_crop, cls=True, det=False)
+                result = self.ocr.ocr(img_crop, cls=True, det=False)[0]
                 if result[0][0] != '':
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
@@ -2264,7 +2265,7 @@ class MainWindow(QMainWindow):
                 msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                 QMessageBox.information(self, "Information", msg)
                 return
-            result = self.ocr.ocr(img_crop, cls=True, det=False)
+            result = self.ocr.ocr(img_crop, cls=True, det=False)[0]
             if result[0][0] != '':
                 result.insert(0, box)
                 print('result in reRec is ', result)
@@ -2415,12 +2416,12 @@ class MainWindow(QMainWindow):
             # merge the text result in the cell
             texts = ''
             probs = 0. # the probability of the cell is avgerage prob of every text box in the cell
-            bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)
+            bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)[0]
             if len(bboxes) > 0:
                 bboxes.reverse() # top row text at first
                 for _bbox in bboxes:
                     patch = get_rotate_crop_image(img_crop, np.array(_bbox, np.float32))
-                    rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)
+                    rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)[0]
                     text = rec_res[0][0]
                     if text != '':
                         texts += text + ('' if text[0].isalpha() else ' ') # add space between english word

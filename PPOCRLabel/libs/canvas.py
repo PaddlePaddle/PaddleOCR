@@ -237,7 +237,7 @@ class Canvas(QWidget):
                     self.hShape.highlightClear()
                 self.hVertex, self.hShape = None, shape
                 self.setToolTip(
-                    "Click & drag to move shape '%s'" % shape.label[0])
+                    "Click & drag to move shape '%s'" % shape.label)
                 self.setStatusTip(self.toolTip())
                 self.overrideCursor(CURSOR_GRAB)
                 self.update()
