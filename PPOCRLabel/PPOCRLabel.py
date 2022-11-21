@@ -2265,7 +2265,7 @@ class MainWindow(QMainWindow):
                 msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                 QMessageBox.information(self, "Information", msg)
                 return
-            result = self.ocr.ocr(img_crop, cls=True, det=False)[0] #[[('口服带释剂型', 0.9397498965263367)]]
+            result = self.ocr.ocr(img_crop, cls=True, det=False)[0]
             if result[0][0] != '':
                 result.insert(0, box)
                 print('result in reRec is ', result)
