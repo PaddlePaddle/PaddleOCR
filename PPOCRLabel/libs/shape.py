@@ -17,7 +17,7 @@ import sys
 
 from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QColor, QPen, QPainterPath, QFont
-from libs.utils import distance
+from libs.utils import distance, label2str
 
 DEFAULT_LINE_COLOR = QColor(0, 255, 0, 128)
 DEFAULT_FILL_COLOR = QColor(255, 0, 0, 128)
@@ -239,7 +239,7 @@ class Shape(object):
         self._highlightIndex = None
 
     def copy(self):
-        shape = Shape("%s" % self.label[0])
+        shape = Shape("%s" % label2str(self.label))
         shape.points = [p for p in self.points]
         shape.center = self.center
         shape.direction = self.direction
