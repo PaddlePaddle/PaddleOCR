@@ -7,7 +7,7 @@ tqdm
 numpy
 visualdl
 rapidfuzz
-opencv-python
+opencv-python-headless
 opencv-contrib-python
 cython
 lxml
