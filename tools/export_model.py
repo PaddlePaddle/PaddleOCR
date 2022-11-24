@@ -105,6 +105,12 @@ def export_single_model(model,
                 shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == 'SATRN':
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 32, 100], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "VisionLAN":
         other_shape = [
             paddle.static.InputSpec(
