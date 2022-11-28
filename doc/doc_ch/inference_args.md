@@ -70,7 +70,7 @@ SAST算法相关参数如下
 | :--: | :--: | :--: | :--: |
 |  det_sast_score_thresh | float | 0.5 | SAST后处理中的得分阈值 |
 |  det_sast_nms_thresh | float | 0.5 | SAST后处理中nms的阈值 |
-|  det_sast_polygon | bool | False | 是否多边形检测，弯曲文本场景（如Total-Text）设置为True |
+|  det_box_type | str | quad | 是否多边形检测，弯曲文本场景（如Total-Text）设置为'poly' |
 
 PSE算法相关参数如下
 
@@ -79,7 +79,7 @@ PSE算法相关参数如下
 |  det_pse_thresh | float | 0.0 | 对输出图做二值化的阈值 |
 |  det_pse_box_thresh | float | 0.85 | 对box进行过滤的阈值，低于此阈值的丢弃 |
 |  det_pse_min_area | float | 16 | box的最小面积，低于此阈值的丢弃 |
-|  det_pse_box_type | str | "box" | 返回框的类型，box:四点坐标，poly: 弯曲文本的所有点坐标 |
+|  det_box_type | str | "quad" | 返回框的类型，quad:四点坐标，poly: 弯曲文本的所有点坐标 |
 |  det_pse_scale | int | 1 | 输入图像相对于进后处理的图的比例，如`640*640`的图像，网络输出为`160*160`，scale为2的情况下，进后处理的图片shape为`320*320`。这个值调大可以加快后处理速度，但是会带来精度的下降 |
 
 * 文本识别模型相关

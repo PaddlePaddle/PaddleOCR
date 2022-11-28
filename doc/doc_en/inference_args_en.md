@@ -70,7 +70,7 @@ The relevant parameters of the SAST algorithm are as follows
 | :--: | :--: | :--: | :--: |
 |  det_sast_score_thresh | float | 0.5 | Score thresholds in SAST postprocess |
 |  det_sast_nms_thresh | float | 0.5 | Thresholding of nms in SAST postprocess |
-|  det_sast_polygon | bool | False | Whether polygon detection, curved text scene (such as Total-Text) is set to True |
+|  det_box_type | str | 'quad' | Whether polygon detection, curved text scene (such as Total-Text) is set to 'poly' |
 
 The relevant parameters of the PSE algorithm are as follows
 
@@ -79,7 +79,7 @@ The relevant parameters of the PSE algorithm are as follows
 |  det_pse_thresh | float | 0.0 | Threshold for binarizing the output image |
 |  det_pse_box_thresh | float | 0.85 | Threshold for filtering boxes, below this threshold is discarded |
 |  det_pse_min_area | float | 16 | The minimum area of the box, below this threshold is discarded |
-|  det_pse_box_type | str | "box" | The type of the returned box, box: four point coordinates, poly: all point coordinates of the curved text |
+|  det_box_type | str | "quad" | The type of the returned box, quad: four point coordinates, poly: all point coordinates of the curved text |
 |  det_pse_scale | int | 1 | The ratio of the input image relative to the post-processed image, such as an image of `640*640`, the network output is `160*160`, and when the scale is 2, the shape of the post-processed image is `320*320`. Increasing this value can speed up the post-processing speed, but it will bring about a decrease in accuracy |
 
 * Text recognition model related parameters
