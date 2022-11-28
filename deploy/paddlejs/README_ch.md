@@ -29,3 +29,7 @@
 <div align="center">
     <img src="https://user-images.githubusercontent.com/26592129/197918203-c7d46f8a-75d4-47f9-9687-405ee0d6727e.gif" width="800">
 </div>
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lb0jzfbyyttdxne1imal" alt="trackgit-views" />
+</a>
