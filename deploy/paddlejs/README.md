@@ -24,3 +24,7 @@ Run OCR demo in wechat miniprogram refer to [tutorial](https://github.com/Paddle
 <div align="center">
     <img src="./paddlejs_demo.gif" width="800">
 </div>
+
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lb0jygcawaxcrq8cb8rl" alt="trackgit-views" />
+</a>
