@@ -368,7 +368,7 @@ elif [ ${MODE} = "whole_infer" ];then
     python_name_list=$(func_parser_value "${lines[2]}")
     array=(${python_name_list}) 
     python_name=${array[0]}
-    ${python_name} -m pip install paddleslim --force-reinstall
+    ${python_name} -m pip install paddleslim
     ${python_name} -m pip install -r requirements.txt
     wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
     wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar --no-check-certificate
