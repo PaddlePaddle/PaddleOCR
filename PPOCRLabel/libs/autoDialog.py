@@ -40,7 +40,7 @@ class Worker(QThread):
                     if self.model == 'paddle':
                         h, w, _ = cv2.imdecode(np.fromfile(Imgpath, dtype=np.uint8), 1).shape
                         if h > 32 and w > 32:
-                            self.result_dic = self.ocr.ocr(Imgpath, cls=True, det=True)
+                            self.result_dic = self.ocr.ocr(Imgpath, cls=True, det=True)[0]
                         else:
                             print('The size of', Imgpath, 'is too small to be recognised')
                             self.result_dic = None

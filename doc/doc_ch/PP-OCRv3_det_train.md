@@ -1,14 +1,16 @@
+[English](../doc_en/PP-OCRv3_det_train_en.md) | 简体中文
+
 
 # PP-OCRv3 文本检测模型训练
 
 - [1. 简介](#1)
-- [2. PPOCRv3检测训练](#2)
-- [3. 基于PPOCRv3检测的finetune训练](#3)
+- [2. PP-OCRv3检测训练](#2)
+- [3. 基于PP-OCRv3检测的finetune训练](#3)
 
 <a name="1"></a>
 ## 1. 简介
 
-PP-OCRv3在PP-OCRv2的基础上进一步升级。本节介绍PP-OCRv3检测模型的训练步骤。有关PPOCRv3策略介绍参考[文档](./PP-OCRv3_introduction.md)。
+PP-OCRv3在PP-OCRv2的基础上进一步升级。本节介绍PP-OCRv3检测模型的训练步骤。有关PP-OCRv3策略介绍参考[文档](./PP-OCRv3_introduction.md)。
 
 
 <a name="2"></a>
@@ -55,10 +57,10 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 
 训练过程中保存的模型在output目录下，包含以下文件：
 ```
-best_accuracy.states    
+best_accuracy.states  
 best_accuracy.pdparams  # 默认保存最优精度的模型参数
 best_accuracy.pdopt     # 默认保存最优精度的优化器相关参数
-latest.states    
+latest.states  
 latest.pdparams  # 默认保存的最新模型参数
 latest.pdopt     # 默认保存的最新模型的优化器相关参数
 ```
@@ -145,19 +147,19 @@ paddle.save(s_params, "./pretrain_models/cml_student.pdparams")
 
 
 <a name="3"></a>
-## 3. 基于PPOCRv3检测finetune训练
+## 3. 基于PP-OCRv3检测finetune训练
 
-本节介绍如何使用PPOCRv3检测模型在其他场景上的finetune训练。
+本节介绍如何使用PP-OCRv3检测模型在其他场景上的finetune训练。
 
 finetune训练适用于三种场景：
-- 基于CML蒸馏方法的finetune训练，适用于教师模型在使用场景上精度高于PPOCRv3检测模型，且希望得到一个轻量检测模型。
-- 基于PPOCRv3轻量检测模型的finetune训练，无需训练教师模型，希望在PPOCRv3检测模型基础上提升使用场景上的精度。
+- 基于CML蒸馏方法的finetune训练，适用于教师模型在使用场景上精度高于PP-OCRv3检测模型，且希望得到一个轻量检测模型。
+- 基于PP-OCRv3轻量检测模型的finetune训练，无需训练教师模型，希望在PP-OCRv3检测模型基础上提升使用场景上的精度。
 - 基于DML蒸馏方法的finetune训练，适用于采用DML方法进一步提升精度的场景。
 
 
 **基于CML蒸馏方法的finetune训练**
 
-下载PPOCRv3训练模型：
+下载PP-OCRv3训练模型：
 ```
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
 tar xf ch_PP-OCRv3_det_distill_train.tar
@@ -177,10 +179,10 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs
        Global.save_model_dir=./output/
 ```
 
-**基于PPOCRv3轻量检测模型的finetune训练**
+**基于PP-OCRv3轻量检测模型的finetune训练**
 
 
-下载PPOCRv3训练模型，并提取Student结构的模型参数：
+下载PP-OCRv3训练模型，并提取Student结构的模型参数：
 ```
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
 tar xf ch_PP-OCRv3_det_distill_train.tar
@@ -248,5 +250,3 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
        Architecture.Models.Student2.pretrained=./teacher \
        Global.save_model_dir=./output/
 ```
-
-

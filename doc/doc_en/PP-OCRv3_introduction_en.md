@@ -65,6 +65,7 @@ The ablation experiments are as follows:
 
 Testing environment: Intel Gold 6148 CPU, with MKLDNN acceleration enabled during inference.
 
+The training steps of PP-OCRv3 detection model refer to [tutorial](./PP-OCRv3_det_train_en.md)
 
 **(1) LK-PAN: A PAN structure with large receptive field**
 

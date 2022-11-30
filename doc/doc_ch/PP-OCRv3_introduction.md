@@ -63,6 +63,8 @@ PP-OCRv3检测模型是对PP-OCRv2中的[CML](https://arxiv.org/pdf/2109.03144.p
 
 测试环境： Intel Gold 6148 CPU，预测时开启MKLDNN加速。
 
+PP-OCRv3检测模型训练步骤参考[文档](./PP-OCRv3_det_train.md)
+
 **（1）LK-PAN：大感受野的PAN结构**
 
 LK-PAN (Large Kernel PAN) 是一个具有更大感受野的轻量级[PAN](https://arxiv.org/pdf/1803.01534.pdf)结构，核心是将PAN结构的path augmentation中卷积核从`3*3`改为`9*9`。通过增大卷积核，提升特征图每个位置覆盖的感受野，更容易检测大字体的文字以及极端长宽比的文字。使用LK-PAN结构，可以将教师模型的hmean从83.2%提升到85.0%。
