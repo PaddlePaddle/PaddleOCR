@@ -31,7 +31,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
   - 发布OCR场景应用集合，包含数码管、液晶屏、车牌、高精度SVTR模型等**7个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
   
 - **🔥2022.5.9 发布PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
-    - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
+    - 发布[PP-OCRv3](./doc/doc_ch/ppocr_introduction.md#pp-ocrv3)：速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
     - 发布半自动标注工具[PPOCRLabelv2](./PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
     - 发布OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求；
     - 发布交互式OCR开源电子书[《动手学OCR》](./doc/doc_ch/ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。

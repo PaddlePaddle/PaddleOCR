@@ -8,10 +8,10 @@
 
 ###  PaddleOCR
 
-克隆PaddleOCR的仓库，使用release/2.4分支，并进行安装，由于PaddleOCR仓库比较大，git clone速度比较慢，所以本教程已下载
+克隆PaddleOCR的仓库，使用release/2.5分支，并进行安装，由于PaddleOCR仓库比较大，git clone速度比较慢，所以本教程已下载
 
 ```
-git clone  -b release/2.4 https://github.com/PaddlePaddle/PaddleOCR.git
+git clone  -b release/2.5 https://github.com/PaddlePaddle/PaddleOCR.git
 cd PaddleOCR && python3.7 setup.py install
 ```
 
