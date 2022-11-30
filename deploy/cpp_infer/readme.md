@@ -158,7 +158,7 @@ build/paddle_inference_install_dir/
 <a name="21"></a>
 ### 2.1 Export the inference model
 
-* You can refer to [Model inference](../../doc/doc_ch/inference.md) and export the inference model. After the model is exported, assuming it is placed in the `inference` directory, the directory structure is as follows.
+* You can refer to [Model inference](../../doc/doc_en/inference_en.md) and export the inference model. After the model is exported, assuming it is placed in the `inference` directory, the directory structure is as follows.
 
 ```
 inference/
