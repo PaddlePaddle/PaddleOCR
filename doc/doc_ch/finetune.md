@@ -137,7 +137,7 @@ Train:
 ```
 
 
-上述配置文件中，首先需要将`pretrained_model`字段指定为2.2章节中解压得到的`ch_PP-OCRv3_rec_train/best_accuracy.pdparams`文件路径。
+上述配置文件中，首先需要将`pretrained_model`字段指定为3.2章节中解压得到的`ch_PP-OCRv3_rec_train/best_accuracy.pdparams`文件路径。
 
 PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*128=1024`）、且没有加载预训练模型情况下的配置文件，因此您的场景中，学习率与总的batch size需要对应线性调整，例如：
 
