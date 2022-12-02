@@ -17,6 +17,8 @@ import logging
 import numpy as np
 import cv2
 import base64
+from io import BytesIO
+from PIL import Image
 # from paddle_serving_app.reader import OCRReader
 from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
@@ -35,6 +37,19 @@ class RecOp(Op):
         raw_im = base64.b64decode(input_dict["image"].encode('utf8'))
         data = np.fromstring(raw_im, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
+        if(im is None):
+            buf = BytesIO()
+            image_decode = base64.b64decode(data["img"].encode())
+            image=BytesIO(image_decode)
+            im = Image.open(image)
+            rgb = im.convert('RGB')      #灰度转RGB
+            rgb.save(buf, 'jpeg')
+            buf.seek(0)
+            image_bytes = buf.read()
+            data_base64=str(base64.b64encode(image_bytes),encoding="utf-8")
+            image_decode = base64.b64decode(data_base64)
+            img_array = np.frombuffer(image_decode, np.uint8)
+            im = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
         feed_list = []
         max_wh_ratio = 0
         ## Many mini-batchs, the type of feed_data is list.
