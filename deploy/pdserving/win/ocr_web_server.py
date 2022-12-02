@@ -17,6 +17,7 @@ import cv2
 import sys
 import numpy as np
 import os
+from io import BytesIO
 from paddle_serving_client import Client
 from paddle_serving_app.reader import Sequential, URL2Image, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
@@ -52,6 +53,19 @@ class OCRService(WebService):
         data = base64.b64decode(feed[0]["image"].encode('utf8'))
         data = np.fromstring(data, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
+        if(im is None):
+            buf = BytesIO()
+            image_decode = base64.b64decode(data["img"].encode())
+            image=BytesIO(image_decode)
+            im = Image.open(image)
+            rgb = im.convert('RGB')
+            rgb.save(buf, 'jpeg')
+            buf.seek(0)
+            image_bytes = buf.read()
+            data_base64=str(base64.b64encode(image_bytes),encoding="utf-8")
+            image_decode = base64.b64decode(data_base64)
+            img_array = np.frombuffer(image_decode, np.uint8)
+            im = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
         ori_h, ori_w, _ = im.shape
         det_img = self.det_preprocess(im)
         _, new_h, new_w = det_img.shape
