@@ -172,7 +172,8 @@ Wherein, the format of `config.json` is as follows:
         "ocr_system": {
             "init_args": {
                 "version": "1.0.0",
-                "use_gpu": true
+                "use_gpu": true,
+                "enable_mkldnn": false
             },
             "predict_args": {
             }
