@@ -294,7 +294,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls tru
 
 ## 3 自定义模型
 
-当内置模型无法满足需求时，需要使用到自己训练的模型。 首先，参照[inference.md](./inference.md) 第一节转换将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
+当内置模型无法满足需求时，需要使用到自己训练的模型。 首先，参照[模型导出](./detection.md#4-模型导出与预测)将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
 
 ### 3.1 代码使用
 
