@@ -39,7 +39,7 @@ class RecOp(Op):
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
         if(im is None):
             buf = BytesIO()
-            image_decode = base64.b64decode(data["img"].encode())
+            image_decode = base64.b64decode(input_dict["image"].encode())
             image=BytesIO(image_decode)
             im = Image.open(image)
             rgb = im.convert('RGB')      #灰度转RGB
