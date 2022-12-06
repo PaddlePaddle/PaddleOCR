@@ -308,7 +308,7 @@ void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
   std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
   if (ocr_result.size() > 0) {
     for (int i = 0; i < ocr_result.size() - 1; i++) {
-      for (int j = i; j > 0; j--) {
+      for (int j = i; j >= 0; j--) {
         if (abs(ocr_result[j + 1].box[0][1] - ocr_result[j].box[0][1]) < 10 &&
             (ocr_result[j + 1].box[0][0] < ocr_result[j].box[0][0])) {
           std::swap(ocr_result[i], ocr_result[i + 1]);
