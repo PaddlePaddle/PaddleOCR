@@ -26,6 +26,9 @@ import cv2
 import logging
 import numpy as np
 from pathlib import Path
+import base64
+from io import BytesIO
+from PIL import Image
 
 tools = importlib.import_module('.', 'tools')
 ppocr = importlib.import_module('.', 'ppocr')
@@ -431,7 +434,25 @@ def check_img(img):
         img, flag_gif, flag_pdf = check_and_read(image_file)
         if not flag_gif and not flag_pdf:
             with open(image_file, 'rb') as f:
-                img = img_decode(f.read())
+                img_str = f.read()
+                img = img_decode(img_str)
+            if img is None:
+                try:
+                    buf = BytesIO()
+                    image = BytesIO(img_str)
+                    im = Image.open(image)
+                    rgb = im.convert('RGB')
+                    rgb.save(buf, 'jpeg')
+                    buf.seek(0)
+                    image_bytes = buf.read()
+                    data_base64 = str(base64.b64encode(image_bytes),
+                                      encoding="utf-8")
+                    image_decode = base64.b64decode(data_base64)
+                    img_array = np.frombuffer(image_decode, np.uint8)
+                    img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                except:
+                    logger.error("error in loading image:{}".format(image_file))
+                    return None
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
             return None
