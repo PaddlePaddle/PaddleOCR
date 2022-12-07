@@ -17,7 +17,6 @@ import paddle
 from paddle import nn
 import paddle.nn.functional as F
 from paddle.nn import LayerList
-# from paddle.nn.initializer import XavierNormal as xavier_uniform_
 from paddle.nn import Dropout, Linear, LayerNorm
 import numpy as np
 from ppocr.modeling.backbones.rec_svtrnet import Mlp, zeros_, ones_
@@ -30,7 +29,6 @@ class Transformer(nn.Layer):
     Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Lukasz Kaiser, and
     Illia Polosukhin. 2017. Attention is all you need. In Advances in Neural Information
     Processing Systems, pages 6000-6010.
-
     Args:
         d_model: the number of expected features in the encoder/decoder inputs (default=512).
         nhead: the number of heads in the multiheadattention models (default=8).
@@ -162,7 +160,7 @@ class Transformer(nn.Layer):
             memory = src
         dec_seq = paddle.full((bs, 1), 2, dtype=paddle.int64)
         dec_prob = paddle.full((bs, 1), 1., dtype=paddle.float32)
-        for len_dec_seq in range(1, self.max_len):
+        for len_dec_seq in range(1, paddle.to_tensor(self.max_len)):
             dec_seq_embed = self.embedding(dec_seq)
             dec_seq_embed = self.positional_encoding(dec_seq_embed)
             tgt_mask = self.generate_square_subsequent_mask(
@@ -304,7 +302,7 @@ class Transformer(nn.Layer):
             inst_idx_to_position_map = get_inst_idx_to_tensor_position_map(
                 active_inst_idx_list)
             # Decode
-            for len_dec_seq in range(1, self.max_len):
+            for len_dec_seq in range(1, paddle.to_tensor(self.max_len)):
                 src_enc_copy = src_enc.clone()
                 active_inst_idx_list = beam_decode_step(
                     inst_dec_beams, len_dec_seq, src_enc_copy,
@@ -348,15 +346,12 @@ class MultiheadAttention(nn.Layer):
     """Allows the model to jointly attend to information
     from different representation subspaces.
     See reference: Attention Is All You Need
-
     .. math::
         \text{MultiHead}(Q, K, V) = \text{Concat}(head_1,\dots,head_h)W^O
         \text{where} head_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
-
     Args:
         embed_dim: total dimension of the model
         num_heads: parallel attention layers, or heads
-
     """
 
     def __init__(self, embed_dim, num_heads, dropout=0., self_attn=False):
