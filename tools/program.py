@@ -67,6 +67,7 @@ class ArgsParser(ArgumentParser):
             return config
         for s in opts:
             s = s.strip()
+            print(s)
             k, v = s.split('=')
             config[k] = yaml.load(v, Loader=yaml.Loader)
         return config
@@ -179,7 +180,8 @@ def train(config,
           log_writer=None,
           scaler=None,
           amp_level='O2',
-          amp_custom_black_list=[]):
+          amp_custom_black_list=[],
+          amp_type='float16'):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -268,6 +270,7 @@ def train(config,
             if scaler:
                 with paddle.amp.auto_cast(
                         level=amp_level,
+                        dtype=amp_type,
                         custom_black_list=amp_custom_black_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
@@ -280,9 +283,15 @@ def train(config,
                 preds = to_float32(preds)
                 loss = loss_class(preds, batch)
                 avg_loss = loss['loss']
-                scaled_avg_loss = scaler.scale(avg_loss)
-                scaled_avg_loss.backward()
-                scaler.minimize(optimizer, scaled_avg_loss)
+                if amp_type == 'bfloat16':
+                    print("run fp16.")
+                    scaled_avg_loss = scaler.scale(avg_loss)
+                    scaled_avg_loss.backward()
+                    scaler.minimize(optimizer, scaled_avg_loss)
+                else:
+                    print("run bf16.")
+                    avg_loss.backward()
+                    optimizer.step()
             else:
                 if model_type == 'table' or extra_input:
                     preds = model(images, data=batch[1:])

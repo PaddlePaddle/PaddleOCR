@@ -161,14 +161,18 @@ def main(config, device, logger, vdl_writer):
         scaler = paddle.amp.GradScaler(
             init_loss_scaling=scale_loss,
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+        amp_type = config["Global"].get("amp_type", 'float16')
         if amp_level == "O2":
+            print(amp_type)
             model, optimizer = paddle.amp.decorate(
                 models=model,
+                dtype=amp_type,
                 optimizers=optimizer,
                 level=amp_level,
                 master_weight=True)
     else:
         scaler = None
+        amp_type = 'float32'
 
     # load pretrain model
     pre_best_model_dict = load_model(config, model, optimizer,
@@ -180,7 +184,7 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list)
+                  amp_level, amp_custom_black_list, amp_type)
 
 
 def test_reader(config, device, logger):
