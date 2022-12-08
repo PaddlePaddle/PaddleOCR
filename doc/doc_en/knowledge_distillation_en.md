@@ -228,7 +228,6 @@ Architecture:
               enc_dim: 512
               max_text_length: *max_text_length
 ```
-```
 
 When the model is finally trained, it contains 3 sub-networks: `Teacher`, `Student`, `Student2`.
 
