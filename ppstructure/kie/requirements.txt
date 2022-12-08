@@ -2,6 +2,6 @@ sentencepiece
 yacs
 seqeval
 pypandoc
-attrdict
+attrdict3
 python_docx
 paddlenlp>=2.4.1

@@ -261,7 +261,7 @@ Output will be a list, each item contains classification result and confidence
 
 ## 3 Use custom model
 When the built-in model cannot meet the needs, you need to use your own trained model.
-First, refer to the first section of [inference_en.md](./inference_en.md) to convert your det and rec model to inference model, and then use it as follows
+First, refer to [export](./detection_en.md#4-inference) doc to convert your det and rec model to inference model, and then use it as follows
 
 ### 3.1 Use by code
 
