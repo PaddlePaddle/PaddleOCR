@@ -22,8 +22,6 @@ sys.path.insert(0, ".")
 import copy
 
 import time
-import paddlehub
-from paddlehub.common.logger import logger
 from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
 import numpy as np
@@ -33,7 +31,9 @@ from tools.infer.utility import base64_to_cv2
 from tools.infer.predict_system import TextSystem
 from tools.infer.utility import parse_args
 from deploy.hubserving.ocr_system.params import read_params
+from ppocr.utils.logging import get_logger
 
+logger = get_logger()
 
 @moduleinfo(
     name="ocr_system",
