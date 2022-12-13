@@ -1,0 +1,82 @@
+from random import sample
+from glob import glob
+import argparse
+import os
+import shutil
+from tqdm import tqdm
+#############################################   take input from user
+parser = argparse.ArgumentParser(description="paddle layout format converter", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-l", "--labdir", help="Source location for all label.txt files")
+parser.add_argument("-i", "--imgdir", help="location of all images")
+parser.add_argument("-o", "--out", help="Destination location ")
+parser.add_argument("--kie", default=False ,help="To create data for det model kie = False")
+args = parser.parse_args()
+config = vars(args)
+
+#############################################   delete all files in destination folder
+if config['labdir'][-1]!="/":
+   config['labdir'] = config['labdir']+"/"
+if config['imgdir'][-1]!="/":
+   config['imgdir'] = config['imgdir']+"/"
+if config['out'][-1]!="/":
+   config['out'] = config['out']+"/"
+
+if os.path.exists(config['out']):
+   shutil.rmtree(config["out"])
+os.mkdir(config["out"])
+
+#############################################   converting labels.txt to desirted format
+lst=[];train_dir=[];val_dir=[]
+for i in glob(config['labdir']+"*"):
+    f=open(i,"r")
+    for j in f.read().split("\n"):
+        lst.append(j)
+    f.close()
+
+for b in range(len(lst)):
+    try:
+        m=lst[b].split("\t")
+        m[0]=m[0].split("/")[-1]
+        if config['kie']==True:
+            m[1]=m[1].replace('}',' , "linking": []}')
+            m[1]=m[1].replace('key_cls', 'label')
+            m[1]=m[1].replace('None', 'other')
+        else:
+            lst[b]="\t".join(m)
+    except Exception as e:
+        print("Error {} at line {}".format(e,b))
+#################################################   train and val split of 90:10
+#print()
+train=sample(lst,k=int(len(lst)))
+
+
+val=[]
+for i in lst:
+    if i not in train:
+       val.append(i)
+#val = [x for x in lst if x not in train]
+
+print(len(lst), len(train), len(val))
+#################################################   writing train and val files
+f=open(config["out"]+"train.txt", "w")
+f.write("\n".join(train))
+f.close()
+f=open(config["out"]+"val.txt","w")
+f.write("\n".join(val))
+f.close()
+
+input("press enter once done with changing")
+#################################################   writing train and val images
+for i in train:
+    train_dir.append(i.split("\t")[0])
+for i in val:
+    val_dir.append(i.split("\t")[0])
+
+os.mkdir(config["out"]+"train/")
+os.mkdir(config["out"]+"val/")
+
+for i in tqdm(glob(config["imgdir"]+"*")):
+    if i.split("/")[-1] in train_dir:
+        shutil.copy(i, config["out"]+"train/")
+    if i.split("/")[-1] in val_dir:
+        shutil.copy(i, config["out"]+"val/")
