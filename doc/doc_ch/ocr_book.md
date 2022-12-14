@@ -21,5 +21,5 @@
 
 ## 资料地址
 - 中文版电子书下载请扫描首页二维码入群后领取
-- [notebook教程](../../notebook/notebook_ch/)
+- [notebook教程](https://github.com/PaddleOCR-Community/Dive-into-OCR)
 - [教学视频](https://aistudio.baidu.com/aistudio/education/group/info/25207)
