@@ -19,30 +19,36 @@
 
 namespace PaddleOCR {
 
-PPOCR::PPOCR() {
+PPOCR::PPOCR() : detector_(), classifier_(), recognizer_() {
   if (FLAGS_det) {
-    this->detector_ = new DBDetector(
+    this->detector_.reset(new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_limit_type,
         FLAGS_limit_side_len, FLAGS_det_db_thresh, FLAGS_det_db_box_thresh,
         FLAGS_det_db_unclip_ratio, FLAGS_det_db_score_mode, FLAGS_use_dilation,
-        FLAGS_use_tensorrt, FLAGS_precision);
+        FLAGS_use_tensorrt, FLAGS_precision));
   }
-
   if (FLAGS_cls && FLAGS_use_angle_cls) {
-    this->classifier_ = new Classifier(
+    this->classifier_.reset(new Classifier(
         FLAGS_cls_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_cls_thresh,
-        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_cls_batch_num);
+        FLAGS_use_tensorrt, FLAGS_precision, FLAGS_cls_batch_num));
   }
   if (FLAGS_rec) {
-    this->recognizer_ = new CRNNRecognizer(
+    this->recognizer_.reset(new CRNNRecognizer(
         FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_rec_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num,
-        FLAGS_rec_img_h, FLAGS_rec_img_w);
+        FLAGS_rec_img_h, FLAGS_rec_img_w));
   }
-};
+}
+
+PPOCR::PPOCR(std::unique_ptr<DBDetector> detector,
+             std::unique_ptr<Classifier> classifier,
+             std::unique_ptr<CRNNRecognizer> recognizer) :
+  detector_(std::move(detector)),
+  classifier_(std::move(classifier)),
+  recognizer_(std::move(recognizer)) {}
 
 std::vector<std::vector<OCRPredictResult>>
 PPOCR::ocr(std::vector<cv::Mat> img_list, bool det, bool rec, bool cls) {
@@ -51,7 +57,7 @@ PPOCR::ocr(std::vector<cv::Mat> img_list, bool det, bool rec, bool cls) {
   if (!det) {
     std::vector<OCRPredictResult> ocr_result;
     ocr_result.resize(img_list.size());
-    if (cls && this->classifier_ != nullptr) {
+    if (cls && this->classifier_) {
       this->cls(img_list, ocr_result);
       for (int i = 0; i < img_list.size(); i++) {
         if (ocr_result[i].cls_label % 2 == 1 &&
@@ -80,7 +86,6 @@ PPOCR::ocr(std::vector<cv::Mat> img_list, bool det, bool rec, bool cls) {
 
 std::vector<OCRPredictResult> PPOCR::ocr(cv::Mat img, bool det, bool rec,
                                          bool cls) {
-
   std::vector<OCRPredictResult> ocr_result;
   // det
   this->det(img, ocr_result);
@@ -92,7 +97,7 @@ std::vector<OCRPredictResult> PPOCR::ocr(cv::Mat img, bool det, bool rec,
     img_list.push_back(crop_img);
   }
   // cls
-  if (cls && this->classifier_ != nullptr) {
+  if (cls && this->classifier_) {
     this->cls(img_list, ocr_result);
     for (int i = 0; i < img_list.size(); i++) {
       if (ocr_result[i].cls_label % 2 == 1 &&
@@ -189,17 +194,5 @@ void PPOCR::benchmark_log(int img_num) {
     autolog_cls.report();
   }
 }
-
-PPOCR::~PPOCR() {
-  if (this->detector_ != nullptr) {
-    delete this->detector_;
-  }
-  if (this->classifier_ != nullptr) {
-    delete this->classifier_;
-  }
-  if (this->recognizer_ != nullptr) {
-    delete this->recognizer_;
-  }
-};
 
 } // namespace PaddleOCR

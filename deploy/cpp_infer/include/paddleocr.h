@@ -23,7 +23,10 @@ namespace PaddleOCR {
 class PPOCR {
 public:
   explicit PPOCR();
-  ~PPOCR();
+
+  PPOCR(std::unique_ptr<DBDetector> detector,
+        std::unique_ptr<Classifier> classifier,
+        std::unique_ptr<CRNNRecognizer> recognizer);
 
   std::vector<std::vector<OCRPredictResult>> ocr(std::vector<cv::Mat> img_list,
                                                  bool det = true,
@@ -47,9 +50,9 @@ protected:
            std::vector<OCRPredictResult> &ocr_results);
 
 private:
-  DBDetector *detector_ = nullptr;
-  Classifier *classifier_ = nullptr;
-  CRNNRecognizer *recognizer_ = nullptr;
+  std::unique_ptr<DBDetector> detector_;
+  std::unique_ptr<Classifier> classifier_;
+  std::unique_ptr<CRNNRecognizer> recognizer_;
 };
 
 } // namespace PaddleOCR
