@@ -28,7 +28,7 @@ class CosineEmbeddingLoss(nn.Layer):
 
     def forward(self, x1, x2, target):
         similarity = paddle.sum(
-            x1 * x2, dim=-1) / (paddle.norm(
+            x1 * x2, axis=-1) / (paddle.norm(
                 x1, axis=-1) * paddle.norm(
                     x2, axis=-1) + self.epsilon)
         one_list = paddle.full_like(target, fill_value=1)
