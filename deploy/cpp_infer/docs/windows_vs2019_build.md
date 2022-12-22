@@ -121,7 +121,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 ```
 cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
 ```
-可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme.md)`运行demo`部分。
+可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme_ch.md)`运行demo`部分。
 
 ```shell
 # 切换终端编码为utf8
