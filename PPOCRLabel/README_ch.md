@@ -2,7 +2,7 @@
 
 # PPOCRLabelv2
 
-PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置PP-OCR模型对数据自动标注和重新识别。使用Python3和PyQT5编写，支持矩形框标注和四点标注模式，导出格式可直接用于PaddleOCR检测和识别模型的训练。
+PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置PP-OCR模型对数据自动标注和重新识别。使用Python3和PyQT5编写，支持矩形框标注、表格标注、不规则文本标注、关键信息标注模式，导出格式可直接用于PaddleOCR检测和识别模型的训练。
 
 |                      常规标注                       |                    表格标注                    |
 | :-------------------------------------------------: | :--------------------------------------------: |
@@ -101,12 +101,12 @@ python PPOCRLabel.py --lang ch
 
 #### 1.2.3 本地构建whl包并安装
 
-编译与安装新的whl包，其中1.0.2为版本号，可在 `setup.py` 中指定新版本。
+编译与安装新的whl包，其中0.0.0为版本号，可在 `setup.py` 中指定新版本。
 
 ```bash
-cd PaddleOCR/PPOCRLabel
+cd ./PPOCRLabel
 python3 setup.py bdist_wheel 
-pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
+pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
 ```
 
 

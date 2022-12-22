@@ -14,6 +14,9 @@ This article provides a full-process guide for the PaddleOCR table recognition m
   - [2.5. Distributed Training](#25-distributed-training)
   - [2.6. Training on other platform(Windows/macOS/Linux DCU)](#26-training-on-other-platformwindowsmacoslinux-dcu)
   - [2.7. Fine-tuning](#27-fine-tuning)
+    - [2.7.1 Dataset](#271-dataset)
+    - [2.7.2 model selection](#272-model-selection)
+    - [2.7.3 Training hyperparameter selection](#273-training-hyperparameter-selection)
 - [3. Evaluation and Test](#3-evaluation-and-test)
   - [3.1. Evaluation](#31-evaluation)
   - [3.2. Test table structure recognition effect](#32-test-table-structure-recognition-effect)
@@ -41,7 +44,7 @@ The json format of each line is:
    'imgid': 0,# index of image
    'html': {
      'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, # HTML string of the table
-     'cell': [
+     'cells': [
        {
          'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], # text in cell
          'bbox': [x0, y0, x1, y1] # bbox of cell
@@ -226,8 +229,40 @@ Running on a DCU device requires setting the environment variable `export HIP_VI
 
 ## 2.7. Fine-tuning
 
-In the actual use process, it is recommended to load the officially provided pre-training model and fine-tune it in your own data set. For the fine-tuning method of the table recognition model, please refer to: [Model fine-tuning tutorial](./finetune.md).
 
+### 2.7.1 Dataset
+
+Data number: It is recommended to prepare at least 2000 table recognition datasets for model fine-tuning.
+
+### 2.7.2 model selection
+
+It is recommended to choose the SLANet model (configuration file: [SLANet_ch.yml](../../configs/table/SLANet_ch.yml), pre-training model: [ch_ppstructure_mobile_v2.0_SLANet_train.tar](https://paddleocr.bj.bcebos .com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_train.tar)) for fine-tuning, its accuracy and generalization performance is the best Chinese table pre-training model currently available.
+
+For more table recognition models, please refer to [PP-Structure Series Model Library](../../ppstructure/docs/models_list.md).
+
+### 2.7.3 Training hyperparameter selection
+
+When fine-tuning the model, the most important hyperparameters are the pretrained model path `pretrained_model`, the learning rate `learning_rate`, and some configuration files are shown below.
+
+```yaml
+Global:
+  pretrained_model: ./ch_ppstructure_mobile_v2.0_SLANet_train/best_accuracy.pdparams # Pre-trained model path
+Optimizer:
+  lr:
+    name: Cosine
+    learning_rate: 0.001 #
+    warmup_epoch: 0
+  regularizer:
+    name: 'L2'
+    factor: 0
+```
+
+In the above configuration file, you first need to specify the `pretrained_model` field as the `best_accuracy.pdparams` file path.
+
+The configuration file provided by PaddleOCR is for 4-card training (equivalent to a total batch size of `4*48=192`) and no pre-trained model is loaded. Therefore, in your scenario, the learning rate is the same as the total The batch size needs to be adjusted linearly, for example
+
+* If your scenario is single card training, single card batch_size=48, then the total batch_size=48, it is recommended to adjust the learning rate to about `0.00025`.
+* If your scenario is for single-card training, due to memory limitations, you can only set batch_size=32 for a single card, then the total batch_size=32, it is recommended to adjust the learning rate to about `0.00017`.
 
 # 3. Evaluation and Test
 

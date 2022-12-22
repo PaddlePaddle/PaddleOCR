@@ -1,4 +1,4 @@
-# PP-Structurev2
+# PP-StructureV2
 
 ##  目录
 
@@ -16,11 +16,11 @@
 
 现实场景中包含大量的文档图像，它们以图片等非结构化形式存储。基于文档图像的结构化分析与信息抽取对于数据的数字化存储以及产业的数字化转型至关重要。基于该考虑，PaddleOCR自研并发布了PP-Structure智能文档分析系统，旨在帮助开发者更好的完成版面分析、表格识别、关键信息抽取等文档理解相关任务。
 
-近期，PaddleOCR团队针对PP-Structurev1的版面分析、表格识别、关键信息抽取模块，进行了共计8个方面的升级，同时新增整图方向矫正、文档复原等功能，打造出一个全新的、效果更优的文档分析系统：PP-Structurev2。
+近期，PaddleOCR团队针对PP-StructureV1的版面分析、表格识别、关键信息抽取模块，进行了共计8个方面的升级，同时新增整图方向矫正、文档复原等功能，打造出一个全新的、效果更优的文档分析系统：PP-StructureV2。
 
 ## 2. 简介
 
-PP-Structurev2在PP-Structurev1的基础上进一步改进，主要有以下3个方面升级：
+PP-StructureV2在PP-StructureV1的基础上进一步改进，主要有以下3个方面升级：
 
  * **系统功能升级** ：新增图像矫正和版面复原模块，图像转word/pdf、关键信息抽取能力全覆盖！
  * **系统性能优化** ：
@@ -29,7 +29,7 @@ PP-Structurev2在PP-Structurev1的基础上进一步改进，主要有以下3个
 	 * 关键信息抽取：设计视觉无关模型结构，语义实体识别精度提升**2.8%**，关系抽取精度提升**9.1%**。
  * **中文场景适配** ：完成对版面分析与表格识别的中文场景适配，开源**开箱即用**的中文场景版面结构化模型！
 
-PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正模块，判断整图方向并完成转正，随后可以完成版面信息分析与关键信息抽取2类任务。版面分析任务中，图像首先经过版面分析模型，将图像划分为文本、表格、图像等不同区域，随后对这些区域分别进行识别，如，将表格区域送入表格识别模块进行结构化识别，将文本区域送入OCR引擎进行文字识别，最后使用版面恢复模块将其恢复为与原始图像布局一致的word或者pdf格式的文件；关键信息抽取任务中，首先使用OCR引擎提取文本内容，然后由语义实体识别模块获取图像中的语义实体，最后经关系抽取模块获取语义实体之间的对应关系，从而提取需要的关键信息。
+PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正模块，判断整图方向并完成转正，随后可以完成版面信息分析与关键信息抽取2类任务。版面分析任务中，图像首先经过版面分析模型，将图像划分为文本、表格、图像等不同区域，随后对这些区域分别进行识别，如，将表格区域送入表格识别模块进行结构化识别，将文本区域送入OCR引擎进行文字识别，最后使用版面恢复模块将其恢复为与原始图像布局一致的word或者pdf格式的文件；关键信息抽取任务中，首先使用OCR引擎提取文本内容，然后由语义实体识别模块获取图像中的语义实体，最后经关系抽取模块获取语义实体之间的对应关系，从而提取需要的关键信息。
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185939247-57e53254-399c-46c4-a610-da4fa79232f5.png" width="1200">
@@ -52,7 +52,7 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 	* TB-YX：考虑阅读顺序的文本行排序逻辑
 	* UDML：联合互学习知识蒸馏策略
 
-最终，与PP-Structurev1相比：
+最终，与PP-StructureV1相比：
 
 - 版面分析模型参数量减少95.6%，推理速度提升11倍，精度提升0.4%；
 - 表格识别预测耗时不变，模型精度提升6%，端到端TEDS提升2%；
@@ -62,7 +62,7 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 
 ## 3. 整图方向矫正
 
-由于训练集一般以正方向图像为主，旋转过的文档图像直接输入模型会增加识别难度，影响识别效果。PP-Structurev2引入了整图方向矫正模块来判断含文字图像的方向，并将其进行方向调整。
+由于训练集一般以正方向图像为主，旋转过的文档图像直接输入模型会增加识别难度，影响识别效果。PP-StructureV2引入了整图方向矫正模块来判断含文字图像的方向，并将其进行方向调整。
 
 我们直接调用PaddleClas中提供的文字图像方向分类模型-[PULC_text_image_orientation](https://github.com/PaddlePaddle/PaddleClas/blob/develop/docs/zh_CN/PULC/PULC_text_image_orientation.md)，该模型部分数据集图像如下所示。不同于文本行方向分类器，文字图像方向分类模型针对整图进行方向判别。文字图像方向分类模型在验证集上精度高达99%，单张图像CPU预测耗时仅为`2.16ms`。
 
@@ -74,17 +74,17 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 
 ### 4.1 版面分析
 
-版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等，PP-Structurev1使用了PaddleDetection中开源的高效检测算法PP-YOLOv2完成版面分析的任务。
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等，PP-StructureV1使用了PaddleDetection中开源的高效检测算法PP-YOLOv2完成版面分析的任务。
 
-在PP-Structurev2中，我们发布基于PP-PicoDet的轻量级版面分析模型，并针对版面分析场景定制图像尺度，同时使用FGD知识蒸馏算法，进一步提升模型精度。最终CPU上`41ms`即可完成版面分析过程(仅包含模型推理时间，数据预处理耗时大约50ms左右)。在公开数据集PubLayNet 上，消融实验如下：
+在PP-StructureV2中，我们发布基于PP-PicoDet的轻量级版面分析模型，并针对版面分析场景定制图像尺度，同时使用FGD知识蒸馏算法，进一步提升模型精度。最终CPU上`41ms`即可完成版面分析过程(仅包含模型推理时间，数据预处理耗时大约50ms左右)。在公开数据集PubLayNet 上，消融实验如下：
 
 | 实验序号 | 策略                          | 模型存储(M) | mAP     | CPU预测耗时(ms) |
 |:------:|:------:|:------:|:------:|:------:|
-| 1    |  PP-YOLOv2(640*640)  |  221  | 93.6% |  512  |
-| 2    | PP-PicoDet-LCNet2.5x(640*640) |  29.7 | 92.5% |53.2|
-| 3    | PP-PicoDet-LCNet2.5x(800*608) |   29.7  | 94.2% |83.1 |
-| 4    | PP-PicoDet-LCNet1.0x(800*608) |    9.7  | 93.5% | 41.2|
-| 5    | PP-PicoDet-LCNet1.0x(800*608) + FGD |  9.7  | 94% |41.2|
+| 1    |  PP-YOLOv2(640*640)  |  221.0  | 93.60% |  512.00  |
+| 2    | PP-PicoDet-LCNet2.5x(640*640) |  29.7 | 92.50% |53.20|
+| 3    | PP-PicoDet-LCNet2.5x(800*608) |   29.7  | 94.20% |83.10 |
+| 4    | PP-PicoDet-LCNet1.0x(800*608) |    9.7  | 93.50% | 41.20|
+| 5    | PP-PicoDet-LCNet1.0x(800*608) + FGD |  9.7  | 94.00% |41.20|
 
 * 测试条件
 	* paddle版本：2.3.0
@@ -94,8 +94,8 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 
 | 模型                | mAP | CPU预测耗时   |
 |-------------------|-----------|------------|
-| layoutparser (Detectron2)   | 88.98%    | 2.9s    |
-| PP-Structurev2 (PP-PicoDet) | **94%**    |   41.2ms   |
+| layoutparser (Detectron2)   | 88.98%    | 2.90s    |
+| PP-StructureV2 (PP-PicoDet) | **94.00%**    |   41.20ms   |
 
 [PubLayNet](https://github.com/ibm-aur-nlp/PubLayNet)数据集是一个大型的文档图像数据集，包含Text、Title、Tale、Figure、List，共5个类别。数据集中包含335,703张训练集、11,245张验证集和11,405张测试集。训练数据与标注示例图如下所示：
 
@@ -108,7 +108,7 @@ PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正
 
 **（1）轻量级版面分析模型PP-PicoDet**
 
-`PP-PicoDet`是PaddleDetection中提出的轻量级目标检测模型，通过使用PP-LCNet骨干网络、CSP-PAN特征融合模块、SimOTA标签分配方法等优化策略，最终在CPU与移动端具有卓越的性能。我们将PP-Structurev1中采用的PP-YOLOv2模型替换为`PP-PicoDet`，同时针对版面分析场景优化预测尺度，从针对目标检测设计的`640*640`调整为更适配文档图像的`800*608`，在`1.0x`配置下，模型精度与PP-YOLOv2相当，CPU平均预测速度可提升11倍。
+`PP-PicoDet`是PaddleDetection中提出的轻量级目标检测模型，通过使用PP-LCNet骨干网络、CSP-PAN特征融合模块、SimOTA标签分配方法等优化策略，最终在CPU与移动端具有卓越的性能。我们将PP-StructureV1中采用的PP-YOLOv2模型替换为`PP-PicoDet`，同时针对版面分析场景优化预测尺度，从针对目标检测设计的`640*640`调整为更适配文档图像的`800*608`，在`1.0x`配置下，模型精度与PP-YOLOv2相当，CPU平均预测速度可提升11倍。
 
 **（1）FGD知识蒸馏**
 
@@ -130,10 +130,10 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 | 实验序号 | 策略             |  mAP     |
 |:------:|:------:|:------:|
-| 1    |  PP-YOLOv2 |  84.7% |
-| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  87.8% |
-| 3    |  PP-PicoDet-LCNet1.0x(800*608) | 84.5% |
-| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  86.8% |
+| 1    |  PP-YOLOv2 |  84.70% |
+| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  87.80% |
+| 3    |  PP-PicoDet-LCNet1.0x(800*608) | 84.50% |
+| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  86.80% |
 
 
 **（2）表格版面分析**
@@ -144,10 +144,10 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 | 实验序号 | 策略            |  mAP     |
 |:------:|:------:|:------:|
-| 1    |  PP-YOLOv2  |91.3% |
-| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  95.9% |
-| 3    |  PP-PicoDet-LCNet1.0x(800*608) |   95.2% |
-| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  95.7% |
+| 1    |  PP-YOLOv2  |91.30% |
+| 2    |  PP-PicoDet-LCNet2.5x(800*608) |  95.90% |
+| 3    |  PP-PicoDet-LCNet1.0x(800*608) |   95.20% |
+| 4    |  PP-PicoDet-LCNet1.0x(800*608) + FGD |  95.70% |
 
 表格检测效果示意图如下：
 
@@ -157,7 +157,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 ### 4.2 表格识别
 
-基于深度学习的表格识别算法种类丰富，PP-Structurev1中，我们基于文本识别算法RARE研发了端到端表格识别算法TableRec-RARE，模型输出为表格结构的HTML表示，进而可以方便地转化为Excel文件。PP-Structurev2中，我们对模型结构和损失函数等5个方面进行升级，提出了 SLANet (Structure Location Alignment Network) ，模型结构如下图所示：
+基于深度学习的表格识别算法种类丰富，PP-StructureV1中，我们基于文本识别算法RARE研发了端到端表格识别算法TableRec-RARE，模型输出为表格结构的HTML表示，进而可以方便地转化为Excel文件。PP-StructureV2中，我们对模型结构和损失函数等5个方面进行升级，提出了 SLANet (Structure Location Alignment Network) ，模型结构如下图所示：
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185940811-089c9265-4be9-4776-b365-6d1125606b4b.png" width="1200">
@@ -170,7 +170,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 |TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
 |+PP-LCNet|	74.71% |94.37%	|778ms|	8.7M|
 |+CSP-PAN|	75.68%| 94.72%	|708ms|	9.3M|
-|+SLAHead|	77.7%|94.85%|	766ms|	9.2M|
+|+SLAHead|	77.70%|94.85%|	766ms|	9.2M|
 |+MergeToken|	76.31%|	95.89%|766ms|	9.2M|
 
 * 测试环境
@@ -181,7 +181,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 |策略|Acc|TEDS|推理速度(CPU+MKLDNN)|模型大小|
 |---|---|---|---|---|
-|TableMaster|77.9%|96.12%|2144ms|253M|
+|TableMaster|77.90%|96.12%|2144ms|253.0M|
 |TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
 |SLANet|76.31%|	95.89%|766ms|9.2M|
 
@@ -189,7 +189,7 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 **（1） CPU友好型轻量级骨干网络PP-LCNet**
 
-PP-LCNet是结合Intel-CPU端侧推理特性而设计的轻量高性能骨干网络，该方案在图像分类任务上取得了比ShuffleNetV2、MobileNetV3、GhostNet等轻量级模型更优的“精度-速度”均衡。PP-Structurev2中，我们采用PP-LCNet作为骨干网络，表格识别模型精度从71.73%提升至72.98%；同时加载通过SSLD知识蒸馏方案训练得到的图像分类模型权重作为表格识别的预训练模型，最终精度进一步提升2.95%至74.71%。
+PP-LCNet是结合Intel-CPU端侧推理特性而设计的轻量高性能骨干网络，该方案在图像分类任务上取得了比ShuffleNetV2、MobileNetV3、GhostNet等轻量级模型更优的“精度-速度”均衡。PP-StructureV2中，我们采用PP-LCNet作为骨干网络，表格识别模型精度从71.73%提升至72.98%；同时加载通过SSLD知识蒸馏方案训练得到的图像分类模型权重作为表格识别的预训练模型，最终精度进一步提升2.95%至74.71%。
 
 **（2）轻量级高低层特征融合模块CSP-PAN**
 
@@ -199,7 +199,7 @@ PP-LCNet是结合Intel-CPU端侧推理特性而设计的轻量高性能骨干网
 
 TableRec-RARE的TableAttentionHead如下图a所示，TableAttentionHead在执行完全部step的计算后拿到最终隐藏层状态表征(hiddens)，随后hiddens经由SDM(Structure Decode Module)和CLDM(Cell Location Decode Module)模块生成全部的表格结构token和单元格坐标。但是这种设计忽略了单元格token和坐标之间一一对应的关系。
 
-PP-Structurev2中，我们设计SLAHead模块，对单元格token和坐标之间做了对齐操作，如下图b所示。在SLAHead中，每一个step的隐藏层状态表征会分别送入SDM和CLDM来得到当前step的token和坐标，每个step的token和坐标输出分别进行concat得到表格的html表达和全部单元格的坐标。此外，考虑到表格识别模型的单元格准确率依赖于表格结构的识别准确，我们将损失函数中表格结构分支与单元格定位分支的权重比从1:1提升到8:1，并使用收敛更稳定的Smoothl1 Loss替换定位分支中的MSE Loss。最终模型精度从75.68%提高至77.7%。
+PP-StructureV2中，我们设计SLAHead模块，对单元格token和坐标之间做了对齐操作，如下图b所示。在SLAHead中，每一个step的隐藏层状态表征会分别送入SDM和CLDM来得到当前step的token和坐标，每个step的token和坐标输出分别进行concat得到表格的html表达和全部单元格的坐标。此外，考虑到表格识别模型的单元格准确率依赖于表格结构的识别准确，我们将损失函数中表格结构分支与单元格定位分支的权重比从1:1提升到8:1，并使用收敛更稳定的Smoothl1 Loss替换定位分支中的MSE Loss。最终模型精度从75.68%提高至77.7%。
 
 
 <div align="center">
@@ -211,14 +211,14 @@ PP-Structurev2中，我们设计SLAHead模块，对单元格token和坐标之间
 
 TableRec-RARE算法中，我们使用`<td>`和`</td>`两个单独的token来表示一个非跨行列单元格，这种表示方式限制了网络对于单元格数量较多表格的处理能力。
 
-PP-Structurev2中，我们参考TableMaster中的token处理方法，将`<td>`和`</td>`合并为一个token-`<td></td>`。合并token后，验证集中token长度大于500的图片也参与模型评估，最终模型精度降低为76.31%，但是端到端TEDS提升1.04%。
+PP-StructureV2中，我们参考TableMaster中的token处理方法，将`<td>`和`</td>`合并为一个token-`<td></td>`。合并token后，验证集中token长度大于500的图片也参与模型评估，最终模型精度降低为76.31%，但是端到端TEDS提升1.04%。
 
 #### 4.2.2 中文场景适配
 
 除了上述模型策略的升级外，本次升级还开源了中文表格识别模型。在实际应用场景中，表格图像存在着各种各样的倾斜角度（PubTabNet数据集不存在该问题），因此在中文模型中，我们将单元格坐标回归的点数从2个（左上，右下）增加到4个(左上，右上，右下，左下)。在内部测试集上，模型升级前后指标如下：
 |模型|acc|
 |---|---|
-|TableRec-RARE|44.3%|
+|TableRec-RARE|44.30%|
 |SLANet|59.35%|
 
 可视化结果如下，左为输入图像，右为识别的html表格
@@ -249,7 +249,7 @@ PP-Structurev2中，我们参考TableMaster中的token处理方法，将`<td>`�
 
 ### 4.3 版面恢复
 
-版面恢复指的是文档图像经过OCR识别、版面分析、表格识别等方法处理后的内容可以与原始文档保持相同的排版方式，并输出到word等文档中。PP-Structurev2中，我们版面恢复系统，包含版面分析、表格识别、OCR文本检测与识别等子模块。
+版面恢复指的是文档图像经过OCR识别、版面分析、表格识别等方法处理后的内容可以与原始文档保持相同的排版方式，并输出到word等文档中。PP-StructureV2中，我们版面恢复系统，包含版面分析、表格识别、OCR文本检测与识别等子模块。
 下图展示了版面恢复的结果：
 
 <div align="center">
@@ -258,7 +258,7 @@ PP-Structurev2中，我们参考TableMaster中的token处理方法，将`<td>`�
 
 ## 5. 关键信息抽取
 
-关键信息抽取指的是针对文档图像的文字内容，提取出用户关注的关键信息，如身份证中的姓名、住址等字段。PP-Structure中支持了基于多模态LayoutLM系列模型的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。PP-Structurev2中，我们对模型结构以及下游任务训练方法进行升级，提出了VI-LayoutXLM（Visual-feature Independent LayoutXLM），具体流程图如下所示。
+关键信息抽取指的是针对文档图像的文字内容，提取出用户关注的关键信息，如身份证中的姓名、住址等字段。PP-Structure中支持了基于多模态LayoutLM系列模型的语义实体识别 (Semantic Entity Recognition, SER) 以及关系抽取 (Relation Extraction, RE) 任务。PP-StructureV2中，我们对模型结构以及下游任务训练方法进行升级，提出了VI-LayoutXLM（Visual-feature Independent LayoutXLM），具体流程图如下所示。
 
 
 <div align="center">
@@ -307,8 +307,8 @@ LayoutLMv2以及LayoutXLM中引入视觉骨干网络，用于提取视觉特征�
 |-----------------|----------|---------|--------|
 | LayoutLMv2      | 0.76     | 84.20%  | -      |
 | VI-LayoutLMv2 | 0.42     | 82.10%  | -2.10% |
-| LayoutXLM       | 1.4      | 89.50%  | -      |
-| VI-LayouXLM   | 1.1      | 90.46%  | +0.96%  |
+| LayoutXLM       | 1.40     | 89.50%  | -      |
+| VI-LayouXLM   | 1.10      | 90.46%  | +0.96%  |
 
 同时，基于XFUND数据集，VI-LayoutXLM在RE任务上的精度也进一步提升了`1.06%`。
 
@@ -394,7 +394,7 @@ RE任务的可视化结果如下所示。
 | 实验序号 | 策略                  | F1-score |
 |:------:|:------:|:------:|
 | 1    | LayoutXLM  | 82.28%   |
-| 2    | PP-Structurev2 SER       | **87.79%**   |
+| 2    | PP-StructureV2 SER       | **87.79%**   |
 
 
 **RE任务结果**
@@ -402,7 +402,7 @@ RE任务的可视化结果如下所示。
 | 实验序号 | 策略                 | F1-score |
 |:------:|:------:|:------:|
 | 1    | LayoutXLM    |  53.13%  |
-| 2    | PP-Structurev2 SER    | **74.87%**   |
+| 2    | PP-StructureV2 SER    | **74.87%**   |
 
 
 ## 6. Reference

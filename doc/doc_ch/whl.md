@@ -33,12 +33,14 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR(use_angle_cls=True, lang="ch")  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -71,12 +73,14 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -109,8 +113,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True)  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
@@ -127,12 +133,14 @@ from paddleocr import PaddleOCR, draw_ocr
 ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, rec=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 im_show = draw_ocr(image, result, txts=None, scores=None, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
@@ -163,8 +171,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR()  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 结果是一个list，每个item只包含识别结果和识别置信度
@@ -181,8 +191,10 @@ from paddleocr import PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True)  # need to run only once to download and load model into memory
 img_path = 'PaddleOCR/doc/imgs_words/ch/word_1.jpg'
 result = ocr.ocr(img_path, det=False, rec=False, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 ```
 
 结果是一个list，每个item只包含分类结果和分类置信度
@@ -210,6 +222,11 @@ paddleocr --image_dir PaddleOCR/doc/imgs/11.jpg --use_angle_cls true
 ```bash
 [[[28.0, 37.0], [302.0, 39.0], [302.0, 72.0], [27.0, 70.0]], ('纯臻营养护发素', 0.9658738374710083)]
 ......
+```
+
+此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。
+```bash
+paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
 ```
 
 * 检测+识别
@@ -277,7 +294,7 @@ paddleocr --image_dir PaddleOCR/doc/imgs_words/ch/word_1.jpg --use_angle_cls tru
 
 ## 3 自定义模型
 
-当内置模型无法满足需求时，需要使用到自己训练的模型。 首先，参照[inference.md](./inference.md) 第一节转换将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
+当内置模型无法满足需求时，需要使用到自己训练的模型。 首先，参照[模型导出](./detection.md#4-模型导出与预测)将检测、分类和识别模型转换为inference模型，然后按照如下方式使用
 
 ### 3.1 代码使用
 
@@ -290,12 +307,14 @@ ocr = PaddleOCR(det_model_dir='{your_det_model_dir}', rec_model_dir='{your_rec_m
                 use_angle_cls=True)
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -325,12 +344,14 @@ from paddleocr import PaddleOCR, draw_ocr, download_with_progressbar
 ocr = PaddleOCR(use_angle_cls=True, lang="ch")  # need to run only once to download and load model into memory
 img_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'
 result = ocr.ocr(img_path, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 download_with_progressbar(img_path, 'tmp.jpg')
 image = Image.open('tmp.jpg').convert('RGB')
 boxes = [line[0] for line in result]
@@ -362,12 +383,14 @@ img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
 # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), 如果你自己训练的模型支持灰度图，可以将这句话的注释取消
 result = ocr.ocr(img, cls=True)
-for line in result:
-    print(line)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
 
 # 显示结果
 from PIL import Image
-
+result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
@@ -376,14 +399,65 @@ im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
+## 5 PDF文件作为输入
+- 命令行模式
 
-## 5 参数说明
+可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。
+```bash
+paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
+```
+- 代码使用
+
+```python
+from paddleocr import PaddleOCR, draw_ocr
+
+# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换
+# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`
+ocr = PaddleOCR(use_angle_cls=True, lang="ch"， page_num=2)  # need to run only once to download and load model into memory
+img_path = './xxx.pdf'
+result = ocr.ocr(img_path, cls=True)
+for idx in range(len(result)):
+    res = result[idx]
+    for line in res:
+        print(line)
+
+# 显示结果
+import fitz
+from PIL import Image
+import cv2
+import numpy as np
+imgs = []
+with fitz.open(img_path) as pdf:
+    for pg in range(0, pdf.pageCount):
+        page = pdf[pg]
+        mat = fitz.Matrix(2, 2)
+        pm = page.getPixmap(matrix=mat, alpha=False)
+        # if width or height > 2000 pixels, don't enlarge the image
+        if pm.width > 2000 or pm.height > 2000:
+            pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+
+        img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        imgs.append(img)
+for idx in range(len(result)):
+    res = result[idx]
+    image = imgs[idx]
+    boxes = [line[0] for line in res]
+    txts = [line[1][0] for line in res]
+    scores = [line[1][1] for line in res]
+    im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
+    im_show = Image.fromarray(im_show)
+    im_show.save('result_page_{}.jpg'.format(idx))
+```
+
+## 6 参数说明
 
 | 字段                    | 说明                                                                                                                                                                                                                 | 默认值                  |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
 | use_gpu                 | 是否使用GPU                                                                                                                                                                                                          | TRUE                    |
 | gpu_mem                 | 初始化占用的GPU内存大小                                                                                                                                                                                              | 8000M                   |
-| image_dir               | 通过命令行调用时执行预测的图片或文件夹路径                                                                                                                                                                           |                         |
+| image_dir               | 通过命令行调用时执行预测的图片或文件夹路径                                                                                                                                                                           |  
+| page_num               | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页                     |        0                 |
 | det_algorithm           | 使用的检测算法类型                                                                                                                                                                                                   | DB                      |
 | det_model_dir          |  检测模型所在文件夹。传参方式有两种，1. None: 自动下载内置模型到 `~/.paddleocr/det`；2.自己转换好的inference模型路径，模型路径下必须包含model和params文件 |   None        |
 | det_max_side_len        | 检测算法前向时图片长边的最大尺寸，当长边超出这个值时会将长边resize到这个大小，短边等比例缩放                                                                                                                         | 960                     |

@@ -12,6 +12,7 @@ This article introduces the use of the Python inference engine for the PP-OCR mo
     - [3. Multilingual Model Inference](#3-multilingual-model-inference)
   - [Angle Classification Model Inference](#angle-classification-model-inference)
   - [Text Detection Angle Classification and Recognition Inference Concatenation](#text-detection-angle-classification-and-recognition-inference-concatenation)
+  - [TensorRT Inference](TensorRT-Inference)
 
 <a name="DETECTION_MODEL_INFERENCE"></a>
 
@@ -84,9 +85,9 @@ For English recognition model inference, you can execute the following commands,
 
 ```
 # download en model：
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
-tar xf en_PP-OCRv3_det_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_det_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
+tar xf en_PP-OCRv3_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
 
 ![](../imgs_words/en/word_1.png)
@@ -144,16 +145,17 @@ After executing the command, the prediction results (classification angle and sc
 
 **Note**: The input shape used by the recognition model of `PP-OCRv3` is `3, 48, 320`. If you use other recognition models, you need to set the parameter `--rec_image_shape` according to the model. In addition, the `rec_algorithm` used by the recognition model of `PP-OCRv3` is `SVTR_LCNet` by default. Note the difference from the original `SVTR`.
 
-When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, pdf file is also supported, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```shell
 # use direction classifier
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true
-
 # not use use direction classifier
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false
 # use multi-process
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
+# use PDF files, you can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
+python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true --page_num=2
 ```
 
 
@@ -162,3 +164,34 @@ After executing the command, the recognition result image is as follows:
 ![](../imgs_results/system_res_00018069_v3.jpg)
 
 For more configuration and explanation of inference parameters, please refer to：[Model Inference Parameters Explained Tutorial](./inference_args_en.md)。
+
+
+## TensorRT Inference
+
+Paddle Inference ensembles TensorRT using subgraph mode. For GPU deployment scenarios, TensorRT can optimize some subgraphs, including horizontal and vertical integration of OPs, filter redundant OPs, and automatically select the optimal OP kernels for to speed up inference.
+
+You need to do the following 2 steps for inference using TRT.
+
+* (1) Collect the dynamic shape information of the model about a specific dataset and store it in a file.
+* (2) Load the dynamic shape information file for TRT inference.
+
+
+Taking the text detection model as an example. Firstly, you can use the following command to generate a dynamic shape file, which will eventually be named as `det_trt_dynamic_shape.txt` and stored in the `ch_PP-OCRv3_det_infer` folder.
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+The above command is only used to collect dynamic shape information, and TRT is not used during inference.
+
+Then, you can use the following command to perform TRT inference.
+
+
+```bash
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+```
+
+**Note:**
+
+* In the first step, if the dynamic shape information file already exists, it does not need to be collected again. If you want to regenerate the dynamic shape information file, you need to delete the dynamic shape information file in the model folder firstly, and then regenerate it.
+* In general, dynamic shape information file only needs to be generated once. In the actual deployment process, it is recommended that the dynamic shape information file can be generated on offline validation set or test set, and then the file can be directly loaded for online TRT inference.

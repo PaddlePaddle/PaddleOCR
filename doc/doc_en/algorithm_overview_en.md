@@ -3,6 +3,8 @@
 - [1. Two-stage OCR Algorithms](#1)
   - [1.1 Text Detection Algorithms](#11)
   - [1.2 Text Recognition Algorithms](#12)
+  - [1.3 Text Super-Resolution Algorithms](#13)
+  - [1.4 Formula Recognition Algorithm](#14)
 - [2. End-to-end OCR Algorithms](#2)
 - [3. Table Recognition Algorithms](#3)
 - [4. Key Information Extraction Algorithms](#4)
@@ -27,13 +29,14 @@ Supported text detection algorithms (Click the link to get the tutorial):
 - [x]  [SAST](./algorithm_det_sast_en.md)
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
 - [x]  [FCENet](./algorithm_det_fcenet_en.md)
+- [x]  [DRRG](./algorithm_det_drrg_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
 |Model|Backbone|Precision|Recall|Hmean|Download link|
 | --- | --- | --- | --- | --- | --- |
 |EAST|ResNet50_vd|88.71%|81.36%|84.88%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
-|EAST|MobileNetV3|78.2%|79.1%|78.65%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
+|EAST|MobileNetV3|78.20%|79.10%|78.65%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
@@ -52,6 +55,7 @@ On CTW1500 dataset, the text detection result is as follows:
 |Model|Backbone|Precision|Recall|Hmean| Download link|
 | --- | --- | --- | --- | --- |---|  
 |FCE|ResNet50_dcn|88.39%|82.18%|85.27%| [trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar) |
+|DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[trained model](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
 
 **Note：** Additional data, like icdar2013, icdar2017, COCO-Text, ArT, was added to the model training of SAST. Download English public dataset in organized format used by PaddleOCR from:
 * [Baidu Drive](https://pan.baidu.com/s/12cPnZcVuV1zn5DOd4mqjVw) (download code: 2bpi).
@@ -76,6 +80,7 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [VisionLAN](./algorithm_rec_visionlan_en.md)
 - [x]  [SPIN](./algorithm_rec_spin_en.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner_en.md)
+- [x]  [RFL](./algorithm_rec_rfl_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -96,9 +101,39 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SVTR|SVTR-Tiny| 89.25% | rec_svtr_tiny_none_ctc_en | [trained model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) |
 |ViTSTR|ViTSTR| 79.82% | rec_vitstr_none_ce | [trained model](https://paddleocr.bj.bcebos.com/rec_vitstr_none_none_train.tar) |
 |ABINet|Resnet45| 90.75% | rec_r45_abinet | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar) |
-|VisionLAN|Resnet45| 90.30% | rec_r45_visionlan | [trained model](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar) |
-|SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | coming soon |
-|RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | coming soon |
+|VisionLAN|Resnet45| 90.30% | rec_r45_visionlan | [trained model](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar) |
+|SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
+|RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
+|RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
+
+<a name="13"></a>
+
+### 1.3 Text Super-Resolution Algorithms
+
+Supported text super-resolution algorithms (Click the link to get the tutorial):
+- [x]  [Text Gestalt](./algorithm_sr_gestalt.md)
+- [x]  [Text Telescope](./algorithm_sr_telescope.md)
+
+On the TextZoom public dataset, the effect of the algorithm is as follows:
+
+|Model|Backbone|PSNR_Avg|SSIM_Avg|Config|Download link|
+|---|---|---|---|---|---|
+|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](../../configs/sr/sr_tsrn_transformer_strock.yml)|[trained model](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[trained model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+
+<a name="14"></a>
+
+### 1.4 Formula Recognition Algorithm
+
+Supported formula recognition algorithms (Click the link to get the tutorial):
+
+- [x]  [CAN](./algorithm_rec_can.md.md)
+
+On the CROHME handwritten formula dataset, the effect of the algorithm is as follows:
+
+|Model    |Backbone|Config|ExpRate|Download link|
+| ----- | ----- | ----- | ----- | ----- |
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
 
 
 <a name="2"></a>
@@ -119,7 +154,7 @@ On the PubTabNet dataset, the algorithm result is as follows:
 
 |Model|Backbone|Config|Acc|Download link|
 |---|---|---|---|---|
-|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
+|TableMaster|TableResNetExtra|[configs/table/table_master.yml](../../configs/table/table_master.yml)|77.47%|[trained model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar) / [inference model](https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_infer.tar)|
 
 
 <a name="4"></a>
@@ -138,7 +173,7 @@ On wildreceipt dataset, the algorithm result is as follows:
 
 |Model|Backbone|Config|Hmean|Download link|
 | --- | --- | --- | --- | --- |
-|SDMGR|VGG6|[configs/kie/sdmgr/kie_unet_sdmgr.yml](../../configs/kie/sdmgr/kie_unet_sdmgr.yml)|86.7%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/kie_vgg16.tar)|
+|SDMGR|VGG6|[configs/kie/sdmgr/kie_unet_sdmgr.yml](../../configs/kie/sdmgr/kie_unet_sdmgr.yml)|86.70%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/kie_vgg16.tar)|
 
 On XFUND_zh dataset, the algorithm result is as follows:
 

@@ -14,21 +14,12 @@
 
 #pragma once
 
+#include <iostream>
+#include <vector>
+
 #include "opencv2/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
-using namespace std;
-using namespace paddle;
 
 namespace PaddleOCR {
 
@@ -51,9 +42,9 @@ public:
 
 class ResizeImgType0 {
 public:
-  virtual void Run(const cv::Mat &img, cv::Mat &resize_img, string limit_type,
-                   int limit_side_len, float &ratio_h, float &ratio_w,
-                   bool use_tensorrt);
+  virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
+                   std::string limit_type, int limit_side_len, float &ratio_h,
+                   float &ratio_w, bool use_tensorrt);
 };
 
 class CrnnResizeImg {
@@ -80,6 +71,12 @@ class TablePadImg {
 public:
   virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
                    const int max_len = 488);
+};
+
+class Resize {
+public:
+  virtual void Run(const cv::Mat &img, cv::Mat &resize_img, const int h,
+                   const int w);
 };
 
 } // namespace PaddleOCR

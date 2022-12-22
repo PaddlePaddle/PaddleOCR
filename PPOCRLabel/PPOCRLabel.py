@@ -1617,8 +1617,9 @@ class MainWindow(QMainWindow):
                 key_cls = 'None' if not self.kie_mode else box.get('key_cls', 'None')
                 shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
 
-        self.loadLabels(shapes)
-        self.canvas.verified = False
+        if shapes != []:
+            self.loadLabels(shapes)
+            self.canvas.verified = False
 
     def validFilestate(self, filePath):
         if filePath not in self.fileStatedict.keys():
@@ -2203,7 +2204,7 @@ class MainWindow(QMainWindow):
                     msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                     QMessageBox.information(self, "Information", msg)
                     return
-                result = self.ocr.ocr(img_crop, cls=True, det=False)
+                result = self.ocr.ocr(img_crop, cls=True, det=False)[0]
                 if result[0][0] != '':
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
@@ -2264,7 +2265,7 @@ class MainWindow(QMainWindow):
                 msg = 'Can not recognise the detection box in ' + self.filePath + '. Please change manually'
                 QMessageBox.information(self, "Information", msg)
                 return
-            result = self.ocr.ocr(img_crop, cls=True, det=False)
+            result = self.ocr.ocr(img_crop, cls=True, det=False)[0]
             if result[0][0] != '':
                 result.insert(0, box)
                 print('result in reRec is ', result)
@@ -2415,12 +2416,12 @@ class MainWindow(QMainWindow):
             # merge the text result in the cell
             texts = ''
             probs = 0. # the probability of the cell is avgerage prob of every text box in the cell
-            bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)
+            bboxes = self.ocr.ocr(img_crop, det=True, rec=False, cls=False)[0]
             if len(bboxes) > 0:
                 bboxes.reverse() # top row text at first
                 for _bbox in bboxes:
                     patch = get_rotate_crop_image(img_crop, np.array(_bbox, np.float32))
-                    rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)
+                    rec_res = self.ocr.ocr(patch, det=False, rec=True, cls=False)[0]
                     text = rec_res[0][0]
                     if text != '':
                         texts += text + ('' if text[0].isalpha() else ' ') # add space between english word
@@ -2449,13 +2450,6 @@ class MainWindow(QMainWindow):
             export PPLabel and CSV to JSON (PubTabNet)
         '''
         import pandas as pd
-        from libs.dataPartitionDialog import DataPartitionDialog
-
-        # data partition user input
-        partitionDialog = DataPartitionDialog(parent=self)
-        partitionDialog.exec()
-        if partitionDialog.getStatus() == False:
-            return
 
         # automatically save annotations
         self.saveFilestate()
@@ -2478,28 +2472,19 @@ class MainWindow(QMainWindow):
                         labeldict[file] = eval(label)
                     else:
                         labeldict[file] = []
+        
+        # read table recognition output
+        TableRec_excel_dir = os.path.join(
+            self.lastOpenDir, 'tableRec_excel_output')
 
-        train_split, val_split, test_split = partitionDialog.getDataPartition()
-        # check validate
-        if train_split + val_split + test_split > 100:
-            msg = "The sum of training, validation and testing data should be less than 100%"
-            QMessageBox.information(self, "Information", msg)
-            return
-        print(train_split, val_split, test_split)
-        train_split, val_split, test_split = float(train_split) / 100., float(val_split) / 100., float(test_split) / 100.
-        train_id = int(len(labeldict) * train_split)
-        val_id = int(len(labeldict) * (train_split + val_split))
-        print('Data partition: train:', train_id, 
-              'validation:',  val_id - train_id,
-              'test:', len(labeldict) - val_id)
-
-        TableRec_excel_dir = os.path.join(self.lastOpenDir, 'tableRec_excel_output')
-        json_results = []
-        imgid = 0
+        # save txt
+        fid = open(
+            "{}/gt.txt".format(self.lastOpenDir), "w", encoding='utf-8')
         for image_path in labeldict.keys():
             # load csv annotations
             filename, _ = os.path.splitext(os.path.basename(image_path))
-            csv_path = os.path.join(TableRec_excel_dir, filename + '.xlsx')
+            csv_path = os.path.join(
+                TableRec_excel_dir, filename + '.xlsx')
             if not os.path.exists(csv_path):
                 continue
 
@@ -2518,28 +2503,31 @@ class MainWindow(QMainWindow):
             cells = []
             for anno in labeldict[image_path]:
                 tokens = list(anno['transcription'])
-                obb = anno['points']
-                hbb = OBB2HBB(np.array(obb)).tolist()
-                cells.append({'tokens': tokens, 'bbox': hbb})
-            
-            # data split
-            if imgid < train_id:
-                split = 'train'
-            elif imgid < val_id:
-                split = 'val'
-            else:
-                split = 'test'
+                cells.append({
+                    'tokens': tokens, 
+                    'bbox': anno['points']
+                    })
 
-            #  save dict
-            html = {'structure': {'tokens': token_list}, 'cell': cells}
-            json_results.append({'filename': os.path.basename(image_path), 'split': split, 'imgid': imgid, 'html': html})
-            imgid += 1
-
-        # save json
-        with open("{}/annotation.json".format(self.lastOpenDir), "w", encoding='utf-8') as fid:
-            fid.write(json.dumps(json_results, ensure_ascii=False))
-        
-        msg = 'JSON sucessfully saved in {}/annotation.json'.format(self.lastOpenDir)
+            # 构造标注信息
+            html = {
+                'structure': {
+                    'tokens': token_list
+                    }, 
+                'cells': cells
+                }
+            d = {
+                'filename': os.path.basename(image_path), 
+                'html': html
+                }
+            # 重构HTML
+            d['gt'] = rebuild_html_from_ppstructure_label(d)
+            fid.write('{}\n'.format(
+                json.dumps(
+                    d, ensure_ascii=False)))
+                    
+        # convert to PP-Structure label format
+        fid.close()
+        msg = 'JSON sucessfully saved in {}/gt.txt'.format(self.lastOpenDir)
         QMessageBox.information(self, "Information", msg)
 
     def autolcm(self):
@@ -2728,6 +2716,9 @@ class MainWindow(QMainWindow):
 
             self._update_shape_color(shape)
             self.keyDialog.addLabelHistory(key_text)
+            
+        # save changed shape
+        self.setDirty()
 
     def undoShapeEdit(self):
         self.canvas.restoreShape()

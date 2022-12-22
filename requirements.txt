@@ -14,3 +14,4 @@ lxml
 premailer
 openpyxl
 attrdict
+PyMuPDF<1.21.0

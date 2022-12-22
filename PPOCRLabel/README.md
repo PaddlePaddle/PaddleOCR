@@ -103,11 +103,11 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 ```
 
 #### 1.2.3 Build and Install the Whl Package Locally
-Compile and install a new whl package, where 1.0.2 is the version number, you can specify the new version in 'setup.py'.
+Compile and install a new whl package, where 0.0.0 is the version number, you can specify the new version in 'setup.py'.
 ```bash
-cd PaddleOCR/PPOCRLabel
+cd ./PPOCRLabel
 python3 setup.py bdist_wheel
-pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
+pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl
 ```
 
 

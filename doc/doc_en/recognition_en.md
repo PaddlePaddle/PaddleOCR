@@ -15,6 +15,7 @@
   * [2.6 Training with knowledge distillation](#kd)
   * [2.7 Multi-language Training](#Multi_language)
   * [2.8 Training on other platform(Windows/macOS/Linux DCU)](#28)
+  * [2.9 Fine-tuning](#29)
 - [3. Evaluation and Test](#3-evaluation-and-test)
   * [3.1 Evaluation](#31-evaluation)
   * [3.2 Test](#32-test)
@@ -383,6 +384,11 @@ GPU mode is not supported, you need to set `use_gpu` to False in the configurati
 
 - Linux DCU
 Running on a DCU device requires setting the environment variable `export HIP_VISIBLE_DEVICES=0,1,2,3`, and the rest of the training and evaluation prediction commands are exactly the same as the Linux GPU.
+
+<a name="29"></a>
+## 2.9 Fine-tuning
+
+In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the recognition model, please refer to: [Model Fine-tuning Tutorial](./finetune_en.md).
 
 <a name="3-evaluation-and-test"></a>
 ## 3. Evaluation and Test

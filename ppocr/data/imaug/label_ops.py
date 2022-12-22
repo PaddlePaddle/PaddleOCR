@@ -488,6 +488,62 @@ class AttnLabelEncode(BaseRecLabelEncode):
         return idx
 
 
+class RFLLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 **kwargs):
+        super(RFLLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = [self.beg_str] + dict_character + [self.end_str]
+        return dict_character
+
+    def encode_cnt(self, text):
+        cnt_label = [0.0] * len(self.character)
+        for char_ in text:
+            cnt_label[char_] += 1
+        return np.array(cnt_label)
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        if len(text) >= self.max_text_len:
+            return None
+        cnt_label = self.encode_cnt(text)
+        data['length'] = np.array(len(text))
+        text = [0] + text + [len(self.character) - 1] + [0] * (self.max_text_len
+                                                               - len(text) - 2)
+        if len(text) != self.max_text_len:
+            return None
+        data['label'] = np.array(text)
+        data['cnt_label'] = cnt_label
+        return data
+
+    def get_ignored_tokens(self):
+        beg_idx = self.get_beg_end_flag_idx("beg")
+        end_idx = self.get_beg_end_flag_idx("end")
+        return [beg_idx, end_idx]
+
+    def get_beg_end_flag_idx(self, beg_or_end):
+        if beg_or_end == "beg":
+            idx = np.array(self.dict[self.beg_str])
+        elif beg_or_end == "end":
+            idx = np.array(self.dict[self.end_str])
+        else:
+            assert False, "Unsupport type %s in get_beg_end_flag_idx" \
+                          % beg_or_end
+        return idx
+
+
 class SEEDLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
 
@@ -1089,7 +1145,7 @@ class VQATokenLabelEncode(object):
 
     def _load_ocr_info(self, data):
         if self.infer_mode:
-            ocr_result = self.ocr_engine.ocr(data['image'], cls=False)
+            ocr_result = self.ocr_engine.ocr(data['image'], cls=False)[0]
             ocr_info = []
             for res in ocr_result:
                 ocr_info.append({
@@ -1340,12 +1396,9 @@ class VLLabelEncode(BaseRecLabelEncode):
                  max_text_length,
                  character_dict_path=None,
                  use_space_char=False,
-                 lower=True,
                  **kwargs):
-        super(VLLabelEncode, self).__init__(
-            max_text_length, character_dict_path, use_space_char, lower)
-        self.character = self.character[10:] + self.character[
-            1:10] + [self.character[0]]
+        super(VLLabelEncode, self).__init__(max_text_length,
+                                            character_dict_path, use_space_char)
         self.dict = {}
         for i, char in enumerate(self.character):
             self.dict[char] = i
@@ -1394,4 +1447,59 @@ class VLLabelEncode(BaseRecLabelEncode):
         label_sub = label_sub + [0] * (self.max_text_len - len(label_sub))
         data['label_res'] = np.array(label_res)
         data['label_sub'] = np.array(label_sub)
+        return data
+
+
+class CTLabelEncode(object):
+    def __init__(self, **kwargs):
+        pass
+
+    def __call__(self, data):
+        label = data['label']
+
+        label = json.loads(label)
+        nBox = len(label)
+        boxes, txts = [], []
+        for bno in range(0, nBox):
+            box = label[bno]['points']
+            box = np.array(box)
+
+            boxes.append(box)
+            txt = label[bno]['transcription']
+            txts.append(txt)
+
+        if len(boxes) == 0:
+            return None
+
+        data['polys'] = boxes
+        data['texts'] = txts
+        return data
+
+
+class CANLabelEncode(BaseRecLabelEncode):
+    def __init__(self,
+                 character_dict_path,
+                 max_text_length=100,
+                 use_space_char=False,
+                 lower=True,
+                 **kwargs):
+        super(CANLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char, lower)
+
+    def encode(self, text_seq):
+        text_seq_encoded = []
+        for text in text_seq:
+            if text not in self.character:
+                continue
+            text_seq_encoded.append(self.dict.get(text))
+        if len(text_seq_encoded) == 0:
+            return None
+        return text_seq_encoded
+
+    def __call__(self, data):
+        label = data['label']
+        if isinstance(label, str):
+            label = label.strip().split()
+        label.append(self.end_str)
+        data['label'] = self.encode(label)
         return data

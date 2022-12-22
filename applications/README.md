@@ -42,14 +42,14 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 
 ### 金融
 
-| 类别           | 亮点                          | 模型下载       | 教程                                  | 示例图                                                       |
-| -------------- | ----------------------------- | -------------- | ------------------------------------- | ------------------------------------------------------------ |
-| 表单VQA        | 多模态通用表单结构化提取      | [模型下载](#2) | [中文](./多模态表单识别.md)/English   | <img src="https://ai-studio-static-online.cdn.bcebos.com/a3b25766f3074d2facdf88d4a60fc76612f51992fd124cf5bd846b213130665b"  width = "200" height = "200" /> |
-| 增值税发票     | 关键信息抽取，SER、RE任务训练 | [模型下载](#2) | [中文](./发票关键信息抽取.md)/English | <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg"  width = "200"  /> |
-| 印章检测与识别 | 端到端弯曲文本识别            |                |                                       |                                                              |
-| 通用卡证识别   | 通用结构化提取                |                |                                       |                                                              |
-| 身份证识别     | 结构化提取、图像阴影          |                |                                       |                                                              |
-| 合同比对       | 密集文本检测、NLP串联         |                |                                       |                                                              |
+| 类别           | 亮点                          | 模型下载       | 教程                                      | 示例图                                                       |
+| -------------- | ----------------------------- | -------------- | ----------------------------------------- | ------------------------------------------------------------ |
+| 表单VQA        | 多模态通用表单结构化提取      | [模型下载](#2) | [中文](./多模态表单识别.md)/English       | <img src="https://ai-studio-static-online.cdn.bcebos.com/a3b25766f3074d2facdf88d4a60fc76612f51992fd124cf5bd846b213130665b"  width = "200" height = "200" /> |
+| 增值税发票     | 关键信息抽取，SER、RE任务训练 | [模型下载](#2) | [中文](./发票关键信息抽取.md)/English     | <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg"  width = "200"  /> |
+| 印章检测与识别 | 端到端弯曲文本识别            | [模型下载](#2) | [中文](./印章弯曲文字识别.md)/English     | <img src="https://ai-studio-static-online.cdn.bcebos.com/498119182f0a414ab86ae2de752fa31c9ddc3a74a76847049cc57884602cb269"  width = "150"  /> |
+| 通用卡证识别   | 通用结构化提取                | [模型下载](#2) | [中文](./快速构建卡证类OCR.md)/English    | <img src="https://ai-studio-static-online.cdn.bcebos.com/981640e17d05487e961162f8576c9e11634ca157f79048d4bd9d3bc21722afe8"  width = "300"  /> |
+| 身份证识别     | 结构化提取、图像阴影          |                |                                           |                                                              |
+| 合同比对       | 密集文本检测、NLP关键信息抽取 | [模型下载](#2) | [中文](./扫描合同关键信息提取.md)/English | <img src="https://ai-studio-static-online.cdn.bcebos.com/54f3053e6e1b47a39b26e757006fe2c44910d60a3809422ab76c25396b92e69b"  width = "300"  /> |
 
 <a name="14"></a>
 

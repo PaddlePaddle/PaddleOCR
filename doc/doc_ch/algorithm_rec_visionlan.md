@@ -27,7 +27,7 @@
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|VisionLAN|ResNet45|[rec_r45_visionlan.yml](../../configs/rec/rec_r45_visionlan.yml)|90.3%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar)|
+|VisionLAN|ResNet45|[rec_r45_visionlan.yml](../../configs/rec/rec_r45_visionlan.yml)|90.30%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar)|
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -80,7 +80,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_r45_visionlan.yml -o Global.infer_
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/rec_r45_visionlan_train.tar))，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar))，可以使用如下命令进行转换：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
@@ -139,7 +139,7 @@ Predicts of ./doc/imgs_words/en/word_2.png:('yourself', 0.9999493)
 ## 5. FAQ
 
 1. MJSynth和SynthText两种数据集来自于[VisionLAN源repo](https://github.com/wangyuxin87/VisionLAN) 。
-2. 我们使用VisionLAN作者提供的预训练模型进行finetune训练。
+2. 我们使用VisionLAN作者提供的预训练模型进行finetune训练，预训练模型配套字典为'ppocr/utils/ic15_dict.txt'。
 
 ## 引用
 

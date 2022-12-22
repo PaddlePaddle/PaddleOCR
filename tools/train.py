@@ -119,6 +119,7 @@ def main(config, device, logger, vdl_writer):
             config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
+
     use_sync_bn = config["Global"].get("use_sync_bn", False)
     if use_sync_bn:
         model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
@@ -138,7 +139,7 @@ def main(config, device, logger, vdl_writer):
 
     # build metric
     eval_class = build_metric(config['Metric'])
-    
+
     logger.info('train dataloader has {} iters'.format(len(train_dataloader)))
     if valid_dataloader is not None:
         logger.info('valid dataloader has {} iters'.format(
@@ -146,12 +147,13 @@ def main(config, device, logger, vdl_writer):
 
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
-    amp_custom_black_list = config['Global'].get('amp_custom_black_list',[])
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     if use_amp:
-        AMP_RELATED_FLAGS_SETTING = {
-            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
-            'FLAGS_max_inplace_grad_add': 8,
-        }
+        AMP_RELATED_FLAGS_SETTING = {'FLAGS_max_inplace_grad_add': 8, }
+        if paddle.is_compiled_with_cuda():
+            AMP_RELATED_FLAGS_SETTING.update({
+                'FLAGS_cudnn_batchnorm_spatial_persistent': 1
+            })
         paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["Global"].get("scale_loss", 1.0)
         use_dynamic_loss_scaling = config["Global"].get(
@@ -161,20 +163,24 @@ def main(config, device, logger, vdl_writer):
             use_dynamic_loss_scaling=use_dynamic_loss_scaling)
         if amp_level == "O2":
             model, optimizer = paddle.amp.decorate(
-                models=model, optimizers=optimizer, level=amp_level, master_weight=True)
+                models=model,
+                optimizers=optimizer,
+                level=amp_level,
+                master_weight=True)
     else:
         scaler = None
 
     # load pretrain model
     pre_best_model_dict = load_model(config, model, optimizer,
                                      config['Architecture']["model_type"])
-                                     
+
     if config['Global']['distributed']:
         model = paddle.DataParallel(model)
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,amp_level, amp_custom_black_list)
+                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
+                  amp_level, amp_custom_black_list)
 
 
 def test_reader(config, device, logger):

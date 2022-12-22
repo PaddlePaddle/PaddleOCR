@@ -14,6 +14,9 @@
   - [2.5. 分布式训练](#25-分布式训练)
   - [2.6. 其他训练环境](#26-其他训练环境)
   - [2.7. 模型微调](#27-模型微调)
+    - [2.7.1 数据选择](#271-数据选择)
+    - [2.7.2 模型选择](#272-模型选择)
+    - [2.7.3 训练超参选择](#273-训练超参选择)
 - [3. 模型评估与预测](#3-模型评估与预测)
   - [3.1. 指标评估](#31-指标评估)
   - [3.2. 测试表格结构识别效果](#32-测试表格结构识别效果)
@@ -41,7 +44,7 @@ img_label
    'imgid': 0,								 		# 图像的index
    'html': {
      'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, 			# 表格的HTML字符串
-     'cell': [
+     'cells': [
        {
          'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], 	# 表格中的单个文本
          'bbox': [x0, y0, x1, y1]  							# 表格中的单个文本的坐标
@@ -219,7 +222,39 @@ DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`�
 
 ## 2.7. 模型微调
 
-实际使用过程中，建议加载官方提供的预训练模型，在自己的数据集中进行微调，关于模型的微调方法，请参考：[模型微调教程](./finetune.md)。
+### 2.7.1 数据选择
+
+数据量：建议至少准备2000张的表格识别数据集用于模型微调。
+
+### 2.7.2 模型选择
+
+建议选择SLANet模型（配置文件：[SLANet_ch.yml](../../configs/table/SLANet_ch.yml)，预训练模型：[ch_ppstructure_mobile_v2.0_SLANet_train.tar](https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_train.tar)）进行微调，其精度与泛化性能是目前提供的最优中文表格预训练模型。
+
+更多表格识别模型，请参考[PP-Structure 系列模型库](../../ppstructure/docs/models_list.md)。
+
+### 2.7.3 训练超参选择
+
+在模型微调的时候，最重要的超参就是预训练模型路径`pretrained_model`, 学习率`learning_rate`，部分配置文件如下所示。
+
+```yaml
+Global:
+  pretrained_model: ./ch_ppstructure_mobile_v2.0_SLANet_train/best_accuracy.pdparams # 预训练模型路径
+Optimizer:
+  lr:
+    name: Cosine
+    learning_rate: 0.001 #
+    warmup_epoch: 0
+  regularizer:
+    name: 'L2'
+    factor: 0
+```
+
+上述配置文件中，首先需要将`pretrained_model`字段指定为`best_accuracy.pdparams`文件路径。
+
+PaddleOCR提供的配置文件是在4卡训练（相当于总的batch size是`4*48=192`）、且没有加载预训练模型情况下的配置文件，因此您的场景中，学习率与总的batch size需要对应线性调整，例如
+
+* 如果您的场景中是单卡训练，单卡batch_size=48，则总的batch_size=48，建议将学习率调整为`0.00025`左右。
+* 如果您的场景中是单卡训练，由于显存限制，只能设置单卡batch_size=32，则总的batch_size=32，建议将学习率调整为`0.00017`左右。
 
 
 # 3. 模型评估与预测

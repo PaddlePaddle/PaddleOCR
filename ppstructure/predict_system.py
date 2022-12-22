@@ -30,6 +30,7 @@ from copy import deepcopy
 
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
+from ppocr.utils.visual import draw_ser_results, draw_re_results
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
@@ -75,7 +76,8 @@ class StructureSystem(object):
                     self.table_system = TableSystem(args)
 
         elif self.mode == 'kie':
-            raise NotImplementedError
+            from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
+            self.kie_predictor = SerRePredictor(args)
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
@@ -100,7 +102,8 @@ class StructureSystem(object):
                 '180': cv2.ROTATE_180,
                 '270': cv2.ROTATE_90_CLOCKWISE
             }
-            img = cv2.rotate(img, cv_rotate_code[angle])
+            if angle in cv_rotate_code:
+                img = cv2.rotate(img, cv_rotate_code[angle])
             toc = time.time()
             time_dict['image_orientation'] = toc - tic
         if self.mode == 'structure':
@@ -175,7 +178,10 @@ class StructureSystem(object):
             time_dict['all'] = end - start
             return res_list, time_dict
         elif self.mode == 'kie':
-            raise NotImplementedError
+            re_res, elapse = self.kie_predictor(img)
+            time_dict['kie'] = elapse
+            time_dict['all'] = elapse
+            return re_res[0], time_dict
         return None, None
 
 
@@ -210,15 +216,27 @@ def main(args):
     image_file_list = image_file_list
     image_file_list = image_file_list[args.process_id::args.total_process_num]
 
-    structure_sys = StructureSystem(args)
+    if not args.use_pdf2docx_api:
+        structure_sys = StructureSystem(args)
+        save_folder = os.path.join(args.output, structure_sys.mode)
+        os.makedirs(save_folder, exist_ok=True)
     img_num = len(image_file_list)
-    save_folder = os.path.join(args.output, structure_sys.mode)
-    os.makedirs(save_folder, exist_ok=True)
 
     for i, image_file in enumerate(image_file_list):
         logger.info("[{}/{}] {}".format(i, img_num, image_file))
         img, flag_gif, flag_pdf = check_and_read(image_file)
         img_name = os.path.basename(image_file).split('.')[0]
+
+        if args.recovery and args.use_pdf2docx_api and flag_pdf:
+            from pdf2docx.converter import Converter
+            os.makedirs(args.output, exist_ok=True)
+            docx_file = os.path.join(args.output,
+                                     '{}_api.docx'.format(img_name))
+            cv = Converter(image_file)
+            cv.convert(docx_file)
+            cv.close()
+            logger.info('docx save to {}'.format(docx_file))
+            continue
 
         if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)
@@ -234,15 +252,32 @@ def main(args):
         all_res = []
         for index, img in enumerate(imgs):
             res, time_dict = structure_sys(img, img_idx=index)
+            img_save_path = os.path.join(save_folder, img_name,
+                                         'show_{}.jpg'.format(index))
+            os.makedirs(os.path.join(save_folder, img_name), exist_ok=True)
             if structure_sys.mode == 'structure' and res != []:
-                save_structure_res(res, save_folder, img_name, index)
                 draw_img = draw_structure_result(img, res, args.vis_font_path)
-                img_save_path = os.path.join(save_folder, img_name,
-                                             'show_{}.jpg'.format(index))
+                save_structure_res(res, save_folder, img_name, index)
             elif structure_sys.mode == 'kie':
-                raise NotImplementedError
-                # draw_img = draw_ser_results(img, res, args.vis_font_path)
-                # img_save_path = os.path.join(save_folder, img_name + '.jpg')
+                if structure_sys.kie_predictor.predictor is not None:
+                    draw_img = draw_re_results(
+                        img, res, font_path=args.vis_font_path)
+                else:
+                    draw_img = draw_ser_results(
+                        img, res, font_path=args.vis_font_path)
+
+                with open(
+                        os.path.join(save_folder, img_name,
+                                     'res_{}_kie.txt'.format(index)),
+                        'w',
+                        encoding='utf8') as f:
+                    res_str = '{}\t{}\n'.format(
+                        image_file,
+                        json.dumps(
+                            {
+                                "ocr_info": res
+                            }, ensure_ascii=False))
+                    f.write(res_str)
             if res != []:
                 cv2.imwrite(img_save_path, draw_img)
                 logger.info('result save to {}'.format(img_save_path))
@@ -254,8 +289,7 @@ def main(args):
 
         if args.recovery and all_res != []:
             try:
-                convert_info_docx(img, all_res, save_folder, img_name,
-                                  args.save_pdf)
+                convert_info_docx(img, all_res, save_folder, img_name)
             except Exception as ex:
                 logger.error("error in layout recovery image:{}, err msg: {}".
                              format(image_file, ex))

@@ -28,7 +28,7 @@ from ppocr.utils.logging import get_logger
 logger = get_logger()
 
 
-def convert_info_docx(img, res, save_folder, img_name, save_pdf=False):
+def convert_info_docx(img, res, save_folder, img_name):
     doc = Document()
     doc.styles['Normal'].font.name = 'Times New Roman'
     doc.styles['Normal']._element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
@@ -60,14 +60,9 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf=False):
         elif region['type'].lower() == 'title':
             doc.add_heading(region['res'][0]['text'])
         elif region['type'].lower() == 'table':
-            paragraph = doc.add_paragraph()
-            new_parser = HtmlToDocx()
-            new_parser.table_style = 'TableGrid'
-            table = new_parser.handle_table(html=region['res']['html'])
-            new_table = deepcopy(table)
-            new_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-            paragraph.add_run().element.addnext(new_table._tbl)
-
+            parser = HtmlToDocx()
+            parser.table_style = 'TableGrid'
+            parser.handle_table(region['res']['html'], doc)
         else:
             paragraph = doc.add_paragraph()
             paragraph_format = paragraph.paragraph_format
@@ -78,16 +73,9 @@ def convert_info_docx(img, res, save_folder, img_name, save_pdf=False):
                 text_run.font.size = shared.Pt(10)
 
     # save to docx
-    docx_path = os.path.join(save_folder, '{}.docx'.format(img_name))
+    docx_path = os.path.join(save_folder, '{}_ocr.docx'.format(img_name))
     doc.save(docx_path)
     logger.info('docx save to {}'.format(docx_path))
-
-    # save to pdf
-    if save_pdf:
-        pdf_path = os.path.join(save_folder, '{}.pdf'.format(img_name))
-        from docx2pdf import convert
-        convert(docx_path, pdf_path)
-        logger.info('pdf save to {}'.format(pdf_path))
 
 
 def sorted_layout_boxes(res, w):

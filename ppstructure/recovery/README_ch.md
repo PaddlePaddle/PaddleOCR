@@ -6,19 +6,37 @@
 - [2. 安装](#2)
   - [2.1 安装PaddlePaddle](#2.1)
   - [2.2 安装PaddleOCR](#2.2)
-- [3. 使用](#3)
-  - [3.1 下载模型](#3.1)
-  - [3.2 版面恢复](#3.2)
-- [4. 更多](#4)
-
+- [3.使用标准PDF解析进行版面恢复](#3)
+- [4. 使用图片格式PDF解析进行版面恢复](#4)
+  - [4.1 下载模型](#4.1)
+  - [4.2 版面恢复](#4.2)
+- [5. 更多](#5)
 
 <a name="1"></a>
 
 ## 1. 简介
 
-版面恢复就是在OCR识别后，内容仍然像原文档图片那样排列着，段落不变、顺序不变的输出到word文档中等。
+版面恢复就是将输入的图片、pdf内容仍然像原文档那样排列着，段落不变、顺序不变的输出到word文档中等。
 
-版面恢复结合了[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件，下图分别展示了英文文档和中文文档版面恢复的效果：
+提供了2种版面恢复方法，可根据输入PDF的格式进行选择：
+
+- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过PyMuPDF获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。
+- **图片格式PDF解析(输入可为标准PDF或图片格式PDF)**：结合[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件。
+
+2种方法输入格式、适用场景如下：
+
+|      方法       | 支持输入文件 |                      适用场景/存在问题                       |
+| :-------------: | :----------: | :----------------------------------------------------------: |
+|   标准PDF解析   |     pdf      | 优点：非论文文档恢复效果更优、每一页内容恢复后仍在同一页<br>缺点：有些中文文档中的英文乱码、仍存在内容超出当前页面的情况、整页内容恢复为表格格式、部分图片恢复效果不佳 |
+| 图片格式PDF解析 |  pdf、图片   | 优点：更适合论文文档正文内容的恢复、中英文文档OCR识别效果好<br>缺点：目前内容恢复基于规则，内容排版效果(间距、字体等)待进一步提升、版面恢复效果依赖于版面分析效果 |
+
+下图展示了通过PDF解析版面恢复效果：
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/19808900/195319840-68fc60ec-ea66-4095-b734-0ec115860341.png"  width = "700" />
+</div>
+
+下图分别展示了通过OCR技术，英文文档和中文文档版面恢复的效果：
 
 <div align="center">
 <img src="../docs/recovery/recovery.jpg"  width = "700" />
@@ -64,15 +82,46 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **（2）安装recovery的`requirements`**
 
-版面恢复导出为docx、pdf文件，所以需要安装python-docx、docx2pdf API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。
+版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。
+
+通过如下命令安装全部库：
 
 ```bash
 python3 -m pip install -r ppstructure/recovery/requirements.txt
 ```
 
+使用pdf2docx库解析的方式恢复文档需要安装优化的pdf2docx。
+
+```bash
+wget https://paddleocr.bj.bcebos.com/whl/pdf2docx-0.0.0-py3-none-any.whl
+pip3 install pdf2docx-0.0.0-py3-none-any.whl
+```
+
 <a name="3"></a>
 
-## 3. 使用
+## 3.使用标准PDF解析进行版面恢复
+
+`use_pdf2docx_api`表示使用PDF解析的方式进行版面恢复，通过whl包的形式方便快速使用，代码如下，更多信息详见 [quickstart](../docs/quickstart.md)。
+
+```bash
+# 安装 paddleocr，推荐使用2.6版本
+pip3 install "paddleocr>=2.6"
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+```
+
+通过命令行的方式：
+
+```bash
+python3 predict_system.py \
+    --image_dir=ppstructure/recovery/UnrealText.pdf \
+    --recovery=True \
+    --use_pdf2docx_api=True \
+    --output=../output/
+```
+
+<a name="4"></a>
+
+## 4.使用图片格式PDF解析进行版面恢复
 
 我们通过版面分析对图片/pdf形式的文档进行区域划分，定位其中的关键区域，如文字、表格、图片等，记录每个区域的位置、类别、区域像素值信息。对不同的区域分别处理，其中：
 
@@ -83,11 +132,22 @@ python3 -m pip install -r ppstructure/recovery/requirements.txt
 
 我们通过版面信息、OCR检测和识别结构、表格信息、保存的图片，对测试图片进行恢复即可。
 
-提供如下代码实现版面恢复，也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
+提供如下代码实现版面恢复，也提供了whl包的形式方便快速使用，代码如下，更多信息详见 [quickstart](../docs/quickstart.md)。
 
-<a name="3.1"></a>
+```bash
+# 安装 paddleocr，推荐使用2.6版本
+pip3 install "paddleocr>=2.6"
+# 中文测试图
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
+# 英文测试图
+paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
+# pdf测试文件
+paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
+```
 
-### 3.1 下载模型
+<a name="4.1"></a>
+
+### 4.1 下载模型
 
 如果输入为英文文档类型，下载OCR检测和识别、版面分析、表格识别的英文模型
 
@@ -113,9 +173,9 @@ cd ..
 
 [PP-OCRv3中英文超轻量文本检测和识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/README_ch.md#pp-ocr%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E5%88%97%E8%A1%A8%E6%9B%B4%E6%96%B0%E4%B8%AD)、[表格识别模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#22-表格识别模型)、[版面分析模型](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppstructure/docs/models_list.md#1-版面分析模型)
 
-<a name="3.2"></a>
+<a name="4.2"></a>
 
-### 3.2 版面恢复
+### 4.2 版面恢复
 
 使用下载的模型恢复给定文档的版面，以英文模型为例，执行如下命令：
 
@@ -131,7 +191,6 @@ python3 predict_system.py \
     --layout_dict_path=../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt \
     --vis_font_path=../doc/fonts/simfang.ttf \
     --recovery=True \
-    --save_pdf=False \
     --output=../output/
 ```
 
@@ -148,12 +207,11 @@ python3 predict_system.py \
 - layout_model_dir：版面分析模型路径
 - layout_dict_path：版面分析字典，如果更换为中文模型，需要更改为"../ppocr/utils/dict/layout_dict/layout_cdla_dict.txt"
 - recovery：是否进行版面恢复，默认False
-- save_pdf：进行版面恢复导出docx文档的同时，是否保存为pdf文件，默认为False
 - output：版面恢复结果保存路径
 
-<a name="4"></a>
+<a name="5"></a>
 
-## 4. 更多
+## 5. 更多
 
 关于OCR检测模型的训练评估与推理，请参考：[文本检测教程](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/detection.md)
 

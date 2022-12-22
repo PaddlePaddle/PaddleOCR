@@ -97,6 +97,8 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 
 |模型版本|模型简介|模型大小|检测模型|文本方向分类模型|识别模型|Paddle-Lite版本|
 |---|---|---|---|---|---|---|
+|PP-OCRv3|蒸馏版超轻量中文OCR移动端模型|16.2M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.nb)|v2.10|
+|PP-OCRv3(slim)|蒸馏版超轻量中文OCR移动端模型|5.9M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.nb)|v2.10|
 |PP-OCRv2|蒸馏版超轻量中文OCR移动端模型|11M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_det_infer_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_rec_infer_opt.nb)|v2.10|
 |PP-OCRv2(slim)|蒸馏版超轻量中文OCR移动端模型|4.6M|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_det_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)|[下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_PP-OCRv2_rec_slim_opt.nb)|v2.10|
 
@@ -131,16 +133,16 @@ paddle_lite_opt 参数介绍：
 下面以PaddleOCR的超轻量中文模型为例，介绍使用编译好的opt文件完成inference模型到Paddle-Lite优化模型的转换。
 
 ```
-# 【推荐】 下载 PP-OCRv2版本的中英文 inference模型
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_quant_infer.tar && tar xf  ch_PP-OCRv2_det_slim_quant_infer.tar
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar && tar xf  ch_PP-OCRv2_rec_slim_quant_infer.tar
+# 【推荐】 下载 PP-OCRv3版本的中英文 inference模型
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.tar && tar xf  ch_PP-OCRv3_det_slim_infer.tar
+wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar && tar xf  ch_PP-OCRv2_rec_slim_quant_infer.tar
 wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls_slim_infer.tar && tar xf  ch_ppocr_mobile_v2.0_cls_slim_infer.tar
 # 转换检测模型
-./opt --model_file=./ch_PP-OCRv2_det_slim_quant_infer/inference.pdmodel  --param_file=./ch_PP-OCRv2_det_slim_quant_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv2_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+paddle_lite_opt --model_file=./ch_PP-OCRv3_det_slim_infer/inference.pdmodel  --param_file=./ch_PP-OCRv3_det_slim_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv3_det_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换识别模型
-./opt --model_file=./ch_PP-OCRv2_rec_slim_quant_infer/inference.pdmodel  --param_file=./ch_PP-OCRv2_rec_slim_quant_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv2_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+paddle_lite_opt --model_file=./ch_PP-OCRv3_rec_slim_infer/inference.pdmodel  --param_file=./ch_PP-OCRv3_rec_slim_infer/inference.pdiparams  --optimize_out=./ch_PP-OCRv3_rec_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 # 转换方向分类器模型
-./opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
+paddle_lite_opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdmodel  --param_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdiparams  --optimize_out=./ch_ppocr_mobile_v2.0_cls_slim_opt --valid_targets=arm  --optimize_out_type=naive_buffer
 
 ```
 
@@ -194,15 +196,15 @@ wget  https://paddleocr.bj.bcebos.com/dygraph_v2.0/slim/ch_ppocr_mobile_v2.0_cls
  ```
 
  准备测试图像，以`PaddleOCR/doc/imgs/11.jpg`为例，将测试的图像复制到`demo/cxx/ocr/debug/`文件夹下。
- 准备lite opt工具优化后的模型文件，比如使用`ch_PP-OCRv2_det_slim_opt.ch_PP-OCRv2_rec_slim_rec.nb, ch_ppocr_mobile_v2.0_cls_slim_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
+ 准备lite opt工具优化后的模型文件，比如使用`ch_PP-OCRv3_det_slim_opt.ch_PP-OCRv3_rec_slim_rec.nb, ch_ppocr_mobile_v2.0_cls_slim_opt.nb`，模型文件放置在`demo/cxx/ocr/debug/`文件夹下。
 
  执行完成后，ocr文件夹下将有如下文件格式：
 
 ```
 demo/cxx/ocr/
 |-- debug/  
-|   |--ch_PP-OCRv2_det_slim_opt.nb           优化后的检测模型文件
-|   |--ch_PP-OCRv2_rec_slim_opt.nb           优化后的识别模型文件
+|   |--ch_PP-OCRv3_det_slim_opt.nb           优化后的检测模型文件
+|   |--ch_PP-OCRv3_rec_slim_opt.nb           优化后的识别模型文件
 |   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           优化后的文字方向分类器模型文件
 |   |--11.jpg                           待测试图像
 |   |--ppocr_keys_v1.txt                中文字典文件
@@ -239,7 +241,7 @@ det_db_thresh  0.3        # 用于过滤DB预测的二值化图像，设置为0.
 det_db_box_thresh  0.5    # 检测器后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小
 det_db_unclip_ratio  1.6  # 表示文本框的紧致程度，越小则文本框更靠近文本
 use_direction_classify  0  # 是否使用方向分类器，0表示不使用，1表示使用
-rec_image_height  32      # 识别模型输入图像的高度，PP-OCRv3模型设置为48，PP-OCRv2模型需要设置为32
+rec_image_height  48      # 识别模型输入图像的高度，PP-OCRv3模型设置为48，PP-OCRv2模型需要设置为32
 ```
 
  5. 启动调试
@@ -259,13 +261,13 @@ rec_image_height  32      # 识别模型输入图像的高度，PP-OCRv3模型�
  export LD_LIBRARY_PATH=${PWD}:$LD_LIBRARY_PATH
  # 开始使用，ocr_db_crnn可执行文件的使用方式为:
  # ./ocr_db_crnn 预测模式  检测模型文件 方向分类器模型文件  识别模型文件 运行硬件 运行精度 线程数  batchsize  测试图像路径  参数配置路径  字典文件路径 是否使用benchmark参数
- ./ocr_db_crnn system  ch_PP-OCRv2_det_slim_opt.nb  ch_PP-OCRv2_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
+ ./ocr_db_crnn system  ch_PP-OCRv3_det_slim_opt.nb  ch_PP-OCRv3_rec_slim_opt.nb  ch_ppocr_mobile_v2.0_cls_slim_opt.nb  arm8 INT8 10 1  ./11.jpg  config.txt  ppocr_keys_v1.txt  True
 
 # 仅使用文本检测模型，使用方式如下：
-./ocr_db_crnn  det ch_PP-OCRv2_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
+./ocr_db_crnn  det ch_PP-OCRv3_det_slim_opt.nb arm8 INT8 10 1 ./11.jpg  config.txt
 
 # 仅使用文本识别模型，使用方式如下：
-./ocr_db_crnn  rec ch_PP-OCRv2_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
+./ocr_db_crnn  rec ch_PP-OCRv3_rec_slim_opt.nb arm8 INT8 10 1 word_1.jpg ppocr_keys_v1.txt config.txt
  ```
 
  如果对代码做了修改，则需要重新编译并push到手机上。

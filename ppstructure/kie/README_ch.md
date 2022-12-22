@@ -156,16 +156,16 @@ wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layou
 # 仅预测SER模型
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 
 # SER + RE模型串联
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 `Global.save_res_path`目录中会保存可视化的结果图像以及预测的文本文件。
@@ -177,32 +177,33 @@ python3 ./tools/infer_kie_token_ser_re.py \
 # 仅预测SER模型
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False
 
 # SER + RE模型串联
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 #### 4.2.3 基于PaddleInference的预测
 
-目前仅SER模型支持PaddleInference推理。
-
-首先下载SER的推理模型。
-
+首先下载SER和RE的推理模型。
 
 ```bash
 mkdir inference
 cd inference
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar && tar -xf re_vi_layoutxlm_xfund_infer.tar
+cd ..
 ```
+
+- SER
 
 执行下面的命令进行预测。
 
@@ -218,6 +219,26 @@ python3 kie/predict_kie_token_ser.py \
 ```
 
 可视化结果保存在`output`目录下。
+
+- RE
+
+执行下面的命令进行预测。
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --use_visual_backbone=False \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+可视化结果保存在`output`目录下。
+
 
 ### 4.3 更多
 

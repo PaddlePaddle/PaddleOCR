@@ -53,6 +53,9 @@ def build_optimizer(config, epochs, step_each_epoch, model):
     if 'clip_norm' in config:
         clip_norm = config.pop('clip_norm')
         grad_clip = paddle.nn.ClipGradByNorm(clip_norm=clip_norm)
+    elif 'clip_norm_global' in config:
+        clip_norm = config.pop('clip_norm_global')
+        grad_clip = paddle.nn.ClipGradByGlobalNorm(clip_norm=clip_norm)
     else:
         grad_clip = None
     optim = getattr(optimizer, optim_name)(learning_rate=lr,

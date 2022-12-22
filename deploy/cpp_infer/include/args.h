@@ -49,13 +49,20 @@ DECLARE_int32(rec_batch_num);
 DECLARE_string(rec_char_dict_path);
 DECLARE_int32(rec_img_h);
 DECLARE_int32(rec_img_w);
+// layout model related
+DECLARE_string(layout_model_dir);
+DECLARE_string(layout_dict_path);
+DECLARE_double(layout_score_threshold);
+DECLARE_double(layout_nms_threshold);
 // structure model related
 DECLARE_string(table_model_dir);
 DECLARE_int32(table_max_len);
 DECLARE_int32(table_batch_num);
 DECLARE_string(table_char_dict_path);
+DECLARE_bool(merge_no_span_structure);
 // forward related
 DECLARE_bool(det);
 DECLARE_bool(rec);
 DECLARE_bool(cls);
 DECLARE_bool(table);
+DECLARE_bool(layout);

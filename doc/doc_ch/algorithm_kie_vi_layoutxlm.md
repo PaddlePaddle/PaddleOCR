@@ -23,7 +23,7 @@ VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去�
 |模型|骨干网络|任务|配置文件|hmean|下载链接|
 | --- | --- |---| --- | --- | --- |
 |VI-LayoutXLM |VI-LayoutXLM-base | SER |[ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)|93.19%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)/[推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar)|
-|VI-LayoutXLM |VI-LayoutXLM-base |RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|83.92%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)/[推理模型(coming soon)]()|
+|VI-LayoutXLM |VI-LayoutXLM-base |RE | [re_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh_udml.yml)|83.92%|[训练模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)/[推理模型](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar)|
 
 <a name="2"></a>
 
@@ -45,7 +45,7 @@ VI-LayoutXLM基于LayoutXLM进行改进，在下游任务训练过程中，去�
 
 ### 4.1 Python推理
 
-**注：** 目前RE任务推理过程仍在适配中，下面以SER任务为例，介绍基于VI-LayoutXLM模型的关键信息抽取过程。
+- SER
 
 首先将训练得到的模型转换成inference model。以VI-LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
 
@@ -74,6 +74,36 @@ SER可视化结果默认保存到`./output`文件夹里面，结果示例如下�
     <img src="../../ppstructure/docs/kie/result_ser/zh_val_42_ser.jpg" width="800">
 </div>
 
+- RE
+
+首先将训练得到的模型转换成inference model。以VI-LayoutXLM模型在XFUND_zh数据集上训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar)），可以使用下面的命令进行转换。
+
+``` bash
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_pretrained.tar
+tar -xf re_vi_layoutxlm_xfund_pretrained.tar
+python3 tools/export_model.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml -o Architecture.Backbone.checkpoints=./re_vi_layoutxlm_xfund_pretrained/best_accuracy Global.save_inference_dir=./inference/re_vi_layoutxlm_infer
+```
+
+VI-LayoutXLM模型基于RE任务进行推理，可以执行如下命令：
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm_infer \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_infer \
+  --use_visual_backbone=False \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+RE可视化结果默认保存到`./output`文件夹里面，结果示例如下：
+
+<div align="center">
+    <img src="../../ppstructure/docs/kie/result_re/zh_val_42_re.jpg" width="800">
+</div>
 
 <a name="4-2"></a>
 ### 4.2 C++推理部署
