@@ -16,6 +16,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import math
 import paddle
 import paddle.nn as nn
 from paddle import ParamAttr
@@ -42,7 +43,6 @@ class TableAttentionHead(nn.Layer):
     def __init__(self,
                  in_channels,
                  hidden_size,
-                 loc_type,
                  in_max_len=488,
                  max_text_length=800,
                  out_channels=30,
@@ -57,20 +57,16 @@ class TableAttentionHead(nn.Layer):
         self.structure_attention_cell = AttentionGRUCell(
             self.input_size, hidden_size, self.out_channels, use_gru=False)
         self.structure_generator = nn.Linear(hidden_size, self.out_channels)
-        self.loc_type = loc_type
         self.in_max_len = in_max_len
 
-        if self.loc_type == 1:
-            self.loc_generator = nn.Linear(hidden_size, 4)
+        if self.in_max_len == 640:
+            self.loc_fea_trans = nn.Linear(400, self.max_text_length + 1)
+        elif self.in_max_len == 800:
+            self.loc_fea_trans = nn.Linear(625, self.max_text_length + 1)
         else:
-            if self.in_max_len == 640:
-                self.loc_fea_trans = nn.Linear(400, self.max_text_length + 1)
-            elif self.in_max_len == 800:
-                self.loc_fea_trans = nn.Linear(625, self.max_text_length + 1)
-            else:
-                self.loc_fea_trans = nn.Linear(256, self.max_text_length + 1)
-            self.loc_generator = nn.Linear(self.input_size + hidden_size,
-                                           loc_reg_num)
+            self.loc_fea_trans = nn.Linear(256, self.max_text_length + 1)
+        self.loc_generator = nn.Linear(self.input_size + hidden_size,
+                                       loc_reg_num)
 
     def _char_to_onehot(self, input_char, onehot_dim):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
@@ -80,16 +76,14 @@ class TableAttentionHead(nn.Layer):
         # if and else branch are both needed when you want to assign a variable
         # if you modify the var in just one branch, then the modification will not work.
         fea = inputs[-1]
-        if len(fea.shape) == 3:
-            pass
-        else:
-            last_shape = int(np.prod(fea.shape[2:]))  # gry added
-            fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], last_shape])
-            fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
+        last_shape = int(np.prod(fea.shape[2:]))  # gry added
+        fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], last_shape])
+        fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
         batch_size = fea.shape[0]
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
-        output_hiddens = []
+        output_hiddens = paddle.zeros(
+            (batch_size, self.max_text_length + 1, self.hidden_size))
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
@@ -97,19 +91,14 @@ class TableAttentionHead(nn.Layer):
                     structure[:, i], onehot_dim=self.out_channels)
                 (outputs, hidden), alpha = self.structure_attention_cell(
                     hidden, fea, elem_onehots)
-                output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
-            output = paddle.concat(output_hiddens, axis=1)
-            structure_probs = self.structure_generator(output)
-            if self.loc_type == 1:
-                loc_preds = self.loc_generator(output)
-                loc_preds = F.sigmoid(loc_preds)
-            else:
-                loc_fea = fea.transpose([0, 2, 1])
-                loc_fea = self.loc_fea_trans(loc_fea)
-                loc_fea = loc_fea.transpose([0, 2, 1])
-                loc_concat = paddle.concat([output, loc_fea], axis=2)
-                loc_preds = self.loc_generator(loc_concat)
-                loc_preds = F.sigmoid(loc_preds)
+                output_hiddens[:, i, :] = outputs
+            structure_probs = self.structure_generator(output_hiddens)
+            loc_fea = fea.transpose([0, 2, 1])
+            loc_fea = self.loc_fea_trans(loc_fea)
+            loc_fea = loc_fea.transpose([0, 2, 1])
+            loc_concat = paddle.concat([output_hiddens, loc_fea], axis=2)
+            loc_preds = self.loc_generator(loc_concat)
+            loc_preds = F.sigmoid(loc_preds)
         else:
             temp_elem = paddle.zeros(shape=[batch_size], dtype="int32")
             structure_probs = None
@@ -118,30 +107,23 @@ class TableAttentionHead(nn.Layer):
             outputs = None
             alpha = None
             max_text_length = paddle.to_tensor(self.max_text_length)
-            i = 0
-            while i < max_text_length + 1:
+            for i in range(max_text_length + 1):
                 elem_onehots = self._char_to_onehot(
                     temp_elem, onehot_dim=self.out_channels)
                 (outputs, hidden), alpha = self.structure_attention_cell(
                     hidden, fea, elem_onehots)
-                output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
+                output_hiddens[:, i, :] = outputs
                 structure_probs_step = self.structure_generator(outputs)
                 temp_elem = structure_probs_step.argmax(axis=1, dtype="int32")
-                i += 1
 
-            output = paddle.concat(output_hiddens, axis=1)
-            structure_probs = self.structure_generator(output)
+            structure_probs = self.structure_generator(output_hiddens)
             structure_probs = F.softmax(structure_probs)
-            if self.loc_type == 1:
-                loc_preds = self.loc_generator(output)
-                loc_preds = F.sigmoid(loc_preds)
-            else:
-                loc_fea = fea.transpose([0, 2, 1])
-                loc_fea = self.loc_fea_trans(loc_fea)
-                loc_fea = loc_fea.transpose([0, 2, 1])
-                loc_concat = paddle.concat([output, loc_fea], axis=2)
-                loc_preds = self.loc_generator(loc_concat)
-                loc_preds = F.sigmoid(loc_preds)
+            loc_fea = fea.transpose([0, 2, 1])
+            loc_fea = self.loc_fea_trans(loc_fea)
+            loc_fea = loc_fea.transpose([0, 2, 1])
+            loc_concat = paddle.concat([output_hiddens, loc_fea], axis=2)
+            loc_preds = self.loc_generator(loc_concat)
+            loc_preds = F.sigmoid(loc_preds)
         return {'structure_probs': structure_probs, 'loc_preds': loc_preds}
 
 
@@ -166,6 +148,7 @@ class SLAHead(nn.Layer):
         self.max_text_length = max_text_length
         self.emb = self._char_to_onehot
         self.num_embeddings = out_channels
+        self.loc_reg_num = loc_reg_num
 
         # structure
         self.structure_attention_cell = AttentionGRUCell(
@@ -213,15 +196,19 @@ class SLAHead(nn.Layer):
         fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
-        structure_preds = []
-        loc_preds = []
+        structure_preds = paddle.zeros(
+            (batch_size, self.max_text_length + 1, self.num_embeddings))
+        loc_preds = paddle.zeros(
+            (batch_size, self.max_text_length + 1, self.loc_reg_num))
+        structure_preds.stop_gradient = True
+        loc_preds.stop_gradient = True
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
                 hidden, structure_step, loc_step = self._decode(structure[:, i],
                                                                 fea, hidden)
-                structure_preds.append(structure_step)
-                loc_preds.append(loc_step)
+                structure_preds[:, i, :] = structure_step
+                loc_preds[:, i, :] = loc_step
         else:
             pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
             max_text_length = paddle.to_tensor(self.max_text_length)
@@ -231,10 +218,8 @@ class SLAHead(nn.Layer):
                 hidden, structure_step, loc_step = self._decode(pre_chars, fea,
                                                                 hidden)
                 pre_chars = structure_step.argmax(axis=1, dtype="int32")
-                structure_preds.append(structure_step)
-                loc_preds.append(loc_step)
-        structure_preds = paddle.stack(structure_preds, axis=1)
-        loc_preds = paddle.stack(loc_preds, axis=1)
+                structure_preds[:, i, :] = structure_step
+                loc_preds[:, i, :] = loc_step
         if not self.training:
             structure_preds = F.softmax(structure_preds)
         return {'structure_probs': structure_preds, 'loc_preds': loc_preds}

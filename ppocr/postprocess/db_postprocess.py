@@ -38,7 +38,7 @@ class DBPostProcess(object):
                  unclip_ratio=2.0,
                  use_dilation=False,
                  score_mode="fast",
-                 use_polygon=False,
+                 box_type='quad',
                  **kwargs):
         self.thresh = thresh
         self.box_thresh = box_thresh
@@ -46,7 +46,7 @@ class DBPostProcess(object):
         self.unclip_ratio = unclip_ratio
         self.min_size = 3
         self.score_mode = score_mode
-        self.use_polygon = use_polygon
+        self.box_type = box_type
         assert score_mode in [
             "slow", "fast"
         ], "Score mode must be in [slow, fast] but got: {}".format(score_mode)
@@ -144,9 +144,9 @@ class DBPostProcess(object):
                 np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
                 np.round(box[:, 1] / height * dest_height), 0, dest_height)
-            boxes.append(box.astype(np.int16))
+            boxes.append(box.astype("int32"))
             scores.append(score)
-        return np.array(boxes, dtype=np.int16), scores
+        return np.array(boxes, dtype="int32"), scores
 
     def unclip(self, box, unclip_ratio):
         poly = Polygon(box)
@@ -185,15 +185,15 @@ class DBPostProcess(object):
         '''
         h, w = bitmap.shape[:2]
         box = _box.copy()
-        xmin = np.clip(np.floor(box[:, 0].min()).astype(np.int), 0, w - 1)
-        xmax = np.clip(np.ceil(box[:, 0].max()).astype(np.int), 0, w - 1)
-        ymin = np.clip(np.floor(box[:, 1].min()).astype(np.int), 0, h - 1)
-        ymax = np.clip(np.ceil(box[:, 1].max()).astype(np.int), 0, h - 1)
+        xmin = np.clip(np.floor(box[:, 0].min()).astype("int32"), 0, w - 1)
+        xmax = np.clip(np.ceil(box[:, 0].max()).astype("int32"), 0, w - 1)
+        ymin = np.clip(np.floor(box[:, 1].min()).astype("int32"), 0, h - 1)
+        ymax = np.clip(np.ceil(box[:, 1].max()).astype("int32"), 0, h - 1)
 
         mask = np.zeros((ymax - ymin + 1, xmax - xmin + 1), dtype=np.uint8)
         box[:, 0] = box[:, 0] - xmin
         box[:, 1] = box[:, 1] - ymin
-        cv2.fillPoly(mask, box.reshape(1, -1, 2).astype(np.int32), 1)
+        cv2.fillPoly(mask, box.reshape(1, -1, 2).astype("int32"), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
     def box_score_slow(self, bitmap, contour):
@@ -214,7 +214,7 @@ class DBPostProcess(object):
         contour[:, 0] = contour[:, 0] - xmin
         contour[:, 1] = contour[:, 1] - ymin
 
-        cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype(np.int32), 1)
+        cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype("int32"), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
     def __call__(self, outs_dict, shape_list):
@@ -233,12 +233,14 @@ class DBPostProcess(object):
                     self.dilation_kernel)
             else:
                 mask = segmentation[batch_index]
-            if self.use_polygon is True:
+            if self.box_type == 'poly':
                 boxes, scores = self.polygons_from_bitmap(pred[batch_index],
                                                           mask, src_w, src_h)
-            else:
+            elif self.box_type == 'quad':
                 boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
                                                        src_w, src_h)
+            else:
+                raise ValueError("box_type can only be one of ['quad', 'poly']")
 
             boxes_batch.append({'points': boxes})
         return boxes_batch
@@ -254,7 +256,7 @@ class DistillationDBPostProcess(object):
                  unclip_ratio=1.5,
                  use_dilation=False,
                  score_mode="fast",
-                 use_polygon=False,
+                 box_type='quad',
                  **kwargs):
         self.model_name = model_name
         self.key = key
@@ -265,7 +267,7 @@ class DistillationDBPostProcess(object):
             unclip_ratio=unclip_ratio,
             use_dilation=use_dilation,
             score_mode=score_mode,
-            use_polygon=use_polygon)
+            box_type=box_type)
 
     def __call__(self, predicts, shape_list):
         results = {}

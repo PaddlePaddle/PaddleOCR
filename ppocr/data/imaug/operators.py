@@ -225,6 +225,8 @@ class DetResizeForTest(object):
     def __call__(self, data):
         img = data['image']
         src_h, src_w, _ = img.shape
+        if sum([src_h, src_w]) < 64:
+            img = self.image_padding(img)
 
         if self.resize_type == 0:
             # img, shape = self.resize_image_type0(img)
@@ -237,6 +239,12 @@ class DetResizeForTest(object):
         data['image'] = img
         data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
         return data
+
+    def image_padding(self, im, value=0):
+        h, w, c = im.shape
+        im_pad = np.zeros((max(32, h), max(32, w), c), np.uint8) + value
+        im_pad[:h, :w, :] = im
+        return im_pad
 
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
@@ -490,3 +498,27 @@ class ResizeNormalize(object):
         img_numpy = np.array(img).astype("float32")
         img_numpy = img_numpy.transpose((2, 0, 1)) / 255
         return img_numpy
+
+
+class GrayImageChannelFormat(object):
+    """
+    format gray scale image's channel: (3,h,w) -> (1,h,w)
+    Args:
+        inverse: inverse gray image 
+    """
+
+    def __init__(self, inverse=False, **kwargs):
+        self.inverse = inverse
+
+    def __call__(self, data):
+        img = data['image']
+        img_single_channel = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_expanded = np.expand_dims(img_single_channel, 0)
+
+        if self.inverse:
+            data['image'] = np.abs(img_expanded - 1)
+        else:
+            data['image'] = img_expanded
+
+        data['src_image'] = img
+        return data

@@ -60,19 +60,19 @@ class KLJSLoss(object):
                         ], "mode can only be one of ['kl', 'KL', 'js', 'JS']"
         self.mode = mode
 
-    def __call__(self, p1, p2, reduction="mean"):
+    def __call__(self, p1, p2, reduction="mean", eps=1e-5):
 
         if self.mode.lower() == 'kl':
             loss = paddle.multiply(p2,
-                                   paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
-            loss += paddle.multiply(
-                p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
+                                   paddle.log((p2 + eps) / (p1 + eps) + eps))
+            loss += paddle.multiply(p1,
+                                    paddle.log((p1 + eps) / (p2 + eps) + eps))
             loss *= 0.5
         elif self.mode.lower() == "js":
             loss = paddle.multiply(
-                p2, paddle.log((2 * p2 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
+                p2, paddle.log((2 * p2 + eps) / (p1 + p2 + eps) + eps))
             loss += paddle.multiply(
-                p1, paddle.log((2 * p1 + 1e-5) / (p1 + p2 + 1e-5) + 1e-5))
+                p1, paddle.log((2 * p1 + eps) / (p1 + p2 + eps) + eps))
             loss *= 0.5
         else:
             raise ValueError(

@@ -5,6 +5,7 @@
 - [中文街景文字识别](#中文街景文字识别)
 - [中文文档文字识别](#中文文档文字识别)
 - [ICDAR2019-ArT](#ICDAR2019-ArT)
+- [电子印章数据集](#电子印章数据集)
 
 除了开源数据，用户还可使用合成工具自行合成，可参考[数据合成工具](../data_synthesis.md)；
 
@@ -58,6 +59,12 @@ https://aistudio.baidu.com/aistudio/datasetdetail/8429
 - **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](../../datasets/ArT.jpg)
 - **下载地址**：https://ai.baidu.com/broad/download?dataset=art
+
+<a name="电子印章数据集"></a>
+#### 6、电子印章数据集
+- **数据来源**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
+- **数据简介**：共包含10000张图像，训练集8000图，测试集2000图。数据集是用程序合成的，并不涉及隐私安全，主要用于印章弯曲文本的训练与检测。由开发者[jingsongliujing](https://github.com/jingsongliujing)贡献
+- **下载地址**：https://aistudio.baidu.com/aistudio/datasetdetail/154271/0
 
 ## 参考文献
 **ICDAR 2019-LSVT Challenge**

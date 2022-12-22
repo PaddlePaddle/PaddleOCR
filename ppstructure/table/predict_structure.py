@@ -68,6 +68,8 @@ def build_pre_process_list(args):
 
 class TableStructurer(object):
     def __init__(self, args):
+        self.args = args
+        self.use_onnx = args.use_onnx
         pre_process_list = build_pre_process_list(args)
         if args.table_algorithm not in ['TableMaster']:
             postprocess_params = {
@@ -88,8 +90,31 @@ class TableStructurer(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'table', logger)
 
+        if args.benchmark:
+            import auto_log
+            pid = os.getpid()
+            gpu_id = utility.get_infer_gpuid()
+            self.autolog = auto_log.AutoLogger(
+                model_name="table",
+                model_precision=args.precision,
+                batch_size=1,
+                data_shape="dynamic",
+                save_path=None,  #args.save_log_path,
+                inference_config=self.config,
+                pids=pid,
+                process_name=None,
+                gpu_ids=gpu_id if args.use_gpu else None,
+                time_keys=[
+                    'preprocess_time', 'inference_time', 'postprocess_time'
+                ],
+                warmup=0,
+                logger=logger)
+
     def __call__(self, img):
         starttime = time.time()
+        if self.args.benchmark:
+            self.autolog.times.start()
+
         ori_im = img.copy()
         data = {'image': img}
         data = transform(data, self.preprocess_op)
@@ -98,13 +123,21 @@ class TableStructurer(object):
             return None, 0
         img = np.expand_dims(img, axis=0)
         img = img.copy()
-
-        self.input_tensor.copy_from_cpu(img)
-        self.predictor.run()
-        outputs = []
-        for output_tensor in self.output_tensors:
-            output = output_tensor.copy_to_cpu()
-            outputs.append(output)
+        if self.args.benchmark:
+            self.autolog.times.stamp()
+        if self.use_onnx:
+            input_dict = {}
+            input_dict[self.input_tensor.name] = img
+            outputs = self.predictor.run(self.output_tensors, input_dict)
+        else:
+            self.input_tensor.copy_from_cpu(img)
+            self.predictor.run()
+            outputs = []
+            for output_tensor in self.output_tensors:
+                output = output_tensor.copy_to_cpu()
+                outputs.append(output)
+            if self.args.benchmark:
+                self.autolog.times.stamp()
 
         preds = {}
         preds['structure_probs'] = outputs[1]
@@ -120,6 +153,8 @@ class TableStructurer(object):
             '<html>', '<body>', '<table>'
         ] + structure_str_list + ['</table>', '</body>', '</html>']
         elapse = time.time() - starttime
+        if self.args.benchmark:
+            self.autolog.times.end(stamp=True)
         return (structure_str_list, bbox_list), elapse
 
 
@@ -159,6 +194,8 @@ def main(args):
                 total_time += elapse
             count += 1
             logger.info("Predict time of {}: {}".format(image_file, elapse))
+    if args.benchmark:
+        table_structurer.autolog.report()
 
 
 if __name__ == "__main__":

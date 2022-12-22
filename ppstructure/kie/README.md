@@ -1,17 +1,18 @@
 English | [简体中文](README_ch.md)
 
-- [1. Introduction](#1-introduction)
+# Key Information Extraction (KIE)
 
-- [2. Accuracy and performance](#2-Accuracy-and-performance)
-- [3. Visualization](#3-Visualization)
+- [1. Introduction](#1-introduction)
+- [2. Performance](#2-performance)
+- [3. Visualization](#3-visualization)
   - [3.1 SER](#31-ser)
   - [3.2 RE](#32-re)
 - [4. Usage](#4-usage)
-  - [4.1 Prepare for the environment](#41-Prepare-for-the-environment)
-  - [4.2 Quick start](#42-Quick-start)
-  - [4.3 More](#43-More)
-- [5. Reference](#5-Reference)
-- [6. License](#6-License)
+  - [4.1 Prepare for the environment](#41-prepare-for-the-environment)
+  - [4.2 Quick start](#42-quick-start)
+  - [4.3 More](#43-more)
+- [5. Reference](#5-reference)
+- [6. License](#6-license)
 
 
 ## 1. Introduction
@@ -31,7 +32,7 @@ The main features of the key information extraction module in PP-Structure are a
 - Support SER model export and inference using PaddleInference.
 
 
-## 2. Accuracy and performance
+## 2. Performance
 
 We evaluate the methods on the Chinese dataset of [XFUND](https://github.com/doc-analysis/XFUND), and the performance is as follows
 
@@ -171,16 +172,16 @@ If you want to use OCR engine to obtain end-to-end prediction results, you can u
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./ppstructure/docs/kie/input/zh_val_42.jpg
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/image/zh_val_42.jpg \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
@@ -192,32 +193,33 @@ If you want to load the text detection and recognition results collected before,
 # just predict using SER trained model
 python3 tools/infer_kie_token_ser.py \
   -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False
 
 # predict using SER and RE trained model at the same time
 python3 ./tools/infer_kie_token_ser_re.py \
   -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml \
-  -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
+  -o Architecture.Backbone.checkpoints=./pretrained_model/re_vi_layoutxlm_xfund_pretrained/best_accuracy \
   Global.infer_img=./train_data/XFUND/zh_val/val.json \
   Global.infer_mode=False \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=./pretrain_models/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
+  -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
 #### 4.2.3 Inference using PaddleInference
 
-At present, only SER model supports inference using PaddleInference.
-
 Firstly, download the inference SER inference model.
-
 
 ```bash
 mkdir inference
 cd inference
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/ser_vi_layoutxlm_xfund_infer.tar && tar -xf ser_vi_layoutxlm_xfund_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/vi_layoutxlm/re_vi_layoutxlm_xfund_infer.tar && tar -xf re_vi_layoutxlm_xfund_infer.tar
+cd ..
 ```
+
+- SER
 
 Use the following command for inference.
 
@@ -235,6 +237,26 @@ python3 kie/predict_kie_token_ser.py \
 
 The visual results and text file will be saved in directory `output`.
 
+- RE
+
+Use the following command for inference.
+
+
+```bash
+cd ppstructure
+python3 kie/predict_kie_token_ser_re.py \
+  --kie_algorithm=LayoutXLM \
+  --re_model_dir=../inference/re_vi_layoutxlm_xfund_infer \
+  --ser_model_dir=../inference/ser_vi_layoutxlm_xfund_infer \
+  --use_visual_backbone=False \
+  --image_dir=./docs/kie/input/zh_val_42.jpg \
+  --ser_dict_path=../train_data/XFUND/class_list_xfun.txt \
+  --vis_font_path=../doc/fonts/simfang.ttf \
+  --ocr_order_method="tb-yx"
+```
+
+The visual results and text file will be saved in directory `output`.
+
 
 ### 4.3 More
 
@@ -242,9 +264,7 @@ For training, evaluation and inference tutorial for KIE models, please refer to 
 
 For training, evaluation and inference tutorial for text detection models, please refer to [text detection doc](../../doc/doc_en/detection_en.md).
 
-For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](../../doc/doc_en/recognition.md).
-
-If you want to finish the KIE tasks in your scene, and don't know what to prepare,  please refer to [End cdoc](../../doc/doc_en/recognition.md).
+For training, evaluation and inference tutorial for text recognition models, please refer to [text recognition doc](../../doc/doc_en/recognition_en.md).
 
 To complete the key information extraction task in your own scenario from data preparation to model selection, please refer to: [Guide to End-to-end KIE](./how_to_do_kie_en.md)。
 

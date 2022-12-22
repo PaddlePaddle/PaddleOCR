@@ -14,7 +14,6 @@
 
 import os
 import sys
-import subprocess
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -58,48 +57,32 @@ def expand(pix, det_box, shape):
 
 class TableSystem(object):
     def __init__(self, args, text_detector=None, text_recognizer=None):
+        self.args = args
         if not args.show_log:
             logger.setLevel(logging.INFO)
-
-        self.text_detector = predict_det.TextDetector(
-            args) if text_detector is None else text_detector
-        self.text_recognizer = predict_rec.TextRecognizer(
-            args) if text_recognizer is None else text_recognizer
-
+        benchmark_tmp = False
+        if args.benchmark:
+            benchmark_tmp = args.benchmark
+            args.benchmark = False
+        self.text_detector = predict_det.TextDetector(copy.deepcopy(
+            args)) if text_detector is None else text_detector
+        self.text_recognizer = predict_rec.TextRecognizer(copy.deepcopy(
+            args)) if text_recognizer is None else text_recognizer
+        if benchmark_tmp:
+            args.benchmark = True
         self.table_structurer = predict_strture.TableStructurer(args)
         if args.table_algorithm in ['TableMaster']:
             self.match = TableMasterMatcher()
         else:
             self.match = TableMatch(filter_ocr_result=True)
 
-        self.benchmark = args.benchmark
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'table', logger)
-        if args.benchmark:
-            import auto_log
-            pid = os.getpid()
-            gpu_id = utility.get_infer_gpuid()
-            self.autolog = auto_log.AutoLogger(
-                model_name="table",
-                model_precision=args.precision,
-                batch_size=1,
-                data_shape="dynamic",
-                save_path=None,  #args.save_log_path,
-                inference_config=self.config,
-                pids=pid,
-                process_name=None,
-                gpu_ids=gpu_id if args.use_gpu else None,
-                time_keys=[
-                    'preprocess_time', 'inference_time', 'postprocess_time'
-                ],
-                warmup=0,
-                logger=logger)
 
     def __call__(self, img, return_ocr_result_in_table=False):
         result = dict()
         time_dict = {'det': 0, 'rec': 0, 'table': 0, 'all': 0, 'match': 0}
         start = time.time()
-
         structure_res, elapse = self._structure(copy.deepcopy(img))
         result['cell_bbox'] = structure_res[1].tolist()
         time_dict['table'] = elapse
@@ -118,24 +101,16 @@ class TableSystem(object):
         toc = time.time()
         time_dict['match'] = toc - tic
         result['html'] = pred_html
-        if self.benchmark:
-            self.autolog.times.end(stamp=True)
         end = time.time()
         time_dict['all'] = end - start
-        if self.benchmark:
-            self.autolog.times.stamp()
         return result, time_dict
 
     def _structure(self, img):
-        if self.benchmark:
-            self.autolog.times.start()
         structure_res, elapse = self.table_structurer(copy.deepcopy(img))
         return structure_res, elapse
 
     def _ocr(self, img):
         h, w = img.shape[:2]
-        if self.benchmark:
-            self.autolog.times.stamp()
         dt_boxes, det_elapse = self.text_detector(copy.deepcopy(img))
         dt_boxes = sorted_boxes(dt_boxes)
 
@@ -233,12 +208,13 @@ def main(args):
     f_html.close()
 
     if args.benchmark:
-        text_sys.autolog.report()
+        table_sys.table_structurer.autolog.report()
 
 
 if __name__ == "__main__":
     args = parse_args()
     if args.use_mp:
+        import subprocess
         p_list = []
         total_process_num = args.total_process_num
         for process_id in range(total_process_num):

@@ -26,21 +26,11 @@ PaddleOCR提供的PP-OCR系列模型在通用场景中性能优异，能够解�
 
 ### 2.2 模型选择
 
-建议选择PP-OCRv2模型（配置文件：[ch_PP-OCRv2_det_student.yml](../../configs/det/ch_PP-OCRv2/ch_PP-OCRv2_det_student.yml)，预训练模型：[ch_PP-OCRv2_det_distill_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_distill_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[ch_PP-OCRv3_det_student.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml)，预训练模型：[ch_PP-OCRv3_det_distill_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
-更多PP-OCR系列模型，请参考[PaddleOCR 首页说明文档](../../README_ch.md)。
+更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](./models_list.md)。
 
-注意：在使用上述预训练模型的时候，由于保存的模型中包含教师模型，因此需要将其中的学生模型单独提取出来，再加载学生模型即可进行模型微调。
-
-```python
-import paddle
-# 加载完整的检测预训练模型
-a = paddle.load("ch_PP-OCRv2_det_distill_train/best_accuracy.pdparams")
-# 提取学生模型的参数
-b = {k[len("student_model."):]: a[k] for k in a if "student_model." in k}
-# 保存模型，用于后续模型微调
-paddle.save(b, "ch_PP-OCRv2_det_student.pdparams")
-```
+注意：在使用上述预训练模型的时候，需要使用文件夹中的`student.pdparams`文件作为预训练模型，即，仅使用学生模型。
 
 
 ### 2.3 训练超参选择
@@ -49,7 +39,7 @@ paddle.save(b, "ch_PP-OCRv2_det_student.pdparams")
 
 ```yaml
 Global:
-  pretrained_model: ./pretrain_models/student.pdparams # 预训练模型路径
+  pretrained_model: ./ch_PP-OCRv3_det_distill_train/student.pdparams # 预训练模型路径
 Optimizer:
   lr:
     name: Cosine
@@ -67,7 +57,7 @@ Train:
     num_workers: 4
 ```
 
-上述配置文件中，首先需要将`pretrained_model`字段指定为2.2章节中提取出来的`ch_PP-OCRv2_det_student.pdparams`文件路径。
+上述配置文件中，首先需要将`pretrained_model`字段指定为`student.pdparams`文件路径。
 
 PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*8=64`）、且没有加载预训练模型情况下的配置文件，因此您的场景中，学习率与总的batch size需要对应线性调整，例如
 
@@ -88,7 +78,7 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 |  det_db_score_mode | str | "fast" | DB的检测结果得分计算方法，支持`fast`和`slow`，`fast`是根据polygon的外接矩形边框内的所有像素计算平均得分，`slow`是根据原始polygon内的所有像素计算平均得分，计算速度相对较慢一些，但是更加准确一些。 |
 
 
-更多关于推理方法的介绍可以参考[Paddle Inference推理教程](./inference.md)。
+更多关于推理方法的介绍可以参考[Paddle Inference推理教程](././inference_ppocr.md)。
 
 
 ## 3. 文本识别模型微调
@@ -100,14 +90,18 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 
 * 数据分布：建议分布与实测场景尽量一致。如果实测场景包含大量短文本，则训练数据中建议也包含较多短文本，如果实测场景对于空格识别效果要求较高，则训练数据中建议也包含较多带空格的文本内容。
 
+* 数据合成：针对部分字符识别有误的情况，建议获取一批特定字符数据，加入到原数据中使用小学习率微调。其中原始数据与新增数据比例可尝试 10:1 ～ 5：1， 避免单一场景数据过多导致模型过拟合，同时尽量平衡语料词频，确保常用字的出现频率不会过低。
+
+  特定字符生成可以使用 TextRenderer 工具，合成例子可参考 [数码管数据合成](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB.md#31-%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87)
+  ，合成数据语料尽量来自真实使用场景，在贴近真实场景的基础上保持字体、背景的丰富性，有助于提升模型效果。
 
 * 通用中英文数据：在训练的时候，可以在训练集中添加通用真实数据（如在不更换字典的微调场景中，建议添加LSVT、RCTW、MTWI等真实数据），进一步提升模型的泛化性能。
 
 ### 3.2 模型选择
 
-建议选择PP-OCRv2模型（配置文件：[ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml)，预训练模型：[ch_PP-OCRv2_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，预训练模型：[ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
-更多PP-OCR系列，模型请参考[PaddleOCR 首页说明文档](../../README_ch.md)。
+更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](./models_list.md)。
 
 
 ### 3.3 训练超参选择
@@ -142,8 +136,7 @@ Train:
 
 ```
 
-
-上述配置文件中，首先需要将`pretrained_model`字段指定为2.2章节中解压得到的`ch_PP-OCRv2_rec_train/best_accuracy.pdparams`文件路径。
+上述配置文件中，首先需要将`pretrained_model`字段指定为3.2章节中解压得到的`ch_PP-OCRv3_rec_train/best_accuracy.pdparams`文件路径。
 
 PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*128=1024`）、且没有加载预训练模型情况下的配置文件，因此您的场景中，学习率与总的batch size需要对应线性调整，例如：
 
@@ -168,3 +161,7 @@ Train:
     - general.txt
     ratio_list: [1.0, 0.1]
 ```
+
+### 3.4 训练调优
+
+训练过程并非一蹴而就的，完成一个阶段的训练评估后，建议收集分析当前模型在真实场景中的 badcase，有针对性的调整训练数据比例，或者进一步新增合成数据。通过多次迭代训练，不断优化模型效果。

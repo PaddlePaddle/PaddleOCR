@@ -14,25 +14,11 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
 #include "paddle_api.h"
 #include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
 
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
-
-using namespace paddle_infer;
 
 namespace PaddleOCR {
 
@@ -41,7 +27,7 @@ public:
   explicit DBDetector(const std::string &model_dir, const bool &use_gpu,
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
-                      const bool &use_mkldnn, const string &limit_type,
+                      const bool &use_mkldnn, const std::string &limit_type,
                       const int &limit_side_len, const double &det_db_thresh,
                       const double &det_db_box_thresh,
                       const double &det_db_unclip_ratio,
@@ -77,7 +63,7 @@ public:
            std::vector<double> &times);
 
 private:
-  std::shared_ptr<Predictor> predictor_;
+  std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   bool use_gpu_ = false;
   int gpu_id_ = 0;
@@ -85,7 +71,7 @@ private:
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
 
-  string limit_type_ = "max";
+  std::string limit_type_ = "max";
   int limit_side_len_ = 960;
 
   double det_db_thresh_ = 0.3;

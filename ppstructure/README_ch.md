@@ -16,14 +16,15 @@
 
 PP-Structure是PaddleOCR团队自研的智能文档分析系统，旨在帮助开发者更好的完成版面分析、表格识别等文档理解相关任务。
 
-PP-Structurev2系统流程图如下所示，文档图像首先经过图像矫正模块，判断整图方向并完成转正，随后可以完成版面信息分析与关键信息抽取2类任务。
+PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正模块，判断整图方向并完成转正，随后可以完成版面信息分析与关键信息抽取2类任务。
 - 版面分析任务中，图像首先经过版面分析模型，将图像划分为文本、表格、图像等不同区域，随后对这些区域分别进行识别，如，将表格区域送入表格识别模块进行结构化识别，将文本区域送入OCR引擎进行文字识别，最后使用版面恢复模块将其恢复为与原始图像布局一致的word或者pdf格式的文件；
 - 关键信息抽取任务中，首先使用OCR引擎提取文本内容，然后由语义实体识别模块获取图像中的语义实体，最后经关系抽取模块获取语义实体之间的对应关系，从而提取需要的关键信息。
-<img src="./docs/ppstructurev2_pipeline.png" width="100%"/>
 
-更多技术细节：👉 [PP-Structurev2技术报告](docs/PP-Structurev2_introduction.md)
+<img src="https://user-images.githubusercontent.com/14270174/195265734-6f4b5a7f-59b1-4fcc-af6d-89afc9bd51e1.jpg" width="100%"/>
 
-PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，点击下面相应链接获取各个独立模块的使用教程：
+更多技术细节：👉 PP-StructureV2技术报告 [中文版](docs/PP-StructureV2_introduction.md)，[英文版](https://arxiv.org/abs/2210.05391)。
+
+PP-StructureV2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，点击下面相应链接获取各个独立模块的使用教程：
 
 - [版面分析](layout/README_ch.md)
 - [表格识别](table/README_ch.md)
@@ -33,7 +34,7 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
 <a name="2"></a>
 ## 2. 特性
 
-PP-Structurev2的主要特性如下：
+PP-StructureV2的主要特性如下：
 - 支持对图片/pdf形式的文档进行版面分析，可以划分**文字、标题、表格、图片、公式等**区域；
 - 支持通用的中英文**表格检测**任务；
 - 支持表格区域进行结构化识别，最终结果输出**Excel文件**；
@@ -44,7 +45,7 @@ PP-Structurev2的主要特性如下：
 
 <a name="3"></a>
 ## 3. 效果展示
-PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，这里仅展示几种代表性使用方式的可视化效果。
+PP-StructureV2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，这里仅展示几种代表性使用方式的可视化效果。
 
 <a name="31"></a>
 ### 3.1 版面分析和表格识别
@@ -77,7 +78,7 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
 </div>
 
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186094456-01a1dd11-1433-4437-9ab2-6480ac94ec0a.png" width="600">
+    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
 </div>
 
 <div align="center">
@@ -102,7 +103,7 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186095641-5843b4da-34d7-4c1c-943a-b1036a859fe3.png" width="600">
-</div> 
+</div>
 
 <a name="4"></a>
 ## 4. 快速体验
@@ -119,4 +120,3 @@ PP-Structurev2支持各个模块独立使用或灵活搭配，如，可以单独
 
 OCR相关模型下载可以参考：
 - [PP-OCR 模型库](../doc/doc_ch/models_list.md)
-

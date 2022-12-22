@@ -14,25 +14,11 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
 #include "paddle_api.h"
 #include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
 
 #include <include/preprocess_op.h>
 #include <include/utility.h>
-
-using namespace paddle_infer;
 
 namespace PaddleOCR {
 
@@ -66,7 +52,7 @@ public:
            std::vector<float> &cls_scores, std::vector<double> &times);
 
 private:
-  std::shared_ptr<Predictor> predictor_;
+  std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   bool use_gpu_ = false;
   int gpu_id_ = 0;

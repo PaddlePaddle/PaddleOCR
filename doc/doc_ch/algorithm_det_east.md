@@ -26,8 +26,10 @@
 
 |模型|骨干网络|配置文件|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- | --- |
-|EAST|ResNet50_vd|88.71%|    81.36%|    84.88%|    [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
-|EAST|    MobileNetV3| 78.2%|    79.1%|    78.65%|    [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
+|EAST|ResNet50_vd| [det_r50_vd_east.yml](../../configs/det/det_r50_vd_east.yml)|88.71%|    81.36%|    84.88%|    [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
+|EAST|MobileNetV3|[det_mv3_east.yml](../../configs/det/det_mv3_east.yml) | 78.20%|    79.10%|    78.65%|    [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
+
+
 
 
 <a name="2"></a>

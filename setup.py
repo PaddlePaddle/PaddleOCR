@@ -16,9 +16,16 @@ from setuptools import setup
 from io import open
 from paddleocr import VERSION
 
-with open('requirements.txt', encoding="utf-8-sig") as f:
-    requirements = f.readlines()
-    requirements.append('tqdm')
+def load_requirements(file_list=None):
+    if file_list is None:
+        file_list = ['requirements.txt']
+    if isinstance(file_list,str):
+        file_list = [file_list]
+    requirements = []
+    for file in file_list:
+        with open(file, encoding="utf-8-sig") as f:
+            requirements.extend(f.readlines())
+    return requirements
 
 
 def readme():
@@ -34,7 +41,7 @@ setup(
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
     version=VERSION,
-    install_requires=requirements,
+    install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
     license='Apache License 2.0',
     description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
     long_description=readme(),

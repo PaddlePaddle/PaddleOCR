@@ -55,16 +55,17 @@ The ablation experiments are as follows:
 
 |ID|Strategy|Model Size|Hmean|The Inference Time（cpu + mkldnn)|
 |-|-|-|-|-|
-|baseline teacher|PP-OCR server|49M|83.2%|171ms|
-|teacher1|DB-R50-LK-PAN|124M|85.0%|396ms|
-|teacher2|DB-R50-LK-PAN-DML|124M|86.0%|396ms|
-|baseline student|PP-OCRv2|3M|83.2%|117ms|
-|student0|DB-MV3-RSE-FPN|3.6M|84.5%|124ms|
-|student1|DB-MV3-CML（teacher2）|3M|84.3%|117ms|
-|student2|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.4%|124ms|
+|baseline teacher|PP-OCR server|49.0M|83.20%|171ms|
+|teacher1|DB-R50-LK-PAN|124.0M|85.00%|396ms|
+|teacher2|DB-R50-LK-PAN-DML|124.0M|86.00%|396ms|
+|baseline student|PP-OCRv2|3.0M|83.20%|117ms|
+|student0|DB-MV3-RSE-FPN|3.6M|84.50%|124ms|
+|student1|DB-MV3-CML（teacher2）|3.0M|84.30%|117ms|
+|student2|DB-MV3-RSE-FPN-CML（teacher2）|3.6M|85.40%|124ms|
 
 Testing environment: Intel Gold 6148 CPU, with MKLDNN acceleration enabled during inference.
 
+The training steps of PP-OCRv3 detection model refer to [tutorial](./PP-OCRv3_det_train_en.md)
 
 **(1) LK-PAN: A PAN structure with large receptive field**
 
@@ -111,15 +112,15 @@ Based on the above strategy, compared with PP-OCRv2, the PP-OCRv3 recognition mo
 
 | ID | strategy |  Model size | accuracy | prediction speed（CPU + MKLDNN)|
 |-----|-----|--------|----| --- |
-| 01 | PP-OCRv2 | 8M | 74.8% | 8.54ms |
-| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | SVTR_LCNet(h32) | 12M | 71.9% | 6.6ms |
-| 04 | SVTR_LCNet(h48) | 12M | 73.98% | 7.6ms |
-| 05 | + GTC | 12M | 75.8% | 7.6ms |
-| 06 | + TextConAug | 12M | 76.3% | 7.6ms |
-| 07 | + TextRotNet | 12M | 76.9% | 7.6ms |
-| 08 | + UDML | 12M | 78.4% | 7.6ms |
-| 09 | + UIM | 12M | 79.4% | 7.6ms |
+| 01 | PP-OCRv2 | 8.0M | 74.80% | 8.54ms |
+| 02 | SVTR_Tiny | 21.0M | 80.10% | 97.00ms |
+| 03 | SVTR_LCNet(h32) | 12.0M | 71.90% | 6.60ms |
+| 04 | SVTR_LCNet(h48) | 12.0M | 73.98% | 7.60ms |
+| 05 | + GTC | 12.0M | 75.80% | 7.60ms |
+| 06 | + TextConAug | 12.0M | 76.30% | 7.60ms |
+| 07 | + TextRotNet | 12.0M | 76.90% | 7.60ms |
+| 08 | + UDML | 12.0M | 78.40% | 7.60ms |
+| 09 | + UIM | 12.0M | 79.40% | 7.60ms |
 
 Note: When testing the speed, the input image shape of Experiment 01-03 is (3, 32, 320), and the input image shape of 04-08 is (3, 48, 320). In the actual prediction, the image is a variable-length input, and the speed will vary. Testing environment: Intel Gold 6148 CPU, with MKLDNN acceleration enabled during prediction.
 
@@ -158,12 +159,12 @@ The ablation experiments are as follows:
 
 | ID | strategy |  Model size | accuracy | prediction speed（CPU + MKLDNN)|
 |-----|-----|--------|----| --- |
-| 01 | PP-OCRv2-baseline | 8M | 69.3%  | 8.54ms |
-| 02 | SVTR_Tiny | 21M | 80.1% | 97ms |
-| 03 | SVTR_LCNet(G4) | 9.2M | 76% | 30ms |
-| 04 | SVTR_LCNet(G2) | 13M | 72.98% | 9.37ms |
-| 05 | SVTR_LCNet(h32) | 12M | 71.9% | 6.6ms |
-| 06 | SVTR_LCNet(h48)  | 12M | 73.98% | 7.6ms |
+| 01 | PP-OCRv2-baseline | 8.0M | 69.30%  | 8.54ms |
+| 02 | SVTR_Tiny | 21.0M | 80.10% | 97.00ms |
+| 03 | SVTR_LCNet(G4) | 9.2M | 76.00% | 30.00ms |
+| 04 | SVTR_LCNet(G2) | 13.0M | 72.98% | 9.37ms |
+| 05 | SVTR_LCNet(h32) | 12.0M | 71.90% | 6.60ms |
+| 06 | SVTR_LCNet(h48)  | 12.0M | 73.98% | 7.60ms |
 
 Note: When testing the speed, the input image shape of 01-05 are all (3, 32, 320); PP-OCRv2-baseline represents the model trained without distillation method
 
@@ -210,21 +211,21 @@ UIM (Unlabeled Images Mining) is a very simple unlabeled data mining strategy. T
 
 ## 4. End-to-end Evaluation
 
-With the optimization strategies mentioned above, PP-OCRv3 outperforms PP-OCRv2 by 5% in terms of end-to-end Hmean for Chinese scenarios with comparable speed. The specific metrics are shown as follows.
+With the optimization strategies mentioned above, PP-OCRv3 outperforms PP-OCRv2 by 5.00% in terms of end-to-end Hmean for Chinese scenarios with comparable speed. The specific metrics are shown as follows.
 
 | Model | Hmean |  Model Size (M) | Time Cost (CPU, ms) | Time Cost (T4 GPU, ms) |
 |-----|-----|--------|----| --- |
-| PP-OCR mobile | 50.3% | 8.1 | 356  | 116 |
-| PP-OCR server | 57.0% | 155.1 | 1056 | 200 |
-| PP-OCRv2 | 57.6% | 11.6 | 330 | 111 |
-| PP-OCRv3 | 62.9% | 15.6 | 331 | 86.64 |
+| PP-OCR mobile | 50.30% | 8.1 | 356.00  | 116.00 |
+| PP-OCR server | 57.00% | 155.1 | 1056.00 | 200.00 |
+| PP-OCRv2 | 57.60% | 11.6 | 330.00 | 111.00 |
+| PP-OCRv3 | 62.90% | 15.6 | 331.00 | 86.64 |
 
 
 Testing environment:
 - CPU: Intel Gold 6148, and MKLDNN acceleration is enabled during CPU inference.
 
 
-In addition to Chinese scenarios, the recognition model for English is also optimized with an increasement of 11% for end-to-end Hmean, which is shown as follows.
+In addition to Chinese scenarios, the recognition model for English is also optimized with an increasement of 11.00% for end-to-end Hmean, which is shown as follows.
 
 | Model | Recall |  Precision | Hmean |
 |-----|-----|--------|----|
@@ -235,5 +236,5 @@ At the same time, recognition models for more than 80 language are also upgraded
 
 | Model | Latin | Arabic | Japanese | Korean |
 |-----|-----|--------|----| --- |
-| PP-OCR_mul | 69.6% | 40.5% | 38.5% | 55.4% |
-| PP-OCRv3_mul | 75.2% | 45.37% | 45.8% | 60.1% |
+| PP-OCR_mul | 69.60% | 40.50% | 38.50% | 55.40% |
+| PP-OCRv3_mul | 75.20% | 45.37% | 45.80% | 60.10% |

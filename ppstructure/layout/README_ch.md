@@ -1,35 +1,41 @@
-- [1. 简介](#1-简介)
-- [2. 安装](#2-安装)
-  - [2.1 安装PaddlePaddle](#21-安装paddlepaddle)
-  - [2.2 安装PaddleDetection](#22-安装paddledetection)
-- [3. 数据准备](#3-数据准备)
-  - [3.1 英文数据集](#31-英文数据集)
-  - [3.2 更多数据集](#32-更多数据集)
-- [4. 开始训练](#4-开始训练)
-  - [4.1 启动训练](#41-启动训练)
-  - [4.2 FGD蒸馏训练](#42-FGD蒸馏训练)
-- [5. 模型评估与预测](#5-模型评估与预测)
-  - [5.1 指标评估](#51-指标评估)
-  - [5.2 测试版面分析结果](#52-测试版面分析结果)
-- [6 模型导出与预测](#6-模型导出与预测)
-  - [6.1 模型导出](#61-模型导出)
-  - [6.2 模型推理](#62-模型推理)
+简体中文 | [English](README.md)
 
 # 版面分析
 
+- [1. 简介](#1-简介)
+- [2. 快速开始](#2-快速开始)
+- [3. 安装](#3-安装)
+  - [3.1 安装PaddlePaddle](#31-安装paddlepaddle)
+  - [3.2 安装PaddleDetection](#32-安装paddledetection)
+- [4. 数据准备](#4-数据准备)
+  - [4.1 英文数据集](#41-英文数据集)
+  - [4.2 更多数据集](#42-更多数据集)
+- [5. 开始训练](#5-开始训练)
+  - [5.1 启动训练](#51-启动训练)
+  - [5.2 FGD蒸馏训练](#52-fgd蒸馏训练)
+- [6. 模型评估与预测](#6-模型评估与预测)
+  - [6.1 指标评估](#61-指标评估)
+  - [6.2 测试版面分析结果](#62-测试版面分析结果)
+- [7 模型导出与预测](#7-模型导出与预测)
+  - [7.1 模型导出](#71-模型导出)
+  - [7.2 模型推理](#72-模型推理)
+
 ## 1. 简介
 
-版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发。
+版面分析指的是对图片形式的文档进行区域划分，定位其中的关键区域，如文字、标题、表格、图片等。版面分析算法基于[PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection)的轻量模型PP-PicoDet进行开发，包含英文、中文、表格版面分析3类模型。其中，英文模型支持Text、Title、Tale、Figure、List5类区域的检测，中文模型支持Text、Title、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation10类区域的检测，表格版面分析支持Table区域的检测，版面分析效果如下图所示：
 
 <div align="center">
     <img src="../docs/layout/layout.png" width="800">
 </div>
 
+## 2. 快速开始
+
+PP-Structure目前提供了中文、英文、表格三类文档版面分析模型，模型链接见 [models_list](../docs/models_list.md#1-版面分析模型)。也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
 
 
-## 2. 安装依赖
+## 3. 安装
 
-### 2.1. 安装PaddlePaddle
+### 3.1. 安装PaddlePaddle
 
 - **（1) 安装PaddlePaddle**
 
@@ -37,14 +43,14 @@
 python3 -m pip install --upgrade pip
 
 # GPU安装
-python3 -m pip install "paddlepaddle-gpu>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle-gpu>=2.3" -i https://mirror.baidu.com/pypi/simple
 
 # CPU安装
-python3 -m pip install "paddlepaddle>=2.2" -i https://mirror.baidu.com/pypi/simple
+python3 -m pip install "paddlepaddle>=2.3" -i https://mirror.baidu.com/pypi/simple
 ```
 更多需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
-### 2.2. 安装PaddleDetection
+### 3.2. 安装PaddleDetection
 
 - **（1）下载PaddleDetection源码**
 
@@ -59,11 +65,11 @@ cd PaddleDetection
 python3 -m pip install -r requirements.txt
 ```
 
-## 3. 数据准备
+## 4. 数据准备
 
 如果希望直接体验预测过程，可以跳过数据准备，下载我们提供的预训练模型。
 
-### 3.1. 英文数据集
+### 4.1. 英文数据集
 
 下载文档分析数据集[PubLayNet](https://developer.ibm.com/exchanges/data/all/publaynet/)（数据集96G），包含5个类：`{0: "Text", 1: "Title", 2: "List", 3:"Table", 4:"Figure"}`
 
@@ -138,7 +144,7 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
   }
   ```
 
-### 3.2. 更多数据集
+### 4.2. 更多数据集
 
 我们提供了CDLA(中文版面分析)、TableBank(表格版面分析)等数据集的下连接，处理为上述标注文件json格式，即可以按相同方式进行训练。
 
@@ -146,29 +152,31 @@ json文件包含所有图像的标注，数据以字典嵌套的方式存放，�
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [cTDaR2019_cTDaR](https://cndplab-founder.github.io/cTDaR2019/) | 用于表格检测(TRACKA)和表格识别(TRACKB)。图片类型包含历史数据集(以cTDaR_t0开头，如cTDaR_t00872.jpg)和现代数据集(以cTDaR_t1开头，cTDaR_t10482.jpg)。 |
 | [IIIT-AR-13K](http://cvit.iiit.ac.in/usodi/iiitar13k.php)    | 手动注释公开的年度报告中的图形或页面而构建的数据集，包含5类：table, figure, natural image, logo, and signature |
-| [CDLA](https://github.com/buptlihang/CDLA)                   | 中文文档版面分析数据集，面向中文文献类（论文）场景，包含10类：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
+| [CDLA](https://github.com/buptlihang/CDLA)                   | 中文文档版面分析数据集，面向中文文献类（论文）场景，包含10类：Text、Title、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation |
 | [TableBank](https://github.com/doc-analysis/TableBank)       | 用于表格检测和识别大型数据集，包含Word和Latex2种文档格式     |
 | [DocBank](https://github.com/doc-analysis/DocBank)           | 使用弱监督方法构建的大规模数据集(500K文档页面)，用于文档布局分析，包含12类：Author、Caption、Date、Equation、Figure、Footer、List、Paragraph、Reference、Section、Table、Title |
 
 
-## 4. 开始训练
+## 5. 开始训练
 
 提供了训练脚本、评估脚本和预测脚本，本节将以PubLayNet预训练模型为例进行讲解。
 
-如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型(PubLayNet数据集)，并跳过本部分。
+如果不希望训练，直接体验后面的模型评估、预测、动转静、推理的流程，可以下载提供的预训练模型(PubLayNet数据集)，并跳过5.1和5.2。
 
 ```
 mkdir pretrained_model
 cd pretrained_model
-# 下载PubLayNet预训练模型
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout.pdparams
+# 下载PubLayNet预训练模型（直接体验模型评估、预测、动转静）
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout.pdparams
+# 下载PubLaynet推理模型（直接体验模型推理）
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
 ```
 
-下载更多[版面分析模型](../docs/models_list.md)（中文CDLA数据集预训练模型、表格预训练模型）
+如果测试图片为中文，可以下载中文CDLA数据集的预训练模型，识别10类文档区域：Table、Figure、Figure caption、Table、Table caption、Header、Footer、Reference、Equation，在[版面分析模型](../docs/models_list.md)中下载`picodet_lcnet_x1_0_fgd_layout_cdla`模型的训练模型和推理模型。如果只检测图片中的表格区域，可以下载表格数据集的预训练模型，在[版面分析模型](../docs/models_list.md)中下载`picodet_lcnet_x1_0_fgd_layout_table`模型的训练模型和推理模型。
 
-### 4.1. 启动训练
+### 5.1. 启动训练
 
-开始训练:
+使用PaddleDetection[版面分析配置文件](https://github.com/PaddlePaddle/PaddleDetection/tree/release/2.5/configs/picodet/legacy_model/application/layout_analysis)启动训练
 
 * 修改配置文件
 
@@ -216,14 +224,14 @@ TestDataset:
 # 单卡训练
 export CUDA_VISIBLE_DEVICES=0
 python3 tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --eval
 
 # 多卡训练，通过--gpus参数指定卡号
 export CUDA_VISIBLE_DEVICES=0,1,2,3
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --eval
 ```
 
 **注意：**如果训练时显存out memory，将TrainReader中batch_size调小，同时LearningRate中base_lr等比例减小。发布的config均由8卡训练得到，如果改变GPU卡数为1，那么base_lr需要减小8倍。
@@ -242,7 +250,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py \
 
 **注意，预测/评估时的配置文件请务必与训练一致。**
 
-### 4.2. FGD蒸馏训练
+### 5.2. FGD蒸馏训练
 
 PaddleDetection支持了基于FGD([Focal and Global Knowledge Distillation for Detectors](https://arxiv.org/abs/2111.11837v1))蒸馏的目标检测模型训练过程，FGD蒸馏分为两个部分`Focal`和`Global`。`Focal`蒸馏分离图像的前景和背景，让学生模型分别关注教师模型的前景和背景部分特征的关键像素；`Global`蒸馏部分重建不同像素之间的关系并将其从教师转移到学生，以补偿`Focal`蒸馏中丢失的全局信息。
 
@@ -252,25 +260,25 @@ PaddleDetection支持了基于FGD([Focal and Global Knowledge Distillation for D
 # 单卡训练
 export CUDA_VISIBLE_DEVICES=0
 python3 tools/train.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	--eval
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    --eval
 ```
 
 - `-c`: 指定模型配置文件。
 - `--slim_config`: 指定压缩策略配置文件。
 
-## 5. 模型评估与预测
+## 6. 模型评估与预测
 
-### 5.1. 指标评估
+### 6.1. 指标评估
 
 训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。
 
 ```bash
 # GPU 评估， weights 为待测权重
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	-o weights=./output/picodet_lcnet_x1_0_layout/best_model
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    -o weights=./output/picodet_lcnet_x1_0_layout/best_model
 ```
 
 会输出以下信息，打印出mAP、AP0.5等信息。
@@ -292,20 +300,20 @@ python3 tools/eval.py \
 [08/15 07:07:09] ppdet.engine INFO: Best test bbox ap is 0.935.
 ```
 
-使用FGD蒸馏模型进行评估：
+若使用**提供的预训练模型进行评估**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，执行如下命令进行评估：
 
 ```
 python3 tools/eval.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights=output/picodet_lcnet_x2_5_layout/best_model
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights=output/picodet_lcnet_x2_5_layout/best_model
 ```
 
 - `-c`: 指定模型配置文件。
 - `--slim_config`: 指定蒸馏策略配置文件。
 - `-o weights`: 指定蒸馏算法训好的模型路径。
 
-### 5.2. 测试版面分析结果
+### 6.2 测试版面分析结果
 
 
 预测使用的配置文件必须与训练一致，如您通过 `python3 tools/train.py -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml` 完成了模型的训练过程。
@@ -325,25 +333,23 @@ python3 tools/infer.py \
 - `--output_dir`: 指定可视化结果保存路径。
 - `--draw_threshold`:指定绘制结果框的NMS阈值。
 
-预测图片如下所示，图片会存储在`output_dir`路径中。
-
-使用FGD蒸馏模型进行测试：
+若使用**提供的预训练模型进行预测**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，执行如下命令进行预测：
 
 ```
 python3 tools/infer.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
-	--infer_img='docs/images/layout.jpg' \
-	--output_dir=output_dir/ \
-	--draw_threshold=0.5
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights='output/picodet_lcnet_x2_5_layout/best_model.pdparams' \
+    --infer_img='docs/images/layout.jpg' \
+    --output_dir=output_dir/ \
+    --draw_threshold=0.5
 ```
 
 
-## 6. 模型导出与预测
+## 7. 模型导出与预测
 
 
-### 6.1 模型导出
+### 7.1 模型导出
 
 inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，把模型结构和模型参数保存在文件中的固化模型，多用于预测部署场景。 训练过程中保存的模型是checkpoints模型，保存的只有模型的参数，多用于恢复训练等。 与checkpoints模型相比，inference 模型会额外保存模型的结构信息，在预测部署、加速推理上性能优越，灵活方便，适合于实际系统集成。
 
@@ -351,9 +357,9 @@ inference 模型（`paddle.jit.save`保存的模型） 一般是模型训练，�
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	-o weights=output/picodet_lcnet_x1_0_layout/best_model \
-	--output_dir=output_inference/
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    -o weights=output/picodet_lcnet_x1_0_layout/best_model \
+    --output_dir=output_inference/
 ```
 
 * 如无需导出后处理，请指定：`-o export.benchmark=True`（如果-o已出现过，此处删掉-o）
@@ -368,27 +374,27 @@ output_inference/picodet_lcnet_x1_0_layout/
     └── model.pdmodel           # inference模型的模型结构文件
 ```
 
-FGD蒸馏模型转inference模型步骤如下：
+若使用**提供的预训练模型转Inference模型**，或使用**FGD蒸馏训练的模型**，更换`weights`模型路径，模型转inference模型步骤如下：
 
 ```bash
 python3 tools/export_model.py \
-	-c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
-	--slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
-	-o weights=./output/picodet_lcnet_x2_5_layout/best_model \
-	--output_dir=output_inference/
+    -c configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml \
+    --slim_config configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x2_5_layout.yml \
+    -o weights=./output/picodet_lcnet_x2_5_layout/best_model \
+    --output_dir=output_inference/
 ```
 
 
 
-### 6.2 模型推理
+### 7.2 模型推理
 
-版面恢复任务进行推理，可以执行如下命令：
+若使用**提供的推理训练模型推理**，或使用**FGD蒸馏训练的模型**，更换`model_dir`推理模型路径，执行如下命令进行推理：
 
 ```bash
 python3 deploy/python/infer.py \
-	--model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
-	--image_file=docs/images/layout.jpg \
-	--device=CPU
+    --model_dir=output_inference/picodet_lcnet_x1_0_layout/ \
+    --image_file=docs/images/layout.jpg \
+    --device=CPU
 ```
 
 - --device：指定GPU、CPU设备

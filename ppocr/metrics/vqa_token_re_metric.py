@@ -37,23 +37,25 @@ class VQAReTokenMetric(object):
         gt_relations = []
         for b in range(len(self.relations_list)):
             rel_sent = []
-            if "head" in self.relations_list[b]:
-                for head, tail in zip(self.relations_list[b]["head"],
-                                      self.relations_list[b]["tail"]):
+            relation_list = self.relations_list[b]
+            entitie_list = self.entities_list[b]
+            head_len = relation_list[0, 0]
+            if head_len > 0:
+                entitie_start_list = entitie_list[1:entitie_list[0, 0] + 1, 0]
+                entitie_end_list = entitie_list[1:entitie_list[0, 1] + 1, 1]
+                entitie_label_list = entitie_list[1:entitie_list[0, 2] + 1, 2]
+                for head, tail in zip(relation_list[1:head_len + 1, 0],
+                                      relation_list[1:head_len + 1, 1]):
                     rel = {}
                     rel["head_id"] = head
-                    rel["head"] = (
-                        self.entities_list[b]["start"][rel["head_id"]],
-                        self.entities_list[b]["end"][rel["head_id"]])
-                    rel["head_type"] = self.entities_list[b]["label"][rel[
-                        "head_id"]]
+                    rel["head"] = (entitie_start_list[head],
+                                   entitie_end_list[head])
+                    rel["head_type"] = entitie_label_list[head]
 
                     rel["tail_id"] = tail
-                    rel["tail"] = (
-                        self.entities_list[b]["start"][rel["tail_id"]],
-                        self.entities_list[b]["end"][rel["tail_id"]])
-                    rel["tail_type"] = self.entities_list[b]["label"][rel[
-                        "tail_id"]]
+                    rel["tail"] = (entitie_start_list[tail],
+                                   entitie_end_list[tail])
+                    rel["tail_type"] = entitie_label_list[tail]
 
                     rel["type"] = 1
                     rel_sent.append(rel)

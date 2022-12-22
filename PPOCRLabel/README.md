@@ -1,10 +1,14 @@
 English | [简体中文](README_ch.md)
 
-# PPOCRLabel
+# PPOCRLabelv2
 
-PPOCRLabel is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PP-OCR model to automatically detect and re-recognize data. It is written in python3 and pyqt5, supporting rectangular box, table and multi-point annotation modes. Annotations can be directly used for the training of PP-OCR detection and recognition models.
+PPOCRLabelv2 is a semi-automatic graphic annotation tool suitable for OCR field, with built-in PP-OCR model to automatically detect and re-recognize data. It is written in Python3 and PyQT5, supporting rectangular box, table, irregular text and key information annotation modes. Annotations can be directly used for the training of PP-OCR detection and recognition models.
 
-<img src="./data/gif/steps_en.gif" width="100%"/>
+|               regular text annotation               |                table annotation                |
+| :-------------------------------------------------: | :--------------------------------------------: |
+|  <img src="./data/gif/steps_en.gif" width="80%"/>   | <img src="./data/gif/table.gif" width="100%"/> |
+|            **irregular text annotation**            |         **key information annotation**         |
+| <img src="./data/gif/multi-point.gif" width="80%"/> |  <img src="./data/gif/kie.gif" width="100%"/>  |
 
 ### Recent Update
 
@@ -99,11 +103,11 @@ python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyw
 ```
 
 #### 1.2.3 Build and Install the Whl Package Locally
-Compile and install a new whl package, where 1.0.2 is the version number, you can specify the new version in 'setup.py'.
+Compile and install a new whl package, where 0.0.0 is the version number, you can specify the new version in 'setup.py'.
 ```bash
-cd PaddleOCR/PPOCRLabel
+cd ./PPOCRLabel
 python3 setup.py bdist_wheel
-pip3 install dist/PPOCRLabel-1.0.2-py2.py3-none-any.whl
+pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl
 ```
 
 

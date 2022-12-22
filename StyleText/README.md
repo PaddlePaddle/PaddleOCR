@@ -120,7 +120,7 @@ In actual application scenarios, it is often necessary to synthesize pictures in
      * `with_label`：Whether the `label_file` is label file list.
    * `CorpusGenerator`：
      * `method`：Method of CorpusGenerator，supports `FileCorpus` and `EnNumCorpus`. If `EnNumCorpus` is used，No other configuration is needed，otherwise you need to set `corpus_file` and `language`.
-     * `language`：Language of the corpus. Currently, the tool only supports English(en), Simplified Chinese(ch) and Korean(ko). 
+     * `language`：Language of the corpus. Currently, the tool only supports English(en), Simplified Chinese(ch) and Korean(ko).
      * `corpus_file`: Filepath of the corpus. Corpus file should be a text file which will be split by line-endings（'\n'）. Corpus generator samples one line each time.
 
 
@@ -171,9 +171,8 @@ After adding the above synthetic data for training, the accuracy of the recognit
 
 | Scenario | Characters | Raw Data | Test Data | Only Use Raw Data</br>Recognition Accuracy | New Synthetic Data | Simultaneous Use of Synthetic Data</br>Recognition Accuracy | Index Improvement |
 | -------- | ---------- | -------- | -------- | -------------------------- | ------------ | ---------------------- | -------- |
-| Metal surface | English and numbers | 2203     | 650      | 0.5938                     | 20000        | 0.7546                 | 16%      |
-| Random background | Korean       | 5631     | 1230     | 0.3012                     | 100000       | 0.5057                 | 20%      |
-
+| Metal surface | English and numbers | 2203     | 650      | 59.38%                     | 20000        | 75.46%                 | 16.08%      |
+| Random background | Korean       | 5631     | 1230     | 30.12%                     | 100000       | 50.57%                 | 20.45%      |
 
 <a name="Code_structure"></a>
 ### Code Structure

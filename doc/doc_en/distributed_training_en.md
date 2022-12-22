@@ -40,17 +40,29 @@ python3 -m paddle.distributed.launch \
 
 ## Performance comparison
 
-* On two 8-card P40 graphics cards, the final time consumption and speedup ratio for public recognition dataset (LSVT, RCTW, MTWI) containing 260k images are as follows.
+* We conducted model training on 2x8 P40 GPUs. Accuracy, training time, and multi machine acceleration ratio of different models are shown below.
+
+| Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 3x8 GPU training time / Accuracy | Acceleration ratio  |
 
 
-| Model   | Config file  | Recognition acc     | single 8-card training time | two 8-card training time | Speedup ratio |
-|------|-----|--------|--------|--------|-----|
-| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) | 67.0% | 2.50d   | 1.67d  | **1.5** |
+| Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 3x8 GPU training time / Accuracy | Acceleration ratio  |
+|:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
+| CRNN | [rec_chinese_lite_train_v2.0.yml](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml) |  260k Chinese dataset | 2.50d/66.70%   | 1.67d/67.00%  | **1.5** |
 
 
-* On four 8-card V100 graphics cards, the final time consumption and speedup ratio for full data are as follows.
+* We conducted model training on 3x8 V100 GPUs. Accuracy, training time, and multi machine acceleration ratio of different models are shown below.
+
+| Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 3x8 GPU training time / Accuracy | Acceleration ratio  |
+|:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
+| SLANet | [SLANet.yml](../../configs/table/SLANet.yml) |  PubTabNet | 49.80h/76.20%   | 19.75h/74.77%  | **2.52** |
 
 
-| Model   | Config file  | Recognition acc     | single 8-card training time | four 8-card training time | Speedup ratio |
-|------|-----|--------|--------|--------|-----|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) | 74.0% | 10d   | 2.84d  | **3.5** |
+    > Note: when training with 3x8 GPUs, the single card batch size is unchanged compared with the 1x8 GPUs' training process, and the learning rate is multiplied by 2 (if it is multiplied by 3 by default, the accuracy is only 73.42%).
+
+
+* We conducted model training on 4x8 V100 GPUs. Accuracy, training time, and multi machine acceleration ratio of different models are shown below.
+
+
+| Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 4x8 GPU training time / Accuracy | Acceleration ratio  |
+|:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
+| SVTR | [ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.00%  | **3.5** |

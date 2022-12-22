@@ -29,14 +29,14 @@ __all__ = ["LayoutXLMForSer", "LayoutLMForSer"]
 pretrained_model_dict = {
     LayoutXLMModel: {
         "base": "layoutxlm-base-uncased",
-        "vi": "layoutxlm-wo-backbone-base-uncased",
+        "vi": "vi-layoutxlm-base-uncased",
     },
     LayoutLMModel: {
         "base": "layoutlm-base-uncased",
     },
     LayoutLMv2Model: {
         "base": "layoutlmv2-base-uncased",
-        "vi": "layoutlmv2-wo-backbone-base-uncased",
+        "vi": "vi-layoutlmv2-base-uncased",
     },
 }
 
@@ -218,8 +218,12 @@ class LayoutXLMForRe(NLPBaseModel):
     def forward(self, x):
         if self.use_visual_backbone is True:
             image = x[4]
+            entities = x[5]
+            relations = x[6]
         else:
             image = None
+            entities = x[4]
+            relations = x[5]
         x = self.model(
             input_ids=x[0],
             bbox=x[1],
@@ -229,6 +233,6 @@ class LayoutXLMForRe(NLPBaseModel):
             position_ids=None,
             head_mask=None,
             labels=None,
-            entities=x[5],
-            relations=x[6])
+            entities=entities,
+            relations=relations)
         return x
