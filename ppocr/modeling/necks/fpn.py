@@ -28,7 +28,8 @@ class Conv_BN_ReLU(nn.Layer):
                  out_planes,
                  kernel_size=1,
                  stride=1,
-                 padding=0):
+                 padding=0,
+                 bias=False):
         super(Conv_BN_ReLU, self).__init__()
         self.conv = nn.Conv2D(
             in_planes,
@@ -36,7 +37,7 @@ class Conv_BN_ReLU(nn.Layer):
             kernel_size=kernel_size,
             stride=stride,
             padding=padding,
-            bias_attr=False)
+            bias_attr=bias)
         self.bn = nn.BatchNorm2D(out_planes, momentum=0.1)
         self.relu = nn.ReLU()
 
@@ -63,33 +64,38 @@ class Conv_BN_ReLU(nn.Layer):
 
 
 class FPN(nn.Layer):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels, out_channels, bias=False, use_last_conv=False):
         super(FPN, self).__init__()
 
         # Top layer
         self.toplayer_ = Conv_BN_ReLU(
-            in_channels[3], out_channels, kernel_size=1, stride=1, padding=0)
+            in_channels[3], out_channels, kernel_size=1, stride=1, padding=0, bias=bias)
         # Lateral layers
         self.latlayer1_ = Conv_BN_ReLU(
-            in_channels[2], out_channels, kernel_size=1, stride=1, padding=0)
+            in_channels[2], out_channels, kernel_size=1, stride=1, padding=0, bias=bias)
 
         self.latlayer2_ = Conv_BN_ReLU(
-            in_channels[1], out_channels, kernel_size=1, stride=1, padding=0)
+            in_channels[1], out_channels, kernel_size=1, stride=1, padding=0, bias=bias)
 
         self.latlayer3_ = Conv_BN_ReLU(
-            in_channels[0], out_channels, kernel_size=1, stride=1, padding=0)
+            in_channels[0], out_channels, kernel_size=1, stride=1, padding=0, bias=bias)
 
         # Smooth layers
         self.smooth1_ = Conv_BN_ReLU(
-            out_channels, out_channels, kernel_size=3, stride=1, padding=1)
+            out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=bias)
 
         self.smooth2_ = Conv_BN_ReLU(
-            out_channels, out_channels, kernel_size=3, stride=1, padding=1)
+            out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=bias)
 
         self.smooth3_ = Conv_BN_ReLU(
-            out_channels, out_channels, kernel_size=3, stride=1, padding=1)
+            out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=bias)
 
         self.out_channels = out_channels * 4
+
+        if use_last_conv:
+            self.conv = Conv_BN_ReLU(out_channels * 4, out_channels * 4, kernel_size=3, stride=1, padding=1, bias=bias)
+        else:
+            self.conv = None
         for m in self.sublayers():
             if isinstance(m, nn.Conv2D):
                 n = m._kernel_size[0] * m._kernel_size[1] * m._out_channels
@@ -135,4 +141,6 @@ class FPN(nn.Layer):
         p5 = self._upsample(p5, 8)
 
         fuse = paddle.concat([p2, p3, p4, p5], axis=1)
+        if self.conv is not None:
+            fuse = self.conv(fuse)
         return fuse

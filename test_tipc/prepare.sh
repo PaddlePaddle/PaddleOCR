@@ -65,7 +65,7 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
     fi
-    if [[ ${model_name} =~ "det_r50_db_v2_0" || ${model_name} =~ "det_r50_vd_pse_v2_0" ]];then
+    if [[ ${model_name} =~ "det_r50_vd_db_v2_0" || ${model_name} =~ "det_r50_vd_pse_v2_0" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
         rm -rf ./train_data/icdar2015
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
@@ -231,7 +231,7 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_mv3_db_v2.0_train.tar && cd ../
     fi
-    if [ ${model_name} == "det_r50_db_v2_0" ]; then
+    if [ ${model_name} == "det_r50_vd_db_v2_0" ]; then
         wget -nc -P ./pretrain_models/ https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/ResNet50_vd_ssld_pretrained.pdparams --no-check-certificate
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_db_v2.0_train.tar && cd ../
@@ -513,7 +513,7 @@ elif [ ${MODE} = "whole_infer" ];then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_mv3_db_v2.0_train.tar && tar xf ch_det_data_50.tar && cd ../
     fi
-    if [ ${model_name} == "det_r50_db_v2_0" ]; then
+    if [ ${model_name} == "det_r50_vd_db_v2_0" ]; then
         wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar  --no-check-certificate
         cd ./inference/ && tar xf det_r50_vd_db_v2.0_train.tar && tar xf ch_det_data_50.tar && cd ../
     fi
