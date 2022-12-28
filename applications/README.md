@@ -69,11 +69,12 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通等行业的主要OC
 
 ## 资料下载
 
-如需下载**《OCR产业范例20讲》和上述场景中已经训练好的垂类模型**，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
+如需下载《OCR产业范例20讲》和上述场景中已经训练好的垂类模型，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
 
 <div align="center">
 <img src="https://ai-studio-static-online.cdn.bcebos.com/dd721099bd50478f9d5fb13d8dd00fad69c22d6848244fd3a1d3980d7fefc63e"  width = "150" height = "150" />
 </div>
+
 如果您是企业开发者且未在上述场景中找到合适的方案，可以填写[OCR应用合作调研问卷](https://paddle.wjx.cn/vj/QwF7GKw.aspx)，免费与官方团队展开不同层次的合作，包括但不限于问题抽象、确定技术方案、项目答疑、共同研发等。如果您已经使用PaddleOCR落地项目，也可以填写此问卷，与飞桨平台共同宣传推广，提升企业技术品宣。期待您的提交！
 
 <a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/l63cvzo0w09yxypc7ygl" alt="traffic" /></a>
