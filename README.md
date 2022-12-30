@@ -22,7 +22,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 ## Notice
 PaddleOCR supports both dynamic graph and static graph programming paradigm
-- Dynamic graph: dygraph branch (default), **supported by paddle 2.0.0 ([installation](./doc/doc_en/installation_en.md))**
+- Dynamic graph: V2.2 branch (default), **supported by paddle 2.1.1 ([installation](./doc/doc_en/installation_en.md))**
 - Static graph: develop branch
 
 **Recent updates**
@@ -90,7 +90,7 @@ Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Andr
 | Model introduction                                           | Model name                   | Recommended scene | Detection model                                              | Direction classifier                                         | Recognition model                                            |
 | ------------------------------------------------------------ | ---------------------------- | ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Chinese and English ultra-lightweight OCR model (9.4M)       | ch_ppocr_mobile_v2.0_xx      | Mobile & server   |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_train.tar)|[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar)      |
-| Chinese and English general OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_traingit.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
+| Chinese and English general OCR model (143.4M)               | ch_ppocr_server_v2.0_xx      | Server            |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)    |[inference model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) / [pre-trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar)  |  
 
 
 For more model downloads (including multiple languages), please refer to [PP-OCR v2.0 series model downloads](./doc/doc_en/models_list_en.md).
@@ -101,11 +101,13 @@ For a new language request, please refer to [Guideline for new language_requests
 - [Installation](./doc/doc_en/installation_en.md)
 - [Quick Start(Chinese)](./doc/doc_en/quickstart_en.md)
 - [Quick Start(English&Multi-languages)](./doc/doc_en/multi_languages_en.md)
+- [Quick Start(PP-Structure)](./ppstructure/README.md)
 - [Code Structure](./doc/doc_en/tree_en.md)
 - Algorithm Introduction
     - [Text Detection Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [Text Recognition Algorithm](./doc/doc_en/algorithm_overview_en.md)
     - [PP-OCR Pipeline](#PP-OCR-Pipeline)
+    - [PP-Structure Pipeline](./ppstructure/README.md)
 - Model Training/Evaluation
     - [Text Detection](./doc/doc_en/detection_en.md)
     - [Text Recognition](./doc/doc_en/recognition_en.md)

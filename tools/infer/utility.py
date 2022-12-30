@@ -51,7 +51,7 @@ def init_args():
     parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
     parser.add_argument("--max_batch_size", type=int, default=10)
-    parser.add_argument("--use_dilation", type=bool, default=False)
+    parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
@@ -61,7 +61,7 @@ def init_args():
     # SAST parmas
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
-    parser.add_argument("--det_sast_polygon", type=bool, default=False)
+    parser.add_argument("--det_sast_polygon", type=str2bool, default=False)
 
     # params for text recognizer
     parser.add_argument("--rec_algorithm", type=str, default='CRNN')
@@ -90,7 +90,7 @@ def init_args():
     parser.add_argument(
         "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
     parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
-    parser.add_argument("--e2e_pgnet_polygon", type=bool, default=True)
+    parser.add_argument("--e2e_pgnet_polygon", type=str2bool, default=True)
     parser.add_argument("--e2e_pgnet_mode", type=str, default='fast')
 
     # params for text classifier
@@ -111,7 +111,7 @@ def init_args():
     parser.add_argument("--total_process_num", type=int, default=1)
     parser.add_argument("--process_id", type=int, default=0)
 
-    parser.add_argument("--benchmark", type=bool, default=False)
+    parser.add_argument("--benchmark", type=str2bool, default=False)
     parser.add_argument("--save_log_path", type=str, default="./log_output/")
 
     parser.add_argument("--show_log", type=str2bool, default=True)
