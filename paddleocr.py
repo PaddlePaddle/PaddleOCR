@@ -49,7 +49,7 @@ __all__ = [
     'save_structure_res', 'download_with_progressbar', 'to_excel'
 ]
 
-SUPPORT_DET_MODEL = ['DB']
+SUPPORT_DET_MODEL = ['DB', 'DB++]
 VERSION = '2.6.1.0'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
