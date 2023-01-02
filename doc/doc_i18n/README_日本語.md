@@ -89,7 +89,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 | 中国語と英語の超軽量 PP-OCRv3 モデル（16.2M）    | ch_PP-OCRv3_xx          | モバイル & サーバー | [推論モデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [トレーニングモデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [推論モデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [トレーニングモデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
 
 
-- その他のモデルのダウンロード (多言語を含む) については、[PP-OCR シリーズ モデルのダウンロード] (../doc_en/models_list_en.md)をご参照ください。
+- その他のモデルのダウンロード (多言語を含む) については、[PP-OCR シリーズ モデルのダウンロード](../doc_en/models_list_en.md)をご参照ください。
 - 新しい言語のリクエストについては、 [新しい言語_リクエストのガイドライン](#language_requests)を参照してください。
 - 構造文書分析モデルについては、[PP-Structure models](../../ppstructure/docs/models_list_en.md)をご参照ください。
 
