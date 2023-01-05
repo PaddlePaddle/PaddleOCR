@@ -14,6 +14,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
 from paddle import nn
 from ppocr.modeling.transforms import build_transform
 from ppocr.modeling.backbones import build_backbone
@@ -46,9 +47,13 @@ class BaseModel(nn.Layer):
             in_channels = self.transform.out_channels
 
         # build backbone, backbone is need for del, rec and cls
-        config["Backbone"]['in_channels'] = in_channels
-        self.backbone = build_backbone(config["Backbone"], model_type)
-        in_channels = self.backbone.out_channels
+        if 'Backbone' not in config or config['Backbone'] is None:
+            self.use_backbone = False
+        else:
+            self.use_backbone = True
+            config["Backbone"]['in_channels'] = in_channels
+            self.backbone = build_backbone(config["Backbone"], model_type)
+            in_channels = self.backbone.out_channels
 
         # build neck
         # for rec, neck can be cnn,rnn or reshape(None)
@@ -73,28 +78,41 @@ class BaseModel(nn.Layer):
         self.return_all_feats = config.get("return_all_feats", False)
 
     def forward(self, x, data=None):
+
         y = dict()
         if self.use_transform:
             x = self.transform(x)
-        x = self.backbone(x)
-        y["backbone_out"] = x
-        if self.use_neck:
-            x = self.neck(x)
-        y["neck_out"] = x
-        if self.use_head:
-            x = self.head(x, targets=data)
-        # for multi head, save ctc neck out for udml
-        if isinstance(x, dict) and 'ctc_neck' in x.keys():
-            y["neck_out"] = x["ctc_neck"]
-            y["head_out"] = x
-        elif isinstance(x, dict):
+        if self.use_backbone:
+            x = self.backbone(x)
+        if isinstance(x, dict):
             y.update(x)
         else:
-            y["head_out"] = x
+            y["backbone_out"] = x
+        final_name = "backbone_out"
+        if self.use_neck:
+            x = self.neck(x)
+            if isinstance(x, dict):
+                y.update(x)
+            else:
+                y["neck_out"] = x
+            final_name = "neck_out"
+        if self.use_head:
+            x = self.head(x, targets=data)
+            # for multi head, save ctc neck out for udml
+            if isinstance(x, dict) and 'ctc_neck' in x.keys():
+                y["neck_out"] = x["ctc_neck"]
+                y["head_out"] = x
+            elif isinstance(x, dict):
+                y.update(x)
+            else:
+                y["head_out"] = x
+            final_name = "head_out"
         if self.return_all_feats:
             if self.training:
                 return y
+            elif isinstance(x, dict):
+                return x
             else:
-                return {"head_out": y["head_out"]}
+                return {final_name: x}
         else:
             return x

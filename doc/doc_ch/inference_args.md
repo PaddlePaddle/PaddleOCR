@@ -7,6 +7,7 @@
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
 |  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |
+|  page_num | int | 0 | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页 |
 |  vis_font_path | str | "./doc/fonts/simfang.ttf" | 用于可视化的字体路径 |
 |  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |
 |  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |
@@ -15,7 +16,7 @@
 |  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |
 |  crop_res_save_dir | str | "./output" | 保存OCR识别出来的文本图像路径 |
 |  use_mp | bool | False | 是否开启多进程预测  |
-|  total_process_num | int | 6 | 开启的进城数，`use_mp`为`True`时生效  |
+|  total_process_num | int | 6 | 开启的进程数，`use_mp`为`True`时生效  |
 |  process_id | int | 0 | 当前进程的id号，无需自己修改  |
 |  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |
 |  save_log_path | str | "./log_output/" | 开启`benchmark`时，日志结果的保存文件夹 |
@@ -39,10 +40,10 @@
 
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
-|  det_algorithm | str | "DB" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`  |
+|  det_algorithm | str | "DB" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`, `DB++`, `FCE`  |
 |  det_model_dir | str | xx | 检测inference模型路径 |
 |  det_limit_side_len | int | 960 | 检测的图像边长限制 |
-|  det_limit_type | str | "max" | 检测的变成限制类型，目前支持`min`, `max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |
+|  det_limit_type | str | "max" | 检测的边长限制类型，目前支持`min`和`max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |
 
 其中，DB算法相关参数如下
 
@@ -69,7 +70,7 @@ SAST算法相关参数如下
 | :--: | :--: | :--: | :--: |
 |  det_sast_score_thresh | float | 0.5 | SAST后处理中的得分阈值 |
 |  det_sast_nms_thresh | float | 0.5 | SAST后处理中nms的阈值 |
-|  det_sast_polygon | bool | False | 是否多边形检测，弯曲文本场景（如Total-Text）设置为True |
+|  det_box_type | str | quad | 是否多边形检测，弯曲文本场景（如Total-Text）设置为'poly' |
 
 PSE算法相关参数如下
 
@@ -78,16 +79,16 @@ PSE算法相关参数如下
 |  det_pse_thresh | float | 0.0 | 对输出图做二值化的阈值 |
 |  det_pse_box_thresh | float | 0.85 | 对box进行过滤的阈值，低于此阈值的丢弃 |
 |  det_pse_min_area | float | 16 | box的最小面积，低于此阈值的丢弃 |
-|  det_pse_box_type | str | "box" | 返回框的类型，box:四点坐标，poly: 弯曲文本的所有点坐标 |
+|  det_box_type | str | "quad" | 返回框的类型，quad:四点坐标，poly: 弯曲文本的所有点坐标 |
 |  det_pse_scale | int | 1 | 输入图像相对于进后处理的图的比例，如`640*640`的图像，网络输出为`160*160`，scale为2的情况下，进后处理的图片shape为`320*320`。这个值调大可以加快后处理速度，但是会带来精度的下降 |
 
 * 文本识别模型相关
 
 | 参数名称 | 类型 | 默认值 | 含义 |
 | :--: | :--: | :--: | :--: |
-|  rec_algorithm | str | "CRNN" | 文本识别算法名称，目前支持`CRNN`, `SRN`, `RARE`, `NETR`, `SAR` |
+|  rec_algorithm | str | "CRNN" | 文本识别算法名称，目前支持`CRNN`, `SRN`, `RARE`, `NETR`, `SAR`, `ViTSTR`, `ABINet`, `VisionLAN`, `SPIN`, `RobustScanner`, `SVTR`, `SVTR_LCNet` |
 |  rec_model_dir | str | 无，如果使用识别模型，该项是必填项 | 识别inference模型路径 |
-|  rec_image_shape | list | [3, 32, 320] | 识别时的图像尺寸， |
+|  rec_image_shape | list | [3, 48, 320] | 识别时的图像尺寸 |
 |  rec_batch_num | int | 6 | 识别的batch size |
 |  max_text_length | int | 25 | 识别结果最大长度，在`SRN`中有效 |
 |  rec_char_dict_path | str | "./ppocr/utils/ppocr_keys_v1.txt" | 识别的字符字典文件 |

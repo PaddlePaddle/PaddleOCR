@@ -14,25 +14,11 @@
 
 #pragma once
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
 #include "paddle_api.h"
 #include "paddle_inference_api.h"
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <vector>
-
-#include <cstring>
-#include <fstream>
-#include <numeric>
 
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
-
-using namespace paddle_infer;
 
 namespace PaddleOCR {
 
@@ -41,8 +27,8 @@ public:
   explicit DBDetector(const std::string &model_dir, const bool &use_gpu,
                       const int &gpu_id, const int &gpu_mem,
                       const int &cpu_math_library_num_threads,
-                      const bool &use_mkldnn, const int &max_side_len,
-                      const double &det_db_thresh,
+                      const bool &use_mkldnn, const std::string &limit_type,
+                      const int &limit_side_len, const double &det_db_thresh,
                       const double &det_db_box_thresh,
                       const double &det_db_unclip_ratio,
                       const std::string &det_db_score_mode,
@@ -54,7 +40,8 @@ public:
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
     this->use_mkldnn_ = use_mkldnn;
 
-    this->max_side_len_ = max_side_len;
+    this->limit_type_ = limit_type;
+    this->limit_side_len_ = limit_side_len;
 
     this->det_db_thresh_ = det_db_thresh;
     this->det_db_box_thresh_ = det_db_box_thresh;
@@ -76,7 +63,7 @@ public:
            std::vector<double> &times);
 
 private:
-  std::shared_ptr<Predictor> predictor_;
+  std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   bool use_gpu_ = false;
   int gpu_id_ = 0;
@@ -84,7 +71,8 @@ private:
   int cpu_math_library_num_threads_ = 4;
   bool use_mkldnn_ = false;
 
-  int max_side_len_ = 960;
+  std::string limit_type_ = "max";
+  int limit_side_len_ = 960;
 
   double det_db_thresh_ = 0.3;
   double det_db_box_thresh_ = 0.5;
@@ -106,7 +94,7 @@ private:
   Permute permute_op_;
 
   // post-process
-  PostProcessor post_processor_;
+  DBPostProcessor post_processor_;
 };
 
 } // namespace PaddleOCR

@@ -63,10 +63,10 @@ function func_paddle2onnx(){
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
         trans_det_log="${LOG_PATH}/trans_model_det.log"
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_det_log} 2>&1 "
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} --enable_dev_version=False > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_det_log}"
         # trans rec
         set_dirname=$(func_set_params "--model_dir" "${rec_infer_model_dir_value}")
         set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
@@ -75,10 +75,10 @@ function func_paddle2onnx(){
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
         trans_rec_log="${LOG_PATH}/trans_model_rec.log"
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_rec_log} 2>&1 "
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} --enable_dev_version=False > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_rec_log}"
     elif [[ ${model_name} =~ "det" ]]; then
         # trans det
         set_dirname=$(func_set_params "--model_dir" "${det_infer_model_dir_value}")
@@ -88,10 +88,10 @@ function func_paddle2onnx(){
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
         trans_det_log="${LOG_PATH}/trans_model_det.log"
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_det_log} 2>&1 "
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} --enable_dev_version=False > ${trans_det_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"     
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_det_log}" 
     elif [[ ${model_name} =~ "rec" ]]; then
         # trans rec
         set_dirname=$(func_set_params "--model_dir" "${rec_infer_model_dir_value}")
@@ -101,10 +101,23 @@ function func_paddle2onnx(){
         set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
         set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
         trans_rec_log="${LOG_PATH}/trans_model_rec.log"
-        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} > ${trans_rec_log} 2>&1 "
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} --enable_dev_version=False > ${trans_rec_log} 2>&1 "
         eval $trans_model_cmd
         last_status=${PIPESTATUS[0]}
-        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}"
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_rec_log}"
+    elif [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
+        # trans det
+        set_dirname=$(func_set_params "--model_dir" "${det_infer_model_dir_value}")
+        set_model_filename=$(func_set_params "${model_filename_key}" "${model_filename_value}")
+        set_params_filename=$(func_set_params "${params_filename_key}" "${params_filename_value}")
+        set_save_model=$(func_set_params "--save_file" "${det_save_file_value}")
+        set_opset_version=$(func_set_params "${opset_version_key}" "${opset_version_value}")
+        set_enable_onnx_checker=$(func_set_params "${enable_onnx_checker_key}" "${enable_onnx_checker_value}")
+        trans_det_log="${LOG_PATH}/trans_model_det.log"
+        trans_model_cmd="${padlle2onnx_cmd} ${set_dirname} ${set_model_filename} ${set_params_filename} ${set_save_model} ${set_opset_version} ${set_enable_onnx_checker} --enable_dev_version=True > ${trans_det_log} 2>&1 "
+        eval $trans_model_cmd
+        last_status=${PIPESTATUS[0]}
+        status_check $last_status "${trans_model_cmd}" "${status_log}" "${model_name}" "${trans_det_log}" 
     fi
 
     # python inference
@@ -117,7 +130,7 @@ function func_paddle2onnx(){
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
-            elif [[ ${model_name} =~ "det" ]]; then
+            elif [[ ${model_name} =~ "det" ]] || [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
             elif [[ ${model_name} =~ "rec" ]]; then
@@ -127,7 +140,7 @@ function func_paddle2onnx(){
             eval $infer_model_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
-            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}"
+            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
         elif [ ${use_gpu} = "True" ] || [ ${use_gpu} = "gpu" ]; then
             _save_log_path="${LOG_PATH}/paddle2onnx_infer_gpu.log"
             set_gpu=$(func_set_params "${use_gpu_key}" "${use_gpu}")
@@ -136,7 +149,7 @@ function func_paddle2onnx(){
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 set_rec_model_dir=$(func_set_params "${rec_model_key}" "${rec_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} ${set_rec_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
-            elif [[ ${model_name} =~ "det" ]]; then
+            elif [[ ${model_name} =~ "det" ]]|| [ ${model_name} = "slanet" ] || [ ${model_name} = "en_table_structure" ]; then
                 set_det_model_dir=$(func_set_params "${det_model_key}" "${det_save_file_value}")
                 infer_model_cmd="${python} ${inference_py} ${set_gpu} ${set_img_dir} ${set_det_model_dir} --use_onnx=True > ${_save_log_path} 2>&1 "
             elif [[ ${model_name} =~ "rec" ]]; then
@@ -146,7 +159,7 @@ function func_paddle2onnx(){
             eval $infer_model_cmd
             last_status=${PIPESTATUS[0]}
             eval "cat ${_save_log_path}"
-            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}"
+            status_check $last_status "${infer_model_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
         else
             echo "Does not support hardware other than CPU and GPU Currently!"
         fi

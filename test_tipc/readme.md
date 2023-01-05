@@ -44,6 +44,7 @@
 | SAST   |det_r50_vd_sast_totaltext_v2.0 | 检测  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | Rosetta|rec_mv3_none_none_ctc_v2.0     | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | Rosetta|rec_r34_vd_none_none_ctc_v2.0  | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| CAN    |rec_d28_can                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | CRNN   |rec_mv3_none_bilstm_ctc_v2.0   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | CRNN   |rec_r34_vd_none_bilstm_ctc_v2.0| 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | StarNet|rec_mv3_tps_bilstm_ctc_v2.0    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
@@ -54,6 +55,7 @@
 | NRTR   |rec_mtb_nrtr                   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | SAR    |rec_r31_sar                    | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | SPIN   |rec_r32_gaspin_bilstm_att      | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
+| RobustScanner |rec_r31_robustscanner   | 识别  | 支持 | 多机多卡 <br> 混合精度 | - | - |
 | PGNet  |rec_r34_vd_none_none_ctc_v2.0  | 端到端| 支持 | 多机多卡 <br> 混合精度 | - | - |
 | TableMaster  |table_structure_tablemaster_train  | 表格识别| 支持 | 多机多卡 <br> 混合精度 | - | - |
 

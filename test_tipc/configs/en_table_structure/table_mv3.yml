@@ -4,7 +4,7 @@ Global:
   log_smooth_window: 20
   print_batch_step: 5
   save_model_dir: ./output/table_mv3/
-  save_epoch_step: 3
+  save_epoch_step: 400
   # evaluation is run every 400 iterations after the 0th iteration
   eval_batch_step: [0, 40000]
   cal_metric_during_train: True
@@ -17,10 +17,9 @@ Global:
   # for data or label process
   character_dict_path: ppocr/utils/dict/table_structure_dict.txt
   character_type: en
-  max_text_length: 800
+  max_text_length: &max_text_length 500
+  box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
   infer_mode: False
-  process_total_num: 0
-  process_cut_num: 0
 
 Optimizer:
   name: Adam
@@ -39,12 +38,14 @@ Architecture:
   Backbone:
     name: MobileNetV3
     scale: 1.0
-    model_name: large
+    model_name: small
+    disable_se: true
   Head:
     name: TableAttentionHead
     hidden_size: 256
     loc_type: 2
-    max_text_length: 800
+    max_text_length: *max_text_length
+    loc_reg_num: &loc_reg_num 4
 
 Loss:
   name: TableAttentionLoss
@@ -72,6 +73,8 @@ Train:
           learn_empty_box: False
           merge_no_span_structure: False
           replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - TableBoxEncode:
       - ResizeTableImage:
           max_len: 488
@@ -104,6 +107,8 @@ Eval:
           learn_empty_box: False
           merge_no_span_structure: False
           replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
       - TableBoxEncode:
       - ResizeTableImage:
           max_len: 488

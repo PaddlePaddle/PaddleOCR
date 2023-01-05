@@ -12,13 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .token import VQATokenPad, VQASerTokenChunk, VQAReTokenChunk, VQAReTokenRelation
-from .augment import DistortBBox
+from .token import VQATokenPad, VQASerTokenChunk, VQAReTokenChunk, VQAReTokenRelation, TensorizeEntitiesRelations
 
 __all__ = [
-    'VQATokenPad',
-    'VQASerTokenChunk',
-    'VQAReTokenChunk',
-    'VQAReTokenRelation',
-    'DistortBBox',
+    'VQATokenPad', 'VQASerTokenChunk', 'VQAReTokenChunk', 'VQAReTokenRelation',
+    'TensorizeEntitiesRelations'
 ]

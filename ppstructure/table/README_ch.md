@@ -2,22 +2,22 @@
 
 # 表格识别
 
-- [1. 表格识别 pipeline](#1)
-- [2. 性能](#2)
-- [3. 使用](#3)
-    - [3.1 快速开始](#31)
-    - [3.2 训练](#32)
-    - [3.3 评估](#33)
-    - [3.4 预测](#34)
+- [1. 表格识别 pipeline](#1-表格识别-pipeline)
+- [2. 性能](#2-性能)
+- [3. 效果演示](#3-效果演示)
+- [4. 使用](#4-使用)
+  - [4.1 快速开始](#41-快速开始)
+  - [4.2 模型训练、评估与推理](#42-模型训练评估与推理)
+  - [4.3 计算TEDS](#43-计算teds)
+- [5. Reference](#5-reference)
 
 
-<a name="1"></a>
 ## 1. 表格识别 pipeline
 
 表格识别主要包含三个模型
 1. 单行文本检测-DB
 2. 单行文本识别-CRNN
-3. 表格结构和cell坐标预测-RARE
+3. 表格结构和cell坐标预测-SLANet
 
 具体流程图如下
 
@@ -26,111 +26,138 @@
 流程说明:
 
 1. 图片由单行文字检测模型检测到单行文字的坐标，然后送入识别模型拿到识别结果。
-2. 图片由表格结构和cell坐标预测模型拿到表格的结构信息和单元格的坐标信息。
+2. 图片由SLANet模型拿到表格的结构信息和单元格的坐标信息。
 3. 由单行文字的坐标、识别结果和单元格的坐标一起组合出单元格的识别结果。
 4. 单元格的识别结果和表格结构一起构造表格的html字符串。
 
 
-<a name="2"></a>
 ## 2. 性能
 
 我们在 PubTabNet<sup>[1]</sup> 评估数据集上对算法进行了评估，性能如下
 
 
-|算法|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|
-| --- | --- |
-| EDD<sup>[2]</sup> | 88.3 |
-| Ours | 93.32 |
+|算法|Acc|[TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src)|Speed|
+| --- | --- | --- | ---|
+| EDD<sup>[2]</sup> |x| 88.30% |x|
+| TableRec-RARE(ours) | 71.73%| 93.88% |779ms|
+| SLANet(ours) |76.31%|	95.89%|766ms|
 
-<a name="3"></a>
-## 3. 使用
+性能指标解释如下：
+- Acc: 模型对每张图像里表格结构的识别准确率，错一个token就算错误。
+- TEDS: 模型对表格信息还原的准确度，此指标评价内容不仅包含表格结构，还包含表格内的文字内容。
+- Speed: 模型在CPU机器上，开启MKL的情况下，单张图片的推理速度。
 
-<a name="31"></a>
-### 3.1 快速开始
+## 3. 效果演示
 
+![](../docs/imgs/table_ch_result1.jpg)
+![](../docs/imgs/table_ch_result2.jpg)
+![](../docs/imgs/table_ch_result3.jpg)
+
+## 4. 使用
+
+### 4.1 快速开始
+
+PP-Structure目前提供了中英文两种语言的表格识别模型，模型链接见 [models_list](../docs/models_list.md)。也提供了whl包的形式方便快速使用，详见 [quickstart](../docs/quickstart.md)。
+
+下面以中文表格识别模型为例，介绍如何识别一张表格。
+
+使用如下命令即可快速完成一张表格的识别。
 ```python
 cd PaddleOCR/ppstructure
 
 # 下载模型
 mkdir inference && cd inference
-# 下载超轻量级表格英文OCR模型的检测模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
-# 下载超轻量级表格英文OCR模型的识别模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
-# 下载超轻量级英文表格英寸模型并解压
-wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar && tar xf en_ppocr_mobile_v2.0_table_structure_infer.tar
+# 下载PP-OCRv3文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
+# 下载PP-OCRv3文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
+# 下载PP-StructureV2中文表格识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
-# 执行预测
-python3 table/predict_table.py --det_model_dir=inference/en_ppocr_mobile_v2.0_table_det_infer --rec_model_dir=inference/en_ppocr_mobile_v2.0_table_rec_infer --table_model_dir=inference/en_ppocr_mobile_v2.0_table_structure_infer --image_dir=./docs/table/table.jpg --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --output ./output/table
+# 执行表格识别
+python table/predict_table.py \
+    --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+    --rec_model_dir=inference/ch_PP-OCRv3_rec_infer  \
+    --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
+    --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \
+    --image_dir=docs/table/table.jpg \
+    --output=../output/table
 ```
-运行完成后，每张图片的excel表格会保存到output字段指定的目录下
+运行完成后，每张图片的excel表格会保存到output字段指定的目录下，同时在该目录下回生产一个html文件，用于可视化查看单元格坐标和识别的表格。
 
-note: 上述模型是在 PubLayNet 数据集上训练的表格识别模型，仅支持英文扫描场景，如需识别其他场景需要自己训练模型后替换 `det_model_dir`,`rec_model_dir`,`table_model_dir`三个字段即可。
+**NOTE**
+1. 如果想使用英文模型，需要在 [models_list](../docs/models_list.md) 中下载英文文字检测识别模型和英文表格识别模型，同时替换`table_structure_dict_ch.txt`为`table_structure_dict.txt`即可。
+2. 如需使用TableRec-RARE模型，需要替换`table_structure_dict_ch.txt`为`table_structure_dict.txt`，同时参数`--merge_no_span_structure=False`
 
-<a name="32"></a>
-### 3.2 训练
+### 4.2 模型训练、评估与推理
 
-在这一章节中，我们仅介绍表格结构模型的训练，[文字检测](../../doc/doc_ch/detection.md)和[文字识别](../../doc/doc_ch/recognition.md)的模型训练请参考对应的文档。
+文本检测模型的训练、评估和推理流程可参考 [detection](../../doc/doc_ch/detection.md)
 
-* 数据准备  
+文本识别模型的训练、评估和推理流程可参考 [recognition](../../doc/doc_ch/recognition.md)
 
-训练数据使用公开数据集PubTabNet ([论文](https://arxiv.org/abs/1911.10683)，[下载地址](https://github.com/ibm-aur-nlp/PubTabNet))。PubTabNet数据集包含约50万张表格数据的图像，以及图像对应的html格式的注释。
+表格识别模型的训练、评估和推理流程可参考 [table_recognition](../../doc/doc_ch/table_recognition.md)
 
-* 启动训练
-
-*如果您安装的是cpu版本，请将配置文件中的 `use_gpu` 字段修改为false*
-```shell
-# 单机单卡训练
-python3 tools/train.py -c configs/table/table_mv3.yml
-# 单机多卡训练，通过 --gpus 参数设置使用的GPU ID
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/table/table_mv3.yml
-```
-
-上述指令中，通过-c 选择训练使用configs/table/table_mv3.yml配置文件。有关配置文件的详细解释，请参考[链接](../../doc/doc_ch/config.md)。
-
-* 断点训练
-
-如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
-```shell
-python3 tools/train.py -c configs/table/table_mv3.yml -o Global.checkpoints=./your/trained/model
-```
-
-**注意**：`Global.checkpoints`的优先级高于`Global.pretrain_weights`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrain_weights`指定的模型。
-
-<a name="33"></a>
-### 3.3 评估
+### 4.3 计算TEDS
 
 表格使用 [TEDS(Tree-Edit-Distance-based Similarity)](https://github.com/ibm-aur-nlp/PubTabNet/tree/master/src) 作为模型的评估指标。在进行模型评估之前，需要将pipeline中的三个模型分别导出为inference模型(我们已经提供好)，还需要准备评估的gt， gt示例如下:
-```json
-{"PMC4289340_004_00.png": [
-  ["<html>", "<body>", "<table>", "<thead>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>", "</thead>", "<tbody>", "<tr>", "<td>", "</td>", "<td>", "</td>", "<td>", "</td>", "</tr>",  "</tbody>", "</table>", "</body>", "</html>"],
-  [[1, 4, 29, 13], [137, 4, 161, 13], [215, 4, 236, 13], [1, 17, 30, 27], [137, 17, 147, 27], [215, 17, 225, 27]],
-  [["<b>", "F", "e", "a", "t", "u", "r", "e", "</b>"], ["<b>", "G", "b", "3", " ", "+", "</b>"], ["<b>", "G", "b", "3", " ", "-", "</b>"], ["<b>", "P", "a", "t", "i", "e", "n", "t", "s", "</b>"], ["6", "2"], ["4", "5"]]
-]}
+```txt
+PMC5755158_010_01.png    <html><body><table><thead><tr><td></td><td><b>Weaning</b></td><td><b>Week 15</b></td><td><b>Off-test</b></td></tr></thead><tbody><tr><td>Weaning</td><td>–</td><td>–</td><td>–</td></tr><tr><td>Week 15</td><td>–</td><td>0.17 ± 0.08</td><td>0.16 ± 0.03</td></tr><tr><td>Off-test</td><td>–</td><td>0.80 ± 0.24</td><td>0.19 ± 0.09</td></tr></tbody></table></body></html>
 ```
-json 中，key为图片名，value为对应的gt，gt是一个由三个item组成的list，每个item分别为
-1. 表格结构的html字符串list
-2. 每个cell的坐标 (不包括cell里文字为空的)
-3. 每个cell里的文字信息 (不包括cell里文字为空的)
+gt每一行都由文件名和表格的html字符串组成，文件名和表格的html字符串之间使用`\t`分隔。
+
+也可使用如下命令，由标注文件生成评估的gt文件：
+```python
+python3 ppstructure/table/convert_label2html.py --ori_gt_path /path/to/your_label_file --save_path /path/to/save_file
+```
 
 准备完成后使用如下命令进行评估，评估完成后会输出teds指标。
 ```python
 cd PaddleOCR/ppstructure
-python3 table/eval_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --gt_path=path/to/gt.json
+python3 table/eval_table.py \
+    --det_model_dir=path/to/det_model_dir \
+    --rec_model_dir=path/to/rec_model_dir \
+    --table_model_dir=path/to/table_model_dir \
+    --image_dir=docs/table/table.jpg \
+    --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --det_limit_side_len=736 \
+    --det_limit_type=min \
+    --gt_path=path/to/gt.txt
 ```
-如使用PubLatNet评估数据集，将会输出
+
+如使用英文表格识别模型在PubLatNet数据集上进行评估
+
 ```bash
-teds: 93.32
-```
-
-<a name="34"></a>
-### 3.4 预测
-
-```python
 cd PaddleOCR/ppstructure
-python3 table/predict_table.py --det_model_dir=path/to/det_model_dir --rec_model_dir=path/to/rec_model_dir --table_model_dir=path/to/table_model_dir --image_dir=../doc/table/1.png --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --det_limit_side_len=736 --det_limit_type=min --output ../output/table
+# 下载模型
+mkdir inference && cd inference
+# 下载基于PubTabNet数据集训练的文本检测模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_det_infer.tar && tar xf en_ppocr_mobile_v2.0_table_det_infer.tar
+# 下载基于PubTabNet数据集训练的文本识别模型并解压
+wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_rec_infer.tar && tar xf en_ppocr_mobile_v2.0_table_rec_infer.tar
+# 下载基于PubTabNet数据集训练的表格识别模型并解压
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
+cd ..
+
+python3 table/eval_table.py \
+    --det_model_dir=inference/en_ppocr_mobile_v2.0_table_det_infer \
+    --rec_model_dir=inference/en_ppocr_mobile_v2.0_table_rec_infer \
+    --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
+    --image_dir=train_data/table/pubtabnet/val/ \
+    --rec_char_dict_path=../ppocr/utils/dict/table_dict.txt \
+    --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
+    --det_limit_side_len=736 \
+    --det_limit_type=min \
+    --rec_image_shape=3,32,320 \
+    --gt_path=path/to/gt.txt
 ```
 
-# Reference
+将会输出
+```bash
+teds: 95.89
+```
+
+## 5. Reference
 1. https://github.com/ibm-aur-nlp/PubTabNet
 2. https://arxiv.org/pdf/1911.10683

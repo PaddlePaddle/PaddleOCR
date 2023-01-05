@@ -32,7 +32,7 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->cls_batch_num_) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = min(img_num, beg_img_no + this->cls_batch_num_);
+    int end_img_no = std::min(img_num, beg_img_no + this->cls_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     // preprocess
     std::vector<cv::Mat> norm_img_batch;
@@ -45,6 +45,11 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
 
       this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
                               this->is_scale_);
+      if (resize_img.cols < cls_image_shape[2]) {
+        cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
+                           cls_image_shape[2] - resize_img.cols,
+                           cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
+      }
       norm_img_batch.push_back(resize_img);
     }
     std::vector<float> input(batch_num * cls_image_shape[0] *
@@ -97,7 +102,7 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
 }
 
 void Classifier::LoadModel(const std::string &model_dir) {
-  AnalysisConfig config;
+  paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");
 
@@ -112,6 +117,11 @@ void Classifier::LoadModel(const std::string &model_dir) {
         precision = paddle_infer::Config::Precision::kInt8;
       }
       config.EnableTensorRtEngine(1 << 20, 10, 3, precision, false, false);
+      if (!Utility::PathExists("./trt_cls_shape.txt")) {
+        config.CollectShapeRangeInfo("./trt_cls_shape.txt");
+      } else {
+        config.EnableTunedTensorRtDynamicShape("./trt_cls_shape.txt", true);
+      }
     }
   } else {
     config.DisableGpu();
@@ -131,6 +141,6 @@ void Classifier::LoadModel(const std::string &model_dir) {
   config.EnableMemoryOptim();
   config.DisableGlogInfo();
 
-  this->predictor_ = CreatePredictor(config);
+  this->predictor_ = paddle_infer::CreatePredictor(config);
 }
 } // namespace PaddleOCR

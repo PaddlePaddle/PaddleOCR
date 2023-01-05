@@ -25,13 +25,19 @@ def build_neck(config):
     from .fpn import FPN
     from .fce_fpn import FCEFPN
     from .pren_fpn import PRENFPN
+    from .csp_pan import CSPPAN
+    from .ct_fpn import CTFPN
+    from .fpn_unet import FPN_UNet
+    from .rf_adaptor import RFAdaptor
     support_dict = [
         'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
-        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN'
+        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN',
+        'RFAdaptor', 'FPN_UNet'
     ]
 
     module_name = config.pop('name')
     assert module_name in support_dict, Exception('neck only support {}'.format(
         support_dict))
+
     module_class = eval(module_name)(**config)
     return module_class

@@ -93,3 +93,25 @@ class VQASerTokenLayoutLMPostProcess(object):
                 ocr_info[idx]["pred"] = self.id2label_map_for_show[int(pred_id)]
             results.append(ocr_info)
         return results
+
+
+class DistillationSerPostProcess(VQASerTokenLayoutLMPostProcess):
+    """
+    DistillationSerPostProcess
+    """
+
+    def __init__(self, class_path, model_name=["Student"], key=None, **kwargs):
+        super().__init__(class_path, **kwargs)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+        self.key = key
+
+    def __call__(self, preds, batch=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            output[name] = super().__call__(pred, batch=batch, *args, **kwargs)
+        return output

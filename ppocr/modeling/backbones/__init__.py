@@ -21,7 +21,10 @@ def build_backbone(config, model_type):
         from .det_resnet import ResNet
         from .det_resnet_vd import ResNet_vd
         from .det_resnet_vd_sast import ResNet_SAST
-        support_dict = ["MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST"]
+        from .det_pp_lcnet import PPLCNet
+        support_dict = [
+            "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet"
+        ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra
             support_dict.append('TableResNetExtra')
@@ -39,27 +42,28 @@ def build_backbone(config, model_type):
         from .rec_efficientb3_pren import EfficientNetb3_PREN
         from .rec_svtrnet import SVTRNet
         from .rec_vitstr import ViTSTR
+        from .rec_resnet_rfl import ResNetRFL
+        from .rec_densenet import DenseNet
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
-            'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32'
+            'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32', 'ResNetRFL',
+            'DenseNet'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet
         support_dict = ['ResNet']
     elif model_type == 'kie':
         from .kie_unet_sdmgr import Kie_backbone
-        support_dict = ['Kie_backbone']
+        from .vqa_layoutlm import LayoutLMForSer, LayoutLMv2ForSer, LayoutLMv2ForRe, LayoutXLMForSer, LayoutXLMForRe
+        support_dict = [
+            'Kie_backbone', 'LayoutLMForSer', 'LayoutLMv2ForSer',
+            'LayoutLMv2ForRe', 'LayoutXLMForSer', 'LayoutXLMForRe'
+        ]
     elif model_type == 'table':
         from .table_resnet_vd import ResNet
         from .table_mobilenet_v3 import MobileNetV3
         support_dict = ['ResNet', 'MobileNetV3']
-    elif model_type == 'vqa':
-        from .vqa_layoutlm import LayoutLMForSer, LayoutLMv2ForSer, LayoutLMv2ForRe, LayoutXLMForSer, LayoutXLMForRe
-        support_dict = [
-            'LayoutLMForSer', 'LayoutLMv2ForSer', 'LayoutLMv2ForRe',
-            'LayoutXLMForSer', 'LayoutXLMForRe'
-        ]
     else:
         raise NotImplementedError
 

@@ -109,8 +109,10 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 
 运行之前，将下面文件拷贝到`build/Release/`文件夹下
 1. `paddle_inference/paddle/lib/paddle_inference.dll`
-2. `opencv/build/x64/vc15/bin/opencv_world455.dll`
-3. 如果使用openblas版本的预测库还需要拷贝 `paddle_inference/third_party/install/openblas/lib/openblas.dll`
+2. `paddle_inference/third_party/install/onnxruntime/lib/onnxruntime.dll`
+3. `paddle_inference/third_party/install/paddle2onnx/lib/paddle2onnx.dll`
+4. `opencv/build/x64/vc15/bin/opencv_world455.dll`
+5. 如果使用openblas版本的预测库还需要拷贝 `paddle_inference/third_party/install/openblas/lib/openblas.dll`
 
 ### Step4: 预测
 
@@ -119,7 +121,7 @@ CUDA_LIB、CUDNN_LIB、TENSORRT_DIR、WITH_GPU、WITH_TENSORRT
 ```
 cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
 ```
-可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme.md)`运行demo`部分。
+可执行文件`ppocr.exe`即为样例的预测程序，其主要使用方法如下，更多使用方法可以参考[说明文档](../readme_ch.md)`运行demo`部分。
 
 ```shell
 # 切换终端编码为utf8

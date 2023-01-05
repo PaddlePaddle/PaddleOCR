@@ -168,22 +168,22 @@ def train(config, scaler=None):
             if idx % 10 == 0:
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
-                strs += f"loss: {avg_loss.numpy()[0]}"
-                strs += f", acc_topk1: {acc['top1'].numpy()[0]}, acc_top5: {acc['top5'].numpy()[0]}"
+                strs += f"loss: {float(avg_loss)}"
+                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model)
-            if len(best_acc) < 1 or acc['top5'].numpy()[0] > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
                 best_acc = acc
                 best_acc['epoch'] = epoch
                 is_best = True
             else:
                 is_best = False
             logger.info(
-                f"The best acc: acc_topk1: {best_acc['top1'].numpy()[0]}, acc_top5: {best_acc['top5'].numpy()[0]}, best_epoch: {best_acc['epoch']}"
+                f"The best acc: acc_topk1: {float(best_acc['top1'])}, acc_top5: {float(best_acc['top5'])}, best_epoch: {best_acc['epoch']}"
             )
             save_model(
                 model,
@@ -276,22 +276,22 @@ def train_distill(config, scaler=None):
             if idx % 10 == 0:
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
-                strs += f"loss: {avg_loss.numpy()[0]}"
-                strs += f", acc_topk1: {acc['top1'].numpy()[0]}, acc_top5: {acc['top5'].numpy()[0]}"
+                strs += f"loss: {float(avg_loss)}"
+                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model._layers.student)
-            if len(best_acc) < 1 or acc['top5'].numpy()[0] > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
                 best_acc = acc
                 best_acc['epoch'] = epoch
                 is_best = True
             else:
                 is_best = False
             logger.info(
-                f"The best acc: acc_topk1: {best_acc['top1'].numpy()[0]}, acc_top5: {best_acc['top5'].numpy()[0]}, best_epoch: {best_acc['epoch']}"
+                f"The best acc: acc_topk1: {float(best_acc['top1'])}, acc_top5: {float(best_acc['top5'])}, best_epoch: {best_acc['epoch']}"
             )
 
             save_model(
@@ -401,22 +401,22 @@ def train_distill_multiopt(config, scaler=None):
             if idx % 10 == 0:
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
-                strs += f"loss: {avg_loss.numpy()[0]}, loss1: {avg_loss1.numpy()[0]}"
-                strs += f", acc_topk1: {acc['top1'].numpy()[0]}, acc_top5: {acc['top5'].numpy()[0]}"
+                strs += f"loss: {float(avg_loss)}, loss1: {float(avg_loss1)}"
+                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model._layers.student)
-            if len(best_acc) < 1 or acc['top5'].numpy()[0] > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
                 best_acc = acc
                 best_acc['epoch'] = epoch
                 is_best = True
             else:
                 is_best = False
             logger.info(
-                f"The best acc: acc_topk1: {best_acc['top1'].numpy()[0]}, acc_top5: {best_acc['top5'].numpy()[0]}, best_epoch: {best_acc['epoch']}"
+                f"The best acc: acc_topk1: {float(best_acc['top1'])}, acc_top5: {float(best_acc['top5'])}, best_epoch: {best_acc['epoch']}"
             )
             save_model(
                 model, [optimizer, optimizer1],
@@ -450,7 +450,7 @@ def eval(config, model):
     labels = paddle.concat(labels, axis=0)
     acc = metric_func(outs, labels)
 
-    strs = f"The metric are as follows: acc_topk1: {acc['top1'].numpy()[0]}, acc_top5: {acc['top5'].numpy()[0]}"
+    strs = f"The metric are as follows: acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
     logger.info(strs)
     return acc
 

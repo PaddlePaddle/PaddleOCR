@@ -37,7 +37,7 @@ class TableMasterHead(nn.Layer):
                  d_ff=2048,
                  dropout=0,
                  max_text_length=500,
-                 point_num=2,
+                 loc_reg_num=4,
                  **kwargs):
         super(TableMasterHead, self).__init__()
         hidden_size = in_channels[-1]
@@ -50,7 +50,7 @@ class TableMasterHead(nn.Layer):
         self.cls_fc = nn.Linear(hidden_size, out_channels)
         self.bbox_fc = nn.Sequential(
             # nn.Linear(hidden_size, hidden_size),
-            nn.Linear(hidden_size, point_num * 2),
+            nn.Linear(hidden_size, loc_reg_num),
             nn.Sigmoid())
         self.norm = nn.LayerNorm(hidden_size)
         self.embedding = Embeddings(d_model=hidden_size, vocab=out_channels)
@@ -59,7 +59,7 @@ class TableMasterHead(nn.Layer):
         self.SOS = out_channels - 3
         self.PAD = out_channels - 1
         self.out_channels = out_channels
-        self.point_num = point_num
+        self.loc_reg_num = loc_reg_num
         self.max_text_length = max_text_length
 
     def make_mask(self, tgt):
@@ -105,7 +105,7 @@ class TableMasterHead(nn.Layer):
         output = paddle.zeros(
             [input.shape[0], self.max_text_length + 1, self.out_channels])
         bbox_output = paddle.zeros(
-            [input.shape[0], self.max_text_length + 1, self.point_num * 2])
+            [input.shape[0], self.max_text_length + 1, self.loc_reg_num])
         max_text_length = paddle.to_tensor(self.max_text_length)
         for i in range(max_text_length + 1):
             target_mask = self.make_mask(input)

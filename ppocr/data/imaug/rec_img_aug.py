@@ -205,6 +205,65 @@ class RecResizeImg(object):
         return data
 
 
+class VLRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 infer_mode=False,
+                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
+                 padding=True,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.infer_mode = infer_mode
+        self.character_dict_path = character_dict_path
+        self.padding = padding
+
+    def __call__(self, data):
+        img = data['image']
+
+        imgC, imgH, imgW = self.image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_w = imgW
+        resized_image = resized_image.astype('float32')
+        if self.image_shape[0] == 1:
+            resized_image = resized_image / 255
+            norm_img = resized_image[np.newaxis, :]
+        else:
+            norm_img = resized_image.transpose((2, 0, 1)) / 255
+        valid_ratio = min(1.0, float(resized_w / imgW))
+
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
+class RFLRecResizeImg(object):
+    def __init__(self, image_shape, padding=True, interpolation=1, **kwargs):
+        self.image_shape = image_shape
+        self.padding = padding
+
+        self.interpolation = interpolation
+        if self.interpolation == 0:
+            self.interpolation = cv2.INTER_NEAREST
+        elif self.interpolation == 1:
+            self.interpolation = cv2.INTER_LINEAR
+        elif self.interpolation == 2:
+            self.interpolation = cv2.INTER_CUBIC
+        elif self.interpolation == 3:
+            self.interpolation = cv2.INTER_AREA
+        else:
+            raise Exception("Unsupported interpolation type !!!")
+
+    def __call__(self, data):
+        img = data['image']
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        norm_img, valid_ratio = resize_norm_img(
+            img, self.image_shape, self.padding, self.interpolation)
+        data['image'] = norm_img
+        data['valid_ratio'] = valid_ratio
+        return data
+
+
 class SRNRecResizeImg(object):
     def __init__(self, image_shape, num_heads, max_text_length, **kwargs):
         self.image_shape = image_shape
@@ -259,6 +318,7 @@ class PRENResizeImg(object):
         data['image'] = resized_img.astype(np.float32)
         return data
 
+
 class SPINRecResizeImg(object):
     def __init__(self,
                  image_shape,
@@ -267,7 +327,7 @@ class SPINRecResizeImg(object):
                  std=(127.5, 127.5, 127.5),
                  **kwargs):
         self.image_shape = image_shape
-        
+
         self.mean = np.array(mean, dtype=np.float32)
         self.std = np.array(std, dtype=np.float32)
         self.interpolation = interpolation
@@ -302,6 +362,7 @@ class SPINRecResizeImg(object):
         img *= stdinv
         data['image'] = img
         return data
+
 
 class GrayRecResizeImg(object):
     def __init__(self,
@@ -381,6 +442,29 @@ class SVTRRecResizeImg(object):
         return data
 
 
+class RobustScannerRecResizeImg(object):
+    def __init__(self,
+                 image_shape,
+                 max_text_length,
+                 width_downsample_ratio=0.25,
+                 **kwargs):
+        self.image_shape = image_shape
+        self.width_downsample_ratio = width_downsample_ratio
+        self.max_text_length = max_text_length
+
+    def __call__(self, data):
+        img = data['image']
+        norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
+            img, self.image_shape, self.width_downsample_ratio)
+        word_positons = np.array(range(0, self.max_text_length)).astype('int64')
+        data['image'] = norm_img
+        data['resized_shape'] = resize_shape
+        data['pad_shape'] = pad_shape
+        data['valid_ratio'] = valid_ratio
+        data['word_positons'] = word_positons
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]
@@ -416,13 +500,16 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     return padding_im, resize_shape, pad_shape, valid_ratio
 
 
-def resize_norm_img(img, image_shape, padding=True):
+def resize_norm_img(img,
+                    image_shape,
+                    padding=True,
+                    interpolation=cv2.INTER_LINEAR):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
     w = img.shape[1]
     if not padding:
         resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+            img, (imgW, imgH), interpolation=interpolation)
         resized_w = imgW
     else:
         ratio = w / float(h)
@@ -451,7 +538,7 @@ def resize_norm_img_chinese(img, image_shape):
     max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
-    max_wh_ratio = max(max_wh_ratio, ratio)
+    max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
     imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW
