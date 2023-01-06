@@ -10,30 +10,28 @@ For more details, please refer to the document [Classification Framework](https:
 
 Next, we first introduce how to convert a trained model into an inference model, and then we will introduce text detection, text recognition, angle class, and the concatenation of them based on inference model.
 
-- [1. Convert Training Model to Inference Model](#CONVERT)
-    - [1.1 Convert Detection Model to Inference Model](#Convert_detection_model)
-    - [1.2 Convert Recognition Model to Inference Model](#Convert_recognition_model)
-    - [1.3 Convert Angle Classification Model to Inference Model](#Convert_angle_class_model)
-
-
-- [2. Text Detection Model Inference](#DETECTION_MODEL_INFERENCE)
-    - [2.1 Lightweight Chinese Detection Model Inference](#LIGHTWEIGHT_DETECTION)
-    - [2.2 DB Text Detection Model Inference](#DB_DETECTION)
-    - [2.3 East Text Detection Model Inference](#EAST_DETECTION)
-    - [2.4 Sast Text Detection Model Inference](#SAST_DETECTION)
-
-- [3. Text Recognition Model Inference](#RECOGNITION_MODEL_INFERENCE)
-    - [3.1 Lightweight Chinese Text Recognition Model Reference](#LIGHTWEIGHT_RECOGNITION)
-    - [3.2 CTC-Based Text Recognition Model Inference](#CTC-BASED_RECOGNITION)
-    - [3.3 SRN-Based Text Recognition Model Inference](#SRN-BASED_RECOGNITION)
-    - [3.4 Text Recognition Model Inference Using Custom Characters Dictionary](#USING_CUSTOM_CHARACTERS)
-    - [3.5 Multilingual Model Inference](#MULTILINGUAL_MODEL_INFERENCE)
-
-- [4. Angle Classification Model Inference](#ANGLE_CLASS_MODEL_INFERENCE)
-
-- [5. Text Detection Angle Classification And Recognition Inference Concatenation](#CONCATENATION)
-    - [5.1 Lightweight Chinese Model](#LIGHTWEIGHT_CHINESE_MODEL)
-    - [5.2 Other Models](#OTHER_MODELS)
+- [Inference Based on Python Prediction Engine](#inference-based-on-python-prediction-engine)
+  - [1. Convert Training Model to Inference Model](#1-convert-training-model-to-inference-model)
+    - [1.1 Convert Detection Model to Inference Model](#11-convert-detection-model-to-inference-model)
+    - [1.2 Convert Recognition Model to Inference Model](#12-convert-recognition-model-to-inference-model)
+    - [1.3 Convert Angle Classification Model to Inference Model](#13-convert-angle-classification-model-to-inference-model)
+  - [2. Text Detection Model Inference](#2-text-detection-model-inference)
+    - [2.1 Lightweight Chinese Detection Model Inference](#21-lightweight-chinese-detection-model-inference)
+    - [2.2 DB Text Detection Model Inference](#22-db-text-detection-model-inference)
+    - [2.3 EAST TEXT DETECTION MODEL INFERENCE](#23-east-text-detection-model-inference)
+    - [2.4 Sast Text Detection Model Inference](#24-sast-text-detection-model-inference)
+      - [(1). Quadrangle text detection model (ICDAR2015)](#1-quadrangle-text-detection-model-icdar2015)
+      - [(2). Curved text detection model (Total-Text)](#2-curved-text-detection-model-total-text)
+  - [3. Text Recognition Model Inference](#3-text-recognition-model-inference)
+    - [3.1 Lightweight Chinese Text Recognition Model Reference](#31-lightweight-chinese-text-recognition-model-reference)
+    - [3.2 CTC-Based Text Recognition Model Inference](#32-ctc-based-text-recognition-model-inference)
+    - [3.3 SRN-Based Text Recognition Model Inference](#33-srn-based-text-recognition-model-inference)
+    - [3.4 Text Recognition Model Inference Using Custom Characters Dictionary](#34-text-recognition-model-inference-using-custom-characters-dictionary)
+    - [3.5 Multilingual Model Inference](#35-multilingual-model-inference)
+  - [4. Angle Classification Model Inference](#4-angle-classification-model-inference)
+  - [5. Text Detection Angle Classification and Recognition Inference Concatenation](#5-text-detection-angle-classification-and-recognition-inference-concatenation)
+    - [5.1 Lightweight Chinese Model](#51-lightweight-chinese-model)
+    - [5.2 Other Models](#52-other-models)
 
 <a name="CONVERT"></a>
 ## 1. Convert Training Model to Inference Model
@@ -371,7 +369,7 @@ After executing the command, the prediction results (classification angle and sc
 <a name="LIGHTWEIGHT_CHINESE_MODEL"></a>
 ### 5.1 Lightweight Chinese Model
 
-When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter . The visualized recognition results are saved to the `./inference_results` folder by default.
+When performing prediction, you need to specify the path of a single image or a folder of images through the parameter `image_dir`, the parameter `det_model_dir` specifies the path to detect the inference model, the parameter `cls_model_dir` specifies the path to angle classification inference model and the parameter `rec_model_dir` specifies the path to identify the inference model. The parameter `use_angle_cls` is used to control whether to enable the angle classification model. The parameter `use_mp` specifies whether to use multi-process to infer `total_process_num` specifies process number when using multi-process. The parameter(Paddle Inference is not thread-safe, it is recommended to use multi-process) . The visualized recognition results are saved to the `./inference_results` folder by default.
 
 ```shell
 # use direction classifier
