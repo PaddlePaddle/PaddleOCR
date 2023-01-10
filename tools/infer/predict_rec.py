@@ -173,9 +173,10 @@ class TextRecognizer(object):
         imgW = int((imgH * max_wh_ratio))
         if self.use_onnx:
             w = self.input_tensor.shape[3:][0]
-            if w is not None and w > 0:
+            if isinstance(w, str):
+                pass
+            elif w is not None and w > 0:
                 imgW = w
-
         h, w = img.shape[:2]
         ratio = w / float(h)
         if math.ceil(imgH * ratio) > imgW:
