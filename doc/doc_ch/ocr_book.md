@@ -1,6 +1,6 @@
 # 《动手学OCR》电子书
 
-《动手学OCR》是PaddleOCR团队携手复旦大学青年研究员陈智能、中国移动研究院视觉领域资深专家黄文辉等产学研同仁，以及OCR开发者共同打造的结合OCR前沿理论与代码实践的教材。主要特色如下：
+《动手学OCR》是PaddleOCR团队携手华中科技大学博导/教授，IAPR Fellow 白翔、复旦大学青年研究员陈智能、中国移动研究院视觉领域资深专家黄文辉、中国工商银行大数据人工智能实验室研究员等产学研同仁，以及OCR开发者共同打造的结合OCR前沿理论与代码实践的教材。主要特色如下：
 
 - 覆盖从文本检测识别到文档分析的OCR全栈技术
 - 紧密结合理论实践，跨越代码实现鸿沟，并配套教学视频
@@ -21,5 +21,5 @@
 
 ## 资料地址
 - 中文版电子书下载请扫描首页二维码入群后领取
-- [notebook教程](../../notebook/notebook_ch/)
+- [notebook教程](https://github.com/PaddleOCR-Community/Dive-into-OCR)
 - [教学视频](https://aistudio.baidu.com/aistudio/education/group/info/25207)
