@@ -7,7 +7,7 @@
 
 ## Web Demo使用
 
-在浏览器中直接运行官方OCR demo参考[教程](https://github.com/PaddlePaddle/FastDeploy/blob/develop/examples/application/js/WebDemo.md)
+在浏览器中直接运行官方OCR demo参考[教程](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo)
 
 |demo名称|web demo目录|可视化|
 |-|-|-|
