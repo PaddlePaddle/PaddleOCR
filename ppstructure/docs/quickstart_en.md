@@ -311,7 +311,7 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 | save_pdf    | Whether to convert docx to pdf when recovery| False |
 | structure_version |  Structure version, optional PP-structure and PP-structurev2  | PP-structure |
 
-Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl.md)
+Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl_en.md)
 
 <a name="3"></a>
 ## 3. Summary

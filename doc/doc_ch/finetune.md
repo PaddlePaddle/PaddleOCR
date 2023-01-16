@@ -103,6 +103,66 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 
 更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](./models_list.md)。
 
+PP-OCRv3 模型使用了GTC策略，其中SAR分支参数量大，当训练数据为简单场景时模型容易过拟合，导致微调效果不佳，建议去除GTC策略，模型结构部分配置文件修改如下：
+
+```yaml
+Architecture:
+  model_type: rec
+  algorithm: SVTR
+  Transform:
+  Backbone:
+    name: MobileNetV1Enhance
+    scale: 0.5
+    last_conv_stride: [1, 2]
+    last_pool_type: avg
+  Neck:
+    name: SequenceEncoder
+    encoder_type: svtr
+    dims: 64
+    depth: 2
+    hidden_dims: 120
+    use_guide: False
+  Head:
+    name: CTCHead
+    fc_decay: 0.00001
+Loss:
+  name: CTCLoss
+
+Train:
+  dataset:
+  ......
+    transforms:
+    # 去除 RecConAug 增广
+    # - RecConAug:
+    #     prob: 0.5
+    #     ext_data_num: 2
+    #     image_shape: [48, 320, 3]
+    #     max_text_length: *max_text_length
+    - RecAug:
+    # 修改 Encode 方式
+    - CTCLabelEncode:
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label
+        - length
+...
+
+Eval:
+  dataset:
+  ...
+    transforms:
+    ...
+    - CTCLabelEncode:
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label
+        - length
+...
+
+
+```
 
 ### 3.3 训练超参选择
 
@@ -163,6 +223,9 @@ Train:
     ratio_list: [1.0, 0.1]
 ```
 
+
 ### 3.4 训练调优
 
 训练过程并非一蹴而就的，完成一个阶段的训练评估后，建议收集分析当前模型在真实场景中的 badcase，有针对性的调整训练数据比例，或者进一步新增合成数据。通过多次迭代训练，不断优化模型效果。
+
+如果在训练时修改了自定义字典，由于无法加载最后一层FC的参数，在迭代初期acc=0是正常的情况，不必担心，加载预训练模型依然可以加快模型收敛。
