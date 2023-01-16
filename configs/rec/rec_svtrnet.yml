@@ -26,10 +26,10 @@ Optimizer:
   name: AdamW
   beta1: 0.9
   beta2: 0.99
-  epsilon: 8.e-8
+  epsilon: 1.e-8
   weight_decay: 0.05
   no_weight_decay_name: norm pos_embed
-  one_dim_param_no_weight_decay: true
+  one_dim_param_no_weight_decay: True
   lr:
     name: Cosine
     learning_rate: 0.0005
@@ -48,7 +48,7 @@ Architecture:
   Backbone:
     name: SVTRNet
     img_size: [32, 100]
-    out_char_num: 25
+    out_char_num: 25 # W//4 or W//8 or W/12
     out_channels: 192
     patch_merging: 'Conv'
     embed_dim: [64, 128, 256]
@@ -57,7 +57,7 @@ Architecture:
     mixer: ['Local','Local','Local','Local','Local','Local','Global','Global','Global','Global','Global','Global']
     local_mixer: [[7, 11], [7, 11], [7, 11]]
     last_stage: True
-    prenorm: false
+    prenorm: False
   Neck:
     name: SequenceEncoder
     encoder_type: reshape
@@ -82,6 +82,8 @@ Train:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
+      - SVTRRecAug:
+          aug_type: 0 # or 1
       - CTCLabelEncode: # Class handling label
       - SVTRRecResizeImg:
           image_shape: [3, 64, 256]
@@ -92,7 +94,7 @@ Train:
     shuffle: True
     batch_size_per_card: 512
     drop_last: True
-    num_workers: 4
+    num_workers: 8
 
 Eval:
   dataset:
