@@ -42,6 +42,7 @@ def init_args():
     parser.add_argument("--min_subgraph_size", type=int, default=15)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
+    parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
@@ -219,7 +220,7 @@ def create_predictor(args, mode, logger):
                 logger.warning(
                     "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
-            config.enable_use_gpu(args.gpu_mem, 0)
+            config.enable_use_gpu(args.gpu_mem, args.gpu_id)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
