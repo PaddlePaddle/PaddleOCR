@@ -19,7 +19,7 @@ import random
 import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
-from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter
+from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration
 from paddle.vision.transforms import Compose
 
 
@@ -109,8 +109,9 @@ class ABINetRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=geometry_p), CVDeterioration(
-                    var=20, degrees=6, factor=4, p=deterioration_p),
+                p=geometry_p),
+            CVDeterioration(
+                var=20, degrees=6, factor=4, p=deterioration_p),
             CVColorJitter(
                 brightness=0.5,
                 contrast=0.5,
@@ -166,6 +167,39 @@ class RecConAug(object):
                 break
             data = self.merge_ext_data(data, ext_data)
         data.pop("ext_data")
+        return data
+
+
+class SVTRRecAug(object):
+    def __init__(self,
+                 aug_type=0,
+                 geometry_p=0.5,
+                 deterioration_p=0.25,
+                 colorjitter_p=0.25,
+                 **kwargs):
+        self.transforms = Compose([
+            SVTRGeometry(
+                aug_type=aug_type,
+                degrees=45,
+                translate=(0.0, 0.0),
+                scale=(0.5, 2.),
+                shear=(45, 15),
+                distortion=0.5,
+                p=geometry_p),
+            SVTRDeterioration(
+                var=20, degrees=6, factor=4, p=deterioration_p),
+            CVColorJitter(
+                brightness=0.5,
+                contrast=0.5,
+                saturation=0.5,
+                hue=0.1,
+                p=colorjitter_p)
+        ])
+
+    def __call__(self, data):
+        img = data['image']
+        img = self.transforms(img)
+        data['image'] = img
         return data
 
 

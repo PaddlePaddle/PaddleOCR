@@ -159,7 +159,23 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 <a name="5"></a>
 ## 5. FAQ
 
-1. 由于`SVTR`使用的算子大多为矩阵相乘，在GPU环境下，速度具有优势，但在CPU开启mkldnn加速环境下，`SVTR`相比于被优化的卷积网络没有优势。
+- 1. GPU和CPU速度对比
+  - 由于`SVTR`使用的算子大多为矩阵相乘，在GPU环境下，速度具有优势，但在CPU开启mkldnn加速环境下，`SVTR`相比于被优化的卷积网络没有优势。
+- 2. SVTR模型转ONNX失败
+  - 保证`paddle2onnx`和`onnxruntime`版本最新，转onnx命令参考[SVTR模型转onnx步骤实例](https://github.com/PaddlePaddle/PaddleOCR/issues/7821#issuecomment-1271214273)。
+- 3. SVTR转ONNX成功但是推理结果不正确
+  - 可能的原因模型参数`out_char_num`设置不正确，应设置为W//4、W//8或者W//12，可以参考[高精度中文场景文本识别模型SVTR的3.3.3章节](https://aistudio.baidu.com/aistudio/projectdetail/5073182?contributionType=1)。
+- 4. 长文本识别优化
+  - 参考[高精度中文场景文本识别模型SVTR的3.3章节](https://aistudio.baidu.com/aistudio/projectdetail/5073182?contributionType=1)。
+- 5. 论文结果复现注意事项
+  - 数据集使用[ABINet](https://github.com/FangShancheng/ABINet)提供的数据集；
+  - 默认使用4卡GPU训练，单卡Batchsize默认为512，总Batchsize为2048，对应的学习率为0.0005，当修改Batchsize或者改变GPU卡数，学习率应等比例修改。
+- 6. 进一步优化的探索点
+  - 学习率调整：可以调整为默认的两倍保持Batchsize不变；或者将Batchsize减小为默认的1/2，保持学习率不变；
+  - 数据增强策略：可选`RecConAug`和`RecAug`；
+  - 如果不使用STN时，可以将`mixer`的`Local`替换为`Conv`、`local_mixer`全部修改为`[5, 5]`；
+  - 网格搜索最优的`embed_dim`、`depth`、`num_heads`配置；
+  - 使用`后Normalization策略`，即是将模型配置`prenorm`修改为`True`。
 
 
 ## 引用
