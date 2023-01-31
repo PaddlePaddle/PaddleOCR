@@ -239,6 +239,9 @@ python3 kie/predict_kie_token_ser_re.py \
 
 可视化结果保存在`output`目录下。
 
+如果想使用自定义模型，可通过如下字段进行设置
+- `--det_model_dir`: 设置检测模型地址
+- `--rec_model_dir`: 设置识别模型地址
 
 ### 4.3 更多
 

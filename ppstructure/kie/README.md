@@ -257,6 +257,9 @@ python3 kie/predict_kie_token_ser_re.py \
 
 The visual results and text file will be saved in directory `output`.
 
+If you want to use a custom model, you can set it through the following fields
+- `--det_model_dir`: the detection model path
+- `--rec_model_dir`: the recognition model path
 
 ### 4.3 More
 
