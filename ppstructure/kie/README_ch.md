@@ -191,6 +191,10 @@ python3 ./tools/infer_kie_token_ser_re.py \
   -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
+如果想使用自定义模型，可通过如下字段进行设置
+- `Global.kie_det_model_dir`: 设置检测inference模型地址
+- `Global.kie_rec_model_dir`: 设置识别inference模型地址
+
 #### 4.2.3 基于PaddleInference的预测
 
 首先下载SER和RE的推理模型。
@@ -240,8 +244,8 @@ python3 kie/predict_kie_token_ser_re.py \
 可视化结果保存在`output`目录下。
 
 如果想使用自定义模型，可通过如下字段进行设置
-- `--det_model_dir`: 设置检测模型地址
-- `--rec_model_dir`: 设置识别模型地址
+- `--det_model_dir`: 设置检测inference模型地址
+- `--rec_model_dir`: 设置识别inference模型地址
 
 ### 4.3 更多
 

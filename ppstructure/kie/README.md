@@ -207,6 +207,11 @@ python3 ./tools/infer_kie_token_ser_re.py \
   -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
 
+If you want to use a custom model, you can set it through the following fields
+- `Global.kie_det_model_dir`: the detection inference model path
+- `Global.kie_rec_model_dir`: the recognition inference model path
+
+
 #### 4.2.3 Inference using PaddleInference
 
 Firstly, download the inference SER inference model.
@@ -258,8 +263,8 @@ python3 kie/predict_kie_token_ser_re.py \
 The visual results and text file will be saved in directory `output`.
 
 If you want to use a custom model, you can set it through the following fields
-- `--det_model_dir`: the detection model path
-- `--rec_model_dir`: the recognition model path
+- `--det_model_dir`: the detection inference model path
+- `--rec_model_dir`: the recognition inference model path
 
 ### 4.3 More
 
