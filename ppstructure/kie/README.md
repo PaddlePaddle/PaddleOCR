@@ -186,6 +186,10 @@ python3 ./tools/infer_kie_token_ser_re.py \
 
 The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
 
+If you want to use a custom ocr model, you can set it through the following fields
+- `Global.kie_det_model_dir`: the detection inference model path
+- `Global.kie_rec_model_dir`: the recognition inference model path
+
 
 If you want to load the text detection and recognition results collected before, you can use the following command to predict.
 
@@ -206,11 +210,6 @@ python3 ./tools/infer_kie_token_ser_re.py \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
   -o_ser Architecture.Backbone.checkpoints=./pretrained_model/ser_vi_layoutxlm_xfund_pretrained/best_accuracy
 ```
-
-If you want to use a custom model, you can set it through the following fields
-- `Global.kie_det_model_dir`: the detection inference model path
-- `Global.kie_rec_model_dir`: the recognition inference model path
-
 
 #### 4.2.3 Inference using PaddleInference
 
@@ -262,7 +261,7 @@ python3 kie/predict_kie_token_ser_re.py \
 
 The visual results and text file will be saved in directory `output`.
 
-If you want to use a custom model, you can set it through the following fields
+If you want to use a custom ocr model, you can set it through the following fields
 - `--det_model_dir`: the detection inference model path
 - `--rec_model_dir`: the recognition inference model path
 
