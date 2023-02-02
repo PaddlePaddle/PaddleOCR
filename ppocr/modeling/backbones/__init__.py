@@ -33,6 +33,7 @@ def build_backbone(config, model_type):
         from .rec_resnet_vd import ResNet
         from .rec_resnet_fpn import ResNetFPN
         from .rec_mv1_enhance import MobileNetV1Enhance
+        from .rec_mv1_enhance_dlc import MobileNetV1EnhanceDLC
         from .rec_nrtr_mtb import MTB
         from .rec_resnet_31 import ResNet31
         from .rec_resnet_32 import ResNet32
@@ -48,7 +49,7 @@ def build_backbone(config, model_type):
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
             'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32', 'ResNetRFL',
-            'DenseNet'
+            'DenseNet', 'MobileNetV1EnhanceDLC'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet
