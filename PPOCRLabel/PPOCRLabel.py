@@ -21,7 +21,6 @@ import os.path
 import platform
 import subprocess
 import sys
-from copy import deepcopy
 
 import xlrd
 from functools import partial
@@ -1388,6 +1387,7 @@ class MainWindow(QMainWindow):
 
                     self._update_shape_color(shape)
                     self.keyDialog.addLabelHistory(key_text)
+                    self.existed_ser_label_set.add(key_text)
 
             self.addLabel(shape)
             if self.beginner():  # Switch to edit mode.
@@ -1779,6 +1779,9 @@ class MainWindow(QMainWindow):
                     self.keyList.addItem(item)
                     rgb = self._get_rgb_by_label(key_text, self.kie_mode)
                     self.keyList.setItemLabel(item, key_text, rgb)
+
+                    if self.keyDialog is not None:
+                        self.keyDialog.addLabelHistory(key_text)
 
         if self.keyDialog is None:
             # key list dialog
@@ -2639,11 +2642,9 @@ class MainWindow(QMainWindow):
 
         if self.kie_mode:
             with open(self.ser_label_txt_path, 'w', encoding='utf-8') as f:
-
-                save_list = deepcopy(self.existed_ser_label_set)
-                save_list = [label for label in save_list if label != 'other']
-                save_list = ['other'] + save_list  # make sure 'other' always in the first place
+                save_list = [label for label in self.existed_ser_label_set if label != 'other']
                 save_list.sort()
+                save_list = ['other'] + save_list  # make sure 'other' always in the first place
 
                 for key in save_list:
                     f.write(str(key).lower() + '\n')  # make other always in the front
@@ -2726,6 +2727,7 @@ class MainWindow(QMainWindow):
         key_text, _ = self.keyDialog.popUp(self.key_previous_text)
         if key_text is None:
             return
+        key_text = str(key_text).lower()
         self.key_previous_text = key_text
         for shape in self.canvas.selectedShapes:
             shape.ser_label = key_text
@@ -2737,7 +2739,8 @@ class MainWindow(QMainWindow):
 
             self._update_shape_color(shape)
             self.keyDialog.addLabelHistory(key_text)
-            
+            self.existed_ser_label_set.add(key_text)
+
         # save changed shape
         self.setDirty()
 
