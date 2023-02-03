@@ -1225,12 +1225,12 @@ class MainWindow(QMainWindow):
 
         # Can add different annotation formats here
         for box in self.result_dic:
-            trans_dic = {"transcription": box[1][0], "points": box[0], "difficult": False}
+            trans_dic = {"label": box[1][0], "points": box[0], "difficult": False}
             if self.kie_mode:
                 if len(box) == 3:
-                    trans_dic.update({"label": box[2]})
+                    trans_dic.update({"ser_label": box[2]})
                 else:
-                    trans_dic.update({"label": "other"})
+                    trans_dic.update({"ser_label": "other"})
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -1238,9 +1238,9 @@ class MainWindow(QMainWindow):
         try:
             trans_dic = []
             for box in shapes:
-                trans_dict = {"transcription": box['transcription'], "points": box['points'], "difficult": box['difficult']}
+                trans_dict = {"transcription": box['label'], "points": box['points'], "difficult": box['difficult']}
                 if self.kie_mode:
-                    trans_dict.update({"label": box['label']})
+                    trans_dict.update({"label": box['ser_label']})
                 trans_dic.append(trans_dict)
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
