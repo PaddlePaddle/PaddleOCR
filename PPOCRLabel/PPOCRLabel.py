@@ -1802,6 +1802,7 @@ class MainWindow(QMainWindow):
             self.PPlabelpath = dirpath + '/Label.txt'
             self.PPlabel = self.loadLabelFile(self.PPlabelpath)
             self.Cachelabelpath = dirpath + '/Cache.cach'
+            self.ser_label_txt_path = dirpath + '/ser_class_list.txt'
             self.Cachelabel = self.loadLabelFile(self.Cachelabelpath)
             if self.Cachelabel:
                 self.PPlabel = dict(self.Cachelabel, **self.PPlabel)
@@ -2633,6 +2634,12 @@ class MainWindow(QMainWindow):
                 if key in savedfile and self.PPlabel[key] != []:
                     f.write(key + '\t')
                     f.write(json.dumps(self.PPlabel[key], ensure_ascii=False) + '\n')
+
+        if self.kie_mode:
+            with open(self.ser_label_txt_path, 'w', encoding='utf-8') as f:
+                f.write('other\n')  # make other always in the front
+                for key in self.existed_ser_label_set:
+                    f.write(str(key).lower() + '\n')  # make other always in the front
 
         if mode == 'Manual':
             if self.lang == 'ch':
