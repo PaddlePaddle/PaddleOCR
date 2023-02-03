@@ -54,4 +54,7 @@ python deploy/slim/quantization/export_model.py -c configs/det/ch_PP-OCRv3/ch_PP
 ### 5. 量化模型部署
 
 上述步骤导出的量化模型，参数精度仍然是FP32，但是参数的数值范围是int8，导出的模型可以通过PaddleLite的opt模型转换工具完成模型转换。
-量化模型部署的可参考 [移动端模型部署](../../lite/readme.md)
+
+量化模型移动端部署的可参考 [移动端模型部署](../../lite/readme.md)
+
+备注：量化训练后的模型参数是float32类型，转inference model预测时相对不量化无加速效果，原因是量化后模型结构之间存在量化和反量化算子，如果要使用量化模型部署，建议使用TensorRT并设置precision为INT8加速量化模型的预测时间。
