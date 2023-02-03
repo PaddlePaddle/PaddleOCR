@@ -1608,7 +1608,7 @@ class MainWindow(QMainWindow):
         # box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
         # four corner coordinates of the shapes to the height and width of the image
         for box in self.canvas.lockedShapes:
-            ser_label = 'other' if not self.kie_mode else box['ser_label']
+            ser_label = 'other' if not self.kie_mode else box['label']
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
                                DEFAULT_LOCK_COLOR, ser_label, box['difficult']))
