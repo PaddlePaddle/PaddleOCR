@@ -21,6 +21,8 @@ import os.path
 import platform
 import subprocess
 import sys
+from copy import deepcopy
+
 import xlrd
 from functools import partial
 
@@ -2637,8 +2639,13 @@ class MainWindow(QMainWindow):
 
         if self.kie_mode:
             with open(self.ser_label_txt_path, 'w', encoding='utf-8') as f:
-                f.write('other\n')  # make other always in the front
-                for key in self.existed_ser_label_set:
+
+                save_list = deepcopy(self.existed_ser_label_set)
+                save_list = [label for label in save_list if label != 'other']
+                save_list = ['other'] + save_list  # make sure 'other' always in the first place
+                save_list.sort()
+
+                for key in save_list:
                     f.write(str(key).lower() + '\n')  # make other always in the front
 
         if mode == 'Manual':
