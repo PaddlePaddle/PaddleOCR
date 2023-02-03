@@ -1415,7 +1415,7 @@ class MainWindow(QMainWindow):
 
     def _get_rgb_by_label(self, label, kie_mode):
         shift_auto_shape_color = 2  # use for random color
-        if kie_mode and label != "None":
+        if kie_mode and label != "other":
             item = self.keyList.findItemsByLabel(label)[0]
             label_id = self.keyList.indexFromItem(item).row() + 1
             label_id += shift_auto_shape_color
