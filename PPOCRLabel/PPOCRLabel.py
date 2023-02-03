@@ -90,7 +90,7 @@ class MainWindow(QMainWindow):
         # KIE setting
         self.kie_mode = kie_mode
         self.key_previous_text = ""
-        self.existed_key_cls_set = set()
+        self.existed_ser_label_set = set()
         self.key_dialog_tip = getStr('keyDialogTip')
 
         self.defaultSaveDir = default_save_dir
@@ -1071,15 +1071,15 @@ class MainWindow(QMainWindow):
 
         if self.kie_mode:
             if len(self.canvas.selectedShapes) == 1 and self.keyList.count() > 0:
-                selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls,
+                selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].ser_label,
                                                                       get_row=True)
                 if isinstance(selected_key_item_row, list) and len(selected_key_item_row) == 0:
-                    key_text = self.canvas.selectedShapes[0].key_cls
+                    key_text = self.canvas.selectedShapes[0].ser_label
                     item = self.keyList.createItemFromLabel(key_text)
                     self.keyList.addItem(item)
                     rgb = self._get_rgb_by_label(key_text, self.kie_mode)
                     self.keyList.setItemLabel(item, key_text, rgb)
-                    selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].key_cls,
+                    selected_key_item_row = self.keyList.findItemsByLabel(self.canvas.selectedShapes[0].ser_label,
                                                                           get_row=True)
 
                 self.keyList.setCurrentRow(selected_key_item_row)
@@ -1149,8 +1149,8 @@ class MainWindow(QMainWindow):
     def loadLabels(self, shapes):
         s = []
         shape_index = 0
-        for label, points, line_color, key_cls, difficult in shapes:
-            shape = Shape(label=label, line_color=line_color, key_cls=key_cls)
+        for label, points, line_color, ser_label, difficult in shapes:
+            shape = Shape(label=label, line_color=line_color, ser_label=ser_label)
             for x, y in points:
 
                 # Ensure the labels are within the bounds of the image. If not, fix them.
@@ -1214,20 +1214,21 @@ class MainWindow(QMainWindow):
                         fill_color=s.fill_color.getRgb(),
                         points=[(int(p.x()), int(p.y())) for p in s.points],  # QPonitF
                         difficult=s.difficult,
-                        key_cls=s.key_cls)  # bool
+                        ser_label=s.ser_label)  # bool
 
         if mode == 'Auto':
             shapes = []
         else:
             shapes = [format_shape(shape) for shape in self.canvas.shapes if shape.line_color != DEFAULT_LOCK_COLOR]
-        # Can add differrent annotation formats here
+
+        # Can add different annotation formats here
         for box in self.result_dic:
-            trans_dic = {"label": box[1][0], "points": box[0], "difficult": False}
+            trans_dic = {"transcription": box[1][0], "points": box[0], "difficult": False}
             if self.kie_mode:
                 if len(box) == 3:
-                    trans_dic.update({"key_cls": box[2]})
+                    trans_dic.update({"label": box[2]})
                 else:
-                    trans_dic.update({"key_cls": "None"})
+                    trans_dic.update({"label": "other"})
             if trans_dic["label"] == "" and mode == 'Auto':
                 continue
             shapes.append(trans_dic)
@@ -1235,9 +1236,9 @@ class MainWindow(QMainWindow):
         try:
             trans_dic = []
             for box in shapes:
-                trans_dict = {"transcription": box['label'], "points": box['points'], "difficult": box['difficult']}
+                trans_dict = {"transcription": box['transcription'], "points": box['points'], "difficult": box['difficult']}
                 if self.kie_mode:
-                    trans_dict.update({"key_cls": box['key_cls']})
+                    trans_dict.update({"label": box['label']})
                 trans_dic.append(trans_dict)
             self.PPlabel[annotationFilePath] = trans_dic
             if mode == 'Auto':
@@ -1401,7 +1402,7 @@ class MainWindow(QMainWindow):
             self.canvas.resetAllLines()
 
     def _update_shape_color(self, shape):
-        r, g, b = self._get_rgb_by_label(shape.key_cls, self.kie_mode)
+        r, g, b = self._get_rgb_by_label(shape.ser_label, self.kie_mode)
         shape.line_color = QColor(r, g, b)
         shape.vertex_fill_color = QColor(r, g, b)
         shape.hvertex_fill_color = QColor(255, 255, 255)
@@ -1605,17 +1606,17 @@ class MainWindow(QMainWindow):
         # box['ratio'] of the shapes saved in lockedShapes contains the ratio of the
         # four corner coordinates of the shapes to the height and width of the image
         for box in self.canvas.lockedShapes:
-            key_cls = 'None' if not self.kie_mode else box['key_cls']
+            ser_label = 'other' if not self.kie_mode else box['ser_label']
             if self.canvas.isInTheSameImage:
                 shapes.append((box['transcription'], [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
+                               DEFAULT_LOCK_COLOR, ser_label, box['difficult']))
             else:
                 shapes.append(('锁定框：待检测', [[s[0] * width, s[1] * height] for s in box['ratio']],
-                               DEFAULT_LOCK_COLOR, key_cls, box['difficult']))
+                               DEFAULT_LOCK_COLOR, ser_label, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                key_cls = 'None' if not self.kie_mode else box.get('key_cls', 'None')
-                shapes.append((box['transcription'], box['points'], None, key_cls, box.get('difficult', False)))
+                ser_label = 'other' if not self.kie_mode else box.get('ser_label', 'other')
+                shapes.append((box['transcription'], box['points'], None, ser_label, box.get('difficult', False)))
 
         if shapes != []:
             self.loadLabels(shapes)
@@ -1757,14 +1758,19 @@ class MainWindow(QMainWindow):
     def init_key_list(self, label_dict):
         if not self.kie_mode:
             return
-        # load key_cls
+        # load ser_label
         for image, info in label_dict.items():
             for box in info:
-                if "key_cls" not in box:
-                    box.update({"key_cls": "None"})
-                self.existed_key_cls_set.add(box["key_cls"])
-        if len(self.existed_key_cls_set) > 0:
-            for key_text in self.existed_key_cls_set:
+                if "label" not in box:
+                    if 'key_cls' in box:
+                        # for bc break, switch 'key_cls' to 'label'
+                        box.update({"label": box["key_cls"]})
+                        box.pop("key_cls")
+                    else:
+                        box.update({"label": "other"})
+                self.existed_ser_label_set.add(box["label"])
+        if len(self.existed_ser_label_set) > 0:
+            for key_text in self.existed_ser_label_set:
                 if not self.keyList.findItemsByLabel(key_text):
                     item = self.keyList.createItemFromLabel(key_text)
                     self.keyList.addItem(item)
@@ -1776,7 +1782,7 @@ class MainWindow(QMainWindow):
             self.keyDialog = KeyDialog(
                 text=self.key_dialog_tip,
                 parent=self,
-                labels=self.existed_key_cls_set,
+                labels=self.existed_ser_label_set,
                 sort_labels=True,
                 show_text_field=True,
                 completion="startswith",
@@ -2193,7 +2199,7 @@ class MainWindow(QMainWindow):
             rec_flag = 0
             for shape in self.canvas.shapes:
                 box = [[int(p.x()), int(p.y())] for p in shape.points]
-                kie_cls = shape.key_cls
+                ser_label = shape.ser_label
 
                 if len(box) > 4:
                     box = self.gen_quad_from_poly(np.array(box))
@@ -2210,24 +2216,24 @@ class MainWindow(QMainWindow):
                         shape.label = result[0][0]
                         result.insert(0, box)
                         if self.kie_mode:
-                            result.append(kie_cls)
+                            result.append(ser_label)
                         self.result_dic_locked.append(result)
                     else:
                         result.insert(0, box)
                         if self.kie_mode:
-                            result.append(kie_cls)
+                            result.append(ser_label)
                         self.result_dic.append(result)
                 else:
                     print('Can not recognise the box')
                     if shape.line_color == DEFAULT_LOCK_COLOR:
                         shape.label = result[0][0]
                         if self.kie_mode:
-                            self.result_dic_locked.append([box, (self.noLabelText, 0), kie_cls])
+                            self.result_dic_locked.append([box, (self.noLabelText, 0), ser_label])
                         else:
                             self.result_dic_locked.append([box, (self.noLabelText, 0)])
                     else:
                         if self.kie_mode:
-                            self.result_dic.append([box, (self.noLabelText, 0), kie_cls])
+                            self.result_dic.append([box, (self.noLabelText, 0), ser_label])
                         else:
                             self.result_dic.append([box, (self.noLabelText, 0)])
                 try:
@@ -2339,7 +2345,7 @@ class MainWindow(QMainWindow):
                     rext_bbox = [[bbox[0], bbox[1]], [bbox[2], bbox[1]], [bbox[2], bbox[3]], [bbox[0], bbox[3]]]
 
                     # save bbox to shape
-                    shape = Shape(label=rec_text, line_color=DEFAULT_LINE_COLOR, key_cls=None)
+                    shape = Shape(label=rec_text, line_color=DEFAULT_LINE_COLOR, ser_label="other")
                     for point in rext_bbox:
                         x, y = point
                         # Ensure the labels are within the bounds of the image. 
@@ -2707,7 +2713,7 @@ class MainWindow(QMainWindow):
             return
         self.key_previous_text = key_text
         for shape in self.canvas.selectedShapes:
-            shape.key_cls = key_text
+            shape.ser_label = key_text
             if not self.keyList.findItemsByLabel(key_text):
                 item = self.keyList.createItemFromLabel(key_text)
                 self.keyList.addItem(item)
@@ -2753,7 +2759,7 @@ class MainWindow(QMainWindow):
                         fill_color=s.fill_color.getRgb(),
                         ratio=[[int(p.x()) / width, int(p.y()) / height] for p in s.points],  # QPonitF
                         difficult=s.difficult,  # bool
-                        key_cls=s.key_cls,  # bool
+                        ser_label=s.ser_label,  # bool
                         )
 
         # lock
@@ -2766,7 +2772,7 @@ class MainWindow(QMainWindow):
             for box in shapes:
                 trans_dict = {"transcription": box['label'], "ratio": box['ratio'], "difficult": box['difficult']}
                 if self.kie_mode:
-                    trans_dict.update({"key_cls": box["key_cls"]})
+                    trans_dict.update({"label": box["label"]})
                 trans_dic.append(trans_dict)
             self.canvas.lockedShapes = trans_dic
             self.actions.save.setEnabled(True)
