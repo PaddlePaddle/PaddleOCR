@@ -1617,7 +1617,7 @@ class MainWindow(QMainWindow):
                                DEFAULT_LOCK_COLOR, ser_label, box['difficult']))
         if imgidx in self.PPlabel.keys():
             for box in self.PPlabel[imgidx]:
-                ser_label = 'other' if not self.kie_mode else box.get('ser_label', 'other')
+                ser_label = 'other' if not self.kie_mode else box.get('label', 'other')
                 shapes.append((box['transcription'], box['points'], None, ser_label, box.get('difficult', False)))
 
         if shapes != []:
