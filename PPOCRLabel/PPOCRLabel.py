@@ -1374,6 +1374,7 @@ class MainWindow(QMainWindow):
             shape = self.canvas.setLastLabel(text, None, None, None)  # generate_color, generate_color
             if self.kie_mode:
                 key_text, _ = self.keyDialog.popUp(self.key_previous_text)
+                key_text = str(key_text).lower()
                 if key_text is not None:
                     shape = self.canvas.setLastLabel(text, None, None, key_text)  # generate_color, generate_color
                     self.key_previous_text = key_text
