@@ -11,7 +11,9 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 | <img src="./data/gif/multi-point.gif" width="80%"/> |  <img src="./data/gif/kie.gif" width="100%"/>  |
 
 #### 近期更新
-- 2022.05：**新增表格标注**，使用方法见下方`2.2 表格标注`（by [whjdark](https://github.com/peterh0323); [Evezerest](https://github.com/Evezerest))
+- 2023.02：**完善关键信息标注**（by [PeterH0323](https://github.com/peterh0323) ）：
+  - 完善 KIE 标注字段，保存的时候会自动生成 SER 的 class list 的 txt 文件
+- 2022.05：**新增表格标注**，使用方法见下方`2.2 表格标注`（by [whjdark](https://github.com/whjdark); [Evezerest](https://github.com/Evezerest))
 - 2022.02：**新增关键信息标注**、优化标注体验（by [PeterH0323](https://github.com/peterh0323) ）
   - 新增：使用 `--kie` 进入 KIE 功能，用于打【检测+识别+关键字提取】的标签
   - 提升用户体验：新增文件与标记数目提示、优化交互、修复gpu使用等问题。

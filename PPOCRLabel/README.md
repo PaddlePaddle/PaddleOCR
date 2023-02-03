@@ -12,7 +12,9 @@ PPOCRLabelv2 is a semi-automatic graphic annotation tool suitable for OCR field,
 
 ### Recent Update
 
-- 2022.05: Add table annotations, follow `2.2 Table Annotations` for more information （by [whjdark](https://github.com/peterh0323); [Evezerest](https://github.com/Evezerest))
+- 2023.02：（by [PeterH0323](https://github.com/peterh0323) ）：
+  - Improve the KIE label field, and the txt file of SER's class list will be automatically generated when saving.
+- 2022.05: Add table annotations, follow `2.2 Table Annotations` for more information （by [whjdark](https://github.com/whjdark); [Evezerest](https://github.com/Evezerest))
 - 2022.02:（by [PeterH0323](https://github.com/peterh0323) ）
   - Add KIE Mode by using `--kie`, for [detection + identification + keyword extraction] labeling.
   - Improve user experience: prompt for the number of files and labels, optimize interaction, and fix bugs such as only use CPU when inference
