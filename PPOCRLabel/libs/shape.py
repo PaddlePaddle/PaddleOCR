@@ -46,14 +46,14 @@ class Shape(object):
     point_size = 8
     scale = 1.0
 
-    def __init__(self, label=None, line_color=None, difficult=False, key_cls="None", paintLabel=False, paintIdx=False):
+    def __init__(self, label=None, line_color=None, difficult=False, ser_label="other", paintLabel=False, paintIdx=False):
         self.label = label
         self.idx = None # bbox order, only for table annotation
         self.points = []
         self.fill = False
         self.selected = False
         self.difficult = difficult
-        self.key_cls = key_cls
+        self.ser_label = ser_label
         self.paintLabel = paintLabel
         self.paintIdx = paintIdx
         self.locked = False
@@ -251,7 +251,7 @@ class Shape(object):
         if self.fill_color != Shape.fill_color:
             shape.fill_color = self.fill_color
         shape.difficult = self.difficult
-        shape.key_cls = self.key_cls
+        shape.ser_label = self.ser_label
         return shape
 
     def __len__(self):
