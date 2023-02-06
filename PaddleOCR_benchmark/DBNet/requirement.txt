@@ -10,3 +10,4 @@ PyYAML
 scikit-image
 Shapely
 tqdm
+addict
