@@ -3,7 +3,7 @@ Global:
   epoch_num: 5
   log_smooth_window: 20
   print_batch_step: 50
-  save_model_dir: ../work_dir/ppocr/satrn_branch/rec_satrn/
+  save_model_dir: ./output/rec/rec_satrn/
   save_epoch_step: 1
   # evaluation is run every 5000 iterations
   eval_batch_step: [0, 5000]
@@ -75,7 +75,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: /data/Dataset/OCR_Rec/visual_data/rfl_dataset2/training
+    data_dir: ./train_data/data_lmdb_release/training/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -96,7 +96,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /data/Dataset/OCR_Rec/visual_data/rfl_dataset2/evaluation_academic
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
