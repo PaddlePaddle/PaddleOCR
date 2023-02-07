@@ -127,7 +127,7 @@ On the TextZoom public dataset, the effect of the algorithm is as follows:
 
 Supported formula recognition algorithms (Click the link to get the tutorial):
 
-- [x]  [CAN](./algorithm_rec_can.md.md)
+- [x]  [CAN](./algorithm_rec_can_en.md)
 
 On the CROHME handwritten formula dataset, the effect of the algorithm is as follows:
 
