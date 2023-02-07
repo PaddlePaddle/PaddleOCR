@@ -30,7 +30,7 @@ Supported text detection algorithms (Click the link to get the tutorial):
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
 - [x]  [FCENet](./algorithm_det_fcenet_en.md)
 - [x]  [DRRG](./algorithm_det_drrg_en.md)
-- [x]  [DRRG](./algorithm_det_ct_en.md)
+- [x]  [CT](./algorithm_det_ct_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
