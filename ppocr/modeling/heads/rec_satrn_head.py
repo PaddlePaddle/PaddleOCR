@@ -523,7 +523,7 @@ class SATRNDecoder(nn.Layer):
         init_target_seq[:, 0] = self.start_idx
 
         outputs = []
-        for step in range(0, self.max_seq_len):
+        for step in range(0, paddle.to_tensor(self.max_seq_len)):
             decoder_output = self._attention(
                 init_target_seq, out_enc, src_mask=src_mask)
             # bsz * seq_len * C
