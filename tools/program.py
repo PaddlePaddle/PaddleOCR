@@ -220,7 +220,7 @@ def train(config,
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN",
-        "RobustScanner", "RFL", 'DRRG'
+        "RobustScanner", "RFL", 'DRRG', 'SATRN'
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -643,7 +643,7 @@ def preprocess(is_train=False):
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
         'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG', 'CAN',
-        'Telescope'
+        'Telescope', 'SATRN'
     ]
 
     if use_xpu:

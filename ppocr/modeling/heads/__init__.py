@@ -40,6 +40,7 @@ def build_head(config):
     from .rec_visionlan_head import VLHead
     from .rec_rfl_head import RFLHead
     from .rec_can_head import CANHead
+    from .rec_satrn_head import SATRNHead
 
     # cls head
     from .cls_head import ClsHead
@@ -56,7 +57,7 @@ def build_head(config):
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead', 'CANHead'
+        'DRRGHead', 'CANHead', 'SATRNHead'
     ]
 
     if config['name'] == 'DRRGHead':
