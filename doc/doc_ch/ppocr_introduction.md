@@ -104,7 +104,7 @@ PP-OCRv3系统pipeline如下：
 
 - 在线网站体验：超轻量PP-OCR mobile模型体验地址：https://www.paddlepaddle.org.cn/hub/scene/ocr
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
-- 一行命令快速使用：[快速开始（中英文/多语言）](./doc/doc_ch/quickstart.md)
+- 一行命令快速使用：[快速开始（中英文/多语言）](./quickstart.md)
 
 <a name="52"></a>
 ### 5.2 模型训练、压缩、推理部署
