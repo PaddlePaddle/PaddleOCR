@@ -80,7 +80,7 @@ def main():
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
-        for key in config['Archigitecture']["Models"]:
+        for key in config['Architecture']["Models"]:
             extra_input = extra_input or config['Architecture']['Models'][key][
                 'algorithm'] in extra_input_models
     else:
