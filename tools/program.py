@@ -219,7 +219,7 @@ def train(config,
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
-        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SPIN", "VisionLAN",
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "SPIN", "VisionLAN",
         "RobustScanner", "RFL", 'DRRG', 'SATRN'
     ]
     extra_input = False
@@ -641,9 +641,9 @@ def preprocess(is_train=False):
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
         'CLS', 'PGNet', 'Distillation', 'NRTR', 'TableAttn', 'SAR', 'PSE',
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
-        'SVTR', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN', 'VisionLAN',
-        'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG', 'CAN',
-        'Telescope', 'SATRN'
+        'SVTR', 'SVTR_LCNet', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN',
+        'VisionLAN', 'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG',
+        'CAN', 'Telescope', 'SATRN'
     ]
 
     if use_xpu:

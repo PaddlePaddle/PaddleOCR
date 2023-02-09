@@ -62,17 +62,17 @@ def export_single_model(model,
                 shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "SVTR_LCNet":
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 48, -1], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
-        if arch_config["Head"]["name"] == 'MultiHead':
-            other_shape = [
-                paddle.static.InputSpec(
-                    shape=[None, 3, 48, -1], dtype="float32"),
-            ]
-        else:
-            other_shape = [
-                paddle.static.InputSpec(
-                    shape=[None] + input_shape, dtype="float32"),
-            ]
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None] + input_shape, dtype="float32"),
+        ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
         other_shape = [
