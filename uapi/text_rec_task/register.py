@@ -14,25 +14,25 @@
 
 import os.path as osp
 
-from ..base.register import register_arch_info, register_model_info
+from ..base.register import register_suite_info, register_model_info
 from .model import TextRecModel
 from .runner import TextRecRunner
 
 # XXX: Hard-code relative path of repo root dir
 REPO_ROOT_PATH = osp.abspath(osp.join(osp.dirname(__file__), '..', '..'))
-register_model_info({
-    'model_name': 'TextRecModel',
-    'model_cls': TextRecModel,
-    'runner_cls': TextRecRunner,
-    'repo_root_path': REPO_ROOT_PATH
+register_suite_info({
+    'suite_name': 'OCRRec',
+    'model': TextRecModel,
+    'runner': TextRecRunner,
+    'runner_root_path': REPO_ROOT_PATH
 })
 
 PPOCRv3_REC_CFG_PATH = osp.join(
     REPO_ROOT_PATH, 'configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml')
 
-register_arch_info({
-    'arch_name': 'ch_PP-OCRv3_rec',
-    'model': 'TextRecModel',
+register_model_info({
+    'model_name': 'ch_PP-OCRv3_rec',
+    'suite': 'OCRRec',
     'config_path': PPOCRv3_REC_CFG_PATH,
     'auto_compression_config_path': PPOCRv3_REC_CFG_PATH
 })

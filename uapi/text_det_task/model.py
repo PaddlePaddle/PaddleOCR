@@ -33,7 +33,7 @@ class TextDetModel(TextRecModel):
         if save_dir is not None:
             save_dir = abspath(save_dir)
 
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         model_type = config.model_type(self.name)
         # Parse CLI arguments

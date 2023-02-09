@@ -50,7 +50,7 @@ class TextRecModel(BaseModel):
             save_dir = abspath(save_dir)
 
         # Update YAML config file
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         config._update_dataset_config(dataset)
         config._update_amp_config(amp)
@@ -86,7 +86,7 @@ class TextRecModel(BaseModel):
             save_dir = abspath(save_dir)
 
         # Update YAML config file
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         if weight_path is not None:
             config.update({'Global.pretrained_model': weight_path})
@@ -108,7 +108,7 @@ class TextRecModel(BaseModel):
             save_dir = abspath(save_dir)
 
         # Update YAML config file
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         if weight_path is not None:
             config.update({'Global.pretrained_model': weight_path})
@@ -126,7 +126,7 @@ class TextRecModel(BaseModel):
         if save_dir is not None:
             save_dir = abspath(save_dir)
 
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         model_type = config.model_type(self.name)
         # Parse CLI arguments
@@ -153,7 +153,7 @@ class TextRecModel(BaseModel):
             save_dir = abspath(save_dir)
 
         # Update YAML config file
-        config_file_path = self.arch_info['config_path']
+        config_file_path = self.model_info['config_path']
         config = self.config_cls.build_from_file(config_file_path)
         config._update_dataset_config(dataset)
         config._update_device_config(device)

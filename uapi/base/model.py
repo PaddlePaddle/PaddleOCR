@@ -14,7 +14,7 @@
 
 import abc
 
-from .register import get_registered_arch_info, build_runner_from_arch_info
+from .register import get_registered_model_info, build_runner_from_model_info
 from .utils.misc import CachedProperty as cached_property
 from .utils.path import create_yaml_config_file
 
@@ -22,10 +22,10 @@ from .utils.path import create_yaml_config_file
 class BaseModel(metaclass=abc.ABCMeta):
     def __init__(self, model_name):
         self.name = model_name
-        self.arch_info = get_registered_arch_info(model_name)
-        # NOTE: We build runner instance here by extracting runner info from arch info
+        self.model_info = get_registered_model_info(model_name)
+        # NOTE: We build runner instance here by extracting runner info from model info
         # so that we don't have to overwrite the `__init__()` method of each child class.
-        self.runner = build_runner_from_arch_info(self.arch_info)
+        self.runner = build_runner_from_model_info(self.model_info)
 
     @abc.abstractmethod
     def train(self, dataset, batch_size, epochs_iters, device, resume_path,
@@ -52,7 +52,7 @@ class BaseModel(metaclass=abc.ABCMeta):
     @cached_property
     def config_file_path(self):
         cls = self.__class__
-        arch_name = self.arch_info['arch_name']
-        tag = '_'.join([cls.__name__.lower(), arch_name])
+        model_name = self.model_info['model_name']
+        tag = '_'.join([cls.__name__.lower(), model_name])
         # Allow overwriting
         return create_yaml_config_file(tag=tag, noclobber=False)

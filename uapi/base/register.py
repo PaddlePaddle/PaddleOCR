@@ -16,33 +16,26 @@ from collections import OrderedDict
 
 # TODO: We need a lightweight RDBMS to handle these tables.
 
-arch_zoo = OrderedDict()
 model_zoo = OrderedDict()
+suite_zoo = OrderedDict()
 
-ARCH_INFO_REQUIRED_KEYS = ('arch_name', 'model', 'config_path',
-                           'auto_compression_config_path')
-ARCH_INFO_PRIMARY_KEY = 'arch_name'
-assert ARCH_INFO_PRIMARY_KEY in ARCH_INFO_REQUIRED_KEYS
-MODEL_INFO_REQUIRED_KEYS = ('model_name', 'model_cls', 'runner_cls',
-                            'repo_root_path')
+MODEL_INFO_REQUIRED_KEYS = ('model_name', 'suite', 'config_path',
+                            'auto_compression_config_path')
 MODEL_INFO_PRIMARY_KEY = 'model_name'
 assert MODEL_INFO_PRIMARY_KEY in MODEL_INFO_REQUIRED_KEYS
+SUITE_INFO_REQUIRED_KEYS = ('suite_name', 'model', 'runner', 'runner_root_path')
+SUITE_INFO_PRIMARY_KEY = 'suite_name'
+assert SUITE_INFO_PRIMARY_KEY in SUITE_INFO_REQUIRED_KEYS
 
 # Relations:
-# 'model' in arch info <-> 'model_name' in model info
+# 'suite' in model info <-> 'suite_name' in suite info
 
 
 class PaddleModel(object):
     # We constrain function params here
     def __new__(cls, model_name):
-        arch_info = get_registered_arch_info(model_name)
-        return build_model_from_arch_info(arch_info)
-
-
-def _validate_arch_info(arch_info):
-    for key in ARCH_INFO_REQUIRED_KEYS:
-        if key not in arch_info:
-            raise KeyError(f"Key '{key}' is required, but not found.")
+        model_info = get_registered_model_info(model_name)
+        return build_model_from_model_info(model_info)
 
 
 def _validate_model_info(model_info):
@@ -51,11 +44,10 @@ def _validate_model_info(model_info):
             raise KeyError(f"Key '{key}' is required, but not found.")
 
 
-def register_arch_info(data):
-    global arch_zoo
-    _validate_arch_info(data)
-    prim_key = data[ARCH_INFO_PRIMARY_KEY]
-    arch_zoo[prim_key] = data
+def _validate_suite_info(suite_info):
+    for key in SUITE_INFO_REQUIRED_KEYS:
+        if key not in suite_info:
+            raise KeyError(f"Key '{key}' is required, but not found.")
 
 
 def register_model_info(data):
@@ -65,27 +57,34 @@ def register_model_info(data):
     model_zoo[prim_key] = data
 
 
-def get_registered_arch_info(prim_key):
-    return arch_zoo[prim_key]
+def register_suite_info(data):
+    global suite_zoo
+    _validate_suite_info(data)
+    prim_key = data[SUITE_INFO_PRIMARY_KEY]
+    suite_zoo[prim_key] = data
 
 
 def get_registered_model_info(prim_key):
     return model_zoo[prim_key]
 
 
-def build_runner_from_arch_info(arch_info):
-    model_name = arch_info['model']
-    # `model_name` being the primary key of model info
-    model_info = get_registered_model_info(model_name)
-    runner_cls = model_info['runner_cls']
-    repo_root_path = model_info['repo_root_path']
-    return runner_cls(repo_root_path=repo_root_path)
+def get_registered_suite_info(prim_key):
+    return suite_zoo[prim_key]
 
 
-def build_model_from_arch_info(arch_info):
-    arch_name = arch_info['arch_name']
-    model_name = arch_info['model']
-    # `model_name` being the primary key of model info
-    model_info = get_registered_model_info(model_name)
-    model_cls = model_info['model_cls']
-    return model_cls(model_name=arch_name)
+def build_runner_from_model_info(model_info):
+    suite_name = model_info['suite']
+    # `suite_name` being the primary key of suite info
+    suite_info = get_registered_suite_info(suite_name)
+    runner_cls = suite_info['runner']
+    runner_root_path = suite_info['runner_root_path']
+    return runner_cls(runner_root_path=runner_root_path)
+
+
+def build_model_from_model_info(model_info):
+    model_name = model_info['model_name']
+    suite_name = model_info['suite']
+    # `suite_name` being the primary key of suite info
+    suite_info = get_registered_suite_info(suite_name)
+    model_cls = suite_info['model']
+    return model_cls(model_name=model_name)
