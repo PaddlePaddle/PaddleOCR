@@ -30,6 +30,7 @@ Supported text detection algorithms (Click the link to get the tutorial):
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
 - [x]  [FCENet](./algorithm_det_fcenet_en.md)
 - [x]  [DRRG](./algorithm_det_drrg_en.md)
+- [x]  [CT](./algorithm_det_ct_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -49,6 +50,7 @@ On Total-Text dataset, the text detection result is as follows:
 |Model|Backbone|Precision|Recall|Hmean|Download link|
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
+|CT|ResNet18_vd|88.68%|81.70%|85.05%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)|
 
 On CTW1500 dataset, the text detection result is as follows:
 
