@@ -25,6 +25,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 通用工具 | [iocr](https://github.com/mymagicpower/AIAS/blob/main/8_suite_hub/iocr)                 | IOCR 自定义模板识别(支持表格识别)              | [Calvin](https://github.com/mymagicpower)                          |
 | 通用工具 | [Lmdb Dataset Format Conversion Tool](https://github.com/OneYearIsEnough/PaddleOCR-Recog-LmdbDataset-Conversion) | 文本识别任务中lmdb数据格式转换工具 | [OneYearIsEnough](https://github.com/OneYearIsEnough) |
 | 通用工具 | [用paddleocr打造一款“盗幕笔记”](https://github.com/kjf4096/paddleocr_dmbj) | 用PaddleOCR记笔记 | [kjf4096](https://github.com/kjf4096) |
+| 通用工具 | [Ave React OCR](https://github.com/rerender2021/ocr-2) | 一个简单的 Windows 桌面 OCR 应用 | [rerender2021](https://github.com/rerender2021) |
 | 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0) | 英文视频自动生成字幕       | [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052) |
 | 垂类工具 | [id_card_ocr](https://github.com/baseli/id_card_ocr)         | 身份证复印件识别           | [baseli](https://github.com/baseli)                          |
 | 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])                   |
@@ -39,6 +40,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 应用部署 | [PaddleOCR-PyWebIO-Demo](https://github.com/Lovely-Pig/PaddleOCR-PyWebIO-Demo) | 使用PyWebIO部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-Vue-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-Vue-Demo) | 使用Paddle.js和Vue部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
 | 应用部署 | [PaddleOCR-Paddlejs-React-Demo](https://github.com/Lovely-Pig/PaddleOCR-Paddlejs-React-Demo) | 使用Paddle.js和React部署PaddleOCR | [Lovely-Pig](https://github.com/Lovely-Pig) |
+| 应用部署 | [PaddleOcrAPI](https://github.com/YongJie-Xie/PaddleocrAPI) | Windows 上直接部署的 OCR API 服务器 | [YongJie-Xie](https://github.com/YongJie-Xie) |
 | 学术前沿模型训练与推理 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3397137) | StarNet-MobileNetV3算法–中文训练 | [xiaoyangyang2](https://github.com/xiaoyangyang2)                |
 | 学术前沿模型训练与推理 | [ABINet-paddle](https://github.com/Huntersdeng/abinet-paddle) | ABINet算法前向运算的paddle实现以及模型各部分的实现细节分析 | [Huntersdeng](https://github.com/Huntersdeng)                |
 
