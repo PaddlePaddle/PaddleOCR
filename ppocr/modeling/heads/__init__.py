@@ -24,6 +24,7 @@ def build_head(config):
     from .det_fce_head import FCEHead
     from .e2e_pg_head import PGHead
     from .det_ct_head import CT_Head
+    from .det_tpm_head import TPMRRGN
 
     # rec head
     from .rec_ctc_head import CTCHead
@@ -57,7 +58,7 @@ def build_head(config):
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead', 'CANHead', 'SATRNHead'
+        'DRRGHead', 'CANHead', 'SATRNHead', 'TPMRRGN'
     ]
 
     if config['name'] == 'DRRGHead':

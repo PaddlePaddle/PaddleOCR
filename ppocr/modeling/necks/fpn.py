@@ -136,3 +136,112 @@ class FPN(nn.Layer):
 
         fuse = paddle.concat([p2, p3, p4, p5], axis=1)
         return fuse
+
+
+class UpBlok(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super().__init__()
+        self.conv1x1 = nn.Conv2d(
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0)
+        self.conv3x3 = nn.Conv2d(
+            in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+        self.deconv = nn.ConvTranspose2d(
+            out_channels, out_channels, kernel_size=4, stride=2, padding=1)
+
+    def forward(self, upsampled, shortcut):
+        x = torch.cat([upsampled, shortcut], dim=1)
+        x = self.conv1x1(x)
+        x = F.relu(x)
+        x = self.conv3x3(x)
+        x = F.relu(x)
+        x = self.deconv(x)
+        return x
+
+
+class RRGN(nn.Module):
+    def __init__(self, in_channels):
+        super().__init__()
+        self.FNUM = len(cfg.fuc_k)
+        self.SepareConv0 = nn.Sequential(
+            nn.Conv2d(
+                in_channels,
+                in_channels,
+                kernel_size=(5, 1),
+                stride=1,
+                padding=1),
+            nn.Conv2d(
+                in_channels,
+                in_channels,
+                kernel_size=(1, 5),
+                stride=1,
+                padding=1),
+            nn.Conv2d(
+                in_channels, 1, kernel_size=1, stride=1, padding=0), )
+        channels2 = in_channels + 1
+        self.SepareConv1 = nn.Sequential(
+            nn.Conv2d(
+                channels2, channels2, kernel_size=(5, 1), stride=1, padding=1),
+            nn.Conv2d(
+                channels2, channels2, kernel_size=(1, 5), stride=1, padding=1),
+            nn.Conv2d(
+                channels2, 1, kernel_size=1, stride=1, padding=0), )
+
+    def forward(self, x):
+        f_map = list()
+        for i in range(self.FNUM):
+            if i == 0:
+                f = self.SepareConv0(x)
+                f_map.append(f)
+                continue
+            b1 = torch.cat([x, f_map[i - 1]], dim=1)
+            f = self.SepareConv1(b1)
+            f_map.append(f)
+        f_map = torch.cat(f_map, dim=1)
+        return f_map
+
+
+class UpSample(nn.Layer):
+    def __init__(self, in_channels, out_channels):
+        super(UpSample, self).__init__()
+        self.conv_block = nn.Sequential(
+            nn.Conv2D(
+                in_channels, in_channels, kernel_size=1, stride=1, padding=0),
+            nn.ReLU(),
+            nn.Conv2D(
+                in_channels, out_channels, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Conv2DTranspose(
+                out_channels, out_channels, kernel_size=4, stride=2, padding=1))
+
+    def forward(self, x):
+        return self.conv_block(x)
+
+
+class TPMFPN(nn.Layer):
+    def __init__(self, in_channels=2048):
+        super(TPMFPN, self).__init__()
+
+        self.up_conv5 = nn.Conv2DTranspose(
+            in_channels, 256, kernel_size=4, stride=2, padding=1)
+        self.up_conv4 = UpBlok(1024 + 256, 128)
+        self.up_conv3 = UpBlok(512 + 128, 64)
+        self.up_conv2 = UpBlok(256 + 64, 32)
+        self.up_conv1 = UpBlok(64 + 32, 16)
+
+    def forward(self, x):
+        C1, C2, C3, C4, C5 = x
+        up5 = self.up_conv5(C5)
+        up5 = F.relu(up5)
+
+        up4 = self.up_conv4(C4, up5)
+        up4 = F.relu(up4)
+
+        up3 = self.up_conv3(C3, up4)
+        up3 = F.relu(up3)
+
+        up2 = self.up_conv2(C2, up3)
+        up2 = F.relu(up2)
+
+        up1 = self.up_conv1(C1, up2)
+
+        return up1
