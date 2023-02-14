@@ -1,0 +1,73 @@
+name: DBNet
+dataset:
+  train:
+    dataset:
+      type: DetDataset # 数据集类型
+      args:
+        data_path: # 一个存放 img_path \t gt_path的文件
+          - ''
+        pre_processes: # 数据的预处理过程，包含augment和标签制作
+          - type: IaaAugment # 使用imgaug进行变换
+            args:
+              - {'type':Fliplr, 'args':{'p':0.5}}
+              - {'type': Affine, 'args':{'rotate':[-10,10]}}
+              - {'type':Resize,'args':{'size':[0.5,3]}}
+          - type: EastRandomCropData
+            args:
+              size: [640,640]
+              max_tries: 50
+              keep_ratio: true
+          - type: MakeBorderMap
+            args:
+              shrink_ratio: 0.4
+              thresh_min: 0.3
+              thresh_max: 0.7
+          - type: MakeShrinkMap
+            args:
+              shrink_ratio: 0.4
+              min_text_size: 8
+        transforms: # 对图片进行的变换方式
+          - type: ToTensor
+            args: {}
+          - type: Normalize
+            args:
+              mean: [0.485, 0.456, 0.406]
+              std: [0.229, 0.224, 0.225]
+        img_mode: RGB
+        load_char_annotation: false
+        expand_one_char: false
+        filter_keys: [img_path,img_name,text_polys,texts,ignore_tags,shape] # 返回数据之前，从数据字典里删除的key
+        ignore_tags: ['*', '###']
+    loader:
+      batch_size: 1
+      shuffle: true
+      num_workers: 0
+      collate_fn: ''
+  validate:
+    dataset:
+      type: DetDataset
+      args:
+        data_path:
+          - ''
+        pre_processes:
+          - type: ResizeShortSize
+            args:
+              short_size: 736
+              resize_text_polys: false
+        transforms:
+          - type: ToTensor
+            args: {}
+          - type: Normalize
+            args:
+              mean: [0.485, 0.456, 0.406]
+              std: [0.229, 0.224, 0.225]
+        img_mode: RGB
+        load_char_annotation: false # 是否加载字符级标注
+        expand_one_char: false # 是否对只有一个字符的框进行宽度扩充，扩充后w = w+h
+        filter_keys: []
+        ignore_tags: ['*', '###']
+    loader:
+      batch_size: 1
+      shuffle: true
+      num_workers: 0
+      collate_fn: ICDARCollectFN

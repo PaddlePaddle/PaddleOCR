@@ -45,7 +45,7 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance
@@ -72,7 +72,7 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance
