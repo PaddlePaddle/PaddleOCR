@@ -2,16 +2,17 @@
 
 **说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../../ppstructure/docs/quickstart.md)。
 
-- [1. 安装](#1)
-  - [1.1 安装PaddlePaddle](#11)
-  - [1.2 安装PaddleOCR whl包](#12)
-- [2. 便捷使用](#2)
-  - [2.1 命令行使用](#21)
-      - [2.1.1 中英文模型](#211)
-      - [2.1.2 多语言模型](#212)
-  - [2.2 Python脚本使用](#22)
-      - [2.2.1 中英文与多语言使用](#221)
-- [3.小结](#3)
+- [PaddleOCR 快速开始](#paddleocr-快速开始)
+  - [1. 安装](#1-安装)
+    - [1.1 安装PaddlePaddle](#11-安装paddlepaddle)
+    - [1.2 安装PaddleOCR whl包](#12-安装paddleocr-whl包)
+  - [2. 便捷使用](#2-便捷使用)
+    - [2.1 命令行使用](#21-命令行使用)
+      - [2.1.1 中英文模型](#211-中英文模型)
+      - [2.1.2 多语言模型](#212-多语言模型)
+    - [2.2 Python脚本使用](#22-python脚本使用)
+      - [2.2.1 中英文与多语言使用](#221-中英文与多语言使用)
+  - [3. 小结](#3-小结)
 
 
 <a name="1"></a>
@@ -172,9 +173,9 @@ for line in result:
 from PIL import Image
 
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='./fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')

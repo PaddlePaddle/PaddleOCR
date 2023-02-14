@@ -32,9 +32,9 @@ for line in result:
 # draw result
 from PIL import Image
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
@@ -66,9 +66,9 @@ for line in result:
 # draw result
 from PIL import Image
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
@@ -259,9 +259,9 @@ for line in result:
 # draw result
 from PIL import Image
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
@@ -289,9 +289,9 @@ for line in result:
 # show result
 from PIL import Image
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
@@ -320,9 +320,9 @@ from PIL import Image
 
 download_with_progressbar(img_path, 'tmp.jpg')
 image = Image.open('tmp.jpg').convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [line[0] for line in result[0]]
+txts = [line[1][0] for line in result[0]]
+scores = [line[1][1] for line in result[0]]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
