@@ -20,29 +20,91 @@ from .utils.misc import run_cmd as _run_cmd, abspath
 
 
 class BaseRunner(metaclass=abc.ABCMeta):
-    def __init__(self, runner_root_path):
-        self.runner_root_path = abspath(runner_root_path)
+    """
+    Abstract base class of Runner.
 
+    Runner is responsible for executing training/inference/compression commands.
+    """
+
+    def __init__(self, runner_root_path):
+        # The path to the directory where the scripts reside, 
+        # e.g. the root directory of the repository.
+        self.runner_root_path = abspath(runner_root_path)
+        # Path to python interpreter
         self.python = sys.executable
 
+    def prepare(self):
+        """
+        Make preparations for the execution of commands.
+
+        For example, download prerequisites and install dependencies.
+        """
+        # By default we do nothing
+        pass
+
     @abc.abstractmethod
-    def train(self, config_file_path, cli_args, device):
+    def train(self, config_path, cli_args, device):
+        """
+        Execute model training command.
+
+        Args:
+            config_path (str): Path of the configuration file.
+            cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments.
+            device (str): A string that describes the device(s) to use, e.g., 'cpu', 'xpu:0', 'gpu:1,2'.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def predict(self, config_file_path, cli_args, device):
+    def predict(self, config_path, cli_args, device):
+        """
+        Execute prediction command.
+
+        Args:
+            config_path (str): Path of the configuration file.
+            cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments.
+            device (str): A string that describes the device(s) to use, e.g., 'cpu', 'xpu:0', 'gpu:1,2'.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def export(self, config_file_path, cli_args, device):
+    def export(self, config_path, cli_args, device):
+        """
+        Execute model export command.
+
+        Args:
+            config_path (str): Path of the configuration file.
+            cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments.
+            device (str): A string that describes the device(s) to use, e.g., 'cpu', 'xpu:0', 'gpu:1,2'.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def infer(self, config_file_path, cli_args, device):
+    def infer(self, config_path, cli_args, device):
+        """
+        Execute model inference command.
+
+        Args:
+            config_path (str): Path of the configuration file.
+            cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments.
+            device (str): A string that describes the device(s) to use, e.g., 'cpu', 'xpu:0', 'gpu:1,2'.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def compression(self, config_file_path, cli_args, device):
+    def compression(self, config_path, train_cli_args, export_cli_args, device,
+                    train_save_dir):
+        """
+        Execute model compression (quantization aware training and model export) commands.
+
+        Args:
+            config_path (str): Path of the configuration file.
+            train_cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments used for model 
+                training.
+            train_cli_args (list[utils.arg.CLIArgument]): List of command-line Arguments used for model 
+                export.
+            device (str): A string that describes the device(s) to use, e.g., 'cpu', 'xpu:0', 'gpu:1,2'.
+            train_save_dir (str): Directory to store model snapshots and the exported model.
+        """
         raise NotImplementedError
 
     def distributed(self, device):

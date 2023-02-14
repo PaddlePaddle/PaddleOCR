@@ -17,25 +17,23 @@ import os
 from ..base.utils.path import get_cache_dir
 from ..base.utils.arg import CLIArgument
 from ..base.utils.misc import abspath
-
 from ..text_rec_task import TextRecModel
-from .config import TextDetConfig
 
 
 class TextDetModel(TextRecModel):
-    def update_config_cls(self):
-        self.config_cls = TextDetConfig
-
-    def infer(self, model_dir, device=None, input_path=None, save_dir=None):
+    def infer(self, model_dir, input_path, device='gpu', save_dir=None):
         model_dir = abspath(model_dir)
-        if input_path is not None:
-            input_path = abspath(input_path)
+        input_path = abspath(input_path)
         if save_dir is not None:
             save_dir = abspath(save_dir)
+        else:
+            # `save_dir` is None
+            save_dir = abspath(os.path.join('output', 'infer'))
 
-        config_file_path = self.model_info['config_path']
-        config = self.config_cls.build_from_file(config_file_path)
+        config = self.config.copy()
         model_type = config.model_type(self.name)
+        config_path = self._config_path
+        config.dump(config_path)
         # Parse CLI arguments
         cli_args = []
         cli_args.append(CLIArgument('--det_model_dir', model_dir))
@@ -45,4 +43,4 @@ class TextDetModel(TextRecModel):
         if save_dir is not None:
             cli_args.append(CLIArgument('--draw_img_save_dir', save_dir))
 
-        self.runner.infer(cli_args, device)
+        self.runner.infer(config_path, cli_args, device)

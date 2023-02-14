@@ -23,6 +23,6 @@ from ..text_rec_task import TextRecConfig
 
 
 class TextDetConfig(TextRecConfig):
-    def _update_batch_size_config(self, batch_size):
+    def update_batch_size(self, batch_size):
         _cfg = {'Train.loader.batch_size_per_card': batch_size}
         self.update(_cfg)

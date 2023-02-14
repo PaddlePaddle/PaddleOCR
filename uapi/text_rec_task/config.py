@@ -37,42 +37,59 @@ class TextRecConfig(BaseConfig):
         with open(config_file_path, 'w') as f:
             yaml.dump(self.dict, f, default_flow_style=False, sort_keys=False)
 
-    def _update_dataset_config(self, dataset_root_path):
-        _cfg = {
-            'Train.dataset.name': 'SimpleDataSet',
-            'Train.dataset.data_dir': dataset_root_path,
-            'Train.dataset.label_file_list':
-            [os.path.join(dataset_root_path, 'train.txt')],
-            'Eval.dataset.name': 'SimpleDataSet',
-            'Eval.dataset.data_dir': dataset_root_path,
-            'Eval.dataset.label_file_list':
-            [os.path.join(dataset_root_path, 'val.txt')],
-        }
-        self.update(_cfg)
+    def update_dataset(self, dataset_path, dataset_type=None):
+        if dataset_type is None:
+            dataset_type = 'SimpleDataSet'
+        if dataset_type == 'SimpleDataSet':
+            _cfg = {
+                'Train.dataset.name': 'SimpleDataSet',
+                'Train.dataset.data_dir': dataset_path,
+                'Train.dataset.label_file_list':
+                [os.path.join(dataset_path, 'train.txt')],
+                'Eval.dataset.name': 'SimpleDataSet',
+                'Eval.dataset.data_dir': dataset_path,
+                'Eval.dataset.label_file_list':
+                [os.path.join(dataset_path, 'val.txt')],
+            }
+            self.update(_cfg)
+        else:
+            raise ValueError(f"{dataset_type} is not supported.")
 
-    def _update_batch_size_config(self, batch_size):
+    def update_batch_size(self, batch_size, mode='train'):
         _cfg = {
             'Train.loader.batch_size_per_card': batch_size,
             'Eval.loader.batch_size_per_card': batch_size
         }
         self.update(_cfg)
 
-    def _update_amp_config(self, amp):
+    def update_optimizer(self, optimizer_type):
+        # Not yet implemented
+        raise NotImplementedError
+
+    def update_backbone(self, backbone_type):
+        # Not yet implemented
+        raise NotImplementedError
+
+    def update_lr_scheduler(self, lr_scheduler_type):
+        _cfg = {
+            'Optimizer.lr.learning_rate': lr_scheduler_type,
+            # 'Optimizer.lr.warmup_epoch': 0,
+            # 'Optimizer.lr.name': 'Const',
+        }
+        self.update(_cfg)
+
+    def update_weight_decay(self, weight_decay):
+        # Not yet implemented
+        raise NotImplementedError
+
+    def update_amp(self, amp):
         _cfg = {
             'Global.use_amp': amp is not None,
             'Global.amp_level': amp,
         }
         self.update(_cfg)
 
-    def _update_lr_config(self, lr):
-        _cfg = {
-            'Optimizer.lr.learning_rate': lr,
-            # 'Optimizer.lr.warmup_epoch': 0,
-            # 'Optimizer.lr.name': 'Const',
-        }
-        self.update(_cfg)
-
-    def _update_device_config(self, device):
+    def update_device(self, device):
         device = device.split(':')[0]
         default_cfg = {
             'Global.use_gpu': False,

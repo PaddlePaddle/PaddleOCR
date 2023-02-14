@@ -14,6 +14,6 @@
 
 from .base import PaddleModel
 # Register models and architectures
-# ocr task
+# task
 from .text_det_task import register
 from .text_rec_task import register

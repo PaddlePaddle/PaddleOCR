@@ -18,6 +18,7 @@ import subprocess
 
 
 def run_cmd(cmd, silent=True, wd=None, timeout=None, echo=False):
+    """Wrap around `subprocess.run()` to execute a shell command."""
     # XXX: This function is not safe!!!
     cfg = dict(check=True, shell=True, timeout=timeout)
     if silent:

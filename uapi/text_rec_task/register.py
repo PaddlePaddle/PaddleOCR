@@ -17,13 +17,15 @@ import os.path as osp
 from ..base.register import register_suite_info, register_model_info
 from .model import TextRecModel
 from .runner import TextRecRunner
+from .config import TextRecConfig
 
 # XXX: Hard-code relative path of repo root dir
 REPO_ROOT_PATH = osp.abspath(osp.join(osp.dirname(__file__), '..', '..'))
 register_suite_info({
-    'suite_name': 'OCRRec',
+    'suite_name': 'TextRec',
     'model': TextRecModel,
     'runner': TextRecRunner,
+    'config': TextRecConfig,
     'runner_root_path': REPO_ROOT_PATH
 })
 
@@ -32,7 +34,8 @@ PPOCRv3_REC_CFG_PATH = osp.join(
 
 register_model_info({
     'model_name': 'ch_PP-OCRv3_rec',
-    'suite': 'OCRRec',
+    'suite': 'TextRec',
     'config_path': PPOCRv3_REC_CFG_PATH,
-    'auto_compression_config_path': PPOCRv3_REC_CFG_PATH
+    'auto_compression_config_path': PPOCRv3_REC_CFG_PATH,
+    'supported_apis': ['train', 'predict', 'export', 'infer', 'compression']
 })

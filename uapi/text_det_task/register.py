@@ -17,13 +17,15 @@ import os.path as osp
 from ..base.register import register_suite_info, register_model_info
 from .model import TextDetModel
 from .runner import TextDetRunner
+from .config import TextDetConfig
 
 # XXX: Hard-code relative path of repo root dir
 REPO_ROOT_PATH = osp.abspath(osp.join(osp.dirname(__file__), '..', '..'))
 register_suite_info({
-    'suite_name': 'OCRDet',
+    'suite_name': 'TextDet',
     'model': TextDetModel,
     'runner': TextDetRunner,
+    'config': TextDetConfig,
     'runner_root_path': REPO_ROOT_PATH
 })
 
@@ -32,7 +34,8 @@ PPOCRv3_DET_CFG_PATH = osp.join(
 
 register_model_info({
     'model_name': 'ch_PP-OCRv3_det',
-    'suite': 'OCRDet',
+    'suite': 'TextDet',
     'config_path': PPOCRv3_DET_CFG_PATH,
-    'auto_compression_config_path': PPOCRv3_DET_CFG_PATH
+    'auto_compression_config_path': PPOCRv3_DET_CFG_PATH,
+    'supported_apis': ['train', 'predict', 'export', 'infer', 'compression']
 })

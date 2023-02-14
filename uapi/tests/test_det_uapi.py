@@ -56,38 +56,3 @@ if __name__ == '__main__':
         device='gpu',
         weight_path='tests/ocr_det_res/latest.pdparams',
         save_dir='tests/ocr_det_res/compress')
-
-    model = PaddleModel(model_name='ch_PP-OCRv3_rec')
-
-    model.train(
-        dataset='tests/data/ic15_data',
-        batch_size=32,
-        epochs_iters=1,
-        device='gpu:0',
-        dy2st=False,
-        amp='O2',
-        save_dir='tests/ocr_rec_res')
-
-    model.predict(
-        weight_path='tests/ocr_rec_res/latest.pdparams',
-        device='gpu',
-        input_path='tests/data/ic15_data/train/word_1.png',
-        save_dir='tests/ocr_rec_res/pred_res')
-
-    model.export(
-        weight_path='tests/ocr_rec_res/latest.pdparams',
-        save_dir='tests/ocr_rec_res/infer')
-
-    model.infer(
-        model_dir='tests/ocr_rec_res/infer/Student',
-        device='gpu',
-        input_path='tests/data/ic15_data/train/word_1.png')
-
-    model.compression(
-        dataset='tests/data/ic15_data',
-        batch_size=16,
-        learning_rate=0.1,
-        epochs_iters=1,
-        device='gpu',
-        weight_path='tests/ocr_rec_res/latest.pdparams',
-        save_dir='tests/ocr_rec_res/compress')

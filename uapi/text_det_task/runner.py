@@ -16,12 +16,12 @@ from ..text_rec_task import TextRecRunner
 
 
 class TextDetRunner(TextRecRunner):
-    def predict(self, config_file_path, device):
+    def predict(self, config_path, cli_args, device):
         self.distributed(device)
-        cmd = f"{self.python} tools/infer_det.py -c {config_file_path}"
+        cmd = f"{self.python} tools/infer_det.py -c {config_path}"
         self.run_cmd(cmd, switch_wdir=True, echo=True, silent=False)
 
-    def infer(self, cli_args, device):
+    def infer(self, config_path, cli_args, device):
         _, device_type = self.distributed(device)
         args_str = ' '.join(str(arg) for arg in cli_args)
         cmd = f"{self.python} tools/infer/predict_det.py --use_gpu {device_type=='gpu'} {args_str}"
