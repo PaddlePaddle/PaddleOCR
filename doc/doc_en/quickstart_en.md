@@ -169,6 +169,7 @@ A list of all languages and their corresponding abbreviations can be found in [M
 
 ### 2.2 Use by Code
 <a name="221-chinese---english-model-and-multilingual-model"></a>
+Read ./installation_en.md fisrtt!!!!!!!!!!!!!!!!!!
 
 #### 2.2.1 Chinese & English Model and Multilingual Model
 
