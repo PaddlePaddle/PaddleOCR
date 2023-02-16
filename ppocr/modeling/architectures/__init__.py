@@ -40,7 +40,7 @@ def apply_to_static(model, config, logger):
         return model
     assert "image_shape" in config[
         "Global"], "image_shape must be assigned for static training mode..."
-    supported_list = ["DB", "SVTR"]
+    supported_list = ["DB", "SVTR_LCNet"]
     if config["Architecture"]["algorithm"] in ["Distillation"]:
         algo = list(config["Architecture"]["Models"].values())[0]["algorithm"]
     else:
@@ -52,7 +52,7 @@ def apply_to_static(model, config, logger):
             [None] + config["Global"]["image_shape"], dtype='float32')
     ]
 
-    if algo == "SVTR":
+    if algo == "SVTR_LCNet":
         specs.append([
             InputSpec(
                 [None, config["Global"]["max_text_length"]],
