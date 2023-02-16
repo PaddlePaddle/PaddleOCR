@@ -234,15 +234,18 @@ python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_s
    **强烈建议修改后先直接运行`module.py`调试，能正确运行预测后再启动服务测试。**
 
    **注意：** PPOCR-v3识别模型使用的图片输入shape为`3,48,320`,因此需要修改`params.py`中的`cfg.rec_image_shape = "3, 48, 320"`，如果不使用PPOCR-v3识别模型，则无需修改该参数。
-3. 如果目录下存在`__pycache__`目录请将其删除：
+3. （可选）如果想要重命名模块需要更改以下行：
+   https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_rec/module.py#L35
+   https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_rec/module.py#L39
+4. （可选）可能需要删除`__pycache__`目录以强制刷新cpy缓存：
    ```bash
-   find -name '__pycache__' -exec rm -r {} \;
+   find deploy/hubserving/ocr_system -name '__pycache__' -exec rm -r {} \;
    ```
-4. 安装修改后的新服务包：
+5. 安装修改后的新服务包：
    ```bash
-   hub install deploy/hubserving/ocr_system/
+   hub install deploy/hubserving/ocr_system
    ```
-5. 重新启动服务：
+6. 重新启动服务：
    ```bash
    hub serving start -m ocr_system
    ```
