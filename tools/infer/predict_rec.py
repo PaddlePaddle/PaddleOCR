@@ -106,6 +106,13 @@ class TextRecognizer(object):
                 "character_dict_path": None,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "SATRN":
+            postprocess_params = {
+                'name': 'SATRNLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char,
+                "rm_symbol": True
+            }
         elif self.rec_algorithm == "PREN":
             postprocess_params = {'name': 'PRENLabelDecode'}
         elif self.rec_algorithm == "CAN":
@@ -429,7 +436,7 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list.append(norm_img[3])
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
-                elif self.rec_algorithm == "SVTR":
+                elif self.rec_algorithm in ["SVTR", "SATRN"]:
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]

@@ -69,6 +69,8 @@ class BaseDataAugmentation(object):
         self.jitter_prob = jitter_prob
         self.blur_prob = blur_prob
         self.hsv_aug_prob = hsv_aug_prob
+        # for GaussianBlur
+        self.fil = cv2.getGaussianKernel(ksize=5, sigma=1, ktype=cv2.CV_32F)
 
     def __call__(self, data):
         img = data['image']
@@ -78,7 +80,8 @@ class BaseDataAugmentation(object):
             img = get_crop(img)
 
         if random.random() <= self.blur_prob:
-            img = blur(img)
+            # GaussianBlur
+            img = cv2.sepFilter2D(img, -1, self.fil, self.fil)
 
         if random.random() <= self.hsv_aug_prob:
             img = hsv_aug(img)
