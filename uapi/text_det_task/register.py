@@ -20,7 +20,9 @@ from .runner import TextDetRunner
 from .config import TextDetConfig
 
 # XXX: Hard-code relative path of repo root dir
-REPO_ROOT_PATH = osp.abspath(osp.join(osp.dirname(__file__), '..', '..'))
+_file_path = osp.realpath(__file__)
+REPO_ROOT_PATH = osp.abspath(osp.join(osp.dirname(_file_path), '..', '..'))
+
 register_suite_info({
     'suite_name': 'TextDet',
     'model': TextDetModel,

@@ -24,35 +24,35 @@ if __name__ == '__main__':
     model = PaddleModel(model_name='ch_PP-OCRv3_det')
 
     model.train(
-        dataset='tests/data/icdar2015_lite/text_localization',
+        dataset='uapi/tests/data/icdar2015_lite/text_localization',
         batch_size=1,
         epochs_iters=1,
         device='gpu:0',
         dy2st=False,
         amp='O1',
-        save_dir='tests/ocr_det_res')
+        save_dir='uapi/tests/ocr_det_res')
 
     model.predict(
-        weight_path='tests/ocr_det_res/latest.pdparams',
+        weight_path='uapi/tests/ocr_det_res/latest.pdparams',
         device='gpu',
-        input_path='tests/data/icdar2015_lite/text_localization/train/img_61.jpg',
-        save_dir='tests/ocr_det_res/pred_res')
+        input_path='uapi/tests/data/icdar2015_lite/text_localization/train/img_61.jpg',
+        save_dir='uapi/tests/ocr_det_res/pred_res')
 
     model.export(
-        weight_path='tests/ocr_det_res/latest.pdparams',
-        save_dir='tests/ocr_det_res/infer')
+        weight_path='uapi/tests/ocr_det_res/latest.pdparams',
+        save_dir='uapi/tests/ocr_det_res/infer')
 
     model.infer(
-        model_dir='tests/ocr_det_res/infer/Student2',
+        model_dir='uapi/tests/ocr_det_res/infer/Student2',
         device='gpu',
-        input_path='tests/data/icdar2015_lite/text_localization/train/img_61.jpg',
-        save_dir='tests/ocr_det_res/infer_res')
+        input_path='uapi/tests/data/icdar2015_lite/text_localization/train/img_61.jpg',
+        save_dir='uapi/tests/ocr_det_res/infer_res')
 
     model.compression(
-        dataset='tests/data/icdar2015_lite/text_localization',
+        dataset='uapi/tests/data/icdar2015_lite/text_localization',
         batch_size=1,
         learning_rate=0.1,
         epochs_iters=1,
         device='gpu',
-        weight_path='tests/ocr_det_res/latest.pdparams',
-        save_dir='tests/ocr_det_res/compress')
+        weight_path='uapi/tests/ocr_det_res/latest.pdparams',
+        save_dir='uapi/tests/ocr_det_res/compress')
