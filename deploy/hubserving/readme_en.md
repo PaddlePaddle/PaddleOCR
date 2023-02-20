@@ -226,9 +226,9 @@ hub serving stop --port/-p XXXX
 2. Modify the code in the corresponding files under `deploy/hubserving/ocr_system`, such as `module.py` and `params.py`, to your actual needs.
 
    For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`.
-   
+
    Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation.
-   
+
    **It is suggested to run `module.py` directly for debugging after modification before starting the service test.**
 
    **Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
