@@ -54,7 +54,7 @@ deploy/hubserving/ocr_system/
 The following steps take the 2-stage series service as an example. If only the detection service or recognition service is needed, replace the corresponding file path.
 
 ### 2.1 Prepare the environment
-```shell
+```bash
 # Install paddlehub
 # python>3.6.2 is required bt paddlehub
 pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
@@ -78,7 +78,7 @@ KIE(SER+RE): ./inference/re_vi_layoutxlm_xfund_infer/
 PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.
 
 * On Linux platform, the examples are as follows.
-```shell
+```bash
 # Install the text detection service module:
 hub install deploy/hubserving/ocr_det/
 
@@ -105,7 +105,7 @@ hub install deploy/hubserving/kie_ser_re/
 ```
 
 * On Windows platform, the examples are as follows.
-```shell
+```bash
 # Install the detection service module:
 hub install deploy\hubserving\ocr_det\
 
@@ -138,7 +138,7 @@ hub install deploy\hubserving\kie_ser_re\
 #### 2.4.1 Start with command line parameters (CPU only)
 
 **start command：**
-```shell
+```bash
 $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
                     --port XXXX \
                     --use_multiprocess \
@@ -154,7 +154,7 @@ $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
 |--workers|The number of concurrent tasks specified in concurrent mode, the default is `2*cpu_count-1`, where `cpu_count` is the number of CPU cores|
 
 For example, start the 2-stage series service:
-```shell
+```bash
 hub serving start -m ocr_system
 ```
 
@@ -162,7 +162,7 @@ This completes the deployment of a service API, using the default port number 88
 
 #### 2.4.2 Start with configuration file（CPU、GPU）
 **start command：**
-```shell
+```bash
 hub serving start --config/-c config.json
 ```
 Wherein, the format of `config.json` is as follows:
@@ -192,14 +192,14 @@ Wherein, the format of `config.json` is as follows:
 - **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**
 
 For example, use GPU card No. 3 to start the 2-stage series service:
-```shell
+```bash
 export CUDA_VISIBLE_DEVICES=3
 hub serving start -c deploy/hubserving/ocr_system/config.json
 ```
 
 ## 3. Send prediction requests
 After the service starts, you can use the following command to send a prediction request to obtain the prediction result:
-```shell
+```bash
 python tools/test_hubserving.py --server_url=server_url --image_dir=image_path
 ```
 
@@ -222,7 +222,7 @@ For example, if using the configuration file to start the text angle classificat
 - **output**：The floder to save Visualization result, default value is `./hubserving_result`
 
 **Eg.**
-```shell
+```bash
 python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir=./doc/imgs/ --visualize=false`
 ```
 
@@ -259,21 +259,21 @@ The fields returned by different modules are different. For example, the results
 If you need to modify the service logic, the following steps are generally required (take the modification of `ocr_system` for example):
 
 - 1. Stop service
-```shell
+```bash
 hub serving stop --port/-p XXXX
 ```
-- 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.
+- 2. Modify the code in the@ deploy/hubserving/readme_en.md corresponding files, like `module.py` and `params.py`, according to the actual needs.
 For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.
 **Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
 - 3. Uninstall old service module
-```shell
+```bash
 hub uninstall ocr_system
 ```
 - 4. Install modified service module
-```shell
+```bash
 hub install deploy/hubserving/ocr_system/
 ```
 - 5. Restart service
-```shell
+```bash
 hub serving start -m ocr_system
 ```
