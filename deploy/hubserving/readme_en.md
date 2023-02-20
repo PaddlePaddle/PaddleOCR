@@ -3,7 +3,7 @@ English | [简体中文](readme.md)
 - [Service deployment based on PaddleHub Serving](#service-deployment-based-on-paddlehub-serving)
   - [1. Update](#1-update)
   - [2. Quick start service](#2-quick-start-service)
-    - [2.1 Prepare the environment](#21-prepare-the-environment)
+    - [2.1 Install PaddleHub](#21-install-paddlehub)
     - [2.2 Download inference model](#22-download-inference-model)
     - [2.3 Install Service Module](#23-install-service-module)
     - [2.4 Start service](#24-start-service)
@@ -15,8 +15,8 @@ English | [简体中文](readme.md)
 
 
 PaddleOCR provides 2 service deployment methods:
-- Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
-- Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/README.md) for usage.
+- Based on **PaddleHub Serving**: Code path is `./deploy/hubserving`. Please follow this tutorial.
+- Based on **PaddleServing**: Code path is `./deploy/pdserving`. Please refer to the [tutorial](../../deploy/pdserving/README.md) for usage.
 
 # Service deployment based on PaddleHub Serving
 
@@ -53,11 +53,9 @@ deploy/hubserving/ocr_system/
 ## 2. Quick start service
 The following steps take the 2-stage series service as an example. If only the detection service or recognition service is needed, replace the corresponding file path.
 
-### 2.1 Prepare the environment
+### 2.1 Install PaddleHub
 ```bash
-# Install paddlehub
-# python>3.6.2 is required bt paddlehub
-pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip3 install paddlehub==2.1.0 --upgrade
 ```
 
 ### 2.2 Download inference model
@@ -72,7 +70,8 @@ KIE(SER): ./inference/ser_vi_layoutxlm_xfund_infer/
 KIE(SER+RE): ./inference/re_vi_layoutxlm_xfund_infer/
 ```
 
-**The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
+**The model path can be found and modified in `params.py`.**
+More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
 
 ### 2.3 Install Service Module
 PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.
@@ -139,19 +138,19 @@ hub install deploy\hubserving\kie_ser_re\
 
 **start command：**
 ```bash
-$ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
-                    --port XXXX \
-                    --use_multiprocess \
-                    --workers \
+hub serving start --modules Module1==Version1, Module2==Version2, ... \
+                  --port 8866 \
+                  --use_multiprocess \
+                  --workers \
 ```
 **parameters：**
 
 |parameters|usage|
 |---|---|
-|--modules/-m|PaddleHub Serving pre-installed model, listed in the form of multiple Module==Version key-value pairs<br>*`When Version is not specified, the latest version is selected by default`*|
-|--port/-p|Service port, default is 8866|
-|--use_multiprocess|Enable concurrent mode, the default is single-process mode, this mode is recommended for multi-core CPU machines<br>*`Windows operating system only supports single-process mode`*|
-|--workers|The number of concurrent tasks specified in concurrent mode, the default is `2*cpu_count-1`, where `cpu_count` is the number of CPU cores|
+|`--modules`/`-m`|PaddleHub Serving pre-installed model, listed in the form of multiple Module==Version key-value pairs<br>**When Version is not specified, the latest version is selected by default**|
+|`--port`/`-p`|Service port, default is 8866|
+|`--use_multiprocess`|Enable concurrent mode, the default is single-process mode, this mode is recommended for multi-core CPU machines<br>**Windows operating system only supports single-process mode**|
+|`--workers`|The number of concurrent tasks specified in concurrent mode, the default is `2*cpu_count-1`, where `cpu_count` is the number of CPU cores|
 
 For example, start the 2-stage series service:
 ```bash
@@ -166,7 +165,7 @@ This completes the deployment of a service API, using the default port number 88
 hub serving start --config/-c config.json
 ```
 Wherein, the format of `config.json` is as follows:
-```python
+```json
 {
     "modules_info": {
         "ocr_system": {
@@ -183,12 +182,17 @@ Wherein, the format of `config.json` is as follows:
     "workers": 2
 }
 ```
-- The configurable parameters in `init_args` are consistent with the `_initialize` function interface in `module.py`. Among them, **when `use_gpu` is `true`, it means that the GPU is used to start the service**.
+- The configurable parameters in `init_args` are consistent with the `_initialize` function interface in `module.py`.
+
+  **When `use_gpu` is `true`, it means that the GPU is used to start the service**.
 - The configurable parameters in `predict_args` are consistent with the `predict` function interface in `module.py`.
 
 **Note:**
 - When using the configuration file to start the service, other parameters will be ignored.
-- If you use GPU prediction (that is, `use_gpu` is set to `true`), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as: ```export CUDA_VISIBLE_DEVICES=0```, otherwise you do not need to set it.
+- If you use GPU prediction (that is, `use_gpu` is set to `true`), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as:
+  ```bash
+  export CUDA_VISIBLE_DEVICES=0
+  ```
 - **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**
 
 For example, use GPU card No. 3 to start the 2-stage series service:
@@ -206,17 +210,22 @@ python tools/test_hubserving.py --server_url=server_url --image_dir=image_path
 Two parameters need to be passed to the script:
 - **server_url**：service address，format of which is
 `http://[ip_address]:[port]/predict/[module_name]`
-For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition and PP-Structure service, then the `server_url` to send the request will be:
 
-`http://127.0.0.1:8865/predict/ocr_det`
-`http://127.0.0.1:8866/predict/ocr_cls`
-`http://127.0.0.1:8867/predict/ocr_rec`
-`http://127.0.0.1:8868/predict/ocr_system`
-`http://127.0.0.1:8869/predict/structure_table`
-`http://127.0.0.1:8870/predict/structure_system`
-`http://127.0.0.1:8870/predict/structure_layout`
-`http://127.0.0.1:8871/predict/kie_ser`
-`http://127.0.0.1:8872/predict/kie_ser_re`
+  For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition and PP-Structure service,
+
+  also modified the port for each services, then the `server_url` to send the request will be:
+
+  ```
+  http://127.0.0.1:8865/predict/ocr_det
+  http://127.0.0.1:8866/predict/ocr_cls
+  http://127.0.0.1:8867/predict/ocr_rec
+  http://127.0.0.1:8868/predict/ocr_system
+  http://127.0.0.1:8869/predict/structure_table
+  http://127.0.0.1:8870/predict/structure_system
+  http://127.0.0.1:8870/predict/structure_layout
+  http://127.0.0.1:8871/predict/kie_ser
+  http://127.0.0.1:8872/predict/kie_ser_re
+  ```
 - **image_dir**：Test image path, can be a single image path or an image directory path
 - **visualize**：Whether to visualize the results, the default value is False
 - **output**：The floder to save Visualization result, default value is `./hubserving_result`
@@ -241,17 +250,17 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 
 The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
 
-| field name/module name | ocr_det | ocr_cls | ocr_rec | ocr_system | structure_table | structure_system | structure_layout | kie_ser | kie_re |
-|  ---  |  ---  |  ---  |  ---  |  ---  | ---  |  ---  |  ---  | ---  |  ---  |
-|angle| | ✔ | | ✔ | |||
-|text| | |✔|✔| | ✔ |  | ✔ | ✔ |
-|confidence| |✔ |✔| | | ✔| |✔ | ✔ |
-|text_region| ✔| | |✔ | | ✔| |✔ | ✔ |
-|html| | | | |✔ |✔||| |
-|regions| | | | |✔ |✔ | || |
-|layout| | | | | | | ✔ || |
-|ser_res| | | | | | |  |  ✔ | |
-|re_res| | | | | | |  | |  ✔ |
+|field name/module name |ocr_det |ocr_cls |ocr_rec |ocr_system |structure_table |structure_system |structure_layout |kie_ser |kie_re |
+|---                    |---     |---     |---     |---        |---             |---              |---              |---     |---    |
+|angle                  |        |✔       |        |✔          |                |                 |                 |
+|text                   |        |        |✔       |✔          |                |✔                |                 |✔       |✔      |
+|confidence             |        |✔       |✔       |           |                |✔                |                 |✔       |✔      |
+|text_region            |✔       |        |        |✔          |                |✔                |                 |✔       |✔      |
+|html                   |        |        |        |           |✔               |✔                |                 |        |       |
+|regions                |        |        |        |           |✔               |✔                |                 |        |       |
+|layout                 |        |        |        |           |                |                 |✔                |        |       |
+|ser_res                |        |        |        |           |                |                 |                 |✔       |       |
+|re_res                 |        |        |        |           |                |                 |                 |        |✔      |
 
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 
