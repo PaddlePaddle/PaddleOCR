@@ -13,7 +13,6 @@ English | [简体中文](readme.md)
   - [4. Returned result format](#4-returned-result-format)
   - [5. User defined service module modification](#5-user-defined-service-module-modification)
 
-
 PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is `./deploy/hubserving`. Please follow this tutorial.
 - Based on **PaddleServing**: Code path is `./deploy/pdserving`. Please refer to the [tutorial](../../deploy/pdserving/README.md) for usage.
@@ -49,7 +48,6 @@ deploy/hubserving/ocr_system/
 * 2022.03.30 add PP-Structure and table recognition services.
 * 2022.05.05 add PP-OCRv3 text detection and recognition services.
 
-
 ## 2. Quick start service
 The following steps take the 2-stage series service as an example. If only the detection service or recognition service is needed, replace the corresponding file path.
 
@@ -60,15 +58,15 @@ pip3 install paddlehub==2.1.0 --upgrade
 
 ### 2.2 Download inference model
 Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:
-```
-text detection model: ./inference/ch_PP-OCRv3_det_infer/
-text recognition model: ./inference/ch_PP-OCRv3_rec_infer/
-text angle classifier: ./inference/ch_ppocr_mobile_v2.0_cls_infer/
-layout parse model: ./inference/picodet_lcnet_x1_0_fgd_layout_infer/
-tanle recognition: ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
-KIE(SER): ./inference/ser_vi_layoutxlm_xfund_infer/
-KIE(SER+RE): ./inference/re_vi_layoutxlm_xfund_infer/
-```
+| Model | Path |
+| ------- | - |
+| text detection model | ./inference/ch_PP-OCRv3_det_infer/ |
+| text recognition model | ./inference/ch_PP-OCRv3_rec_infer/ |
+| text angle classifier | ./inference/ch_ppocr_mobile_v2.0_cls_infer/ |
+| layout parse model | ./inference/picodet_lcnet_x1_0_fgd_layout_infer/ |
+| tanle recognition | ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/ |
+| KIE(SER) | ./inference/ser_vi_layoutxlm_xfund_infer/ |
+| KIE(SER+RE) | ./inference/re_vi_layoutxlm_xfund_infer/ |
 
 **The model path can be found and modified in `params.py`.**
 More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
@@ -76,66 +74,19 @@ More models provided by PaddleOCR can be obtained from the [model library](../..
 ### 2.3 Install Service Module
 PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.
 
-* On Linux platform, the examples are as follows.
-```bash
-# Install the text detection service module:
-hub install deploy/hubserving/ocr_det/
-
-# Or, install the text angle class service module:
-hub install deploy/hubserving/ocr_cls/
-
-# Or, install the text recognition service module:
-hub install deploy/hubserving/ocr_rec/
-
-# Or, install the 2-stage series service module:
-hub install deploy/hubserving/ocr_system/
-
-# Or install table recognition service module
-hub install deploy/hubserving/structure_table/
-
-# Or install PP-Structure service module
-hub install deploy/hubserving/structure_system/
-
-# Or install KIE(SER) service module
-hub install deploy/hubserving/kie_ser/
-
-# Or install KIE(SER+RE) service module
-hub install deploy/hubserving/kie_ser_re/
-```
-
-* On Windows platform, the examples are as follows.
-```bash
-# Install the detection service module:
-hub install deploy\hubserving\ocr_det\
-
-# Or, install the angle class service module:
-hub install deploy\hubserving\ocr_cls\
-
-# Or, install the recognition service module:
-hub install deploy\hubserving\ocr_rec\
-
-# Or, install the 2-stage series service module:
-hub install deploy\hubserving\ocr_system\
-
-# Or install table recognition service module
-hub install deploy/hubserving/structure_table/
-
-# Or install PP-Structure service module
-hub install deploy\hubserving\structure_system\
-
-# Or install layout analysis service module
-hub install deploy\hubserving\structure_layout\
-
-# Or install KIE(SER) service module
-hub install deploy\hubserving\kie_ser\
-
-# Or install KIE(SER+RE) service module
-hub install deploy\hubserving\kie_ser_re\
-```
+* On Linux platform(replace `/` with `\` if using Windows), the examples are as following table:
+| Service model | Command |
+| text detection | `hub install deploy/hubserving/ocr_det` |
+| text angle class: | `hub install deploy/hubserving/ocr_cls` |
+| text recognition: | `hub install deploy/hubserving/ocr_rec` |
+| 2-stage series: | `hub install deploy/hubserving/ocr_system` |
+| table recognition | `hub install deploy/hubserving/structure_table` |
+| PP-Structure | `hub install deploy/hubserving/structure_system` |
+| KIE(SER) | `hub install deploy/hubserving/kie_ser` |
+| KIE(SER+RE) | `hub install deploy/hubserving/kie_ser_re` |
 
 ### 2.4 Start service
 #### 2.4.1 Start with command line parameters (CPU only)
-
 **start command：**
 ```bash
 hub serving start --modules Module1==Version1, Module2==Version2, ... \
@@ -143,8 +94,8 @@ hub serving start --modules Module1==Version1, Module2==Version2, ... \
                   --use_multiprocess \
                   --workers \
 ```
-**parameters：**
 
+**parameters：**
 |parameters|usage|
 |---|---|
 |`--modules`/`-m`|PaddleHub Serving pre-installed model, listed in the form of multiple Module==Version key-value pairs<br>**When Version is not specified, the latest version is selected by default**|
@@ -164,7 +115,8 @@ This completes the deployment of a service API, using the default port number 88
 ```bash
 hub serving start --config/-c config.json
 ```
-Wherein, the format of `config.json` is as follows:
+
+In which the format of `config.json` is as follows:
 ```json
 {
     "modules_info": {
@@ -187,13 +139,13 @@ Wherein, the format of `config.json` is as follows:
   **When `use_gpu` is `true`, it means that the GPU is used to start the service**.
 - The configurable parameters in `predict_args` are consistent with the `predict` function interface in `module.py`.
 
-**Note:**
-- When using the configuration file to start the service, other parameters will be ignored.
-- If you use GPU prediction (that is, `use_gpu` is set to `true`), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as:
-  ```bash
-  export CUDA_VISIBLE_DEVICES=0
-  ```
-- **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**
+  **Note:**
+  - When using the configuration file to start the service, other parameters will be ignored.
+  - If you use GPU prediction (that is, `use_gpu` is set to `true`), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as:
+    ```bash
+    export CUDA_VISIBLE_DEVICES=0
+    ```
+  - **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**
 
 For example, use GPU card No. 3 to start the 2-stage series service:
 ```bash
@@ -230,7 +182,7 @@ Two parameters need to be passed to the script:
 - **visualize**：Whether to visualize the results, the default value is False
 - **output**：The floder to save Visualization result, default value is `./hubserving_result`
 
-**Eg.**
+Example:
 ```bash
 python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_system --image_dir=./doc/imgs/ --visualize=false`
 ```
@@ -248,7 +200,7 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 |regions|list|The result of layout analysis + table recognition + OCR, each item is a list<br>including `bbox` indicating area coordinates, `type` of area type and `res` of area results|
 |layout|list|The result of layout analysis, each item is a dict, including `bbox` indicating area coordinates, `label` of area type|
 
-The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
+The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`, detailed table as following:
 
 |field name/module name |ocr_det |ocr_cls |ocr_rec |ocr_system |structure_table |structure_system |structure_layout |kie_ser |kie_re |
 |---                    |---     |---     |---     |---        |---             |---              |---              |---     |---    |

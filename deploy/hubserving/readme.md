@@ -76,18 +76,18 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 ### 2.3 安装服务模块
 PaddleOCR提供5种服务模块，根据需要安装所需模块。
 
-在Linux环境下，安装模块命令如下表（Windows环境请将`/`替换为`\`）：
+在Linux环境（Windows环境请将`/`替换为`\`）下，安装模块命令如下表：
 | 服务模块 | 命令 |
 | ------- | - |
-| 检测 | `hub install deploy/hubserving/ocr_det/` |
-| 分类 | `hub install deploy/hubserving/ocr_cls/` |
-| 识别 | `hub install deploy/hubserving/ocr_rec/` |
-| 检测+识别串联 | `hub install deploy/hubserving/ocr_system/` |
-| 表格识别 | `hub install deploy/hubserving/structure_table/` |
-| PP-Structure | `hub install deploy/hubserving/structure_system/` |
-| 版面分析 | `hub install deploy/hubserving/structure_layout/` |
-| 关键信息抽取SER | `hub install deploy/hubserving/kie_ser/` |
-| 关键信息抽取SER+RE | `hub install deploy/hubserving/kie_ser_re/` |
+| 检测 | `hub install deploy/hubserving/ocr_det` |
+| 分类 | `hub install deploy/hubserving/ocr_cls` |
+| 识别 | `hub install deploy/hubserving/ocr_rec` |
+| 检测+识别串联 | `hub install deploy/hubserving/ocr_system` |
+| 表格识别 | `hub install deploy/hubserving/structure_table` |
+| PP-Structure | `hub install deploy/hubserving/structure_system` |
+| 版面分析 | `hub install deploy/hubserving/structure_layout` |
+| 关键信息抽取SER | `hub install deploy/hubserving/kie_ser` |
+| 关键信息抽取SER+RE | `hub install deploy/hubserving/kie_ser_re` |
 
 ### 2.4 启动服务
 #### 2.4.1. 命令行命令启动（仅支持CPU）
@@ -214,7 +214,6 @@ python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_s
 |layout          |        |        |        |           |                |                 |✔                |        |       |
 |ser_res         |        |        |        |           |                |                 |                 |✔       |       |
 |re_res          |        |        |        |           |                |                 |                 |        |✔      |
-
 
 **说明：** 如果需要增加、删除、修改返回字段，可在相应模块的`module.py`文件中进行修改，完整流程参考下一节自定义修改服务模块。
 
