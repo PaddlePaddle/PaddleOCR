@@ -18,9 +18,9 @@ PaddleOCR provides 2 service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please follow this tutorial.
 - Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please refer to the [tutorial](../../deploy/pdserving/README.md) for usage.
 
-# Service deployment based on PaddleHub Serving  
+# Service deployment based on PaddleHub Serving
 
-The hubserving service deployment directory includes seven service packages: text detection, text angle class, text recognition, text detection+text angle class+text recognition three-stage series connection, layout analysis, table recognition and PP-Structure. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:  
+The hubserving service deployment directory includes seven service packages: text detection, text angle class, text recognition, text detection+text angle class+text recognition three-stage series connection, layout analysis, table recognition and PP-Structure. Please select the corresponding service package to install and start service according to your needs. The directory is as follows:
 ```
 deploy/hubserving/
   └─  ocr_det     text detection module service package
@@ -34,7 +34,7 @@ deploy/hubserving/
   └─  kie_ser_re  KIE(SER+RE) service package
 ```
 
-Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:  
+Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:
 ```
 deploy/hubserving/ocr_system/
   └─  __init__.py    Empty file, required
@@ -55,13 +55,13 @@ The following steps take the 2-stage series service as an example. If only the d
 
 ### 2.1 Prepare the environment
 ```shell
-# Install paddlehub  
+# Install paddlehub
 # python>3.6.2 is required bt paddlehub
 pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 2.2 Download inference model
-Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:  
+Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:
 ```
 text detection model: ./inference/ch_PP-OCRv3_det_infer/
 text recognition model: ./inference/ch_PP-OCRv3_rec_infer/
@@ -70,7 +70,7 @@ layout parse model: ./inference/picodet_lcnet_x1_0_fgd_layout_infer/
 tanle recognition: ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/
 KIE(SER): ./inference/ser_vi_layoutxlm_xfund_infer/
 KIE(SER+RE): ./inference/re_vi_layoutxlm_xfund_infer/
-```  
+```
 
 **The model path can be found and modified in `params.py`.** More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
 
@@ -137,34 +137,34 @@ hub install deploy\hubserving\kie_ser_re\
 ### 2.4 Start service
 #### 2.4.1 Start with command line parameters (CPU only)
 
-**start command：**  
+**start command：**
 ```shell
 $ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \
                     --port XXXX \
                     --use_multiprocess \
                     --workers \
-```  
-**parameters：**  
+```
+**parameters：**
 
-|parameters|usage|  
-|---|---|  
+|parameters|usage|
+|---|---|
 |--modules/-m|PaddleHub Serving pre-installed model, listed in the form of multiple Module==Version key-value pairs<br>*`When Version is not specified, the latest version is selected by default`*|
-|--port/-p|Service port, default is 8866|  
+|--port/-p|Service port, default is 8866|
 |--use_multiprocess|Enable concurrent mode, the default is single-process mode, this mode is recommended for multi-core CPU machines<br>*`Windows operating system only supports single-process mode`*|
-|--workers|The number of concurrent tasks specified in concurrent mode, the default is `2*cpu_count-1`, where `cpu_count` is the number of CPU cores|  
+|--workers|The number of concurrent tasks specified in concurrent mode, the default is `2*cpu_count-1`, where `cpu_count` is the number of CPU cores|
 
-For example, start the 2-stage series service:  
+For example, start the 2-stage series service:
 ```shell
 hub serving start -m ocr_system
-```  
+```
 
-This completes the deployment of a service API, using the default port number 8866.  
+This completes the deployment of a service API, using the default port number 8866.
 
 #### 2.4.2 Start with configuration file（CPU、GPU）
-**start command：**  
+**start command：**
 ```shell
 hub serving start --config/-c config.json
-```  
+```
 Wherein, the format of `config.json` is as follows:
 ```python
 {
@@ -186,36 +186,36 @@ Wherein, the format of `config.json` is as follows:
 - The configurable parameters in `init_args` are consistent with the `_initialize` function interface in `module.py`. Among them, **when `use_gpu` is `true`, it means that the GPU is used to start the service**.
 - The configurable parameters in `predict_args` are consistent with the `predict` function interface in `module.py`.
 
-**Note:**  
+**Note:**
 - When using the configuration file to start the service, other parameters will be ignored.
 - If you use GPU prediction (that is, `use_gpu` is set to `true`), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as: ```export CUDA_VISIBLE_DEVICES=0```, otherwise you do not need to set it.
-- **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**  
+- **`use_gpu` and `use_multiprocess` cannot be `true` at the same time.**
 
 For example, use GPU card No. 3 to start the 2-stage series service:
 ```shell
 export CUDA_VISIBLE_DEVICES=3
 hub serving start -c deploy/hubserving/ocr_system/config.json
-```  
+```
 
 ## 3. Send prediction requests
-After the service starts, you can use the following command to send a prediction request to obtain the prediction result:  
+After the service starts, you can use the following command to send a prediction request to obtain the prediction result:
 ```shell
 python tools/test_hubserving.py --server_url=server_url --image_dir=image_path
-```  
+```
 
 Two parameters need to be passed to the script:
 - **server_url**：service address，format of which is
-`http://[ip_address]:[port]/predict/[module_name]`  
+`http://[ip_address]:[port]/predict/[module_name]`
 For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition and PP-Structure service, then the `server_url` to send the request will be:
 
-`http://127.0.0.1:8865/predict/ocr_det`  
-`http://127.0.0.1:8866/predict/ocr_cls`  
-`http://127.0.0.1:8867/predict/ocr_rec`  
-`http://127.0.0.1:8868/predict/ocr_system`  
-`http://127.0.0.1:8869/predict/structure_table`  
-`http://127.0.0.1:8870/predict/structure_system`  
-`http://127.0.0.1:8870/predict/structure_layout`  
-`http://127.0.0.1:8871/predict/kie_ser`  
+`http://127.0.0.1:8865/predict/ocr_det`
+`http://127.0.0.1:8866/predict/ocr_cls`
+`http://127.0.0.1:8867/predict/ocr_rec`
+`http://127.0.0.1:8868/predict/ocr_system`
+`http://127.0.0.1:8869/predict/structure_table`
+`http://127.0.0.1:8870/predict/structure_system`
+`http://127.0.0.1:8870/predict/structure_layout`
+`http://127.0.0.1:8871/predict/kie_ser`
 `http://127.0.0.1:8872/predict/kie_ser_re`
 - **image_dir**：Test image path, can be a single image path or an image directory path
 - **visualize**：Whether to visualize the results, the default value is False
@@ -262,8 +262,8 @@ If you need to modify the service logic, the following steps are generally requi
 ```shell
 hub serving stop --port/-p XXXX
 ```
-- 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.  
-For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.  
+- 2. Modify the code in the corresponding files, like `module.py` and `params.py`, according to the actual needs.
+For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.
 **Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
 - 3. Uninstall old service module
 ```shell
