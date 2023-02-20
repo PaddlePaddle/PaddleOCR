@@ -3,7 +3,7 @@
 - [基于PaddleHub Serving的服务部署](#基于paddlehub-serving的服务部署)
   - [1. 近期更新](#1-近期更新)
   - [2. 快速启动服务](#2-快速启动服务)
-    - [2.1 安装paddlehub](#21-安装paddlehub)
+    - [2.1 安装PaddleHub](#21-安装PaddleHub)
     - [2.2 下载推理模型](#22-下载推理模型)
     - [2.3 安装服务模块](#23-安装服务模块)
     - [2.4 启动服务](#24-启动服务)
@@ -51,7 +51,7 @@ deploy/hubserving/ocr_system/
 
 ## 2. 快速启动服务
 以下步骤以检测+识别2阶段串联服务为例，如果只需要检测服务或识别服务，替换相应文件路径即可。
-### 2.1 安装paddlehub
+### 2.1 安装PaddleHub
 paddlehub 需要 python>3.6.2
 ```bash
 pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
@@ -237,7 +237,7 @@ python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_s
 3. （可选）如果想要重命名模块需要更改`module.py`文件中的以下行：
    - [`from deploy.hubserving.ocr_system.params import read_params`中的`ocr_system`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35)
    - [`name="ocr_system",`中的`ocr_system`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39)
-4. （可选）可能需要删除`__pycache__`目录以强制刷新cpy缓存：
+4. （可选）可能需要删除`__pycache__`目录以强制刷新CPython缓存：
    ```bash
    find deploy/hubserving/ocr_system -name '__pycache__' -exec rm -r {} \;
    ```

@@ -245,7 +245,7 @@ The returned result is a list. Each item in the list is a dict. The dict may con
 |confidence|float|text recognition confidence|
 |text_region|list|text location coordinates|
 |html|str|table html str|
-|regions|list|The result of layout analysis + table recognition + OCR, each item is a list, including `bbox` indicating area coordinates, `type` of area type and `res` of area results|
+|regions|list|The result of layout analysis + table recognition + OCR, each item is a list<br>including `bbox` indicating area coordinates, `type` of area type and `res` of area results|
 |layout|list|The result of layout analysis, each item is a dict, including `bbox` indicating area coordinates, `label` of area type|
 
 The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain `text_region`. The details are as follows:
@@ -265,24 +265,33 @@ The fields returned by different modules are different. For example, the results
 **Note：** If you need to add, delete or modify the returned fields, you can modify the file `module.py` of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.
 
 ## 5. User defined service module modification
-If you need to modify the service logic, the following steps are generally required (take the modification of `ocr_system` for example):
+If you need to modify the service logic, the following steps are generally required (take the modification of `deploy/hubserving/ocr_system` for example):
 
-- 1. Stop service
+1. Stop service:
 ```bash
 hub serving stop --port/-p XXXX
 ```
-- 2. Modify the code in the@ deploy/hubserving/readme_en.md corresponding files, like `module.py` and `params.py`, according to the actual needs.
-For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`. Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation. It is suggested to run `module.py` directly for debugging after modification before starting the service test.
-**Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
-- 3. Uninstall old service module
-```bash
-hub uninstall ocr_system
-```
-- 4. Install modified service module
-```bash
-hub install deploy/hubserving/ocr_system/
-```
-- 5. Restart service
-```bash
-hub serving start -m ocr_system
-```
+2. Modify the code in the corresponding files under `deploy/hubserving/ocr_system`, such as `module.py` and `params.py`, to your actual needs.
+
+   For example, if you need to replace the model used by the deployed service, you need to modify model path parameters `det_model_dir` and `rec_model_dir` in `params.py`. If you want to turn off the text direction classifier, set the parameter `use_angle_cls` to `False`.
+   
+   Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation.
+   
+   **It is suggested to run `module.py` directly for debugging after modification before starting the service test.**
+
+   **Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
+3. (Optional) If you want to rename the module, following lines should be modified:
+   - [`ocr_system` within `from deploy.hubserving.ocr_system.params import read_params`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35)
+   - [`ocr_system` within `name="ocr_system",`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39)
+4. (Optional) It may requires you to delete the directory `__pycache__` to force flush CPython build cache:
+   ```bash
+   find deploy/hubserving/ocr_system -name '__pycache__' -exec rm -r {} \;
+   ```
+5. Install modified service module:
+   ```bash
+   hub install deploy/hubserving/ocr_system/
+   ```
+6. Restart service:
+   ```bash
+   hub serving start -m ocr_system
+   ```
