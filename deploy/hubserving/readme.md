@@ -207,7 +207,7 @@ python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_s
 |---             |---     |---     |---     |---        |---             |---              |---              |---     |---    |
 |angle           |        |✔       |        |✔          |                |                 |                 |
 |text            |        |        |✔       |✔          |                |✔                |                 |✔       |✔      |
-|confidence      |        |✔       |✔       |           |                |✔                |                 |✔       |✔      |
+|confidence      |        |✔       |✔       |✔          |                |✔                |                 |✔       |✔      |
 |text_region     |✔       |        |        |✔          |                |✔                |                 |✔       |✔      |
 |html            |        |        |        |           |✔               |✔                |                 |        |       |
 |regions         |        |        |        |           |✔               |✔                |                 |        |       |

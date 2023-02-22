@@ -206,7 +206,7 @@ The fields returned by different modules are different. For example, the results
 |---                    |---     |---     |---     |---        |---             |---              |---              |---     |---    |
 |angle                  |        |✔       |        |✔          |                |                 |                 |
 |text                   |        |        |✔       |✔          |                |✔                |                 |✔       |✔      |
-|confidence             |        |✔       |✔       |           |                |✔                |                 |✔       |✔      |
+|confidence             |        |✔       |✔       |✔          |                |✔                |                 |✔       |✔      |
 |text_region            |✔       |        |        |✔          |                |✔                |                 |✔       |✔      |
 |html                   |        |        |        |           |✔               |✔                |                 |        |       |
 |regions                |        |        |        |           |✔               |✔                |                 |        |       |
