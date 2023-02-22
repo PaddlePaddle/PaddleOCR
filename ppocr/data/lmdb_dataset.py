@@ -18,6 +18,7 @@ import lmdb
 import cv2
 import string
 import six
+import pickle
 from PIL import Image
 
 from .imaug import transform, create_operators
@@ -203,3 +204,87 @@ class LMDBDataSetSR(LMDBDataSet):
         if outs is None:
             return self.__getitem__(np.random.randint(self.__len__()))
         return outs
+
+
+class LMDBDataSetTableMaster(LMDBDataSet):
+    def load_hierarchical_lmdb_dataset(self, data_dir):
+        lmdb_sets = {}
+        dataset_idx = 0
+        env = lmdb.open(
+            data_dir,
+            max_readers=32,
+            readonly=True,
+            lock=False,
+            readahead=False,
+            meminit=False)
+        txn = env.begin(write=False)
+        num_samples = int(pickle.loads(txn.get(b"__len__")))
+        lmdb_sets[dataset_idx] = {"dirpath":data_dir, "env":env, \
+            "txn":txn, "num_samples":num_samples}
+        return lmdb_sets
+
+    def get_img_data(self, value):
+        """get_img_data"""
+        if not value:
+            return None
+        imgdata = np.frombuffer(value, dtype='uint8')
+        if imgdata is None:
+            return None
+        imgori = cv2.imdecode(imgdata, 1)
+        if imgori is None:
+            return None
+        return imgori
+
+    def get_lmdb_sample_info(self, txn, index):
+        def convert_bbox(bbox_str_list):
+            bbox_list = []
+            for bbox_str in bbox_str_list:
+                bbox_list.append(int(bbox_str))
+            return bbox_list
+
+        try:
+            data = pickle.loads(txn.get(str(index).encode('utf8')))
+        except:
+            return None
+
+        # img_name, img, info_lines
+        file_name = data[0]
+        bytes = data[1]
+        info_lines = data[2]  # raw data from TableMASTER annotation file.
+        # parse info_lines
+        raw_data = info_lines.strip().split('\n')
+        raw_name, text = raw_data[0], raw_data[
+            1]  # don't filter the samples's length over max_seq_len.
+        text = text.split(',')
+        bbox_str_list = raw_data[2:]
+        bbox_split = ','
+        bboxes = [{
+            'bbox': convert_bbox(bsl.strip().split(bbox_split)),
+            'tokens': ['1', '2']
+        } for bsl in bbox_str_list]
+
+        # advance parse bbox
+        # import pdb;pdb.set_trace()
+
+        line_info = {}
+        line_info['file_name'] = file_name
+        line_info['structure'] = text
+        line_info['cells'] = bboxes
+        line_info['image'] = bytes
+        return line_info
+
+    def __getitem__(self, idx):
+        lmdb_idx, file_idx = self.data_idx_order_list[idx]
+        lmdb_idx = int(lmdb_idx)
+        file_idx = int(file_idx)
+        data = self.get_lmdb_sample_info(self.lmdb_sets[lmdb_idx]['txn'],
+                                         file_idx)
+        if data is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        outs = transform(data, self.ops)
+        if outs is None:
+            return self.__getitem__(np.random.randint(self.__len__()))
+        return outs
+
+    def __len__(self):
+        return self.data_idx_order_list.shape[0]
