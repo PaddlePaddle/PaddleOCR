@@ -10,7 +10,7 @@
 
 
 ## 2.部署模型准备
-在部署前, 请准备好您所需要运行的推理模型, 您可以在[FastDeploy支持PaddleOCR模型列表](../README.md)中下载所需模型.
+在部署前, 请准备好您所需要运行的推理模型, 您可以在[FastDeploy支持的PaddleOCR模型列表](../README.md)中下载所需模型.
 
 ## 3.运行部署示例
 ```
@@ -46,7 +46,9 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 
 运行完成可视化结果如下图所示
 
+<div  align="center">  
 <img width="640" src="https://user-images.githubusercontent.com/109218879/185826024-f7593a0c-1bd2-4a60-b76c-15588484fa08.jpg">
+</div>
 
 ## 4. 更多指南
 - [PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)

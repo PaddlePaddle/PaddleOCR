@@ -7,7 +7,7 @@
 在部署前，需自行编译基于华为昇腾AI处理器的FastDeploy python wheel包并安装，参考文档，参考文档[华为昇腾AI处理器部署环境编译](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#自行编译安装)
 
 ## 2.部署模型准备
-在部署前, 请准备好您所需要运行的推理模型, 您可以在[FastDeploy支持PaddleOCR模型列表](../README.md)中下载所需模型.
+在部署前, 请准备好您所需要运行的推理模型, 您可以在[FastDeploy支持的PaddleOCR模型列表](../README.md)中下载所需模型.
 
 ## 3.运行部署示例
 ```
@@ -35,7 +35,9 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 
 运行完成可视化结果如下图所示
 
+<div  align="center">  
 <img width="640" src="https://user-images.githubusercontent.com/109218879/185826024-f7593a0c-1bd2-4a60-b76c-15588484fa08.jpg">
+</div>
 
 ## 4. 更多指南
 - [PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html)
