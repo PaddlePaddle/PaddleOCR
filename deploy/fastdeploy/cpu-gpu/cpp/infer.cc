@@ -71,6 +71,16 @@ void InitAndInfer(const std::string &det_model_dir,
   assert(cls_model.Initialized());
   assert(rec_model.Initialized());
 
+  // Parameters settings for pre and post processing of Det/Cls/Rec Models.
+  // All parameters are set to default values.
+  det_model.GetPreprocessor().SetMaxSideLen(960);
+  det_model.GetPostprocessor().SetDetDBThresh(0.3);
+  det_model.GetPostprocessor().SetDetDBBoxThresh(0.6);
+  det_model.GetPostprocessor().SetDetDBUnclipRatio(1.5);
+  det_model.GetPostprocessor().SetDetDBScoreMode("slow");
+  det_model.GetPostprocessor().SetUseDilation(0);
+  cls_model.GetPostprocessor().SetClsThresh(0.9);
+
   // The classification model is optional, so the PP-OCR can also be connected
   // in series as follows
   // auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &rec_model);

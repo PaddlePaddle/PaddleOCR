@@ -65,7 +65,7 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 关于如何通过FastDeploy使用更多不同的推理后端，以及如何使用不同的硬件，请参考文档：[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
 
 ## 6. 更多指南
-- [PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html)
+- 如果用户想要设置PP-OCRv3的前后处理超参数, 或者进行更多定制化的开发, 请阅读[[PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html), 其中, FastDeploy提供的超参数的含义与文档[PaddleOCR推理模型参数解释](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_args.md)是相同的.
 - [FastDeploy部署PaddleOCR模型概览](../../)
 - [PPOCRv3 C++部署](../cpp)
 
@@ -76,3 +76,32 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 - [编译CPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/cpu.md)
 - [编译GPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/gpu.md)
 - [编译Jetson部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/jetson.md)
+
+## 8. PaddleOCR专用指南
+
+### 8.1 如何使用Python部署PP-OCRv2系列模型.
+本目录下的`infer.py`代码是以PP-OCRv3模型为例, 如果用户有使用PP-OCRv2的需求, 只需要按照下面所示的方式, 来创建PP-OCRv2并使用.
+
+```python
+# 此行为创建PPOCRv3模型的代码
+ppocr_v3 = fd.vision.ocr.PPOCRv3(det_model=det_model, cls_model=cls_model, rec_model=rec_model)
+# 只需要将PPOCRv3改为PPOCRv2,即可创造PPOCRv2模型, 同时, 后续的接口均使用ppocr_v2来调用
+ppocr_v2 = fd.vision.ocr.PPOCRv2(det_model=det_model, cls_model=cls_model, rec_model=rec_model)
+
+# 如果用户在部署PP-OCRv2时, 需要使用TensorRT推理, 还需要改动Rec模型的TensorRT的输入shape.
+# 建议如下修改, 需要把 H 维度改为32, W 纬度按需修改.
+rec_option.set_trt_input_shape("x", [1, 3, 32, 10],
+                                       [args.rec_bs, 3, 32, 320],
+                                       [args.rec_bs, 3, 32, 2304])
+```
+
+### 8.2 如何在PP-OCRv2/v3系列模型中, 关闭文字方向分类器的使用.
+
+在PP-OCRv3/v2中, 文字方向分类器是可选的, 用户可以按照以下方式, 来决定自己是否使用方向分类器.
+```python
+# 使用 Cls 模型
+ppocr_v3 = fd.vision.ocr.PPOCRv3(det_model=det_model, cls_model=cls_model, rec_model=rec_model)
+
+# 不使用 Cls 模型
+ppocr_v3 = fd.vision.ocr.PPOCRv3(det_model=det_model, cls_model=None, rec_model=rec_model)
+```

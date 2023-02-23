@@ -127,6 +127,16 @@ cls_model = fd.vision.ocr.Classifier(
 rec_model = fd.vision.ocr.Recognizer(
     rec_model_file, rec_params_file, rec_label_file, runtime_option=rec_option)
 
+# Parameters settings for pre and post processing of Det/Cls/Rec Models.
+# All parameters are set to default values.
+det_model.preprocessor.max_side_len = 960
+det_model.postprocessor.det_db_thresh = 0.3
+det_model.postprocessor.det_db_box_thresh = 0.6
+det_model.postprocessor.det_db_unclip_ratio = 1.5
+det_model.postprocessor.det_db_score_mode = "slow"
+det_model.postprocessor.use_dilation = False
+cls_model.postprocessor.cls_thresh = 0.9
+
 # Create PP-OCRv3, if cls_model is not needed, just set cls_model=None .
 ppocr_v3 = fd.vision.ocr.PPOCRv3(
     det_model=det_model, cls_model=cls_model, rec_model=rec_model)
