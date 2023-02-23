@@ -24,18 +24,18 @@ cd build
 cmake .. -DFASTDEPLOY_INSTALL_DIR=${PWD}/fastdeploy-ascend
 make -j
 
-# 下载模型,图片和字典文件
+# 下载PP-OCRv3文字检测模型
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
 tar -xvf ch_PP-OCRv3_det_infer.tar
-
+# 下载文字方向分类器模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
-
+# 下载PP-OCRv3文字识别模型
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
 tar -xvf ch_PP-OCRv3_rec_infer.tar
 
+# 下载预测图片与字典文件
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/doc/imgs/12.jpg
-
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_keys_v1.txt
 
 # 按照上文提供的文档完成环境初始化, 并执行以下命令
