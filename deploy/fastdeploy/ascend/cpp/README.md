@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
 # PPOCRv3 Ascend C++部署示例
 
-本目录下提供`infer.cc`, 供用户完成PPOCRv3在华为昇腾AI处理器上的部署。
+本目录下提供`infer.cc`, 供用户完成PPOCRv3在华为昇腾AI处理器上的部署.
 
 ## 1. 部署环境准备
 在部署前，需确认以下两个步骤

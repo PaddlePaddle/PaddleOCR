@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
 # PPOCRv3 昆仑芯XPU Python部署示例
 
-本目录下提供`infer.py`, 供用户完成PPOCRv3在昆仑芯XPU上的部署。
+本目录下提供`infer.py`, 供用户完成PPOCRv3在昆仑芯XPU上的部署.
 
 ## 1. 部署环境准备
 在部署前，需自行编译基于昆仑XPU的FastDeploy python wheel包并安装，参考文档[昆仑芯XPU部署环境](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#自行编译安装)

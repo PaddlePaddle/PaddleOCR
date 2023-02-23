@@ -3,7 +3,7 @@
 # PaddleOCR 在昆仑芯上部署方案-FastDeploy
 
 ## 1. 说明  
-PaddleOCR支持利用FastDeploy在昆仑芯片上部署模型。
+PaddleOCR支持利用FastDeploy在昆仑芯片上部署模型.
 
 支持如下芯片的部署
 - 昆仑 818-100（推理芯片）

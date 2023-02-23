@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
 # PPOCRv3 昆仑芯XPU C++部署示例
 
-本目录下提供`infer.cc`, 供用户完成PPOCRv3在昆仑芯XPU上的部署。
+本目录下提供`infer.cc`, 供用户完成PPOCRv3在昆仑芯XPU上的部署.
 
 ## 1. 部署环境准备
 在部署前，需自行编译基于昆仑芯XPU的预测库，参考文档[昆仑芯XPU部署环境编译安装](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#自行编译安装)
