@@ -83,6 +83,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 |5| 在GPU上使用Paddle TensorRT推理 |
 |6| 在GPU上使用ONNX Runtime推理 |
 |7| 在GPU上使用Nvidia TensorRT推理 |
+
 关于如何通过FastDeploy使用更多不同的推理后端，以及如何使用不同的硬件，请参考文档：[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
 
 ## 6. 更多指南
