@@ -139,7 +139,7 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.
    
 4. 标注表格结构：**在外部Excel软件中，将存在文字的单元格标记为任意标识符（如 `1` ）**，保证Excel中的单元格合并情况与原图相同即可（即不需要Excel中的单元格文字与图片中的文字完全相同）
 
-5. 导出JSON格式：关闭所有表格图像对应的Excel，点击 `文件`-`导出表格JSON标注` 获得JSON标注结果。
+5. 导出JSON格式：关闭所有表格图像对应的Excel，点击 `文件`-`导出表格标注`，生成gt.txt标注文件。
 
 ### 2.3 注意
 
