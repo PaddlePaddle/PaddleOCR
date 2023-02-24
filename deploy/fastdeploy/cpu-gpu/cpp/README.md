@@ -60,22 +60,12 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 - 注意，以上命令只适用于Linux或MacOS, Windows下SDK的使用方式请参考文档: [如何在Windows中使用FastDeploy C++ SDK](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/use_sdk_on_windows.md)  
 - 关于如何通过FastDeploy使用更多不同的推理后端，以及如何使用不同的硬件，请参考文档：[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
 
+## 5. 部署示例选项说明  
+
+
 ## 6. 更多指南
 
-- 如果用户想要设置PP-OCRv3的前后处理超参数, 或者进行更多定制化的开发, 请阅读[PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html), 其中, FastDeploy提供的超参数的含义与文档[PaddleOCR推理模型参数解释](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_args.md)是相同的.
-- [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-
-## 7. 常见问题
-- [如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
-- [Intel GPU(独立显卡/集成显卡)的使用](https://github.com/PaddlePaddle/FastDeploy/blob/develop/tutorials/intel_gpu/README.md)
-- [编译CPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/cpu.md)
-- [编译GPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/gpu.md)
-- [编译Jetson部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/jetson.md)
-
-## 8. PaddleOCR专用指南
-
-### 8.1 如何使用C++部署PP-OCRv2系列模型.
+### 6.1 如何使用C++部署PP-OCRv2系列模型.
 本目录下的`infer.cc`代码是以PP-OCRv3模型为例, 如果用户有使用PP-OCRv2的需求, 只需要按照下面所示的方式, 来创建PP-OCRv2并使用.
 
 ```cpp
@@ -89,7 +79,7 @@ auto ppocr_v2 = fastdeploy::pipeline::PPOCRv2(&det_model, &cls_model, &rec_model
 rec_option.SetTrtInputShape("x", {1, 3, 32, 10}, {rec_batch_size, 3, 32, 320},
                                 {rec_batch_size, 3, 32, 2304});
 ```
-### 8.2 如何在PP-OCRv2/v3系列模型中, 关闭文字方向分类器的使用.
+### 6.2 如何在PP-OCRv2/v3系列模型中, 关闭文字方向分类器的使用.
 
 在PP-OCRv3/v2中, 文字方向分类器是可选的, 用户可以按照以下方式, 来决定自己是否使用方向分类器.
 ```cpp
@@ -99,3 +89,30 @@ auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &cls_model, &rec_model
 // 不使用 Cls 模型
 auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &rec_model);
 ```
+### 6.3 如何修改前后处理超参数.
+在示例代码中, 我们展示出了修改前后处理超参数的接口,并设置为默认值,其中, FastDeploy提供的超参数的含义与文档[PaddleOCR推理模型参数解释](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_args.md)是相同的. 如果用户想要进行更多定制化的开发, 请阅读[PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)
+
+```cpp
+// 设置检测模型的max_side_len
+det_model.GetPreprocessor().SetMaxSideLen(960);
+// 其他...
+```
+
+### 6.4 其他指南
+- [FastDeploy部署PaddleOCR模型概览](../../)
+- [PPOCRv3 Python部署](../python)
+
+## 7. 常见问题
+- PaddleOCR能在FastDeploy支持的多种后端上推理,支持情况如下表所示, 如何切换后端, 详见文档[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
+
+|硬件类型|支持的后端|
+|:---:|:---:|
+|X86 CPU| Paddle Inference, ONNX Runtime, OpenVINO |
+|ARM CPU| Paddle Lite |
+|飞腾 CPU| ONNX Runtime |
+|NVIDIA GPU| Paddle Inference, ONNX Runtime, TensorRT |
+
+- [Intel GPU(独立显卡/集成显卡)的使用](https://github.com/PaddlePaddle/FastDeploy/blob/develop/tutorials/intel_gpu/README.md)
+- [编译CPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/cpu.md)
+- [编译GPU部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/gpu.md)
+- [编译Jetson部署库](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/jetson.md)
