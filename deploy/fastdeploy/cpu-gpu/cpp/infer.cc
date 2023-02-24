@@ -126,9 +126,8 @@ int main(int argc, char *argv[]) {
                  "./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer "
                  "./ppocr_keys_v1.txt ./12.jpg 0"
               << std::endl;
-    std::cout << "The data type of run_option is int, 0: run with cpu; 1: run "
-                 "with gpu; 2: run with gpu and use tensorrt backend; 3: run "
-                 "with gpu and use Paddle-TRT; 4: run with kunlunxin."
+    std::cout << "The data type of run_option is int, e.g. 0: run with paddle "
+                 "inference on cpu;"
               << std::endl;
     return -1;
   }
@@ -138,11 +137,30 @@ int main(int argc, char *argv[]) {
 
   if (flag == 0) {
     option.UseCpu();
+    option.UsePaddleBackend(); // Paddle Inference
   } else if (flag == 1) {
-    option.UseGpu();
+    option.UseCpu();
+    option.UseOpenVINOBackend(); // OpenVINO
   } else if (flag == 2) {
+    option.UseCpu();
+    option.UseOrtBackend(); // ONNX Runtime
+  } else if (flag == 3) {
+    option.UseCpu();
+    option.UseLiteBackend(); // Paddle Lite
+  } else if (flag == 4) {
+    option.UseGpu();
+    option.UsePaddleBackend(); // Paddle Inference
+  } else if (flag == 5) {
     option.UseGpu();
     option.UseTrtBackend();
+    option.EnablePaddleTrtCollectShape();
+    option.EnablePaddleToTrt(); // Paddle-TensorRT
+  } else if (flag == 6) {
+    option.UseGpu();
+    option.UseOrtBackend(); // ONNX Runtime
+  } else if (flag == 7) {
+    option.UseGpu();
+    option.UseTrtBackend(); // TensorRT
   }
 
   std::string det_model_dir = argv[1];

@@ -44,12 +44,22 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/doc/imgs/12.jpg
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_keys_v1.txt
 
 # 运行部署示例
-# CPU推理
+# 在CPU上使用Paddle Inference推理
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
-# GPU推理
+# 在CPU上使用OenVINO推理
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
-# GPU上TensorRT推理
+# 在CPU上使用ONNX Runtime推理
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 2
+# 在CPU上使用Paddle Lite推理
+./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 3
+# 在GPU上使用Paddle Inference推理
+./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 4
+# 在GPU上使用Paddle TensorRT推理
+./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 5
+# 在GPU上使用ONNX Runtime推理
+./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 6
+# 在GPU上使用Nvidia TensorRT推理
+./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 7
 ```
 
 运行完成可视化结果如下图所示
@@ -61,7 +71,19 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 - 关于如何通过FastDeploy使用更多不同的推理后端，以及如何使用不同的硬件，请参考文档：[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
 
 ## 5. 部署示例选项说明  
-
+在我们使用`infer_demo`时, 输入了6个参数, 分别为文字检测模型, 文字分类模型, 文字识别模型, 预测图片, 字典文件与最后一位的数字选项.
+现在下表将解释最后一位数字选项的含义.
+|数字选项|含义|
+|:---:|:---:|
+|0| 在CPU上使用Paddle Inference推理 |
+|1| 在CPU上使用OenVINO推理 |
+|2| 在CPU上使用ONNX Runtime推理 |
+|3| 在CPU上使用Paddle Lite推理 |
+|4| 在GPU上使用Paddle Inference推理 |
+|5| 在GPU上使用Paddle TensorRT推理 |
+|6| 在GPU上使用ONNX Runtime推理 |
+|7| 在GPU上使用Nvidia TensorRT推理 |
+关于如何通过FastDeploy使用更多不同的推理后端，以及如何使用不同的硬件，请参考文档：[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
 
 ## 6. 更多指南
 
@@ -88,7 +110,10 @@ auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &cls_model, &rec_model
 
 // 不使用 Cls 模型
 auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &rec_model);
+
+// 当不使用Cls模型时, 请删掉或者注释掉相关代码
 ```
+
 ### 6.3 如何修改前后处理超参数.
 在示例代码中, 我们展示出了修改前后处理超参数的接口,并设置为默认值,其中, FastDeploy提供的超参数的含义与文档[PaddleOCR推理模型参数解释](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_args.md)是相同的. 如果用户想要进行更多定制化的开发, 请阅读[PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)
 

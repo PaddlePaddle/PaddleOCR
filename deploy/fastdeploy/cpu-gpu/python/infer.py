@@ -41,7 +41,7 @@ def parse_arguments():
         "--device",
         type=str,
         default='cpu',
-        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.")
+        help="Type of inference device, support 'cpu' or 'gpu'.")
     parser.add_argument(
         "--device_id",
         type=int,
@@ -58,10 +58,11 @@ def parse_arguments():
         default=6,
         help="Recognition model inference batch size")
     parser.add_argument(
-        "--use_trt",
-        type=ast.literal_eval,
-        default=False,
-        help="Wether to use tensorrt.")
+        "--backend",
+        type=str,
+        default="default",
+        help="Type of inference backend, support ort/trt/paddle/openvino, default 'openvino' for cpu, 'tensorrt' for gpu"
+    )
 
     return parser.parse_args()
 
@@ -77,7 +78,7 @@ def build_option(args):
         cls_option.use_gpu(args.device_id)
         rec_option.use_gpu(args.device_id)
 
-    if args.use_trt:
+    if args.backend.lower() == "trt":
         assert args.device.lower(
         ) == "gpu", "TensorRT backend require inference on device GPU."
         det_option.use_trt_backend()
@@ -100,6 +101,62 @@ def build_option(args):
         det_option.set_trt_cache_file(args.det_model + "/det_trt_cache.trt")
         cls_option.set_trt_cache_file(args.cls_model + "/cls_trt_cache.trt")
         rec_option.set_trt_cache_file(args.rec_model + "/rec_trt_cache.trt")
+
+    elif args.backend.lower() == "pptrt":
+        assert args.device.lower(
+        ) == "gpu", "Paddle-TensorRT backend require inference on device GPU."
+        det_option.use_trt_backend()
+        det_option.enable_paddle_trt_collect_shape()
+        det_option.enable_paddle_to_trt()
+
+        cls_option.use_trt_backend()
+        cls_option.enable_paddle_trt_collect_shape()
+        cls_option.enable_paddle_to_trt()
+
+        rec_option.use_trt_backend()
+        rec_option.enable_paddle_trt_collect_shape()
+        rec_option.enable_paddle_to_trt()
+
+        # If use TRT backend, the dynamic shape will be set as follow.
+        # We recommend that users set the length and height of the detection model to a multiple of 32.
+        # We also recommend that users set the Trt input shape as follow. 
+        det_option.set_trt_input_shape("x", [1, 3, 64, 64], [1, 3, 640, 640],
+                                       [1, 3, 960, 960])
+        cls_option.set_trt_input_shape("x", [1, 3, 48, 10],
+                                       [args.cls_bs, 3, 48, 320],
+                                       [args.cls_bs, 3, 48, 1024])
+        rec_option.set_trt_input_shape("x", [1, 3, 48, 10],
+                                       [args.rec_bs, 3, 48, 320],
+                                       [args.rec_bs, 3, 48, 2304])
+
+        # Users could save TRT cache file to disk as follow. 
+        det_option.set_trt_cache_file(args.det_model)
+        cls_option.set_trt_cache_file(args.cls_model)
+        rec_option.set_trt_cache_file(args.rec_model)
+
+    elif args.backend.lower() == "ort":
+        det_option.use_ort_backend()
+        cls_option.use_ort_backend()
+        rec_option.use_ort_backend()
+
+    elif args.backend.lower() == "paddle":
+        det_option.use_paddle_infer_backend()
+        cls_option.use_paddle_infer_backend()
+        rec_option.use_paddle_infer_backend()
+
+    elif args.backend.lower() == "openvino":
+        assert args.device.lower(
+        ) == "cpu", "OpenVINO backend require inference on device CPU."
+        det_option.use_openvino_backend()
+        cls_option.use_openvino_backend()
+        rec_option.use_openvino_backend()
+
+    elif args.backend.lower() == "pplite":
+        assert args.device.lower(
+        ) == "cpu", "Paddle Lite backend require inference on device CPU."
+        det_option.use_lite_backend()
+        cls_option.use_lite_backend()
+        rec_option.use_lite_backend()
 
     return det_option, cls_option, rec_option
 
