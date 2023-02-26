@@ -102,7 +102,7 @@ def readImage(image_file) -> list:
     if os.path.basename(image_file)[-3:] == 'pdf':
         imgs = []
         with fitz.open(image_file) as pdf:
-            for pg in range(0, pdf.pageCount):
+            for pg in range(0, pdf.page_count):
                 page = pdf[pg]
                 mat = fitz.Matrix(2, 2)
                 pm = page.getPixmap(matrix=mat, alpha=False)
