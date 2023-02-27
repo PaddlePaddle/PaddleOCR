@@ -9,7 +9,22 @@ include(${FASTDEPLOY_INSTALL_DIR}/FastDeploy.cmake)
 # 添加FastDeploy依赖头文件
 include_directories(${FASTDEPLOY_INCS})
 
+# PP-OCR
 add_executable(infer_demo ${PROJECT_SOURCE_DIR}/infer.cc)
 # 添加FastDeploy库依赖
 target_link_libraries(infer_demo ${FASTDEPLOY_LIBS})
 
+# Only Det
+add_executable(infer_det ${PROJECT_SOURCE_DIR}/infer_det.cc)
+# 添加FastDeploy库依赖
+target_link_libraries(infer_det ${FASTDEPLOY_LIBS})
+
+# Only Cls
+add_executable(infer_cls ${PROJECT_SOURCE_DIR}/infer_cls.cc)
+# 添加FastDeploy库依赖
+target_link_libraries(infer_cls ${FASTDEPLOY_LIBS})
+
+# Only Rec
+add_executable(infer_rec ${PROJECT_SOURCE_DIR}/infer_rec.cc)
+# 添加FastDeploy库依赖
+target_link_libraries(infer_rec ${FASTDEPLOY_LIBS})
