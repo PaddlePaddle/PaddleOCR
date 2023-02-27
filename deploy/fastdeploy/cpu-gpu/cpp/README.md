@@ -60,6 +60,18 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 6
 # 在GPU上使用Nvidia TensorRT推理
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 7
+
+# 同时, FastDeploy提供文字检测,文字分类,文字识别三个模型的单独推理,
+# 有需要的用户, 请准备合适的图片, 同时根据自己的需求, 参考infer.cc来配置自定义硬件与推理后端.
+
+# 在CPU上,单独使用文字检测模型部署
+./infer_det ./ch_PP-OCRv3_det_infer ./12.jpg 0
+
+# 在CPU上,单独使用文字方向分类模型部署
+./infer_cls ./ch_ppocr_mobile_v2.0_cls_infer ./12.jpg 0
+
+# 在CPU上,单独使用文字识别模型部署
+./infer_rec ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
 ```
 
 运行完成可视化结果如下图所示

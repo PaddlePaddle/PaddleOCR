@@ -52,6 +52,19 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend ort
 # 在GPU上使用Nvidia TensorRT推理
 python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend trt
+
+# 同时, FastDeploy提供文字检测,文字分类,文字识别三个模型的单独推理,
+# 有需要的用户, 请准备合适的图片, 同时根据自己的需求, 参考infer.py来配置自定义硬件与推理后端.
+
+# 在CPU上,单独使用文字检测模型部署
+python infer_det.py --det_model ch_PP-OCRv3_det_infer  --image 12.jpg --device cpu
+
+# 在CPU上,单独使用文字方向分类模型部署
+python infer_cls.py --cls_model ch_ppocr_mobile_v2.0_cls_infer --image 12.jpg --device cpu
+
+# 在CPU上,单独使用文字识别模型部署
+python infer_rec.py  --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu
+
 ```
 
 运行完成可视化结果如下图所示
