@@ -42,6 +42,7 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 - [PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
 - [PPOCRv3 C++部署](../cpp)
+- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)
 
 ## 5. 常见问题
 - [如何将视觉模型预测结果转为numpy格式](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/vision_result_related_problems.md)

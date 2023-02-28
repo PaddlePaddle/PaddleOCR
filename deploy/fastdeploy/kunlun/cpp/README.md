@@ -49,3 +49,4 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 - [PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
 - [PPOCRv3 Python部署](../python)
+- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/cpp/README.md)
