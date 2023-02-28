@@ -10,9 +10,8 @@
 
 ## 部署步骤
 
-1. OCR文字识别 Demo 位于 `fastdeploy/examples/vision/ocr/PP-OCRv3/android` 目录
-2. 用 Android Studio 打开 PP-OCRv3/android 工程
-3. 手机连接电脑，打开 USB 调试和文件传输模式，并在 Android Studio 上连接自己的手机设备（手机需要开启允许从 USB 安装软件权限）
+1. 用 Android Studio 打开 PP-OCRv3/android 工程
+2. 手机连接电脑，打开 USB 调试和文件传输模式，并在 Android Studio 上连接自己的手机设备（手机需要开启允许从 USB 安装软件权限）
 
 <p align="center">
 <img width="1440" alt="image" src="https://user-images.githubusercontent.com/31974251/203257262-71b908ab-bb2b-47d3-9efb-67631687b774.png">
