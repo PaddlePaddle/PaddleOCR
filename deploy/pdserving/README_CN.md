@@ -106,13 +106,13 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_rec_infer/ \
 检测模型转换完成后，会在当前文件夹多出`ppocr_det_v3_serving` 和`ppocr_det_v3_client`的文件夹，具备如下格式：
 ```
 |- ppocr_det_v3_serving/
-  |- __model__  
+  |- __model__
   |- __params__
-  |- serving_server_conf.prototxt  
+  |- serving_server_conf.prototxt
   |- serving_server_conf.stream.prototxt
 
 |- ppocr_det_v3_client
-  |- serving_client_conf.prototxt  
+  |- serving_client_conf.prototxt
   |- serving_client_conf.stream.prototxt
 
 ```
@@ -232,6 +232,7 @@ cp -rf general_detection_op.cpp Serving/core/general-server/op
     # 启动服务，运行日志保存在log.txt
     python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3_serving --op GeneralDetectionOp GeneralInferOp --port 8181 &>log.txt &
     ```
+
     成功启动服务后，log.txt中会打印类似如下日志
     ![](./imgs/start_server.png)
 
