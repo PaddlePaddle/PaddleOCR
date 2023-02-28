@@ -8,7 +8,7 @@
 ## 1. FastDeploy介绍
 <div id="FastDeploy介绍"></div>  
 
-**[⚡️FastDeploy](https://github.com/PaddlePaddle/FastDeploy)**是一款**全场景**、**易用灵活**、**极致高效**的AI推理部署工具，支持**云边端**部署.使用FastDeploy可以简单高效的在X86 CPU、NVIDIA GPU、飞腾CPU、ARM CPU、Intel GPU、昆仑、昇腾、算能等10+款硬件上对PaddleOCR模型进行快速部署，并且支持Paddle Inference、Paddle Lite、TensorRT、OpenVINO、ONNXRuntime、SOPHGO等多种推理后端.
+**[⚡️FastDeploy](https://github.com/PaddlePaddle/FastDeploy)**是一款**全场景**、**易用灵活**、**极致高效**的AI推理部署工具，支持**云边端**部署.使用FastDeploy可以简单高效的在X86 CPU、NVIDIA GPU、飞腾CPU、ARM CPU、Intel GPU、昆仑、昇腾、算能、瑞芯微等10+款硬件上对PaddleOCR模型进行快速部署，并且支持Paddle Inference、Paddle Lite、TensorRT、OpenVINO、ONNXRuntime、SOPHGO、RKNPU2等多种推理后端.
 
 <div align="center">
 
@@ -32,6 +32,7 @@
 |昆仑|✅|[链接](./kunlun)|✅|✅|
 |昇腾|✅|[链接](./ascend)|✅|✅|
 |算能|✅|[链接](./sophgo)|✅|✅|  
+|瑞芯微|✅|[链接](./rockchip)|✅|✅|  
 
 ### 2.2. 详细使用文档
 - X86 CPU
