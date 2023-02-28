@@ -67,6 +67,10 @@
   - [部署模型准备](./sophgo/)  
   - [Python部署示例](./sophgo/python/)
   - [C++部署示例](./sophgo/cpp/)  
+- 瑞芯微 Rockchip
+  - [部署模型准备](./rockchip/)  
+  - [Python部署示例](./rockchip/rknpu2/)
+  - [C++部署示例](./rockchip/rknpu2/)
 
 ### 2.3 更多部署方式
 
