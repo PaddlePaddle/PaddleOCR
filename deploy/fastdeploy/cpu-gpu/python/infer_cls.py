@@ -71,4 +71,7 @@ im = cv2.imread(args.image)
 # Predict and return the results
 result = cls_model.predict(im)
 
+# User can infer a batch of images by following code.
+# result = cls_model.batch_predict([im])
+
 print(result)

@@ -24,11 +24,10 @@ void InitAndInfer(const std::string &det_model_dir,
                   const fastdeploy::RuntimeOption &option) {
   auto det_model_file = det_model_dir + sep + "inference.pdmodel";
   auto det_params_file = det_model_dir + sep + "inference.pdiparams";
-
   auto det_option = option;
+
   auto det_model = fastdeploy::vision::ocr::DBDetector(
       det_model_file, det_params_file, det_option);
-
   assert(det_model.Initialized());
 
   // Parameters settings for pre and post processing of Det Model.
@@ -43,7 +42,7 @@ void InitAndInfer(const std::string &det_model_dir,
   auto im_bak = im.clone();
 
   fastdeploy::vision::OCRResult result;
-  if (!det_model.Predict(im, &(result.boxes))) {
+  if (!det_model.Predict(im, &result)) {
     std::cerr << "Failed to predict." << std::endl;
     return;
   }

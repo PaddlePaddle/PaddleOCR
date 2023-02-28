@@ -25,7 +25,6 @@ void InitAndInfer(const std::string &cls_model_dir,
 
   auto cls_model_file = cls_model_dir + sep + "inference.pdmodel";
   auto cls_params_file = cls_model_dir + sep + "inference.pdiparams";
-
   auto cls_option = option;
 
   auto cls_model = fastdeploy::vision::ocr::Classifier(
@@ -39,11 +38,16 @@ void InitAndInfer(const std::string &cls_model_dir,
   auto im_bak = im.clone();
 
   fastdeploy::vision::OCRResult result;
-  if (!cls_model.BatchPredict({im}, &(result.cls_labels),
-                              &(result.cls_scores))) {
+  if (!cls_model.Predict(im, &result)) {
     std::cerr << "Failed to predict." << std::endl;
     return;
   }
+
+  // User can infer a batch of images by following code.
+  // if (!cls_model.BatchPredict({im}, &result)) {
+  //   std::cerr << "Failed to predict." << std::endl;
+  //   return;
+  // }
 
   std::cout << result.Str() << std::endl;
 }

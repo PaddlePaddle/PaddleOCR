@@ -73,4 +73,7 @@ im = cv2.imread(args.image)
 # Predict and return the result
 result = rec_model.predict(im)
 
+# User can infer a batch of images by following code.
+# result = rec_model.batch_predict([im])
+
 print(result)

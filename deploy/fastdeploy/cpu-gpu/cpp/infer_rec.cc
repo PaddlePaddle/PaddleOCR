@@ -26,7 +26,6 @@ void InitAndInfer(const std::string &rec_model_dir,
 
   auto rec_model_file = rec_model_dir + sep + "inference.pdmodel";
   auto rec_params_file = rec_model_dir + sep + "inference.pdiparams";
-
   auto rec_option = option;
 
   auto rec_model = fastdeploy::vision::ocr::Recognizer(
@@ -39,10 +38,16 @@ void InitAndInfer(const std::string &rec_model_dir,
 
   fastdeploy::vision::OCRResult result;
 
-  if (!rec_model.BatchPredict({im}, &(result.text), &(result.rec_scores))) {
+  if (!rec_model.Predict(im, &result)) {
     std::cerr << "Failed to predict." << std::endl;
     return;
   }
+
+  // User can infer a batch of images by following code.
+  // if (!rec_model.BatchPredict({im}, &result)) {
+  //   std::cerr << "Failed to predict." << std::endl;
+  //   return;
+  // }
 
   std::cout << result.Str() << std::endl;
 }
