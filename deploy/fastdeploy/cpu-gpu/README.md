@@ -22,3 +22,5 @@ PaddleOCR支持通过FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、I
 ## 3. 详细部署的部署示例  
 - [Python部署](python)
 - [C++部署](cpp)
+- [C部署](c)
+- [C#部署](csharp)

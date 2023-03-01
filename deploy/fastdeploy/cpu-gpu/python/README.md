@@ -127,7 +127,8 @@ det_model.preprocessor.max_side_len = 960
 ### 6.4 其他指南
 - [FastDeploy部署PaddleOCR模型概览](../../)
 - [PPOCRv3 C++部署](../cpp)
-
+- [PPOCRv3 C 部署](../c)
+- [PPOCRv3 C# 部署](../csharp)
 
 ## 7. 常见问题
 - PaddleOCR能在FastDeploy支持的多种后端上推理,支持情况如下表所示, 如何切换后端, 详见文档[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)
