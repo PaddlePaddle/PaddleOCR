@@ -95,6 +95,13 @@ python3 client.py
 当前默认配置在GPU上运行， 如果要在CPU或其他推理引擎上运行。 需要修改`models/runtime/config.pbtxt`中配置，详情请参考[配置文档](../../../../../serving/docs/zh_CN/model_configuration.md)
 
 ## 6. 其他指南
+
+- 使用PP-OCRv2进行服务化部署, 除了自行准备PP-OCRv2模型之外, 只需手动添加一行代码即可.
+在[model.py](./models/det_postprocess/1/model.py#L109)文件**109行添加以下代码**：
+```
+self.rec_preprocessor.cls_image_shape[1] = 32
+```
+
 - [使用 VisualDL 进行 Serving 可视化部署](https://github.com/PaddlePaddle/FastDeploy/blob/develop/serving/docs/zh_CN/vdl_management.md)
 通过VisualDL的可视化界面对PP-OCRv3进行服务化部署只需要如下三步：
 ```text
