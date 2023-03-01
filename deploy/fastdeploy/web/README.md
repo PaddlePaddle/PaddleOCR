@@ -4,19 +4,17 @@
 本节介绍部署PaddleOCR的PP-OCRv3模型在浏览器中运行，以及@paddle-js-models/ocr npm包中的js接口。
 
 
-## 前端部署PP-OCRv3模型
+## 1. 前端部署PP-OCRv3模型
+PP-OCRv3模型web demo使用[**参考文档**](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo)
 
-PP-OCRv3模型web demo使用[**参考文档**](../../../../application/js/web_demo/)
-
-
-## PP-OCRv3 js接口
+## 2. PP-OCRv3 js接口
 
 ```
 import * as ocr from "@paddle-js-models/ocr";
 await ocr.init(detConfig, recConfig);
 const res = await ocr.recognize(img, option, postConfig);
 ```
-ocr模型加载和初始化，其中模型为Paddle.js模型格式，js模型转换方式参考[文档](../../../../application/js/web_demo/README.md)
+ocr模型加载和初始化，其中模型为Paddle.js模型格式，js模型转换方式参考[文档](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo/README.md)
 
 **init函数参数**
 
@@ -32,9 +30,4 @@ ocr模型加载和初始化，其中模型为Paddle.js模型格式，js模型转
 
 
 ## 其它文档
-
-- [PP-OCR 系列模型介绍](../../)
-- [PP-OCRv3 C++部署](../cpp)
-- [模型预测结果说明](../../../../../docs/api/vision_results/)
-- [如何切换模型推理后端引擎](../../../../../docs/cn/faq/how_to_change_backend.md)
-- [PP-OCRv3 微信小程序部署文档](../mini_program/)
+- [PP-OCRv3 微信小程序部署文档](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/mini_program)
