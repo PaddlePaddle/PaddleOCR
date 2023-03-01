@@ -27,8 +27,7 @@ cd PaddleOCR/deploy/fastdeploy/sophgo/cpp
 ```
 
 ### 3.2 拷贝bmodel模型文至model文件夹
-将Paddle模型转换为SOPHGO bmodel模型，转换步骤参考[文档](../README.md)  
-将转换后的SOPHGO bmodel模型文件拷贝至model中.
+将Paddle模型转换为SOPHGO bmodel模型，转换步骤参考[文档](../README.md). 将转换后的SOPHGO bmodel模型文件拷贝至model中.
 
 ### 3.3 准备测试图片至image文件夹，以及字典文件
 ```bash
