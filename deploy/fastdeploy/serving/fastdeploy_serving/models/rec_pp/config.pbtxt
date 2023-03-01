@@ -1,0 +1,54 @@
+name: "rec_pp"
+platform: "ensemble"
+max_batch_size: 128
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    dims: [ 3, 48, -1 ]
+  }
+]
+output [
+  {
+    name: "rec_texts"
+    data_type: TYPE_STRING
+    dims: [ 1 ]
+  },
+  {
+    name: "rec_scores"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "rec_runtime"
+      model_version: 1
+      input_map {
+        key: "x"
+        value: "x"
+      }
+      output_map {
+        key: "softmax_5.tmp_0"
+        value: "infer_output"
+      }
+    },
+    {
+      model_name: "rec_postprocess"
+      model_version: 1
+      input_map {
+        key: "POST_INPUT_0"
+        value: "infer_output"
+      }
+      output_map {
+        key: "POST_OUTPUT_0"
+        value: "rec_texts"
+      }
+      output_map {
+        key: "POST_OUTPUT_1"
+        value: "rec_scores"
+      }
+    }
+  ]
+}
