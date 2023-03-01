@@ -38,7 +38,7 @@ python paddle_infer_shape.py --model_dir ch_PP-OCRv3_det_infer \
                              --save_dir ch_PP-OCRv3_det_infer_fix \
                              --input_shape_dict="{'x':[1,3,960,608]}"
 
-#将固定输入的Paddle模型转换成ONNX模型
+# 请用户自行安装最新发布版本的paddle2onnx, 转换模型到ONNX格式的模型
 paddle2onnx --model_dir ch_PP-OCRv3_det_infer_fix \
             --model_filename inference.pdmodel \
             --params_filename inference.pdiparams \

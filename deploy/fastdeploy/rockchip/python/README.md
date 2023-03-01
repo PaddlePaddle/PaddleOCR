@@ -1,6 +1,6 @@
 [English](README_CN.md) | 简体中文
-# PPOCRv3 RKNPU2 Python部署示例
-本目录下提供`infer.py`, 供用户完成PPOCRv3在RKNPU2的部署.
+# PP-OCRv3 RKNPU2 Python部署示例
+本目录下提供`infer.py`, 供用户完成PP-OCRv3在RKNPU2的部署.
 
 
 ## 1. 部署环境准备
@@ -24,7 +24,7 @@ tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
 tar -xvf ch_PP-OCRv3_rec_infer.tar
 
-# 请用户自行安装paddle2onnx, 转换模型到ONNX格式的模型
+# 请用户自行安装最新发布版本的paddle2onnx, 转换模型到ONNX格式的模型
 paddle2onnx --model_dir ch_PP-OCRv3_det_infer \
             --model_filename inference.pdmodel \
             --params_filename inference.pdiparams \
@@ -100,6 +100,6 @@ python3 infer.py \
 ## 4. 更多指南
 - [PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 C++部署](../cpp)
+- [PP-OCRv3 C++部署](../cpp)
 - [FastDeploy RKNPU2资源导航](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install/rknpu2.md)
-- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)
+- 如果用户想要调整前后处理超参数、单独使用文字检测识别模型、使用其他模型等，更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)

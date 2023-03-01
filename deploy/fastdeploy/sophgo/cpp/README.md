@@ -1,5 +1,5 @@
 [English](README_CN.md) | 简体中文
-# PPOCRv3 SOPHGO C++部署示例
+# PP-OCRv3 SOPHGO C++部署示例
 本目录下提供`infer.cc`快速完成PPOCRv3模型在SOPHGO BM1684x板子上加速部署的示例。
 
 ## 1. 部署环境准备
@@ -56,5 +56,5 @@ make
 
 - [PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/cpp/README.md)
+- [PP-OCRv3 Python部署](../python)
+- 如果用户想要调整前后处理超参数、单独使用文字检测识别模型、使用其他模型等，更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/cpp/README.md)

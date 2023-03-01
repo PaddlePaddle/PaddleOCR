@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
 # PaddleOCR CPU-GPU C部署示例
 
-本目录下提供`infer.c`来调用C API快速完成PPOCRv3模型在CPU/GPU上部署的示例。
+本目录下提供`infer.c`来调用C API快速完成PP-OCRv3模型在CPU/GPU上部署的示例。
 
 ## 1. 说明  
 PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、Intel GPU(独立显卡/集成显卡)硬件上快速部署OCR模型.
@@ -56,7 +56,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 <img width="640" src="https://user-images.githubusercontent.com/109218879/185826024-f7593a0c-1bd2-4a60-b76c-15588484fa08.jpg">
 
 
-## 5. PPOCRv3 C API接口简介
+## 5. PP-OCRv3 C API接口简介
 下面提供了PP-OCRv3的C API简介
 
 - 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C Runtime API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/c_api/fastdeploy_capi/runtime/runtime_option.h).
@@ -168,7 +168,7 @@ FD_C_PPOCRv3Wrapper* FD_C_CreatePPOCRv3Wrapper(
     FD_C_RecognizerWrapper* rec_model
 )
 ```
-> 创建一个PPOCRv3的模型，并且返回操作它的指针。
+> 创建一个PP-OCRv3的模型，并且返回操作它的指针。
 >
 > **参数**
 >
@@ -178,7 +178,7 @@ FD_C_PPOCRv3Wrapper* FD_C_CreatePPOCRv3Wrapper(
 >
 > **返回**
 >
-> * **fd_c_ppocrv3_wrapper**(FD_C_PPOCRv3Wrapper*): 指向PPOCRv3模型对象的指针
+> * **fd_c_ppocrv3_wrapper**(FD_C_PPOCRv3Wrapper*): 指向PP-OCRv3模型对象的指针
 
 
 
@@ -227,7 +227,7 @@ FD_C_Bool FD_C_PPOCRv3WrapperPredict(
 > 模型预测接口，输入图像直接并生成结果。
 >
 > **参数**
-> * **fd_c_ppocrv3_wrapper**(FD_C_PPOCRv3Wrapper*): 指向PPOCRv3模型的指针
+> * **fd_c_ppocrv3_wrapper**(FD_C_PPOCRv3Wrapper*): 指向PP-OCRv3模型的指针
 > * **img**（FD_C_Mat）: 输入图像的指针，指向cv::Mat对象，可以调用FD_C_Imread读取图像获取
 > * **result**(FD_C_OCRResult*): OCR预测结果,包括由检测模型输出的检测框位置,分类模型输出的方向分类,以及识别模型输出的识别结果, OCRResult说明参考[视觉模型预测结果](../../../../../docs/api/vision_results/)
 
@@ -251,6 +251,6 @@ FD_C_Mat FD_C_VisOcr(FD_C_Mat im, FD_C_OCRResult* ocr_result)
 ## 6. 其它文档
 
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-- [PPOCRv3 C++ 部署](../cpp)
-- [PPOCRv3 C# 部署](../csharp)
+- [PP-OCRv3 Python部署](../python)
+- [PP-OCRv3 C++ 部署](../cpp)
+- [PP-OCRv3 C# 部署](../csharp)

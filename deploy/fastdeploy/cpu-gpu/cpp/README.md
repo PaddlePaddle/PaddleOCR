@@ -104,7 +104,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 本目录下的`infer.cc`代码是以PP-OCRv3模型为例, 如果用户有使用PP-OCRv2的需求, 只需要按照下面所示的方式, 来创建PP-OCRv2并使用.
 
 ```cpp
-// 此行为创建PPOCRv3模型的代码
+// 此行为创建PP-OCRv3模型的代码
 auto ppocr_v3 = fastdeploy::pipeline::PPOCRv3(&det_model, &cls_model, &rec_model);
 // 只需要将PPOCRv3改为PPOCRv2,即可创造PPOCRv2模型, 同时, 后续的接口均使用ppocr_v2来调用
 auto ppocr_v2 = fastdeploy::pipeline::PPOCRv2(&det_model, &cls_model, &rec_model);
@@ -138,9 +138,9 @@ det_model.GetPreprocessor().SetMaxSideLen(960);
 
 ### 6.4 其他指南
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-- [PPOCRv3 C 部署](../c)
-- [PPOCRv3 C# 部署](../csharp)
+- [PP-OCRv3 Python部署](../python)
+- [PP-OCRv3 C 部署](../c)
+- [PP-OCRv3 C# 部署](../csharp)
 
 ## 7. 常见问题
 - PaddleOCR能在FastDeploy支持的多种后端上推理,支持情况如下表所示, 如何切换后端, 详见文档[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)

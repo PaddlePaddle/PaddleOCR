@@ -93,7 +93,7 @@ python infer_rec.py  --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_ke
 本目录下的`infer.py`代码是以PP-OCRv3模型为例, 如果用户有使用PP-OCRv2的需求, 只需要按照下面所示的方式, 来创建PP-OCRv2并使用.
 
 ```python
-# 此行为创建PPOCRv3模型的代码
+# 此行为创建PP-OCRv3模型的代码
 ppocr_v3 = fd.vision.ocr.PPOCRv3(det_model=det_model, cls_model=cls_model, rec_model=rec_model)
 # 只需要将PPOCRv3改为PPOCRv2,即可创造PPOCRv2模型, 同时, 后续的接口均使用ppocr_v2来调用
 ppocr_v2 = fd.vision.ocr.PPOCRv2(det_model=det_model, cls_model=cls_model, rec_model=rec_model)
@@ -126,9 +126,9 @@ det_model.preprocessor.max_side_len = 960
 
 ### 6.4 其他指南
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 C++部署](../cpp)
-- [PPOCRv3 C 部署](../c)
-- [PPOCRv3 C# 部署](../csharp)
+- [PP-OCRv3 C++部署](../cpp)
+- [PP-OCRv3 C 部署](../c)
+- [PP-OCRv3 C# 部署](../csharp)
 
 ## 7. 常见问题
 - PaddleOCR能在FastDeploy支持的多种后端上推理,支持情况如下表所示, 如何切换后端, 详见文档[如何切换模型推理后端引擎](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/how_to_change_backend.md)

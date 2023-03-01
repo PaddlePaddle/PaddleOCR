@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
-# PPOCRv3 Ascend Python部署示例
+# PP-OCRv3 Ascend Python部署示例
 
-本目录下提供`infer.py`, 供用户完成PPOCRv3在华为昇腾AI处理器上的部署.
+本目录下提供`infer.py`, 供用户完成PP-OCRv3在华为昇腾AI处理器上的部署.
 
 ## 1. 部署环境准备
 在部署前，需自行编译基于华为昇腾AI处理器的FastDeploy python wheel包并安装，参考文档，参考文档[华为昇腾AI处理器部署环境编译](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#自行编译安装)
@@ -42,8 +42,8 @@ python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2
 ## 4. 更多指南
 - [PP-OCR系列 Python API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/python/html/ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 C++部署](../cpp)
-- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)
+- [PP-OCRv3 C++部署](../cpp)
+- 如果用户想要调整前后处理超参数、单独使用文字检测识别模型、使用其他模型等，更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)
 
 ## 5. 常见问题
 - [如何将视觉模型预测结果转为numpy格式](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/vision_result_related_problems.md)

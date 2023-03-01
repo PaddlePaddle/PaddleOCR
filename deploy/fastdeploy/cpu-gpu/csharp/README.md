@@ -67,7 +67,7 @@ infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv
 infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
 ```
 
-## 5. PPOCRv3 C# API接口简介
+## 5. PP-OCRv3 C# API接口简介
 下面提供了PP-OCRv3的C# API简介
 
 - 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C# Runtime API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/csharp/fastdeploy/runtime_option.cs).
@@ -135,7 +135,7 @@ fastdeploy.pipeline.PPOCRv3Model(
         Recognizer recognizer)
 ```
 
-> PPOCRv3Model模型加载和初始化。
+> PP-OCRv3Model模型加载和初始化。
 
 > **参数**
 
@@ -162,6 +162,6 @@ fastdeploy.OCRResult Predict(OpenCvSharp.Mat im)
 
 ## 6. 其它文档
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-- [PPOCRv3 C++ 部署](../cpp)
-- [PPOCRv3 C 部署](../c)
+- [PP-OCRv3 Python部署](../python)
+- [PP-OCRv3 C++ 部署](../cpp)
+- [PP-OCRv3 C 部署](../c)

@@ -1,7 +1,7 @@
 [English](README.md) | 简体中文
-# PPOCRv3 Ascend C++部署示例
+# PP-OCRv3 Ascend C++部署示例
 
-本目录下提供`infer.cc`, 供用户完成PPOCRv3在华为昇腾AI处理器上的部署.
+本目录下提供`infer.cc`, 供用户完成PP-OCRv3在华为昇腾AI处理器上的部署.
 
 ## 1. 部署环境准备
 在部署前，需确认以下两个步骤
@@ -53,5 +53,5 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 ## 4. 更多指南
 - [PP-OCR系列 C++ API查阅](https://www.paddlepaddle.org.cn/fastdeploy-api-doc/cpp/html/namespacefastdeploy_1_1vision_1_1ocr.html)
 - [FastDeploy部署PaddleOCR模型概览](../../)
-- [PPOCRv3 Python部署](../python)
-- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/cpp/README.md)
+- [PP-OCRv3 Python部署](../python)
+- 如果用户想要调整前后处理超参数、单独使用文字检测识别模型、使用其他模型等，更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)
