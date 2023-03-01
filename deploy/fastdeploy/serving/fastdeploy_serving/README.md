@@ -6,13 +6,13 @@ PaddleOCR 服务化部署示例是利用FastDeploy Serving搭建的服务化部�
 ## 1. 部署环境准备
 在服务化部署前，需确认服务化镜像的软硬件环境要求和镜像拉取命令，请参考[FastDeploy服务化部署](https://github.com/PaddlePaddle/FastDeploy/blob/develop/serving/README_CN.md)
 
-## 2. PP-OCR服务化部署介绍
-本文介绍了使用FastDeploy搭建PP-OCR模型服务的方法.
+## 2. PP-OCRv3服务化部署介绍
+本文介绍了使用FastDeploy搭建PP-OCRv3模型服务的方法.
 服务端必须在docker内启动,而客户端不是必须在docker容器内.
 
 **本文所在路径($PWD)下的models里包含模型的配置和代码(服务端会加载模型和代码以启动服务), 需要将其映射到docker中使用.**
 
-PP-OCR由det(检测)、cls(分类)和rec(识别)三个模型组成.
+PP-OCRv3由det(检测)、cls(分类)和rec(识别)三个模型组成.
 
 服务化部署串联的示意图如下图所示,其中`pp_ocr`串联了`det_preprocess`、`det_runtime`和`det_postprocess`,`cls_pp`串联了`cls_runtime`和`cls_postprocess`,`rec_pp`串联了`rec_runtime`和`rec_postprocess`.
 
@@ -96,7 +96,7 @@ python3 client.py
 
 ## 6. 其他指南
 - [使用 VisualDL 进行 Serving 可视化部署](https://github.com/PaddlePaddle/FastDeploy/blob/develop/serving/docs/zh_CN/vdl_management.md)
-通过VisualDL的可视化界面对PP-OCR进行服务化部署只需要如下三步：
+通过VisualDL的可视化界面对PP-OCRv3进行服务化部署只需要如下三步：
 ```text
 1. 载入模型库：./vision/ocr/PP-OCRv3/serving
 2. 下载模型资源文件：点击det_runtime模型，点击版本号1添加预训练模型，选择文字识别模型ch_PP-OCRv3_det进行下载。点击cls_runtime模型，点击版本号1添加预训练模型，选择文字识别模型ch_ppocr_mobile_v2.0_cls进行下载。点击rec_runtime模型，点击版本号1添加预训练模型，选择文字识别模型ch_PP-OCRv3_rec进行下载。点击rec_postprocess模型，点击版本号1添加预训练模型，选择文字识别模型ch_PP-OCRv3_rec进行下载。
