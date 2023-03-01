@@ -1,15 +1,22 @@
-# PPOCRv3 Python部署示例
+[English](README.md) | 简体中文
+# PP-OCRv3 SOPHGO Python部署示例
+本目录下提供`infer.py`快速完成 PP-OCRv3 在SOPHGO TPU上部署的示例。
 
-在部署前，需确认以下两个步骤
+## 1. 部署环境准备
 
-- 1. 软硬件环境满足要求，参考[FastDeploy环境要求](../../../../../../docs/cn/build_and_install/sophgo.md)
+在部署前，需自行编译基于算能硬件的FastDeploy python wheel包并安装，参考文档[算能硬件部署环境](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#算能硬件部署环境)
 
-本目录下提供`infer.py`快速完成 PPOCRv3 在SOPHGO TPU上部署的示例。执行如下脚本即可完成
 
+## 2.运行部署示例
+
+### 2.1 模型准备
+将Paddle模型转换为SOPHGO bmodel模型, 转换步骤参考[文档](../README.md)  
+
+### 2.2 开始部署
 ```bash
 # 下载部署示例代码
-git clone https://github.com/PaddlePaddle/FastDeploy.git
-cd FastDeploy/examples/vision/ocr/PP-OCRv3/sophgo/python
+git clone https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR/deploy/fastdeploy/sophgo/python
 
 # 下载图片
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/doc/imgs/12.jpg
@@ -33,6 +40,7 @@ det boxes: [[74,553],[427,542],[428,571],[75,582]]rec text: 打浦路252935号 r
 可视化结果保存在sophgo_result.jpg中
 ```
 
-## 其它文档
-- [PPOCRv3 C++部署](../cpp)
-- [转换 PPOCRv3 SOPHGO模型文档](../README.md)
+## 3. 其它文档
+- [PP-OCRv3 C++部署](../cpp)
+- [转换 PP-OCRv3 SOPHGO模型文档](../README.md)
+- 如果用户想要调整前后处理超参数, 或者单独使用某一个模型, 更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/cpp/README.md)

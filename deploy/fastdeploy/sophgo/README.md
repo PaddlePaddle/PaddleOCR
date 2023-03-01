@@ -1,20 +1,32 @@
-# PPOCRv3 SOPHGO C++部署示例
+[English](README.md) | 简体中文
 
-## 支持模型列表
+# PaddleOCR 模型在SOPHGO上部署方案-FastDeploy
 
-- PP-OCRv3部署模型实现来自[PP-OCR系列模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md)
+## 1. 说明  
+PaddleOCR支持通过FastDeploy在SOPHGO上部署相关模型.
 
-## 准备PPOCRv3部署模型以及转换模型
+## 2.支持模型列表
 
-PPOCRv3包括文本框检测模型（ch_PP-OCRv3_det）、方向分类模型（ch_ppocr_mobile_v2.0_cls）、文字识别模型（ch_PP-OCRv3_rec）  
+下表中的模型下载链接由PaddleOCR模型库提供, 详见[PP-OCR系列模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md)
+
+| PaddleOCR版本 | 文本框检测 | 方向分类模型 | 文字识别 |字典文件| 说明 |
+|:----|:----|:----|:----|:----|:--------|
+| ch_PP-OCRv3[推荐] |[ch_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_PP-OCRv3_rec](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv3系列原始超轻量模型，支持中英文、多语种文本检测 |
+| en_PP-OCRv3[推荐] |[en_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [en_PP-OCRv3_rec](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) | [en_dict.txt](https://bj.bcebos.com/paddlehub/fastdeploy/en_dict.txt) | OCRv3系列原始超轻量模型，支持英文与数字识别，除检测模型和识别模型的训练数据与中文模型不同以外，无其他区别 |
+| ch_PP-OCRv2 |[ch_PP-OCRv2_det](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_PP-OCRv2_rec](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2系列原始超轻量模型，支持中英文、多语种文本检测 |
+| ch_PP-OCRv2_mobile |[ch_ppocr_mobile_v2.0_det](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_ppocr_mobile_v2.0_rec](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2系列原始超轻量模型，支持中英文、多语种文本检测,比PPOCRv2更加轻量 |
+| ch_PP-OCRv2_server |[ch_ppocr_server_v2.0_det](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_ppocr_server_v2.0_rec](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) |[ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2服务器系列模型, 支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|
+
+## 3. 准备PP-OCR推理模型以及转换模型
+
+PP-OCRv3包括文本检测模型（ch_PP-OCRv3_det）、方向分类模型（ch_ppocr_mobile_v2.0_cls）、文字识别模型（ch_PP-OCRv3_rec）  
 SOPHGO-TPU部署模型前需要将以上Paddle模型转换成bmodel模型，我们以ch_PP-OCRv3_det模型为例，具体步骤如下:
 - 下载Paddle模型[ch_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar)
 - Pddle模型转换为ONNX模型，请参考[Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX)
 - ONNX模型转换bmodel模型的过程，请参考[TPU-MLIR](https://github.com/sophgo/tpu-mlir)
+下面我们提供一个example, 供用户参考，完成模型的转换.
 
-## 模型转换example
-
-### 下载ch_PP-OCRv3_det模型,并转换为ONNX模型
+### 3.1 下载ch_PP-OCRv3_det模型,并转换为ONNX模型
 ```shell
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
 tar xvf ch_PP-OCRv3_det_infer.tar
@@ -34,10 +46,10 @@ paddle2onnx --model_dir ch_PP-OCRv3_det_infer_fix \
             --enable_dev_version True
 ```
 
-### 导出bmodel模型
+### 3.2 导出bmodel模型
 
 以转换BM1684x的bmodel模型为例子，我们需要下载[TPU-MLIR](https://github.com/sophgo/tpu-mlir)工程，安装过程具体参见[TPU-MLIR文档](https://github.com/sophgo/tpu-mlir/blob/master/README.md)。
-### 1.	安装
+#### 3.2.1    安装
 ``` shell
 docker pull sophgo/tpuc_dev:latest
 
@@ -48,7 +60,7 @@ source ./envsetup.sh
 ./build.sh
 ```
 
-### 2.	ONNX模型转换为bmodel模型
+#### 3.2.2    ONNX模型转换为bmodel模型
 ``` shell
 mkdir ch_PP-OCRv3_det && cd ch_PP-OCRv3_det
 
@@ -84,5 +96,7 @@ model_deploy.py \
 ```
 最终获得可以在BM1684x上能够运行的bmodel模型ch_PP-OCRv3_det_1684x_f32.bmodel。按照上面同样的方法，可以将ch_ppocr_mobile_v2.0_cls，ch_PP-OCRv3_rec转换为bmodel的格式。如果需要进一步对模型进行加速，可以将ONNX模型转换为INT8 bmodel，具体步骤参见[TPU-MLIR文档](https://github.com/sophgo/tpu-mlir/blob/master/README.md)。
 
-## 其他链接
-- [Cpp部署](./cpp)
+
+## 4. 详细部署的部署示例  
+- [Python部署](python)
+- [C++部署](cpp)
