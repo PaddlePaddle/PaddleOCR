@@ -138,6 +138,13 @@ if [ ${MODE} = "benchmark_train" ];then
         
         cd ../
     fi
+    if [ ${model_name} == "table_master" ];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/ppstructure/models/tablemaster/table_structure_tablemaster_train.tar --no-check-certificate
+        cd ./pretrain_models/ && tar xf table_structure_tablemaster_train.tar  && cd ../
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/StructureLabel_val_500.tar --no-check-certificate
+        cd ./train_data/ && tar xf StructureLabel_val_500.tar
+        cd ../
+    fi
 fi
 
 if [ ${MODE} = "lite_train_lite_infer" ];then
@@ -368,7 +375,7 @@ elif [ ${MODE} = "whole_infer" ];then
     python_name_list=$(func_parser_value "${lines[2]}")
     array=(${python_name_list}) 
     python_name=${array[0]}
-    ${python_name} -m pip install paddleslim --force-reinstall
+    ${python_name} -m pip install paddleslim
     ${python_name} -m pip install -r requirements.txt
     wget -nc -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/ch_det_data_50.tar --no-check-certificate
     wget -nc -P ./inference/ https://paddleocr.bj.bcebos.com/dygraph_v2.0/test/rec_inference.tar --no-check-certificate

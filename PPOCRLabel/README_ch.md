@@ -126,7 +126,7 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.
 9. 删除：点击 “删除图像”，图片将会被删除至回收站。
 10. 导出结果：用户可以通过菜单中“文件-导出标记结果”手动导出，同时也可以点击“文件 - 自动导出标记结果”开启自动导出。手动确认过的标记将会被存放在所打开图片文件夹下的*Label.txt*中。在菜单栏点击 “文件” - "导出识别结果"后，会将此类图片的识别训练数据保存在*crop_img*文件夹下，识别标签保存在*rec_gt.txt*中<sup>[4]</sup>。
 
-### 2.2 表格标注
+### 2.2 表格标注（[视频演示](https://www.bilibili.com/video/BV1wR4y1v7JE/?share_source=copy_web&vd_source=cf1f9d24648d49636e3d109c9f9a377d&t=1998)）
 表格标注针对表格的结构化提取，将图片中的表格转换为Excel格式，因此标注时需要配合外部软件打开Excel同时完成。在PPOCRLabel软件中完成表格中的文字信息标注（文字与位置）、在Excel文件中完成表格结构信息标注，推荐的步骤为：
 1. 表格识别：打开表格图片后，点击软件右上角 `表格识别` 按钮，软件调用PP-Structure中的表格识别模型，自动为表格打标签，同时弹出Excel
 
@@ -139,7 +139,7 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.
    
 4. 标注表格结构：**在外部Excel软件中，将存在文字的单元格标记为任意标识符（如 `1` ）**，保证Excel中的单元格合并情况与原图相同即可（即不需要Excel中的单元格文字与图片中的文字完全相同）
 
-5. 导出JSON格式：关闭所有表格图像对应的Excel，点击 `文件`-`导出表格JSON标注` 获得JSON标注结果。
+5. 导出JSON格式：关闭所有表格图像对应的Excel，点击 `文件`-`导出表格标注`，生成gt.txt标注文件。
 
 ### 2.3 注意
 

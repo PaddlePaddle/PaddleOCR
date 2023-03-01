@@ -93,7 +93,7 @@ class TableSystem(object):
         time_dict['rec'] = rec_elapse
 
         if return_ocr_result_in_table:
-            result['boxes'] = dt_boxes  #[x.tolist() for x in dt_boxes]
+            result['boxes'] = [x.tolist() for x in dt_boxes]
             result['rec_res'] = rec_res
 
         tic = time.time()

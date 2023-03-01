@@ -36,7 +36,7 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: SVTR
+  algorithm: SVTR_LCNet
   Transform:
   Backbone:
     name: MobileNetV1Enhance

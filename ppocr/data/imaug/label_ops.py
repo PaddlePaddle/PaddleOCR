@@ -64,7 +64,7 @@ class DetLabelEncode(object):
             return None
         boxes = self.expand_points_num(boxes)
         boxes = np.array(boxes, dtype=np.float32)
-        txt_tags = np.array(txt_tags, dtype=np.bool)
+        txt_tags = np.array(txt_tags, dtype=np.bool_)
 
         data['polys'] = boxes
         data['texts'] = txts
@@ -218,7 +218,7 @@ class E2ELabelEncodeTest(BaseRecLabelEncode):
             else:
                 txt_tags.append(False)
         boxes = np.array(boxes, dtype=np.float32)
-        txt_tags = np.array(txt_tags, dtype=np.bool)
+        txt_tags = np.array(txt_tags, dtype=np.bool_)
         data['polys'] = boxes
         data['ignore_tags'] = txt_tags
         temp_texts = []
@@ -254,7 +254,7 @@ class E2ELabelEncodeTrain(object):
             else:
                 txt_tags.append(False)
         boxes = np.array(boxes, dtype=np.float32)
-        txt_tags = np.array(txt_tags, dtype=np.bool)
+        txt_tags = np.array(txt_tags, dtype=np.bool_)
 
         data['polys'] = boxes
         data['texts'] = txts
@@ -879,6 +879,62 @@ class SARLabelEncode(BaseRecLabelEncode):
         padded_text = [self.padding_idx for _ in range(self.max_text_len)]
 
         padded_text[:len(target)] = target
+        data['label'] = np.array(padded_text)
+        return data
+
+    def get_ignored_tokens(self):
+        return [self.padding_idx]
+
+
+class SATRNLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 lower=False,
+                 **kwargs):
+        super(SATRNLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.lower = lower
+
+    def add_special_char(self, dict_character):
+        beg_end_str = "<BOS/EOS>"
+        unknown_str = "<UKN>"
+        padding_str = "<PAD>"
+        dict_character = dict_character + [unknown_str]
+        self.unknown_idx = len(dict_character) - 1
+        dict_character = dict_character + [beg_end_str]
+        self.start_idx = len(dict_character) - 1
+        self.end_idx = len(dict_character) - 1
+        dict_character = dict_character + [padding_str]
+        self.padding_idx = len(dict_character) - 1
+
+        return dict_character
+
+    def encode(self, text):
+        if self.lower:
+            text = text.lower()
+        text_list = []
+        for char in text:
+            text_list.append(self.dict.get(char, self.unknown_idx))
+        if len(text_list) == 0:
+            return None
+        return text_list
+
+    def __call__(self, data):
+        text = data['label']
+        text = self.encode(text)
+        if text is None:
+            return None
+        data['length'] = np.array(len(text))
+        target = [self.start_idx] + text + [self.end_idx]
+        padded_text = [self.padding_idx for _ in range(self.max_text_len)]
+        if len(target) > self.max_text_len:
+            padded_text = target[:self.max_text_len]
+        else:
+            padded_text[:len(target)] = target
         data['label'] = np.array(padded_text)
         return data
 

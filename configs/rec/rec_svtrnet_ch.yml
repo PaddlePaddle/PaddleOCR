@@ -23,7 +23,7 @@ Optimizer:
   name: AdamW
   beta1: 0.9
   beta2: 0.99
-  epsilon: 8.0e-08
+  epsilon: 1.0e-08
   weight_decay: 0.05
   no_weight_decay_name: norm pos_embed
   one_dim_param_no_weight_decay: true
@@ -40,7 +40,7 @@ Architecture:
     img_size:
     - 32
     - 320
-    out_char_num: 40
+    out_char_num: 40 # W//4 or W//8 or W/12
     out_channels: 96
     patch_merging: Conv
     embed_dim:
