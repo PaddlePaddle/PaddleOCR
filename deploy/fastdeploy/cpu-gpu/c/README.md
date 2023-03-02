@@ -15,14 +15,15 @@ PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、I
 
 ## 4.运行部署示例
 ```bash
-mkdir build
-cd build
-# 下载FastDeploy预编译库，用户可在上文提到的`FastDeploy预编译库`中自行选择合适的版本使用
-wget https://bj.bcebos.com/fastdeploy/release/cpp/fastdeploy-linux-x64-x.x.x.tgz
-
 # 下载部署示例代码
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
 cd PaddleOCR/deploy/fastdeploy/cpu-gpu/c
+
+mkdir build
+cd build
+
+# 下载FastDeploy预编译库，用户可在上文提到的`FastDeploy预编译库`中自行选择合适的版本使用
+wget https://bj.bcebos.com/fastdeploy/release/cpp/fastdeploy-linux-x64-x.x.x.tgz
 
 # 编译Demo
 tar xvf fastdeploy-linux-x64-x.x.x.tgz
@@ -59,7 +60,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 ## 5. PP-OCRv3 C API接口简介
 下面提供了PP-OCRv3的C API简介
 
-- 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C Runtime API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/c_api/fastdeploy_capi/runtime/runtime_option.h).
+- 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C Runtime API](https://baidu-paddle.github.io/fastdeploy-api/c/html/runtime__option_8h.html).
 - 更多 PP-OCR C API 请查看 [C PP-OCR API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/c_api/fastdeploy_capi/vision/ocr/ppocr/model.h)
 
 ### 配置
