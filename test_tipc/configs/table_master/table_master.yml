@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/table_master/
   save_epoch_step: 17
   eval_batch_step: [0,  6259]
-  cal_metric_during_train: true
+  cal_metric_during_train: false
   pretrained_model: null
   checkpoints: 
   save_inference_dir: output/table_master/infer
@@ -16,6 +16,7 @@ Global:
   character_dict_path: ppocr/utils/dict/table_master_structure_dict.txt
   infer_mode: false
   max_text_length: 500
+  image_shape: [3, 480, 480]
 
 
 Optimizer:
@@ -67,16 +68,15 @@ Metric:
 
 Train:
   dataset:
-    name: PubTabDataSet
-    data_dir: ./train_data/pubtabnet/train
-    label_file_list: [./train_data/pubtabnet/train.jsonl]
+    name: LMDBDataSetTableMaster
+    data_dir: train_data/StructureLabel_val_500/
     transforms:
       - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: False
           replace_empty_cell_token: True
       - ResizeTableImage:
           max_len: 480
@@ -101,16 +101,15 @@ Train:
 
 Eval:
   dataset:
-    name: PubTabDataSet
-    data_dir: ./train_data/pubtabnet/test/
-    label_file_list: [./train_data/pubtabnet/test.jsonl]
+    name: LMDBDataSetTableMaster
+    data_dir: train_data/StructureLabel_val_500/
     transforms:
       - DecodeImage:
           img_mode: BGR
           channel_first: False
       - TableMasterLabelEncode:
           learn_empty_box: False
-          merge_no_span_structure: True
+          merge_no_span_structure: False
           replace_empty_cell_token: True
       - ResizeTableImage:
           max_len: 480

@@ -40,8 +40,8 @@ fpgm_key=$(func_parser_key "${lines[17]}")
 fpgm_trainer=$(func_parser_value "${lines[17]}")
 distill_key=$(func_parser_key "${lines[18]}")
 distill_trainer=$(func_parser_value "${lines[18]}")
-trainer_key1=$(func_parser_key "${lines[19]}")
-trainer_value1=$(func_parser_value "${lines[19]}")
+to_static_key=$(func_parser_key "${lines[19]}")
+to_static_value=$(func_parser_value "${lines[19]}")
 trainer_key2=$(func_parser_key "${lines[20]}")
 trainer_value2=$(func_parser_value "${lines[20]}")
 
@@ -253,9 +253,9 @@ else
                 elif [ ${trainer} = "${distill_key}" ]; then
                     run_train=${distill_trainer}
                     run_export=${distill_export}
-                elif [ ${trainer} = ${trainer_key1} ]; then
-                    run_train=${trainer_value1}
-                    run_export=${export_value1}
+                elif [ ${trainer} = "${to_static_key}" ]; then
+                    run_train="${norm_trainer}  ${to_static_value}"
+                    run_export=${norm_export}
                 elif [[ ${trainer} = ${trainer_key2} ]]; then
                     run_train=${trainer_value2}
                     run_export=${export_value2}
@@ -289,11 +289,11 @@ else
 
                 set_save_model=$(func_set_params "${save_model_key}" "${save_log}")
                 if [ ${#gpu} -le 2 ];then  # train with cpu or single gpu
-                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_train_params1} ${set_amp_config} "
+                    cmd="${python} ${run_train} ${set_use_gpu}  ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_amp_config} ${set_train_params1}"
                 elif [ ${#ips} -le 15 ];then  # train with multi-gpu
-                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_train_params1} ${set_amp_config}"
+                    cmd="${python} -m paddle.distributed.launch --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_epoch} ${set_pretrain}  ${set_batchsize} ${set_amp_config} ${set_train_params1}"
                 else     # train with multi-machine
-                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_pretrain} ${set_epoch}  ${set_batchsize} ${set_train_params1} ${set_amp_config}"
+                    cmd="${python} -m paddle.distributed.launch --ips=${ips} --gpus=${gpu} ${run_train} ${set_use_gpu} ${set_save_model} ${set_pretrain} ${set_epoch}  ${set_batchsize} ${set_amp_config} ${set_train_params1}"
                 fi
                 # run train
                 eval $cmd
@@ -338,4 +338,3 @@ else
         done      # done with:    for autocast in ${autocast_list[*]}; do 
     done          # done with:    for gpu in ${gpu_list[*]}; do
 fi  # end if [ ${MODE} = "infer" ]; then
-
