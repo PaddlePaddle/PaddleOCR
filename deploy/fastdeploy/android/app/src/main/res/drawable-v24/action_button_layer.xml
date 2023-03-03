@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/textColorHighlight" />
+        </shape>
+    </item>
+    <!--这里的right和bottom表示的是这一层图片的右边距和下边距，当然还有left和top-->
+    <item android:bottom="5px">
+        <shape>
+            <solid android:color="@color/bk_black" />
+        </shape>
+    </item>
+</layer-list>
