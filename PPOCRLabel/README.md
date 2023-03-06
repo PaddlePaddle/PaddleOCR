@@ -157,7 +157,7 @@ labeling in the Excel file, the recommended steps are:
 
 4. ***Adjust cell order:*** Click on the menu  `View` - `Show Box Number` to show the box ordinal numbers, and drag all the results under the 'Recognition Results' column on the right side of the software interface to make the box numbers are arranged from left to right, top to bottom
 
-5. Export JSON format annotation: close all Excel files corresponding to table images, click `File`-`Export table JSON annotation` to obtain JSON annotation results.
+5. Export JSON format annotation: close all Excel files corresponding to table images, click `File-Export Table Label` to obtain `gt.txt` annotation results.
 
 ### 2.3 Note
 
