@@ -90,7 +90,7 @@ def check_and_read(img_path):
         from PIL import Image
         imgs = []
         with fitz.open(img_path) as pdf:
-            for pg in range(0, pdf.pageCount):
+            for pg in range(0, pdf.page_count):
                 page = pdf[pg]
                 mat = fitz.Matrix(2, 2)
                 pm = page.getPixmap(matrix=mat, alpha=False)
