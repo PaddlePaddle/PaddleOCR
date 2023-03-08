@@ -67,6 +67,20 @@ def maybe_download(model_storage_directory, url):
         os.remove(tmp_path)
 
 
+def maybe_download_params(model_path):
+    if os.path.exists(model_path):
+        return model_path
+    elif not is_link(model_path):
+        url = 'https://paddleocr.bj.bcebos.com/' + model_path
+    else:
+        url = model_path
+    tmp_path = os.path.join(MODELS_DIR, url.split('/')[-1])
+    print('download {} to {}'.format(url, tmp_path))
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    download_with_progressbar(url, tmp_path)
+    return tmp_path
+
+
 def is_link(s):
     return s is not None and s.startswith('http')
 
