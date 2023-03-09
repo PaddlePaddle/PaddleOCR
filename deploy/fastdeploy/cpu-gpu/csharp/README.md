@@ -70,7 +70,7 @@ infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv
 ## 5. PP-OCRv3 C# API接口简介
 下面提供了PP-OCRv3的C# API简介
 
-- 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C# Runtime API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/csharp/fastdeploy/runtime_option.cs).
+- 如果用户想要更换部署后端或进行其他定制化操作, 请查看[C# Runtime API](https://baidu-paddle.github.io/fastdeploy-api/csharp/html/classfastdeploy_1_1RuntimeOption.html).
 - 更多 PP-OCR C# API 请查看 [C# PP-OCR API](https://github.com/PaddlePaddle/FastDeploy/blob/develop/csharp/fastdeploy/vision/ocr/model.cs)
 
 ### 模型
