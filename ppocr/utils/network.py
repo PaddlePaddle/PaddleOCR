@@ -20,6 +20,8 @@ from tqdm import tqdm
 
 from ppocr.utils.logging import get_logger
 
+MODELS_DIR = os.path.expanduser("~/.paddleocr/models/")
+
 
 def download_with_progressbar(url, save_path):
     logger = get_logger()
