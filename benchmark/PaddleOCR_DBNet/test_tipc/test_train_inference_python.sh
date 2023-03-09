@@ -5,7 +5,7 @@ FILENAME=$1
 # MODE be one of ['lite_train_lite_infer' 'lite_train_whole_infer' 'whole_train_whole_infer', 'whole_infer']
 MODE=$2
 
-dataline=$(awk 'NR==1, NR==51{print}'  $FILENAME)
+dataline=$(awk 'NR>=1{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
@@ -40,8 +40,8 @@ fpgm_key=$(func_parser_key "${lines[17]}")
 fpgm_trainer=$(func_parser_value "${lines[17]}")
 distill_key=$(func_parser_key "${lines[18]}")
 distill_trainer=$(func_parser_value "${lines[18]}")
-to_static_key=$(func_parser_key "${lines[19]}")
-to_static_value=$(func_parser_value "${lines[19]}")
+trainer_key1=$(func_parser_key "${lines[19]}")
+trainer_value1=$(func_parser_value "${lines[19]}")
 trainer_key2=$(func_parser_key "${lines[20]}")
 trainer_value2=$(func_parser_value "${lines[20]}")
 
@@ -88,10 +88,14 @@ benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
+line_num=`grep -n -w "to_static_train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
+to_static_key=$(func_parser_key "${lines[line_num]}")
+to_static_trainer=$(func_parser_value "${lines[line_num]}")
+echo $line_num $to_static_key $to_static_trainer
+
 LOG_PATH="./test_tipc/output/${model_name}/${MODE}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
-
 
 function func_inference(){
     IFS='|'
@@ -237,9 +241,9 @@ else
         fi
         for autocast in ${autocast_list[*]}; do 
             if [ ${autocast} = "amp" ]; then
-                set_amp_config="amp.scale_loss=1024.0 amp.use_dynamic_loss_scaling=True amp.amp_level=O2"
+                set_amp_config="Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
             else
-                set_amp_config="amp=None"
+                set_amp_config=" "
             fi          
             for trainer in ${trainer_list[*]}; do 
                 flag_quant=False
@@ -254,7 +258,7 @@ else
                     run_train=${distill_trainer}
                     run_export=${distill_export}
                 elif [ ${trainer} = "${to_static_key}" ]; then
-                    run_train="${norm_trainer}  ${to_static_value}"
+                    run_train="${norm_trainer}  ${to_static_trainer}"
                     run_export=${norm_export}
                 elif [[ ${trainer} = ${trainer_key2} ]]; then
                     run_train=${trainer_value2}
