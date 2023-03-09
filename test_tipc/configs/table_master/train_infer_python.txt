@@ -17,7 +17,7 @@ norm_train:tools/train.py -c test_tipc/configs/table_master/table_master.yml -o 
 pact_train:null
 fpgm_train:null
 distill_train:null
-to_static_train:Global.to_static=true
+null:null
 null:null
 ##
 ===========================eval_params=========================== 
@@ -57,3 +57,5 @@ fp_items:fp32|fp16
 epoch:2
 --profiler_options:batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile
 flags:FLAGS_eager_delete_tensor_gb=0.0;FLAGS_fraction_of_gpu_memory_to_use=0.98;FLAGS_conv_workspace_size_limit=4096
+===========================to_static_train_benchmark_params===========================
+to_static_train:Global.to_static=true
