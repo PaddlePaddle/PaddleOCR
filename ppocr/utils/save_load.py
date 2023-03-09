@@ -24,6 +24,7 @@ import six
 import paddle
 
 from ppocr.utils.logging import get_logger
+from ppocr.utils.network import maybe_download_params
 
 __all__ = ['load_model']
 
@@ -145,6 +146,7 @@ def load_model(config, model, optimizer=None, model_type='det'):
 
 def load_pretrained_params(model, path):
     logger = get_logger()
+    path = maybe_download_params(path)
     if path.endswith('.pdparams'):
         path = path.replace('.pdparams', '')
     assert os.path.exists(path + ".pdparams"), \
