@@ -88,14 +88,13 @@ benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
 
-line_num=`grep -n -w "to_static_train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
-to_static_key=$(func_parser_key "${lines[line_num]}")
-to_static_trainer=$(func_parser_value "${lines[line_num]}")
-echo $line_num $to_static_key $to_static_trainer
-
 LOG_PATH="./test_tipc/output/${model_name}/${MODE}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
+
+line_num=`grep -n -w "to_static_train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
+to_static_key=$(func_parser_key "${lines[line_num]}")
+to_static_trainer=$(func_parser_value "${lines[line_num]}")
 
 function func_inference(){
     IFS='|'
@@ -241,9 +240,9 @@ else
         fi
         for autocast in ${autocast_list[*]}; do 
             if [ ${autocast} = "amp" ]; then
-                set_amp_config="Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True"
+                set_amp_config="amp.scale_loss=1024.0 amp.use_dynamic_loss_scaling=True amp.amp_level=O2"
             else
-                set_amp_config=" "
+                set_amp_config="amp=None"
             fi          
             for trainer in ${trainer_list[*]}; do 
                 flag_quant=False

@@ -91,7 +91,6 @@ infer_value1=$(func_parser_value "${lines[50]}")
 line_num=`grep -n -w "to_static_train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
 to_static_key=$(func_parser_key "${lines[line_num]}")
 to_static_trainer=$(func_parser_value "${lines[line_num]}")
-echo $line_num $to_static_key $to_static_trainer
 
 LOG_PATH="./test_tipc/output/${model_name}/${MODE}"
 mkdir -p ${LOG_PATH}
