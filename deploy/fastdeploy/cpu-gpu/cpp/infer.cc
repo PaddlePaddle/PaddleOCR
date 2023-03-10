@@ -152,9 +152,9 @@ int main(int argc, char *argv[]) {
     option.UsePaddleBackend(); // Paddle Inference
   } else if (flag == 5) {
     option.UseGpu();
-    option.UseTrtBackend();
-    option.EnablePaddleTrtCollectShape();
-    option.EnablePaddleToTrt(); // Paddle-TensorRT
+    option.UsePaddleInferBackend();
+    option.paddle_infer_option.collect_trt_shape = true;
+    option.paddle_infer_option.enable_trt = true; // Paddle-TensorRT
   } else if (flag == 6) {
     option.UseGpu();
     option.UseOrtBackend(); // ONNX Runtime
