@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from io import open
-from paddleocr import VERSION
+
 
 def load_requirements(file_list=None):
     if file_list is None:
         file_list = ['requirements.txt']
-    if isinstance(file_list,str):
+    if isinstance(file_list, str):
         file_list = [file_list]
     requirements = []
     for file in file_list:
@@ -36,14 +36,14 @@ def readme():
 
 setup(
     name='paddleocr',
-    packages=['paddleocr'],
+    packages=find_packages(),
     package_dir={'paddleocr': ''},
     include_package_data=True,
-    entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
-    version=VERSION,
-    install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
+    author="Pravesh Kaji Budhathoki",
+    # entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
+    version="1.0",
+    install_requires=load_requirements("requirements.txt"),
     license='Apache License 2.0',
-    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/PaddlePaddle/PaddleOCR',
@@ -53,7 +53,7 @@ setup(
     ],
     classifiers=[
         'Intended Audience :: Developers', 'Operating System :: OS Independent',
-        'Natural Language :: Chinese (Simplified)',
+        'Natural Language :: English (Simplified)',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
