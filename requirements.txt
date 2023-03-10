@@ -5,11 +5,11 @@ pyclipper
 lmdb
 tqdm
 numpy
-visualdl
+visualdl~=2.4.1
 rapidfuzz
-opencv-python==4.6.0.66
-opencv-contrib-python==4.6.0.66
-cython
+opencv-python~=4.5.4.60
+opencv-contrib-python~=4.5.4.60
+cython-bbox~=0.1.3
 lxml
 premailer
 openpyxl
@@ -17,3 +17,4 @@ attrdict
 Polygon3
 lanms-neo==1.0.2
 PyMuPDF<1.21.0
+paddlepaddle~=2.4.2
