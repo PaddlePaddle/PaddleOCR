@@ -70,10 +70,8 @@ def maybe_download(model_storage_directory, url):
 
 
 def maybe_download_params(model_path):
-    if os.path.exists(model_path):
+    if os.path.exists(model_path) or not is_link(model_path):
         return model_path
-    elif not is_link(model_path):
-        url = 'https://paddleocr.bj.bcebos.com/' + model_path
     else:
         url = model_path
     tmp_path = os.path.join(MODELS_DIR, url.split('/')[-1])

@@ -102,7 +102,7 @@ export frame_version=${str_tmp%%.post*}
 export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
 
 # 获取benchmark_params所在的行数
-line_num=`grep -n "train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
+line_num=`grep -n -w "train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
 # for train log parser
 batch_size=$(func_parser_value "${lines[line_num]}")
 line_num=`expr $line_num + 1`
