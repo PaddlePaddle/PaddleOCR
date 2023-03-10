@@ -17,7 +17,7 @@ norm_train:tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o 
 pact_train:null
 fpgm_train:null
 distill_train:null
-null:null
+to_static_train:Global.to_static=true
 null:null
 ##
 ===========================eval_params=========================== 
