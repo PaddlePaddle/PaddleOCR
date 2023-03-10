@@ -1,0 +1,22 @@
+name: Increase tag and generated release
+on:
+  push:
+    branches:
+      - identeq
+
+jobs:
+  release-on-push:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - id: release
+        uses: identeq/release-on-push-action@master
+        with:
+          bump_version_scheme: patch
+          tag_prefix: v
+
+      - name: Check Output Parameters
+        run: |
+          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+          echo "Got release version ${{ steps.release.outputs.version }}"
