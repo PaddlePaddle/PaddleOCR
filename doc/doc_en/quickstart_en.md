@@ -223,7 +223,7 @@ from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `fr`, `german`, `korean`, `japan`
 # to switch the language model in order.
-ocr = PaddleOCR(use_angle_cls=True, lang="ch"， page_num=2)  # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=2)  # need to run only once to download and load model into memory
 img_path = './xxx.pdf'
 result = ocr.ocr(img_path, cls=True)
 for idx in range(len(result)):
