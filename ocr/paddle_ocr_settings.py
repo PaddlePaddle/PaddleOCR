@@ -11,7 +11,7 @@
 
 import os
 
-SUPPORT_DET_MODEL = ['DB']
+SUPPORT_DET_MODEL = ['DB', 'DB++']
 VERSION = '2.6.1.0'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
