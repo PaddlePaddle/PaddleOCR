@@ -31,7 +31,7 @@ from tools.infer.utility import check_gpu
 class PaddleOCR(predict_system.TextSystem):
     def __init__(self, use_gpu=True, use_angle_cls=False, lang="en", ocr_version="PP-OCRv3", use_onnx=False,
                  det_model_dir=None,
-                 rec_model_dir=None, det_algorithm="DB", rec_algorithm="SVTR_LCNet", page_num=0, cls_model_dir=None,
+                 rec_model_dir=None, det_algorithm="DB++", rec_algorithm="SVTR_LCNet", page_num=0, cls_model_dir=None,
                  rec_char_dict_path=None):
         """
         paddleocr package
@@ -60,6 +60,7 @@ class PaddleOCR(predict_system.TextSystem):
             det_model_dir,
             os.path.join(BASE_DIR, 'whl', 'det', det_lang),
             det_model_config['url'])
+
         rec_model_config = get_model_config('OCR', params.ocr_version, 'rec',
                                             lang)
         params.rec_model_dir, rec_url = confirm_model_dir_url(
