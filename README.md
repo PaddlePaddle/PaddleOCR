@@ -33,7 +33,7 @@
 
 *斯拉夫语系*
 
-- [ ] 【PP-OCRv30】俄语文本行识别
+- [x] 【PP-OCRv30】俄语文本行识别
 - [ ] 【PP-OCRv30】哈萨克语文本行识别
 
 *元音附标语系*
@@ -41,6 +41,7 @@
 - [ ] 【PP-OCRv30】藏语文本行识别
 - [ ] 【PP-OCRv30】缅甸语文本行识别
 - [ ] 【PP-OCRv30】印地语文本行识别
+- [ ] 【PP-OCRv30】泰语文本行识别
 
 *拉丁语系*
 
@@ -62,11 +63,12 @@
 | :--------------: | :------: | :----------------------------------------------------------: | :------: | :----: | :-----------: |
 | ar_PP-OCRv30_rec | 阿拉伯语 | [ar_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ar_PP-OCRv30_rec.yml) |  8.69M   | 73.33% |    97.83%     |
 | ug_PP-OCRv30_rec | 维吾尔语 | [ug_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ug_PP-OCRv30_rec.yml) |  8.68M   | 70.97% |    93.83%     |
-| ru_PP-OCRv30_rec |   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) |  8.69M   |        |               |
+| ru_PP-OCRv30_rec |   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) |  8.69M   | 93.55% |    99.57%     |
 | kk_PP-OCRv30_rec | 哈萨克语 | [kk_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/kk_PP-OCRv30_rec.yml) |          |        |               |
-| bo_PP-OCRv30_rec |   藏语   |                                                              |          |        |               |
+| bo_PP-OCRv30_rec |   藏语   | [bo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/bo_PP-OCRv30_rec.yml) |          |        |               |
 | my_PP-OCRv30_rec |  缅甸语  |                                                              |          |        |               |
 | hi_PP-OCRv30_rec |  印地语  |                                                              |          |        |               |
+| ti_PP-OCRv30_rec |   泰语   |                                                              |          |        |               |
 | vi_PP-OCRv30_rec |   越南   |                                                              |          |        |               |
 | ms_PP-OCRv30_rec |   马来   |                                                              |          |        |               |
 | id_PP-OCRv30_rec |  印尼语  |                                                              |          |        |               |
