@@ -28,11 +28,11 @@ class CANLoss(nn.Layer):
         counting_loss: counting loss of every symbol
     '''
 
-    def __init__(self):
+    def __init__(self, out_channel):
         super(CANLoss, self).__init__()
 
         self.use_label_mask = False
-        self.out_channel = 111
+        self.out_channel = out_channel
         self.cross = nn.CrossEntropyLoss(
             reduction='none') if self.use_label_mask else nn.CrossEntropyLoss()
         self.counting_loss = nn.SmoothL1Loss(reduction='mean')
