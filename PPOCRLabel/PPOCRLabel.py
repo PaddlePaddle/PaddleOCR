@@ -21,8 +21,8 @@ import os.path
 import platform
 import subprocess
 import sys
-import xlrd
 from functools import partial
+from openpyxl import load_workbook
 
 from PyQt5.QtCore import QSize, Qt, QPoint, QByteArray, QTimer, QFileInfo, QPointF, QProcess
 from PyQt5.QtGui import QImage, QCursor, QPixmap, QImageReader
@@ -2488,11 +2488,13 @@ class MainWindow(QMainWindow):
             if not os.path.exists(csv_path):
                 continue
 
-            excel = xlrd.open_workbook(csv_path)
-            sheet0 = excel.sheet_by_index(0)  # only sheet 0
-            merged_cells = sheet0.merged_cells # (0,1,1,3) start row, end row, start col, end col
+            excel = load_workbook(csv_path, read_only=True)
 
-            html_list = [['td'] * sheet0.ncols for i in range(sheet0.nrows)]
+            sheet0 = excel.active # only sheet 0
+            merged_cells = [(sheet0.min_row, sheet0.max_row, sheet0.min_column,
+                             sheet0.max_column)] # (0,1,1,3) start row, end row, start col, end col
+
+            html_list = [['td'] * sheet0.max_column for i in sheet0.iter_rows()]
 
             for merged in merged_cells:
                 html_list = expand_list(merged, html_list)
