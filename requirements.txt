@@ -7,8 +7,8 @@ tqdm
 numpy
 visualdl~=2.4.1
 rapidfuzz
-opencv-python~=4.5.4.60
-opencv-contrib-python~=4.5.4.60
+opencv-python~=4.6.0
+opencv-contrib-python~=4.6.0
 cython-bbox~=0.1.3
 lxml
 premailer
