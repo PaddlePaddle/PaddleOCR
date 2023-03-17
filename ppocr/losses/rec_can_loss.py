@@ -28,7 +28,7 @@ class CANLoss(nn.Layer):
         counting_loss: counting loss of every symbol
     '''
 
-    def __init__(self, out_channel):
+    def __init__(self, out_channel=111):
         super(CANLoss, self).__init__()
 
         self.use_label_mask = False
