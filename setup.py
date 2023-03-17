@@ -15,17 +15,27 @@
 from setuptools import setup, find_packages
 from io import open
 
+# def load_requirements(file_list=None):
+#     if file_list is None:
+#         file_list = ['requirements.txt']
+#     if isinstance(file_list, str):
+#         file_list = [file_list]
+#     requirements = []
+#     for file in file_list:
+#         with open(file, encoding="utf-8-sig") as f:
+#             requirements.extend(f.readlines())
+#     return requirements
 
-def load_requirements(file_list=None):
-    if file_list is None:
-        file_list = ['requirements.txt']
-    if isinstance(file_list, str):
-        file_list = [file_list]
-    requirements = []
-    for file in file_list:
-        with open(file, encoding="utf-8-sig") as f:
-            requirements.extend(f.readlines())
-    return requirements
+requirements = []
+try:
+    with open('requirements.txt') as f:
+        requirements = f.read().splitlines()
+except IOError as e:
+    print(e)
+
+test_requirements = [
+    'tox',
+]
 
 
 def readme():
@@ -42,23 +52,19 @@ setup(
     author="Pravesh Kaji Budhathoki",
     # entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
     version="1.0",
-    install_requires=load_requirements("requirements.txt"),
+    install_requires=requirements,
     license='Apache License 2.0',
     long_description=readme(),
     long_description_content_type='text/markdown',
-    url='https://github.com/PaddlePaddle/PaddleOCR',
-    download_url='https://github.com/PaddlePaddle/PaddleOCR.git',
+    # url='https://github.com/PaddlePaddle/PaddleOCR',
+    # download_url='https://github.com/PaddlePaddle/PaddleOCR.git',
     keywords=[
         'ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition'
     ],
     classifiers=[
         'Intended Audience :: Developers', 'Operating System :: OS Independent',
         'Natural Language :: English (Simplified)',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7', 'Topic :: Utilities'
+        'Programming Language :: Python :: 3.7'
+        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.9'
     ], )
