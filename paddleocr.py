@@ -16,7 +16,7 @@ import os
 import sys
 import importlib
 
-__dir__ = os.path.dirname(__file__)
+__dir__ = os.path.dirname(os.path.abspath(__file__))
 
 import paddle
 
