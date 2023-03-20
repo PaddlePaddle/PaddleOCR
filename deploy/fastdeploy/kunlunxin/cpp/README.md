@@ -17,7 +17,7 @@ cd  FastDeploy/examples/vision/ocr/PP-OCR/kunlunxin/cpp
 
 # 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
-# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到develop分支
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
 git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/kunlunxin/cpp
 
