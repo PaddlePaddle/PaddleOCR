@@ -105,17 +105,17 @@ def build_option(args):
     elif args.backend.lower() == "pptrt":
         assert args.device.lower(
         ) == "gpu", "Paddle-TensorRT backend require inference on device GPU."
-        det_option.use_trt_backend()
-        det_option.enable_paddle_trt_collect_shape()
-        det_option.enable_paddle_to_trt()
+        det_option.use_paddle_infer_backend()
+        det_option.paddle_infer_option.collect_trt_shape = True
+        det_option.paddle_infer_option.enable_trt = True
 
-        cls_option.use_trt_backend()
-        cls_option.enable_paddle_trt_collect_shape()
-        cls_option.enable_paddle_to_trt()
+        cls_option.use_paddle_infer_backend()
+        cls_option.paddle_infer_option.collect_trt_shape = True
+        cls_option.paddle_infer_option.enable_trt = True
 
-        rec_option.use_trt_backend()
-        rec_option.enable_paddle_trt_collect_shape()
-        rec_option.enable_paddle_to_trt()
+        rec_option.use_paddle_infer_backend()
+        rec_option.paddle_infer_option.collect_trt_shape = True
+        rec_option.paddle_infer_option.enable_trt = True
 
         # If use TRT backend, the dynamic shape will be set as follow.
         # We recommend that users set the length and height of the detection model to a multiple of 32.
