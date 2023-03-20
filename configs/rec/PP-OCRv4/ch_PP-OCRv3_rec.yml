@@ -121,7 +121,7 @@ Eval:
         use_space_char: True
     - RecResizeImg:
         image_shape: [3, 48, 320]
-        infer_mode: True
+        eval_mode: True
     - KeepKeys:
         keep_keys:
         - image
