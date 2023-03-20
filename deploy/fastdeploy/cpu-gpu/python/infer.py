@@ -87,7 +87,7 @@ def build_option(args):
 
         # If use TRT backend, the dynamic shape will be set as follow.
         # We recommend that users set the length and height of the detection model to a multiple of 32.
-        # We also recommend that users set the Trt input shape as follow. 
+        # We also recommend that users set the Trt input shape as follow.
         det_option.set_trt_input_shape("x", [1, 3, 64, 64], [1, 3, 640, 640],
                                        [1, 3, 960, 960])
         cls_option.set_trt_input_shape("x", [1, 3, 48, 10],
@@ -97,7 +97,7 @@ def build_option(args):
                                        [args.rec_bs, 3, 48, 320],
                                        [args.rec_bs, 3, 48, 2304])
 
-        # Users could save TRT cache file to disk as follow. 
+        # Users could save TRT cache file to disk as follow.
         det_option.set_trt_cache_file(args.det_model + "/det_trt_cache.trt")
         cls_option.set_trt_cache_file(args.cls_model + "/cls_trt_cache.trt")
         rec_option.set_trt_cache_file(args.rec_model + "/rec_trt_cache.trt")
@@ -119,7 +119,7 @@ def build_option(args):
 
         # If use TRT backend, the dynamic shape will be set as follow.
         # We recommend that users set the length and height of the detection model to a multiple of 32.
-        # We also recommend that users set the Trt input shape as follow. 
+        # We also recommend that users set the Trt input shape as follow.
         det_option.set_trt_input_shape("x", [1, 3, 64, 64], [1, 3, 640, 640],
                                        [1, 3, 960, 960])
         cls_option.set_trt_input_shape("x", [1, 3, 48, 10],
@@ -129,7 +129,7 @@ def build_option(args):
                                        [args.rec_bs, 3, 48, 320],
                                        [args.rec_bs, 3, 48, 2304])
 
-        # Users could save TRT cache file to disk as follow. 
+        # Users could save TRT cache file to disk as follow.
         det_option.set_trt_cache_file(args.det_model)
         cls_option.set_trt_cache_file(args.cls_model)
         rec_option.set_trt_cache_file(args.rec_model)
@@ -199,8 +199,8 @@ ppocr_v3 = fd.vision.ocr.PPOCRv3(
     det_model=det_model, cls_model=cls_model, rec_model=rec_model)
 
 # Set inference batch size for cls model and rec model, the value could be -1 and 1 to positive infinity.
-# When inference batch size is set to -1, it means that the inference batch size 
-# of the cls and rec models will be the same as the number of boxes detected by the det model. 
+# When inference batch size is set to -1, it means that the inference batch size
+# of the cls and rec models will be the same as the number of boxes detected by the det model.
 ppocr_v3.cls_batch_size = args.cls_bs
 ppocr_v3.rec_batch_size = args.rec_bs
 

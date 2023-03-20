@@ -23,7 +23,6 @@ void InitAndInfer(const std::string &rec_model_dir,
                   const std::string &rec_label_file,
                   const std::string &image_file,
                   const fastdeploy::RuntimeOption &option) {
-
   auto rec_model_file = rec_model_dir + sep + "inference.pdmodel";
   auto rec_params_file = rec_model_dir + sep + "inference.pdiparams";
   auto rec_option = option;
