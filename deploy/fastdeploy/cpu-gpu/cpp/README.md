@@ -2,7 +2,6 @@
 # PaddleOCR CPU-GPU C++部署示例
 
 本目录下提供`infer.cc`快速完成PP-OCRv3在CPU/GPU，以及GPU上通过Paddle-TensorRT加速部署的示例.
-
 ## 1. 说明  
 PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、Intel GPU(独立显卡/集成显卡)硬件上快速部署OCR模型.
 
@@ -17,7 +16,13 @@ PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、I
 
 ```bash  
 # 下载部署示例代码
+git clone https://github.com/PaddlePaddle/FastDeploy.git
+cd  FastDeploy/examples/vision/ocr/PP-OCR/cpu-gpu/cpp
+
+# 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
+git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/cpu-gpu/cpp
 
 # 下载FastDeploy预编译库，用户可在上文提到的`FastDeploy预编译库`中自行选择合适的版本使用

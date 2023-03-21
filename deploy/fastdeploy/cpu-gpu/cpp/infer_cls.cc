@@ -22,7 +22,6 @@ const char sep = '/';
 void InitAndInfer(const std::string &cls_model_dir,
                   const std::string &image_file,
                   const fastdeploy::RuntimeOption &option) {
-
   auto cls_model_file = cls_model_dir + sep + "inference.pdmodel";
   auto cls_params_file = cls_model_dir + sep + "inference.pdiparams";
   auto cls_option = option;

@@ -92,8 +92,8 @@ ppocr_v3 = fd.vision.ocr.PPOCRv3(
     det_model=det_model, cls_model=cls_model, rec_model=rec_model)
 
 # Set inference batch size for cls model and rec model, the value could be -1 and 1 to positive infinity.
-# When inference batch size is set to -1, it means that the inference batch size 
-# of the cls and rec models will be the same as the number of boxes detected by the det model. 
+# When inference batch size is set to -1, it means that the inference batch size
+# of the cls and rec models will be the same as the number of boxes detected by the det model.
 ppocr_v3.cls_batch_size = args.cls_bs
 ppocr_v3.rec_batch_size = args.rec_bs
 

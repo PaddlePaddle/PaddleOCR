@@ -18,7 +18,13 @@ pip install fastdeploy-gpu-python -f https://www.paddlepaddle.org.cn/whl/fastdep
 conda config --add channels conda-forge && conda install cudatoolkit=11.2 cudnn=8.2
 
 # 下载部署示例代码
+git clone https://github.com/PaddlePaddle/FastDeploy.git
+cd  FastDeploy/examples/vision/ocr/PP-OCR/cpu-gpu/python
+
+# 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
+git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/cpu-gpu/python
 
 # 下载PP-OCRv3文字检测模型

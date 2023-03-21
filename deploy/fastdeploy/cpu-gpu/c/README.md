@@ -16,7 +16,13 @@ PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、I
 ## 4.运行部署示例
 ```bash
 # 下载部署示例代码
+git clone https://github.com/PaddlePaddle/FastDeploy.git
+cd  FastDeploy/examples/vision/ocr/PP-OCR/cpu-gpu/c
+
+# 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
+git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/cpu-gpu/c
 
 mkdir build

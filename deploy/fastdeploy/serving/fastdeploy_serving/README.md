@@ -30,7 +30,14 @@ PP-OCRv3由det(检测)、cls(分类)和rec(识别)三个模型组成.
 ### 3.1 下载模型并使用服务化Docker
 ```bash
 # 下载仓库代码
+# 下载部署示例代码
+git clone https://github.com/PaddlePaddle/FastDeploy.git
+cd  FastDeploy/examples/vision/ocr/PP-OCR/serving/fastdeploy_serving
+
+# 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
+git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/serving/fastdeploy_serving
 
 # 下载模型,图片和字典文件

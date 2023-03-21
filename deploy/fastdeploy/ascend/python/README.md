@@ -12,8 +12,14 @@
 ## 3.运行部署示例
 ```
 # 下载部署示例代码
+git clone https://github.com/PaddlePaddle/FastDeploy.git
+cd  FastDeploy/examples/vision/ocr/PP-OCR/ascend/python
+
+# 如果您希望从PaddleOCR下载示例代码，请运行
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
-cd PaddleOCR/deploy/fastdeploy/PP-OCRv3/ascend/python
+# 注意：如果当前分支找不到下面的fastdeploy测试代码，请切换到dygraph分支
+git checkout dygraph
+cd PaddleOCR/deploy/fastdeploy/ascend/python
 
 # 下载PP-OCRv3文字检测模型
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
