@@ -1,0 +1,52 @@
+DATA:
+  DICT: dicts/scut-hccdoc.txt
+  VAL:
+    DATA_ROOT: datasets/SCUT-HCCDoc_test
+    WIDTHS:
+      - 1600
+    MAX_HEIGHT: 2240 
+    SIZE_STRIDE: 16
+    BATCH_SIZE: 1
+    IMAGE_MODE: 'binary'
+  NUM_WORKER: 3
+MODEL:
+  WEIGHTS: 'outputs/scut-hccdoc/checkpoints/scut-hccdoc.pth'
+  BACKBONE:
+    BLOCK: basicblock
+    IN_CHANNEL: 3
+    LAYERS: 
+      - 2
+      - 2
+      - 2
+      - 2
+    CHANNELS:
+      - 64
+      - 128
+      - 256
+      - 512
+  FEAT:
+    BOX_CHANNELS:
+      - 256
+      - 128
+      - 64
+    DIS_CHANNELS:
+      - 256
+      - 128
+      - 64
+    CLS_CHANNELS:
+      - 512 
+      - 512 
+      - 1024
+    ROM_CHANNELS:
+      - 64
+      - 64
+  PRED:
+    DROPOUT: 0.5
+    NUM_CLASSES: 6109
+POST_PROCESS:
+  DIS_WEIGHT: 0.8
+  CONF_THRES: 0.8
+  NMS_THRES: 0.15
+  SOL_EOL_CONF_THRES: 0.9
+  READ_ORDER_MAX_STEP: 20
+OUTPUT_FOLDER: './outputs/scut-hccdoc'

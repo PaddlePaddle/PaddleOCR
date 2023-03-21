@@ -1,0 +1,1 @@
+from .pagenet import build_model_paddle

@@ -1,0 +1,55 @@
+DATA:
+  DICT: PageNet-pytorch/PageNet-pytorch/dicts/mthv2.txt
+  VAL:
+    DATA_ROOT: MTHv2_test
+    WIDTHS:
+      - 2880
+    MAX_HEIGHT: 2880
+    FORCE_RESIZE: False
+    SIZE_STRIDE: 16
+    BATCH_SIZE: 1
+    IMAGE_MODE: 'binary'
+  NUM_WORKER: 3
+MODEL:
+  WEIGHTS: 'PageNet-pytorch/PageNet-pytorch/outputs/mthv2/mthv2.pth'
+  BACKBONE:
+    BLOCK: basicblock
+    IN_CHANNEL: 3
+    LAYERS: 
+      - 2
+      - 2
+      - 2
+      - 2
+    CHANNELS:
+      - 64
+      - 128
+      - 256
+      - 512
+  FEAT:
+    BOX_CHANNELS:
+      - 256
+      - 128
+      - 64
+    DIS_CHANNELS:
+      - 256
+      - 128
+      - 64
+    CLS_CHANNELS:
+      - 512 
+      - 512 
+      - 1024
+    ROM_CHANNELS:
+      - 64
+      - 64
+  PRED:
+    DROPOUT: 0.5
+    NUM_CLASSES: 6760
+POST_PROCESS:
+  DIS_WEIGHT: 0.8
+  CONF_THRES: 0.8
+  NMS_THRES: 0.15
+  SOL_EOL_CONF_THRES: 0.9
+  READ_ORDER_MAX_STEP: 12
+  LAYOUT: 'vertical'
+OUTPUT_FOLDER: 'PageNet-pytorch/PageNet-pytorch/outputs/mthv2'
+
