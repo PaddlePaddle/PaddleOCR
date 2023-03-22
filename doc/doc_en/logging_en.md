@@ -57,5 +57,46 @@ For more advanced usage to log images, audios, videos or any other form of data,
 
 To view the dashboard, the link to the dashboard is printed to the console at the beginning and end of every training job and you can also access it by logging into your W&B account on your browser.
 
+### mlflow
+mlflow is a MLOps tool that can be used for experiment tracking, dataset/model versioning, visualizing results and collaborating with colleagues. A mlflow logger is integrated directly into PaddleOCR and to use it, first you need to install the mlflow package.
+
+```shell
+# Install MLflow
+pip install mlflow
+
+# Install MLflow with extra ML libraries and 3rd-party tools
+pip install mlflow[extras]
+
+# Start a local server 
+mlflow server --backend-store-uri /datadrive/mlflow --default-artifact-root /datadrive/mlflow --host 0.0.0.0
+```
+
+To visualize and track your model training add the following flag to your config yaml file under the `Global` section -
+
+```
+Global:
+    use_mlflow: True
+```
+
+To add more arguments to the `MlflowLogger` listed [here](./config_en.md) add the header `mlflow` to the yaml file and add the arguments under it - 
+
+```
+mlflow:
+  tracking_uri: http://localhost:5000
+  exp_name: paddleocr
+  run_name: icdar2015.det_mv3_db
+```
+
+
+
+These config variables from the yaml file are used to instantiate the `MlflowLogger` object with the project name. During the training process, the `log_metrics` function is called to log training and evaluation metrics at the training and evaluation steps respectively from the rank 0 process only.
+At every model saving step, the MlflowLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on.
+
+All the logging mentioned above is integrated into the `program.train` function and will generate dashboards like this -
+
+![mlflow Dashboard](../imgs_en/mlflow_metrics.png)
+
+![mlflow Models](../imgs_en/mlflow_models.png)
+
 ### Using Multiple Loggers
 Both VisualDL and W&B can also be used simultaneously by just setting both the aforementioned flags to True.

@@ -33,7 +33,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
-from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
+from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers, MlflowLogger
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
@@ -678,6 +678,16 @@ def preprocess(is_train=False):
             wandb_params = dict()
         wandb_params.update({'save_dir': save_model_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
+        loggers.append(log_writer)
+    if ('use_mlflow' in config['Global'] and
+            config['Global']['use_mlflow']) or 'mlflow' in config:
+        save_model_dir = config['Global']['save_model_dir']
+        if "mlflow" in config:
+            mlflow_params = config['mlflow']
+        else:
+            mlflow_params = dict()
+        mlflow_params.update({'save_dir': save_model_dir})
+        log_writer = MlflowLogger(**mlflow_params, config=config)
         loggers.append(log_writer)
     else:
         log_writer = None

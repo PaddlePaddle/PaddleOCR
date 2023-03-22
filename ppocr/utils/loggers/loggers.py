@@ -1,5 +1,5 @@
 from .wandb_logger import WandbLogger
-
+from .mlflow_logger import MlflowLogger
 class Loggers(object):
     def __init__(self, loggers):
         super().__init__()
