@@ -36,7 +36,7 @@ from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.visual import draw_ser_results
 from ppocr.utils.utility import get_image_file_list, load_vqa_bio_label_maps
-import tools.program as program
+import paddle_tools.program as program
 
 
 def to_tensor(data):

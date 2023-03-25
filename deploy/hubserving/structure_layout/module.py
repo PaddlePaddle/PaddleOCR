@@ -28,7 +28,7 @@ from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
 import paddlehub as hub
 
-from tools.infer.utility import base64_to_cv2
+from paddle_tools.infer.utility import base64_to_cv2
 from ppstructure.layout.predict_layout import LayoutPredictor as _LayoutPredictor
 from ppstructure.utility import parse_args
 from deploy.hubserving.structure_layout.params import read_params

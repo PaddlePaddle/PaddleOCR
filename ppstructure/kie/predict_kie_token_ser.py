@@ -25,7 +25,7 @@ import json
 import numpy as np
 import time
 
-import tools.infer.utility as utility
+import paddle_tools.infer.utility as utility
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger

@@ -38,7 +38,7 @@ from ppocr.optimizer import build_optimizer
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
-import tools.program as program
+import paddle_tools.program as program
 from paddleslim.dygraph.quant import QAT
 
 dist.get_world_size()
