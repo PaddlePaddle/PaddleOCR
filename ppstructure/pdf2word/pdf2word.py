@@ -21,7 +21,7 @@ import functools
 import cv2
 import platform
 import numpy as np
-import fitz
+import pdf2image
 from PIL import Image
 from pdf2docx.converter import Converter
 from qtpy.QtWidgets import QApplication, QWidget, QPushButton, QProgressBar, \
@@ -100,20 +100,7 @@ def QImageToCvMat(incomingImage) -> np.array:
 
 def readImage(image_file) -> list:
     if os.path.basename(image_file)[-3:] == 'pdf':
-        imgs = []
-        with fitz.open(image_file) as pdf:
-            for pg in range(0, pdf.pageCount):
-                page = pdf[pg]
-                mat = fitz.Matrix(2, 2)
-                pm = page.getPixmap(matrix=mat, alpha=False)
-
-                # if width or height > 2000 pixels, don't enlarge the image
-                if pm.width > 2000 or pm.height > 2000:
-                    pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
-
-                img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
-                img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-                imgs.append(img)
+        imgs = pdf2image.convert_from_path(image_file)
     else:
         img = cv2.imread(image_file, cv2.IMREAD_COLOR)
         if img is not None:
