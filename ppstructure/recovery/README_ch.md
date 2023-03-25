@@ -20,7 +20,7 @@
 
 提供了2种版面恢复方法，可根据输入PDF的格式进行选择：
 
-- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过PyMuPDF获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。
+- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过pdf2image获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。
 - **图片格式PDF解析(输入可为标准PDF或图片格式PDF)**：结合[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件。
 
 2种方法输入格式、适用场景如下：
@@ -82,7 +82,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **（2）安装recovery的`requirements`**
 
-版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。
+版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装pdf2image API([要求Python >= 3.7](https://pypi.org/project/pdf2image/))。
 
 通过如下命令安装全部库：
 
