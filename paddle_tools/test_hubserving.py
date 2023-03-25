@@ -25,7 +25,7 @@ import numpy as np
 import time
 from PIL import Image
 from ppocr.utils.utility import get_image_file_list
-from tools.infer.utility import draw_ocr, draw_boxes, str2bool
+from paddle_tools.infer.utility import draw_ocr, draw_boxes, str2bool
 from ppstructure.utility import draw_structure_result
 from ppstructure.predict_system import to_excel
 

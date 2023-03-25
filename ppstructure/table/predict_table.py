@@ -26,10 +26,10 @@ import copy
 import logging
 import numpy as np
 import time
-import tools.infer.predict_rec as predict_rec
-import tools.infer.predict_det as predict_det
-import tools.infer.utility as utility
-from tools.infer.predict_system import sorted_boxes
+import paddle_tools.infer.predict_rec as predict_rec
+import paddle_tools.infer.predict_det as predict_det
+import paddle_tools.infer.utility as utility
+from paddle_tools.infer.predict_system import sorted_boxes
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from ppstructure.table.matcher import TableMatch

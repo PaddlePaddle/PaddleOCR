@@ -25,8 +25,8 @@ import json
 import numpy as np
 import time
 
-import tools.infer.utility as utility
-from tools.infer_kie_token_ser_re import make_input
+import paddle_tools.infer.utility as utility
+from paddle_tools.infer_kie_token_ser_re import make_input
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
 from ppocr.utils.visual import draw_ser_results, draw_re_results

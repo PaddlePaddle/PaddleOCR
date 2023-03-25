@@ -37,8 +37,8 @@ from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
 from ppocr.utils.visual import draw_rectangle
-from tools.infer.utility import draw_boxes
-import tools.program as program
+from paddle_tools.infer.utility import draw_boxes
+import paddle_tools.program as program
 import cv2
 
 

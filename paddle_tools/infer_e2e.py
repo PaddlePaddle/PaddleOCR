@@ -36,7 +36,7 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import get_image_file_list
-import tools.program as program
+import paddle_tools.program as program
 from PIL import Image, ImageDraw, ImageFont
 import math
 

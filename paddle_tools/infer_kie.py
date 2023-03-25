@@ -34,7 +34,7 @@ import paddle
 from ppocr.data import create_operators, transform
 from ppocr.modeling.architectures import build_model
 from ppocr.utils.save_load import load_model
-import tools.program as program
+import paddle_tools.program as program
 import time
 
 

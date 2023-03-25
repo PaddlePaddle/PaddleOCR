@@ -29,7 +29,7 @@ import cv2
 import numpy as np
 import paddlehub as hub
 
-from tools.infer.utility import base64_to_cv2
+from paddle_tools.infer.utility import base64_to_cv2
 from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
 from ppstructure.utility import parse_args
 
