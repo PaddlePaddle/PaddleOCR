@@ -21,7 +21,7 @@ editable Word file consistent with the original image layout.
 
 Two layout recovery methods are provided, you can choose by PDF format:
 
-- **Standard PDF parse(the input is standard PDF)**: Python based PDF to word library [pdf2docx] (https://github.com/dothinking/pdf2docx) is optimized, the method extracts data from PDF with PyMuPDF, then parse layout with rule, finally, generate docx with python-docx.
+- **Standard PDF parse(the input is standard PDF)**: Python based PDF to word library [pdf2docx] (https://github.com/dothinking/pdf2docx) is optimized, the method extracts data from PDF with pdf2image, then parse layout with rule, finally, generate docx with python-docx.
 
 - **Image format PDF parse(the input can be standard PDF or image format PDF)**: Layout recovery combines [layout analysis](../layout/README.md)、[table recognition](../table/README.md) to better recover images, tables, titles, etc. supports input files in PDF and document image formats in Chinese and English.
 
@@ -86,7 +86,7 @@ git clone https://gitee.com/paddlepaddle/PaddleOCR
 
 - **(2) Install recovery `requirements`**
 
-The layout restoration is exported as docx files, so python-docx API need to be installed, and PyMuPDF api([requires Python >= 3.7](https://pypi.org/project/PyMuPDF/)) need to be installed to process the input files in pdf format.
+The layout restoration is exported as docx files, so python-docx API need to be installed, and pdf2image api([requires Python >= 3.7](https://pypi.org/project/pdf2image/)) need to be installed to process the input files in pdf format.
 
 Install all the libraries by running the following command:
 
