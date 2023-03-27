@@ -1,5 +1,11 @@
 English | [简体中文](README_ch.md)
 
+# Note from Maintainer:
+
+This is a fork of the PaddleOCR repository, created with the purpose of complying with an Apache license. The original repo contains at least one dependency that is not Apache compliant so this fork was created to remove any non-compliant dependencies.
+
+The original documentation at the time of the fork is found below.
+
 # PP-Structure
 
 - [1. Introduction](#1-introduction)
