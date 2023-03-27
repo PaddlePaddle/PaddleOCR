@@ -14,7 +14,7 @@
 
 from setuptools import setup
 from io import open
-from paddleocr import VERSION
+#from paddleocr import VERSION
 
 def load_requirements(file_list=None):
     if file_list is None:
@@ -40,7 +40,7 @@ setup(
     package_dir={'paddleocr': ''},
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
-    version=VERSION,
+    #version=VERSION,
     install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
     license='Apache License 2.0',
     description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
