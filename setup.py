@@ -15,10 +15,11 @@
 from setuptools import setup
 from io import open
 
+
 def load_requirements(file_list=None):
     if file_list is None:
-        file_list = ['requirements.txt']
-    if isinstance(file_list,str):
+        file_list = ["requirements.txt"]
+    if isinstance(file_list, str):
         file_list = [file_list]
     requirements = []
     for file in file_list:
@@ -28,35 +29,58 @@ def load_requirements(file_list=None):
 
 
 def readme():
-    with open('doc/doc_en/whl_en.md', encoding="utf-8-sig") as f:
+    with open("doc/doc_en/whl_en.md", encoding="utf-8-sig") as f:
         README = f.read()
     return README
 
 
 setup(
-    name='unstructured.paddleocr',
-    packages=['unstructured.paddleocr'],
-    package_dir={'unstructured.paddleocr': ''},
+    name="unstructured.paddleocr",
+    packages=["unstructured.paddleocr"],
+    package_dir={"unstructured.paddleocr": ""},
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
-    install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
-    license='Apache License 2.0',
-    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
+    install_requires=[
+        "shapely",
+        "scikit-image",
+        "imgaug",
+        "pyclipper",
+        "lmdb",
+        "tqdm",
+        "numpy",
+        "visualdl",
+        "rapidfuzz",
+        "opencv-python==4.6.0.66",
+        "opencv-contrib-python==4.6.0.66",
+        "cython",
+        "lxml",
+        "premailer",
+        "openpyxl",
+        "attrdict",
+        "Polygon3",
+        "lanms-neo==1.0.2",
+        "pdf2image",
+    ],
+    license="Apache License 2.0",
+    description="Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices",
     long_description=readme(),
-    long_description_content_type='text/markdown',
-    url='https://github.com/UnstructureIO/unstructured.PaddleOCR',
-    download_url='https://github.com/UnstructureIO/unstructured.PaddleOCR.git',
+    long_description_content_type="text/markdown",
+    url="https://github.com/UnstructureIO/unstructured.PaddleOCR",
+    download_url="https://github.com/UnstructureIO/unstructured.PaddleOCR.git",
     keywords=[
-        'ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition'
+        "ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition"
     ],
     classifiers=[
-        'Intended Audience :: Developers', 'Operating System :: OS Independent',
-        'Natural Language :: Chinese (Simplified)',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7', 'Topic :: Utilities'
-    ], )
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Natural Language :: Chinese (Simplified)",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Topic :: Utilities",
+    ],
+)
