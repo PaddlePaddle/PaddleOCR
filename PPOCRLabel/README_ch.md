@@ -105,7 +105,7 @@ python PPOCRLabel.py --lang ch
 
 ```bash
 cd ./PPOCRLabel
-python3 setup.py bdist_wheel 
+python3 setup.py bdist_wheel
 pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.com/pypi/simple
 ```
 
@@ -130,13 +130,13 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.
 表格标注针对表格的结构化提取，将图片中的表格转换为Excel格式，因此标注时需要配合外部软件打开Excel同时完成。在PPOCRLabel软件中完成表格中的文字信息标注（文字与位置）、在Excel文件中完成表格结构信息标注，推荐的步骤为：
 1. 表格识别：打开表格图片后，点击软件右上角 `表格识别` 按钮，软件调用PP-Structure中的表格识别模型，自动为表格打标签，同时弹出Excel
 
-2. 更改标注结果：**以表格中的单元格为单位增加标注框**（即一个单元格内的文字都标记为一个框）。标注框上鼠标右键后点击 `单元格重识别` 
+2. 更改标注结果：**以表格中的单元格为单位增加标注框**（即一个单元格内的文字都标记为一个框）。标注框上鼠标右键后点击 `单元格重识别`
    可利用模型自动识别单元格内的文字。
-   
+
    > 注意：如果表格中存在空白单元格，同样需要使用一个标注框将其标出，使得单元格总数与图像中保持一致。
 
 3. **调整单元格顺序**：点击软件`视图-显示框编号` 打开标注框序号，在软件界面右侧拖动 `识别结果` 一栏下的所有结果，使得标注框编号按照从左到右，从上到下的顺序排列，按行依次标注。
-   
+
 4. 标注表格结构：**在外部Excel软件中，将存在文字的单元格标记为任意标识符（如 `1` ）**，保证Excel中的单元格合并情况与原图相同即可（即不需要Excel中的单元格文字与图片中的文字完全相同）
 
 5. 导出JSON格式：关闭所有表格图像对应的Excel，点击 `文件`-`导出表格标注`，生成gt.txt标注文件。
@@ -191,9 +191,9 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl -i https://mirror.baidu.
 
  - 默认模型：PPOCRLabel默认使用PaddleOCR中的中英文超轻量OCR模型，支持中英文与数字识别，多种语言检测。
 
- - 模型语言切换：用户可通过菜单栏中 "PaddleOCR" - "选择模型" 切换内置模型语言，目前支持的语言包括法文、德文、韩文、日文。具体模型下载链接可参考[PaddleOCR模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/models_list.md).
+ - 模型语言切换：用户可通过菜单栏中 "PaddleOCR" - "选择模型" 切换内置模型语言，目前支持的语言包括法文、德文、韩文、日文。具体模型下载链接可参考[PaddleOCR模型列表](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md).
 
- - **自定义模型**：如果用户想将内置模型更换为自己的推理模型，可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/PPOCRLabel.py#L116) 实现，例如指定检测模型：`self.ocr = PaddleOCR(det=True, cls=True, use_gpu=gpu, lang=lang) `，在 `det_model_dir` 中传入  自己的模型即可。 
+ - **自定义模型**：如果用户想将内置模型更换为自己的推理模型，可根据[自定义模型代码使用](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/whl.md#3-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B)，通过修改PPOCRLabel.py中针对[PaddleOCR类的实例化](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/PPOCRLabel/PPOCRLabel.py#L97) 或者[PPStructure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/PPOCRLabel/PPOCRLabel.py#L104)实现，例如指定检测模型：`self.ocr = PaddleOCR(det=True, cls=True, use_gpu=gpu, lang=lang) `，在 `det_model_dir` 中传入自己的模型即可。
 
 ### 3.3 导出标记结果
 
@@ -213,7 +213,7 @@ PPOCRLabel支持三种导出方式：
 
 ```
 cd ./PPOCRLabel # 将目录切换到PPOCRLabel文件夹下
-python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data 
+python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data
 ```
 
 参数说明：
@@ -235,7 +235,7 @@ python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../
     |- word_003.jpg
     | ...
   ```
-  
+
 ### 3.5 错误提示
 
 - 如果同时使用whl包安装了paddleocr，其优先级大于通过paddleocr.py调用PaddleOCR类，whl包未更新时会导致程序异常。
