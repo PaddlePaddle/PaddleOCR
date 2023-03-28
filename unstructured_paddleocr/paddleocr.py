@@ -31,20 +31,20 @@ from pathlib import Path
 # ppocr = importlib.import_module(".", "ppocr")
 # ppstructure = importlib.import_module(".", "ppstructure")
 
-from unstructured_paddleocr.paddle_tools.infer import predict_system
-from unstructured_paddleocr.ppocr.utils.logging import get_logger
+from .paddle_tools.infer import predict_system
+from .ppocr.utils.logging import get_logger
 
 logger = get_logger()
-from unstructured_paddleocr.ppocr.utils.utility import check_and_read, get_image_file_list
-from unstructured_paddleocr.ppocr.utils.network import (
+from .ppocr.utils.utility import check_and_read, get_image_file_list
+from .ppocr.utils.network import (
     maybe_download,
     download_with_progressbar,
     is_link,
     confirm_model_dir_url,
 )
-from unstructured_paddleocr.paddle_tools.infer.utility import draw_ocr, str2bool, check_gpu
-from unstructured_paddleocr.ppstructure.utility import init_args, draw_structure_result
-from unstructured_paddleocr.ppstructure.predict_system import (
+from .paddle_tools.infer.utility import draw_ocr, str2bool, check_gpu
+from .ppstructure.utility import init_args, draw_structure_result
+from .ppstructure.predict_system import (
     StructureSystem,
     save_structure_res,
     to_excel,
