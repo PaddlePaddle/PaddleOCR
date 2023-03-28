@@ -60,7 +60,7 @@ PPOCRLabel can be started in two ways: whl package and Python script. The whl pa
 ```bash
 pip install PPOCRLabel  # install
 
-# Select label mode and run 
+# Select label mode and run
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -76,7 +76,7 @@ PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extrac
 pip3 install PPOCRLabel
 pip3 install trash-cli
 
-# Select label mode and run 
+# Select label mode and run
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -86,7 +86,7 @@ PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extrac
 pip3 install PPOCRLabel
 pip3 install opencv-contrib-python-headless==4.2.0.32
 
-# Select label mode and run 
+# Select label mode and run
 PPOCRLabel  # [Normal mode] for [detection + recognition] labeling
 PPOCRLabel --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -97,7 +97,7 @@ If you modify the PPOCRLabel file (for example, specifying a new built-in model)
 ```bash
 cd ./PPOCRLabel  # Switch to the PPOCRLabel directory
 
-# Select label mode and run 
+# Select label mode and run
 python PPOCRLabel.py  # [Normal mode] for [detection + recognition] labeling
 python PPOCRLabel.py --kie True # [KIE mode] for [detection + recognition + keyword extraction] labeling
 ```
@@ -140,20 +140,20 @@ pip3 install dist/PPOCRLabel-0.0.0-py2.py3-none-any.whl
 10. Labeling result: the user can export the label result manually through the menu "File - Export Label", while the program will also export automatically if "File - Auto export Label Mode" is selected. The manually checked label will be stored in *Label.txt* under the opened picture folder. Click "File"-"Export Recognition Results" in the menu bar, the recognition training data of such pictures will be saved in the *crop_img* folder, and the recognition label will be saved in *rec_gt.txt*<sup>[4]</sup>.
 
 ### 2.2 Table Annotation
-The table annotation is aimed at extracting the structure of the table in a picture and converting it to Excel format, 
+The table annotation is aimed at extracting the structure of the table in a picture and converting it to Excel format,
 so the annotation needs to be done simultaneously with external software to edit Excel.
-In PPOCRLabel, complete the text information labeling (text and position), complete the table structure information 
+In PPOCRLabel, complete the text information labeling (text and position), complete the table structure information
 labeling in the Excel file, the recommended steps are:
 
-1. Table annotation: After opening the table picture, click on the `Table Recognition` button in the upper right corner of PPOCRLabel, which will call the table recognition model in PP-Structure to automatically label 
+1. Table annotation: After opening the table picture, click on the `Table Recognition` button in the upper right corner of PPOCRLabel, which will call the table recognition model in PP-Structure to automatically label
     the table and pop up Excel at the same time.
 
-2. Change the recognition result: **label each cell** (i.e. the text in a cell is marked as a box). Right click on the box and click on `Cell Re-recognition`. 
+2. Change the recognition result: **label each cell** (i.e. the text in a cell is marked as a box). Right click on the box and click on `Cell Re-recognition`.
    You can use the model to automatically recognise the text within a cell.
 
 3. Mark the table structure: for each cell contains the text, **mark as any identifier (such as `1`) in Excel**, to ensure that the merged cell structure is same as the original picture.
 
-	> Note: If there are blank cells in the table, you also need to mark them with a bounding box so that the total number of cells is the same as in the image.
+    > Note: If there are blank cells in the table, you also need to mark them with a bounding box so that the total number of cells is the same as in the image.
 
 4. ***Adjust cell order:*** Click on the menu  `View` - `Show Box Number` to show the box ordinal numbers, and drag all the results under the 'Recognition Results' column on the right side of the software interface to make the box numbers are arranged from left to right, top to bottom
 
@@ -209,9 +209,9 @@ labeling in the Excel file, the recommended steps are:
 - Default model: PPOCRLabel uses the Chinese and English ultra-lightweight OCR model in PaddleOCR by default, supports Chinese, English and number recognition, and multiple language detection.
 
 - Model language switching: Changing the built-in model language is supportable by clicking "PaddleOCR"-"Choose OCR Model" in the menu bar. Currently supported languages​include French, German, Korean, and Japanese.
-  For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_en/models_list_en.md#multilingual-recognition-modelupdating)
+  For specific model download links, please refer to [PaddleOCR Model List](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/models_list_en.md)
 
-- **Custom Model**: If users want to replace the built-in model with their own inference model, they can follow the [Custom Model Code Usage](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_en/whl_en.md#31-use-by-code) by modifying PPOCRLabel.py for [Instantiation of PaddleOCR class](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/PPOCRLabel/PPOCRLabel.py#L86) :
+- **Custom Model**: If users want to replace the built-in model with their own inference model, they can follow the [Custom Model Code Usage](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_en/whl_en.md#31-use-by-code) by modifying PPOCRLabel.py for [Instantiation of PaddleOCR class](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/PPOCRLabel/PPOCRLabel.py#L97) :
 
   add parameter `det_model_dir`  in `self.ocr = PaddleOCR(use_pdserving=False, use_angle_cls=True, det=True, cls=True, use_gpu=gpu, lang=lang) `
 
@@ -233,7 +233,7 @@ PPOCRLabel supports three ways to export Label.txt
 
     ```
   cd ./PPOCRLabel # Change the directory to the PPOCRLabel folder
-  python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data 
+  python gen_ocr_train_val_test.py --trainValTestRatio 6:2:2 --datasetRootPath ../train_data
   ```
 
   Parameter Description:
@@ -255,7 +255,7 @@ PPOCRLabel supports three ways to export Label.txt
     |- word_003.jpg
     | ...
   ```
-  
+
 ### 3.5 Error message
 
 - If paddleocr is installed with whl, it has a higher priority than calling PaddleOCR class with paddleocr.py, which may cause an exception if whl package is not updated.
