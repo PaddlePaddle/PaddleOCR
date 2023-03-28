@@ -37,6 +37,7 @@ def readme():
 setup(
     name="unstructured.paddleocr",
     packages=["unstructured.paddleocr"],
+    version="0.2.6.1",
     package_dir={"unstructured.paddleocr": ""},
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
