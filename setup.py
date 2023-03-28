@@ -38,8 +38,7 @@ setup(
     name="unstructured.paddleocr",
     packages=find_packages(),
     version="0.2.6.3",
-    package_dir={"paddleocr": ""},
-    include_package_data=True,
+    py_modules="paddleocr",
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
     install_requires=[
         "shapely",
