@@ -12,6 +12,7 @@ Global:
   use_visualdl: False
   seed: 2022
   infer_img: ppstructure/docs/kie/input/zh_val_42.jpg
+  d2s_train_image_shape: [3, 224, 224]
   # if you want to predict using the groundtruth ocr info,
   # you can use the following config
   # infer_img: train_data/XFUND/zh_val/val.json

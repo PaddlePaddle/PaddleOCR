@@ -20,6 +20,7 @@ Global:
   infer_mode: False
   use_space_char: False
   save_res_path: ./output/rec/predicts_svtr_tiny.txt
+  d2s_train_image_shape: [3, 64, 256]
 
 
 Optimizer:

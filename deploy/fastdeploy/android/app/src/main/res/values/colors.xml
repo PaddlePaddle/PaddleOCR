@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorWindow">#FF000000</color>
+    <color name="colorTopBar">#00000000</color>
+    <color name="colorBottomBar">#00000000</color>
+    <color name="colorText">#FFFFFFFF</color>
+
+    <color name="bk_black">#000000</color>
+    <color name="bk_blue">#3B85F5</color>
+    <color name="textColorHighlight">#F5A623</color>
+    <color name="textColor">#FFFFFF</color>
+
+    <color name="bk_result_image_padding">#EEEEEE</color>
+
+    <color name="table_result_item_text_color">#3B85F5</color>
+    <color name="table_result_tableheader_text_color">#333333</color>
+    <color name="result_section_border_color">#E5E5E5</color>
+    <color name="result_popview_tablebody_bk">#3b85f5</color>
+</resources>
