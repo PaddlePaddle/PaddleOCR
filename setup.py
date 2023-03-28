@@ -58,6 +58,7 @@ setup(
         "Polygon3",
         "lanms-neo==1.0.2",
         "pdf2image",
+        "paddlepaddle",
     ],
     license="Apache License 2.0",
     description="Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices",
