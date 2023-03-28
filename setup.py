@@ -37,7 +37,7 @@ def readme():
 setup(
     name="unstructured.paddleocr",
     packages=find_packages(),
-    version="0.2.6.4",
+    version="0.2.6.5",
     install_requires=[
         "shapely",
         "scikit-image",
