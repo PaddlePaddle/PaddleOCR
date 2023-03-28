@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from io import open
 
 
@@ -29,16 +29,16 @@ def load_requirements(file_list=None):
 
 
 def readme():
-    with open("doc/doc_en/whl_en.md", encoding="utf-8-sig") as f:
+    with open("README.md", encoding="utf-8-sig") as f:
         README = f.read()
     return README
 
 
 setup(
     name="unstructured.paddleocr",
-    packages=["unstructured.paddleocr"],
-    version="0.2.6.2",
-    package_dir={"unstructured.paddleocr": ""},
+    packages=find_packages(),
+    version="0.2.6.3",
+    package_dir={"paddleocr": ""},
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
     install_requires=[
