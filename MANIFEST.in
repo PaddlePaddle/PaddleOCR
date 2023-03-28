@@ -1,10 +1,12 @@
 include LICENSE
 include README.md
+include unstructured_paddleocr/paddleocr.py
+include unstructured_paddleocr/__init__.py
 
-recursive-include ppocr/utils *.*
-recursive-include ppocr/data *.py
-recursive-include ppocr/postprocess *.py
-recursive-include paddle_tools/infer *.py
-recursive-include paddle_tools __init__.py
-recursive-include ppocr/utils/e2e_utils *.py
-recursive-include ppstructure *.py
+recursive-include unstructured_paddleocr/ppocr/utils *.*
+recursive-include unstructured_paddleocr/ppocr/data *.py
+recursive-include unstructured_paddleocr/ppocr/postprocess *.py
+recursive-include unstructured_paddleocr/paddle_tools/infer *.py
+recursive-include unstructured_paddleocr/paddle_tools __init__.py
+recursive-include unstructured_paddleocr/ppocr/utils/e2e_utils *.py
+recursive-include unstructured_paddleocr/ppstructure *.py
