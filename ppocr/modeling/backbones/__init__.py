@@ -45,11 +45,12 @@ def build_backbone(config, model_type):
         from .rec_resnet_rfl import ResNetRFL
         from .rec_densenet import DenseNet
         from .rec_shallow_cnn import ShallowCNN
+        from .rec_lcnetv3 import LCNetv3
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
             'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32', 'ResNetRFL',
-            'DenseNet', 'ShallowCNN'
+            'DenseNet', 'ShallowCNN', 'LCNetv3'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet
