@@ -56,15 +56,13 @@ setup(
     license='Apache License 2.0',
     long_description=readme(),
     long_description_content_type='text/markdown',
-    # url='https://github.com/PaddlePaddle/PaddleOCR',
-    # download_url='https://github.com/PaddlePaddle/PaddleOCR.git',
     keywords=[
         'ocr textdetection textrecognition paddleocr crnn east star-net rosetta ocrlite db chineseocr chinesetextdetection chinesetextrecognition'
     ],
     classifiers=[
         'Intended Audience :: Developers', 'Operating System :: OS Independent',
         'Natural Language :: English (Simplified)',
-        'Programming Language :: Python :: 3.7'
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9'
     ], )
