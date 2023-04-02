@@ -104,7 +104,7 @@ def train(config, scaler=None):
     # model = MobileNetV3_large_x0_5(class_dim=100)
     model = build_model(config)
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
         config, parameter_list=model.parameters())
 
@@ -146,7 +146,7 @@ def train(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
+            # cal metric
             acc = metric_func(outs, label)
 
             # cal loss
@@ -218,7 +218,7 @@ def train_distill(config, scaler=None):
     else:
         pass
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
         config, parameter_list=model.parameters())
 
@@ -252,7 +252,7 @@ def train_distill(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
+            # cal metric
             acc = metric_func(outs['student'], label)
 
             # cal loss
@@ -318,7 +318,7 @@ def train_distill_multiopt(config, scaler=None):
     # model = distillmv3_large_x0_5(class_dim=100)
     model = build_model(config)
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
         config, parameter_list=model.student.parameters())
     optimizer1, lr_scheduler1 = create_optimizer(
@@ -364,7 +364,7 @@ def train_distill_multiopt(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
+            # cal metric
             acc = metric_func(outs['student'], label)
 
             # cal loss

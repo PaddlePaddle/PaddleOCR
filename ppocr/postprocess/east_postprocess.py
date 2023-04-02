@@ -87,7 +87,7 @@ class EASTPostProcess(object):
             boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
         if boxes.shape[0] == 0:
             return []
-        # Here we filter some low score boxes by the average score map, 
+        # Here we filter some low score boxes by the average score map,
         #   this is different from the orginal paper.
         for i, box in enumerate(boxes):
             mask = np.zeros_like(score_map, dtype=np.uint8)

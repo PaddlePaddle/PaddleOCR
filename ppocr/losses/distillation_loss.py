@@ -267,7 +267,7 @@ class DistillationDilaDBLoss(DBLoss):
             # dilation to teacher prediction
             dilation_w = np.array([[1, 1], [1, 1]])
             th_shrink_maps = tch_preds[:, 0, :, :]
-            th_shrink_maps = th_shrink_maps.numpy() > 0.3  # thresh = 0.3 
+            th_shrink_maps = th_shrink_maps.numpy() > 0.3  # thresh = 0.3
             dilate_maps = np.zeros_like(th_shrink_maps).astype(np.float32)
             for i in range(th_shrink_maps.shape[0]):
                 dilate_maps[i] = cv2.dilate(

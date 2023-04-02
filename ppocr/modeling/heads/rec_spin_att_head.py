@@ -57,7 +57,7 @@ class SPINAttentionHead(nn.Layer):
                                                                char_onehots)
                 output_hiddens.append(paddle.unsqueeze(outputs, axis=1))
             output = paddle.concat(output_hiddens, axis=1)
-            probs = self.generator(output)        
+            probs = self.generator(output)
         else:
             targets = paddle.zeros(shape=[batch_size], dtype="int32")
             probs = None

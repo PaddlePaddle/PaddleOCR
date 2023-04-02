@@ -131,7 +131,7 @@ class TSRN(nn.Layer):
             length = x[2]
             input_tensor = x[3]
 
-            # add transformer 
+            # add transformer
             sr_pred, word_attention_map_pred, _ = self.r34_transformer(
                 sr_img, length, input_tensor)
 
@@ -212,7 +212,7 @@ class GruBlock(nn.Layer):
         x = self.conv1(x)
         x = x.transpose([0, 2, 3, 1])  # b, w, h, c
         batch_size, w, h, c = x.shape
-        x = x.reshape([-1, h, c])  # b*w, h, c  
+        x = x.reshape([-1, h, c])  # b*w, h, c
         x, _ = self.gru(x)
         x = x.reshape([-1, w, h, c])
         x = x.transpose([0, 3, 1, 2])

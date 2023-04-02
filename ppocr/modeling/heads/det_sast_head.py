@@ -74,7 +74,7 @@ class SAST_Header1(nn.Layer):
             ConvBNLayer(in_channels, out_channels[0], 1, 1, act='relu', name='f_border1'),
             ConvBNLayer(out_channels[0], out_channels[1], 3, 1, act='relu', name='f_border2'),
             ConvBNLayer(out_channels[1], out_channels[2], 1, 1, act='relu', name='f_border3'),
-            ConvBNLayer(out_channels[2], 4, 3, 1, act=None, name='f_border4')            
+            ConvBNLayer(out_channels[2], 4, 3, 1, act=None, name='f_border4')
         )
 
     def forward(self, x):
@@ -98,7 +98,7 @@ class SAST_Header2(nn.Layer):
             ConvBNLayer(in_channels, out_channels[0], 1, 1, act='relu', name='f_tco1'),
             ConvBNLayer(out_channels[0], out_channels[1], 3, 1, act='relu', name='f_tco2'),
             ConvBNLayer(out_channels[1], out_channels[2], 1, 1, act='relu', name='f_tco3'),
-            ConvBNLayer(out_channels[2], 2, 3, 1, act=None, name='f_tco4')            
+            ConvBNLayer(out_channels[2], 2, 3, 1, act=None, name='f_tco4')
         )
 
     def forward(self, x):

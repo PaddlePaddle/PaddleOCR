@@ -896,7 +896,7 @@ class PRENLabelEncode(BaseRecLabelEncode):
             max_text_length, character_dict_path, use_space_char)
 
     def add_special_char(self, dict_character):
-        padding_str = '<PAD>'  # 0 
+        padding_str = '<PAD>'  # 0
         end_str = '<EOS>'  # 1
         unknown_str = '<UNK>'  # 2
 

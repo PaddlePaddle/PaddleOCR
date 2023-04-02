@@ -171,7 +171,7 @@ def main():
                 info = json.dumps(rec_info, ensure_ascii=False)
             elif isinstance(post_result, list) and isinstance(post_result[0],
                                                               int):
-                # for RFLearning CNT branch 
+                # for RFLearning CNT branch
                 info = str(post_result[0])
             else:
                 if len(post_result[0]) >= 2:

@@ -60,7 +60,7 @@ class CopyPaste(object):
 
             src_img, box = self.paste_img(src_img, box_img, src_polys)
             if box is not None:
-                box = box.tolist() 
+                box = box.tolist()
                 for _ in range(len(box), point_num):
                     box.append(box[-1])
                 src_polys.append(box)

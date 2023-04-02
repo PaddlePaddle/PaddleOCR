@@ -163,12 +163,12 @@ class FPN_Down_Fusion(nn.Layer):
 
         self.g1_conv = nn.Sequential(
             ConvBNLayer(out_channels[1], out_channels[1], 3, 1, act='relu', name='fpn_down_g1_1'),
-            ConvBNLayer(out_channels[1], out_channels[2], 3, 2, act=None, name='fpn_down_g1_2')            
+            ConvBNLayer(out_channels[1], out_channels[2], 3, 2, act=None, name='fpn_down_g1_2')
         )
 
         self.g2_conv = nn.Sequential(
             ConvBNLayer(out_channels[2], out_channels[2], 3, 1, act='relu', name='fpn_down_fusion_1'),
-            ConvBNLayer(out_channels[2], out_channels[2], 1, 1, act=None, name='fpn_down_fusion_2')            
+            ConvBNLayer(out_channels[2], out_channels[2], 1, 1, act=None, name='fpn_down_fusion_2')
         )
 
     def forward(self, x):
@@ -230,7 +230,7 @@ class Cross_Attention(nn.Layer):
         f_g = self.g_conv(f_common)
 
         ######## horizon ########
-        fh_weight = self._cal_fweight([f_theta, f_phi, f_g], 
+        fh_weight = self._cal_fweight([f_theta, f_phi, f_g],
                                         [f_shape[0], f_shape[2], f_shape[3]])
         fh_weight = paddle.transpose(fh_weight, [0, 3, 1, 2])
         fh_weight = self.fh_weight_conv(fh_weight)
@@ -242,7 +242,7 @@ class Cross_Attention(nn.Layer):
         fv_theta = paddle.transpose(f_theta, [0, 1, 3, 2])
         fv_phi = paddle.transpose(f_phi, [0, 1, 3, 2])
         fv_g = paddle.transpose(f_g, [0, 1, 3, 2])
-        fv_weight = self._cal_fweight([fv_theta, fv_phi, fv_g], 
+        fv_weight = self._cal_fweight([fv_theta, fv_phi, fv_g],
                                         [f_shape[0], f_shape[3], f_shape[2]])
         fv_weight = paddle.transpose(fv_weight, [0, 3, 2, 1])
         fv_weight = self.fv_weight_conv(fv_weight)

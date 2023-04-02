@@ -2,12 +2,12 @@ import os
 from .base_logger import BaseLogger
 
 class WandbLogger(BaseLogger):
-    def __init__(self, 
-        project=None, 
-        name=None, 
-        id=None, 
-        entity=None, 
-        save_dir=None, 
+    def __init__(self,
+        project=None,
+        name=None,
+        id=None,
+        entity=None,
+        save_dir=None,
         config=None,
         **kwargs):
         try:

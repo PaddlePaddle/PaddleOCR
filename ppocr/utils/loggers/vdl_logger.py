@@ -18,4 +18,4 @@ class VDLLogger(BaseLogger):
         pass
     
     def close(self):
-        self.vdl_writer.close() 
+        self.vdl_writer.close()

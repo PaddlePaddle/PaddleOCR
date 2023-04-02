@@ -431,7 +431,7 @@ class SiameseMV3(nn.Layer):
         for block in self.net.block_list:
             x = block(x)
 
-        # net1 
+        # net1
         x1 = self.net1.conv1(inputs)
         for block in self.net1.block_list:
             x1 = block(x1)

@@ -79,7 +79,7 @@ class Canvas(QWidget):
         #initialisation for panning
         self.pan_initial_pos = QPoint()
 
-        #lockedshapes related 
+        #lockedshapes related
         self.lockedShapes = []
         self.isInTheSameImage = False
 
@@ -664,7 +664,7 @@ class Canvas(QWidget):
 
         self.current.close()
         self.current.idx = len(self.shapes) # add current box index
-        self.shapes.append(self.current) 
+        self.shapes.append(self.current)
         self.current = None
         self.setHiding(False)
         self.newShape.emit()

@@ -258,7 +258,7 @@ class MainWindow(QMainWindow):
         labelIndexListlBox.addWidget(self.labelListDock, 10) # label list is wider than index list
         
         # enable labelList drag_drop to adjust bbox order
-        # 设置选择模式为单选  
+        # 设置选择模式为单选
         self.labelList.setSelectionMode(QAbstractItemView.SingleSelection)
         # 启用拖拽
         self.labelList.setDragEnabled(True)
@@ -267,7 +267,7 @@ class MainWindow(QMainWindow):
         # 设置显示将要被放置的位置
         self.labelList.setDropIndicatorShown(True)
         # 设置拖放模式为移动项目，如果不设置，默认为复制项目
-        self.labelList.setDragDropMode(QAbstractItemView.InternalMove) 
+        self.labelList.setDragDropMode(QAbstractItemView.InternalMove)
         # 触发放置
         self.labelList.model().rowsMoved.connect(self.drag_drop_happened)
 
@@ -1066,7 +1066,7 @@ class MainWindow(QMainWindow):
         self.labelList.scrollToItem(self.currentItem())  # QAbstractItemView.EnsureVisible
         # map current label item to index item and select it
         index = self.labelList.indexFromItem(self.currentItem()).row()
-        self.indexList.scrollToItem(self.indexList.item(index)) 
+        self.indexList.scrollToItem(self.indexList.item(index))
         self.BoxList.scrollToItem(self.currentBox())
 
         if self.kie_mode:
@@ -1934,7 +1934,7 @@ class MainWindow(QMainWindow):
                     self.openNextImg()
                 self.actions.saveRec.setEnabled(True)
                 self.actions.saveLabel.setEnabled(True)
-                self.actions.exportJSON.setEnabled(True) 
+                self.actions.exportJSON.setEnabled(True)
 
         elif mode == 'Auto':
             if annotationFilePath and self.saveLabels(annotationFilePath, mode=mode):
@@ -2342,7 +2342,7 @@ class MainWindow(QMainWindow):
                     shape = Shape(label=rec_text, line_color=DEFAULT_LINE_COLOR, key_cls=None)
                     for point in rext_bbox:
                         x, y = point
-                        # Ensure the labels are within the bounds of the image. 
+                        # Ensure the labels are within the bounds of the image.
                         # If not, fix them.
                         x, y, snapped = self.canvas.snapPointToCanvas(x, y)
                         shape.addPoint(QPointF(x, y))
@@ -2504,7 +2504,7 @@ class MainWindow(QMainWindow):
             for anno in labeldict[image_path]:
                 tokens = list(anno['transcription'])
                 cells.append({
-                    'tokens': tokens, 
+                    'tokens': tokens,
                     'bbox': anno['points']
                     })
 
@@ -2512,11 +2512,11 @@ class MainWindow(QMainWindow):
             html = {
                 'structure': {
                     'tokens': token_list
-                    }, 
+                    },
                 'cells': cells
                 }
             d = {
-                'filename': os.path.basename(image_path), 
+                'filename': os.path.basename(image_path),
                 'html': html
                 }
             # 重构HTML

@@ -516,7 +516,7 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
         resize_w = min(imgW_max, resize_w)
     resized_image = cv2.resize(img, (resize_w, imgH))
     resized_image = resized_image.astype('float32')
-    # norm 
+    # norm
     if image_shape[0] == 1:
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]

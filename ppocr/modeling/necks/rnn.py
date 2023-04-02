@@ -82,12 +82,12 @@ class EncoderWithCascadeRNN(nn.Layer):
         self.out_channels = out_channels[-1]
         self.encoder = nn.LayerList(
             [BidirectionalLSTM(
-                in_channels if i == 0 else out_channels[i - 1], 
-                hidden_size, 
-                output_size=out_channels[i], 
-                num_layers=1, 
-                direction='bidirectional', 
-                with_linear=with_linear) 
+                in_channels if i == 0 else out_channels[i - 1],
+                hidden_size,
+                output_size=out_channels[i],
+                num_layers=1,
+                direction='bidirectional',
+                with_linear=with_linear)
             for i in range(num_layers)]
         )
         

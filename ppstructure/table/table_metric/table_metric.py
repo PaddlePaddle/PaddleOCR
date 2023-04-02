@@ -67,7 +67,7 @@ class CustomConfig_del_short(Config):
                 if len(node1_content) < 3:
                     node1_content = ['####']
                 if len(node2_content) < 3:
-                    node2_content = ['####']   
+                    node2_content = ['####']
                 return Levenshtein.normalized_distance(node1_content, node2_content)
         return 0.
 

@@ -135,14 +135,14 @@ class ResNet(nn.Layer):
 
         self.inplanes = int(output_channel / 8)
         self.conv0_1 = nn.Conv2D(input_channel, int(output_channel / 16),
-                                 kernel_size=3, stride=1, 
-                                 padding=1, 
+                                 kernel_size=3, stride=1,
+                                 padding=1,
                                  weight_attr=conv_weight_attr,
                                  bias_attr=False)
         self.bn0_1 = nn.BatchNorm2D(int(output_channel / 16))
         self.conv0_2 = nn.Conv2D(int(output_channel / 16), self.inplanes,
                                  kernel_size=3, stride=1,
-                                 padding=1, 
+                                 padding=1,
                                  weight_attr=conv_weight_attr,
                                  bias_attr=False)
         self.bn0_2 = nn.BatchNorm2D(self.inplanes)
@@ -155,7 +155,7 @@ class ResNet(nn.Layer):
         self.conv1 = nn.Conv2D(self.output_channel_block[0],
                                self.output_channel_block[0],
                                kernel_size=3, stride=1,
-                               padding=1, 
+                               padding=1,
                                weight_attr=conv_weight_attr,
                                bias_attr=False)
         self.bn1 = nn.BatchNorm2D(self.output_channel_block[0])
@@ -167,7 +167,7 @@ class ResNet(nn.Layer):
         self.conv2 = nn.Conv2D(self.output_channel_block[1],
                                self.output_channel_block[1],
                                kernel_size=3, stride=1,
-                               padding=1, 
+                               padding=1,
                                weight_attr=conv_weight_attr,
                                bias_attr=False,)
         self.bn2 = nn.BatchNorm2D(self.output_channel_block[1])
@@ -180,7 +180,7 @@ class ResNet(nn.Layer):
         self.conv3 = nn.Conv2D(self.output_channel_block[2],
                                self.output_channel_block[2],
                                kernel_size=3, stride=1,
-                               padding=1, 
+                               padding=1,
                                weight_attr=conv_weight_attr,
                                bias_attr=False)
         self.bn3 = nn.BatchNorm2D(self.output_channel_block[2])
@@ -190,14 +190,14 @@ class ResNet(nn.Layer):
         self.conv4_1 = nn.Conv2D(self.output_channel_block[3],
                                  self.output_channel_block[3],
                                  kernel_size=2, stride=(2, 1),
-                                 padding=(0, 1), 
+                                 padding=(0, 1),
                                  weight_attr=conv_weight_attr,
                                  bias_attr=False)
         self.bn4_1 = nn.BatchNorm2D(self.output_channel_block[3])
         self.conv4_2 = nn.Conv2D(self.output_channel_block[3],
                                  self.output_channel_block[3],
                                  kernel_size=2, stride=1,
-                                 padding=0, 
+                                 padding=0,
                                  weight_attr=conv_weight_attr,
                                  bias_attr=False)
         self.bn4_2 = nn.BatchNorm2D(self.output_channel_block[3])
@@ -220,7 +220,7 @@ class ResNet(nn.Layer):
             downsample = nn.Sequential(
                 nn.Conv2D(self.inplanes, planes * block.expansion,
                           kernel_size=1, stride=stride,
-                          weight_attr=conv_weight_attr, 
+                          weight_attr=conv_weight_attr,
                           bias_attr=False),
                 nn.BatchNorm2D(planes * block.expansion),
             )

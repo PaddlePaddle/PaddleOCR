@@ -129,7 +129,7 @@ class SerRePredictor(object):
 
         self.ser_engine = SerPredictor(ser_config)
 
-        #  init re model 
+        #  init re model
 
         # build post process
         self.post_process_class = build_post_process(config['PostProcess'],

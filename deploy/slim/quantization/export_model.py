@@ -43,7 +43,7 @@ def main():
     # 1. quantization configs
     ############################################################################################################
     quant_config = {
-        # weight preprocess type, default is None and no preprocessing is performed. 
+        # weight preprocess type, default is None and no preprocessing is performed.
         'weight_preprocess_type': None,
         # activation preprocess type, default is None and no preprocessing is performed.
         'activation_preprocess_type': None,

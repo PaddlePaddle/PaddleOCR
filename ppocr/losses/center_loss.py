@@ -57,7 +57,7 @@ class CenterLoss(nn.Layer):
 
         batch_size = feats_reshape.shape[0]
 
-        #calc l2 distance between feats and centers  
+        #calc l2 distance between feats and centers
         square_feat = paddle.sum(paddle.square(feats_reshape),
                                  axis=1,
                                  keepdim=True)

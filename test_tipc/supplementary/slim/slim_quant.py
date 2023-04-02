@@ -25,7 +25,7 @@ class PACT(paddle.nn.Layer):
 
 
 quant_config = {
-    # weight preprocess type, default is None and no preprocessing is performed. 
+    # weight preprocess type, default is None and no preprocessing is performed.
     'weight_preprocess_type': None,
     # activation preprocess type, default is None and no preprocessing is performed.
     'activation_preprocess_type': None,

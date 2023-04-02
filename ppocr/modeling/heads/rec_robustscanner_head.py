@@ -42,7 +42,7 @@ class BaseDecoder(nn.Layer):
                 feat,
                 out_enc,
                 label=None,
-                valid_ratios=None, 
+                valid_ratios=None,
                 word_positions=None,
                 train_mode=True):
         self.train_mode = train_mode
@@ -703,7 +703,7 @@ class RobustScannerHead(nn.Layer):
                 inputs,
                 out_enc,
                 label=None,
-                valid_ratios=valid_ratios, 
+                valid_ratios=valid_ratios,
                 word_positions=word_positions,
                 train_mode=False)
         return final_out

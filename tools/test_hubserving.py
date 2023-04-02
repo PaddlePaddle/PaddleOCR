@@ -44,7 +44,7 @@ def draw_server_result(image_file, res):
     if len(res) == 0:
         return np.array(image)
     keys = res[0].keys()
-    if 'text_region' not in keys:  # for ocr_rec, draw function is invalid 
+    if 'text_region' not in keys:  # for ocr_rec, draw function is invalid
         logger.info("draw function is invalid for ocr_rec!")
         return None
     elif 'text' not in keys:  # for ocr_det
