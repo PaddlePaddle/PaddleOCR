@@ -30,7 +30,7 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
 
     assert label_dir != save_dir, "hahahhaha"
 
-    label_file = open(label_dir, 'r')
+    label_file = open(label_dir, 'r', encoding="utf8")
     data = label_file.readlines()
 
     gt_dict = {}
@@ -79,7 +79,7 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
     for img_name in gt_dict.keys():
         save_name = img_name.split("/")[-1]
         save_file = os.path.join(save_dir, save_name + ".txt")
-        with open(save_file, "w") as f:
+        with open(save_file, "w", encoding="utf8") as f:
             f.writelines(gt_dict[img_name])
 
     print("The convert label saved in {}".format(save_dir))

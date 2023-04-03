@@ -19,12 +19,20 @@
 
 # 计划
 
-## 文本检测
+## 新增功能
+
+- [x] OCR接口精度测试
+
+## 文本检测优化
 
 - [x] 【PP-OCRv30】通用多语言场景文档大模型
 - [ ] 【PP-OCRv30】通用多语言文档大模型
 
-## 文本识别
+## 文本识别优化
+
+中文语系
+
+- [ ] 【PP-OCRv30】中文文本行识别
 
 *阿拉伯语系*
 
@@ -41,7 +49,7 @@
 - [x] 【PP-OCRv30】藏语文本行识别
 - [x] 【PP-OCRv30】缅甸语文本行识别
 - [x] 【PP-OCRv30】印地语文本行识别
-- [ ] 【PP-OCRv30】高棉语文本行识别
+- [x] 【PP-OCRv30】高棉语文本行识别
 - [ ] 【PP-OCRv30】老挝语文本行识别
 - [ ] 【PP-OCRv30】泰语文本行识别
 
@@ -65,7 +73,7 @@
 | :--------------: | :------: | :----------------------------------------------------------: | :----: | :-----------: | ------ |
 | ar_PP-OCRv30_rec | 阿拉伯语 | [ar_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ar_PP-OCRv30_rec.yml) | 73.33% |    97.83%     |        |
 | ug_PP-OCRv30_rec | 维吾尔语 | [ug_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ug_PP-OCRv30_rec.yml) | 70.97% |    93.83%     |        |
-| ru_PP-OCRv30_rec |   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) | 93.55% |    99.57%     |        |
+| ru_PP-OCRv30_rec |   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) | 93.55% |    99.57%     | 需优化 |
 | kk_PP-OCRv30_rec | 哈萨克语 | [kk_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/kk_PP-OCRv30_rec.yml) | 59.37% |    95.30%     |        |
 | bo_PP-OCRv30_rec |   藏语   | [bo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/bo_PP-OCRv30_rec.yml) | 67.09% |    93.07%     | 需优化 |
 | my_PP-OCRv30_rec |  缅甸语  | [my_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/my_PP-OCRv30_rec.yml) | 74.19% |      97%      |        |
