@@ -1,0 +1,224 @@
+Global:
+  debug: false
+  use_gpu: true
+  epoch_num: 500
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/ch_PP-OCR_v30_det/
+  save_epoch_step: 100
+  eval_batch_step:
+  - 0
+  - 400
+  cal_metric_during_train: false
+  pretrained_model: null
+  checkpoints: null
+  save_inference_dir: null
+  use_visualdl: false
+  infer_img: doc/imgs_en/img_10.jpg
+  save_res_path: ./checkpoints/det_db/predicts_db.txt
+  distributed: true
+
+Architecture:
+  name: DistillationModel
+  algorithm: Distillation
+  model_type: det
+  Models:
+    Student:
+      pretrained:
+      model_type: det
+      algorithm: DB
+      Transform: null
+      Backbone:
+        name: MobileNetV3
+        scale: 0.5
+        model_name: large
+        disable_se: true
+      Neck:
+        name: RSEFPN
+        out_channels: 96
+        shortcut: True
+      Head:
+        name: DBHead
+        k: 50
+    Student2:
+      pretrained:
+      model_type: det
+      algorithm: DB
+      Transform: null
+      Backbone:
+        name: MobileNetV3
+        scale: 0.5
+        model_name: large
+        disable_se: true
+      Neck:
+        name: RSEFPN
+        out_channels: 96
+        shortcut: True
+      Head:
+        name: DBHead
+        k: 50
+    Teacher:
+      pretrained: ./pretrain_models/ch_db_res50/one_student/student.pdparams
+      freeze_params: true                  # Teacher 不训练
+      return_all_feats: false
+      model_type: det
+      algorithm: DB
+      Backbone:
+        name: ResNet_vd
+        in_channels: 3
+        layers: 50
+      Neck:
+        name: LKPAN
+        out_channels: 256
+      Head:
+        name: DBHead
+        kernel_list: [7,2,2]
+        k: 50
+
+Loss:
+  name: CombinedLoss
+  loss_config_list:
+  - DistillationDilaDBLoss:
+      weight: 1.0
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      - ["Student2", "Teacher"]
+      key: maps
+      balance_loss: true
+      main_loss_type: DiceLoss
+      alpha: 5
+      beta: 10
+      ohem_ratio: 3
+  - DistillationDMLLoss:
+      model_name_pairs:
+      - ["Student", "Student2"]
+      maps_name: "thrink_maps"
+      weight: 1.0
+      model_name_pairs: ["Student", "Student2"]
+      key: maps
+  - DistillationDBLoss:
+      weight: 1.0
+      model_name_list: ["Student", "Student2"]
+      balance_loss: true
+      main_loss_type: DiceLoss
+      alpha: 5
+      beta: 10
+      ohem_ratio: 3
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+    warmup_epoch: 2
+  regularizer:
+    name: L2
+    factor: 5.0e-05
+
+PostProcess:
+  name: DistillationDBPostProcess
+  model_name: ["Student"]
+  key: head_out
+  thresh: 0.3
+  box_thresh: 0.6
+  max_candidates: 1000
+  unclip_ratio: 1.5
+
+Metric:
+  name: DistillationMetric
+  base_metric_name: DetMetric
+  main_indicator: hmean
+  key: "Student"
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/det/
+    label_file_list: ['./train_data/det/det_rpa/label_train.txt', './train_data/det/thai/det_label.txt', './train_data/det/TD_TR/TD500/train_gt_labels.txt', './train_data/det/TD_TR/TR400/gt_labels.txt', './train_data/det/SROIE/det_train_label.txt', './train_data/det/ctw1500/imgs/training.txt', './train_data/det/det_asayar/Train_label.txt', './train_data/det/LSVT/det_train_label.txt', './train_data/det/ru/det_train_label.txt', './train_data/det/ar/det_train_label.txt']
+    ratio_list: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 1.0]
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - DetLabelEncode: null
+    - CopyPaste:
+    - IaaAugment:
+        augmenter_args:
+        - type: Fliplr
+          args:
+            p: 0.5
+        - type: Affine
+          args:
+            rotate:
+            - -10
+            - 10
+        - type: Resize
+          args:
+            size:
+            - 0.5
+            - 3
+    - EastRandomCropData:
+        size:
+        - 960
+        - 960
+        max_tries: 50
+        keep_ratio: true
+    - MakeBorderMap:
+        shrink_ratio: 0.4
+        thresh_min: 0.3
+        thresh_max: 0.7
+    - MakeShrinkMap:
+        shrink_ratio: 0.4
+        min_text_size: 8
+    - NormalizeImage:
+        scale: 1./255.
+        mean:
+        - 0.485
+        - 0.456
+        - 0.406
+        std:
+        - 0.229
+        - 0.224
+        - 0.225
+        order: hwc
+    - ToCHWImage: null
+    - KeepKeys:
+        keep_keys:
+        - image
+        - threshold_map
+        - threshold_mask
+        - shrink_map
+        - shrink_mask
+  loader:
+    shuffle: true
+    drop_last: false
+    batch_size_per_card: 8
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/icdar2015/text_localization/
+    label_file_list: ['./train_data/det/det_rpa/label_test.txt', './train_data/det/ctw1500/imgs/test.txt', './train_data/det/TD_TR/TD500/test_gt_labels.txt', './train_data/det/SROIE/det_test_label.txt', './train_data/det/det_asayar/Test_label.txt', './train_data/det/ru/det_test_label.txt', './train_data/det/ar/det_test_label.txt']
+    ratio_list : [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - DetLabelEncode: # Class handling label
+      - DetResizeForTest:
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: ['image', 'shape', 'polys', 'ignore_tags']
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1 # must be 1
+    num_workers: 2
