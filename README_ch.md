@@ -27,6 +27,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 📣 近期更新
 
+- **🔥2023.3.10 PaddleOCR集成了高性能、全场景模型部署方案FastDeploy，欢迎参考[指南](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/fastdeploy)试用（注意使用dygraph分支）。**
 - 📚**2022.12 发布[《OCR产业范例20讲》电子书](./applications/README.md)**，新增蒙古文、身份证、液晶屏缺陷等**7个场景应用范例**
 - 🔨**2022.11 新增实现[4种前沿算法](doc/doc_ch/algorithm_overview.md)**：文本检测 [DRRG](doc/doc_ch/algorithm_det_drrg.md),  文本识别 [RFL](doc/doc_ch/algorithm_rec_rfl.md), 文本超分[Text Telescope](doc/doc_ch/algorithm_sr_telescope.md)，公式识别[CAN](doc/doc_ch/algorithm_rec_can.md)
 - **2022.10 优化[JS版PP-OCRv3模型](./deploy/paddlejs/README_ch.md)**：模型大小仅4.3M，预测速度提升8倍，配套web demo开箱即用
