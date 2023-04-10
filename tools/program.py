@@ -134,7 +134,7 @@ def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
         if use_xpu and not paddle.device.is_compiled_with_xpu():
             print(err.format("use_xpu", "xpu", "xpu", "use_xpu"))
             sys.exit(1)
-        if use_npu and not paddle.device.is_compiled_with_npu():
+        if use_npu and not paddle.device.is_compiled_with_custom_device('npu'):
             print(err.format("use_npu", "npu", "npu", "use_npu"))
             sys.exit(1)
         if use_mlu and not paddle.device.is_compiled_with_mlu():
