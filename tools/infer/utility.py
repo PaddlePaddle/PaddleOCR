@@ -25,6 +25,12 @@ from paddle import inference
 import time
 import random
 from ppocr.utils.logging import get_logger
+from ppocr.modeling.transforms.tps_spatial_transformer import TPSSpatialTransformer
+from ppocr.utils.correct import resample_contour, get_mini_boxes, reorder_poly_edge, curve2bezier, resample_line
+
+custom_ops_align = load(
+    name="custom_jit_ops",
+    sources=["./ppocr/utils/bezier_align/custom_op/test_align.cc"])
 
 
 def str2bool(v):
@@ -52,6 +58,7 @@ def init_args():
     parser.add_argument("--det_limit_side_len", type=float, default=960)
     parser.add_argument("--det_limit_type", type=str, default='max')
     parser.add_argument("--det_box_type", type=str, default='quad')
+    parser.add_argument("--det_correct_type", type=str, default='bezier')
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
@@ -651,6 +658,64 @@ def get_minarea_rect_crop(img, points):
     box = [points[index_a], points[index_b], points[index_c], points[index_d]]
     crop_img = get_rotate_crop_image(img, np.array(box))
     return crop_img
+
+
+def get_correct_crop_image(img, contour, correct_type):
+
+    contour = resample_contour(contour, approx_factor=0.0001, num_points=30)
+    quad, _ = get_mini_boxes(contour)
+
+    if correct_type == "None" or Polygon.Polygon(contour).area(
+    ) / Polygon.Polygon(quad).area() > 0.5:
+        return get_rotate_crop_image(img, quad), quad
+
+    top_line, bot_line = reorder_poly_edge(contour)
+
+    if correct_type == "bezier":
+        bezier_top = curve2bezier(top_line).astype(np.float32)
+        bezier_bot = curve2bezier(bot_line).astype(np.float32)
+        beziers_pd = np.concatenate([bezier_top, bezier_bot]).astype(np.float32)
+        beziers_pd = paddle.to_tensor(
+            beziers_pd, stop_gradient=False, place=paddle.CPUPlace())
+        beziers_pd = beziers_pd.flatten().reshape([1, -1])
+        # ins = paddle.to_tensor(img.astype(np.float32), stop_gradient=False, place=paddle.CPUPlace())
+        ins = paddle.transpose(ins, perm=[2, 0, 1]).unsqueeze(0)
+
+        res = custom_ops_align.custom_bezier(ins, beziers_pd)
+        res_arr = res.numpy()
+        res_arr_hwc = np.transpose(res_arr, [0, 2, 3, 1])[0, :, :, :]
+        return res_arr_hwc, quad
+    else:
+        tps_outputsize = (48, 320)
+        tps_margins = [0.02, 0.02]
+        tps = TPSSpatialTransformer(
+            output_image_size=tps_outputsize,
+            num_control_points=30,
+            margins=tuple(tps_margins))
+
+        resampled_top_line = resample_line(top_line, 14).astype(np.int32)
+        resampled_bot_line = resample_line(bot_line, 14).astype(np.int32)
+        resampled_line = np.concatenate(
+            [resampled_top_line, resampled_bot_line[::-1]]).astype(np.int32)
+
+        x_min = resampled_line[:, 0].min()
+        x_max = resampled_line[:, 0].max()
+        y_min = resampled_line[:, 1].min()
+        y_max = resampled_line[:, 1].max()
+
+        ctrl_points = resampled_line.copy().astype(np.float32).flatten()
+        ctrl_points[0::2] -= x_min
+        ctrl_points[0::2] = ctrl_points[0::2] / (x_max - x_min)
+        ctrl_points[1::2] -= y_min
+        ctrl_points[1::2] = ctrl_points[1::2] / (y_max - y_min)
+        ctrl_points = paddle.to_tensor(ctrl_points).reshape([1, -1, 2])
+
+        img_crop = img[y_min:y_max, x_min:x_max].astype(np.float32)
+        img_crop = paddle.to_tensor(img_crop)
+        img_crop = paddle.transpose(img_crop, perm=[2, 0, 1]).unsqueeze(0)
+        img_crop, _ = tps(img_crop, ctrl_points)
+        img_crop = img_crop.numpy().squeeze(0).transpose((1, 2, 0))
+        return img_crop, quad
 
 
 def check_gpu(use_gpu):

@@ -34,7 +34,7 @@ import tools.infer.predict_det as predict_det
 import tools.infer.predict_cls as predict_cls
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
-from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image, get_minarea_rect_crop
+from tools.infer.utility import draw_ocr_box_txt, get_rotate_crop_image, get_minarea_rect_crop, get_correct_crop_image
 logger = get_logger()
 
 
@@ -77,10 +77,14 @@ class TextSystem(object):
         img_crop_list = []
 
         dt_boxes = sorted_boxes(dt_boxes)
-
+        # dt_boxes2 = []
         for bno in range(len(dt_boxes)):
             tmp_box = copy.deepcopy(dt_boxes[bno])
-            if self.args.det_box_type == "quad":
+            if self.args.det_box_type == "poly":
+                img_crop, quad = get_correct_crop_image(ori_im, tmp_box,
+                                                        args.det_correct_type)
+                dt_boxes[bno] = tmp_box
+            elif self.args.det_box_type == "quad":
                 img_crop = get_rotate_crop_image(ori_im, tmp_box)
             else:
                 img_crop = get_minarea_rect_crop(ori_im, tmp_box)
