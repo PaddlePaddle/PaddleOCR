@@ -46,10 +46,7 @@ class MultiHead(nn.Layer):
     def __init__(self, in_channels, out_channels_list, **kwargs):
         super().__init__()
         self.head_list = kwargs.pop('head_list')
-        self.use_pool = kwargs.get('use_pool', False)
-        if self.use_pool:
-            self.pool = nn.AvgPool2D(
-                kernel_size=[3, 2], stride=[3, 2], padding=0)
+
         self.gtc_head = 'sar'
         assert len(self.head_list) >= 2
         for idx, head_name in enumerate(self.head_list):
@@ -91,9 +88,7 @@ class MultiHead(nn.Layer):
                     '{} is not supported in MultiHead yet'.format(name))
 
     def forward(self, x, targets=None):
-        if self.use_pool:  # for svtr backbone
-            # bs h*w c -> # bs c h//3 w//2
-            x = self.pool(x.reshape([0, 3, 80, -1]).transpose([0, 3, 1, 2]))
+
         ctc_encoder = self.ctc_encoder(x)
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()
