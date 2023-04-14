@@ -67,9 +67,17 @@ class DBLoss(nn.Layer):
         loss_shrink_maps = self.alpha * loss_shrink_maps
         loss_threshold_maps = self.beta * loss_threshold_maps
 
+        if 'extra_maps' in predicts.keys():
+            cbn_maps = predicts['extra_maps']
+            cbn_loss = self.bce_loss(cbn_maps[:, 0, :, :], label_shrink_map,
+                                     label_shrink_mask)
+        else:
+            dis_loss = paddle.to_tensor([0.])
+            cbn_loss = paddle.to_tensor([0.])
+
         loss_all = loss_shrink_maps + loss_threshold_maps \
                    + loss_binary_maps
-        losses = {'loss': loss_all, \
+        losses = {'loss': loss_all + cbn_loss, \
                   "loss_shrink_maps": loss_shrink_maps, \
                   "loss_threshold_maps": loss_threshold_maps, \
                   "loss_binary_maps": loss_binary_maps}

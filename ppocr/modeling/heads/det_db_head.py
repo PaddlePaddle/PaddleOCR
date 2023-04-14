@@ -21,6 +21,7 @@ import paddle
 from paddle import nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
+from ppocr.modeling.backbones.det_mobilenet_v3 import ConvBNLayer
 
 
 def get_bias_attr(k):
@@ -82,6 +83,20 @@ class Head(nn.Layer):
         return x
 
 
+class LocalModule(nn.Layer):
+    def __init__(self, in_c, use_distance=True):
+        super(self.__class__, self).__init__()
+
+        self.last_3 = ConvBNLayer(in_c + 1, in_c // 2, 3, 1, 1, act='relu')
+        self.last_1 = nn.Conv2D(in_c // 2, 1, 1, 1, 0)
+
+    def forward(self, x, init_map, distance_map):
+        outf = paddle.concat([init_map, x], axis=1)
+        # last Conv
+        out = self.last_1(self.last_3(outf))
+        return out
+
+
 class DBHead(nn.Layer):
     """
     Differentiable Binarization (DB) for text detection:
@@ -95,11 +110,37 @@ class DBHead(nn.Layer):
         self.k = k
         self.binarize = Head(in_channels, **kwargs)
         self.thresh = Head(in_channels, **kwargs)
+        self.extra_conv = False
+        if 'extra_conv' in kwargs.keys() and kwargs['extra_conv'] is True:
+            self.extra_conv = kwargs['extra_conv']
+            self.up_conv = nn.Upsample(
+                scale_factor=2, mode="nearest", align_mode=1)
+            self.extra_layer = LocalModule(in_channels // 4)
 
     def step_function(self, x, y):
         return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
 
     def forward(self, x, targets=None):
+        if self.extra_conv is True:
+            return self.forward_extra(x, targets)
+        else:
+            return self.forward_default(x, targets)
+
+    def forward_extra(self, x, targets=None):
+        shrink_maps, f = self.binarize(x, return_f=True)
+        base_maps = shrink_maps
+        cbn_maps = self.extra_layer(self.up_conv(f), shrink_maps,
+                                    None)  #, distance_maps)
+        cbn_maps = F.sigmoid(cbn_maps)
+        if not self.training:
+            return {'maps': 0.5 * (base_maps + cbn_maps), 'cbn_maps': cbn_maps}
+
+        threshold_maps = self.thresh(x)
+        binary_maps = self.step_function(shrink_maps, threshold_maps)
+        y = paddle.concat([cbn_maps, threshold_maps, binary_maps], axis=1)
+        return {'maps': y, 'extra_maps': cbn_maps}
+
+    def forward_default(self, x, targets=None):
         shrink_maps = self.binarize(x)
         if not self.training:
             return {'maps': shrink_maps}
