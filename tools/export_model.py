@@ -187,6 +187,12 @@ def export_single_model(model,
                     shape=[None] + infer_shape, dtype="float32")
             ])
 
+    if arch_config["Backbone"]["name"] == "LCNetv3":
+        # for rep lcnetv3
+        for layer in model.sublayers():
+            if hasattr(layer, "rep") and not getattr(layer, "is_repped"):
+                layer.rep()
+
     if quanter is None:
         paddle.jit.save(model, save_path)
     else:
