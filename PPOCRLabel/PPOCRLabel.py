@@ -2615,6 +2615,7 @@ class MainWindow(QMainWindow):
                     if label:
                         label = label.replace('false', 'False')
                         label = label.replace('true', 'True')
+                        label = label.replace('null', 'None')
                         labeldict[file] = eval(label)
                     else:
                         labeldict[file] = []
