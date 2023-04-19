@@ -32,7 +32,7 @@ def get_bias_attr(k):
 
 
 class Head(nn.Layer):
-    def __init__(self, in_channels, name_list, kernel_list=[3, 2, 2], **kwargs):
+    def __init__(self, in_channels, kernel_list=[3, 2, 2], **kwargs):
         super(Head, self).__init__()
 
         self.conv1 = nn.Conv2D(
@@ -74,20 +74,7 @@ class Head(nn.Layer):
                 initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4), )
 
-    def forward(self, x, return_f=False):
-        x = self.conv1(x)
-        x = self.conv_bn1(x)
-        x = self.conv2(x)
-        x = self.conv_bn2(x)
-        if return_f is True:
-            f = x
-        x = self.conv3(x)
-        x = F.sigmoid(x)
-        if return_f is True:
-            return x, f
-        return x
-
-    def forward_pure(self, x):
+    def forward(self, x):
         x = self.conv1(x)
         x = self.conv_bn1(x)
         x = self.conv2(x)
@@ -108,16 +95,8 @@ class DBHead(nn.Layer):
     def __init__(self, in_channels, k=50, **kwargs):
         super(DBHead, self).__init__()
         self.k = k
-        binarize_name_list = [
-            'conv2d_56', 'batch_norm_47', 'conv2d_transpose_0', 'batch_norm_48',
-            'conv2d_transpose_1', 'binarize'
-        ]
-        thresh_name_list = [
-            'conv2d_57', 'batch_norm_49', 'conv2d_transpose_2', 'batch_norm_50',
-            'conv2d_transpose_3', 'thresh'
-        ]
-        self.binarize = Head(in_channels, binarize_name_list, **kwargs)
-        self.thresh = Head(in_channels, thresh_name_list, **kwargs)
+        self.binarize = Head(in_channels, **kwargs)
+        self.thresh = Head(in_channels, **kwargs)
 
     def step_function(self, x, y):
         return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
