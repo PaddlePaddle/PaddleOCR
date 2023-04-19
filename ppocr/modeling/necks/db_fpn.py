@@ -181,14 +181,6 @@ class DBFPN(nn.Layer):
         out4 = self.aff_c45(in4, in5)
         out3 = self.aff_c34(in3, out4)
         out2 = self.aff_c23(in2, out3)
-        """
-        out4 = in4 + F.upsample(
-            in5, scale_factor=2, mode="nearest", align_mode=1)  # 1/16
-        out3 = in3 + F.upsample(
-            out4, scale_factor=2, mode="nearest", align_mode=1)  # 1/8
-        out2 = in2 + F.upsample(
-            out3, scale_factor=2, mode="nearest", align_mode=1)  # 1/4
-        """
 
         p5 = self.p5_conv(in5)
         p4 = self.p4_conv(out4)
