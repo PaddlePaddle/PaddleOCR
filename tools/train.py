@@ -80,14 +80,22 @@ def main(config, device, logger, vdl_writer):
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
-                    # update SARLoss params
-                    assert list(config['Loss']['loss_config_list'][-1].keys())[
-                        0] == 'DistillationSARLoss'
-                    config['Loss']['loss_config_list'][-1][
-                        'DistillationSARLoss']['ignore_index'] = char_num + 1
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list = {}
                     out_channels_list['CTCLabelDecode'] = char_num
-                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    # update SARLoss params
+                    if list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationSARLoss':
+                        config['Loss']['loss_config_list'][-1][
+                            'DistillationSARLoss'][
+                                'ignore_index'] = char_num + 1
+                        out_channels_list['SARLabelDecode'] = char_num + 2
+                    elif list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationNRTRLoss':
+                        out_channels_list['NRTRLabelDecode'] = char_num + 3
+
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
@@ -97,19 +105,24 @@ def main(config, device, logger, vdl_writer):
                 'name'] == 'MultiHead':  # for multi head
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
-            # update SARLoss params
-            assert list(config['Loss']['loss_config_list'][1].keys())[
-                0] == 'SARLoss'
-            if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
-                config['Loss']['loss_config_list'][1]['SARLoss'] = {
-                    'ignore_index': char_num + 1
-                }
-            else:
-                config['Loss']['loss_config_list'][1]['SARLoss'][
-                    'ignore_index'] = char_num + 1
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list = {}
             out_channels_list['CTCLabelDecode'] = char_num
-            out_channels_list['SARLabelDecode'] = char_num + 2
+            # update SARLoss params
+            if list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'SARLoss':
+                if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
+                    config['Loss']['loss_config_list'][1]['SARLoss'] = {
+                        'ignore_index': char_num + 1
+                    }
+                else:
+                    config['Loss']['loss_config_list'][1]['SARLoss'][
+                        'ignore_index'] = char_num + 1
+                out_channels_list['SARLabelDecode'] = char_num + 2
+            elif list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'NRTRLoss':
+                out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model

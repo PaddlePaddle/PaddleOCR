@@ -48,33 +48,44 @@ def main():
     # build model
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
-        if config['Architecture']["algorithm"] in ["Distillation",
+        if config["Architecture"]["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
-            for key in config['Architecture']["Models"]:
-                if config['Architecture']['Models'][key]['Head'][
-                        'name'] == 'MultiHead':  # for multi head
+            for key in config["Architecture"]["Models"]:
+                if config["Architecture"]["Models"][key]["Head"][
+                        "name"] == 'MultiHead':  # multi head
                     out_channels_list = {}
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list['CTCLabelDecode'] = char_num
                     out_channels_list['SARLabelDecode'] = char_num + 2
+                    out_channels_list['NRTRLabelDecode'] = char_num + 3
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
-                    config['Architecture']["Models"][key]["Head"][
-                        'out_channels'] = char_num
+                    config["Architecture"]["Models"][key]["Head"][
+                        "out_channels"] = char_num
+                # just one final tensor needs to exported for inference
+                config["Architecture"]["Models"][key][
+                    "return_all_feats"] = False
         elif config['Architecture']['Head'][
-                'name'] == 'MultiHead':  # for multi head loss
+                'name'] == 'MultiHead':  # multi head
             out_channels_list = {}
+            char_num = len(getattr(post_process_class, 'character'))
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list['CTCLabelDecode'] = char_num
             out_channels_list['SARLabelDecode'] = char_num + 2
+            out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model
-            config['Architecture']["Head"]['out_channels'] = char_num
+            config["Architecture"]["Head"]["out_channels"] = char_num
 
     model = build_model(config['Architecture'])
 
