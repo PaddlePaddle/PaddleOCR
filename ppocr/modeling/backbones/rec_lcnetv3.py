@@ -16,18 +16,11 @@ from __future__ import absolute_import, division, print_function
 
 import paddle
 import paddle.nn as nn
-from paddle import ParamAttr
-from paddle.nn.initializer import Constant
 import paddle.nn.functional as F
-from paddle.nn import AdaptiveAvgPool2D, BatchNorm2D, Conv2D, Dropout, Linear
+from paddle import ParamAttr
+from paddle.nn.initializer import Constant, KaimingNormal
+from paddle.nn import AdaptiveAvgPool2D, BatchNorm2D, Conv2D, Dropout, Hardsigmoid, Hardswish, Identity, Linear, ReLU
 from paddle.regularizer import L2Decay
-from paddle.nn.initializer import KaimingNormal
-
-MODEL_STAGES_PATTERN = {
-    "PPLCNet": ["blocks2", "blocks3", "blocks4", "blocks5", "blocks6"]
-}
-
-NUM_CONV_BRANCHES = 4
 
 # Each element(list) represents a depthwise block, which is composed of k, in_c, out_c, s, use_se.
 # k: kernel_size
@@ -59,73 +52,83 @@ def make_divisible(v, divisor=16, min_value=None):
     return new_v
 
 
-class whswish_b(nn.Layer):
-    def __init__(self, scale_value=1.0, bias_value=0.0):
+class LearnableAffineBlock(nn.Layer):
+    def __init__(self, scale_value=1.0, bias_value=0.0, lr_mult=1.0,
+                 lab_lr=0.1):
         super().__init__()
-        self.act = nn.Hardswish()
-
         self.scale = self.create_parameter(
             shape=[1, ],
             default_initializer=Constant(value=scale_value),
-            attr=ParamAttr(learning_rate=0.1))
+            attr=ParamAttr(learning_rate=lr_mult * lab_lr))
         self.add_parameter("scale", self.scale)
         self.bias = self.create_parameter(
             shape=[1, ],
             default_initializer=Constant(value=bias_value),
-            attr=ParamAttr(learning_rate=0.1))
+            attr=ParamAttr(learning_rate=lr_mult * lab_lr))
         self.add_parameter("bias", self.bias)
 
     def forward(self, x):
-        return self.scale * self.act(x) + self.bias
+        return self.scale * x + self.bias
 
 
 class ConvBNLayer(nn.Layer):
     def __init__(self,
-                 num_channels,
-                 filter_size,
-                 num_filters,
+                 in_channels,
+                 out_channels,
+                 kernel_size,
                  stride,
-                 num_groups=1,
+                 groups=1,
                  lr_mult=1.0):
         super().__init__()
-        self.stride = stride
-
         self.conv = Conv2D(
-            in_channels=num_channels,
-            out_channels=num_filters,
-            kernel_size=filter_size,
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
             stride=stride,
-            padding=(filter_size - 1) // 2,
-            groups=num_groups,
+            padding=(kernel_size - 1) // 2,
+            groups=groups,
             weight_attr=ParamAttr(
                 initializer=KaimingNormal(), learning_rate=lr_mult),
             bias_attr=False)
 
         self.bn = BatchNorm2D(
-            num_filters,
+            out_channels,
             weight_attr=ParamAttr(
                 regularizer=L2Decay(0.0), learning_rate=lr_mult),
             bias_attr=ParamAttr(
                 regularizer=L2Decay(0.0), learning_rate=lr_mult))
-        self.hardswish = whswish_b()
 
     def forward(self, x):
         x = self.conv(x)
         x = self.bn(x)
-        if self.stride != 2:
-            x = self.hardswish(x)
         return x
 
 
-class MobileOneBlock(nn.Layer):
+class Act(nn.Layer):
+    def __init__(self, act="hswish", lr_mult=1.0, lab_lr=0.1):
+        super().__init__()
+        if act == "hswish":
+            self.act = Hardswish()
+        else:
+            assert act == "relu"
+            self.act = ReLU()
+        self.lab = LearnableAffineBlock(lr_mult=lr_mult, lab_lr=lab_lr)
+
+    def forward(self, x):
+        return self.lab(self.act(x))
+
+
+class LearnableRepLayer(nn.Layer):
     def __init__(self,
-                 in_channels: int,
-                 out_channels: int,
-                 kernel_size: int,
-                 stride: int=1,
-                 groups: int=1,
-                 num_conv_branches: int=1) -> None:
-        super(MobileOneBlock, self).__init__()
+                 in_channels,
+                 out_channels,
+                 kernel_size,
+                 stride=1,
+                 groups=1,
+                 num_conv_branches=1,
+                 lr_mult=1.0,
+                 lab_lr=0.1):
+        super().__init__()
         self.is_repped = False
         self.groups = groups
         self.stride = stride
@@ -133,142 +136,101 @@ class MobileOneBlock(nn.Layer):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.num_conv_branches = num_conv_branches
-        padding = (kernel_size - 1) // 2
+        self.padding = (kernel_size - 1) // 2
 
-        self.activation = whswish_b()
+        self.identity = BatchNorm2D(
+            num_features=in_channels,
+            weight_attr=ParamAttr(learning_rate=lr_mult),
+            bias_attr=ParamAttr(learning_rate=lr_mult)
+        ) if out_channels == in_channels and stride == 1 else None
 
-        # Re-parameterizable skip connection
-        self.rbr_skip = nn.BatchNorm2D(num_features=in_channels) \
-            if out_channels == in_channels and stride == 1 else None
+        self.conv_kxk = nn.LayerList([
+            ConvBNLayer(
+                in_channels,
+                out_channels,
+                kernel_size,
+                stride,
+                groups=groups,
+                lr_mult=lr_mult) for _ in range(self.num_conv_branches)
+        ])
 
-        # Re-parameterizable conv branches
-        rbr_conv = list()
-        for _ in range(self.num_conv_branches):
-            rbr_conv.append(
-                self._conv_bn(
-                    kernel_size=kernel_size, padding=padding))
-        self.rbr_conv = nn.LayerList(rbr_conv)
+        self.conv_1x1 = ConvBNLayer(
+            in_channels,
+            out_channels,
+            1,
+            stride,
+            groups=groups,
+            lr_mult=lr_mult) if kernel_size > 1 else None
 
-        # Re-parameterizable scale branch
-        self.rbr_scale = None
-        if kernel_size > 1:
-            self.rbr_scale = self._conv_bn(kernel_size=1, padding=0)
-        self.w = self.create_parameter(
-            shape=[1, ],
-            default_initializer=Constant(value=1.),
-            attr=ParamAttr(learning_rate=0.1))
-        self.b = self.create_parameter(
-            shape=[1, ],
-            default_initializer=Constant(value=0.),
-            attr=ParamAttr(learning_rate=0.1))
+        self.lab = LearnableAffineBlock(lr_mult=lr_mult, lab_lr=lab_lr)
+        self.act = Act(lr_mult=lr_mult, lab_lr=lab_lr)
 
     def forward(self, x):
-        """ Apply forward pass. """
+        # for export
         if self.is_repped:
-            out = self.reparam_conv(x)
-            out = self.w * out + self.b
+            out = self.lab(self.reparam_conv(x))
             if self.stride != 2:
-                out = self.activation(out)
+                out = self.act(out)
             return out
-        # Multi-branched train-time forward pass.
-        # Skip branch output
-        identity_out = 0
-        if self.rbr_skip is not None:
-            identity_out = self.rbr_skip(x)
 
-        # Scale branch output
-        scale_out = 0
-        if self.rbr_scale is not None:
-            scale_out = self.rbr_scale(x)
+        out = 0
+        if self.identity is not None:
+            out += self.identity(x)
 
-        # Other branches
-        out = scale_out + identity_out
+        if self.conv_1x1 is not None:
+            out += self.conv_1x1(x)
 
-        for ix in range(self.num_conv_branches):
-            out += self.rbr_conv[ix](x)
+        for conv in self.conv_kxk:
+            out += conv(x)
 
-        out = self.w * out + self.b
+        out = self.lab(out)
         if self.stride != 2:
-            out = self.activation(out)
+            out = self.act(out)
         return out
-
-    def _conv_bn(self, kernel_size: int, padding: int) -> nn.Sequential:
-        """ Helper method to construct conv-batchnorm layers.
-
-        :param kernel_size: Size of the convolution kernel.
-        :param padding: Zero-padding size.
-        :return: Conv-BN module.
-        """
-        mod_list = nn.Sequential()
-        mod_list.add_sublayer(
-            'conv',
-            nn.Conv2D(
-                in_channels=self.in_channels,
-                out_channels=self.out_channels,
-                kernel_size=kernel_size,
-                stride=self.stride,
-                padding=padding,
-                groups=self.groups,
-                bias_attr=False))
-        mod_list.add_sublayer(
-            'bn', nn.BatchNorm2D(num_features=self.out_channels))
-        return mod_list
 
     def rep(self):
         if self.is_repped:
             return
         kernel, bias = self._get_kernel_bias()
-        self.reparam_conv = nn.Conv2D(
-            in_channels=self.rbr_conv[0].conv._in_channels,
-            out_channels=self.rbr_conv[0].conv._out_channels,
-            kernel_size=self.rbr_conv[0].conv._kernel_size,
-            stride=self.rbr_conv[0].conv._stride,
-            padding=self.rbr_conv[0].conv._padding,
-            dilation=self.rbr_conv[0].conv._dilation,
-            groups=self.rbr_conv[0].conv._groups)
+        self.reparam_conv = Conv2D(
+            in_channels=self.in_channels,
+            out_channels=self.out_channels,
+            kernel_size=self.kernel_size,
+            stride=self.stride,
+            padding=self.padding,
+            groups=self.groups)
         self.reparam_conv.weight.set_value(kernel)
         self.reparam_conv.bias.set_value(bias)
-
-        self.__delattr__('rbr_conv')
-        self.__delattr__('rbr_scale')
-        if hasattr(self, 'rbr_skip'):
-            self.__delattr__('rbr_skip')
-
         self.is_repped = True
 
-        return kernel, bias
+    def _pad_kernel_1x1_to_kxk(self, kernel1x1, pad):
+        if not isinstance(kernel1x1, paddle.Tensor):
+            return 0
+        else:
+            return nn.functional.pad(kernel1x1, [pad, pad, pad, pad])
 
     def _get_kernel_bias(self):
-        # get weights and bias of scale branch
-        kernel_scale = 0
-        bias_scale = 0
-        if self.rbr_scale is not None:
-            kernel_scale, bias_scale = self._fuse_bn_tensor(self.rbr_scale)
-            # Pad scale branch kernel to match conv branch kernel size.
-            pad = self.kernel_size // 2
-            kernel_scale = paddle.nn.functional.pad(kernel_scale,
-                                                    [pad, pad, pad, pad])
+        kernel_conv_1x1, bias_conv_1x1 = self._fuse_bn_tensor(self.conv_1x1)
+        kernel_conv_1x1 = self._pad_kernel_1x1_to_kxk(kernel_conv_1x1,
+                                                      self.kernel_size // 2)
 
-        # get weights and bias of skip branch
-        kernel_identity = 0
-        bias_identity = 0
-        if self.rbr_skip is not None:
-            kernel_identity, bias_identity = self._fuse_bn_tensor(self.rbr_skip)
+        kernel_identity, bias_identity = self._fuse_bn_tensor(self.identity)
 
-        # get weights and bias of conv branches
-        kernel_conv = 0
-        bias_conv = 0
-        for ix in range(self.num_conv_branches):
-            _kernel, _bias = self._fuse_bn_tensor(self.rbr_conv[ix])
-            kernel_conv += _kernel
-            bias_conv += _bias
+        kernel_conv_kxk = 0
+        bias_conv_kxk = 0
+        for conv in self.conv_kxk:
+            kernel, bias = self._fuse_bn_tensor(conv)
+            kernel_conv_kxk += kernel
+            bias_conv_kxk += bias
 
-        kernel_final = kernel_conv + kernel_scale + kernel_identity
-        bias_final = bias_conv + bias_scale + bias_identity
-        return kernel_final, bias_final
+        kernel_reparam = kernel_conv_kxk + kernel_conv_1x1 + kernel_identity
+        bias_reparam = bias_conv_kxk + bias_conv_1x1 + bias_identity
+        return kernel_reparam, bias_reparam
 
     def _fuse_bn_tensor(self, branch):
-        if isinstance(branch, nn.Sequential):
+        if not branch:
+            return 0, 0
+        elif isinstance(branch, ConvBNLayer):
             kernel = branch.conv.weight
             running_mean = branch.bn._mean
             running_var = branch.bn._variance
@@ -276,7 +238,7 @@ class MobileOneBlock(nn.Layer):
             beta = branch.bn.bias
             eps = branch.bn._epsilon
         else:
-            assert isinstance(branch, nn.BatchNorm2D)
+            assert isinstance(branch, BatchNorm2D)
             if not hasattr(self, 'id_tensor'):
                 input_dim = self.in_channels // self.groups
                 kernel_value = paddle.zeros(
@@ -298,41 +260,7 @@ class MobileOneBlock(nn.Layer):
         return kernel * t, beta - running_mean * gamma / std
 
 
-class DepthwiseSeparable(nn.Layer):
-    def __init__(self,
-                 num_channels,
-                 num_filters,
-                 stride,
-                 dw_size=3,
-                 use_se=False,
-                 lr_mult=1.0):
-        super().__init__()
-        self.use_se = use_se
-        self.dw_conv = MobileOneBlock(
-            in_channels=num_channels,
-            out_channels=num_channels,
-            kernel_size=dw_size,
-            stride=stride,
-            groups=num_channels,
-            num_conv_branches=NUM_CONV_BRANCHES)
-        if use_se:
-            self.se = SEModule(num_channels, lr_mult=lr_mult)
-        self.pw_conv = MobileOneBlock(
-            in_channels=num_channels,
-            out_channels=num_filters,
-            kernel_size=1,
-            stride=1,
-            num_conv_branches=NUM_CONV_BRANCHES)
-
-    def forward(self, x):
-        x = self.dw_conv(x)
-        if self.use_se:
-            x = self.se(x)
-        x = self.pw_conv(x)
-        return x
-
-
-class SEModule(nn.Layer):
+class SELayer(nn.Layer):
     def __init__(self, channel, reduction=4, lr_mult=1.0):
         super().__init__()
         self.avg_pool = AdaptiveAvgPool2D(1)
@@ -344,7 +272,7 @@ class SEModule(nn.Layer):
             padding=0,
             weight_attr=ParamAttr(learning_rate=lr_mult),
             bias_attr=ParamAttr(learning_rate=lr_mult))
-        self.relu = nn.ReLU()
+        self.relu = ReLU()
         self.conv2 = Conv2D(
             in_channels=channel // reduction,
             out_channels=channel,
@@ -353,7 +281,7 @@ class SEModule(nn.Layer):
             padding=0,
             weight_attr=ParamAttr(learning_rate=lr_mult),
             bias_attr=ParamAttr(learning_rate=lr_mult))
-        self.hardsigmoid = nn.Hardsigmoid()
+        self.hardsigmoid = Hardsigmoid()
 
     def forward(self, x):
         identity = x
@@ -366,28 +294,57 @@ class SEModule(nn.Layer):
         return x
 
 
-class PPLCNet(nn.Layer):
+class LCNetV3Block(nn.Layer):
     def __init__(self,
-                 stages_pattern,
+                 in_channels,
+                 out_channels,
+                 stride,
+                 dw_size,
+                 use_se=False,
+                 conv_kxk_num=4,
+                 lr_mult=1.0,
+                 lab_lr=0.1):
+        super().__init__()
+        self.use_se = use_se
+        self.dw_conv = LearnableRepLayer(
+            in_channels=in_channels,
+            out_channels=in_channels,
+            kernel_size=dw_size,
+            stride=stride,
+            groups=in_channels,
+            num_conv_branches=conv_kxk_num,
+            lr_mult=lr_mult,
+            lab_lr=lab_lr)
+        if use_se:
+            self.se = SELayer(in_channels, lr_mult=lr_mult)
+        self.pw_conv = LearnableRepLayer(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=1,
+            stride=1,
+            num_conv_branches=conv_kxk_num,
+            lr_mult=lr_mult,
+            lab_lr=lab_lr)
+
+    def forward(self, x):
+        x = self.dw_conv(x)
+        if self.use_se:
+            x = self.se(x)
+        x = self.pw_conv(x)
+        return x
+
+
+class PPLCNetV3(nn.Layer):
+    def __init__(self,
                  scale=1.0,
-                 class_num=1000,
-                 dropout_prob=0.2,
-                 class_expand=1280,
+                 conv_kxk_num=4,
                  lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                 stride_list=[2, 2, 2, 2, 2],
-                 use_last_conv=True,
-                 return_patterns=None,
-                 return_stages=None,
+                 lab_lr=0.1,
                  **kwargs):
         super().__init__()
         self.scale = scale
-        self.class_expand = class_expand
         self.lr_mult_list = lr_mult_list
-        self.use_last_conv = use_last_conv
-        self.stride_list = stride_list
         self.net_config = NET_CONFIG
-        if isinstance(self.lr_mult_list, str):
-            self.lr_mult_list = eval(self.lr_mult_list)
 
         assert isinstance(self.lr_mult_list, (
             list, tuple
@@ -398,87 +355,76 @@ class PPLCNet(nn.Layer):
                        len(self.lr_mult_list))
 
         self.conv1 = ConvBNLayer(
-            num_channels=3,
-            filter_size=3,
-            num_filters=make_divisible(16 * scale),
+            in_channels=3,
+            out_channels=make_divisible(16 * scale),
+            kernel_size=3,
             stride=2,
             lr_mult=self.lr_mult_list[0])
 
         self.blocks2 = nn.Sequential(* [
-            DepthwiseSeparable(
-                num_channels=make_divisible(in_c * scale),
-                num_filters=make_divisible(out_c * scale),
+            LCNetV3Block(
+                in_channels=make_divisible(in_c * scale),
+                out_channels=make_divisible(out_c * scale),
                 dw_size=k,
                 stride=s,
                 use_se=se,
-                lr_mult=self.lr_mult_list[1]) for i, (k, in_c, out_c, s, se) in
-            enumerate(self.net_config["blocks2"])
+                conv_kxk_num=conv_kxk_num,
+                lr_mult=self.lr_mult_list[1],
+                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
+                    self.net_config["blocks2"])
         ])
 
         self.blocks3 = nn.Sequential(* [
-            DepthwiseSeparable(
-                num_channels=make_divisible(in_c * scale),
-                num_filters=make_divisible(out_c * scale),
+            LCNetV3Block(
+                in_channels=make_divisible(in_c * scale),
+                out_channels=make_divisible(out_c * scale),
                 dw_size=k,
                 stride=s,
                 use_se=se,
-                lr_mult=self.lr_mult_list[2]) for i, (k, in_c, out_c, s, se) in
-            enumerate(self.net_config["blocks3"])
+                conv_kxk_num=conv_kxk_num,
+                lr_mult=self.lr_mult_list[2],
+                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
+                    self.net_config["blocks3"])
         ])
 
         self.blocks4 = nn.Sequential(* [
-            DepthwiseSeparable(
-                num_channels=make_divisible(in_c * scale),
-                num_filters=make_divisible(out_c * scale),
+            LCNetV3Block(
+                in_channels=make_divisible(in_c * scale),
+                out_channels=make_divisible(out_c * scale),
                 dw_size=k,
                 stride=s,
                 use_se=se,
-                lr_mult=self.lr_mult_list[3]) for i, (k, in_c, out_c, s, se) in
-            enumerate(self.net_config["blocks4"])
+                conv_kxk_num=conv_kxk_num,
+                lr_mult=self.lr_mult_list[3],
+                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
+                    self.net_config["blocks4"])
         ])
 
         self.blocks5 = nn.Sequential(* [
-            DepthwiseSeparable(
-                num_channels=make_divisible(in_c * scale),
-                num_filters=make_divisible(out_c * scale),
+            LCNetV3Block(
+                in_channels=make_divisible(in_c * scale),
+                out_channels=make_divisible(out_c * scale),
                 dw_size=k,
                 stride=s,
                 use_se=se,
-                lr_mult=self.lr_mult_list[4]) for i, (k, in_c, out_c, s, se) in
-            enumerate(self.net_config["blocks5"])
+                conv_kxk_num=conv_kxk_num,
+                lr_mult=self.lr_mult_list[4],
+                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
+                    self.net_config["blocks5"])
         ])
 
         self.blocks6 = nn.Sequential(* [
-            DepthwiseSeparable(
-                num_channels=make_divisible(in_c * scale),
-                num_filters=make_divisible(out_c * scale),
+            LCNetV3Block(
+                in_channels=make_divisible(in_c * scale),
+                out_channels=make_divisible(out_c * scale),
                 dw_size=k,
                 stride=s,
                 use_se=se,
-                lr_mult=self.lr_mult_list[5]) for i, (k, in_c, out_c, s, se) in
-            enumerate(self.net_config["blocks6"])
+                conv_kxk_num=conv_kxk_num,
+                lr_mult=self.lr_mult_list[5],
+                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
+                    self.net_config["blocks6"])
         ])
-
-        self.avg_pool = nn.AvgPool2D(kernel_size=2, stride=2, padding=0)
-        if self.use_last_conv:
-            self.last_conv = Conv2D(
-                in_channels=make_divisible(self.net_config["blocks6"][-1][2] *
-                                           scale),
-                out_channels=self.class_expand,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                bias_attr=False)
-            self.hardswish = whswish_b()
-            self.dropout = Dropout(p=dropout_prob, mode="downscale_in_infer")
-        else:
-            self.last_conv = None
-        self.flatten = nn.Flatten(start_axis=1, stop_axis=-1)
-        self.fc = Linear(
-            self.class_expand if self.use_last_conv else
-            make_divisible(self.net_config["blocks6"][-1][2] * scale),
-            class_num)
-
         self.out_channels = make_divisible(512 * scale)
 
     def forward(self, x):
@@ -490,21 +436,13 @@ class PPLCNet(nn.Layer):
         x = self.blocks5(x)
         x = self.blocks6(x)
 
-        x = F.adaptive_avg_pool2d(x, [1, x.shape[-1] // 2])
-
+        if self.training:
+            x = F.adaptive_avg_pool2d(x, [1, 40])
+        else:
+            x = F.avg_pool2d(x, [3, 2])
         return x
 
 
-def LCNetv3(**kwargs):
-    """
-    PPLCNet_x1_0
-    Args:
-        pretrained: bool=False or str. If `True` load pretrained parameters, `False` otherwise.
-                    If str, means the path of the pretrained model.
-        use_ssld: bool=False. Whether using distillation pretrained model when pretrained=True.
-    Returns:
-        model: nn.Layer. Specific `PPLCNet_x1_0` model depends on args.
-    """
-    model = PPLCNet(
-        scale=0.95, stages_pattern=MODEL_STAGES_PATTERN["PPLCNet"], **kwargs)
+def LCNetv3(pretrained=False, use_ssld=False, **kwargs):
+    model = PPLCNetV3(scale=0.95, conv_kxk_num=4, **kwargs)
     return model
