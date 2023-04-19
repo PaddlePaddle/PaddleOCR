@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import paddle
 import paddle.nn as nn
@@ -21,13 +23,6 @@ from paddle import ParamAttr
 from paddle.nn.initializer import Constant, KaimingNormal
 from paddle.nn import AdaptiveAvgPool2D, BatchNorm2D, Conv2D, Dropout, Hardsigmoid, Hardswish, Identity, Linear, ReLU
 from paddle.regularizer import L2Decay
-
-# Each element(list) represents a depthwise block, which is composed of k, in_c, out_c, s, use_se.
-# k: kernel_size
-# in_c: input channel number in depthwise block
-# out_c: output channel number in depthwise block
-# s: stride in depthwise block
-# use_se: whether to use SE block
 
 NET_CONFIG = {
     "blocks2":
