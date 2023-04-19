@@ -133,12 +133,11 @@ class DBHead(nn.Layer):
         return {'maps': y}
 
 
-class CBNModuleLocal(nn.Layer):
-    def __init__(self, in_c, use_distance=True):
+class LocalModule(nn.Layer):
+    def __init__(self, in_c, mid_c, use_distance=True):
         super(self.__class__, self).__init__()
-
-        self.last_3 = ConvBNLayer(in_c + 1, in_c, 3, 1, 1, act='relu')
-        self.last_1 = nn.Conv2D(in_c, 1, 1, 1, 0)
+        self.last_3 = ConvBNLayer(in_c + 1, mid_c, 3, 1, 1, act='relu')
+        self.last_1 = nn.Conv2D(mid_c, 1, 1, 1, 0)
 
     def forward(self, x, init_map, distance_map):
         outf = paddle.concat([init_map, x], axis=1)
@@ -147,88 +146,21 @@ class CBNModuleLocal(nn.Layer):
         return out
 
 
-class CBNHeadLocal(nn.Layer):
-    def __init__(self, in_channels, k=50, mode='cbnlocal', **kwargs):
+class CBNHeadLocal(DBHead):
+    def __init__(self, in_channels, k=50, mode='small', **kwargs):
         super(CBNHeadLocal, self).__init__()
-        self.k = k
         self.mode = mode
-        binarize_name_list = [
-            'conv2d_56', 'batch_norm_47', 'conv2d_transpose_0', 'batch_norm_48',
-            'conv2d_transpose_1', 'binarize'
-        ]
-        thresh_name_list = [
-            'conv2d_57', 'batch_norm_49', 'conv2d_transpose_2', 'batch_norm_50',
-            'conv2d_transpose_3', 'thresh'
-        ]
-        self.binarize = Head(in_channels, binarize_name_list, **kwargs)
-        self.thresh = Head(in_channels, thresh_name_list, **kwargs)
-        self.p_conv = nn.Upsample(scale_factor=2, mode="nearest", align_mode=1)
-        self.cbn_layer = CBNModuleLocal(in_channels // 4)
 
-    def step_function(self, x, y):
-        return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
+        self.up_conv = nn.Upsample(scale_factor=2, mode="nearest", align_mode=1)
+        if self.mode == 'large':
+            self.cbn_layer = LocalModule(in_channels // 4, in_channels // 4)
+        elif self.mode == 'small':
+            self.cbn_layer = LocalModule(in_channels // 4, in_channels // 8)
 
     def forward(self, x, targets=None):
-        return self.forward_cbnlocal(x, targets)
-
-    def forward_cbnlocal(self, x, targets=None):
         shrink_maps, f = self.binarize(x, return_f=True)
         base_maps = shrink_maps
-        cbn_maps = self.cbn_layer(self.p_conv(f), shrink_maps, None)
-        cbn_maps = F.sigmoid(cbn_maps)
-        if not self.training:
-            return {'maps': 0.5 * (base_maps + cbn_maps), 'cbn_maps': cbn_maps}
-
-        threshold_maps = self.thresh(x)
-        binary_maps = self.step_function(shrink_maps, threshold_maps)
-        y = paddle.concat([cbn_maps, threshold_maps, binary_maps], axis=1)
-        return {'maps': y, 'distance_maps': cbn_maps, 'cbn_maps': binary_maps}
-
-
-class CBNModuleLocal_Stu(nn.Layer):
-    def __init__(self, in_c, use_distance=True):
-        super(self.__class__, self).__init__()
-
-        self.last_3 = ConvBNLayer(in_c + 1, in_c // 2, 3, 1, 1, act='relu')
-        self.last_1 = nn.Conv2D(in_c // 2, 1, 1, 1, 0)
-
-    def forward(self, x, init_map, distance_map):
-        outf = paddle.concat([init_map, x], axis=1)
-        # last Conv
-        out = self.last_1(self.last_3(outf))
-        return out
-
-
-class CBNHeadLocal_Stu(nn.Layer):
-    def __init__(self, in_channels, k=50, mode='cbnlocal', **kwargs):
-        super(CBNHeadLocal_Stu, self).__init__()
-        self.k = k
-        self.mode = mode
-        binarize_name_list = [
-            'conv2d_56', 'batch_norm_47', 'conv2d_transpose_0', 'batch_norm_48',
-            'conv2d_transpose_1', 'binarize'
-        ]
-        thresh_name_list = [
-            'conv2d_57', 'batch_norm_49', 'conv2d_transpose_2', 'batch_norm_50',
-            'conv2d_transpose_3', 'thresh'
-        ]
-        self.binarize = Head(in_channels, binarize_name_list, **kwargs)
-        self.thresh = Head(in_channels, thresh_name_list, **kwargs)
-
-        self.p_conv = nn.Upsample(scale_factor=2, mode="nearest", align_mode=1)
-
-        self.cbn_layer = CBNModuleLocal_Stu(in_channels // 4)
-
-    def step_function(self, x, y):
-        return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
-
-    def forward(self, x, targets=None):
-        return self.forward_cbnlocal(x, targets)
-
-    def forward_cbnlocal(self, x, targets=None):
-        shrink_maps, f = self.binarize(x, return_f=True)
-        base_maps = shrink_maps
-        cbn_maps = self.cbn_layer(self.p_conv(f), shrink_maps, None)
+        cbn_maps = self.cbn_layer(self.up_conv(f), shrink_maps, None)
         cbn_maps = F.sigmoid(cbn_maps)
         if not self.training:
             return {'maps': 0.5 * (base_maps + cbn_maps), 'cbn_maps': cbn_maps}

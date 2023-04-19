@@ -1,6 +1,8 @@
 import paddle
 from paddle import nn
 
+# refer from: https://github.com/ViTAE-Transformer/I3CL/blob/736c80237f66d352d488e83b05f3e33c55201317/mmdet/models/detectors/intra_cl_module.py
+
 
 class IntraCLBlock(nn.Layer):
     def __init__(self, in_channels=96, reduce_factor=4):

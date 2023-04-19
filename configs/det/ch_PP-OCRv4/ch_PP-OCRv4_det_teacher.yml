@@ -31,11 +31,9 @@ Architecture:
     intracl: true
   Head:
     name: CBNHeadLocal
-    kernel_list:
-    - 3
-    - 2
-    - 2
     k: 50
+    mode: "large"
+    
 
 Loss:
   name: DBLoss
