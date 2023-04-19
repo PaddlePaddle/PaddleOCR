@@ -71,14 +71,7 @@ Train:
     name: SimpleDataSet
     data_dir: data/chinese/
     label_file_list:
-    - data/chinese/zhongce_training_fix_1.6k.txt
-    - data/chinese/label_train_all_f4_part2.txt
-    - data/chinese/label_train_all_f4_part3.txt
-    - data/chinese/label_train_all_f4_part4.txt
-    - data/chinese/label_train_all_f4_part5.txt
-    - data/chinese/synth_en_my_clip.txt
-    - data/chinese/synth_ch_my_clip.txt
-    - data/chinese/synth_en_my_largeword_clip.txt
+    - data/chinese/label.txt
     ratio_list:
     - 0.3
     - 0.2
