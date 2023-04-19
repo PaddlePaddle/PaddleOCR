@@ -22,6 +22,7 @@ Global:
   use_sync_bn: True
   save_res_path: 'output/infer'
   d2s_train_image_shape: [3, -1, -1]
+  amp_custom_white_list: ['concat', 'elementwise_sub', 'set_value']
 
 Optimizer:
   name: Adam

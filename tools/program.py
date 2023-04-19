@@ -188,7 +188,8 @@ def train(config,
           log_writer=None,
           scaler=None,
           amp_level='O2',
-          amp_custom_black_list=[]):
+          amp_custom_black_list=[],
+          amp_custom_white_list=[]):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -277,7 +278,8 @@ def train(config,
             if scaler:
                 with paddle.amp.auto_cast(
                         level=amp_level,
-                        custom_black_list=amp_custom_black_list):
+                        custom_black_list=amp_custom_black_list,
+                        custom_white_list=amp_custom_white_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
