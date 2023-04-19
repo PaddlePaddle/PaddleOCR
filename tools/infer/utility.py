@@ -291,7 +291,9 @@ def create_predictor(args, mode, logger):
 def get_output_tensors(args, mode, predictor):
     output_names = predictor.get_output_names()
     output_tensors = []
-    if mode == "rec" and args.rec_algorithm in ["CRNN", "SVTR_LCNet"]:
+    if mode == "rec" and args.rec_algorithm in [
+            "CRNN", "SVTR_LCNet", "SVTR_HGNet"
+    ]:
         output_name = 'softmax_0.tmp_0'
         if output_name in output_names:
             return [predictor.get_output_handle(output_name)]

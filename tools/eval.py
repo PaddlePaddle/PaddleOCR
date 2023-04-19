@@ -83,7 +83,7 @@ def main():
     model = build_model(config['Architecture'])
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "VisionLAN",
-        "RobustScanner"
+        "RobustScanner", "SVTR_HGNet"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
