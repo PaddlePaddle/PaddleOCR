@@ -246,7 +246,7 @@ def create_predictor(args, mode, logger):
                     logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
 
         elif args.use_npu:
-            config.enable_npu()
+            config.enable_custom_device("npu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
