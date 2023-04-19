@@ -48,6 +48,13 @@ class SimpleDataSet(Dataset):
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
+
+        if self.mode == 'train':
+            dataset_config['transforms'][5]['MakeBorderMap'][
+                'epoch'] = seed if seed is not None else 0
+            dataset_config['transforms'][6]['MakeShrinkMap'][
+                'epoch'] = seed if seed is not None else 0
+
         self.ops = create_operators(dataset_config['transforms'], global_config)
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
