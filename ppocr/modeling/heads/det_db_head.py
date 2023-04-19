@@ -127,7 +127,7 @@ class LocalModule(nn.Layer):
 
 class CBNHeadLocal(DBHead):
     def __init__(self, in_channels, k=50, mode='small', **kwargs):
-        super(CBNHeadLocal, self).__init__()
+        super(CBNHeadLocal, self).__init__(in_channels, k, **kwargs)
         self.mode = mode
 
         self.up_conv = nn.Upsample(scale_factor=2, mode="nearest", align_mode=1)
