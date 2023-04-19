@@ -165,9 +165,6 @@ class DBFPN(nn.Layer):
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False)
 
-        self.aff_c45 = AFF(out_channels, 2)
-        self.aff_c34 = AFF(out_channels, 2)
-        self.aff_c23 = AFF(out_channels, 2)
         if self.use_asf is True:
             self.asf = ASFBlock(self.out_channels, self.out_channels // 4)
 
@@ -178,9 +175,13 @@ class DBFPN(nn.Layer):
         in4 = self.in4_conv(c4)
         in3 = self.in3_conv(c3)
         in2 = self.in2_conv(c2)
-        out4 = self.aff_c45(in4, in5)
-        out3 = self.aff_c34(in3, out4)
-        out2 = self.aff_c23(in2, out3)
+
+        out4 = in4 + F.upsample(
+            in5, scale_factor=2, mode="nearest", align_mode=1)  # 1/16
+        out3 = in3 + F.upsample(
+            out4, scale_factor=2, mode="nearest", align_mode=1)  # 1/8
+        out2 = in2 + F.upsample(
+            out3, scale_factor=2, mode="nearest", align_mode=1)  # 1/4
 
         p5 = self.p5_conv(in5)
         p4 = self.p4_conv(out4)
@@ -452,61 +453,3 @@ class ASFBlock(nn.Layer):
         for i in range(self.out_features_num):
             out_list.append(attention_scores[:, i:i + 1] * features_list[i])
         return paddle.concat(out_list, axis=1)
-
-
-class AFF(nn.Layer):
-    def __init__(self, in_channels, shortcut=False, reduction=2):
-        super(self.__class__, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2D(1)
-        weight_attr = paddle.nn.initializer.KaimingUniform()
-        self.gamma = self.create_parameter(
-            shape=[1],
-            dtype='float32',
-            default_initializer=nn.initializer.Constant(0))
-        self.shortcut = shortcut
-
-        self.lconv1 = nn.Conv2D(
-            in_channels=in_channels,
-            out_channels=in_channels // reduction,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            weight_attr=ParamAttr(initializer=weight_attr),
-            bias_attr=False)
-        self.lconv2 = nn.Conv2D(
-            in_channels=in_channels // reduction,
-            out_channels=in_channels,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            weight_attr=ParamAttr(initializer=weight_attr),
-            bias_attr=False)
-        self.gconv1 = nn.Conv2D(
-            in_channels=in_channels,
-            out_channels=in_channels // reduction,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            weight_attr=ParamAttr(initializer=weight_attr),
-            bias_attr=False)
-        self.gconv2 = nn.Conv2D(
-            in_channels=in_channels // reduction,
-            out_channels=in_channels,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            weight_attr=ParamAttr(initializer=weight_attr),
-            bias_attr=False)
-
-    def forward(self, x1, x2):
-        _x = paddle.add(x1,
-                        F.upsample(
-                            x2, scale_factor=2, mode="nearest", align_mode=1))
-        gx = self.avg_pool(_x)
-        gx = self.gconv2(F.relu(self.gconv1(gx)))
-        lx = self.lconv2(F.relu(self.lconv1(_x)))
-        _x = F.sigmoid(paddle.add(gx, lx))
-        out = x1 * _x
-        if self.shortcut:
-            return out * self.gamma + _x
-        return out

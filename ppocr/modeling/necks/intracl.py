@@ -116,17 +116,3 @@ def build_intraclblock_list(num_block):
         IntraCLBlock_list.append(IntraCLBlock())
 
     return IntraCLBlock_list
-
-
-def test_intracl():
-    ins = paddle.randn([2, 24, 320, 320])
-
-    model = IntraCLBlock(in_channels=24, reduce_factor=2)
-    res = model(ins)
-    print(res.shape)
-
-    paddle.save(model.state_dict(), "./testIntraCLmodel.pdparams")
-
-
-if __name__ == "__main__":
-    test_intracl()

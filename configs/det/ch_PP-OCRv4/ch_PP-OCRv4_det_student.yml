@@ -69,11 +69,10 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: data/chinese/
+    data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
-    - data/chinese/label.txt
-    ratio_list:
-    - 0.3
+      - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
+    ratio_list: [1.0]
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -138,17 +137,15 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: data/v4_4_test_dataset/
+    data_dir: ./train_data/icdar2015/text_localization/
     label_file_list:
-    - data/v4_4_test_dataset/label.txt 
+      - ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
     - DetResizeForTest:
-        # limit_side_len: 960  # limit eval size
-        # limit_type: max
     - NormalizeImage:
         scale: 1./255.
         mean:
