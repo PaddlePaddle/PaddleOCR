@@ -11,7 +11,7 @@ Global:
   - 1500
   cal_metric_during_train: false
   checkpoints:
-  pretrained_model: ./PPHGNet_small_ssld_ocr.pdparams
+  pretrained_model:
   save_inference_dir: null
   use_visualdl: false
   infer_img: doc/imgs_en/img_10.jpg
@@ -23,8 +23,8 @@ Architecture:
   algorithm: DB
   Transform: null
   Backbone:
-    name: PPHGNet
-    scale: "small"
+    name: PPHGNet_small
+    det: True
   Neck:
     name: LKPAN
     out_channels: 256

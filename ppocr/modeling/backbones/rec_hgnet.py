@@ -1,4 +1,4 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2022 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,44 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import paddle
-from paddle import ParamAttr
 import paddle.nn as nn
 import paddle.nn.functional as F
+from paddle.nn.initializer import KaimingNormal, Constant
 from paddle.nn import Conv2D, BatchNorm2D, ReLU, AdaptiveAvgPool2D, MaxPool2D
 from paddle.regularizer import L2Decay
-from paddle.nn.initializer import Normal, Constant, XavierUniform, KaimingNormal
-
-__all__ = ["PPHGNet"]
-
-SCALE_CONFIG = {
-    "small": {
-        "stage_config": {
-            # in_channels, mid_channels, out_channels, blocks, downsample
-            "stage1": [128, 128, 256, 1, False],
-            "stage2": [256, 160, 512, 1, True],
-            "stage3": [512, 192, 768, 2, True],
-            "stage4": [768, 224, 1024, 1, True],
-        },
-        "stem_channels": [64, 64, 128],
-        "layer_num": 6,
-    },
-    "tiny": {
-        "stage_config": {
-            # in_channels, mid_channels, out_channels, blocks, downsample
-            "stage1": [96, 96, 224, 1, False],
-            "stage2": [224, 128, 448, 1, True],
-            "stage3": [448, 160, 512, 2, True],
-            "stage4": [512, 192, 768, 1, True],
-        },
-        "stem_channels": [48, 48, 96],
-        "layer_num": 5,
-    }
-}
+from paddle import ParamAttr
 
 kaiming_normal_ = KaimingNormal()
 zeros_ = Constant(value=0.)
@@ -166,7 +135,8 @@ class HG_Stage(nn.Layer):
                  out_channels,
                  block_num,
                  layer_num,
-                 downsample=True):
+                 downsample=True,
+                 stride=[2, 1]):
         super().__init__()
         self.downsample = downsample
         if downsample:
@@ -174,7 +144,7 @@ class HG_Stage(nn.Layer):
                 in_channels=in_channels,
                 out_channels=in_channels,
                 kernel_size=3,
-                stride=2,
+                stride=stride,
                 groups=in_channels,
                 use_act=False)
 
@@ -220,19 +190,14 @@ class PPHGNet(nn.Layer):
 
     def __init__(
             self,
-            in_channels,
-            scale,
-            use_last_conv=True,
-            class_expand=2048,
-            dropout_prob=0.0,
-            class_num=1000,
+            stem_channels,
+            stage_config,
+            layer_num,
+            in_channels=3,
+            det=False,
             out_indices=None, ):
         super().__init__()
-        self.use_last_conv = use_last_conv
-        self.class_expand = class_expand
-        stage_config = SCALE_CONFIG[scale]["stage_config"]
-        stem_channels = SCALE_CONFIG[scale]["stem_channels"]
-        layer_num = SCALE_CONFIG[scale]["layer_num"]
+        self.det = det
         self.out_indices = out_indices if out_indices is not None else [
             0, 1, 2, 3
         ]
@@ -246,36 +211,23 @@ class PPHGNet(nn.Layer):
                 stride=2 if i == 0 else 1) for i in range(
                     len(stem_channels) - 1)
         ])
-        self.pool = nn.MaxPool2D(kernel_size=3, stride=2, padding=1)
 
+        if self.det:
+            self.pool = nn.MaxPool2D(kernel_size=3, stride=2, padding=1)
         # stages
         self.stages = nn.LayerList()
         self.out_channels = []
-        for block, k in enumerate(stage_config):
-            in_channels, mid_channels, out_channels, block_num, downsample = stage_config[
+        for block_id, k in enumerate(stage_config):
+            in_channels, mid_channels, out_channels, block_num, downsample, stride = stage_config[
                 k]
             self.stages.append(
                 HG_Stage(in_channels, mid_channels, out_channels, block_num,
-                         layer_num, downsample))
-            if block in self.out_indices:
+                         layer_num, downsample, stride))
+            if block_id in self.out_indices:
                 self.out_channels.append(out_channels)
 
-        self.avg_pool = AdaptiveAvgPool2D(1)
-        if self.use_last_conv:
-            self.last_conv = Conv2D(
-                in_channels=out_channels,
-                out_channels=self.class_expand,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                bias_attr=False)
-            self.act = nn.ReLU()
-            self.dropout = nn.Dropout(p=dropout_prob, mode="downscale_in_infer")
-
-        self.flatten = nn.Flatten(start_axis=1, stop_axis=-1)
-        self.fc = nn.Linear(self.class_expand
-                            if self.use_last_conv else out_channels, class_num)
-
+        if not self.det:
+            self.out_channels = stage_config["stage4"][2]
         self._init_weights()
 
     def _init_weights(self):
@@ -290,11 +242,107 @@ class PPHGNet(nn.Layer):
 
     def forward(self, x):
         x = self.stem(x)
-        x = self.pool(x)
+        if self.det:
+            x = self.pool(x)
 
         out = []
         for i, stage in enumerate(self.stages):
             x = stage(x)
-            if i in self.out_indices:
+            if self.det and i in self.out_indices:
                 out.append(x)
-        return out
+        if self.det:
+            return out
+
+        if self.training:
+            x = F.adaptive_avg_pool2d(x, [1, 40])
+        else:
+            x = F.avg_pool2d(x, [3, 2])
+        return x
+
+
+def PPHGNet_tiny(pretrained=False, use_ssld=False, **kwargs):
+    """
+    PPHGNet_tiny
+    Args:
+        pretrained: bool=False or str. If `True` load pretrained parameters, `False` otherwise.
+                    If str, means the path of the pretrained model.
+        use_ssld: bool=False. Whether using distillation pretrained model when pretrained=True.
+    Returns:
+        model: nn.Layer. Specific `PPHGNet_tiny` model depends on args.
+    """
+    stage_config = {
+        # in_channels, mid_channels, out_channels, blocks, downsample
+        "stage1": [96, 96, 224, 1, False, [2, 1]],
+        "stage2": [224, 128, 448, 1, True, [1, 2]],
+        "stage3": [448, 160, 512, 2, True, [2, 1]],
+        "stage4": [512, 192, 768, 1, True, [2, 1]],
+    }
+
+    model = PPHGNet(
+        stem_channels=[48, 48, 96],
+        stage_config=stage_config,
+        layer_num=5,
+        **kwargs)
+    return model
+
+
+def PPHGNet_small(pretrained=False, use_ssld=False, det=False, **kwargs):
+    """
+    PPHGNet_small
+    Args:
+        pretrained: bool=False or str. If `True` load pretrained parameters, `False` otherwise.
+                    If str, means the path of the pretrained model.
+        use_ssld: bool=False. Whether using distillation pretrained model when pretrained=True.
+    Returns:
+        model: nn.Layer. Specific `PPHGNet_small` model depends on args.
+    """
+    stage_config_det = {
+        # in_channels, mid_channels, out_channels, blocks, downsample
+        "stage1": [128, 128, 256, 1, False, 2],
+        "stage2": [256, 160, 512, 1, True, 2],
+        "stage3": [512, 192, 768, 2, True, 2],
+        "stage4": [768, 224, 1024, 1, True, 2],
+    }
+
+    stage_config_rec = {
+        # in_channels, mid_channels, out_channels, blocks, downsample
+        "stage1": [128, 128, 256, 1, True, [2, 1]],
+        "stage2": [256, 160, 512, 1, True, [1, 2]],
+        "stage3": [512, 192, 768, 2, True, [2, 1]],
+        "stage4": [768, 224, 1024, 1, True, [2, 1]],
+    }
+
+    model = PPHGNet(
+        stem_channels=[64, 64, 128],
+        stage_config=stage_config_det if det else stage_config_rec,
+        layer_num=6,
+        det=det,
+        **kwargs)
+    return model
+
+
+def PPHGNet_base(pretrained=False, use_ssld=True, **kwargs):
+    """
+    PPHGNet_base
+    Args:
+        pretrained: bool=False or str. If `True` load pretrained parameters, `False` otherwise.
+                    If str, means the path of the pretrained model.
+        use_ssld: bool=False. Whether using distillation pretrained model when pretrained=True.
+    Returns:
+        model: nn.Layer. Specific `PPHGNet_base` model depends on args.
+    """
+    stage_config = {
+        # in_channels, mid_channels, out_channels, blocks, downsample
+        "stage1": [160, 192, 320, 1, False, [2, 1]],
+        "stage2": [320, 224, 640, 2, True, [1, 2]],
+        "stage3": [640, 256, 960, 3, True, [2, 1]],
+        "stage4": [960, 288, 1280, 2, True, [2, 1]],
+    }
+
+    model = PPHGNet(
+        stem_channels=[96, 96, 160],
+        stage_config=stage_config,
+        layer_num=7,
+        dropout_prob=0.2,
+        **kwargs)
+    return model
