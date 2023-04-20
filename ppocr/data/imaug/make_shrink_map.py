@@ -38,7 +38,8 @@ class MakeShrinkMap(object):
     def __init__(self, min_text_size=8, shrink_ratio=0.4, **kwargs):
         self.min_text_size = min_text_size
         self.shrink_ratio = shrink_ratio
-        if 'total_epoch' in kwargs and 'epoch' in kwargs:
+        if 'total_epoch' in kwargs and 'epoch' in kwargs and kwargs[
+                'epoch'] != "None":
             self.shrink_ratio = self.shrink_ratio + 0.2 * kwargs[
                 'epoch'] / float(kwargs['total_epoch'])
 
