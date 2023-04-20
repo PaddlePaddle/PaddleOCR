@@ -228,7 +228,10 @@ class PPHGNet(nn.Layer):
         x = self.stem(x)
         for stage in self.stages:
             x = stage(x)
-        x = F.adaptive_avg_pool2d(x, [1, x.shape[-1] // 2])
+        if self.training:
+            x = F.adaptive_avg_pool2d(x, [1, 40])
+        else:
+            x = F.avg_pool2d(x, [3, 2])
         return x
 
 
