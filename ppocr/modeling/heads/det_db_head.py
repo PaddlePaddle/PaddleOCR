@@ -74,13 +74,17 @@ class Head(nn.Layer):
                 initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4), )
 
-    def forward(self, x):
+    def forward(self, x, return_f=False):
         x = self.conv1(x)
         x = self.conv_bn1(x)
         x = self.conv2(x)
         x = self.conv_bn2(x)
+        if return_f is True:
+            f = x
         x = self.conv3(x)
         x = F.sigmoid(x)
+        if return_f is True:
+            return x, f
         return x
 
 

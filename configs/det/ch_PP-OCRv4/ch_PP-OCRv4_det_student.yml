@@ -23,9 +23,9 @@ Architecture:
   algorithm: DB
   Transform: null
   Backbone:
-    name: PPLCNetNew
+    name: LCNetv3
     scale: 0.75
-    pretrained: True #load pretrain
+    det: True
   Neck:
     name: RSEFPN
     out_channels: 96

@@ -24,7 +24,20 @@ from paddle.nn.initializer import Constant, KaimingNormal
 from paddle.nn import AdaptiveAvgPool2D, BatchNorm2D, Conv2D, Dropout, Hardsigmoid, Hardswish, Identity, Linear, ReLU
 from paddle.regularizer import L2Decay
 
-NET_CONFIG = {
+NET_CONFIG_det = {
+    "blocks2":
+    #k, in_c, out_c, s, use_se
+    [[3, 16, 32, 1, False]],
+    "blocks3": [[3, 32, 64, 2, False], [3, 64, 64, 1, False]],
+    "blocks4": [[3, 64, 128, 2, False], [3, 128, 128, 1, False]],
+    "blocks5":
+    [[3, 128, 256, 2, False], [5, 256, 256, 1, False], [5, 256, 256, 1, False],
+     [5, 256, 256, 1, False], [5, 256, 256, 1, False]],
+    "blocks6": [[5, 256, 512, 2, True], [5, 512, 512, 1, True],
+                [5, 512, 512, 1, False], [5, 512, 512, 1, False]]
+}
+
+NET_CONFIG_rec = {
     "blocks2":
     #k, in_c, out_c, s, use_se
     [[3, 16, 32, 1, False]],
@@ -335,11 +348,14 @@ class PPLCNetV3(nn.Layer):
                  conv_kxk_num=4,
                  lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
                  lab_lr=0.1,
+                 det=False,
                  **kwargs):
         super().__init__()
         self.scale = scale
         self.lr_mult_list = lr_mult_list
-        self.net_config = NET_CONFIG
+        self.det = det
+
+        self.net_config = NET_CONFIG_det if self.det else NET_CONFIG_rec
 
         assert isinstance(self.lr_mult_list, (
             list, tuple
@@ -365,8 +381,9 @@ class PPLCNetV3(nn.Layer):
                 use_se=se,
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[1],
-                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
-                    self.net_config["blocks2"])
+                lab_lr=lab_lr)
+            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
+                "blocks2"])
         ])
 
         self.blocks3 = nn.Sequential(* [
@@ -378,8 +395,9 @@ class PPLCNetV3(nn.Layer):
                 use_se=se,
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[2],
-                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
-                    self.net_config["blocks3"])
+                lab_lr=lab_lr)
+            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
+                "blocks3"])
         ])
 
         self.blocks4 = nn.Sequential(* [
@@ -391,8 +409,9 @@ class PPLCNetV3(nn.Layer):
                 use_se=se,
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[3],
-                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
-                    self.net_config["blocks4"])
+                lab_lr=lab_lr)
+            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
+                "blocks4"])
         ])
 
         self.blocks5 = nn.Sequential(* [
@@ -404,8 +423,9 @@ class PPLCNetV3(nn.Layer):
                 use_se=se,
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[4],
-                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
-                    self.net_config["blocks5"])
+                lab_lr=lab_lr)
+            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
+                "blocks5"])
         ])
 
         self.blocks6 = nn.Sequential(* [
@@ -417,19 +437,52 @@ class PPLCNetV3(nn.Layer):
                 use_se=se,
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[5],
-                lab_lr=lab_lr) for i, (k, in_c, out_c, s, se) in enumerate(
-                    self.net_config["blocks6"])
+                lab_lr=lab_lr)
+            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
+                "blocks6"])
         ])
         self.out_channels = make_divisible(512 * scale)
 
+        if self.det:
+            mv_c = [16, 24, 56, 480]
+            self.out_channels = [
+                make_divisible(self.net_config["blocks3"][-1][2] * scale),
+                make_divisible(self.net_config["blocks4"][-1][2] * scale),
+                make_divisible(self.net_config["blocks5"][-1][2] * scale),
+                make_divisible(self.net_config["blocks6"][-1][2] * scale),
+            ]
+
+            self.layer_list = nn.LayerList([
+                nn.Conv2D(self.out_channels[0], int(mv_c[0] * scale), 1, 1, 0),
+                nn.Conv2D(self.out_channels[1], int(mv_c[1] * scale), 1, 1, 0),
+                nn.Conv2D(self.out_channels[2], int(mv_c[2] * scale), 1, 1, 0),
+                nn.Conv2D(self.out_channels[3], int(mv_c[3] * scale), 1, 1, 0)
+            ])
+            self.out_channels = [
+                int(mv_c[0] * scale), int(mv_c[1] * scale),
+                int(mv_c[2] * scale), int(mv_c[3] * scale)
+            ]
+
     def forward(self, x):
+        out_list = []
         x = self.conv1(x)
 
         x = self.blocks2(x)
         x = self.blocks3(x)
+        out_list.append(x)
         x = self.blocks4(x)
+        out_list.append(x)
         x = self.blocks5(x)
+        out_list.append(x)
         x = self.blocks6(x)
+        out_list.append(x)
+
+        if self.det:
+            out_list[0] = self.layer_list[0](out_list[0])
+            out_list[1] = self.layer_list[1](out_list[1])
+            out_list[2] = self.layer_list[2](out_list[2])
+            out_list[3] = self.layer_list[3](out_list[3])
+            return out_list
 
         if self.training:
             x = F.adaptive_avg_pool2d(x, [1, 40])
@@ -438,6 +491,6 @@ class PPLCNetV3(nn.Layer):
         return x
 
 
-def LCNetv3(pretrained=False, use_ssld=False, **kwargs):
-    model = PPLCNetV3(scale=0.95, conv_kxk_num=4, **kwargs)
+def LCNetv3(scale=0.95, **kwargs):
+    model = PPLCNetV3(scale=scale, conv_kxk_num=4, **kwargs)
     return model

@@ -24,9 +24,10 @@ def build_backbone(config, model_type):
         from .det_pp_lcnet import PPLCNet
         from .lcnet import PPLCNetNew
         from .det_hgnet import PPHGNet
+        from .rec_lcnetv3 import LCNetv3
         support_dict = [
             "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet",
-            "PPLCNetNew", "PPHGNet"
+            "PPLCNetNew", "PPHGNet", 'LCNetv3'
         ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra
