@@ -54,12 +54,11 @@ class NLPBaseModel(nn.Layer):
         if checkpoints is not None:  # load the trained model
             self.model = model_class.from_pretrained(checkpoints)
         else:  # load the pretrained-model
-            pretrained_model_name = pretrained_model_dict[base_model_class][
-                mode]
+            pretrained_model_name = pretrained_model_dict[base_model_class][mode]
             if type == "ser":
-                self.model = model_class.from_pretrained(pretrained, num_classes=kwargs["num_classes"], dropout=0)
+                self.model = model_class.from_pretrained(pretrained_model_name, num_classes=kwargs["num_classes"], dropout=0)
             else:
-                self.model = model_class.from_pretrained(pretrained, dropout=0)
+                self.model = model_class.from_pretrained(pretrained_model_name, dropout=0)
         self.out_channels = 1
         self.use_visual_backbone = True
 
