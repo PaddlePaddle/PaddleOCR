@@ -44,6 +44,10 @@ class MakeBorderMap(object):
         self.shrink_ratio = shrink_ratio
         self.thresh_min = thresh_min
         self.thresh_max = thresh_max
+        if 'total_epoch' in kwargs.keys() and 'epoch' in kwargs.keys():
+            if kwargs['epoch'] != "None":
+                self.shrink_ratio = 0.4 + 0.2 * kwargs['epoch'] / float(kwargs[
+                    'total_epoch'])
 
     def __call__(self, data):
 

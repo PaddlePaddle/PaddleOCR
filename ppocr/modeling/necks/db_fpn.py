@@ -22,6 +22,7 @@ import paddle.nn.functional as F
 from paddle import ParamAttr
 import os
 import sys
+from ppocr.modeling.necks.intracl import IntraCLBlock
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -229,6 +230,15 @@ class RSEFPN(nn.Layer):
         self.ins_conv = nn.LayerList()
         self.inp_conv = nn.LayerList()
 
+        self.intracl = False
+        if 'intracl' in kwargs.keys() and kwargs['intracl'] is True:
+            self.intracl = kwargs['intracl']
+            # self.reduce_factor = kwargs['reduce_factor'] if 'reduce_factor' in kwargs.keys() else 2
+            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+
         for i in range(len(in_channels)):
             self.ins_conv.append(
                 RSELayer(
@@ -328,6 +338,15 @@ class LKPAN(nn.Layer):
                     padding=4,
                     weight_attr=ParamAttr(initializer=weight_attr),
                     bias_attr=False))
+
+        self.intracl = False
+        if 'intracl' in kwargs.keys() and kwargs['intracl'] is True:
+            self.intracl = kwargs['intracl']
+            # self.reduce_factor = kwargs['reduce_factor'] if 'reduce_factor' in kwargs.keys() else 2
+            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
 
     def forward(self, x):
         c2, c3, c4, c5 = x

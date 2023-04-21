@@ -48,10 +48,24 @@ class SimpleDataSet(Dataset):
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
+
+        self.set_epoch_as_seed(self.seed)
+
         self.ops = create_operators(dataset_config['transforms'], global_config)
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
         self.need_reset = True in [x < 1 for x in ratio_list]
+
+    def set_epoch_as_seed(self, seed):
+        if self.mode is 'train':
+            try:
+                dataset_config['transforms'][5]['MakeBorderMap'][
+                    'epoch'] = seed if seed is not None else 0
+                dataset_config['transforms'][6]['MakeShrinkMap'][
+                    'epoch'] = seed if seed is not None else 0
+            except Exception as E:
+                logger.info(E)
+                return
 
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):
