@@ -188,8 +188,19 @@ class PPHGNet(nn.Layer):
         model: nn.Layer. Specific PPHGNet model depends on args.
     """
 
-    def __init__(self, stem_channels, stage_config, layer_num, in_channels=3):
+    def __init__(
+            self,
+            stem_channels,
+            stage_config,
+            layer_num,
+            in_channels=3,
+            det=False,
+            out_indices=None, ):
         super().__init__()
+        self.det = det
+        self.out_indices = out_indices if out_indices is not None else [
+            0, 1, 2, 3
+        ]
 
         # stem
         stem_channels.insert(0, in_channels)
@@ -202,16 +213,23 @@ class PPHGNet(nn.Layer):
                     len(stem_channels) - 1)
         ])
 
+        if self.det:
+            self.pool = nn.MaxPool2D(kernel_size=3, stride=2, padding=1)
         # stages
         self.stages = nn.LayerList()
-        for k in stage_config:
+        self.out_channels = []
+        for block_id, k in enumerate(stage_config):
             in_channels, mid_channels, out_channels, block_num, downsample, stride = stage_config[
                 k]
             self.stages.append(
                 HG_Stage(in_channels, mid_channels, out_channels, block_num,
                          layer_num, downsample, stride))
+            if block_id in self.out_indices:
+                self.out_channels.append(out_channels)
 
-        self.out_channels = stage_config["stage4"][2]
+        if not self.det:
+            self.out_channels = stage_config["stage4"][2]
+
         self._init_weights()
 
     def _init_weights(self):
@@ -226,8 +244,17 @@ class PPHGNet(nn.Layer):
 
     def forward(self, x):
         x = self.stem(x)
-        for stage in self.stages:
+        if self.det:
+            x = self.pool(x)
+
+        out = []
+        for i, stage in enumerate(self.stages):
             x = stage(x)
+            if self.det and i in self.out_indices:
+                out.append(x)
+        if self.det:
+            return out
+
         if self.training:
             x = F.adaptive_avg_pool2d(x, [1, 40])
         else:
@@ -261,7 +288,7 @@ def PPHGNet_tiny(pretrained=False, use_ssld=False, **kwargs):
     return model
 
 
-def PPHGNet_small(pretrained=False, use_ssld=False, **kwargs):
+def PPHGNet_small(pretrained=False, use_ssld=False, det=False, **kwargs):
     """
     PPHGNet_small
     Args:
@@ -271,7 +298,15 @@ def PPHGNet_small(pretrained=False, use_ssld=False, **kwargs):
     Returns:
         model: nn.Layer. Specific `PPHGNet_small` model depends on args.
     """
-    stage_config = {
+    stage_config_det = {
+        # in_channels, mid_channels, out_channels, blocks, downsample
+        "stage1": [128, 128, 256, 1, False, 2],
+        "stage2": [256, 160, 512, 1, True, 2],
+        "stage3": [512, 192, 768, 2, True, 2],
+        "stage4": [768, 224, 1024, 1, True, 2],
+    }
+
+    stage_config_rec = {
         # in_channels, mid_channels, out_channels, blocks, downsample
         "stage1": [128, 128, 256, 1, True, [2, 1]],
         "stage2": [256, 160, 512, 1, True, [1, 2]],
@@ -281,8 +316,9 @@ def PPHGNet_small(pretrained=False, use_ssld=False, **kwargs):
 
     model = PPHGNet(
         stem_channels=[64, 64, 128],
-        stage_config=stage_config,
+        stage_config=stage_config_det if det else stage_config_rec,
         layer_num=6,
+        det=det,
         **kwargs)
     return model
 

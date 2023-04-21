@@ -22,8 +22,11 @@ def build_backbone(config, model_type):
         from .det_resnet_vd import ResNet_vd
         from .det_resnet_vd_sast import ResNet_SAST
         from .det_pp_lcnet import PPLCNet
+        from .rec_lcnetv3 import LCNetv3
+        from .rec_hgnet import PPHGNet_small
         support_dict = [
-            "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet"
+            "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet",
+            "LCNetv3", "PPHGNet_small"
         ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra
