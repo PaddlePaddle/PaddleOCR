@@ -201,6 +201,7 @@ class PPHGNet(nn.Layer):
         self.out_indices = out_indices if out_indices is not None else [
             0, 1, 2, 3
         ]
+
         # stem
         stem_channels.insert(0, in_channels)
         self.stem = nn.Sequential(* [
@@ -228,6 +229,7 @@ class PPHGNet(nn.Layer):
 
         if not self.det:
             self.out_channels = stage_config["stage4"][2]
+
         self._init_weights()
 
     def _init_weights(self):

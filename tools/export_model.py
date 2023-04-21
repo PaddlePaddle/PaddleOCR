@@ -62,7 +62,7 @@ def export_single_model(model,
                 shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "SVTR_LCNet":
+    elif arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, -1], dtype="float32"),
