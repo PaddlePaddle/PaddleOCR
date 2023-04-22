@@ -60,7 +60,7 @@ def convert_info_docx(img, res, save_folder, img_name):
         elif region['type'].lower() == 'title':
             j=0
             while j < len(region['res']):
-                doc.add_heading(region['res'][0]['text'])
+                doc.add_heading(region['res'][j]['text'])
         elif region['type'].lower() == 'table':
             parser = HtmlToDocx()
             parser.table_style = 'TableGrid'
