@@ -68,9 +68,6 @@ def main():
                 else:
                     config["Architecture"]["Models"][key]["Head"][
                         "out_channels"] = char_num
-                # just one final tensor needs to exported for inference
-                config["Architecture"]["Models"][key][
-                    "return_all_feats"] = False
         elif config['Architecture']['Head'][
                 'name'] == 'MultiHead':  # multi head
             out_channels_list = {}
@@ -86,7 +83,6 @@ def main():
                 'out_channels_list'] = out_channels_list
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
-
     model = build_model(config['Architecture'])
 
     load_model(config, model)

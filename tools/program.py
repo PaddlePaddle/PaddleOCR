@@ -188,7 +188,8 @@ def train(config,
           log_writer=None,
           scaler=None,
           amp_level='O2',
-          amp_custom_black_list=[]):
+          amp_custom_black_list=[],
+          amp_custom_white_list=[]):
     cal_metric_during_train = config['Global'].get('cal_metric_during_train',
                                                    False)
     calc_epoch_interval = config['Global'].get('calc_epoch_interval', 1)
@@ -229,7 +230,7 @@ def train(config,
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "SPIN", "VisionLAN",
-        "RobustScanner", "RFL", 'DRRG', 'SATRN'
+        "RobustScanner", "RFL", 'DRRG', 'SATRN', 'SVTR_HGNet'
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -277,7 +278,8 @@ def train(config,
             if scaler:
                 with paddle.amp.auto_cast(
                         level=amp_level,
-                        custom_black_list=amp_custom_black_list):
+                        custom_black_list=amp_custom_black_list,
+                        custom_white_list=amp_custom_white_list):
                     if model_type == 'table' or extra_input:
                         preds = model(images, data=batch[1:])
                     elif model_type in ["kie"]:
@@ -652,7 +654,11 @@ def preprocess(is_train=False):
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'SVTR_LCNet', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN',
         'VisionLAN', 'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG',
+<<<<<<< HEAD
         'CAN', 'Telescope', 'SATRN', 'SPTS'
+=======
+        'CAN', 'Telescope', 'SATRN', 'SVTR_HGNet'
+>>>>>>> 26519a6d17587531e8d33ecb38fbd2ab08dd1ff3
     ]
 
     if use_xpu:

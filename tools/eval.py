@@ -84,7 +84,7 @@ def main():
     # paddle.jit.save(model, './output/inference/rec_spts')
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "VisionLAN",
-        "RobustScanner"
+        "RobustScanner", "SVTR_HGNet", "SPTS"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':

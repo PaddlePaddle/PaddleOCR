@@ -4,7 +4,7 @@ Global:
   epoch_num: 200
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_ppocr_v4
+  save_model_dir: ./output/rec_ppocr_v4_hgnet
   save_epoch_step: 10
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
@@ -36,11 +36,10 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: SVTR_LCNet
+  algorithm: SVTR_HGNet
   Transform:
   Backbone:
-    name: PPLCNetV3
-    scale: 0.95
+    name: PPHGNet_small
   Head:
     name: MultiHead
     head_list:
