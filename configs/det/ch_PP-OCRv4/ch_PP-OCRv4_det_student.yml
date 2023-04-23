@@ -23,7 +23,7 @@ Architecture:
   algorithm: DB
   Transform: null
   Backbone:
-    name: LCNetv3
+    name: PPLCNetV3
     scale: 0.75
     det: True
   Neck:

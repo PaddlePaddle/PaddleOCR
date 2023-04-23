@@ -372,7 +372,7 @@ class PPLCNetV3(nn.Layer):
             stride=2,
             lr_mult=self.lr_mult_list[0])
 
-        self.blocks2 = nn.Sequential(* [
+        self.blocks2 = nn.Sequential(*[
             LCNetV3Block(
                 in_channels=make_divisible(in_c * scale),
                 out_channels=make_divisible(out_c * scale),
@@ -382,11 +382,11 @@ class PPLCNetV3(nn.Layer):
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[1],
                 lab_lr=lab_lr)
-            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
-                "blocks2"])
+            for i, (k, in_c, out_c, s, se
+                    ) in enumerate(self.net_config["blocks2"])
         ])
 
-        self.blocks3 = nn.Sequential(* [
+        self.blocks3 = nn.Sequential(*[
             LCNetV3Block(
                 in_channels=make_divisible(in_c * scale),
                 out_channels=make_divisible(out_c * scale),
@@ -396,11 +396,11 @@ class PPLCNetV3(nn.Layer):
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[2],
                 lab_lr=lab_lr)
-            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
-                "blocks3"])
+            for i, (k, in_c, out_c, s, se
+                    ) in enumerate(self.net_config["blocks3"])
         ])
 
-        self.blocks4 = nn.Sequential(* [
+        self.blocks4 = nn.Sequential(*[
             LCNetV3Block(
                 in_channels=make_divisible(in_c * scale),
                 out_channels=make_divisible(out_c * scale),
@@ -410,11 +410,11 @@ class PPLCNetV3(nn.Layer):
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[3],
                 lab_lr=lab_lr)
-            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
-                "blocks4"])
+            for i, (k, in_c, out_c, s, se
+                    ) in enumerate(self.net_config["blocks4"])
         ])
 
-        self.blocks5 = nn.Sequential(* [
+        self.blocks5 = nn.Sequential(*[
             LCNetV3Block(
                 in_channels=make_divisible(in_c * scale),
                 out_channels=make_divisible(out_c * scale),
@@ -424,11 +424,11 @@ class PPLCNetV3(nn.Layer):
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[4],
                 lab_lr=lab_lr)
-            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
-                "blocks5"])
+            for i, (k, in_c, out_c, s, se
+                    ) in enumerate(self.net_config["blocks5"])
         ])
 
-        self.blocks6 = nn.Sequential(* [
+        self.blocks6 = nn.Sequential(*[
             LCNetV3Block(
                 in_channels=make_divisible(in_c * scale),
                 out_channels=make_divisible(out_c * scale),
@@ -438,8 +438,8 @@ class PPLCNetV3(nn.Layer):
                 conv_kxk_num=conv_kxk_num,
                 lr_mult=self.lr_mult_list[5],
                 lab_lr=lab_lr)
-            for i, (k, in_c, out_c, s, se) in enumerate(self.net_config[
-                "blocks6"])
+            for i, (k, in_c, out_c, s, se
+                    ) in enumerate(self.net_config["blocks6"])
         ])
         self.out_channels = make_divisible(512 * scale)
 
@@ -489,8 +489,3 @@ class PPLCNetV3(nn.Layer):
         else:
             x = F.avg_pool2d(x, [3, 2])
         return x
-
-
-def LCNetv3(scale=0.95, **kwargs):
-    model = PPLCNetV3(scale=scale, conv_kxk_num=4, **kwargs)
-    return model
