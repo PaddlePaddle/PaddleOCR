@@ -48,13 +48,9 @@ def build_backbone(config, model_type):
         from .rec_resnet_rfl import ResNetRFL
         from .rec_densenet import DenseNet
         from .rec_shallow_cnn import ShallowCNN
-<<<<<<< HEAD
-        from .rec_lcnetv3 import LCNetv3
-        from .rec_spts import SPTS
-=======
         from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
->>>>>>> 26519a6d17587531e8d33ecb38fbd2ab08dd1ff3
+        from .rec_spts import SPTS
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
