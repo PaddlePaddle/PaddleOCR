@@ -1,0 +1,159 @@
+Global:
+  use_gpu: true
+  epoch_num: 350
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/spts
+  save_epoch_step: 50
+  eval_batch_step: [ 0,500000 ]
+  cal_metric_during_train: False
+  pretrained_model: ./output/pretrain/best_accuracy
+  checkpoints: 
+  save_inference_dir: ./output/inference/rec_spts
+  use_visualdl: False
+  infer_img: 
+  save_res_path: 
+
+Architecture:
+  algorithm: SPTS
+  model_type: rec
+  Backbone:
+    name: SPTS
+    Position: 
+      position_embedding: sine
+      tfm_hidden_dim: 256
+      temperature: 
+    Transformer:
+      tfm_hidden_dim: 256
+      nhead: 8
+      num_encoder_layers: 6
+      num_decoder_layers: 6
+      dim_feedforward: 1024
+      dropout: 0.05
+      normalize_before: True
+      num_classes: 1100
+      return_intermediate_dec: False
+      num_bins: 1000
+      max_num_text_ins: 60
+      padding_index: 1099
+      sos_index: 1098
+      eos_index: 1097
+      recog_pad_index: 1096
+
+Loss:
+  name: CELoss
+  ignore_index: 1099
+
+Optimizer:
+  name: AdamW
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 10.0
+  lr:
+    name: Linear
+    learning_rate: 0.0005
+    warmup_epoch: 5
+  regularizer:
+    name: 'L2'
+    factor: 0
+
+PostProcess:
+  name: SPTSDecode
+  # num_bins: 1000
+  # recog_pad_index: 1096
+  # padding_index: 1099
+
+Metric:
+  name: SPTSMetric
+  main_indicator: Precision
+  with_lexicon: True
+  match_dist_thres: 0.4
+  gt_folder: '/data/xiaoqihang/dataset/gt/gt_ic15'
+  lexicon_paths:  [
+              '/data/xiaoqihang/dataset/lexicons/ic15/GenericVocabulary_new.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/ch4_test_vocabulary_new.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/new_strong_lexicon/new_voc_img_',
+          ]
+  pair_paths: [
+            '/data/xiaoqihang/dataset/lexicons/ic15/GenericVocabulary_pair_list.txt',
+            '/data/xiaoqihang/dataset/lexicons/ic15/ch4_test_vocabulary_pair_list.txt',
+            '/data/xiaoqihang/dataset/lexicons/ic15/new_strong_lexicon/pair_voc_img_',
+        ]
+  lexicon_type: 0
+  IS_WORDSPOTTING: False
+
+
+Train:
+  dataset:
+    name: TextSpottingDataset
+    data_dir: ../../dataset/icdar2015
+    label_file_list:
+      - train_images
+      - ic15_train.json
+    ratio_list: [1.]
+    transforms:
+      - RandomCrop:
+          min_size_ratio: 0.5
+          max_size_ratio: 1.0
+          prob: 1.0
+      - RandomRotate:
+          max_angle: 30
+          prob: 0.3
+      - RandomResize:
+          min_size: [672, 704, 736, 768, 800, 832, 864, 896]
+          max_size: 1600
+      - RandomDistortion:
+          brightness: 0.5
+          contrast: 0.5
+          saturation: 0.5
+          hue: 0.5
+          prob: 0.5
+      - Normalize:
+      - MakeSequence:
+          num_bins: 1000
+          max_num_text_ins: 60
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1
+    num_batch: 2
+    num_workers: 0
+    use_shared_memory: False
+
+Eval:
+  dataset:
+    name: TextSpottingDataset 
+    data_dir: /data/xiaoqihang/dataset/icdar2015
+    label_file_list:
+      - test_images
+      - ic15_test.json
+    ratio_list: [0.01]
+    transforms:
+      - RandomResize:
+          min_size: [640, 672, 704, 736, 768, 800, 832, 864, 896]
+          max_size: 1600
+      - Normalize:
+      - MakeSequence:
+          num_bins: 1000
+          max_num_text_ins: 60
+  visualize: False
+  rec:
+    lexicon_type: 0
+    gt_folder: '/data/xiaoqihang/dataset/gt/gt_ic15'
+    lexicon_paths:  [
+              '/data/xiaoqihang/dataset/lexicons/ic15/GenericVocabulary_new.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/ch4_test_vocabulary_new.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/new_strong_lexicon/new_voc_img_',
+          ]
+    pair_paths: [
+              '/data/xiaoqihang/dataset/lexicons/ic15/GenericVocabulary_pair_list.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/ch4_test_vocabulary_pair_list.txt',
+              '/data/xiaoqihang/dataset/lexicons/ic15/new_strong_lexicon/pair_voc_img_',
+          ]
+    IS_WORDSPOTTING: False
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1 # must be 1
+    num_batch: 1
+    num_workers: 0

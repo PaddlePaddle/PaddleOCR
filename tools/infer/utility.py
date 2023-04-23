@@ -45,7 +45,7 @@ def init_args():
     parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
-    parser.add_argument("--image_dir", type=str)
+    parser.add_argument("--image_dir", type=str, default="/data/xiaoqihang/myproject/PaddleOCR/output/inference/img_38.jpg")
     parser.add_argument("--page_num", type=int, default=0)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
@@ -83,11 +83,11 @@ def init_args():
     parser.add_argument("--fourier_degree", type=int, default=5)
 
     # params for text recognizer
-    parser.add_argument("--rec_algorithm", type=str, default='SVTR_LCNet')
-    parser.add_argument("--rec_model_dir", type=str)
+    parser.add_argument("--rec_algorithm", type=str, default='SPTS')
+    parser.add_argument("--rec_model_dir", type=str, default="/data/xiaoqihang/myproject/PaddleOCR/output/inference/rec_spts")
     parser.add_argument("--rec_image_inverse", type=str2bool, default=True)
-    parser.add_argument("--rec_image_shape", type=str, default="3, 48, 320")
-    parser.add_argument("--rec_batch_num", type=int, default=6)
+    parser.add_argument("--rec_image_shape", type=str, default="3, 550, 386")
+    parser.add_argument("--rec_batch_num", type=int, default=1)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
         "--rec_char_dict_path",

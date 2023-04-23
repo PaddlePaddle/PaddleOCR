@@ -81,6 +81,7 @@ def main():
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
+    # paddle.jit.save(model, './output/inference/rec_spts')
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "VisionLAN",
         "RobustScanner"

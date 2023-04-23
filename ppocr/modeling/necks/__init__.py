@@ -32,7 +32,7 @@ def build_neck(config):
     support_dict = [
         'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
         'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN',
-        'RFAdaptor', 'FPN_UNet'
+        'RFAdaptor', 'FPN_UNet', 'SPTS_Neck'
     ]
 
     module_name = config.pop('name')

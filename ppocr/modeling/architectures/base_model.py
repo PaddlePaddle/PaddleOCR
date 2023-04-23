@@ -77,8 +77,10 @@ class BaseModel(nn.Layer):
 
         self.return_all_feats = config.get("return_all_feats", False)
 
+    # from paddle.static import InputSpec
+    # import paddle
+    # @paddle.jit.to_static(input_spec=[[InputSpec(shape=[None, 3, None, None])], [InputSpec(shape=[1, 1])], [InputSpec(shape=[None, None, None])]],None)
     def forward(self, x, data=None):
-
         y = dict()
         if self.use_transform:
             x = self.transform(x)

@@ -42,7 +42,7 @@ class ArgsParser(ArgumentParser):
     def __init__(self):
         super(ArgsParser, self).__init__(
             formatter_class=RawDescriptionHelpFormatter)
-        self.add_argument("-c", "--config", help="configuration file to use")
+        self.add_argument("-c", "--config", help="configuration file to use", default="/data/xiaoqihang/myproject/PaddleOCR/configs/rec/rec_spts.yml")
         self.add_argument(
             "-o", "--opt", nargs='+', help="set configuration options")
         self.add_argument(
@@ -652,7 +652,7 @@ def preprocess(is_train=False):
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'SVTR_LCNet', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN',
         'VisionLAN', 'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG',
-        'CAN', 'Telescope', 'SATRN'
+        'CAN', 'Telescope', 'SATRN', 'SPTS'
     ]
 
     if use_xpu:

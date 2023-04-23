@@ -163,6 +163,18 @@ def export_single_model(model,
         if model.backbone.use_visual_backbone is False:
             input_spec.pop(4)
         model = to_static(model, input_spec=[input_spec])
+    elif arch_config["algorithm"] == "SPTS":
+        other_shape = [
+            # paddle.static.InputSpec(
+            #     shape=[None, 3, 48, 160], dtype="float32"),
+            [paddle.static.InputSpec(
+                shape=[1, 3, 720, 1280], dtype="float32")],
+            [paddle.static.InputSpec(
+                shape=[1, 1], dtype="int64")],
+            [paddle.static.InputSpec(
+                shape=[1, 720, 1280], dtype="float64")]
+        ]
+        model = to_static(model, input_spec=[other_shape, None])
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":

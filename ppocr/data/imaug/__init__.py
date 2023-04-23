@@ -46,6 +46,7 @@ from .fce_aug import *
 from .fce_targets import FCENetTargets
 from .ct_process import *
 from .drrg_targets import DRRGTargets
+from .spts_process import RandomCrop, RandomRotate, RandomResize, RandomDistortion, Normalize, MakeSequence
 
 
 def transform(data, ops=None):
