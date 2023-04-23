@@ -22,11 +22,11 @@ def build_backbone(config, model_type):
         from .det_resnet_vd import ResNet_vd
         from .det_resnet_vd_sast import ResNet_SAST
         from .det_pp_lcnet import PPLCNet
-        from .rec_lcnetv3 import LCNetv3
+        from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
         support_dict = [
             "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet",
-            "LCNetv3", "PPHGNet_small"
+            "PPLCNetV3", "PPHGNet_small"
         ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra
@@ -48,13 +48,13 @@ def build_backbone(config, model_type):
         from .rec_resnet_rfl import ResNetRFL
         from .rec_densenet import DenseNet
         from .rec_shallow_cnn import ShallowCNN
-        from .rec_lcnetv3 import LCNetv3
+        from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
         support_dict = [
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
             'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32', 'ResNetRFL',
-            'DenseNet', 'ShallowCNN', 'LCNetv3', 'PPHGNet_small'
+            'DenseNet', 'ShallowCNN', 'PPLCNetV3', 'PPHGNet_small'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet

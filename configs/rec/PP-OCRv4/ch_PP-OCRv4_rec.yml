@@ -39,7 +39,8 @@ Architecture:
   algorithm: SVTR_LCNet
   Transform:
   Backbone:
-    name: LCNetv3
+    name: PPLCNetV3
+    scale: 0.95
   Head:
     name: MultiHead
     head_list:
