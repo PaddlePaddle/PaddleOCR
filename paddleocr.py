@@ -75,8 +75,11 @@ MODEL_URLS = {
             'rec': {
                 'ch': {
                     'url':
-                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar',
-                    'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+                    # 'url':
+                    # 'https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar',
+                    # 'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
                 },
                 'en': {
                     'url':
