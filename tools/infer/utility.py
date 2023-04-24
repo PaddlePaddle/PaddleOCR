@@ -13,18 +13,17 @@
 # limitations under the License.
 
 import argparse
+import math
 import os
-import sys
 import platform
+import random
+import sys
+
 import cv2
 import numpy as np
 import paddle
 from PIL import Image, ImageDraw, ImageFont
-import math
 from paddle import inference
-import time
-import random
-from ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
@@ -432,9 +431,9 @@ def draw_ocr_box_txt(image,
 
 def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
     box_height = int(
-        math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][1])**2))
+        math.sqrt((box[0][0] - box[3][0]) ** 2 + (box[0][1] - box[3][1]) ** 2))
     box_width = int(
-        math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][1])**2))
+        math.sqrt((box[0][0] - box[1][0]) ** 2 + (box[0][1] - box[1][1]) ** 2))
 
     if box_height > 2 * box_width and box_height > 30:
         img_text = Image.new('RGB', (box_height, box_width), (255, 255, 255))
@@ -596,7 +595,7 @@ def draw_boxes(image, boxes, scores=None, drop_score=0.5):
 
 
 def get_rotate_crop_image(img, points):
-    '''
+    """
     img_height, img_width = img.shape[0:2]
     left = int(np.min(points[:, 0]))
     right = int(np.max(points[:, 0]))
@@ -605,7 +604,9 @@ def get_rotate_crop_image(img, points):
     img_crop = img[top:bottom, left:right, :].copy()
     points[:, 0] = points[:, 0] - left
     points[:, 1] = points[:, 1] - top
-    '''
+    """
+    if points.dtype != np.float32:
+        points = points.astype(np.float32)
     assert len(points) == 4, "shape of points must be 4*2"
     img_crop_width = int(
         max(
