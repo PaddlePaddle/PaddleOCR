@@ -45,7 +45,7 @@ def init_args():
     parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
-    parser.add_argument("--image_dir", type=str, default="/data/xiaoqihang/myproject/PaddleOCR/output/inference/img_38.jpg")
+    parser.add_argument("--image_dir", type=str, default="./output/inference/img_38.jpg")
     parser.add_argument("--page_num", type=int, default=0)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
