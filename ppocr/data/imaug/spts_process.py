@@ -3,14 +3,292 @@ import random
 import numbers
 
 import cv2
-import bezier
 import numpy as np
 from PIL import Image, ImageEnhance
+
+class Curve():
+    r"""
+    Represents a B |eacute| zier `curve`_.
+
+    .. _curve: 
+        https://en.wikipedia.org/wiki/B%C3%A9zier_curve
+
+    We take the traditional definition: a B |eacute| zier curve is a mapping
+    from :math:`s \in \left[0, 1\right]` to convex combinations
+    of points :math:`v_0, v_1, \ldots, v_n` in some vector space:
+
+    .. math::
+
+       B(s) = \sum_{j = 0}^n \binom{n}{j} s^j (1 - s)^{n - j} \cdot v_j
+
+    .. image:: ../../images/curve_constructor.png
+       :align: center
+
+    .. doctest:: curve-constructor
+
+       >>> import bezier
+       >>> nodes = np.asfortranarray([
+       ...     [0.0, 0.625, 1.0],
+       ...     [0.0, 0.5  , 0.5],
+       ... ])
+       >>> curve = bezier.Curve(nodes, degree=2)
+       >>> curve
+       <Curve (degree=2, dimension=2)>
+
+    .. testcleanup:: curve-constructor
+
+       import make_images
+       make_images.curve_constructor(curve)
+
+    Args:
+        nodes (Sequence[Sequence[numbers.Number]]): The nodes in the curve.
+            Must be convertible to a 2D NumPy array of floating point values,
+            where the columns represent each node while the rows are the
+            dimension of the ambient space.
+        degree (int): The degree of the curve. This is assumed to
+            correctly correspond to the number of ``nodes``. Use
+            :meth:`from_nodes` if the degree has not yet been computed.
+        copy (bool): Flag indicating if the nodes should be copied before
+            being stored. Defaults to :data:`True` since callers may
+            freely mutate ``nodes`` after passing in.
+        verify (bool): Flag indicating if the degree should be verified against
+            the number of nodes. Defaults to :data:`True`.
+    """
+
+    def __init__(self, nodes, degree, *, copy=True, verify=True):
+        nodes_np = sequence_to_array(nodes)
+        dimension, _ = nodes_np.shape
+        self._dimension = dimension
+        if copy:
+            self._nodes = nodes_np.copy(order="F")
+        else:
+            self._nodes = nodes_np
+        self._degree = degree
+        self._verify_degree(verify)
+
+    def _verify_degree(self, verify):
+        """Verify that the number of nodes matches the degree.
+
+        Args:
+            verify (bool): Flag indicating if the degree should be verified
+                against the number of nodes.
+
+        Raises:
+            ValueError: If ``verify`` is :data:`True` and the number of nodes
+                does not match the degree.
+        """
+        if not verify:
+            return
+
+        _, num_nodes = self._nodes.shape
+        expected_nodes = self._degree + 1
+        if expected_nodes == num_nodes:
+            return
+
+        msg = (
+            f"A degree {self._degree} curve should have "
+            f"{expected_nodes} nodes, not {num_nodes}."
+        )
+        raise ValueError(msg)
+
+    def evaluate_multi(self, s_vals):
+        r"""Evaluate :math:`B(s)` for multiple points along the curve.
+
+        This is done via a modified Horner's method (vectorized for
+        each ``s``-value).
+
+        .. doctest:: curve-eval-multi
+           :options: +NORMALIZE_WHITESPACE
+
+           >>> nodes = np.asfortranarray([
+           ...     [0.0, 1.0],
+           ...     [0.0, 2.0],
+           ...     [0.0, 3.0],
+           ... ])
+           >>> curve = bezier.Curve(nodes, degree=1)
+           >>> curve
+           <Curve (degree=1, dimension=3)>
+           >>> s_vals = np.linspace(0.0, 1.0, 5)
+           >>> curve.evaluate_multi(s_vals)
+           array([[0.  , 0.25, 0.5 , 0.75, 1.  ],
+                  [0.  , 0.5 , 1.  , 1.5 , 2.  ],
+                  [0.  , 0.75, 1.5 , 2.25, 3.  ]])
+
+        Args:
+            s_vals (numpy.ndarray): Parameters along the curve (as a
+                1D array).
+
+        Returns:
+            numpy.ndarray: The points on the curve. As a two dimensional
+            NumPy array, with the columns corresponding to each ``s``
+            value and the rows to the dimension.
+        """
+        return evaluate_multi(self._nodes, s_vals)
+
+    @classmethod
+    def from_nodes(cls, nodes, copy=True):
+        """Create a :class:`.Curve` from nodes.
+
+        Computes the ``degree`` based on the shape of ``nodes``.
+
+        Args:
+            nodes (Sequence[Sequence[numbers.Number]]): The nodes in the curve.
+                Must be convertible to a 2D NumPy array of floating point
+                values, where the columns represent each node while the rows
+                are the dimension of the ambient space.
+            copy (bool): Flag indicating if the nodes should be copied before
+                being stored. Defaults to :data:`True` since callers may
+                freely mutate ``nodes`` after passing in.
+
+        Returns:
+            Curve: The constructed curve.
+        """
+        nodes_np = sequence_to_array(nodes)
+        _, num_nodes = nodes_np.shape
+        degree = get_degree(num_nodes)
+        return cls(nodes_np, degree, copy=copy, verify=False)
+
+
+def evaluate_multi(nodes, s_vals):
+    r"""Computes multiple points along a curve.
+
+    Does so via a modified Horner's method for each value in ``s_vals``
+    rather than using the de Casteljau algorithm.
+
+    .. note::
+
+       There is also a Fortran implementation of this function, which
+       will be used if it can be built.
+
+    Args:
+        nodes (numpy.ndarray): The nodes defining a curve.
+        s_vals (numpy.ndarray): Parameters along the curve (as a
+            1D array).
+
+    Returns:
+        numpy.ndarray: The evaluated points on the curve as a two dimensional
+        NumPy array, with the columns corresponding to each ``s``
+        value and the rows to the dimension.
+    """
+    one_less = 1.0 - s_vals
+    return evaluate_multi_barycentric(nodes, one_less, s_vals)
+
+
+def evaluate_multi_barycentric(nodes, lambda1, lambda2):
+    r"""Evaluates a B |eacute| zier type-function.
+
+    Of the form
+
+    .. math::
+
+       B(\lambda_1, \lambda_2) = \sum_j \binom{n}{j}
+           \lambda_1^{n - j} \lambda_2^j \cdot v_j
+
+    for some set of vectors :math:`v_j` given by ``nodes``.
+
+    Does so via a modified Horner's method for each pair of values
+    in ``lambda1`` and ``lambda2``, rather than using the
+    de Casteljau algorithm.
+
+    .. note::
+
+       There is also a Fortran implementation of this function, which
+       will be used if it can be built.
+
+    Args:
+        nodes (numpy.ndarray): The nodes defining a curve.
+        lambda1 (numpy.ndarray): Parameters along the curve (as a
+            1D array).
+        lambda2 (numpy.ndarray): Parameters along the curve (as a
+            1D array). Typically we have ``lambda1 + lambda2 == 1``.
+
+    Returns:
+        numpy.ndarray: The evaluated points as a two dimensional
+        NumPy array, with the columns corresponding to each pair of parameter
+        values and the rows to the dimension.
+    """
+    # NOTE: We assume but don't check that lambda2 has the same shape.
+    (num_vals,) = lambda1.shape
+    dimension, num_nodes = nodes.shape
+    degree = num_nodes - 1
+    # Resize as row vectors for broadcast multiplying with
+    # columns of ``nodes``.
+    lambda1 = lambda1[np.newaxis, :]
+    lambda2 = lambda2[np.newaxis, :]
+    result = np.zeros((dimension, num_vals), order="F")
+    result += lambda1 * nodes[:, [0]]
+    binom_val = 1.0
+    lambda2_pow = np.ones((1, num_vals), order="F")
+    for index in range(1, degree):
+        lambda2_pow *= lambda2
+        binom_val = (binom_val * (degree - index + 1)) / index
+        result += binom_val * lambda2_pow * nodes[:, [index]]
+        result *= lambda1
+    result += lambda2 * lambda2_pow * nodes[:, [degree]]
+    return result
+
+
+def get_degree(num_nodes):
+    """Get the degree of the current curve.
+
+    Args:
+        num_nodes (int): The number of nodes provided.
+
+    Returns:
+        int: The degree of the current curve.
+    """
+    return num_nodes - 1
+
+
+def sequence_to_array(nodes):
+    """Convert a sequence to a Fortran-ordered ``np.float64`` NumPy array.
+
+    Args:
+        nodes (Sequence[Sequence[numbers.Number]]): The control points for a
+            shape. Must be convertible to a 2D NumPy array of floating point
+            values, where the columns are the nodes and the rows correspond to
+            each dimension the shape occurs in.
+
+    Returns:
+        numpy.ndarray: The converted array (or the original if already a
+        float array).
+
+    Raises:
+        ValueError: If the ``nodes`` are not 2D.
+    """
+    nodes_np = np.asarray(nodes, order="F")
+    if nodes_np.ndim != 2:
+        raise ValueError("Nodes must be 2-dimensional, not", nodes_np.ndim)
+
+    return _lossless_to_float(nodes_np)
+
+
+def _lossless_to_float(array):
+    """Convert a NumPy array to ``np.float64`` data type.
+
+    Args:
+        array (numpy.ndarray): The NumPy array to convert to float.
+
+    Returns:
+        numpy.ndarray: The converted array (or the original if already a
+        float).
+
+    Raises:
+        ValueError: If ``array`` can't be directly converted without rounding.
+    """
+    if array.dtype == np.float64:
+        return array
+
+    converted = array.astype(np.float64)
+    if not np.all(array == converted):
+        raise ValueError("Array cannot be converted to floating point")
+
+    return converted
 
 
 def sample_bezier_curve(bezier_pts, num_points=10, mid_point=False):
     """bezier采样曲线"""
-    curve = bezier.Curve.from_nodes(bezier_pts.transpose())
+    curve = Curve.from_nodes(bezier_pts.transpose())
     if mid_point:
         x_vals = np.array([0.5])
     else:

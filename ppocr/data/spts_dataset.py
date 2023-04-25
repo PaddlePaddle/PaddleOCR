@@ -1,7 +1,6 @@
 import os
 import copy
 import json
-import bezier
 import numpy as np
 from PIL import Image
 from collections import defaultdict

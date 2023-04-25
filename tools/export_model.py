@@ -168,11 +168,11 @@ def export_single_model(model,
             # paddle.static.InputSpec(
             #     shape=[None, 3, 48, 160], dtype="float32"),
             [paddle.static.InputSpec(
-                shape=[1, 3, 720, 1280], dtype="float32")],
+                shape=[-1, 3, 720, 1280], dtype="float32")],
             [paddle.static.InputSpec(
-                shape=[1, 1], dtype="int64")],
+                shape=[-1, 1], dtype="int64")],
             [paddle.static.InputSpec(
-                shape=[1, 720, 1280], dtype="float64")]
+                shape=[-1, 720, 1280], dtype="float64")]
         ]
         model = to_static(model, input_spec=[other_shape, None])
     else:
