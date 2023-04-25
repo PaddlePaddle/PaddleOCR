@@ -8,7 +8,7 @@ import copy
 import glob
 from tqdm import tqdm
 import numpy as np
-import editdistance as ed
+# import editdistance as ed
 from shapely.geometry import Point, LineString
 
 from ppocr.utils.e2e_metric.Deteval import combine_results, get_score_C
@@ -96,13 +96,43 @@ class SPTSMetric(object):
             self.results = new_results
 
 
+def minDistance(word1, word2):
+    n = len(word1)
+    m = len(word2)
+
+    # Null
+    if n * m == 0:
+        return n + m
+
+    # DP array
+    D = [ [0] * (m + 1) for _ in range(n + 1)]
+
+    # init boundary
+    for i in range(n + 1):
+        D[i][0] = i
+    for j in range(m + 1):
+        D[0][j] = j
+
+    # compute all DP value
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            left = D[i - 1][j] + 1
+            down = D[i][j - 1] + 1
+            left_down = D[i - 1][j - 1] 
+            if word1[i - 1] != word2[j - 1]:
+                left_down += 1
+            D[i][j] = min(left, down, left_down)
+
+    return D[n][m]
+
 def find_match_word(rec_str, lexicon, pair):
     rec_str = rec_str.upper()
     match_word = ''
     match_dist = 100
     for word in lexicon:
         word = word.upper()
-        ed_dist = ed.eval(rec_str, word)
+        # ed_dist = ed.eval(rec_str, word)
+        ed_dist = minDistance(rec_str, word)
         norm_ed_dist = ed_dist / max(len(word), len(rec_str))
         if norm_ed_dist < match_dist:
             match_dist = norm_ed_dist
