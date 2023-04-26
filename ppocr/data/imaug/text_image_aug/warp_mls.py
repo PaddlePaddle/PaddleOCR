@@ -17,6 +17,8 @@ https://github.com/RubanSeven/Text-Image-Augmentation-python/blob/master/warp_ml
 """
 
 import numpy as np
+import paddle
+from custom_setup_ops import warp_mls
 
 
 class WarpMLS:
@@ -34,10 +36,23 @@ class WarpMLS:
 
     @staticmethod
     def __bilinear_interp(x, y, v11, v12, v21, v22):
-        return (v11 * (1 - y) + v12 * y) * (1 - x) + (v21 *
-                                                      (1 - y) + v22 * y) * x
+        return (v11 * (1 - y) + v12 * y) * (1 - x) + \
+               (v21 * (1 - y) + v22 * y) * x
 
     def generate(self):
+        out_res = warp_mls(
+            paddle.to_tensor(
+                self.src, place=paddle.CPUPlace()),
+            paddle.to_tensor(
+                self.src_pts, place=paddle.CPUPlace()),
+            paddle.to_tensor(
+                self.dst_pts, dtype="float32", place=paddle.CPUPlace()),
+            self.dst_w,
+            self.dst_h,
+            self.trans_ratio)
+
+        return out_res.numpy()
+        # Use custom_ops above
         self.calc_delta()
         return self.gen_img()
 
@@ -103,9 +118,9 @@ class WarpMLS:
 
                         tmp_pt = np.zeros(2, dtype=np.float32)
                         tmp_pt[0] = np.sum(pt_i * cur_pt) * self.src_pts[k][0] - \
-                                    np.sum(pt_j * cur_pt) * self.src_pts[k][1]
+                            np.sum(pt_j * cur_pt) * self.src_pts[k][1]
                         tmp_pt[1] = -np.sum(pt_i * cur_pt_j) * self.src_pts[k][0] + \
-                                    np.sum(pt_j * cur_pt_j) * self.src_pts[k][1]
+                            np.sum(pt_j * cur_pt_j) * self.src_pts[k][1]
                         tmp_pt *= (w[k] / miu_s)
                         new_pt += tmp_pt
 
