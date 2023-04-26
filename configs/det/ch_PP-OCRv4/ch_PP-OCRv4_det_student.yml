@@ -11,7 +11,7 @@ Global:
   - 1500
   cal_metric_during_train: false
   checkpoints:
-  pretrained_model:
+  pretrained_model: https://paddleocr.bj.bcebos.com/pretrained/PPLCNetV3_x0_75_ocr_det.pdparams
   save_inference_dir: null
   use_visualdl: false
   infer_img: doc/imgs_en/img_10.jpg
