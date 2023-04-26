@@ -799,7 +799,7 @@ class NRTRLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text.lower(), np.mean(conf_list).tolist()))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
 

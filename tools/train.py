@@ -80,14 +80,22 @@ def main(config, device, logger, vdl_writer):
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
-                    # update SARLoss params
-                    assert list(config['Loss']['loss_config_list'][-1].keys())[
-                        0] == 'DistillationSARLoss'
-                    config['Loss']['loss_config_list'][-1][
-                        'DistillationSARLoss']['ignore_index'] = char_num + 1
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list = {}
                     out_channels_list['CTCLabelDecode'] = char_num
-                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    # update SARLoss params
+                    if list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationSARLoss':
+                        config['Loss']['loss_config_list'][-1][
+                            'DistillationSARLoss'][
+                                'ignore_index'] = char_num + 1
+                        out_channels_list['SARLabelDecode'] = char_num + 2
+                    elif list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationNRTRLoss':
+                        out_channels_list['NRTRLabelDecode'] = char_num + 3
+
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
@@ -97,19 +105,24 @@ def main(config, device, logger, vdl_writer):
                 'name'] == 'MultiHead':  # for multi head
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
-            # update SARLoss params
-            assert list(config['Loss']['loss_config_list'][1].keys())[
-                0] == 'SARLoss'
-            if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
-                config['Loss']['loss_config_list'][1]['SARLoss'] = {
-                    'ignore_index': char_num + 1
-                }
-            else:
-                config['Loss']['loss_config_list'][1]['SARLoss'][
-                    'ignore_index'] = char_num + 1
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list = {}
             out_channels_list['CTCLabelDecode'] = char_num
-            out_channels_list['SARLabelDecode'] = char_num + 2
+            # update SARLoss params
+            if list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'SARLoss':
+                if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
+                    config['Loss']['loss_config_list'][1]['SARLoss'] = {
+                        'ignore_index': char_num + 1
+                    }
+                else:
+                    config['Loss']['loss_config_list'][1]['SARLoss'][
+                        'ignore_index'] = char_num + 1
+                out_channels_list['SARLabelDecode'] = char_num + 2
+            elif list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'NRTRLoss':
+                out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model
@@ -148,6 +161,7 @@ def main(config, device, logger, vdl_writer):
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
     amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
+    amp_custom_white_list = config['Global'].get('amp_custom_white_list', [])
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {'FLAGS_max_inplace_grad_add': 8, }
         if paddle.is_compiled_with_cuda():
@@ -181,7 +195,7 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list)
+                  amp_level, amp_custom_black_list, amp_custom_white_list)
 
 
 def test_reader(config, device, logger):
