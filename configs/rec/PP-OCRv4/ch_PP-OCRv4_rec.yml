@@ -40,6 +40,7 @@ Architecture:
   Transform:
   Backbone:
     name: PPLCNetV3
+    scale: 0.95
   Head:
     name: MultiHead
     head_list:
@@ -75,6 +76,7 @@ Train:
     name: MultiScaleDataSet
     ds_width: false
     data_dir: ./train_data/
+    ext_op_transform_idx: 1
     label_file_list:
     - ./train_data/train_list.txt
     transforms:
@@ -120,7 +122,7 @@ Eval:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
-        max_text_length: 600
+        max_text_length: 100
         character_dict_path: ppocr/utils/ppocr_keys_v1.txt
         use_space_char: True
         gtc_encode: NRTRLabelEncode

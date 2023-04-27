@@ -80,10 +80,6 @@ def build_dataloader(config, mode, device, logger, seed=None):
         # Distribute data to multiple cards
         if 'sampler' in config[mode]:
             config_sampler = config[mode]['sampler']
-            # batch_sampler = None
-            # batch_size = config_sampler["batch_size"]
-            # drop_last = config_sampler["drop_last"]
-            # shuffle = config_sampler["shuffle"]
             sampler_name = config_sampler.pop("name")
             batch_sampler = eval(sampler_name)(dataset, **config_sampler)
         else:

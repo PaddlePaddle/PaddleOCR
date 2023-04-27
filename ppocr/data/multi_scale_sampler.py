@@ -33,7 +33,7 @@ class MultiScaleSampler(Sampler):
         self.seed = data_source.seed
         if self.ds_width:
             self.wh_ratio = data_source.wh_ratio
-            self.wh_ratio_sort = data_source.wh_ratio_sort  #np.argsort(self.wh_ratio)
+            self.wh_ratio_sort = data_source.wh_ratio_sort
         self.n_data_samples = len(self.data_source)
         self.ratio_wh = ratio_wh
         self.max_w = max_w
@@ -56,8 +56,6 @@ class MultiScaleSampler(Sampler):
             math.ceil(self.n_data_samples * 1.0 / num_replicas))
 
         img_indices = [idx for idx in range(self.n_data_samples)]
-        #
-        # print
 
         self.shuffle = False
         if is_training:
@@ -111,7 +109,6 @@ class MultiScaleSampler(Sampler):
                 batch = [curr_w, curr_h, len(batch_ids)]
                 self.batch_list.append(batch)
         self.length = len(self.batch_list)
-        # self.itersss  = 0
         self.batchs_in_one_epoch = self.iter()
         self.batchs_in_one_epoch_id = [
             i for i in range(len(self.batchs_in_one_epoch))
@@ -133,9 +130,6 @@ class MultiScaleSampler(Sampler):
                 random.seed(self.seed)
             else:
                 random.seed(self.epoch)
-            # print(self.itersss)
-            # self.itersss +=1
-            # random.shuffle(self.img_indices)
             if not self.ds_width:
                 random.shuffle(self.img_indices)
             random.shuffle(self.img_batch_pairs)
@@ -157,18 +151,13 @@ class MultiScaleSampler(Sampler):
             start_index += curr_bsz
 
             if len(batch_ids) > 0:
-                # self.data_idx_order_list = np.array(data_source.data_idx_order_list)
                 if self.ds_width:
                     wh_ratio_current = self.wh_ratio[self.wh_ratio_sort[
                         batch_ids]]
-                    # ind = np.argsort(wh_ratio_current)
                     ratio_current = wh_ratio_current.mean()
                     ratio_current = ratio_current if ratio_current * curr_h < self.max_w else self.max_w / curr_h
-                    # print(ratio_current)
-                    # exit(0)
                 else:
                     ratio_current = None
-                # print(ratio_current*curr_h)
                 batch = [(curr_w, curr_h, b_id, ratio_current)
                          for b_id in batch_ids]
                 # yield batch

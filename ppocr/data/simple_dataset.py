@@ -190,7 +190,6 @@ class MultiScaleDataSet(SimpleDataSet):
 
     def resize_norm_img(self, data, imgW, imgH, padding=True):
         img = data['image']
-        # imgC, imgH, imgW = image_shape
         h = img.shape[0]
         w = img.shape[1]
         if not padding:
@@ -202,8 +201,7 @@ class MultiScaleDataSet(SimpleDataSet):
             if math.ceil(imgH * ratio) > imgW:
                 resized_w = imgW
             else:
-                resized_w = int(math.ceil(imgH *
-                                          ratio))  # * (random.random() + 0.5)))
+                resized_w = int(math.ceil(imgH * ratio))
             resized_image = cv2.resize(img, (resized_w, imgH))
         resized_image = resized_image.astype('float32')
 
