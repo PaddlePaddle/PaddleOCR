@@ -56,8 +56,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
 
     support_dict = [
         'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet',
-        'MultiScaleSamplerNew'
+        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
