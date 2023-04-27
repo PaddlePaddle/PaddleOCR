@@ -22,7 +22,7 @@ for filename in os.listdir(img_folder):
 
     ocr = PaddleOCR(use_angle_cls=True, lang='ch')#, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
     img_path = img_folder+'/'+filename #'PaddleOCR/doc/imgs_en/img_12.jpg'
-    # img_path = './img/0049=總裁批簽=001=0001=49-0061=0002.jpg'
+    # img_path = './img/4-1.jpeg'
     result = ocr.ocr(img_path, cls=True)
 
     for idx in range(len(result)):

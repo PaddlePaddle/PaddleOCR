@@ -1,29 +1,38 @@
-outputfile_folder = './correctoutput'
+from jiwer import wer
 
-charcount = 0
-charmatch = 0
-answer = []
+correctfile_folder = './correctoutput'
+comparefile_folder = './outputfile'
+
+reference = ''
+hypothesis = ''
+
+
+
 
 # open the answer
-with open(outputfile_folder+'/c_1.txt', 'r') as file:
+with open(correctfile_folder+'/c_1.txt', 'r', encoding="utf-8") as file:
+    reference = ''
     while True:
-        char = file.read(1)
-        if not char:
-            # 文件末尾
-            print(charcount)
+        line = file.readline()
+        if not line:
             break
-        else :
-            answer.append(char)
-            charcount += 1
+        line_into_list = line.strip()
+        reference+=line_into_list
+print(reference)
+        
+print("--------------------------------------------------")
+
 
 # open file to check
-with open(outputfile_folder+'/c_1.txt', 'r') as file:
-    charmatch = 0
-    for char_i in range(charcount):
-        char = file.read(1)
-        print(char_i)
-        print(answer[char_i])
+with open(comparefile_folder+'/1.jpg.txt', 'r', encoding="utf-8") as file:
+    while True:
+        line = file.readline()
+        if not line:
+            break
+        line_into_list = line.strip()
+        hypothesis+=line_into_list
+print(hypothesis)
 
-        if answer[char_i] == char:
-            charmatch += 1
-    print(charmatch)
+wer_rate = wer(reference, hypothesis)
+
+print('WER=%2f'%wer_rate)
