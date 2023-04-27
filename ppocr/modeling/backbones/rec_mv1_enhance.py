@@ -108,6 +108,7 @@ class MobileNetV1Enhance(nn.Layer):
                  scale=0.5,
                  last_conv_stride=1,
                  last_pool_type='max',
+                 last_pool_kernel_size=[3, 2],
                  **kwargs):
         super().__init__()
         self.scale = scale
@@ -214,7 +215,10 @@ class MobileNetV1Enhance(nn.Layer):
 
         self.block_list = nn.Sequential(*self.block_list)
         if last_pool_type == 'avg':
-            self.pool = nn.AvgPool2D(kernel_size=2, stride=2, padding=0)
+            self.pool = nn.AvgPool2D(
+                kernel_size=last_pool_kernel_size,
+                stride=last_pool_kernel_size,
+                padding=0)
         else:
             self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
         self.out_channels = int(1024 * scale)

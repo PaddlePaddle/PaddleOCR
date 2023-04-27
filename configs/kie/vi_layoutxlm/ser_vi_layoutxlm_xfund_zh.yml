@@ -21,6 +21,7 @@ Global:
   save_res_path: ./output/ser/xfund_zh/res
   kie_rec_model_dir: 
   kie_det_model_dir:
+  amp_custom_white_list: ['scale', 'concat', 'elementwise_add']
 
 Architecture:
   model_type: kie
