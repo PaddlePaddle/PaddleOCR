@@ -72,9 +72,9 @@ Metric:
 
 Train:
   dataset:
-    name: SimpleDataSet
+    name: MultiScaleDataSet
+    ds_width: false
     data_dir: ./train_data/
-    ext_op_transform_idx: 1
     label_file_list:
     - ./train_data/train_list.txt
     transforms:
@@ -89,8 +89,6 @@ Train:
     - RecAug:
     - MultiLabelEncode:
         gtc_encode: NRTRLabelEncode
-    - RecResizeImg:
-        image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image
@@ -98,6 +96,14 @@ Train:
         - label_gtc
         - length
         - valid_ratio
+  sampler:
+    name: MultiScaleSampler
+    scales: [[320, 32], [320, 48], [320, 64]]
+    # divide_factor: to ensure the width and height dimensions can be devided by downsampling multiple
+    first_bs: &bs 128
+    fix_bs: false
+    divided_factor: [8, 16] # w, h
+    is_training: True
   loader:
     shuffle: true
     batch_size_per_card: 128
@@ -114,9 +120,13 @@ Eval:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
+        max_text_length: 100
+        character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+        use_space_char: True
         gtc_encode: NRTRLabelEncode
     - RecResizeImg:
         image_shape: [3, 48, 320]
+        eval_mode: True
     - KeepKeys:
         keep_keys:
         - image
