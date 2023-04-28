@@ -1,5 +1,6 @@
 from paddleocr import PaddleOCR,draw_ocr
 import os
+import cv2
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`
 # to switch the language model in order.
@@ -21,8 +22,14 @@ for filename in os.listdir(img_folder):
     # print(img_folder+'/'+filename)
 
     ocr = PaddleOCR(use_angle_cls=True, lang='ch')#, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
-    img_path = img_folder+'/'+filename #'PaddleOCR/doc/imgs_en/img_12.jpg'
-    # img_path = './img/4-1.jpeg'
+    # img_path = img_folder+'/'+filename #'PaddleOCR/doc/imgs_en/img_12.jpg'
+    img_path = './img/4-1.jpeg'
+
+    # self.cv_image = cv2.cvtColor(np.asarray(self.image), cv2.COLOR_RGB2BGR)
+    #     gray = cv2.cvtColor(self.cv_image, cv2.COLOR_BGR2GRAY)
+    #     ret, bin_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+    #     self.cv_image = cv2.cvtColor(bin_img, cv2.COLOR_GRAY2RGB)
+    #     self.image = Image.fromarray(self.cv_image)
     result = ocr.ocr(img_path, cls=True)
 
     for idx in range(len(result)):
