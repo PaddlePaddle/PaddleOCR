@@ -101,7 +101,6 @@ Train:
   sampler:
     name: MultiScaleSampler
     scales: [[320, 32], [320, 48], [320, 64]]
-    # divide_factor: to ensure the width and height dimensions can be devided by downsampling multiple
     first_bs: &bs 128
     fix_bs: false
     divided_factor: [8, 16] # w, h
