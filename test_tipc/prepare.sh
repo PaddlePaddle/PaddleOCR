@@ -88,7 +88,7 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./ic15_data_benckmark ./ic15_data
         cd ../
     fi
-    if [[ ${model_name} =~ "ch_PP-OCRv2_rec" || ${model_name} =~ "ch_PP-OCRv3_rec" ]];then
+    if [[ ${model_name} =~ "ch_PP-OCRv2_rec" || ${model_name} =~ "ch_PP-OCRv3_rec" || ${model_name} =~ "ch_PP-OCRv4_mobile_rec" ]];then
         rm -rf ./train_data/ic15_data
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ic15_data_benckmark.tar --no-check-certificate
         cd ./train_data/ && tar xf ic15_data_benckmark.tar
