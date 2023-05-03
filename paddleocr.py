@@ -27,17 +27,17 @@ import logging
 import numpy as np
 from pathlib import Path
 
-tools = importlib.import_module('.', 'tools')
+tools = importlib.import_module('.', 'paddleocr.tools')
 ppocr = importlib.import_module('.', 'ppocr')
 ppstructure = importlib.import_module('.', 'ppstructure')
 
-from tools.infer import predict_system
+from paddleocr.tools.infer import predict_system
 from ppocr.utils.logging import get_logger
 
 logger = get_logger()
 from ppocr.utils.utility import check_and_read, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
-from tools.infer.utility import draw_ocr, str2bool, check_gpu
+from paddleocr.tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
