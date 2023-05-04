@@ -121,13 +121,9 @@ Eval:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
-        max_text_length: 100
-        character_dict_path: ppocr/utils/ppocr_keys_v1.txt
-        use_space_char: True
         gtc_encode: NRTRLabelEncode
     - RecResizeImg:
         image_shape: [3, 48, 320]
-        eval_mode: True
     - KeepKeys:
         keep_keys:
         - image
@@ -138,5 +134,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 1
+    batch_size_per_card: 128
     num_workers: 4
