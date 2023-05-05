@@ -1,6 +1,6 @@
 ===========================train_params===========================
 model_name:vi_layoutxlm_ser
-python:python3.7
+python:python
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:fp32
