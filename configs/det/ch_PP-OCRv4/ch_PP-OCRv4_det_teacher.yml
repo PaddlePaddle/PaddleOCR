@@ -4,7 +4,7 @@ Global:
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 100
-  save_model_dir: ./output/ch_PP-OCRv3_mv3_cbnlocal_shrink/
+  save_model_dir: ./output/ch_PP-OCRv4
   save_epoch_step: 10
   eval_batch_step:
   - 0
