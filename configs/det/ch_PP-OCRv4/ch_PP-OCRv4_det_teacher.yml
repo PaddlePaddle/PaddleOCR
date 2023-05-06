@@ -96,8 +96,8 @@ Train:
             - 3
     - EastRandomCropData:
         size:
-        - 960
-        - 960
+        - 640
+        - 640
         max_tries: 50
         keep_ratio: true
     - MakeBorderMap:
