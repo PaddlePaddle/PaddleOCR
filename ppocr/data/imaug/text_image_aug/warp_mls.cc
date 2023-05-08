@@ -234,14 +234,14 @@ public:
         Tensor x, y;
         if (src.shape().size() == 3) {
           x = tile(
-              unsqueeze(experimental::cast(ny, DataType::INT32) - nyi, {-1}),
+              unsqueeze(ny - experimental::cast(nyi, DataType::FLOAT32), {-1}),
               {1, 1, 3});
           y = tile(
-              unsqueeze(experimental::cast(nx, DataType::INT32) - nxi, {-1}),
+              unsqueeze(nx - experimental::cast(nxi, DataType::FLOAT32), {-1}),
               {1, 1, 3});
         } else {
-          x = ny - nyi;
-          y = nx - nxi;
+          x = ny - experimental::cast(nyi, DataType::FLOAT32);
+          y = nx - experimental::cast(nxi, DataType::FLOAT32);
         }
 
         auto *nxi_data = nxi.data<int>();
@@ -292,15 +292,15 @@ public:
         }
 
         Tensor res =
-            BilinearInterp(x, y, experimental::cast(src1, DataType::INT32),
-                           experimental::cast(src2, DataType::INT32),
-                           experimental::cast(src3, DataType::INT32),
-                           experimental::cast(src4, DataType::INT32));
+            BilinearInterp(x, y, experimental::cast(src1, DataType::FLOAT32),
+                           experimental::cast(src2, DataType::FLOAT32),
+                           experimental::cast(src3, DataType::FLOAT32),
+                           experimental::cast(src4, DataType::FLOAT32));
 
         int dst_dim0 = dst.shape()[0];
         int dst_dim1 = dst.shape()[1];
         int dst_dim2 = dst.shape()[2];
-        auto *res_data = res.data<int32_t>();
+        auto *res_data = res.data<float>();
         dim0 = res.shape()[0];
         dim1 = res.shape()[1];
         dim2 = res.shape()[2];
@@ -315,7 +315,7 @@ public:
         }
       }
     }
-    dst = clip(experimental::cast(dst, DataType::INT32), 0, 255);
+    dst = clip(dst, 0, 255);
     dst = experimental::cast(dst, DataType::UINT8);
     return {dst};
   }
