@@ -9,14 +9,14 @@ Global:
   cal_metric_during_train: False
   pretrained_model: ./output/pretrain/best_accuracy
   checkpoints: 
-  save_inference_dir: ./output/inference/rec_spts
+  save_inference_dir: ./output/inference/e2e_spts
   use_visualdl: False
   infer_img: 
   save_res_path: 
 
 Architecture:
   algorithm: SPTS
-  model_type: rec
+  model_type: e2e
   Backbone:
     name: SPTS
     Position: 

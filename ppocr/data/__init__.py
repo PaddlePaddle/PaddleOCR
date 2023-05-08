@@ -33,10 +33,11 @@ from paddle.io import Dataset, DataLoader, BatchSampler, DistributedBatchSampler
 import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
-from ppocr.data.simple_dataset import SimpleDataSet
+from ppocr.data.simple_dataset import SimpleDataSet, MultiScaleDataSet
 from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR, LMDBDataSetTableMaster
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
+from ppocr.data.multi_scale_sampler import MultiScaleSampler
 from ppocr.data.spts_dataset import TextSpottingDataset
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
@@ -55,8 +56,8 @@ def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'TextSpottingDataset', 
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet', 'TextSpottingDataset',
+        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
@@ -77,11 +78,16 @@ def build_dataloader(config, mode, device, logger, seed=None):
 
     if mode == "Train":
         # Distribute data to multiple cards
-        batch_sampler = DistributedBatchSampler(
-            dataset=dataset,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            drop_last=drop_last)
+        if 'sampler' in config[mode]:
+            config_sampler = config[mode]['sampler']
+            sampler_name = config_sampler.pop("name")
+            batch_sampler = eval(sampler_name)(dataset, **config_sampler)
+        else:
+            batch_sampler = DistributedBatchSampler(
+                dataset=dataset,
+                batch_size=batch_size,
+                shuffle=shuffle,
+                drop_last=drop_last)
     else:
         # Distribute data to single card
         batch_sampler = BatchSampler(
