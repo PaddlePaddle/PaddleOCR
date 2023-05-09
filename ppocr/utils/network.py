@@ -20,6 +20,8 @@ from tqdm import tqdm
 
 from ppocr.utils.logging import get_logger
 
+MODELS_DIR = os.path.expanduser("~/.paddleocr/models/")
+
 
 def download_with_progressbar(url, save_path):
     logger = get_logger()
@@ -65,6 +67,18 @@ def maybe_download(model_storage_directory, url):
                         'wb') as f:
                     f.write(file.read())
         os.remove(tmp_path)
+
+
+def maybe_download_params(model_path):
+    if os.path.exists(model_path) or not is_link(model_path):
+        return model_path
+    else:
+        url = model_path
+    tmp_path = os.path.join(MODELS_DIR, url.split('/')[-1])
+    print('download {} to {}'.format(url, tmp_path))
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    download_with_progressbar(url, tmp_path)
+    return tmp_path
 
 
 def is_link(s):

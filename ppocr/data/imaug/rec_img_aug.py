@@ -112,9 +112,8 @@ class ABINetRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=geometry_p),
-            CVDeterioration(
-                var=20, degrees=6, factor=4, p=deterioration_p),
+                p=geometry_p), CVDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
             CVColorJitter(
                 brightness=0.5,
                 contrast=0.5,
@@ -188,9 +187,8 @@ class SVTRRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=geometry_p),
-            SVTRDeterioration(
-                var=20, degrees=6, factor=4, p=deterioration_p),
+                p=geometry_p), SVTRDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
             CVColorJitter(
                 brightness=0.5,
                 contrast=0.5,
@@ -221,17 +219,20 @@ class RecResizeImg(object):
     def __init__(self,
                  image_shape,
                  infer_mode=False,
+                 eval_mode=False,
                  character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
                  padding=True,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
+        self.eval_mode = eval_mode
         self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_dict_path is not None:
+        if self.eval_mode or (self.infer_mode and
+                              self.character_dict_path is not None):
             norm_img, valid_ratio = resize_norm_img_chinese(img,
                                                             self.image_shape)
         else:
@@ -575,7 +576,7 @@ def resize_norm_img_chinese(img, image_shape):
     max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
-    max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
+    max_wh_ratio = max(max_wh_ratio, ratio)
     imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW

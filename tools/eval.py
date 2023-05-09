@@ -54,8 +54,12 @@ def main():
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list['CTCLabelDecode'] = char_num
                     out_channels_list['SARLabelDecode'] = char_num + 2
+                    out_channels_list['NRTRLabelDecode'] = char_num + 3
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
@@ -66,8 +70,11 @@ def main():
             out_channels_list = {}
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list['CTCLabelDecode'] = char_num
             out_channels_list['SARLabelDecode'] = char_num + 2
+            out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model
@@ -76,7 +83,7 @@ def main():
     model = build_model(config['Architecture'])
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "VisionLAN",
-        "RobustScanner"
+        "RobustScanner", "SVTR_HGNet"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
