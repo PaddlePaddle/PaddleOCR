@@ -17,7 +17,7 @@ __all__ = ['build_head']
 
 def build_head(config):
     # det head
-    from .det_db_head import DBHead, CBNHeadLocal
+    from .det_db_head import DBHead, PFHeadLocal
     from .det_east_head import EASTHead
     from .det_sast_head import SASTHead
     from .det_pse_head import PSEHead
@@ -56,7 +56,7 @@ def build_head(config):
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead', 'CANHead', 'SATRNHead', 'CBNHeadLocal'
+        'DRRGHead', 'CANHead', 'SATRNHead', 'PFHeadLocal'
     ]
 
     if config['name'] == 'DRRGHead':

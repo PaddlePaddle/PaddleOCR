@@ -129,7 +129,7 @@ class LocalModule(nn.Layer):
         return out
 
 
-class CBNHeadLocal(DBHead):
+class PFHeadLocal(DBHead):
     def __init__(self, in_channels, k=50, mode='small', **kwargs):
         super(CBNHeadLocal, self).__init__(in_channels, k, **kwargs)
         self.mode = mode
