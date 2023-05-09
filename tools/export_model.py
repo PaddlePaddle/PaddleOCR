@@ -187,7 +187,7 @@ def export_single_model(model,
                     shape=[None] + infer_shape, dtype="float32")
             ])
 
-    if arch_config["Backbone"]["name"] == "LCNetv3":
+    if arch_config["Backbone"]["name"] == "PPLCNetV3":
         # for rep lcnetv3
         for layer in model.sublayers():
             if hasattr(layer, "rep") and not getattr(layer, "is_repped"):
