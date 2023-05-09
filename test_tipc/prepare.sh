@@ -40,6 +40,22 @@ if [ ${MODE} = "benchmark_train" ];then
             cd ../../../
         fi
     fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_mobile_det" ]];then
+        wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/PPLCNetV3_x0_75_ocr_det.pdparams  --no-check-certificate
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
+    fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_server_det" ]];then
+        wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/PPHGNet_small_ocr_det.pdparams  --no-check-certificate
+        rm -rf ./train_data/icdar2015
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf icdar2015_benckmark.tar
+        ln -s ./icdar2015_benckmark ./icdar2015
+        cd ../
+    fi
     if [[ ${model_name} =~ "ch_ppocr_server_v2_0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         rm -rf ./train_data/icdar2015
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
@@ -88,7 +104,7 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./ic15_data_benckmark ./ic15_data
         cd ../
     fi
-    if [[ ${model_name} =~ "ch_PP-OCRv2_rec" || ${model_name} =~ "ch_PP-OCRv3_rec" ]];then
+    if [[ ${model_name} =~ "ch_PP-OCRv2_rec" || ${model_name} =~ "ch_PP-OCRv3_rec" || ${model_name} =~ "ch_PP-OCRv4_mobile_rec" || ${model_name} =~ "ch_PP-OCRv4_server_rec" ]];then
         rm -rf ./train_data/ic15_data
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ic15_data_benckmark.tar --no-check-certificate
         cd ./train_data/ && tar xf ic15_data_benckmark.tar
@@ -180,6 +196,12 @@ if [ ${MODE} = "lite_train_lite_infer" ];then
     if [[ ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar --no-check-certificate
         cd ./pretrain_models/ && tar xf ch_PP-OCRv3_det_distill_train.tar && cd ../
+    fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_mobile_det" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/PPLCNetV3_x0_75_ocr_det.pdparams --no-check-certificate
+    fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_server_det" ]];then
+        wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/PPHGNet_small_ocr_det.pdparams --no-check-certificate
     fi
     if [ ${model_name} == "en_table_structure" ] || [ ${model_name} == "en_table_structure_PACT" ];then
         wget -nc -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar --no-check-certificate
