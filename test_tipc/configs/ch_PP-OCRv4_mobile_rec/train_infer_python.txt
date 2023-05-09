@@ -13,7 +13,7 @@ train_infer_img_dir:./inference/rec_inference
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml -o Global.print_batch_step=1 Train.loader.shuffle=false Train.dataset.data_dir=./train_data/ic15_data Train.dataset.label_file_list=[./train_data/ic15_data/rec_gt_train.txt] Eval.dataset.data_dir=./train_data/ic15_data Eval.dataset.label_file_list=[./train_data/ic15_data/rec_gt_test.txt]
+norm_train:tools/train.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml -o Global.cal_metric_during_train=False Global.print_batch_step=1 Train.loader.shuffle=false Train.dataset.data_dir=./train_data/ic15_data Train.dataset.label_file_list=[./train_data/ic15_data/rec_gt_train.txt] Eval.dataset.data_dir=./train_data/ic15_data Eval.dataset.label_file_list=[./train_data/ic15_data/rec_gt_test.txt] Train.loader.num_workers=16 Eval.loader.num_workers=16
 pact_train:null
 fpgm_train:null
 distill_train:null
