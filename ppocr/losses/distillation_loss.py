@@ -668,11 +668,13 @@ class DistillationVQADistanceLoss(DistanceLoss):
                  mode="l2",
                  model_name_pairs=[],
                  key=None,
+                 index=None,
                  name="loss_distance",
                  **kargs):
         super().__init__(mode=mode, **kargs)
         assert isinstance(model_name_pairs, list)
         self.key = key
+        self.index = index
         self.model_name_pairs = model_name_pairs
         self.name = name + "_l2"
 
@@ -685,6 +687,9 @@ class DistillationVQADistanceLoss(DistanceLoss):
             if self.key is not None:
                 out1 = out1[self.key]
                 out2 = out2[self.key]
+                if self.index is not None:
+                    out1 = out1[:, self.index, :, :]
+                    out2 = out2[:, self.index, :, :]
                 if attention_mask is not None:
                     max_len = attention_mask.shape[-1]
                     out1 = out1[:, :max_len]
@@ -726,9 +731,6 @@ class CTCDKDLoss(nn.Layer):
     def kl_loss(self, p1, p2):  # predict, label
         loss = paddle.multiply(
             p2, paddle.log((p2 + self.eps) / (p1 + self.eps) + self.eps))
-        # if self.reduction is "mean":
-        #loss = paddle.mean(loss)
-        # else:
         bs = loss.shape[0]
         loss = paddle.sum(loss) / bs
         return loss
@@ -740,20 +742,15 @@ class CTCDKDLoss(nn.Layer):
         return rt
 
     def multi_label_mask(self, targets):
-        # print(len(targets))
-        # print(paddle.to_tensor(targets).shape)
-        # targets = paddle.to_tensor(targets, )
+
         targets = targets.astype("int32")
         res = F.one_hot(targets, num_classes=11465)
-        # mask = paddle.cast(paddle.sum(res, axis=1) > 0, "int32")
         mask = paddle.clip(paddle.sum(res, axis=1), 0, 1)
         mask[:, 0] = 0  # ingore ctc blank label
-        # assert mask.shape == shape, f"mask shape: {mask.shape}, targets.shape: ({shape})"
         return mask
 
     def forward(self, logits_student, logits_teacher, targets, mask=None):
-        # gt_mask = F.one_hot(target.reshape([-1]), num_classes=logits_student.shape[-1])
-        # differents with dkd
+
         gt_mask = self.multi_label_mask(targets)
         other_mask = paddle.ones_like(gt_mask) - gt_mask
         # other_mask = 1 - gt_mask
@@ -782,8 +779,6 @@ class CTCDKDLoss(nn.Layer):
 
         # differents with dkd
         nckd_loss = self.kl_loss(pred_student_part2, pred_teacher_part2)
-        # print("TCKD: ", tckd_loss.item())
-        # print("NCKD: ", nckd_loss.item())
         loss = self.alpha * tckd_loss + self.beta * nckd_loss
         return loss
 
@@ -798,38 +793,21 @@ class KLCTCLogits(nn.Layer):
         self.act = nn.Softmax(axis=-1)
         self.use_log = True
         self.mode = mode
-        print("=====> KLCTCLogits mode: ", self.mode)
-
         self.ctc_dkd_loss = CTCDKDLoss()
-        print("KLCTCLogits mode : ", self.mode)
 
     def kl_loss(self, p1, p2):  # predict, label
         loss = paddle.multiply(
             p2, paddle.log((p2 + self.eps) / (p1 + self.eps) + self.eps))
-        # if self.reduction is "mean":
-        #loss = paddle.mean(loss)
-        # else:
         bs = loss.shape[0]
         loss = paddle.sum(loss) / bs
         return loss
 
     def forward_meanmax(self, stu_out, tea_out):
-        # loss_dict = dict()
-        # stu_out = predicts['ctc']
-        # tea_out = batch['ctc']
-        # assert stu_out.shape == tea_out.shape, f"{stu_out.shape}, vs {tea_out.shape}"
-        # softmax max
-        # stu_out = paddle.max(F.softmax(stu_out, axis=-1), axis=1)
-        # tea_out = paddle.max(F.softmax(tea_out, axis=-1), axis=1)
+
         stu_out = paddle.mean(F.softmax(stu_out / self.t, axis=-1), axis=1)
         tea_out = paddle.mean(F.softmax(tea_out / self.t, axis=-1), axis=1)
         loss = self.kl_loss(stu_out, tea_out)
 
-        # another kl loss
-        # stu_out = paddle.sum(F.softmax(stu_out/self.t, axis=-1), axis=1)
-        # tea_out = paddle.sum(F.softmax(tea_out/self.t, axis=-1), axis=1)
-        # stu_out = paddle.log(stu_out)
-        # loss = F.kl_div(stu_out, tea_out, reduction="sum")/bs
         return loss
 
     def forward_meanlog(self, stu_out, tea_out):
@@ -932,16 +910,11 @@ class DistillCTCLogits(KLCTCLogits):
         for idx, pair in enumerate(self.model_name_pairs):
             out1 = predicts[pair[0]]
             out2 = predicts[pair[1]]
-            # print(predicts.keys())
-            # print(out1.keys(), out2.keys())
-            # print(out1.keys(), out2.keys())
+
             if self.key is not None:
                 out1 = out1[self.key]['ctc']
                 out2 = out2[self.key]['ctc']
-            # if self.multi_head:
-            #     assert 'ctc' in out, 'multi head has multi out'
-            #     loss = super().forward(out, batch)
-            # else:
+
             ctc_label = batch[1]
             loss = super().forward(out1, out2, ctc_label)
             if isinstance(loss, dict):

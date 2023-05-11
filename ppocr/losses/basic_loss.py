@@ -237,8 +237,7 @@ class DKDLoss(nn.Layer):
             logits_student / self.temperature - 1000.0 * gt_mask, axis=1)
         nckd_loss = self._kl_div(log_pred_student_part2,
                                  pred_teacher_part2) * (self.temperature**2)
-        # print("TCKD: ", tckd_loss.item())
-        # print("NCKD: ", nckd_loss.item())
+
         loss = self.alpha * tckd_loss + self.beta * nckd_loss
 
         return loss
