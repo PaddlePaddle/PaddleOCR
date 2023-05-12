@@ -35,7 +35,6 @@ def grid_sample(input, grid, canvas=None):
         data_type = grid.dtype
         input = input.cast(paddle.float32)
         grid = grid.cast(paddle.float32)
-
         is_fp16 = True
     output = F.grid_sample(input, grid)
     if is_fp16:
