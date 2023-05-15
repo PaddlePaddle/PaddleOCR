@@ -10,7 +10,6 @@ import datetime
 pdf_folder = './pdf/'
 img_folder = './img'
 pdfoutputimg_folder_all = './pdftoimg_all'
-pdfoutputimg_folder_cover = './pdftoimg_cover'
 pdfoutputimg_folder_note = './pdftoimg_note'
 pdfoutputimg_folder_main = './pdftoimg_main'
 pdfoutputimg_folder_appendix = './pdftoimg_appendix'
@@ -45,24 +44,6 @@ for filename in os.listdir(pdf_folder):
             page.save(pdfoutputimg_folder_main, f'{filename}_page_{i+1}.jpg')
         else:
             page.save(pdfoutputimg_folder_appendix, f'{filename}_page_{i+1}.jpg')
-        # print(filename+" page"+str(i)+" w:"+str(page.size[0]))#PDF頁面的寬度
-        # print(filename+" page"+str(i)+" h:"+str(page.size[1]))#PDF頁面的高度
-        # output_path = os.path.join(pdfoutputimg_folder_all, f'{filename}_page_{i+1}.jpg')
-
-        filename = os.path.splitext(filename)[0]
-        # 依據頁面寬進行文本分類，寬<1000為note、2000<寬<4000為正文、寬>4000為附錄
-        if page.size[0] == 2506 and page.size[1] == 3594:
-            output_path = os.path.join(pdfoutputimg_folder_cover, f'{filename}_page_{i+1}_cover.jpg')
-            page.save(output_path, 'JPEG')
-        elif page.size[0] < 2000:
-            output_path = os.path.join(pdfoutputimg_folder_note, f'{filename}_page_{i+1}_note.jpg')
-            page.save(output_path, 'JPEG')
-        elif page.size[0] > 2000 and page.size[0] < 4000 :
-            output_path = os.path.join(pdfoutputimg_folder_main, f'{filename}_page_{i+1}_main.jpg')
-            page.save(output_path, 'JPEG')
-        else:
-            output_path = os.path.join(pdfoutputimg_folder_appendix, f'{filename}_page_{i+1}.jpg')
-            page.save(output_path, 'JPEG')
 
 # 配置 logging
 logging.basicConfig(
@@ -115,12 +96,10 @@ for filename in os.listdir(pdfoutputimg_folder_main):
         for line in res:
             # print(line)
             # record log
-            # print_obj = str(line)
+            print_obj = str(line)
             #print(print_obj)
-            logger.error(str(line))
+            logger.error(print_obj)
     logger.error('---------------fileend----------------')
-    # 去掉副檔名
-    filename = os.path.splitext(filename)[0]
 
     # draw result
     from PIL import Image
