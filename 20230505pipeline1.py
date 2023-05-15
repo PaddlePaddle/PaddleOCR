@@ -34,6 +34,17 @@ for filename in os.listdir(pdf_folder):
                               grayscale = True)
     # 保存圖像
     for i, page in enumerate(pages):
+        # print(filename, "page", i, "w", page.size[0])#PDF頁面的寬度
+        # print(filename, "page", i, "h", page.size[1])#PDF頁面的高度
+        # output_path = os.path.join(pdfoutputimg_folder_all, f'{filename}_page_{i+1}.jpg')
+
+        # 依據頁面寬進行文本分類，寬<1000為note、2000<寬<4000為正文、寬>4000為附錄
+        if page.size[0] < 1000:
+            page.save(pdfoutputimg_folder_note, f'{filename}_page_{i+1}.jpg')
+        elif page.size[0] > 2000 and page.size[0] < 4000 :
+            page.save(pdfoutputimg_folder_main, f'{filename}_page_{i+1}.jpg')
+        else:
+            page.save(pdfoutputimg_folder_appendix, f'{filename}_page_{i+1}.jpg')
         # print(filename+" page"+str(i)+" w:"+str(page.size[0]))#PDF頁面的寬度
         # print(filename+" page"+str(i)+" h:"+str(page.size[1]))#PDF頁面的高度
         # output_path = os.path.join(pdfoutputimg_folder_all, f'{filename}_page_{i+1}.jpg')
