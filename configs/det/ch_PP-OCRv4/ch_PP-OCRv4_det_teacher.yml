@@ -30,7 +30,7 @@ Architecture:
     out_channels: 256
     intracl: true
   Head:
-    name: CBNHeadLocal
+    name: PFHeadLocal
     k: 50
     mode: "large"
     

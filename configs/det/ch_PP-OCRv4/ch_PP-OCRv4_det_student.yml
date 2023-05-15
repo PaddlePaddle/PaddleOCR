@@ -31,7 +31,7 @@ Architecture:
     out_channels: 96
     shortcut: True
   Head:
-    name: CBNHeadLocal
+    name: PFHeadLocal
     k: 50
     mode: "small"
 
