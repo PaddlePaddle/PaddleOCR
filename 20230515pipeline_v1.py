@@ -112,7 +112,6 @@ logging.basicConfig(
                     format ='%(aㄅsctime)s - %(levelname)s - %(message)s' # 设置日志格式
                     )
 
-
 # create logFileHandler
 log_filename = datetime.datetime.now().strftime("%Y-%m-%d.log")#-%M-%S
 log_path = os.path.join(outputlog_folder, log_filename)
