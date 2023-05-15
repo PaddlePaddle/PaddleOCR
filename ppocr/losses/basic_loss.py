@@ -165,3 +165,79 @@ class LossFromOutput(nn.Layer):
         elif self.reduction == 'sum':
             loss = paddle.sum(loss)
         return {'loss': loss}
+
+
+class KLDivLoss(nn.Layer):
+    """
+    KLDivLoss
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def _kldiv(self, x, target, mask=None):
+        eps = 1.0e-10
+        loss = target * (paddle.log(target + eps) - x)
+        if mask is not None:
+            loss = loss.flatten(0, 1).sum(axis=1)
+            loss = loss.masked_select(mask).mean()
+        else:
+            # batch mean loss
+            loss = paddle.sum(loss) / loss.shape[0]
+        return loss
+
+    def forward(self, logits_s, logits_t, mask=None):
+        log_out_s = F.log_softmax(logits_s, axis=-1)
+        out_t = F.softmax(logits_t, axis=-1)
+        loss = self._kldiv(log_out_s, out_t, mask)
+        return loss
+
+
+class DKDLoss(nn.Layer):
+    """
+    KLDivLoss
+    """
+
+    def __init__(self, temperature=1.0, alpha=1.0, beta=1.0):
+        super().__init__()
+        self.temperature = temperature
+        self.alpha = alpha
+        self.beta = beta
+
+    def _cat_mask(self, t, mask1, mask2):
+        t1 = (t * mask1).sum(axis=1, keepdim=True)
+        t2 = (t * mask2).sum(axis=1, keepdim=True)
+        rt = paddle.concat([t1, t2], axis=1)
+        return rt
+
+    def _kl_div(self, x, label, mask=None):
+        y = (label * (paddle.log(label + 1e-10) - x)).sum(axis=1)
+        if mask is not None:
+            y = y.masked_select(mask).mean()
+        else:
+            y = y.mean()
+        return y
+
+    def forward(self, logits_student, logits_teacher, target, mask=None):
+        gt_mask = F.one_hot(
+            target.reshape([-1]), num_classes=logits_student.shape[-1])
+        other_mask = 1 - gt_mask
+        logits_student = logits_student.flatten(0, 1)
+        logits_teacher = logits_teacher.flatten(0, 1)
+        pred_student = F.softmax(logits_student / self.temperature, axis=1)
+        pred_teacher = F.softmax(logits_teacher / self.temperature, axis=1)
+        pred_student = self._cat_mask(pred_student, gt_mask, other_mask)
+        pred_teacher = self._cat_mask(pred_teacher, gt_mask, other_mask)
+        log_pred_student = paddle.log(pred_student)
+        tckd_loss = self._kl_div(log_pred_student,
+                                 pred_teacher) * (self.temperature**2)
+        pred_teacher_part2 = F.softmax(
+            logits_teacher / self.temperature - 1000.0 * gt_mask, axis=1)
+        log_pred_student_part2 = F.log_softmax(
+            logits_student / self.temperature - 1000.0 * gt_mask, axis=1)
+        nckd_loss = self._kl_div(log_pred_student_part2,
+                                 pred_teacher_part2) * (self.temperature**2)
+
+        loss = self.alpha * tckd_loss + self.beta * nckd_loss
+
+        return loss
