@@ -295,10 +295,6 @@ class DistillationDKDLoss(DKDLoss):
 
     def forward(self, predicts, batch):
         loss_dict = dict()
-        # print([x.shape for x in batch])
-        # print("batch[1]: ", batch[1][0].tolist())
-        # print("batch[2]: ", batch[2][0].tolist())
-        # print("batch[3]: ", batch[3])
 
         for idx, pair in enumerate(self.model_name_pairs):
             out1 = predicts[pair[0]]
@@ -312,15 +308,13 @@ class DistillationDKDLoss(DKDLoss):
                     max_len = batch[3].max()
                     tgt = batch[2][:, 1:2 +
                                    max_len]  # [batch_size, max_len + 1]
-                    # print("targets: ", tgt[0].tolist())
+
                     tgt = tgt.reshape([-1])  # batch_size * (max_len + 1)
-                    # print("predicts: ", paddle.argmax(out2[self.dis_head][0], axis=-1).tolist())
-                    # print("predicts: ", out2[self.dis_head][0].max(axis=-1).tolist())
                     non_pad_mask = paddle.not_equal(
                         tgt, paddle.zeros(
                             tgt.shape,
                             dtype=tgt.dtype))  # batch_size * (max_len + 1)
-                    # print("batch", out1[self.dis_head].shape)
+
                     loss = super().forward(
                         out1[self.dis_head], out2[self.dis_head], tgt,
                         non_pad_mask)  # [batch_size, max_len + 1, num_char]
@@ -752,7 +746,6 @@ class CTCDKDLoss(nn.Layer):
 
         gt_mask = self.multi_label_mask(targets)
         other_mask = paddle.ones_like(gt_mask) - gt_mask
-        # other_mask = 1 - gt_mask
 
         pred_student = F.softmax(logits_student / self.temperature, axis=-1)
         pred_teacher = F.softmax(logits_teacher / self.temperature, axis=-1)

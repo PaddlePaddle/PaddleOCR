@@ -186,14 +186,9 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - RecAug: null
+    - RecAug:
     - MultiLabelEncode:
         gtc_encode: NRTRLabelEncode
-    - RecResizeImg:
-        image_shape:
-        - 3
-        - 48
-        - 320
     - KeepKeys:
         keep_keys:
         - image
@@ -218,15 +213,9 @@ Eval:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
-        max_text_length: 600
-        character_dict_path: ppocr/utils/ppocr_keys_v1.txt
-        use_space_char: true
+        gtc_encode: NRTRLabelEncode
     - RecResizeImg:
-        image_shape:
-        - 3
-        - 48
-        - 320
-        eval_mode: true
+        image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image
@@ -237,6 +226,6 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 1
-    num_workers: 16
+    batch_size_per_card: 128
+    num_workers: 4
 profiler_options: null
