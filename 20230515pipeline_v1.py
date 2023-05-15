@@ -67,7 +67,6 @@ outputlog_folder = './outputlog'
 outputimg_folder = './outputimg'
 outputimg_binary_folder = './outputbinaryimg'
 
-file_names = os.listdir(img_folder)
 
 if not os.path.exists(outputimg_folder):
     os.makedirs(outputimg_folder)
