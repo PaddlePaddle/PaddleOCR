@@ -177,79 +177,11 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: 400w_data/
+    data_dir: ./train_data/
     label_file_list:
-    - 400w_data/real_data_disturb_v2.txt
-    - 400w_data/ccpd_disturb_v2/rec_ccpd2019_disturb_fix_new_26w_scor90.txt
-    - 400w_data/CCPD2019_rec/rec_all_fix_new_26w_scor90.txt
-    - 400w_data/ctw_imgs/rec_ctw_train_val_file_list_new_26w_scor90.txt
-    - 400w_data/InvoiceDatasets/rec_train_val_list_new_26w_scor90.txt
-    - 400w_data/born_digit_disturb_v2/rec_born_digit_disturb_new_26w_scor90.txt
-    - 400w_data/pubtabnet_crop_20_95_exa_20w.txt
-    - 400w_data/lsvt_weak_imgs/unlabeled_train_list_82.4_shuaku_score_0.95_new26w.txt
-    - 400w_data/rec_caibao_fileter_eng-score_0.95_new26w.txt
-    - 400w_data/openimages_text_en/oidv5_label_new_new_26w_scor90_exa.txt
-    - 400w_data/hard_vertical_img/hard_vertical_img_list_new_26w_scor90.txt
-    - 400w_data/space_img_new/ch_label_0_new_26w_scor90.txt
-    - 400w_data/seldom_new_26w_scor90_150w.txt
-    - 400w_data/en_movies_img/en_movies_new_26w_scor90.txt
-    - 400w_data/hospital_img/hospital_new_26w_scor90.txt
-    - 400w_data/card_number_img/card_number_new_26w_scor90.txt
-    - 400w_data/digital_img/digital_label_new_26w_scor90.txt
-    - 400w_data/kie_img/kie_new_26w_scor90_exa.txt
-    - 400w_data/layout_crop_label.txt
-    - 400w_data/26w_RectsRects_label.txt
-    - 400w_data/handwriting_label.txt
-    - 400w_data/rec_ocr_tusou_v4/label_tusou_v4_0.95_1_list_chinese.txt
-    - 400w_data/zhongce_rec_tusou_v1_20200901/rec_tusou_v4_zhongce_v1_20201130.txt
+    - ./train_data/train_list.txt
     ratio_list:
     - 1.0
-    - 0.5
-    - 0.25
-    - 0.2
-    - 1.0
-    - 1.0
-    - 0.2
-    - 0.3
-    - 0.4
-    - 0.1
-    - 0.2
-    - 1.0
-    - 0.025
-    - 0.2
-    - 1.0
-    - 1.0
-    - 1.0
-    - 1.0
-    - 0.5
-    - 0.43
-    - 0.8
-    - 0.06
-    - 0.3
-    ext_data_ratio_list:
-    - 1.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 1.0
-    - 0.0
-    - 1.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 1.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
-    - 0.0
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -278,9 +210,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ../
+    data_dir: ./train_data
     label_file_list:
-    - ../e2e_v4_4/label.txt
+    - ./train_data/val_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR

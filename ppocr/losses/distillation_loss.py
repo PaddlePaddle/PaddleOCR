@@ -726,7 +726,6 @@ class CTCDKDLoss(nn.Layer):
         self.t = temperature
         self.act = nn.Softmax(axis=-1)
         self.use_log = True
-        # self.mode = mode
 
     def kl_loss(self, p1, p2):  # predict, label
         loss = paddle.multiply(
@@ -828,7 +827,6 @@ class KLCTCLogits(nn.Layer):
         tea_out = paddle.sum(F.softmax(tea_out / self.t, axis=-1), axis=1)
         stu_out = paddle.log(stu_out)
         bs = stu_out.shape[0]
-        #loss = self._kldiv(stu_out, tea_out)
         loss = tea_out * (paddle.log(tea_out + self.eps) - stu_out)
         loss = paddle.sum(loss, axis=1) / loss.shape[0]
         return loss
@@ -836,8 +834,6 @@ class KLCTCLogits(nn.Layer):
     def _kldiv(self, x, target):
         eps = 1.0e-10
         loss = target * (paddle.log(target + eps) - x)
-        # batch mean loss
-        #loss = paddle.sum(loss) / loss.shape[0]
         loss = paddle.sum(paddle.mean(loss, axis=1)) / loss.shape[0]
         return loss
 
