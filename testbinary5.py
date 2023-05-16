@@ -32,7 +32,7 @@ def color_filter(img_path, filename):
 
     cv2.imwrite(test_folder+"/_5"+filename, output_image)
 
-    return filled_image, test_folder+"/_4"+filename
+    return output_image, test_folder+"/_4"+filename
     # cv2.namedWindow("filter", cv2.WINDOW_NORMAL)
     # cv2.imshow("filter", filled_image)
     # cv2.waitKey(0)
