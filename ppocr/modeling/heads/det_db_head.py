@@ -129,9 +129,9 @@ class LocalModule(nn.Layer):
         return out
 
 
-class CBNHeadLocal(DBHead):
+class PFHeadLocal(DBHead):
     def __init__(self, in_channels, k=50, mode='small', **kwargs):
-        super(CBNHeadLocal, self).__init__(in_channels, k, **kwargs)
+        super(PFHeadLocal, self).__init__(in_channels, k, **kwargs)
         self.mode = mode
 
         self.up_conv = nn.Upsample(scale_factor=2, mode="nearest", align_mode=1)
