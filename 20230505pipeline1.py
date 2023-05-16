@@ -67,7 +67,7 @@ for filename in os.listdir(pdf_folder):
 # 配置 logging
 logging.basicConfig(
                     level=logging.INFO, # 設置log级别为 INFO
-                    format ='%(aㄅsctime)s - %(levelname)s - %(message)s' # 设置日志格式
+                    format ='%(asctime)s - %(levelname)s - %(message)s' # 设置日志格式
                     )
 
 
