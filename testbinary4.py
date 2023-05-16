@@ -67,6 +67,8 @@ def color_filter(img_path, filename):
     # 填补不完整区域
     filled_image = fill_incomplete_regions(sharpened_image)
     cv2.imwrite(test_folder+"/_4"+filename, filled_image)
+
+    return filled_image, test_folder+"/_4"+filename
     # cv2.namedWindow("filter", cv2.WINDOW_NORMAL)
     # cv2.imshow("filter", filled_image)
     # cv2.waitKey(0)
@@ -87,7 +89,7 @@ test_folder = './testoutput'
 # do ocr (stage1以本文為主)
 for filename in os.listdir(pdfoutputimg_folder_main):
     img_path = pdfoutputimg_folder_main+'/'+filename #'PaddleOCR/doc/imgs_en/img_12.jpg'
-    color_filter(img_path, filename)
+    binaryimg, binaryimg_path = color_filter(img_path, filename)
     # print(filename)
     # print(img_folder+'/'+filename)
 
@@ -100,14 +102,14 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     # ret, bin_img = cv2.threshold(gray_img, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
     #prepare output ocr result 
-    result = ocr.ocr(img_path, cls=True)
+    result = ocr.ocr(binaryimg, cls=True)
     # 去掉副檔名
     filename = os.path.splitext(filename)[0]
 
     # draw result
     from PIL import Image
     result = result[0]
-    image = Image.open(img_path).convert('RGB')
+    image = Image.open(binaryimg_path).convert('RGB')
     boxes = [line[0] for line in result]
     print('---------------------------')
     # print(boxes)
