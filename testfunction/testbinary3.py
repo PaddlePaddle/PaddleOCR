@@ -55,8 +55,8 @@ def gama_transfer(img, power1, output_path):
     # 保存调整后的图像
     cv2.imwrite(output_path, out_img)
 
-pdfoutputimg_folder_main = './pdftoimg_main'
-pdfoutputimg_binary_folder_main = './pdftoimg_binary_main'
+pdfoutputimg_folder_main = '../pdftoimg_main'
+pdfoutputimg_binary_folder_main = '../pdftoimg_binary_main'
 
 for filename in os.listdir(pdfoutputimg_folder_main):
     # 读取输入图像

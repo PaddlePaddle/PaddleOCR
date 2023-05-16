@@ -24,7 +24,7 @@ def color_filter(input_image):
     cv2.destroyAllWindows()
 
 # 读取输入图像
-input_image = cv2.imread("./pdftoimg_main/__w__CP066-000-000099-000-000-000_001_KJfQV0p_page_3_main.jpg")
+input_image = cv2.imread("../pdftoimg_main\__w__CP071-000-000038-000-000-000_001_page_2_cover.jpg")
 
 # 进行颜色过滤处理并显示结果
 color_filter(input_image)
