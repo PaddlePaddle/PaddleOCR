@@ -65,10 +65,10 @@ def color_filter(img_path, filename):
     sharpened_image = cv2.filter2D(dst, -1, sharpening_kernel)
 
     # 填补不完整区域
-    filled_image = fill_incomplete_regions(sharpened_image)
-    cv2.imwrite(test_folder+"/_4"+filename, filled_image)
+    # filled_image = fill_incomplete_regions(sharpened_image)
+    cv2.imwrite(test_folder+"/_9"+filename, sharpened_image)
 
-    return filled_image, test_folder+"/_4"+filename
+    return sharpened_image, test_folder+"/_9"+filename
     # cv2.namedWindow("filter", cv2.WINDOW_NORMAL)
     # cv2.imshow("filter", filled_image)
     # cv2.waitKey(0)
@@ -93,7 +93,8 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     # print(filename)
     # print(img_folder+'/'+filename)
 
-    ocr = PaddleOCR(use_angle_cls=True, lang='ch')#, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
+    ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+    #, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
     # img_path = './img/4-1.jpeg'
 
     # cv2.imread(img_path)
@@ -102,7 +103,7 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     # ret, bin_img = cv2.threshold(gray_img, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 
     #prepare output ocr result 
-    result = ocr.ocr(binaryimg, cls=True)
+    result = ocr.ocr(binaryimg_path, cls=True)
     # 去掉副檔名
     filename = os.path.splitext(filename)[0]
 
@@ -118,7 +119,7 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     #im_show = draw_ocr(image, boxes, txts, scores, font_path='./PaddleOCR/doc/fonts/simfang.ttf')
     im_show = draw_ocr(image, boxes, txts, scores, font_path='./doc/fonts/chinese_cht.ttf')
     im_show = Image.fromarray(im_show)
-    im_show.save(os.path.join(test_folder, f'{filename}_result_4.jpg'))
+    im_show.save(os.path.join(test_folder, f'{filename}_result_9.jpg'))
 
 
     # save to file
@@ -127,7 +128,7 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     righttop_order = [sorted(righttop_location,reverse=True)]
 
     # 搭配 with 寫入檔案
-    output_path = os.path.join(test_folder, f'{filename}_4.txt')
+    output_path = os.path.join(test_folder, f'{filename}_9.txt')
     with open(output_path, 'w') as f:
         # get each box righttop(x, y)
         for righttop in righttop_order[0]:
