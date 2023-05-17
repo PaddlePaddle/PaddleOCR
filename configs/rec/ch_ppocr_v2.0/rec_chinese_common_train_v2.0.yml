@@ -1,12 +1,12 @@
 Global:
   use_gpu: true
-  epoch_num: 500
+  epoch_num: 100
   log_smooth_window: 20
   print_batch_step: 10
   save_model_dir: ./output/rec_chinese_common_v2.0
-  save_epoch_step: 3
+  save_epoch_step: 5
   # evaluation is run every 5000 iterations after the 4000th iteration
-  eval_batch_step: [0, 2000]
+  eval_batch_step: [0, 10000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
@@ -14,7 +14,7 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words/ch/word_1.jpg
   # for data or label process
-  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  character_dict_path: ppocr/utils/dict/zh_dict.txt
   max_text_length: 25
   infer_mode: False
   use_space_char: True
@@ -62,7 +62,8 @@ Train:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/
-    label_file_list: ["./train_data/train_list.txt"]
+    label_file_list: ["./train_data/chinese_zh_synthtiger_train/gt.txt", "./train_data/chinese_zh_synthtiger_train_1/gt.txt", "./train_data/latin_en_synthtiger_train/gt.txt", "./train_data/zh_text_renderer_train_1/labels.txt", "./train_data/zh_text_renderer_train_2/labels.txt", "./train_data/zh_TextRecognitionDataGenerator_train/labels_filter.txt", "./train_data/line/label_train.txt"]
+    ratio_list: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -83,7 +84,8 @@ Eval:
   dataset:
     name: SimpleDataSet
     data_dir: ./train_data/
-    label_file_list: ["./train_data/val_list.txt"]
+    label_file_list: ["./train_data/chinese_zh_synthtiger_test/gt.txt", "./train_data/zh_text_renderer_test/labels.txt", "./train_data/zh_TextRecognitionDataGenerator_test/labels_filter.txt", "./train_data/line/label_test.txt"]
+    ratio_list: [1.0, 1.0, 1.0, 1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

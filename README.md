@@ -32,17 +32,23 @@
 
 中文语系
 
-- [ ] 【PP-OCRv30】中文文本行识别
+- [x] 【PP-OCRv30】中文文本行识别
 
 *阿拉伯语系*
 
 - [x] 【PP-OCRv30】阿拉伯语文本行识别模型
 - [x] 【PP-OCRv30】维吾尔语文本行识别
 
+表音文字语系
+
+- [ ] 【PP-OCRv30】日语文本行识别
+- [ ] 【PP-OCRv30】韩语文本行识别
+
 *斯拉夫语系*
 
 - [x] 【PP-OCRv30】俄语文本行识别
 - [x] 【PP-OCRv30】哈萨克语文本行识别
+- [ ] 【PP-OCRv30】乌克兰语文本行识别
 
 *元音附标语系*
 
@@ -51,13 +57,21 @@
 - [x] 【PP-OCRv30】印地语文本行识别
 - [x] 【PP-OCRv30】高棉语文本行识别
 - [ ] 【PP-OCRv30】老挝语文本行识别
-- [ ] 【PP-OCRv30】泰语文本行识别
+- [x] 【PP-OCRv30】泰语文本行识别
+- [ ] 【PP-OCRv30】孟加拉语文本行识别
 
 *拉丁语系*
 
-- [ ] 【PP-OCRv30】越南语文本行识别
-- [ ] 【PP-OCRv30】马来语文本行识别
-- [ ] 【PP-OCRv30】印尼语文本行识别
+- [x] 【PP-OCRv30】越南语文本行识别
+- [x] 【PP-OCRv30】马来语文本行识别
+- [x] 【PP-OCRv30】印尼语文本行识别
+- [ ] 【PP-OCRv30】西班牙语文本行识别
+- [ ] 【PP-OCRv30】葡萄牙语文本行识别
+- [ ] 【PP-OCRv30】意大利语文本行识别
+- [ ] 【PP-OCRv30】法语文本行识别
+- [ ] 【PP-OCRv30】德语文本行识别
+
+
 
 # 模型
 
@@ -69,21 +83,22 @@
 
 ## 文字识别
 
-|     模型名称     |   语言   |                           配置文件                           |  acc   | norm_edit_dis | 备注   |
-| :--------------: | :------: | :----------------------------------------------------------: | :----: | :-----------: | ------ |
-| ar_PP-OCRv30_rec | 阿拉伯语 | [ar_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ar_PP-OCRv30_rec.yml) | 73.33% |    97.83%     |        |
-| ug_PP-OCRv30_rec | 维吾尔语 | [ug_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ug_PP-OCRv30_rec.yml) | 70.97% |    93.83%     |        |
-| ru_PP-OCRv30_rec |   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) | 93.55% |    99.57%     | 需优化 |
-| kk_PP-OCRv30_rec | 哈萨克语 | [kk_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/kk_PP-OCRv30_rec.yml) | 59.37% |    95.30%     |        |
-| bo_PP-OCRv30_rec |   藏语   | [bo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/bo_PP-OCRv30_rec.yml) | 67.09% |    93.07%     | 需优化 |
-| my_PP-OCRv30_rec |  缅甸语  | [my_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/my_PP-OCRv30_rec.yml) | 74.19% |      97%      |        |
-| hi_PP-OCRv30_rec |  印地语  | [hi_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/hi_PP-OCRv30_rec.yml) | 43.01% |    85.05%     | 需优化 |
-| km_PP-OCRv30_rec |  高棉语  | [km_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/km_PP-OCRv30_rec.yml) |        |               |        |
-| lo_PP-OCRv30_rec |  老挝语  | [lo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/lo_PP-OCRv30_rec.yml) |        |               |        |
-| th_PP-OCRv30_rec |   泰语   | [th_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/th_PP-OCRv30_rec.yml) |        |               |        |
-| vi_PP-OCRv30_rec |   越南   |                                                              |        |               |        |
-| ms_PP-OCRv30_rec |   马来   |                                                              |        |               |        |
-| id_PP-OCRv30_rec |  印尼语  |                                                              |        |               |        |
+|   语言   |                           配置文件                           |  acc   | norm_edit_dis | 备注       |
+| :------: | :----------------------------------------------------------: | :----: | :-----------: | ---------- |
+|   中文   | [rec_chinese_common_train_v2.0.yml](./configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml) | 77.38% |    94.21%     | 文档数据集 |
+| 阿拉伯语 | [ar_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ar_PP-OCRv30_rec.yml) | 73.33% |    97.83%     |            |
+| 维吾尔语 | [ug_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ug_PP-OCRv30_rec.yml) | 70.97% |    93.83%     |            |
+|   俄语   | [ru_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/ru_PP-OCRv30_rec.yml) | 93.55% |    99.57%     | 需优化     |
+| 哈萨克语 | [kk_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/kk_PP-OCRv30_rec.yml) | 59.37% |    95.30%     |            |
+|   藏语   | [bo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/bo_PP-OCRv30_rec.yml) | 67.09% |    93.07%     | 需优化     |
+|  缅甸语  | [my_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/my_PP-OCRv30_rec.yml) | 74.19% |      97%      |            |
+|  印地语  | [hi_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/hi_PP-OCRv30_rec.yml) | 43.01% |    85.05%     | 需优化     |
+|  高棉语  | [km_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/km_PP-OCRv30_rec.yml) | 53.5%  |    79.98%     |            |
+|  老挝语  | [lo_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/lo_PP-OCRv30_rec.yml) |  11%   |    78.33%     |            |
+|   泰语   | [th_PP-OCRv30_rec.yml](./configs/rec/PP-OCRv30/th_PP-OCRv30_rec.yml) |        |               |            |
+|  越南语  |                                                              |        |               |            |
+|  马来语  |                                                              |        |               |            |
+|  印尼语  |                                                              |        |               |            |
 
 注：测试数据采用场景数据。
 
