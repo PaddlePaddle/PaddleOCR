@@ -8,7 +8,7 @@ Global:
   save_epoch_step: 10
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
-  pretrained_model: 
+  pretrained_model:
   checkpoints:
   save_inference_dir:
   use_visualdl: false
@@ -101,7 +101,7 @@ Train:
   sampler:
     name: MultiScaleSampler
     scales: [[320, 32], [320, 48], [320, 64]]
-    first_bs: &bs 128
+    first_bs: &bs 192
     fix_bs: false
     divided_factor: [8, 16] # w, h
     is_training: True
