@@ -4,17 +4,17 @@ import os, cv2, numpy as np
 import logging
 import datetime
 
-pdf_folder = '../pdf/'
-img_folder = '../img'
-pdfoutputimg_folder_all = '../pdftoimg_all'
-pdfoutputimg_folder_cover = '../pdftoimg_cover'
-pdfoutputimg_folder_note = '../pdftoimg_note'
-pdfoutputimg_folder_main = '../pdftoimg_main'
-pdfoutputimg_folder_appendix = '../pdftoimg_appendix'
-outputfile_folder = '../outputfile'
-outputlog_folder = '../outputlog'
-outputimg_folder = '../outputimg'
-test_folder = '../testoutput'
+pdf_folder = './pdf/'
+img_folder = './img'
+pdfoutputimg_folder_all = './pdftoimg_all'
+pdfoutputimg_folder_cover = './pdftoimg_cover'
+pdfoutputimg_folder_note = './pdftoimg_note'
+pdfoutputimg_folder_main = './pdftoimg_main'
+pdfoutputimg_folder_appendix = './pdftoimg_appendix'
+outputfile_folder = './outputfile'
+outputlog_folder = './outputlog'
+outputimg_folder = './outputimg'
+test_folder = './testoutput'
 
 def color_filter(img_path, filename):
     input_image = cv2.imread(img_path)
@@ -46,7 +46,7 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     # print(img_folder+'/'+filename)
 
     ocr = PaddleOCR(use_angle_cls=True, lang='ch')#, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
-    # img_path = '../img/4-1.jpeg'
+    # img_path = './img/4-1.jpeg'
 
     # cv2.imread(img_path)
     # cv_img = cv2.cvtColor(np.asarray(img_path), cv2.COLOR_RGB2BGR)
@@ -67,8 +67,8 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     # print(boxes)
     txts = [line[1][0] for line in result]
     scores = [line[1][1] for line in result]
-    #im_show = draw_ocr(image, boxes, txts, scores, font_path='../PaddleOCR/doc/fonts/simfang.ttf')
-    im_show = draw_ocr(image, boxes, txts, scores, font_path='../doc/fonts/chinese_cht.ttf')
+    #im_show = draw_ocr(image, boxes, txts, scores, font_path='./PaddleOCR/doc/fonts/simfang.ttf')
+    im_show = draw_ocr(image, boxes, txts, scores, font_path='./doc/fonts/chinese_cht.ttf')
     im_show = Image.fromarray(im_show)
     im_show.save(os.path.join(test_folder, f'{filename}_result_5.jpg'))
 

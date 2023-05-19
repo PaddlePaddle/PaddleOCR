@@ -1,13 +1,10 @@
+from paddleocr import PaddleOCR, draw_ocr
 import cv2
 import os
 import numpy as np
 
-<<<<<<< HEAD
 def color_filter(img_path, filename):
     input_image = cv2.imread(img_path)
-=======
-def color_filter(input_image):
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
     hsv_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2HSV)
     height, width, _ = hsv_image.shape
 
@@ -23,22 +20,13 @@ def color_filter(input_image):
                 # 将非黑色像素转换为其他颜色
                 hsv_image[i, j] = [0, 0, 255]
 
-<<<<<<< HEAD
     # output_image = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2BGR)
-=======
-    output_image = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2BGR)
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
     # cv2.imshow("Original Image", input_image)
     # cv2.imshow("Filtered Image", output_image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-<<<<<<< HEAD
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
     cv2.imwrite(test_folder+"/_1"+filename, hsv_image)
     return hsv_image, test_folder+"/_1"+filename
-=======
-    cv2.imwrite('./output.jpg', output_image)
-    return './output.jpg'
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
 
 def adjust_contrast(image_path, alpha, beta, output_path):
     # 读取图像
@@ -66,34 +54,74 @@ def gama_transfer(img, power1, output_path):
 
 pdfoutputimg_folder_main = './pdftoimg_main'
 pdfoutputimg_binary_folder_main = './pdftoimg_binary_main'
-<<<<<<< HEAD
 test_folder = '../testoutput'
-=======
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
 
+# for filename in os.listdir(pdfoutputimg_folder_main):
+#     # 读取输入图像
+#     input_image = cv2.imread(pdfoutputimg_folder_main+'/'+filename)
+
+#     # 进行颜色过滤处理并显示结果
+#     binaryimg, binaryimg_path = color_filter(img_path, filename)
+
+#     # print(adjusted_image)
+#     # 调用函数进行对比度调整
+#     img, img_path = adjust_contrast(binaryimg, 1.5, -50, pdfoutputimg_binary_folder_main+"/"+f'{filename}.jpg')
+#     print("img_path="+img_path)
+#     # 进行颜色过滤处理并显示结果
+#     gama_transfer(img, 5, pdfoutputimg_binary_folder_main+"/"+f'{filename}_1.jpg')
+# do ocr (stage1以笨文為主)
 for filename in os.listdir(pdfoutputimg_folder_main):
-    # 读取输入图像
-    input_image = cv2.imread(pdfoutputimg_folder_main+'/'+filename)
-
-    # 进行颜色过滤处理并显示结果
-<<<<<<< HEAD
+    img_path = pdfoutputimg_folder_main+'/'+filename #'PaddleOCR/doc/imgs_en/img_12.jpg'
     binaryimg, binaryimg_path = color_filter(img_path, filename)
+    # print(filename)
+    # print(img_folder+'/'+filename)
 
-    # print(adjusted_image)
-    # 调用函数进行对比度调整
-    img, img_path = adjust_contrast(binaryimg, 1.5, -50, pdfoutputimg_binary_folder_main+"/"+f'{filename}.jpg')
-    print("img_path="+img_path)
-    # 进行颜色过滤处理并显示结果
-    gama_transfer(img, 5, pdfoutputimg_binary_folder_main+"/"+f'{filename}_1.jpg')
-=======
-    adjusted_image = color_filter(input_image)
-    print("adjusted_image="+adjusted_image)
+    ocr = PaddleOCR(use_angle_cls=True, lang='ch')#, rec_algorithm = 'chinese_cht') # need to run only once to download and load model into memory
+    # img_path = './img/4-1.jpeg'
 
-    # print(adjusted_image)
-    # 调用函数进行对比度调整
-    img, img_path = adjust_contrast(adjusted_image, 1.5, -50, pdfoutputimg_binary_folder_main+"/"+f'{filename}.jpg')
-    print("img_path="+img_path)
-    # 进行颜色过滤处理并显示结果
-    gama_transfer(img, 5, pdfoutputimg_binary_folder_main+"/"+f'{filename}_2.jpg')
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
+    # cv2.imread(img_path)
+    # cv_img = cv2.cvtColor(np.asarray(img_path), cv2.COLOR_RGB2BGR)
+    # gray_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
+    # ret, bin_img = cv2.threshold(gray_img, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+    #prepare output ocr result 
+    result = ocr.ocr(binaryimg, cls=True)
+    # 去掉副檔名
+    filename = os.path.splitext(filename)[0]
+
+    # draw result
+    from PIL import Image
+    result = result[0]
+    image = Image.open(binaryimg_path).convert('RGB')
+    boxes = [line[0] for line in result]
+    print('---------------------------')
+    # print(boxes)
+    txts = [line[1][0] for line in result]
+    scores = [line[1][1] for line in result]
+    #im_show = draw_ocr(image, boxes, txts, scores, font_path='./PaddleOCR/doc/fonts/simfang.ttf')
+    im_show = draw_ocr(image, boxes, txts, scores, font_path='./doc/fonts/chinese_cht.ttf')
+    im_show = Image.fromarray(im_show)
+    im_show.save(os.path.join(test_folder, f'{filename}_result_1.jpg'))
+
+
+    # save to file
+    righttop_location = [topright[2] for topright in boxes]
+    # right to left order [right][top]
+    righttop_order = [sorted(righttop_location,reverse=True)]
+
+    # 搭配 with 寫入檔案
+    output_path = os.path.join(test_folder, f'{filename}_1.txt')
+    with open(output_path, 'w') as f:
+        # get each box righttop(x, y)
+        for righttop in righttop_order[0]:
+            for line in result:
+                # print(righttop)
+                
+                # check if match the righttop(x, y)
+                if line[0][2] == righttop:
+                    # write file
+                    f.write(line[1][0]+'\n')
+                    break
+            else:
+                continue
 

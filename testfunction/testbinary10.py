@@ -14,29 +14,34 @@ def seg_img(img_path, filename):
 
     thH = [5, 190]
     thS = [6, 190]
-    thV = [0, 200]
+    thV = [0, 105]
 
     seg_image = cv2.inRange(hsvColor, np.array([thH[0], thS[0], thV[0]]), np.array([thH[1], thS[1], thV[1]]))
 
     cv2.imwrite(test_folder+"/_8"+filename, seg_image)
+    print("output_path="+test_folder+"/_8"+filename, seg_image)
     return seg_image, test_folder+"/_8"+filename
 
 
 
-img_path = 'pdftoimg_main\__w__CP069-000-000345-000-000-000_001_page_3_cover.jpg'
+img_path = './pdftoimg_main/__w__CP069-000-000345-000-000-000_001_page_3_cover.jpg'
 
-seg_img_path = seg_img(img_path, '__w__CP069-000-000345-000-000-000_001_page_3_cover.jpg')
-
+seg_image, seg_img_path = seg_img(img_path, '__w__CP069-000-000345-000-000-000_001_page_3_cover.jpg')
 img = cv2.imread(seg_img_path)
-cv2.imshow('oxxostudio1', img)   # 原始影像
 
+
+
+cv2.namedWindow("oxxostudio1", cv2.WINDOW_NORMAL)
+cv2.imshow('oxxostudio1', img)   # 原始影像
 img2 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 11))
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
 
 img = cv2.erode(img, kernel)     # 先侵蝕，將白色小圓點移除
+cv2.namedWindow("oxxostudio2", cv2.WINDOW_NORMAL)
 cv2.imshow('oxxostudio2', img)   # 侵蝕後的影像
 
 img = cv2.dilate(img, kernel)    # 再膨脹，白色小點消失
+cv2.namedWindow("oxxostudio3", cv2.WINDOW_NORMAL)
 cv2.imshow('oxxostudio3', img)   # 膨脹後的影像
 
 cv2.waitKey(0)                   # 按下 q 鍵停止

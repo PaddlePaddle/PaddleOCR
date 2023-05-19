@@ -2,12 +2,8 @@ import cv2
 import os
 import numpy as np
 
-<<<<<<< HEAD
 def color_filter(img_path, filename):
     input_image = cv2.imread(img_path)
-=======
-def color_filter(input_image):
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
     #灰度图像处理
     GrayImage = cv2.cvtColor(input_image,cv2.COLOR_BGR2GRAY)
 
@@ -31,7 +27,6 @@ def color_filter(input_image):
     # output_image = cv2.cvtColor(GrayImage, cv2.COLOR_HSV2BGR)
     # cv2.imshow("Original Image", input_image)
     # cv2.imshow("Filtered Image", output_image)
-<<<<<<< HEAD
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
     cv2.imwrite(test_folder+"/_3"+filename, b)
@@ -41,16 +36,6 @@ def color_filter(input_image):
 def adjust_contrast(binaryimg_path, alpha, beta, output_path):
     # 读取图像
     img = cv2.imread(binaryimg_path, cv2.IMREAD_GRAYSCALE)
-=======
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    cv2.imwrite('./output.jpg', b)
-    return './output.jpg'
-
-def adjust_contrast(image_path, alpha, beta, output_path):
-    # 读取图像
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
 
     # 调整对比度
     adjusted = cv2.convertScaleAbs(img, alpha=alpha, beta=beta)
@@ -74,7 +59,6 @@ def gama_transfer(img, power1, output_path):
 
 pdfoutputimg_folder_main = '../pdftoimg_main'
 pdfoutputimg_binary_folder_main = '../pdftoimg_binary_main'
-<<<<<<< HEAD
 test_folder = '../testoutput'
 
 for filename in os.listdir(pdfoutputimg_folder_main):
@@ -88,21 +72,4 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     print("img_path="+img_path)
     # 进行颜色过滤处理并显示结果
     gama_transfer(img, 1.5, test_folder+"/"+f'{filename}_3.jpg')
-=======
-
-for filename in os.listdir(pdfoutputimg_folder_main):
-    # 读取输入图像
-    input_image = cv2.imread(pdfoutputimg_folder_main+'/'+filename)
-
-    # 进行颜色过滤处理并显示结果
-    adjusted_image = color_filter(input_image)
-    print("adjusted_image="+adjusted_image)
-
-    # print(adjusted_image)
-    # 调用函数进行对比度调整
-    img, img_path = adjust_contrast(adjusted_image, 10, -50, pdfoutputimg_binary_folder_main+"/"+f'{filename}.jpg')
-    print("img_path="+img_path)
-    # 进行颜色过滤处理并显示结果
-    gama_transfer(img, 1.5, pdfoutputimg_binary_folder_main+"/"+f'{filename}_2.jpg')
->>>>>>> cbd04d1fbbfe8f7d1f0ed5ccd24503c692676c55
 

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-input_img = '__w__CP069-000-000310-000-000-000_001_page_3_cover.jpg'
+input_img = './pdftoimg_main/__w__CP069-000-000310-000-000-000_001_page_3_cover.jpg'
 img = cv2.imread(input_img)
 hsvColor = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -26,7 +26,7 @@ cv2.setMouseCallback(window_name, mouseHSV)
 
 thH = [5, 190]
 thS = [6, 190]
-thV = [0, 200]
+thV = [0, 100]
 
 #inRange(frame_HSV, Scalar(low_H, low_S, low_V), Scalar(high_H, high_S, high_V), frame_threshold);
 
