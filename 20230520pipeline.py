@@ -3,6 +3,7 @@ from pdf2image import convert_from_path
 import os, cv2, numpy as np
 import logging
 import datetime
+from PIL import Image
 
 pdf_folder = './pdf/'
 img_folder = './img'
@@ -16,6 +17,40 @@ outputfile_folder = './outputfile'
 outputlog_folder = './outputlog'
 outputimg_folder = './outputimg'
 outputimg_binary_folder = './outputbinaryimg'
+
+
+def crop_img(img_path):
+
+    lower = np.array([30, 40, 200])
+    upper = np.array([90, 100, 255])
+    # 讀取圖片
+    ori_img = cv2.imread(img_path)
+
+    output = cv2.inRange(ori_img, lower, upper)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 11))
+    output = cv2.dilate(output, kernel)
+    output = cv2.erode(output, kernel)
+    contours, hierarchy = cv2.findContours(output, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # 若有找到最大的方框
+    max_area = 0
+    max_contour = None
+    for contour in contours:
+        area = cv2.contourArea(contour)
+        if area > max_area:
+            max_area = area
+            max_contour = contour
+
+    # 切割最大的方框區域，否則使用原圖
+    if max_contour is not None:
+        x, y, w, h = cv2.boundingRect(max_contour)
+        max_box_region = ori_img[y:y+h, x:x+w].copy()
+        if(max_box_region.size > 1500000):
+            ori_img = max_box_region
+
+    return ori_img
+
+
 
 
 if not os.path.exists(outputimg_folder):
@@ -78,6 +113,15 @@ logger.addHandler(file_handler)
 logger.error('-------------log start------------------')
 
 
+
+for filename in os.listdir(pdfoutputimg_folder_main):
+    img_path = pdfoutputimg_folder_main+'/'+filename
+    aftercrop_img = crop_img(img_path)
+    cv2.imwrite(img_path, aftercrop_img)
+
+
+
+
 # do ocr (stage1以本文為主)
 for filename in os.listdir(pdfoutputimg_folder_main):
     # print(filename)
@@ -112,7 +156,6 @@ for filename in os.listdir(pdfoutputimg_folder_main):
     filename = os.path.splitext(filename)[0]
 
     # draw result
-    from PIL import Image
     result = result[0]
     image = Image.open(img_path).convert('RGB')
     boxes = [line[0] for line in result]
