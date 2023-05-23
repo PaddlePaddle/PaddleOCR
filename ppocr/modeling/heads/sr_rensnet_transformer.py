@@ -78,7 +78,7 @@ class MultiHeadedAttention(nn.Layer):
     def forward(self, query, key, value, mask=None, attention_map=None):
         if mask is not None:
             mask = mask.unsqueeze(1)
-        nbatches = query.shape[0]
+        nbatches = paddle.shape(query)[0]
 
         query, key, value = \
             [paddle.transpose(l(x).reshape([nbatches, -1, self.h, self.d_k]), [0,2,1,3])
