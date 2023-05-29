@@ -2,7 +2,7 @@
 # "save_gear" ensures that it can be evenly divided by the number of GPUs available for training, 
 # and save_nums = save_gear * batch_size_per_card. Using the appropriate multiplier will 
 # accelerate the training process.
-
+# `num_workers` must be equal to `1`
 Global:
   debug: false
   use_gpu: true
@@ -112,7 +112,7 @@ Train:
     shuffle: false
     batch_size_per_card: 128
     drop_last: true
-    num_workers: 4
+    num_workers: 1
 Eval:
   dataset:
     name: SpeedupDataset
@@ -140,4 +140,4 @@ Eval:
     shuffle: false
     drop_last: false
     batch_size_per_card: 128
-    num_workers: 4
+    num_workers: 1
