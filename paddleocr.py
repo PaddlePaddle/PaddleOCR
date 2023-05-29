@@ -27,9 +27,17 @@ import logging
 import numpy as np
 from pathlib import Path
 
-tools = importlib.import_module('.', 'tools')
-ppocr = importlib.import_module('.', 'ppocr')
-ppstructure = importlib.import_module('.', 'ppstructure')
+def _import_file(module_name, file_path, make_importable=False):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if make_importable:
+        sys.modules[module_name] = module
+    return module
+
+tools = _import_file('tools', os.path.join(__dir__, 'tools/__init__.py'), make_importable=True)
+ppocr = importlib.import_module('ppocr', 'paddleocr')
+ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 
 from tools.infer import predict_system
 from ppocr.utils.logging import get_logger
