@@ -11,13 +11,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import numpy as np
-import os
 import json
+import math
+import os
+import pickle
 import random
 import traceback
+from multiprocessing import Pool, cpu_count
+
+import numpy as np
 from paddle.io import Dataset
-from .imaug import transform, create_operators
+
+from .imaug import create_operators, transform
 
 
 class SimpleDataSet(Dataset):
@@ -149,3 +154,96 @@ class SimpleDataSet(Dataset):
 
     def __len__(self):
         return len(self.data_idx_order_list)
+
+
+class SpeedupDataset(SimpleDataSet):
+    def __init__(self, config, mode, logger, seed=None):
+        super().__init__(config, mode, logger, seed)
+        dataset_config = config[mode]['dataset']
+        self.dataset_mode = mode
+        self.save_parts_dir = dataset_config.get('save_parts_dir')
+        self.save_gear = dataset_config.get('save_gear')
+        self.save_nums = self.save_gear*config[mode]['loader']['batch_size_per_card']
+        self.save_reset = dataset_config.get('save_reset', False)
+        self.save_files = [f"{self.save_parts_dir}/{i}.pkl" for i in range(math.ceil(self.__len__()/self.save_nums))]
+
+        # save_data
+        self.prepare_data()
+
+        # initialize_cursor
+        self.cursor_file = None
+        self.cursor = []
+
+    def hash_idx_2_pkl(self, idx):
+        ifi = int(idx/self.save_nums)
+        idd = idx % self.save_nums
+        return self.save_files[ifi], idd
+
+    def hash_filei_2_idxs(self, i): return list(range(i*self.save_nums, min((i+1)*self.save_nums, self.__len__())))
+    def shuffle_data_random(self): ...
+
+    def prepare_data(self):
+        print(f"Start prepare dataset `{self.dataset_mode}`")
+        os.makedirs(self.save_parts_dir, exist_ok=True)
+        eis = []
+        for ei in enumerate(self.save_files):
+            _, save_file = ei
+            if self.save_reset or (not os.path.exists(save_file)):
+                eis.append(ei)
+        # for ei in enumerate(self.save_files):
+        #     self.save_process(ei)
+        with Pool(cpu_count()//4) as p:
+            p.map(self.save_process, enumerate(self.save_files))
+        print(f"Prepare dataset `{self.dataset_mode}` finish")
+
+    def save_process(self, args):
+        ifi, save_file = args
+        idxs = self.hash_filei_2_idxs(ifi)
+        datas = self.load_idxs(idxs)
+        with open(save_file, "wb") as f:
+            pickle.dump(datas, f)
+
+    def load_idxs(self, idxs):
+        datas = []
+        for idx in idxs:
+            datas.append(self.get_old(idx))
+        return datas
+
+    def load_cursor(self, save_file):
+        with open(save_file, "rb") as f:
+            self.cursor = pickle.load(f)
+            self.cursor_file = save_file
+
+    def __getitem__(self, idx):
+        cursor_file, idd = self.hash_idx_2_pkl(idx)
+        if cursor_file != self.cursor_file:
+            self.load_cursor(cursor_file)
+            return self.__getitem__(idx)
+        return self.cursor[idd]
+
+    def get_old(self, idx):
+        file_idx = self.data_idx_order_list[idx]
+        data_line = self.data_lines[file_idx]
+        try:
+            data_line = data_line.decode('utf-8')
+            substr = data_line.strip("\n").split(self.delimiter)
+            file_name = substr[0]
+            file_name = self._try_parse_filename_list(file_name)
+            label = substr[1]
+            img_path = os.path.join(self.data_dir, file_name)
+            data = {'img_path': img_path, 'label': label}
+            if not os.path.exists(img_path):
+                raise Exception("{} does not exist!".format(img_path))
+            with open(data['img_path'], 'rb') as f:
+                img = f.read()
+                data['image'] = img
+            data['ext_data'] = self.get_ext_data()
+            outs = transform(data, self.ops)
+        except:
+            self.logger.info("When parsing line {}, error happened with msg: {}".format(data_line, traceback.format_exc()))
+            outs = None
+        if outs is None:
+            # during evaluation, we should fix the idx to get same results for many times of evaluation.
+            rnd_idx = (idx + 1) % self.__len__()
+            return self.get_old(rnd_idx)
+        return outs

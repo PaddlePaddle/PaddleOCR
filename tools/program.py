@@ -373,8 +373,7 @@ def train(config,
                 train_batch_cost = 0.0
             # eval
             if global_step > start_eval_step and \
-                    (global_step - start_eval_step) % eval_batch_step == 0 \
-                    and dist.get_rank() == 0:
+                    (global_step - start_eval_step) % eval_batch_step == 0:
                 if model_average:
                     Model_Average = paddle.incubate.optimizer.ModelAverage(
                         0.15,
@@ -382,7 +381,7 @@ def train(config,
                         min_average_window=10000,
                         max_average_window=15625)
                     Model_Average.apply()
-                cur_metric = eval(
+                cur_metric, metric_keys = eval(
                     model,
                     valid_dataloader,
                     post_process_class,
@@ -392,48 +391,56 @@ def train(config,
                     scaler=scaler,
                     amp_level=amp_level,
                     amp_custom_black_list=amp_custom_black_list)
-                cur_metric_str = 'cur metric, {}'.format(', '.join(
-                    ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
-                logger.info(cur_metric_str)
+                if dist.get_rank() == 0:
+                    # average metric
+                    cur_metric = cur_metric/dist.get_world_size()
+                    d_cur_metric = {}
+                    for met, k in zip(cur_metric.numpy().tolist(), metric_keys):
+                        d_cur_metric[k] = met
+                    cur_metric = d_cur_metric
+                    # continue last
+                    cur_metric_str = 'cur metric, {}'.format(', '.join(
+                        ['{}: {}'.format(k, v) for k, v in cur_metric.items()]))
+                    logger.info(cur_metric_str)
 
-                # logger metric
-                if log_writer is not None:
-                    log_writer.log_metrics(
-                        metrics=cur_metric, prefix="EVAL", step=global_step)
+                    # logger metric
+                    if log_writer is not None:
+                        log_writer.log_metrics(
+                            metrics=cur_metric, prefix="EVAL", step=global_step)
 
-                if cur_metric[main_indicator] >= best_model_dict[
-                        main_indicator]:
-                    best_model_dict.update(cur_metric)
-                    best_model_dict['best_epoch'] = epoch
-                    save_model(
-                        model,
-                        optimizer,
-                        save_model_dir,
-                        logger,
-                        config,
-                        is_best=True,
-                        prefix='best_accuracy',
-                        best_model_dict=best_model_dict,
-                        epoch=epoch,
-                        global_step=global_step)
-                best_str = 'best metric, {}'.format(', '.join([
-                    '{}: {}'.format(k, v) for k, v in best_model_dict.items()
-                ]))
-                logger.info(best_str)
-                # logger best metric
-                if log_writer is not None:
-                    log_writer.log_metrics(
-                        metrics={
-                            "best_{}".format(main_indicator):
-                            best_model_dict[main_indicator]
-                        },
-                        prefix="EVAL",
-                        step=global_step)
+                    if cur_metric[main_indicator] >= best_model_dict[
+                            main_indicator]:
+                        best_model_dict.update(cur_metric)
+                        best_model_dict['best_epoch'] = epoch
+                        save_model(
+                            model,
+                            optimizer,
+                            save_model_dir,
+                            logger,
+                            config,
+                            is_best=True,
+                            prefix='best_accuracy',
+                            best_model_dict=best_model_dict,
+                            epoch=epoch,
+                            global_step=global_step)
+                    best_str = 'best metric, {}'.format(', '.join([
+                        '{}: {}'.format(k, v) for k, v in best_model_dict.items()
+                    ]))
+                    logger.info(best_str)
+                    # logger best metric
+                    if log_writer is not None:
+                        log_writer.log_metrics(
+                            metrics={
+                                "best_{}".format(main_indicator):
+                                best_model_dict[main_indicator]
+                            },
+                            prefix="EVAL",
+                            step=global_step)
 
-                    log_writer.log_model(
-                        is_best=True,
-                        prefix="best_accuracy",
-                        metadata=best_model_dict)
+                        log_writer.log_model(
+                            is_best=True,
+                            prefix="best_accuracy",
+                            metadata=best_model_dict)
 
             reader_start = time.time()
         if dist.get_rank() == 0:
@@ -561,13 +568,18 @@ def eval(model,
             pbar.update(1)
             total_frame += len(images)
             sum_images += 1
-        # Get final metric，eg. acc or hmean
-        metric = eval_class.get_metric()
-
     pbar.close()
-    model.train()
+
+    # Get final metric，eg. acc or hmean
+    metric = eval_class.get_metric()
     metric['fps'] = total_frame / total_time
-    return metric
+    # Rank Synchronize
+    metric: dict
+    metric_tensor = paddle.to_tensor([metric[i] for i in metric.keys()])
+    dist.all_reduce(metric_tensor)
+    model.train()
+    return metric_tensor, list(metric.keys())
+
 
 
 def update_center(char_center, post_result, preds):

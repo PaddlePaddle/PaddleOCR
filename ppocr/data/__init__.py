@@ -33,7 +33,7 @@ from paddle.io import Dataset, DataLoader, BatchSampler, DistributedBatchSampler
 import paddle.distributed as dist
 
 from ppocr.data.imaug import transform, create_operators
-from ppocr.data.simple_dataset import SimpleDataSet
+from ppocr.data.simple_dataset import SimpleDataSet, SpeedupDataset
 from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
@@ -55,7 +55,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
 
     support_dict = [
         'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR'
+        'LMDBDataSetSR', 'SpeedupDataset'
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
@@ -76,6 +76,13 @@ def build_dataloader(config, mode, device, logger, seed=None):
 
     if mode == "Train":
         # Distribute data to multiple cards
+        batch_sampler = DistributedBatchSampler(
+            dataset=dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            drop_last=drop_last)
+    elif mode == "Eval":
+        # Eval use multiple cards
         batch_sampler = DistributedBatchSampler(
             dataset=dataset,
             batch_size=batch_size,
