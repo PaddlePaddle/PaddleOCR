@@ -56,6 +56,26 @@ if [ ${MODE} = "benchmark_train" ];then
         ln -s ./icdar2015_benckmark ./icdar2015
         cd ../
     fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_mobile_rec" ]];then
+        rm -rf ./train_data/ic15_data
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ic15_data_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf ic15_data_benckmark.tar
+        ln -s ./ic15_data_benckmark ./ic15_data
+        cd ic15_data
+        mv rec_gt_train4w.txt rec_gt_train.txt
+        cd ../
+        cd ../
+    fi
+    if [[ ${model_name} =~ "ch_PP-OCRv4_server_rec" ]];then
+        rm -rf ./train_data/ic15_data
+        wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/ic15_data_benckmark.tar --no-check-certificate
+        cd ./train_data/ && tar xf ic15_data_benckmark.tar
+        ln -s ./ic15_data_benckmark ./ic15_data
+        cd ic15_data
+        mv rec_gt_train4w.txt rec_gt_train.txt
+        cd ../
+        cd ../
+    fi
     if [[ ${model_name} =~ "ch_ppocr_server_v2_0_det" || ${model_name} =~ "ch_PP-OCRv3_det" ]];then
         rm -rf ./train_data/icdar2015
         wget -nc -P ./train_data/ https://paddleocr.bj.bcebos.com/dataset/icdar2015_benckmark.tar --no-check-certificate
