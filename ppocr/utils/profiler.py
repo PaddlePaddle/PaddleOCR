@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import sys
-import paddle
+import paddle.profiler as profiler
 
 # A global variable to record the number of calling times for profiler
 # functions. It is used to specify the tracing range of training steps.
@@ -21,7 +21,7 @@ _profiler_step_id = 0
 
 # A global variable to avoid parsing from string every time.
 _profiler_options = None
-
+_prof = None
 
 class ProfilerOptions(object):
     '''
@@ -31,6 +31,7 @@ class ProfilerOptions(object):
       "profile_path=model.profile"
       "batch_range=[50, 60]; profile_path=model.profile"
       "batch_range=[50, 60]; tracer_option=OpDetail; profile_path=model.profile"
+
     ProfilerOptions supports following key-value pair:
       batch_range      - a integer list, e.g. [100, 110].
       state            - a string, the optional values are 'CPU', 'GPU' or 'All'. 
@@ -52,7 +53,8 @@ class ProfilerOptions(object):
             'sorted_key': 'total',
             'tracer_option': 'Default',
             'profile_path': '/tmp/profile',
-            'exit_on_finished': True
+            'exit_on_finished': True,
+            'timer_only': True
         }
         self._parse_from_string(options_str)
 
@@ -71,6 +73,8 @@ class ProfilerOptions(object):
                     'state', 'sorted_key', 'tracer_option', 'profile_path'
             ]:
                 self._options[key] = value
+            elif key == 'timer_only':
+                self._options[key] = value
 
     def __getitem__(self, name):
         if self._options.get(name, None) is None:
@@ -84,7 +88,6 @@ def add_profiler_step(options_str=None):
     Enable the operator-level timing using PaddlePaddle's profiler.
     The profiler uses a independent variable to count the profiler steps.
     One call of this function is treated as a profiler step.
-    
     Args:
       profiler_options - a string to initialize the ProfilerOptions.
                          Default is None, and the profiler is disabled.
@@ -92,18 +95,33 @@ def add_profiler_step(options_str=None):
     if options_str is None:
         return
 
+    global _prof 
     global _profiler_step_id
     global _profiler_options
 
     if _profiler_options is None:
         _profiler_options = ProfilerOptions(options_str)
-
-    if _profiler_step_id == _profiler_options['batch_range'][0]:
-        paddle.utils.profiler.start_profiler(
-            _profiler_options['state'], _profiler_options['tracer_option'])
-    elif _profiler_step_id == _profiler_options['batch_range'][1]:
-        paddle.utils.profiler.stop_profiler(_profiler_options['sorted_key'],
-                                            _profiler_options['profile_path'])
+    # profile : https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/performance_improving/profiling_model.html#chakanxingnengshujudetongjibiaodan
+    # timer_only = True  only the model's throughput and time overhead are displayed
+    # timer_only = False calling summary can print a statistical form that presents performance data from different perspectives.
+    # timer_only = False the output Timeline information can be found in the profiler_log directory
+    if _prof is None:
+        _timer_only = str(_profiler_options['timer_only']) == str(True)
+        _prof = profiler.Profiler(
+                   scheduler = (_profiler_options['batch_range'][0], _profiler_options['batch_range'][1]),
+                   on_trace_ready = profiler.export_chrome_tracing('./profiler_log'),
+                   timer_only = _timer_only)
+        _prof.start()
+    else:
+        _prof.step()
+        
+    if _profiler_step_id == _profiler_options['batch_range'][1]:
+        _prof.stop()
+        _prof.summary(
+             op_detail=True,
+             thread_sep=False,
+             time_unit='ms')
+        _prof = None
         if _profiler_options['exit_on_finished']:
             sys.exit(0)
 
