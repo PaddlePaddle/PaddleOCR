@@ -41,10 +41,6 @@ PP-OCRv4在PP-OCRv3的基础上进一步升级。整体的框架图保持了与P
 
 PP-OCRv4检测模型在PP-OCRv3检测模型的基础上，在网络结构，训练策略，蒸馏策略三个方面做了优化。首先，PP-OCRv4检测模型使用PP-LCNetV3替换MobileNetv3，并提出并行分支融合的PFhead结构；其次，训练时动态调整shrink ratio的比例；最后，PP-OCRv4对CML的蒸馏loss进行优化，进一步提升文字检测效果。
 
-<div align="center">
-    <img src=".././ppocr_v4/ppocrv4_det_cml.png" width="800">
-</div>
-
 消融实验如下：
 
 |序号|策略|模型大小|hmean|速度（cpu + mkldnn)|
@@ -63,7 +59,7 @@ PP-OCRv4检测模型在PP-OCRv3检测模型的基础上，在网络结构，训�
 PFhead结构如下图所示，PFHead在经过第一个转置卷积后，分别进行上采样和转置卷积，上采样的输出通过3x3卷积得到输出结果，然后和转置卷积的分支的结果级联并经过1x1卷积层，最后1x1卷积的结果和转置卷积的结果相加得到最后输出的概率图。PP-OCRv4学生检测模型使用PFhead，hmean从76.22%增加到76.97%。
 
 <div align="center">
-    <img src="../ppocr_v4/PFHead.png" width="1000">
+    <img src="../ppocr_v4/PFHead.png" width="500">
 </div>
 
 **（2）DSR: 收缩比例动态调整策略**
@@ -79,7 +75,7 @@ PP-LCNetV3系列模型是PP-LCNet系列模型的延续，覆盖了更大的精�
 PP-OCRv4检测模型对PP-OCRv3中的CML（Collaborative Mutual Learning) 协同互学习文本检测蒸馏策略进行了优化。如下图所示，在计算Student Model和Teacher Model的distill Loss时，额外添加KL div loss，让两者输出的response maps分布接近，由此进一步提升Student网络的精度，检测Hmean从79.08%增加到79.56%，端到端指标从61.31%增加到61.87%。
 
 <div align="center">
-    <img src="../ppocr_v4/ppocrv4_det_cml.png" width="1000">
+    <img src="../ppocr_v4/ppocrv4_det_cml.png" width="500">
 </div>
 
 <a name="3"></a>
@@ -130,7 +126,7 @@ Lite-Neck整体结构沿用PP-OCRv3版本，在参数上稍作精简，识别模
 GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合多种文本特征的表达，有效的提升文本识别精度。在PP-OCRv4中使用训练更稳定的Transformer模型NRTR作为指导，相比SAR基于循环神经网络的结构，NRTR基于Transformer实现解码过程泛化能力更强，能有效指导CTC分支学习。解决简单场景下快速过拟合的问题。模型大小不变，识别精度提升至73.21%(+0.5%)。
 
 <div align="center">
-    <img src="../ppocr_v4/v4_gtc.png" width="500">
+    <img src="../ppocr_v4/ppocrv4_gtc.png" width="500">
 </div>
 
 
