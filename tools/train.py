@@ -160,6 +160,7 @@ def main(config, device, logger, vdl_writer):
 
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
+    amp_dtype = config["Global"].get("amp_dtype", 'float16')
     amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     amp_custom_white_list = config['Global'].get('amp_custom_white_list', [])
     if use_amp:
@@ -181,7 +182,8 @@ def main(config, device, logger, vdl_writer):
                 models=model,
                 optimizers=optimizer,
                 level=amp_level,
-                master_weight=True)
+                master_weight=True,
+                dtype=amp_dtype)
     else:
         scaler = None
 
@@ -195,7 +197,8 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list, amp_custom_white_list)
+                  amp_level, amp_custom_black_list, amp_custom_white_list,
+                  amp_dtype)
 
 
 def test_reader(config, device, logger):
