@@ -135,7 +135,7 @@ GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合�
 动态尺度训练策略，是在训练过程中随机resize输入图片的高度，以增大模型的鲁棒性。在训练过程中随机选择（32，48，64）三种高度进行resize，实验证明在测试集上评估精度不掉，在端到端串联推理时，指标可以提升0.5%。
 
 <div align="center">
-    <img src="../ppocr_v4/multi_scale" width="500">
+    <img src="../ppocr_v4/multi_scale.png" width="500">
 </div>
 
 
