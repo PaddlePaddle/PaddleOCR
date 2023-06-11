@@ -89,38 +89,42 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     inference_diff += inference_end - inference_start;
     // ctc decode
     auto postprocess_start = std::chrono::steady_clock::now();
-    for (int m = 0; m < predict_shape[0]; m++) {
-      std::string str_res;
-      int argmax_idx;
-      int last_index = 0;
-      float score = 0.f;
-      int count = 0;
-      float max_value = 0.0f;
+    
+        int s1 = predict_shape[1];
+        int s2 = predict_shape[2];
+        for (int m = 0; m < predict_shape[0]; m++) {
+            std::string str_res;
+            int argmax_idx;
+            int last_index = 0;
+            float score = 0.f;
+            int count = 0;
+            float max_value = 0.0f;
+            for (int n = 0; n < predict_shape[1]; n++) {
+                int indexstart = (m * s1 + n) * s2;
+                int indexend = (m * s1 + n+1) * s2;
+              auto predict_batchstart= &predict_batch[indexstart];
+              auto predict_batchend = &predict_batch[indexend];
 
-      for (int n = 0; n < predict_shape[1]; n++) {
-        // get idx
-        argmax_idx = int(Utility::argmax(
-            &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
-            &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
-        // get score
-        max_value = float(*std::max_element(
-            &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
-            &predict_batch[(m * predict_shape[1] + n + 1) * predict_shape[2]]));
+                max_value = float(*std::max_element(predict_batchstart, predict_batchend));
+                 auto itr = std::find(predict_batchstart, predict_batchend + s2, max_value);
+                 argmax_idx = std::distance(predict_batchstart, itr);
 
-        if (argmax_idx > 0 && (!(n > 0 && argmax_idx == last_index))) {
-          score += max_value;
-          count += 1;
-          str_res += label_list_[argmax_idx];
+                if (argmax_idx > 0 && (!(n > 0 && argmax_idx == last_index))) {
+                    score += max_value;
+                    count += 1;
+                    str_res += label_list_[argmax_idx];
+                }
+                last_index = argmax_idx;
+            }
+            score /= count;
+            if (std::isnan(score)) {
+                continue;
+            }
+            rec_texts[indices[beg_img_no + m]] = str_res;
+            rec_text_scores[indices[beg_img_no + m]] = score;
         }
-        last_index = argmax_idx;
-      }
-      score /= count;
-      if (std::isnan(score)) {
-        continue;
-      }
-      rec_texts[indices[beg_img_no + m]] = str_res;
-      rec_text_scores[indices[beg_img_no + m]] = score;
-    }
+    
+    
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
   }
