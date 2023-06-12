@@ -52,9 +52,18 @@ def term_mp(sig_num, frame):
 
 
 def set_signal_handlers():
-    # support exit using ctrl+c
-    signal.signal(signal.SIGINT, term_mp)
-    signal.signal(signal.SIGTERM, term_mp)
+    pid = os.getpid()
+    pgid = os.getpgid(os.getpid())
+    # XXX: `term_mp` kills all processes in the process group, which in 
+    # some cases includes the parent process of current process and may 
+    # cause unexpected results. To solve this problem, we set signal 
+    # handlers only when current process is the group leader. In the 
+    # future, it would be better to consider killing only descendants of 
+    # the current process.
+    if pid == pgid:
+        # support exit using ctrl+c
+        signal.signal(signal.SIGINT, term_mp)
+        signal.signal(signal.SIGTERM, term_mp)
 
 
 def build_dataloader(config, mode, device, logger, seed=None):
