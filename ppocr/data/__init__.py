@@ -39,7 +39,7 @@ from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
 
-__all__ = ['build_dataloader', 'transform', 'create_operators']
+__all__ = ['build_dataloader', 'transform', 'create_operators', 'set_signal_handlers']
 
 
 def term_mp(sig_num, frame):
@@ -49,6 +49,12 @@ def term_mp(sig_num, frame):
     pgid = os.getpgid(os.getpid())
     print("main proc {} exit, kill process group " "{}".format(pid, pgid))
     os.killpg(pgid, signal.SIGKILL)
+
+
+def set_signal_handlers():
+    # support exit using ctrl+c
+    signal.signal(signal.SIGINT, term_mp)
+    signal.signal(signal.SIGTERM, term_mp)
 
 
 def build_dataloader(config, mode, device, logger, seed=None):
@@ -108,9 +114,5 @@ def build_dataloader(config, mode, device, logger, seed=None):
         return_list=True,
         use_shared_memory=use_shared_memory,
         collate_fn=collate_fn)
-
-    # support exit using ctrl+c
-    signal.signal(signal.SIGINT, term_mp)
-    signal.signal(signal.SIGTERM, term_mp)
 
     return data_loader

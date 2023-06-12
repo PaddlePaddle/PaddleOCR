@@ -31,7 +31,7 @@ import paddle.distributed as dist
 
 paddle.seed(2)
 
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
@@ -117,6 +117,7 @@ def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
     # build dataloader
+    set_signal_handlers()
     config['Train']['loader']['num_workers'] = 0
     is_layoutxlm_ser =  config['Architecture']['model_type'] =='kie' and config['Architecture']['Backbone']['name'] == 'LayoutXLMForSer'
     train_dataloader = build_dataloader(config, 'Train', device, logger)
