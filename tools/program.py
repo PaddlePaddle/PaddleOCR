@@ -683,7 +683,7 @@ def preprocess(is_train=False):
 
     if 'use_visualdl' in config['Global'] and config['Global']['use_visualdl']:
         save_model_dir = config['Global']['save_model_dir']
-        vdl_writer_path = '{}/vdl/'.format(save_model_dir)
+        vdl_writer_path = save_model_dir
         log_writer = VDLLogger(vdl_writer_path)
         loggers.append(log_writer)
     if ('use_wandb' in config['Global'] and
