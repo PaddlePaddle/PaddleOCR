@@ -199,13 +199,13 @@ def save_model(model,
     model_prefix = os.path.join(model_path, prefix)
 
     if prefix == 'best_accuracy':
-        uapi_best_model_path = os.path.join(model_path, 'best_model')
-        _mkdir_if_not_exist(uapi_best_model_path, logger)
+        best_model_path = os.path.join(model_path, 'best_model')
+        _mkdir_if_not_exist(best_model_path, logger)
 
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
     if prefix == 'best_accuracy':
         paddle.save(optimizer.state_dict(),
-                    os.path.join(uapi_best_model_path, 'model.pdopt'))
+                    os.path.join(best_model_path, 'model.pdopt'))
 
     is_nlp_model = config['Architecture']["model_type"] == 'kie' and config[
         "Architecture"]["algorithm"] not in ["SDMGR"]
@@ -215,7 +215,7 @@ def save_model(model,
 
         if prefix == 'best_accuracy':
             paddle.save(model.state_dict(),
-                        os.path.join(uapi_best_model_path, 'model.pdparams'))
+                        os.path.join(best_model_path, 'model.pdparams'))
 
     else:  # for kie system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
@@ -228,7 +228,7 @@ def save_model(model,
         metric_prefix = os.path.join(model_prefix, 'metric')
 
         if prefix == 'best_accuracy':
-            arch.backbone.model.save_pretrained(uapi_best_model_path)
+            arch.backbone.model.save_pretrained(best_model_path)
 
     # save metric and config
     with open(metric_prefix + '.states', 'wb') as f:
