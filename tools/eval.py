@@ -24,7 +24,7 @@ sys.path.insert(0, __dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
 
 import paddle
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
@@ -35,6 +35,7 @@ import tools.program as program
 def main():
     global_config = config['Global']
     # build dataloader
+    set_signal_handlers()
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     # build post process
