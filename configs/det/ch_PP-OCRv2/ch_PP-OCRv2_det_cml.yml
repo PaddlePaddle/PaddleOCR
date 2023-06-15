@@ -16,7 +16,7 @@ Global:
   save_res_path: ./output/det_db/predicts_db.txt
   use_amp: False
   amp_level: O2
-  amp_custom_black_list: ['exp']
+  amp_dtype: bfloat16
 
 Architecture:
   name: DistillationModel
