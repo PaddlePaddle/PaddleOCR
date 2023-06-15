@@ -96,7 +96,7 @@ model_name=$(func_parser_value "${lines[1]}")
 python_name=$(func_parser_value "${lines[2]}")
 
 # set env
-python=${python_name}
+python=python
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
 export frame_version=${str_tmp%%.post*}
 export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
