@@ -20,8 +20,17 @@ ocr = PaddleOCR(
     # rec_char_dict_path= "./ppocr/utils/ppocr_keys_v1.txt"
 ) # need to run only once to download and load model into memory
 
-input_path = './content/preps'
+# input and output paths
+input_path = './content/inputs'
 output_path = './content/outputs'
+
+# Create the directories if they do not exist
+if not os.path.exists(input_path):
+    os.makedirs(input_path)
+
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+    
 labels = []
 preds = []
 
