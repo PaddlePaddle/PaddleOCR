@@ -23,7 +23,7 @@ trainer_list=$(func_parser_value "${lines[14]}")
 if [ ${MODE} = "benchmark_train" ];then
     python_name_list=$(func_parser_value "${lines[2]}")
     array=(${python_name_list}) 
-    python_name=${array[0]}
+    python_name=python
     ${python_name} -m pip install -r requirements.txt
     if [[ ${model_name} =~ "ch_ppocr_mobile_v2_0_det" || ${model_name} =~ "det_mv3_db_v2_0" ]];then
         wget -nc -P  ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams  --no-check-certificate
