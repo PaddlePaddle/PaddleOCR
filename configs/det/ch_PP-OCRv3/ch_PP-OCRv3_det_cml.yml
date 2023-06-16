@@ -18,6 +18,7 @@ Global:
   save_res_path: ./checkpoints/det_db/predicts_db.txt
   distributed: true
   d2s_train_image_shape: [3, -1, -1]
+  amp_dtype: bfloat16
 
 Architecture:
   name: DistillationModel
