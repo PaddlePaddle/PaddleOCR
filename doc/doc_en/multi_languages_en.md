@@ -156,9 +156,9 @@ for line in result:
 # Visualization
 from PIL import Image
 image = Image.open(img_path).convert('RGB')
-boxes = [line[0] for line in result]
-txts = [line[1][0] for line in result]
-scores = [line[1][1] for line in result]
+boxes = [detection[0] for line in result for detection in line] 
+txts = [detection[1][0] for line in result for detection in line] 
+scores = [detection[1][1] for line in result for detection in line]
 im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
