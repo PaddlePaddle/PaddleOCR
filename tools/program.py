@@ -679,8 +679,8 @@ def preprocess(is_train=False):
         loggers.append(log_writer)
     if ('use_wandb' in config['Global'] and
             config['Global']['use_wandb']) or 'wandb' in config:
-        save_dir = config['Global']['save_model_dir']
-        wandb_writer_path = "{}/wandb".format(save_dir)
+        save_model_dir = config['Global']['save_model_dir']
+        wandb_writer_path = "{}/wandb".format(save_model_dir)
         if "wandb" in config:
             wandb_params = config['wandb']
         else:
