@@ -679,13 +679,13 @@ def preprocess(is_train=False):
         loggers.append(log_writer)
     if ('use_wandb' in config['Global'] and
             config['Global']['use_wandb']) or 'wandb' in config:
-        save_model_dir = config['Global']['save_model_dir']
-        wandb_writer_path = "{}/wandb".format(save_model_dir)
+        save_dir = config['Global']['save_model_dir']
+        wandb_writer_path = "{}/wandb".format(save_dir)
         if "wandb" in config:
             wandb_params = config['wandb']
         else:
             wandb_params = dict()
-        wandb_params.update({'save_dir': save_model_dir})
+        wandb_params.update({'save_dir': save_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
         loggers.append(log_writer)
     else:
