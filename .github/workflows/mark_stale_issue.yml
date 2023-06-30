@@ -25,7 +25,7 @@ jobs:
         repo-token: ${{ secrets.PAT }}
         stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs. Thank you for your contributions.'
         stale-issue-label: 'stale'
-        close-issue-reason: 'The issue is stale and not response is provided after 7 days.'
+        close-issue-reason: 'completed'
         exempt-issue-labels: 'bug, feature request, good first issue'
         operations-per-run: 900
         days-before-pr-stale: -1
