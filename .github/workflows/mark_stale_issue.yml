@@ -8,6 +8,9 @@ name: Mark stale issues and pull requests
 on:
   schedule:
   - cron: '30 1 * * *'
+  push:
+    branches:
+     - release/2.6
 
 jobs:
   stale:
@@ -19,7 +22,7 @@ jobs:
     steps:
     - uses: actions/stale@v8
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ secrets.PAT }}
         stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs. Thank you for your contributions.'
         stale-issue-label: 'stale'
         close-issue-reason: 'The issue is stale and not response is provided after 7 days.'
