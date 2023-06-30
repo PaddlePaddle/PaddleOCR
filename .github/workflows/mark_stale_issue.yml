@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/stale@v8
       with:
-        repo-token: ${{ secrets.PAT }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs. Thank you for your contributions.'
         stale-issue-label: 'stale'
         close-issue-reason: 'completed'
