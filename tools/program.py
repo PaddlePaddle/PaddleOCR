@@ -697,7 +697,7 @@ def preprocess(is_train=False):
             wandb_params = config['wandb']
         else:
             wandb_params = dict()
-        wandb_params.update({'save_dir': save_model_dir})
+        wandb_params.update({'save_dir': save_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
         loggers.append(log_writer)
     else:
