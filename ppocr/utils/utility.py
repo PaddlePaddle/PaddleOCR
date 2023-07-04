@@ -59,7 +59,6 @@ def get_image_file_list(img_file):
     if img_file is None or not os.path.exists(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
     if os.path.isfile(img_file) and _check_image_file(img_file):
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
@@ -74,7 +73,7 @@ def get_image_file_list(img_file):
 
 
 def check_and_read(img_path):
-    if os.path.basename(img_path)[-3:].lower() in ['gif']:
+    if os.path.basename(img_path)[-3:].lower() == 'gif':
         gif = cv2.VideoCapture(img_path)
         ret, frame = gif.read()
         if not ret:
@@ -85,7 +84,7 @@ def check_and_read(img_path):
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True, False
-    elif os.path.basename(img_path)[-3:].lower() in ['pdf']:
+    elif os.path.basename(img_path)[-3:].lower() == 'pdf':
         import fitz
         from PIL import Image
         imgs = []
