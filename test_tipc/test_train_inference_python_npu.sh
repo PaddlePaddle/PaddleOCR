@@ -38,6 +38,8 @@ lines=(${dataline})
 modelname=$(echo ${lines[1]} | cut -d ":" -f2)
 if  [ $modelname == "rec_r31_sar" ] || [ $modelname == "rec_mtb_nrtr" ]; then
     sed -i "s/Global.epoch_num:lite_train_lite_infer=2/Global.epoch_num:lite_train_lite_infer=1/g" $FILENAME
+    sed -i "s/gpu_list:0|0,1/gpu_list:0,1/g" $FILENAME
+    sed -i "s/Global.use_npu:True|True/Global.use_npu:True/g" $FILENAME
 fi
 
 # replace training config file
