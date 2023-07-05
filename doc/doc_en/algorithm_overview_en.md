@@ -118,8 +118,8 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 ### 1.3 Text Super-Resolution Algorithms
 
 Supported text super-resolution algorithms (Click the link to get the tutorial):
-- [x]  [Text Gestalt](./algorithm_sr_gestalt.md)
-- [x]  [Text Telescope](./algorithm_sr_telescope.md)
+- [x]  [Text Gestalt](./algorithm_sr_gestalt_en.md)
+- [x]  [Text Telescope](./algorithm_sr_telescope_en.md)
 
 On the TextZoom public dataset, the effect of the algorithm is as follows:
 
