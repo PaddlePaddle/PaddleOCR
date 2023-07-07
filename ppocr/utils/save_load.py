@@ -153,26 +153,27 @@ def load_pretrained_params(model, path):
     params = paddle.load(path + '.pdparams')
 
     state_dict = model.state_dict()
-
+    
     new_state_dict = {}
     is_float16 = False
 
-    for k1 in params.keys():
-
-        if k1 not in state_dict.keys():
-            logger.warning("The pretrained params {} not in model".format(k1))
+    map_dict = MapBackboneWeights(params, state_dict)
+    
+    for k1 in map_dict.keys():
+        k2 = map_dict[k1]
+        if k2 not in state_dict.keys():
+            logger.warning("The pretrained params {} not in model".format(k2))
         else:
             if params[k1].dtype == paddle.float16:
                 is_float16 = True
-            if params[k1].dtype != state_dict[k1].dtype:
-                params[k1] = params[k1].astype(state_dict[k1].dtype)
-            if list(state_dict[k1].shape) == list(params[k1].shape):
-                new_state_dict[k1] = params[k1]
+            if params[k1].dtype != state_dict[k2].dtype:
+                params[k1] = params[k1].astype(state_dict[k2].dtype)
+            if list(state_dict[k2].shape) == list(params[k1].shape):
+                new_state_dict[k2] = params[k1]
             else:
                 logger.warning(
                     "The shape of model params {} {} not matched with loaded params {} {} !".
-                    format(k1, state_dict[k1].shape, k1, params[k1].shape))
-
+                    format(k1, state_dict[k2].shape, k1, params[k1].shape))
     model.set_state_dict(new_state_dict)
     if is_float16:
         logger.info(
@@ -180,6 +181,15 @@ def load_pretrained_params(model, path):
         )
     logger.info("load pretrain successful from {}".format(path))
     return is_float16
+
+
+def MapBackboneWeights(params, state_dict):
+    # transfer model weight names for backbone
+    map_dict = {}
+    for state_dict_key, param_key in zip(state_dict.keys(), params.keys()):
+        if state_dict_key.startswith('backbone'):
+            map_dict[param_key] = state_dict_key
+    return map_dict
 
 
 def save_model(model,
