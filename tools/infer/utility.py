@@ -313,7 +313,7 @@ def get_infer_gpuid():
     if sysstr == "Windows":
         return 0
 
-    if not paddle.fluid.core.is_compiled_with_rocm():
+    if not paddle.device.is_compiled_with_rocm:
         cmd = "env | grep CUDA_VISIBLE_DEVICES"
     else:
         cmd = "env | grep HIP_VISIBLE_DEVICES"
