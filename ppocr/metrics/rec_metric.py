@@ -41,23 +41,35 @@ class RecMetric(object):
         correct_num = 0
         all_num = 0
         norm_edit_dis = 0.0
-        for (pred, pred_conf), (target, _) in zip(preds, labels):
+        edit_dis = 0
+        
+        for (pred, _), (target, _) in zip(preds, labels):
+            
             if self.ignore_space:
                 pred = pred.replace(" ", "")
                 target = target.replace(" ", "")
             if self.is_filter:
                 pred = self._normalize_text(pred)
                 target = self._normalize_text(target)
+
             norm_edit_dis += Levenshtein.normalized_distance(pred, target)
+            edit_dis += Levenshtein.distance(pred, target)
+            
             if pred == target:
                 correct_num += 1
+            
             all_num += 1
+
+
         self.correct_num += correct_num
         self.all_num += all_num
         self.norm_edit_dis += norm_edit_dis
+        self.edit_dis += edit_dis
+
         return {
             'acc': correct_num / (all_num + self.eps),
-            'norm_edit_dis': 1 - norm_edit_dis / (all_num + self.eps)
+            'norm_edit_dis': 1 - norm_edit_dis / (all_num + self.eps),
+            'norm_char_error_rate' : edit_dis / (edit_dis + correct_num + self.eps)
         }
 
     def get_metric(self):
@@ -65,17 +77,20 @@ class RecMetric(object):
         return metrics {
                  'acc': 0,
                  'norm_edit_dis': 0,
+                 'norm_char_error_rate': 0,
             }
         """
         acc = 1.0 * self.correct_num / (self.all_num + self.eps)
         norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num + self.eps)
+        norm_cer = 1.0 * self.edit_dis / (self.edit_dis + self.correct_num + self.eps)
         self.reset()
-        return {'acc': acc, 'norm_edit_dis': norm_edit_dis}
+        return {'acc': acc, 'norm_edit_dis': norm_edit_dis, 'norm_char_error_rate': norm_cer}
 
     def reset(self):
         self.correct_num = 0
         self.all_num = 0
         self.norm_edit_dis = 0
+        self.edit_dis = 0
 
 
 class CNTMetric(object):
