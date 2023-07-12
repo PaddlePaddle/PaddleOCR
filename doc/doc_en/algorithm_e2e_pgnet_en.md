@@ -20,7 +20,8 @@ For details of PGNet algorithm, please refer to [paper](https://arxiv.org/pdf/21
 After feature extraction, the input image is sent to four branches: TBO module for text edge offset prediction, TCL module for text center-line prediction, TDO module for text direction offset prediction, and TCC module for text character classification graph prediction.
 The output of TBO and TCL can get text detection results after post-processing, and TCL, TDO and TCC are responsible for text recognition.
 
-The results of detection and recognition are as follows:
+#### The results of detection and recognition are as follows:
+
 ![](../imgs_results/e2e_res_img293_pgnet.png)
 ![](../imgs_results/e2e_res_img295_pgnet.png)
 ### Performance
