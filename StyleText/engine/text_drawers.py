@@ -23,7 +23,7 @@ class StdTextDrawer(object):
 
     def get_valid_height(self, font_path):
         font = ImageFont.truetype(font_path, self.height - 4)
-        _, font_height = font.getsize(self.char_list)
+        _ , _ , _ , font_height = font.getbbox(self.char_list)
         if font_height <= self.height - 4:
             return self.height - 4
         else:
@@ -57,7 +57,7 @@ class StdTextDrawer(object):
             i = 0
             while i < len(corpus):
                 char_i = corpus[i]
-                char_size = font.getsize(char_i)[0]
+                _ , _ , char_size ,_ = font.getbbox(char_i)
                 # split when char_x exceeds char size and index is not 0 (at least 1 char should be wroten on the image)
                 if char_x + char_size >= width and i != 0:
                     text_input = np.array(bg).astype(np.uint8)

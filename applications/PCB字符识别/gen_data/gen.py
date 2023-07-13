@@ -55,7 +55,7 @@ def get_horizontal_text_picture(image_file, chars, fonts_list, cf):
     ch_w = []
     ch_h = []
     for ch in chars:
-        wt, ht = font.getsize(ch)
+        _ , _ , wt, ht = font.getbbox(text)
         ch_w.append(wt)
         ch_h.append(ht)
     f_w = sum(ch_w)
@@ -101,7 +101,7 @@ def get_vertical_text_picture(image_file, chars, fonts_list, cf):
     ch_w = []
     ch_h = []
     for ch in chars:
-        wt, ht = font.getsize(ch)
+        _ , _ ,wt, ht = font.getbbox(ch)        
         ch_w.append(wt)
         ch_h.append(ht)
     f_w = max(ch_w)
