@@ -25,8 +25,8 @@ import json
 import copy
 from random import sample
 
-from ppocr.utils.logging import get_logger
-from ppocr.data.imaug.vqa.augment import order_by_tbyx
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.ppocr.data.imaug.vqa.augment import order_by_tbyx
 
 
 class ClsLabelEncode(object):
@@ -950,7 +950,7 @@ class VQATokenLabelEncode(object):
                  **kwargs):
         super(VQATokenLabelEncode, self).__init__()
         from paddlenlp.transformers import LayoutXLMTokenizer, LayoutLMTokenizer, LayoutLMv2Tokenizer
-        from ppocr.utils.utility import load_vqa_bio_label_maps
+        from paddleocr.ppocr.utils.utility import load_vqa_bio_label_maps
         tokenizer_dict = {
             'LayoutXLM': {
                 'class': LayoutXLMTokenizer,

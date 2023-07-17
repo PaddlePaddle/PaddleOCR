@@ -23,7 +23,7 @@ import six
 
 import paddle
 
-from ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.logging import get_logger
 
 __all__ = ['load_model']
 

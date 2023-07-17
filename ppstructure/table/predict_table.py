@@ -26,16 +26,16 @@ import copy
 import logging
 import numpy as np
 import time
-import tools.infer.predict_rec as predict_rec
-import tools.infer.predict_det as predict_det
-import tools.infer.utility as utility
-from tools.infer.predict_system import sorted_boxes
-from ppocr.utils.utility import get_image_file_list, check_and_read
-from ppocr.utils.logging import get_logger
-from ppstructure.table.matcher import TableMatch
-from ppstructure.table.table_master_match import TableMasterMatcher
-from ppstructure.utility import parse_args
-import ppstructure.table.predict_structure as predict_strture
+import paddleocr.tools.infer.predict_rec as predict_rec
+import paddleocr.tools.infer.predict_det as predict_det
+import paddleocr.tools.infer.utility as utility
+from paddleocr.tools.infer.predict_system import sorted_boxes
+from paddleocr.ppocr.utils.utility import get_image_file_list, check_and_read
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.ppstructure.table.matcher import TableMatch
+from paddleocr.ppstructure.table.table_master_match import TableMasterMatcher
+from paddleocr.ppstructure.utility import parse_args
+import paddleocr.ppstructure.table.predict_structure as predict_strture
 
 logger = get_logger()
 

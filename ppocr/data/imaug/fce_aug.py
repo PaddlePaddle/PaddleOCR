@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw
 import cv2
 from shapely.geometry import Polygon
 import math
-from ppocr.utils.poly_nms import poly_intersection
+from paddleocr.ppocr.utils.poly_nms import poly_intersection
 
 
 class RandomScaling:

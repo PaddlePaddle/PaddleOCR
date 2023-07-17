@@ -25,11 +25,11 @@ import numpy as np
 import time
 import sys
 
-import tools.infer.utility as utility
-from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read
-from ppocr.data import create_operators, transform
-from ppocr.postprocess import build_post_process
+import paddleocr.tools.infer.utility as utility
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.utility import get_image_file_list, check_and_read
+from paddleocr.ppocr.data import create_operators, transform
+from paddleocr.ppocr.postprocess import build_post_process
 
 logger = get_logger()
 

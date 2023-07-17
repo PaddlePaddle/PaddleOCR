@@ -32,11 +32,11 @@ import copy
 from paddle.io import Dataset, DataLoader, BatchSampler, DistributedBatchSampler
 import paddle.distributed as dist
 
-from ppocr.data.imaug import transform, create_operators
-from ppocr.data.simple_dataset import SimpleDataSet
-from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR
-from ppocr.data.pgnet_dataset import PGDataSet
-from ppocr.data.pubtab_dataset import PubTabDataSet
+from paddleocr.ppocr.data.imaug import transform, create_operators
+from paddleocr.ppocr.data.simple_dataset import SimpleDataSet
+from paddleocr.ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR
+from paddleocr.ppocr.data.pgnet_dataset import PGDataSet
+from paddleocr.ppocr.data.pubtab_dataset import PubTabDataSet
 
 __all__ = ['build_dataloader', 'transform', 'create_operators']
 

@@ -23,10 +23,10 @@ import cv2
 import pickle
 import paddle
 from tqdm import tqdm
-from ppstructure.table.table_metric import TEDS
-from ppstructure.table.predict_table import TableSystem
-from ppstructure.utility import init_args
-from ppocr.utils.logging import get_logger
+from paddleocr.ppstructure.table.table_metric import TEDS
+from paddleocr.ppstructure.table.predict_table import TableSystem
+from paddleocr.ppstructure.utility import init_args
+from paddleocr.ppocr.utils.logging import get_logger
 
 logger = get_logger()
 
