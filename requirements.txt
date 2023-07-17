@@ -15,4 +15,4 @@ premailer
 openpyxl
 attrdict
 PyMuPDF<1.21.0
-Pillow<=9.5.0
+Pillow>=10.0.0

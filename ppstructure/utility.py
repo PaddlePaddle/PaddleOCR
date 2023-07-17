@@ -132,7 +132,8 @@ def draw_structure_result(image, result, font_path):
             [(box_layout[0], box_layout[1]), (box_layout[2], box_layout[3])],
             outline=box_color,
             width=3)
-        text_w, text_h = font.getsize(region['type'])
+        left, top, right, bottom = font.getbbox(region['type'])
+        text_w, text_h = right - left, bottom - top
         draw_layout.rectangle(
             [(box_layout[0], box_layout[1]),
              (box_layout[0] + text_w, box_layout[1] + text_h)],
