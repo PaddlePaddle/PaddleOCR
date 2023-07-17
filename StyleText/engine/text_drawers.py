@@ -23,7 +23,8 @@ class StdTextDrawer(object):
 
     def get_valid_height(self, font_path):
         font = ImageFont.truetype(font_path, self.height - 4)
-        _, font_height = font.getsize(self.char_list)
+        left, top, right, bottom = font.getbbox(self.char_list)
+        _, font_height = right - left, bottom - top
         if font_height <= self.height - 4:
             return self.height - 4
         else:
