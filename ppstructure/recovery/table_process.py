@@ -260,20 +260,30 @@ class HtmlToDocx(HTMLParser):
                 if col.name == 'th':
                     cell_html = "<b>%s</b>" % cell_html
 
-                docx_cell = table.cell(cell_row, cell_col)
+                # skip cell_col if it bigger than current row's column count
+                if cell_col >= cols_len or cell_col >= len(cols):
+                    continue
 
-                while docx_cell.text != '':  # Skip the merged cell
-                    cell_col += 1
+                try:
                     docx_cell = table.cell(cell_row, cell_col)
 
-                cell_to_merge = table.cell(cell_row + rowspan - 1,
-                                           cell_col + colspan - 1)
-                if docx_cell != cell_to_merge:
-                    docx_cell.merge(cell_to_merge)
+                    while docx_cell.text != '':  # Skip the merged cell
+                        cell_col += 1
+                        docx_cell = table.cell(cell_row, cell_col)
 
-                child_parser = HtmlToDocx()
-                child_parser.copy_settings_from(self)
-                child_parser.add_html_to_cell(cell_html or ' ', docx_cell)
+                    cell_to_merge = table.cell(cell_row + rowspan - 1,
+                                            cell_col + colspan - 1)
+                    if docx_cell != cell_to_merge:
+                        docx_cell.merge(cell_to_merge)
+
+                    child_parser = HtmlToDocx()
+                    child_parser.copy_settings_from(self)
+                    child_parser.add_html_to_cell(cell_html or ' ', docx_cell)
+                except Exception as e:
+                    warn_message = f"Table Error: Cannot process (${html} row {cell_row}, col {cell_col}) skipped cell, suspected table structure is inconsistent!"
+                    doc.add_paragraph(warn_message)
+                    print(warn_message)
+                
 
                 cell_col += colspan
             cell_row += 1
