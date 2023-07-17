@@ -28,13 +28,13 @@ import time
 import logging
 from copy import deepcopy
 
-from ppocr.utils.utility import get_image_file_list, check_and_read
-from ppocr.utils.logging import get_logger
-from ppocr.utils.visual import draw_ser_results, draw_re_results
-from tools.infer.predict_system import TextSystem
-from ppstructure.layout.predict_layout import LayoutPredictor
-from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.utility import parse_args, draw_structure_result
+from paddleocr.ppocr.utils.utility import get_image_file_list, check_and_read
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.visual import draw_ser_results, draw_re_results
+from paddleocr.tools.infer.predict_system import TextSystem
+from paddleocr.ppstructure.layout.predict_layout import LayoutPredictor
+from paddleocr.ppstructure.table.predict_table import TableSystem, to_excel
+from paddleocr.ppstructure.utility import parse_args, draw_structure_result
 
 logger = get_logger()
 
@@ -76,7 +76,7 @@ class StructureSystem(object):
                     self.table_system = TableSystem(args)
 
         elif self.mode == 'kie':
-            from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
+            from paddleocr.ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
             self.kie_predictor = SerRePredictor(args)
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
@@ -282,7 +282,7 @@ def main(args):
                 cv2.imwrite(img_save_path, draw_img)
                 logger.info('result save to {}'.format(img_save_path))
             if args.recovery and res != []:
-                from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+                from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
                 h, w, _ = img.shape
                 res = sorted_layout_boxes(res, w)
                 all_res += res

@@ -18,9 +18,9 @@ import numpy as np
 from PIL import Image
 from shapely.geometry import Polygon
 
-from ppocr.data.imaug.iaa_augment import IaaAugment
-from ppocr.data.imaug.random_crop_data import is_poly_outside_rect
-from tools.infer.utility import get_rotate_crop_image
+from paddleocr.ppocr.data.imaug.iaa_augment import IaaAugment
+from paddleocr.ppocr.data.imaug.random_crop_data import is_poly_outside_rect
+from paddleocr.tools.infer.utility import get_rotate_crop_image
 
 
 class CopyPaste(object):

@@ -25,13 +25,13 @@ import json
 import numpy as np
 import time
 
-import tools.infer.utility as utility
-from ppocr.data import create_operators, transform
-from ppocr.postprocess import build_post_process
-from ppocr.utils.logging import get_logger
-from ppocr.utils.visual import draw_ser_results
-from ppocr.utils.utility import get_image_file_list, check_and_read
-from ppstructure.utility import parse_args
+import paddleocr.tools.infer.utility as utility
+from paddleocr.ppocr.data import create_operators, transform
+from paddleocr.ppocr.postprocess import build_post_process
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.visual import draw_ser_results
+from paddleocr.ppocr.utils.utility import get_image_file_list, check_and_read
+from paddleocr.ppstructure.utility import parse_args
 
 from paddleocr import PaddleOCR
 

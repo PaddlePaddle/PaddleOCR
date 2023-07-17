@@ -42,7 +42,7 @@ from .table_ops import *
 
 from .vqa import *
 
-from .fce_aug import *
+from paddleocr.ppocr.data.imaug.fce_aug import *
 from .fce_targets import FCENetTargets
 from .ct_process import *
 from .drrg_targets import DRRGTargets

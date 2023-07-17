@@ -34,10 +34,10 @@ root = os.path.abspath(os.path.join(file, '../../'))
 sys.path.append(file)
 sys.path.insert(0, root)
 
-from ppstructure.predict_system import StructureSystem, save_structure_res
-from ppstructure.utility import parse_args, draw_structure_result
-from ppocr.utils.network import download_with_progressbar
-from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+from paddleocr.ppstructure.predict_system import StructureSystem, save_structure_res
+from paddleocr.ppstructure.utility import parse_args, draw_structure_result
+from paddleocr.ppocr.utils.network import download_with_progressbar
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
 # from ScreenShotWidget import ScreenShotWidget
 
 __APPNAME__ = "pdf2word"

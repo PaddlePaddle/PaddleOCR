@@ -18,7 +18,7 @@ import tarfile
 import requests
 from tqdm import tqdm
 
-from ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.logging import get_logger
 
 
 def download_with_progressbar(url, save_path):

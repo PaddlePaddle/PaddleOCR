@@ -24,7 +24,7 @@ import math
 from paddle import inference
 import time
 import random
-from ppocr.utils.logging import get_logger
+from paddleocr.ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
@@ -220,7 +220,7 @@ def create_predictor(args, mode, logger):
                 logger.warning(
                     "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
-            config.enable_use_gpu(args.gpu_mem, args.gpu_id)
+            config.enable_use_gpu(args.gpu_mem, 0)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
@@ -246,7 +246,7 @@ def create_predictor(args, mode, logger):
                     logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
 
         elif args.use_npu:
-            config.enable_custom_device("npu")
+            config.enable_npu()
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
