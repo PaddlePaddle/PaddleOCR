@@ -29,8 +29,10 @@ from ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
-    return v.lower() in ("true", "t", "1")
+    return v.lower() in ("true", "yes", "t", "y", "1")
 
+def str2int_tuple(v):
+    return tuple([int(i.strip()) for i in v.split(",")])
 
 def init_args():
     parser = argparse.ArgumentParser()
