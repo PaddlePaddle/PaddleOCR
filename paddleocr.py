@@ -45,7 +45,8 @@ tools = _import_file(
 ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
-from tools.infer import predict_system
+
+logger = get_logger()
 from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
@@ -641,6 +642,9 @@ class PaddleOCR(predict_system.TextSystem):
             det: use text detection or not. If False, only rec will be exec. Default is True
             rec: use text recognition or not. If False, only det will be exec. Default is True
             cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            bin: binarize image to black and white. Default is False.
+            inv: invert image colors. Default is False.
+            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -655,12 +659,14 @@ class PaddleOCR(predict_system.TextSystem):
         # for infer pdf file
         if isinstance(img, list):
             if self.page_num > len(img) or self.page_num == 0:
-                self.page_num = len(img)
-            imgs = img[:self.page_num]
+                imgs = img
+            else:
+                imgs = img[:self.page_num]
         else:
             imgs = [img]
 
         def preprocess_image(_image):
+            _image = alpha_to_color(_image, alpha_color)
             if inv:
                 _image = cv2.bitwise_not(_image)
             if bin:
