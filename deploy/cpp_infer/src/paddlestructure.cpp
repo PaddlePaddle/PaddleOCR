@@ -290,6 +290,9 @@ PaddleStructure::~PaddleStructure() {
   if (this->table_model_ != nullptr) {
     delete this->table_model_;
   }
-};
+  if (this->layout_model_ != nullptr) {
+    delete this->layout_model_;
+  }
+}
 
 } // namespace PaddleOCR
