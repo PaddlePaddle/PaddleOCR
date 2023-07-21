@@ -1,9 +1,9 @@
 ---
-name: Issue template
+name: New Feature Issue template
 about: Issue template for new features.
 title: ''
-labels: ''
-assignees: ''
+labels: 'Code PR is needed'
+assignees: 'shiyutang'
 
 ---
 
