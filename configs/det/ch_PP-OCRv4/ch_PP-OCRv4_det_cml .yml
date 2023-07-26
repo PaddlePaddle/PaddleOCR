@@ -9,7 +9,7 @@ Global:
   eval_batch_step:
   - 0
   - 1000
-  cal_metric_during_train: false
+  cal_metric_during_train: true
   checkpoints: null
   pretrained_model: null
   save_inference_dir: null
@@ -54,7 +54,7 @@ Architecture:
         name: DBHead
         k: 50
     Teacher:
-      pretrained: teacher.pdparams
+      pretrained: https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_cml_teacher_pretrained/teacher.pdparams
       freeze_params: true
       return_all_feats: false
       model_type: det
