@@ -14,7 +14,6 @@
 
 import logging
 import os
-import imghdr
 import cv2
 import random
 import numpy as np
