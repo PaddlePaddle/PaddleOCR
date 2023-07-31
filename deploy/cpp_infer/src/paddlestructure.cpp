@@ -21,20 +21,20 @@ namespace PaddleOCR {
 
 PaddleStructure::PaddleStructure() {
   if (FLAGS_layout) {
-    this->layout_model_ = new StructureLayoutRecognizer(
+    this->layout_model_.reset(new StructureLayoutRecognizer(
         FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_layout_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_layout_score_threshold,
-        FLAGS_layout_nms_threshold);
+        FLAGS_layout_nms_threshold));
   }
   if (FLAGS_table) {
-    this->table_model_ = new StructureTableRecognizer(
+    this->table_model_.reset(new StructureTableRecognizer(
         FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
-        FLAGS_table_max_len, FLAGS_merge_no_span_structure);
+        FLAGS_table_max_len, FLAGS_merge_no_span_structure));
   }
-};
+}
 
 std::vector<StructurePredictResult>
 PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
@@ -65,7 +65,7 @@ PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
   }
 
   return structure_results;
-};
+}
 
 void PaddleStructure::layout(
     cv::Mat img, std::vector<StructurePredictResult> &structure_result) {
@@ -123,7 +123,7 @@ void PaddleStructure::table(cv::Mat img,
     structure_result.cell_box = structure_boxes[i];
     structure_result.html_score = structure_scores[i];
   }
-};
+}
 
 std::string
 PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
@@ -283,15 +283,6 @@ void PaddleStructure::benchmark_log(int img_num) {
                               FLAGS_cls_batch_num, "dynamic", FLAGS_precision,
                               this->time_info_layout, img_num);
     autolog_layout.report();
-  }
-}
-
-PaddleStructure::~PaddleStructure() {
-  if (this->table_model_ != nullptr) {
-    delete this->table_model_;
-  }
-  if (this->layout_model_ != nullptr) {
-    delete this->layout_model_;
   }
 }
 
