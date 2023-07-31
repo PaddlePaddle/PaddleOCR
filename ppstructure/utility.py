@@ -16,7 +16,7 @@ import ast
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
-
+import math
 
 def init_args():
     parser = infer_args()
@@ -165,6 +165,19 @@ def draw_structure_result(image, result, font_path):
                 boxes.append(np.array(text_result['text_region']))
                 txts.append(text_result['text'])
                 scores.append(text_result['confidence'])
+
+                if 'text_word_region' in text_result:
+                    for word_region in text_result['text_word_region']:
+                        char_box = word_region
+                        box_height = int(
+                            math.sqrt((char_box[0][0] - char_box[3][0])**2 + (char_box[0][1] - char_box[3][1])**2))
+                        box_width = int(
+                            math.sqrt((char_box[0][0] - char_box[1][0])**2 + (char_box[0][1] - char_box[1][1])**2))
+                        if box_height == 0 or box_width == 0:
+                            continue
+                        boxes.append(word_region)
+                        txts.append("")
+                        scores.append(1.0)
 
     im_show = draw_ocr_box_txt(
         img_layout, boxes, txts, scores, font_path=font_path, drop_score=0)

@@ -79,6 +79,8 @@ class StructureSystem(object):
             from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
             self.kie_predictor = SerRePredictor(args)
 
+        self.return_word_box = args.return_word_box
+
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
             'image_orientation': 0,
@@ -156,17 +158,66 @@ class StructureSystem(object):
                         ]
                         res = []
                         for box, rec_res in zip(filter_boxes, filter_rec_res):
-                            rec_str, rec_conf = rec_res
+                            rec_str, rec_conf = rec_res[0], rec_res[1]
                             for token in style_token:
                                 if token in rec_str:
                                     rec_str = rec_str.replace(token, '')
                             if not self.recovery:
                                 box += [x1, y1]
-                            res.append({
-                                'text': rec_str,
-                                'confidence': float(rec_conf),
-                                'text_region': box.tolist()
-                            })
+                            if self.return_word_box:
+                                rec_word_info = rec_res[2]
+                                col_num, word_list, word_col_list, state_list = rec_word_info
+                                box = box.tolist()
+                                bbox_x_start = box[0][0]
+                                bbox_x_end = box[1][0]
+                                bbox_y_start = box[0][1]
+                                bbox_y_end = box[2][1]
+
+                                cell_width = (bbox_x_end - bbox_x_start)/col_num
+
+                                word_box_list = []
+                                word_box_content_list = []
+                                cn_width_list = []
+                                cn_col_list = []
+                                for word, word_col, state in zip(word_list, word_col_list, state_list):
+                                    if state == 'cn':
+                                        if len(word_col) != 1:
+                                            char_seq_length = (word_col[-1] - word_col[0] + 1) * cell_width
+                                            char_width = char_seq_length/(len(word_col)-1)
+                                            cn_width_list.append(char_width)
+                                        cn_col_list += word_col
+                                        word_box_content_list += word
+                                    else:
+                                        cell_x_start = bbox_x_start + int(word_col[0] * cell_width)
+                                        cell_x_end = bbox_x_start + int((word_col[-1]+1) * cell_width)
+                                        cell = ((cell_x_start, bbox_y_start), (cell_x_end, bbox_y_start), (cell_x_end, bbox_y_end), (cell_x_start, bbox_y_end))
+                                        word_box_list.append(cell)
+                                        word_box_content_list.append("".join(word))
+                                if len(cn_col_list) != 0:
+                                    if len(cn_width_list) != 0:
+                                        avg_char_width = np.mean(cn_width_list)
+                                    else:
+                                        avg_char_width = (bbox_x_end - bbox_x_start)/len(rec_str)
+                                    for center_idx in cn_col_list:
+                                        center_x = (center_idx+0.5)*cell_width
+                                        cell_x_start = max(int(center_x - avg_char_width/2), 0) + bbox_x_start
+                                        cell_x_end = min(int(center_x + avg_char_width/2), bbox_x_end-bbox_x_start) + bbox_x_start
+                                        cell = ((cell_x_start, bbox_y_start), (cell_x_end, bbox_y_start), (cell_x_end, bbox_y_end), (cell_x_start, bbox_y_end))
+                                        word_box_list.append(cell)
+
+                                res.append({
+                                    'text': rec_str,
+                                    'confidence': float(rec_conf),
+                                    'text_region': box,
+                                    'text_word': word_box_content_list,
+                                    'text_word_region': word_box_list
+                                })
+                            else:
+                                res.append({
+                                    'text': rec_str,
+                                    'confidence': float(rec_conf),
+                                    'text_region': box.tolist()
+                                })
                 res_list.append({
                     'type': region['label'].lower(),
                     'bbox': [x1, y1, x2, y2],
