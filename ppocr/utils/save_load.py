@@ -173,7 +173,7 @@ def load_pretrained_params(model, path):
             else:
                 logger.warning(
                     "The shape of model params {} {} not matched with loaded params {} {} !".
-                    format(k1, state_dict[k2].shape, k1, params[k1].shape))
+                    format(k2, state_dict[k2].shape, k1, params[k1].shape))
     model.set_state_dict(new_state_dict)
     if is_float16:
         logger.info(
