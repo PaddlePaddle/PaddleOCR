@@ -107,9 +107,10 @@ cd /path/to/ppocr_img
   ```
 
 **版本说明**
-paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
+paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
 |  版本名称  |  版本说明 |
 |    ---    |   ---   |
+| PP-OCRv4 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv3 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv2 | 支持中英文的检测和识别，方向分类器，多语言暂未更新 |
 | PP-OCR   | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
