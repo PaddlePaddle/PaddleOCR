@@ -122,6 +122,13 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "SPTS":
+            self.inverse = args.rec_image_inverse
+            postprocess_params = {
+                'name': 'SPTSDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -480,6 +487,12 @@ class TextRecognizer(object):
                     word_label_list = []
                     norm_img_mask_batch.append(norm_image_mask)
                     word_label_list.append(word_label)
+                elif self.rec_algorithm == "SPTS":
+                    # norm_img = self.resize_norm_img(img_list[indices[ino]],
+                    #                                 max_wh_ratio)
+                    norm_img = np.transpose(img_list[0], (2, 0, 1)) / 255.
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
                 else:
                     norm_img = self.resize_norm_img(img_list[indices[ino]],
                                                     max_wh_ratio)
@@ -604,6 +617,35 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs
+            elif self.rec_algorithm == "SPTS":
+                sequence = np.array([[1098]]).astype("int64")
+                norm_img_mask_batch = np.zeros([1, norm_img_batch.shape[2], norm_img_batch.shape[3]])
+                input_tensor = []
+                input_names = self.predictor.get_input_names()
+                for i, name in enumerate(input_names):
+                    input_tensor_i = self.predictor.get_input_handle(name)
+                    if i == 0:
+                        input_tensor_i.copy_from_cpu(norm_img_batch)
+                        input_tensor.append(input_tensor_i)
+                    elif i == 1:
+                        input_tensor_i.copy_from_cpu(sequence)
+                        input_tensor.append(input_tensor_i)
+                    elif i == 2:
+                        input_tensor_i.copy_from_cpu(norm_img_mask_batch)
+                        input_tensor.append(input_tensor_i)
+                self.input_tensor = input_tensor
+
+                self.predictor.run()
+
+                results = []
+                output_names = self.predictor.get_output_names()
+                for i, name in enumerate(output_names):
+                    output_tensor = self.predictor.get_output_handle(name)
+                    output_data = output_tensor.copy_to_cpu()
+                    results.append(output_data)
+                targets = {'image_id':np.array([1]),
+                           'orig_size': np.array([[imgW, imgH]])}
+                pred = {'preds': results, 'target':targets}
             else:
                 if self.use_onnx:
                     input_dict = {}

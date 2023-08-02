@@ -46,6 +46,7 @@ from .fce_aug import *
 from .fce_targets import FCENetTargets
 from .ct_process import *
 from .drrg_targets import DRRGTargets
+from .spts_process import RandomCrop, RandomRotate, RandomResize, RandomDistortion, Normalize, MakeSequence
 
 
 def transform(data, ops=None):
@@ -73,7 +74,7 @@ def create_operators(op_param_list, global_config=None):
                           dict) and len(operator) == 1, "yaml format error"
         op_name = list(operator)[0]
         param = {} if operator[op_name] is None else operator[op_name]
-        if global_config is not None:
+        if global_config is not None and "max_text_length" not in param:
             param.update(global_config)
         op = eval(op_name)(**param)
         ops.append(op)

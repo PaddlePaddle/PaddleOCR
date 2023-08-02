@@ -58,7 +58,8 @@ def build_backbone(config, model_type):
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet
-        support_dict = ['ResNet']
+        from .e2e_spts import SPTS
+        support_dict = ['ResNet', 'SPTS']
     elif model_type == 'kie':
         from .kie_unet_sdmgr import Kie_backbone
         from .vqa_layoutlm import LayoutLMForSer, LayoutLMv2ForSer, LayoutLMv2ForRe, LayoutXLMForSer, LayoutXLMForRe

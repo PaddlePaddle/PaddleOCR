@@ -44,6 +44,10 @@ class CELoss(nn.Layer):
                 tgt = tgt.reshape([-1])
                 loss = self.loss_func(pred, tgt)
                 return {'loss': loss}
+            elif len(batch) == 1:
+                label = batch[0][1][:, 1, :].astype("int")
+                loss = self.loss_func(pred, label)
+                return {"loss": loss}
             else:  # for NRTR
                 max_len = batch[2].max()
                 tgt = batch[1][:, 1:2 + max_len]

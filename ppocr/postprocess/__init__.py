@@ -37,7 +37,7 @@ from .table_postprocess import TableMasterLabelDecode, TableLabelDecode
 from .picodet_postprocess import PicoDetPostProcess
 from .ct_postprocess import CTPostProcess
 from .drrg_postprocess import DRRGPostprocess
-from .rec_postprocess import CANLabelDecode
+from .rec_postprocess import CANLabelDecode, SPTSDecode
 
 
 def build_post_process(config, global_config=None):
@@ -53,7 +53,7 @@ def build_post_process(config, global_config=None):
         'DistillationSerPostProcess', 'DistillationRePostProcess',
         'VLLabelDecode', 'PicoDetPostProcess', 'CTPostProcess',
         'RFLLabelDecode', 'DRRGPostprocess', 'CANLabelDecode',
-        'SATRNLabelDecode'
+        'SATRNLabelDecode', 'SPTSDecode',
     ]
 
     if config['name'] == 'PSEPostProcess':

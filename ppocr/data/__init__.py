@@ -37,6 +37,7 @@ from ppocr.data.simple_dataset import SimpleDataSet, MultiScaleDataSet
 from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR, LMDBDataSetTableMaster
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
+from ppocr.data.spts_dataset import TextSpottingDataset
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
 
 __all__ = ['build_dataloader', 'transform', 'create_operators', 'set_signal_handlers']
@@ -76,7 +77,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
+        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet', 'TextSpottingDataset', 
         'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet'
     ]
     module_name = config[mode]['dataset']['name']

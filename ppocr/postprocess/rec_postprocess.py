@@ -1005,3 +1005,69 @@ class CANLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class SPTSDecode(object):
+    def __init__(self, character_dict_path=None, use_space_char=False, **config):
+        self.define_char = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+        self.num_bins = 1000  # config['num_bins']
+        self.recog_pad_index = 1096  # config['recog_pad_index']
+        self.padding_index = 1099  # config['padding_index']
+        
+        pass
+
+    def __call__(self, preds, target, **kwargs):
+        index_seq, prob_seq = preds
+        index_seq = index_seq[0, :-1].numpy()  # The last one should be eos
+        prob_seq = prob_seq[0, :-1].numpy()
+        if index_seq.shape[0] % 27 != 0:  # Delete data if it is not a multiple of 27
+            index_seq = index_seq[:-index_seq.shape[0]%27]
+            prob_seq = index_seq[:-index_seq.shape[0]%27]
+        decode_results = self.decoder_seq(index_seq, 'none')
+        confs = prob_seq.reshape([-1, 27]).mean(-1)
+
+        image_id = int(target['image_id'])
+        image_h, image_w = target['orig_size'][-1].numpy()
+        results = []
+        for decode_result, conf in zip(decode_results, confs):
+            point_x = decode_result['point'][0] * image_w 
+            point_y = decode_result['point'][1] * image_h 
+            recog = decode_result['recog']
+            result = {
+                'image_id': image_id,
+                'polys': [[point_x.item(), point_y.item()]],
+                'rec': recog,
+                'score': conf.item()
+            }
+            results.append(result)
+
+        return results
+
+    def decoder_seq(self, seq, type):
+        seq = seq[seq != self.padding_index]
+        if type == 'input':
+            seq = seq[1:]
+        elif type == 'output':
+            seq = seq[:-1]
+        elif type == 'none':
+            seq = seq 
+        else:
+            raise ValueError
+        seq = seq.reshape([-1, 27])
+
+        decode_result = []
+        for text_ins_seq in seq:
+            point_x = text_ins_seq[0] / self.num_bins
+            point_y = text_ins_seq[1] / self.num_bins
+            recog = []
+            for index in text_ins_seq[2:]:
+                if index == self.recog_pad_index:
+                    break 
+                if index == self.recog_pad_index - 1:
+                    continue
+                recog.append(self.define_char[index - self.num_bins])
+            recog = ''.join(recog)
+            decode_result.append(
+                {'point': (point_x.item(), point_y.item()), 'recog': recog}
+            )
+        return decode_result

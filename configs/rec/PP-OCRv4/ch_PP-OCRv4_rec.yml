@@ -73,8 +73,7 @@ Metric:
 
 Train:
   dataset:
-    name: MultiScaleDataSet
-    ds_width: false
+    name: SimpleDataSet
     data_dir: ./train_data/
     ext_op_transform_idx: 1
     label_file_list:
@@ -91,6 +90,8 @@ Train:
     - RecAug:
     - MultiLabelEncode:
         gtc_encode: NRTRLabelEncode
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image
@@ -107,9 +108,9 @@ Train:
     is_training: True
   loader:
     shuffle: true
-    batch_size_per_card: *bs
+    batch_size_per_card: 128
     drop_last: true
-    num_workers: 8
+    num_workers: 4
 Eval:
   dataset:
     name: SimpleDataSet
