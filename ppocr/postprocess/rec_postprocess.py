@@ -64,7 +64,7 @@ class BaseRecLabelDecode(object):
 
         return ''.join(pred_re[::-1])
 
-    def add_special_char(self, text, dict_character):
+    def add_special_char(self, dict_character):
         return dict_character
 
     def get_word_info(self, text, selection):
