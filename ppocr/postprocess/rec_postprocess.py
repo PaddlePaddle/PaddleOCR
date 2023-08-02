@@ -88,7 +88,7 @@ class BaseRecLabelDecode(object):
         word_list = []
         word_col_list = []
         state_list = []
-        valid_col = np.where(selection == True)[0]
+        valid_col = np.where(selection==True)[0]
 
         for c_i, char in enumerate(text):
             if '\u4e00' <= char <= '\u9fff':
@@ -97,14 +97,12 @@ class BaseRecLabelDecode(object):
                 c_state = 'en&num'
             else:
                 c_state = 'splitter'
-
-            if char == '.' and state == 'en&num' and c_i + 1 < len(
-                    text) and bool(re.search('[0-9]', text[
-                        c_i + 1])):  # grouping floting number
+            
+            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping floting number
                 c_state = 'en&num'
-            if char == '-' and state == "en&num":  # grouping word with '-', such as 'state-of-the-art'
+            if char == '-' and state == "en&num": # grouping word with '-', such as 'state-of-the-art'
                 c_state = 'en&num'
-
+            
             if state == None:
                 state = c_state
 
