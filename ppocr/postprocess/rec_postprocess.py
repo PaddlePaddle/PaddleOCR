@@ -68,6 +68,20 @@ class BaseRecLabelDecode(object):
         return dict_character
 
     def get_word_info(self, text, selection):
+        """
+        Group the decoded characters and record the corresponding decoded positions. 
+
+        Args:
+            text: the decoded text
+            selection: the bool array that identifies which columns of features are decoded as non-separated characters 
+        Returns:
+            word_list: list of the grouped words
+            word_col_list: list of decoding positions corresponding to each character in the grouped word
+            state_list: list of marker to identify the type of grouping words, including two types of grouping words: 
+                        - 'cn': continous chinese characters (e.g., 你好啊)
+                        - 'en&num': continous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
+                        The remaining characters in text are treated as separators between groups (e.g., space, '(', ')', etc.).
+        """
         state = None
         word_content = []
         word_col_content = []
@@ -84,7 +98,7 @@ class BaseRecLabelDecode(object):
             else:
                 c_state = 'splitter'
             
-            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping float number
+            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping floting number
                 c_state = 'en&num'
             if char == '-' and state == "en&num": # grouping word with '-', such as 'state-of-the-art'
                 c_state = 'en&num'
@@ -168,6 +182,11 @@ class CTCLabelDecode(BaseRecLabelDecode):
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True, return_word_box=return_word_box)
+        if return_word_box:
+            for rec_idx, rec in enumerate(text):
+                wh_ratio = kwargs['wh_ratio_list'][rec_idx]
+                max_wh_ratio = kwargs['max_wh_ratio']
+                rec[2][0] = rec[2][0]*(wh_ratio/max_wh_ratio)
         if label is None:
             return text
         label = self.decode(label)

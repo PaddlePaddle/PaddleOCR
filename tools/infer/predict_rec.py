@@ -409,11 +409,12 @@ class TextRecognizer(object):
                 valid_ratios = []
             imgC, imgH, imgW = self.rec_image_shape[:3]
             max_wh_ratio = imgW / imgH
-            # max_wh_ratio = 0
+            wh_ratio_list = []
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
+                wh_ratio_list.append(wh_ratio)
             for ino in range(beg_img_no, end_img_no):
                 if self.rec_algorithm == "SAR":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
@@ -619,13 +620,7 @@ class TextRecognizer(object):
                     else:
                         preds = outputs[0]
             if self.postprocess_params['name'] == 'CTCLabelDecode':
-                rec_result = self.postprocess_op(preds, return_word_box=self.return_word_box)
-                ino_list = list(range(beg_img_no, end_img_no))
-                for rec_idx, rec in enumerate(rec_result):
-                    ino = ino_list[rec_idx]
-                    h, w = img_list[indices[ino]].shape[0:2]
-                    wh_ratio = w * 1.0 / h
-                    rec[2][0] = rec[2][0]*(wh_ratio/max_wh_ratio)
+                rec_result = self.postprocess_op(preds, return_word_box=self.return_word_box, wh_ratio_list=wh_ratio_list, max_wh_ratio=max_wh_ratio)
             else:
                 rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):

@@ -182,3 +182,47 @@ def draw_structure_result(image, result, font_path):
     im_show = draw_ocr_box_txt(
         img_layout, boxes, txts, scores, font_path=font_path, drop_score=0)
     return im_show
+
+def cal_ocr_word_box(rec_str, box, rec_word_info):
+    ''' Calculate the detection frame for each word based on the results of recognition and detection of ocr'''
+    
+    col_num, word_list, word_col_list, state_list = rec_word_info
+    box = box.tolist()
+    bbox_x_start = box[0][0]
+    bbox_x_end = box[1][0]
+    bbox_y_start = box[0][1]
+    bbox_y_end = box[2][1]
+
+    cell_width = (bbox_x_end - bbox_x_start)/col_num
+
+    word_box_list = []
+    word_box_content_list = []
+    cn_width_list = []
+    cn_col_list = []
+    for word, word_col, state in zip(word_list, word_col_list, state_list):
+        if state == 'cn':
+            if len(word_col) != 1:
+                char_seq_length = (word_col[-1] - word_col[0] + 1) * cell_width
+                char_width = char_seq_length/(len(word_col)-1)
+                cn_width_list.append(char_width)
+            cn_col_list += word_col
+            word_box_content_list += word
+        else:
+            cell_x_start = bbox_x_start + int(word_col[0] * cell_width)
+            cell_x_end = bbox_x_start + int((word_col[-1]+1) * cell_width)
+            cell = ((cell_x_start, bbox_y_start), (cell_x_end, bbox_y_start), (cell_x_end, bbox_y_end), (cell_x_start, bbox_y_end))
+            word_box_list.append(cell)
+            word_box_content_list.append("".join(word))
+    if len(cn_col_list) != 0:
+        if len(cn_width_list) != 0:
+            avg_char_width = np.mean(cn_width_list)
+        else:
+            avg_char_width = (bbox_x_end - bbox_x_start)/len(rec_str)
+        for center_idx in cn_col_list:
+            center_x = (center_idx+0.5)*cell_width
+            cell_x_start = max(int(center_x - avg_char_width/2), 0) + bbox_x_start
+            cell_x_end = min(int(center_x + avg_char_width/2), bbox_x_end-bbox_x_start) + bbox_x_start
+            cell = ((cell_x_start, bbox_y_start), (cell_x_end, bbox_y_start), (cell_x_end, bbox_y_end), (cell_x_start, bbox_y_end))
+            word_box_list.append(cell)
+    
+    return word_box_content_list, word_box_list
