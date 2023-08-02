@@ -39,7 +39,16 @@ from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
 
-__all__ = ['build_dataloader', 'transform', 'create_operators', 'set_signal_handlers']
+# for PaddleX dataset_type
+TextDetDataset = SimpleDataSet
+TextRecDataset = SimpleDataSet
+MSTextRecDataset = MultiScaleDataSet
+PubTabTableRecDataset = PubTabDataSet
+KieDataset = SimpleDataSet
+
+__all__ = [
+    'build_dataloader', 'transform', 'create_operators', 'set_signal_handlers'
+]
 
 
 def term_mp(sig_num, frame):
@@ -76,8 +85,18 @@ def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet'
+        'SimpleDataSet',
+        'LMDBDataSet',
+        'PGDataSet',
+        'PubTabDataSet',
+        'LMDBDataSetSR',
+        'LMDBDataSetTableMaster',
+        'MultiScaleDataSet',
+        'TextDetDataset',
+        'TextRecDataset',
+        'MSTextRecDataset',
+        'PubTabTableRecDataset',
+        'KieDataset',
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
