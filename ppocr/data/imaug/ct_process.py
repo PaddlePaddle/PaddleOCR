@@ -19,9 +19,7 @@ import pyclipper
 import paddle
 
 import numpy as np
-from ppocr.utils.utility import check_install
-
-import scipy.io as scio
+import Polygon as plg
 
 from PIL import Image
 import paddle.vision.transforms as transforms
