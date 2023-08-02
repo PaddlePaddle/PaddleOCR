@@ -152,7 +152,7 @@ def init_args():
     parser.add_argument("--use_onnx", type=str2bool, default=False)
 
     # extended function
-    parser.add_argument("--return_word_box", type=str2bool, default=False, help='Whether return the bbox of each word (split by space) or chinese character')
+    parser.add_argument("--return_word_box", type=str2bool, default=False, help='Whether return the bbox of each word (split by space) or chinese character. Only used in ppstructure for layout recovery')
 
     return parser
 
