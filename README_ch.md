@@ -27,8 +27,11 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 📣 近期更新
 - **🔥2023.8.1 发布 PaddleOCR [release/2.7](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.7)**
-    - 发布[PP-OCRv4](./doc/doc_ch/PP-OCRv4_introduction.md)，速度可比情况下，中文场景效果相比于PP-OCRv3再提升4.5%，英文场景提升10%，80语种多语言模型平均识别准确率提升8%以上，可在[PaddleX](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)完成的全流程体验；
-    - 发布[PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) ,使用融合LLMs的通用场景关键信息抽取全新方案.
+    - 发布[PP-OCRv4](./doc/doc_ch/PP-OCRv4_introduction.md)，提供mobile和server两种模型
+      - mobile：速度可比情况下，中文场景效果相比于PP-OCRv3再提升4.5%，英文场景提升10%，80语种多语言模型平均识别准确率提升8%以上。
+      - server：xxxx
+        可参考[快速开始]（xxx） 体验模型效果，同时也可在[PaddleX](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)中低代码完成模型训练、推理、高性能部署全流程；
+    - 发布[PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) ,使用融合PP-OCR模型和LLMs的通用场景关键信息抽取全新方案.
 - 🔨**2022.11 新增实现[4种前沿算法](doc/doc_ch/algorithm_overview.md)**：文本检测 [DRRG](doc/doc_ch/algorithm_det_drrg.md),  文本识别 [RFL](doc/doc_ch/algorithm_rec_rfl.md), 文本超分[Text Telescope](doc/doc_ch/algorithm_sr_telescope.md)，公式识别[CAN](doc/doc_ch/algorithm_rec_can.md)
 - **2022.10 优化[JS版PP-OCRv3模型](./deploy/paddlejs/README_ch.md)**：模型大小仅4.3M，预测速度提升8倍，配套web demo开箱即用
 - **💥 直播回放：PaddleOCR研发团队详解PP-StructureV2优化策略**。微信扫描[下方二维码](#开源社区)，关注公众号并填写问卷后进入官方交流群，获取直播回放链接与20G重磅OCR学习大礼包（内含PDF转Word应用程序、10种垂类模型、《动手学OCR》电子书等）
@@ -55,8 +58,8 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## ⚡ 快速开始
 
 - 在线网站体验：
-    - 超轻量PP-OCR mobile模型体验地址：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286
-    - ChatOCR 体验地址：https://aistudio.baidu.com/aistudio/projectdetail/6488689
+    - PP-OCRv4 在线体验地址：todo 添加ppocrv4在线体验地址
+    - ChatOCR 在线体验地址：https://aistudio.baidu.com/aistudio/projectdetail/6488689
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 
