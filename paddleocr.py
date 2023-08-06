@@ -30,6 +30,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 
+
 def _import_file(module_name, file_path, make_importable=False):
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
@@ -38,33 +39,120 @@ def _import_file(module_name, file_path, make_importable=False):
         sys.modules[module_name] = module
     return module
 
-tools = _import_file('tools', os.path.join(__dir__, 'tools/__init__.py'), make_importable=True)
+
+tools = _import_file(
+    'tools', os.path.join(__dir__, 'tools/__init__.py'), make_importable=True)
 ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
-
-logger = get_logger()
+from ppocr.utils.logging import get_logger
+from tools.infer import predict_system
 from ppocr.utils.utility import check_and_read, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
+logger = get_logger()
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
     'save_structure_res', 'download_with_progressbar', 'to_excel'
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.6.1.0'
+VERSION = '2.7.0.0'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
-DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
-SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3']
+DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv4'
+SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3', 'PP-OCRv4']
 DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-StructureV2'
 SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-Structure', 'PP-StructureV2']
 MODEL_URLS = {
     'OCR': {
+        'PP-OCRv4': {
+            'det': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar',
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar',
+                },
+                'ml': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar'
+                }
+            },
+            'rec': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/en_dict.txt'
+                },
+                'korean': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/korean_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/korean_dict.txt'
+                },
+                'japan': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/japan_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/japan_dict.txt'
+                },
+                'chinese_cht': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+                },
+                'ta': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ta_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ta_dict.txt'
+                },
+                'te': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/te_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/te_dict.txt'
+                },
+                'ka': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ka_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ka_dict.txt'
+                },
+                'latin': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/latin_dict.txt'
+                },
+                'arabic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/arabic_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/arabic_dict.txt'
+                },
+                'cyrillic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/cyrillic_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
+                },
+                'devanagari': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/devanagari_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
+                },
+            },
+            'cls': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar',
+                }
+            },
+        },
         'PP-OCRv3': {
             'det': {
                 'ch': {
@@ -324,9 +412,9 @@ def parse_args(mMain=True):
         "--ocr_version",
         type=str,
         choices=SUPPORT_OCR_MODEL_VERSION,
-        default='PP-OCRv3',
+        default='PP-OCRv4',
         help='OCR Model version, the current model support list is as follows: '
-        '1. PP-OCRv3 Support Chinese and English detection and recognition model, and direction classifier model'
+        '1. PP-OCRv4/v3 Support Chinese and English detection and recognition model, and direction classifier model'
         '2. PP-OCRv2 Support Chinese detection and recognition model. '
         '3. PP-OCR support Chinese detection, recognition and direction classifier and multilingual recognition model.'
     )
@@ -502,7 +590,7 @@ class PaddleOCR(predict_system.TextSystem):
         params.cls_model_dir, cls_url = confirm_model_dir_url(
             params.cls_model_dir,
             os.path.join(BASE_DIR, 'whl', 'cls'), cls_model_config['url'])
-        if params.ocr_version == 'PP-OCRv3':
+        if params.ocr_version in ['PP-OCRv3', 'PP-OCRv4']:
             params.rec_image_shape = "3, 48, 320"
         else:
             params.rec_image_shape = "3, 32, 320"
