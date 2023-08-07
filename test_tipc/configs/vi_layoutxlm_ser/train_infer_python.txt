@@ -1,6 +1,6 @@
 ===========================train_params===========================
 model_name:vi_layoutxlm_ser
-python:python3.7
+python:python
 gpu_list:0|0,1
 Global.use_gpu:True|True
 Global.auto_cast:fp32
@@ -13,7 +13,7 @@ train_infer_img_dir:ppstructure/docs/kie/input/zh_val_42.jpg
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c ./configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Global.print_batch_step=1 Global.eval_batch_step=[1000,1000] Train.loader.shuffle=false
+norm_train:tools/train.py -c ./configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Global.print_batch_step=1 Global.eval_batch_step=[1000,1000] Train.loader.shuffle=false Train.loader.num_workers=32 Eval.loader.num_workers=32
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -52,7 +52,7 @@ null:null
 ===========================infer_benchmark_params==========================
 random_infer_input:[{float32,[3,224,224]}]
 ===========================train_benchmark_params==========================
-batch_size:4
+batch_size:8
 fp_items:fp32|fp16
 epoch:3
 --profiler_options:batch_range=[10,20];state=GPU;tracer_option=Default;profile_path=model.profile

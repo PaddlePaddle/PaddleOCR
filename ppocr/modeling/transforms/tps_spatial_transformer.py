@@ -29,12 +29,28 @@ import itertools
 
 def grid_sample(input, grid, canvas=None):
     input.stop_gradient = False
+
+    is_fp16 = False
+    if grid.dtype != paddle.float32:
+        data_type = grid.dtype
+        input = input.cast(paddle.float32)
+        grid = grid.cast(paddle.float32)
+        is_fp16 = True
     output = F.grid_sample(input, grid)
+    if is_fp16:
+        output = output.cast(data_type)
+        grid = grid.cast(data_type)
+
     if canvas is None:
         return output
     else:
         input_mask = paddle.ones(shape=input.shape)
+        if is_fp16:
+            input_mask = input_mask.cast(paddle.float32)
+            grid = grid.cast(paddle.float32)
         output_mask = F.grid_sample(input_mask, grid)
+        if is_fp16:
+            output_mask = output_mask.cast(data_type)
         padded_output = output * output_mask + canvas * (1 - output_mask)
         return padded_output
 

@@ -62,8 +62,8 @@ def draw_box_txt(bbox, text, draw, font, font_size, color):
     draw.rectangle(bbox, fill=color)
 
     # draw ocr results
-    tw = font.getsize(text)[0]
-    th = font.getsize(text)[1]
+    left, top, right, bottom = font.getbbox(text)
+    tw, th = right - left, bottom - top
     start_y = max(0, bbox[0][1] - th)
     draw.rectangle(
         [(bbox[0][0] + 1, start_y), (bbox[0][0] + tw + 1, start_y + th)],

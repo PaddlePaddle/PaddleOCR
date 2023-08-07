@@ -107,9 +107,10 @@ cd /path/to/ppocr_img
   ```
 
 **版本说明**
-paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
+paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
 |  版本名称  |  版本说明 |
 |    ---    |   ---   |
+| PP-OCRv4 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv3 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv2 | 支持中英文的检测和识别，方向分类器，多语言暂未更新 |
 | PP-OCR   | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
@@ -251,4 +252,4 @@ for idx in range(len(result)):
 
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
 
-PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，您可以参考[文档教程](../../README_ch.md#文档教程)，正式开启PaddleOCR的应用之旅。
+飞桨AI套件（PaddleX）提供了飞桨生态优质模型，是训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！目前PP-OCRv4已上线PaddleX，您可以进入[通用OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)体验模型训练、压缩和推理部署全流程。

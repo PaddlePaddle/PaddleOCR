@@ -280,5 +280,13 @@ class GA_SPIN_Transformer(nn.Layer):
 
             x = self.sp_net(x, sp_weight, offsets, lambda_color)
             if self.stn:
+                is_fp16 = False
+                if build_P_prime_reshape.dtype != paddle.float32:
+                    data_type = build_P_prime_reshape.dtype
+                    x = x.cast(paddle.float32)
+                    build_P_prime_reshape = build_P_prime_reshape.cast(paddle.float32)
+                    is_fp16 = True
                 x = F.grid_sample(x=x, grid=build_P_prime_reshape, padding_mode='border')
+                if is_fp16:
+                    x = x.cast(data_type)
         return x

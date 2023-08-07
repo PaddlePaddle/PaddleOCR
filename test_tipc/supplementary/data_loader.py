@@ -1,7 +1,6 @@
 import numpy as np
 from paddle.vision.datasets import Cifar100
 from paddle.vision.transforms import Normalize
-from paddle.fluid.dataloader.collate import default_collate_fn
 import signal
 import os
 from paddle.io import Dataset, DataLoader, DistributedBatchSampler
