@@ -28,6 +28,8 @@ wandb login
 
 If you do not have a wandb account, you can make one [here](https://wandb.ai/site).
 
+In case you want to dive directly into the code and get started on using W&B with PaddleOCR, a colab is available [here](https://github.com/wandb/examples/blob/master/colabs/paddlepaddle/paddleocr/Train_and_Debug_Your_OCR_Models_with_PaddleOCR_and_W%26B.ipynb). This blog ([English](https://wandb.ai/manan-goel/text_detection/reports/Train-and-Debug-Your-OCR-Models-with-PaddleOCR-and-W-B--VmlldzoyMDUwMDIw) and [Chinese](https://wandb.ai/wandb_fc/chinese/reports/W-B-OCR---VmlldzoyMDk1NzE4)) also showcases runnable code along with cool visualizations that you an create in W&B.
+
 To visualize and track your model training add the following flag to your config yaml file under the `Global` section -
 
 ```
@@ -41,11 +43,12 @@ To add more arguments to the `WandbLogger` listed [here](./config_en.md) add the
 wandb:
     project: my_project
     entity: my_team
+    log_checkpoint: false
 ```
 
 These config variables from the yaml file are used to instantiate the `WandbLogger` object with the project name, entity name (the logged in user by default), directory to store metadata (`./wandb` by default) and more. During the training process, the `log_metrics` function is called to log training and evaluation metrics at the training and evaluation steps respectively from the rank 0 process only.
 
-At every model saving step, the WandbLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on.
+At every model saving step, the WandbLogger, logs the model using the `log_model` function along with relavant metadata and tags showing the epoch in which the model is saved, the model is best or not and so on only if the `log_checkpoint` argument is set as `true`.
 
 All the logging mentioned above is integrated into the `program.train` function and will generate dashboards like this -
 
