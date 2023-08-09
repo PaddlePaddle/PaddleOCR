@@ -59,7 +59,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.7.0.0'
+VERSION = '2.7.0.1'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -808,7 +808,7 @@ def main():
                 logger.info('processing {}/{} page:'.format(index + 1,
                                                             len(img_paths)))
                 new_img_name = os.path.basename(new_img_path).split('.')[0]
-                result = engine(new_img_path, img_idx=index)
+                result = engine(img, img_idx=index)
                 save_structure_res(result, args.output, img_name, index)
 
                 if args.recovery and result != []:
