@@ -67,7 +67,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 
 <a name="技术交流合作"></a>
-
 ## 📖 技术交流合作
 - 飞桨AI套件([PaddleX](http://10.136.157.23:8080/paddle/paddleX))提供了飞桨生态模型训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！
    - PaddleX 目前覆盖图像分类、目标检测、图像分割、3D、OCR和时序预测等领域方向，已内置了36种基础单模型，例如RP-DETR、PP-YOLOE、PP-HGNet、PP-LCNet、PP-LiteSeg等；集成了12种产业方案，例如PP-OCRv4、PP-ChatOCR、PP-ShiTu、PP-TS、车载路面垃圾检测、野生动物违禁制品识别等。
@@ -87,11 +86,13 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="开源共建"></a>
 ## 🚀 开源共建
-- **👫 加入社区**：感谢大家长久以来对 PaddleOCR 的支持和关注，我们非常欢迎各位开发者参与到飞桨社区的开源建设中，加入开源、共建飞桨。**为感谢社区开发者在 PaddleOCR release2.7 中做出的代码贡献，我们将为贡献者制作与邮寄[开源贡献证书](https://github.com/PaddlePaddle/community/blob/master/contributors/certificate-inspection.md)，烦请[填写问卷](https://paddle.wjx.cn/vm/wFNr6w7.aspx)提供必要的邮寄信息。**
+- **👫 加入社区**：感谢大家长久以来对 PaddleOCR 的支持和关注，与广大开发者共同构建一个专业、和谐、相互帮助的开源社区是 PaddleOCR 的目标。我们非常欢迎各位开发者参与到飞桨社区的开源建设中，加入开源、共建飞桨。**为感谢社区开发者在 PaddleOCR release2.7 中做出的代码贡献，我们将为贡献者制作与邮寄[开源贡献证书](https://github.com/PaddlePaddle/community/blob/master/contributors/certificate-inspection.md)，烦请[填写问卷](https://paddle.wjx.cn/vm/wFNr6w7.aspx)提供必要的邮寄信息。**
 - **🤩 社区活动**：飞桨开源社区长期运营与发布各类丰富的活动与开发任务，在 PaddleOCR 社区，你可以关注以下社区活动，并选择自己感兴趣的内容参与开源共建：
   - **🎁 飞桨套件快乐开源常规赛 | [传送门](https://github.com/PaddlePaddle/PaddleOCR/issues/10223)**：OCR 社区常规赛升级版，以建设更好用的 OCR 套件为目标，包括但不限于学术前沿模型训练与推理、打磨优化 OCR 工具与应用项目开发等，任何有利于社区意见流动和问题解决的行为都热切希望大家的参与。让我们共同成长为飞桨套件的重要 Contributor 🎉🎉🎉。
   - **💡 新需求征集 | [传送门](https://github.com/PaddlePaddle/PaddleOCR/issues/10334)**：你在日常研究和实践深度学习过程中，有哪些你期望的 feature 亟待实现？请按照格式描述你想实现的 feature 和你提出的初步实现思路，我们会定期沟通与讨论这些需求，并将其纳入未来的版本规划中。
   - **💬 PP-SIG 技术研讨会 | [传送门](https://github.com/PaddlePaddle/community/tree/master/ppsigs)**：PP-SIG 是飞桨社区开发者由于相同的兴趣汇聚在一起形成的虚拟组织，通过定期召开技术研讨会的方式，分享行业前沿动态、探讨社区需求与技术开发细节、发起社区联合贡献任务。PaddleOCR 希望可以通过 AI 的力量助力任何一位有梦想的开发者实现自己的想法，享受创造价值带来的愉悦。
+- **📑 项目合作**：如果你有企业中明确的 OCR 垂类应用需求，我们推荐你使用训压推一站式全流程高效率开发平台 PaddleX，助力 AI 技术快速落地。PaddleX 还支持联创开发，利润分成！欢迎广大的个人开发者和企业开发者参与进来，共创繁荣的 AI 技术生态！
+
 
 <a name="模型下载"></a>
 ## 🛠️ PP-OCR系列模型列表（更新中）
