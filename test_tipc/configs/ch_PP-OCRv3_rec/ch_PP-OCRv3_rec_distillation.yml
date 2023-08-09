@@ -27,7 +27,7 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Piecewise
-    decay_epochs : [700, 800]
+    decay_epochs : [700]
     values : [0.0005, 0.00005]
     warmup_epoch: 5
   regularizer:
@@ -45,7 +45,7 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance
@@ -72,7 +72,7 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance

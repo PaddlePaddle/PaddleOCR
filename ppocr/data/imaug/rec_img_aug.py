@@ -19,7 +19,7 @@ import random
 import copy
 from PIL import Image
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
-from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter
+from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration
 from paddle.vision.transforms import Compose
 
 
@@ -166,6 +166,38 @@ class RecConAug(object):
                 break
             data = self.merge_ext_data(data, ext_data)
         data.pop("ext_data")
+        return data
+
+
+class SVTRRecAug(object):
+    def __init__(self,
+                 aug_type=0,
+                 geometry_p=0.5,
+                 deterioration_p=0.25,
+                 colorjitter_p=0.25,
+                 **kwargs):
+        self.transforms = Compose([
+            SVTRGeometry(
+                aug_type=aug_type,
+                degrees=45,
+                translate=(0.0, 0.0),
+                scale=(0.5, 2.),
+                shear=(45, 15),
+                distortion=0.5,
+                p=geometry_p), SVTRDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
+            CVColorJitter(
+                brightness=0.5,
+                contrast=0.5,
+                saturation=0.5,
+                hue=0.1,
+                p=colorjitter_p)
+        ])
+
+    def __call__(self, data):
+        img = data['image']
+        img = self.transforms(img)
+        data['image'] = img
         return data
 
 
@@ -538,7 +570,7 @@ def resize_norm_img_chinese(img, image_shape):
     max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
-    max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
+    max_wh_ratio = max(max_wh_ratio, ratio)
     imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW

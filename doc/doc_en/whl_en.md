@@ -335,7 +335,7 @@ ocr = PaddleOCR(use_angle_cls=True, lang="ch") # need to run only once to downlo
 img_path = 'PaddleOCR/doc/imgs/11.jpg'
 img = cv2.imread(img_path)
 # img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY), If your own training model supports grayscale images, you can uncomment this line
-result = ocr.ocr(img_path, cls=True)
+result = ocr.ocr(img, cls=True)
 for idx in range(len(result)):
     res = result[idx]
     for line in res:

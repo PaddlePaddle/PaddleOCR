@@ -28,7 +28,11 @@ from ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
-    return v.lower() in ("true", "t", "1")
+    return v.lower() in ("true", "yes", "t", "y", "1")
+
+
+def str2int_tuple(v):
+    return tuple([int(i.strip()) for i in v.split(",")])
 
 
 def init_args():
@@ -37,11 +41,13 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
+    parser.add_argument("--use_mlu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
+    parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
@@ -144,6 +150,10 @@ def init_args():
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     parser.add_argument("--use_onnx", type=str2bool, default=False)
+
+    # extended function
+    parser.add_argument("--return_word_box", type=str2bool, default=False, help='Whether return the bbox of each word (split by space) or chinese character. Only used in ppstructure for layout recovery')
+
     return parser
 
 
@@ -219,7 +229,7 @@ def create_predictor(args, mode, logger):
                 logger.warning(
                     "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
-            config.enable_use_gpu(args.gpu_mem, 0)
+            config.enable_use_gpu(args.gpu_mem, args.gpu_id)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
@@ -245,7 +255,9 @@ def create_predictor(args, mode, logger):
                     logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
 
         elif args.use_npu:
-            config.enable_npu()
+            config.enable_custom_device("npu")
+        elif args.use_mlu:
+            config.enable_custom_device("mlu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:

@@ -405,3 +405,54 @@ class CVColorJitter(object):
     def __call__(self, img):
         if random.random() < self.p: return self.transforms(img)
         else: return img
+
+
+class SVTRDeterioration(object):
+    def __init__(self, var, degrees, factor, p=0.5):
+        self.p = p
+        transforms = []
+        if var is not None:
+            transforms.append(CVGaussianNoise(var=var))
+        if degrees is not None:
+            transforms.append(CVMotionBlur(degrees=degrees))
+        if factor is not None:
+            transforms.append(CVRescale(factor=factor))
+        self.transforms = transforms
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            random.shuffle(self.transforms)
+            transforms = Compose(self.transforms)
+            return transforms(img)
+        else:
+            return img
+
+
+class SVTRGeometry(object):
+    def __init__(self,
+                 aug_type=0,
+                 degrees=15,
+                 translate=(0.3, 0.3),
+                 scale=(0.5, 2.),
+                 shear=(45, 15),
+                 distortion=0.5,
+                 p=0.5):
+        self.aug_type = aug_type
+        self.p = p
+        self.transforms = []
+        self.transforms.append(CVRandomRotation(degrees=degrees))
+        self.transforms.append(CVRandomAffine(
+                degrees=degrees, translate=translate, scale=scale, shear=shear))
+        self.transforms.append(CVRandomPerspective(distortion=distortion))
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            if self.aug_type:
+                random.shuffle(self.transforms)
+                transforms = Compose(self.transforms[:random.randint(1, 3)])
+                img = transforms(img)
+            else:
+                img = self.transforms[random.randint(0, 2)](img)
+            return img
+        else:
+            return img

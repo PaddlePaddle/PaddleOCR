@@ -5,7 +5,7 @@ English| [简体中文](README_ch.md)
 [Paddle.js](https://github.com/PaddlePaddle/Paddle.js) is a web project for Baidu PaddlePaddle, which is an open source deep learning framework running in the browser. Paddle.js can either load a pre-trained model, or transforming a model from paddle-hub with model transforming tools provided by Paddle.js. It could run in every browser with WebGL/WebGPU/WebAssembly supported. It could also run in Baidu Smartprogram and wechat miniprogram.
 
 ## Web Demo
-Run OCR demo in browser refer to [tutorial](https://github.com/PaddlePaddle/FastDeploy/blob/develop/examples/application/js/WebDemo_en.md).
+Run OCR demo in browser refer to [tutorial](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo).
 
 |demo|web demo dicrctory|visualization|
 |-|-|-|
