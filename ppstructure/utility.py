@@ -16,7 +16,7 @@ import ast
 import PIL
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
-from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
+from tools.infer.utility import draw_ocr_box_txt, str2bool, init_args as infer_args
 import math
 
 
