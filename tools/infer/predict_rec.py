@@ -158,7 +158,7 @@ class TextRecognizer(object):
             if self.rec_algorithm == 'ViTSTR':
                 img = image_pil.resize([imgW, imgH], Image.BICUBIC)
             else:
-                img = image_pil.resize([imgW, imgH], Image.LANCZOS)
+                img = image_pil.resize([imgW, imgH], Image.Resampling.LANCZOS)
             img = np.array(img)
             norm_img = np.expand_dims(img, -1)
             norm_img = norm_img.transpose((2, 0, 1))

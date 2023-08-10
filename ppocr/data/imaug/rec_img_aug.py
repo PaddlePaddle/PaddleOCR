@@ -18,6 +18,7 @@ import numpy as np
 import random
 import copy
 from PIL import Image
+import PIL
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
 from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration
 from paddle.vision.transforms import Compose
@@ -406,7 +407,7 @@ class GrayRecResizeImg(object):
     def __init__(self,
                  image_shape,
                  resize_type,
-                 inter_type='Image.LANCZOS',
+                 inter_type="Image.Resampling.LANCZOS",
                  scale=True,
                  padding=False,
                  **kwargs):
