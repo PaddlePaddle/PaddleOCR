@@ -17,6 +17,7 @@ https://github.com/zcswdt/Color_OCR_image_generator
 """
 import os
 import random
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import json
 import argparse
@@ -55,8 +56,11 @@ def get_horizontal_text_picture(image_file, chars, fonts_list, cf):
     ch_w = []
     ch_h = []
     for ch in chars:
-        left, top, right, bottom = font.getbbox(ch)
-        wt, ht = right - left, bottom - top
+        if int(PIL.__version__.split('.')[0]) < 10:
+            wt, ht = font.getsize(ch)
+        else:
+            left, top, right, bottom = font.getbbox(ch)
+            wt, ht = right - left, bottom - top
         ch_w.append(wt)
         ch_h.append(ht)
     f_w = sum(ch_w)
@@ -102,8 +106,11 @@ def get_vertical_text_picture(image_file, chars, fonts_list, cf):
     ch_w = []
     ch_h = []
     for ch in chars:
-        left, top, right, bottom = font.getbbox(ch)
-        wt, ht = right - left, bottom - top
+        if int(PIL.__version__.split('.')[0]) < 10:
+            wt, ht = font.getsize(ch)
+        else:
+            left, top, right, bottom = font.getbbox(ch)
+            wt, ht = right - left, bottom - top
         ch_w.append(wt)
         ch_h.append(ht)
     f_w = max(ch_w)
