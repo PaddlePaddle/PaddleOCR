@@ -89,7 +89,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <p>PaddleOCR官方交流群二维码</p>
 </div>
 
-
 <a name="模型下载"></a>
 ## 🛠️ PP-OCR系列模型列表（更新中）
 

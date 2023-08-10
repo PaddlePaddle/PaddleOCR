@@ -43,7 +43,7 @@ setup(
     version=VERSION,
     install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
     license='Apache License 2.0',
-    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
+    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embedded and IoT devices',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/PaddlePaddle/PaddleOCR',
