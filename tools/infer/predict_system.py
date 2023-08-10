@@ -101,7 +101,7 @@ class TextSystem(object):
                                    rec_res)
         filter_boxes, filter_rec_res = [], []
         for box, rec_result in zip(dt_boxes, rec_res):
-            text, score = rec_result
+            text, score = rec_result[0], rec_result[1]
             if score >= self.drop_score:
                 filter_boxes.append(box)
                 filter_rec_res.append(rec_result)
