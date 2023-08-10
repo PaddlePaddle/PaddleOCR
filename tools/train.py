@@ -41,7 +41,7 @@ import tools.program as program
 dist.get_world_size()
 
 
-def main(config, device, logger, vdl_writer):
+def main(config, device, logger, vdl_writer, seed):
     # init dist environment
     if config['Global']['distributed']:
         dist.init_parallel_env()
@@ -50,7 +50,7 @@ def main(config, device, logger, vdl_writer):
 
     # build dataloader
     set_signal_handlers()
-    train_dataloader = build_dataloader(config, 'Train', device, logger)
+    train_dataloader = build_dataloader(config, 'Train', device, logger, seed)
     if len(train_dataloader) == 0:
         logger.error(
             "No Images in train dataset, please ensure\n" +
@@ -61,9 +61,11 @@ def main(config, device, logger, vdl_writer):
         return
 
     if config['Eval']:
-        valid_dataloader = build_dataloader(config, 'Eval', device, logger)
+        valid_dataloader = build_dataloader(config, 'Eval', device, logger,
+                                            seed)
     else:
         valid_dataloader = None
+    step_pre_epoch = len(train_dataloader)
 
     # build post process
     post_process_class = build_post_process(config['PostProcess'],
@@ -93,8 +95,8 @@ def main(config, device, logger, vdl_writer):
                             'DistillationSARLoss'][
                                 'ignore_index'] = char_num + 1
                         out_channels_list['SARLabelDecode'] = char_num + 2
-                    elif list(config['Loss']['loss_config_list'][-1].keys())[
-                            0] == 'DistillationNRTRLoss':
+                    elif any('DistillationNRTRLoss' in d
+                             for d in config['Loss']['loss_config_list']):
                         out_channels_list['NRTRLabelDecode'] = char_num + 3
 
                     config['Architecture']['Models'][key]['Head'][
@@ -197,9 +199,9 @@ def main(config, device, logger, vdl_writer):
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list, amp_custom_white_list,
-                  amp_dtype)
+                  eval_class, pre_best_model_dict, logger, step_pre_epoch,
+                  vdl_writer, scaler, amp_level, amp_custom_black_list,
+                  amp_custom_white_list, amp_dtype)
 
 
 def test_reader(config, device, logger):
@@ -224,5 +226,5 @@ if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     seed = config['Global']['seed'] if 'seed' in config['Global'] else 1024
     set_seed(seed)
-    main(config, device, logger, vdl_writer)
+    main(config, device, logger, vdl_writer, seed)
     # test_reader(config, device, logger)
