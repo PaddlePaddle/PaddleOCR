@@ -81,7 +81,7 @@ PP-OCRv4检测模型对PP-OCRv3中的CML（Collaborative Mutual Learning) 协同
 <a name="3"></a>
 ## 3. 识别优化
 
-PP-OCRv3的识别模块是基于文本识别算法[SVTR](https://arxiv.org/abs/2205.00159)优化。SVTR不再采用RNN结构，通过引入Transformers结构更加有效地挖掘文本行图像的上下文信息，从而提升文本识别能力。直接将PP-OCRv2的识别模型，替换成SVTR_Tiny，识别准确率从74.8%提升到80.1%（+5.3%），但是预测速度慢了将近11倍，CPU上预测一条文本行，将近100ms。因此，如下图所示，PP-OCRv3采用如下6个优化策略进行识别模型加速。
+PP-OCRv4在PP-OCRv3的基础上进一步升级。整体的框架图保持了与PP-OCRv3相同的pipeline，针对检测模型和识别模型进行了数据、网络结构、训练策略等多个模块的优化。 PP-OCRv4系统框图如下所示：
 
 <div align="center">
     <img src="../ppocr_v4/v4_rec_pipeline.png" width=800>
@@ -169,7 +169,7 @@ GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合�
 | PP-OCRv3_en | 64.04% |
 | PP-OCRv4_en | 70.1% |
 
-同时，也对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升5%以上，如下表所示：
+同时，也对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升8%以上，如下表所示：
 
 | Model | 拉丁语系 |  阿拉伯语系 | 日语 | 韩语 |
 |-----|-----|--------|----| --- |
