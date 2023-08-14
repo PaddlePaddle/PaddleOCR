@@ -620,7 +620,7 @@ class PaddleOCR(predict_system.TextSystem):
     def ocr(self, img, det=True, rec=True, cls=True):
         """
         ocr with paddleocr
-        argsï¼?
+        args:
             img: img for ocr, support ndarray, img_path and list or ndarray
             det: use text detection or not. If false, only rec will be exec. Default is True
             rec: use text recognition or not. If false, only det will be exec. Default is True
