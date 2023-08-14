@@ -72,7 +72,7 @@ PP-OCRv4检测模型对PP-OCRv3中的CML（Collaborative Mutual Learning) 协同
 
 ## 3. 识别优化
 
-PP-OCRv4在PP-OCRv3的基础上进一步升级。整体的框架图保持了与PP-OCRv3相同的pipeline，针对检测模型和识别模型进行了数据、网络结构、训练策略等多个模块的优化。 PP-OCRv4系统框图如下所示：
+PP-OCRv4识别模型在PP-OCRv3的基础上进一步升级。如下图所示，整体的框架图保持了与PP-OCRv3识别模型相同的pipeline，分别进行了数据、网络结构、训练策略等方面的优化。
 
 ![img](./images/v4_rec_pipeline.png)
 
@@ -109,7 +109,7 @@ Lite-Neck整体结构沿用PP-OCRv3版本的结构，在参数上稍作精简，
 
 GTC（Guided Training of CTC），是PP-OCRv3识别模型的最有效的策略之一，融合多种文本特征的表达，有效的提升文本识别精度。在PP-OCRv4中使用训练更稳定的Transformer模型NRTR作为指导分支，相比V3版本中的SAR基于循环神经网络的结构，NRTR基于Transformer实现解码过程泛化能力更强，能有效指导CTC分支学习，解决简单场景下快速过拟合的问题。使用Lite-Neck和GTC-NRTR两个策略，识别精度提升至73.21%(+0.5%)。
 
-![img](./images/ppocrv4_gtc.png)
+GTC（Guided Training of CTC），是PP-OCRv3识别模型的最有效的策略之一，融合多种文本特征的表达，有效的提升文本识别精度。在PP-OCRv4中使用训练更稳定的Transformer模型NRTR作为指导分支，相比V3版本中的SAR基于循环神经网络的结构，NRTR基于Transformer实现解码过程泛化能力更强，能有效指导CTC分支学习，解决简单场景下快速过拟合的问题。使用Lite-Neck和GTC-NRTR两个策略，识别精度提升至73.21%(+0.5%)。
 
 ### （5）Multi-Scale：多尺度训练策略
 
@@ -117,7 +117,14 @@ GTC（Guided Training of CTC），是PP-OCRv3识别模型的最有效的策略�
 
 ![img](./images/multi_scale.png)
 
-### （6）DKD：蒸馏策略
+动态尺度训练策略，是在训练过程中随机resize输入图片的高度，以增强识别模型在端到端串联使用时的鲁棒性。在训练时，每个iter从（32，48，64）三种高度中随机选择一种高度进行resize。实验证明，使用该策略，尽管在识别测试集上准确率没有提升，但在端到端串联评估时，指标提升0.5%。
+
+<div align="center">
+    <img src="../ppocr_v4/multi_scale.png" width="500">
+</div>
+
+
+**（6）DKD：蒸馏策略**
 
 识别模型的蒸馏包含两个部分，NRTRhead蒸馏和CTCHead蒸馏;
 
@@ -144,7 +151,7 @@ GTC（Guided Training of CTC），是PP-OCRv3识别模型的最有效的策略�
 | PP-OCRv3_en | 64.04% |
 | PP-OCRv4_en | 70.1% |
 
-同时，也对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升8%以上，如下表所示：
+同时，对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升8%以上，如下表所示：
 
 | Model | 拉丁语系 |  阿拉伯语系 | 日语 | 韩语 |
 |-----|-----|--------|----| --- |
