@@ -62,6 +62,8 @@ from ppocr.utils.network import (
     confirm_model_dir_url,
 )
 from tools.infer import predict_system
+from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
+from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
@@ -693,44 +695,17 @@ class PaddleOCR(predict_system.TextSystem):
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(
-        self,
-        img,
-        det=True,
-        rec=True,
-        cls=True,
-        bin=False,
-        inv=False,
-        alpha_color=(255, 255, 255),
-        slice={},
-    ):
+    def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
         OCR with PaddleOCR
-
-        Args:
-            img: Image for OCR. It can be an ndarray, img_path, or a list of ndarrays.
-            det: Use text detection or not. If False, only text recognition will be executed. Default is True.
-            rec: Use text recognition or not. If False, only text detection will be executed. Default is True.
-            cls: Use angle classifier or not. Default is True. If True, the text with a rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance.
-            bin: Binarize image to black and white. Default is False.
-            inv: Invert image colors. Default is False.
-            alpha_color: Set RGB color Tuple for transparent parts replacement. Default is pure white.
-            slice: Use sliding window inference for large images. Both det and rec must be True. Requires int values for slice["horizontal_stride"], slice["vertical_stride"], slice["merge_x_thres"], slice["merge_y_thres"] (See doc/doc_en/slice_en.md). Default is {}.
-
-        Returns:
-            If both det and rec are True, returns a list of OCR results for each image. Each OCR result is a list of bounding boxes and recognized text for each detected text region.
-            If det is True and rec is False, returns a list of detected bounding boxes for each image.
-            If det is False and rec is True, returns a list of recognized text for each image.
-            If both det and rec are False, returns a list of angle classification results for each image.
-
-        Raises:
-            AssertionError: If the input image is not of type ndarray, list, str, or bytes.
-            SystemExit: If det is True and the input is a list of images.
-
-        Note:
-            - If the angle classifier is not initialized (use_angle_cls=False), it will not be used during the forward process.
-            - For PDF files, if the input is a list of images and the page_num is specified, only the first page_num images will be processed.
-            - The preprocess_image function is used to preprocess the input image by applying alpha color replacement, inversion, and binarization if specified.
+        args：
+            img: img for OCR, support ndarray, img_path and list or ndarray
+            det: use text detection or not. If False, only rec will be exec. Default is True
+            rec: use text recognition or not. If False, only det will be exec. Default is True
+            cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            bin: binarize image to black and white. Default is False.
+            inv: invert image colors. Default is False.
+            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
         """
         assert (
             det or rec or cls
@@ -741,7 +716,7 @@ class PaddleOCR(predict_system.TextSystem):
             exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
-                "Since the angle classifier is not initialized, it will not be used during the forward process"
+                'Since the angle classifier is not initialized, it will not be used during the forward process'
             )
 
         img, flag_gif, flag_pdf = check_img(img, alpha_color)
@@ -764,21 +739,22 @@ class PaddleOCR(predict_system.TextSystem):
 
         if det and rec:
             ocr_res = []
-            for img in imgs:
+            for idx, img in enumerate(imgs):
                 img = preprocess_image(img)
-                dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
+                dt_boxes, rec_res, _ = self.__call__(img, cls)
                 if not dt_boxes and not rec_res:
                     ocr_res.append(None)
                     continue
-                tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
+                tmp_res = [[box.tolist(), res]
+                           for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
             return ocr_res
         elif det and not rec:
             ocr_res = []
-            for img in imgs:
+            for idx, img in enumerate(imgs):
                 img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
-                if dt_boxes.size == 0:
+                if not dt_boxes:
                     ocr_res.append(None)
                     continue
                 tmp_res = [box.tolist() for box in dt_boxes]
@@ -973,9 +949,9 @@ def main():
         raise NotImplementedError
 
     for img_path in image_file_list:
-        img_name = os.path.basename(img_path).split(".")[0]
-        logger.info("{}{}{}".format("*" * 10, img_path, "*" * 10))
-        if args.type == "ocr":
+        img_name = os.path.basename(img_path).split('.')[0]
+        logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
+        if args.type == 'ocr':
             result = engine.ocr(
                 img_path,
                 det=args.det,
@@ -983,7 +959,7 @@ def main():
                 cls=args.use_angle_cls,
                 bin=args.binarize,
                 inv=args.invert,
-                alpha_color=args.alphacolor,
+                alpha_color=args.alphacolor
             )
             if result is not None:
                 lines = []
