@@ -46,7 +46,7 @@ ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
 
-logger = get_logger()
+from tools.infer import predict_system
 from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
@@ -517,19 +517,7 @@ def img_decode(content: bytes):
     return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
 
 
-def check_img(img, alpha_color=(255, 255, 255)):
-    """
-    Check the image data. If it is another type of image file, try to decode it into a numpy array.
-    The inference network requires three-channel images, So the following channel conversions are done
-        single channel image: Gray to RGB R←Y,G←Y,B←Y
-        four channel image: alpha_to_color
-    args:
-        img: image data
-            file format: jpg, png and other image formats that opencv can decode, as well as gif and pdf formats
-            storage type: binary image, net image file, local image file
-        alpha_color: Background color in images in RGBA format
-        return: numpy.array (h, w, 3)
-    """
+def check_img(img):
     if isinstance(img, bytes):
         img = img_decode(img)
     if isinstance(img, str):
@@ -636,8 +624,8 @@ class PaddleOCR(predict_system.TextSystem):
     def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
         OCR with PaddleOCR
-        
-        args:
+
+        args：
             img: img for OCR, support ndarray, img_path and list or ndarray
             det: use text detection or not. If False, only rec will be exec. Default is True
             rec: use text recognition or not. If False, only det will be exec. Default is True
