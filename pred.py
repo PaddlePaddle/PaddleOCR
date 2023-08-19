@@ -135,6 +135,3 @@ for l, p in zip(labels, preds):
     char_accuracy += per_accuracy
 char_accuracy = char_accuracy / len(labels)
 print("Character Based Accuracy : ", char_accuracy)
-
-
-
