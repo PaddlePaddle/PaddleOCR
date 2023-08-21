@@ -525,6 +525,7 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = {"predict": outputs[2]}
+                    self.predictor.try_shrink_memory()
             elif self.rec_algorithm == "SAR":
                 valid_ratios = np.concatenate(valid_ratios)
                 inputs = [
@@ -552,6 +553,7 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs[0]
+                    self.predictor.try_shrink_memory()
             elif self.rec_algorithm == "RobustScanner":
                 valid_ratios = np.concatenate(valid_ratios)
                 word_positions_list = np.concatenate(word_positions_list)
@@ -577,6 +579,7 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs[0]
+                    self.predictor.try_shrink_memory()
             elif self.rec_algorithm == "CAN":
                 norm_img_mask_batch = np.concatenate(norm_img_mask_batch)
                 word_label_list = np.concatenate(word_label_list)
@@ -604,6 +607,7 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs
+                    self.predictor.try_shrink_memory()
             else:
                 if self.use_onnx:
                     input_dict = {}
@@ -624,6 +628,7 @@ class TextRecognizer(object):
                         preds = outputs
                     else:
                         preds = outputs[0]
+                    self.predictor.try_shrink_memory()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
