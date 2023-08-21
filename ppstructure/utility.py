@@ -16,7 +16,7 @@ import ast
 import PIL
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
-from tools.infer.utility import draw_ocr_box_txt, str2bool, init_args as infer_args
+from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
 import math
 
 
@@ -100,6 +100,21 @@ def init_args():
         type=str2bool,
         default=False,
         help='Whether to use pdf2docx api')
+    parser.add_argument(
+        "--invert",
+        type=str2bool,
+        default=False,
+        help='Whether to invert image before processing')
+    parser.add_argument(
+        "--binarize",
+        type=str2bool,
+        default=False,
+        help='Whether to threshold binarize image before processing')
+    parser.add_argument(
+        "--alphacolor",
+        type=str2int_tuple,
+        default=(255, 255, 255),
+        help='Replacement color for the alpha channel, if the latter is present; R,G,B integers')
 
     return parser
 

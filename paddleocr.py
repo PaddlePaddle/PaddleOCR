@@ -46,7 +46,7 @@ ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
 from tools.infer import predict_system
-from ppocr.utils.utility import check_and_read, get_image_file_list
+from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
@@ -513,7 +513,7 @@ def get_model_config(type, version, model_type, lang):
 
 def img_decode(content: bytes):
     np_arr = np.frombuffer(content, dtype=np.uint8)
-    return cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
 
 
 def check_img(img):
@@ -617,14 +617,17 @@ class PaddleOCR(predict_system.TextSystem):
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(self, img, det=True, rec=True, cls=True):
+    def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
-        ocr with paddleocr
+        OCR with PaddleOCR
         args:
-            img: img for ocr, support ndarray, img_path and list or ndarray
-            det: use text detection or not. If false, only rec will be exec. Default is True
-            rec: use text recognition or not. If false, only det will be exec. Default is True
-            cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            img: img for OCR, support ndarray, img_path and list or ndarray
+            det: use text detection or not. If False, only rec will be exec. Default is True
+            rec: use text recognition or not. If False, only det will be exec. Default is True
+            cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            bin: binarize image to black and white. Default is False.
+            inv: invert image colors. Default is False.
+            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -632,7 +635,7 @@ class PaddleOCR(predict_system.TextSystem):
             exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
-                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+                'Since the angle classifier is not initialized, it will not be used during the forward process'
             )
 
         img = check_img(img)
@@ -643,10 +646,23 @@ class PaddleOCR(predict_system.TextSystem):
             imgs = img[:self.page_num]
         else:
             imgs = [img]
+
+        def preprocess_image(_image):
+            _image = alpha_to_color(_image, alpha_color)
+            if inv:
+                _image = cv2.bitwise_not(_image)
+            if bin:
+                _image = binarize_img(_image)
+            return _image
+
         if det and rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
                 dt_boxes, rec_res, _ = self.__call__(img, cls)
+                if not dt_boxes and not rec_res:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [[box.tolist(), res]
                            for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
@@ -654,7 +670,11 @@ class PaddleOCR(predict_system.TextSystem):
         elif det and not rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
+                if not dt_boxes:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
             return ocr_res
@@ -663,6 +683,7 @@ class PaddleOCR(predict_system.TextSystem):
             cls_res = []
             for idx, img in enumerate(imgs):
                 if not isinstance(img, list):
+                    img = preprocess_image(img)
                     img = [img]
                 if self.use_angle_cls and cls:
                     img, cls_res_tmp, elapse = self.text_classifier(img)
@@ -764,10 +785,15 @@ def main():
         img_name = os.path.basename(img_path).split('.')[0]
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
         if args.type == 'ocr':
-            result = engine.ocr(img_path,
-                                det=args.det,
-                                rec=args.rec,
-                                cls=args.use_angle_cls)
+            result = engine.ocr(
+                img_path,
+                det=args.det,
+                rec=args.rec,
+                cls=args.use_angle_cls,
+                bin=args.binarize,
+                inv=args.invert,
+                alpha_color=args.alphacolor
+            )
             if result is not None:
                 lines = []
                 for idx in range(len(result)):
