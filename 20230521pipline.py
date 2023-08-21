@@ -5,7 +5,7 @@ import logging
 import datetime
 from PIL import Image
 
-pdf_folder = './srcimg/'
+pdf_folder = './pdf/'
 img_folder = './img'
 
 pdfoutputimg_folder_cover = './pdftoimg_cover'
