@@ -6,6 +6,7 @@ This article provides a full-process guide for the PaddleOCR table recognition m
   - [1.1. DataSet Format](#11-dataset-format)
   - [1.2. Data Download](#12-data-download)
   - [1.3. Dataset Generation](#13-dataset-generation)
+  - [1.4 Data annotation](#14-data-annotation)
 - [2. Training](#2-training)
   - [2.1. Start Training](#21-start-training)
   - [2.2. Resume Training](#22-resume-training)
@@ -79,6 +80,10 @@ Some samples are as follows:
 |---|---|
 |Simple Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/simple.jpg)|
 |Simple Color Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/color.jpg)|
+
+## 1.4 Data annotation
+
+Data annotation can refer to[PPOCRLabel](../../PPOCRLabel/README.md)
 
 # 2. Training
 

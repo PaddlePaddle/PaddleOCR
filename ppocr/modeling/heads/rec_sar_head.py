@@ -276,7 +276,9 @@ class ParallelSARDecoder(BaseDecoder):
             hf_c = holistic_feat.shape[-1]
             holistic_feat = paddle.expand(
                 holistic_feat, shape=[bsz, seq_len, hf_c])
-            y = self.prediction(paddle.concat((y, attn_feat, holistic_feat), 2))
+            y = self.prediction(
+                paddle.concat((y, attn_feat.astype(y.dtype),
+                               holistic_feat.astype(y.dtype)), 2))
         else:
             y = self.prediction(attn_feat)
         # bsz * (seq_len + 1) * num_classes
@@ -298,7 +300,7 @@ class ParallelSARDecoder(BaseDecoder):
 
         lab_embedding = self.embedding(label)
         # bsz * seq_len * emb_dim
-        out_enc = out_enc.unsqueeze(1)
+        out_enc = out_enc.unsqueeze(1).astype(lab_embedding.dtype)
         # bsz * 1 * emb_dim
         in_dec = paddle.concat((out_enc, lab_embedding), axis=1)
         # bsz * (seq_len + 1) * C

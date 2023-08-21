@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context=".ocr.OcrMainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWindow">
+
+        <com.baidu.paddle.fastdeploy.app.ui.layout.ActionBarLayout
+            android:id="@+id/action_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back_in_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cropToPadding="true"
+                android:paddingLeft="40px"
+                android:paddingTop="60px"
+                android:paddingRight="60px"
+                android:paddingBottom="40px"
+                android:src="@drawable/back_btn" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/action_takepicture_btn"
+                    style="@style/action_btn_selected"
+                    android:layout_width="300px"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_take_photo"
+                    android:textAlignment="center"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/action_realtime_btn"
+                    style="@style/action_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_bar_realtime"
+                    android:textAlignment="center" />
+            </LinearLayout>
+        </com.baidu.paddle.fastdeploy.app.ui.layout.ActionBarLayout>
+
+        <com.baidu.paddle.fastdeploy.app.ui.view.CameraSurfaceView
+            android:id="@+id/sv_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/contral"
+            android:layout_below="@+id/action_bar_main"
+            android:layout_centerInParent="true" />
+
+        <ImageView
+            android:id="@+id/iv_select"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="145dp"
+            android:background="@drawable/album_btn"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginRight="30dp"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/small_font_size" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_bar_height"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorTopBar">
+
+            <ImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/btn_settings" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/contral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorBottomBar"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_bar_top_margin"
+                android:orientation="vertical"></LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/large_button_height">
+
+                <ImageButton
+                    android:id="@+id/btn_switch"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="60dp"
+                    android:background="#00000000"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/switch_side_btn" />
+
+                <ImageButton
+                    android:id="@+id/btn_shutter"
+                    android:layout_width="@dimen/large_button_width"
+                    android:layout_height="@dimen/large_button_height"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/take_picture_btn" />
+
+                <ImageView
+                    android:id="@+id/realtime_toggle_btn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="60dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/realtime_stop_btn" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bottom_bar_bottom_margin"
+                android:orientation="vertical"></LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

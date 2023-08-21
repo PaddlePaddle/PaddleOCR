@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+        <com.baidu.paddle.fastdeploy.app.ui.layout.ActionBarLayout
+            android:id="@+id/action_bar_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/back_in_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:cropToPadding="true"
+                android:paddingLeft="40px"
+                android:paddingTop="60px"
+                android:paddingRight="60px"
+                android:paddingBottom="40px"
+                android:src="@drawable/back_btn" />
+
+            <TextView
+                android:id="@+id/model_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50px"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/action_btn_text_size" />
+        </com.baidu.paddle.fastdeploy.app.ui.layout.ActionBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="700px">
+
+            <ImageView
+                android:id="@+id/result_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bk_result_image_padding" />
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40px"
+            android:layout_marginTop="26px"
+            android:layout_marginBottom="20px"
+            android:text="@string/result_label"
+            android:textColor="@color/bk_black"
+            android:textSize="56px"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/result_seekbar_section"
+            android:layout_width="match_parent"
+            android:layout_height="130px"
+            android:layout_marginLeft="@dimen/result_list_padding_lr"
+            android:layout_marginRight="@dimen/result_list_padding_lr"
+            android:layout_marginBottom="@dimen/result_list_gap_width"
+            android:background="@drawable/result_page_border_section_bk"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:paddingLeft="30px"
+                android:text="@string/result_table_header_confidence"
+                android:textColor="@color/table_result_tableheader_text_color"
+                android:textSize="@dimen/result_list_view_text_size" />
+
+            <SeekBar
+                android:id="@+id/confidence_seekbar"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:focusable="false"
+                android:maxHeight="8px"
+                android:progressDrawable="@drawable/seekbar_progress_result"
+                android:splitTrack="false"
+                android:thumb="@drawable/seekbar_handle" />
+
+            <TextView
+                android:id="@+id/seekbar_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:paddingRight="30px"
+                android:textSize="@dimen/result_list_view_text_size"
+
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/result_list_padding_lr"
+            android:layout_marginRight="@dimen/result_list_padding_lr"
+            android:layout_marginBottom="@dimen/result_list_gap_width"
+            android:background="@drawable/result_page_border_section_bk"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/list_result_view_tablehead_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/result_table_header_index"
+                android:textColor="@color/table_result_tableheader_text_color" />
+
+            <TextView
+                style="@style/list_result_view_tablehead_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/result_table_header_name"
+                android:textColor="@color/table_result_tableheader_text_color" />
+
+            <TextView
+                style="@style/list_result_view_tablehead_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:gravity="right"
+                android:text="@string/result_table_header_confidence"
+                android:textColor="@color/table_result_tableheader_text_color" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15px"
+                android:paddingLeft="@dimen/result_list_padding_lr"
+                android:paddingRight="@dimen/result_list_padding_lr">
+
+                <com.baidu.paddle.fastdeploy.app.ui.view.ResultListView
+                    android:id="@+id/result_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="700px"
+                    android:divider="#FFFFFF"
+                    android:dividerHeight="@dimen/result_list_gap_width"></com.baidu.paddle.fastdeploy.app.ui.view.ResultListView>
+            </ScrollView>
+
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

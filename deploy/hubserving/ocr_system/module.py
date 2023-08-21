@@ -130,7 +130,7 @@ class OCRSystem(hub.Module):
                 rec_res_final.append({
                     'text': text,
                     'confidence': float(score),
-                    'text_region': dt_boxes[dno].astype(np.int).tolist()
+                    'text_region': dt_boxes[dno].astype(np.int32).tolist()
                 })
             all_results.append(rec_res_final)
         return all_results

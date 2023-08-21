@@ -22,6 +22,7 @@ import cv2
 import paddle
 
 import os
+from ppocr.utils.utility import check_install
 import sys
 
 
@@ -78,11 +79,12 @@ class EASTPostProcess(object):
         boxes[:, 8] = score_map[xy_text[:, 0], xy_text[:, 1]]
 
         try:
+            check_install('lanms', 'lanms-nova')
             import lanms
             boxes = lanms.merge_quadrangle_n9(boxes, nms_thresh)
         except:
             print(
-                'you should install lanms by pip3 install lanms-nova to speed up nms_locality'
+                'You should install lanms by pip3 install lanms-nova to speed up nms_locality'
             )
             boxes = nms_locality(boxes.astype(np.float64), nms_thresh)
         if boxes.shape[0] == 0:

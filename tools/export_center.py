@@ -24,7 +24,7 @@ __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
 
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
@@ -40,6 +40,7 @@ def main():
         'data_dir']
     config['Eval']['dataset']['label_file_list'] = config['Train']['dataset'][
         'label_file_list']
+    set_signal_handlers()
     eval_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     # build post process

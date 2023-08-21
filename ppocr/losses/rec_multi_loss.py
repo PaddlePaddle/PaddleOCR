@@ -21,6 +21,7 @@ from paddle import nn
 
 from .rec_ctc_loss import CTCLoss
 from .rec_sar_loss import SARLoss
+from .rec_nrtr_loss import NRTRLoss
 
 
 class MultiLoss(nn.Layer):
@@ -30,7 +31,6 @@ class MultiLoss(nn.Layer):
         self.loss_list = kwargs.pop('loss_config_list')
         self.weight_1 = kwargs.get('weight_1', 1.0)
         self.weight_2 = kwargs.get('weight_2', 1.0)
-        self.gtc_loss = kwargs.get('gtc_loss', 'sar')
         for loss_info in self.loss_list:
             for name, param in loss_info.items():
                 if param is not None:
@@ -48,6 +48,9 @@ class MultiLoss(nn.Layer):
                                  batch[:2] + batch[3:])['loss'] * self.weight_1
             elif name == 'SARLoss':
                 loss = loss_func(predicts['sar'],
+                                 batch[:1] + batch[2:])['loss'] * self.weight_2
+            elif name == 'NRTRLoss':
+                loss = loss_func(predicts['nrtr'],
                                  batch[:1] + batch[2:])['loss'] * self.weight_2
             else:
                 raise NotImplementedError(

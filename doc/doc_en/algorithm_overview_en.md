@@ -30,6 +30,7 @@ Supported text detection algorithms (Click the link to get the tutorial):
 - [x]  [PSENet](./algorithm_det_psenet_en.md)
 - [x]  [FCENet](./algorithm_det_fcenet_en.md)
 - [x]  [DRRG](./algorithm_det_drrg_en.md)
+- [x]  [CT](./algorithm_det_ct_en.md)
 
 On the ICDAR2015 dataset, the text detection result is as follows:
 
@@ -40,8 +41,8 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 |DB|ResNet50_vd|86.41%|78.72%|82.38%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_db_v2.0_train.tar)|
 |DB|MobileNetV3|77.29%|73.08%|75.12%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_db_v2.0_train.tar)|
 |SAST|ResNet50_vd|91.39%|83.77%|87.42%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)|
-|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
-|PSE|MobileNetV3|82.20%|70.48%|75.89%|[trianed model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
+|PSE|ResNet50_vd|85.81%|79.53%|82.55%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_vd_pse_v2.0_train.tar)|
+|PSE|MobileNetV3|82.20%|70.48%|75.89%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_mv3_pse_v2.0_train.tar)|
 |DB++|ResNet50|90.89%|82.66%|86.58%|[pretrained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/ResNet50_dcn_asf_synthtext_pretrained.pdparams)/[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/en_det/det_r50_db%2B%2B_icdar15_train.tar)|
 
 On Total-Text dataset, the text detection result is as follows:
@@ -49,6 +50,7 @@ On Total-Text dataset, the text detection result is as follows:
 |Model|Backbone|Precision|Recall|Hmean|Download link|
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
+|CT|ResNet18_vd|88.68%|81.70%|85.05%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)|
 
 On CTW1500 dataset, the text detection result is as follows:
 
@@ -105,36 +107,6 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
-
-<a name="13"></a>
-
-### 1.3 Text Super-Resolution Algorithms
-
-Supported text super-resolution algorithms (Click the link to get the tutorial):
-- [x]  [Text Gestalt](./algorithm_sr_gestalt_en.md)
-- [x]  [Text Telescope](./algorithm_sr_telescope_en.md)
-
-On the TextZoom public dataset, the effect of the algorithm is as follows:
-
-|Model|Backbone|PSNR_Avg|SSIM_Avg|Config|Download link|
-|---|---|---|---|---|---|
-|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](../../configs/sr/sr_tsrn_transformer_strock.yml)|[trained model](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
-|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[trained model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
-
-<a name="14"></a>
-
-### 1.4 Formula Recognition Algorithm
-
-Supported formula recognition algorithms (Click the link to get the tutorial):
-
-- [x]  [CAN](./algorithm_rec_can_en.md)
-
-On the CROHME handwritten formula dataset, the effect of the algorithm is as follows:
-
-|Model    |Backbone|Config|ExpRate|Download link|
-| ----- | ----- | ----- | ----- | ----- |
-|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
-
 
 <a name="2"></a>
 

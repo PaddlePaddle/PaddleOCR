@@ -69,6 +69,8 @@ class BaseDataAugmentation(object):
         self.jitter_prob = jitter_prob
         self.blur_prob = blur_prob
         self.hsv_aug_prob = hsv_aug_prob
+        # for GaussianBlur
+        self.fil = cv2.getGaussianKernel(ksize=5, sigma=1, ktype=cv2.CV_32F)
 
     def __call__(self, data):
         img = data['image']
@@ -78,7 +80,8 @@ class BaseDataAugmentation(object):
             img = get_crop(img)
 
         if random.random() <= self.blur_prob:
-            img = blur(img)
+            # GaussianBlur
+            img = cv2.sepFilter2D(img, -1, self.fil, self.fil)
 
         if random.random() <= self.hsv_aug_prob:
             img = hsv_aug(img)
@@ -216,17 +219,20 @@ class RecResizeImg(object):
     def __init__(self,
                  image_shape,
                  infer_mode=False,
+                 eval_mode=False,
                  character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
                  padding=True,
                  **kwargs):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
+        self.eval_mode = eval_mode
         self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):
         img = data['image']
-        if self.infer_mode and self.character_dict_path is not None:
+        if self.eval_mode or (self.infer_mode and
+                              self.character_dict_path is not None):
             norm_img, valid_ratio = resize_norm_img_chinese(img,
                                                             self.image_shape)
         else:
@@ -400,7 +406,7 @@ class GrayRecResizeImg(object):
     def __init__(self,
                  image_shape,
                  resize_type,
-                 inter_type='Image.ANTIALIAS',
+                 inter_type='Image.LANCZOS',
                  scale=True,
                  padding=False,
                  **kwargs):

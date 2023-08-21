@@ -143,7 +143,9 @@ class TextDetector(object):
 
         if self.use_onnx:
             img_h, img_w = self.input_tensor.shape[2:]
-            if img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
+            if isinstance(img_h, str) or isinstance(img_w, str):
+                pass
+            elif img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
                 pre_process_list[0] = {
                     'DetResizeForTest': {
                         'image_shape': [img_h, img_w]

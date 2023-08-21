@@ -15,7 +15,9 @@
 import json
 import numpy as np
 import scipy.io as io
-import Polygon as plg
+
+from ppocr.utils.utility import check_install
+
 from ppocr.utils.e2e_metric.polygon_fast import iod, area_of_intersection, area
 
 
@@ -275,6 +277,8 @@ def get_score_C(gt_label, text, pred_bboxes):
     """
     get score for CentripetalText (CT) prediction.
     """
+    check_install("Polygon", "Polygon3")
+    import Polygon as plg
 
     def gt_reading_mod(gt_label, text):
         """This helper reads groundtruths from mat files"""

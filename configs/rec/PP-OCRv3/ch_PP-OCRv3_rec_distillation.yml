@@ -19,6 +19,7 @@ Global:
   use_space_char: true
   distributed: true
   save_res_path: ./output/rec/predicts_ppocrv3_distillation.txt
+  d2s_train_image_shape: [3, 48, -1]
 
 
 Optimizer:
@@ -45,13 +46,14 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance
         scale: 0.5
         last_conv_stride: [1, 2]
         last_pool_type: avg
+        last_pool_kernel_size: [2, 2]
       Head:
         name: MultiHead
         head_list:
@@ -72,13 +74,14 @@ Architecture:
       freeze_params: false
       return_all_feats: true
       model_type: *model_type
-      algorithm: SVTR
+      algorithm: SVTR_LCNet
       Transform:
       Backbone:
         name: MobileNetV1Enhance
         scale: 0.5
         last_conv_stride: [1, 2]
         last_pool_type: avg
+        last_pool_kernel_size: [2, 2]
       Head:
         name: MultiHead
         head_list:

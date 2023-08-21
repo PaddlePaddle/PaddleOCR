@@ -10,7 +10,7 @@ Global:
   - 0
   - 400
   cal_metric_during_train: false
-  pretrained_model: null
+  pretrained_model: https://paddleocr.bj.bcebos.com/pretrained/MobileNetV3_large_x0_5_pretrained.pdparams
   checkpoints: null
   save_inference_dir: null
   use_visualdl: false

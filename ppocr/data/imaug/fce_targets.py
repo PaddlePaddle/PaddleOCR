@@ -22,9 +22,11 @@ from numpy.fft import fft
 from numpy.linalg import norm
 import sys
 
+
 def vector_slope(vec):
     assert len(vec) == 2
     return abs(vec[1] / (vec[0] + 1e-8))
+
 
 class FCENetTargets:
     """Generate the ground truth targets of FCENet: Fourier Contour Embedding
@@ -107,7 +109,9 @@ class FCENetTargets:
         for i in range(1, n):
             current_line_len = i * delta_length
 
-            while current_edge_ind + 1 < len(length_cumsum) and current_line_len >= length_cumsum[current_edge_ind + 1]:
+            while current_edge_ind + 1 < len(
+                    length_cumsum) and current_line_len >= length_cumsum[
+                        current_edge_ind + 1]:
                 current_edge_ind += 1
 
             current_edge_end_shift = current_line_len - length_cumsum[
@@ -239,10 +243,9 @@ class FCENetTargets:
             head_inds = [head_start, head_end]
             tail_inds = [tail_start, tail_end]
         else:
-            if vector_slope(points[1] - points[0]) + vector_slope(
-                    points[3] - points[2]) < vector_slope(points[
-                        2] - points[1]) + vector_slope(points[0] - points[
-                            3]):
+            if vector_slope(points[1] - points[0]) + vector_slope(points[
+                    3] - points[2]) < vector_slope(points[2] - points[
+                        1]) + vector_slope(points[0] - points[3]):
                 horizontal_edge_inds = [[0, 1], [2, 3]]
                 vertical_edge_inds = [[3, 0], [1, 2]]
             else:
@@ -582,7 +585,7 @@ class FCENetTargets:
         lv_ignore_polys = [[] for i in range(len(lv_size_divs))]
         level_maps = []
         for poly in text_polys:
-            polygon = np.array(poly, dtype=np.int).reshape((1, -1, 2))
+            polygon = np.array(poly, dtype=np.int32).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
 
@@ -591,7 +594,7 @@ class FCENetTargets:
                     lv_text_polys[ind].append(poly / lv_size_divs[ind])
 
         for ignore_poly in ignore_polys:
-            polygon = np.array(ignore_poly, dtype=np.int).reshape((1, -1, 2))
+            polygon = np.array(ignore_poly, dtype=np.int32).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
 
