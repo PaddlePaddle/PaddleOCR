@@ -408,6 +408,7 @@ def parse_args(mMain=True):
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--type", type=str, default='ocr')
+    parser.add_argument("--savefile", type=str2bool, default=False)
     parser.add_argument(
         "--ocr_version",
         type=str,
@@ -619,7 +620,7 @@ class PaddleOCR(predict_system.TextSystem):
     def ocr(self, img, det=True, rec=True, cls=True):
         """
         ocr with paddleocr
-        args：
+        args:
             img: img for ocr, support ndarray, img_path and list or ndarray
             det: use text detection or not. If false, only rec will be exec. Default is True
             rec: use text recognition or not. If false, only det will be exec. Default is True
@@ -768,10 +769,25 @@ def main():
                                 rec=args.rec,
                                 cls=args.use_angle_cls)
             if result is not None:
+                lines = []
                 for idx in range(len(result)):
                     res = result[idx]
                     for line in res:
                         logger.info(line)
+                        val = '['
+                        for box in line[0]:
+                            val += str(box[0]) + ',' + str(box[1]) + ','
+
+                        val = val[:-1]
+                        val += '],' + line[1][0] + ',' + str(line[1][1]) + '\n'
+                        lines.append(val)
+                if args.savefile:
+                    if os.path.exists(args.output) is False:
+                        os.mkdir(args.output)
+                    outfile = args.output + '/' + img_name + '.txt'
+                    with open(outfile,'w',encoding='utf-8') as f:
+                        f.writelines(lines)
+                     
         elif args.type == 'structure':
             img, flag_gif, flag_pdf = check_and_read(img_path)
             if not flag_gif and not flag_pdf:
