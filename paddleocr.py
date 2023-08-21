@@ -50,7 +50,6 @@ def _import_file(module_name, file_path, make_importable=False):
         sys.modules[module_name] = module
     return module
 
-
 tools = _import_file(
     'tools', os.path.join(__dir__, 'tools/__init__.py'), make_importable=True)
 ppocr = importlib.import_module('ppocr', 'paddleocr')
@@ -58,6 +57,9 @@ ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
 from tools.infer import predict_system
 from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
+
+logger = get_logger()
+from ppocr.utils.utility import check_and_read, get_image_file_list
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
