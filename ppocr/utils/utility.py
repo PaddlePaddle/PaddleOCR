@@ -88,6 +88,13 @@ def get_image_file_list(img_file, infer_list=None):
                 if os.path.isfile(file_path) and _check_image_file(file_path):
                     imgs_lists.append(file_path)
 
+    if os.path.isfile(img_file) and _check_image_file(img_file):
+        imgs_lists.append(img_file)
+    elif os.path.isdir(img_file):
+        for single_file in os.listdir(img_file):
+            file_path = os.path.join(img_file, single_file)
+            if os.path.isfile(file_path) and _check_image_file(file_path):
+                imgs_lists.append(file_path)
     if len(imgs_lists) == 0:
         raise Exception("not found any img file in {}".format(img_file))
     imgs_lists = sorted(imgs_lists)
@@ -136,7 +143,7 @@ def alpha_to_color(img, alpha_color=(255, 255, 255)):
 
 
 def check_and_read(img_path):
-    if os.path.basename(img_path)[-3:].lower() == "gif":
+    if os.path.basename(img_path)[-3:].lower() == 'gif':
         gif = cv2.VideoCapture(img_path)
         ret, frame = gif.read()
         if not ret:
@@ -147,10 +154,8 @@ def check_and_read(img_path):
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True, False
-    elif os.path.basename(img_path)[-3:].lower() == "pdf":
-        from paddle.utils import try_import
-
-        fitz = try_import("fitz")
+    elif os.path.basename(img_path)[-3:].lower() == 'pdf':
+        import fitz
         from PIL import Image
 
         imgs = []
