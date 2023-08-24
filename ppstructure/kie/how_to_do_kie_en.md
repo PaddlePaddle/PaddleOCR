@@ -21,7 +21,7 @@ For the document images in a specific scene, the position and layout of the key 
 
 The KIE in the document image generally contains 2 subtasks, which is as shown follows.
 
-* (1) SER: semantic entity recognition, which classifies each detected textline, such as dividing it into name and ID card. As shown in the red boxes in the following figure.
+* (1) SER: semantic entity recognition, which classifies each detected textline, such as dividing it into name and ID No. As shown in the red boxes in the following figure.
 
 * (2) RE: relationship extraction, which matches the question and answer based on SER results. As shown in the figure below, the yellow arrows match the question and answer.
 
