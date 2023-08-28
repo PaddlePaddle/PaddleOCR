@@ -46,7 +46,7 @@ Architecture:
     use_lang: True
     iter_size: 3
     max_length: *max_text_length
-    image_shape: [ &h 32, &w 128 ]  # [ h, w ]
+    image_size: [ &h 32, &w 128 ]  # [ h, w ]
 
 
 Loss:

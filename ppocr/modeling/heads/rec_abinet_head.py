@@ -183,10 +183,10 @@ class ABINetHead(nn.Layer):
                  max_length=25,
                  use_lang=False,
                  iter_size=1,
-                 image_shape=(32, 128)):
+                 image_size=(32, 128)):
         super().__init__()
         self.max_length = max_length + 1
-        h, w = image_shape[0] // 4, image_shape[1] // 4
+        h, w = image_size[0] // 4, image_size[1] // 4
         self.pos_encoder = PositionalEncoding(
             dropout=0.1, dim=d_model, max_len=h * w)
         self.encoder = nn.LayerList([
