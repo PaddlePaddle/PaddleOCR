@@ -59,7 +59,7 @@ class PubTabDataSet(Dataset):
             file_list = [file_list]
         data_lines = []
         for idx, file in enumerate(file_list):
-            with open(file, "rb") as f:
+            with open(file, "rb", encoding="utf-8") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
                     random.seed(self.seed)
@@ -112,7 +112,7 @@ class PubTabDataSet(Dataset):
                 'file_name': file_name
             }
 
-            with open(data['img_path'], 'rb') as f:
+            with open(data['img_path'], 'rb', encoding="utf-8") as f:
                 img = f.read()
                 data['image'] = img
             outs = transform(data, self.ops)
