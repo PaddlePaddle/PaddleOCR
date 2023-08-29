@@ -745,6 +745,8 @@ class DistillationDilaDBLoss(DBLoss):
             # dilation to teacher prediction
             dilation_w = np.array([[1, 1], [1, 1]])
             th_shrink_maps = tch_preds[:, 0, :, :]
+            if hasattr(paddle.Tensor, "contiguous"):
+                th_shrink_maps = th_shrink_maps.contiguous()
             th_shrink_maps = th_shrink_maps.numpy() > 0.3  # thresh = 0.3 
             dilate_maps = np.zeros_like(th_shrink_maps).astype(np.float32)
             for i in range(th_shrink_maps.shape[0]):
