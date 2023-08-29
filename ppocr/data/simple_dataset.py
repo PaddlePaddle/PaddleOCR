@@ -61,12 +61,16 @@ class SimpleDataSet(Dataset):
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == 'train':
             try:
-                border_map_id = [index
-                    for index, dictionary in enumerate(dataset_config['transforms'])
-                    if 'MakeBorderMap' in dictionary][0]
-                shrink_map_id = [index
-                    for index, dictionary in enumerate(dataset_config['transforms'])
-                    if 'MakeShrinkMap' in dictionary][0]
+                border_map_id = [
+                    index
+                    for index, dictionary in enumerate(dataset_config[
+                        'transforms']) if 'MakeBorderMap' in dictionary
+                ][0]
+                shrink_map_id = [
+                    index
+                    for index, dictionary in enumerate(dataset_config[
+                        'transforms']) if 'MakeShrinkMap' in dictionary
+                ][0]
                 dataset_config['transforms'][border_map_id]['MakeBorderMap'][
                     'epoch'] = seed if seed is not None else 0
                 dataset_config['transforms'][shrink_map_id]['MakeShrinkMap'][
@@ -80,7 +84,7 @@ class SimpleDataSet(Dataset):
             file_list = [file_list]
         data_lines = []
         for idx, file in enumerate(file_list):
-            with open(file, "rb") as f:
+            with open(file, "rb", encoding="utf-8") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
                     random.seed(self.seed)
@@ -126,7 +130,7 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 continue
-            with open(data['img_path'], 'rb') as f:
+            with open(data['img_path'], 'rb', encoding="utf-8") as f:
                 img = f.read()
                 data['image'] = img
             data = transform(data, load_data_ops)
@@ -152,7 +156,7 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
+            with open(data['img_path'], 'rb', encoding="utf-8") as f:
                 img = f.read()
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()
@@ -246,7 +250,7 @@ class MultiScaleDataSet(SimpleDataSet):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
+            with open(data['img_path'], 'rb', encoding="utf-8") as f:
                 img = f.read()
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()

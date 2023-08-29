@@ -62,7 +62,7 @@ class PGDataSet(Dataset):
             file_list = [file_list]
         data_lines = []
         for idx, file in enumerate(file_list):
-            with open(file, "rb") as f:
+            with open(file, "rb", encoding="utf-8") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
                     random.seed(self.seed)
@@ -89,7 +89,7 @@ class PGDataSet(Dataset):
             data = {'img_path': img_path, 'label': label, 'img_id': img_id}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
+            with open(data['img_path'], 'rb', encoding="utf-8") as f:
                 img = f.read()
                 data['image'] = img
             outs = transform(data, self.ops)
