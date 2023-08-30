@@ -801,18 +801,8 @@ class TextRecognizer(object):
                         preds = outputs
                     else:
                         preds = outputs[0]
-            if self.postprocess_params["name"] == "CTCLabelDecode":
-                rec_result = self.postprocess_op(
-                    preds,
-                    return_word_box=self.return_word_box,
-                    wh_ratio_list=wh_ratio_list,
-                    max_wh_ratio=max_wh_ratio,
-                )
-            elif self.postprocess_params["name"] == "LaTeXOCRDecode":
-                preds = [p.reshape([-1]) for p in preds]
-                rec_result = self.postprocess_op(preds)
-            else:
-                rec_result = self.postprocess_op(preds)
+                    self.predictor.try_shrink_memory()
+            rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
             if self.benchmark:
