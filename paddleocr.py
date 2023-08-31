@@ -513,7 +513,7 @@ def get_model_config(type, version, model_type, lang):
 
 def img_decode(content: bytes):
     np_arr = np.frombuffer(content, dtype=np.uint8)
-    return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
+    return cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
 
 def check_img(img):
