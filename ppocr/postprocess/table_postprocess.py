@@ -26,7 +26,7 @@ class TableLabelDecode(AttnLabelDecode):
                  merge_no_span_structure=False,
                  **kwargs):
         dict_character = []
-        with open(character_dict_path, "rb", encoding="utf-8") as fin:
+        with open(character_dict_path, "rb") as fin:
             lines = fin.readlines()
             for line in lines:
                 line = line.decode('utf-8').strip("\n").strip("\r\n")
