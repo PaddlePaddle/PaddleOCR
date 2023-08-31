@@ -118,7 +118,7 @@ class BaseRecLabelEncode(object):
             self.lower = True
         else:
             self.character_str = []
-            with open(character_dict_path, "rb", encoding="utf-8") as fin:
+            with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
                     line = line.decode('utf-8').strip("\n").strip("\r\n")
@@ -278,7 +278,7 @@ class KieLabelEncode(object):
                 char = line.strip()
                 self.dict[char] = idx
                 idx += 1
-        with open(class_path, "r", encoding="utf-8") as fin:
+        with open(class_path, "r") as fin:
             lines = fin.readlines()
             for idx, line in enumerate(lines):
                 line = line.strip("\n")
@@ -640,7 +640,7 @@ class TableLabelEncode(AttnLabelEncode):
         self.replace_empty_cell_token = replace_empty_cell_token
 
         dict_character = []
-        with open(character_dict_path, "rb", encoding="utf-8") as fin:
+        with open(character_dict_path, "rb") as fin:
             lines = fin.readlines()
             for line in lines:
                 line = line.decode('utf-8').strip("\n").strip("\r\n")
@@ -1380,7 +1380,7 @@ class SRLabelEncode(BaseRecLabelEncode):
         super(SRLabelEncode, self).__init__(max_text_length,
                                             character_dict_path, use_space_char)
         self.dic = {}
-        with open(character_dict_path, 'r', encoding="utf-8") as fin:
+        with open(character_dict_path, 'r') as fin:
             for line in fin.readlines():
                 line = line.strip()
                 character, sequence = line.split()
