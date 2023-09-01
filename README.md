@@ -97,4 +97,164 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 📄 许可证书
 
-本项目的发布受 [Apache License Version 2.0](./LICENSE) 许可认证, 欢迎大家使用和贡献。
+| 模型简介                              | 模型名称                | 推荐场景        | 检测模型                                                     | 方向分类器                                                   | 识别模型                                                     |
+| ------------------------------------- | ----------------------- | --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 中英文超轻量PP-OCRv4模型（15.8M）     | ch_PP-OCRv4_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_train.tar) |
+| 中英文超轻量PP-OCRv3模型（16.2M）     | ch_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
+| 英文超轻量PP-OCRv3模型（13.4M）     | en_PP-OCRv3_xx          | 移动端&服务器端 | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar) | [推理模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
+
+- 超轻量OCR系列更多模型下载（包括多语言），可以参考[PP-OCR系列模型下载](./doc/doc_ch/models_list.md)，文档分析相关模型参考[PP-Structure系列模型下载](./ppstructure/docs/models_list.md)
+
+### PaddleOCR场景应用模型
+
+| 行业 | 类别         | 亮点                               | 文档说明                                                     | 模型下载                                      |
+| ---- | ------------ | ---------------------------------- | ------------------------------------------------------------ | --------------------------------------------- |
+| 制造 | 数码管识别   | 数码管数据合成、漏识别调优         | [光功率计数码管字符识别](./applications/光功率计数码管字符识别/光功率计数码管字符识别.md) | [下载链接](./applications/README.md#模型下载) |
+| 金融 | 通用表单识别 | 多模态通用表单结构化提取           | [多模态表单识别](./applications/多模态表单识别.md)           | [下载链接](./applications/README.md#模型下载) |
+| 交通 | 车牌识别     | 多角度图像处理、轻量模型、端侧部署 | [轻量级车牌识别](./applications/轻量级车牌识别.md)           | [下载链接](./applications/README.md#模型下载) |
+
+- 更多制造、金融、交通行业的主要OCR垂类应用模型（如电表、液晶屏、高精度SVTR模型等），可参考[场景应用模型下载](./applications)
+
+<a name="文档教程"></a>
+
+## 📖 文档教程
+
+- [运行环境准备](./doc/doc_ch/environment.md)
+- [PP-OCR文本检测识别🔥](./doc/doc_ch/ppocr_introduction.md)
+    - [快速开始](./doc/doc_ch/quickstart.md)
+    - [模型库](./doc/doc_ch/models_list.md)
+    - [模型训练](./doc/doc_ch/training.md)
+        - [文本检测](./doc/doc_ch/detection.md)
+        - [文本识别](./doc/doc_ch/recognition.md)
+        - [文本方向分类器](./doc/doc_ch/angle_class.md)
+    - 模型压缩
+        - [模型量化](./deploy/slim/quantization/README.md)
+        - [模型裁剪](./deploy/slim/prune/README.md)
+        - [知识蒸馏](./doc/doc_ch/knowledge_distillation.md)
+    - [推理部署](./deploy/README_ch.md)
+        - [基于Python预测引擎推理](./doc/doc_ch/inference_ppocr.md)
+        - [基于C++预测引擎推理](./deploy/cpp_infer/readme_ch.md)
+        - [服务化部署](./deploy/pdserving/README_CN.md)
+        - [端侧部署](./deploy/lite/readme.md)
+        - [Paddle2ONNX模型转化与预测](./deploy/paddle2onnx/readme.md)
+        - [云上飞桨部署工具](./deploy/paddlecloud/README.md)
+        - [Benchmark](./doc/doc_ch/benchmark.md)
+- [PP-Structure文档分析🔥](./ppstructure/README_ch.md)
+    - [快速开始](./ppstructure/docs/quickstart.md)
+    - [模型库](./ppstructure/docs/models_list.md)
+    - [模型训练](./doc/doc_ch/training.md)
+        - [版面分析](./ppstructure/layout/README_ch.md)
+        - [表格识别](./ppstructure/table/README_ch.md)
+        - [关键信息提取](./ppstructure/kie/README_ch.md)
+    - [推理部署](./deploy/README_ch.md)
+        - [基于Python预测引擎推理](./ppstructure/docs/inference.md)
+        - [基于C++预测引擎推理](./deploy/cpp_infer/readme_ch.md)
+        - [服务化部署](./deploy/hubserving/readme.md)
+- [前沿算法与模型🚀](./doc/doc_ch/algorithm_overview.md)
+    - [文本检测算法](./doc/doc_ch/algorithm_overview.md)
+    - [文本识别算法](./doc/doc_ch/algorithm_overview.md)
+    - [端到端OCR算法](./doc/doc_ch/algorithm_overview.md)
+    - [表格识别算法](./doc/doc_ch/algorithm_overview.md)
+    - [关键信息抽取算法](./doc/doc_ch/algorithm_overview.md)
+    - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
+- [场景应用](./applications)
+- 数据标注与合成
+    - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
+    - [数据合成工具Style-Text](./StyleText/README_ch.md)
+    - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
+    - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
+- 数据集
+    - [通用中英文OCR数据集](doc/doc_ch/dataset/datasets.md)
+    - [手写中文OCR数据集](doc/doc_ch/dataset/handwritten_datasets.md)
+    - [垂类多语言OCR数据集](doc/doc_ch/dataset/vertical_and_multilingual_datasets.md)
+    - [版面分析数据集](doc/doc_ch/dataset/layout_datasets.md)
+    - [表格识别数据集](doc/doc_ch/dataset/table_datasets.md)
+    - [关键信息提取数据集](doc/doc_ch/dataset/kie_datasets.md)
+- [代码组织结构](./doc/doc_ch/tree.md)
+- [效果展示](#效果展示)
+- [《动手学OCR》电子书📚](./doc/doc_ch/ocr_book.md)
+- [开源社区](#开源社区)
+- FAQ
+    - [通用问题](./doc/doc_ch/FAQ.md)
+    - [PaddleOCR实战问题](./doc/doc_ch/FAQ.md)
+- [参考文献](./doc/doc_ch/reference.md)
+- [许可证书](#许可证书)
+
+
+<a name="效果展示"></a>
+
+## 👀 效果展示 [more](./doc/doc_ch/visualization.md)
+
+<details open>
+<summary>PP-OCRv3 中文模型</summary>
+
+<div align="center">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+</div>
+
+</details>
+
+
+<details open>
+<summary>PP-OCRv3 英文模型</summary>
+
+<div align="center">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
+</div>
+
+</details>
+
+
+<details open>
+<summary>PP-OCRv3 多语言模型</summary>
+
+<div align="center">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
+</div>
+
+</details>
+
+<details open>
+<summary>PP-Structure 文档分析</summary>
+
+- 版面分析+表格识别  
+<div align="center">
+    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
+</div>
+
+- SER（语义实体识别）  
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
+</div>
+
+- RE（关系提取）
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
+</div>
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
+</div>
+
+</details>
+
+<a name="许可证书"></a>
+
+## 许可证书
+本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
