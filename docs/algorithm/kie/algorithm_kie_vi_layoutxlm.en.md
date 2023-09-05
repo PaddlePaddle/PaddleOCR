@@ -17,7 +17,10 @@ On XFUND_zh dataset, the algorithm reproduction Hmean is as follows.
 
 ## 2. Environment
 
-Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](../../ppocr/blog/clone.en.md)to clone the project code.
+## 2. Environment
+
+Please refer to ["Environment Preparation"](./environment_en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
+
 
 ## 3. Model Training / Evaluation / Prediction
 
