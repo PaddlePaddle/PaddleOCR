@@ -21,7 +21,8 @@ Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to co
 
 ## 3. Model Training / Evaluation / Prediction
 
-Please refer to [KIE tutorial](../../ppocr/model_train/kie.en.md). PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different models.
+Please refer to [KIE tutorial](./kie_en.md). PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different models.
+
 
 ## 4. Inference and Deployment
 
