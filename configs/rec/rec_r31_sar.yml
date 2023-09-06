@@ -14,7 +14,7 @@ Global:
   use_visualdl: False
   infer_img: 
   # for data or label process
-  character_dict_path: ppocr/utils/dict90.txt
+  character_dict_path:  /ssd3/suzejia/newAlgOCR/ppocr/utils/en_dict.txt
   max_text_length: 30
   infer_mode: False
   use_space_char: False
@@ -54,10 +54,12 @@ Metric:
 
 Train:
   dataset:
-    name: SimpleDataSet
-    label_file_list: ['./train_data/train_list.txt']
-    data_dir: ./train_data/
-    ratio_list: 1.0
+    # name: SimpleDataSet
+    # label_file_list: ['./train_data/train_list.txt']
+    # data_dir: ./train_data/
+    name: LMDBDataSet
+    data_dir: /ssd3/suzejia/parseq/data/train/real
+    ratio_list: [1.0]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR

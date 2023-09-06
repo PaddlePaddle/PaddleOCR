@@ -58,7 +58,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/training/
+    data_dir: /ssd3/suzejia/parseq/data/val
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
