@@ -208,7 +208,7 @@ class ParseQHead(nn.Layer):
             tgt_in[:, (0)] = self.bos_id
 
             logits = []
-            for i in range(num_steps):
+            for i in range(paddle.to_tensor(num_steps)):
                 j = i + 1
                 tgt_out = self.decode(tgt_in[:, :j], memory, tgt_mask[:j, :j], tgt_query=pos_queries[:, i:j], tgt_query_mask=query_mask[i:j, :j])
                 p_i = self.head(tgt_out)

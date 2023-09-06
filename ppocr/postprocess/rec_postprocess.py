@@ -504,7 +504,10 @@ class ParseQLabelDecode(BaseRecLabelDecode):
         self.max_text_length = kwargs.get('max_text_length', 25)
 
     def __call__(self, preds, label=None, *args, **kwargs):
-        pred = preds['predict']
+        if isinstance(preds, dict):
+            pred = preds['predict']
+        else:
+            pred = preds
 
         char_num = len(self.character_str) + 1 # We don't predict <bos> nor <pad>, with only addition <eos>
         if isinstance(pred, paddle.Tensor):

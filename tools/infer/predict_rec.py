@@ -122,6 +122,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "ParseQ":
+            postprocess_params = {
+                'name': 'ParseQLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
@@ -348,6 +354,17 @@ class TextRecognizer(object):
         resized_image /= 0.5
         return resized_image
 
+    def resize_norm_img_parseq(self, img, image_shape):
+
+        imgC, imgH, imgW = image_shape
+        resized_image = cv2.resize(
+            img, (imgW, imgH), interpolation=cv2.INTER_CUBIC)
+        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image -= 0.5
+        resized_image /= 0.5
+        return resized_image
+
     def resize_norm_img_abinet(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -480,6 +497,10 @@ class TextRecognizer(object):
                     word_label_list = []
                     norm_img_mask_batch.append(norm_image_mask)
                     word_label_list.append(word_label)
+                elif self.rec_algorithm == "ParseQ":
+                    norm_img = self.resize_norm_img_parseq(img_list[indices[ino]], self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
                 else:
                     norm_img = self.resize_norm_img(img_list[indices[ino]],
                                                     max_wh_ratio)
