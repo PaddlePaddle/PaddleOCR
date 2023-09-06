@@ -76,7 +76,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir:
+    data_dir: /ssd3/suzejia/parseq/data/train/synth
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -98,7 +98,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir:
+    data_dir: /ssd3/suzejia/parseq/new_eval/val
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
