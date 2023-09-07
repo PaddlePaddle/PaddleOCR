@@ -41,7 +41,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
   - [表格识别](./ppstructure/table/README_ch.md)模型优化：设计3大优化策略，预测耗时不变情况下，模型精度提升6%；
   - [关键信息抽取](./ppstructure/kie/README_ch.md)模型优化：设计视觉无关模型结构，语义实体识别精度提升2.8%，关系抽取精度提升9.1%。
 - 🔥**2022.8 发布 [OCR场景应用集合](./applications)**：包含数码管、液晶屏、车牌、高精度SVTR模型、手写体识别等**9个垂类模型**，覆盖通用，制造、金融、交通行业的主要OCR垂类应用。
-  
+
 > [更多](./doc/doc_ch/update.md)
 
 ## 🌟 特性
@@ -62,16 +62,22 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - PP-ChatOCR 在线体验地址：https://aistudio.baidu.com/aistudio/projectdetail/6488689
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - 飞桨AI套件（PaddleX）中训练、推理、高性能部署全流程体验：
-    - PP-OCRv4：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286
-    - PP-ChatOCR：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=332
+    - PP-OCRv4：https://aistudio.baidu.com/projectdetail/6712676
+    - PP-ChatOCR：https://aistudio.baidu.com/projectdetail/6712651
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 
 <a name="技术交流合作"></a>
 ## 📖 技术交流合作
-- 飞桨AI套件([PaddleX](http://10.136.157.23:8080/paddle/paddleX))提供了飞桨模型训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！
-   - PaddleX 目前覆盖图像分类、目标检测、图像分割、3D、OCR和时序预测等领域方向，已内置了36种基础单模型，例如RT-DETR、PP-YOLOE、PP-HGNet、PP-LCNet、PP-LiteSeg等；集成了12种实用的产业方案，例如PP-OCRv4、PP-ChatOCR、PP-ShiTu、PP-TS、车载路面垃圾检测、野生动物违禁制品识别等。
-   - PaddleX 提供了“工具箱”和“开发者”两种AI开发模式。工具箱模式可以无代码调优关键超参，开发者模式可以低代码进行单模型训压推和多模型串联推理，同时支持云端和本地端。
-   - PaddleX 还支持联创开发，利润分成！目前 PaddleX 正在快速迭代，欢迎广大的个人开发者和企业开发者参与进来，共创繁荣的 AI 技术生态！
+- 飞桨AI套件（PaddleX）—— 精选产业实用模型的一站式开发平台。包含如下特点：
+* 【优质的算法库】包含10大任务领域的36个精选模型，实现在一个平台中完成不同任务模型算法的开发。更多领域模型持续丰富中！PaddleX还提供完善的模型训练推理benchmark数据，服务开发者基于业务需求选择最合适的模型。
+* 【简易的开发方式】工具箱/开发者双模式联动，无代码+低代码开发方式，四步完成数据、训练、验证、部署的全流程AI开发。
+* 【高效的训练部署】沉淀百度算法团队的最佳调优策略，实现每个模型都能最快最优地收敛。完善的部署SDK支持，实现跨平台、跨硬件的快速产业级部署（服务化部署能力完善中）。
+* 【丰富的国产硬件支持】PaddleX除了在AI Studio云端使用，还沉淀了windows本地端，正在丰富Linux版本、昆仑芯版本、昇腾版本、寒武纪版本。
+* 【共赢的联创共建】除了便捷地开发AI应用外，PaddleX还为大家提供了获取商业收益的机会，为企业探索更多商业空间。
+
+作为一款高效的开发神器，PaddleX值得每一位开发者拥有。
+
+PaddleX官网地址：https://www.paddlepaddle.org.cn/paddle/paddleX
 
 微信扫描下面二维码添加运营同学，并回复【paddlex】，运营同学会邀请您加入官方交流群，获得更高效的问题答疑。
 
