@@ -14,7 +14,7 @@ Global:
   use_visualdl: False
   infer_img: doc/imgs_words_en/word_10.png
   # for data or label process
-  character_dict_path: /ssd3/suzejia/newAlgOCR/ppocr/utils/dict/parseq_dict.txt
+  character_dict_path: ppocr/utils/dict/parseq_dict.txt
   character_type: en
   max_text_length: 25
   num_heads: 8
