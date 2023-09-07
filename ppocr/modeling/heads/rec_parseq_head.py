@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Code was based on https://github.com/baudm/parseq/blob/main/strhub/models/parseq/system.py
+# reference: https://arxiv.org/abs/2207.06966
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
