@@ -559,6 +559,95 @@ class SRNLabelDecode(BaseRecLabelDecode):
                           % beg_or_end
         return idx
 
+class ParseQLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+    BOS = '[B]'
+    EOS = '[E]'
+    PAD = '[P]'
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ParseQLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, dict):
+            pred = preds['predict']
+        else:
+            pred = preds
+
+        char_num = len(self.character_str) + 1 # We don't predict <bos> nor <pad>, with only addition <eos>
+        if isinstance(pred, paddle.Tensor):
+            pred = pred.numpy()
+        B, L = pred.shape[:2]
+        pred = np.reshape(pred, [-1, char_num])
+
+        preds_idx = np.argmax(pred, axis=1)
+        preds_prob = np.max(pred, axis=1)
+
+        preds_idx = np.reshape(preds_idx, [B, L])
+        preds_prob = np.reshape(preds_prob, [B, L])
+
+        if label is None:
+            text = self.decode(preds_idx, preds_prob, raw=False)
+            return text
+        
+        text = self.decode(preds_idx, preds_prob, raw=False)
+        label = self.decode(label, None, False)
+
+        return text, label
+
+    def decode(self, text_index, text_prob=None, raw=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        batch_size = len(text_index)
+
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+
+            index = text_index[batch_idx, :]
+            prob = None
+            if text_prob is not None:
+                prob = text_prob[batch_idx, :]
+
+            if not raw:
+                index, prob = self._filter(index, prob)
+
+            for idx in range(len(index)):
+                if index[idx] in ignored_tokens:
+                    continue
+                char_list.append(self.character[int(index[idx])])
+                if text_prob is not None:
+                    conf_list.append(prob[idx])
+                else:
+                    conf_list.append(1)
+
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
+
+        return result_list
+
+    def add_special_char(self, dict_character):
+        dict_character = [self.EOS] + dict_character + [self.BOS, self.PAD]
+        return dict_character
+
+    def _filter(self, ids, probs=None):
+        ids = ids.tolist()
+        try:
+            eos_idx = ids.index(self.dict[self.EOS])
+        except ValueError:
+            eos_idx = len(ids)  # Nothing to truncate.
+        # Truncate after EOS
+        ids = ids[:eos_idx]
+        if probs is not None:
+            probs = probs[:eos_idx + 1]  # but include prob. for EOS (if it exists)
+        return ids, probs
+
+    def get_ignored_tokens(self):
+        return  [self.dict[self.BOS], self.dict[self.EOS], self.dict[self.PAD]]
 
 class SARLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """

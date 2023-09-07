@@ -122,6 +122,12 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "ParseQ":
+            postprocess_params = {
+                'name': 'ParseQLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
         self.postprocess_params = postprocess_params
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
@@ -439,7 +445,7 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list.append(norm_img[3])
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
-                elif self.rec_algorithm in ["SVTR", "SATRN"]:
+                elif self.rec_algorithm in ["SVTR", "SATRN", "ParseQ"]:
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]

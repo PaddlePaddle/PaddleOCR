@@ -81,13 +81,13 @@ PP-OCRv4检测模型对PP-OCRv3中的CML（Collaborative Mutual Learning) 协同
 <a name="3"></a>
 ## 3. 识别优化
 
-PP-OCRv3的识别模块是基于文本识别算法[SVTR](https://arxiv.org/abs/2205.00159)优化。SVTR不再采用RNN结构，通过引入Transformers结构更加有效地挖掘文本行图像的上下文信息，从而提升文本识别能力。直接将PP-OCRv2的识别模型，替换成SVTR_Tiny，识别准确率从74.8%提升到80.1%（+5.3%），但是预测速度慢了将近11倍，CPU上预测一条文本行，将近100ms。因此，如下图所示，PP-OCRv3采用如下6个优化策略进行识别模型加速。
+PP-OCRv4识别模型在PP-OCRv3的基础上进一步升级。如下图所示，整体的框架图保持了与PP-OCRv3识别模型相同的pipeline，分别进行了数据、网络结构、训练策略等方面的优化。
 
 <div align="center">
     <img src="../ppocr_v4/v4_rec_pipeline.png" width=800>
 </div>
 
-基于上述策略，PP-OCRv4识别模型相比PP-OCRv3，在速度可比的情况下，精度进一步提升4%。 具体消融实验如下所示：
+经过如图所示的策略优化，PP-OCRv4识别模型相比PP-OCRv3，在速度可比的情况下，精度进一步提升4%。 具体消融实验如下所示：
 
 | ID | 策略 |  模型大小 | 精度 | 预测耗时（CPU openvino)|
 |-----|-----|--------|----| --- |
@@ -103,8 +103,8 @@ PP-OCRv3的识别模块是基于文本识别算法[SVTR](https://arxiv.org/abs/2
 
 **（1）DF：数据挖掘方案**
 
-DF(Data Filter) 是一种简单有效的数据挖掘方案。核心思想是利用已有模型预测训练数据，通过置信度和预测结果等信息，对全量数据进行筛选。具体的：首先使用少量数据快速训练得到一个低精度模型，使用该低精度模型对千万级的数据进行预测，去除置信度大于0.95的样本，该部分被认为是对提升模型精度无效的冗余数据。其次使用PP-OCRv3作为高精度模型，对剩余数据进行预测，去除置信度小于0.15的样本，该部分被认为是难以识别或质量很差的样本。
-使用该策略，千万级别训练数据被精简至百万级，显著提升模型训练效率，模型训练时间从2周减少到5天，同时精度提升至72.7%(+1.2%)。
+DF(Data Filter) 是一种简单有效的数据挖掘方案。核心思想是利用已有模型预测训练数据，通过置信度和预测结果等信息，对全量的训练数据进行筛选。具体的：首先使用少量数据快速训练得到一个低精度模型，使用该低精度模型对千万级的数据进行预测，去除置信度大于0.95的样本，该部分被认为是对提升模型精度无效的冗余样本。其次使用PP-OCRv3作为高精度模型，对剩余数据进行预测，去除置信度小于0.15的样本，该部分被认为是难以识别或质量很差的样本。
+使用该策略，千万级别训练数据被精简至百万级，模型训练时间从2周减少到5天，显著提升了训练效率，同时精度提升至72.7%(+1.2%)。
 
 
 <div align="center">
@@ -118,12 +118,12 @@ PP-LCNetV3系列模型是PP-LCNet系列模型的延续，覆盖了更大的精�
 
 **（3）Lite-Neck：精简参数的Neck结构**
 
-Lite-Neck整体结构沿用PP-OCRv3版本，在参数上稍作精简，识别模型整体的模型大小可从12M降低到8.5M，而精度不变；在CTCHead中，将Neck输出特征的维度从64提升到120，此时模型大小从8.5M提升到9.6M，精度提升0.5%。
+Lite-Neck整体结构沿用PP-OCRv3版本的结构，在参数上稍作精简，识别模型整体的模型大小可从12M降低到8.5M，而精度不变；在CTCHead中，将Neck输出特征的维度从64提升到120，此时模型大小从8.5M提升到9.6M。
 
 
 **（4）GTC-NRTR：Attention指导CTC训练策略**
 
-GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合多种文本特征的表达，有效的提升文本识别精度。在PP-OCRv4中使用训练更稳定的Transformer模型NRTR作为指导，相比SAR基于循环神经网络的结构，NRTR基于Transformer实现解码过程泛化能力更强，能有效指导CTC分支学习。解决简单场景下快速过拟合的问题。模型大小不变，识别精度提升至73.21%(+0.5%)。
+GTC（Guided Training of CTC），是PP-OCRv3识别模型的最有效的策略之一，融合多种文本特征的表达，有效的提升文本识别精度。在PP-OCRv4中使用训练更稳定的Transformer模型NRTR作为指导分支，相比V3版本中的SAR基于循环神经网络的结构，NRTR基于Transformer实现解码过程泛化能力更强，能有效指导CTC分支学习，解决简单场景下快速过拟合的问题。使用Lite-Neck和GTC-NRTR两个策略，识别精度提升至73.21%(+0.5%)。
 
 <div align="center">
     <img src="../ppocr_v4/ppocrv4_gtc.png" width="500">
@@ -132,7 +132,7 @@ GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合�
 
 **（5）Multi-Scale：多尺度训练策略**
 
-动态尺度训练策略，是在训练过程中随机resize输入图片的高度，以增大模型的鲁棒性。在训练过程中随机选择（32，48，64）三种高度进行resize，实验证明在测试集上评估精度不掉，在端到端串联推理时，指标可以提升0.5%。
+动态尺度训练策略，是在训练过程中随机resize输入图片的高度，以增强识别模型在端到端串联使用时的鲁棒性。在训练时，每个iter从（32，48，64）三种高度中随机选择一种高度进行resize。实验证明，使用该策略，尽管在识别测试集上准确率没有提升，但在端到端串联评估时，指标提升0.5%。
 
 <div align="center">
     <img src="../ppocr_v4/multi_scale.png" width="500">
@@ -143,9 +143,9 @@ GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合�
 
 识别模型的蒸馏包含两个部分，NRTRhead蒸馏和CTCHead蒸馏;
 
-对于NRTR head，使用了DKD loss蒸馏，使学生模型NRTR head输出的logits与教师NRTR head接近。最终NRTR head的loss是学生与教师间的DKD loss和与ground truth的cross entropy loss的加权和，用于监督学生模型的backbone训练。通过实验，我们发现加入DKD loss后，计算与ground truth的cross entropy loss时去除label smoothing可以进一步提高精度，因此我们在这里使用的是不带label smoothing的cross entropy loss。
+对于NRTR head，使用了DKD loss蒸馏，拉近学生模型和教师模型的NRTR head logits。最终NRTR head的loss是学生与教师间的DKD loss和与ground truth的cross entropy loss的加权和，用于监督学生模型的backbone训练。通过实验，我们发现加入DKD loss后，计算与ground truth的cross entropy loss时去除label smoothing可以进一步提高精度，因此我们在这里使用的是不带label smoothing的cross entropy loss。
 
-对于CTCHead，由于CTC的输出中存在Blank位，即使教师模型和学生模型的预测结果一样，二者的输出的logits分布也会存在差异，影响教师模型向学生模型的知识传递。PP-OCRv4识别模型蒸馏策略中，将CTC输出logits沿着文本长度维度计算均值，将多字符识别问题转换为多字符分类问题，用于监督CTC Head的训练。使用该策略融合NRTRhead DKD蒸馏策略，指标从0.7377提升到0.7545。
+对于CTCHead，由于CTC的输出中存在Blank位，即使教师模型和学生模型的预测结果一样，二者的输出的logits分布也会存在差异，影响教师模型向学生模型的知识传递。PP-OCRv4识别模型蒸馏策略中，将CTC输出logits沿着文本长度维度计算均值，将多字符识别问题转换为多字符分类问题，用于监督CTC Head的训练。使用该策略融合NRTRhead DKD蒸馏策略，指标从74.72%提升到75.45%。
 
 
 
@@ -169,11 +169,11 @@ GTC（Guided Training of CTC），是在PP-OCRv3中使用过的策略，融合�
 | PP-OCRv3_en | 64.04% |
 | PP-OCRv4_en | 70.1% |
 
-同时，也对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升5%以上，如下表所示：
+同时，对已支持的80余种语言识别模型进行了升级更新，在有评估集的四种语系识别准确率平均提升8%以上，如下表所示：
 
 | Model | 拉丁语系 |  阿拉伯语系 | 日语 | 韩语 |
 |-----|-----|--------|----| --- |
 | PP-OCR_mul | 69.60% | 40.50% | 38.50%  | 55.40% |
-| PP-OCRv3_mul | 75.20%| 45.37% | 45.80% | 60.10% |
+| PP-OCRv3_mul | 71.57%| 72.90% | 45.85% | 77.23% |
 | PP-OCRv4_mul | 80.00%| 75.48% | 56.50% | 83.25% |
 
