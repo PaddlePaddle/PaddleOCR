@@ -84,7 +84,7 @@ Train:
       - ParseQRecAug:
           aug_type: 0 # or 1
       - ParseQLabelEncode:
-      - ParseQRecResizeImg:
+      - SVTRRecResizeImg:
           image_shape: [3, 32, 128]
           padding: False
       - KeepKeys:
@@ -104,7 +104,7 @@ Eval:
           img_mode: BGR
           channel_first: False
       - ParseQLabelEncode: # Class handling label
-      - ParseQRecResizeImg:
+      - SVTRRecResizeImg:
           image_shape: [3, 32, 128]
           padding: False
       - KeepKeys:
