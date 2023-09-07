@@ -73,9 +73,29 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 > It is recommended to start with the “quick experience” in the document tutorial
 
-## ⚡ [Quick Start](https://paddlepaddle.github.io/PaddleOCR/latest/en/quick_start.html)
+
+## ⚡ Quick Experience
+
+- Web online experience
+    - PP-OCRv4 online experience：https://aistudio.baidu.com/projectdetail/6712676
+    - PP-ChatOCR online experience：https://aistudio.baidu.com/projectdetail/6712651
+- One line of code quick use: [Quick Start（Chinese/English/Multilingual/Document Analysis](./doc/doc_en/quickstart_en.md)
+- Full-process experience of training, inference, and high-performance deployment in the Paddle AI suite (PaddleX)：
+    - PP-OCRv4：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286
+    - PP-ChatOCR：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=332
+- Mobile demo experience：[Installation DEMO](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(Based on EasyEdge and Paddle-Lite, support iOS and Android systems)
+
+<a name="Technical exchange and cooperation"></a>
 
 ## 📖 Technical exchange and cooperation
+- PaddleX —— A one-stop development platform for practical models of selected industries. Includes the following features:
+* [High-quality algorithm library] Contains 36 selected models in 10 major task areas, enabling the development of model algorithms for different tasks in one platform. More domain models continue to be enriched! PaddleX also provides complete model training and inference benchmark data, allowing developers to choose the most appropriate model based on business needs.
+* [Simple development method] Toolbox/developer dual-mode linkage, no-code + low-code development method, complete the full process of AI development of data, training, verification, and deployment in four steps.
+* [Efficient training deployment] Precipitate the best tuning strategy of Baidu algorithm team to achieve the fastest and optimal convergence of each model. Complete deployment SDK support enables rapid industrial-level deployment across platforms and hardware (service-based deployment capabilities are being improved).
+* [Rich domestic hardware support] In addition to being used on the AIStudio cloud, PaddleX has also precipitated the Windows local side and is enriching the Linux version, Kunlun Core version, Ascend version, and Cambrian version.
+* [Win-win joint creation and co-construction] In addition to conveniently developing AI applications, PaddleX also provides everyone with opportunities to obtain business benefits and explore more business space for enterprises.
+
+PaddleX Official website address：https://www.paddlepaddle.org.cn/paddle/paddleX
 
 PaddleX provides a one-stop full-process high-efficiency development platform for flying paddle ecological model training, pressure, and push. Its mission is to help AI technology quickly land, and its vision is to make everyone an AI Developer!
 
