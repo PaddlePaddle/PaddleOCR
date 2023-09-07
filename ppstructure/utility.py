@@ -18,6 +18,7 @@ import numpy as np
 from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
 import math
 
+
 def init_args():
     parser = infer_args()
 
