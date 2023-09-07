@@ -386,23 +386,6 @@ class PRENResizeImg(object):
         data['image'] = resized_img.astype(np.float32)
         return data
 
-class ParseQRecResizeImg(object):
-    def __init__(self, image_shape, **kwargs):
-        """
-        Accroding to original paper's realization, it's a hard resize method here. 
-        So maybe you should optimize it to fit for your task better.
-        """
-        self.image_shape = image_shape
-        self.dst_h, self.dst_w = image_shape[1], image_shape[2]
-
-    def __call__(self, data):
-        img = data['image']
-        resized_img = cv2.resize(img, (self.dst_w, self.dst_h), interpolation=cv2.INTER_CUBIC)
-        resized_img = resized_img.transpose((2, 0, 1)) / 255
-        resized_img -= 0.5
-        resized_img /= 0.5
-        data['image'] = resized_img.astype(np.float32)
-        return data
 
 class SPINRecResizeImg(object):
     def __init__(self,
