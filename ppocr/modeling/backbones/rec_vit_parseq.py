@@ -280,11 +280,8 @@ class VisionTransformer(nn.Layer):
             ones_(m.weight)
 
     def forward_features(self, x):
-        # B = x.shape[0]
         B = paddle.shape(x)[0]
         x = self.patch_embed(x)
-        # cls_tokens = self.cls_token.expand((B, -1, -1))
-        # x = paddle.concat((cls_tokens, x), axis=1)
         x = x + self.pos_embed
         x = self.pos_drop(x)
         for blk in self.blocks:
