@@ -98,9 +98,9 @@ class SerPredictor(object):
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'ser', logger)
 
-    def __call__(self, img):
+    def __call__(self, img, cls=False):
         ori_im = img.copy()
-        data = {'image': img}
+        data = {'image': img, 'cls': cls}
         data = transform(data, self.preprocess_op)
         if data[0] is None:
             return None, 0
