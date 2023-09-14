@@ -247,12 +247,10 @@ def main(args):
         text_sys.text_detector.autolog.report()
         text_sys.text_recognizer.autolog.report()
 
-    with open(
-            os.path.join(draw_img_save_dir, "system_results.txt"),
-            'w',
-            encoding='utf-8') as f:
+    save_file = os.path.join(draw_img_save_dir, f"system_results_{args.process_id}.txt")
+    with open(save_file, 'w', encoding='utf-8') as f:
         f.writelines(save_results)
-
+    logger.info(f"save predict result to {save_file}")
 
 if __name__ == "__main__":
     args = utility.parse_args()
