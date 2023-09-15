@@ -85,9 +85,10 @@ __all__ = [
     "convert_info_markdown",
 ]
 
-SUPPORT_DET_MODEL = ["DB"]
-SUPPORT_REC_MODEL = ["CRNN", "SVTR_LCNet"]
-BASE_DIR = os.environ.get("PADDLE_OCR_BASE_DIR", os.path.expanduser("~/.paddleocr/"))
+SUPPORT_DET_MODEL = ['DB']
+VERSION = '2.7.0.3'
+SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
+BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
 DEFAULT_OCR_MODEL_VERSION = "PP-OCRv4"
 SUPPORT_OCR_MODEL_VERSION = ["PP-OCR", "PP-OCRv2", "PP-OCRv3", "PP-OCRv4"]
@@ -695,7 +696,14 @@ class PaddleOCR(predict_system.TextSystem):
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
+    def ocr(self,
+            img,
+            det=True,
+            rec=True,
+            cls=True,
+            bin=False,
+            inv=False,
+            alpha_color=(255, 255, 255)):
         """
         OCR with PaddleOCR
         args：
@@ -952,15 +960,13 @@ def main():
         img_name = os.path.basename(img_path).split('.')[0]
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
         if args.type == 'ocr':
-            result = engine.ocr(
-                img_path,
-                det=args.det,
-                rec=args.rec,
-                cls=args.use_angle_cls,
-                bin=args.binarize,
-                inv=args.invert,
-                alpha_color=args.alphacolor
-            )
+            result = engine.ocr(img_path,
+                                det=args.det,
+                                rec=args.rec,
+                                cls=args.use_angle_cls,
+                                bin=args.binarize,
+                                inv=args.invert,
+                                alpha_color=args.alphacolor)
             if result is not None:
                 lines = []
                 for res in result:

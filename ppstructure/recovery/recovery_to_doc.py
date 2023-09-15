@@ -37,10 +37,10 @@ def convert_info_docx(img, res, save_folder, img_name):
 
     flag = 1
     for i, region in enumerate(res):
-        if not region["res"] and region["type"].lower() != "figure":
+        if len(region['res']) == 0:
             continue
-        img_idx = region["img_idx"]
-        if flag == 2 and region["layout"] == "single":
+        img_idx = region['img_idx']
+        if flag == 2 and region['layout'] == 'single':
             section = doc.add_section(WD_SECTION.CONTINUOUS)
             section._sectPr.xpath("./w:cols")[0].set(qn("w:num"), "1")
             flag = 1
