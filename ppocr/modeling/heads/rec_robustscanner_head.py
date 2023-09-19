@@ -99,7 +99,7 @@ class DotProductAttentionLayer(nn.Layer):
         logits = paddle.reshape(logits, [n, c, h, w])
         if valid_ratios is not None:
             # cal mask of attention weight
-            with paddle.fluid.framework._stride_in_no_check_dy2st_diff():
+            with paddle.base.framework._stride_in_no_check_dy2st_diff():
                 for i, valid_ratio in enumerate(valid_ratios):
                     valid_width = min(w, int(w * valid_ratio + 0.5))
                     if valid_width < w:
