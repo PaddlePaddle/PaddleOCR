@@ -39,7 +39,16 @@ from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
 
-__all__ = ['build_dataloader', 'transform', 'create_operators']
+# for PaddleX dataset_type
+TextDetDataset = SimpleDataSet
+TextRecDataset = SimpleDataSet
+MSTextRecDataset = MultiScaleDataSet
+PubTabTableRecDataset = PubTabDataSet
+KieDataset = SimpleDataSet
+
+__all__ = [
+    'build_dataloader', 'transform', 'create_operators', 'set_signal_handlers'
+]
 
 
 def term_mp(sig_num, frame):
@@ -51,12 +60,43 @@ def term_mp(sig_num, frame):
     os.killpg(pgid, signal.SIGKILL)
 
 
+def set_signal_handlers():
+    pid = os.getpid()
+    try:
+        pgid = os.getpgid(pid)
+    except AttributeError:
+        # In case `os.getpgid` is not available, no signal handler will be set,
+        # because we cannot do safe cleanup.
+        pass
+    else:
+        # XXX: `term_mp` kills all processes in the process group, which in 
+        # some cases includes the parent process of current process and may 
+        # cause unexpected results. To solve this problem, we set signal 
+        # handlers only when current process is the group leader. In the 
+        # future, it would be better to consider killing only descendants of 
+        # the current process.
+        if pid == pgid:
+            # support exit using ctrl+c
+            signal.signal(signal.SIGINT, term_mp)
+            signal.signal(signal.SIGTERM, term_mp)
+
+
 def build_dataloader(config, mode, device, logger, seed=None):
     config = copy.deepcopy(config)
 
     support_dict = [
-        'SimpleDataSet', 'LMDBDataSet', 'PGDataSet', 'PubTabDataSet',
-        'LMDBDataSetSR', 'LMDBDataSetTableMaster', 'MultiScaleDataSet'
+        'SimpleDataSet',
+        'LMDBDataSet',
+        'PGDataSet',
+        'PubTabDataSet',
+        'LMDBDataSetSR',
+        'LMDBDataSetTableMaster',
+        'MultiScaleDataSet',
+        'TextDetDataset',
+        'TextRecDataset',
+        'MSTextRecDataset',
+        'PubTabTableRecDataset',
+        'KieDataset',
     ]
     module_name = config[mode]['dataset']['name']
     assert module_name in support_dict, Exception(
@@ -108,9 +148,5 @@ def build_dataloader(config, mode, device, logger, seed=None):
         return_list=True,
         use_shared_memory=use_shared_memory,
         collate_fn=collate_fn)
-
-    # support exit using ctrl+c
-    signal.signal(signal.SIGINT, term_mp)
-    signal.signal(signal.SIGTERM, term_mp)
 
     return data_loader

@@ -1,10 +1,10 @@
 Global:
   debug: false
   use_gpu: true
-  epoch_num: 500
+  epoch_num: &epoch_num 500
   log_smooth_window: 20
   print_batch_step: 100
-  save_model_dir: ./output/ch_PP-OCRv3_mv3_cbnlocal_shrink/
+  save_model_dir: ./output/ch_PP-OCRv4
   save_epoch_step: 10
   eval_batch_step:
   - 0
@@ -96,19 +96,19 @@ Train:
             - 3
     - EastRandomCropData:
         size:
-        - 960
-        - 960
+        - 640
+        - 640
         max_tries: 50
         keep_ratio: true
     - MakeBorderMap:
         shrink_ratio: 0.4
         thresh_min: 0.3
         thresh_max: 0.7
-        total_epoch: 500
+        total_epoch: *epoch_num
     - MakeShrinkMap:
         shrink_ratio: 0.4
         min_text_size: 8
-        total_epoch: 500
+        total_epoch: *epoch_num
     - NormalizeImage:
         scale: 1./255.
         mean:

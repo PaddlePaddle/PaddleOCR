@@ -197,13 +197,26 @@ def save_model(model,
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
+
+    if prefix == 'best_accuracy':
+        best_model_path = os.path.join(model_path, 'best_model')
+        _mkdir_if_not_exist(best_model_path, logger)
+
     paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+    if prefix == 'best_accuracy':
+        paddle.save(optimizer.state_dict(),
+                    os.path.join(best_model_path, 'model.pdopt'))
 
     is_nlp_model = config['Architecture']["model_type"] == 'kie' and config[
         "Architecture"]["algorithm"] not in ["SDMGR"]
     if is_nlp_model is not True:
         paddle.save(model.state_dict(), model_prefix + '.pdparams')
         metric_prefix = model_prefix
+
+        if prefix == 'best_accuracy':
+            paddle.save(model.state_dict(),
+                        os.path.join(best_model_path, 'model.pdparams'))
+
     else:  # for kie system, we follow the save/load rules in NLP
         if config['Global']['distributed']:
             arch = model._layers
@@ -213,6 +226,10 @@ def save_model(model,
             arch = arch.Student
         arch.backbone.model.save_pretrained(model_prefix)
         metric_prefix = os.path.join(model_prefix, 'metric')
+
+        if prefix == 'best_accuracy':
+            arch.backbone.model.save_pretrained(best_model_path)
+
     # save metric and config
     with open(metric_prefix + '.states', 'wb') as f:
         pickle.dump(kwargs, f, protocol=2)

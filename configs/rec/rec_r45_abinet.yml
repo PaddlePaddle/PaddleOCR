@@ -16,7 +16,7 @@ Global:
   # for data or label process
   character_dict_path:
   character_type: en
-  max_text_length: 25
+  max_text_length: &max_text_length 25
   infer_mode: False
   use_space_char: False
   save_res_path: ./output/rec/predicts_abinet.txt
@@ -29,7 +29,7 @@ Optimizer:
   lr:
     name: Piecewise
     decay_epochs: [6]
-    values: [0.0001, 0.00001] 
+    values: [0.0001, 0.00001]
   regularizer:
     name: 'L2'
     factor: 0.
@@ -45,7 +45,9 @@ Architecture:
     name: ABINetHead
     use_lang: True
     iter_size: 3
-    
+    max_length: *max_text_length
+    image_size: [ &h 32, &w 128 ]  # [ h, w ]
+
 
 Loss:
   name: CELoss
@@ -70,7 +72,7 @@ Train:
       - ABINetLabelEncode: # Class handling label
           ignore_index: *ignore_index
       - ABINetRecResizeImg:
-          image_shape: [3, 32, 128]
+          image_shape: [3, *h, *w]
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:
@@ -90,7 +92,7 @@ Eval:
       - ABINetLabelEncode: # Class handling label
           ignore_index: *ignore_index
       - ABINetRecResizeImg:
-          image_shape: [3, 32, 128]
+          image_shape: [3, *h, *w]
       - KeepKeys:
           keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
   loader:

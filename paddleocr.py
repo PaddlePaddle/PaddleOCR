@@ -30,36 +30,129 @@ import base64
 from io import BytesIO
 from PIL import Image
 
-tools = importlib.import_module('.', 'tools')
-ppocr = importlib.import_module('.', 'ppocr')
-ppstructure = importlib.import_module('.', 'ppstructure')
 
-from tools.infer import predict_system
+def _import_file(module_name, file_path, make_importable=False):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    if make_importable:
+        sys.modules[module_name] = module
+    return module
+
+
+tools = _import_file(
+    'tools', os.path.join(__dir__, 'tools/__init__.py'), make_importable=True)
+ppocr = importlib.import_module('ppocr', 'paddleocr')
+ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
-
-logger = get_logger()
-from ppocr.utils.utility import check_and_read, get_image_file_list
+from tools.infer import predict_system
+from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
+logger = get_logger()
 __all__ = [
     'PaddleOCR', 'PPStructure', 'draw_ocr', 'draw_structure_result',
     'save_structure_res', 'download_with_progressbar', 'to_excel'
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.6.1.0'
+VERSION = '2.7.0.2'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
-DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv3'
-SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3']
+DEFAULT_OCR_MODEL_VERSION = 'PP-OCRv4'
+SUPPORT_OCR_MODEL_VERSION = ['PP-OCR', 'PP-OCRv2', 'PP-OCRv3', 'PP-OCRv4']
 DEFAULT_STRUCTURE_MODEL_VERSION = 'PP-StructureV2'
 SUPPORT_STRUCTURE_MODEL_VERSION = ['PP-Structure', 'PP-StructureV2']
 MODEL_URLS = {
     'OCR': {
+        'PP-OCRv4': {
+            'det': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar',
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar',
+                },
+                'ml': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar'
+                }
+            },
+            'rec': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/ppocr_keys_v1.txt'
+                },
+                'en': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/en_dict.txt'
+                },
+                'korean': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/korean_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/korean_dict.txt'
+                },
+                'japan': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/japan_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/japan_dict.txt'
+                },
+                'chinese_cht': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/chinese_cht_dict.txt'
+                },
+                'ta': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ta_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ta_dict.txt'
+                },
+                'te': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/te_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/te_dict.txt'
+                },
+                'ka': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ka_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/ka_dict.txt'
+                },
+                'latin': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/latin_dict.txt'
+                },
+                'arabic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/arabic_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/arabic_dict.txt'
+                },
+                'cyrillic': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/cyrillic_PP-OCRv3_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/cyrillic_dict.txt'
+                },
+                'devanagari': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/devanagari_PP-OCRv4_rec_infer.tar',
+                    'dict_path': './ppocr/utils/dict/devanagari_dict.txt'
+                },
+            },
+            'cls': {
+                'ch': {
+                    'url':
+                    'https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar',
+                }
+            },
+        },
         'PP-OCRv3': {
             'det': {
                 'ch': {
@@ -315,13 +408,14 @@ def parse_args(mMain=True):
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--type", type=str, default='ocr')
+    parser.add_argument("--savefile", type=str2bool, default=False)
     parser.add_argument(
         "--ocr_version",
         type=str,
         choices=SUPPORT_OCR_MODEL_VERSION,
-        default='PP-OCRv3',
+        default='PP-OCRv4',
         help='OCR Model version, the current model support list is as follows: '
-        '1. PP-OCRv3 Support Chinese and English detection and recognition model, and direction classifier model'
+        '1. PP-OCRv4/v3 Support Chinese and English detection and recognition model, and direction classifier model'
         '2. PP-OCRv2 Support Chinese detection and recognition model. '
         '3. PP-OCR support Chinese detection, recognition and direction classifier and multilingual recognition model.'
     )
@@ -419,7 +513,7 @@ def get_model_config(type, version, model_type, lang):
 
 def img_decode(content: bytes):
     np_arr = np.frombuffer(content, dtype=np.uint8)
-    return cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
 
 
 def check_img(img):
@@ -497,7 +591,7 @@ class PaddleOCR(predict_system.TextSystem):
         params.cls_model_dir, cls_url = confirm_model_dir_url(
             params.cls_model_dir,
             os.path.join(BASE_DIR, 'whl', 'cls'), cls_model_config['url'])
-        if params.ocr_version == 'PP-OCRv3':
+        if params.ocr_version in ['PP-OCRv3', 'PP-OCRv4']:
             params.rec_image_shape = "3, 48, 320"
         else:
             params.rec_image_shape = "3, 32, 320"
@@ -523,14 +617,17 @@ class PaddleOCR(predict_system.TextSystem):
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(self, img, det=True, rec=True, cls=True):
+    def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
-        ocr with paddleocr
-        args：
-            img: img for ocr, support ndarray, img_path and list or ndarray
-            det: use text detection or not. If false, only rec will be exec. Default is True
-            rec: use text recognition or not. If false, only det will be exec. Default is True
-            cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+        OCR with PaddleOCR
+        args:
+            img: img for OCR, support ndarray, img_path and list or ndarray
+            det: use text detection or not. If False, only rec will be exec. Default is True
+            rec: use text recognition or not. If False, only det will be exec. Default is True
+            cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            bin: binarize image to black and white. Default is False.
+            inv: invert image colors. Default is False.
+            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -538,7 +635,7 @@ class PaddleOCR(predict_system.TextSystem):
             exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
-                'Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process'
+                'Since the angle classifier is not initialized, it will not be used during the forward process'
             )
 
         img = check_img(img)
@@ -549,10 +646,23 @@ class PaddleOCR(predict_system.TextSystem):
             imgs = img[:self.page_num]
         else:
             imgs = [img]
+
+        def preprocess_image(_image):
+            _image = alpha_to_color(_image, alpha_color)
+            if inv:
+                _image = cv2.bitwise_not(_image)
+            if bin:
+                _image = binarize_img(_image)
+            return _image
+
         if det and rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
                 dt_boxes, rec_res, _ = self.__call__(img, cls)
+                if not dt_boxes and not rec_res:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [[box.tolist(), res]
                            for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
@@ -560,7 +670,11 @@ class PaddleOCR(predict_system.TextSystem):
         elif det and not rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
+                if not dt_boxes:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
             return ocr_res
@@ -569,6 +683,7 @@ class PaddleOCR(predict_system.TextSystem):
             cls_res = []
             for idx, img in enumerate(imgs):
                 if not isinstance(img, list):
+                    img = preprocess_image(img)
                     img = [img]
                 if self.use_angle_cls and cls:
                     img, cls_res_tmp, elapse = self.text_classifier(img)
@@ -670,15 +785,35 @@ def main():
         img_name = os.path.basename(img_path).split('.')[0]
         logger.info('{}{}{}'.format('*' * 10, img_path, '*' * 10))
         if args.type == 'ocr':
-            result = engine.ocr(img_path,
-                                det=args.det,
-                                rec=args.rec,
-                                cls=args.use_angle_cls)
+            result = engine.ocr(
+                img_path,
+                det=args.det,
+                rec=args.rec,
+                cls=args.use_angle_cls,
+                bin=args.binarize,
+                inv=args.invert,
+                alpha_color=args.alphacolor
+            )
             if result is not None:
+                lines = []
                 for idx in range(len(result)):
                     res = result[idx]
                     for line in res:
                         logger.info(line)
+                        val = '['
+                        for box in line[0]:
+                            val += str(box[0]) + ',' + str(box[1]) + ','
+
+                        val = val[:-1]
+                        val += '],' + line[1][0] + ',' + str(line[1][1]) + '\n'
+                        lines.append(val)
+                if args.savefile:
+                    if os.path.exists(args.output) is False:
+                        os.mkdir(args.output)
+                    outfile = args.output + '/' + img_name + '.txt'
+                    with open(outfile,'w',encoding='utf-8') as f:
+                        f.writelines(lines)
+                     
         elif args.type == 'structure':
             img, flag_gif, flag_pdf = check_and_read(img_path)
             if not flag_gif and not flag_pdf:
@@ -715,7 +850,7 @@ def main():
                 logger.info('processing {}/{} page:'.format(index + 1,
                                                             len(img_paths)))
                 new_img_name = os.path.basename(new_img_path).split('.')[0]
-                result = engine(new_img_path, img_idx=index)
+                result = engine(img, img_idx=index)
                 save_structure_res(result, args.output, img_name, index)
 
                 if args.recovery and result != []:

@@ -27,7 +27,7 @@ import yaml
 import paddle
 import paddle.distributed as dist
 
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
@@ -41,7 +41,7 @@ import tools.program as program
 dist.get_world_size()
 
 
-def main(config, device, logger, vdl_writer):
+def main(config, device, logger, vdl_writer, seed):
     # init dist environment
     if config['Global']['distributed']:
         dist.init_parallel_env()
@@ -49,7 +49,8 @@ def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
     # build dataloader
-    train_dataloader = build_dataloader(config, 'Train', device, logger)
+    set_signal_handlers()
+    train_dataloader = build_dataloader(config, 'Train', device, logger, seed)
     if len(train_dataloader) == 0:
         logger.error(
             "No Images in train dataset, please ensure\n" +
@@ -60,7 +61,7 @@ def main(config, device, logger, vdl_writer):
         return
 
     if config['Eval']:
-        valid_dataloader = build_dataloader(config, 'Eval', device, logger)
+        valid_dataloader = build_dataloader(config, 'Eval', device, logger, seed)
     else:
         valid_dataloader = None
 
@@ -92,8 +93,7 @@ def main(config, device, logger, vdl_writer):
                             'DistillationSARLoss'][
                                 'ignore_index'] = char_num + 1
                         out_channels_list['SARLabelDecode'] = char_num + 2
-                    elif list(config['Loss']['loss_config_list'][-1].keys())[
-                            0] == 'DistillationNRTRLoss':
+                    elif any('DistillationNRTRLoss' in d for d in config['Loss']['loss_config_list']):
                         out_channels_list['NRTRLabelDecode'] = char_num + 3
 
                     config['Architecture']['Models'][key]['Head'][
@@ -160,6 +160,7 @@ def main(config, device, logger, vdl_writer):
 
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
+    amp_dtype = config["Global"].get("amp_dtype", 'float16')
     amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
     amp_custom_white_list = config['Global'].get('amp_custom_white_list', [])
     if use_amp:
@@ -181,7 +182,8 @@ def main(config, device, logger, vdl_writer):
                 models=model,
                 optimizers=optimizer,
                 level=amp_level,
-                master_weight=True)
+                master_weight=True,
+                dtype=amp_dtype)
     else:
         scaler = None
 
@@ -195,7 +197,8 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list, amp_custom_white_list)
+                  amp_level, amp_custom_black_list, amp_custom_white_list,
+                  amp_dtype)
 
 
 def test_reader(config, device, logger):
@@ -220,5 +223,5 @@ if __name__ == '__main__':
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     seed = config['Global']['seed'] if 'seed' in config['Global'] else 1024
     set_seed(seed)
-    main(config, device, logger, vdl_writer)
+    main(config, device, logger, vdl_writer, seed)
     # test_reader(config, device, logger)

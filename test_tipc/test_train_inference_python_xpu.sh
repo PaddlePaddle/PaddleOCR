@@ -29,11 +29,20 @@ fi
 sed -i 's/use_gpu/use_xpu/g' $FILENAME
 # disable benchmark as AutoLog required nvidia-smi command
 sed -i 's/--benchmark:True/--benchmark:False/g' $FILENAME
+# python has been updated to version 3.9 for xpu backend
+sed -i "s/python3.7/python3.9/g" $FILENAME
 dataline=`cat $FILENAME`
 
 # parser params
 IFS=$'\n'
 lines=(${dataline})
+
+modelname=$(echo ${lines[1]} | cut -d ":" -f2)
+if  [ $modelname == "rec_r31_sar" ] || [ $modelname == "rec_mtb_nrtr" ]; then
+    sed -i "s/Global.epoch_num:lite_train_lite_infer=2/Global.epoch_num:lite_train_lite_infer=1/g" $FILENAME
+    sed -i "s/gpu_list:0|0,1/gpu_list:0,1/g" $FILENAME
+    sed -i "s/Global.use_xpu:True|True/Global.use_xpu:True/g" $FILENAME
+fi
 
 # replace training config file
 grep -n 'tools/.*yml' $FILENAME  | cut -d ":" -f 1 \
@@ -41,6 +50,7 @@ grep -n 'tools/.*yml' $FILENAME  | cut -d ":" -f 1 \
     train_cmd=$(func_parser_value "${lines[line_num-1]}")
     trainer_config=$(func_parser_config ${train_cmd})
     sed -i 's/use_gpu/use_xpu/g' "$REPO_ROOT_PATH/$trainer_config"
+    sed -i 's/use_sync_bn: True/use_sync_bn: False/g' "$REPO_ROOT_PATH/$trainer_config"
 done
 
 # change gpu to xpu in execution script
