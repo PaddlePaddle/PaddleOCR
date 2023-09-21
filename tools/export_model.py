@@ -93,11 +93,12 @@ def export_single_model(model,
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "ABINet":
+        if not input_shape:
+            input_shape = [3, 32, 128]
         other_shape = [
             paddle.static.InputSpec(
-                shape=[None, 3, 32, 128], dtype="float32"),
+                shape=[None] + input_shape, dtype="float32"),
         ]
-        # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["NRTR", "SPIN", 'RFL']:
         other_shape = [
@@ -270,6 +271,9 @@ def main():
             "name"] != 'MultiHead':
         input_shape = config["Eval"]["dataset"]["transforms"][-2][
             'SVTRRecResizeImg']['image_shape']
+    elif arch_config["algorithm"].lower() == "ABINet".lower():
+        rec_rs = [c for c in config["Eval"]["dataset"]["transforms"] if 'ABINetRecResizeImg' in c]
+        input_shape = rec_rs[0]['ABINetRecResizeImg']['image_shape'] if rec_rs else None
     else:
         input_shape = None
 
