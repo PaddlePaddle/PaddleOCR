@@ -152,9 +152,9 @@ std::string PaddleStructure::rebuild_table(
     ocr_box[3] += 1;
     std::vector<std::vector<float>> dis_list(structure_boxes.size(),
                                              std::vector<float>(3, 100000.0));
-    for (size_t j = 0; j < structure_boxes.size(); ++j) {
+    for (int j = 0; j < structure_boxes.size(); j++) {
       if (structure_boxes[j].size() == 8) {
-        structure_box = std::move(Utility::xyxyxyxy2xyxy(structure_boxes[j]));
+        structure_box = Utility::xyxyxyxy2xyxy(structure_boxes[j]);
       } else {
         structure_box = structure_boxes[j];
       }
