@@ -41,6 +41,7 @@ def build_head(config):
     from .rec_can_head import CANHead
     from .rec_satrn_head import SATRNHead
     from .rec_parseq_head import ParseQHead
+    from .rec_cppd_head import CPPDHead
 
     # cls head
     from .cls_head import ClsHead
@@ -57,7 +58,8 @@ def build_head(config):
         'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
         'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
         'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead', 'CANHead', 'SATRNHead', 'PFHeadLocal', 'ParseQHead'
+        'DRRGHead', 'CANHead', 'SATRNHead', 'PFHeadLocal', 'ParseQHead',
+        'CPPDHead'
     ]
 
     if config['name'] == 'DRRGHead':
