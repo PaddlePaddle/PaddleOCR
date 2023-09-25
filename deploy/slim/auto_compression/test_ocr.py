@@ -122,10 +122,6 @@ def eval(args):
     time_max = float("-inf")
     print("Start evaluating ( total_iters: {}).".format(sample_nums))
 
-    warmup, repeats = 0, 1
-    if args.warmup:
-        warmup, repeats = 20, 100
-
     # preprocess_op = create_operators(pre_process_list)
     # data = transform(data, self.preprocess_op)
     for batch_id, batch in enumerate(val_loader):
@@ -215,11 +211,6 @@ if __name__ == "__main__":
         default="GPU",
         choices=["CPU", "GPU"],
         help="Choose the device you want to run, it can be: CPU/GPU, default is GPU",
-    )
-    parser.add_argument(
-        "--warmup",
-        default=True,
-        help="Whether test the time.",
     )
     parser.add_argument(
         "--precision",

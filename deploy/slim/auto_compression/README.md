@@ -22,7 +22,11 @@
 ### PPOCRV4
 | 模型 | 策略 | Metric | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-
+| 中文PPOCRV4-det | Baseline | 84.57 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
+| 中文PPOCRV4-det | 量化+蒸馏 | 85.01 | - | - | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](） |
+| 中文PPOCRV4-rec | Baseline | 76.48 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar) |
+| 中文PPOCRV4-rec | 量化+蒸馏 | 73.23 | - | - | [Config](./configs/ppocrv4/ppocrv4_rec_qat_dist.yaml\) | [Model]() |
+> PPOCRV3-det 的测试指标为 hmean，PPOCRV3-rec的测试指标为 accuracy.
 
 
 
@@ -30,33 +34,31 @@
 | 模型 | 策略 | Metric | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
 | 中文PPOCRV3-det | Baseline | 84.57 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) |
-| 中文PPOCRV3-det | 量化+蒸馏 | 85.01 | - | - | [Config](./configs/ppocrv3_det_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_det_QAT.tar) |
+| 中文PPOCRV3-det | 量化+蒸馏 | 85.01 | - | - | [Config](./configs/ppocrv3/ppocrv3_det_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_det_QAT.tar) |
 | 中文PPOCRV3-rec | Baseline | 76.48 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) |
-| 中文PPOCRV3-rec | 量化+蒸馏 | 73.23 | - | - | [Config](./configs/ppocrv3_rec_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_rec_QAT.tar) |
+| 中文PPOCRV3-rec | 量化+蒸馏 | 73.23 | - | - | [Config](./configs/ppocrv3/ppocrv3_rec_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_rec_QAT.tar) |
 > PPOCRV3-det 的测试指标为 hmean，PPOCRV3-rec的测试指标为 accuracy.
-
-
 
 
 ## 3. 自动压缩流程
 
 ### 3.1 准备环境
 
-- python >= 3.6
-- PaddlePaddle >= 2.4 （可从[Paddle官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html)下载安装）
-- PaddleSlim >= 2.4
+- PaddlePaddle == 2.5 （可从[Paddle官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html)下载安装）
+- PaddleSlim == 2.5
+- PaddleOCR == develop
 
 安装paddlepaddle：
 ```shell
 # CPU
-pip install paddlepaddle==2.4.1
-# GPU 以Ubuntu、CUDA 11.2为例
-python -m pip install paddlepaddle-gpu==2.4.1.post112 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+python -m pip install paddlepaddle==2.5.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+# GPU 以Ubuntu、CUDA 10.2为例
+python -m pip install paddlepaddle-gpu==2.5.1.post102 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
 ```
 
-安装paddleslim：
+安装paddleslim 2.5：
 ```shell
-pip install paddleslim
+pip install paddleslim@git+https://gitee.com/paddlepaddle/PaddleSlim.git@release/2.5
 ```
 
 安装其他依赖：
@@ -68,11 +70,13 @@ pip install scikit-image imgaug
 下载PaddleOCR:
 ```shell
 git clone -b release/2.7 https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR/
+pip install -r requirements.txt 
+
 ```
-> 你需要下载到 Paddleslim/example/auto_compression/ 目录下并运行 pip install -r requirements.txt 安装依赖。下载 [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR.git) 的目的只是为了直接使用 PaddleOCR 中的 Dataloader 组件和精度评估模块，不涉及模型组网等。通过 `pip install paddleocr` 安装的 paddleocr 只有预测代码，没有数据集读取和精度评估的部分，因此需要下载 PaddleOCR 库。
 
 ### 3.2 准备数据集
-公开数据集可参考[OCR数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/dataset/ocr_datasets.md)，然后根据程序运行过程中提示放置到对应位置。
+公开数据集可参考[OCR数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_ch/dataset/ocr_datasets.md)，然后根据程序运行过程中提示放置到对应位置。
 
 > 注意：使用不同的数据集需要修改配置文件中`dataset`中数据路径和数据处理部分。
 
@@ -84,13 +88,13 @@ git clone -b release/2.7 https://github.com/PaddlePaddle/PaddleOCR.git
 可在[PaddleOCR模型库](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md)中直接获取Inference模型，具体可参考下方获取中文PPOCRV3模型示例：
 
 ```shell
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar -xf ch_PP-OCRv3_det_infer.tar
+https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar
+tar -xf ch_PP-OCRv4_rec_infer.tar
 ```
 
 ```shell
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
-tar -xf ch_PP-OCRv3_rec_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar
+tar -xf ch_PP-OCRv4_det_infer.tar
 ```
 
 蒸馏量化自动压缩示例通过run.py脚本启动，会使用接口 ```paddleslim.auto_compression.AutoCompression``` 对模型进行量化训练和蒸馏。配置config文件中模型路径、数据集路径、蒸馏、量化和训练等部分的参数，配置完成后便可开始自动压缩。
@@ -99,7 +103,7 @@ tar -xf ch_PP-OCRv3_rec_infer.tar
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0
-python run.py --save_dir='./save_quant_ppocr_det/' --config_path='./configs/ppocrv3_det_qat_dist.yaml'
+python run.py --save_dir='./save_quant_ppocrv4_det/' --config_path='./configs/ppocrv4/ppocrv4_det_qat_dist.yaml'
 ```
 
 **多卡启动**
@@ -108,7 +112,7 @@ python run.py --save_dir='./save_quant_ppocr_det/' --config_path='./configs/ppoc
 
 ```shell
 export CUDA_VISIBLE_DEVICES=0,1,2,3
-python -m paddle.distributed.launch run.py --save_dir='./save_quant_ppocr_det/' --config_path='./configs/ppocrv3_det_qat_dist.yaml'
+python -m paddle.distributed.launch run.py --save_dir='./save_quant_ppocrv4_det/' --config_path='./configs/ppocrv4/ppocrv4_det_qat_dist.yaml'
 ```
 多卡训练指的是将训练任务按照一定方法拆分到多个训练节点完成数据读取、前向计算、反向梯度计算等过程，并将计算出的梯度上传至服务节点。服务节点在收到所有训练节点传来的梯度后，会将梯度聚合并更新参数。最后将参数发送给训练节点，开始新一轮的训练。多卡训练一轮训练能训练```batch size * num gpus```的数据，比如单卡的```batch size```为32，单轮训练的数据量即32，而四卡训练的```batch size```为32，单轮训练的数据量为128。
 
@@ -125,11 +129,74 @@ python eval.py --config_path='./configs/ppocrv3_det_qat_dist.yaml'
 ```
 
 ## 4.预测部署
-### 4.1 Python预测推理
 
-环境配置：若使用 TesorRT 预测引擎，需安装 ```WITH_TRT=ON``` 的Paddle，下载地址：[Python预测库](https://paddleinference.paddlepaddle.org.cn/master/user_guides/download_lib.html#python)
+#### 4.1 Paddle Inference 验证性能
 
-Python预测引擎推理可参考[基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/9cdab61d909eb595af849db885c257ca8c74cb57/doc/doc_ch/inference_ppocr.md)
+输出的量化模型也是静态图模型，静态图模型在GPU上可以使用TensorRT进行加速，在CPU上可以使用MKLDNN进行加速。
+
+TensorRT预测环境配置：
+1. 如果使用 TesorRT 预测引擎，需安装 ```WITH_TRT=ON``` 的Paddle，上述paddle下载的2.5满足打开TensorRT编译的要求。
+2. 使用TensorRT预测需要进一步安装TensorRT，安装TensorRT的方式参考[TensorRT安装说明](../../../docs/deployment/installtrt.md)。
+
+以下字段用于配置预测参数：
+
+| 参数名 | 含义 |
+|:------:|:------:|
+| model_path | inference 模型文件所在目录，该目录下需要有文件 .pdmodel 和 .pdiparams 两个文件 |
+| model_filename | inference_model_dir文件夹下的模型文件名称 |
+| params_filename | inference_model_dir文件夹下的参数文件名称 |
+| dataset_config | 数据集配置的config  |
+| image_file | 待测试单张图片的路径，如果设置image_file，则dataset_config将无效。   |
+| device | 预测时的设备，可选：`CPU`, `GPU`。  |
+| use_trt | 是否使用 TesorRT 预测引擎，在device为```GPU```时生效。   |
+| use_mkldnn | 是否启用```MKL-DNN```加速库，注意```use_mkldnn```，在device为```CPU```时生效。  |
+| cpu_threads | CPU预测时，使用CPU线程数量，默认10  |
+| precision | 预测时精度，可选：`fp32`, `fp16`, `int8`。 |
+
+
+准备好预测模型，并且修改dataset_config中数据集路径为正确的路径后，启动测试：
+
+##### 4.1.1 基于压缩模型进行基于GPU的批量测试：
+
+```shell
+cd deploy/slim/auto_compression
+python test_ocr.py \
+      --model_path save_quant_ppocrv4_det \
+      --config_path configs/ppocrv4/ppocrv4_det_qat_dist.yaml \
+      --device GPU  \
+      --use_trt True  \
+      --precision int8
+```
+
+
+##### 4.1.2 基于压缩前模型进行基于GPU的批量测试：
+
+```shell
+cd deploy/slim/auto_compression
+python test_ocr.py \
+      --model_path ch_PP-OCRv4_det_infer \
+      --config_path configs/ppocrv4/ppocrv4_rec_det_dist.yaml \
+      --device GPU  \
+      --use_trt True  \
+      --precision int8
+```
+
+
+##### 4.1.3 基于压缩模型进行基于CPU的批量测试：
+
+- MKLDNN预测：
+
+```shell
+cd deploy/slim/auto_compression
+python test_ocr.py \
+      --model_path save_quant_ppocrv4_det \
+      --config_path configs/ppocrv4/ppocrv4_det_qat_dist.yaml \
+      --device GPU  \
+      --use_trt True  \
+      --use_mkldnn=True \
+      --precision=int8 \
+      --cpu_threads=10
+```
 
 ### 4.2 PaddleLite端侧部署
 PaddleLite端侧部署可参考：
