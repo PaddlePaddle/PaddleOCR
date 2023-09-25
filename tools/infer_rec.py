@@ -118,9 +118,11 @@ def main():
         os.makedirs(os.path.dirname(save_res_path))
 
     model.eval()
-
+    
+    infer_imgs = config['Global']['infer_img']
+    infer_list = config['Global'].get('infer_list', None)
     with open(save_res_path, "w") as fout:
-        for file in get_image_file_list(config['Global']['infer_img']):
+        for file in get_image_file_list(infer_imgs, infer_list=infer_list):
             logger.info("infer_img: {}".format(file))
             with open(file, 'rb') as f:
                 img = f.read()
