@@ -139,7 +139,7 @@ class DecoderLayer(nn.Layer):
             self.normkv = norm_layer(dim)
         else:
             raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+                "The norm_layer must be str or paddle.nn.LayerNorm class")
         self.mixer = Attention(
             dim,
             num_heads=num_heads,
