@@ -22,7 +22,7 @@
 
 ### CPPD算法简介
 
-基于深度学习的场景文本识别模型通常是Encoder-Decoder结构，其中decoder可以分为两种：(1)CTC，(2)Attention-based。目前SOTA模型大多使用Attention-based的decoder，而attention-based可以分为AR和PD两种，一般来说，AR解码器识别精度优于PD，而PD解码速度快于AR，CPPD在AR和PD的基础上进行了改进，达到了“AR的精度，PD的速度”的效果。
+基于深度学习的场景文本识别模型通常是Encoder-Decoder结构，其中decoder可以分为两种：(1)CTC，(2)Attention-based。目前SOTA模型大多使用Attention-based的decoder，而attention-based可以分为AR和PD两种，一般来说，AR解码器识别精度优于PD，而PD解码速度快于AR，CPPD通过精心设计的CO和CC模块，达到了“AR的精度，PD的速度”的效果。
 
 
 <a name="model"></a>
@@ -111,7 +111,7 @@ python3 tools/infer_rec.py -c ./rec_svtr_cppd_base_en_train/rec_svtrnet_cppd_bas
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。下面以基于`CPPD-B`，在英文数据集训练的模型为例（[模型和配置文件下载地址](https://paddleocr.bj.bcebos.com/CPPD/rec_svtr_cppd_base_en_train.tar) )，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。下面以基于`CPPD-B`，在英文数据集训练的模型为例（[模型和配置文件下载地址](https://paddleocr.bj.bcebos.com/CPPD/rec_svtr_cppd_base_en_train.tar)，可以使用如下命令进行转换：
 
 **注意：**
 - 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否为所正确的字典文件。
@@ -133,6 +133,8 @@ python3 tools/export_model.py -c configs/rec/rec_svtrnet_cppd_base_ch.yml -o Glo
 python3 tools/infer/predict_rec.py --image_dir='../iiik' --rec_model_dir='./rec_svtr_cppd_base_en_infer/' --rec_algorithm='CPPD' --rec_image_shape='3,32,100' --rec_char_dict_path='./ppocr/utils/ic15_dict.txt' --warmup=True --benchmark=True --rec_batch_num=1 --use_tensorrt=True
 # ch
 python3 tools/infer/predict_rec.py --image_dir='../iiik' --rec_model_dir='./rec_svtr_cppd_base_ch_infer/' --rec_algorithm='CPPDPadding' --rec_image_shape='3,32,256' --warmup=True --benchmark=True --rec_batch_num=1 --use_tensorrt=True
+# stn_ch
+python3 tools/infer/predict_rec.py --image_dir='../iiik' --rec_model_dir='./rec_svtr_cppd_base_stn_ch_infer/' --rec_algorithm='CPPD' --rec_image_shape='3,64,256' --warmup=True --benchmark=True --rec_batch_num=1 --use_tensorrt=True
 ```
 
 导出成功后，在目录下有三个文件：

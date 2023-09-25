@@ -363,10 +363,11 @@ class TextRecognizer(object):
         resized_image /= 0.5
         return resized_image
 
-    def resize_norm_img_cppd_padding(self, img,
-                        image_shape,
-                        padding=True,
-                        interpolation=cv2.INTER_LINEAR):
+    def resize_norm_img_cppd_padding(self,
+                                     img,
+                                     image_shape,
+                                     padding=True,
+                                     interpolation=cv2.INTER_LINEAR):
         imgC, imgH, imgW = image_shape
         h = img.shape[0]
         w = img.shape[1]
@@ -489,8 +490,8 @@ class TextRecognizer(object):
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm in ["CPPDPadding"]:
-                    norm_img = self.resize_norm_img_cppd_padding(img_list[indices[ino]],
-                                                         self.rec_image_shape)
+                    norm_img = self.resize_norm_img_cppd_padding(
+                        img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm in ["VisionLAN", "PREN"]:
@@ -677,7 +678,11 @@ class TextRecognizer(object):
                     else:
                         preds = outputs[0]
             if self.postprocess_params['name'] == 'CTCLabelDecode':
-                rec_result = self.postprocess_op(preds, return_word_box=self.return_word_box, wh_ratio_list=wh_ratio_list, max_wh_ratio=max_wh_ratio)
+                rec_result = self.postprocess_op(
+                    preds,
+                    return_word_box=self.return_word_box,
+                    wh_ratio_list=wh_ratio_list,
+                    max_wh_ratio=max_wh_ratio)
             else:
                 rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):

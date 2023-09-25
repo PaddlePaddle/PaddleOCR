@@ -1306,6 +1306,7 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
         return dict_character
 
+
 class ParseQLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
     BOS = '[B]'
@@ -1337,6 +1338,7 @@ class ParseQLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = [self.EOS] + dict_character + [self.BOS, self.PAD]
         return dict_character
+
 
 class ViTSTRLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
@@ -1627,11 +1629,13 @@ class CPPDLabelEncode(BaseRecLabelEncode):
                 return None
             data['length'] = np.array(len(text))
 
-            text_pos_node = [1] * (len(text)+1) + [0] * (self.max_text_len - len(text))
+            text_pos_node = [1] * (len(text) + 1) + [0] * (self.max_text_len -
+                                                           len(text))
 
-            text.append(0) # eos
-            text = text + [self.ignore_index] * (self.max_text_len + 1 - len(text))
-            
+            text.append(0)  # eos
+            text = text + [self.ignore_index] * (self.max_text_len + 1 -
+                                                 len(text))
+
             data['label'] = np.array(text)
             data['label_node'] = np.array(text_node_num + text_pos_node)
             data['label_index'] = np.array(text_node_index)
@@ -1644,15 +1648,17 @@ class CPPDLabelEncode(BaseRecLabelEncode):
                 return None
             data['length'] = np.array(len(text))
 
-            text_pos_node = [1] * (len(text)+1) + [0] * (self.max_text_len - len(text))
+            text_pos_node = [1] * (len(text) + 1) + [0] * (self.max_text_len -
+                                                           len(text))
 
-            text.append(0) # eos
-            
-            text = text + [self.ignore_index] * (self.max_text_len + 1 - len(text))
+            text.append(0)  # eos
+
+            text = text + [self.ignore_index] * (self.max_text_len + 1 -
+                                                 len(text))
             data['label'] = np.array(text)
             data['label_node'] = np.array(text_char_node + text_pos_node)
             data['label_order'] = np.array(ch_order)
-            
+
             return data
 
     def add_special_char(self, dict_character):
@@ -1677,16 +1683,17 @@ class CPPDLabelEncode(BaseRecLabelEncode):
                 continue
             text_list.append(self.dict[char])
             text_node[self.dict[char]] += 1
-            ch_order.append([self.dict[char], text_node[self.dict[char]], order])
+            ch_order.append(
+                [self.dict[char], text_node[self.dict[char]], order])
             order += 1
-            
+
         no_ch_order = []
         for char in self.character:
             if char not in text:
                 no_ch_order.append([self.dict[char], 1, 0])
         random.shuffle(no_ch_order)
         ch_order = ch_order + no_ch_order
-        ch_order = ch_order[:self.max_text_len+1]
+        ch_order = ch_order[:self.max_text_len + 1]
 
         if len(text_list) == 0:
             return None, None, None
@@ -1700,7 +1707,7 @@ class CPPDLabelEncode(BaseRecLabelEncode):
         if self.lower:
             text = text.lower()
         text_node_dict = {}
-        text_node_dict.update({0:1})
+        text_node_dict.update({0: 1})
         character_index = [_ for _ in range(self.num_character)]
         text_list = []
         for char in text:
@@ -1711,10 +1718,11 @@ class CPPDLabelEncode(BaseRecLabelEncode):
             if i_c in text_node_dict.keys():
                 text_node_dict[i_c] += 1
             else:
-                text_node_dict.update({i_c:1})
+                text_node_dict.update({i_c: 1})
         for ic in list(text_node_dict.keys()):
             character_index.remove(ic)
-        none_char_index = sample(character_index, 37 - len(list(text_node_dict.keys())))
+        none_char_index = sample(character_index,
+                                 37 - len(list(text_node_dict.keys())))
         for ic in none_char_index:
             text_node_dict[ic] = 0
 
