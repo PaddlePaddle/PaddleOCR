@@ -24,6 +24,7 @@ def build_backbone(config, model_type):
         from .det_pp_lcnet import PPLCNet
         from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
+        from .rec_vit import ViT
         support_dict = [
             "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet",
             "PPLCNetV3", "PPHGNet_small"
@@ -55,7 +56,7 @@ def build_backbone(config, model_type):
             'MobileNetV1Enhance', 'MobileNetV3', 'ResNet', 'ResNetFPN', 'MTB',
             'ResNet31', 'ResNet45', 'ResNet_ASTER', 'MicroNet',
             'EfficientNetb3_PREN', 'SVTRNet', 'ViTSTR', 'ResNet32', 'ResNetRFL',
-            'DenseNet', 'ShallowCNN', 'PPLCNetV3', 'PPHGNet_small', 'ViTParseQ'
+            'DenseNet', 'ShallowCNN', 'PPLCNetV3', 'PPHGNet_small', 'ViTParseQ', 'ViT'
         ]
     elif model_type == 'e2e':
         from .e2e_resnet_vd_pg import ResNet

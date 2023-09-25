@@ -15,7 +15,7 @@ Global:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
   character_dict_path: ppocr/utils/ppocr_keys_v1.txt
-  max_text_length: &max_text_length 25
+  max_text_length: &max_text_length 40
   infer_mode: false
   use_space_char: true
   distributed: true
@@ -128,7 +128,7 @@ Eval:
         channel_first: false
     - MultiLabelEncode:
         gtc_encode: NRTRLabelEncode
-    - RecResizeImg:
+    - SVTRRecResizeImg:
         image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
