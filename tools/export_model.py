@@ -68,7 +68,7 @@ def export_single_model(model,
                 shape=[None, 3, 48, -1], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "SVTR":
+    elif arch_config["algorithm"] in ["SVTR", "CPPD"]:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None] + input_shape, dtype="float32"),
@@ -106,7 +106,7 @@ def export_single_model(model,
                 shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == 'SATRN':
+    elif arch_config["algorithm"] in ['SATRN']:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 32, 100], dtype="float32"),
@@ -267,7 +267,7 @@ def main():
 
     arch_config = config["Architecture"]
 
-    if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+    if arch_config["algorithm"] in ["SVTR", "CPPD"] and arch_config["Head"][
             "name"] != 'MultiHead':
         input_shape = config["Eval"]["dataset"]["transforms"][-2][
             'SVTRRecResizeImg']['image_shape']

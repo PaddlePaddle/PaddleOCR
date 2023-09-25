@@ -113,6 +113,13 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char,
                 "rm_symbol": True
             }
+        elif self.rec_algorithm in ["CPPD", "CPPDPadding"]:
+            postprocess_params = {
+                'name': 'CPPDLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char,
+                "rm_symbol": True
+            }
         elif self.rec_algorithm == "PREN":
             postprocess_params = {'name': 'PRENLabelDecode'}
         elif self.rec_algorithm == "CAN":
@@ -356,6 +363,38 @@ class TextRecognizer(object):
         resized_image /= 0.5
         return resized_image
 
+    def resize_norm_img_cppd_padding(self,
+                                     img,
+                                     image_shape,
+                                     padding=True,
+                                     interpolation=cv2.INTER_LINEAR):
+        imgC, imgH, imgW = image_shape
+        h = img.shape[0]
+        w = img.shape[1]
+        if not padding:
+            resized_image = cv2.resize(
+                img, (imgW, imgH), interpolation=interpolation)
+            resized_w = imgW
+        else:
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+        resized_image = resized_image.astype('float32')
+        if image_shape[0] == 1:
+            resized_image = resized_image / 255
+            resized_image = resized_image[np.newaxis, :]
+        else:
+            resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image -= 0.5
+        resized_image /= 0.5
+        padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+        padding_im[:, :, 0:resized_w] = resized_image
+
+        return padding_im
+
     def resize_norm_img_abinet(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -445,9 +484,14 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list.append(norm_img[3])
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
-                elif self.rec_algorithm in ["SVTR", "SATRN", "ParseQ"]:
+                elif self.rec_algorithm in ["SVTR", "SATRN", "ParseQ", "CPPD"]:
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm in ["CPPDPadding"]:
+                    norm_img = self.resize_norm_img_cppd_padding(
+                        img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm in ["VisionLAN", "PREN"]:
@@ -634,7 +678,11 @@ class TextRecognizer(object):
                     else:
                         preds = outputs[0]
             if self.postprocess_params['name'] == 'CTCLabelDecode':
-                rec_result = self.postprocess_op(preds, return_word_box=self.return_word_box, wh_ratio_list=wh_ratio_list, max_wh_ratio=max_wh_ratio)
+                rec_result = self.postprocess_op(
+                    preds,
+                    return_word_box=self.return_word_box,
+                    wh_ratio_list=wh_ratio_list,
+                    max_wh_ratio=max_wh_ratio)
             else:
                 rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):

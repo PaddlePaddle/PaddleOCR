@@ -44,6 +44,7 @@ from .rec_can_loss import CANLoss
 from .rec_satrn_loss import SATRNLoss
 from .rec_nrtr_loss import NRTRLoss
 from .rec_parseq_loss import ParseQLoss
+from .rec_cppd_loss import CPPDLoss
 
 # cls loss
 from .cls_loss import ClsLoss
@@ -77,7 +78,7 @@ def build_loss(config):
         'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
         'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'StrokeFocusLoss',
         'SLALoss', 'CTLoss', 'RFLLoss', 'DRRGLoss', 'CANLoss', 'TelescopeLoss',
-        'SATRNLoss', 'NRTRLoss', 'ParseQLoss'
+        'SATRNLoss', 'NRTRLoss', 'ParseQLoss', 'CPPDLoss'
     ]
     config = copy.deepcopy(config)
     module_name = config.pop('name')

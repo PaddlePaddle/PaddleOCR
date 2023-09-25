@@ -23,6 +23,7 @@ import string
 from shapely.geometry import LineString, Point, Polygon
 import json
 import copy
+import random
 from random import sample
 
 from ppocr.utils.logging import get_logger
@@ -1305,6 +1306,7 @@ class NRTRLabelEncode(BaseRecLabelEncode):
         dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
         return dict_character
 
+
 class ParseQLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
     BOS = '[B]'
@@ -1336,6 +1338,7 @@ class ParseQLabelEncode(BaseRecLabelEncode):
     def add_special_char(self, dict_character):
         dict_character = [self.EOS] + dict_character + [self.BOS, self.PAD]
         return dict_character
+
 
 class ViTSTRLabelEncode(BaseRecLabelEncode):
     """ Convert between text-label and text-index """
@@ -1599,3 +1602,132 @@ class CANLabelEncode(BaseRecLabelEncode):
         label.append(self.end_str)
         data['label'] = self.encode(label)
         return data
+
+
+class CPPDLabelEncode(BaseRecLabelEncode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self,
+                 max_text_length,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 ch=False,
+                 ignore_index=100,
+                 **kwargs):
+        super(CPPDLabelEncode, self).__init__(
+            max_text_length, character_dict_path, use_space_char)
+        self.ch = ch
+        self.ignore_index = ignore_index
+
+    def __call__(self, data):
+        text = data['label']
+        if self.ch:
+            text, text_node_index, text_node_num = self.encodech(text)
+            if text is None:
+                return None
+            if len(text) > self.max_text_len:
+                return None
+            data['length'] = np.array(len(text))
+
+            text_pos_node = [1] * (len(text) + 1) + [0] * (self.max_text_len -
+                                                           len(text))
+
+            text.append(0)  # eos
+            text = text + [self.ignore_index] * (self.max_text_len + 1 -
+                                                 len(text))
+
+            data['label'] = np.array(text)
+            data['label_node'] = np.array(text_node_num + text_pos_node)
+            data['label_index'] = np.array(text_node_index)
+            return data
+        else:
+            text, text_char_node, ch_order = self.encode(text)
+            if text is None:
+                return None
+            if len(text) >= self.max_text_len:
+                return None
+            data['length'] = np.array(len(text))
+
+            text_pos_node = [1] * (len(text) + 1) + [0] * (self.max_text_len -
+                                                           len(text))
+
+            text.append(0)  # eos
+
+            text = text + [self.ignore_index] * (self.max_text_len + 1 -
+                                                 len(text))
+            data['label'] = np.array(text)
+            data['label_node'] = np.array(text_char_node + text_pos_node)
+            data['label_order'] = np.array(ch_order)
+
+            return data
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        self.num_character = len(dict_character)
+        return dict_character
+
+    def encode(self, text):
+        """
+        """
+        if len(text) == 0 or len(text) > self.max_text_len:
+            return None, None, None
+        if self.lower:
+            text = text.lower()
+        text_node = [0 for _ in range(self.num_character)]
+        text_node[0] = 1
+        text_list = []
+        ch_order = []
+        order = 1
+        for char in text:
+            if char not in self.dict:
+                continue
+            text_list.append(self.dict[char])
+            text_node[self.dict[char]] += 1
+            ch_order.append(
+                [self.dict[char], text_node[self.dict[char]], order])
+            order += 1
+
+        no_ch_order = []
+        for char in self.character:
+            if char not in text:
+                no_ch_order.append([self.dict[char], 1, 0])
+        random.shuffle(no_ch_order)
+        ch_order = ch_order + no_ch_order
+        ch_order = ch_order[:self.max_text_len + 1]
+
+        if len(text_list) == 0:
+            return None, None, None
+        return text_list, text_node, ch_order.sort()
+
+    def encodech(self, text):
+        """
+        """
+        if len(text) == 0 or len(text) > self.max_text_len:
+            return None, None, None
+        if self.lower:
+            text = text.lower()
+        text_node_dict = {}
+        text_node_dict.update({0: 1})
+        character_index = [_ for _ in range(self.num_character)]
+        text_list = []
+        for char in text:
+            if char not in self.dict:
+                continue
+            i_c = self.dict[char]
+            text_list.append(i_c)
+            if i_c in text_node_dict.keys():
+                text_node_dict[i_c] += 1
+            else:
+                text_node_dict.update({i_c: 1})
+        for ic in list(text_node_dict.keys()):
+            character_index.remove(ic)
+        none_char_index = sample(character_index,
+                                 37 - len(list(text_node_dict.keys())))
+        for ic in none_char_index:
+            text_node_dict[ic] = 0
+
+        text_node_index = sorted(text_node_dict)
+        text_node_num = [text_node_dict[k] for k in text_node_index]
+        if len(text_list) == 0:
+            return None, None, None
+        return text_list, text_node_index, text_node_num
