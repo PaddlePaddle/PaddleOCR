@@ -185,6 +185,7 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
+          step_pre_epoch,
           log_writer=None,
           scaler=None,
           amp_level='O2',
@@ -198,6 +199,7 @@ def train(config,
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    eval_batch_epoch = config['Global'].get('eval_batch_epoch', None)
     profiler_options = config['profiler_options']
 
     global_step = 0
@@ -205,8 +207,9 @@ def train(config,
         global_step = pre_best_model_dict['global_step']
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
-        start_eval_step = eval_batch_step[0]
-        eval_batch_step = eval_batch_step[1]
+        start_eval_step = eval_batch_step[0] if not eval_batch_epoch else 0
+        eval_batch_step = eval_batch_step[
+            1] if not eval_batch_epoch else step_pre_epoch * eval_batch_epoch
         if len(valid_dataloader) == 0:
             logger.info(
                 'No Images in eval dataset, evaluation during training ' \
