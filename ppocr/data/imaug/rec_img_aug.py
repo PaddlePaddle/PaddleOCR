@@ -47,7 +47,7 @@ class RecAug(object):
             if h >= 20 and w >= 20:
                 img = tia_distort(img, random.randint(3, 6))
                 img = tia_stretch(img, random.randint(3, 6))
-            img = tia_perspective(img)
+                img = tia_perspective(img)
 
         # bda
         data['image'] = img
