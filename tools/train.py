@@ -64,6 +64,7 @@ def main(config, device, logger, vdl_writer):
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
     else:
         valid_dataloader = None
+    step_pre_epoch = len(train_dataloader)
 
     # build post process
     post_process_class = build_post_process(config['PostProcess'],
@@ -197,9 +198,9 @@ def main(config, device, logger, vdl_writer):
     # start train
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list, amp_custom_white_list,
-                  amp_dtype)
+                  eval_class, pre_best_model_dict, logger, step_pre_epoch,
+                  vdl_writer, scaler, amp_level, amp_custom_black_list,
+                  amp_custom_white_list, amp_dtype)
 
 
 def test_reader(config, device, logger):
@@ -225,4 +226,4 @@ if __name__ == '__main__':
     seed = config['Global']['seed'] if 'seed' in config['Global'] else 1024
     set_seed(seed)
     main(config, device, logger, vdl_writer)
-    # test_reader(config, device, logger)
+    # test_reader(config, device, logger) 
