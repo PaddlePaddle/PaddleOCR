@@ -70,7 +70,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 - Web online experience
     - PP-OCRv4 online experience：https://aistudio.baidu.com/application/detail/7658
-    - PP-ChatOCR online experience：https://aistudio.baidu.com/application/detail/7659
+    - PP-ChatOCR online experience：https://aistudio.baidu.com/application/detail/7709
 
 - One line of code quick use: [Quick Start（Chinese/English/Multilingual/Document Analysis](./doc/doc_en/quickstart_en.md)
 - Full-process experience of training, inference, and high-performance deployment in the Paddle AI suite (PaddleX)：
