@@ -58,12 +58,12 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 ## ⚡ 快速开始
 
 - 在线网站体验：
-    - PP-OCRv4 在线体验地址：https://aistudio.baidu.com/application/detail/6712
-    - PP-ChatOCR 在线体验地址：https://aistudio.baidu.com/application/detail/7464
+    - PP-OCRv4 在线体验地址：https://aistudio.baidu.com/application/detail/7658
+    - PP-ChatOCR 在线体验地址：https://aistudio.baidu.com/application/detail/7659
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - 飞桨AI套件（PaddleX）中训练、推理、高性能部署全流程体验：
-    - PP-OCRv4：https://aistudio.baidu.com/projectdetail/6712676
-    - PP-ChatOCR：https://aistudio.baidu.com/projectdetail/6712651
+    - PP-OCRv4：https://aistudio.baidu.com/projectdetail/paddlex/6796224
+    - PP-ChatOCR：https://aistudio.baidu.com/projectdetail/paddlex/6796372
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 
 <a name="技术交流合作"></a>
