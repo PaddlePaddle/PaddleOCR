@@ -27,7 +27,7 @@ Scene text recognition models based on deep learning typically follow an Encoder
 <a name="model"></a>
 The accuracy (%) and model files of CPPD on the public dataset of scene text recognition are as follows:：
 
-* English dataset from [PARSeq](https://github.com/baudm/parseq)。
+* English dataset from [PARSeq](https://github.com/baudm/parseq).
 
 
 |    Model      |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg |      Download       |
@@ -36,7 +36,7 @@ The accuracy (%) and model files of CPPD on the public dataset of scene text rec
 | CPPD Base | 98.2  | 95.5 |   97.6   | 87.9  | 90.0 | 92.7 | 93.80 | [en](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_en_train.tar)|
 | CPPD Base 48*160  | 97.5  | 95.5 |   97.7   | 87.7  | 92.4 | 93.7 | 94.10 | [en](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_48_160_en_train.tar) |
 
-* Union14M-L benchmark from [U14m](https://github.com/Mountchicken/Union14M/)。
+* Trained on Synth dataset(MJ+ST), Test on Union14M-L benchmark from [U14m](https://github.com/Mountchicken/Union14M/).
 
 |    Model      |Curve |  Multi-<br/>Oriented  |Artistic |Contextless| Salient  | Multi-<br/>word | General | Avg |     Download       |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|
@@ -44,7 +44,17 @@ The accuracy (%) and model files of CPPD on the public dataset of scene text rec
 | CPPD Base | 65.5  | 18.6 |   56.0   | 61.9  | 71.0 | 57.5 | 65.8 | 56.63 | Same as the table above. |
 | CPPD Base 48*160  | 71.9  | 22.1 |   60.5   | 67.9  | 78.3 | 63.9 | 67.1 | 61.69 | Same as the table above. |
 
-* Chinese dataset from [Chinese Benckmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition) 。
+* Trained on Union14M-L training dataset.
+
+|    Model      |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg |      Download       |
+|:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|
+| CPPD Base 32*128  | 98.7  | 98.5 |   99.4   | 91.7  | 96.7 | 99.7 | 97.44 | [en](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_u14m_train.tar) |
+
+|    Model      |Curve |  Multi-<br/>Oriented  |Artistic |Contextless| Salient  | Multi-<br/>word | General | Avg |     Download       |
+|:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|
+| CPPD Base 32*128  | 87.5  | 70.7 |   78.2   | 82.9  | 85.5 | 85.4 | 84.3 | 82.08 | Same as the table above. |
+
+* Chinese dataset from [Chinese Benckmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition).
 
 |    Model      | Scene | Web | Document | Handwriting | Avg |      Download       |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|
