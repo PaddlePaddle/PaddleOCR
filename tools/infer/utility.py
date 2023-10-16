@@ -43,6 +43,8 @@ def init_args():
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
     parser.add_argument("--gpu_id", type=int, default=0)
+    #添加的对于bidi的处理，主要应用于predict_rec.py文件上
+    parser.add_argument("--bidi", type=str2bool, default=False)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)

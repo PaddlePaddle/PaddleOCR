@@ -61,9 +61,12 @@ def download(origin_label_path, dataset_dir_path):
         with open(origin_label_path, 'r', encoding='utf8') as f:
             lines = f.readlines()
             # 遍历每条标注信息
-            for index, line in tqdm(enumerate(lines)):
+            for index_, line in tqdm(enumerate(lines)):
+                index = index_ + 3000
                 down_url, label = line.split("    ")
                 label = label[:-1]
+                # 替换为外网路径
+                down_url = down_url.replace("http://192.168.100.128:4000/", "http://39.98.138.221:8600/")
                 # 下载并保存图片
                 try:
                     data = urllib.request.urlopen(down_url, timeout=10).read()
@@ -93,33 +96,14 @@ def download(origin_label_path, dataset_dir_path):
 
 
 if __name__ == "__main__":
+    # items中元素含义：[语言名称，要生成的数据集文件夹名称，崔波给的txt文件名称]
     items = [
-        # ["汉语", "zh_doc", "2023.03.26_21.02.04_[中文]zhongwen(doc001).txt"],
-        # ["汉语", "zh_view", "2023.03.30_09.28.06_[中文]zhongwen(view001).txt"],
-        # ["哈萨克语", "kk_doc", "2023.03.26_21.05.42_[哈萨克文]hayu(doc001).txt"],
-        # ["哈萨克语", "kk_view", "2023.03.26_21.02.33_[哈萨克文]hayu(view001).txt"],
-        # ["泰语", "th_doc", "2023.03.26_21.08.12_[泰文]taiyu(doc001).txt"],
-        # ["泰语", "th_view", "2023.03.26_21.02.25_[泰文]taiyu(view001).txt"],
-        # ["马来语", "ms_doc", "2023.03.26_20.59.42_[马来文]malaiyu(doc001).txt"],
-        ["马来语", "ms_view", "2023.03.31_11.58.49_[马来文]malaiyu(view001).txt"],
-        # ["越南语", "vi_doc", "2023.03.26_21.08.43_[越南文]yuenanyu(doc001).txt"],
-        # ["越南语", "vi_view", "2023.03.30_09.28.18_[越南文]yuenanyu(view001).txt"],
-        # ["印尼语", "id_doc", "2023.03.26_20.59.06_[印尼文]yinniyu(doc001).txt"],
-        #["印尼语", "id_view", "2023.03.31_11.30.25_[印尼文]yinniyu(view001).txt"],
-        # ["缅甸语", "my_doc", "2023.03.26_21.07.41_[缅甸文]miandianyu(doc001).txt"],
-        # ["缅甸语", "my_view", "2023.03.30_15.09.38_[缅甸文]miandianu(view001).txt"],
-        # ["维吾尔语", "ug_doc", "2023.03.26_21.04.51_[维吾尔文]weiyu(doc001).txt"],
-        # ["维吾尔语", "ug_view", "2023.03.30_20.15.02_[维吾尔文]weiyu（view001）.txt"],
-        # ["藏语", "bo_doc", "2023.03.26_21.06.09_[藏文]zangyu(doc001).txt"],
-        # ["藏语", "bo_view", "2023.03.28_17.35.18_[藏文]zangyu(view001).txt"],
-        #["阿拉伯语", "ar_doc", "2023.03.31_11.38.21_[阿拉伯文]ayu(doc001).txt"],
-        # ["阿拉伯语", "ar_view", "2023.03.28_16.36.16_[阿拉伯文]alaboyu(view001).txt"],
-        # ["俄语", "ru_doc", "2023.03.26_21.08.32_[俄罗斯文]eyu(doc001).txt"],
-        # ["俄语", "ru_view", "2023.03.26_21.02.49_[俄罗斯文]eyu(view001).txt"],
-        # ["印地语", "hi_doc", "2023.03.28_14.28.12_[印地文]yindiyu(doc001).txt"],
-        # ["印地语", "hi_view", ""],
+        ["乌克兰文", "uk_view", "2023.09.13_15.12.01_[乌克兰文]uk（view）.txt"]
+        
     ]
+    # 崔波给的txt文件所在文件夹
     path_ = r"C:\Users\lvjia\Nutstore\1\我的坚果云\工作文档\项目内容\OCR\精度测试\测试集\2023"
+    # 下载后的数据集所在文件夹路径
     output_path_ = r"C:\Users\lvjia\Pictures\dataset\test\2023\image"
     for item in items:
         print("开始下载：", item[0])
