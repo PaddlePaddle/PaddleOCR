@@ -43,6 +43,10 @@ if  [ $modelname == "rec_r31_sar" ] || [ $modelname == "rec_mtb_nrtr" ]; then
     sed -i "s/gpu_list:0|0,1/gpu_list:0,1/g" $FILENAME
     sed -i "s/Global.use_npu:True|True/Global.use_npu:True/g" $FILENAME
 fi
+if [ $modelname == "ch_ppocr_mobile_v2_0_rec_FPGM" ]; then
+    sed -i '18s/$/ -o Global.use_gpu=False/' $FILENAME 
+    sed -i '32s/$/ Global.use_gpu=False/' $FILENAME
+fi
 
 # replace training config file
 grep -n 'tools/.*yml' $FILENAME  | cut -d ":" -f 1 \
