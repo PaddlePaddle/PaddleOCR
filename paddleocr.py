@@ -45,7 +45,8 @@ tools = _import_file(
 ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
-from tools.infer import predict_system
+
+logger = get_logger()
 from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
@@ -635,6 +636,7 @@ class PaddleOCR(predict_system.TextSystem):
     def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
         OCR with PaddleOCR
+        
         args:
             img: img for OCR, support ndarray, img_path and list or ndarray
             det: use text detection or not. If False, only rec will be exec. Default is True
@@ -657,12 +659,14 @@ class PaddleOCR(predict_system.TextSystem):
         # for infer pdf file
         if isinstance(img, list):
             if self.page_num > len(img) or self.page_num == 0:
-                self.page_num = len(img)
-            imgs = img[:self.page_num]
+                imgs = img
+            else:
+                imgs = img[:self.page_num]
         else:
             imgs = [img]
 
         def preprocess_image(_image):
+            _image = alpha_to_color(_image, alpha_color)
             if inv:
                 _image = cv2.bitwise_not(_image)
             if bin:
