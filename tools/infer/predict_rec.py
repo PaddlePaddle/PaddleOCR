@@ -624,6 +624,7 @@ class TextRecognizer(object):
                         preds = outputs
                     else:
                         preds = outputs[0]
+                    self.predictor.try_shrink_memory()
             rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]

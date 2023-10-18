@@ -164,7 +164,7 @@ for line in result:
 
 from PIL import Image
 
-font_path = 'doc/fonts/simfang.ttf' # font provieded in PaddleOCR
+font_path = 'doc/fonts/simfang.ttf' # font provided in PaddleOCR
 image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
