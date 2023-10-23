@@ -29,6 +29,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
 import paddle
+import paddle.nn.functional as F
 
 from ppocr.data import create_operators, transform
 from ppocr.modeling.architectures import build_model
@@ -165,6 +166,9 @@ def main():
                 preds = model(images, img_metas)
             elif config['Architecture']['algorithm'] == "CAN":
                 preds = model([images, image_mask, label])
+            elif config['Architecture']['algorithm'] == "ParseQ":
+                preds = model(images)
+                preds = F.softmax(preds['predict'])
             else:
                 preds = model(images)
             post_result = post_process_class(preds)
