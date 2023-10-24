@@ -238,8 +238,11 @@ class ParseQHead(nn.Layer):
                 tgt_padding_mask = tgt_padding_mask.cuda().astype(dtype='float32')==1.0
                 tgt_out = self.decode(tgt_in, memory, tgt_mask, tgt_padding_mask, tgt_query=pos_queries, tgt_query_mask=query_mask[:, :tgt_in.shape[1]])
                 logits = self.head(tgt_out)
+        
+        # transfer to probility
+        logits = F.softmax(logits, axis=-1)
 
-        final_output = {"predict":logits}
+        final_output = {"predict": logits}
 
         return final_output
 
