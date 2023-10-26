@@ -1422,7 +1422,10 @@ class MainWindow(QMainWindow):
     def scrollRequest(self, delta, orientation):
         units = - delta / (8 * 15)
         bar = self.scrollBars[orientation]
-        bar.setValue(bar.value() + bar.singleStep() * units)
+        # bar.setValue(bar.value() + bar.singleStep() * units)
+        val = bar.value() + bar.singleStep() * units
+        if isinstance(val, float):
+            bar.setValue(int(val))
 
     def setZoom(self, value):
         self.actions.fitWidth.setChecked(False)
