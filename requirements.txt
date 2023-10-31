@@ -17,3 +17,4 @@ attrdict
 PyMuPDF<1.21.0
 Pillow>=10.0.0
 pyyaml
+paddlepaddle
