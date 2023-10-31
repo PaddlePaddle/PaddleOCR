@@ -17,6 +17,7 @@ import argparse
 import ast
 import codecs
 import json
+import numpy
 import os.path
 import platform
 import subprocess
@@ -2659,13 +2660,13 @@ class MainWindow(QMainWindow):
             for key in self.fileStatedict:
                 idx = self.getImglabelidx(key)
                 try:
-                    img = cv2.imread(key)
+                    img = cv2.imdecode(numpy.fromfile(key, dtype=numpy.uint8), -1)
                     for i, label in enumerate(self.PPlabel[idx]):
                         if label['difficult']:
                             continue
                         img_crop = get_rotate_crop_image(img, np.array(label['points'], np.float32))
                         img_name = os.path.splitext(os.path.basename(idx))[0] + '_crop_' + str(i) + '.jpg'
-                        cv2.imwrite(crop_img_dir + img_name, img_crop)
+                        cv2.imencode(".jpg",img_crop)[1].tofile(crop_img_dir + img_name)
                         f.write('crop_img/' + img_name + '\t')
                         f.write(label['transcription'] + '\n')
                 except Exception as e:

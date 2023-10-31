@@ -232,22 +232,24 @@ class Canvas(QWidget):
                 self.setStatusTip(self.toolTip())
                 self.update()
                 break
-            elif shape.containsPoint(pos):
-                if self.selectedVertex():
-                    self.hShape.highlightClear()
-                self.hVertex, self.hShape = None, shape
-                self.setToolTip(
-                    "Click & drag to move shape '%s'" % shape.label)
-                self.setStatusTip(self.toolTip())
-                self.overrideCursor(CURSOR_GRAB)
-                self.update()
-                break
-        else:  # Nothing found, clear highlights, reset state.
-            if self.hShape:
-                self.hShape.highlightClear()
-                self.update()
-            self.hVertex, self.hShape = None, None
-            self.overrideCursor(CURSOR_DEFAULT)
+            else:
+                for shape in reversed([s for s in self.shapes if self.isVisible(s)]):
+                    if shape.containsPoint(pos):
+                        if self.selectedVertex():
+                            self.hShape.highlightClear()
+                        self.hVertex, self.hShape = None, shape
+                        self.setToolTip(
+                            "Click & drag to move shape '%s'" % shape.label)
+                        self.setStatusTip(self.toolTip())
+                        self.overrideCursor(CURSOR_GRAB)
+                        self.update()
+                        break
+                else:  # Nothing found, clear highlights, reset state.
+                    if self.hShape:
+                        self.hShape.highlightClear()
+                        self.update()
+                    self.hVertex, self.hShape = None, None
+                    self.overrideCursor(CURSOR_DEFAULT)
 
     def mousePressEvent(self, ev):
         pos = self.transformPos(ev.pos())
