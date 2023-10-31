@@ -1260,8 +1260,8 @@ class MainWindow(QMainWindow):
         # self.shapeSelectionChanged(True)
 
     def move_scrollbar(self, value):
-        self.labelListBar.setValue(value)
-        self.indexListBar.setValue(value)
+        self.labelListBar.setValue(int(value))
+        self.indexListBar.setValue(int(value))
 
     def labelSelectionChanged(self):
         if self._noSelectionSlot:
@@ -1406,9 +1406,9 @@ class MainWindow(QMainWindow):
         shape.line_color = QColor(r, g, b)
         shape.vertex_fill_color = QColor(r, g, b)
         shape.hvertex_fill_color = QColor(255, 255, 255)
-        shape.fill_color = QColor(r, g, b, 128)
+        shape.fill_color = QColor(r, g, b, 32)
         shape.select_line_color = QColor(255, 255, 255)
-        shape.select_fill_color = QColor(r, g, b, 155)
+        shape.select_fill_color = QColor(r, g, b, 32)
 
     def _get_rgb_by_label(self, label, kie_mode):
         shift_auto_shape_color = 2  # use for random color
@@ -1423,17 +1423,17 @@ class MainWindow(QMainWindow):
     def scrollRequest(self, delta, orientation):
         units = - delta / (8 * 15)
         bar = self.scrollBars[orientation]
-        bar.setValue(bar.value() + bar.singleStep() * units)
+        bar.setValue(int(bar.value() + bar.singleStep() * units))
 
     def setZoom(self, value):
         self.actions.fitWidth.setChecked(False)
         self.actions.fitWindow.setChecked(False)
         self.zoomMode = self.MANUAL_ZOOM
-        self.zoomWidget.setValue(value)
+        self.zoomWidget.setValue(int(value))
 
     def addZoom(self, increment=10):
-        self.setZoom(self.zoomWidget.value() + increment)
-        self.imageSlider.setValue(self.zoomWidget.value() + increment)  # set zoom slider value
+        self.setZoom(int(self.zoomWidget.value() + increment))
+        self.imageSlider.setValue(int(self.zoomWidget.value() + increment))  # set zoom slider value
 
     def zoomRequest(self, delta):
         # get the current scrollbar positions
@@ -1484,8 +1484,8 @@ class MainWindow(QMainWindow):
         new_h_bar_value = h_bar.value() + move_x * d_h_bar_max
         new_v_bar_value = v_bar.value() + move_y * d_v_bar_max
 
-        h_bar.setValue(new_h_bar_value)
-        v_bar.setValue(new_v_bar_value)
+        h_bar.setValue(int(new_h_bar_value))
+        v_bar.setValue(int(new_v_bar_value))
 
     def setFitWindow(self, value=True):
         if value:
