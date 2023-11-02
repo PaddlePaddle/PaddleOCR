@@ -1,0 +1,46 @@
+# Sweep AI turns bugs & feature requests into code changes (https://sweep.dev)
+# For details on our config file, check out our docs at https://docs.sweep.dev/usage/config
+
+# This setting contains a list of rules that Sweep will check for. If any of these rules are broken in a new commit, Sweep will create an pull request to fix the broken rule.
+rules:
+  - "All docstrings and comments should be up to date."
+  - "There should be no trailing whitespace at the end of lines."
+  - "Indentation should be consistent throughout the codebase."
+  - "Variable and function names should be descriptive and follow a consistent naming convention."
+  - "There should be no commented out code in the codebase."
+  - "There should be no unused imports in the codebase."
+
+# This is the branch that Sweep will develop from and make pull requests to. Most people use 'main' or 'master' but some users also use 'dev' or 'staging'.
+branch: 'main'
+
+# By default Sweep will read the logs and outputs from your existing Github Actions. To disable this, set this to false.
+gha_enabled: True
+
+# This is the description of your project. It will be used by sweep when creating PRs. You can tell Sweep what's unique about your project, what frameworks you use, or anything else you want.
+#
+# Example:
+#
+# description: sweepai/sweep is a python project. The main api endpoints are in sweepai/api.py. Write code that adheres to PEP8.
+description: ''
+
+# This sets whether to create pull requests as drafts. If this is set to True, then all pull requests will be created as drafts and GitHub Actions will not be triggered.
+draft: False
+
+# This is a list of directories that Sweep will not be able to edit.
+blocked_dirs: []
+
+# This is a list of documentation links that Sweep will use to help it understand your code. You can add links to documentation for any packages you use here.
+#
+# Example:
+#
+# docs:
+#   - PyGitHub: ["https://pygithub.readthedocs.io/en/latest/", "We use pygithub to interact with the GitHub API"]
+docs: []
+
+# Sandbox executes commands in a sandboxed environment to validate code changes after every edit to guarantee pristine code. For more details, see the [Sandbox](./sandbox) page.
+sandbox:
+  install:
+    - trunk init
+  check:
+    - trunk fmt {file_path} || return 0
+    - trunk check --fix --print-failures {file_path}
