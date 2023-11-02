@@ -1,0 +1,15 @@
+name: Sweep Issue
+title: 'Sweep: '
+description: For small bugs, features, refactors, and tests to be handled by Sweep, an AI-powered junior developer.
+labels: sweep
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Details
+      description: Tell Sweep where and what to edit and provide enough context for a new developer to the codebase
+      placeholder: |
+        Unit Tests: Write unit tests for <FILE>. Test each function in the file. Make sure to test edge cases.
+        Bugs: The bug might be in <FILE>. Here are the logs: ...
+        Features: the new endpoint should use the ... class from <FILE> because it contains ... logic.
+        Refactors: We are migrating this function to ... version because ...
