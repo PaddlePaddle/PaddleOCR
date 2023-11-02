@@ -17,7 +17,6 @@ import argparse
 import ast
 import codecs
 import json
-import numpy
 import os.path
 import platform
 import subprocess
@@ -2660,7 +2659,7 @@ class MainWindow(QMainWindow):
             for key in self.fileStatedict:
                 idx = self.getImglabelidx(key)
                 try:
-                    img = cv2.imdecode(numpy.fromfile(key, dtype=numpy.uint8), -1)
+                    img = cv2.imdecode(np.fromfile(key, dtype=np.uint8), -1)
                     for i, label in enumerate(self.PPlabel[idx]):
                         if label['difficult']:
                             continue
