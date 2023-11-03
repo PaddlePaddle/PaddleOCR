@@ -78,9 +78,12 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的 OCR 工具库，助�
 
 PaddleX官网地址：https://www.paddlepaddle.org.cn/paddle/paddleX
 
-- [《动手学 OCR》电子书](https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/blog/ocr_book.html)
+欢迎微信扫描下方二维码或者点击链接：https://aistudio.baidu.com/community/channel/610 进入AI Studio【PaddleX社区频道】获得更高效的技术答疑～
 
-## 🎖 贡献者
+<div align="center">
+<img src="https://user-images.githubusercontent.com/45199522/279737332-e9f960f7-f0e5-4b92-95fb-79313bee2d89.png"  width = "150" height = "150",caption='' />
+<p>飞桨AI套件【PaddleX】社区频道二维码</p>
+</div>
 
 <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
