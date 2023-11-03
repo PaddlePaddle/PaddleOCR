@@ -77,11 +77,16 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 作为一款高效的开发神器，PaddleX值得每一位开发者拥有。
 
-PaddleX官网地址：https://www.paddlepaddle.org.cn/paddle/paddleX
-
 - PaddleX官网地址：https://aistudio.baidu.com/intro/paddlex
 
 - PaddleX官方交流频道：https://aistudio.baidu.com/community/channel/610
+
+欢迎微信扫描下方二维码或者点击链接：https://aistudio.baidu.com/community/channel/610 进入AI Studio【PaddleX社区频道】获得更高效的技术答疑～
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/45199522/279737332-e9f960f7-f0e5-4b92-95fb-79313bee2d89.png"  width = "150" height = "150",caption='' />
+<p>飞桨AI套件【PaddleX】社区频道二维码</p>
+</div>
 
 <a name="电子书"></a>
 ## 📚《动手学OCR》电子书
