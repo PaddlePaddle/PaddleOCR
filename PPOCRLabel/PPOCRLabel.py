@@ -536,6 +536,8 @@ class MainWindow(QMainWindow):
 
         lock = action(getStr("lockBox"), self.lockSelectedShape,
                       None, "lock", getStr("lockBoxDetail"), enabled=False)
+        expand = action(getStr("expandBox"), self.expandSelectedShape,
+                        "Ctrl+K", "expand", getStr("expandBoxDetail"), enabled=False)
 
         self.editButton.setDefaultAction(edit)
         self.newButton.setDefaultAction(create)
@@ -598,14 +600,14 @@ class MainWindow(QMainWindow):
                               fitWindow=fitWindow, fitWidth=fitWidth,
                               zoomActions=zoomActions, saveLabel=saveLabel, change_cls=change_cls,
                               undo=undo, undoLastPoint=undoLastPoint, open_dataset_dir=open_dataset_dir,
-                              rotateLeft=rotateLeft, rotateRight=rotateRight, lock=lock, exportJSON=exportJSON,
+                              rotateLeft=rotateLeft, rotateRight=rotateRight, lock=lock, exportJSON=exportJSON,expand=expand,
                               fileMenuActions=(opendir, open_dataset_dir, saveLabel, exportJSON, resetAll, quit),
                               beginner=(), advanced=(),
                               editMenu=(createpoly, edit, copy, delete, singleRere, cellreRec, None, undo, undoLastPoint,
-                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock,
+                                        None, rotateLeft, rotateRight, None, color1, self.drawSquaresOption, lock,expand,
                                         None, change_cls),
                               beginnerContext=(
-                                  create, createpoly, edit, copy, delete, singleRere, cellreRec, rotateLeft, rotateRight, lock, change_cls),
+                                  create, createpoly, edit, copy, delete, singleRere, cellreRec, rotateLeft, rotateRight, lock,expand,change_cls),
                               advancedContext=(createMode, editMode, edit, copy,
                                                delete, shapeLineColor, shapeFillColor),
                               onLoadActive=(create, createpoly, createMode, editMode),
@@ -925,6 +927,7 @@ class MainWindow(QMainWindow):
         self.toggleDrawMode(True)
         self.labelSelectionChanged()
 
+
     def updateFileMenu(self):
         currFilePath = self.filePath
 
@@ -1093,6 +1096,7 @@ class MainWindow(QMainWindow):
         self.actions.edit.setEnabled(n_selected == 1)
         self.actions.lock.setEnabled(n_selected)
         self.actions.change_cls.setEnabled(n_selected)
+        self.actions.expand.setEnabled(n_selected)
 
     def addLabel(self, shape):
         shape.paintLabel = self.displayLabelOption.isChecked()
@@ -1957,7 +1961,7 @@ class MainWindow(QMainWindow):
             deleteInfo = self.deleteImgDialog()
             if deleteInfo == QMessageBox.Yes:
                 if platform.system() == 'Windows':
-                    from win32com.shell import shell, shellcon
+                    from win32com import shell, shellcon
                     shell.SHFileOperation((0, shellcon.FO_DELETE, deletePath, None,
                                            shellcon.FOF_SILENT | shellcon.FOF_ALLOWUNDO | shellcon.FOF_NOCONFIRMATION,
                                            None, None))
@@ -2779,6 +2783,23 @@ class MainWindow(QMainWindow):
             self.result_dic_locked = []
             self.setDirty()
             self.actions.save.setEnabled(True)
+
+    def expandSelectedShape(self):
+        img = cv2.imdecode(np.fromfile(self.filePath, dtype=np.uint8), 1)
+        for shape in self.canvas.selectedShapes:
+            box = [[int(p.x()), int(p.y())] for p in shape.points]
+            if len(box) > 4:
+                box = self.gen_quad_from_poly(np.array(box))
+            assert len(box) == 4
+            box = boxPad(box, img.shape, 3)
+            shape.points = [QPointF(box[0][0], box[0][1]),
+                            QPointF(box[1][0], box[1][1]),
+                            QPointF(box[2][0], box[2][1]),
+                            QPointF(box[3][0], box[3][1])]
+            print(shape.points)
+            self.updateBoxlist()
+            self.setDirty()
+
 
 
 def inverted(color):
