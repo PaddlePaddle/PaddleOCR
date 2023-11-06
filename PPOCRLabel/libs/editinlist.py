@@ -28,6 +28,6 @@ class EditInList(QListWidget):
 
     def keyPressEvent(self, event) -> None:
         # close edit
-        if event.key() == 16777221:
+        if event.key() in [16777220, 16777221]:
             for i in range(self.count()):
                 self.closePersistentEditor(self.item(i))
