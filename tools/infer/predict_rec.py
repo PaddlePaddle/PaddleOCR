@@ -584,7 +584,7 @@ class TextRecognizer(object):
                 inputs = [
                     norm_img_batch,
                     np.array(
-                        [valid_ratios], dtype=np.float32),
+                        [valid_ratios], dtype=np.float32).T,
                 ]
                 if self.use_onnx:
                     input_dict = {}
