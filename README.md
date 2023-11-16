@@ -58,28 +58,26 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## ⚡ 快速开始
 
-- 在线网站体验：
+- 在线免费体验：
     - PP-OCRv4 在线体验地址：https://aistudio.baidu.com/application/detail/7658
     - PP-ChatOCR 在线体验地址：https://aistudio.baidu.com/application/detail/8519
+  
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
-- 飞桨AI套件（PaddleX）中训练、推理、高性能部署全流程体验：
-    - PP-OCRv4：https://aistudio.baidu.com/projectdetail/paddlex/6796224
-    - PP-ChatOCR：https://aistudio.baidu.com/projectdetail/paddlex/6796372
-    - PP-ChatOCRv2：https://aistudio.baidu.com/projectdetail/paddlex/7050167
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
 
 <a name="技术交流合作"></a>
 ## 📖 技术交流合作
-- 飞桨AI套件（PaddleX）—— 精选产业实用模型的一站式开发平台。包含如下特点：
-* 【优质的算法库】包含10大任务领域的36个精选模型，实现在一个平台中完成不同任务模型算法的开发。更多领域模型持续丰富中！PaddleX还提供完善的模型训练推理benchmark数据，服务开发者基于业务需求选择最合适的模型。
-* 【简易的开发方式】工具箱/开发者双模式联动，无代码+低代码开发方式，四步完成数据、训练、验证、部署的全流程AI开发。
-* 【高效的训练部署】沉淀百度算法团队的最佳调优策略，实现每个模型都能最快最优地收敛。完善的部署SDK支持，实现跨平台、跨硬件的快速产业级部署（服务化部署能力完善中）。
-* 【丰富的国产硬件支持】PaddleX除了在AI Studio云端使用，还沉淀了windows本地端，正在丰富Linux版本、昆仑芯版本、昇腾版本、寒武纪版本。
-* 【共赢的联创共建】除了便捷地开发AI应用外，PaddleX还为大家提供了获取商业收益的机会，为企业探索更多商业空间。
+
+飞桨AI套件（PaddleX）—— 精选产业实用模型的一站式开发平台。包含如下特点：
+
+* 【产业高精度模型库】精选算法和预训练模型，覆盖10+主流AI任务下的40+精选模型，如图像分类、目标检测、图像分割、3D、OCR、PDF转word等，并提供权威模型Benchmark表单，助力模型选型。
+* 【持续上新的特色工具】「PP-ChatOCRv2」文心一言与PP-OCR强强结合的通用文本图像智能分析系统；「大模型半监督学习工具」10%标注数据，比肩全量标注的模型效果；「PP-TSv2工具」支持时序预测和时序异常检测任务，达到业界SOTA效果。其他特色工具持续更新中。
+* 【低代码全流程开发】10+主流AI任务一套开发范式，基于图形界面(低代码)，只需四个简单步骤，即可实现数据准备、模型训练、模型评估、部署SDK下载等全流程AI开发。
+* 【轻量级私有化本地端】PaddleX支持纯离线使用，满足企业安全保密需要。产品兼容性程度高，标准化程度高，支持AI Studio云端、Windows本地端，即将发布Linux本地端、昆仑芯本地端、昇腾本地端、寒武纪本地端等。
 
 作为一款高效的开发神器，PaddleX值得每一位开发者拥有。
 
-PaddleX官网地址：https://www.paddlepaddle.org.cn/paddle/paddleX
+PaddleX官网地址：[https://www.paddlepaddle.org.cn/paddle/paddleX](https://aistudio.baidu.com/intro/paddlex)
 
 欢迎微信扫描下方二维码或者点击[链接](https://aistudio.baidu.com/community/channel/610) 进入AI Studio【PaddleX社区频道】获得更高效的技术答疑～
 
