@@ -45,15 +45,15 @@ def splitTrainVal(root, abs_train_root_path, abs_val_root_path, abs_test_root_pa
             if cur_ratio < train_ratio:
                 image_copy_path = os.path.join(abs_train_root_path, image_name)
                 shutil.copy(image_path, image_copy_path)
-                train_txt.write("{}\t{}\n".format(image_copy_path, image_label))
+                train_txt.write("{}\t{}".format(image_copy_path, image_label))
             elif cur_ratio >= train_ratio and cur_ratio < val_ratio:
                 image_copy_path = os.path.join(abs_val_root_path, image_name)
                 shutil.copy(image_path, image_copy_path)
-                val_txt.write("{}\t{}\n".format(image_copy_path, image_label))
+                val_txt.write("{}\t{}".format(image_copy_path, image_label))
             else:
                 image_copy_path = os.path.join(abs_test_root_path, image_name)
                 shutil.copy(image_path, image_copy_path)
-                test_txt.write("{}\t{}\n".format(image_copy_path, image_label))
+                test_txt.write("{}\t{}".format(image_copy_path, image_label))
 
 
 # 删掉存在的文件
