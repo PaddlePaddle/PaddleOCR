@@ -33,9 +33,8 @@ def str2bool(v):
 def str2int_tuple(v):
     return tuple([int(i.strip()) for i in v.split(",")])
 
-def init_args():
-    parser = argparse.ArgumentParser()
-    # params for prediction engine
+###########################################################
+def init_prediction_args(parser):
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
@@ -46,7 +45,7 @@ def init_args():
     parser.add_argument("--gpu_mem", type=int, default=500)
     parser.add_argument("--gpu_id", type=int, default=0)
 
-    # params for text detector
+def init_text_detector_args(parser):
     parser.add_argument("--image_dir", type=str)
     parser.add_argument("--page_num", type=int, default=0)
     parser.add_argument("--det_algorithm", type=str, default='DB')
@@ -54,66 +53,61 @@ def init_args():
     parser.add_argument("--det_limit_side_len", type=float, default=960)
     parser.add_argument("--det_limit_type", type=str, default='max')
     parser.add_argument("--det_box_type", type=str, default='quad')
-
-    # DB parmas
+    
+def init_DB_args(parser):
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
     parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
-
-    # EAST parmas
+    
+def init_EAST_params_args(parser):
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
-
-    # SAST parmas
+    
+def init_SAST_params_args(parser):
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
 
-    # PSE parmas
+def init_PSE_params_args(parser):
     parser.add_argument("--det_pse_thresh", type=float, default=0)
     parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
     parser.add_argument("--det_pse_min_area", type=float, default=16)
     parser.add_argument("--det_pse_scale", type=int, default=1)
-
-    # FCE parmas
+    
+def init_FCE_params(parser):
     parser.add_argument("--scales", type=list, default=[8, 16, 32])
     parser.add_argument("--alpha", type=float, default=1.0)
     parser.add_argument("--beta", type=float, default=1.0)
     parser.add_argument("--fourier_degree", type=int, default=5)
 
-    # params for text recognizer
+def init_text_recognizer_args(parser):
     parser.add_argument("--rec_algorithm", type=str, default='SVTR_LCNet')
     parser.add_argument("--rec_model_dir", type=str)
     parser.add_argument("--rec_image_inverse", type=str2bool, default=True)
     parser.add_argument("--rec_image_shape", type=str, default="3, 48, 320")
     parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
-    parser.add_argument(
-        "--rec_char_dict_path",
-        type=str,
-        default="./ppocr/utils/ppocr_keys_v1.txt")
+    parser.add_argument("--rec_char_dict_path",type=str,default="./ppocr/utils/ppocr_keys_v1.txt")
     parser.add_argument("--use_space_char", type=str2bool, default=True)
-    parser.add_argument(
-        "--vis_font_path", type=str, default="./doc/fonts/simfang.ttf")
+    parser.add_argument("--vis_font_path", type=str, default="./doc/fonts/simfang.ttf")
     parser.add_argument("--drop_score", type=float, default=0.5)
 
-    # params for e2e
+def init_e2e_params(parser):
     parser.add_argument("--e2e_algorithm", type=str, default='PGNet')
     parser.add_argument("--e2e_model_dir", type=str)
     parser.add_argument("--e2e_limit_side_len", type=float, default=768)
     parser.add_argument("--e2e_limit_type", type=str, default='max')
-
-    # PGNet parmas
+    
+def init_PGNEet_params(parser):
     parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
-    parser.add_argument(
-        "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
+    parser.add_argument("--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt")
     parser.add_argument("--e2e_pgnet_valid_set", type=str, default='totaltext')
     parser.add_argument("--e2e_pgnet_mode", type=str, default='fast')
 
-    # params for text classifier
+def inti_text_classifier_params(parser):
     parser.add_argument("--use_angle_cls", type=str2bool, default=False)
     parser.add_argument("--cls_model_dir", type=str)
     parser.add_argument("--cls_image_shape", type=str, default="3, 48, 192")
@@ -121,63 +115,77 @@ def init_args():
     parser.add_argument("--cls_batch_num", type=int, default=6)
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
+def init_SR_params(parser):
+    parser.add_argument("--sr_model_dir", type=str)
+    parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
+    parser.add_argument("--sr_batch_num", type=int, default=1)
+    
+def init_multi_process(parser):
+    parser.add_argument("--use_mp", type=str2bool, default=False)
+    parser.add_argument("--total_process_num", type=int, default=1)
+    parser.add_argument("--process_id", type=int, default=0)
+    parser.add_argument("--benchmark", type=str2bool, default=False)
+    parser.add_argument("--save_log_path", type=str, default="./log_output/")
+    parser.add_argument("--show_log", type=str2bool, default=True)
+    parser.add_argument("--use_onnx", type=str2bool, default=False)
+
+def init_args():
+    parser = argparse.ArgumentParser()
+
+    # Inicialización de argumentos para diferentes módulos
+    init_prediction_args(parser)
+    init_text_detector_args(parser)
+    init_text_recognizer_args(parser)
+    init_DB_args(parser)
+    init_EAST_params_args(parser)
+    init_SAST_params_args(parser)
+    init_PSE_params_args(parser)
+    init_FCE_params(parser)
+    init_e2e_params(parser)
+    init_PGNEet_params(parser)
+    inti_text_classifier_params(parser)
+    init_SR_params(parser)
+    init_multi_process(parser)
+    
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
-
-    # SR parmas
-    parser.add_argument("--sr_model_dir", type=str)
-    parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
-    parser.add_argument("--sr_batch_num", type=int, default=1)
-
-    #
-    parser.add_argument(
-        "--draw_img_save_dir", type=str, default="./inference_results")
+    
+    parser.add_argument("--draw_img_save_dir", type=str, default="./inference_results")
     parser.add_argument("--save_crop_res", type=str2bool, default=False)
     parser.add_argument("--crop_res_save_dir", type=str, default="./output")
 
-    # multi-process
-    parser.add_argument("--use_mp", type=str2bool, default=False)
-    parser.add_argument("--total_process_num", type=int, default=1)
-    parser.add_argument("--process_id", type=int, default=0)
+    return parser.parse_args()
 
-    parser.add_argument("--benchmark", type=str2bool, default=False)
-    parser.add_argument("--save_log_path", type=str, default="./log_output/")
-
-    parser.add_argument("--show_log", type=str2bool, default=True)
-    parser.add_argument("--use_onnx", type=str2bool, default=False)
-    return parser
-
+args = init_args()
+###########################################################
 
 def parse_args():
     parser = init_args()
     return parser.parse_args()
 
 
-def create_predictor(args, mode, logger):
-    if mode == "det":
-        model_dir = args.det_model_dir
-    elif mode == 'cls':
-        model_dir = args.cls_model_dir
-    elif mode == 'rec':
-        model_dir = args.rec_model_dir
-    elif mode == 'table':
-        model_dir = args.table_model_dir
-    elif mode == 'ser':
-        model_dir = args.ser_model_dir
-    elif mode == 're':
-        model_dir = args.re_model_dir
-    elif mode == "sr":
-        model_dir = args.sr_model_dir
-    elif mode == 'layout':
-        model_dir = args.layout_model_dir
-    else:
-        model_dir = args.e2e_model_dir
-
+def get_mode_directory(args, mode):
+    mode_directories = {
+        "det": args.det_model_dir,
+        "cls": args.cls_model_dir,
+        "rec": args.rec_model_dir,
+        "table": args.table_model_dir,
+        "ser": args.ser_model_dir,
+        "re": args.re_model_dir,
+        "sr": args.sr_model_dir,
+        "layout": args.layout_model_dir
+    }
+    model_dir = mode_directories.get(mode, args.e2e_model_dir)
     if model_dir is None:
         logger.info("not find {} model file path {}".format(mode, model_dir))
         sys.exit(0)
+    
+    return model_dir
+
+def create_predictor(args, mode, logger):
+    model_dir = get_mode_directory(args, mode)
     if args.use_onnx:
         import onnxruntime as ort
         model_file_path = model_dir
