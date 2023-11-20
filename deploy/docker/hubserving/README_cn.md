@@ -42,7 +42,7 @@ docker logs -f paddle_ocr
 ```
 
 ## 4.测试服务
-a. 计算待识别图片的Base64编码（如果只是测试一下效果，可以通过免费的在线工具实现，如：http://tool.chinaz.com/tools/imgtobase/）
+a. 计算待识别图片的Base64编码（如果只是测试一下效果，可以通过免费的在线工具实现，如：http://tool.chinaz.com/tools/imgtobase/
 b. 发送服务请求（可参见sample_request.txt中的值）
 ```
 curl -H "Content-Type:application/json" -X POST --data "{\"images\": [\"填入图片Base64编码(需要删除'data:image/jpg;base64,'）\"]}" http://localhost:8868/predict/ocr_system

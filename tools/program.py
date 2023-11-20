@@ -185,6 +185,7 @@ def train(config,
           eval_class,
           pre_best_model_dict,
           logger,
+          step_pre_epoch,
           log_writer=None,
           scaler=None,
           amp_level='O2',
@@ -198,6 +199,7 @@ def train(config,
     epoch_num = config['Global']['epoch_num']
     print_batch_step = config['Global']['print_batch_step']
     eval_batch_step = config['Global']['eval_batch_step']
+    eval_batch_epoch = config['Global'].get('eval_batch_epoch', None)
     profiler_options = config['profiler_options']
 
     global_step = 0
@@ -205,8 +207,9 @@ def train(config,
         global_step = pre_best_model_dict['global_step']
     start_eval_step = 0
     if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
-        start_eval_step = eval_batch_step[0]
-        eval_batch_step = eval_batch_step[1]
+        start_eval_step = eval_batch_step[0] if not eval_batch_epoch else 0
+        eval_batch_step = eval_batch_step[
+            1] if not eval_batch_epoch else step_pre_epoch * eval_batch_epoch
         if len(valid_dataloader) == 0:
             logger.info(
                 'No Images in eval dataset, evaluation during training ' \
@@ -231,7 +234,7 @@ def train(config,
     use_srn = config['Architecture']['algorithm'] == "SRN"
     extra_input_models = [
         "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "SPIN", "VisionLAN",
-        "RobustScanner", "RFL", 'DRRG', 'SATRN', 'SVTR_HGNet'
+        "RobustScanner", "RFL", 'DRRG', 'SATRN', 'SVTR_HGNet', "ParseQ", "CPPD"
     ]
     extra_input = False
     if config['Architecture']['algorithm'] == 'Distillation':
@@ -346,7 +349,10 @@ def train(config,
                 lr_scheduler.step()
 
             # logger and visualdl
-            stats = {k: v.numpy().mean() for k, v in loss.items()}
+            stats = {
+                k: float(v) if v.shape == [] else v.numpy().mean()
+                for k, v in loss.items()
+            }
             stats['lr'] = lr
             train_stats.update(stats)
 
@@ -661,7 +667,7 @@ def preprocess(is_train=False):
         'SEED', 'SDMGR', 'LayoutXLM', 'LayoutLM', 'LayoutLMv2', 'PREN', 'FCE',
         'SVTR', 'SVTR_LCNet', 'ViTSTR', 'ABINet', 'DB++', 'TableMaster', 'SPIN',
         'VisionLAN', 'Gestalt', 'SLANet', 'RobustScanner', 'CT', 'RFL', 'DRRG',
-        'CAN', 'Telescope', 'SATRN', 'SVTR_HGNet'
+        'CAN', 'Telescope', 'SATRN', 'SVTR_HGNet', 'ParseQ', 'CPPD'
     ]
 
     if use_xpu:
@@ -694,7 +700,7 @@ def preprocess(is_train=False):
             wandb_params = config['wandb']
         else:
             wandb_params = dict()
-        wandb_params.update({'save_dir': save_model_dir})
+        wandb_params.update({'save_dir': save_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
         loggers.append(log_writer)
     else:
