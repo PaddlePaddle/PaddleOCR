@@ -596,33 +596,36 @@ def get_center(model, eval_dataloader, post_process_class):
         char_center[key] = char_center[key][0]
     return char_center
 
-
+#################### Tets Refactor 2
 def preprocess(is_train=False):
-    FLAGS = ArgsParser().parse_args()
-    profiler_options = FLAGS.profiler_options
-    config = load_config(FLAGS.config)
-    config = merge_config(config, FLAGS.opt)
+    FLAGS = parse_arguments()
+    config = load_configuration(FLAGS)
     profile_dic = {"profiler_options": FLAGS.profiler_options}
     config = merge_config(config, profile_dic)
+    check_algorithm(config)
 
     if is_train:
-        # save_config
         save_model_dir = config['Global']['save_model_dir']
-        os.makedirs(save_model_dir, exist_ok=True)
-        with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
-            yaml.dump(
-                dict(config), f, default_flow_style=False, sort_keys=False)
+        save_configuration(config, save_model_dir)
         log_file = '{}/train.log'.format(save_model_dir)
     else:
         log_file = None
-    logger = get_logger(log_file=log_file)
 
-    # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['Global'].get('use_gpu', False)
-    use_xpu = config['Global'].get('use_xpu', False)
-    use_npu = config['Global'].get('use_npu', False)
-    use_mlu = config['Global'].get('use_mlu', False)
+    logger = initialize_logger(log_file)
+    device = get_device(config)
+    set_device(device)
+    configure_distributed_training(config)
+    log_writer = initialize_loggers(config)
+    print_configuration(config, logger)
 
+    logger.info('train with paddle {} and device {}'.format(paddle.__version__, device))
+    
+    return config, device, logger, log_writer
+
+def parse_arguments():
+    return ArgsParser().parse_args()
+
+def check_algorithm(config):
     alg = config['Architecture']['algorithm']
     assert alg in [
         'EAST', 'DB', 'SAST', 'Rosetta', 'CRNN', 'STARNet', 'RARE', 'SRN',
@@ -633,21 +636,42 @@ def preprocess(is_train=False):
         'CAN', 'Telescope', 'SATRN', 'SVTR_HGNet'
     ]
 
+def load_configuration(FLAGS):
+    config = load_config(FLAGS.config)
+    return merge_config(config, FLAGS.opt)
+
+def save_configuration(config, save_model_dir):
+    os.makedirs(save_model_dir, exist_ok=True)
+    with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
+        yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
+
+def initialize_logger(log_file):
+    if log_file:
+        return get_logger(log_file=log_file)
+    return get_logger()
+
+def get_device(config):
+    use_gpu = config['Global'].get('use_gpu', False)
+    use_xpu = config['Global'].get('use_xpu', False)
+    use_npu = config['Global'].get('use_npu', False)
+    use_mlu = config['Global'].get('use_mlu', False)
+
     if use_xpu:
-        device = 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
+        return 'xpu:{0}'.format(os.getenv('FLAGS_selected_xpus', 0))
     elif use_npu:
-        device = 'npu:{0}'.format(os.getenv('FLAGS_selected_npus', 0))
+        return 'npu:{0}'.format(os.getenv('FLAGS_selected_npus', 0))
     elif use_mlu:
-        device = 'mlu:{0}'.format(os.getenv('FLAGS_selected_mlus', 0))
+        return 'mlu:{0}'.format(os.getenv('FLAGS_selected_mlus', 0))
     else:
-        device = 'gpu:{}'.format(dist.ParallelEnv()
-                                 .dev_id) if use_gpu else 'cpu'
-    check_device(use_gpu, use_xpu, use_npu, use_mlu)
+        return 'gpu:{}'.format(dist.ParallelEnv().dev_id) if use_gpu else 'cpu'
 
-    device = paddle.set_device(device)
+def set_device(device):
+    return paddle.set_device(device)
 
+def configure_distributed_training(config):
     config['Global']['distributed'] = dist.get_world_size() != 1
 
+def initialize_loggers(config):
     loggers = []
 
     if 'use_visualdl' in config['Global'] and config['Global']['use_visualdl']:
@@ -655,26 +679,17 @@ def preprocess(is_train=False):
         vdl_writer_path = save_model_dir
         log_writer = VDLLogger(vdl_writer_path)
         loggers.append(log_writer)
+
     if ('use_wandb' in config['Global'] and
             config['Global']['use_wandb']) or 'wandb' in config:
         save_dir = config['Global']['save_model_dir']
         wandb_writer_path = "{}/wandb".format(save_dir)
-        if "wandb" in config:
-            wandb_params = config['wandb']
-        else:
-            wandb_params = dict()
+        wandb_params = config['wandb'] if 'wandb' in config else dict()
         wandb_params.update({'save_dir': save_dir})
         log_writer = WandbLogger(**wandb_params, config=config)
         loggers.append(log_writer)
-    else:
-        log_writer = None
+
+    return Loggers(loggers) if loggers else None
+
+def print_configuration(config, logger):
     print_dict(config, logger)
-
-    if loggers:
-        log_writer = Loggers(loggers)
-    else:
-        log_writer = None
-
-    logger.info('train with paddle {} and device {}'.format(paddle.__version__,
-                                                            device))
-    return config, device, logger, log_writer
