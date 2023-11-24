@@ -368,12 +368,11 @@ def train(config,
                 eta_sec = ((epoch_num + 1 - epoch) * \
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
+                max_mem_reserved_str = ""
+                max_mem_allocated_str = ""
                 if paddle.device.is_compiled_with_cuda():
                     max_mem_reserved_str = f"max_mem_reserved: {paddle.device.cuda.max_memory_reserved()} B"
                     max_mem_allocated_str = f"max_mem_allocated: {paddle.device.cuda.max_memory_allocated()} B"
-                else:
-                    max_mem_reserved_str = f"max_mem_reserved: not supported on non-CUDA device B"
-                    max_mem_allocated_str = f"max_mem_allocated: not supported on non-CUDA device B"
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                     '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
                     'ips: {:.5f} samples/s, eta: {}, {}, {}'.format(
