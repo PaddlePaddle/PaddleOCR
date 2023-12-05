@@ -371,11 +371,11 @@ def train(config,
                 max_mem_reserved_str = ""
                 max_mem_allocated_str = ""
                 if paddle.device.is_compiled_with_cuda():
-                    max_mem_reserved_str = f"max_mem_reserved: {paddle.device.cuda.max_memory_reserved()} B"
-                    max_mem_allocated_str = f"max_mem_allocated: {paddle.device.cuda.max_memory_allocated()} B"
+                    max_mem_reserved_str = f"max_mem_reserved: {paddle.device.cuda.max_memory_reserved() // (1024 ** 2)} MB,"
+                    max_mem_allocated_str = f"max_mem_allocated: {paddle.device.cuda.max_memory_allocated() // (1024 ** 2)} MB"
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                     '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                    'ips: {:.5f} samples/s, eta: {}, {}, {}'.format(
+                    'ips: {:.5f} samples/s, eta: {}, {} {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
