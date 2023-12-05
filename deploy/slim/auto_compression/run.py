@@ -75,7 +75,13 @@ def eval_function(exe, compiled_test_program, test_feed_names, test_fetch_list):
             ncols=80) as t:
         for batch_id, batch in enumerate(val_loader):
             images = batch[0]
-            preds, = exe.run(compiled_test_program,
+            
+            try:
+                preds, = exe.run(compiled_test_program,
+                             feed={test_feed_names[0]: images},
+                             fetch_list=test_fetch_list)
+            except:
+                preds, _ = exe.run(compiled_test_program,
                              feed={test_feed_names[0]: images},
                              fetch_list=test_fetch_list)
 
