@@ -227,7 +227,7 @@ def cal_ocr_word_box(rec_str, box, rec_word_info):
         if len(cn_width_list) != 0:
             avg_char_width = np.mean(cn_width_list)
         else:
-g            avg_char_width = (bbox_x_end - bbox_x_start) / len(rec_str)
+            avg_char_width = (bbox_x_end - bbox_x_start) / len(rec_str)
         for center_idx in cn_col_list:
             center_x = (center_idx + 0.5) * cell_width
             cell_x_start = max(int(center_x - avg_char_width / 2),
