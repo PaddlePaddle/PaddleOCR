@@ -1,5 +1,5 @@
 Global:
-  model_dir: ch_PP-OCRv4_rec_infer
+  model_dir: ./models/ch_PP-OCRv4_rec_infer
   model_filename: inference.pdmodel
   params_filename: inference.pdiparams
   model_type: rec
@@ -12,30 +12,29 @@ Distillation:
   alpha: [1.0, 1.0]
   loss: ['skd', 'l2']
   node:
-   - ['linear_170.tmp_1']
+   - ['softmax_11.tmp_0']
    - ['linear_170.tmp_1']
 
 QuantAware:
-  use_pact: true
+  use_pact: false
   activation_bits: 8
   is_full_quantize: false
-  onnx_format: True
+  onnx_format: false
   activation_quantize_type: moving_average_abs_max
   weight_quantize_type: channel_wise_abs_max
   not_quant_pattern:
   - skip_quant
   quantize_op_types:
   - conv2d
-  - depthwise_conv2d
   weight_bits: 8
 
 TrainConfig:
-  epochs: 10
-  eval_iter: 200
+  epochs: 1
+  eval_iter: 1000
   logging_iter: 100
   learning_rate: 
     type: CosineAnnealingDecay 
-    learning_rate: 0.00005
+    learning_rate: 0.00001
   optimizer_builder:
     optimizer:
       type: Adam
@@ -53,9 +52,9 @@ Train:
   dataset:
     name: MultiScaleDataSet
     ds_width: false
-    data_dir: data_pubtabnet/real_data
+    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
     label_file_list:
-      - data_pubtabnet/real_data/train_list.txt 
+      - /home/aistudio/PaddleOCR/datasets/real_data/train_list.txt
     ext_op_transform_idx: 1
     transforms:
     - DecodeImage:
@@ -79,7 +78,7 @@ Train:
   sampler:
     name: MultiScaleSampler
     scales: [[320, 32], [320, 48], [320, 64]]
-    first_bs: &bs 192
+    first_bs: &bs 64
     fix_bs: false
     divided_factor: [8, 16] # w, h
     is_training: True
@@ -91,9 +90,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: data_pubtabnet/real_data
+    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
     label_file_list:
-      - data_pubtabnet/real_data/val_list.txt 
+      - /home/aistudio/PaddleOCR/datasets/real_data/val_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -112,5 +111,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 128
+    batch_size_per_card: 1
     num_workers: 4

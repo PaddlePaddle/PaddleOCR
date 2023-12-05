@@ -1,5 +1,5 @@
 Global:
-  model_dir: ch_PP-OCRv4_rec_server_infer
+  model_dir: ./models/ch_PP-OCRv4_rec_server_infer
   model_filename: inference.pdmodel
   params_filename: inference.pdiparams
   model_type: rec
@@ -9,33 +9,29 @@ Global:
   use_space_char: true
 
 Distillation:
-  alpha: [1.0, 1.0]
-  loss: ['skd', 'l2']
-  node:
-   - ['linear_47.tmp_1']
-   - ['linear_47.tmp_1']
+  alpha: 1.0
+  loss: 'l2'
 
 QuantAware:
-  use_pact: true
+  use_pact: false
   activation_bits: 8
   is_full_quantize: false
-  onnx_format: True
+  onnx_format: false
   activation_quantize_type: moving_average_abs_max
   weight_quantize_type: channel_wise_abs_max
   not_quant_pattern:
   - skip_quant
   quantize_op_types:
   - conv2d
-  - depthwise_conv2d
   weight_bits: 8
 
 TrainConfig:
-  epochs: 10
-  eval_iter: 2000
+  epochs: 1
+  eval_iter: 1000
   logging_iter: 100
   learning_rate: 
     type: CosineAnnealingDecay 
-    learning_rate: 0.00005
+    learning_rate: 0.00001
   optimizer_builder:
     optimizer:
       type: Adam
@@ -51,27 +47,12 @@ Metric:
 
 Train:
   dataset:
-    name: SimpleDataSet
-    data_dir: datasets/chinese/
+    name: MultiScaleDataSet
+    ds_width: false
+    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
     ext_op_transform_idx: 1
     label_file_list:
-        - datasets/chinese/zhongce_training_fix_1.6k.txt
-        - datasets/chinese/label_train_all_f4_part2.txt
-        - datasets/chinese/label_train_all_f4_part3.txt
-        - datasets/chinese/label_train_all_f4_part4.txt
-        - datasets/chinese/label_train_all_f4_part5.txt
-        - datasets/chinese/synth_en_my_clip.txt
-        - datasets/chinese/synth_ch_my_clip.txt
-        - datasets/chinese/synth_en_my_largeword_clip.txt
-    ratio_list:
-        - 0.3
-        - 0.2
-        - 0.1
-        - 0.2
-        - 0.2
-        - 0.1
-        - 0.2
-        - 0.2
+    - /home/aistudio/PaddleOCR/datasets/real_data/train_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -83,43 +64,50 @@ Train:
         max_text_length: *max_text_length
     - RecAug:
     - MultiLabelEncode:
-    - RecResizeImg:
-        image_shape: [3, 48, 320]
+        gtc_encode: NRTRLabelEncode
     - KeepKeys:
         keep_keys:
         - image
         - label_ctc
-        - label_sar
+        - label_gtc
         - length
         - valid_ratio
+  sampler:
+    name: MultiScaleSampler
+    scales: [[320, 32], [320, 48], [320, 64]]
+    first_bs: &bs 64
+    fix_bs: false
+    divided_factor: [8, 16] # w, h
+    is_training: True
   loader:
     shuffle: true
-    batch_size_per_card: 16
+    batch_size_per_card: *bs
     drop_last: true
-    num_workers: 0
+    num_workers: 8
 
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: datasets/v4_4_test_dataset
+    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
     label_file_list:
-      - datasets/v4_4_test_dataset/label.txt
+    - /home/aistudio/PaddleOCR/datasets/real_data/val_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
+        gtc_encode: NRTRLabelEncode
     - RecResizeImg:
         image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
         - image
         - label_ctc
-        - label_sar
+        - label_gtc
         - length
         - valid_ratio
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 64
-    num_workers: 0
+    batch_size_per_card: 1
+    num_workers: 4
