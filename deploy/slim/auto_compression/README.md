@@ -1,17 +1,23 @@
 # OCR模型自动压缩示例
 
 目录：
-- [1. 简介](#1简介)
-- [2. Benchmark](#2Benchmark)
-- [3. 自动压缩流程](#自动压缩流程)
-  - [3.1 准备环境](#31-准备准备)
-  - [3.2 准备数据集](#32-准备数据集)
-  - [3.3 准备预测模型](#33-准备预测模型)
-  - [3.4 自动压缩并产出模型](#34-自动压缩并产出模型)
-- [4. 预测部署](#4预测部署)
-  - [4.1 Python预测推理](#41-Python预测推理)
-  - [4.2 PaddleLite端侧部署](#42-PaddleLite端侧部署)
-- [5. FAQ](5FAQ)
+- [OCR模型自动压缩示例](#ocr模型自动压缩示例)
+  - [1. 简介](#1-简介)
+  - [2. Benchmark](#2-benchmark)
+    - [PPOCRV4\_det](#ppocrv4_det)
+    - [PPOCRV4\_rec](#ppocrv4_rec)
+    - [PPOCRV3](#ppocrv3)
+  - [3. 自动压缩流程](#3-自动压缩流程)
+    - [3.1 准备环境](#31-准备环境)
+    - [3.2 准备数据集](#32-准备数据集)
+    - [3.3 准备预测模型](#33-准备预测模型)
+  - [4.预测部署](#4预测部署)
+      - [4.1 Paddle Inference 验证性能](#41-paddle-inference-验证性能)
+        - [4.1.1 基于压缩模型进行基于GPU的批量测试：](#411-基于压缩模型进行基于gpu的批量测试)
+        - [4.1.2 基于压缩前模型进行基于GPU的批量测试：](#412-基于压缩前模型进行基于gpu的批量测试)
+        - [4.1.3 基于压缩模型进行基于CPU的批量测试：](#413-基于压缩模型进行基于cpu的批量测试)
+    - [4.2 PaddleLite端侧部署](#42-paddlelite端侧部署)
+  - [5.FAQ](#5faq)
 
 
 ## 1. 简介
@@ -19,16 +25,26 @@
 
 ## 2. Benchmark
 
-### PPOCRV4
-| 模型 | 策略 | Metric | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
+### PPOCRV4_det
+| 模型 | 策略 | Metric(hmean) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| 中文PPOCRV4-det | Baseline | 84.57 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
-| 中文PPOCRV4-det | 量化+蒸馏 | 85.01 | - | - | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](） |
-| 中文PPOCRV4-rec | Baseline | 76.48 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar) |
-| 中文PPOCRV4-rec | 量化+蒸馏 | 73.23 | - | - | [Config](./configs/ppocrv4/ppocrv4_rec_qat_dist.yaml\) | [Model]() |
-> PPOCRV3-det 的测试指标为 hmean，PPOCRV3-rec的测试指标为 accuracy.
+| 中文PPOCRV4-det_mobile | Baseline | 72.71 | 5.7 | 92.0 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
+| 中文PPOCRV4-det_mobile | 量化+蒸馏 | 71.10 | 2.3 | 94.1 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model]() |
+| 中文PPOCRV4-det_server | Baseline | 79.82 | 32.6 | 844.7 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
+| 中文PPOCRV4-det_server | 量化+蒸馏 | 79.27 | 12.3 | 635.0 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
+> - GPU测试环境：RTX 3090ti, cuda11.7+tensorrt8.4.2.4+paddle2.5
+> - CPU测试环境：Intel(R) Xeon(R) Gold 6226R，使用12线程测试
+> - PPOCRV4-det_server在不完整的数据集上测试，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
 
-
+### PPOCRV4_rec
+| 模型 | 策略 | Metric(accuracy) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
+|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| 中文PPOCRV4-rec_mobile | Baseline | 78.92 | 1.7 | 33.3 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar) |
+| 中文PPOCRV4-rec_mobile | 量化+蒸馏 | 78.41 | 1.4 | 34.0 | [Config](./configs/ppocrv4/ppocrv4_rec_qat_dist.yaml) | [Model]() |
+| 中文PPOCRV4-rec_server | Baseline | 81.62 | 4.0 | 62.5 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar) |
+| 中文PPOCRV4-rec_server | 量化+蒸馏 | 81.03 | 2.0 | 64.4 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
+> - GPU测试环境：Tesla V100, cuda11.2+tensorrt8.0.3.4+paddle2.5
+> - CPU测试环境：Intel(R) Xeon(R) Gold 6271C，使用12线程测试
 
 ### PPOCRV3
 | 模型 | 策略 | Metric | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
@@ -72,7 +88,6 @@ pip install scikit-image imgaug
 git clone -b release/2.7 https://github.com/PaddlePaddle/PaddleOCR.git
 cd PaddleOCR/
 pip install -r requirements.txt 
-
 ```
 
 ### 3.2 准备数据集
@@ -85,7 +100,7 @@ pip install -r requirements.txt
 
 > 注：其他像`__model__`和`__params__`分别对应`model.pdmodel` 和 `model.pdiparams`文件。
 
-可在[PaddleOCR模型库](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/doc/doc_ch/models_list.md)中直接获取Inference模型，具体可参考下方获取中文PPOCRV3模型示例：
+可在[PaddleOCR模型库](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_ch/models_list.md)中直接获取Inference模型，具体可参考下方获取中文PPOCRV4模型示例：
 
 ```shell
 https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar

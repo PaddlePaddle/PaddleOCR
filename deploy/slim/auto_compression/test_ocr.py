@@ -39,6 +39,39 @@ from paddle.inference import Config as PredictConfig
 logger = get_logger(__name__, level=logging.INFO)
 
 
+
+def find_images_with_bounding_size(dataset: paddle.io.Dataset):
+    max_length_index = -1
+    max_width_index = -1
+    min_length_index = -1
+    min_width_index = -1
+
+    max_length = float('-inf')
+    max_width = float('-inf')
+    min_length = float('inf')
+    min_width = float('inf')
+    for idx, data in enumerate(dataset):
+        image = np.array(data[0])
+        h, w = image.shape[-2:]
+        if h > max_length:
+            max_length = h
+            max_length_index = idx
+        if w > max_width:
+            max_width = w
+            max_width_index = idx
+        if h < min_length:
+            min_length = h
+            min_length_index = idx
+        if w < min_width:
+            min_width = w
+            min_width_index = idx
+    print(f"Found max image length: {max_length}, index: {max_length_index}")
+    print(f"Found max image width: {max_width}, index: {max_width_index}")
+    print(f"Found min image length: {min_length}, index: {min_length_index}")
+    print(f"Found min image width: {min_width}, index: {min_width_index}")
+    return paddle.io.Subset(dataset, [max_width_index,max_length_index,
+                                           min_width_index, min_length_index])
+
 def load_predictor(args):
     """
     load predictor func
@@ -56,10 +89,12 @@ def load_predictor(args):
         pred_cfg.set_cpu_math_library_num_threads(args.cpu_threads)
         if args.use_mkldnn:
             pred_cfg.enable_mkldnn()
+            if args.precision == "fp32" and global_config['model_type']=="rec":
+                # delete pass which influence the accuracy, please refer to https://github.com/PaddlePaddle/Paddle/issues/55290
+                pred_cfg.delete_pass("fc_mkldnn_pass")
+                pred_cfg.delete_pass("fc_act_mkldnn_fuse_pass")
             if args.precision == "int8":
-                pred_cfg.enable_mkldnn_int8({
-                    "conv2d", "depthwise_conv2d", "pool2d", "elementwise_mul"
-                })
+                pred_cfg.enable_mkldnn_int8({"conv2d"})
 
     if args.use_trt:
         # To collect the dynamic shapes of inputs for TensorRT engine
@@ -82,16 +117,13 @@ def load_predictor(args):
                 use_static=True,
                 use_calib_mode=False, )
         else:
-            pred_cfg.disable_gpu()
-            pred_cfg.set_cpu_math_library_num_threads(10)
+            # pred_cfg.disable_gpu()
+            # pred_cfg.set_cpu_math_library_num_threads(24)
             pred_cfg.collect_shape_range_info(dynamic_shape_file)
             print("Start collect dynamic shape...")
             rerun_flag = True
 
-    pred_cfg.exp_disable_tensorrt_ops(["reshape2"])
-    # pred_cfg.delete_pass("gpu_cpu_map_matmul_v2_to_mul_pass")
-    # pred_cfg.delete_pass("delete_quant_dequant_linear_op_pass")
-    # pred_cfg.delete_pass("delete_weight_dequant_linear_op_pass")
+
     predictor = create_predictor(pred_cfg)
     return predictor, rerun_flag
 
@@ -111,6 +143,16 @@ def eval(args):
     model_type = global_config['model_type']
 
     predictor, rerun_flag = load_predictor(args)
+
+    if rerun_flag:
+        eval_dataset = find_images_with_bounding_size(val_loader.dataset)
+        batch_sampler = paddle.io.BatchSampler(
+        eval_dataset, batch_size=1, shuffle=False, drop_last=False)
+        val_loader = paddle.io.DataLoader(
+            eval_dataset,
+            batch_sampler=batch_sampler,
+            num_workers=4,
+            return_list=True)
 
     input_names = predictor.get_input_names()
     input_handle = predictor.get_input_handle(input_names[0])
@@ -155,16 +197,17 @@ def eval(args):
             eval_class(post_result, batch_numpy)
 
         if rerun_flag:
-            print(
-                "***** Collect dynamic shape done, Please rerun the program to get correct results. *****"
-            )
-            return
+            if batch_id == 3:
+                print(
+                    "***** Collect dynamic shape done, Please rerun the program to get correct results. *****"
+                )
+                return
         if batch_id % 100 == 0:
             print("Eval iter:", batch_id)
             sys.stdout.flush()
 
 
-        metric = eval_class.get_metric()
+    metric = eval_class.get_metric()
         
     time_avg = predict_time / sample_nums
     print(
