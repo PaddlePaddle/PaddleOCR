@@ -6,10 +6,10 @@
   - [2. Benchmark](#2-benchmark)
     - [PPOCRV4\_det](#ppocrv4_det)
     - [PPOCRV4\_rec](#ppocrv4_rec)
-    - [PPOCRV3](#ppocrv3)
   - [3. 自动压缩流程](#3-自动压缩流程)
     - [3.1 准备环境](#31-准备环境)
     - [3.2 准备数据集](#32-准备数据集)
+      - [3.2.1 PPOCRV4\_det\_server数据集预处理](#321-ppocrv4_det_server数据集预处理)
     - [3.3 准备预测模型](#33-准备预测模型)
   - [4.预测部署](#4预测部署)
       - [4.1 Paddle Inference 验证性能](#41-paddle-inference-验证性能)
@@ -34,7 +34,7 @@
 | 中文PPOCRV4-det_server | 量化+蒸馏 | 79.27 | 12.3 | 635.0 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
 > - GPU测试环境：RTX 3090ti, cuda11.7+tensorrt8.4.2.4+paddle2.5
 > - CPU测试环境：Intel(R) Xeon(R) Gold 6226R，使用12线程测试
-> - PPOCRV4-det_server在不完整的数据集上测试，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
+> - PPOCRV4-det_server在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
 
 ### PPOCRV4_rec
 | 模型 | 策略 | Metric(accuracy) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
@@ -45,15 +45,6 @@
 | 中文PPOCRV4-rec_server | 量化+蒸馏 | 81.03 | 2.0 | 64.4 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
 > - GPU测试环境：Tesla V100, cuda11.2+tensorrt8.0.3.4+paddle2.5
 > - CPU测试环境：Intel(R) Xeon(R) Gold 6271C，使用12线程测试
-
-### PPOCRV3
-| 模型 | 策略 | Metric | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
-|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| 中文PPOCRV3-det | Baseline | 84.57 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) |
-| 中文PPOCRV3-det | 量化+蒸馏 | 85.01 | - | - | [Config](./configs/ppocrv3/ppocrv3_det_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_det_QAT.tar) |
-| 中文PPOCRV3-rec | Baseline | 76.48 | - | - | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) |
-| 中文PPOCRV3-rec | 量化+蒸馏 | 73.23 | - | - | [Config](./configs/ppocrv3/ppocrv3_rec_qat_dist.yaml) | [Model](https://bj.bcebos.com/v1/paddle-slim-models/act/OCR/PPOCRV3_rec_QAT.tar) |
-> PPOCRV3-det 的测试指标为 hmean，PPOCRV3-rec的测试指标为 accuracy.
 
 
 ## 3. 自动压缩流程
@@ -92,6 +83,12 @@ pip install -r requirements.txt
 
 ### 3.2 准备数据集
 公开数据集可参考[OCR数据集](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_ch/dataset/ocr_datasets.md)，然后根据程序运行过程中提示放置到对应位置。
+
+#### 3.2.1 PPOCRV4_det_server数据集预处理
+PPOCRV4_det_server在使用原始数据集推理时，默认将输入图像的最小边缩放到736，然而原始数据集中存在一些长宽比很大的图像，比如13:1，此时再进行缩放就会导致长边的尺寸非常大，在实验过程中发现最大的长边尺寸有10000+，这导致在构建TensorRT子图的时候显存不足。
+
+为了能顺利跑通自动压缩的流程，展示自动压缩的效果，因此需要对原始数据集进行预处理，将长宽比过大的图像进行剔除，处理脚本可见[ppocrv4_det_server_dataset_process.py](./ppocrv4_det_server_dataset_process.py)。
+
 
 > 注意：使用不同的数据集需要修改配置文件中`dataset`中数据路径和数据处理部分。
 
