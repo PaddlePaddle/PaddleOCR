@@ -13,9 +13,10 @@
     - [3.3 准备预测模型](#33-准备预测模型)
   - [4.预测部署](#4预测部署)
       - [4.1 Paddle Inference 验证性能](#41-paddle-inference-验证性能)
-        - [4.1.1 基于压缩模型进行基于GPU的批量测试：](#411-基于压缩模型进行基于gpu的批量测试)
-        - [4.1.2 基于压缩前模型进行基于GPU的批量测试：](#412-基于压缩前模型进行基于gpu的批量测试)
-        - [4.1.3 基于压缩模型进行基于CPU的批量测试：](#413-基于压缩模型进行基于cpu的批量测试)
+        - [4.1.1 使用测试脚本进行批量测试：](#411-使用测试脚本进行批量测试)
+        - [4.1.2 基于压缩模型进行基于GPU的批量测试：](#412-基于压缩模型进行基于gpu的批量测试)
+        - [4.1.3 基于压缩前模型进行基于GPU的批量测试：](#413-基于压缩前模型进行基于gpu的批量测试)
+        - [4.1.4 基于压缩模型进行基于CPU的批量测试：](#414-基于压缩模型进行基于cpu的批量测试)
     - [4.2 PaddleLite端侧部署](#42-paddlelite端侧部署)
   - [5.FAQ](#5faq)
 
@@ -168,7 +169,20 @@ TensorRT预测环境配置：
 
 准备好预测模型，并且修改dataset_config中数据集路径为正确的路径后，启动测试：
 
-##### 4.1.1 基于压缩模型进行基于GPU的批量测试：
+##### 4.1.1 使用测试脚本进行批量测试：
+
+我们提供两个脚本文件用于测试模型自动化压缩的效果，分别是[test_ocr_det.sh](./test_ocr_det.sh)和[test_ocr_rec.sh](./test_ocr_rec.sh)，这两个脚本都接收一个`model_type`参数，用于区分是测试mobile模型还是server模型，可选参数为`mobile`和`server`，使用示例：
+  
+  ```shell
+  # 测试mobile模型
+  bash test_ocr_det.sh mobile
+  bash test_ocr_rec.sh mobile
+  # 测试server模型
+  bash test_ocr_det.sh server
+  bash test_ocr_rec.sh server
+  ```
+
+##### 4.1.2 基于压缩模型进行基于GPU的批量测试：
 
 ```shell
 cd deploy/slim/auto_compression
@@ -181,7 +195,7 @@ python test_ocr.py \
 ```
 
 
-##### 4.1.2 基于压缩前模型进行基于GPU的批量测试：
+##### 4.1.3 基于压缩前模型进行基于GPU的批量测试：
 
 ```shell
 cd deploy/slim/auto_compression
@@ -194,7 +208,7 @@ python test_ocr.py \
 ```
 
 
-##### 4.1.3 基于压缩模型进行基于CPU的批量测试：
+##### 4.1.4 基于压缩模型进行基于CPU的批量测试：
 
 - MKLDNN预测：
 
