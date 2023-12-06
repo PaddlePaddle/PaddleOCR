@@ -45,7 +45,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的 OCR 工具库，助�
 
 ## 🌟 特性
 
-支持多种 OCR 相关前沿算法，包括但不限于文本检测、文本识别、表格识别等。在此基础上打造产业级特色模型 PP-OCR、PP-Structure 和 PP-ChatOCR，并打通数据生产、模型训练、压缩、预测部署全流程，为开发者提供一站式解决方案。
+支持多种OCR相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)、[PP-Structure](./ppstructure/README_ch.md)和[PP-ChatOCRv2](https://aistudio.baidu.com/projectdetail/paddlex/7050167)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
 <div align="center">
     <img src="./docs/images/ppocrv4.png">
