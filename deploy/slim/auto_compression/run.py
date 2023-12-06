@@ -142,7 +142,6 @@ def main():
     global_config['input_name'] = get_feed_vars(
         global_config['model_dir'], global_config['model_filename'],
         global_config['params_filename'])
-    # import pdb;pdb.set_trace()
     
     ac = AutoCompression(
         model_dir=global_config['model_dir'],

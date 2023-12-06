@@ -164,8 +164,6 @@ def eval(args):
     time_max = float("-inf")
     print("Start evaluating ( total_iters: {}).".format(sample_nums))
 
-    # preprocess_op = create_operators(pre_process_list)
-    # data = transform(data, self.preprocess_op)
     for batch_id, batch in enumerate(val_loader):
         
         images = np.array(batch[0])
