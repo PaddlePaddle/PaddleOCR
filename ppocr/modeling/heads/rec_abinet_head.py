@@ -156,7 +156,7 @@ class PositionAttention(nn.Layer):
         # calculate query vector
         # TODO q=f(q,k)
         zeros = paddle.zeros(
-            (B, self.max_length, C), dtype=x.dtype)  # (T, N, C)
+            (B, self.max_length, C), dtype=x.dtype)  # (B, N, C)
         q = self.pos_encoder(zeros)  # (B, N, C)
         q = self.project(q)  # (B, N, C)
 
