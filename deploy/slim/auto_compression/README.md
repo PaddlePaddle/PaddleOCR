@@ -19,6 +19,7 @@
         - [4.1.4 基于压缩模型进行基于CPU的批量测试：](#414-基于压缩模型进行基于cpu的批量测试)
     - [4.2 PaddleLite端侧部署](#42-paddlelite端侧部署)
   - [5.FAQ](#5faq)
+    - [5.1 报错找不到模型文件或者数据集文件](#51-报错找不到模型文件或者数据集文件)
 
 
 ## 1. 简介
@@ -229,3 +230,37 @@ PaddleLite端侧部署可参考：
 - [Paddle Lite部署](https://github.com/PaddlePaddle/PaddleOCR/tree/9cdab61d909eb595af849db885c257ca8c74cb57/deploy/lite)
 
 ## 5.FAQ
+
+### 5.1 报错找不到模型文件或者数据集文件
+
+如果在推理或者跑ACT时报错找不到模型文件或者数据集文件，可以检查一下配置文件中的路径是否正确，以det_mobile为例，配置文件中的指定模型路径的配置信息如下：
+
+```yaml
+Global:
+  model_dir: ./models/ch_PP-OCRv4_det_infer
+  model_filename: inference.pdmodel
+  params_filename: inference.pdiparams
+```
+指定训练集验证集路径的配置信息如下：
+
+```yaml
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: datasets/chinese
+    label_file_list:
+        - datasets/chinese/zhongce_training_fix_1.6k.txt
+        - datasets/chinese/label_train_all_f4_part2.txt
+        - datasets/chinese/label_train_all_f4_part3.txt
+        - datasets/chinese/label_train_all_f4_part4.txt
+        - datasets/chinese/label_train_all_f4_part5.txt
+        - datasets/chinese/synth_en_my_clip.txt
+        - datasets/chinese/synth_ch_my_clip.txt
+        - datasets/chinese/synth_en_my_largeword_clip.txt
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: datasets/v4_4_test_dataset
+    label_file_list:
+      - datasets/v4_4_test_dataset/label.txt        
+```

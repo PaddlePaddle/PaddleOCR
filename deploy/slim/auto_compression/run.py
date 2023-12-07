@@ -121,7 +121,8 @@ def main():
     global all_config, global_config
     all_config = load_slim_config(args.config_path)
 
-    assert "Global" in all_config, f"Key 'Global' not found in config file. \n{all_config}"
+    if "Global" not in all_config:  
+        raise KeyError(f"Key 'Global' not found in config file. \n{all_config}")
     global_config = all_config["Global"]
 
     gpu_num = paddle.distributed.get_world_size()

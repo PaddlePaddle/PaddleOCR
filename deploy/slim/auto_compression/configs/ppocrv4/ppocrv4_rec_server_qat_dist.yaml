@@ -49,10 +49,10 @@ Train:
   dataset:
     name: MultiScaleDataSet
     ds_width: false
-    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
+    data_dir: datasets/real_data/
     ext_op_transform_idx: 1
     label_file_list:
-    - /home/aistudio/PaddleOCR/datasets/real_data/train_list.txt
+    - datasets/real_data/train_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -88,9 +88,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: /home/aistudio/PaddleOCR/datasets/real_data/
+    data_dir: datasets/real_data/
     label_file_list:
-    - /home/aistudio/PaddleOCR/datasets/real_data/val_list.txt
+    - datasets/real_data/val_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR

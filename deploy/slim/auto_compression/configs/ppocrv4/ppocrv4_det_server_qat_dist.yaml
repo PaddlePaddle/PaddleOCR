@@ -47,16 +47,16 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese
+    data_dir: datasets/chinese
     label_file_list:
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/zhongce_training_fix_1.6k.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/label_train_all_f4_part2.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/label_train_all_f4_part3.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/label_train_all_f4_part4.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/label_train_all_f4_part5.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/synth_en_my_clip.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/synth_ch_my_clip.txt
-        - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/chinese/synth_en_my_largeword_clip.txt
+        - datasets/chinese/zhongce_training_fix_1.6k.txt
+        - datasets/chinese/label_train_all_f4_part2.txt
+        - datasets/chinese/label_train_all_f4_part3.txt
+        - datasets/chinese/label_train_all_f4_part4.txt
+        - datasets/chinese/label_train_all_f4_part5.txt
+        - datasets/chinese/synth_en_my_clip.txt
+        - datasets/chinese/synth_ch_my_clip.txt
+        - datasets/chinese/synth_en_my_largeword_clip.txt
     ratio_list:
         - 0.3
         - 0.2
@@ -127,9 +127,9 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/v4_4_test_dataset_small
+    data_dir: datasets/v4_4_test_dataset_small
     label_file_list:
-      - /data/ailab/2022/rcz/paddles/PaddleOCR/datasets/v4_4_test_dataset_small/label.txt
+      - datasets/v4_4_test_dataset_small/label.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
