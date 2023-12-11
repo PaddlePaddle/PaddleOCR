@@ -217,7 +217,7 @@ class TextDetector(object):
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
-    def __call__(self, img):
+    def predict(self, img):
         ori_im = img.copy()
         data = {'image': img}
 
@@ -282,6 +282,44 @@ class TextDetector(object):
             self.autolog.times.end(stamp=True)
         et = time.time()
         return dt_boxes, et - st
+
+    def __call__(self, img):
+        # For image like poster with a height much greater than width,
+        # splitting recursively and processing with overlap to enhance performance.
+        MIN_BOUND_DISTANCE = 50
+        if img.shape[0] / img.shape[1] > 2:
+            dt_boxes = None
+            elapse = 0
+            start_h = 0
+            end_h = 0
+            while end_h <= img.shape[0]:
+                end_h = start_h + img.shape[1] * 3 // 4
+                subimg = img[start_h: end_h, :]
+                if len(subimg) == 0:
+                    break
+                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                offset = start_h
+                # To prevent text blocks from being cut off, roll back a certain buffer area.
+                if len(sub_dt_boxes) == 0 or img.shape[1] - max([x[-1][1] for x in sub_dt_boxes]) > MIN_BOUND_DISTANCE:
+                    start_h = end_h
+                else:
+                    bottom_line = 0
+                    for i in range(len(sub_dt_boxes) - 1):
+                        if sub_dt_boxes[i + 1][0][1] > sub_dt_boxes[i][3][1] > bottom_line:
+                            bottom_line = int(sub_dt_boxes[i][3][1])
+                    if bottom_line > 0:
+                        start_h += bottom_line
+                        sub_dt_boxes = sub_dt_boxes[sub_dt_boxes[:, 3, 1] <= bottom_line]
+                    else:
+                        start_h = end_h
+                if dt_boxes is None:
+                    dt_boxes = sub_dt_boxes + np.array([0, offset], dtype=np.float32)
+                else:
+                    dt_boxes = np.append(dt_boxes, sub_dt_boxes + np.array([0, offset], dtype=np.float32), axis=0)
+                elapse += sub_elapse
+        else:
+            dt_boxes, elapse = self.predict(img)
+        return dt_boxes, elapse
 
 
 if __name__ == "__main__":
