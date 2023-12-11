@@ -245,6 +245,27 @@ class PicoDetPostProcess(object):
         for dt in out_boxes_list:
             clsid, bbox, score = int(dt[0]), dt[2:], dt[1]
             label = self.labels[clsid]
-            result = {'bbox': bbox, 'label': label}
+            result = {'bbox': bbox, 'label': label, 'score': score}
             results.append(result)
+
+        # Handle conflict where a box is simultaneously recognized as multiple labels.
+        # Use IoU to find similar boxes. Prioritize labels as table, text, and others when deduplicate similar boxes.
+        bboxes = np.array([x['bbox'] for x in results])
+        duplicate_idx = list()
+        for i in range(len(results)):
+            if i in duplicate_idx:
+                continue
+            ious = iou_of(bboxes, bboxes[i, ...])
+            sims = np.where(ious > 0.5)[0]
+            if len(sims) > 1:
+                table_box = [x for x in sims if results[x]['label'] == 'table']
+                text_box = [x for x in sims if results[x]['label'] == 'text']
+                if len(table_box) > 0:
+                    keep = sorted([(x, results[x]) for x in table_box], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                elif len(text_box) > 0:
+                    keep = sorted([(x, results[x]) for x in text_box], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                else:
+                    keep = sorted([(x, results[x]) for x in sims], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                duplicate_idx.extend([x for x in sims if x != keep])
+        results = [x for i, x in enumerate(results) if i not in duplicate_idx]
         return results
