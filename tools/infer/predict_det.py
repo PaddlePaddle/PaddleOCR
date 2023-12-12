@@ -287,8 +287,8 @@ class TextDetector(object):
         # For image like poster with a height much greater than width,
         # splitting recursively and processing with overlap to enhance performance.
         MIN_BOUND_DISTANCE = 50
-        if img.shape[0] / img.shape[1] > 2:
-            dt_boxes = None
+        if img.shape[0] / img.shape[1] > 2 and img.shape[0] > self.args.det_limit_side_len:
+            dt_boxes = np.zeros((0, 4, 2), dtype=np.float32)
             elapse = 0
             start_h = 0
             end_h = 0
@@ -312,10 +312,13 @@ class TextDetector(object):
                         sub_dt_boxes = sub_dt_boxes[sub_dt_boxes[:, 3, 1] <= bottom_line]
                     else:
                         start_h = end_h
-                if dt_boxes is None:
-                    dt_boxes = sub_dt_boxes + np.array([0, offset], dtype=np.float32)
-                else:
-                    dt_boxes = np.append(dt_boxes, sub_dt_boxes + np.array([0, offset], dtype=np.float32), axis=0)
+                if len(sub_dt_boxes) > 0:
+                    if dt_boxes.shape[0] == 0:
+                        dt_boxes = sub_dt_boxes + np.array([0, offset], dtype=np.float32)
+                    else:
+                        dt_boxes = np.append(dt_boxes,
+                                             sub_dt_boxes + np.array([0, offset], dtype=np.float32),
+                                             axis=0)
                 elapse += sub_elapse
         else:
             dt_boxes, elapse = self.predict(img)
