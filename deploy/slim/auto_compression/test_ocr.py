@@ -89,12 +89,13 @@ def load_predictor(args):
         pred_cfg.set_cpu_math_library_num_threads(args.cpu_threads)
         if args.use_mkldnn:
             pred_cfg.enable_mkldnn()
-            if args.precision == "fp32" and global_config['model_type']=="rec":
+            if args.precision == "int8":
+                pred_cfg.enable_mkldnn_int8({"conv2d"})
+                
+            if global_config['model_type']=="rec":
                 # delete pass which influence the accuracy, please refer to https://github.com/PaddlePaddle/Paddle/issues/55290
                 pred_cfg.delete_pass("fc_mkldnn_pass")
                 pred_cfg.delete_pass("fc_act_mkldnn_fuse_pass")
-            if args.precision == "int8":
-                pred_cfg.enable_mkldnn_int8({"conv2d"})
 
     if args.use_trt:
         # To collect the dynamic shapes of inputs for TensorRT engine
