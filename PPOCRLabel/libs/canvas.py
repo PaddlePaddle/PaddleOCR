@@ -232,22 +232,24 @@ class Canvas(QWidget):
                 self.setStatusTip(self.toolTip())
                 self.update()
                 break
-            elif shape.containsPoint(pos):
-                if self.selectedVertex():
-                    self.hShape.highlightClear()
-                self.hVertex, self.hShape = None, shape
-                self.setToolTip(
-                    "Click & drag to move shape '%s'" % shape.label)
-                self.setStatusTip(self.toolTip())
-                self.overrideCursor(CURSOR_GRAB)
-                self.update()
-                break
-        else:  # Nothing found, clear highlights, reset state.
-            if self.hShape:
-                self.hShape.highlightClear()
-                self.update()
-            self.hVertex, self.hShape = None, None
-            self.overrideCursor(CURSOR_DEFAULT)
+            else:
+                for shape in reversed([s for s in self.shapes if self.isVisible(s)]):
+                    if shape.containsPoint(pos):
+                        if self.selectedVertex():
+                            self.hShape.highlightClear()
+                        self.hVertex, self.hShape = None, shape
+                        self.setToolTip(
+                            "Click & drag to move shape '%s'" % shape.label)
+                        self.setStatusTip(self.toolTip())
+                        self.overrideCursor(CURSOR_GRAB)
+                        self.update()
+                        break
+                else:  # Nothing found, clear highlights, reset state.
+                    if self.hShape:
+                        self.hShape.highlightClear()
+                        self.update()
+                    self.hVertex, self.hShape = None, None
+                    self.overrideCursor(CURSOR_DEFAULT)
 
     def mousePressEvent(self, ev):
         pos = self.transformPos(ev.pos())
@@ -593,7 +595,7 @@ class Canvas(QWidget):
             p.setPen(self.drawingRectColor)
             brush = QBrush(Qt.BDiagPattern)
             p.setBrush(brush)
-            p.drawRect(leftTop.x(), leftTop.y(), rectWidth, rectHeight)
+            p.drawRect(int(leftTop.x()), int(leftTop.y()), int(rectWidth), int(rectHeight))
 
 
         # ADD：
@@ -611,8 +613,8 @@ class Canvas(QWidget):
 
         if self.drawing() and not self.prevPoint.isNull() and not self.outOfPixmap(self.prevPoint):
             p.setPen(QColor(0, 0, 0))
-            p.drawLine(int(self.prevPoint.x()), 0, int(self.prevPoint.x()), self.pixmap.height())
-            p.drawLine(0, int(self.prevPoint.y()), self.pixmap.width(), int(self.prevPoint.y()))
+            p.drawLine(int(self.prevPoint.x()), 0, int(self.prevPoint.x()), int(self.pixmap.height()))
+            p.drawLine(0, int(self.prevPoint.y()), int(self.pixmap.width()), int(self.prevPoint.y()))
 
         self.setAutoFillBackground(True)
         if self.verified:

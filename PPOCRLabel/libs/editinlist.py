@@ -24,6 +24,10 @@ class EditInList(QListWidget):
         pass
 
     def leaveEvent(self, event):
+        pass
+
+    def keyPressEvent(self, event) -> None:
         # close edit
-        for i in range(self.count()):
-            self.closePersistentEditor(self.item(i))
+        if event.key() in [16777220, 16777221]:
+            for i in range(self.count()):
+                self.closePersistentEditor(self.item(i))
