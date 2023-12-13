@@ -319,7 +319,7 @@ class TextDetector(object):
                                              sub_dt_boxes + np.array([0, offset], dtype=np.float32),
                                              axis=0)
                 elapse += sub_elapse
-        elif img.shape[1] / img.shape[0] > 2 and img.shape[1] > self.args.det_limit_side_len:
+        elif img.shape[1] / img.shape[0] > 3 and img.shape[1] > self.args.det_limit_side_len * 3:
             start_w = 0
             end_w = 0
             while end_w <= img.shape[1]:
