@@ -38,8 +38,12 @@ def build_model(config):
 def apply_to_static(model, config, logger):
     if config["Global"].get("to_static", False) is not True:
         return model
-    assert "d2s_train_image_shape" in config[
-        "Global"], "d2s_train_image_shape must be assigned for static training mode..."
+        
+    if "d2s_train_image_shape" not in config:
+        model = to_static(model)
+        logger.info("Successfully to apply @to_static.")
+        return model
+
     supported_list = [
         "DB", "SVTR_LCNet", "TableMaster", "LayoutXLM", "SLANet", "SVTR"
     ]
