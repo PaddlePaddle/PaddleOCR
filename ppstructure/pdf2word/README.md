@@ -38,10 +38,11 @@ python pdf2word.py
 
 ## 2.软件下载
 
-如需获取已打包程序，可以扫描下方二维码，关注公众号填写问卷后，加入PaddleOCR官方交流群免费获取20G OCR学习大礼包，内含OCR场景应用集合（包含数码管、液晶屏、车牌、高精度SVTR模型等7个垂类模型）、《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料
+如需获取已打包程序，可以扫描下方二维码或者点击[链接](https://aistudio.baidu.com/community/channel/610) 进入AI Studio【PaddleX社区频道】，免费获取20G OCR学习大礼包，内含OCR场景应用集合（包含数码管、液晶屏、车牌、高精度SVTR模型等7个垂类模型）、《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料
 
 <div align="center">
-<img src="https://user-images.githubusercontent.com/50011306/186369636-35f2008b-df5a-4784-b1f5-cebebcb2b7a5.jpg"  width = "150" height = "150" />
+<img src="https://user-images.githubusercontent.com/45199522/279737332-e9f960f7-f0e5-4b92-95fb-79313bee2d89.png"  width = "150" height = "150",caption='' />
+<p>飞桨AI套件【PaddleX】社区频道二维码</p>
 </div>
 
 ## 3.版本说明
