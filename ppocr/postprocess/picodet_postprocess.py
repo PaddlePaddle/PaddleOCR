@@ -78,6 +78,24 @@ def area_of(left_top, right_bottom):
     return hw[..., 0] * hw[..., 1]
 
 
+def calculate_containment(boxes0, boxes1):
+    """
+    Calculate the containment of the boxes.
+    Args:
+        boxes0 (N, 4): ground truth boxes.
+        boxes1 (N or 1, 4): predicted boxes.
+    Returns:
+        containment (N): containment values.
+    """
+    overlap_left_top = np.maximum(boxes0[..., :2], boxes1[..., :2])
+    overlap_right_bottom = np.minimum(boxes0[..., 2:], boxes1[..., 2:])
+
+    overlap_area = area_of(overlap_left_top, overlap_right_bottom)
+    area0 = area_of(boxes0[..., :2], boxes0[..., 2:])
+    area1 = area_of(boxes1[..., :2], boxes1[..., 2:])
+    return overlap_area / np.minimum(area0, np.expand_dims(area1, axis=0))
+
+
 class PicoDetPostProcess(object):
     """
     Args:
@@ -255,17 +273,14 @@ class PicoDetPostProcess(object):
         for i in range(len(results)):
             if i in duplicate_idx:
                 continue
-            ious = iou_of(bboxes, bboxes[i, ...])
-            sims = np.where(ious > 0.5)[0]
-            if len(sims) > 1:
-                table_box = [x for x in sims if results[x]['label'] == 'table']
-                text_box = [x for x in sims if results[x]['label'] == 'text']
+            containments = calculate_containment(bboxes, bboxes[i, ...])
+            overlaps = np.where(containments > 0.5)[0]
+            if len(overlaps) > 1:
+                table_box = [x for x in overlaps if results[x]['label'] == 'table']
                 if len(table_box) > 0:
                     keep = sorted([(x, results[x]) for x in table_box], key=lambda x: x[1]['score'], reverse=True)[0][0]
-                elif len(text_box) > 0:
-                    keep = sorted([(x, results[x]) for x in text_box], key=lambda x: x[1]['score'], reverse=True)[0][0]
                 else:
-                    keep = sorted([(x, results[x]) for x in sims], key=lambda x: x[1]['score'], reverse=True)[0][0]
-                duplicate_idx.extend([x for x in sims if x != keep])
+                    keep = sorted([(x, results[x]) for x in overlaps], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                duplicate_idx.extend([x for x in overlaps if x != keep])
         results = [x for i, x in enumerate(results) if i not in duplicate_idx]
         return results
