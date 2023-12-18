@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import sys
-import paddle.profiler as profiler
+import paddle.utils.profiler as profiler
 
 # A global variable to record the number of calling times for profiler
 # functions. It is used to specify the tracing range of training steps.
