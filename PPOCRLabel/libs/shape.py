@@ -92,8 +92,11 @@ class Shape(object):
         return pRes
 
     def close(self):
-        self.center = QPointF((self.points[0].x() + self.points[2].x()) / 2,
+        try:
+            self.center = QPointF((self.points[0].x() + self.points[2].x()) / 2,
                               (self.points[0].y() + self.points[2].y()) / 2)
+        except:
+            self.center = None
         self._closed = True
 
     def reachMaxPoints(self):
