@@ -86,6 +86,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 - [x]  [SPIN](./algorithm_rec_spin.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner.md)
 - [x]  [RFL](./algorithm_rec_rfl.md)
+- [x]  [SATRN](./algorithm_rec_satrn.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -110,6 +111,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
+|SATRN|ShallowCNN| 88.05% | rec_satrn | [训练模型](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a) |
 
 
 <a name="13"></a>
