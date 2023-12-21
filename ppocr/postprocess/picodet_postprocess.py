@@ -78,6 +78,24 @@ def area_of(left_top, right_bottom):
     return hw[..., 0] * hw[..., 1]
 
 
+def calculate_containment(boxes0, boxes1):
+    """
+    Calculate the containment of the boxes.
+    Args:
+        boxes0 (N, 4): ground truth boxes.
+        boxes1 (N or 1, 4): predicted boxes.
+    Returns:
+        containment (N): containment values.
+    """
+    overlap_left_top = np.maximum(boxes0[..., :2], boxes1[..., :2])
+    overlap_right_bottom = np.minimum(boxes0[..., 2:], boxes1[..., 2:])
+
+    overlap_area = area_of(overlap_left_top, overlap_right_bottom)
+    area0 = area_of(boxes0[..., :2], boxes0[..., 2:])
+    area1 = area_of(boxes1[..., :2], boxes1[..., 2:])
+    return overlap_area / np.minimum(area0, np.expand_dims(area1, axis=0))
+
+
 class PicoDetPostProcess(object):
     """
     Args:
@@ -245,6 +263,24 @@ class PicoDetPostProcess(object):
         for dt in out_boxes_list:
             clsid, bbox, score = int(dt[0]), dt[2:], dt[1]
             label = self.labels[clsid]
-            result = {'bbox': bbox, 'label': label}
+            result = {'bbox': bbox, 'label': label, 'score': score}
             results.append(result)
+
+        # Handle conflict where a box is simultaneously recognized as multiple labels.
+        # Use IoU to find similar boxes. Prioritize labels as table, text, and others when deduplicate similar boxes.
+        bboxes = np.array([x['bbox'] for x in results])
+        duplicate_idx = list()
+        for i in range(len(results)):
+            if i in duplicate_idx:
+                continue
+            containments = calculate_containment(bboxes, bboxes[i, ...])
+            overlaps = np.where(containments > 0.5)[0]
+            if len(overlaps) > 1:
+                table_box = [x for x in overlaps if results[x]['label'] == 'table']
+                if len(table_box) > 0:
+                    keep = sorted([(x, results[x]) for x in table_box], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                else:
+                    keep = sorted([(x, results[x]) for x in overlaps], key=lambda x: x[1]['score'], reverse=True)[0][0]
+                duplicate_idx.extend([x for x in overlaps if x != keep])
+        results = [x for i, x in enumerate(results) if i not in duplicate_idx]
         return results
