@@ -68,17 +68,15 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 <a name="技术交流合作"></a>
 ## 📖 技术交流合作
-- 飞桨AI套件([PaddleX](http://10.136.157.23:8080/paddle/paddleX))提供了飞桨模型训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！
-   - PaddleX 目前覆盖图像分类、目标检测、图像分割、3D、OCR和时序预测等领域方向，已内置了36种基础单模型，例如RT-DETR、PP-YOLOE、PP-HGNet、PP-LCNet、PP-LiteSeg等；集成了12种实用的产业方案，例如PP-OCRv4、PP-ChatOCR、PP-ShiTu、PP-TS、车载路面垃圾检测、野生动物违禁制品识别等。
-   - PaddleX 提供了“工具箱”和“开发者”两种AI开发模式。工具箱模式可以无代码调优关键超参，开发者模式可以低代码进行单模型训压推和多模型串联推理，同时支持云端和本地端。
-   - PaddleX 还支持联创开发，利润分成！目前 PaddleX 正在快速迭代，欢迎广大的个人开发者和企业开发者参与进来，共创繁荣的 AI 技术生态！
+- 飞桨低代码开发工具（PaddleX）—— 面向国内外主流AI硬件的飞桨精选模型一站式开发工具。包含如下核心优势：
+  - 【产业高精度模型库】：覆盖10个主流AI任务 40+精选模型，丰富齐全。
+  - 【特色模型产线】：提供融合大小模型的特色模型产线，精度更高，效果更好。
+  - 【低代码开发模式】：图形化界面支持统一开发范式，便捷高效。
+  - 【私有化部署多硬件支持】：适配国内外主流AI硬件，支持本地纯离线使用，满足企业安全保密需要。
 
-微信扫描下面二维码添加运营同学，并回复【paddlex】，运营同学会邀请您加入官方交流群，获得更高效的问题答疑。
+- PaddleX官网地址：https://aistudio.baidu.com/intro/paddlex
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus_paddlex.jpg"  width = "150" height = "150",caption='' />
-<p>飞桨AI套件【PaddleX】技术交流群二维码</p>
-</div>
+- PaddleX官方交流频道：https://aistudio.baidu.com/community/channel/610
 
 <a name="电子书"></a>
 ## 📚《动手学OCR》电子书
