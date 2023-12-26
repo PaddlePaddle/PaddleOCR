@@ -74,6 +74,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 <a name="Community"></a>
 
+<<<<<<< HEAD
 ## 👫 Community
 
 - For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
@@ -83,6 +84,19 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 <div align="center">
 <img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
 </div>
+=======
+<a name="技术交流合作"></a>
+## 📖 技术交流合作
+- 飞桨低代码开发工具（PaddleX）—— 面向国内外主流AI硬件的飞桨精选模型一站式开发工具。包含如下核心优势：
+  - 【产业高精度模型库】：覆盖10个主流AI任务 40+精选模型，丰富齐全。
+  - 【特色模型产线】：提供融合大小模型的特色模型产线，精度更高，效果更好。
+  - 【低代码开发模式】：图形化界面支持统一开发范式，便捷高效。
+  - 【私有化部署多硬件支持】：适配国内外主流AI硬件，支持本地纯离线使用，满足企业安全保密需要。
+
+- PaddleX官网地址：https://aistudio.baidu.com/intro/paddlex
+
+- PaddleX官方交流频道：https://aistudio.baidu.com/community/channel/610
+>>>>>>> a637e996... update paddlex of readme
 
 <a name="Supported-Chinese-model-list"></a>
 
