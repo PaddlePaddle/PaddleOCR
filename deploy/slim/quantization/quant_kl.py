@@ -139,7 +139,7 @@ def main(config, device, logger, vdl_writer):
         if  not (os.path.exists(os.path.join(inference_model_dir, "inference.pdmodel")) and \
             os.path.exists(os.path.join(inference_model_dir, "inference.pdiparams")) ):
             raise ValueError(
-                "Please set inference model dir in Global.inference_model or Global.pretrained_model for post-quantazition"
+                "Please set inference model dir in Global.inference_model or Global.pretrained_model for post-quantization"
             )
     
     if is_layoutxlm_ser:
