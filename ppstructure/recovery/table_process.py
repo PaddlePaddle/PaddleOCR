@@ -257,9 +257,11 @@ class HtmlToDocx(HTMLParser):
             cols = get_table_columns(row)
             cell_col = 0
             for col in cols:
-                colspan = int(col.attrs.get("colspan", 1))
-                rowspan = int(col.attrs.get("rowspan", 1))
+                if cell_col >= cols_len:
+                    break
 
+                colspan = int(col.attrs.get('colspan', 1))
+                rowspan = int(col.attrs.get('rowspan', 1))
                 cell_html = get_cell_html(col)
                 if col.name == "th":
                     cell_html = "<b>%s</b>" % cell_html
@@ -268,10 +270,8 @@ class HtmlToDocx(HTMLParser):
                     continue
 
                 docx_cell = table.cell(cell_row, cell_col)
-
-                while docx_cell.text != "":  # Skip the merged cell
-                    cell_col += 1
-                    docx_cell = table.cell(cell_row, cell_col)
+                if (cell_col + colspan -1) >= cols_len:
+                    colspan -= 1
 
                 cell_to_merge = table.cell(
                     cell_row + rowspan - 1, cell_col + colspan - 1
