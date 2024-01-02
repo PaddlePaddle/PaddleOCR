@@ -127,7 +127,7 @@ def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
 
     try:
         if use_gpu and use_xpu:
-            print("use_xpu and use_gpu can not both be ture.")
+            print("use_xpu and use_gpu can not both be true.")
         if use_gpu and not paddle.is_compiled_with_cuda():
             print(err.format("use_gpu", "cuda", "gpu", "use_gpu"))
             sys.exit(1)
