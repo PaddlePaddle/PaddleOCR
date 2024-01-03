@@ -678,7 +678,7 @@ class PaddleOCR(predict_system.TextSystem):
             for idx, img in enumerate(imgs):
                 img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
-                if not dt_boxes:
+                if dt_boxes.size == 0 or not dt_boxes.any():
                     ocr_res.append(None)
                     continue
                 tmp_res = [box.tolist() for box in dt_boxes]
