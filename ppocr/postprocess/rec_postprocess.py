@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bidi.algorithm import get_display
 import numpy as np
 import paddle
 from paddle.nn import functional as F
@@ -49,20 +50,7 @@ class BaseRecLabelDecode(object):
         self.character = dict_character
 
     def pred_reverse(self, pred):
-        pred_re = []
-        c_current = ''
-        for c in pred:
-            if not bool(re.search('[a-zA-Z0-9 :*./%+-]', c)):
-                if c_current != '':
-                    pred_re.append(c_current)
-                pred_re.append(c)
-                c_current = ''
-            else:
-                c_current += c
-        if c_current != '':
-            pred_re.append(c_current)
-
-        return ''.join(pred_re[::-1])
+        return get_display(pred)
 
     def add_special_char(self, dict_character):
         return dict_character
