@@ -382,7 +382,7 @@ def train(config,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
                     total_samples / print_batch_step,
-                    total_samples / train_batch_cost, eta_sec_format, max_mem_reserved_str,max_mem_allocated_str)
+                    total_samples / train_batch_cost, eta_sec_format, max_mem_reserved_str, max_mem_allocated_str)
                 logger.info(strs)
 
                 total_samples = 0
