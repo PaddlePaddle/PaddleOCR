@@ -52,15 +52,15 @@ elif [ "$model_type" = "server" ]; then
 
     ## GPU指标测试
     ### 量化前，预期指标：hmean:79.82%;time:32.6ms
-    python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision fp32 --use_trt True
+    python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision fp32 --use_trt True
     ### 量化后，预期指标：hmean:79.27%;time:12.3ms
-    python test_ocr.py --model_path ./models/det_server_qat--config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision int8 --use_trt True
+    python test_ocr.py --model_path ./models/det_server_qat --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision int8 --use_trt True
 
     ## CPU指标测试
     ### 量化前，预期指标：hmean:79.77%;time:844.7ms
-    python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision fp32 --use_mkldnn True --device CPU --cpu_threads 12
+    python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision fp32 --use_mkldnn True --device CPU --cpu_threads 12
     ### 量化后，预期指标：hmean:79.66%;time:635.0ms
-    python test_ocr.py --model_path ./models/det_server_qat --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision int8 --use_mkldnn True --device CPU --cpu_threads 12
+    python test_ocr.py --model_path ./models/det_server_qat --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision int8 --use_mkldnn True --device CPU --cpu_threads 12
 
     ## 量化前模型推理
     ### GPU
