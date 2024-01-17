@@ -129,11 +129,13 @@ def draw_structure_result(image, result, font_path):
 
     img_layout = image.copy()
     draw_layout = ImageDraw.Draw(img_layout)
-    text_color = (255, 255, 255)
+    text_color = (0, 0, 0)
     text_background_color = (80, 127, 255)
     catid2color = {}
     font_size = 15
     font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+
+    table_counter = 1  # Counter for tables
 
     for region in result:
         if region['type'] not in catid2color:
@@ -149,13 +151,24 @@ def draw_structure_result(image, result, font_path):
             width=3)
         left, top, right, bottom = font.getbbox(region['type'])
         text_w, text_h = right - left, bottom - top
+
+        # Check if the region is a table and update the label accordingly
+        if region['type'] == 'table':
+            region_label = 'table_{}'.format(table_counter)
+            table_counter += 1
+        else:
+            region_label = region['type']
+
+        # Compute the width and height of the entire label
+        label_width, label_height = font.getsize(region_label)
+
         draw_layout.rectangle(
             [(box_layout[0], box_layout[1]),
-             (box_layout[0] + text_w, box_layout[1] + text_h)],
+             (box_layout[0] + label_width, box_layout[1] + label_height)],
             fill=text_background_color)
         draw_layout.text(
             (box_layout[0], box_layout[1]),
-            region['type'],
+            region_label,
             fill=text_color,
             font=font)
 
