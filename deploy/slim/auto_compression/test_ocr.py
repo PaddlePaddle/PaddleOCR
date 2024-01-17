@@ -103,14 +103,25 @@ def load_predictor(args):
         if os.path.exists(dynamic_shape_file):
             pred_cfg.enable_tuned_tensorrt_dynamic_shape(dynamic_shape_file,
                                                          True)
-            # pred_cfg.exp_disable_tensorrt_ops(["reshape2"])
             print("trt set dynamic shape done!")
             precision_map = {
                 "fp16": PrecisionType.Half,
                 "fp32": PrecisionType.Float32,
                 "int8": PrecisionType.Int8
             }
-            pred_cfg.enable_tensorrt_engine(
+            if args.precision == 'int8' and "ppocrv4_det_server_qat_dist.yaml" in args.config_path:
+                # Use the following settings only when the hardware is a Tesla V100. If you are using
+                # a RTX 3090, use the settings in the else branch.
+                pred_cfg.enable_tensorrt_engine(
+                    workspace_size=1 << 30,
+                    max_batch_size=1,
+                    min_subgraph_size=30,
+                    precision_mode=precision_map[args.precision],
+                    use_static=True,
+                    use_calib_mode=False, )
+                pred_cfg.exp_disable_tensorrt_ops(["elementwise_add"])
+            else:    
+                pred_cfg.enable_tensorrt_engine(
                 workspace_size=1 << 30,
                 max_batch_size=1,
                 min_subgraph_size=4,

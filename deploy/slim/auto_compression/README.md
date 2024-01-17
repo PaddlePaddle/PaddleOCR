@@ -20,6 +20,7 @@
     - [4.2 PaddleLite端侧部署](#42-paddlelite端侧部署)
   - [5.FAQ](#5faq)
     - [5.1 报错找不到模型文件或者数据集文件](#51-报错找不到模型文件或者数据集文件)
+    - [5.2 软件环境一致，硬件不同导致精度差异很大？](#52-软件环境一致硬件不同导致精度差异很大)
 
 
 ## 1. 简介
@@ -34,8 +35,18 @@
 | 中文PPOCRV4-det_mobile | 量化+蒸馏 | 71.10 | 2.3 | 94.1 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model]() |
 | 中文PPOCRV4-det_server | Baseline | 79.82 | 32.6 | 844.7 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
 | 中文PPOCRV4-det_server | 量化+蒸馏 | 79.27 | 12.3 | 635.0 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
-> - GPU测试环境：RTX 3090ti, cuda11.7+tensorrt8.4.2.4+paddle2.5
+> - GPU测试环境：RTX 3090, cuda11.7+tensorrt8.4.2.4+paddle2.5
 > - CPU测试环境：Intel(R) Xeon(R) Gold 6226R，使用12线程测试
+> - PPOCRV4-det_server在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
+
+| 模型 | 策略 | Metric(hmean) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
+|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
+| 中文PPOCRV4-det_mobile | Baseline | 72.71 | 4.7 | 198.4 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
+| 中文PPOCRV4-det_mobile | 量化+蒸馏 | 71.38 | 3.3 | 205.2 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model]() |
+| 中文PPOCRV4-det_server | Baseline | 79.77 | 50.0 | 2159.4 | - | [Model](https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar) |
+| 中文PPOCRV4-det_server | 量化+蒸馏 | 79.81 | 42.4 | 1834.8 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model]() |
+> - GPU测试环境：Tesla V100, cuda11.7+tensorrt8.4.2.4+paddle2.5.2
+> - CPU测试环境：Intel(R) Xeon(R) Gold 6271C，使用12线程测试
 > - PPOCRV4-det_server在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
 
 ### PPOCRV4_rec
@@ -264,3 +275,29 @@ Eval:
     label_file_list:
       - datasets/v4_4_test_dataset/label.txt        
 ```
+
+### 5.2 软件环境一致，硬件不同导致精度差异很大？
+
+这种情况是正常的，TensorRT针对不同的硬件设备有着不同的优化方法，同一种优化策略在不同硬件上可能有着截然不同的表现，以本实验的ppocrv4_det_server为举例。截取[test_ocr.py](./test_ocr.py)中的一部分代码如下所示：
+```python
+if args.precision == 'int8' and "ppocrv4_det_server_qat_dist.yaml" in args.config_path:
+    # Use the following settings only when the hardware is a Tesla V100. If you are using
+    # a RTX 3090, use the settings in the else branch.
+    pred_cfg.enable_tensorrt_engine(
+        workspace_size=1 << 30,
+        max_batch_size=1,
+        min_subgraph_size=30,
+        precision_mode=precision_map[args.precision],
+        use_static=True,
+        use_calib_mode=False, )
+    pred_cfg.exp_disable_tensorrt_ops(["elementwise_add"])
+else:    
+    pred_cfg.enable_tensorrt_engine(
+    workspace_size=1 << 30,
+    max_batch_size=1,
+    min_subgraph_size=4,
+    precision_mode=precision_map[args.precision],
+    use_static=True,
+    use_calib_mode=False, )
+```
+当硬件为RTX 3090的时候，使用else分支中的策略即可得到正常的结果，但是当硬件是Tesla V100的时候，必须使用if分支中的策略才能保证量化后精度不下降，具体结果参考[benchmark](#2-benchmark)。

@@ -12,15 +12,15 @@ if [ "$model_type" = "mobile" ]; then
     CUDA_VISIBLE_DEVICES=0 python run.py --save_dir ./models/det_mobile_qat --config_path configs/ppocrv4/ppocrv4_det_qat_dist.yaml
 
     ## GPU指标测试
-    ### 量化前，预期指标：hmean:72.71%;time:5.7ms
+    ### 量化前，预期指标：hmean:72.71%;time:4.7ms
     python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_infer --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision fp32 --use_trt True
-    ### 量化后，预期指标：hmean:71.10%;time:2.3ms
+    ### 量化后，预期指标：hmean:71.38%;time:3.3ms
     python test_ocr.py --model_path ./models/det_mobile_qat --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision int8 --use_trt True
 
     ## CPU指标测试
-    ### 量化前，预期指标：hmean:72.71%;time:92.0ms
+    ### 量化前，预期指标：hmean:72.71%;time:198.4ms
     python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_infer --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision fp32 --use_mkldnn True --device CPU --cpu_threads 12
-    ### 量化后，预期指标：hmean:72.94%;time:94.1ms
+    ### 量化后，预期指标：hmean:72.30%;time:205.2ms
     python test_ocr.py --model_path ./models/det_mobile_qat --config ./configs/ppocrv4/ppocrv4_det_qat_dist.yaml --precision int8 --use_mkldnn True --device CPU --cpu_threads 12
 
     # 量化前模型推理
@@ -51,15 +51,15 @@ elif [ "$model_type" = "server" ]; then
     CUDA_VISIBLE_DEVICES=0 python run.py --save_dir ./models/det_server_qat --config_path configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml
 
     ## GPU指标测试
-    ### 量化前，预期指标：hmean:79.82%;time:32.6ms
+    ### 量化前，预期指标：hmean:79.77%;time:50.0ms
     python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision fp32 --use_trt True
-    ### 量化后，预期指标：hmean:79.27%;time:12.3ms
+    ### 量化后，预期指标：hmean:79.81%;time:42.4ms
     python test_ocr.py --model_path ./models/det_server_qat --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision int8 --use_trt True
 
     ## CPU指标测试
-    ### 量化前，预期指标：hmean:79.77%;time:844.7ms
+    ### 量化前，预期指标：hmean:79.77%;time:2159.4ms
     python test_ocr.py --model_path ./models/ch_PP-OCRv4_det_server_infer --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision fp32 --use_mkldnn True --device CPU --cpu_threads 12
-    ### 量化后，预期指标：hmean:79.66%;time:635.0ms
+    ### 量化后，预期指标：hmean:79.69%;time:1834.8ms
     python test_ocr.py --model_path ./models/det_server_qat --config ./configs/ppocrv4/ppocrv4_det_server_qat_dist.yaml --precision int8 --use_mkldnn True --device CPU --cpu_threads 12
 
     ## 量化前模型推理
