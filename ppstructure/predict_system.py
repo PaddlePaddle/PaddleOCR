@@ -184,30 +184,39 @@ class StructureSystem(object):
             return re_res[0], time_dict
         return None, None
 
+table_number = 0
+
+def get_unique_filename(base_folder, base_name, img_idx, extension):
+    counter = 0
+    file_path = os.path.join(base_folder, '{}_{:02d}.{}'.format(base_name, counter + 1, extension))
+
+    # Check if the file already exists, if yes, increment the counter
+    while os.path.exists(file_path):
+        counter += 1
+        file_path = os.path.join(base_folder, '{}_{:02d}.{}'.format(base_name, counter + 1, extension))
+
+    return file_path
+
 
 def save_structure_res(res, save_folder, img_name, img_idx=0):
     excel_save_folder = os.path.join(save_folder, img_name)
     os.makedirs(excel_save_folder, exist_ok=True)
     res_cp = deepcopy(res)
+
     # save res
     with open(
-            os.path.join(excel_save_folder, 'res_{}.txt'.format(img_idx)),
-            'w',
-            encoding='utf8') as f:
+        os.path.join(excel_save_folder, 'res_{}.txt'.format(img_idx)),
+        'w',
+        encoding='utf8') as f:
         for region in res_cp:
             roi_img = region.pop('img')
             f.write('{}\n'.format(json.dumps(region)))
 
-            if region['type'].lower() == 'table' and len(region[
-                    'res']) > 0 and 'html' in region['res']:
-                excel_path = os.path.join(
-                    excel_save_folder,
-                    '{}_{}.xlsx'.format(region['bbox'], img_idx))
+            if region['type'].lower() == 'table' and len(region['res']) > 0 and 'html' in region['res']:
+                excel_path = get_unique_filename(excel_save_folder, 'table', img_idx, 'xlsx')
                 to_excel(region['res']['html'], excel_path)
             elif region['type'].lower() == 'figure':
-                img_path = os.path.join(
-                    excel_save_folder,
-                    '{}_{}.jpg'.format(region['bbox'], img_idx))
+                img_path = get_unique_filename(excel_save_folder, 'figure', img_idx, 'jpg')
                 cv2.imwrite(img_path, roi_img)
 
 
