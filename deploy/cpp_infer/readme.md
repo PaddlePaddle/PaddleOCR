@@ -227,7 +227,7 @@ Specifically,
     --use_angle_cls=true \
     --det=true \
     --rec=true \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 2. det+rec：
@@ -238,7 +238,7 @@ Specifically,
     --use_angle_cls=false \
     --det=true \
     --rec=true \
-    --cls=false \
+    --cls=false
 ```
 
 ##### 3. det
@@ -257,7 +257,7 @@ Specifically,
     --use_angle_cls=true \
     --det=false \
     --rec=true \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 5. rec
@@ -267,7 +267,7 @@ Specifically,
     --use_angle_cls=false \
     --det=false \
     --rec=true \
-    --cls=false \
+    --cls=false
 ```
 
 ##### 6. cls
@@ -278,7 +278,7 @@ Specifically,
     --use_angle_cls=true \
     --det=false \
     --rec=false \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 7. layout+table
