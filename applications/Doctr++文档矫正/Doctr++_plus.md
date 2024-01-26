@@ -224,14 +224,29 @@ doc3d/
 准备工作完成后，即可开始进行模型训练。本项目提供训练脚本train.sh。其中需要自行修改数据集路径--data-root
 ```python
 # 模型训练
-chmod +x train.sh
-./train.sh
+export OPENCV_IO_ENABLE_OPENEXR=1
+export FLAGS_logtostderr=0
+export CUDA_VISIBLE_DEVICES=4
+
+python train.py --data-root ./doc3d \
+    --img-size 288 \
+    --name "DocTr++" \
+    --batch-size 12 \
+    --lr 1e-4 \
+    --exist-ok \
+    --epochs 150 \
 ```
-每个époch后，会进行验证集评估，保存best_model以及last_model。
+每个epoch后，会进行验证集评估，保存best_model以及last_model。
 ## 7. 模型评估
 在训练之前，我们可以直接使用下面命令来评估预训练模型的效果,预训练模型下载地址：https://github.com/
+
+### 单张图预测
 ```python
-python eval_DocUNet.py --i ./crop/ --m pretrained_model  --o output_val --g ./scan/
+python predict.py --i image_path --m pretrained_model_path
+```
+### DOCUnet测试集评估
+```python
+python eval_DocUNet.py --i ./crop/ --m pretrained_model_path  --o output_val_path --g ./scan/
 ```
 效果如下：
 

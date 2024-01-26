@@ -53,27 +53,18 @@ class Doc3dDataset(io.Dataset):
         return len(self.files[self.split])
 
     def __getitem__(self, index):
-        # import pdb;pdb.set_trace()
         image_name = self.files[self.split][index]
 
         # Read image
         image_path = os.path.join(self.root, "img", image_name + ".png")
         image = cv2.imread(image_path)
 
-        # if image is None:
-        #     print(image_path)
-        #     image2=cv2.imread("doc3d/img/1/1000_4-pp_Page_847-Pwi0001.png")
-        #     wc2=cv2.imread(os.path.join(self.root, "wc", "1","1000_4-pp_Page_847-Pwi0001" + ".exr"), cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-        #     bm2=h5.loadmat(os.path.join("doc3d", "bm", "1","1000_4-pp_Page_847-Pwi0001"+ ".mat"))["bm"]
-        #     image, bm = self.transform(wc2, bm2, image2)
-        #     return image, bm
-
         # Read 3D Coordinates
         wc_path = os.path.join(self.root, "wc", image_name + ".exr")
         wc = cv2.imread(wc_path, cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
 
         # Read backward map
-        bm_path = os.path.join("/ssd2/dataset/doc3d", "bm", image_name + ".mat")
+        bm_path = os.path.join(self.root, "bm", image_name + ".mat")
         bm = h5.loadmat(bm_path)["bm"]
 
         image, bm = self.transform(wc, bm, image)

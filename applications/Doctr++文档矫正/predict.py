@@ -25,8 +25,6 @@ import paddle.nn as nn
 def run(args):
     image_path = args.image
     model_path = args.model
-    output_path = args.output
-    gt_path = args.gt_path
     # 如果使用预训练模型需要开启下行代码，因为只提供了权重
     state_dict=paddle.load(model_path)
     # 如果使用自己训练的模型需要开启下行代码
@@ -36,28 +34,11 @@ def run(args):
     model.set_state_dict(state_dict)
     model.eval()
 
-    avg_ms_ssim = 0
-    avg_ssim = 0
-    l1_loss_fn = nn.L1Loss()
     with paddle.no_grad():
         for i in range(1, 131):
-            print("EVAL number {0}".format(i))
-            if i % 2 == 0:
-                id_ = 2
-            else:
-                id_ = 1
-            image_path_i = os.path.join(
-                image_path,
-                str(int((i + 1) / 2)) + '_' + str(id_) + " copy.png")
-            gt_path_i = os.path.join(gt_path, str(int((i + 1) / 2)) + ".png")
-            output_path_i = os.path.join(
-                output_path, str(int((i + 1) / 2)) + '_' + str(id_) + ".png")
-            img_org = cv2.imread(image_path_i)
-            gt = cv2.imread(gt_path_i)
+            img_org = cv2.imread(image_path)
             y = to_tensor(img_org)
             img = cv2.resize(img_org, (288, 288))
-            gt = cv2.resize(gt, (img_org.shape[1], img_org.shape[0]))
-            gt_ = to_tensor(gt)
             x = to_tensor(img)
             bm = model(x)
             # 如果使用预训练模型需要开启下行代码，如果使用自己训练的模型则关闭
@@ -65,14 +46,8 @@ def run(args):
             bm = (bm - 0.5) * 2
 
             out = unwarp(y, bm)
-            ssim_val = ssim(out, gt_, data_range=1.0)
-            ms_ssim_val = ms_ssim(out, gt_, data_range=1.0)
-            avg_ssim += ssim_val
-            avg_ms_ssim += ms_ssim_val
             out = to_image(out.cpu())
-            cv2.imwrite(output_path_i, out)
-        print("avg_ssim:", avg_ssim / 130)
-        print("avg_ms_ssim", avg_ms_ssim / 130)
+            cv2.imwrite('output.png', out)
 
 
 if __name__ == "__main__":
@@ -92,22 +67,6 @@ if __name__ == "__main__":
         type=str,
         default="",
         help="The path of model", )
-
-    parser.add_argument(
-        "--output",
-        "-o",
-        nargs="?",
-        type=str,
-        default="",
-        help="The path of output", )
-
-    parser.add_argument(
-        "--gt_path",
-        "-g",
-        nargs="?",
-        type=str,
-        default="",
-        help="The path of ground truth", )
 
     args = parser.parse_args()
 
