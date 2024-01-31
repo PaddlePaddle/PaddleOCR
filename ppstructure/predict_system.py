@@ -205,7 +205,7 @@ def close_unclosed_brackets(value, symbols):
     else:
         return value
         
-ef process_excel_file(input_file_path, symbols):
+def process_excel_file(input_file_path, symbols):
     # Read the Excel file into a DataFrame
     df = pd.read_excel(input_file_path, index_col=0, header=None)
 
