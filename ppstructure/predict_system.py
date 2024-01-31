@@ -186,6 +186,46 @@ class StructureSystem(object):
 
 table_number = 0
 
+def close_unclosed_brackets(value, symbols):
+    if pd.isna(value) or value == "nan":
+        return ""  # Replace nan values with an empty string or any other desired value
+    
+    # Define a regular expression pattern to identify unclosed brackets for numbers, strings, and symbols
+    pattern = re.compile(rf'(\S+)\s*\(([^)]*(?:{"|".join(re.escape(s) for s in symbols)}\s*\d+)?[^)]*)\s*\)?')
+
+    # Use the regular expression to find matches in the value
+    match = re.search(pattern, value)
+
+    # If an unclosed bracket is found, close it
+    if match:
+        content_before_bracket = match.group(1)
+        content_inside_bracket = match.group(2)
+        corrected_value = f"{content_before_bracket} ({content_inside_bracket})"
+        return corrected_value
+    else:
+        return value
+        
+ef process_excel_file(input_file_path, symbols):
+    # Read the Excel file into a DataFrame
+    df = pd.read_excel(input_file_path, index_col=0, header=None)
+
+    # Replace "nan" values with an empty string in the entire DataFrame
+    df = df.replace({"nan": ""})
+
+    # Drop rows and columns that contain only NaN values
+    df = df.dropna(axis=0, how='all').dropna(axis=1, how='all')
+
+    # If the DataFrame has a multi-level index, flatten it
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = [' '.join(col).strip() for col in df.columns]
+
+    # Apply the close_unclosed_brackets function to each cell in the data
+    df = df.applymap(lambda x: close_unclosed_brackets(str(x), symbols))
+
+    # Overwrite the original Excel file with the corrected DataFrame
+    df.to_excel(input_file_path)
+    print(f"Overwritten the original Excel file with the corrected DataFrame.")
+
 def get_unique_filename(base_folder, base_name, img_idx, extension):
     counter = 0
     file_path = os.path.join(base_folder, '{}_{:02d}.{}'.format(base_name, counter + 1, extension))
@@ -196,7 +236,6 @@ def get_unique_filename(base_folder, base_name, img_idx, extension):
         file_path = os.path.join(base_folder, '{}_{:02d}.{}'.format(base_name, counter + 1, extension))
 
     return file_path
-
 
 def save_structure_res(res, save_folder, img_name, img_idx=0):
     excel_save_folder = os.path.join(save_folder, img_name)
@@ -215,9 +254,43 @@ def save_structure_res(res, save_folder, img_name, img_idx=0):
             if region['type'].lower() == 'table' and len(region['res']) > 0 and 'html' in region['res']:
                 excel_path = get_unique_filename(excel_save_folder, 'table', img_idx, 'xlsx')
                 to_excel(region['res']['html'], excel_path)
+
+                # Read the Excel file into a DataFrame
+                df = pd.read_excel(excel_path, header=None)
+
+                # Define symbols to close in the close_unclosed_brackets function
+                symbols_to_close = ["%", "@", "$"]  # Add other symbols as needed
+
+                # Apply the close_unclosed_brackets function to each cell in the data
+                df = df.applymap(lambda x: close_unclosed_brackets(str(x), symbols_to_close))
+                df.columns = [close_unclosed_brackets(str(col), symbols_to_close) for col in df.columns]
+
+                # Overwrite the original Excel file with the corrected DataFrame
+                df.to_excel(excel_path, index=False, header=None)
+                print(f"Overwritten the original '{os.path.basename(excel_path)}' file with the corrected DataFrame.")
             elif region['type'].lower() == 'figure':
                 img_path = get_unique_filename(excel_save_folder, 'figure', img_idx, 'jpg')
                 cv2.imwrite(img_path, roi_img)
+#def save_structure_res(res, save_folder, img_name, img_idx=0):
+ #   excel_save_folder = os.path.join(save_folder, img_name)
+  #  os.makedirs(excel_save_folder, exist_ok=True)
+   # res_cp = deepcopy(res)
+
+    # save res
+    #with open(
+     #   os.path.join(excel_save_folder, 'res_{}.txt'.format(img_idx)),
+      #  'w',
+       # encoding='utf8') as f:
+        #for region in res_cp:
+         #   roi_img = region.pop('img')
+          #  f.write('{}\n'.format(json.dumps(region)))
+
+           # if region['type'].lower() == 'table' and len(region['res']) > 0 and 'html' in region['res']:
+            #    excel_path = get_unique_filename(excel_save_folder, 'table', img_idx, 'xlsx')
+             #   to_excel(region['res']['html'], excel_path)
+            #elif region['type'].lower() == 'figure':
+             #   img_path = get_unique_filename(excel_save_folder, 'figure', img_idx, 'jpg')
+              #  cv2.imwrite(img_path, roi_img)
 
 
 def main(args):
