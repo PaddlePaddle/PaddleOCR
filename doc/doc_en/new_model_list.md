@@ -151,7 +151,5 @@ This chapter lists OCR nb models with PP-OCRv2 or earlier versions. You can acce
 | PP-OCRv2 | Distilled ultra-lightweight Chinese OCR mobile model | 11.0M | [Download](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer_opt.nb) | v2.9 |
 | PP-OCRv2(slim) | Distilled ultra-lightweight Chinese OCR mobile model | 4.9M | [Download](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_slim_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_opt.nb) | v2.9 |
 | V2.0 | ppocr_v2.0 ultra-lightweight Chinese OCR mobile model | 7.8M | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_opt.nb) | v2.9 |
-
-
 | V2.0(slim) | ppocr_v2.0 ultra-lightweight Chinese OCR mobile model | 3.3M | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_det_slim_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb) | [Download](https://paddleocr.bj.bcebos.com/dygraph_v2.0/lite/ch_ppocr_mobile_v2.0_rec_slim_opt.nb) | v2.9 |
 
