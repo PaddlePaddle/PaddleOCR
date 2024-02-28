@@ -12,4 +12,4 @@
 - [ ] 这个 PR 是提交到dygraph分支或者是一个cherry-pick，否则请先提交到dygarph分支。
       This PR is pushed to the dygraph branch or cherry-picked from the dygraph branch. Otherwise, please push your changes to the dygraph branch.
 - [ ] 这个PR清楚描述了功能，帮助评审能提升效率。This PR have fully described what it does such that reviewers can speedup.
-- [ ] 这个PR已经经过本地测试。This PR can be convered by current tests or already test locally by you.
+- [ ] 这个PR已经经过本地测试。This PR can be covered by existing tests or locally verified. 
