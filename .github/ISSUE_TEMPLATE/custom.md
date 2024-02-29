@@ -7,16 +7,13 @@ assignees: ''
 
 ---
 
-Please provide the following information to help us quickly identify and resolve the issue:
+Please provide the following information to help us quickly identify and resolve the problem:
 
 - **System Environment:** [e.g., Windows 10, macOS Catalina, Ubuntu 20.04]
-- **Version:** 
-  - Paddle: [e.g., 2.0.0]
-  - PaddleOCR: [e.g., 2.1.0]
-  - Related components: [e.g., Python 3.8, CUDA 11.1]
-- **Command Code:** [Provide the command or code snippet that triggers the error]
-- **Complete Error Message:** [Include the full error message or traceback]
-- **Steps to Reproduce:** [Outline the steps to reproduce the error, if applicable]
-- **Expected Behavior:** [Describe what you expected to happen]
-- **Additional Context:** [Add any other context about the problem here]
+- **Version:** [e.g., Paddle 2.0, PaddleOCR 2.1.0]
+- **Related Components:** [e.g., PaddlePaddle, PaddleOCR]
+- **Command Code:** [e.g., The command you used that resulted in the error]
+- **Complete Error Message:** [The full error message you encountered]
+
+Please avoid including images in your issue description if possible.
 
