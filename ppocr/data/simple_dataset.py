@@ -20,7 +20,7 @@ import random
 import traceback
 from paddle.io import Dataset
 from .imaug import transform, create_operators
-
+import threading
 
 class SimpleDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
@@ -57,6 +57,9 @@ class SimpleDataSet(Dataset):
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
         self.need_reset = True in [x < 1 for x in ratio_list]
+        
+        self.img_cache = {}
+        self.data_cache = {}
 
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == 'train':
@@ -106,6 +109,7 @@ class SimpleDataSet(Dataset):
 
     def get_ext_data(self):
         ext_data_num = 0
+        read_count = 0
         for op in self.ops:
             if hasattr(op, 'ext_data_num'):
                 ext_data_num = getattr(op, 'ext_data_num')
@@ -124,18 +128,35 @@ class SimpleDataSet(Dataset):
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
+            
             if not os.path.exists(img_path):
                 continue
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
+            # TODO (yiakwy) : cache img_path
+            if data['img_path'] in self.img_cache:
+                img = self.img_cache[data['img_path']]
+                # used by imgaug transform
                 data['image'] = img
-            data = transform(data, load_data_ops)
+                if (read_count + len(self.data_lines)) % 100 == 0:
+                    # pp data loader init a threads pool iterate over dataset
+                    print(f"[SimpleDataset] [{threading.current_thread().name}] fast loaded {read_count}th img {data['img_path']}. ext_data/ext_data_num={len(ext_data)}/{ext_data_num}")
+            else:
+                with open(data['img_path'], 'rb') as f:
+                    img = f.read()
+                    data['image'] = img
+                self.img_cache[data['img_path']] = img
+                if (read_count + len(self.data_lines)) % 100 == 0:
+                    print(f"[SimpleDataset] [{threading.current_thread().name}] {read_count}th img {data['img_path']} readed.")
+            if data['img_path'] in self.data_cache:
+                data = self.data_cache[data['img_path']]
+            else:
+                data = transform(data, load_data_ops)
+                self.data_cache[data['img_path']] = data
 
+            # read ith image
+            read_count += 1
+            
             if data is None:
                 continue
-            if 'polys' in data.keys():
-                if data['polys'].shape[1] != 4:
-                    continue
             ext_data.append(data)
         return ext_data
 
@@ -152,9 +173,14 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
+            if data['img_path'] in self.img_cache:
+                img = self.img_cache[data['img_path']]
                 data['image'] = img
+            else:
+                with open(data['img_path'], 'rb') as f:
+                    img = f.read()
+                    data['image'] = img
+                    self.img_cache[data['img_path']] = img
             data['ext_data'] = self.get_ext_data()
             outs = transform(data, self.ops)
         except:

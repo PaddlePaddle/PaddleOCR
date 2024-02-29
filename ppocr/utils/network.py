@@ -75,6 +75,9 @@ def maybe_download_params(model_path):
     else:
         url = model_path
     tmp_path = os.path.join(MODELS_DIR, url.split('/')[-1])
+    if os.path.exists(tmp_path) and os.path.isfile(tmp_path):
+        print(f'[network::maybe_download_params] models has been downloaded to {tmp_path}')
+        return tmp_path
     print('download {} to {}'.format(url, tmp_path))
     os.makedirs(MODELS_DIR, exist_ok=True)
     download_with_progressbar(url, tmp_path)
