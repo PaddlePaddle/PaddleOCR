@@ -237,7 +237,6 @@ class RSEFPN(nn.Layer):
             self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
             self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
 
-        # TODO (yiakwy) : modify
         if isinstance(in_channels, numbers.Number):
             in_channels = [in_channels]
             
@@ -309,6 +308,9 @@ class LKPAN(nn.Layer):
             raise ValueError(
                 "mode can only be one of ['lite', 'large'], but received {}".
                 format(mode))
+
+        if isinstance(in_channels, numbers.Number):
+            in_channels = [in_channels]
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
