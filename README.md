@@ -257,3 +257,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 ## 许可证书
 本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
+
+
+## Originalfrom [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR.git) 
