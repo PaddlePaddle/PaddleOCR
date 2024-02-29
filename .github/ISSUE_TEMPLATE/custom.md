@@ -1,17 +1,22 @@
 ---
 name: Issue template
-about: Issue template for code error.
+about: Template for reporting code errors.
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-请提供下述完整信息以便快速定位问题/Please provide the following information to quickly locate the problem
+Please provide the following information to help us quickly identify and resolve the issue:
 
-- 系统环境/System Environment：
-- 版本号/Version：Paddle：  PaddleOCR： 问题相关组件/Related components：
-- 运行指令/Command Code：
-- 完整报错/Complete Error Message：
+- **System Environment:** [e.g., Windows 10, macOS Catalina, Ubuntu 20.04]
+- **Version:** 
+  - Paddle: [e.g., 2.0.0]
+  - PaddleOCR: [e.g., 2.1.0]
+  - Related components: [e.g., Python 3.8, CUDA 11.1]
+- **Command Code:** [Provide the command or code snippet that triggers the error]
+- **Complete Error Message:** [Include the full error message or traceback]
+- **Steps to Reproduce:** [Outline the steps to reproduce the error, if applicable]
+- **Expected Behavior:** [Describe what you expected to happen]
+- **Additional Context:** [Add any other context about the problem here]
 
-请尽量不要包含图片在问题中/Please try to not include the image in the issue.
