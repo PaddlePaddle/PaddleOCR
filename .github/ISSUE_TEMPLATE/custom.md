@@ -1,30 +1,29 @@
----
-name: Issue template
-about: Template for reporting code errors.
-title: ''
-labels: ''
-assignees: ''
+**Describe the bug**
+A clear and concise description of what the bug is.
 
----
-body:
-- type: checkboxes
-  id: cat-preferences
-  attributes:
-    label: What kinds of cats do you like?
-    description: You may select more than one.
-    options:
-      - label: Orange cat (required. Everyone likes orange cats.)
-        required: true
-      - label: **Black cat**
+**To Reproduce**
+Steps to reproduce the behavior:
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
-Please provide the following information to help us quickly identify and resolve the problem:
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
 
-- **System Environment:** [e.g., Windows 10, macOS Catalina, Ubuntu 20.04]
-- **Version:** [e.g., Paddle 2.0, PaddleOCR 2.1.0]
-- **Related Components:** [e.g., PaddlePaddle, PaddleOCR]
-- **Command Code:** [e.g., The command you used that resulted in the error]
-- **Complete Error Message:** [The full error message you encountered]
+**Desktop (please complete the following information):**
+ - OS: [e.g. iOS]
+ - Browser [e.g. chrome, safari]
+ - Version [e.g. 22]
 
-Please avoid including images in your issue description if possible.
+**Smartphone (please complete the following information):**
+ - Device: [e.g. iPhone6]
+ - OS: [e.g. iOS8.1]
+ - Browser [e.g. stock browser, safari]
+ - Version [e.g. 22]
 
+**Additional context**
+Add any other context about the problem here.
