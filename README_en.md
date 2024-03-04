@@ -187,9 +187,7 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
 <summary>PP-StructureV2</summary>
 
 - layout analysis + table recognition  
-<div align="center">
-    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
-</div>
+
 
 - SER (Semantic entity recognition)
 
