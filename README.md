@@ -198,9 +198,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <summary>PP-Structure 文档分析</summary>
 
 - 版面分析+表格识别  
-<div align="center">
-    <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
-</div>
+
 
 - SER（语义实体识别）  
 
