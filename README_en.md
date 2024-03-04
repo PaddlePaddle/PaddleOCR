@@ -1,8 +1,5 @@
 English | [简体中文](README_ch.md) | [हिन्दी](./doc/doc_i18n/README_हिन्द.md) | [日本語](./doc/doc_i18n/README_日本語.md) | [한국인](./doc/doc_i18n/README_한국어.md) | [Pу́сский язы́к](./doc/doc_i18n/README_Ру́сский_язы́к.md)
 
-<p align="center">
- <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
-<p align="center">
 <p align="left">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
     <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
@@ -16,14 +13,6 @@ English | [简体中文](README_ch.md) | [हिन्दी](./doc/doc_i18n/REA
 ## Introduction
 
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
-
-<div align="center">
-    <img src="./doc/imgs_results/PP-OCRv3/en/en_4.png" width="800">
-</div>
-
-<div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
-</div>
 
 ## 📣 Recent updates
 - **🔥2023.8.7 Release PaddleOCR[release/2.7](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.7)**
@@ -59,10 +48,6 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 
 PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](./doc/doc_en/ppocr_introduction_en.md)、 [PP-Structure](./ppstructure/README.md) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186171245-40abc4d7-904f-4949-ade1-250f86ed3a90.png">
-</div>
-
 > It is recommended to start with the “quick experience” in the document tutorial
 
 
@@ -92,10 +77,6 @@ PaddleX Official website address：https://www.paddlepaddle.org.cn/paddle/paddle
 
 Scan the QR code below on WeChat to add operation students, and reply [paddlex], operation students will invite you to join the official communication group for more efficient questions and answers.
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus_paddlex.jpg"  width = "150" height = "150",caption='' />
-<p>[PaddleX] technology exchange group QR code</p>
-</div>
 
 <a name="book"></a>
 ## 📚 E-book: *Dive Into OCR*
@@ -108,10 +89,6 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
 - For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
 
 - For Chinese develops, Scan the QR code below with your Wechat, you can join the official technical discussion group. For richer community content, please refer to [中文README](README_ch.md), looking forward to your participation.
-
-<div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
-</div>
 
 <a name="Supported-Chinese-model-list"></a>
 
@@ -193,27 +170,17 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
 
 <details open>
 <summary>PP-OCRv3 Chinese model</summary>
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
-</div>
+
 </details>
 
 <details open>
 <summary>PP-OCRv3 English model</summary>
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
-</div>
+
 </details>
 
 <details open>
 <summary>PP-OCRv3 Multilingual model</summary>
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
-</div>
+
 </details>
 
 <details open>
@@ -225,30 +192,6 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
 </div>
 
 - SER (Semantic entity recognition)
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
-</div>
-
-- RE (Relation Extraction)
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>  
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
-</div>
 
 </details>
 
