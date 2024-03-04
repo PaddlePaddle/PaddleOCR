@@ -17,13 +17,7 @@
 
 PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力开发者训练出更好的模型，并应用落地。
 
-<div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/test_add_91.jpg" width="800">
-</div>
 
-<div align="center">
-    <img src="./doc/imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
-</div>
 
 ## 📣 近期更新
 - **🔥[PaddleOCR 算法模型挑战赛](https://competition.atomgit.com/competitionInfo?id=d25e62a0d7f27876a8c4219bfc0be90e)** 火热开启！报名时间1/15-3/31，30万元奖金池！快来一展身手吧😎！
@@ -50,9 +44,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 支持多种OCR相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)、[PP-Structure](./ppstructure/README_ch.md)和[PP-ChatOCRv2](https://aistudio.baidu.com/projectdetail/paddlex/7050167)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
-<div align="center">
-    <img src="https://raw.githubusercontent.com/tink2123/test/master/ppocrv4.png">
-</div>
+
 
 > 上述内容的使用方法建议从文档教程中的快速开始体验
 
@@ -187,11 +179,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <details open>
 <summary>PP-OCRv3 中文模型</summary>
 
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
-</div>
+
 
 </details>
 
@@ -199,10 +187,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <details open>
 <summary>PP-OCRv3 英文模型</summary>
 
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_1.png" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/en/en_2.png" width="800">
-</div>
 
 </details>
 
@@ -210,10 +194,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 <details open>
 <summary>PP-OCRv3 多语言模型</summary>
 
-<div align="center">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="doc/imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
-</div>
 
 </details>
 
@@ -226,30 +206,6 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 </div>
 
 - SER（语义实体识别）  
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png" width="600">
-</div>
-
-- RE（关系提取）
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
-</div>
-
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>
 
 </details>
 
