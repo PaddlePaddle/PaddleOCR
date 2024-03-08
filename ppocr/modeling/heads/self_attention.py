@@ -252,7 +252,7 @@ class MultiHeadAttention(nn.Layer):
         product = paddle.matmul(x=q, y=k, transpose_y=True)
         product = product * self.d_model**-0.5
         if attn_bias is not None:
-            product += attn_bias
+            product += attn_bias.astype(product.dtype)
         weights = F.softmax(product)
         if self.dropout_rate:
             weights = F.dropout(
