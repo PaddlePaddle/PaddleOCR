@@ -27,9 +27,10 @@ Architecture:
       algorithm: DB
       Transform: null
       Backbone:
-        name: PPLCNetNew
+        name: PPLCNetV3
         scale: 0.75
         pretrained: false
+        det: true
       Neck:
         name: RSEFPN
         out_channels: 96
@@ -43,9 +44,10 @@ Architecture:
       algorithm: DB
       Transform: null
       Backbone:
-        name: PPLCNetNew
+        name: PPLCNetV3
         scale: 0.75
         pretrained: true
+        det: true
       Neck:
         name: RSEFPN
         out_channels: 96
@@ -208,7 +210,9 @@ Eval:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
-    - DetResizeForTest: null
+    - DetResizeForTest: 
+        limit_side_len: 960
+        limit_type: max
     - NormalizeImage:
         scale: 1./255.
         mean:

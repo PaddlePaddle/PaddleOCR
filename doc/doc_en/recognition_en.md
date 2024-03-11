@@ -27,7 +27,7 @@
 
 ### 1.1 DataSet Preparation
 
-To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets.md) .
+To prepare datasets, refer to [ocr_datasets](./dataset/datasets_en.md) .
 
 PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
 
@@ -80,7 +80,7 @@ PaddleOCR has built-in dictionaries, which can be used on demand.
 
 `ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
 
-`ppocr/utils/ic15_dict.txt` is an English dictionary with 63 characters
+`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 
@@ -154,7 +154,7 @@ PaddleOCR supports alternating training and evaluation. You can modify `eval_bat
 
 If the evaluation set is large, the test will be time-consuming. It is recommended to reduce the number of evaluations, or evaluate after training.
 
-* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/algorithm_overview.md):
+* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/algorithm_overview_en.md):
 
 
 For training Chinese data, it is recommended to use

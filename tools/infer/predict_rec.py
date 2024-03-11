@@ -73,7 +73,8 @@ class TextRecognizer(object):
             postprocess_params = {
                 'name': 'VLLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
-                "use_space_char": args.use_space_char
+                "use_space_char": args.use_space_char,
+                "max_text_length": args.max_text_length
             }
         elif self.rec_algorithm == 'ViTSTR':
             postprocess_params = {
@@ -583,7 +584,7 @@ class TextRecognizer(object):
                 inputs = [
                     norm_img_batch,
                     np.array(
-                        [valid_ratios], dtype=np.float32),
+                        [valid_ratios], dtype=np.float32).T,
                 ]
                 if self.use_onnx:
                     input_dict = {}

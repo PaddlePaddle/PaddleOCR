@@ -88,7 +88,7 @@ class BaseRecLabelDecode(object):
         word_list = []
         word_col_list = []
         state_list = []
-        valid_col = np.where(selection == True)[0]
+        valid_col = np.where(selection==True)[0]
 
         for c_i, char in enumerate(text):
             if '\u4e00' <= char <= '\u9fff':
@@ -97,14 +97,12 @@ class BaseRecLabelDecode(object):
                 c_state = 'en&num'
             else:
                 c_state = 'splitter'
-
-            if char == '.' and state == 'en&num' and c_i + 1 < len(
-                    text) and bool(re.search('[0-9]', text[
-                        c_i + 1])):  # grouping floting number
+            
+            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping floting number
                 c_state = 'en&num'
-            if char == '-' and state == "en&num":  # grouping word with '-', such as 'state-of-the-art'
+            if char == '-' and state == "en&num": # grouping word with '-', such as 'state-of-the-art'
                 c_state = 'en&num'
-
+            
             if state == None:
                 state = c_state
 
@@ -1137,15 +1135,19 @@ class VLLabelDecode(BaseRecLabelDecode):
             net_out = paddle.to_tensor(net_out, dtype='float32')
         net_out = F.softmax(net_out, axis=1)
         for i in range(0, length.shape[0]):
-            preds_idx = net_out[int(length[:i].sum()):int(length[:i].sum(
-            ) + length[i])].topk(1)[1][:, 0].tolist()
+            if i == 0:
+                start_idx = 0
+                end_idx = int(length[i])
+            else:
+                start_idx = int(length[:i].sum())
+                end_idx = int(length[:i].sum() + length[i])
+            preds_idx = net_out[start_idx:end_idx].topk(1)[1][:, 0].tolist()
             preds_text = ''.join([
                 self.character[idx - 1]
                 if idx > 0 and idx <= len(self.character) else ''
                 for idx in preds_idx
             ])
-            preds_prob = net_out[int(length[:i].sum()):int(length[:i].sum(
-            ) + length[i])].topk(1)[0][:, 0]
+            preds_prob = net_out[start_idx:end_idx].topk(1)[0][:, 0]
             preds_prob = paddle.exp(
                 paddle.log(preds_prob).sum() / (preds_prob.shape[0] + 1e-6))
             text.append((preds_text, float(preds_prob)))

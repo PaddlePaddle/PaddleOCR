@@ -127,7 +127,7 @@ def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
 
     try:
         if use_gpu and use_xpu:
-            print("use_xpu and use_gpu can not both be ture.")
+            print("use_xpu and use_gpu can not both be true.")
         if use_gpu and not paddle.is_compiled_with_cuda():
             print(err.format("use_gpu", "cuda", "gpu", "use_gpu"))
             sys.exit(1)
@@ -368,16 +368,21 @@ def train(config,
                 eta_sec = ((epoch_num + 1 - epoch) * \
                     len(train_dataloader) - idx - 1) * eta_meter.avg
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
+                max_mem_reserved_str = ""
+                max_mem_allocated_str = ""
+                if paddle.device.is_compiled_with_cuda():
+                    max_mem_reserved_str = f"max_mem_reserved: {paddle.device.cuda.max_memory_reserved() // (1024 ** 2)} MB,"
+                    max_mem_allocated_str = f"max_mem_allocated: {paddle.device.cuda.max_memory_allocated() // (1024 ** 2)} MB"
                 strs = 'epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: ' \
                     '{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, ' \
-                    'ips: {:.5f} samples/s, eta: {}'.format(
+                    'ips: {:.5f} samples/s, eta: {}, {} {}'.format(
                     epoch, epoch_num, global_step, logs,
                     train_reader_cost / print_batch_step,
                     train_batch_cost / print_batch_step,
                     total_samples / print_batch_step,
-                    total_samples / train_batch_cost, eta_sec_format)
+                    total_samples / train_batch_cost, eta_sec_format, max_mem_reserved_str, max_mem_allocated_str)
                 logger.info(strs)
-
+                
                 total_samples = 0
                 train_reader_cost = 0.0
                 train_batch_cost = 0.0

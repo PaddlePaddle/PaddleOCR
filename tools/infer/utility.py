@@ -31,8 +31,10 @@ from ppocr.utils.logging import get_logger
 def str2bool(v):
     return v.lower() in ("true", "yes", "t", "y", "1")
 
+
 def str2int_tuple(v):
     return tuple([int(i.strip()) for i in v.split(",")])
+
 
 def init_args():
     parser = argparse.ArgumentParser()
@@ -40,6 +42,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
+    parser.add_argument("--use_mlu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -257,6 +260,8 @@ def create_predictor(args, mode, logger):
 
         elif args.use_npu:
             config.enable_custom_device("npu")
+        elif args.use_mlu:
+            config.enable_custom_device("mlu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
@@ -670,7 +675,7 @@ def get_minarea_rect_crop(img, points):
 
 
 def check_gpu(use_gpu):
-    if use_gpu and not paddle.is_compiled_with_cuda():
+    if use_gpu and (not paddle.is_compiled_with_cuda() or paddle.device.get_device() == 'cpu'):
         use_gpu = False
     return use_gpu
 

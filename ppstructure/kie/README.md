@@ -87,9 +87,9 @@ Demo results for SER task are as follows.
 
 Boxes of different colors in the image represent different categories.
 
-The invoice and application form images have three categories: `request`, `answer` and `header`. The `question` and 'answer' can be used to extract the relationship.
+The invoice and application form images have three categories: `request`, `answer` and `header`. The `question` and `answer` can be used to extract the relationship.
 
-For the ID card image, the model can directly identify the key information such as `name`, `gender`, `nationality`, so that the subsequent relationship extraction process is not required, and the key information extraction task can be completed using only on model.
+For the ID card image, the model can directly identify the key information such as `name`, `gender`, `nationality`, so that the subsequent relationship extraction process is not required, and the key information extraction task can be completed using only one model.
 
 ### 3.2 RE
 
@@ -108,7 +108,7 @@ Demo results for RE task are as follows.
     <img src="https://user-images.githubusercontent.com/14270174/185540291-f64e5daf-6d42-4e7c-bbbb-471e3fac4fcc.png" width="600">
 </div>
 
-Red boxes are questions, blue boxes are answers. The green lines means the two conected objects are a pair.
+Red boxes are questions, blue boxes are answers. The green lines means the two connected objects are a pair.
 
 
 ## 4. Usage

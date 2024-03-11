@@ -19,7 +19,6 @@ import numpy as np
 from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
 import math
 
-
 def init_args():
     parser = infer_args()
 
@@ -193,7 +192,6 @@ def draw_structure_result(image, result, font_path):
         img_layout, boxes, txts, scores, font_path=font_path, drop_score=0)
     return im_show
 
-
 def cal_ocr_word_box(rec_str, box, rec_word_info):
     ''' Calculate the detection frame for each word based on the results of recognition and detection of ocr'''
 
@@ -242,3 +240,4 @@ def cal_ocr_word_box(rec_str, box, rec_word_info):
             word_box_list.append(cell)
 
     return word_box_content_list, word_box_list
+

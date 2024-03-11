@@ -18,6 +18,7 @@ import sys
 from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QColor, QPen, QPainterPath, QFont
 from libs.utils import distance
+from ppocr.utils.logging import get_logger
 
 DEFAULT_LINE_COLOR = QColor(0, 255, 0, 128)
 DEFAULT_FILL_COLOR = QColor(255, 0, 0, 128)
@@ -92,8 +93,15 @@ class Shape(object):
         return pRes
 
     def close(self):
-        self.center = QPointF((self.points[0].x() + self.points[2].x()) / 2,
+        try:
+            self.center = QPointF((self.points[0].x() + self.points[2].x()) / 2,
                               (self.points[0].y() + self.points[2].y()) / 2)
+        except:
+            self.center = None
+            logger = get_logger()
+            logger.warning(
+               'The XY coordinates of QPointF are not detectable!'
+            )
         self._closed = True
 
     def reachMaxPoints(self):
