@@ -41,18 +41,26 @@ def print_dict(d, logger, delimiter=0):
 
 
 def get_check_global_params(mode):
-    check_params = ['use_gpu', 'max_text_length', 'image_shape', \
-                    'image_shape', 'character_type', 'loss_type']
+    check_params = [
+        "use_gpu",
+        "max_text_length",
+        "image_shape",
+        "image_shape",
+        "character_type",
+        "loss_type",
+    ]
     if mode == "train_eval":
-        check_params = check_params + [ \
-            'train_batch_size_per_card', 'test_batch_size_per_card']
+        check_params = check_params + [
+            "train_batch_size_per_card",
+            "test_batch_size_per_card",
+        ]
     elif mode == "test":
-        check_params = check_params + ['test_batch_size_per_card']
+        check_params = check_params + ["test_batch_size_per_card"]
     return check_params
 
 
 def _check_image_file(path):
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
+    img_end = {"jpg", "bmp", "png", "jpeg", "rgb", "tif", "tiff", "gif", "pdf"}
     return any([path.lower().endswith(e) for e in img_end])
 
 
@@ -74,13 +82,15 @@ def get_image_file_list(img_file, infer_list=None):
     imgs_lists = sorted(imgs_lists)
     return imgs_lists
 
+
 def binarize_img(img):
     if len(img.shape) == 3 and img.shape[2] == 3:
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # conversion to grayscale image
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # conversion to grayscale image
         # use cv2 threshold binarization
         _, gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         img = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
     return img
+
 
 def alpha_to_color(img, alpha_color=(255, 255, 255)):
     if len(img.shape) == 3 and img.shape[2] == 4:
@@ -94,21 +104,25 @@ def alpha_to_color(img, alpha_color=(255, 255, 255)):
         img = cv2.merge((B, G, R))
     return img
 
+
 def check_and_read(img_path):
-    if os.path.basename(img_path)[-3:].lower() == 'gif':
+    if os.path.basename(img_path)[-3:].lower() == "gif":
         gif = cv2.VideoCapture(img_path)
         ret, frame = gif.read()
         if not ret:
-            logger = logging.getLogger('ppocr')
+            logger = logging.getLogger("ppocr")
             logger.info("Cannot read {}. This gif image maybe corrupted.")
             return None, False
         if len(frame.shape) == 2 or frame.shape[-1] == 1:
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True, False
-    elif os.path.basename(img_path)[-3:].lower() == 'pdf':
-        import fitz
+    elif os.path.basename(img_path)[-3:].lower() == "pdf":
+        from paddle.utils import try_import
+
+        try_import("fitz")
         from PIL import Image
+
         imgs = []
         with fitz.open(img_path) as pdf:
             for pg in range(0, pdf.page_count):
@@ -128,7 +142,7 @@ def check_and_read(img_path):
 
 
 def load_vqa_bio_label_maps(label_map_path):
-    with open(label_map_path, "r", encoding='utf-8') as fin:
+    with open(label_map_path, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
     old_lines = [line.strip() for line in lines]
     lines = ["O"]
@@ -155,19 +169,19 @@ def set_seed(seed=1024):
 def check_install(module_name, install_name):
     spec = importlib.util.find_spec(module_name)
     if spec is None:
-        print(f'Warnning! The {module_name} module is NOT installed')
+        print(f"Warnning! The {module_name} module is NOT installed")
         print(
-            f'Try install {module_name} module automatically. You can also try to install manually by pip install {install_name}.'
+            f"Try install {module_name} module automatically. You can also try to install manually by pip install {install_name}."
         )
         python = sys.executable
         try:
             subprocess.check_call(
-                [python, '-m', 'pip', 'install', install_name],
-                stdout=subprocess.DEVNULL)
-            print(f'The {module_name} module is now installed')
+                [python, "-m", "pip", "install", install_name],
+                stdout=subprocess.DEVNULL,
+            )
+            print(f"The {module_name} module is now installed")
         except subprocess.CalledProcessError as exc:
-            raise Exception(
-                f"Install {module_name} failed, please install manually")
+            raise Exception(f"Install {module_name} failed, please install manually")
     else:
         print(f"{module_name} has been installed.")
 
