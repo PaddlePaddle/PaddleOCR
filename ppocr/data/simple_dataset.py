@@ -20,7 +20,7 @@ import random
 import traceback
 from paddle.io import Dataset
 from .imaug import transform, create_operators
-import threading
+
 
 class SimpleDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
@@ -109,7 +109,6 @@ class SimpleDataSet(Dataset):
 
     def get_ext_data(self):
         ext_data_num = 0
-        read_count = 0
         for op in self.ops:
             if hasattr(op, 'ext_data_num'):
                 ext_data_num = getattr(op, 'ext_data_num')
@@ -131,29 +130,20 @@ class SimpleDataSet(Dataset):
             
             if not os.path.exists(img_path):
                 continue
-            # TODO (yiakwy) : cache img_path
             if data['img_path'] in self.img_cache:
                 img = self.img_cache[data['img_path']]
                 # used by imgaug transform
                 data['image'] = img
-                if (read_count + len(self.data_lines)) % 100 == 0:
-                    # pp data loader init a threads pool iterate over dataset
-                    print(f"[SimpleDataset] [{threading.current_thread().name}] fast loaded {read_count}th img {data['img_path']}. ext_data/ext_data_num={len(ext_data)}/{ext_data_num}")
             else:
                 with open(data['img_path'], 'rb') as f:
                     img = f.read()
                     data['image'] = img
                 self.img_cache[data['img_path']] = img
-                if (read_count + len(self.data_lines)) % 100 == 0:
-                    print(f"[SimpleDataset] [{threading.current_thread().name}] {read_count}th img {data['img_path']} readed.")
             if data['img_path'] in self.data_cache:
                 data = self.data_cache[data['img_path']]
             else:
                 data = transform(data, load_data_ops)
                 self.data_cache[data['img_path']] = data
-
-            # read ith image
-            read_count += 1
             
             if data is None:
                 continue
