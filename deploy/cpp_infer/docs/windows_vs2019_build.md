@@ -31,7 +31,7 @@ PaddleOCR在Windows 平台下基于`Visual Studio 2019 Community` 进行了测�
 
 #### 1.2.1 下载 PaddlePaddle C++ 预测库
 
-PaddlePaddle C++ 预测库针对不同的`CPU`和`CUDA`版本提供了不同的预编译版本，请根据实际情况下载:  [C++预测库下载列表](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#windows)
+PaddlePaddle C++ 预测库针对不同的`CPU`和`CUDA`版本提供了不同的预编译版本，请根据实际情况下载:  [C++预测库下载列表](https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html#windows)
 
 解压后`D:\projects\paddle_inference`目录包含内容为：
 ```
