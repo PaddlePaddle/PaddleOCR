@@ -61,8 +61,8 @@ class DetOp(Op):
         ]
         dt_boxes_list = self.post_func(det_out, [ratio_list])
         dt_boxes = self.filter_func(dt_boxes_list[0], [self.ori_h, self.ori_w])
-        out_dict = {"dt_boxes": str(dt_boxes)}
-
+        # convert ndarray to string may cause problem, so change to list
+        out_dict = {"dt_boxes": str(dt_boxes.tolist())}
         return out_dict, None, ""
 
 
