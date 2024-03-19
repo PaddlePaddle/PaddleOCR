@@ -648,6 +648,7 @@ class PaddleOCR(predict_system.TextSystem):
             alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
+        img_is_list = isinstance(img, list)
         if isinstance(img, list) and det == True:
             logger.error('When input a list of images, det must be false')
             exit(0)
@@ -685,7 +686,7 @@ class PaddleOCR(predict_system.TextSystem):
                 tmp_res = [[box.tolist(), res]
                            for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
-            return ocr_res
+            return ocr_res if img_is_list else ocr_res[0]
         elif det and not rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
@@ -696,7 +697,7 @@ class PaddleOCR(predict_system.TextSystem):
                     continue
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
-            return ocr_res
+            return ocr_res if img_is_list else ocr_res[0]
         else:
             ocr_res = []
             cls_res = []
@@ -711,8 +712,8 @@ class PaddleOCR(predict_system.TextSystem):
                 rec_res, elapse = self.text_recognizer(img)
                 ocr_res.append(rec_res)
             if not rec:
-                return cls_res
-            return ocr_res
+                return cls_res if img_is_list else cls_res[0]
+            return ocr_res if img_is_list else ocr_res[0]
 
 
 class PPStructure(StructureSystem):
