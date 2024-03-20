@@ -664,7 +664,7 @@ class TableLabelEncode(AttnLabelEncode):
         self.start_idx = self.dict[self.beg_str]
         self.end_idx = self.dict[self.end_str]
 
-        self.td_token = ['<td>', '<td', '<eb></eb>', '<td></td>']
+        self.td_token = ['<td>', '>']
         self.empty_bbox_token_dict = {
             "[]": '<eb></eb>',
             "[' ']": '<eb1></eb1>',
