@@ -304,5 +304,14 @@ class TPS(nn.Layer):
         batch_P_prime = self.grid_generator(batch_C_prime, image.shape[2:])
         batch_P_prime = batch_P_prime.reshape(
             [-1, image.shape[2], image.shape[3], 2])
+        is_fp16 = False
+        if batch_P_prime.dtype != paddle.float32:
+            data_type = batch_P_prime.dtype
+            image = image.cast(paddle.float32)
+            batch_P_prime = batch_P_prime.cast(paddle.float32)
+            is_fp16 = True
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)
+        if is_fp16:
+            batch_I_r = batch_I_r.cast(data_type)
+        
         return batch_I_r

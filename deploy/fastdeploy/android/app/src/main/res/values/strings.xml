@@ -1,0 +1,51 @@
+<resources>
+    <!-- Default App name -->
+    <string name="app_name">EasyEdge</string>
+    <!-- Other App name -->
+    <string name="detection_app_name">EasyEdge</string>
+    <string name="ocr_app_name">EasyEdge</string>
+    <string name="classification_app_name">EasyEdge</string>
+    <string name="facedet_app_name">EasyEdge</string>
+    <string name="segmentation_app_name">EasyEdge</string>
+    <!-- Keys for PreferenceScreen -->
+    <string name="CHOOSE_PRE_INSTALLED_MODEL_KEY">CHOOSE_INSTALLED_MODEL_KEY</string>
+    <string name="MODEL_DIR_KEY">MODEL_DIR_KEY</string>
+    <string name="LABEL_PATH_KEY">LABEL_PATH_KEY</string>
+    <string name="CPU_THREAD_NUM_KEY">CPU_THREAD_NUM_KEY</string>
+    <string name="CPU_POWER_MODE_KEY">CPU_POWER_MODE_KEY</string>
+    <string name="SCORE_THRESHOLD_KEY">SCORE_THRESHOLD_KEY</string>
+    <string name="ENABLE_LITE_FP16_MODE_KEY">ENABLE_LITE_FP16_MODE_KEY</string>
+    <!-- Common default values ... -->
+    <string name="CPU_THREAD_NUM_DEFAULT">2</string>
+    <string name="CPU_POWER_MODE_DEFAULT">LITE_POWER_HIGH</string>
+    <string name="SCORE_THRESHOLD_DEFAULT">0.4</string>
+    <string name="SCORE_THRESHOLD_CLASSIFICATION">0.1</string>
+    <string name="SCORE_THRESHOLD_FACEDET">0.25</string>
+    <string name="ENABLE_LITE_FP16_MODE_DEFAULT">true</string>
+    <!--Other values-->
+    <!-- Detection model & Label paths & other values ... -->
+    <string name="DETECTION_MODEL_DIR_DEFAULT">models/picodet_s_320_coco_lcnet</string>
+    <string name="DETECTION_LABEL_PATH_DEFAULT">labels/coco_label_list.txt</string>
+    <!-- PP-OCRv2 & PP-OCRv3 values ... -->
+    <string name="OCR_MODEL_DIR_DEFAULT">models</string>
+    <string name="OCR_REC_LABEL_DEFAULT">labels/ppocr_keys_v1.txt</string>
+    <!-- classification values ... -->
+    <string name="CLASSIFICATION_MODEL_DIR_DEFAULT">models/MobileNetV1_x0_25_infer</string>
+    <string name="CLASSIFICATION_LABEL_PATH_DEFAULT">labels/imagenet1k_label_list.txt</string>
+    <!-- facedet values ... -->
+    <string name="FACEDET_MODEL_DIR_DEFAULT">models/scrfd_500m_bnkps_shape320x320_pd</string>
+    <!-- segmentation values ... -->
+    <string name="SEGMENTATION_MODEL_DIR_DEFAULT">models/human_pp_humansegv1_lite_192x192_inference_model</string>
+    <!-- Other resources values-->
+    <string name="action_bar_take_photo">拍照识别</string>
+    <string name="action_bar_realtime">实时识别</string>
+    <string name="action_bar_back">&lt;</string>
+    <string name="action_bar_model_name">模型名称</string>
+    <string name="result_label">识别结果</string>
+    <string name="result_table_header_index">序号</string>
+    <string name="result_table_header_name">名称</string>
+    <string name="result_table_header_confidence">置信度</string>
+    <string name="operation_confidence_control">阈值控制</string>
+    <string name="operation_retry">重新识别</string>
+    <string name="operation_save">保存结果</string>
+</resources>

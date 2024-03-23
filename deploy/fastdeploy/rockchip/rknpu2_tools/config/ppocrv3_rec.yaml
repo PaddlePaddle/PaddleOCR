@@ -1,0 +1,15 @@
+mean:
+  -
+    - 127.5
+    - 127.5
+    - 127.5
+std:
+  -
+    - 127.5
+    - 127.5
+    - 127.5
+model_path: ./ch_PP-OCRv3_rec_infer/ch_PP-OCRv3_rec_infer.onnx
+outputs_nodes:
+do_quantization: False
+dataset:
+output_folder: "./ch_PP-OCRv3_rec_infer"

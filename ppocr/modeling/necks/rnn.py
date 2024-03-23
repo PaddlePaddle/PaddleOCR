@@ -47,8 +47,10 @@ class EncoderWithRNN(nn.Layer):
         x, _ = self.lstm(x)
         return x
 
+
 class BidirectionalLSTM(nn.Layer):
-    def __init__(self, input_size,
+    def __init__(self,
+                 input_size,
                  hidden_size,
                  output_size=None,
                  num_layers=1,
@@ -58,39 +60,46 @@ class BidirectionalLSTM(nn.Layer):
                  with_linear=False):
         super(BidirectionalLSTM, self).__init__()
         self.with_linear = with_linear
-        self.rnn = nn.LSTM(input_size,
-                           hidden_size,
-                           num_layers=num_layers,
-                           dropout=dropout,
-                           direction=direction,
-                           time_major=time_major)
+        self.rnn = nn.LSTM(
+            input_size,
+            hidden_size,
+            num_layers=num_layers,
+            dropout=dropout,
+            direction=direction,
+            time_major=time_major)
 
         # text recognition the specified structure LSTM with linear
         if self.with_linear:
             self.linear = nn.Linear(hidden_size * 2, output_size)
 
     def forward(self, input_feature):
-        recurrent, _ = self.rnn(input_feature)  # batch_size x T x input_size -> batch_size x T x (2*hidden_size)
+        recurrent, _ = self.rnn(
+            input_feature
+        )  # batch_size x T x input_size -> batch_size x T x (2*hidden_size)
         if self.with_linear:
-            output = self.linear(recurrent)     # batch_size x T x output_size
+            output = self.linear(recurrent)  # batch_size x T x output_size
             return output
         return recurrent
 
+
 class EncoderWithCascadeRNN(nn.Layer):
-    def __init__(self, in_channels, hidden_size, out_channels, num_layers=2, with_linear=False):
+    def __init__(self,
+                 in_channels,
+                 hidden_size,
+                 out_channels,
+                 num_layers=2,
+                 with_linear=False):
         super(EncoderWithCascadeRNN, self).__init__()
         self.out_channels = out_channels[-1]
-        self.encoder = nn.LayerList(
-            [BidirectionalLSTM(
-                in_channels if i == 0 else out_channels[i - 1], 
-                hidden_size, 
-                output_size=out_channels[i], 
-                num_layers=1, 
-                direction='bidirectional', 
-                with_linear=with_linear) 
-            for i in range(num_layers)]
-        )
-        
+        self.encoder = nn.LayerList([
+            BidirectionalLSTM(
+                in_channels if i == 0 else out_channels[i - 1],
+                hidden_size,
+                output_size=out_channels[i],
+                num_layers=1,
+                direction='bidirectional',
+                with_linear=with_linear) for i in range(num_layers)
+        ])
 
     def forward(self, x):
         for i, l in enumerate(self.encoder):
@@ -130,12 +139,17 @@ class EncoderWithSVTR(nn.Layer):
             drop_rate=0.1,
             attn_drop_rate=0.1,
             drop_path=0.,
+            kernel_size=[3, 3],
             qk_scale=None):
         super(EncoderWithSVTR, self).__init__()
         self.depth = depth
         self.use_guide = use_guide
         self.conv1 = ConvBNLayer(
-            in_channels, in_channels // 8, padding=1, act=nn.Swish)
+            in_channels,
+            in_channels // 8,
+            kernel_size=kernel_size,
+            padding=[kernel_size[0] // 2, kernel_size[1] // 2],
+            act=nn.Swish)
         self.conv2 = ConvBNLayer(
             in_channels // 8, hidden_dims, kernel_size=1, act=nn.Swish)
 
@@ -161,7 +175,11 @@ class EncoderWithSVTR(nn.Layer):
             hidden_dims, in_channels, kernel_size=1, act=nn.Swish)
         # last conv-nxn, the input is concat of input tensor and conv3 output tensor
         self.conv4 = ConvBNLayer(
-            2 * in_channels, in_channels // 8, padding=1, act=nn.Swish)
+            2 * in_channels,
+            in_channels // 8,
+            kernel_size=kernel_size,
+            padding=[kernel_size[0] // 2, kernel_size[1] // 2],
+            act=nn.Swish)
 
         self.conv1x1 = ConvBNLayer(
             in_channels // 8, dims, kernel_size=1, act=nn.Swish)

@@ -205,7 +205,7 @@ class CVRandomAffine(object):
                      for x, y in startpoints]
 
         rect = cv2.minAreaRect(np.array(endpoints))
-        bbox = cv2.boxPoints(rect).astype(dtype=np.int)
+        bbox = cv2.boxPoints(rect).astype(dtype=np.int32)
         max_x, max_y = bbox[:, 0].max(), bbox[:, 1].max()
         min_x, min_y = bbox[:, 0].min(), bbox[:, 1].min()
 
@@ -234,9 +234,9 @@ class CVRandomPerspective(object):
 
     def get_params(self, width, height, distortion):
         offset_h = sample_asym(
-            distortion * height / 2, size=4).astype(dtype=np.int)
+            distortion * height / 2, size=4).astype(dtype=np.int32)
         offset_w = sample_asym(
-            distortion * width / 2, size=4).astype(dtype=np.int)
+            distortion * width / 2, size=4).astype(dtype=np.int32)
         topleft = (offset_w[0], offset_h[0])
         topright = (width - 1 - offset_w[1], offset_h[1])
         botright = (width - 1 - offset_w[2], height - 1 - offset_h[2])
@@ -256,7 +256,7 @@ class CVRandomPerspective(object):
 
         # TODO: more robust way to crop image
         rect = cv2.minAreaRect(endpoints)
-        bbox = cv2.boxPoints(rect).astype(dtype=np.int)
+        bbox = cv2.boxPoints(rect).astype(dtype=np.int32)
         max_x, max_y = bbox[:, 0].max(), bbox[:, 1].max()
         min_x, min_y = bbox[:, 0].min(), bbox[:, 1].min()
         min_x, min_y = max(min_x, 0), max(min_y, 0)
@@ -405,3 +405,55 @@ class CVColorJitter(object):
     def __call__(self, img):
         if random.random() < self.p: return self.transforms(img)
         else: return img
+
+
+class SVTRDeterioration(object):
+    def __init__(self, var, degrees, factor, p=0.5):
+        self.p = p
+        transforms = []
+        if var is not None:
+            transforms.append(CVGaussianNoise(var=var))
+        if degrees is not None:
+            transforms.append(CVMotionBlur(degrees=degrees))
+        if factor is not None:
+            transforms.append(CVRescale(factor=factor))
+        self.transforms = transforms
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            random.shuffle(self.transforms)
+            transforms = Compose(self.transforms)
+            return transforms(img)
+        else:
+            return img
+
+
+class SVTRGeometry(object):
+    def __init__(self,
+                 aug_type=0,
+                 degrees=15,
+                 translate=(0.3, 0.3),
+                 scale=(0.5, 2.),
+                 shear=(45, 15),
+                 distortion=0.5,
+                 p=0.5):
+        self.aug_type = aug_type
+        self.p = p
+        self.transforms = []
+        self.transforms.append(CVRandomRotation(degrees=degrees))
+        self.transforms.append(
+            CVRandomAffine(
+                degrees=degrees, translate=translate, scale=scale, shear=shear))
+        self.transforms.append(CVRandomPerspective(distortion=distortion))
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            if self.aug_type:
+                random.shuffle(self.transforms)
+                transforms = Compose(self.transforms[:random.randint(1, 3)])
+                img = transforms(img)
+            else:
+                img = self.transforms[random.randint(0, 2)](img)
+            return img
+        else:
+            return img

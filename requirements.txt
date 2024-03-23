@@ -7,11 +7,12 @@ tqdm
 numpy
 visualdl
 rapidfuzz
-opencv-python
-opencv-contrib-python
+opencv-python<=4.6.0.66
+opencv-contrib-python<=4.6.0.66
 cython
 lxml
 premailer
 openpyxl
 attrdict
-PyMuPDF<1.21.0
+Pillow>=10.0.0
+pyyaml

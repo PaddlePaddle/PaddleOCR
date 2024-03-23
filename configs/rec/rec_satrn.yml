@@ -1,0 +1,117 @@
+Global:
+  use_gpu: true
+  epoch_num: 5
+  log_smooth_window: 20
+  print_batch_step: 50
+  save_model_dir: ./output/rec/rec_satrn/
+  save_epoch_step: 1
+  # evaluation is run every 5000 iterations
+  eval_batch_step: [0, 5000]
+  cal_metric_during_train: False
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: 
+  # for data or label process
+  character_dict_path: ppocr/utils/dict90.txt
+  max_text_length: 25
+  infer_mode: False
+  use_space_char: False
+  rm_symbol: True
+  save_res_path: ./output/rec/predicts_satrn.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Piecewise
+    decay_epochs: [3, 4]
+    values: [0.0003, 0.00003, 0.000003] 
+  regularizer:
+    name: 'L2'
+    factor: 0
+
+Architecture:
+  model_type: rec
+  algorithm: SATRN
+  Backbone:
+    name: ShallowCNN
+    in_channels: 3
+    hidden_dim: 256
+  Head:
+    name: SATRNHead
+    enc_cfg:
+      n_layers: 6
+      n_head: 8
+      d_k: 32
+      d_v: 32
+      d_model: 256
+      n_position: 100
+      d_inner: 1024
+      dropout: 0.1
+    dec_cfg:
+      n_layers: 6
+      d_embedding: 256
+      n_head: 8
+      d_model: 256
+      d_inner: 1024
+      d_k: 32
+      d_v: 32
+      max_seq_len: 25
+      start_idx: 91
+
+Loss:
+  name: SATRNLoss
+
+PostProcess:
+  name: SATRNLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/training/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - SATRNLabelEncode: # Class handling label
+      - SVTRRecResizeImg:
+          image_shape: [3, 32, 100] 
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'valid_ratio'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 128
+    drop_last: True
+    num_workers: 8
+    use_shared_memory: False
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/evaluation/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - SATRNLabelEncode: # Class handling label
+      - SVTRRecResizeImg:
+          image_shape: [3, 32, 100] 
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'valid_ratio'] # dataloader will return list in this order
+  
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 128 
+    num_workers: 4
+    use_shared_memory: False
+

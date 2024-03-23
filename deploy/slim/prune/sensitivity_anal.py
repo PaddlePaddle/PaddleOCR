@@ -26,7 +26,7 @@ sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
 import paddle
 import paddle.distributed as dist
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
@@ -57,6 +57,7 @@ def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
     # build dataloader
+    set_signal_handlers()
     train_dataloader = build_dataloader(config, 'Train', device, logger)
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)

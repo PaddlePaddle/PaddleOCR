@@ -72,6 +72,19 @@ FILENAME=$new_filename
 # MODE must be one of ['benchmark_train']
 MODE=$2
 PARAMS=$3
+
+to_static=""
+# parse "to_static" options and modify trainer into "to_static_trainer"
+if [[ $PARAMS =~ "dynamicTostatic" ]] ;then
+   to_static="d2sT_"
+   sed -i 's/trainer:norm_train/trainer:to_static_train/g' $FILENAME
+   # clear PARAM contents
+   if [ $PARAMS = "to_static" ] ;then
+    PARAMS=""
+   fi
+fi
+# bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt  benchmark_train dynamic_bs8_fp32_DP_N1C8
+# bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt  benchmark_train dynamicTostatic_bs8_fp32_DP_N1C8
 # bash test_tipc/benchmark_train.sh test_tipc/configs/det_mv3_db_v2_0/train_benchmark.txt  benchmark_train dynamic_bs8_null_DP_N1C1
 IFS=$'\n'
 # parser params from train_benchmark.txt
@@ -83,13 +96,13 @@ model_name=$(func_parser_value "${lines[1]}")
 python_name=$(func_parser_value "${lines[2]}")
 
 # set env
-python=${python_name}
+python=python
 export str_tmp=$(echo `pip list|grep paddlepaddle-gpu|awk -F ' ' '{print $2}'`)
 export frame_version=${str_tmp%%.post*}
 export frame_commit=$(echo `${python} -c "import paddle;print(paddle.version.commit)"`)
 
 # 获取benchmark_params所在的行数
-line_num=`grep -n "train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
+line_num=`grep -n -w "train_benchmark_params" $FILENAME  | cut -d ":" -f 1`
 # for train log parser
 batch_size=$(func_parser_value "${lines[line_num]}")
 line_num=`expr $line_num + 1`
@@ -117,7 +130,8 @@ repo_name=$(get_repo_name )
 SAVE_LOG=${BENCHMARK_LOG_DIR:-$(pwd)}   # */benchmark_log
 mkdir -p "${SAVE_LOG}/benchmark_log/"
 status_log="${SAVE_LOG}/benchmark_log/results.log"
-
+# get benchmark profiling params : PROFILING_TIMER_ONLY=no|True|False
+PROFILING_TIMER_ONLY=${PROFILING_TIMER_ONLY:-"True"}
 # The number of lines in which train params can be replaced.
 line_python=3
 line_gpuid=4
@@ -136,6 +150,13 @@ func_sed_params "$FILENAME" "${line_python}"  "$python"
 if  [ ! -n "$PARAMS" ] ;then
     # PARAMS input is not a word.
     IFS="|"
+    batch_size_list=(${batch_size})
+    fp_items_list=(${fp_items})
+    device_num_list=(N1C4)
+    run_mode="DP"
+elif [[ ${PARAMS} = "dynamicTostatic" ]];then
+    IFS="|"
+    model_type=$PARAMS
     batch_size_list=(${batch_size})
     fp_items_list=(${fp_items})
     device_num_list=(N1C4)
@@ -179,26 +200,32 @@ for batch_size in ${batch_size_list[*]}; do
             gpu_id=$(set_gpu_id $device_num)
 
             if [ ${#gpu_id} -le 1 ];then
-                log_path="$SAVE_LOG/profiling_log"
-                mkdir -p $log_path
-                log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_profiling"
                 func_sed_params "$FILENAME" "${line_gpuid}" "0"  # sed used gpu_id 
-                # set profile_option params
-                tmp=`sed -i "${line_profile}s/.*/${profile_option}/" "${FILENAME}"`
-
-                # run test_train_inference_python.sh
-                cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
-                echo $cmd
-                eval $cmd
-                eval "cat ${log_path}/${log_name}"
-
+                if [[ ${PROFILING_TIMER_ONLY} != "no" ]];then
+                    echo "run profile"
+                    # The default value of profile_option's timer_only parameter is True
+                    if [[ ${PROFILING_TIMER_ONLY} = "False" ]];then
+                        profile_option="${profile_option};timer_only=False"
+                    fi
+                    log_path="$SAVE_LOG/profiling_log"
+                    mkdir -p $log_path
+                    log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_${to_static}profiling"
+                    # set profile_option params
+                    tmp=`sed -i "${line_profile}s/.*/\"${profile_option}\"/" "${FILENAME}"`
+                    # run test_train_inference_python.sh
+                    cmd="timeout 5m bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
+                    echo $cmd
+                    eval ${cmd}
+                    eval "cat ${log_path}/${log_name}"
+                fi
+                echo "run without profile"
                 # without profile
                 log_path="$SAVE_LOG/train_log"
                 speed_log_path="$SAVE_LOG/index"
                 mkdir -p $log_path
                 mkdir -p $speed_log_path
-                log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_log"
-                speed_log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_speed"
+                log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_${to_static}log"
+                speed_log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_${to_static}speed"
                 func_sed_params "$FILENAME" "${line_profile}" "null"  # sed profile_id as null
                 cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "
                 echo $cmd
@@ -232,8 +259,8 @@ for batch_size in ${batch_size_list[*]}; do
                 speed_log_path="$SAVE_LOG/index"
                 mkdir -p $log_path
                 mkdir -p $speed_log_path
-                log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_log"
-                speed_log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_speed"
+                log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_${to_static}log"
+                speed_log_name="${repo_name}_${model_name}_bs${batch_size}_${precision}_${run_mode}_${device_num}_${to_static}speed"
                 func_sed_params "$FILENAME" "${line_gpuid}" "$gpu_id"  # sed used gpu_id 
                 func_sed_params "$FILENAME" "${line_profile}" "null"  # sed --profile_option as null
                 cmd="bash test_tipc/test_train_inference_python.sh ${FILENAME} benchmark_train > ${log_path}/${log_name} 2>&1 "

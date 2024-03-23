@@ -32,6 +32,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 - [x]  [PSENet](./algorithm_det_psenet.md)
 - [x]  [FCENet](./algorithm_det_fcenet.md)
 - [x]  [DRRG](./algorithm_det_drrg.md)
+- [x]  [CT](./algorithm_det_ct.md)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
@@ -51,6 +52,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |模型|骨干网络|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
+|CT|ResNet18_vd|88.68%|81.70%|85.05%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)|
 
 在CTW1500文本检测公开数据集上，算法效果如下：
 
@@ -129,7 +131,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 ### 1.4 公式识别算法
 
 已支持的公式识别算法列表（戳链接获取使用教程）：
-- [x]  [CAN](./algorithm_rec_can.md.md)
+- [x]  [CAN](./algorithm_rec_can.md)
 
 在CROHME手写公式数据集上，算法效果如下：
 

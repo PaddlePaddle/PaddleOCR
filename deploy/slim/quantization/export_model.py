@@ -34,7 +34,7 @@ from tools.program import load_config, merge_config, ArgsParser
 from ppocr.metrics import build_metric
 import tools.program as program
 from paddleslim.dygraph.quant import QAT
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from tools.export_model import export_single_model
 
 
@@ -134,6 +134,7 @@ def main():
     eval_class = build_metric(config['Metric'])
 
     # build dataloader
+    set_signal_handlers()
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     use_srn = config['Architecture']['algorithm'] == "SRN"

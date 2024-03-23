@@ -1,6 +1,6 @@
 # PaddleOCR Model Inference Parameter Explanation
 
-When using PaddleOCR for model inference, you can customize the modification parameters to modify the model, data, preprocessing, postprocessing, etc.（parameter file：[utility.py](../../tools/infer/utility.py)），The detailed parameter explanation is as follows:
+When using PaddleOCR for model inference, you can customize the modification parameters to modify the model, data, preprocessing, postprocessing, etc. (parameter file: [utility.py](../../tools/infer/utility.py))，The detailed parameter explanation is as follows:
 
 * Global parameters
 
@@ -88,7 +88,7 @@ The relevant parameters of the PSE algorithm are as follows
 | :--: | :--: | :--: | :--: |
 |  rec_algorithm | str | "CRNN" | Text recognition algorithm name, currently supports `CRNN`, `SRN`, `RARE`, `NETR`, `SAR`, `ViTSTR`, `ABINet`, `VisionLAN`, `SPIN`, `RobustScanner`, `SVTR`, `SVTR_LCNet` |
 |  rec_model_dir | str | None, it is required if using the recognition model | recognition inference model paths |
-|  rec_image_shape | list | [3, 48, 320] | Image size at the time of recognition |
+|  rec_image_shape | str | "3,48,320" ] | Image size at the time of recognition |
 |  rec_batch_num | int | 6 | batch size |
 |  max_text_length | int | 25 | The maximum length of the recognition result, valid in `SRN` |
 |  rec_char_dict_path | str | "./ppocr/utils/ppocr_keys_v1.txt" | character dictionary file |
@@ -115,7 +115,16 @@ The relevant parameters of the PSE algorithm are as follows
 | :--: | :--: | :--: | :--: |
 |  use_angle_cls | bool | False | whether to use an angle classifier |
 |  cls_model_dir | str | None, if you need to use, you must specify the path explicitly | angle classifier inference model path |
-|  cls_image_shape | list | [3, 48, 192] | prediction shape |
+|  cls_image_shape | str | "3,48,192" | prediction shape |
 |  label_list | list | ['0', '180'] | The angle value corresponding to the class id |
 |  cls_batch_num | int | 6 | batch size |
 |  cls_thresh | float | 0.9 | Prediction threshold, when the model prediction result is 180 degrees, and the score is greater than the threshold, the final prediction result is considered to be 180 degrees and needs to be flipped |
+
+
+* OCR image preprocessing parameters
+
+| parameters | type | default | implication |
+| :--: | :--: | :--: | :--: |
+|  invert | bool | False | whether to invert image before processing |
+|  binarize | bool | False | whether to threshold binarize image before processing |
+|  alphacolor | tuple | "255,255,255" | Replacement color for the alpha channel, if the latter is present; R,G,B integers |

@@ -36,13 +36,14 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: SVTR
+  algorithm: SVTR_LCNet
   Transform:
   Backbone:
     name: MobileNetV1Enhance
     scale: 0.5
     last_conv_stride: [1, 2]
     last_pool_type: avg
+    last_pool_kernel_size: [2, 2]
   Head:
     name: MultiHead
     head_list:

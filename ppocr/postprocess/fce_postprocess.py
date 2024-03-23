@@ -31,7 +31,7 @@ def fill_hole(input_mask):
     mask = np.zeros((h + 4, w + 4), np.uint8)
 
     cv2.floodFill(canvas, mask, (0, 0), 1)
-    canvas = canvas[1:h + 1, 1:w + 1].astype(np.bool)
+    canvas = canvas[1:h + 1, 1:w + 1].astype(np.bool_)
 
     return ~canvas | input_mask
 
@@ -234,7 +234,7 @@ class FCEPostProcess(object):
                 poly = np.array(boundary[:-1]).reshape(-1, 2).astype(np.float32)
                 score = boundary[-1]
                 points = cv2.boxPoints(cv2.minAreaRect(poly))
-                points = np.int0(points)
+                points = np.int64(points)
                 new_boundaries.append(points.reshape(-1).tolist() + [score])
                 boundaries = new_boundaries
 

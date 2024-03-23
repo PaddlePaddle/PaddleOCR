@@ -208,7 +208,7 @@ class RandomCropFlip:
         for polygon in all_polys:
             rect = cv2.minAreaRect(polygon.astype(np.int32).reshape(-1, 2))
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.int64(box)
             text_polys.append([box[0], box[1], box[2], box[3]])
 
         polys = np.array(text_polys, dtype=np.int32)

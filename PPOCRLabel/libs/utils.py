@@ -209,10 +209,10 @@ def convert_token(html_list):
                 token_list.append("<td")
                 if 'colspan' in col:
                     _, n = col.split('colspan=')
-                    token_list.append(" colspan=\"{}\"".format(n[0]))
+                    token_list.append(" colspan=\"{}\"".format(str(int(n))))
                 if 'rowspan' in col:
                     _, n = col.split('rowspan=')
-                    token_list.append(" rowspan=\"{}\"".format(n[0]))
+                    token_list.append(" rowspan=\"{}\"".format(str(int(n))))
                 token_list.extend([">", "</td>"])
         token_list.append("</tr>")
     token_list.append("</tbody>")

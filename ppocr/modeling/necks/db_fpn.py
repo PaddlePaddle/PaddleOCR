@@ -22,6 +22,7 @@ import paddle.nn.functional as F
 from paddle import ParamAttr
 import os
 import sys
+from ppocr.modeling.necks.intracl import IntraCLBlock
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
@@ -228,6 +229,13 @@ class RSEFPN(nn.Layer):
         self.out_channels = out_channels
         self.ins_conv = nn.LayerList()
         self.inp_conv = nn.LayerList()
+        self.intracl = False
+        if 'intracl' in kwargs.keys() and kwargs['intracl'] is True:
+            self.intracl = kwargs['intracl']
+            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
@@ -262,6 +270,12 @@ class RSEFPN(nn.Layer):
         p4 = self.inp_conv[2](out4)
         p3 = self.inp_conv[1](out3)
         p2 = self.inp_conv[0](out2)
+
+        if self.intracl is True:
+            p5 = self.incl4(p5)
+            p4 = self.incl3(p4)
+            p3 = self.incl2(p3)
+            p2 = self.incl1(p2)
 
         p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
         p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)
@@ -329,6 +343,14 @@ class LKPAN(nn.Layer):
                     weight_attr=ParamAttr(initializer=weight_attr),
                     bias_attr=False))
 
+        self.intracl = False
+        if 'intracl' in kwargs.keys() and kwargs['intracl'] is True:
+            self.intracl = kwargs['intracl']
+            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+
     def forward(self, x):
         c2, c3, c4, c5 = x
 
@@ -357,6 +379,12 @@ class LKPAN(nn.Layer):
         p3 = self.pan_lat_conv[1](pan3)
         p4 = self.pan_lat_conv[2](pan4)
         p5 = self.pan_lat_conv[3](pan5)
+
+        if self.intracl is True:
+            p5 = self.incl4(p5)
+            p4 = self.incl3(p4)
+            p3 = self.incl2(p3)
+            p2 = self.incl1(p2)
 
         p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
         p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)

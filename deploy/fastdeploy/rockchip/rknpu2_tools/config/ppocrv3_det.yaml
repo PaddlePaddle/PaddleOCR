@@ -1,0 +1,15 @@
+mean:
+  -
+    - 123.675
+    - 116.28
+    - 103.53
+std:
+  -
+    - 58.395
+    - 57.12
+    - 57.375
+model_path: ./ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx
+outputs_nodes:
+do_quantization: False
+dataset:
+output_folder: "./ch_PP-OCRv3_det_infer"

@@ -1,0 +1,16 @@
+.DS_Store
+*.pth
+*.pyc
+*.pyo
+*.log
+*.tmp
+*.pkl
+__pycache__/
+.idea/
+output/
+test/*.jpg
+datasets/
+index/
+train_log/
+log/
+profiling_log/

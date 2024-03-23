@@ -21,7 +21,7 @@ For the document images in a specific scene, the position and layout of the key 
 
 The KIE in the document image generally contains 2 subtasks, which is as shown follows.
 
-* (1) SER: semantic entity recognition, which classifies each detected textline, such as dividing it into name and ID card. As shown in the red boxes in the following figure.
+* (1) SER: semantic entity recognition, which classifies each detected textline, such as dividing it into name and ID No. As shown in the red boxes in the following figure.
 
 * (2) RE: relationship extraction, which matches the question and answer based on SER results. As shown in the figure below, the yellow arrows match the question and answer.
 
@@ -51,7 +51,7 @@ For more detailed introduction of the algorithms, please refer to Chapter 6 of [
 Token based methods such as LayoutXLM are implemented in PaddleOCR. What's more, in PP-StructureV2, we simplify the LayoutXLM model and proposed VI-LayoutXLM, in which the visual feature extraction module is removed for speed-up. The textline sorting strategy conforming to the human reading order and UDML knowledge distillation strategy are utilized for higher model accuracy.
 
 
-In the non end-to-end KIE method, KIE needs at least ** 2 steps**. Firstly, the OCR model is used to extract the text and its position. Secondly, the KIE model is used to extract the key information according to the image, text position and text content.
+In the non end-to-end KIE method, KIE needs at least **2 steps**. Firstly, the OCR model is used to extract the text and its position. Secondly, the KIE model is used to extract the key information according to the image, text position and text content.
 
 
 ### 2.1 Train OCR Models
@@ -132,7 +132,7 @@ In terms of model, it is recommended to use the VI-layoutXLM model proposed in P
 
 The SER model is mainly used to identify all keys and values in the document image, and the RE model is mainly used to match all keys and values.
 
-Taking the ID card scenario as an example, the key information generally includes key information such as `name`, `DOB`, etc. in the SER stage, we need to identify all questions (keys) and answers (values). The demo annotation is as follows. All keys can be annotated as `question`, and all keys can be annotated as `answer`.
+Taking the ID card scenario as an example, the key information generally includes key information such as `name`, `DOB`, etc. in the SER stage, we need to identify all questions (keys) and answers (values). The demo annotation is as follows. All keys can be annotated as `question`, and all values can be annotated as `answer`.
 
 
 <div align="center">
@@ -151,7 +151,7 @@ For each textline, you need to add 'ID' and 'linking' field information. The 'ID
 
 **Note:**
 
--During annotation, if value is multiple textines, a key value pair can be added in linking, such as `[[0, 1], [0, 2]]`.
+During annotation, if value is multiple text lines, a key-value pair can be added in linking, such as `[[0, 1], [0, 2]]`.
 
 In terms of data, generally speaking, for relatively fixed scenes, about **50** training images can achieve acceptable effects.
 

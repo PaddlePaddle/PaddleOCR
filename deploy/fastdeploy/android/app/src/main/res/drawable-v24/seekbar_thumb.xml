@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <selector>
+        <item android:state_focused="true" android:state_pressed="false" android:drawable="@drawable/seekbar_thumb_shape" />
+        <item android:state_focused="true" android:state_pressed="true" android:drawable="@drawable/seekbar_thumb_shape" />
+        <item android:state_focused="false" android:state_pressed="true" android:drawable="@drawable/seekbar_thumb_shape" />
+        <item android:drawable="@drawable/seekbar_thumb_shape" />
+    </selector>
+</selector>

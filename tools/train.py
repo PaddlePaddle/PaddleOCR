@@ -27,7 +27,7 @@ import yaml
 import paddle
 import paddle.distributed as dist
 
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
@@ -49,6 +49,7 @@ def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
     # build dataloader
+    set_signal_handlers()
     train_dataloader = build_dataloader(config, 'Train', device, logger)
     if len(train_dataloader) == 0:
         logger.error(
@@ -80,14 +81,22 @@ def main(config, device, logger, vdl_writer):
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
-                    # update SARLoss params
-                    assert list(config['Loss']['loss_config_list'][-1].keys())[
-                        0] == 'DistillationSARLoss'
-                    config['Loss']['loss_config_list'][-1][
-                        'DistillationSARLoss']['ignore_index'] = char_num + 1
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list = {}
                     out_channels_list['CTCLabelDecode'] = char_num
-                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    # update SARLoss params
+                    if list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationSARLoss':
+                        config['Loss']['loss_config_list'][-1][
+                            'DistillationSARLoss'][
+                                'ignore_index'] = char_num + 1
+                        out_channels_list['SARLabelDecode'] = char_num + 2
+                    elif list(config['Loss']['loss_config_list'][-1].keys())[
+                            0] == 'DistillationNRTRLoss':
+                        out_channels_list['NRTRLabelDecode'] = char_num + 3
+
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
@@ -97,19 +106,24 @@ def main(config, device, logger, vdl_writer):
                 'name'] == 'MultiHead':  # for multi head
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
-            # update SARLoss params
-            assert list(config['Loss']['loss_config_list'][1].keys())[
-                0] == 'SARLoss'
-            if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
-                config['Loss']['loss_config_list'][1]['SARLoss'] = {
-                    'ignore_index': char_num + 1
-                }
-            else:
-                config['Loss']['loss_config_list'][1]['SARLoss'][
-                    'ignore_index'] = char_num + 1
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list = {}
             out_channels_list['CTCLabelDecode'] = char_num
-            out_channels_list['SARLabelDecode'] = char_num + 2
+            # update SARLoss params
+            if list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'SARLoss':
+                if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
+                    config['Loss']['loss_config_list'][1]['SARLoss'] = {
+                        'ignore_index': char_num + 1
+                    }
+                else:
+                    config['Loss']['loss_config_list'][1]['SARLoss'][
+                        'ignore_index'] = char_num + 1
+                out_channels_list['SARLabelDecode'] = char_num + 2
+            elif list(config['Loss']['loss_config_list'][1].keys())[
+                    0] == 'NRTRLoss':
+                out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model
@@ -147,14 +161,17 @@ def main(config, device, logger, vdl_writer):
 
     use_amp = config["Global"].get("use_amp", False)
     amp_level = config["Global"].get("amp_level", 'O2')
+    amp_dtype = config["Global"].get("amp_dtype", 'float16')
     amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
+    amp_custom_white_list = config['Global'].get('amp_custom_white_list', [])
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {'FLAGS_max_inplace_grad_add': 8, }
         if paddle.is_compiled_with_cuda():
             AMP_RELATED_FLAGS_SETTING.update({
-                'FLAGS_cudnn_batchnorm_spatial_persistent': 1
+                'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
+                'FLAGS_gemm_use_half_precision_compute_type': 0,
             })
-        paddle.fluid.set_flags(AMP_RELATED_FLAGS_SETTING)
+        paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["Global"].get("scale_loss", 1.0)
         use_dynamic_loss_scaling = config["Global"].get(
             "use_dynamic_loss_scaling", False)
@@ -166,7 +183,8 @@ def main(config, device, logger, vdl_writer):
                 models=model,
                 optimizers=optimizer,
                 level=amp_level,
-                master_weight=True)
+                master_weight=True,
+                dtype=amp_dtype)
     else:
         scaler = None
 
@@ -180,7 +198,8 @@ def main(config, device, logger, vdl_writer):
     program.train(config, train_dataloader, valid_dataloader, device, model,
                   loss_class, optimizer, lr_scheduler, post_process_class,
                   eval_class, pre_best_model_dict, logger, vdl_writer, scaler,
-                  amp_level, amp_custom_black_list)
+                  amp_level, amp_custom_black_list, amp_custom_white_list,
+                  amp_dtype)
 
 
 def test_reader(config, device, logger):

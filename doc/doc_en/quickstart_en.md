@@ -28,13 +28,13 @@
 - If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
 
   ```bash
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  python -m pip install paddlepaddle-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
   ```
 
 - If you have no available GPU on your machine, please run the following command to install the CPU version
 
   ```bash
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  python -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
   ```
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
@@ -120,9 +120,10 @@ If you do not use the provided test image, you can replace the following `--imag
   ```
 
 **Version**
-paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
+paddleocr uses the PP-OCRv4 model by default(`--ocr_version PP-OCRv4`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
 |  version name |  description |
 |    ---    |   ---   |
+| PP-OCRv4 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 | PP-OCRv3 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 | PP-OCRv2 | only supports Chinese and English detection and recognition, direction classifier, multilingual model is not updated |
 | PP-OCR   | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
@@ -223,7 +224,7 @@ from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `fr`, `german`, `korean`, `japan`
 # to switch the language model in order.
-ocr = PaddleOCR(use_angle_cls=True, lang="ch"， page_num=2)  # need to run only once to download and load model into memory
+ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=2)  # need to run only once to download and load model into memory
 img_path = './xxx.pdf'
 result = ocr.ocr(img_path, cls=True)
 for idx in range(len(result)):
@@ -266,4 +267,4 @@ for idx in range(len(result)):
 
 In this section, you have mastered the use of PaddleOCR whl package.
 
-PaddleOCR is a rich and practical OCR tool library that get through the whole process of data production, model training, compression, inference and deployment, please refer to the [tutorials](../../README.md#tutorials) to start the journey of PaddleOCR.
+PaddleX provides a high-quality ecological model of the paddle. It is a one-stop full-process high-efficiency development platform for training, pressing and pushing. Its mission is to help AI technology to be implemented quickly. The vision is to make everyone an AI Developer! Currently PP-OCRv4 has been launched on PaddleX, you can enter [General OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286) to experience the whole process of model training, compression and inference deployment.

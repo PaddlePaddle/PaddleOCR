@@ -65,15 +65,25 @@ class TextSystem(object):
         self.crop_image_res_index += bbox_num
 
     def __call__(self, img, cls=True):
-        time_dict = {'det': 0, 'rec': 0, 'csl': 0, 'all': 0}
+        time_dict = {'det': 0, 'rec': 0, 'cls': 0, 'all': 0}
+
+        if img is None:
+            logger.debug("no valid image provided")
+            return None, None, time_dict
+
         start = time.time()
         ori_im = img.copy()
         dt_boxes, elapse = self.text_detector(img)
         time_dict['det'] = elapse
-        logger.debug("dt_boxes num : {}, elapse : {}".format(
-            len(dt_boxes), elapse))
+
         if dt_boxes is None:
-            return None, None
+            logger.debug("no dt_boxes found, elapsed : {}".format(elapse))
+            end = time.time()
+            time_dict['all'] = end - start
+            return None, None, time_dict
+        else:
+            logger.debug("dt_boxes num : {}, elapsed : {}".format(
+                len(dt_boxes), elapse))
         img_crop_list = []
 
         dt_boxes = sorted_boxes(dt_boxes)
@@ -89,12 +99,12 @@ class TextSystem(object):
             img_crop_list, angle_list, elapse = self.text_classifier(
                 img_crop_list)
             time_dict['cls'] = elapse
-            logger.debug("cls num  : {}, elapse : {}".format(
+            logger.debug("cls num  : {}, elapsed : {}".format(
                 len(img_crop_list), elapse))
 
         rec_res, elapse = self.text_recognizer(img_crop_list)
         time_dict['rec'] = elapse
-        logger.debug("rec_res num  : {}, elapse : {}".format(
+        logger.debug("rec_res num  : {}, elapsed : {}".format(
             len(rec_res), elapse))
         if self.args.save_crop_res:
             self.draw_crop_rec_res(self.args.crop_res_save_dir, img_crop_list,

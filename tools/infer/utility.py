@@ -28,8 +28,10 @@ from ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
-    return v.lower() in ("true", "t", "1")
+    return v.lower() in ("true", "yes", "t", "y", "1")
 
+def str2int_tuple(v):
+    return tuple([int(i.strip()) for i in v.split(",")])
 
 def init_args():
     parser = argparse.ArgumentParser()
@@ -42,6 +44,7 @@ def init_args():
     parser.add_argument("--min_subgraph_size", type=int, default=15)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
+    parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
@@ -219,7 +222,7 @@ def create_predictor(args, mode, logger):
                 logger.warning(
                     "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
-            config.enable_use_gpu(args.gpu_mem, 0)
+            config.enable_use_gpu(args.gpu_mem, args.gpu_id)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
@@ -245,7 +248,7 @@ def create_predictor(args, mode, logger):
                     logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
 
         elif args.use_npu:
-            config.enable_npu()
+            config.enable_custom_device("npu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
@@ -290,7 +293,9 @@ def create_predictor(args, mode, logger):
 def get_output_tensors(args, mode, predictor):
     output_names = predictor.get_output_names()
     output_tensors = []
-    if mode == "rec" and args.rec_algorithm in ["CRNN", "SVTR_LCNet"]:
+    if mode == "rec" and args.rec_algorithm in [
+            "CRNN", "SVTR_LCNet", "SVTR_HGNet"
+    ]:
         output_name = 'softmax_0.tmp_0'
         if output_name in output_names:
             return [predictor.get_output_handle(output_name)]
@@ -310,7 +315,7 @@ def get_infer_gpuid():
     if sysstr == "Windows":
         return 0
 
-    if not paddle.fluid.core.is_compiled_with_rocm():
+    if not paddle.device.is_compiled_with_rocm:
         cmd = "env | grep CUDA_VISIBLE_DEVICES"
     else:
         cmd = "env | grep HIP_VISIBLE_DEVICES"
@@ -468,7 +473,7 @@ def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
 def create_font(txt, sz, font_path="./doc/fonts/simfang.ttf"):
     font_size = int(sz[1] * 0.99)
     font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-    length = font.getsize(txt)[0]
+    length = font.getlength(txt)
     if length > sz[0]:
         font_size = int(font_size * sz[0] / length)
         font = ImageFont.truetype(font_path, font_size, encoding="utf-8")

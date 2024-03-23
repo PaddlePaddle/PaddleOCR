@@ -164,7 +164,7 @@ for line in result:
 
 from PIL import Image
 
-font_path = 'doc/fonts/simfang.ttf' # font provieded in PaddleOCR
+font_path = 'doc/fonts/simfang.ttf' # font provided in PaddleOCR
 image = Image.open(img_path).convert('RGB')
 im_show = draw_structure_result(image, result,font_path=font_path)
 im_show = Image.fromarray(im_show)
@@ -311,7 +311,7 @@ Please refer to: [Key Information Extraction](../kie/README.md) .
 | save_pdf    | Whether to convert docx to pdf when recovery| False |
 | structure_version |  Structure version, optional PP-structure and PP-structurev2  | PP-structure |
 
-Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl.md)
+Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../../doc/doc_en/whl_en.md)
 
 <a name="3"></a>
 ## 3. Summary

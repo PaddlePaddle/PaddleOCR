@@ -25,12 +25,28 @@ import paddle.nn.functional as F
 from ppocr.modeling.necks.rnn import Im2Seq, EncoderWithRNN, EncoderWithFC, SequenceEncoder, EncoderWithSVTR
 from .rec_ctc_head import CTCHead
 from .rec_sar_head import SARHead
+from .rec_nrtr_head import Transformer
+
+
+class FCTranspose(nn.Layer):
+    def __init__(self, in_channels, out_channels, only_transpose=False):
+        super().__init__()
+        self.only_transpose = only_transpose
+        if not self.only_transpose:
+            self.fc = nn.Linear(in_channels, out_channels, bias_attr=False)
+
+    def forward(self, x):
+        if self.only_transpose:
+            return x.transpose([0, 2, 1])
+        else:
+            return self.fc(x.transpose([0, 2, 1]))
 
 
 class MultiHead(nn.Layer):
     def __init__(self, in_channels, out_channels_list, **kwargs):
         super().__init__()
         self.head_list = kwargs.pop('head_list')
+
         self.gtc_head = 'sar'
         assert len(self.head_list) >= 2
         for idx, head_name in enumerate(self.head_list):
@@ -40,12 +56,27 @@ class MultiHead(nn.Layer):
                 sar_args = self.head_list[idx][name]
                 self.sar_head = eval(name)(in_channels=in_channels, \
                     out_channels=out_channels_list['SARLabelDecode'], **sar_args)
+            elif name == 'NRTRHead':
+                gtc_args = self.head_list[idx][name]
+                max_text_length = gtc_args.get('max_text_length', 25)
+                nrtr_dim = gtc_args.get('nrtr_dim', 256)
+                num_decoder_layers = gtc_args.get('num_decoder_layers', 4)
+                self.before_gtc = nn.Sequential(
+                    nn.Flatten(2), FCTranspose(in_channels, nrtr_dim))
+                self.gtc_head = Transformer(
+                    d_model=nrtr_dim,
+                    nhead=nrtr_dim // 32,
+                    num_encoder_layers=-1,
+                    beam_size=-1,
+                    num_decoder_layers=num_decoder_layers,
+                    max_len=max_text_length,
+                    dim_feedforward=nrtr_dim * 4,
+                    out_channels=out_channels_list['NRTRLabelDecode'])
             elif name == 'CTCHead':
                 # ctc neck
                 self.encoder_reshape = Im2Seq(in_channels)
                 neck_args = self.head_list[idx][name]['Neck']
                 encoder_type = neck_args.pop('name')
-                self.encoder = encoder_type
                 self.ctc_encoder = SequenceEncoder(in_channels=in_channels, \
                     encoder_type=encoder_type, **neck_args)
                 # ctc head
@@ -57,6 +88,7 @@ class MultiHead(nn.Layer):
                     '{} is not supported in MultiHead yet'.format(name))
 
     def forward(self, x, targets=None):
+
         ctc_encoder = self.ctc_encoder(x)
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()
@@ -68,6 +100,7 @@ class MultiHead(nn.Layer):
         if self.gtc_head == 'sar':
             sar_out = self.sar_head(x, targets[1:])
             head_out['sar'] = sar_out
-            return head_out
         else:
-            return head_out
+            gtc_out = self.gtc_head(self.before_gtc(x), targets[1:])
+            head_out['nrtr'] = gtc_out
+        return head_out

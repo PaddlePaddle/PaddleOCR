@@ -32,7 +32,7 @@ def drop_path(x, drop_prob=0., training=False):
     """
     if drop_prob == 0. or not training:
         return x
-    keep_prob = paddle.to_tensor(1 - drop_prob)
+    keep_prob = paddle.to_tensor(1 - drop_prob, dtype=x.dtype)
     shape = (paddle.shape(x)[0], ) + (1, ) * (x.ndim - 1)
     random_tensor = keep_prob + paddle.rand(shape, dtype=x.dtype)
     random_tensor = paddle.floor(random_tensor)  # binarize
@@ -155,8 +155,9 @@ class Attention(nn.Layer):
                  proj_drop=0.):
         super().__init__()
         self.num_heads = num_heads
-        head_dim = dim // num_heads
-        self.scale = qk_scale or head_dim**-0.5
+        self.dim = dim
+        self.head_dim = dim // num_heads
+        self.scale = qk_scale or self.head_dim**-0.5
 
         self.qkv = nn.Linear(dim, dim * 3, bias_attr=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)
@@ -183,13 +184,9 @@ class Attention(nn.Layer):
         self.mixer = mixer
 
     def forward(self, x):
-        if self.HW is not None:
-            N = self.N
-            C = self.C
-        else:
-            _, N, C = x.shape
-        qkv = self.qkv(x).reshape((0, N, 3, self.num_heads, C //
-                                   self.num_heads)).transpose((2, 0, 3, 1, 4))
+        qkv = self.qkv(x).reshape(
+            (0, -1, 3, self.num_heads, self.head_dim)).transpose(
+                (2, 0, 3, 1, 4))
         q, k, v = qkv[0] * self.scale, qkv[1], qkv[2]
 
         attn = (q.matmul(k.transpose((0, 1, 3, 2))))
@@ -198,7 +195,7 @@ class Attention(nn.Layer):
         attn = nn.functional.softmax(attn, axis=-1)
         attn = self.attn_drop(attn)
 
-        x = (attn.matmul(v)).transpose((0, 2, 1, 3)).reshape((0, N, C))
+        x = (attn.matmul(v)).transpose((0, 2, 1, 3)).reshape((0, -1, self.dim))
         x = self.proj(x)
         x = self.proj_drop(x)
         return x

@@ -15,7 +15,7 @@ import random
 import ast
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
-from tools.infer.utility import draw_ocr_box_txt, str2bool, init_args as infer_args
+from tools.infer.utility import draw_ocr_box_txt, str2bool, str2int_tuple, init_args as infer_args
 
 
 def init_args():
@@ -98,6 +98,21 @@ def init_args():
         type=str2bool,
         default=False,
         help='Whether to use pdf2docx api')
+    parser.add_argument(
+        "--invert",
+        type=str2bool,
+        default=False,
+        help='Whether to invert image before processing')
+    parser.add_argument(
+        "--binarize",
+        type=str2bool,
+        default=False,
+        help='Whether to threshold binarize image before processing')
+    parser.add_argument(
+        "--alphacolor",
+        type=str2int_tuple,
+        default=(255, 255, 255),
+        help='Replacement color for the alpha channel, if the latter is present; R,G,B integers')
 
     return parser
 
@@ -132,7 +147,8 @@ def draw_structure_result(image, result, font_path):
             [(box_layout[0], box_layout[1]), (box_layout[2], box_layout[3])],
             outline=box_color,
             width=3)
-        text_w, text_h = font.getsize(region['type'])
+        left, top, right, bottom = font.getbbox(region['type'])
+        text_w, text_h = right - left, bottom - top
         draw_layout.rectangle(
             [(box_layout[0], box_layout[1]),
              (box_layout[0] + text_w, box_layout[1] + text_h)],

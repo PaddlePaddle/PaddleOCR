@@ -1,0 +1,86 @@
+name: DBNet
+base: ['config/open_dataset.yaml']
+arch:
+  type: Model
+  backbone:
+    type: deformable_resnet18
+    pretrained: true
+  neck:
+    type: FPN
+    inner_channels: 256
+  head:
+    type: DBHead
+    out_channels: 2
+    k: 50
+post_processing:
+  type: SegDetectorRepresenter
+  args:
+    thresh: 0.3
+    box_thresh: 0.7
+    max_candidates: 1000
+    unclip_ratio: 1.5 # from paper
+metric:
+  type: QuadMetric
+  args:
+    is_output_polygon: false
+loss:
+  type: DBLoss
+  alpha: 1
+  beta: 10
+  ohem_ratio: 3
+optimizer:
+  type: Adam
+  args:
+    lr: 0.001
+    weight_decay: 0
+    amsgrad: true
+lr_scheduler:
+  type: WarmupPolyLR
+  args:
+    warmup_epoch: 3
+trainer:
+  seed: 2
+  epochs: 1200
+  log_iter: 1
+  show_images_iter: 1
+  resume_checkpoint: ''
+  finetune_checkpoint: ''
+  output_dir: output
+  visual_dl: false
+amp:
+    scale_loss: 1024
+    amp_level: O2
+    custom_white_list: []
+    custom_black_list: ['exp', 'sigmoid', 'concat']
+dataset:
+  train:
+    dataset:
+      args:
+        data_path:
+          - ./datasets/train.json
+        img_mode: RGB
+        load_char_annotation: false
+        expand_one_char: false
+    loader:
+      batch_size: 2
+      shuffle: true
+      num_workers: 6
+      collate_fn: ''
+  validate:
+    dataset:
+      args:
+        data_path:
+          - ./datasets/test.json
+        pre_processes:
+          - type: ResizeShortSize
+            args:
+              short_size: 736
+              resize_text_polys: false
+        img_mode: RGB
+        load_char_annotation: false
+        expand_one_char: false
+    loader:
+      batch_size: 1
+      shuffle: true
+      num_workers: 6
+      collate_fn: ICDARCollectFN

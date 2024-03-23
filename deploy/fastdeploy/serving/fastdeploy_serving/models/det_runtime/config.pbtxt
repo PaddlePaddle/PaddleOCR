@@ -1,0 +1,52 @@
+# optional, If name is specified it must match the name of the model repository directory containing the model.
+name: "det_runtime"
+backend: "fastdeploy"
+max_batch_size: 1
+
+# Input configuration of the model
+input [
+  {
+    # input name
+    name: "x"
+    # input type such as TYPE_FP32、TYPE_UINT8、TYPE_INT8、TYPE_INT16、TYPE_INT32、TYPE_INT64、TYPE_FP16、TYPE_STRING
+    data_type: TYPE_FP32
+    # input shape， The batch dimension is omitted and the actual shape is [batch, c, h, w]
+    dims: [ 3, -1, -1 ]
+  }
+]
+
+# The output of the model is configured in the same format as the input
+output [
+  {
+    name: "sigmoid_0.tmp_0"
+    data_type: TYPE_FP32
+    dims: [ 1, -1, -1 ]
+  }
+]
+
+# Number of instances of the model
+instance_group [
+  {
+    # The number of instances is 1
+    count: 1
+    # Use GPU, CPU inference option is:KIND_CPU
+    kind: KIND_GPU
+    # The instance is deployed on the 0th GPU card
+    gpus: [0]
+  }
+]
+
+optimization {
+  execution_accelerators {
+    # GPU推理配置， 配合KIND_GPU使用
+    gpu_execution_accelerator : [
+      {
+        name : "paddle"
+        # 设置推理并行计算线程数为4
+        parameters { key: "cpu_threads" value: "4" }
+        # 开启mkldnn加速，设置为0关闭mkldnn
+        parameters { key: "use_mkldnn" value: "1" }
+      }
+    ]
+  }
+}

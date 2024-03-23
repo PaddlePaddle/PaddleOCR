@@ -130,7 +130,23 @@ Not supported
 <a name="5"></a>
 ## 5. FAQ
 
-1. Since most of the operators used by `SVTR` are matrix multiplication, in the GPU environment, the speed has an advantage, but in the environment where mkldnn is enabled on the CPU, `SVTR` has no advantage over the optimized convolutional network.
+- 1. Speed situation on CPU and GPU
+  - Since most of the operators used by `SVTR` are matrix multiplication, in the GPU environment, the speed has an advantage, but in the environment where mkldnn is enabled on the CPU, `SVTR` has no advantage over the optimized convolutional network.
+- 2. SVTR model convert to ONNX failed
+  - Ensure `paddle2onnx` and `onnxruntime` versions are up to date, refer to [SVTR model to onnx step-by-step example](https://github.com/PaddlePaddle/PaddleOCR/issues/7821#issuecomment-) for the convert onnx command. 1271214273).
+- 3. SVTR model convert to ONNX is successful but the inference result is incorrect
+  - The possible reason is that the model parameter `out_char_num` is not set correctly, it should be set to W//4, W//8 or W//12, please refer to [Section 3.3.3 of SVTR, a high-precision Chinese scene text recognition model](https://aistudio.baidu.com/aistudio/) projectdetail/5073182?contributionType=1).
+- 4. Optimization of long text recognition
+  - Refer to [Section 3.3 of SVTR, a high-precision Chinese scene text recognition model](https://aistudio.baidu.com/aistudio/projectdetail/5073182?contributionType=1).
+- 5. Notes on the reproduction of the paper results
+  - Dataset using provided by [ABINet](https://github.com/FangShancheng/ABINet).
+  - By default, 4 cards of GPUs are used for training, the default Batchsize of a single card is 512, and the total Batchsize is 2048, corresponding to a learning rate of 0.0005. When modifying the Batchsize or changing the number of GPU cards, the learning rate should be modified in equal proportion.
+- 6. Exploration Directions for further optimization
+  - Learning rate adjustment: adjusting to twice the default to keep Batchsize unchanged; or reducing Batchsize to 1/2 the default to keep the learning rate unchanged.
+  - Data augmentation strategies: optionally `RecConAug` and `RecAug`.
+  - If STN is not used, `Local` of `mixer` can be replaced by `Conv` and `local_mixer` can all be modified to `[5, 5]`.
+  - Grid search for optimal `embed_dim`, `depth`, `num_heads` configurations.
+  - Use the `Post-Normalization strategy`, which is to modify the model configuration `prenorm` to `True`.
 
 ## Citation
 

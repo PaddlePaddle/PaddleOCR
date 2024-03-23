@@ -144,7 +144,7 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
     std::vector<std::vector<float>> dis_list(structure_boxes.size(),
                                              std::vector<float>(3, 100000.0));
     for (int j = 0; j < structure_boxes.size(); j++) {
-      if (structure_boxes[i].size() == 8) {
+      if (structure_boxes[j].size() == 8) {
         structure_box = Utility::xyxyxyxy2xyxy(structure_boxes[j]);
       } else {
         structure_box = structure_boxes[j];

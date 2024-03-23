@@ -62,17 +62,17 @@ def export_single_model(model,
                 shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 48, -1], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
-        if arch_config["Head"]["name"] == 'MultiHead':
-            other_shape = [
-                paddle.static.InputSpec(
-                    shape=[None, 3, 48, -1], dtype="float32"),
-            ]
-        else:
-            other_shape = [
-                paddle.static.InputSpec(
-                    shape=[None] + input_shape, dtype="float32"),
-            ]
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None] + input_shape, dtype="float32"),
+        ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
         other_shape = [
@@ -103,6 +103,12 @@ def export_single_model(model,
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 1, 32, 100], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == 'SATRN':
+        other_shape = [
+            paddle.static.InputSpec(
+                shape=[None, 3, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "VisionLAN":
@@ -181,6 +187,13 @@ def export_single_model(model,
                     shape=[None] + infer_shape, dtype="float32")
             ])
 
+    if arch_config["model_type"] != "sr" and arch_config["Backbone"][
+            "name"] == "PPLCNetV3":
+        # for rep lcnetv3
+        for layer in model.sublayers():
+            if hasattr(layer, "rep") and not getattr(layer, "is_repped"):
+                layer.rep()
+
     if quanter is None:
         paddle.jit.save(model, save_path)
     else:
@@ -212,8 +225,12 @@ def main():
                     if config['PostProcess'][
                             'name'] == 'DistillationSARLabelDecode':
                         char_num = char_num - 2
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
                     out_channels_list['CTCLabelDecode'] = char_num
                     out_channels_list['SARLabelDecode'] = char_num + 2
+                    out_channels_list['NRTRLabelDecode'] = char_num + 3
                     config['Architecture']['Models'][key]['Head'][
                         'out_channels_list'] = out_channels_list
                 else:
@@ -228,8 +245,11 @@ def main():
             char_num = len(getattr(post_process_class, 'character'))
             if config['PostProcess']['name'] == 'SARLabelDecode':
                 char_num = char_num - 2
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
             out_channels_list['CTCLabelDecode'] = char_num
             out_channels_list['SARLabelDecode'] = char_num + 2
+            out_channels_list['NRTRLabelDecode'] = char_num + 3
             config['Architecture']['Head'][
                 'out_channels_list'] = out_channels_list
         else:  # base rec model

@@ -20,6 +20,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import paddle
 from paddle import nn
 
 from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
@@ -66,11 +67,21 @@ class DBLoss(nn.Layer):
                                           label_shrink_mask)
         loss_shrink_maps = self.alpha * loss_shrink_maps
         loss_threshold_maps = self.beta * loss_threshold_maps
+        # CBN loss
+        if 'distance_maps' in predicts.keys():
+            distance_maps = predicts['distance_maps']
+            cbn_maps = predicts['cbn_maps']
+            cbn_loss = self.bce_loss(cbn_maps[:, 0, :, :], label_shrink_map,
+                                     label_shrink_mask)
+        else:
+            dis_loss = paddle.to_tensor([0.])
+            cbn_loss = paddle.to_tensor([0.])
 
         loss_all = loss_shrink_maps + loss_threshold_maps \
                    + loss_binary_maps
-        losses = {'loss': loss_all, \
+        losses = {'loss': loss_all+ cbn_loss, \
                   "loss_shrink_maps": loss_shrink_maps, \
                   "loss_threshold_maps": loss_threshold_maps, \
-                  "loss_binary_maps": loss_binary_maps}
+                  "loss_binary_maps": loss_binary_maps, \
+                  "loss_cbn": cbn_loss}
         return losses

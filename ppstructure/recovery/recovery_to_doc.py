@@ -36,6 +36,8 @@ def convert_info_docx(img, res, save_folder, img_name):
 
     flag = 1
     for i, region in enumerate(res):
+        if len(region['res']) == 0:
+            continue
         img_idx = region['img_idx']
         if flag == 2 and region['layout'] == 'single':
             section = doc.add_section(WD_SECTION.CONTINUOUS)

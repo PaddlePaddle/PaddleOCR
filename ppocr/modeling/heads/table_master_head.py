@@ -90,11 +90,13 @@ class TableMasterHead(nn.Layer):
             x = layer(x, feature, src_mask, tgt_mask)
 
         # cls head
+        cls_x = x
         for layer in self.cls_layer:
             cls_x = layer(x, feature, src_mask, tgt_mask)
         cls_x = self.norm(cls_x)
 
         # bbox head
+        bbox_x = x
         for layer in self.bbox_layer:
             bbox_x = layer(x, feature, src_mask, tgt_mask)
         bbox_x = self.norm(bbox_x)
