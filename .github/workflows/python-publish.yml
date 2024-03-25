@@ -31,6 +31,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install build
         pip install setuptools
+        pip install wheel
     - name: Build package
       run: python setup.py bdist_wheel
     - name: Publish package
