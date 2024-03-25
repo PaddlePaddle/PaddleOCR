@@ -14,7 +14,14 @@
 
 from setuptools import setup
 from io import open
-from paddleocr import VERSION
+import sys
+import subprocess
+
+# get version by matchiing, so will not need to setup complex env in github aciton
+p = subprocess.Popen("grep ^VERSION ./paddleocr.py | cut -d\\' -f 2", stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, shell=True)
+raw_VERSION, _ = p.communicate()
+VERSION = raw_VERSION.decode().strip()
 
 def load_requirements(file_list=None):
     if file_list is None:
