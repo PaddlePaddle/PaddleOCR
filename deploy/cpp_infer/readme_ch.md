@@ -103,7 +103,7 @@ opencv3/
 <a name="131"></a>
 #### 1.3.1 直接下载安装
 
-[Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+[Paddle预测库官网](https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 下载之后解压:
 
