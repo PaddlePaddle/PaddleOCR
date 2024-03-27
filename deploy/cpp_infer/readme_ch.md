@@ -237,7 +237,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --use_angle_cls=true \
     --det=true \
     --rec=true \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 2. 检测+识别：
@@ -248,7 +248,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --use_angle_cls=false \
     --det=true \
     --rec=true \
-    --cls=false \
+    --cls=false
 ```
 
 ##### 3. 检测：
@@ -267,7 +267,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --use_angle_cls=true \
     --det=false \
     --rec=true \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 5. 识别：
@@ -277,7 +277,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --use_angle_cls=false \
     --det=false \
     --rec=true \
-    --cls=false \
+    --cls=false
 ```
 
 ##### 6. 分类：
@@ -288,7 +288,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
     --use_angle_cls=true \
     --det=false \
     --rec=false \
-    --cls=true \
+    --cls=true
 ```
 
 ##### 7. 版面分析+表格识别
