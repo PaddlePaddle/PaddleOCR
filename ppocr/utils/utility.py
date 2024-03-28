@@ -108,7 +108,8 @@ def check_and_read(img_path):
         return imgvalue, True, False
     elif os.path.basename(img_path)[-3:].lower() == 'pdf':
         from paddle.utils import try_import
-        try_import('fitz')
+
+        fitz = try_import("fitz")
         from PIL import Image
         imgs = []
         with fitz.open(img_path) as pdf:
