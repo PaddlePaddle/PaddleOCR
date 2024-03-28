@@ -19,6 +19,7 @@ import platform
 import cv2
 import numpy as np
 import paddle
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
@@ -30,8 +31,10 @@ from ppocr.utils.logging import get_logger
 def str2bool(v):
     return v.lower() in ("true", "yes", "t", "y", "1")
 
+
 def str2int_tuple(v):
     return tuple([int(i.strip()) for i in v.split(",")])
+
 
 def init_args():
     parser = argparse.ArgumentParser()
@@ -39,6 +42,7 @@ def init_args():
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
+    parser.add_argument("--use_mlu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -147,6 +151,10 @@ def init_args():
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     parser.add_argument("--use_onnx", type=str2bool, default=False)
+
+    # extended function
+    parser.add_argument("--return_word_box", type=str2bool, default=False, help='Whether return the bbox of each word (split by space) or chinese character. Only used in ppstructure for layout recovery')
+
     return parser
 
 
@@ -184,7 +192,10 @@ def create_predictor(args, mode, logger):
         if not os.path.exists(model_file_path):
             raise ValueError("not find model file path {}".format(
                 model_file_path))
-        sess = ort.InferenceSession(model_file_path)
+        if args.use_gpu:
+            sess = ort.InferenceSession(model_file_path, providers=['CUDAExecutionProvider'])
+        else:
+            sess = ort.InferenceSession(model_file_path)
         return sess, sess.get_inputs()[0], None, None
 
     else:
@@ -249,6 +260,8 @@ def create_predictor(args, mode, logger):
 
         elif args.use_npu:
             config.enable_custom_device("npu")
+        elif args.use_mlu:
+            config.enable_custom_device("mlu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         else:
@@ -473,7 +486,11 @@ def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
 def create_font(txt, sz, font_path="./doc/fonts/simfang.ttf"):
     font_size = int(sz[1] * 0.99)
     font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-    length = font.getlength(txt)
+    if int(PIL.__version__.split('.')[0]) < 10:
+        length = font.getsize(txt)[0]
+    else:
+        length = font.getlength(txt)
+    
     if length > sz[0]:
         font_size = int(font_size * sz[0] / length)
         font = ImageFont.truetype(font_path, font_size, encoding="utf-8")

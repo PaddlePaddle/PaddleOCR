@@ -205,7 +205,7 @@ Architecture:
     name: LayoutXLMForSer
     pretrained: True
     mode: vi
-    # 假设字典中包含n个字段（包含other），由于采用BIO标注，则类别数为2n-1
+    # 由于采用BIO标注，假设字典中包含n个字段（包含other）时，则类别数为2n-1; 假设字典中包含n个字段（不含other）时，则类别数为2n+1。否则在train过程会报：IndexError: (OutOfRange) label value should less than the shape of axis dimension 。
     num_classes: &num_classes 7
 
 PostProcess:

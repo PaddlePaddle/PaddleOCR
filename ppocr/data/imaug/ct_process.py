@@ -14,17 +14,15 @@
 
 import os
 import cv2
+import paddle
 import random
 import pyclipper
-import paddle
-
 import numpy as np
-from ppocr.utils.utility import check_install
-
-import scipy.io as scio
-
 from PIL import Image
+
 import paddle.vision.transforms as transforms
+
+from ppocr.utils.utility import check_install
 
 
 class RandomScale():

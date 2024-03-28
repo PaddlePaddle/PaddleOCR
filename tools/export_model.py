@@ -68,7 +68,7 @@ def export_single_model(model,
                 shape=[None, 3, 48, -1], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == "SVTR":
+    elif arch_config["algorithm"] in ["SVTR", "CPPD"]:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None] + input_shape, dtype="float32"),
@@ -93,11 +93,12 @@ def export_single_model(model,
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "ABINet":
+        if not input_shape:
+            input_shape = [3, 32, 128]
         other_shape = [
             paddle.static.InputSpec(
-                shape=[None, 3, 32, 128], dtype="float32"),
+                shape=[None] + input_shape, dtype="float32"),
         ]
-        # print([None, 3, 32, 128])
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["NRTR", "SPIN", 'RFL']:
         other_shape = [
@@ -105,7 +106,7 @@ def export_single_model(model,
                 shape=[None, 1, 32, 100], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
-    elif arch_config["algorithm"] == 'SATRN':
+    elif arch_config["algorithm"] in ['SATRN']:
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 32, 100], dtype="float32"),
@@ -266,10 +267,13 @@ def main():
 
     arch_config = config["Architecture"]
 
-    if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+    if arch_config["algorithm"] in ["SVTR", "CPPD"] and arch_config["Head"][
             "name"] != 'MultiHead':
         input_shape = config["Eval"]["dataset"]["transforms"][-2][
             'SVTRRecResizeImg']['image_shape']
+    elif arch_config["algorithm"].lower() == "ABINet".lower():
+        rec_rs = [c for c in config["Eval"]["dataset"]["transforms"] if 'ABINetRecResizeImg' in c]
+        input_shape = rec_rs[0]['ABINetRecResizeImg']['image_shape'] if rec_rs else None
     else:
         input_shape = None
 

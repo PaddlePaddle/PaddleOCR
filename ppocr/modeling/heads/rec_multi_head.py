@@ -22,7 +22,7 @@ from paddle import ParamAttr
 import paddle.nn as nn
 import paddle.nn.functional as F
 
-from ppocr.modeling.necks.rnn import Im2Seq, EncoderWithRNN, EncoderWithFC, SequenceEncoder, EncoderWithSVTR
+from ppocr.modeling.necks.rnn import Im2Seq, EncoderWithRNN, EncoderWithFC, SequenceEncoder, EncoderWithSVTR, trunc_normal_, zeros_
 from .rec_ctc_head import CTCHead
 from .rec_sar_head import SARHead
 from .rec_nrtr_head import Transformer
@@ -41,12 +41,28 @@ class FCTranspose(nn.Layer):
         else:
             return self.fc(x.transpose([0, 2, 1]))
 
+class AddPos(nn.Layer):
+    def  __init__(self, dim, w):
+        super().__init__()
+        self.dec_pos_embed = self.create_parameter(
+                            shape=[1, w, dim], default_initializer=zeros_)
+        self.add_parameter("dec_pos_embed", self.dec_pos_embed)
+        trunc_normal_(self.dec_pos_embed)
+    
+    def forward(self,x):
+        x = x + self.dec_pos_embed[:, :paddle.shape(x)[1], :]
+        return x
+
 
 class MultiHead(nn.Layer):
     def __init__(self, in_channels, out_channels_list, **kwargs):
         super().__init__()
         self.head_list = kwargs.pop('head_list')
-
+        self.use_pool = kwargs.get('use_pool', False)
+        self.use_pos = kwargs.get('use_pos', False)
+        self.in_channels = in_channels
+        if self.use_pool:
+            self.pool = nn.AvgPool2D(kernel_size=[3, 2], stride=[3, 2], padding=0)
         self.gtc_head = 'sar'
         assert len(self.head_list) >= 2
         for idx, head_name in enumerate(self.head_list):
@@ -61,8 +77,13 @@ class MultiHead(nn.Layer):
                 max_text_length = gtc_args.get('max_text_length', 25)
                 nrtr_dim = gtc_args.get('nrtr_dim', 256)
                 num_decoder_layers = gtc_args.get('num_decoder_layers', 4)
-                self.before_gtc = nn.Sequential(
+                if self.use_pos:
+                    self.before_gtc = nn.Sequential(
+                    nn.Flatten(2), FCTranspose(in_channels, nrtr_dim), AddPos(nrtr_dim, 80))
+                else:
+                    self.before_gtc = nn.Sequential(
                     nn.Flatten(2), FCTranspose(in_channels, nrtr_dim))
+                
                 self.gtc_head = Transformer(
                     d_model=nrtr_dim,
                     nhead=nrtr_dim // 32,
@@ -88,7 +109,8 @@ class MultiHead(nn.Layer):
                     '{} is not supported in MultiHead yet'.format(name))
 
     def forward(self, x, targets=None):
-
+        if self.use_pool:
+            x = self.pool(x.reshape([0, 3, -1, self.in_channels]).transpose([0, 3, 1, 2]))
         ctc_encoder = self.ctc_encoder(x)
         ctc_out = self.ctc_head(ctc_encoder, targets)
         head_out = dict()

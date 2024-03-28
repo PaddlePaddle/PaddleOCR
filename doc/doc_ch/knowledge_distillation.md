@@ -69,7 +69,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ```yaml
 Architecture:
-  model_type: &model_type "rec"    # 模型类别，rec、det等，每个子网络的模型类别都与
+  model_type: &model_type "rec"    # 模型类别，rec、det等，每个子网络的模型类别
   name: DistillationModel          # 结构名称，蒸馏任务中，为DistillationModel，用于构建对应的结构
   algorithm: Distillation          # 算法名称
   Models:                          # 模型，包含子网络的配置信息

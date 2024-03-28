@@ -52,11 +52,15 @@ PP-StructureV2支持各个模块独立使用或灵活搭配，如，可以单独
 下图展示了版面分析+表格识别的整体流程，图片先有版面分析划分为图像、文本、标题和表格四种区域，然后对图像、文本和标题三种区域进行OCR的检测识别，对表格进行表格识别，其中图像还会被存储下来以便使用。
 <img src="./docs/table/ppstructure.GIF" width="100%"/>
 
+### 3.1.1 版面识别返回单字坐标
+下图展示了基于上一节版面分析对文字进行定位的效果， 可参考[文档](./return_word_pos.md)。
+![show_0_mdf_v2](https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/799450d4-d2c5-4b61-b490-e160dc0f515c)
+
+
 <a name="32"></a>
 ### 3.2 版面恢复
 下图展示了基于上一节版面分析和表格识别的结果进行版面恢复的效果。
 <img src="./docs/recovery/recovery.jpg" width="100%"/>
-
 
 <a name="33"></a>
 ### 3.3 关键信息抽取

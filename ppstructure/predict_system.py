@@ -34,7 +34,7 @@ from ppocr.utils.visual import draw_ser_results, draw_re_results
 from tools.infer.predict_system import TextSystem
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
-from ppstructure.utility import parse_args, draw_structure_result
+from ppstructure.utility import parse_args, draw_structure_result, cal_ocr_word_box
 
 logger = get_logger()
 
@@ -78,6 +78,8 @@ class StructureSystem(object):
         elif self.mode == 'kie':
             from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
             self.kie_predictor = SerRePredictor(args)
+
+        self.return_word_box = args.return_word_box
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
         time_dict = {
@@ -156,17 +158,27 @@ class StructureSystem(object):
                         ]
                         res = []
                         for box, rec_res in zip(filter_boxes, filter_rec_res):
-                            rec_str, rec_conf = rec_res
+                            rec_str, rec_conf = rec_res[0], rec_res[1]
                             for token in style_token:
                                 if token in rec_str:
                                     rec_str = rec_str.replace(token, '')
                             if not self.recovery:
                                 box += [x1, y1]
-                            res.append({
-                                'text': rec_str,
-                                'confidence': float(rec_conf),
-                                'text_region': box.tolist()
-                            })
+                            if self.return_word_box:
+                                word_box_content_list, word_box_list = cal_ocr_word_box(rec_str, box, rec_res[2])
+                                res.append({
+                                    'text': rec_str,
+                                    'confidence': float(rec_conf),
+                                    'text_region': box.tolist(),
+                                    'text_word': word_box_content_list,
+                                    'text_word_region': word_box_list
+                                })
+                            else:
+                                res.append({
+                                    'text': rec_str,
+                                    'confidence': float(rec_conf),
+                                    'text_region': box.tolist()
+                                })
                 res_list.append({
                     'type': region['label'].lower(),
                     'bbox': [x1, y1, x2, y2],

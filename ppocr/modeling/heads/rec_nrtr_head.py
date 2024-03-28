@@ -16,11 +16,9 @@ import math
 import paddle
 from paddle import nn
 import paddle.nn.functional as F
-from paddle.nn import LayerList
-# from paddle.nn.initializer import XavierNormal as xavier_uniform_
-from paddle.nn import Dropout, Linear, LayerNorm
+from paddle.nn import Dropout, LayerNorm
 import numpy as np
-from ppocr.modeling.backbones.rec_svtrnet import Mlp, zeros_, ones_
+from ppocr.modeling.backbones.rec_svtrnet import Mlp, zeros_
 from paddle.nn.initializer import XavierNormal as xavier_normal_
 
 

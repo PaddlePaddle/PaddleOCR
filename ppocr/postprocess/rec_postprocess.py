@@ -67,7 +67,70 @@ class BaseRecLabelDecode(object):
     def add_special_char(self, dict_character):
         return dict_character
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+    def get_word_info(self, text, selection):
+        """
+        Group the decoded characters and record the corresponding decoded positions. 
+
+        Args:
+            text: the decoded text
+            selection: the bool array that identifies which columns of features are decoded as non-separated characters 
+        Returns:
+            word_list: list of the grouped words
+            word_col_list: list of decoding positions corresponding to each character in the grouped word
+            state_list: list of marker to identify the type of grouping words, including two types of grouping words: 
+                        - 'cn': continous chinese characters (e.g., 你好啊)
+                        - 'en&num': continous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
+                        The remaining characters in text are treated as separators between groups (e.g., space, '(', ')', etc.).
+        """
+        state = None
+        word_content = []
+        word_col_content = []
+        word_list = []
+        word_col_list = []
+        state_list = []
+        valid_col = np.where(selection==True)[0]
+
+        for c_i, char in enumerate(text):
+            if '\u4e00' <= char <= '\u9fff':
+                c_state = 'cn'
+            elif bool(re.search('[a-zA-Z0-9]', char)):
+                c_state = 'en&num'
+            else:
+                c_state = 'splitter'
+            
+            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping floting number
+                c_state = 'en&num'
+            if char == '-' and state == "en&num": # grouping word with '-', such as 'state-of-the-art'
+                c_state = 'en&num'
+            
+            if state == None:
+                state = c_state
+
+            if state != c_state:
+                if len(word_content) != 0:
+                    word_list.append(word_content)
+                    word_col_list.append(word_col_content)
+                    state_list.append(state)
+                    word_content = []
+                    word_col_content = []
+                state = c_state
+
+            if state != "splitter":
+                word_content.append(char)
+                word_col_content.append(valid_col[c_i])
+
+        if len(word_content) != 0:
+            word_list.append(word_content)
+            word_col_list.append(word_col_content)
+            state_list.append(state)
+
+        return word_list, word_col_list, state_list
+
+    def decode(self,
+               text_index,
+               text_prob=None,
+               is_remove_duplicate=False,
+               return_word_box=False):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
@@ -96,7 +159,15 @@ class BaseRecLabelDecode(object):
             if self.reverse:  # for arabic rec
                 text = self.pred_reverse(text)
 
-            result_list.append((text, np.mean(conf_list).tolist()))
+            if return_word_box:
+                word_list, word_col_list, state_list = self.get_word_info(
+                    text, selection)
+                result_list.append((text, np.mean(conf_list).tolist(), [
+                    len(text_index[batch_idx]), word_list, word_col_list,
+                    state_list
+                ]))
+            else:
+                result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def get_ignored_tokens(self):
@@ -111,14 +182,28 @@ class CTCLabelDecode(BaseRecLabelDecode):
         super(CTCLabelDecode, self).__init__(character_dict_path,
                                              use_space_char)
 
-    def __call__(self, preds, label=None, *args, **kwargs):
+    def __call__(self,
+                 preds,
+                 label=None,
+                 return_word_box=False,
+                 *args,
+                 **kwargs):
         if isinstance(preds, tuple) or isinstance(preds, list):
             preds = preds[-1]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        text = self.decode(
+            preds_idx,
+            preds_prob,
+            is_remove_duplicate=True,
+            return_word_box=return_word_box)
+        if return_word_box:
+            for rec_idx, rec in enumerate(text):
+                wh_ratio = kwargs['wh_ratio_list'][rec_idx]
+                max_wh_ratio = kwargs['max_wh_ratio']
+                rec[2][0] = rec[2][0] * (wh_ratio / max_wh_ratio)
         if label is None:
             return text
         label = self.decode(label)
@@ -490,6 +575,100 @@ class SRNLabelDecode(BaseRecLabelDecode):
             assert False, "unsupport type %s in get_beg_end_flag_idx" \
                           % beg_or_end
         return idx
+
+
+class ParseQLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+    BOS = '[B]'
+    EOS = '[E]'
+    PAD = '[P]'
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ParseQLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, dict):
+            pred = preds['predict']
+        else:
+            pred = preds
+
+        char_num = len(
+            self.character_str
+        ) + 1  # We don't predict <bos> nor <pad>, with only addition <eos>
+        if isinstance(pred, paddle.Tensor):
+            pred = pred.numpy()
+        B, L = pred.shape[:2]
+        pred = np.reshape(pred, [-1, char_num])
+
+        preds_idx = np.argmax(pred, axis=1)
+        preds_prob = np.max(pred, axis=1)
+
+        preds_idx = np.reshape(preds_idx, [B, L])
+        preds_prob = np.reshape(preds_prob, [B, L])
+
+        if label is None:
+            text = self.decode(preds_idx, preds_prob, raw=False)
+            return text
+
+        text = self.decode(preds_idx, preds_prob, raw=False)
+        label = self.decode(label, None, False)
+
+        return text, label
+
+    def decode(self, text_index, text_prob=None, raw=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        batch_size = len(text_index)
+
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+
+            index = text_index[batch_idx, :]
+            prob = None
+            if text_prob is not None:
+                prob = text_prob[batch_idx, :]
+
+            if not raw:
+                index, prob = self._filter(index, prob)
+
+            for idx in range(len(index)):
+                if index[idx] in ignored_tokens:
+                    continue
+                char_list.append(self.character[int(index[idx])])
+                if text_prob is not None:
+                    conf_list.append(prob[idx])
+                else:
+                    conf_list.append(1)
+
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
+
+        return result_list
+
+    def add_special_char(self, dict_character):
+        dict_character = [self.EOS] + dict_character + [self.BOS, self.PAD]
+        return dict_character
+
+    def _filter(self, ids, probs=None):
+        ids = ids.tolist()
+        try:
+            eos_idx = ids.index(self.dict[self.EOS])
+        except ValueError:
+            eos_idx = len(ids)  # Nothing to truncate.
+        # Truncate after EOS
+        ids = ids[:eos_idx]
+        if probs is not None:
+            probs = probs[:eos_idx +
+                          1]  # but include prob. for EOS (if it exists)
+        return ids, probs
+
+    def get_ignored_tokens(self):
+        return [self.dict[self.BOS], self.dict[self.EOS], self.dict[self.PAD]]
 
 
 class SARLabelDecode(BaseRecLabelDecode):
@@ -1009,3 +1188,34 @@ class CANLabelDecode(BaseRecLabelDecode):
             return text
         label = self.decode(label)
         return text, label
+
+
+class CPPDLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(CPPDLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            if isinstance(preds[-1], dict):
+                preds = preds[-1]['align'][-1].numpy()
+            else:
+                preds = preds[-1].numpy()
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        else:
+            preds = preds
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character

@@ -80,7 +80,7 @@ PaddleOCR has built-in dictionaries, which can be used on demand.
 
 `ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
 
-`ppocr/utils/ic15_dict.txt` is an English dictionary with 63 characters
+`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 

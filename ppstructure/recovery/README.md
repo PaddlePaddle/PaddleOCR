@@ -152,7 +152,7 @@ cd PaddleOCR/ppstructure
 # download model
 mkdir inference && cd inference
 # Download the detection model of the ultra-lightweight English PP-OCRv3 model and unzip it
-https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
+wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
 # Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
 # Download the ultra-lightweight English table inch model and unzip it

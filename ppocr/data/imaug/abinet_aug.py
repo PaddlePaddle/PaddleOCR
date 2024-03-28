@@ -316,6 +316,35 @@ class CVGaussianNoise(object):
         img = np.clip(img + noise, 0, 255).astype(np.uint8)
         return img
 
+class CVPossionNoise(object):
+    def __init__(self, lam=20):
+        self.lam = lam
+        if isinstance(lam, numbers.Number):
+            self.lam = max(int(sample_asym(lam)), 1)
+        elif isinstance(lam, (tuple, list)) and len(lam) == 2:
+            self.lam = int(sample_uniform(lam[0], lam[1]))
+        else:
+            raise Exception('lam must be number or list with length 2')
+
+    def __call__(self, img):
+        noise = np.random.poisson(lam=self.lam, size=img.shape)
+        img = np.clip(img + noise, 0, 255).astype(np.uint8)
+        return img
+
+class CVGaussionBlur(object):
+    def __init__(self, radius):
+        self.radius = radius
+        if isinstance(radius, numbers.Number):
+            self.radius = max(int(sample_asym(radius)), 1)
+        elif isinstance(radius, (tuple, list)) and len(radius) == 2:
+            self.radius = int(sample_uniform(radius[0], radius[1]))
+        else:
+            raise Exception('radius must be number or list with length 2')
+
+    def __call__(self, img):
+        fil = cv2.getGaussianKernel(ksize=self.radius, sigma=1, ktype=cv2.CV_32F)
+        img = cv2.sepFilter2D(img, -1, fil, fil)
+        return img
 
 class CVMotionBlur(object):
     def __init__(self, degrees=12, angle=90):
@@ -427,6 +456,29 @@ class SVTRDeterioration(object):
         else:
             return img
 
+class ParseQDeterioration(object):
+    def __init__(self, var, degrees, lam, radius, factor, p=0.5):
+        self.p = p
+        transforms = []
+        if var is not None:
+            transforms.append(CVGaussianNoise(var=var))
+        if degrees is not None:
+            transforms.append(CVMotionBlur(degrees=degrees))
+        if lam is not None:
+            transforms.append(CVPossionNoise(lam=lam))
+        if radius is not None:
+            transforms.append(CVGaussionBlur(radius=radius))
+        if factor is not None:
+            transforms.append(CVRescale(factor=factor))
+        self.transforms = transforms
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            random.shuffle(self.transforms)
+            transforms = Compose(self.transforms)
+            return transforms(img)
+        else:
+            return img
 
 class SVTRGeometry(object):
     def __init__(self,

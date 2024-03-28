@@ -182,11 +182,13 @@ class ABINetHead(nn.Layer):
                  dropout=0.1,
                  max_length=25,
                  use_lang=False,
-                 iter_size=1):
+                 iter_size=1,
+                 image_size=(32, 128)):
         super().__init__()
         self.max_length = max_length + 1
+        h, w = image_size[0] // 4, image_size[1] // 4
         self.pos_encoder = PositionalEncoding(
-            dropout=0.1, dim=d_model, max_len=8 * 32)
+            dropout=0.1, dim=d_model, max_len=h * w)
         self.encoder = nn.LayerList([
             TransformerBlock(
                 d_model=d_model,
@@ -199,7 +201,7 @@ class ABINetHead(nn.Layer):
         ])
         self.decoder = PositionAttention(
             max_length=max_length + 1,  # additional stop token
-            mode='nearest', )
+            mode='nearest', h=h, w=w)
         self.out_channels = out_channels
         self.cls = nn.Linear(d_model, self.out_channels)
         self.use_lang = use_lang
