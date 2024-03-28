@@ -1,0 +1,84 @@
+albumentations==1.3.1
+anyio==3.7.1
+astor==0.8.1
+Babel==2.13.1
+bce-python-sdk==0.8.97
+certifi @ file:///croot/certifi_1671487769961/work/certifi
+cfgv==3.3.1
+charset-normalizer==3.3.2
+click==8.1.7
+cycler==0.11.0
+decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
+distlib==0.3.8
+exceptiongroup==1.1.3
+filelock==3.12.2
+Flask==2.2.5
+flask-babel==3.1.0a
+fonttools==4.38.0
+future==0.18.3
+h11==0.14.0
+h2 @ file:///tmp/build/80754af9/h2_1615904319452/work
+h5py==3.8.0
+hdf5storage==0.1.19
+hpack==4.0.0
+httpcore==0.17.3
+httpx==0.24.1
+hyperframe==6.0.1
+identify==2.5.24
+idna @ file:///croot/idna_1666125576474/work
+imageio==2.31.2
+importlib-metadata==6.7.0
+itsdangerous==2.1.2
+Jinja2==3.1.2
+joblib==1.3.2
+kiwisolver==1.4.5
+loguru==0.7.2
+MarkupSafe==2.1.3
+matplotlib==3.5.3
+mkl-fft==1.3.1
+mkl-random @ file:///tmp/build/80754af9/mkl_random_1626179032232/work
+mkl-service==2.4.0
+networkx==2.6.3
+nodeenv==1.8.0
+numpy @ file:///opt/conda/conda-bld/numpy_and_numpy_base_1653915516269/work
+opencv-python==4.6.0.66
+opencv-python-headless==4.8.1.78
+opt-einsum @ file:///tmp/build/80754af9/opt_einsum_1621500238896/work
+packaging==23.2
+paddle-bfloat==0.1.7
+paddle-msssim==0.0.2
+paddlepaddle-gpu @ file:///package/paddlepaddle_gpu-2.5.2.post102-cp37-cp37m-linux_x86_64.whl#sha256=e8a6a40e772bc02c3ee1b81cbee5b1b9235a5b0704f99cdec51cd0a5248cd1a3
+pandas==1.3.5
+Pillow==9.4.0
+platformdirs==4.0.0
+pre-commit==2.21.0
+prettytable==3.7.0
+protobuf==4.24.4
+psutil==5.9.6
+pycryptodome==3.19.0
+pyparsing==3.1.1
+python-dateutil==2.8.2
+pytz==2023.3.post1
+PyWavelets==1.3.0
+PyYAML==6.0.1
+qudida==0.0.4
+rarfile==4.1
+reprod-log==1.0.1
+requests==2.31.0
+rfc3986 @ file:///Users/ktietz/demo/mc3/conda-bld/rfc3986_1629478296451/work
+scikit-image==0.17.2
+scikit-learn==1.0.2
+scipy==1.7.3
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+sniffio==1.3.0
+thop==0.1.1.post2209072238
+threadpoolctl==3.1.0
+tifffile==2021.11.2
+tqdm==4.66.1
+typing_extensions==4.7.1
+urllib3==2.0.7
+virtualenv==20.25.0
+visualdl==2.5.3
+wcwidth==0.2.12
+Werkzeug==2.2.3
+zipp==3.15.0
