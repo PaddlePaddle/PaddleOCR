@@ -26,6 +26,7 @@ import time
 import random
 from ppocr.utils.logging import get_logger
 
+from shapely.geometry import Polygon
 
 def str2bool(v):
     return v.lower() in ("true", "yes", "t", "y", "1")
@@ -609,8 +610,31 @@ def get_rotate_crop_image(img, points):
     img_crop = img[top:bottom, left:right, :].copy()
     points[:, 0] = points[:, 0] - left
     points[:, 1] = points[:, 1] - top
-    '''
-    assert len(points) == 4, "shape of points must be 4*2"
+    ''' 
+    if not isinstance(points, np.ndarray):
+        raise Exception("polygons must be of shape numpy array!")
+    rank = len(points.shape)
+    if rank != 2:
+        points = points.reshape(-1, 2)
+    # capture bbox of points, the length of points must be > 1
+    assert len(points) > 1 and len(points) % 2 == 0, "[utility::get_rotate_crop_image] shape of points must be greater than 1 and labeled with even points"
+    x_min, y_min = np.min(points, axis=0)
+    x_max, y_max = np.max(points, axis=0)
+    
+    points_ = points
+    points = np.array([
+        [x_min, y_min],
+        [x_max, y_min],
+        [x_max, y_max],
+        [x_min, y_max]
+    ], dtype=points_.dtype)
+    
+    area = Polygon(points).area
+    assert area > 1, "[utility::get_rotate_crop_image] bbox must has area greater than 1 pixel unit"
+    
+    # TODO (yiakwy) : remove this unwanted check, since CWT dataset 
+    # naturally contains points more than 4
+    # assert len(points) == 4, "shape of points must be 4*2"
     img_crop_width = int(
         max(
             np.linalg.norm(points[0] - points[1]),

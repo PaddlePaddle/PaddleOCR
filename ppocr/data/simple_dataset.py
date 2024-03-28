@@ -57,6 +57,9 @@ class SimpleDataSet(Dataset):
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
         self.need_reset = True in [x < 1 for x in ratio_list]
+        
+        self.img_cache = {}
+        self.data_cache = {}
 
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == 'train':
@@ -124,18 +127,26 @@ class SimpleDataSet(Dataset):
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
+            
             if not os.path.exists(img_path):
                 continue
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
+            if data['img_path'] in self.img_cache:
+                img = self.img_cache[data['img_path']]
+                # used by imgaug transform
                 data['image'] = img
-            data = transform(data, load_data_ops)
-
+            else:
+                with open(data['img_path'], 'rb') as f:
+                    img = f.read()
+                    data['image'] = img
+                self.img_cache[data['img_path']] = img
+            if data['img_path'] in self.data_cache:
+                data = self.data_cache[data['img_path']]
+            else:
+                data = transform(data, load_data_ops)
+                self.data_cache[data['img_path']] = data
+            
             if data is None:
                 continue
-            if 'polys' in data.keys():
-                if data['polys'].shape[1] != 4:
-                    continue
             ext_data.append(data)
         return ext_data
 
@@ -152,9 +163,14 @@ class SimpleDataSet(Dataset):
             data = {'img_path': img_path, 'label': label}
             if not os.path.exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data['img_path'], 'rb') as f:
-                img = f.read()
+            if data['img_path'] in self.img_cache:
+                img = self.img_cache[data['img_path']]
                 data['image'] = img
+            else:
+                with open(data['img_path'], 'rb') as f:
+                    img = f.read()
+                    data['image'] = img
+                    self.img_cache[data['img_path']] = img
             data['ext_data'] = self.get_ext_data()
             outs = transform(data, self.ops)
         except:

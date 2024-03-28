@@ -29,7 +29,7 @@ sys.path.append(__dir__)
 sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../../..')))
 
 from ppocr.modeling.backbones.det_mobilenet_v3 import SEModule
-
+import numbers
 
 class DSConv(nn.Layer):
     def __init__(self,
@@ -237,6 +237,9 @@ class RSEFPN(nn.Layer):
             self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
             self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
 
+        if isinstance(in_channels, numbers.Number):
+            in_channels = [in_channels]
+            
         for i in range(len(in_channels)):
             self.ins_conv.append(
                 RSELayer(
@@ -305,6 +308,9 @@ class LKPAN(nn.Layer):
             raise ValueError(
                 "mode can only be one of ['lite', 'large'], but received {}".
                 format(mode))
+
+        if isinstance(in_channels, numbers.Number):
+            in_channels = [in_channels]
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
