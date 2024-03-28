@@ -120,7 +120,7 @@ def check_and_read(img_path):
     elif os.path.basename(img_path)[-3:].lower() == "pdf":
         from paddle.utils import try_import
 
-        try_import("fitz")
+        fitz = try_import("fitz")
         from PIL import Image
 
         imgs = []

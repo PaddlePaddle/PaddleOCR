@@ -21,10 +21,9 @@ import functools
 import cv2
 import platform
 import numpy as np
-import fitz
 from paddle.utils import try_import
 
-try_import("fitz")
+fitz = try_import("fitz")
 from PIL import Image
 from pdf2docx.converter import Converter
 from qtpy.QtWidgets import (
