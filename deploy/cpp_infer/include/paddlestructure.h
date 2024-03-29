@@ -23,7 +23,7 @@ namespace PaddleOCR {
 class PaddleStructure : public PPOCR {
 public:
   explicit PaddleStructure();
-  ~PaddleStructure();
+  ~PaddleStructure() = default;
 
   std::vector<StructurePredictResult> structure(cv::Mat img,
                                                 bool layout = false,
@@ -37,8 +37,8 @@ private:
   std::vector<double> time_info_table = {0, 0, 0};
   std::vector<double> time_info_layout = {0, 0, 0};
 
-  StructureTableRecognizer *table_model_ = nullptr;
-  StructureLayoutRecognizer *layout_model_ = nullptr;
+  std::unique_ptr<StructureTableRecognizer> table_model_;
+  std::unique_ptr<StructureLayoutRecognizer> layout_model_;
 
   void layout(cv::Mat img,
               std::vector<StructurePredictResult> &structure_result);

@@ -18,8 +18,9 @@ import numpy as np
 import random
 import copy
 from PIL import Image
+import PIL
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
-from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration
+from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration, ParseQDeterioration
 from paddle.vision.transforms import Compose
 
 
@@ -46,7 +47,7 @@ class RecAug(object):
             if h >= 20 and w >= 20:
                 img = tia_distort(img, random.randint(3, 6))
                 img = tia_stretch(img, random.randint(3, 6))
-            img = tia_perspective(img)
+                img = tia_perspective(img)
 
         # bda
         data['image'] = img
@@ -203,6 +204,36 @@ class SVTRRecAug(object):
         data['image'] = img
         return data
 
+class ParseQRecAug(object):
+    def __init__(self,
+                 aug_type=0,
+                 geometry_p=0.5,
+                 deterioration_p=0.25,
+                 colorjitter_p=0.25,
+                 **kwargs):
+        self.transforms = Compose([
+            SVTRGeometry(
+                aug_type=aug_type,
+                degrees=45,
+                translate=(0.0, 0.0),
+                scale=(0.5, 2.),
+                shear=(45, 15),
+                distortion=0.5,
+                p=geometry_p), ParseQDeterioration(
+                    var=20, degrees=6, lam=20, radius=2.0, factor=4, p=deterioration_p),
+            CVColorJitter(
+                brightness=0.5,
+                contrast=0.5,
+                saturation=0.5,
+                hue=0.1,
+                p=colorjitter_p)
+        ])
+
+    def __call__(self, data):
+        img = data['image']
+        img = self.transforms(img)
+        data['image'] = img
+        return data
 
 class ClsResizeImg(object):
     def __init__(self, image_shape, **kwargs):
@@ -406,7 +437,7 @@ class GrayRecResizeImg(object):
     def __init__(self,
                  image_shape,
                  resize_type,
-                 inter_type='Image.LANCZOS',
+                 inter_type="Image.Resampling.LANCZOS",
                  scale=True,
                  padding=False,
                  **kwargs):
