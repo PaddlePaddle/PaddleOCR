@@ -51,7 +51,7 @@ from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_co
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
-from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
+from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel, TextSystem
 
 logger = get_logger()
 __all__ = [
@@ -572,7 +572,7 @@ def check_img(img, alpha_color=(255, 255, 255)):
     return img
 
 
-class PaddleOCR(predict_system.TextSystem):
+class PaddleOCR(TextSystem):
     def __init__(self, **kwargs):
         """
         paddleocr package
