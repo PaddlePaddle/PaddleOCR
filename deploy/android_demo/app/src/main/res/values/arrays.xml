@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="image_name_entries">
-        <item>0.jpg</item>
-        <item>90.jpg</item>
-        <item>180.jpg</item>
-        <item>270.jpg</item>
+        <item>det_0.jpg</item>
+        <item>det_90.jpg</item>
+        <item>det_180.jpg</item>
+        <item>det_270.jpg</item>
+        <item>rec_0.jpg</item>
+        <item>rec_0_180.jpg</item>
+        <item>rec_1.jpg</item>
+        <item>rec_1_180.jpg</item>
     </string-array>
     <string-array name="image_name_values">
-        <item>images/0.jpg</item>
-        <item>images/90.jpg</item>
-        <item>images/180.jpg</item>
-        <item>images/270.jpg</item>
+        <item>images/det_0.jpg</item>
+        <item>images/det_90.jpg</item>
+        <item>images/det_180.jpg</item>
+        <item>images/det_270.jpg</item>
+        <item>images/rec_0.jpg</item>
+        <item>images/rec_0_180.jpg</item>
+        <item>images/rec_1.jpg</item>
+        <item>images/rec_1_180.jpg</item>
     </string-array>
     <string-array name="cpu_thread_num_entries">
         <item>1 threads</item>
@@ -47,5 +55,13 @@
     <string-array name="input_color_format_values">
         <item>BGR</item>
         <item>RGB</item>
+    </string-array>
+    <string-array name="run_Model">
+        <item>检测+分类+识别</item>
+        <item>检测+识别</item>
+        <item>分类+识别</item>
+        <item>检测</item>
+        <item>识别</item>
+        <item>分类</item>
     </string-array>
 </resources>

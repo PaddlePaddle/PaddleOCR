@@ -16,7 +16,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
@@ -27,7 +27,7 @@ import sys
 
 import tools.infer.utility as utility
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 import json
@@ -67,6 +67,25 @@ class TextDetector(object):
             postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
             postprocess_params["use_dilation"] = args.use_dilation
             postprocess_params["score_mode"] = args.det_db_score_mode
+            postprocess_params["box_type"] = args.det_box_type
+        elif self.det_algorithm == "DB++":
+            postprocess_params['name'] = 'DBPostProcess'
+            postprocess_params["thresh"] = args.det_db_thresh
+            postprocess_params["box_thresh"] = args.det_db_box_thresh
+            postprocess_params["max_candidates"] = 1000
+            postprocess_params["unclip_ratio"] = args.det_db_unclip_ratio
+            postprocess_params["use_dilation"] = args.use_dilation
+            postprocess_params["score_mode"] = args.det_db_score_mode
+            postprocess_params["box_type"] = args.det_box_type
+            pre_process_list[1] = {
+                'NormalizeImage': {
+                    'std': [1.0, 1.0, 1.0],
+                    'mean':
+                    [0.48109378172549, 0.45752457890196, 0.40787054090196],
+                    'scale': '1./255.',
+                    'order': 'hwc'
+                }
+            }
         elif self.det_algorithm == "EAST":
             postprocess_params['name'] = 'EASTPostProcess'
             postprocess_params["score_thresh"] = args.det_east_score_thresh
@@ -81,8 +100,8 @@ class TextDetector(object):
             postprocess_params['name'] = 'SASTPostProcess'
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
-            self.det_sast_polygon = args.det_sast_polygon
-            if self.det_sast_polygon:
+
+            if args.det_box_type == 'poly':
                 postprocess_params["sample_pts_num"] = 6
                 postprocess_params["expand_scale"] = 1.2
                 postprocess_params["shrink_ratio_of_width"] = 0.2
@@ -90,27 +109,49 @@ class TextDetector(object):
                 postprocess_params["sample_pts_num"] = 2
                 postprocess_params["expand_scale"] = 1.0
                 postprocess_params["shrink_ratio_of_width"] = 0.3
+
         elif self.det_algorithm == "PSE":
             postprocess_params['name'] = 'PSEPostProcess'
             postprocess_params["thresh"] = args.det_pse_thresh
             postprocess_params["box_thresh"] = args.det_pse_box_thresh
             postprocess_params["min_area"] = args.det_pse_min_area
-            postprocess_params["box_type"] = args.det_pse_box_type
+            postprocess_params["box_type"] = args.det_box_type
             postprocess_params["scale"] = args.det_pse_scale
-            self.det_pse_box_type = args.det_pse_box_type
+        elif self.det_algorithm == "FCE":
+            pre_process_list[0] = {
+                'DetResizeForTest': {
+                    'rescale_img': [1080, 736]
+                }
+            }
+            postprocess_params['name'] = 'FCEPostProcess'
+            postprocess_params["scales"] = args.scales
+            postprocess_params["alpha"] = args.alpha
+            postprocess_params["beta"] = args.beta
+            postprocess_params["fourier_degree"] = args.fourier_degree
+            postprocess_params["box_type"] = args.det_box_type
+        elif self.det_algorithm == "CT":
+            pre_process_list[0] = {'ScaleAlignedShort': {'short_size': 640}}
+            postprocess_params['name'] = 'CTPostProcess'
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
-        if self.use_onnx:
-            pre_process_list[0] = {
-                'DetResizeForTest': {
-                    'image_shape': [640, 640]
-                }
-            }
+
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
         self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
             args, 'det', logger)
+
+        if self.use_onnx:
+            img_h, img_w = self.input_tensor.shape[2:]
+            if isinstance(img_h, str) or isinstance(img_w, str):
+                pass
+            elif img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
+                pre_process_list[0] = {
+                    'DetResizeForTest': {
+                        'image_shape': [img_h, img_w]
+                    }
+                }
+        self.preprocess_op = create_operators(pre_process_list)
 
         if args.benchmark:
             import auto_log
@@ -133,27 +174,14 @@ class TextDetector(object):
                 logger=logger)
 
     def order_points_clockwise(self, pts):
-        """
-        reference from: https://github.com/jrosebr1/imutils/blob/master/imutils/perspective.py
-        # sort the points based on their x-coordinates
-        """
-        xSorted = pts[np.argsort(pts[:, 0]), :]
-
-        # grab the left-most and right-most points from the sorted
-        # x-roodinate points
-        leftMost = xSorted[:2, :]
-        rightMost = xSorted[2:, :]
-
-        # now, sort the left-most coordinates according to their
-        # y-coordinates so we can grab the top-left and bottom-left
-        # points, respectively
-        leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
-        (tl, bl) = leftMost
-
-        rightMost = rightMost[np.argsort(rightMost[:, 1]), :]
-        (tr, br) = rightMost
-
-        rect = np.array([tl, tr, br, bl], dtype="float32")
+        rect = np.zeros((4, 2), dtype="float32")
+        s = pts.sum(axis=1)
+        rect[0] = pts[np.argmin(s)]
+        rect[2] = pts[np.argmax(s)]
+        tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
+        diff = np.diff(np.array(tmp), axis=1)
+        rect[1] = tmp[np.argmin(diff)]
+        rect[3] = tmp[np.argmax(diff)]
         return rect
 
     def clip_det_res(self, points, img_height, img_width):
@@ -166,6 +194,8 @@ class TextDetector(object):
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
         for box in dt_boxes:
+            if type(box) is list:
+                box = np.array(box)
             box = self.order_points_clockwise(box)
             box = self.clip_det_res(box, img_height, img_width)
             rect_width = int(np.linalg.norm(box[0] - box[1]))
@@ -180,12 +210,14 @@ class TextDetector(object):
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
         for box in dt_boxes:
+            if type(box) is list:
+                box = np.array(box)
             box = self.clip_det_res(box, img_height, img_width)
             dt_boxes_new.append(box)
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
-    def __call__(self, img):
+    def predict(self, img):
         ori_im = img.copy()
         data = {'image': img}
 
@@ -227,17 +259,21 @@ class TextDetector(object):
             preds['f_score'] = outputs[1]
             preds['f_tco'] = outputs[2]
             preds['f_tvo'] = outputs[3]
-        elif self.det_algorithm in ['DB', 'PSE']:
+        elif self.det_algorithm in ['DB', 'PSE', 'DB++']:
             preds['maps'] = outputs[0]
+        elif self.det_algorithm == 'FCE':
+            for i, output in enumerate(outputs):
+                preds['level_{}'.format(i)] = output
+        elif self.det_algorithm == "CT":
+            preds['maps'] = outputs[0]
+            preds['score'] = outputs[1]
         else:
             raise NotImplementedError
 
-        #self.predictor.try_shrink_memory()
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]['points']
-        if (self.det_algorithm == "SAST" and
-                self.det_sast_polygon) or (self.det_algorithm == "PSE" and
-                                           self.det_pse_box_type == 'poly'):
+
+        if self.args.det_box_type == 'poly':
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
@@ -247,49 +283,141 @@ class TextDetector(object):
         et = time.time()
         return dt_boxes, et - st
 
+    def __call__(self, img):
+        # For image like poster with one side much greater than the other side,
+        # splitting recursively and processing with overlap to enhance performance.
+        MIN_BOUND_DISTANCE = 50
+        dt_boxes = np.zeros((0, 4, 2), dtype=np.float32)
+        elapse = 0
+        if img.shape[0] / img.shape[1] > 2 and img.shape[0] > self.args.det_limit_side_len:
+            start_h = 0
+            end_h = 0
+            while end_h <= img.shape[0]:
+                end_h = start_h + img.shape[1] * 3 // 4
+                subimg = img[start_h: end_h, :]
+                if len(subimg) == 0:
+                    break
+                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                offset = start_h
+                # To prevent text blocks from being cut off, roll back a certain buffer area.
+                if len(sub_dt_boxes) == 0 or img.shape[1] - max([x[-1][1] for x in sub_dt_boxes]) > MIN_BOUND_DISTANCE:
+                    start_h = end_h
+                else:
+                    sorted_indices = np.argsort(sub_dt_boxes[:, 2, 1])
+                    sub_dt_boxes = sub_dt_boxes[sorted_indices]
+                    bottom_line = 0 if len(sub_dt_boxes) <= 1 else int(np.max(sub_dt_boxes[:-1, 2, 1]))
+                    if bottom_line > 0:
+                        start_h += bottom_line
+                        sub_dt_boxes = sub_dt_boxes[sub_dt_boxes[:, 2, 1] <= bottom_line]
+                    else:
+                        start_h = end_h
+                if len(sub_dt_boxes) > 0:
+                    if dt_boxes.shape[0] == 0:
+                        dt_boxes = sub_dt_boxes + np.array([0, offset], dtype=np.float32)
+                    else:
+                        dt_boxes = np.append(dt_boxes,
+                                             sub_dt_boxes + np.array([0, offset], dtype=np.float32),
+                                             axis=0)
+                elapse += sub_elapse
+        elif img.shape[1] / img.shape[0] > 3 and img.shape[1] > self.args.det_limit_side_len * 3:
+            start_w = 0
+            end_w = 0
+            while end_w <= img.shape[1]:
+                end_w = start_w + img.shape[0] * 3 // 4
+                subimg = img[:, start_w: end_w]
+                if len(subimg) == 0:
+                    break
+                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                offset = start_w
+                if len(sub_dt_boxes) == 0 or img.shape[0] - max([x[-1][0] for x in sub_dt_boxes]) > MIN_BOUND_DISTANCE:
+                    start_w = end_w
+                else:
+                    sorted_indices = np.argsort(sub_dt_boxes[:, 2, 0])
+                    sub_dt_boxes = sub_dt_boxes[sorted_indices]
+                    right_line = 0 if len(sub_dt_boxes) <= 1 else int(np.max(sub_dt_boxes[:-1, 1, 0]))
+                    if right_line > 0:
+                        start_w += right_line
+                        sub_dt_boxes = sub_dt_boxes[sub_dt_boxes[:, 1, 0] <= right_line]
+                    else:
+                        start_w = end_w
+                if len(sub_dt_boxes) > 0:
+                    if dt_boxes.shape[0] == 0:
+                        dt_boxes = sub_dt_boxes + np.array([offset, 0], dtype=np.float32)
+                    else:
+                        dt_boxes = np.append(dt_boxes,
+                                             sub_dt_boxes + np.array([offset, 0], dtype=np.float32),
+                                             axis=0)
+                elapse += sub_elapse
+        else:
+            dt_boxes, elapse = self.predict(img)
+        return dt_boxes, elapse
+
 
 if __name__ == "__main__":
     args = utility.parse_args()
     image_file_list = get_image_file_list(args.image_dir)
     text_detector = TextDetector(args)
-    count = 0
     total_time = 0
-    draw_img_save = "./inference_results"
+    draw_img_save_dir = args.draw_img_save_dir
+    os.makedirs(draw_img_save_dir, exist_ok=True)
 
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
         for i in range(2):
             res = text_detector(img)
 
-    if not os.path.exists(draw_img_save):
-        os.makedirs(draw_img_save)
     save_results = []
-    for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
-        if not flag:
+    for idx, image_file in enumerate(image_file_list):
+        img, flag_gif, flag_pdf = check_and_read(image_file)
+        if not flag_gif and not flag_pdf:
             img = cv2.imread(image_file)
-        if img is None:
-            logger.info("error in loading image:{}".format(image_file))
-            continue
-        st = time.time()
-        dt_boxes, _ = text_detector(img)
-        elapse = time.time() - st
-        if count > 0:
+        if not flag_pdf:
+            if img is None:
+                logger.debug("error in loading image:{}".format(image_file))
+                continue
+            imgs = [img]
+        else:
+            page_num = args.page_num
+            if page_num > len(img) or page_num == 0:
+                page_num = len(img)
+            imgs = img[:page_num]
+        for index, img in enumerate(imgs):
+            st = time.time()
+            dt_boxes, _ = text_detector(img)
+            elapse = time.time() - st
             total_time += elapse
-        count += 1
-        save_pred = os.path.basename(image_file) + "\t" + str(
-            json.dumps(np.array(dt_boxes).astype(np.int32).tolist())) + "\n"
-        save_results.append(save_pred)
-        logger.info(save_pred)
-        logger.info("The predict time of {}: {}".format(image_file, elapse))
-        src_im = utility.draw_text_det_res(dt_boxes, image_file)
-        img_name_pure = os.path.split(image_file)[-1]
-        img_path = os.path.join(draw_img_save,
-                                "det_res_{}".format(img_name_pure))
-        cv2.imwrite(img_path, src_im)
-        logger.info("The visualized image saved in {}".format(img_path))
+            if len(imgs) > 1:
+                save_pred = os.path.basename(image_file) + '_' + str(
+                    index) + "\t" + str(
+                        json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+            else:
+                save_pred = os.path.basename(image_file) + "\t" + str(
+                    json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+            save_results.append(save_pred)
+            logger.info(save_pred)
+            if len(imgs) > 1:
+                logger.info("{}_{} The predict time of {}: {}".format(
+                    idx, index, image_file, elapse))
+            else:
+                logger.info("{} The predict time of {}: {}".format(
+                    idx, image_file, elapse))
 
-    with open(os.path.join(draw_img_save, "det_results.txt"), 'w') as f:
+            src_im = utility.draw_text_det_res(dt_boxes, img)
+
+            if flag_gif:
+                save_file = image_file[:-3] + "png"
+            elif flag_pdf:
+                save_file = image_file.replace('.pdf',
+                                               '_' + str(index) + '.png')
+            else:
+                save_file = image_file
+            img_path = os.path.join(
+                draw_img_save_dir,
+                "det_res_{}".format(os.path.basename(save_file)))
+            cv2.imwrite(img_path, src_im)
+            logger.info("The visualized image saved in {}".format(img_path))
+
+    with open(os.path.join(draw_img_save_dir, "det_results.txt"), 'w') as f:
         f.writelines(save_results)
         f.close()
     if args.benchmark:

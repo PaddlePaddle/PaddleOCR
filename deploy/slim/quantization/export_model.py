@@ -17,9 +17,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..', '..', '..')))
-sys.path.append(
-    os.path.abspath(os.path.join(__dir__, '..', '..', '..', 'tools')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..', '..', '..')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(__dir__, '..', '..', '..', 'tools')))
 
 import argparse
 
@@ -34,18 +34,8 @@ from tools.program import load_config, merge_config, ArgsParser
 from ppocr.metrics import build_metric
 import tools.program as program
 from paddleslim.dygraph.quant import QAT
-from ppocr.data import build_dataloader
-
-
-def export_single_model(quanter, model, infer_shape, save_path, logger):
-    quanter.save_quantized_model(
-        model,
-        save_path,
-        input_spec=[
-            paddle.static.InputSpec(
-                shape=[None] + infer_shape, dtype='float32')
-        ])
-    logger.info('inference QAT model is saved to {}'.format(save_path))
+from ppocr.data import build_dataloader, set_signal_handlers
+from tools.export_model import export_single_model
 
 
 def main():
@@ -76,7 +66,7 @@ def main():
     }
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
-    merge_config(FLAGS.opt)
+    config = merge_config(config, FLAGS.opt)
     logger = get_logger()
     # build post process
 
@@ -84,16 +74,53 @@ def main():
                                             config['Global'])
 
     # build model
-    # for rec algorithm
     if hasattr(post_process_class, 'character'):
         char_num = len(getattr(post_process_class, 'character'))
         if config['Architecture']["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
             for key in config['Architecture']["Models"]:
-                config['Architecture']["Models"][key]["Head"][
-                    'out_channels'] = char_num
+                if config['Architecture']['Models'][key]['Head'][
+                        'name'] == 'MultiHead':  # for multi head
+                    if config['PostProcess'][
+                            'name'] == 'DistillationSARLabelDecode':
+                        char_num = char_num - 2
+                    # update SARLoss params
+                    assert list(config['Loss']['loss_config_list'][-1].keys())[
+                        0] == 'DistillationSARLoss'
+                    config['Loss']['loss_config_list'][-1][
+                        'DistillationSARLoss']['ignore_index'] = char_num + 1
+                    out_channels_list = {}
+                    out_channels_list['CTCLabelDecode'] = char_num
+                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    config['Architecture']['Models'][key]['Head'][
+                        'out_channels_list'] = out_channels_list
+                else:
+                    config['Architecture']["Models"][key]["Head"][
+                        'out_channels'] = char_num
+        elif config['Architecture']['Head'][
+                'name'] == 'MultiHead':  # for multi head
+            if config['PostProcess']['name'] == 'SARLabelDecode':
+                char_num = char_num - 2
+            # update SARLoss params
+            assert list(config['Loss']['loss_config_list'][1].keys())[
+                0] == 'SARLoss'
+            if config['Loss']['loss_config_list'][1]['SARLoss'] is None:
+                config['Loss']['loss_config_list'][1]['SARLoss'] = {
+                    'ignore_index': char_num + 1
+                }
+            else:
+                config['Loss']['loss_config_list'][1]['SARLoss'][
+                    'ignore_index'] = char_num + 1
+            out_channels_list = {}
+            out_channels_list['CTCLabelDecode'] = char_num
+            out_channels_list['SARLabelDecode'] = char_num + 2
+            config['Architecture']['Head'][
+                'out_channels_list'] = out_channels_list
         else:  # base rec model
             config['Architecture']["Head"]['out_channels'] = char_num
+
+        if config['PostProcess']['name'] == 'SARLabelDecode':  # for SAR model
+            config['Loss']['ignore_index'] = char_num - 1
 
     model = build_model(config['Architecture'])
 
@@ -102,12 +129,12 @@ def main():
     quanter.quantize(model)
 
     load_model(config, model)
-    model.eval()
 
     # build metric
     eval_class = build_metric(config['Metric'])
 
     # build dataloader
+    set_signal_handlers()
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     use_srn = config['Architecture']['algorithm'] == "SRN"
@@ -115,24 +142,34 @@ def main():
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
                           eval_class, model_type, use_srn)
+    model.eval()
 
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))
 
-    infer_shape = [3, 32, 100] if model_type == "rec" else [3, 640, 640]
-
     save_path = config["Global"]["save_inference_dir"]
 
     arch_config = config["Architecture"]
+
+    if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+            "name"] != 'MultiHead':
+        input_shape = config["Eval"]["dataset"]["transforms"][-2][
+            'SVTRRecResizeImg']['image_shape']
+    else:
+        input_shape = None
+
     if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
+        archs = list(arch_config["Models"].values())
         for idx, name in enumerate(model.model_name_list):
             sub_model_save_path = os.path.join(save_path, name, "inference")
-            export_single_model(quanter, model.model_list[idx], infer_shape,
-                                sub_model_save_path, logger)
+            export_single_model(model.model_list[idx], archs[idx],
+                                sub_model_save_path, logger, input_shape,
+                                quanter)
     else:
         save_path = os.path.join(save_path, "inference")
-        export_single_model(quanter, model, infer_shape, save_path, logger)
+        export_single_model(model, arch_config, save_path, logger, input_shape,
+                            quanter)
 
 
 if __name__ == "__main__":

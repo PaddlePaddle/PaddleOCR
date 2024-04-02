@@ -20,6 +20,8 @@ from tqdm import tqdm
 
 from ppocr.utils.logging import get_logger
 
+MODELS_DIR = os.path.expanduser("~/.paddleocr/models/")
+
 
 def download_with_progressbar(url, save_path):
     logger = get_logger()
@@ -41,9 +43,7 @@ def download_with_progressbar(url, save_path):
 
 def maybe_download(model_storage_directory, url):
     # using custom model
-    tar_file_name_list = [
-        'inference.pdiparams', 'inference.pdiparams.info', 'inference.pdmodel'
-    ]
+    tar_file_name_list = ['.pdiparams', '.pdiparams.info', '.pdmodel']
     if not os.path.exists(
             os.path.join(model_storage_directory, 'inference.pdiparams')
     ) or not os.path.exists(
@@ -57,8 +57,8 @@ def maybe_download(model_storage_directory, url):
             for member in tarObj.getmembers():
                 filename = None
                 for tar_file_name in tar_file_name_list:
-                    if tar_file_name in member.name:
-                        filename = tar_file_name
+                    if member.name.endswith(tar_file_name):
+                        filename = 'inference' + tar_file_name
                 if filename is None:
                     continue
                 file = tarObj.extractfile(member)
@@ -67,6 +67,18 @@ def maybe_download(model_storage_directory, url):
                         'wb') as f:
                     f.write(file.read())
         os.remove(tmp_path)
+
+
+def maybe_download_params(model_path):
+    if os.path.exists(model_path) or not is_link(model_path):
+        return model_path
+    else:
+        url = model_path
+    tmp_path = os.path.join(MODELS_DIR, url.split('/')[-1])
+    print('download {} to {}'.format(url, tmp_path))
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    download_with_progressbar(url, tmp_path)
+    return tmp_path
 
 
 def is_link(s):

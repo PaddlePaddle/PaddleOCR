@@ -13,6 +13,7 @@ Global:
   save_inference_dir:
   use_visualdl: False
   infer_img:
+  infer_visual_type: EN # two mode: EN is for english datasets, CN is for chinese datasets
   valid_set: totaltext # two mode: totaltext valid curved words, partvgg valid non-curved words
   save_res_path: ./output/pgnet_r50_vd_totaltext/predicts_pgnet.txt
   character_dict_path: ppocr/utils/ic15_dict.txt
@@ -32,6 +33,7 @@ Architecture:
     name: PGFPN
   Head:
     name: PGHead
+    character_dict_path: ppocr/utils/ic15_dict.txt # the same as Global:character_dict_path
 
 Loss:
   name: PGLoss
@@ -45,16 +47,18 @@ Optimizer:
   beta1: 0.9
   beta2: 0.999
   lr:
+    name: Cosine
     learning_rate: 0.001
+    warmup_epoch: 50
   regularizer:
     name: 'L2'
-    factor: 0
-
+    factor: 0.0001
 
 PostProcess:
   name: PGPostProcess
   score_thresh: 0.5
   mode: fast   # fast or slow two ways
+  point_gather_mode: align # same as PGProcessTrain: point_gather_mode
 
 Metric:
   name: E2EMetric
@@ -76,9 +80,12 @@ Train:
       - E2ELabelEncodeTrain:
       - PGProcessTrain:
           batch_size: 14  # same as loader: batch_size_per_card
+          use_resize: True
+          use_random_crop: False
           min_crop_size: 24
           min_text_size: 4
           max_text_size: 512
+          point_gather_mode: align # two mode: align and none, align mode is better than none mode
       - KeepKeys:
           keep_keys: [ 'images', 'tcl_maps', 'tcl_label_maps', 'border_maps','direction_maps', 'training_masks', 'label_list', 'pos_list', 'pos_mask' ] # dataloader will return list in this order
   loader:

@@ -78,9 +78,9 @@ class E2EMetric(object):
             self.results.append(result)
 
     def get_metric(self):
-        metircs = combine_results(self.results)
+        metrics = combine_results(self.results)
         self.reset()
-        return metircs
+        return metrics
 
     def reset(self):
         self.results = []  # clear results

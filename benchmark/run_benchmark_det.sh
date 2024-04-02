@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -xe
 # 运行示例：CUDA_VISIBLE_DEVICES=0 bash run_benchmark.sh ${run_mode} ${bs_item} ${fp_item} 500 ${model_mode}
 # 参数说明
 function _set_params(){
@@ -34,11 +33,13 @@ function _train(){
         train_cmd="python tools/train.py "${train_cmd}""
         ;;
       mp)
+        rm -rf ./mylog
         train_cmd="python -m paddle.distributed.launch --log_dir=./mylog --gpus=$CUDA_VISIBLE_DEVICES tools/train.py ${train_cmd}"
         ;;
       *) echo "choose run_mode(sp or mp)"; exit 1;
     esac
 # 以下不用修改
+    echo ${train_cmd}
     timeout 15m ${train_cmd} > ${log_file} 2>&1
     if [ $? -ne 0 ];then
             echo -e "${model_name}, FAIL"
@@ -58,3 +59,4 @@ source ${BENCHMARK_ROOT}/scripts/run_model.sh      # 在该脚本中会对符合
 _set_params $@
 #_train      # 如果只想产出训练log,不解析,可取消注释
 _run         # 该函数在run_model.sh中,执行时会调用_train; 如果不联调只想要产出训练log可以注掉本行,提交时需打开
+

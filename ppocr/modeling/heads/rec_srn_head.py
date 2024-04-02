@@ -20,13 +20,11 @@ import math
 import paddle
 from paddle import nn, ParamAttr
 from paddle.nn import functional as F
-import paddle.fluid as fluid
 import numpy as np
 from .self_attention import WrapEncoderForFeature
 from .self_attention import WrapEncoder
 from paddle.static import Program
 from ppocr.modeling.backbones.rec_resnet_fpn import ResNetFPN
-import paddle.fluid.framework as framework
 
 from collections import OrderedDict
 gradient_clip = 10

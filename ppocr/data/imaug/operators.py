@@ -23,15 +23,21 @@ import sys
 import six
 import cv2
 import numpy as np
-import fasttext
+import math
+from PIL import Image
 
 
 class DecodeImage(object):
     """ decode image """
 
-    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
+    def __init__(self,
+                 img_mode='RGB',
+                 channel_first=False,
+                 ignore_orientation=False,
+                 **kwargs):
         self.img_mode = img_mode
         self.channel_first = channel_first
+        self.ignore_orientation = ignore_orientation
 
     def __call__(self, data):
         img = data['image']
@@ -42,7 +48,11 @@ class DecodeImage(object):
             assert type(img) is bytes and len(
                 img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype='uint8')
-        img = cv2.imdecode(img, 1)
+        if self.ignore_orientation:
+            img = cv2.imdecode(img, cv2.IMREAD_IGNORE_ORIENTATION |
+                               cv2.IMREAD_COLOR)
+        else:
+            img = cv2.imdecode(img, 1)
         if img is None:
             return None
         if self.img_mode == 'GRAY':
@@ -54,39 +64,6 @@ class DecodeImage(object):
         if self.channel_first:
             img = img.transpose((2, 0, 1))
 
-        data['image'] = img
-        return data
-
-
-class NRTRDecodeImage(object):
-    """ decode image """
-
-    def __init__(self, img_mode='RGB', channel_first=False, **kwargs):
-        self.img_mode = img_mode
-        self.channel_first = channel_first
-
-    def __call__(self, data):
-        img = data['image']
-        if six.PY2:
-            assert type(img) is str and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        else:
-            assert type(img) is bytes and len(
-                img) > 0, "invalid input 'img' in DecodeImage"
-        img = np.frombuffer(img, dtype='uint8')
-
-        img = cv2.imdecode(img, 1)
-
-        if img is None:
-            return None
-        if self.img_mode == 'GRAY':
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        elif self.img_mode == 'RGB':
-            assert img.shape[2] == 3, 'invalid shape of image[%s]' % (img.shape)
-            img = img[:, :, ::-1]
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        if self.channel_first:
-            img = img.transpose((2, 0, 1))
         data['image'] = img
         return data
 
@@ -111,7 +88,6 @@ class NormalizeImage(object):
         from PIL import Image
         if isinstance(img, Image.Image):
             img = np.array(img)
-
         assert isinstance(img,
                           np.ndarray), "invalid input 'img' in NormalizeImage"
         data['image'] = (
@@ -137,6 +113,7 @@ class ToCHWImage(object):
 
 class Fasttext(object):
     def __init__(self, path="None", **kwargs):
+        import fasttext
         self.fast_model = fasttext.load_model(path)
 
     def __call__(self, data):
@@ -157,6 +134,44 @@ class KeepKeys(object):
         return data_list
 
 
+class Pad(object):
+    def __init__(self, size=None, size_div=32, **kwargs):
+        if size is not None and not isinstance(size, (int, list, tuple)):
+            raise TypeError("Type of target_size is invalid. Now is {}".format(
+                type(size)))
+        if isinstance(size, int):
+            size = [size, size]
+        self.size = size
+        self.size_div = size_div
+
+    def __call__(self, data):
+
+        img = data['image']
+        img_h, img_w = img.shape[0], img.shape[1]
+        if self.size:
+            resize_h2, resize_w2 = self.size
+            assert (
+                img_h < resize_h2 and img_w < resize_w2
+            ), '(h, w) of target size should be greater than (img_h, img_w)'
+        else:
+            resize_h2 = max(
+                int(math.ceil(img.shape[0] / self.size_div) * self.size_div),
+                self.size_div)
+            resize_w2 = max(
+                int(math.ceil(img.shape[1] / self.size_div) * self.size_div),
+                self.size_div)
+        img = cv2.copyMakeBorder(
+            img,
+            0,
+            resize_h2 - img_h,
+            0,
+            resize_w2 - img_w,
+            cv2.BORDER_CONSTANT,
+            value=0)
+        data['image'] = img
+        return data
+
+
 class Resize(object):
     def __init__(self, size=(640, 640), **kwargs):
         self.size = size
@@ -171,17 +186,19 @@ class Resize(object):
 
     def __call__(self, data):
         img = data['image']
-        text_polys = data['polys']
+        if 'polys' in data:
+            text_polys = data['polys']
 
         img_resize, [ratio_h, ratio_w] = self.resize_image(img)
-        new_boxes = []
-        for box in text_polys:
-            new_box = []
-            for cord in box:
-                new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
-            new_boxes.append(new_box)
+        if 'polys' in data:
+            new_boxes = []
+            for box in text_polys:
+                new_box = []
+                for cord in box:
+                    new_box.append([cord[0] * ratio_w, cord[1] * ratio_h])
+                new_boxes.append(new_box)
+            data['polys'] = np.array(new_boxes, dtype=np.float32)
         data['image'] = img_resize
-        data['polys'] = np.array(new_boxes, dtype=np.float32)
         return data
 
 
@@ -189,9 +206,12 @@ class DetResizeForTest(object):
     def __init__(self, **kwargs):
         super(DetResizeForTest, self).__init__()
         self.resize_type = 0
+        self.keep_ratio = False
         if 'image_shape' in kwargs:
             self.image_shape = kwargs['image_shape']
             self.resize_type = 1
+            if 'keep_ratio' in kwargs:
+                self.keep_ratio = kwargs['keep_ratio']
         elif 'limit_side_len' in kwargs:
             self.limit_side_len = kwargs['limit_side_len']
             self.limit_type = kwargs.get('limit_type', 'min')
@@ -205,6 +225,8 @@ class DetResizeForTest(object):
     def __call__(self, data):
         img = data['image']
         src_h, src_w, _ = img.shape
+        if sum([src_h, src_w]) < 64:
+            img = self.image_padding(img)
 
         if self.resize_type == 0:
             # img, shape = self.resize_image_type0(img)
@@ -218,9 +240,19 @@ class DetResizeForTest(object):
         data['shape'] = np.array([src_h, src_w, ratio_h, ratio_w])
         return data
 
+    def image_padding(self, im, value=0):
+        h, w, c = im.shape
+        im_pad = np.zeros((max(32, h), max(32, w), c), np.uint8) + value
+        im_pad[:h, :w, :] = im
+        return im_pad
+
     def resize_image_type1(self, img):
         resize_h, resize_w = self.image_shape
         ori_h, ori_w = img.shape[:2]  # (h, w, c)
+        if self.keep_ratio is True:
+            resize_w = ori_w * resize_h / ori_h
+            N = math.ceil(resize_w / 32)
+            resize_w = N * 32
         ratio_h = float(resize_h) / ori_h
         ratio_w = float(resize_w) / ori_w
         img = cv2.resize(img, (int(resize_w), int(resize_h)))
@@ -367,3 +399,126 @@ class E2EResizeForTest(object):
         ratio_w = resize_w / float(w)
 
         return im, (ratio_h, ratio_w)
+
+
+class KieResize(object):
+    def __init__(self, **kwargs):
+        super(KieResize, self).__init__()
+        self.max_side, self.min_side = kwargs['img_scale'][0], kwargs[
+            'img_scale'][1]
+
+    def __call__(self, data):
+        img = data['image']
+        points = data['points']
+        src_h, src_w, _ = img.shape
+        im_resized, scale_factor, [ratio_h, ratio_w
+                                   ], [new_h, new_w] = self.resize_image(img)
+        resize_points = self.resize_boxes(img, points, scale_factor)
+        data['ori_image'] = img
+        data['ori_boxes'] = points
+        data['points'] = resize_points
+        data['image'] = im_resized
+        data['shape'] = np.array([new_h, new_w])
+        return data
+
+    def resize_image(self, img):
+        norm_img = np.zeros([1024, 1024, 3], dtype='float32')
+        scale = [512, 1024]
+        h, w = img.shape[:2]
+        max_long_edge = max(scale)
+        max_short_edge = min(scale)
+        scale_factor = min(max_long_edge / max(h, w),
+                           max_short_edge / min(h, w))
+        resize_w, resize_h = int(w * float(scale_factor) + 0.5), int(h * float(
+            scale_factor) + 0.5)
+        max_stride = 32
+        resize_h = (resize_h + max_stride - 1) // max_stride * max_stride
+        resize_w = (resize_w + max_stride - 1) // max_stride * max_stride
+        im = cv2.resize(img, (resize_w, resize_h))
+        new_h, new_w = im.shape[:2]
+        w_scale = new_w / w
+        h_scale = new_h / h
+        scale_factor = np.array(
+            [w_scale, h_scale, w_scale, h_scale], dtype=np.float32)
+        norm_img[:new_h, :new_w, :] = im
+        return norm_img, scale_factor, [h_scale, w_scale], [new_h, new_w]
+
+    def resize_boxes(self, im, points, scale_factor):
+        points = points * scale_factor
+        img_shape = im.shape[:2]
+        points[:, 0::2] = np.clip(points[:, 0::2], 0, img_shape[1])
+        points[:, 1::2] = np.clip(points[:, 1::2], 0, img_shape[0])
+        return points
+
+
+class SRResize(object):
+    def __init__(self,
+                 imgH=32,
+                 imgW=128,
+                 down_sample_scale=4,
+                 keep_ratio=False,
+                 min_ratio=1,
+                 mask=False,
+                 infer_mode=False,
+                 **kwargs):
+        self.imgH = imgH
+        self.imgW = imgW
+        self.keep_ratio = keep_ratio
+        self.min_ratio = min_ratio
+        self.down_sample_scale = down_sample_scale
+        self.mask = mask
+        self.infer_mode = infer_mode
+
+    def __call__(self, data):
+        imgH = self.imgH
+        imgW = self.imgW
+        images_lr = data["image_lr"]
+        transform2 = ResizeNormalize(
+            (imgW // self.down_sample_scale, imgH // self.down_sample_scale))
+        images_lr = transform2(images_lr)
+        data["img_lr"] = images_lr
+        if self.infer_mode:
+            return data
+
+        images_HR = data["image_hr"]
+        label_strs = data["label"]
+        transform = ResizeNormalize((imgW, imgH))
+        images_HR = transform(images_HR)
+        data["img_hr"] = images_HR
+        return data
+
+
+class ResizeNormalize(object):
+    def __init__(self, size, interpolation=Image.BICUBIC):
+        self.size = size
+        self.interpolation = interpolation
+
+    def __call__(self, img):
+        img = img.resize(self.size, self.interpolation)
+        img_numpy = np.array(img).astype("float32")
+        img_numpy = img_numpy.transpose((2, 0, 1)) / 255
+        return img_numpy
+
+
+class GrayImageChannelFormat(object):
+    """
+    format gray scale image's channel: (3,h,w) -> (1,h,w)
+    Args:
+        inverse: inverse gray image 
+    """
+
+    def __init__(self, inverse=False, **kwargs):
+        self.inverse = inverse
+
+    def __call__(self, data):
+        img = data['image']
+        img_single_channel = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img_expanded = np.expand_dims(img_single_channel, 0)
+
+        if self.inverse:
+            data['image'] = np.abs(img_expanded - 1)
+        else:
+            data['image'] = img_expanded
+
+        data['src_image'] = img
+        return data

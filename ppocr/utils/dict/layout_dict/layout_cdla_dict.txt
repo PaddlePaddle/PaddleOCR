@@ -1,0 +1,10 @@
+text
+title
+figure
+figure_caption
+table
+table_caption
+header
+footer
+reference
+equation

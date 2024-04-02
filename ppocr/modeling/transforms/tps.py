@@ -219,11 +219,11 @@ class GridGenerator(nn.Layer):
         I_r_height, I_r_width = I_r_size
         I_r_grid_x = (paddle.arange(
             -I_r_width, I_r_width, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_width]))
+                      ) / paddle.to_tensor(np.array([I_r_width])).astype('float64')
 
         I_r_grid_y = (paddle.arange(
             -I_r_height, I_r_height, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_height]))
+                      ) / paddle.to_tensor(np.array([I_r_height])).astype('float64')
 
         # P: self.I_r_width x self.I_r_height x 2
         P = paddle.stack(paddle.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)
@@ -304,5 +304,14 @@ class TPS(nn.Layer):
         batch_P_prime = self.grid_generator(batch_C_prime, image.shape[2:])
         batch_P_prime = batch_P_prime.reshape(
             [-1, image.shape[2], image.shape[3], 2])
+        is_fp16 = False
+        if batch_P_prime.dtype != paddle.float32:
+            data_type = batch_P_prime.dtype
+            image = image.cast(paddle.float32)
+            batch_P_prime = batch_P_prime.cast(paddle.float32)
+            is_fp16 = True
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)
+        if is_fp16:
+            batch_I_r = batch_I_r.cast(data_type)
+        
         return batch_I_r

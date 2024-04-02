@@ -18,6 +18,7 @@ Global:
 Architecture:
   name: DistillationModel
   algorithm: Distillation
+  model_type: det
   Models:
     Student:
       pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
@@ -44,7 +45,7 @@ Architecture:
       algorithm: DB
       Transform:
       Backbone:
-        name: ResNet
+        name: ResNet_vd
         layers: 18
       Neck:
         name: DBFPN

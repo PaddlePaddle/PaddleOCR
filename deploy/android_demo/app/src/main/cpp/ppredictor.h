@@ -22,7 +22,7 @@ public:
 class PPredictor : public PPredictor_Interface {
 public:
   PPredictor(
-      int thread_num, int net_flag = 0,
+          int use_opencl, int thread_num, int net_flag = 0,
       paddle::lite_api::PowerMode mode = paddle::lite_api::LITE_POWER_HIGH);
 
   virtual ~PPredictor() {}
@@ -54,6 +54,7 @@ protected:
   template <typename ConfigT> int _init(ConfigT &config);
 
 private:
+    int _use_opencl;
   int _thread_num;
   paddle::lite_api::PowerMode _mode;
   std::shared_ptr<paddle::lite_api::PaddlePredictor> _predictor;

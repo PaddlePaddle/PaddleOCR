@@ -4,16 +4,16 @@
 
 同时会简单介绍PaddleOCR模型训练数据的组成部分，以及如何在垂类场景中准备数据finetune模型。
 
-- [1.配置文件说明](#配置文件)
-- [2. 基本概念](#基本概念)
-  * [2.1 学习率](#学习率)
-  * [2.2 正则化](#正则化)
-  * [2.3 评估指标](#评估指标)
-- [3. 数据与垂类场景](#数据与垂类场景)
-  * [3.1 训练数据](#训练数据)
-  * [3.2 垂类场景](#垂类场景)
-  * [3.3 自己构建数据集](#自己构建数据集)
-* [4. 常见问题](#常见问题)
+- [1. 配置文件说明](#1-配置文件说明)
+- [2. 基本概念](#2-基本概念)
+  - [2.1 学习率](#21-学习率)
+  - [2.2 正则化](#22-正则化)
+  - [2.3 评估指标](#23-评估指标)
+- [3. 数据与垂类场景](#3-数据与垂类场景)
+  - [3.1 训练数据](#31-训练数据)
+  - [3.2 垂类场景](#32-垂类场景)
+  - [3.3 自己构建数据集](#33-自己构建数据集)
+- [4. 常见问题](#4-常见问题)
 
 <a name="配置文件"></a>
 
@@ -68,7 +68,7 @@ Optimizer:
 
 （2）识别阶段： 字符识别准确率，即正确识别的文本行占标注的文本行数量的比例，只有整行文本识别对才算正确识别。
 
-（3）端到端统计： 端对端召回率：准确检测并正确识别文本行在全部标注文本行的占比； 端到端准确率：准确检测并正确识别文本行在 检测到的文本行数量 的占比； 准确检测的标准是检测框与标注框的IOU大于某个阈值，正确识别的的检测框中的文本与标注的文本相同。
+（3）端到端统计： 端对端召回率：准确检测并正确识别文本行在全部标注文本行的占比； 端到端准确率：准确检测并正确识别文本行在 检测到的文本行数量 的占比； 准确检测的标准是检测框与标注框的IOU大于某个阈值，正确识别的检测框中的文本与标注的文本相同。
 
 <a name="数据与垂类场景"></a>
 
@@ -81,13 +81,13 @@ Optimizer:
     - 检测：  
         - 英文数据集，ICDAR2015  
         - 中文数据集，LSVT街景数据集训练数据3w张图片
-    
+
     - 识别：  
         - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
         - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
         - 小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。
 
-其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](./datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer) 、[SynthText](https://github.com/ankush-me/SynthText) 、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) 等。
+其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](dataset/datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer) 、[SynthText](https://github.com/ankush-me/SynthText) 、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) 等。
 
 <a name="垂类场景"></a>
 ### 3.2 垂类场景
@@ -120,17 +120,17 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 **Q**：训练CRNN识别时，如何选择合适的网络输入shape？
 
     A：一般高度采用32，最长宽度的选择，有两种方法：
-    
+
     （1）统计训练样本图像的宽高比分布。最大宽高比的选取考虑满足80%的训练样本。
-    
+
     （2）统计训练样本文字数目。最长字符数目的选取考虑满足80%的训练样本。然后中文字符长宽比近似认为是1，英文认为3：1，预估一个最长宽度。
 
 **Q**：识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？
 
     A：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：
-    
+
     （1）加入更多的增广方式或者调大增广prob的[概率](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/rec_img_aug.py#L341)，默认为0.4。
-    
+
     （2）调大系统的[l2 dcay值](https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
 
 **Q**: 识别模型训练时，loss能正常下降，但acc一直为0
@@ -141,10 +141,11 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 
 ***
 
-具体的训练教程可点击下方链接跳转： 
+具体的训练教程可点击下方链接跳转：
 
-\- [文本检测模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/detection.md) 
+- [文本检测模型训练](./detection.md)
 
-\- [文本识别模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/recognition.md)  
+- [文本识别模型训练](./recognition.md)  
 
-\- [文本方向分类器训练](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/doc/doc_ch/angle_class.md)  
+- [文本方向分类器训练](./angle_class.md)  
+- [知识蒸馏](./knowledge_distillation.md)

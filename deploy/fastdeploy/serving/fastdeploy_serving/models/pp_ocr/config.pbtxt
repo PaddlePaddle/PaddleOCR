@@ -1,0 +1,87 @@
+name: "pp_ocr"
+platform: "ensemble"
+max_batch_size: 1
+input [
+  {
+    name: "INPUT"
+    data_type: TYPE_UINT8
+    dims: [ -1, -1, 3 ]
+  }
+]
+output [
+  {
+    name: "rec_texts"
+    data_type: TYPE_STRING
+    dims: [ -1, 1 ]
+  },
+  {
+    name: "rec_scores"
+    data_type: TYPE_FP32
+    dims: [ -1, 1 ]
+  },
+  {
+    name: "det_bboxes"
+    data_type: TYPE_FP32
+    dims: [ -1, -1, 1 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "det_preprocess"
+      model_version: 1
+      input_map {
+        key: "INPUT_0"
+        value: "INPUT"
+      }
+      output_map {
+        key: "OUTPUT_0"
+        value: "infer_input"
+      }
+      output_map {
+        key: "OUTPUT_1"
+        value: "infos"
+      }
+    },
+    {
+      model_name: "det_runtime"
+      model_version: 1
+      input_map {
+        key: "x"
+        value: "infer_input"
+      }
+      output_map {
+        key: "sigmoid_0.tmp_0"
+        value: "infer_output"
+      }
+    },
+    {
+      model_name: "det_postprocess"
+      model_version: 1
+      input_map {
+        key: "POST_INPUT_0"
+        value: "infer_output"
+      }
+      input_map {
+        key: "POST_INPUT_1"
+        value: "infos"
+      }
+      input_map {
+        key: "ORI_IMG"
+        value: "INPUT"
+      }
+      output_map {
+        key: "POST_OUTPUT_0"
+        value: "rec_texts"
+      }
+      output_map {
+        key: "POST_OUTPUT_1"
+        value: "rec_scores"
+      }
+      output_map {
+        key: "POST_OUTPUT_2"
+        value: "det_bboxes"
+      }
+    }
+  ]
+}

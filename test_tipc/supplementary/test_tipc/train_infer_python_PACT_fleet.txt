@@ -1,0 +1,17 @@
+===========================train_params===========================
+model_name:ch_PPOCRv2_det
+python:python3.7
+gpu_list:xx.xx.xx.xx,yy.yy.yy.yy;0,1
+use_gpu:True
+AMP.use_amp:True|False
+epoch:lite_train_lite_infer=2|whole_train_whole_infer=1000
+save_model_dir:./output/
+TRAIN.batch_size:lite_train_lite_infer=1280|whole_train_whole_infer=1280
+pretrained_model:null
+checkpoints:null
+use_custom_relu:False|True
+model_type:cls|cls_distill|cls_distill_multiopt
+MODEL.siamese:False|True
+norm_train:train.py -c mv3_large_x0_5.yml -o quant_train=True
+quant_train:False
+prune_train:False

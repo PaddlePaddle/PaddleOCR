@@ -20,16 +20,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     ListPreference etImagePath = null;
     ListPreference lpCPUThreadNum = null;
     ListPreference lpCPUPowerMode = null;
-    ListPreference lpInputColorFormat = null;
-    EditTextPreference etInputShape = null;
-    EditTextPreference etInputMean = null;
-    EditTextPreference etInputStd = null;
+    EditTextPreference etDetLongSize = null;
     EditTextPreference etScoreThreshold = null;
 
     List<String> preInstalledModelPaths = null;
     List<String> preInstalledLabelPaths = null;
     List<String> preInstalledImagePaths = null;
-    List<String> preInstalledInputShapes = null;
+    List<String> preInstalledDetLongSizes = null;
     List<String> preInstalledCPUThreadNums = null;
     List<String> preInstalledCPUPowerModes = null;
     List<String> preInstalledInputColorFormats = null;
@@ -50,7 +47,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         preInstalledModelPaths = new ArrayList<String>();
         preInstalledLabelPaths = new ArrayList<String>();
         preInstalledImagePaths = new ArrayList<String>();
-        preInstalledInputShapes = new ArrayList<String>();
+        preInstalledDetLongSizes = new ArrayList<String>();
         preInstalledCPUThreadNums = new ArrayList<String>();
         preInstalledCPUPowerModes = new ArrayList<String>();
         preInstalledInputColorFormats = new ArrayList<String>();
@@ -63,10 +60,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         preInstalledImagePaths.add(getString(R.string.IMAGE_PATH_DEFAULT));
         preInstalledCPUThreadNums.add(getString(R.string.CPU_THREAD_NUM_DEFAULT));
         preInstalledCPUPowerModes.add(getString(R.string.CPU_POWER_MODE_DEFAULT));
-        preInstalledInputColorFormats.add(getString(R.string.INPUT_COLOR_FORMAT_DEFAULT));
-        preInstalledInputShapes.add(getString(R.string.INPUT_SHAPE_DEFAULT));
-        preInstalledInputMeans.add(getString(R.string.INPUT_MEAN_DEFAULT));
-        preInstalledInputStds.add(getString(R.string.INPUT_STD_DEFAULT));
+        preInstalledDetLongSizes.add(getString(R.string.DET_LONG_SIZE_DEFAULT));
         preInstalledScoreThresholds.add(getString(R.string.SCORE_THRESHOLD_DEFAULT));
 
         // Setup UI components
@@ -89,11 +83,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 (ListPreference) findPreference(getString(R.string.CPU_THREAD_NUM_KEY));
         lpCPUPowerMode =
                 (ListPreference) findPreference(getString(R.string.CPU_POWER_MODE_KEY));
-        lpInputColorFormat =
-                (ListPreference) findPreference(getString(R.string.INPUT_COLOR_FORMAT_KEY));
-        etInputShape = (EditTextPreference) findPreference(getString(R.string.INPUT_SHAPE_KEY));
-        etInputMean = (EditTextPreference) findPreference(getString(R.string.INPUT_MEAN_KEY));
-        etInputStd = (EditTextPreference) findPreference(getString(R.string.INPUT_STD_KEY));
+        etDetLongSize = (EditTextPreference) findPreference(getString(R.string.DET_LONG_SIZE_KEY));
         etScoreThreshold = (EditTextPreference) findPreference(getString(R.string.SCORE_THRESHOLD_KEY));
     }
 
@@ -112,11 +102,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 editor.putString(getString(R.string.IMAGE_PATH_KEY), preInstalledImagePaths.get(modelIdx));
                 editor.putString(getString(R.string.CPU_THREAD_NUM_KEY), preInstalledCPUThreadNums.get(modelIdx));
                 editor.putString(getString(R.string.CPU_POWER_MODE_KEY), preInstalledCPUPowerModes.get(modelIdx));
-                editor.putString(getString(R.string.INPUT_COLOR_FORMAT_KEY),
-                        preInstalledInputColorFormats.get(modelIdx));
-                editor.putString(getString(R.string.INPUT_SHAPE_KEY), preInstalledInputShapes.get(modelIdx));
-                editor.putString(getString(R.string.INPUT_MEAN_KEY), preInstalledInputMeans.get(modelIdx));
-                editor.putString(getString(R.string.INPUT_STD_KEY), preInstalledInputStds.get(modelIdx));
+                editor.putString(getString(R.string.DET_LONG_SIZE_KEY), preInstalledDetLongSizes.get(modelIdx));
                 editor.putString(getString(R.string.SCORE_THRESHOLD_KEY),
                         preInstalledScoreThresholds.get(modelIdx));
                 editor.apply();
@@ -129,10 +115,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         etImagePath.setEnabled(enableCustomSettings);
         lpCPUThreadNum.setEnabled(enableCustomSettings);
         lpCPUPowerMode.setEnabled(enableCustomSettings);
-        lpInputColorFormat.setEnabled(enableCustomSettings);
-        etInputShape.setEnabled(enableCustomSettings);
-        etInputMean.setEnabled(enableCustomSettings);
-        etInputStd.setEnabled(enableCustomSettings);
+        etDetLongSize.setEnabled(enableCustomSettings);
         etScoreThreshold.setEnabled(enableCustomSettings);
         modelPath = sharedPreferences.getString(getString(R.string.MODEL_PATH_KEY),
                 getString(R.string.MODEL_PATH_DEFAULT));
@@ -144,14 +127,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
                 getString(R.string.CPU_THREAD_NUM_DEFAULT));
         String cpuPowerMode = sharedPreferences.getString(getString(R.string.CPU_POWER_MODE_KEY),
                 getString(R.string.CPU_POWER_MODE_DEFAULT));
-        String inputColorFormat = sharedPreferences.getString(getString(R.string.INPUT_COLOR_FORMAT_KEY),
-                getString(R.string.INPUT_COLOR_FORMAT_DEFAULT));
-        String inputShape = sharedPreferences.getString(getString(R.string.INPUT_SHAPE_KEY),
-                getString(R.string.INPUT_SHAPE_DEFAULT));
-        String inputMean = sharedPreferences.getString(getString(R.string.INPUT_MEAN_KEY),
-                getString(R.string.INPUT_MEAN_DEFAULT));
-        String inputStd = sharedPreferences.getString(getString(R.string.INPUT_STD_KEY),
-                getString(R.string.INPUT_STD_DEFAULT));
+        String detLongSize = sharedPreferences.getString(getString(R.string.DET_LONG_SIZE_KEY),
+                getString(R.string.DET_LONG_SIZE_DEFAULT));
         String scoreThreshold = sharedPreferences.getString(getString(R.string.SCORE_THRESHOLD_KEY),
                 getString(R.string.SCORE_THRESHOLD_DEFAULT));
         etModelPath.setSummary(modelPath);
@@ -164,14 +141,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
         lpCPUThreadNum.setSummary(cpuThreadNum);
         lpCPUPowerMode.setValue(cpuPowerMode);
         lpCPUPowerMode.setSummary(cpuPowerMode);
-        lpInputColorFormat.setValue(inputColorFormat);
-        lpInputColorFormat.setSummary(inputColorFormat);
-        etInputShape.setSummary(inputShape);
-        etInputShape.setText(inputShape);
-        etInputMean.setSummary(inputMean);
-        etInputMean.setText(inputMean);
-        etInputStd.setSummary(inputStd);
-        etInputStd.setText(inputStd);
+        etDetLongSize.setSummary(detLongSize);
+        etDetLongSize.setText(detLongSize);
         etScoreThreshold.setText(scoreThreshold);
         etScoreThreshold.setSummary(scoreThreshold);
     }

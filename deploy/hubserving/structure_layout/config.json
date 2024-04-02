@@ -1,0 +1,16 @@
+{
+    "modules_info": {
+        "structure_layout": {
+            "init_args": {
+                "version": "1.0.0",
+                "use_gpu": true
+            },
+            "predict_args": {
+            }
+        }
+    },
+    "port": 8871,
+    "use_multiprocess": false,
+    "workers": 2
+}
+

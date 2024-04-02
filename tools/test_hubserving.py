@@ -25,7 +25,9 @@ import numpy as np
 import time
 from PIL import Image
 from ppocr.utils.utility import get_image_file_list
-from tools.infer.utility import draw_ocr, draw_boxes
+from tools.infer.utility import draw_ocr, draw_boxes, str2bool
+from ppstructure.utility import draw_structure_result
+from ppstructure.predict_system import to_excel
 
 import requests
 import json
@@ -69,8 +71,33 @@ def draw_server_result(image_file, res):
         return draw_img
 
 
-def main(url, image_path):
-    image_file_list = get_image_file_list(image_path)
+def save_structure_res(res, save_folder, image_file):
+    img = cv2.imread(image_file)
+    excel_save_folder = os.path.join(save_folder, os.path.basename(image_file))
+    os.makedirs(excel_save_folder, exist_ok=True)
+    # save res
+    with open(
+            os.path.join(excel_save_folder, 'res.txt'), 'w',
+            encoding='utf8') as f:
+        for region in res:
+            if region['type'] == 'Table':
+                excel_path = os.path.join(excel_save_folder,
+                                          '{}.xlsx'.format(region['bbox']))
+                to_excel(region['res'], excel_path)
+            elif region['type'] == 'Figure':
+                x1, y1, x2, y2 = region['bbox']
+                print(region['bbox'])
+                roi_img = img[y1:y2, x1:x2, :]
+                img_path = os.path.join(excel_save_folder,
+                                        '{}.jpg'.format(region['bbox']))
+                cv2.imwrite(img_path, roi_img)
+            else:
+                for text_result in region['res']:
+                    f.write('{}\n'.format(json.dumps(text_result)))
+
+
+def main(args):
+    image_file_list = get_image_file_list(args.image_dir)
     is_visualize = False
     headers = {"Content-type": "application/json"}
     cnt = 0
@@ -80,38 +107,51 @@ def main(url, image_path):
         if img is None:
             logger.info("error in loading image:{}".format(image_file))
             continue
-
-        # 发送HTTP请求
+        img_name = os.path.basename(image_file)
+        # seed http request
         starttime = time.time()
         data = {'images': [cv2_to_base64(img)]}
-        r = requests.post(url=url, headers=headers, data=json.dumps(data))
+        r = requests.post(
+            url=args.server_url, headers=headers, data=json.dumps(data))
         elapse = time.time() - starttime
         total_time += elapse
         logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
         res = r.json()["results"][0]
         logger.info(res)
 
-        if is_visualize:
-            draw_img = draw_server_result(image_file, res)
+        if args.visualize:
+            draw_img = None
+            if 'structure_table' in args.server_url:
+                to_excel(res['html'], './{}.xlsx'.format(img_name))
+            elif 'structure_system' in args.server_url:
+                save_structure_res(res['regions'], args.output, image_file)
+            else:
+                draw_img = draw_server_result(image_file, res)
             if draw_img is not None:
-                draw_img_save = "./server_results/"
-                if not os.path.exists(draw_img_save):
-                    os.makedirs(draw_img_save)
+                if not os.path.exists(args.output):
+                    os.makedirs(args.output)
                 cv2.imwrite(
-                    os.path.join(draw_img_save, os.path.basename(image_file)),
+                    os.path.join(args.output, os.path.basename(image_file)),
                     draw_img[:, :, ::-1])
                 logger.info("The visualized image saved in {}".format(
-                    os.path.join(draw_img_save, os.path.basename(image_file))))
+                    os.path.join(args.output, os.path.basename(image_file))))
         cnt += 1
         if cnt % 100 == 0:
             logger.info("{} processed".format(cnt))
     logger.info("avg time cost: {}".format(float(total_time) / cnt))
 
 
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser(description="args for hub serving")
+    parser.add_argument("--server_url", type=str, required=True)
+    parser.add_argument("--image_dir", type=str, required=True)
+    parser.add_argument("--visualize", type=str2bool, default=False)
+    parser.add_argument("--output", type=str, default='./hubserving_result')
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        logger.info("Usage: %s server_url image_path" % sys.argv[0])
-    else:
-        server_url = sys.argv[1]
-        image_path = sys.argv[2]
-        main(server_url, image_path)
+    args = parse_args()
+    main(args)

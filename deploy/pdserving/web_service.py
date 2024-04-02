@@ -15,10 +15,11 @@ from paddle_serving_server.web_service import WebService, Op
 
 import logging
 import numpy as np
+import copy
 import cv2
 import base64
 # from paddle_serving_app.reader import OCRReader
-from ocr_reader import OCRReader, DetResizeForTest
+from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
@@ -36,7 +37,7 @@ class DetOp(Op):
         self.filter_func = FilterBoxes(10, 10)
         self.post_func = DBPostProcess({
             "thresh": 0.3,
-            "box_thresh": 0.5,
+            "box_thresh": 0.6,
             "max_candidates": 1000,
             "unclip_ratio": 1.5,
             "min_size": 3
@@ -55,14 +56,13 @@ class DetOp(Op):
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
     def postprocess(self, input_dicts, fetch_dict, data_id, log_id):
-        det_out = fetch_dict["save_infer_model/scale_0.tmp_1"]
+        det_out = list(fetch_dict.values())[0]
         ratio_list = [
             float(self.new_h) / self.ori_h, float(self.new_w) / self.ori_w
         ]
         dt_boxes_list = self.post_func(det_out, [ratio_list])
         dt_boxes = self.filter_func(dt_boxes_list[0], [self.ori_h, self.ori_w])
         out_dict = {"dt_boxes": dt_boxes, "image": self.raw_im}
-
         return out_dict, None, ""
 
 
@@ -79,11 +79,13 @@ class RecOp(Op):
         raw_im = input_dict["image"]
         data = np.frombuffer(raw_im, np.uint8)
         im = cv2.imdecode(data, cv2.IMREAD_COLOR)
-        dt_boxes = input_dict["dt_boxes"]
-        dt_boxes = self.sorted_boxes(dt_boxes)
+        self.dt_list = input_dict["dt_boxes"]
+        self.dt_list = self.sorted_boxes(self.dt_list)
+        # deepcopy to save origin dt_boxes
+        dt_boxes = copy.deepcopy(self.dt_list)
         feed_list = []
         img_list = []
-        max_wh_ratio = 0
+        max_wh_ratio = 320 / 48.
         ## Many mini-batchs, the type of feed_data is list.
         max_batch_size = 6  # len(dt_boxes)
 
@@ -126,25 +128,30 @@ class RecOp(Op):
                 imgs[id] = norm_img
             feed = {"x": imgs.copy()}
             feed_list.append(feed)
-
         return feed_list, False, None, ""
 
     def postprocess(self, input_dicts, fetch_data, data_id, log_id):
-        res_list = []
+        rec_list = []
+        dt_num = len(self.dt_list)
         if isinstance(fetch_data, dict):
             if len(fetch_data) > 0:
                 rec_batch_res = self.ocr_reader.postprocess(
                     fetch_data, with_score=True)
                 for res in rec_batch_res:
-                    res_list.append(res[0])
+                    rec_list.append(res)
         elif isinstance(fetch_data, list):
             for one_batch in fetch_data:
                 one_batch_res = self.ocr_reader.postprocess(
                     one_batch, with_score=True)
                 for res in one_batch_res:
-                    res_list.append(res[0])
-
-        res = {"res": str(res_list)}
+                    rec_list.append(res)
+        result_list = []
+        for i in range(dt_num):
+            text = rec_list[i]
+            dt_box = self.dt_list[i]
+            if text[1] >= 0.5:
+                result_list.append([text, dt_box.tolist()])
+        res = {"result": str(result_list)}
         return res, None, ""
 
 
@@ -156,5 +163,6 @@ class OcrService(WebService):
 
 
 uci_service = OcrService(name="ocr")
-uci_service.prepare_pipeline_config("config.yml")
+FLAGS = ArgsParser().parse_args()
+uci_service.prepare_pipeline_config(yml_dict=FLAGS.conf_dict)
 uci_service.run_service()

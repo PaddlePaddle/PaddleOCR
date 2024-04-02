@@ -28,6 +28,7 @@ Optimizer:
   lr:
     name: Cosine
     learning_rate: 0.001
+    warmup_epoch: 5
   regularizer:
     name: 'L2'
     factor: 0.00001

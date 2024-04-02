@@ -81,13 +81,8 @@ cd TensorRT-${version}/graphsurgeon
 
 ### 3.3 安装PaddlePaddle
 
-下载支持TensorRT版本的Paddle安装包，注意安装包的TensorRT版本需要与本地TensorRT一致，下载[链接](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#python)
-选择下载 linux-cuda10.2-trt7-gcc8.2 Python3.7版本的Paddle：
-```
-# 从下载链接中可以看到是paddle2.1.1-cuda10.2-cudnn8.1版本
-wget  https://paddle-wheel.bj.bcebos.com/with-trt/2.1.1-gpu-cuda10.2-cudnn8.1-mkl-gcc8.2/paddlepaddle_gpu-2.1.1-cp37-cp37m-linux_x86_64.whl
-pip3.7 install -U paddlepaddle_gpu-2.1.1-cp37-cp37m-linux_x86_64.whl
-```
+下载[链接](https://www.paddlepaddle.org.cn/install/quick)
+
 
 ## 4. 安装PaddleOCR依赖
 ```

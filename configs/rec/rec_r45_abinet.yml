@@ -1,0 +1,103 @@
+Global:
+  use_gpu: True
+  epoch_num: 10
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/r45_abinet/
+  save_epoch_step: 1
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model: ./pretrain_models/abinet_vl_pretrained
+  checkpoints:
+  save_inference_dir: ./output/rec/r45_abinet/infer
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_dict_path:
+  character_type: en
+  max_text_length: &max_text_length 25
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_abinet.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.99
+  clip_norm: 20.0
+  lr:
+    name: Piecewise
+    decay_epochs: [6]
+    values: [0.0001, 0.00001]
+  regularizer:
+    name: 'L2'
+    factor: 0.
+
+Architecture:
+  model_type: rec
+  algorithm: ABINet
+  in_channels: 3
+  Transform:
+  Backbone:
+    name: ResNet45
+  Head:
+    name: ABINetHead
+    use_lang: True
+    iter_size: 3
+    max_length: *max_text_length
+    image_size: [ &h 32, &w 128 ]  # [ h, w ]
+
+
+Loss:
+  name: CELoss
+  ignore_index: &ignore_index 100 # Must be greater than the number of character classes
+
+PostProcess:
+  name: ABINetLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/training/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - ABINetRecAug:
+      - ABINetLabelEncode: # Class handling label
+          ignore_index: *ignore_index
+      - ABINetRecResizeImg:
+          image_shape: [3, *h, *w]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 96
+    drop_last: True
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/evaluation/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - ABINetLabelEncode: # Class handling label
+          ignore_index: *ignore_index
+      - ABINetRecResizeImg:
+          image_shape: [3, *h, *w]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 256
+    num_workers: 4
+    use_shared_memory: False

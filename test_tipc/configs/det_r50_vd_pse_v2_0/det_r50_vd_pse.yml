@@ -1,0 +1,134 @@
+Global:
+  use_gpu: true
+  epoch_num: 600
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/det_r50_vd_pse/
+  save_epoch_step: 600
+  # evaluation is run every 125 iterations
+  eval_batch_step: [ 0,1000 ]
+  cal_metric_during_train: False
+  pretrained_model: ./pretrain_models/ResNet50_vd_ssld_pretrained
+  checkpoints: #./output/det_r50_vd_pse_batch8_ColorJitter/best_accuracy
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_en/img_10.jpg
+  save_res_path: ./output/det_pse/predicts_pse.txt
+
+Architecture:
+  model_type: det
+  algorithm: PSE
+  Transform:
+  Backbone:
+    name: ResNet_vd
+    layers: 50
+  Neck:
+    name: FPN
+    out_channels: 256
+  Head:
+    name: PSEHead
+    hidden_dim: 256
+    out_channels: 7
+
+Loss:
+  name: PSELoss
+  alpha: 0.7
+  ohem_ratio: 3
+  kernel_sample_mask: pred
+  reduction: none
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Step
+    learning_rate: 0.0001
+    step_size: 200
+    gamma: 0.1
+  regularizer:
+    name: 'L2'
+    factor: 0.0005
+
+PostProcess:
+  name: PSEPostProcess
+  thresh: 0
+  box_thresh: 0.85
+  min_area: 16
+  box_type: quad # 'quad' or 'poly'
+  scale: 1
+
+Metric:
+  name: DetMetric
+  main_indicator: hmean
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/icdar2015/text_localization/
+    label_file_list:
+      - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
+    ratio_list: [ 1.0 ]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - DetLabelEncode: # Class handling label
+      - ColorJitter:
+          brightness: 0.12549019607843137
+          saturation: 0.5
+      - IaaAugment:
+          augmenter_args:
+            - { 'type': Resize, 'args': { 'size': [ 0.5, 3 ] } }
+            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
+            - { 'type': Affine, 'args': { 'rotate': [ -10, 10 ] } }
+      - MakePseGt:
+          kernel_num: 7
+          min_shrink_ratio: 0.4
+          size: 640
+      - RandomCropImgMask:
+          size: [ 640,640 ]
+          main_key: gt_text
+          crop_keys: [ 'image', 'gt_text', 'gt_kernels', 'mask' ]
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [ 0.485, 0.456, 0.406 ]
+          std: [ 0.229, 0.224, 0.225 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'gt_text', 'gt_kernels', 'mask' ] # the order of the dataloader list
+  loader:
+    shuffle: True
+    drop_last: False
+    batch_size_per_card: 8
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/icdar2015/text_localization/
+    label_file_list:
+      - ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
+    ratio_list: [ 1.0 ]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - DetLabelEncode: # Class handling label
+      - DetResizeForTest:
+          limit_side_len: 736
+          limit_type: min
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [ 0.485, 0.456, 0.406 ]
+          std: [ 0.229, 0.224, 0.225 ]
+          order: 'hwc'
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'shape', 'polys', 'ignore_tags' ]
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1 # must be 1
+    num_workers: 8

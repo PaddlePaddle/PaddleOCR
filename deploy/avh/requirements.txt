@@ -1,0 +1,4 @@
+paddlepaddle
+numpy
+opencv-python
+typing-extensions

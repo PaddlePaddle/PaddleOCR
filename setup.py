@@ -14,11 +14,25 @@
 
 from setuptools import setup
 from io import open
-from paddleocr import VERSION
+import sys
+import subprocess
 
-with open('requirements.txt', encoding="utf-8-sig") as f:
-    requirements = f.readlines()
-    requirements.append('tqdm')
+# get version by matchiing, so will not need to setup complex env in github aciton
+p = subprocess.Popen("grep ^VERSION ./paddleocr.py | cut -d\\' -f 2", stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, shell=True)
+raw_VERSION, _ = p.communicate()
+VERSION = raw_VERSION.decode().strip()
+
+def load_requirements(file_list=None):
+    if file_list is None:
+        file_list = ['requirements.txt']
+    if isinstance(file_list,str):
+        file_list = [file_list]
+    requirements = []
+    for file in file_list:
+        with open(file, encoding="utf-8-sig") as f:
+            requirements.extend(f.readlines())
+    return requirements
 
 
 def readme():
@@ -34,9 +48,9 @@ setup(
     include_package_data=True,
     entry_points={"console_scripts": ["paddleocr= paddleocr.paddleocr:main"]},
     version=VERSION,
-    install_requires=requirements,
+    install_requires=load_requirements(['requirements.txt', 'ppstructure/recovery/requirements.txt']),
     license='Apache License 2.0',
-    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embeded and IoT devices',
+    description='Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embedded and IoT devices',
     long_description=readme(),
     long_description_content_type='text/markdown',
     url='https://github.com/PaddlePaddle/PaddleOCR',

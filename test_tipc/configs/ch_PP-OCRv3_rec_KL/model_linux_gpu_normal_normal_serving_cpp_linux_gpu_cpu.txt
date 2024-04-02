@@ -1,0 +1,19 @@
+===========================serving_params===========================
+model_name:ch_PP-OCRv3_rec_KL
+python:python3.7
+trans_model:-m paddle_serving_client.convert
+--det_dirname:./inference/ch_PP-OCRv3_det_klquant_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--det_serving_server:./deploy/pdserving/ppocr_det_v3_kl_serving/
+--det_serving_client:./deploy/pdserving/ppocr_det_v3_kl_client/
+--rec_dirname:./inference/ch_PP-OCRv3_rec_klquant_infer/
+--rec_serving_server:./deploy/pdserving/ppocr_rec_v3_kl_serving/
+--rec_serving_client:./deploy/pdserving/ppocr_rec_v3_kl_client/
+serving_dir:./deploy/pdserving
+web_service:-m paddle_serving_server.serve
+--op:GeneralDetectionOp GeneralInferOp
+--port:8181
+--gpu_id:"0"|null
+cpp_client:ocr_cpp_client.py
+--image_dir:../../doc/imgs/1.jpg

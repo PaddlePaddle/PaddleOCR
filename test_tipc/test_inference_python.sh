@@ -44,7 +44,7 @@ infer_value1=$(func_parser_value "${lines[17]}")
 
 
 
-LOG_PATH="./test_tipc/output"
+LOG_PATH="./test_tipc/output/${model_name}/${MODE}"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_python.log"
 
@@ -88,7 +88,7 @@ function func_inference(){
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
-                            status_check $last_status "${command}" "${status_log}"
+                            status_check $last_status "${command}" "${status_log}" "${model_name}" "${_save_log_path}"
                         done
                     done
                 done
@@ -113,13 +113,13 @@ function func_inference(){
                         set_tensorrt=$(func_set_params "${use_trt_key}" "${use_trt}")
                         set_precision=$(func_set_params "${precision_key}" "${precision}")
                         set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
-                        set_infer_params0=$(func_set_params "${save_log_key}" "${save_log_value}")
+                        set_infer_params0=$(func_set_params "${rec_model_key}" "${rec_model_value}")
                         set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} ${set_infer_params0} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        status_check $last_status "${command}" "${status_log}" "${model_name}" "${_save_log_path}"
                         
                     done
                 done
@@ -146,14 +146,15 @@ if [ ${MODE} = "whole_infer" ]; then
     for infer_model in ${infer_model_dir_list[*]}; do
         # run export
         if [ ${infer_run_exports[Count]} != "null" ];then
+            _save_log_path="${_log_path}/python_infer_gpu_usetrt_${use_trt}_precision_${precision}_batchsize_${batch_size}_infermodel_${infer_model}.log"
             save_infer_dir=$(dirname $infer_model)
             set_export_weight=$(func_set_params "${export_weight}" "${infer_model}")
             set_save_infer_key=$(func_set_params "${save_infer_key}" "${save_infer_dir}")
-            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key}"
+            export_cmd="${python} ${infer_run_exports[Count]} ${set_export_weight} ${set_save_infer_key} > ${_save_log_path} 2>&1 "
             echo ${infer_run_exports[Count]} 
             eval $export_cmd
             status_export=$?
-            status_check $status_export "${export_cmd}" "${status_log}"
+            status_check $status_export "${export_cmd}" "${status_log}" "${model_name}" "${_save_log_path}"
         else
             save_infer_dir=${infer_model}
         fi

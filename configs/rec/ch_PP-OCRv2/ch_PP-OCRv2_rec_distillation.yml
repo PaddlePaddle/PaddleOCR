@@ -19,6 +19,7 @@ Global:
   use_space_char: true
   distributed: true
   save_res_path: ./output/rec/predicts_pp-OCRv2_distillation.txt
+  amp_custom_black_list: ['matmul','matmul_v2','elementwise_add']
 
 
 Optimizer:
@@ -27,7 +28,7 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Piecewise
-    decay_epochs : [700, 800]
+    decay_epochs : [700]
     values : [0.001, 0.0001]
     warmup_epoch: 5
   regularizer:

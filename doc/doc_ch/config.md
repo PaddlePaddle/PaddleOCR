@@ -45,18 +45,18 @@
 
 ### Optimizer ([ppocr/optimizer](../../ppocr/optimizer))
 
-|         字段             |            用途            |      默认值        |            备注             |
-| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
-|      name        |         优化器类名          |  Adam  |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
-|      beta1           |    设置一阶矩估计的指数衰减率  |       0.9         |               \             |
-|      beta2           |    设置二阶矩估计的指数衰减率  |     0.999         |               \             |
-|      clip_norm           |    所允许的二范数最大值  |              |               \             |
-|      **lr**                |         设置学习率decay方式       |   -    |       \  |
-|        name    |      学习率decay类名   |         Cosine       | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
-|        learning_rate      |    基础学习率        |       0.001      |  \        |
-|      **regularizer**      |  设置网络正则化方式        |       -      | \        |
-|        name      |    正则化类名      |       L2     | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
-|        factor      |    学习率衰减系数       |       0.00004     |  \        |
+|         字段             |      用途       |      默认值      |            备注             |
+| :---------------------: |:-------------:|:-------------:|   :--------------------:   |
+|      name        |     优化器类名     |     Adam      |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
+|      beta1           | 设置一阶矩估计的指数衰减率 |      0.9      |               \             |
+|      beta2           | 设置二阶矩估计的指数衰减率 |     0.999     |               \             |
+|      clip_norm           |  所允许的二范数最大值   |               |               \             |
+|      **lr**                | 设置学习率decay方式  |       -       |       \  |
+|        name    |  学习率decay类名   |    Cosine     | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
+|        learning_rate      |     基础学习率     |     0.001     |  \        |
+|      **regularizer**      |   设置网络正则化方式   |       -       | \        |
+|        name      |     正则化类名     |      L2       | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
+|        factor      |     正则化系数     |       0.00001        |  \        |
 
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))
@@ -66,7 +66,7 @@
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      model_type        |         网络类型          |  rec  |  目前支持`rec`,`det`,`cls`  |
 |      algorithm           |    模型名称  |       CRNN         |               支持列表见[algorithm_overview](./algorithm_overview.md)             |
-|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transform](../../ppocr/modeling/transform)              |
+|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transforms](../../ppocr/modeling/transforms)              |
 |        name    |      变换方式类名   |         TPS       | 目前支持`TPS` |
 |        num_fiducial      |    TPS控制点数        |       20      |  上下边各十个       |
 |        loc_lr      |    定位网络学习率        |       0.1      |  \      |
@@ -94,7 +94,7 @@
 |      name        |         网络loss类名          |  CTCLoss  |  目前支持`CTCLoss`,`DBLoss`,`ClsLoss`  |
 |      balance_loss        |        DBLossloss中是否对正负样本数量进行均衡(使用OHEM)         |  True  |  \  |
 |      ohem_ratio        |        DBLossloss中的OHEM的负正样本比例         |  3  |  \  |
-|      main_loss_type        |        DBLossloss中shrink_map所采用的的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
+|      main_loss_type        |        DBLossloss中shrink_map所采用的loss        |  DiceLoss  |  支持`DiceLoss`,`BCELoss`  |
 |      alpha        |        DBLossloss中shrink_map_loss的系数       |  5  |  \  |
 |      beta        |        DBLossloss中threshold_map_loss的系数       |  10  |  \  |
 
@@ -176,7 +176,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
     --dict {path/of/dict} \             # 字典文件路径
     -o Global.use_gpu=False             # 是否使用gpu
     ...
-    
+
     ```
 
 意大利文由拉丁字母组成，因此执行完命令后会得到名为 rec_latin_lite_train.yml 的配置文件。
@@ -191,21 +191,21 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
       epoch_num: 500
       ...
       character_dict_path:  {path/of/dict} # 字典文件所在路径
-   
+
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/train_list.txt"] # 训练集label路径
       ...
-   
+
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # 数据存放根目录
         label_file_list: ["./train_data/val_list.txt"] # 验证集label路径
       ...
-   
+
    ```
 
 目前PaddleOCR支持的多语言算法有：
@@ -223,4 +223,4 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 | rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  |
 | rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  |
 
-更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
+更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md)

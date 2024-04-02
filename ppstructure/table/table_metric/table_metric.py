@@ -9,7 +9,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # Apache 2.0 License for more details.
 
-import distance
+from rapidfuzz.distance import Levenshtein
 from apted import APTED, Config
 from apted.helpers import Tree
 from lxml import etree, html
@@ -39,17 +39,6 @@ class TableTree(Tree):
 
 
 class CustomConfig(Config):
-    @staticmethod
-    def maximum(*sequences):
-        """Get maximum possible value
-        """
-        return max(map(len, sequences))
-
-    def normalized_distance(self, *sequences):
-        """Get distance from 0 to 1
-        """
-        return float(distance.levenshtein(*sequences)) / self.maximum(*sequences)
-
     def rename(self, node1, node2):
         """Compares attributes of trees"""
         #print(node1.tag)
@@ -58,23 +47,12 @@ class CustomConfig(Config):
         if node1.tag == 'td':
             if node1.content or node2.content:
                 #print(node1.content, )
-                return self.normalized_distance(node1.content, node2.content)
+                return Levenshtein.normalized_distance(node1.content, node2.content)
         return 0.
 
 
 
 class CustomConfig_del_short(Config):
-    @staticmethod
-    def maximum(*sequences):
-        """Get maximum possible value
-        """
-        return max(map(len, sequences))
-
-    def normalized_distance(self, *sequences):
-        """Get distance from 0 to 1
-        """
-        return float(distance.levenshtein(*sequences)) / self.maximum(*sequences)
-
     def rename(self, node1, node2):
         """Compares attributes of trees"""
         if (node1.tag != node2.tag) or (node1.colspan != node2.colspan) or (node1.rowspan != node2.rowspan):
@@ -90,21 +68,10 @@ class CustomConfig_del_short(Config):
                     node1_content = ['####']
                 if len(node2_content) < 3:
                     node2_content = ['####']   
-                return self.normalized_distance(node1_content, node2_content)
+                return Levenshtein.normalized_distance(node1_content, node2_content)
         return 0.
 
 class CustomConfig_del_block(Config):
-    @staticmethod
-    def maximum(*sequences):
-        """Get maximum possible value
-        """
-        return max(map(len, sequences))
-
-    def normalized_distance(self, *sequences):
-        """Get distance from 0 to 1
-        """
-        return float(distance.levenshtein(*sequences)) / self.maximum(*sequences)
-
     def rename(self, node1, node2):
         """Compares attributes of trees"""
         if (node1.tag != node2.tag) or (node1.colspan != node2.colspan) or (node1.rowspan != node2.rowspan):
@@ -120,7 +87,7 @@ class CustomConfig_del_block(Config):
                 while ' ' in node2_content:
                     print(node2_content.index(' '))
                     node2_content.pop(node2_content.index(' '))
-                return self.normalized_distance(node1_content, node2_content)
+                return Levenshtein.normalized_distance(node1_content, node2_content)
         return 0.
 
 class TEDS(object):

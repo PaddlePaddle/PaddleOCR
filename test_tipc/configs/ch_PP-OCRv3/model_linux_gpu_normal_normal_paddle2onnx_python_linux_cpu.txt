@@ -1,0 +1,17 @@
+===========================paddle2onnx_params===========================
+model_name:ch_PP-OCRv3
+python:python3.7
+2onnx: paddle2onnx
+--det_model_dir:./inference/ch_PP-OCRv3_det_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--det_save_file:./inference/det_v3_onnx/model.onnx
+--rec_model_dir:./inference/ch_PP-OCRv3_rec_infer/
+--rec_save_file:./inference/rec_v3_onnx/model.onnx
+--opset_version:10
+--enable_onnx_checker:True
+inference:tools/infer/predict_system.py --rec_image_shape="3,48,320"
+--use_gpu:True|False
+--det_model_dir:
+--rec_model_dir:
+--image_dir:./inference/ch_det_data_50/all-sum-510/00008790.jpg

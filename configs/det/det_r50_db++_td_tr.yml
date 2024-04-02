@@ -1,0 +1,167 @@
+Global:
+  debug: false
+  use_gpu: true
+  epoch_num: 1000
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/det_r50_td_tr/
+  save_epoch_step: 200
+  eval_batch_step:
+  - 0
+  - 2000
+  cal_metric_during_train: false
+  pretrained_model: ./pretrain_models/ResNet50_dcn_asf_synthtext_pretrained
+  checkpoints: null
+  save_inference_dir: null
+  use_visualdl: false
+  infer_img: doc/imgs_en/img_10.jpg
+  save_res_path: ./checkpoints/det_db/predicts_db.txt
+Architecture:
+  model_type: det
+  algorithm: DB++
+  Transform: null
+  Backbone:
+    name: ResNet
+    layers: 50
+    dcn_stage: [False, True, True, True]
+  Neck:
+    name: DBFPN
+    out_channels: 256
+    use_asf: True
+  Head:
+    name: DBHead
+    k: 50
+Loss:
+  name: DBLoss
+  balance_loss: true
+  main_loss_type: BCELoss
+  alpha: 5
+  beta: 10
+  ohem_ratio: 3
+Optimizer:
+  name: Momentum
+  momentum: 0.9
+  lr:
+    name: DecayLearningRate
+    learning_rate: 0.007
+    epochs: 1000
+    factor: 0.9
+    end_lr: 0
+  weight_decay: 0.0001
+PostProcess:
+  name: DBPostProcess
+  thresh: 0.3
+  box_thresh: 0.5
+  max_candidates: 1000
+  unclip_ratio: 1.5
+  det_box_type: 'quad' # 'quad' or 'poly'
+Metric:
+  name: DetMetric
+  main_indicator: hmean
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/                                                                                 
+    label_file_list:                                                                                            
+    - ./train_data/TD_TR/TD500/train_gt_labels.txt                                                           
+    - ./train_data/TD_TR/TR400/gt_labels.txt                                                                 
+    ratio_list:                                                                                                 
+    - 1.0                                                                                                       
+    - 1.0 
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - DetLabelEncode: null
+    - IaaAugment:
+        augmenter_args:
+        - type: Fliplr
+          args:
+            p: 0.5
+        - type: Affine
+          args:
+            rotate:
+            - -10
+            - 10
+        - type: Resize
+          args:
+            size:
+            - 0.5
+            - 3
+    - EastRandomCropData:
+        size:
+        - 640
+        - 640
+        max_tries: 10
+        keep_ratio: true
+    - MakeShrinkMap:
+        shrink_ratio: 0.4
+        min_text_size: 8
+    - MakeBorderMap:
+        shrink_ratio: 0.4
+        thresh_min: 0.3
+        thresh_max: 0.7
+    - NormalizeImage:
+        scale: 1./255.
+        mean:
+        - 0.48109378172549
+        - 0.45752457890196
+        - 0.40787054090196
+        std:
+        - 1.0
+        - 1.0
+        - 1.0
+        order: hwc
+    - ToCHWImage: null
+    - KeepKeys:
+        keep_keys:
+        - image
+        - threshold_map
+        - threshold_mask
+        - shrink_map
+        - shrink_mask
+  loader:
+    shuffle: true
+    drop_last: false
+    batch_size_per_card: 4
+    num_workers: 8
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/                                                                          
+    label_file_list:                                                                                            
+    - ./train_data/TD_TR/TD500/test_gt_labels.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - DetLabelEncode: null
+    - DetResizeForTest:
+        image_shape:
+        - 736
+        - 736
+        keep_ratio: True
+    - NormalizeImage:
+        scale: 1./255.
+        mean:
+        - 0.48109378172549
+        - 0.45752457890196
+        - 0.40787054090196
+        std:
+        - 1.0
+        - 1.0
+        - 1.0
+        order: hwc
+    - ToCHWImage: null
+    - KeepKeys:
+        keep_keys:
+        - image
+        - shape
+        - polys
+        - ignore_tags
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 1
+    num_workers: 2
+profiler_options: null

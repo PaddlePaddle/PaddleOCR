@@ -11,8 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import numpy as np
-import string
 import paddle
 from paddle.nn import functional as F
 import re
@@ -24,8 +24,9 @@ class BaseRecLabelDecode(object):
     def __init__(self, character_dict_path=None, use_space_char=False):
         self.beg_str = "sos"
         self.end_str = "eos"
-
+        self.reverse = False
         self.character_str = []
+
         if character_dict_path is None:
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
@@ -38,6 +39,8 @@ class BaseRecLabelDecode(object):
             if use_space_char:
                 self.character_str.append(" ")
             dict_character = list(self.character_str)
+            if 'arabic' in character_dict_path:
+                self.reverse = True
 
         dict_character = self.add_special_char(dict_character)
         self.dict = {}
@@ -45,33 +48,126 @@ class BaseRecLabelDecode(object):
             self.dict[char] = i
         self.character = dict_character
 
+    def pred_reverse(self, pred):
+        pred_re = []
+        c_current = ''
+        for c in pred:
+            if not bool(re.search('[a-zA-Z0-9 :*./%+-]', c)):
+                if c_current != '':
+                    pred_re.append(c_current)
+                pred_re.append(c)
+                c_current = ''
+            else:
+                c_current += c
+        if c_current != '':
+            pred_re.append(c_current)
+
+        return ''.join(pred_re[::-1])
+
     def add_special_char(self, dict_character):
         return dict_character
 
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+    def get_word_info(self, text, selection):
+        """
+        Group the decoded characters and record the corresponding decoded positions. 
+
+        Args:
+            text: the decoded text
+            selection: the bool array that identifies which columns of features are decoded as non-separated characters 
+        Returns:
+            word_list: list of the grouped words
+            word_col_list: list of decoding positions corresponding to each character in the grouped word
+            state_list: list of marker to identify the type of grouping words, including two types of grouping words: 
+                        - 'cn': continous chinese characters (e.g., 你好啊)
+                        - 'en&num': continous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
+                        The remaining characters in text are treated as separators between groups (e.g., space, '(', ')', etc.).
+        """
+        state = None
+        word_content = []
+        word_col_content = []
+        word_list = []
+        word_col_list = []
+        state_list = []
+        valid_col = np.where(selection==True)[0]
+
+        for c_i, char in enumerate(text):
+            if '\u4e00' <= char <= '\u9fff':
+                c_state = 'cn'
+            elif bool(re.search('[a-zA-Z0-9]', char)):
+                c_state = 'en&num'
+            else:
+                c_state = 'splitter'
+            
+            if char == '.' and state == 'en&num' and c_i + 1 < len(text) and bool(re.search('[0-9]', text[c_i+1])): # grouping floting number
+                c_state = 'en&num'
+            if char == '-' and state == "en&num": # grouping word with '-', such as 'state-of-the-art'
+                c_state = 'en&num'
+            
+            if state == None:
+                state = c_state
+
+            if state != c_state:
+                if len(word_content) != 0:
+                    word_list.append(word_content)
+                    word_col_list.append(word_col_content)
+                    state_list.append(state)
+                    word_content = []
+                    word_col_content = []
+                state = c_state
+
+            if state != "splitter":
+                word_content.append(char)
+                word_col_content.append(valid_col[c_i])
+
+        if len(word_content) != 0:
+            word_list.append(word_content)
+            word_col_list.append(word_col_content)
+            state_list.append(state)
+
+        return word_list, word_col_list, state_list
+
+    def decode(self,
+               text_index,
+               text_prob=None,
+               is_remove_duplicate=False,
+               return_word_box=False):
         """ convert text-index into text-label. """
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
         batch_size = len(text_index)
         for batch_idx in range(batch_size):
-            char_list = []
-            conf_list = []
-            for idx in range(len(text_index[batch_idx])):
-                if text_index[batch_idx][idx] in ignored_tokens:
-                    continue
-                if is_remove_duplicate:
-                    # only for predict
-                    if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
-                            batch_idx][idx]:
-                        continue
-                char_list.append(self.character[int(text_index[batch_idx][
-                    idx])])
-                if text_prob is not None:
-                    conf_list.append(text_prob[batch_idx][idx])
-                else:
-                    conf_list.append(1)
+            selection = np.ones(len(text_index[batch_idx]), dtype=bool)
+            if is_remove_duplicate:
+                selection[1:] = text_index[batch_idx][1:] != text_index[
+                    batch_idx][:-1]
+            for ignored_token in ignored_tokens:
+                selection &= text_index[batch_idx] != ignored_token
+
+            char_list = [
+                self.character[text_id]
+                for text_id in text_index[batch_idx][selection]
+            ]
+            if text_prob is not None:
+                conf_list = text_prob[batch_idx][selection]
+            else:
+                conf_list = [1] * len(selection)
+            if len(conf_list) == 0:
+                conf_list = [0]
+
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+
+            if self.reverse:  # for arabic rec
+                text = self.pred_reverse(text)
+
+            if return_word_box:
+                word_list, word_col_list, state_list = self.get_word_info(
+                    text, selection)
+                result_list.append((text, np.mean(conf_list).tolist(), [
+                    len(text_index[batch_idx]), word_list, word_col_list,
+                    state_list
+                ]))
+            else:
+                result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def get_ignored_tokens(self):
@@ -86,14 +182,28 @@ class CTCLabelDecode(BaseRecLabelDecode):
         super(CTCLabelDecode, self).__init__(character_dict_path,
                                              use_space_char)
 
-    def __call__(self, preds, label=None, *args, **kwargs):
-        if isinstance(preds, tuple):
+    def __call__(self,
+                 preds,
+                 label=None,
+                 return_word_box=False,
+                 *args,
+                 **kwargs):
+        if isinstance(preds, tuple) or isinstance(preds, list):
             preds = preds[-1]
         if isinstance(preds, paddle.Tensor):
             preds = preds.numpy()
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=True)
+        text = self.decode(
+            preds_idx,
+            preds_prob,
+            is_remove_duplicate=True,
+            return_word_box=return_word_box)
+        if return_word_box:
+            for rec_idx, rec in enumerate(text):
+                wh_ratio = kwargs['wh_ratio_list'][rec_idx]
+                max_wh_ratio = kwargs['max_wh_ratio']
+                rec[2][0] = rec[2][0] * (wh_ratio / max_wh_ratio)
         if label is None:
             return text
         label = self.decode(label)
@@ -115,6 +225,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
                  use_space_char=False,
                  model_name=["student"],
                  key=None,
+                 multi_head=False,
                  **kwargs):
         super(DistillationCTCLabelDecode, self).__init__(character_dict_path,
                                                          use_space_char)
@@ -123,6 +234,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
         self.model_name = model_name
 
         self.key = key
+        self.multi_head = multi_head
 
     def __call__(self, preds, label=None, *args, **kwargs):
         output = dict()
@@ -130,72 +242,10 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
             pred = preds[name]
             if self.key is not None:
                 pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['ctc']
             output[name] = super().__call__(pred, label=label, *args, **kwargs)
         return output
-
-
-class NRTRLabelDecode(BaseRecLabelDecode):
-    """ Convert between text-label and text-index """
-
-    def __init__(self, character_dict_path=None, use_space_char=True, **kwargs):
-        super(NRTRLabelDecode, self).__init__(character_dict_path,
-                                              use_space_char)
-
-    def __call__(self, preds, label=None, *args, **kwargs):
-
-        if len(preds) == 2:
-            preds_id = preds[0]
-            preds_prob = preds[1]
-            if isinstance(preds_id, paddle.Tensor):
-                preds_id = preds_id.numpy()
-            if isinstance(preds_prob, paddle.Tensor):
-                preds_prob = preds_prob.numpy()
-            if preds_id[0][0] == 2:
-                preds_idx = preds_id[:, 1:]
-                preds_prob = preds_prob[:, 1:]
-            else:
-                preds_idx = preds_id
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
-            if label is None:
-                return text
-            label = self.decode(label[:, 1:])
-        else:
-            if isinstance(preds, paddle.Tensor):
-                preds = preds.numpy()
-            preds_idx = preds.argmax(axis=2)
-            preds_prob = preds.max(axis=2)
-            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
-            if label is None:
-                return text
-            label = self.decode(label[:, 1:])
-        return text, label
-
-    def add_special_char(self, dict_character):
-        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
-        return dict_character
-
-    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
-        result_list = []
-        batch_size = len(text_index)
-        for batch_idx in range(batch_size):
-            char_list = []
-            conf_list = []
-            for idx in range(len(text_index[batch_idx])):
-                if text_index[batch_idx][idx] == 3:  # end
-                    break
-                try:
-                    char_list.append(self.character[int(text_index[batch_idx][
-                        idx])])
-                except:
-                    continue
-                if text_prob is not None:
-                    conf_list.append(text_prob[batch_idx][idx])
-                else:
-                    conf_list.append(1)
-            text = ''.join(char_list)
-            result_list.append((text.lower(), np.mean(conf_list)))
-        return result_list
 
 
 class AttnLabelDecode(BaseRecLabelDecode):
@@ -239,7 +289,7 @@ class AttnLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -278,6 +328,95 @@ class AttnLabelDecode(BaseRecLabelDecode):
         return idx
 
 
+class RFLLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(RFLLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = dict_character
+        dict_character = [self.beg_str] + dict_character + [self.end_str]
+        return dict_character
+
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        [beg_idx, end_idx] = self.get_ignored_tokens()
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                if text_index[batch_idx][idx] in ignored_tokens:
+                    continue
+                if int(text_index[batch_idx][idx]) == int(end_idx):
+                    break
+                if is_remove_duplicate:
+                    # only for predict
+                    if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
+                            batch_idx][idx]:
+                        continue
+                char_list.append(self.character[int(text_index[batch_idx][
+                    idx])])
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        # if seq_outputs is not None:
+        if isinstance(preds, tuple) or isinstance(preds, list):
+            cnt_outputs, seq_outputs = preds
+            if isinstance(seq_outputs, paddle.Tensor):
+                seq_outputs = seq_outputs.numpy()
+            preds_idx = seq_outputs.argmax(axis=2)
+            preds_prob = seq_outputs.max(axis=2)
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+
+            if label is None:
+                return text
+            label = self.decode(label, is_remove_duplicate=False)
+            return text, label
+
+        else:
+            cnt_outputs = preds
+            if isinstance(cnt_outputs, paddle.Tensor):
+                cnt_outputs = cnt_outputs.numpy()
+            cnt_length = []
+            for lens in cnt_outputs:
+                length = round(np.sum(lens))
+                cnt_length.append(length)
+            if label is None:
+                return cnt_length
+            label = self.decode(label, is_remove_duplicate=False)
+            length = [len(res[0]) for res in label]
+            return cnt_length, length
+
+    def get_ignored_tokens(self):
+        beg_idx = self.get_beg_end_flag_idx("beg")
+        end_idx = self.get_beg_end_flag_idx("end")
+        return [beg_idx, end_idx]
+
+    def get_beg_end_flag_idx(self, beg_or_end):
+        if beg_or_end == "beg":
+            idx = np.array(self.dict[self.beg_str])
+        elif beg_or_end == "end":
+            idx = np.array(self.dict[self.end_str])
+        else:
+            assert False, "unsupport type %s in get_beg_end_flag_idx" \
+                          % beg_or_end
+        return idx
+
+
 class SEEDLabelDecode(BaseRecLabelDecode):
     """ Convert between text-label and text-index """
 
@@ -287,9 +426,12 @@ class SEEDLabelDecode(BaseRecLabelDecode):
                                               use_space_char)
 
     def add_special_char(self, dict_character):
-        self.beg_str = "sos"
+        self.padding_str = "padding"
         self.end_str = "eos"
-        dict_character = dict_character + [self.end_str]
+        self.unknown = "unknown"
+        dict_character = dict_character + [
+            self.end_str, self.padding_str, self.unknown
+        ]
         return dict_character
 
     def get_ignored_tokens(self):
@@ -328,7 +470,7 @@ class SEEDLabelDecode(BaseRecLabelDecode):
                 else:
                     conf_list.append(1)
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -412,7 +554,7 @@ class SRNLabelDecode(BaseRecLabelDecode):
                     conf_list.append(1)
 
             text = ''.join(char_list)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def add_special_char(self, dict_character):
@@ -435,144 +577,98 @@ class SRNLabelDecode(BaseRecLabelDecode):
         return idx
 
 
-class TableLabelDecode(object):
-    """  """
+class ParseQLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+    BOS = '[B]'
+    EOS = '[E]'
+    PAD = '[P]'
 
-    def __init__(self, character_dict_path, **kwargs):
-        list_character, list_elem = self.load_char_elem_dict(
-            character_dict_path)
-        list_character = self.add_special_char(list_character)
-        list_elem = self.add_special_char(list_elem)
-        self.dict_character = {}
-        self.dict_idx_character = {}
-        for i, char in enumerate(list_character):
-            self.dict_idx_character[i] = char
-            self.dict_character[char] = i
-        self.dict_elem = {}
-        self.dict_idx_elem = {}
-        for i, elem in enumerate(list_elem):
-            self.dict_idx_elem[i] = elem
-            self.dict_elem[elem] = i
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ParseQLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
 
-    def load_char_elem_dict(self, character_dict_path):
-        list_character = []
-        list_elem = []
-        with open(character_dict_path, "rb") as fin:
-            lines = fin.readlines()
-            substr = lines[0].decode('utf-8').strip("\n").strip("\r\n").split(
-                "\t")
-            character_num = int(substr[0])
-            elem_num = int(substr[1])
-            for cno in range(1, 1 + character_num):
-                character = lines[cno].decode('utf-8').strip("\n").strip("\r\n")
-                list_character.append(character)
-            for eno in range(1 + character_num, 1 + character_num + elem_num):
-                elem = lines[eno].decode('utf-8').strip("\n").strip("\r\n")
-                list_elem.append(elem)
-        return list_character, list_elem
-
-    def add_special_char(self, list_character):
-        self.beg_str = "sos"
-        self.end_str = "eos"
-        list_character = [self.beg_str] + list_character + [self.end_str]
-        return list_character
-
-    def __call__(self, preds):
-        structure_probs = preds['structure_probs']
-        loc_preds = preds['loc_preds']
-        if isinstance(structure_probs, paddle.Tensor):
-            structure_probs = structure_probs.numpy()
-        if isinstance(loc_preds, paddle.Tensor):
-            loc_preds = loc_preds.numpy()
-        structure_idx = structure_probs.argmax(axis=2)
-        structure_probs = structure_probs.max(axis=2)
-        structure_str, structure_pos, result_score_list, result_elem_idx_list = self.decode(
-            structure_idx, structure_probs, 'elem')
-        res_html_code_list = []
-        res_loc_list = []
-        batch_num = len(structure_str)
-        for bno in range(batch_num):
-            res_loc = []
-            for sno in range(len(structure_str[bno])):
-                text = structure_str[bno][sno]
-                if text in ['<td>', '<td']:
-                    pos = structure_pos[bno][sno]
-                    res_loc.append(loc_preds[bno, pos])
-            res_html_code = ''.join(structure_str[bno])
-            res_loc = np.array(res_loc)
-            res_html_code_list.append(res_html_code)
-            res_loc_list.append(res_loc)
-        return {
-            'res_html_code': res_html_code_list,
-            'res_loc': res_loc_list,
-            'res_score_list': result_score_list,
-            'res_elem_idx_list': result_elem_idx_list,
-            'structure_str_list': structure_str
-        }
-
-    def decode(self, text_index, structure_probs, char_or_elem):
-        """convert text-label into text-index.
-        """
-        if char_or_elem == "char":
-            current_dict = self.dict_idx_character
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, dict):
+            pred = preds['predict']
         else:
-            current_dict = self.dict_idx_elem
-            ignored_tokens = self.get_ignored_tokens('elem')
-            beg_idx, end_idx = ignored_tokens
+            pred = preds
 
+        char_num = len(
+            self.character_str
+        ) + 1  # We don't predict <bos> nor <pad>, with only addition <eos>
+        if isinstance(pred, paddle.Tensor):
+            pred = pred.numpy()
+        B, L = pred.shape[:2]
+        pred = np.reshape(pred, [-1, char_num])
+
+        preds_idx = np.argmax(pred, axis=1)
+        preds_prob = np.max(pred, axis=1)
+
+        preds_idx = np.reshape(preds_idx, [B, L])
+        preds_prob = np.reshape(preds_prob, [B, L])
+
+        if label is None:
+            text = self.decode(preds_idx, preds_prob, raw=False)
+            return text
+
+        text = self.decode(preds_idx, preds_prob, raw=False)
+        label = self.decode(label, None, False)
+
+        return text, label
+
+    def decode(self, text_index, text_prob=None, raw=False):
+        """ convert text-index into text-label. """
         result_list = []
-        result_pos_list = []
-        result_score_list = []
-        result_elem_idx_list = []
+        ignored_tokens = self.get_ignored_tokens()
         batch_size = len(text_index)
+
         for batch_idx in range(batch_size):
             char_list = []
-            elem_pos_list = []
-            elem_idx_list = []
-            score_list = []
-            for idx in range(len(text_index[batch_idx])):
-                tmp_elem_idx = int(text_index[batch_idx][idx])
-                if idx > 0 and tmp_elem_idx == end_idx:
-                    break
-                if tmp_elem_idx in ignored_tokens:
+            conf_list = []
+
+            index = text_index[batch_idx, :]
+            prob = None
+            if text_prob is not None:
+                prob = text_prob[batch_idx, :]
+
+            if not raw:
+                index, prob = self._filter(index, prob)
+
+            for idx in range(len(index)):
+                if index[idx] in ignored_tokens:
                     continue
+                char_list.append(self.character[int(index[idx])])
+                if text_prob is not None:
+                    conf_list.append(prob[idx])
+                else:
+                    conf_list.append(1)
 
-                char_list.append(current_dict[tmp_elem_idx])
-                elem_pos_list.append(idx)
-                score_list.append(structure_probs[batch_idx, idx])
-                elem_idx_list.append(tmp_elem_idx)
-            result_list.append(char_list)
-            result_pos_list.append(elem_pos_list)
-            result_score_list.append(score_list)
-            result_elem_idx_list.append(elem_idx_list)
-        return result_list, result_pos_list, result_score_list, result_elem_idx_list
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
 
-    def get_ignored_tokens(self, char_or_elem):
-        beg_idx = self.get_beg_end_flag_idx("beg", char_or_elem)
-        end_idx = self.get_beg_end_flag_idx("end", char_or_elem)
-        return [beg_idx, end_idx]
+        return result_list
 
-    def get_beg_end_flag_idx(self, beg_or_end, char_or_elem):
-        if char_or_elem == "char":
-            if beg_or_end == "beg":
-                idx = self.dict_character[self.beg_str]
-            elif beg_or_end == "end":
-                idx = self.dict_character[self.end_str]
-            else:
-                assert False, "Unsupport type %s in get_beg_end_flag_idx of char" \
-                              % beg_or_end
-        elif char_or_elem == "elem":
-            if beg_or_end == "beg":
-                idx = self.dict_elem[self.beg_str]
-            elif beg_or_end == "end":
-                idx = self.dict_elem[self.end_str]
-            else:
-                assert False, "Unsupport type %s in get_beg_end_flag_idx of elem" \
-                              % beg_or_end
-        else:
-            assert False, "Unsupport type %s in char_or_elem" \
-                          % char_or_elem
-        return idx
+    def add_special_char(self, dict_character):
+        dict_character = [self.EOS] + dict_character + [self.BOS, self.PAD]
+        return dict_character
+
+    def _filter(self, ids, probs=None):
+        ids = ids.tolist()
+        try:
+            eos_idx = ids.index(self.dict[self.EOS])
+        except ValueError:
+            eos_idx = len(ids)  # Nothing to truncate.
+        # Truncate after EOS
+        ids = ids[:eos_idx]
+        if probs is not None:
+            probs = probs[:eos_idx +
+                          1]  # but include prob. for EOS (if it exists)
+        return ids, probs
+
+    def get_ignored_tokens(self):
+        return [self.dict[self.BOS], self.dict[self.EOS], self.dict[self.PAD]]
 
 
 class SARLabelDecode(BaseRecLabelDecode):
@@ -631,7 +727,7 @@ class SARLabelDecode(BaseRecLabelDecode):
                 comp = re.compile('[^A-Z^a-z^0-9^\u4e00-\u9fa5]')
                 text = text.lower()
                 text = comp.sub('', text)
-            result_list.append((text, np.mean(conf_list)))
+            result_list.append((text, np.mean(conf_list).tolist()))
         return result_list
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -649,3 +745,477 @@ class SARLabelDecode(BaseRecLabelDecode):
 
     def get_ignored_tokens(self):
         return [self.padding_idx]
+
+
+class SATRNLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(SATRNLabelDecode, self).__init__(character_dict_path,
+                                               use_space_char)
+
+        self.rm_symbol = kwargs.get('rm_symbol', False)
+
+    def add_special_char(self, dict_character):
+        beg_end_str = "<BOS/EOS>"
+        unknown_str = "<UKN>"
+        padding_str = "<PAD>"
+        dict_character = dict_character + [unknown_str]
+        self.unknown_idx = len(dict_character) - 1
+        dict_character = dict_character + [beg_end_str]
+        self.start_idx = len(dict_character) - 1
+        self.end_idx = len(dict_character) - 1
+        dict_character = dict_character + [padding_str]
+        self.padding_idx = len(dict_character) - 1
+        return dict_character
+
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                if text_index[batch_idx][idx] in ignored_tokens:
+                    continue
+                if int(text_index[batch_idx][idx]) == int(self.end_idx):
+                    if text_prob is None and idx == 0:
+                        continue
+                    else:
+                        break
+                if is_remove_duplicate:
+                    # only for predict
+                    if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
+                            batch_idx][idx]:
+                        continue
+                char_list.append(self.character[int(text_index[batch_idx][
+                    idx])])
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+            text = ''.join(char_list)
+            if self.rm_symbol:
+                comp = re.compile('[^A-Z^a-z^0-9^\u4e00-\u9fa5]')
+                text = text.lower()
+                text = comp.sub('', text)
+            result_list.append((text, np.mean(conf_list).tolist()))
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+
+        if label is None:
+            return text
+        label = self.decode(label, is_remove_duplicate=False)
+        return text, label
+
+    def get_ignored_tokens(self):
+        return [self.padding_idx]
+
+
+class DistillationSARLabelDecode(SARLabelDecode):
+    """
+    Convert 
+    Convert between text-label and text-index
+    """
+
+    def __init__(self,
+                 character_dict_path=None,
+                 use_space_char=False,
+                 model_name=["student"],
+                 key=None,
+                 multi_head=False,
+                 **kwargs):
+        super(DistillationSARLabelDecode, self).__init__(character_dict_path,
+                                                         use_space_char)
+        if not isinstance(model_name, list):
+            model_name = [model_name]
+        self.model_name = model_name
+
+        self.key = key
+        self.multi_head = multi_head
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        output = dict()
+        for name in self.model_name:
+            pred = preds[name]
+            if self.key is not None:
+                pred = pred[self.key]
+            if self.multi_head and isinstance(pred, dict):
+                pred = pred['sar']
+            output[name] = super().__call__(pred, label=label, *args, **kwargs)
+        return output
+
+
+class PRENLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(PRENLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def add_special_char(self, dict_character):
+        padding_str = '<PAD>'  # 0 
+        end_str = '<EOS>'  # 1
+        unknown_str = '<UNK>'  # 2
+
+        dict_character = [padding_str, end_str, unknown_str] + dict_character
+        self.padding_idx = 0
+        self.end_idx = 1
+        self.unknown_idx = 2
+
+        return dict_character
+
+    def decode(self, text_index, text_prob=None):
+        """ convert text-index into text-label. """
+        result_list = []
+        batch_size = len(text_index)
+
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                if text_index[batch_idx][idx] == self.end_idx:
+                    break
+                if text_index[batch_idx][idx] in \
+                    [self.padding_idx, self.unknown_idx]:
+                    continue
+                char_list.append(self.character[int(text_index[batch_idx][
+                    idx])])
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+
+            text = ''.join(char_list)
+            if len(text) > 0:
+                result_list.append((text, np.mean(conf_list).tolist()))
+            else:
+                # here confidence of empty recog result is 1
+                result_list.append(('', 1))
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+
+class NRTRLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=True, **kwargs):
+        super(NRTRLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+
+        if len(preds) == 2:
+            preds_id = preds[0]
+            preds_prob = preds[1]
+            if isinstance(preds_id, paddle.Tensor):
+                preds_id = preds_id.numpy()
+            if isinstance(preds_prob, paddle.Tensor):
+                preds_prob = preds_prob.numpy()
+            if preds_id[0][0] == 2:
+                preds_idx = preds_id[:, 1:]
+                preds_prob = preds_prob[:, 1:]
+            else:
+                preds_idx = preds_id
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+            if label is None:
+                return text
+            label = self.decode(label[:, 1:])
+        else:
+            if isinstance(preds, paddle.Tensor):
+                preds = preds.numpy()
+            preds_idx = preds.argmax(axis=2)
+            preds_prob = preds.max(axis=2)
+            text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+            if label is None:
+                return text
+            label = self.decode(label[:, 1:])
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['blank', '<unk>', '<s>', '</s>'] + dict_character
+        return dict_character
+
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            char_list = []
+            conf_list = []
+            for idx in range(len(text_index[batch_idx])):
+                try:
+                    char_idx = self.character[int(text_index[batch_idx][idx])]
+                except:
+                    continue
+                if char_idx == '</s>':  # end
+                    break
+                char_list.append(char_idx)
+                if text_prob is not None:
+                    conf_list.append(text_prob[batch_idx][idx])
+                else:
+                    conf_list.append(1)
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
+        return result_list
+
+
+class ViTSTRLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ViTSTRLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, paddle.Tensor):
+            preds = preds[:, 1:].numpy()
+        else:
+            preds = preds[:, 1:]
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label[:, 1:])
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['<s>', '</s>'] + dict_character
+        return dict_character
+
+
+class ABINetLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(ABINetLabelDecode, self).__init__(character_dict_path,
+                                                use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, dict):
+            preds = preds['align'][-1].numpy()
+        elif isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        else:
+            preds = preds
+
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character
+
+
+class SPINLabelDecode(AttnLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(SPINLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def add_special_char(self, dict_character):
+        self.beg_str = "sos"
+        self.end_str = "eos"
+        dict_character = dict_character
+        dict_character = [self.beg_str] + [self.end_str] + dict_character
+        return dict_character
+
+
+class VLLabelDecode(BaseRecLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(VLLabelDecode, self).__init__(character_dict_path, use_space_char)
+        self.max_text_length = kwargs.get('max_text_length', 25)
+        self.nclass = len(self.character) + 1
+
+    def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
+        """ convert text-index into text-label. """
+        result_list = []
+        ignored_tokens = self.get_ignored_tokens()
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            selection = np.ones(len(text_index[batch_idx]), dtype=bool)
+            if is_remove_duplicate:
+                selection[1:] = text_index[batch_idx][1:] != text_index[
+                    batch_idx][:-1]
+            for ignored_token in ignored_tokens:
+                selection &= text_index[batch_idx] != ignored_token
+
+            char_list = [
+                self.character[text_id - 1]
+                for text_id in text_index[batch_idx][selection]
+            ]
+            if text_prob is not None:
+                conf_list = text_prob[batch_idx][selection]
+            else:
+                conf_list = [1] * len(selection)
+            if len(conf_list) == 0:
+                conf_list = [0]
+
+            text = ''.join(char_list)
+            result_list.append((text, np.mean(conf_list).tolist()))
+        return result_list
+
+    def __call__(self, preds, label=None, length=None, *args, **kwargs):
+        if len(preds) == 2:  # eval mode
+            text_pre, x = preds
+            b = text_pre.shape[1]
+            lenText = self.max_text_length
+            nsteps = self.max_text_length
+
+            if not isinstance(text_pre, paddle.Tensor):
+                text_pre = paddle.to_tensor(text_pre, dtype='float32')
+
+            out_res = paddle.zeros(
+                shape=[lenText, b, self.nclass], dtype=x.dtype)
+            out_length = paddle.zeros(shape=[b], dtype=x.dtype)
+            now_step = 0
+            for _ in range(nsteps):
+                if 0 in out_length and now_step < nsteps:
+                    tmp_result = text_pre[now_step, :, :]
+                    out_res[now_step] = tmp_result
+                    tmp_result = tmp_result.topk(1)[1].squeeze(axis=1)
+                    for j in range(b):
+                        if out_length[j] == 0 and tmp_result[j] == 0:
+                            out_length[j] = now_step + 1
+                    now_step += 1
+            for j in range(0, b):
+                if int(out_length[j]) == 0:
+                    out_length[j] = nsteps
+            start = 0
+            output = paddle.zeros(
+                shape=[int(out_length.sum()), self.nclass], dtype=x.dtype)
+            for i in range(0, b):
+                cur_length = int(out_length[i])
+                output[start:start + cur_length] = out_res[0:cur_length, i, :]
+                start += cur_length
+            net_out = output
+            length = out_length
+
+        else:  # train mode
+            net_out = preds[0]
+            length = length
+            net_out = paddle.concat([t[:l] for t, l in zip(net_out, length)])
+        text = []
+        if not isinstance(net_out, paddle.Tensor):
+            net_out = paddle.to_tensor(net_out, dtype='float32')
+        net_out = F.softmax(net_out, axis=1)
+        for i in range(0, length.shape[0]):
+            if i == 0:
+                start_idx = 0
+                end_idx = int(length[i])
+            else:
+                start_idx = int(length[:i].sum())
+                end_idx = int(length[:i].sum() + length[i])
+            preds_idx = net_out[start_idx:end_idx].topk(1)[1][:, 0].tolist()
+            preds_text = ''.join([
+                self.character[idx - 1]
+                if idx > 0 and idx <= len(self.character) else ''
+                for idx in preds_idx
+            ])
+            preds_prob = net_out[start_idx:end_idx].topk(1)[0][:, 0]
+            preds_prob = paddle.exp(
+                paddle.log(preds_prob).sum() / (preds_prob.shape[0] + 1e-6))
+            text.append((preds_text, float(preds_prob)))
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+
+class CANLabelDecode(BaseRecLabelDecode):
+    """ Convert between latex-symbol and symbol-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(CANLabelDecode, self).__init__(character_dict_path,
+                                             use_space_char)
+
+    def decode(self, text_index, preds_prob=None):
+        result_list = []
+        batch_size = len(text_index)
+        for batch_idx in range(batch_size):
+            seq_end = text_index[batch_idx].argmin(0)
+            idx_list = text_index[batch_idx][:seq_end].tolist()
+            symbol_list = [self.character[idx] for idx in idx_list]
+            probs = []
+            if preds_prob is not None:
+                probs = preds_prob[batch_idx][:len(symbol_list)].tolist()
+
+            result_list.append([' '.join(symbol_list), probs])
+        return result_list
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        pred_prob, _, _, _ = preds
+        preds_idx = pred_prob.argmax(axis=2)
+
+        text = self.decode(preds_idx)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+
+class CPPDLabelDecode(NRTRLabelDecode):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, character_dict_path=None, use_space_char=False,
+                 **kwargs):
+        super(CPPDLabelDecode, self).__init__(character_dict_path,
+                                              use_space_char)
+
+    def __call__(self, preds, label=None, *args, **kwargs):
+        if isinstance(preds, tuple):
+            if isinstance(preds[-1], dict):
+                preds = preds[-1]['align'][-1].numpy()
+            else:
+                preds = preds[-1].numpy()
+        if isinstance(preds, paddle.Tensor):
+            preds = preds.numpy()
+        else:
+            preds = preds
+        preds_idx = preds.argmax(axis=2)
+        preds_prob = preds.max(axis=2)
+        text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
+        if label is None:
+            return text
+        label = self.decode(label)
+        return text, label
+
+    def add_special_char(self, dict_character):
+        dict_character = ['</s>'] + dict_character
+        return dict_character

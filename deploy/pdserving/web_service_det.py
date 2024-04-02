@@ -18,7 +18,7 @@ import numpy as np
 import cv2
 import base64
 # from paddle_serving_app.reader import OCRReader
-from ocr_reader import OCRReader, DetResizeForTest
+from ocr_reader import OCRReader, DetResizeForTest, ArgsParser
 from paddle_serving_app.reader import Sequential, ResizeByFactor
 from paddle_serving_app.reader import Div, Normalize, Transpose
 from paddle_serving_app.reader import DBPostProcess, FilterBoxes, GetRotateCropImage, SortedBoxes
@@ -55,7 +55,7 @@ class DetOp(Op):
         return {"x": det_img[np.newaxis, :].copy()}, False, None, ""
 
     def postprocess(self, input_dicts, fetch_dict, data_id, log_id):
-        det_out = fetch_dict["save_infer_model/scale_0.tmp_1"]
+        det_out = list(fetch_dict.values())[0]
         ratio_list = [
             float(self.new_h) / self.ori_h, float(self.new_w) / self.ori_w
         ]
@@ -73,5 +73,6 @@ class OcrService(WebService):
 
 
 uci_service = OcrService(name="ocr")
-uci_service.prepare_pipeline_config("config.yml")
+FLAGS = ArgsParser().parse_args()
+uci_service.prepare_pipeline_config(yml_dict=FLAGS.conf_dict)
 uci_service.run_service()

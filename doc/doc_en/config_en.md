@@ -1,7 +1,7 @@
-# Configuration 
+# Configuration
 
 - [1. Optional Parameter List](#1-optional-parameter-list)
-- [2. Intorduction to Global Parameters of Configuration File](#2-intorduction-to-global-parameters-of-configuration-file)
+- [2. Introduction to Global Parameters of Configuration File](#2-introduction-to-global-parameters-of-configuration-file)
 - [3. Multilingual Config File Generation](#3-multilingual-config-file-generation)
 
 <a name="1-optional-parameter-list"></a>
@@ -15,9 +15,9 @@ The following list can be viewed through `--help`
 |          -c              |      ALL       |  Specify configuration file to use  |  None  |  **Please refer to the parameter introduction for configuration file usage** |
 |          -o              |      ALL       |  set configuration options  |  None  |  Configuration using -o has higher priority than the configuration file selected with -c. E.g: -o Global.use_gpu=false |
 
-<a name="2-intorduction-to-global-parameters-of-configuration-file"></a>
+<a name="2-introduction-to-global-parameters-of-configuration-file"></a>
 
-## 2. Intorduction to Global Parameters of Configuration File
+## 2. Introduction to Global Parameters of Configuration File
 
 Take rec_chinese_lite_train_v2.0.yml as an example
 ### Global
@@ -30,12 +30,13 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      print_batch_step    |    Set print log interval         |       10          |                \                 |
 |      save_model_dir      |    Set model save path        |  output/{算法名称}  |                \                 |
 |      save_epoch_step     |    Set model save interval        |       3           |                \                 |
-|      eval_batch_step     |    Set the model evaluation interval        | 2000 or [1000, 2000]        | runing evaluation every 2000 iters or evaluation is run every 2000 iterations after the 1000th iteration   |
+|      eval_batch_step     |    Set the model evaluation interval        | 2000 or [1000, 2000]        | running evaluation every 2000 iters or evaluation is run every 2000 iterations after the 1000th iteration   |
 |      cal_metric_during_train     |    Set whether to evaluate the metric during the training process. At this time, the metric of the model under the current batch is evaluated        |       true         |                \                 |
 |      load_static_weights     |   Set whether the pre-training model is saved in static graph mode (currently only required by the detection algorithm)        |       true         |                \                 |
 |      pretrained_model    |    Set the path of the pre-trained model      |  ./pretrain_models/CRNN/best_accuracy  |  \          |
 |      checkpoints         |    set model parameter path            |       None        |   Used to load parameters after interruption to continue training|
 |      use_visualdl  |    Set whether to enable visualdl for visual log display |          False        |    [Tutorial](https://www.paddlepaddle.org.cn/paddle/visualdl) |
+|      use_wandb     |    Set whether to enable W&B for visual log display      | False | [Documentation](https://docs.wandb.ai/)
 |      infer_img            |    Set inference image path or folder path     |       ./infer_img | \||
 |      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  | If the character_dict_path is None, model can only recognize number and lower letters |
 |      max_text_length     |    Set the maximum length of text        |       25          |                \                 |
@@ -56,7 +57,7 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |        learning_rate      |    Set the base learning rate        |       0.001      |  \        |
 |      **regularizer**      |  Set network regularization method        |       -      | \        |
 |        name      |    Regularizer class name      |       L2     |  Currently support`L1`,`L2`, see[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
-|        factor      |    Learning rate decay coefficient       |       0.00004     |  \        |
+|        factor      |    Regularizer coefficient       |       0.00001     |  \        |
 
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))
@@ -65,8 +66,8 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |         Parameter             |            Use            |      Defaults        |            Note             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      model_type        |         Network Type          |  rec  |  Currently support`rec`,`det`,`cls`  |
-|      algorithm           |    Model name  |       CRNN         |               See [algorithm_overview](./algorithm_overview.md) for the support list             |
-|      **Transform**           |    Set the transformation method  |       -       |               Currently only recognition algorithms are supported, see [ppocr/modeling/transform](../../ppocr/modeling/transform) for details            |
+|      algorithm           |    Model name  |       CRNN         |               See [algorithm_overview](./algorithm_overview_en.md) for the support list             |
+|      **Transform**           |    Set the transformation method  |       -       |               Currently only recognition algorithms are supported, see [ppocr/modeling/transform](../../ppocr/modeling/transforms) for details            |
 |        name    |      Transformation class name   |         TPS       | Currently supports `TPS` |
 |        num_fiducial      |   Number of TPS control points        |       20      |  Ten on the top and bottom       |
 |        loc_lr      |    Localization network learning rate        |       0.1      |  \      |
@@ -130,18 +131,29 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |      drop_last        |        Whether to discard the last incomplete mini-batch because the number of samples in the data set cannot be divisible by batch_size        |  True | \  |
 |      num_workers        |        The number of sub-processes used to load data, if it is 0, the sub-process is not started, and the data is loaded in the main process       |  8 | \  |
 
+### Weights & Biases ([W&B](../../ppocr/utils/loggers/wandb_logger.py))
+|         Parameter             |            Use            |      Defaults        |            Note             |
+| :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
+|          project              |     Project to which the run is to be logged | uncategorized | \
+|          name                 |     Alias/Name of the run | Randomly generated by wandb | \ 
+|          id                   |     ID of the run    | Randomly generated by wandb     | \
+|          entity               | User or team to which the run is being logged         | The logged in user | \
+|          save_dir             | local directory in which all the models and other data is saved | wandb | \
+|          config               | model configuration | None | \
+
+
 <a name="3-multilingual-config-file-generation"></a>
 
 ## 3. Multilingual Config File Generation
 
-PaddleOCR currently supports 80 (except Chinese) language recognition. A multi-language configuration file template is
+PaddleOCR currently supports recognition for 80 languages (besides Chinese). A multi-language configuration file template is
 provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
-There are two ways to create the required configuration file:：
+There are two ways to create the required configuration file:
 
 1. Automatically generated by script
 
-[generate_multi_language_configs.py](../../configs/rec/multi_language/generate_multi_language_configs.py) Can help you generate configuration files for multi-language models
+Script [generate_multi_language_configs.py](../../configs/rec/multi_language/generate_multi_language_configs.py) can help you generate configuration files for multi-language models.
 
 - Take Italian as an example, if your data is prepared in the following format:
     ```
@@ -196,21 +208,21 @@ Italian is made up of Latin letters, so after executing the command, you will ge
       epoch_num: 500
       ...
       character_dict_path:  {path/of/dict} # path of dict
-   
+
    Train:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # root directory of training data
         label_file_list: ["./train_data/train_list.txt"] # train label path
       ...
-   
+
    Eval:
       dataset:
         name: SimpleDataSet
         data_dir: train_data/ # root directory of val data
         label_file_list: ["./train_data/val_list.txt"] # val label path
       ...
-   
+
    ```
 
 

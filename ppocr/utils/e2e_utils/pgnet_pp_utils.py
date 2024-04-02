@@ -28,13 +28,19 @@ from extract_textpoint_fast import generate_pivot_list_fast, restore_poly
 
 class PGNet_PostProcess(object):
     # two different post-process
-    def __init__(self, character_dict_path, valid_set, score_thresh, outs_dict,
-                 shape_list):
+    def __init__(self,
+                 character_dict_path,
+                 valid_set,
+                 score_thresh,
+                 outs_dict,
+                 shape_list,
+                 point_gather_mode=None):
         self.Lexicon_Table = get_dict(character_dict_path)
         self.valid_set = valid_set
         self.score_thresh = score_thresh
         self.outs_dict = outs_dict
         self.shape_list = shape_list
+        self.point_gather_mode = point_gather_mode
 
     def pg_postprocess_fast(self):
         p_score = self.outs_dict['f_score']
@@ -58,7 +64,8 @@ class PGNet_PostProcess(object):
             p_char,
             p_direction,
             self.Lexicon_Table,
-            score_thresh=self.score_thresh)
+            score_thresh=self.score_thresh,
+            point_gather_mode=self.point_gather_mode)
         poly_list, keep_str_list = restore_poly(instance_yxs_list, seq_strs,
                                                 p_border, ratio_w, ratio_h,
                                                 src_w, src_h, self.valid_set)

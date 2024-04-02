@@ -1,0 +1,133 @@
+Global:
+  use_gpu: true
+  epoch_num: 17
+  log_smooth_window: 20
+  print_batch_step: 100
+  save_model_dir: ./output/table_master/
+  save_epoch_step: 17
+  eval_batch_step: [0,  6259]
+  cal_metric_during_train: false
+  pretrained_model: null
+  checkpoints: 
+  save_inference_dir: output/table_master/infer
+  use_visualdl: false
+  infer_img: ppstructure/docs/table/table.jpg
+  save_res_path: ./output/table_master
+  character_dict_path: ppocr/utils/dict/table_master_structure_dict.txt
+  infer_mode: false
+  max_text_length: 500
+  d2s_train_image_shape: [3, 480, 480]
+
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: MultiStepDecay
+    learning_rate: 0.001
+    milestones: [12, 15]
+    gamma: 0.1
+    warmup_epoch: 0.02
+  regularizer:
+    name: L2
+    factor: 0.0
+
+Architecture:
+  model_type: table
+  algorithm: TableMaster
+  Backbone:
+    name: TableResNetExtra
+    gcb_config:
+      ratio: 0.0625
+      headers: 1
+      att_scale: False
+      fusion_type: channel_add
+      layers: [False, True, True, True]
+    layers: [1,2,5,3]
+  Head:
+    name: TableMasterHead
+    hidden_size: 512
+    headers: 8
+    dropout: 0
+    d_ff: 2024
+    max_text_length: 500
+
+Loss:
+  name: TableMasterLoss
+  ignore_index: 42 # set to len of dict + 3
+
+PostProcess:
+  name: TableMasterLabelDecode
+  box_shape: pad
+
+Metric:
+  name: TableMetric
+  main_indicator: acc
+  compute_bbox_metric: False
+
+Train:
+  dataset:
+    name: LMDBDataSetTableMaster
+    data_dir: train_data/StructureLabel_val_500/
+    transforms:
+      - DecodeImage:
+          img_mode: BGR
+          channel_first: False
+      - TableMasterLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: True
+      - ResizeTableImage:
+          max_len: 480
+          resize_bboxes: True
+      - PaddingTableImage:
+          size: [480, 480]
+      - TableBoxEncode:
+          box_format: 'xywh'
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.5, 0.5, 0.5]
+          std: [0.5, 0.5, 0.5]
+          order: hwc
+      - ToCHWImage: null
+      - KeepKeys:
+          keep_keys: [image, structure, bboxes, bbox_masks, shape]
+  loader:
+    shuffle: True
+    batch_size_per_card: 10
+    drop_last: True
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: LMDBDataSetTableMaster
+    data_dir: train_data/StructureLabel_val_500/
+    transforms:
+      - DecodeImage:
+          img_mode: BGR
+          channel_first: False
+      - TableMasterLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: True
+      - ResizeTableImage:
+          max_len: 480
+          resize_bboxes: True
+      - PaddingTableImage:
+          size: [480, 480]
+      - TableBoxEncode:
+          box_format: 'xywh'
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.5, 0.5, 0.5]
+          std: [0.5, 0.5, 0.5]
+          order: hwc
+      - ToCHWImage: null
+      - KeepKeys:
+          keep_keys: [image, structure, bboxes, bbox_masks, shape]
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 10
+    num_workers: 8

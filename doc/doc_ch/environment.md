@@ -1,20 +1,19 @@
 # 运行环境准备
 
-Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建PyThon环境。
+Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使用docker搭建Python环境。
 
 推荐环境：
-- PaddlePaddle >= 2.0.0 (2.1.2)
-- python3.7
+- PaddlePaddle >= 2.1.2
+- Python 3.7
 - CUDA10.1 / CUDA10.2
 - CUDNN 7.6
 
-如果对于Python环境熟悉的用户可以直接跳到第2步安装PaddlePaddle。
+> 如果您已经安装Python环境，可以直接参考[PaddleOCR快速开始](./quickstart.md)
 
 * [1. Python环境搭建](#1)
   + [1.1 Windows](#1.1)
   + [1.2 Mac](#1.2)
   + [1.3 Linux](#1.3)
-* [2. 安装PaddlePaddle](#2)
 
 <a name="1"></a>
 
@@ -212,7 +211,7 @@ Linux用户可选择Anaconda或Docker两种方式运行。如果你熟悉Docker�
     wget https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.05-Linux-x86_64.sh
 
   # 若您要下载其他版本，需要将最后1个/后的文件名改成您希望下载的版本
-    ```
+  ```
 
 - 安装Anaconda：
 
@@ -311,21 +310,3 @@ sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=hos
 # ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
 sudo docker container exec -it ppocr /bin/bash
 ```
-
-<a name="2"></a>
-
-## 2. 安装PaddlePaddle
-
-- 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
-
-```bash
-python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
-```
-
-- 如果您的机器是CPU，请运行以下命令安装
-
-```bash
-python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-```
-
-更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。

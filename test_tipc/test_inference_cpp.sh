@@ -2,7 +2,7 @@
 source test_tipc/common_func.sh
 
 FILENAME=$1
-dataline=$(awk 'NR==1, NR==16{print}'  $FILENAME)
+dataline=$(awk 'NR==1, NR==20{print}'  $FILENAME)
 
 # parser params
 IFS=$'\n'
@@ -34,8 +34,16 @@ cpp_infer_key1=$(func_parser_key "${lines[14]}")
 cpp_infer_value1=$(func_parser_value "${lines[14]}")
 cpp_benchmark_key=$(func_parser_key "${lines[15]}")
 cpp_benchmark_value=$(func_parser_value "${lines[15]}")
+cpp_det_key=$(func_parser_key "${lines[16]}")
+cpp_det_value=$(func_parser_value "${lines[16]}")
+cpp_rec_key=$(func_parser_key "${lines[17]}")
+cpp_rec_value=$(func_parser_value "${lines[17]}")
+cpp_cls_key=$(func_parser_key "${lines[18]}")
+cpp_cls_value=$(func_parser_value "${lines[18]}")
+cpp_use_angle_cls_key=$(func_parser_key "${lines[19]}")
+cpp_use_angle_cls_value=$(func_parser_value "${lines[19]}")
 
-LOG_PATH="./test_tipc/output"
+LOG_PATH="./test_tipc/output/${model_name}/cpp_infer"
 mkdir -p ${LOG_PATH}
 status_log="${LOG_PATH}/results_cpp.log"
 
@@ -68,11 +76,15 @@ function func_cpp_inference(){
                         set_cpu_threads=$(func_set_params "${cpp_cpu_threads_key}" "${threads}")
                         set_model_dir=$(func_set_params "${cpp_infer_model_key}" "${_model_dir}")
                         set_infer_params1=$(func_set_params "${cpp_infer_key1}" "${cpp_infer_value1}")
-                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                        set_det=$(func_set_params "${cpp_det_key}" "${cpp_det_value}")
+                        set_rec=$(func_set_params "${cpp_rec_key}" "${cpp_rec_value}")
+                        set_cls=$(func_set_params "${cpp_cls_key}" "${cpp_cls_value}")
+                        set_use_angle_cls=$(func_set_params "${cpp_use_angle_cls_key}" "${cpp_use_angle_cls_value}")
+                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_det} ${set_rec} ${set_cls} ${set_use_angle_cls} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        status_check $last_status "${command}" "${status_log}" "${model_name}" "${_save_log_path}"
                     done
                 done
             done
@@ -97,11 +109,15 @@ function func_cpp_inference(){
                         set_precision=$(func_set_params "${cpp_precision_key}" "${precision}")
                         set_model_dir=$(func_set_params "${cpp_infer_model_key}" "${_model_dir}")
                         set_infer_params1=$(func_set_params "${cpp_infer_key1}" "${cpp_infer_value1}")
-                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                        set_det=$(func_set_params "${cpp_det_key}" "${cpp_det_value}")
+                        set_rec=$(func_set_params "${cpp_rec_key}" "${cpp_rec_value}")
+                        set_cls=$(func_set_params "${cpp_cls_key}" "${cpp_cls_value}")
+                        set_use_angle_cls=$(func_set_params "${cpp_use_angle_cls_key}" "${cpp_use_angle_cls_value}")
+                        command="${_script} ${cpp_use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_det} ${set_rec} ${set_cls} ${set_use_angle_cls} ${set_infer_params1} > ${_save_log_path} 2>&1 "
                         eval $command
                         last_status=${PIPESTATUS[0]}
                         eval "cat ${_save_log_path}"
-                        status_check $last_status "${command}" "${status_log}"
+                        status_check $last_status "${command}" "${status_log}" "${model_name}" "${_save_log_path}"
                         
                     done
                 done
@@ -150,7 +166,7 @@ if [ ${use_opencv} = "True" ]; then
 
         make -j
         make install
-        cd ../
+        cd ../..
         echo "################### build opencv finished ###################"
     fi
 fi
@@ -162,7 +178,23 @@ if [ ${use_opencv} = "True" ]; then
 else
     OPENCV_DIR=''
 fi
-LIB_DIR=$(pwd)/Paddle/build/paddle_inference_install_dir/
+if [ -d "paddle_inference/" ] ;then
+    echo "################### download paddle inference skipped ###################"
+else
+    echo "################### download paddle inference ###################"
+    PADDLEInfer=$3
+    if [ "" = "$PADDLEInfer" ];then
+        wget -nc https://paddle-inference-lib.bj.bcebos.com/2.3.0/cxx_c/Linux/GPU/x86-64_gcc8.2_avx_mkl_cuda10.1_cudnn7.6.5_trt6.0.1.5/paddle_inference.tgz --no-check-certificate
+    else
+        wget -nc $PADDLEInfer --no-check-certificate
+    fi
+    tar zxf paddle_inference.tgz
+    if [ ! -d "paddle_inference" ]; then
+        ln -s paddle_inference_install_dir paddle_inference
+    fi
+    echo "################### download paddle inference finished ###################"
+fi
+LIB_DIR=$(pwd)/paddle_inference/
 CUDA_LIB_DIR=$(dirname `find /usr -name libcudart.so`)
 CUDNN_LIB_DIR=$(dirname `find /usr -name libcudnn.so`)
 
@@ -189,11 +221,10 @@ echo "################### build PaddleOCR demo finished ###################"
 # set cuda device
 GPUID=$2
 if [ ${#GPUID} -le 0 ];then
-    env=" "
+    env="export CUDA_VISIBLE_DEVICES=0"
 else
     env="export CUDA_VISIBLE_DEVICES=${GPUID}"
 fi
-set CUDA_VISIBLE_DEVICES
 eval $env
 
 

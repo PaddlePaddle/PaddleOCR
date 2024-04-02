@@ -17,15 +17,15 @@ C++预测功能测试的主程序为`test_inference_cpp.sh`，可以测试基于
 运行环境配置请参考[文档](./install.md)的内容配置TIPC的运行环境。
 
 ### 2.1 功能测试
-先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```test_tipc/output```目录下生成`cpp_infer_*.log`后缀的日志文件。
+先运行`prepare.sh`准备数据和模型，然后运行`test_inference_cpp.sh`进行测试，最终在```test_tipc/output/{model_name}/cpp_infer```目录下生成`cpp_infer_*.log`后缀的日志文件。
 
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt "cpp_infer"
+bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt "cpp_infer"
 
 # 用法1:
-bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt
+bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt '1'
+bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt '1'
 ```  
 
 运行预测指令后，在`test_tipc/output`文件夹下自动会保存运行日志，包括以下文件：
@@ -33,23 +33,21 @@ bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_ppocr_mobile_v2.0_det/
 ```shell
 test_tipc/output/
 |- results_cpp.log    # 运行指令状态的日志
-|- cpp_infer_cpu_usemkldnn_False_threads_1_precision_fp32_batchsize_1.log  # CPU上不开启Mkldnn，线程数设置为1，测试batch_size=1条件下的预测运行日志
-|- cpp_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_1.log  # CPU上不开启Mkldnn，线程数设置为6，测试batch_size=1条件下的预测运行日志
-|- cpp_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log # GPU上不开启TensorRT，测试batch_size=1的fp32精度预测日志
-|- cpp_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log  # GPU上开启TensorRT，测试batch_size=1的fp16精度预测日志
+|- cpp_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_6.log  # CPU上不开启Mkldnn，线程数设置为6，测试batch_size=6条件下的预测运行日志
+|- cpp_infer_gpu_usetrt_False_precision_fp32_batchsize_6.log # GPU上不开启TensorRT，测试batch_size=6的fp32精度预测日志
 ......
 ```
 其中results_cpp.log中包含了每条指令的运行状态，如果运行成功会输出：
 
 ```
-Run successfully with command - ./deploy/cpp_infer/build/ppocr det --use_gpu=False --enable_mkldnn=False --cpu_threads=6 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmar    k=True   > ./test_tipc/output/cpp_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_1.log 2>&1 !
-Run successfully with command - ./deploy/cpp_infer/build/ppocr det --use_gpu=True --use_tensorrt=False --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark    =True   > ./test_tipc/output/cpp_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log 2>&1 !
+[33m Run successfully with command - ch_PP-OCRv2_rec - ./deploy/cpp_infer/build/ppocr --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --rec_img_h=32 --use_gpu=True --use_tensorrt=False --precision=fp32 --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --rec_batch_num=6 --image_dir=./inference/rec_inference/ --benchmark=True --det=False --rec=True --cls=False --use_angle_cls=False   > ./test_tipc/output/ch_PP-OCRv2_rec/cpp_infer/cpp_infer_gpu_usetrt_False_precision_fp32_batchsize_6.log 2>&1 !  [0m
+[33m Run successfully with command - ch_PP-OCRv2_rec - ./deploy/cpp_infer/build/ppocr --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --rec_img_h=32 --use_gpu=False --enable_mkldnn=False --cpu_threads=6 --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --rec_batch_num=6 --image_dir=./inference/rec_inference/ --benchmark=True --det=False --rec=True --cls=False --use_angle_cls=False   > ./test_tipc/output/ch_PP-OCRv2_rec/cpp_infer/cpp_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_6.log 2>&1 !  [0m
 ......
 ```
 如果运行失败，会输出：
 ```
-Run failed with command - ./deploy/cpp_infer/build/ppocr det --use_gpu=True --use_tensorrt=True --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True       > ./test_tipc/output/cpp_infer_gpu_usetrt_True_precision_fp32_batchsize_1.log 2>&1 !
-Run failed with command - ./deploy/cpp_infer/build/ppocr det --use_gpu=True --use_tensorrt=True --precision=fp16 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True       > ./test_tipc/output/cpp_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log 2>&1 !
+Run failed with command - ch_PP-OCRv2_rec - ./deploy/cpp_infer/build/ppocr --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --rec_img_h=32 --use_gpu=True --use_tensorrt=False --precision=fp32 --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --rec_batch_num=6 --image_dir=./inference/rec_inference/ --benchmark=True --det=False --rec=True --cls=False --use_angle_cls=False   > ./test_tipc/output/ch_PP-OCRv2_rec/cpp_infer/cpp_infer_gpu_usetrt_False_precision_fp32_batchsize_6.log 2>&1 !
+Run failed with command - ch_PP-OCRv2_rec - ./deploy/cpp_infer/build/ppocr --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --rec_img_h=32 --use_gpu=False --enable_mkldnn=False --cpu_threads=6 --rec_model_dir=./inference/ch_PP-OCRv2_rec_infer/ --rec_batch_num=6 --image_dir=./inference/rec_inference/ --benchmark=True --det=False --rec=True --cls=False --use_angle_cls=False   > ./test_tipc/output/ch_PP-OCRv2_rec/cpp_infer/cpp_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_6.log 2>&1 !
 ......
 ```
 可以很方便的根据results_cpp.log中的内容判定哪一个指令运行错误。

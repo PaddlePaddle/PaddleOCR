@@ -339,7 +339,7 @@ class CharacterOps(object):
 class OCRReader(object):
     def __init__(self,
                  algorithm="CRNN",
-                 image_shape=[3, 32, 320],
+                 image_shape=[3, 48, 320],
                  char_type="ch",
                  batch_num=1,
                  char_dict_path="./ppocr_keys_v1.txt"):
@@ -356,7 +356,7 @@ class OCRReader(object):
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
         if self.character_type == "ch":
-            imgW = int(32 * max_wh_ratio)
+            imgW = int(imgH * max_wh_ratio)
         h = img.shape[0]
         w = img.shape[1]
         ratio = w / float(h)
@@ -377,7 +377,7 @@ class OCRReader(object):
     def preprocess(self, img_list):
         img_num = len(img_list)
         norm_img_batch = []
-        max_wh_ratio = 0
+        max_wh_ratio = 320/48.
         for ino in range(img_num):
             h, w = img_list[ino].shape[0:2]
             wh_ratio = w * 1.0 / h
@@ -392,38 +392,8 @@ class OCRReader(object):
 
         return norm_img_batch[0]
 
-    def postprocess_old(self, outputs, with_score=False):
-        rec_res = []
-        rec_idx_lod = outputs["ctc_greedy_decoder_0.tmp_0.lod"]
-        rec_idx_batch = outputs["ctc_greedy_decoder_0.tmp_0"]
-        if with_score:
-            predict_lod = outputs["softmax_0.tmp_0.lod"]
-        for rno in range(len(rec_idx_lod) - 1):
-            beg = rec_idx_lod[rno]
-            end = rec_idx_lod[rno + 1]
-            if isinstance(rec_idx_batch, list):
-                rec_idx_tmp = [x[0] for x in rec_idx_batch[beg:end]]
-            else:  #nd array
-                rec_idx_tmp = rec_idx_batch[beg:end, 0]
-            preds_text = self.char_ops.decode(rec_idx_tmp)
-            if with_score:
-                beg = predict_lod[rno]
-                end = predict_lod[rno + 1]
-                if isinstance(outputs["softmax_0.tmp_0"], list):
-                    outputs["softmax_0.tmp_0"] = np.array(outputs[
-                        "softmax_0.tmp_0"]).astype(np.float32)
-                probs = outputs["softmax_0.tmp_0"][beg:end, :]
-                ind = np.argmax(probs, axis=1)
-                blank = probs.shape[1]
-                valid_ind = np.where(ind != (blank - 1))[0]
-                score = np.mean(probs[valid_ind, ind[valid_ind]])
-                rec_res.append([preds_text, score])
-            else:
-                rec_res.append([preds_text])
-        return rec_res
-
     def postprocess(self, outputs, with_score=False):
-        preds = outputs["save_infer_model/scale_0.tmp_1"]
+        preds = list(outputs.values())[0]
         try:
             preds = preds.numpy()
         except:
@@ -433,3 +403,57 @@ class OCRReader(object):
         text = self.label_ops.decode(
             preds_idx, preds_prob, is_remove_duplicate=True)
         return text
+
+
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import yaml
+
+
+class ArgsParser(ArgumentParser):
+    def __init__(self):
+        super(ArgsParser, self).__init__(
+            formatter_class=RawDescriptionHelpFormatter)
+        self.add_argument("-c", "--config", help="configuration file to use")
+        self.add_argument(
+            "-o", "--opt", nargs='+', help="set configuration options")
+
+    def parse_args(self, argv=None):
+        args = super(ArgsParser, self).parse_args(argv)
+        assert args.config is not None, \
+            "Please specify --config=configure_file_path."
+        args.conf_dict = self._parse_opt(args.opt, args.config)
+        print("args config:", args.conf_dict)
+        return args
+
+    def _parse_helper(self, v):
+        if v.isnumeric():
+            if "." in v:
+                v = float(v)
+            else:
+                v = int(v)
+        elif v == "True" or v == "False":
+            v = (v == "True")
+        return v
+
+    def _parse_opt(self, opts, conf_path):
+        f = open(conf_path)
+        config = yaml.load(f, Loader=yaml.Loader)
+        if not opts:
+            return config
+        for s in opts:
+            s = s.strip()
+            k, v = s.split('=')
+            v = self._parse_helper(v)
+            print(k, v, type(v))
+            cur = config
+            parent = cur
+            for kk in k.split("."):
+                if kk not in cur:
+                    cur[kk] = {}
+                    parent = cur
+                    cur = cur[kk]
+                else:
+                    parent = cur
+                    cur = cur[kk]
+            parent[k.split(".")[-1]] = v
+        return config

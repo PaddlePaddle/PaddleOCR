@@ -20,21 +20,22 @@ import os
 import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.insert(0, __dir__)
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
 
-from ppocr.data import build_dataloader
+import paddle
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
-from ppocr.utils.utility import print_dict
 import tools.program as program
 
 
 def main():
     global_config = config['Global']
     # build dataloader
+    set_signal_handlers()
     valid_dataloader = build_dataloader(config, 'Eval', device, logger)
 
     # build post process
@@ -48,30 +49,93 @@ def main():
         if config['Architecture']["algorithm"] in ["Distillation",
                                                    ]:  # distillation model
             for key in config['Architecture']["Models"]:
-                config['Architecture']["Models"][key]["Head"][
-                    'out_channels'] = char_num
+                if config['Architecture']['Models'][key]['Head'][
+                        'name'] == 'MultiHead':  # for multi head
+                    out_channels_list = {}
+                    if config['PostProcess'][
+                            'name'] == 'DistillationSARLabelDecode':
+                        char_num = char_num - 2
+                    if config['PostProcess'][
+                            'name'] == 'DistillationNRTRLabelDecode':
+                        char_num = char_num - 3
+                    out_channels_list['CTCLabelDecode'] = char_num
+                    out_channels_list['SARLabelDecode'] = char_num + 2
+                    out_channels_list['NRTRLabelDecode'] = char_num + 3
+                    config['Architecture']['Models'][key]['Head'][
+                        'out_channels_list'] = out_channels_list
+                else:
+                    config['Architecture']["Models"][key]["Head"][
+                        'out_channels'] = char_num
+        elif config['Architecture']['Head'][
+                'name'] == 'MultiHead':  # for multi head
+            out_channels_list = {}
+            if config['PostProcess']['name'] == 'SARLabelDecode':
+                char_num = char_num - 2
+            if config['PostProcess']['name'] == 'NRTRLabelDecode':
+                char_num = char_num - 3
+            out_channels_list['CTCLabelDecode'] = char_num
+            out_channels_list['SARLabelDecode'] = char_num + 2
+            out_channels_list['NRTRLabelDecode'] = char_num + 3
+            config['Architecture']['Head'][
+                'out_channels_list'] = out_channels_list
         else:  # base rec model
             config['Architecture']["Head"]['out_channels'] = char_num
 
     model = build_model(config['Architecture'])
-    extra_input = config['Architecture']['algorithm'] in ["SRN", "SAR"]
+    extra_input_models = [
+        "SRN", "NRTR", "SAR", "SEED", "SVTR", "SVTR_LCNet", "VisionLAN",
+        "RobustScanner", "SVTR_HGNet"
+    ]
+    extra_input = False
+    if config['Architecture']['algorithm'] == 'Distillation':
+        for key in config['Architecture']["Models"]:
+            extra_input = extra_input or config['Architecture']['Models'][key][
+                'algorithm'] in extra_input_models
+    else:
+        extra_input = config['Architecture']['algorithm'] in extra_input_models
     if "model_type" in config['Architecture'].keys():
-        model_type = config['Architecture']['model_type']
+        if config['Architecture']['algorithm'] == 'CAN':
+            model_type = 'can'
+        else:
+            model_type = config['Architecture']['model_type']
     else:
         model_type = None
 
-    best_model_dict = load_model(config, model)
+    # build metric
+    eval_class = build_metric(config['Metric'])
+    # amp
+    use_amp = config["Global"].get("use_amp", False)
+    amp_level = config["Global"].get("amp_level", 'O2')
+    amp_custom_black_list = config['Global'].get('amp_custom_black_list', [])
+    if use_amp:
+        AMP_RELATED_FLAGS_SETTING = {
+            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
+            'FLAGS_max_inplace_grad_add': 8,
+        }
+        paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
+        scale_loss = config["Global"].get("scale_loss", 1.0)
+        use_dynamic_loss_scaling = config["Global"].get(
+            "use_dynamic_loss_scaling", False)
+        scaler = paddle.amp.GradScaler(
+            init_loss_scaling=scale_loss,
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+        if amp_level == "O2":
+            model = paddle.amp.decorate(
+                models=model, level=amp_level, master_weight=True)
+    else:
+        scaler = None
+
+    best_model_dict = load_model(
+        config, model, model_type=config['Architecture']["model_type"])
     if len(best_model_dict):
         logger.info('metric in ckpt ***************')
         for k, v in best_model_dict.items():
             logger.info('{}:{}'.format(k, v))
 
-    # build metric
-    eval_class = build_metric(config['Metric'])
-
     # start eval
     metric = program.eval(model, valid_dataloader, post_process_class,
-                          eval_class, model_type, extra_input)
+                          eval_class, model_type, extra_input, scaler,
+                          amp_level, amp_custom_black_list)
     logger.info('metric eval ***************')
     for k, v in metric.items():
         logger.info('{}:{}'.format(k, v))

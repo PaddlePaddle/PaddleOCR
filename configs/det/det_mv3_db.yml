@@ -1,5 +1,7 @@
 Global:
   use_gpu: true
+  use_xpu: false
+  use_mlu: false
   epoch_num: 1200
   log_smooth_window: 20
   print_batch_step: 10
@@ -100,7 +102,7 @@ Train:
     drop_last: False
     batch_size_per_card: 16
     num_workers: 8
-    use_shared_memory: False
+    use_shared_memory: True
 
 Eval:
   dataset:
@@ -128,4 +130,4 @@ Eval:
     drop_last: False
     batch_size_per_card: 1 # must be 1
     num_workers: 8
-    use_shared_memory: False
+    use_shared_memory: True

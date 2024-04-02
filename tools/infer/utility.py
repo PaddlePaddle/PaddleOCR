@@ -15,36 +15,49 @@
 import argparse
 import os
 import sys
+import platform
 import cv2
 import numpy as np
 import paddle
+import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
 import time
+import random
 from ppocr.utils.logging import get_logger
 
 
 def str2bool(v):
-    return v.lower() in ("true", "t", "1")
+    return v.lower() in ("true", "yes", "t", "y", "1")
+
+
+def str2int_tuple(v):
+    return tuple([int(i.strip()) for i in v.split(",")])
 
 
 def init_args():
     parser = argparse.ArgumentParser()
     # params for prediction engine
     parser.add_argument("--use_gpu", type=str2bool, default=True)
+    parser.add_argument("--use_xpu", type=str2bool, default=False)
+    parser.add_argument("--use_npu", type=str2bool, default=False)
+    parser.add_argument("--use_mlu", type=str2bool, default=False)
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
     parser.add_argument("--precision", type=str, default="fp32")
     parser.add_argument("--gpu_mem", type=int, default=500)
+    parser.add_argument("--gpu_id", type=int, default=0)
 
     # params for text detector
     parser.add_argument("--image_dir", type=str)
+    parser.add_argument("--page_num", type=int, default=0)
     parser.add_argument("--det_algorithm", type=str, default='DB')
     parser.add_argument("--det_model_dir", type=str)
     parser.add_argument("--det_limit_side_len", type=float, default=960)
     parser.add_argument("--det_limit_type", type=str, default='max')
+    parser.add_argument("--det_box_type", type=str, default='quad')
 
     # DB parmas
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
@@ -53,6 +66,7 @@ def init_args():
     parser.add_argument("--max_batch_size", type=int, default=10)
     parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
+
     # EAST parmas
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
@@ -61,19 +75,24 @@ def init_args():
     # SAST parmas
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
-    parser.add_argument("--det_sast_polygon", type=str2bool, default=False)
 
     # PSE parmas
     parser.add_argument("--det_pse_thresh", type=float, default=0)
     parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
     parser.add_argument("--det_pse_min_area", type=float, default=16)
-    parser.add_argument("--det_pse_box_type", type=str, default='box')
     parser.add_argument("--det_pse_scale", type=int, default=1)
 
+    # FCE parmas
+    parser.add_argument("--scales", type=list, default=[8, 16, 32])
+    parser.add_argument("--alpha", type=float, default=1.0)
+    parser.add_argument("--beta", type=float, default=1.0)
+    parser.add_argument("--fourier_degree", type=int, default=5)
+
     # params for text recognizer
-    parser.add_argument("--rec_algorithm", type=str, default='CRNN')
+    parser.add_argument("--rec_algorithm", type=str, default='SVTR_LCNet')
     parser.add_argument("--rec_model_dir", type=str)
-    parser.add_argument("--rec_image_shape", type=str, default="3, 32, 320")
+    parser.add_argument("--rec_image_inverse", type=str2bool, default=True)
+    parser.add_argument("--rec_image_shape", type=str, default="3, 48, 320")
     parser.add_argument("--rec_batch_num", type=int, default=6)
     parser.add_argument("--max_text_length", type=int, default=25)
     parser.add_argument(
@@ -111,6 +130,11 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
+    # SR parmas
+    parser.add_argument("--sr_model_dir", type=str)
+    parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
+    parser.add_argument("--sr_batch_num", type=int, default=1)
+
     #
     parser.add_argument(
         "--draw_img_save_dir", type=str, default="./inference_results")
@@ -127,6 +151,10 @@ def init_args():
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     parser.add_argument("--use_onnx", type=str2bool, default=False)
+
+    # extended function
+    parser.add_argument("--return_word_box", type=str2bool, default=False, help='Whether return the bbox of each word (split by space) or chinese character. Only used in ppstructure for layout recovery')
+
     return parser
 
 
@@ -144,6 +172,14 @@ def create_predictor(args, mode, logger):
         model_dir = args.rec_model_dir
     elif mode == 'table':
         model_dir = args.table_model_dir
+    elif mode == 'ser':
+        model_dir = args.ser_model_dir
+    elif mode == 're':
+        model_dir = args.re_model_dir
+    elif mode == "sr":
+        model_dir = args.sr_model_dir
+    elif mode == 'layout':
+        model_dir = args.layout_model_dir
     else:
         model_dir = args.e2e_model_dir
 
@@ -156,18 +192,28 @@ def create_predictor(args, mode, logger):
         if not os.path.exists(model_file_path):
             raise ValueError("not find model file path {}".format(
                 model_file_path))
-        sess = ort.InferenceSession(model_file_path)
+        if args.use_gpu:
+            sess = ort.InferenceSession(model_file_path, providers=['CUDAExecutionProvider'])
+        else:
+            sess = ort.InferenceSession(model_file_path)
         return sess, sess.get_inputs()[0], None, None
 
     else:
-        model_file_path = model_dir + "/inference.pdmodel"
-        params_file_path = model_dir + "/inference.pdiparams"
+        file_names = ['model', 'inference']
+        for file_name in file_names:
+            model_file_path = '{}/{}.pdmodel'.format(model_dir, file_name)
+            params_file_path = '{}/{}.pdiparams'.format(model_dir, file_name)
+            if os.path.exists(model_file_path) and os.path.exists(
+                    params_file_path):
+                break
         if not os.path.exists(model_file_path):
-            raise ValueError("not find model file path {}".format(
-                model_file_path))
+            raise ValueError(
+                "not find model.pdmodel or inference.pdmodel in {}".format(
+                    model_dir))
         if not os.path.exists(params_file_path):
-            raise ValueError("not find params file path {}".format(
-                params_file_path))
+            raise ValueError(
+                "not find model.pdiparams or inference.pdiparams in {}".format(
+                    model_dir))
 
         config = inference.Config(model_file_path, params_file_path)
 
@@ -185,115 +231,59 @@ def create_predictor(args, mode, logger):
             gpu_id = get_infer_gpuid()
             if gpu_id is None:
                 logger.warning(
-                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jeston."
+                    "GPU is not found in current device by nvidia-smi. Please check your device or ignore it if run on jetson."
                 )
-            config.enable_use_gpu(args.gpu_mem, 0)
+            config.enable_use_gpu(args.gpu_mem, args.gpu_id)
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size)
-                # skip the minmum trt subgraph
-            use_dynamic_shape = True
-            if mode == "det":
-                min_input_shape = {
-                    "x": [1, 3, 50, 50],
-                    "conv2d_92.tmp_0": [1, 120, 20, 20],
-                    "conv2d_91.tmp_0": [1, 24, 10, 10],
-                    "conv2d_59.tmp_0": [1, 96, 20, 20],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 10, 10],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 20, 20],
-                    "conv2d_124.tmp_0": [1, 256, 20, 20],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 20, 20],
-                    "elementwise_add_7": [1, 56, 2, 2],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 2, 2]
-                }
-                max_input_shape = {
-                    "x": [1, 3, 1536, 1536],
-                    "conv2d_92.tmp_0": [1, 120, 400, 400],
-                    "conv2d_91.tmp_0": [1, 24, 200, 200],
-                    "conv2d_59.tmp_0": [1, 96, 400, 400],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 200, 200],
-                    "conv2d_124.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 400, 400],
-                    "elementwise_add_7": [1, 56, 400, 400],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 400, 400]
-                }
-                opt_input_shape = {
-                    "x": [1, 3, 640, 640],
-                    "conv2d_92.tmp_0": [1, 120, 160, 160],
-                    "conv2d_91.tmp_0": [1, 24, 80, 80],
-                    "conv2d_59.tmp_0": [1, 96, 160, 160],
-                    "nearest_interp_v2_1.tmp_0": [1, 256, 80, 80],
-                    "nearest_interp_v2_2.tmp_0": [1, 256, 160, 160],
-                    "conv2d_124.tmp_0": [1, 256, 160, 160],
-                    "nearest_interp_v2_3.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_4.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_5.tmp_0": [1, 64, 160, 160],
-                    "elementwise_add_7": [1, 56, 40, 40],
-                    "nearest_interp_v2_0.tmp_0": [1, 256, 40, 40]
-                }
-                min_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 20, 20],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 20, 20],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 20, 20]
-                }
-                max_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 400, 400],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 400, 400],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 400, 400]
-                }
-                opt_pact_shape = {
-                    "nearest_interp_v2_26.tmp_0": [1, 256, 160, 160],
-                    "nearest_interp_v2_27.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_28.tmp_0": [1, 64, 160, 160],
-                    "nearest_interp_v2_29.tmp_0": [1, 64, 160, 160]
-                }
-                min_input_shape.update(min_pact_shape)
-                max_input_shape.update(max_pact_shape)
-                opt_input_shape.update(opt_pact_shape)
-            elif mode == "rec":
-                if args.rec_algorithm != "CRNN":
-                    use_dynamic_shape = False
-                min_input_shape = {"x": [1, 3, 32, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 32, 1536]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, 32, 320]}
-            elif mode == "cls":
-                min_input_shape = {"x": [1, 3, 48, 10]}
-                max_input_shape = {"x": [args.rec_batch_num, 3, 48, 1024]}
-                opt_input_shape = {"x": [args.rec_batch_num, 3, 48, 320]}
-            else:
-                use_dynamic_shape = False
-            if use_dynamic_shape:
-                config.set_trt_dynamic_shape_info(
-                    min_input_shape, max_input_shape, opt_input_shape)
+                    min_subgraph_size=args.
+                    min_subgraph_size,  # skip the minmum trt subgraph
+                    use_calib_mode=False)
 
+                # collect shape
+                trt_shape_f = os.path.join(model_dir,
+                                           f"{mode}_trt_dynamic_shape.txt")
+
+                if not os.path.exists(trt_shape_f):
+                    config.collect_shape_range_info(trt_shape_f)
+                    logger.info(
+                        f"collect dynamic shape info into : {trt_shape_f}")
+                try:
+                    config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f,
+                                                               True)
+                except Exception as E:
+                    logger.info(E)
+                    logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
+
+        elif args.use_npu:
+            config.enable_custom_device("npu")
+        elif args.use_mlu:
+            config.enable_custom_device("mlu")
+        elif args.use_xpu:
+            config.enable_xpu(10 * 1024 * 1024)
         else:
             config.disable_gpu()
-            if hasattr(args, "cpu_threads"):
-                config.set_cpu_math_library_num_threads(args.cpu_threads)
-            else:
-                # default cpu threads as 10
-                config.set_cpu_math_library_num_threads(10)
             if args.enable_mkldnn:
                 # cache 10 different shapes for mkldnn to avoid memory leak
                 config.set_mkldnn_cache_capacity(10)
                 config.enable_mkldnn()
                 if args.precision == "fp16":
                     config.enable_mkldnn_bfloat16()
+                if hasattr(args, "cpu_threads"):
+                    config.set_cpu_math_library_num_threads(args.cpu_threads)
+                else:
+                    # default cpu threads as 10
+                    config.set_cpu_math_library_num_threads(10)
         # enable memory optim
         config.enable_memory_optim()
         config.disable_glog_info()
-
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+        config.delete_pass("matmul_transpose_reshape_fuse_pass")
+        if mode == 're':
+            config.delete_pass("simplify_with_basic_ops_pass")
         if mode == 'table':
             config.delete_pass("fc_fuse_pass")  # not supported for table
         config.switch_use_feed_fetch_ops(False)
@@ -302,18 +292,43 @@ def create_predictor(args, mode, logger):
         # create predictor
         predictor = inference.create_predictor(config)
         input_names = predictor.get_input_names()
-        for name in input_names:
-            input_tensor = predictor.get_input_handle(name)
-        output_names = predictor.get_output_names()
-        output_tensors = []
-        for output_name in output_names:
-            output_tensor = predictor.get_output_handle(output_name)
-            output_tensors.append(output_tensor)
+        if mode in ['ser', 're']:
+            input_tensor = []
+            for name in input_names:
+                input_tensor.append(predictor.get_input_handle(name))
+        else:
+            for name in input_names:
+                input_tensor = predictor.get_input_handle(name)
+        output_tensors = get_output_tensors(args, mode, predictor)
         return predictor, input_tensor, output_tensors, config
 
 
+def get_output_tensors(args, mode, predictor):
+    output_names = predictor.get_output_names()
+    output_tensors = []
+    if mode == "rec" and args.rec_algorithm in [
+            "CRNN", "SVTR_LCNet", "SVTR_HGNet"
+    ]:
+        output_name = 'softmax_0.tmp_0'
+        if output_name in output_names:
+            return [predictor.get_output_handle(output_name)]
+        else:
+            for output_name in output_names:
+                output_tensor = predictor.get_output_handle(output_name)
+                output_tensors.append(output_tensor)
+    else:
+        for output_name in output_names:
+            output_tensor = predictor.get_output_handle(output_name)
+            output_tensors.append(output_tensor)
+    return output_tensors
+
+
 def get_infer_gpuid():
-    if not paddle.fluid.core.is_compiled_with_rocm():
+    sysstr = platform.system()
+    if sysstr == "Windows":
+        return 0
+
+    if not paddle.device.is_compiled_with_rocm:
         cmd = "env | grep CUDA_VISIBLE_DEVICES"
     else:
         cmd = "env | grep HIP_VISIBLE_DEVICES"
@@ -341,12 +356,11 @@ def draw_e2e_res(dt_boxes, strs, img_path):
     return src_im
 
 
-def draw_text_det_res(dt_boxes, img_path):
-    src_im = cv2.imread(img_path)
+def draw_text_det_res(dt_boxes, img):
     for box in dt_boxes:
         box = np.array(box).astype(np.int32).reshape(-1, 2)
-        cv2.polylines(src_im, [box], True, color=(255, 255, 0), thickness=2)
-    return src_im
+        cv2.polylines(img, [box], True, color=(255, 255, 0), thickness=2)
+    return img
 
 
 def resize_img(img, input_size=600):
@@ -404,54 +418,83 @@ def draw_ocr(image,
 
 def draw_ocr_box_txt(image,
                      boxes,
-                     txts,
+                     txts=None,
                      scores=None,
                      drop_score=0.5,
-                     font_path="./doc/simfang.ttf"):
+                     font_path="./doc/fonts/simfang.ttf"):
     h, w = image.height, image.width
     img_left = image.copy()
-    img_right = Image.new('RGB', (w, h), (255, 255, 255))
-
-    import random
-
+    img_right = np.ones((h, w, 3), dtype=np.uint8) * 255
     random.seed(0)
+
     draw_left = ImageDraw.Draw(img_left)
-    draw_right = ImageDraw.Draw(img_right)
+    if txts is None or len(txts) != len(boxes):
+        txts = [None] * len(boxes)
     for idx, (box, txt) in enumerate(zip(boxes, txts)):
         if scores is not None and scores[idx] < drop_score:
             continue
         color = (random.randint(0, 255), random.randint(0, 255),
                  random.randint(0, 255))
         draw_left.polygon(box, fill=color)
-        draw_right.polygon(
-            [
-                box[0][0], box[0][1], box[1][0], box[1][1], box[2][0],
-                box[2][1], box[3][0], box[3][1]
-            ],
-            outline=color)
-        box_height = math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][
-            1])**2)
-        box_width = math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][
-            1])**2)
-        if box_height > 2 * box_width:
-            font_size = max(int(box_width * 0.9), 10)
-            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-            cur_y = box[0][1]
-            for c in txt:
-                char_size = font.getsize(c)
-                draw_right.text(
-                    (box[0][0] + 3, cur_y), c, fill=(0, 0, 0), font=font)
-                cur_y += char_size[1]
-        else:
-            font_size = max(int(box_height * 0.8), 10)
-            font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
-            draw_right.text(
-                [box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
+        img_right_text = draw_box_txt_fine((w, h), box, txt, font_path)
+        pts = np.array(box, np.int32).reshape((-1, 1, 2))
+        cv2.polylines(img_right_text, [pts], True, color, 1)
+        img_right = cv2.bitwise_and(img_right, img_right_text)
     img_left = Image.blend(image, img_left, 0.5)
     img_show = Image.new('RGB', (w * 2, h), (255, 255, 255))
     img_show.paste(img_left, (0, 0, w, h))
-    img_show.paste(img_right, (w, 0, w * 2, h))
+    img_show.paste(Image.fromarray(img_right), (w, 0, w * 2, h))
     return np.array(img_show)
+
+
+def draw_box_txt_fine(img_size, box, txt, font_path="./doc/fonts/simfang.ttf"):
+    box_height = int(
+        math.sqrt((box[0][0] - box[3][0])**2 + (box[0][1] - box[3][1])**2))
+    box_width = int(
+        math.sqrt((box[0][0] - box[1][0])**2 + (box[0][1] - box[1][1])**2))
+
+    if box_height > 2 * box_width and box_height > 30:
+        img_text = Image.new('RGB', (box_height, box_width), (255, 255, 255))
+        draw_text = ImageDraw.Draw(img_text)
+        if txt:
+            font = create_font(txt, (box_height, box_width), font_path)
+            draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
+        img_text = img_text.transpose(Image.ROTATE_270)
+    else:
+        img_text = Image.new('RGB', (box_width, box_height), (255, 255, 255))
+        draw_text = ImageDraw.Draw(img_text)
+        if txt:
+            font = create_font(txt, (box_width, box_height), font_path)
+            draw_text.text([0, 0], txt, fill=(0, 0, 0), font=font)
+
+    pts1 = np.float32(
+        [[0, 0], [box_width, 0], [box_width, box_height], [0, box_height]])
+    pts2 = np.array(box, dtype=np.float32)
+    M = cv2.getPerspectiveTransform(pts1, pts2)
+
+    img_text = np.array(img_text, dtype=np.uint8)
+    img_right_text = cv2.warpPerspective(
+        img_text,
+        M,
+        img_size,
+        flags=cv2.INTER_NEAREST,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=(255, 255, 255))
+    return img_right_text
+
+
+def create_font(txt, sz, font_path="./doc/fonts/simfang.ttf"):
+    font_size = int(sz[1] * 0.99)
+    font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+    if int(PIL.__version__.split('.')[0]) < 10:
+        length = font.getsize(txt)[0]
+    else:
+        length = font.getlength(txt)
+    
+    if length > sz[0]:
+        font_size = int(font_size * sz[0] / length)
+        font = ImageFont.truetype(font_path, font_size, encoding="utf-8")
+    return font
 
 
 def str_count(s):
@@ -557,7 +600,7 @@ def text_visual(texts,
 def base64_to_cv2(b64str):
     import base64
     data = base64.b64decode(b64str.encode('utf8'))
-    data = np.fromstring(data, np.uint8)
+    data = np.frombuffer(data, np.uint8)
     data = cv2.imdecode(data, cv2.IMREAD_COLOR)
     return data
 
@@ -608,9 +651,31 @@ def get_rotate_crop_image(img, points):
     return dst_img
 
 
-def check_gpu(use_gpu):
-    if use_gpu and not paddle.is_compiled_with_cuda():
+def get_minarea_rect_crop(img, points):
+    bounding_box = cv2.minAreaRect(np.array(points).astype(np.int32))
+    points = sorted(list(cv2.boxPoints(bounding_box)), key=lambda x: x[0])
 
+    index_a, index_b, index_c, index_d = 0, 1, 2, 3
+    if points[1][1] > points[0][1]:
+        index_a = 0
+        index_d = 1
+    else:
+        index_a = 1
+        index_d = 0
+    if points[3][1] > points[2][1]:
+        index_b = 2
+        index_c = 3
+    else:
+        index_b = 3
+        index_c = 2
+
+    box = [points[index_a], points[index_b], points[index_c], points[index_d]]
+    crop_img = get_rotate_crop_image(img, np.array(box))
+    return crop_img
+
+
+def check_gpu(use_gpu):
+    if use_gpu and (not paddle.is_compiled_with_cuda() or paddle.device.get_device() == 'cpu'):
         use_gpu = False
     return use_gpu
 

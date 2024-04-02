@@ -16,7 +16,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
 
 os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
 
@@ -30,7 +30,7 @@ import traceback
 import tools.infer.utility as utility
 from ppocr.postprocess import build_post_process
 from ppocr.utils.logging import get_logger
-from ppocr.utils.utility import get_image_file_list, check_and_read_gif
+from ppocr.utils.utility import get_image_file_list, check_and_read
 
 logger = get_logger()
 
@@ -128,7 +128,7 @@ def main(args):
     valid_image_file_list = []
     img_list = []
     for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
+        img, flag, _ = check_and_read(image_file)
         if not flag:
             img = cv2.imread(image_file)
         if img is None:

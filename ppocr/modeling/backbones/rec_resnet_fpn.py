@@ -18,7 +18,6 @@ from __future__ import print_function
 
 from paddle import nn, ParamAttr
 from paddle.nn import functional as F
-import paddle.fluid as fluid
 import paddle
 import numpy as np
 

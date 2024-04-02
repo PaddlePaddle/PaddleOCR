@@ -26,7 +26,7 @@ sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
 
 import paddle
 import paddle.distributed as dist
-from ppocr.data import build_dataloader
+from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
 from ppocr.losses import build_loss
 from ppocr.optimizer import build_optimizer
@@ -57,6 +57,7 @@ def main(config, device, logger, vdl_writer):
     global_config = config['Global']
 
     # build dataloader
+    set_signal_handlers()
     train_dataloader = build_dataloader(config, 'Train', device, logger)
     if config['Eval']:
         valid_dataloader = build_dataloader(config, 'Eval', device, logger)
@@ -94,7 +95,7 @@ def main(config, device, logger, vdl_writer):
         config['Optimizer'],
         epochs=config['Global']['epoch_num'],
         step_each_epoch=len(train_dataloader),
-        parameters=model.parameters())
+        model=model)
 
     # build metric
     eval_class = build_metric(config['Metric'])
@@ -126,7 +127,7 @@ def main(config, device, logger, vdl_writer):
     run_sensitive_analysis=True: 
         Automatically compute the sensitivities of convolutions in a model. 
         The sensitivity of a convolution is the losses of accuracy on test dataset in 
-        differenct pruned ratios. The sensitivities can be used to get a group of best 
+        different pruned ratios. The sensitivities can be used to get a group of best 
         ratios with some condition.
     
     run_sensitive_analysis=False: 

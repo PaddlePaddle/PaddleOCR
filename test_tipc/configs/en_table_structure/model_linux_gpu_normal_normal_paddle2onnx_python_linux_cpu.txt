@@ -1,0 +1,17 @@
+===========================paddle2onnx_params===========================
+model_name:en_table_structure
+python:python3.7
+2onnx: paddle2onnx
+--det_model_dir:./inference/en_ppocr_mobile_v2.0_table_structure_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--det_save_file:./inference/en_ppocr_mobile_v2.0_table_structure_infer/model.onnx
+--rec_model_dir:
+--rec_save_file:
+--opset_version:10
+--enable_onnx_checker:True
+inference:ppstructure/table/predict_structure.py --table_char_dict_path=./ppocr/utils/dict/table_structure_dict.txt
+--use_gpu:True|False
+--det_model_dir:
+--rec_model_dir:
+--image_dir:./ppstructure/docs/table/table.jpg

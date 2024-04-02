@@ -1,0 +1,20 @@
+===========================cpp_infer_params===========================
+model_name:ch_PP-OCRv2_rec
+use_opencv:True
+infer_model:./inference/ch_PP-OCRv2_rec_infer/
+infer_quant:False
+inference:./deploy/cpp_infer/build/ppocr --rec_char_dict_path=./ppocr/utils/ppocr_keys_v1.txt --rec_img_h=32
+--use_gpu:True|False
+--enable_mkldnn:False
+--cpu_threads:6
+--rec_batch_num:6
+--use_tensorrt:False
+--precision:fp32
+--rec_model_dir:
+--image_dir:./inference/rec_inference/
+null:null
+--benchmark:True
+--det:False
+--rec:True
+--cls:False
+--use_angle_cls:False
