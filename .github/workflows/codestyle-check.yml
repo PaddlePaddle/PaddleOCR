@@ -35,7 +35,7 @@ jobs:
           key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
       - name: print git log
-        run: git log
+        run: git log -10
 
       - name: Run pre-commit
         # Check only the files that have been changed in the PR
