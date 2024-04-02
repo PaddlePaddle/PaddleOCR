@@ -1,0 +1,40 @@
+name: CodeStyle Check
+
+on:
+  push:
+    branches: [dygraph]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+jobs:
+  codestyle-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Only run linter and formatter on minimum supported Python version
+        python-version: ["3.8"]
+        architecture: ["x64"]
+    name: CodeStyle Check - Python ${{ matrix.python-version }} on ${{ matrix.architecture }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pre-commit
+        run: pipx install pre-commit
+
+      - name: Install python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: ${{ matrix.architecture }}
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Run pre-commit
+        # Check only the files that have been changed in the PR
+        # Ref: https://github.com/pre-commit/action/issues/7#issuecomment-1251300704
+        run: pre-commit run --show-diff-on-failure --color=always --from-ref ${{ github.event.pull_request.base.sha }} --to-ref ${{ github.event.pull_request.head.sha }}
