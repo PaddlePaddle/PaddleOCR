@@ -34,6 +34,9 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit-3|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
 
+      - name: print git log
+        run: git log
+
       - name: Run pre-commit
         # Check only the files that have been changed in the PR
         # Ref: https://github.com/pre-commit/action/issues/7#issuecomment-1251300704
