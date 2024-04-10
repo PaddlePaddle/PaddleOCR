@@ -87,7 +87,9 @@ class DBPostProcess(object):
             else:
                 continue
             box = box.reshape(-1, 2)
-
+            if len(box) == 0:
+                continue
+                
             _, sside = self.get_mini_boxes(box.reshape((-1, 1, 2)))
             if sside < self.min_size + 2:
                 continue
