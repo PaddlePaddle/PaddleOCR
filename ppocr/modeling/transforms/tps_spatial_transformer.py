@@ -152,7 +152,7 @@ class TPSSpatialTransformer(nn.Layer):
         assert source_control_points.ndimension() == 3
         assert source_control_points.shape[1] == self.num_control_points
         assert source_control_points.shape[2] == 2
-        batch_size = paddle.shape(source_control_points)[0]
+        batch_size = source_control_points.shape[0]
 
         padding_matrix = paddle.expand(
             self.padding_matrix, shape=[batch_size, 3, 2])

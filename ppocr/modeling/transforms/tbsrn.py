@@ -80,7 +80,7 @@ class FeatureEnhancer(nn.Layer):
         global_info: (batch, embedding_size, 1, 1)
         conv_feature: (batch, channel, H, W)
         '''
-        batch = paddle.shape(conv_feature)[0]
+        batch = conv_feature.shape[0]
         position2d = positionalencoding2d(
             64, 16, 64).cast('float32').unsqueeze(0).reshape([1, 64, 1024])
         position2d = position2d.tile([batch, 1, 1])
@@ -276,7 +276,7 @@ class RecurrentResidualBlock(nn.Layer):
         residual = self.conv2(residual)
         residual = self.bn2(residual)
 
-        size = paddle.shape(residual)
+        size = residual.shape
         residual = residual.reshape([size[0], size[1], -1])
         residual = self.feature_enhancer(residual)
         residual = residual.reshape([size[0], size[1], size[2], size[3]])

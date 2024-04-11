@@ -50,7 +50,7 @@ class AddPos(nn.Layer):
         trunc_normal_(self.dec_pos_embed)
     
     def forward(self,x):
-        x = x + self.dec_pos_embed[:, :paddle.shape(x)[1], :]
+        x = x + self.dec_pos_embed[:, :x.shape[1], :]
         return x
 
 

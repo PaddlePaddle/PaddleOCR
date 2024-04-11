@@ -150,7 +150,7 @@ class Transformer(nn.Layer):
 
     def forward_test(self, src):
 
-        bs = paddle.shape(src)[0]
+        bs = src.shape[0]
         if self.encoder is not None:
             src = self.positional_encoding(src)
             for encoder_layer in self.encoder:
@@ -164,7 +164,7 @@ class Transformer(nn.Layer):
             dec_seq_embed = self.embedding(dec_seq)
             dec_seq_embed = self.positional_encoding(dec_seq_embed)
             tgt_mask = self.generate_square_subsequent_mask(
-                paddle.shape(dec_seq_embed)[1])
+                dec_seq_embed.shape[1])
             tgt = dec_seq_embed
             for decoder_layer in self.decoder:
                 tgt = decoder_layer(tgt, memory, self_mask=tgt_mask)
@@ -175,7 +175,7 @@ class Transformer(nn.Layer):
             if paddle.equal_all(
                     preds_idx,
                     paddle.full(
-                        paddle.shape(preds_idx), 3, dtype='int64')):
+                        preds_idx.shape, 3, dtype='int64')):
                 break
             preds_prob = paddle.max(word_prob, axis=-1)
             dec_seq = paddle.concat(
@@ -198,7 +198,7 @@ class Transformer(nn.Layer):
                                 n_prev_active_inst, n_bm):
             """ Collect tensor parts associated to active instances. """
 
-            beamed_tensor_shape = paddle.shape(beamed_tensor)
+            beamed_tensor_shape = beamed_tensor.shape
             n_curr_active_inst = len(curr_active_inst_idx)
             new_shape = (n_curr_active_inst * n_bm, beamed_tensor_shape[1],
                          beamed_tensor_shape[2])
@@ -243,7 +243,7 @@ class Transformer(nn.Layer):
                 dec_seq = self.embedding(dec_seq)
                 dec_seq = self.positional_encoding(dec_seq)
                 tgt_mask = self.generate_square_subsequent_mask(
-                    paddle.shape(dec_seq)[1])
+                    dec_seq.shape[1])
                 tgt = dec_seq
                 for decoder_layer in self.decoder:
                     tgt = decoder_layer(tgt, enc_output, self_mask=tgt_mask)
@@ -294,7 +294,7 @@ class Transformer(nn.Layer):
                 src_enc = images
 
             n_bm = self.beam_size
-            src_shape = paddle.shape(src_enc)
+            src_shape = src_enc.shape
             inst_dec_beams = [Beam(n_bm) for _ in range(1)]
             active_inst_idx_list = list(range(1))
             # Repeat data for beam search
@@ -500,7 +500,7 @@ class PositionalEncoding(nn.Layer):
             >>> output = pos_encoder(x)
         """
         x = x.transpose([1, 0, 2])
-        x = x + self.pe[:paddle.shape(x)[0], :]
+        x = x + self.pe[:x.shape[0], :]
         return self.dropout(x).transpose([1, 0, 2])
 
 
@@ -552,13 +552,13 @@ class PositionalEncoding_2d(nn.Layer):
         Examples:
             >>> output = pos_encoder(x)
         """
-        w_pe = self.pe[:paddle.shape(x)[-1], :]
+        w_pe = self.pe[:x.shape[-1], :]
         w1 = self.linear1(self.avg_pool_1(x).squeeze()).unsqueeze(0)
         w_pe = w_pe * w1
         w_pe = paddle.transpose(w_pe, [1, 2, 0])
         w_pe = paddle.unsqueeze(w_pe, 2)
 
-        h_pe = self.pe[:paddle.shape(x).shape[-2], :]
+        h_pe = self.pe[:x.shape.shape[-2], :]
         w2 = self.linear2(self.avg_pool_2(x).squeeze()).unsqueeze(0)
         h_pe = h_pe * w2
         h_pe = paddle.transpose(h_pe, [1, 2, 0])

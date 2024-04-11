@@ -283,7 +283,7 @@ class SATRNEncoder(nn.Layer):
             Tensor: A tensor of shape :math:`(N, T, D_m)`.
         """
         if valid_ratios is None:
-            bs = paddle.shape(feat)[0]
+            bs = feat.shape[0]
             valid_ratios = paddle.full((bs, 1), 1., dtype=paddle.float32)
 
         feat = self.position_enc(feat)

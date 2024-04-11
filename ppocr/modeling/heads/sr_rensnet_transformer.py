@@ -78,7 +78,7 @@ class MultiHeadedAttention(nn.Layer):
     def forward(self, query, key, value, mask=None, attention_map=None):
         if mask is not None:
             mask = mask.unsqueeze(1)
-        nbatches = paddle.shape(query)[0]
+        nbatches = query.shape[0]
 
         query, key, value = \
             [paddle.transpose(l(x).reshape([nbatches, -1, self.h, self.d_k]), [0,2,1,3])
@@ -230,7 +230,7 @@ class PositionalEncoding(nn.Layer):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        x = x + self.pe[:, :paddle.shape(x)[1]]
+        x = x + self.pe[:, :x.shape[1]]
         return self.dropout(x)
 
 
