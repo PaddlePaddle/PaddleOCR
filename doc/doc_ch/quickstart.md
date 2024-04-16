@@ -248,7 +248,7 @@ for idx in range(len(result)):
     boxes = [line[0] for line in res]
     txts = [line[1][0] for line in res]
     scores = [line[1][1] for line in res]
-    im_show = draw_ocr(image, boxes, txts, scores, font_path='simfang.ttf')
+    im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
     im_show = Image.fromarray(im_show)
     im_show.save('result_page_{}.jpg'.format(idx))
 ```

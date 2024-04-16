@@ -224,34 +224,39 @@ from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `fr`, `german`, `korean`, `japan`
 # to switch the language model in order.
-ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=2)  # need to run only once to download and load model into memory
-img_path = './xxx.pdf'
-result = ocr.ocr(img_path, cls=True)
+PAGE_NUM = 10 # Set the recognition page number
+pdf_path = 'default.pdf'
+ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM)  # need to run only once to download and load model into memory
+# ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM,use_gpu=0) # To Use GPU,uncomment this line and comment the above one.
+result = ocr.ocr(pdf_path, cls=True)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None: # Skip when empty result detected to avoid TypeError:NoneType
+        print(f"[DEBUG] Empty page {idx+1} detected, skip it.")
+        continue
     for line in res:
         print(line)
-
-# draw result
+# draw the result
 import fitz
 from PIL import Image
 import cv2
 import numpy as np
 imgs = []
-with fitz.open(img_path) as pdf:
-    for pg in range(0, pdf.pageCount):
+with fitz.open(pdf_path) as pdf:
+    for pg in range(0, PAGE_NUM):
         page = pdf[pg]
         mat = fitz.Matrix(2, 2)
-        pm = page.getPixmap(matrix=mat, alpha=False)
+        pm = page.get_pixmap(matrix=mat, alpha=False)
         # if width or height > 2000 pixels, don't enlarge the image
         if pm.width > 2000 or pm.height > 2000:
-            pm = page.getPixmap(matrix=fitz.Matrix(1, 1), alpha=False)
-
+            pm = page.get_pixmap(matrix=fitz.Matrix(1, 1), alpha=False)
         img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
         img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
         imgs.append(img)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None:
+        continue
     image = imgs[idx]
     boxes = [line[0] for line in res]
     txts = [line[1][0] for line in res]
