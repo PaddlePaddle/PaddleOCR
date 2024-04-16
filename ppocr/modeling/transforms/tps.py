@@ -219,11 +219,11 @@ class GridGenerator(nn.Layer):
         I_r_height, I_r_width = I_r_size
         I_r_grid_x = (paddle.arange(
             -I_r_width, I_r_width, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_width]))
+                      ) / paddle.to_tensor(np.array([I_r_width])).astype('float64')
 
         I_r_grid_y = (paddle.arange(
             -I_r_height, I_r_height, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_height]))
+                      ) / paddle.to_tensor(np.array([I_r_height])).astype('float64')
 
         # P: self.I_r_width x self.I_r_height x 2
         P = paddle.stack(paddle.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)

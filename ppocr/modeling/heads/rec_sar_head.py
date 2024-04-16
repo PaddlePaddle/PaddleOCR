@@ -101,7 +101,7 @@ class SAREncoder(nn.Layer):
             T = paddle.shape(holistic_feat)[1]
             for i in range(paddle.shape(valid_ratios)[0]):
                 valid_step = paddle.minimum(
-                    T, paddle.ceil(valid_ratios[i] * T).astype('int32')) - 1
+                    T, paddle.ceil(valid_ratios[i] * T).astype(T.dtype)) - 1
                 valid_hf.append(holistic_feat[i, valid_step, :])
             valid_hf = paddle.stack(valid_hf, axis=0)
         else:

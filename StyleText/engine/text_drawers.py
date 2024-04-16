@@ -58,7 +58,7 @@ class StdTextDrawer(object):
             i = 0
             while i < len(corpus):
                 char_i = corpus[i]
-                char_size = font.getsize(char_i)[0]
+                char_size = font.getbbox(char_i)[2]
                 # split when char_x exceeds char size and index is not 0 (at least 1 char should be wroten on the image)
                 if char_x + char_size >= width and i != 0:
                     text_input = np.array(bg).astype(np.uint8)
