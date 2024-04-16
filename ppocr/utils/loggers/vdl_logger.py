@@ -1,9 +1,17 @@
 from .base_logger import BaseLogger
-from visualdl import LogWriter
+
 
 class VDLLogger(BaseLogger):
     def __init__(self, save_dir):
         super().__init__(save_dir)
+        # check the installation of visualdl, if not installed, raise an error
+        try:
+            from visualdl import LogWriter
+        except ImportError:
+            raise ImportError(
+                "Please install visualdl via `pip install visualdl` or "
+                "`pip install paddleocr[visualdl]`."
+            )
         self.vdl_writer = LogWriter(logdir=save_dir)
 
     def log_metrics(self, metrics, prefix=None, step=None):
