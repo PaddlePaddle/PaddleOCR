@@ -81,7 +81,7 @@ class Embedding(nn.Layer):
             self.embed_dim)  # Embed encoder output to a word-embedding like
 
     def forward(self, x):
-        x = paddle.reshape(x, [paddle.shape(x)[0], -1])
+        x = paddle.reshape(x, [x.shape[0], -1])
         x = self.eEmbed(x)
         return x
 
@@ -105,7 +105,7 @@ class AttentionRecognitionHead(nn.Layer):
 
     def forward(self, x, embed):
         x, targets, lengths = x
-        batch_size = paddle.shape(x)[0]
+        batch_size = x.shape[0]
         # Decoder
         state = self.decoder.get_initial_state(embed)
         outputs = []

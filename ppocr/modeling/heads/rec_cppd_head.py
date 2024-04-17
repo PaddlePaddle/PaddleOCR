@@ -294,7 +294,7 @@ class CPPDHead(nn.Layer):
             char_node_embed = self.char_node_embed(
                 paddle.arange(self.out_channels)).unsqueeze(0)
             char_node_embed = paddle.tile(char_node_embed, [bs, 1, 1])
-        counting_char_num = paddle.shape(char_node_embed)[1]
+        counting_char_num = char_node_embed.shape[1]
         pos_node_embed = self.pos_node_embed(paddle.arange(
             self.max_len)).unsqueeze(0) + self.char_pos_embed
         pos_node_embed = paddle.tile(pos_node_embed, [bs, 1, 1])

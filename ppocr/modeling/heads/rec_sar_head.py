@@ -83,7 +83,7 @@ class SAREncoder(nn.Layer):
 
     def forward(self, feat, img_metas=None):
         if img_metas is not None:
-            assert len(img_metas[0]) == paddle.shape(feat)[0]
+            assert len(img_metas[0]) == feat.shape[0]
 
         valid_ratios = None
         if img_metas is not None and self.mask:
@@ -99,7 +99,7 @@ class SAREncoder(nn.Layer):
         if valid_ratios is not None:
             valid_hf = []
             T = paddle.shape(holistic_feat)[1]
-            for i in range(paddle.shape(valid_ratios)[0]):
+            for i in range(valid_ratios.shape[0]):
                 valid_step = paddle.minimum(
                     T, paddle.ceil(valid_ratios[i] * T).astype(T.dtype)) - 1
                 valid_hf.append(holistic_feat[i, valid_step, :])
@@ -253,7 +253,7 @@ class ParallelSARDecoder(BaseDecoder):
 
         if valid_ratios is not None:
             # cal mask of attention weight
-            for i in range(paddle.shape(valid_ratios)[0]):
+            for i in range(valid_ratios.shape[0]):
                 valid_width = paddle.minimum(
                     w, paddle.ceil(valid_ratios[i] * w).astype("int32"))
                 if valid_width < w:
@@ -292,7 +292,7 @@ class ParallelSARDecoder(BaseDecoder):
         img_metas: [label, valid_ratio]
         '''
         if img_metas is not None:
-            assert paddle.shape(img_metas[0])[0] == paddle.shape(feat)[0]
+            assert img_metas[0].shape[0] == feat.shape[0]
 
         valid_ratios = None
         if img_metas is not None and self.mask:

@@ -71,7 +71,7 @@ class TableMasterHead(nn.Layer):
         """
         trg_pad_mask = (tgt != self.PAD).unsqueeze(1).unsqueeze(3)
 
-        tgt_len = paddle.shape(tgt)[1]
+        tgt_len = tgt.shape[1]
         trg_sub_mask = paddle.tril(
             paddle.ones(
                 ([tgt_len, tgt_len]), dtype=paddle.float32))
@@ -279,5 +279,5 @@ class PositionalEncoding(nn.Layer):
         self.register_buffer('pe', pe)
 
     def forward(self, feat, **kwargs):
-        feat = feat + self.pe[:, :paddle.shape(feat)[1]]  # pe 1*5000*512
+        feat = feat + self.pe[:, :feat.shape[1]]  # pe 1*5000*512
         return self.dropout(feat)
