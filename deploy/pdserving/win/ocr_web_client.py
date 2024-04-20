@@ -22,9 +22,8 @@ import time
 
 
 def cv2_to_base64(image):
-    #data = cv2.imencode('.jpg', image)[1]
-    return base64.b64encode(image).decode(
-        'utf8')  #data.tostring()).decode('utf8')
+    # data = cv2.imencode('.jpg', image)[1]
+    return base64.b64encode(image).decode("utf8")  # data.tostring()).decode('utf8')
 
 
 headers = {"Content-type": "application/json"}
@@ -32,7 +31,7 @@ url = "http://127.0.0.1:9292/ocr/prediction"
 
 test_img_dir = "../../../doc/imgs/"
 for idx, img_file in enumerate(os.listdir(test_img_dir)):
-    with open(os.path.join(test_img_dir, img_file), 'rb') as file:
+    with open(os.path.join(test_img_dir, img_file), "rb") as file:
         image_data1 = file.read()
 
     image = cv2_to_base64(image_data1)

@@ -4,12 +4,12 @@ from PIL import Image
 
 
 def load_CIFAR_batch(filename):
-    """ load single batch of cifar """
-    with open(filename, 'rb') as f:
-        datadict = p.load(f, encoding='bytes')
+    """load single batch of cifar"""
+    with open(filename, "rb") as f:
+        datadict = p.load(f, encoding="bytes")
         # 以字典的形式取出数据
-        X = datadict[b'data']
-        Y = datadict[b'fine_labels']
+        X = datadict[b"data"]
+        Y = datadict[b"fine_labels"]
         try:
             X = X.reshape(10000, 3, 32, 32)
         except:
@@ -22,9 +22,9 @@ def load_CIFAR_batch(filename):
 if __name__ == "__main__":
     mode = "train"
     imgX, imgY = load_CIFAR_batch(f"./cifar-100-python/{mode}")
-    with open(f'./cifar-100-python/{mode}_imgs/img_label.txt', 'a+') as f:
+    with open(f"./cifar-100-python/{mode}_imgs/img_label.txt", "a+") as f:
         for i in range(imgY.shape[0]):
-            f.write('img' + str(i) + ' ' + str(imgY[i]) + '\n')
+            f.write("img" + str(i) + " " + str(imgY[i]) + "\n")
 
     for i in range(imgX.shape[0]):
         imgs = imgX[i]

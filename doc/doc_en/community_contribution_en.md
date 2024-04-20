@@ -12,7 +12,7 @@ PaddleOCR wants to help any developer with a dream realize their vision and enjo
 
 > The picture above shows PaddleOCR's current Contributor, updated regularly
 
-## 1. COMMUNITY CONTRIBUTION 
+## 1. COMMUNITY CONTRIBUTION
 
 ### 1.1 PaddleOCR BASED COMMUNITY PROJECT
 
@@ -60,7 +60,7 @@ PaddleOCR welcomes community contributions to various services, deployment examp
 
 - Project form: the project code certified by the official community shall have good specifications and structure, and shall be equipped with a detailed README.md, which describes how to use the project. Through add a line 'paddleocr' to the requirements.txt, which can be automatically included in the usedby of paddleocr.
 
-- Integration method: if it is an update to the existing PaddleOCR tool, it will be integrated into the main repo. If a new function is expanded for paddleocr, please contact the official personnel first to confirm whether the project is integrated into the master repo, *even if the new function is not integrated into the master repo, we will also increase the exposure of your personal project in the way of community contribution.* 
+- Integration method: if it is an update to the existing PaddleOCR tool, it will be integrated into the main repo. If a new function is expanded for paddleocr, please contact the official personnel first to confirm whether the project is integrated into the master repo, *even if the new function is not integrated into the master repo, we will also increase the exposure of your personal project in the way of community contribution.*
 
 
 ### 2.2 CODE OPTIMIZATION

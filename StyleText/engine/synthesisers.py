@@ -28,8 +28,7 @@ class ImageSynthesiser(object):
         self.output_dir = self.config["Global"]["output_dir"]
         if not os.path.exists(self.output_dir):
             os.mkdir(self.output_dir)
-        self.logger = get_logger(
-            log_file='{}/predict.log'.format(self.output_dir))
+        self.logger = get_logger(log_file="{}/predict.log".format(self.output_dir))
 
         self.text_drawer = text_drawers.StdTextDrawer(self.config)
 
@@ -39,7 +38,8 @@ class ImageSynthesiser(object):
 
     def synth_image(self, corpus, style_input, language="en"):
         corpus_list, text_input_list = self.text_drawer.draw_text(
-            corpus, language, style_input_width=style_input.shape[1])
+            corpus, language, style_input_width=style_input.shape[1]
+        )
         synth_result = self.predictor.predict(style_input, text_input_list)
         return synth_result
 
@@ -50,8 +50,9 @@ class DatasetSynthesiser(ImageSynthesiser):
         self.tag = self.FLAGS.tag
         self.output_num = self.config["Global"]["output_num"]
         corpus_generator_method = self.config["CorpusGenerator"]["method"]
-        self.corpus_generator = getattr(corpus_generators,
-                                        corpus_generator_method)(self.config)
+        self.corpus_generator = getattr(corpus_generators, corpus_generator_method)(
+            self.config
+        )
 
         style_sampler_method = self.config["StyleSampler"]["method"]
         assert style_sampler_method is not None
@@ -66,7 +67,8 @@ class DatasetSynthesiser(ImageSynthesiser):
             text_input_label_list, text_input_list = self.text_drawer.draw_text(
                 text_input_label,
                 corpus_language,
-                style_input_width=style_input.shape[1])
+                style_input_width=style_input.shape[1],
+            )
 
             text_input_label = "".join(text_input_label_list)
 

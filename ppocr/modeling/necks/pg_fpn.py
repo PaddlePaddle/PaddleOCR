@@ -23,20 +23,23 @@ from paddle import ParamAttr
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride=1,
-                 groups=1,
-                 is_vd_mode=False,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        groups=1,
+        is_vd_mode=False,
+        act=None,
+        name=None,
+    ):
         super(ConvBNLayer, self).__init__()
 
         self.is_vd_mode = is_vd_mode
         self._pool2d_avg = nn.AvgPool2D(
-            kernel_size=2, stride=2, padding=0, ceil_mode=True)
+            kernel_size=2, stride=2, padding=0, ceil_mode=True
+        )
         self._conv = nn.Conv2D(
             in_channels=in_channels,
             out_channels=out_channels,
@@ -45,7 +48,8 @@ class ConvBNLayer(nn.Layer):
             padding=(kernel_size - 1) // 2,
             groups=groups,
             weight_attr=ParamAttr(name=name + "_weights"),
-            bias_attr=False)
+            bias_attr=False,
+        )
         if name == "conv1":
             bn_name = "bn_" + name
         else:
@@ -53,11 +57,12 @@ class ConvBNLayer(nn.Layer):
         self._batch_norm = nn.BatchNorm(
             out_channels,
             act=act,
-            param_attr=ParamAttr(name=bn_name + '_scale'),
-            bias_attr=ParamAttr(bn_name + '_offset'),
-            moving_mean_name=bn_name + '_mean',
-            moving_variance_name=bn_name + '_variance',
-            use_global_stats=False)
+            param_attr=ParamAttr(name=bn_name + "_scale"),
+            bias_attr=ParamAttr(bn_name + "_offset"),
+            moving_mean_name=bn_name + "_mean",
+            moving_variance_name=bn_name + "_variance",
+            use_global_stats=False,
+        )
 
     def forward(self, inputs):
         y = self._conv(inputs)
@@ -66,16 +71,18 @@ class ConvBNLayer(nn.Layer):
 
 
 class DeConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size=4,
-                 stride=2,
-                 padding=1,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=4,
+        stride=2,
+        padding=1,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(DeConvBNLayer, self).__init__()
 
         self.if_act = if_act
@@ -87,8 +94,9 @@ class DeConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
             act=act,
@@ -96,7 +104,8 @@ class DeConvBNLayer(nn.Layer):
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
             moving_variance_name="bn_" + name + "_variance",
-            use_global_stats=False)
+            use_global_stats=False,
+        )
 
     def forward(self, x):
         x = self.deconv(x)
@@ -116,56 +125,64 @@ class PGFPN(nn.Layer):
             kernel_size=3,
             stride=1,
             act=None,
-            name='FPN_d1')
+            name="FPN_d1",
+        )
         self.conv_bn_layer_2 = ConvBNLayer(
             in_channels=64,
             out_channels=64,
             kernel_size=3,
             stride=1,
             act=None,
-            name='FPN_d2')
+            name="FPN_d2",
+        )
         self.conv_bn_layer_3 = ConvBNLayer(
             in_channels=256,
             out_channels=128,
             kernel_size=3,
             stride=1,
             act=None,
-            name='FPN_d3')
+            name="FPN_d3",
+        )
         self.conv_bn_layer_4 = ConvBNLayer(
             in_channels=32,
             out_channels=64,
             kernel_size=3,
             stride=2,
             act=None,
-            name='FPN_d4')
+            name="FPN_d4",
+        )
         self.conv_bn_layer_5 = ConvBNLayer(
             in_channels=64,
             out_channels=64,
             kernel_size=3,
             stride=1,
-            act='relu',
-            name='FPN_d5')
+            act="relu",
+            name="FPN_d5",
+        )
         self.conv_bn_layer_6 = ConvBNLayer(
             in_channels=64,
             out_channels=128,
             kernel_size=3,
             stride=2,
             act=None,
-            name='FPN_d6')
+            name="FPN_d6",
+        )
         self.conv_bn_layer_7 = ConvBNLayer(
             in_channels=128,
             out_channels=128,
             kernel_size=3,
             stride=1,
-            act='relu',
-            name='FPN_d7')
+            act="relu",
+            name="FPN_d7",
+        )
         self.conv_bn_layer_8 = ConvBNLayer(
             in_channels=128,
             out_channels=128,
             kernel_size=1,
             stride=1,
             act=None,
-            name='FPN_d8')
+            name="FPN_d8",
+        )
 
         self.conv_h0 = ConvBNLayer(
             in_channels=num_inputs[0],
@@ -173,90 +190,104 @@ class PGFPN(nn.Layer):
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_h{}".format(0))
+            name="conv_h{}".format(0),
+        )
         self.conv_h1 = ConvBNLayer(
             in_channels=num_inputs[1],
             out_channels=num_outputs[1],
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_h{}".format(1))
+            name="conv_h{}".format(1),
+        )
         self.conv_h2 = ConvBNLayer(
             in_channels=num_inputs[2],
             out_channels=num_outputs[2],
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_h{}".format(2))
+            name="conv_h{}".format(2),
+        )
         self.conv_h3 = ConvBNLayer(
             in_channels=num_inputs[3],
             out_channels=num_outputs[3],
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_h{}".format(3))
+            name="conv_h{}".format(3),
+        )
         self.conv_h4 = ConvBNLayer(
             in_channels=num_inputs[4],
             out_channels=num_outputs[4],
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_h{}".format(4))
+            name="conv_h{}".format(4),
+        )
 
         self.dconv0 = DeConvBNLayer(
             in_channels=num_outputs[0],
             out_channels=num_outputs[0 + 1],
-            name="dconv_{}".format(0))
+            name="dconv_{}".format(0),
+        )
         self.dconv1 = DeConvBNLayer(
             in_channels=num_outputs[1],
             out_channels=num_outputs[1 + 1],
             act=None,
-            name="dconv_{}".format(1))
+            name="dconv_{}".format(1),
+        )
         self.dconv2 = DeConvBNLayer(
             in_channels=num_outputs[2],
             out_channels=num_outputs[2 + 1],
             act=None,
-            name="dconv_{}".format(2))
+            name="dconv_{}".format(2),
+        )
         self.dconv3 = DeConvBNLayer(
             in_channels=num_outputs[3],
             out_channels=num_outputs[3 + 1],
             act=None,
-            name="dconv_{}".format(3))
+            name="dconv_{}".format(3),
+        )
         self.conv_g1 = ConvBNLayer(
             in_channels=num_outputs[1],
             out_channels=num_outputs[1],
             kernel_size=3,
             stride=1,
-            act='relu',
-            name="conv_g{}".format(1))
+            act="relu",
+            name="conv_g{}".format(1),
+        )
         self.conv_g2 = ConvBNLayer(
             in_channels=num_outputs[2],
             out_channels=num_outputs[2],
             kernel_size=3,
             stride=1,
-            act='relu',
-            name="conv_g{}".format(2))
+            act="relu",
+            name="conv_g{}".format(2),
+        )
         self.conv_g3 = ConvBNLayer(
             in_channels=num_outputs[3],
             out_channels=num_outputs[3],
             kernel_size=3,
             stride=1,
-            act='relu',
-            name="conv_g{}".format(3))
+            act="relu",
+            name="conv_g{}".format(3),
+        )
         self.conv_g4 = ConvBNLayer(
             in_channels=num_outputs[4],
             out_channels=num_outputs[4],
             kernel_size=3,
             stride=1,
-            act='relu',
-            name="conv_g{}".format(4))
+            act="relu",
+            name="conv_g{}".format(4),
+        )
         self.convf = ConvBNLayer(
             in_channels=num_outputs[4],
             out_channels=num_outputs[4],
             kernel_size=1,
             stride=1,
             act=None,
-            name="conv_f{}".format(4))
+            name="conv_f{}".format(4),
+        )
 
     def forward(self, x):
         c0, c1, c2, c3, c4, c5, c6 = x

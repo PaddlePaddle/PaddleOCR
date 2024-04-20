@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+
 sys.path.insert(0, ".")
 import copy
 
@@ -40,7 +41,8 @@ from deploy.hubserving.structure_layout.params import read_params
     summary="PP-Structure layout service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/structure_layout")
+    type="cv/structure_layout",
+)
 class LayoutPredictor(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -81,8 +83,9 @@ class LayoutPredictor(hub.Module):
     def read_images(self, paths=[]):
         images = []
         for img_path in paths:
-            assert os.path.isfile(
-                img_path), "The {} isn't a valid file.".format(img_path)
+            assert os.path.isfile(img_path), "The {} isn't a valid file.".format(
+                img_path
+            )
             img = cv2.imread(img_path)
             if img is None:
                 logger.info("error in loading image:{}".format(img_path))
@@ -107,7 +110,9 @@ class LayoutPredictor(hub.Module):
         else:
             raise TypeError("The input data is inconsistent with expectations.")
 
-        assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
+        assert (
+            predicted_data != []
+        ), "There is not any image to be predicted. Please check the input data."
 
         all_results = []
         for img in predicted_data:
@@ -121,8 +126,8 @@ class LayoutPredictor(hub.Module):
             logger.info("Predict time: {}".format(elapse))
 
             for item in res:
-                item['bbox'] = item['bbox'].tolist()
-            all_results.append({'layout': res})
+                item["bbox"] = item["bbox"].tolist()
+            all_results.append({"layout": res})
         return all_results
 
     @serving
@@ -135,9 +140,9 @@ class LayoutPredictor(hub.Module):
         return results
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     layout = LayoutPredictor()
     layout._initialize()
-    image_path = ['./ppstructure/docs/table/1.png']
+    image_path = ["./ppstructure/docs/table/1.png"]
     res = layout.predict(paths=image_path)
     print(res)

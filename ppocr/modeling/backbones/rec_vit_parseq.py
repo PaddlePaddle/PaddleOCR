@@ -25,25 +25,25 @@ import paddle.nn as nn
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal
 
 
-trunc_normal_ = TruncatedNormal(std=.02)
+trunc_normal_ = TruncatedNormal(std=0.02)
 normal_ = Normal
-zeros_ = Constant(value=0.)
-ones_ = Constant(value=1.)
+zeros_ = Constant(value=0.0)
+ones_ = Constant(value=1.0)
 
 
 def to_2tuple(x):
     return tuple([x] * 2)
 
 
-def drop_path(x, drop_prob=0., training=False):
+def drop_path(x, drop_prob=0.0, training=False):
     """Drop paths (Stochastic Depth) per sample (when applied in main path of residual blocks).
     the original name is misleading as 'Drop Connect' is a different form of dropout in a separate paper...
     See discussion: https://github.com/tensorflow/tpu/issues/494#issuecomment-532968956 ...
     """
-    if drop_prob == 0. or not training:
+    if drop_prob == 0.0 or not training:
         return x
     keep_prob = paddle.to_tensor(1 - drop_prob, dtype=x.dtype)
-    shape = (x.shape[0], ) + (1, ) * (x.ndim - 1)
+    shape = (x.shape[0],) + (1,) * (x.ndim - 1)
     random_tensor = keep_prob + paddle.rand(shape).astype(x.dtype)
     random_tensor = paddle.floor(random_tensor)  # binarize
     output = x.divide(keep_prob) * random_tensor
@@ -51,8 +51,7 @@ def drop_path(x, drop_prob=0., training=False):
 
 
 class DropPath(nn.Layer):
-    """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks).
-    """
+    """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks)."""
 
     def __init__(self, drop_prob=None):
         super(DropPath, self).__init__()
@@ -71,12 +70,14 @@ class Identity(nn.Layer):
 
 
 class Mlp(nn.Layer):
-    def __init__(self,
-                 in_features,
-                 hidden_features=None,
-                 out_features=None,
-                 act_layer=nn.GELU,
-                 drop=0.):
+    def __init__(
+        self,
+        in_features,
+        hidden_features=None,
+        out_features=None,
+        act_layer=nn.GELU,
+        drop=0.0,
+    ):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
@@ -95,13 +96,15 @@ class Mlp(nn.Layer):
 
 
 class Attention(nn.Layer):
-    def __init__(self,
-                 dim,
-                 num_heads=8,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.):
+    def __init__(
+        self,
+        dim,
+        num_heads=8,
+        qkv_bias=False,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+    ):
         super().__init__()
         self.num_heads = num_heads
         head_dim = dim // num_heads
@@ -115,8 +118,11 @@ class Attention(nn.Layer):
     def forward(self, x):
         # B= x.shape[0]
         N, C = x.shape[1:]
-        qkv = self.qkv(x).reshape((-1, N, 3, self.num_heads, C //
-                                   self.num_heads)).transpose((2, 0, 3, 1, 4))
+        qkv = (
+            self.qkv(x)
+            .reshape((-1, N, 3, self.num_heads, C // self.num_heads))
+            .transpose((2, 0, 3, 1, 4))
+        )
         q, k, v = qkv[0], qkv[1], qkv[2]
 
         attn = (q.matmul(k.transpose((0, 1, 3, 2)))) * self.scale
@@ -128,48 +134,52 @@ class Attention(nn.Layer):
         x = self.proj_drop(x)
         return x
 
+
 class Block(nn.Layer):
-    def __init__(self,
-                 dim,
-                 num_heads,
-                 mlp_ratio=4.,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer='nn.LayerNorm',
-                 epsilon=1e-5):
+    def __init__(
+        self,
+        dim,
+        num_heads,
+        mlp_ratio=4.0,
+        qkv_bias=False,
+        qk_scale=None,
+        drop=0.0,
+        attn_drop=0.0,
+        drop_path=0.0,
+        act_layer=nn.GELU,
+        norm_layer="nn.LayerNorm",
+        epsilon=1e-5,
+    ):
         super().__init__()
         if isinstance(norm_layer, str):
             self.norm1 = eval(norm_layer)(dim, epsilon=epsilon)
         elif isinstance(norm_layer, Callable):
             self.norm1 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            raise TypeError("The norm_layer must be str or paddle.nn.layer.Layer class")
         self.attn = Attention(
             dim,
             num_heads=num_heads,
             qkv_bias=qkv_bias,
             qk_scale=qk_scale,
             attn_drop=attn_drop,
-            proj_drop=drop)
+            proj_drop=drop,
+        )
         # NOTE: drop path for stochastic depth, we shall see if this is better than dropout here
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else Identity()
+        self.drop_path = DropPath(drop_path) if drop_path > 0.0 else Identity()
         if isinstance(norm_layer, str):
             self.norm2 = eval(norm_layer)(dim, epsilon=epsilon)
         elif isinstance(norm_layer, Callable):
             self.norm2 = norm_layer(dim)
         else:
-            raise TypeError(
-                "The norm_layer must be str or paddle.nn.layer.Layer class")
+            raise TypeError("The norm_layer must be str or paddle.nn.layer.Layer class")
         mlp_hidden_dim = int(dim * mlp_ratio)
-        self.mlp = Mlp(in_features=dim,
-                       hidden_features=mlp_hidden_dim,
-                       act_layer=act_layer,
-                       drop=drop)
+        self.mlp = Mlp(
+            in_features=dim,
+            hidden_features=mlp_hidden_dim,
+            act_layer=act_layer,
+            drop=drop,
+        )
 
     def forward(self, x):
         x = x + self.drop_path(self.attn(self.norm1(x)))
@@ -178,8 +188,7 @@ class Block(nn.Layer):
 
 
 class PatchEmbed(nn.Layer):
-    """ Image to Patch Embedding
-    """
+    """Image to Patch Embedding"""
 
     def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
         super().__init__()
@@ -193,38 +202,41 @@ class PatchEmbed(nn.Layer):
         self.num_patches = num_patches
 
         self.proj = nn.Conv2D(
-            in_chans, embed_dim, kernel_size=patch_size, stride=patch_size)
+            in_chans, embed_dim, kernel_size=patch_size, stride=patch_size
+        )
 
     def forward(self, x):
         B, C, H, W = x.shape
-        assert H == self.img_size[0] and W == self.img_size[1], \
-            f"Input image size ({H}*{W}) doesn't match model ({self.img_size[0]}*{self.img_size[1]})."
+        assert (
+            H == self.img_size[0] and W == self.img_size[1]
+        ), f"Input image size ({H}*{W}) doesn't match model ({self.img_size[0]}*{self.img_size[1]})."
 
         x = self.proj(x).flatten(2).transpose((0, 2, 1))
         return x
 
 
 class VisionTransformer(nn.Layer):
-    """ Vision Transformer with support for patch input
-    """
+    """Vision Transformer with support for patch input"""
 
-    def __init__(self,
-                 img_size=224,
-                 patch_size=16,
-                 in_channels=3,
-                 class_num=1000,
-                 embed_dim=768,
-                 depth=12,
-                 num_heads=12,
-                 mlp_ratio=4,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop_rate=0.,
-                 attn_drop_rate=0.,
-                 drop_path_rate=0.,
-                 norm_layer='nn.LayerNorm',
-                 epsilon=1e-5,
-                 **kwargs):
+    def __init__(
+        self,
+        img_size=224,
+        patch_size=16,
+        in_channels=3,
+        class_num=1000,
+        embed_dim=768,
+        depth=12,
+        num_heads=12,
+        mlp_ratio=4,
+        qkv_bias=False,
+        qk_scale=None,
+        drop_rate=0.0,
+        attn_drop_rate=0.0,
+        drop_path_rate=0.0,
+        norm_layer="nn.LayerNorm",
+        epsilon=1e-5,
+        **kwargs,
+    ):
         super().__init__()
         self.class_num = class_num
 
@@ -234,37 +246,44 @@ class VisionTransformer(nn.Layer):
             img_size=img_size,
             patch_size=patch_size,
             in_chans=in_channels,
-            embed_dim=embed_dim)
+            embed_dim=embed_dim,
+        )
         num_patches = self.patch_embed.num_patches
 
-        self.pos_embed = self.create_parameter(shape=(1, num_patches, embed_dim), default_initializer=zeros_)
+        self.pos_embed = self.create_parameter(
+            shape=(1, num_patches, embed_dim), default_initializer=zeros_
+        )
         self.add_parameter("pos_embed", self.pos_embed)
         self.cls_token = self.create_parameter(
-            shape=(1, 1, embed_dim), default_initializer=zeros_)
+            shape=(1, 1, embed_dim), default_initializer=zeros_
+        )
         self.add_parameter("cls_token", self.cls_token)
         self.pos_drop = nn.Dropout(p=drop_rate)
 
         dpr = np.linspace(0, drop_path_rate, depth)
 
-        self.blocks = nn.LayerList([
-            Block(
-                dim=embed_dim,
-                num_heads=num_heads,
-                mlp_ratio=mlp_ratio,
-                qkv_bias=qkv_bias,
-                qk_scale=qk_scale,
-                drop=drop_rate,
-                attn_drop=attn_drop_rate,
-                drop_path=dpr[i],
-                norm_layer=norm_layer,
-                epsilon=epsilon) for i in range(depth)
-        ])
+        self.blocks = nn.LayerList(
+            [
+                Block(
+                    dim=embed_dim,
+                    num_heads=num_heads,
+                    mlp_ratio=mlp_ratio,
+                    qkv_bias=qkv_bias,
+                    qk_scale=qk_scale,
+                    drop=drop_rate,
+                    attn_drop=attn_drop_rate,
+                    drop_path=dpr[i],
+                    norm_layer=norm_layer,
+                    epsilon=epsilon,
+                )
+                for i in range(depth)
+            ]
+        )
 
         self.norm = eval(norm_layer)(embed_dim, epsilon=epsilon)
 
         # Classifier head
-        self.head = nn.Linear(embed_dim,
-                              class_num) if class_num > 0 else Identity()
+        self.head = nn.Linear(embed_dim, class_num) if class_num > 0 else Identity()
 
         trunc_normal_(self.pos_embed)
         self.out_channels = embed_dim
@@ -296,9 +315,34 @@ class VisionTransformer(nn.Layer):
 
 
 class ViTParseQ(VisionTransformer):
-    def __init__(self, img_size=[224, 224], patch_size=[16, 16], in_channels=3, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4.0, qkv_bias=True, drop_rate=0.0, attn_drop_rate=0.0, drop_path_rate=0.0):
-        super().__init__(img_size, patch_size, in_channels, embed_dim=embed_dim, depth=depth, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, drop_rate=drop_rate, 
-                         attn_drop_rate=attn_drop_rate, drop_path_rate=drop_path_rate, class_num=0)
+    def __init__(
+        self,
+        img_size=[224, 224],
+        patch_size=[16, 16],
+        in_channels=3,
+        embed_dim=768,
+        depth=12,
+        num_heads=12,
+        mlp_ratio=4.0,
+        qkv_bias=True,
+        drop_rate=0.0,
+        attn_drop_rate=0.0,
+        drop_path_rate=0.0,
+    ):
+        super().__init__(
+            img_size,
+            patch_size,
+            in_channels,
+            embed_dim=embed_dim,
+            depth=depth,
+            num_heads=num_heads,
+            mlp_ratio=mlp_ratio,
+            qkv_bias=qkv_bias,
+            drop_rate=drop_rate,
+            attn_drop_rate=attn_drop_rate,
+            drop_path_rate=drop_path_rate,
+            class_num=0,
+        )
 
     def forward(self, x):
         return self.forward_features(x)

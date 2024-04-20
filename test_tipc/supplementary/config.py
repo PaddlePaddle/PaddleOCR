@@ -14,23 +14,20 @@ from utils import get_logger, print_dict
 
 class ArgsParser(ArgumentParser):
     def __init__(self):
-        super(ArgsParser, self).__init__(
-            formatter_class=RawDescriptionHelpFormatter)
+        super(ArgsParser, self).__init__(formatter_class=RawDescriptionHelpFormatter)
         self.add_argument("-c", "--config", help="configuration file to use")
+        self.add_argument("-o", "--opt", nargs="+", help="set configuration options")
         self.add_argument(
-            "-o", "--opt", nargs='+', help="set configuration options")
-        self.add_argument(
-            '-p',
-            '--profiler_options',
+            "-p",
+            "--profiler_options",
             type=str,
             default=None,
-            help='The option of profiler, which should be in format \"key1=value1;key2=value2;key3=value3\".'
+            help='The option of profiler, which should be in format "key1=value1;key2=value2;key3=value3".',
         )
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
-        assert args.config is not None, \
-            "Please specify --config=configure_file_path."
+        assert args.config is not None, "Please specify --config=configure_file_path."
         args.opt = self._parse_opt(args.opt)
         return args
 
@@ -40,7 +37,7 @@ class ArgsParser(ArgumentParser):
             return config
         for s in opts:
             s = s.strip()
-            k, v = s.split('=')
+            k, v = s.split("=")
             config[k] = yaml.load(v, Loader=yaml.Loader)
         return config
 
@@ -60,7 +57,11 @@ class AttrDict(dict):
 
 global_config = AttrDict()
 
-default_config = {'Global': {'debug': False, }}
+default_config = {
+    "Global": {
+        "debug": False,
+    }
+}
 
 
 def load_config(file_path):
@@ -72,8 +73,8 @@ def load_config(file_path):
     """
     merge_config(default_config)
     _, ext = os.path.splitext(file_path)
-    assert ext in ['.yml', '.yaml'], "only support yaml files for now"
-    merge_config(yaml.load(open(file_path, 'rb'), Loader=yaml.Loader))
+    assert ext in [".yml", ".yaml"], "only support yaml files for now"
+    merge_config(yaml.load(open(file_path, "rb"), Loader=yaml.Loader))
     return global_config
 
 
@@ -91,11 +92,12 @@ def merge_config(config):
             else:
                 global_config[key] = value
         else:
-            sub_keys = key.split('.')
+            sub_keys = key.split(".")
             assert (
                 sub_keys[0] in global_config
             ), "the sub_keys can only be one of global_config: {}, but get: {}, please check your running command".format(
-                global_config.keys(), sub_keys[0])
+                global_config.keys(), sub_keys[0]
+            )
             cur = global_config[sub_keys[0]]
             for idx, sub_key in enumerate(sub_keys[1:]):
                 if idx == len(sub_keys) - 2:
@@ -114,18 +116,17 @@ def preprocess(is_train=False):
 
     if is_train:
         # save_config
-        save_model_dir = config['save_model_dir']
+        save_model_dir = config["save_model_dir"]
         os.makedirs(save_model_dir, exist_ok=True)
-        with open(os.path.join(save_model_dir, 'config.yml'), 'w') as f:
-            yaml.dump(
-                dict(config), f, default_flow_style=False, sort_keys=False)
-        log_file = '{}/train.log'.format(save_model_dir)
+        with open(os.path.join(save_model_dir, "config.yml"), "w") as f:
+            yaml.dump(dict(config), f, default_flow_style=False, sort_keys=False)
+        log_file = "{}/train.log".format(save_model_dir)
     else:
         log_file = None
     logger = get_logger(log_file=log_file)
 
     # check if set use_gpu=True in paddlepaddle cpu version
-    use_gpu = config['use_gpu']
+    use_gpu = config["use_gpu"]
 
     print_dict(config, logger)
 

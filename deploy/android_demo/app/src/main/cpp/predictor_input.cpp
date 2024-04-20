@@ -25,4 +25,4 @@ void PredictorInput::set_data(const float *input_data, int input_float_len) {
   float *input_raw_data = get_mutable_float_data();
   memcpy(input_raw_data, input_data, input_float_len * sizeof(float));
 }
-}
+} // namespace ppredictor

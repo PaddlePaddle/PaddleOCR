@@ -19,21 +19,21 @@ import paddle
 import paddle.nn as nn
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal
 
-trunc_normal_ = TruncatedNormal(std=.02)
+trunc_normal_ = TruncatedNormal(std=0.02)
 normal_ = Normal
-zeros_ = Constant(value=0.)
-ones_ = Constant(value=1.)
+zeros_ = Constant(value=0.0)
+ones_ = Constant(value=1.0)
 
 
-def drop_path(x, drop_prob=0., training=False):
+def drop_path(x, drop_prob=0.0, training=False):
     """Drop paths (Stochastic Depth) per sample (when applied in main path of residual blocks).
     the original name is misleading as 'Drop Connect' is a different form of dropout in a separate paper...
     See discussion: https://github.com/tensorflow/tpu/issues/494#issuecomment-532968956 ...
     """
-    if drop_prob == 0. or not training:
+    if drop_prob == 0.0 or not training:
         return x
     keep_prob = paddle.to_tensor(1 - drop_prob)
-    shape = (x.shape[0], ) + (1, ) * (x.ndim - 1)
+    shape = (x.shape[0],) + (1,) * (x.ndim - 1)
     random_tensor = keep_prob + paddle.rand(shape, dtype=x.dtype)
     random_tensor = paddle.floor(random_tensor)  # binarize
     output = x.divide(keep_prob) * random_tensor
@@ -41,8 +41,7 @@ def drop_path(x, drop_prob=0., training=False):
 
 
 class DropPath(nn.Layer):
-    """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks).
-    """
+    """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks)."""
 
     def __init__(self, drop_prob=None):
         super(DropPath, self).__init__()
@@ -61,12 +60,14 @@ class Identity(nn.Layer):
 
 
 class Mlp(nn.Layer):
-    def __init__(self,
-                 in_features,
-                 hidden_features=None,
-                 out_features=None,
-                 act_layer=nn.GELU,
-                 drop=0.):
+    def __init__(
+        self,
+        in_features,
+        hidden_features=None,
+        out_features=None,
+        act_layer=nn.GELU,
+        drop=0.0,
+    ):
         super().__init__()
         out_features = out_features or in_features
         hidden_features = hidden_features or in_features
@@ -85,13 +86,15 @@ class Mlp(nn.Layer):
 
 
 class Attention(nn.Layer):
-    def __init__(self,
-                 dim,
-                 num_heads=8,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 attn_drop=0.,
-                 proj_drop=0.):
+    def __init__(
+        self,
+        dim,
+        num_heads=8,
+        qkv_bias=False,
+        qk_scale=None,
+        attn_drop=0.0,
+        proj_drop=0.0,
+    ):
         super().__init__()
         self.num_heads = num_heads
         self.dim = dim
@@ -102,15 +105,14 @@ class Attention(nn.Layer):
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
-        
 
     def forward(self, x):
-
-        qkv = paddle.reshape(self.qkv(x), (0, -1, 3, self.num_heads, self.dim //
-                                   self.num_heads)).transpose((2, 0, 3, 1, 4))
+        qkv = paddle.reshape(
+            self.qkv(x), (0, -1, 3, self.num_heads, self.dim // self.num_heads)
+        ).transpose((2, 0, 3, 1, 4))
         q, k, v = qkv[0] * self.scale, qkv[1], qkv[2]
 
-        attn = (q.matmul(k.transpose((0, 1, 3, 2))))
+        attn = q.matmul(k.transpose((0, 1, 3, 2)))
         attn = nn.functional.softmax(attn, axis=-1)
         attn = self.attn_drop(attn)
 
@@ -121,43 +123,48 @@ class Attention(nn.Layer):
 
 
 class Block(nn.Layer):
-    def __init__(self,
-                 dim,
-                 num_heads,
-                 mlp_ratio=4.,
-                 qkv_bias=False,
-                 qk_scale=None,
-                 drop=0.,
-                 attn_drop=0.,
-                 drop_path=0.,
-                 act_layer=nn.GELU,
-                 norm_layer='nn.LayerNorm',
-                 epsilon=1e-6,
-                 prenorm=True):
+    def __init__(
+        self,
+        dim,
+        num_heads,
+        mlp_ratio=4.0,
+        qkv_bias=False,
+        qk_scale=None,
+        drop=0.0,
+        attn_drop=0.0,
+        drop_path=0.0,
+        act_layer=nn.GELU,
+        norm_layer="nn.LayerNorm",
+        epsilon=1e-6,
+        prenorm=True,
+    ):
         super().__init__()
         if isinstance(norm_layer, str):
             self.norm1 = eval(norm_layer)(dim, epsilon=epsilon)
         else:
             self.norm1 = norm_layer(dim)
         self.mixer = Attention(
-                dim,
-                num_heads=num_heads,
-                qkv_bias=qkv_bias,
-                qk_scale=qk_scale,
-                attn_drop=attn_drop,
-                proj_drop=drop)
+            dim,
+            num_heads=num_heads,
+            qkv_bias=qkv_bias,
+            qk_scale=qk_scale,
+            attn_drop=attn_drop,
+            proj_drop=drop,
+        )
 
-        self.drop_path = DropPath(drop_path) if drop_path > 0. else Identity()
+        self.drop_path = DropPath(drop_path) if drop_path > 0.0 else Identity()
         if isinstance(norm_layer, str):
             self.norm2 = eval(norm_layer)(dim, epsilon=epsilon)
         else:
             self.norm2 = norm_layer(dim)
         mlp_hidden_dim = int(dim * mlp_ratio)
         self.mlp_ratio = mlp_ratio
-        self.mlp = Mlp(in_features=dim,
-                       hidden_features=mlp_hidden_dim,
-                       act_layer=act_layer,
-                       drop=drop)
+        self.mlp = Mlp(
+            in_features=dim,
+            hidden_features=mlp_hidden_dim,
+            act_layer=act_layer,
+            drop=drop,
+        )
         self.prenorm = prenorm
 
     def forward(self, x):
@@ -172,60 +179,69 @@ class Block(nn.Layer):
 
 class ViT(nn.Layer):
     def __init__(
-            self,
-            img_size=[32, 128],
-            patch_size=[4,4],
-            in_channels=3,
-            embed_dim=384,
-            depth=12,
-            num_heads=6,
-            mlp_ratio=4,
-            qkv_bias=False,
-            qk_scale=None,
-            drop_rate=0.,
-            attn_drop_rate=0.,
-            drop_path_rate=0.1,
-            norm_layer='nn.LayerNorm',
-            epsilon=1e-6,
-            act='nn.GELU',
-            prenorm=False,
-            **kwargs):
+        self,
+        img_size=[32, 128],
+        patch_size=[4, 4],
+        in_channels=3,
+        embed_dim=384,
+        depth=12,
+        num_heads=6,
+        mlp_ratio=4,
+        qkv_bias=False,
+        qk_scale=None,
+        drop_rate=0.0,
+        attn_drop_rate=0.0,
+        drop_path_rate=0.1,
+        norm_layer="nn.LayerNorm",
+        epsilon=1e-6,
+        act="nn.GELU",
+        prenorm=False,
+        **kwargs
+    ):
         super().__init__()
         self.embed_dim = embed_dim
         self.out_channels = embed_dim
         self.prenorm = prenorm
-        self.patch_embed = nn.Conv2D(in_channels, embed_dim, patch_size, patch_size, padding=(0, 0))
+        self.patch_embed = nn.Conv2D(
+            in_channels, embed_dim, patch_size, patch_size, padding=(0, 0)
+        )
         self.pos_embed = self.create_parameter(
-            shape=[1, 257, embed_dim], default_initializer=zeros_)
+            shape=[1, 257, embed_dim], default_initializer=zeros_
+        )
         self.add_parameter("pos_embed", self.pos_embed)
         self.pos_drop = nn.Dropout(p=drop_rate)
         dpr = np.linspace(0, drop_path_rate, depth)
-        self.blocks1 = nn.LayerList([
-            Block(
-                dim=embed_dim,
-                num_heads=num_heads,
-                mlp_ratio=mlp_ratio,
-                qkv_bias=qkv_bias,
-                qk_scale=qk_scale,
-                drop=drop_rate,
-                act_layer=eval(act),
-                attn_drop=attn_drop_rate,
-                drop_path=dpr[i],
-                norm_layer=norm_layer,
-                epsilon=epsilon,
-                prenorm=prenorm) for i in range(depth)
-        ])
+        self.blocks1 = nn.LayerList(
+            [
+                Block(
+                    dim=embed_dim,
+                    num_heads=num_heads,
+                    mlp_ratio=mlp_ratio,
+                    qkv_bias=qkv_bias,
+                    qk_scale=qk_scale,
+                    drop=drop_rate,
+                    act_layer=eval(act),
+                    attn_drop=attn_drop_rate,
+                    drop_path=dpr[i],
+                    norm_layer=norm_layer,
+                    epsilon=epsilon,
+                    prenorm=prenorm,
+                )
+                for i in range(depth)
+            ]
+        )
         if not prenorm:
             self.norm = eval(norm_layer)(embed_dim, epsilon=epsilon)
-        
+
         self.avg_pool = nn.AdaptiveAvgPool2D([1, 25])
         self.last_conv = nn.Conv2D(
-                in_channels=embed_dim,
-                out_channels=self.out_channels,
-                kernel_size=1,
-                stride=1,
-                padding=0,
-                bias_attr=False)
+            in_channels=embed_dim,
+            out_channels=self.out_channels,
+            kernel_size=1,
+            stride=1,
+            padding=0,
+            bias_attr=False,
+        )
         self.hardswish = nn.Hardswish()
         self.dropout = nn.Dropout(p=0.1, mode="downscale_in_infer")
 
@@ -243,15 +259,14 @@ class ViT(nn.Layer):
 
     def forward(self, x):
         x = self.patch_embed(x).flatten(2).transpose((0, 2, 1))
-        x = x + self.pos_embed[:, 1:, :] #[:, :x.shape[1], :]
+        x = x + self.pos_embed[:, 1:, :]  # [:, :x.shape[1], :]
         x = self.pos_drop(x)
         for blk in self.blocks1:
             x = blk(x)
         if not self.prenorm:
             x = self.norm(x)
-        
-        x = self.avg_pool(x.transpose([0, 2, 1]).reshape(
-                    [0, self.embed_dim, -1, 25]))
+
+        x = self.avg_pool(x.transpose([0, 2, 1]).reshape([0, self.embed_dim, -1, 25]))
         x = self.last_conv(x)
         x = self.hardswish(x)
         x = self.dropout(x)

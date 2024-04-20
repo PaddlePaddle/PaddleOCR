@@ -46,21 +46,22 @@ class DRRGLoss(nn.Layer):
         positive_count = int(positive.sum())
 
         if positive_count > 0:
-            loss = F.binary_cross_entropy(pred, gt, reduction='none')
+            loss = F.binary_cross_entropy(pred, gt, reduction="none")
             positive_loss = paddle.sum(loss * positive)
             negative_loss = loss * negative
             negative_count = min(
-                int(negative.sum()), int(positive_count * self.ohem_ratio))
+                int(negative.sum()), int(positive_count * self.ohem_ratio)
+            )
         else:
             positive_loss = paddle.to_tensor(0.0)
-            loss = F.binary_cross_entropy(pred, gt, reduction='none')
+            loss = F.binary_cross_entropy(pred, gt, reduction="none")
             negative_loss = loss * negative
             negative_count = 100
-        negative_loss, _ = paddle.topk(
-            negative_loss.reshape([-1]), negative_count)
+        negative_loss, _ = paddle.topk(negative_loss.reshape([-1]), negative_count)
 
         balance_loss = (positive_loss + paddle.sum(negative_loss)) / (
-            float(positive_count + negative_count) + 1e-5)
+            float(positive_count + negative_count) + 1e-5
+        )
 
         return balance_loss
 
@@ -105,7 +106,7 @@ class DRRGLoss(nn.Layer):
             mask_sz = mask.shape
             # left, right, top, bottom
             pad = [0, target_sz[1] - mask_sz[1], 0, target_sz[0] - mask_sz[0]]
-            mask = F.pad(mask, pad, mode='constant', value=0)
+            mask = F.pad(mask, pad, mode="constant", value=0)
             kernel.append(mask)
         kernel = paddle.stack(kernel)
         results.append(kernel)
@@ -113,12 +114,18 @@ class DRRGLoss(nn.Layer):
         return results
 
     def forward(self, preds, labels):
-        """Compute Drrg loss.
-        """
+        """Compute Drrg loss."""
 
         assert isinstance(preds, tuple)
-        gt_text_mask, gt_center_region_mask, gt_mask, gt_top_height_map, gt_bot_height_map, gt_sin_map, gt_cos_map = labels[
-            1:8]
+        (
+            gt_text_mask,
+            gt_center_region_mask,
+            gt_mask,
+            gt_top_height_map,
+            gt_bot_height_map,
+            gt_sin_map,
+            gt_cos_map,
+        ) = labels[1:8]
 
         downsample_ratio = self.downsample_ratio
 
@@ -133,14 +140,13 @@ class DRRGLoss(nn.Layer):
 
         # bitmask 2 tensor
         mapping = {
-            'gt_text_mask': paddle.cast(gt_text_mask, 'float32'),
-            'gt_center_region_mask':
-            paddle.cast(gt_center_region_mask, 'float32'),
-            'gt_mask': paddle.cast(gt_mask, 'float32'),
-            'gt_top_height_map': paddle.cast(gt_top_height_map, 'float32'),
-            'gt_bot_height_map': paddle.cast(gt_bot_height_map, 'float32'),
-            'gt_sin_map': paddle.cast(gt_sin_map, 'float32'),
-            'gt_cos_map': paddle.cast(gt_cos_map, 'float32')
+            "gt_text_mask": paddle.cast(gt_text_mask, "float32"),
+            "gt_center_region_mask": paddle.cast(gt_center_region_mask, "float32"),
+            "gt_mask": paddle.cast(gt_mask, "float32"),
+            "gt_top_height_map": paddle.cast(gt_top_height_map, "float32"),
+            "gt_bot_height_map": paddle.cast(gt_bot_height_map, "float32"),
+            "gt_sin_map": paddle.cast(gt_sin_map, "float32"),
+            "gt_cos_map": paddle.cast(gt_cos_map, "float32"),
         }
         gt = {}
         for key, value in mapping.items():
@@ -150,7 +156,7 @@ class DRRGLoss(nn.Layer):
             else:
                 gt[key] = [item.rescale(downsample_ratio) for item in gt[key]]
                 gt[key] = self.bitmasks2tensor(gt[key], feature_sz[2:])
-                if key in ['gt_top_height_map', 'gt_bot_height_map']:
+                if key in ["gt_top_height_map", "gt_bot_height_map"]:
                     gt[key] = [item * downsample_ratio for item in gt[key]]
             gt[key] = [item for item in gt[key]]
 
@@ -159,51 +165,54 @@ class DRRGLoss(nn.Layer):
         pred_cos_map = pred_cos_map * scale
 
         loss_text = self.balance_bce_loss(
-            F.sigmoid(pred_text_region), gt['gt_text_mask'][0],
-            gt['gt_mask'][0])
+            F.sigmoid(pred_text_region), gt["gt_text_mask"][0], gt["gt_mask"][0]
+        )
 
-        text_mask = (gt['gt_text_mask'][0] * gt['gt_mask'][0])
-        negative_text_mask = ((1 - gt['gt_text_mask'][0]) * gt['gt_mask'][0])
+        text_mask = gt["gt_text_mask"][0] * gt["gt_mask"][0]
+        negative_text_mask = (1 - gt["gt_text_mask"][0]) * gt["gt_mask"][0]
         loss_center_map = F.binary_cross_entropy(
             F.sigmoid(pred_center_region),
-            gt['gt_center_region_mask'][0],
-            reduction='none')
+            gt["gt_center_region_mask"][0],
+            reduction="none",
+        )
         if int(text_mask.sum()) > 0:
-            loss_center_positive = paddle.sum(loss_center_map *
-                                              text_mask) / paddle.sum(text_mask)
+            loss_center_positive = paddle.sum(loss_center_map * text_mask) / paddle.sum(
+                text_mask
+            )
         else:
             loss_center_positive = paddle.to_tensor(0.0)
         loss_center_negative = paddle.sum(
-            loss_center_map *
-            negative_text_mask) / paddle.sum(negative_text_mask)
+            loss_center_map * negative_text_mask
+        ) / paddle.sum(negative_text_mask)
         loss_center = loss_center_positive + 0.5 * loss_center_negative
 
-        center_mask = (gt['gt_center_region_mask'][0] * gt['gt_mask'][0])
+        center_mask = gt["gt_center_region_mask"][0] * gt["gt_mask"][0]
         if int(center_mask.sum()) > 0:
             map_sz = pred_top_height_map.shape
-            ones = paddle.ones(map_sz, dtype='float32')
+            ones = paddle.ones(map_sz, dtype="float32")
             loss_top = F.smooth_l1_loss(
-                pred_top_height_map / (gt['gt_top_height_map'][0] + 1e-2),
+                pred_top_height_map / (gt["gt_top_height_map"][0] + 1e-2),
                 ones,
-                reduction='none')
+                reduction="none",
+            )
             loss_bot = F.smooth_l1_loss(
-                pred_bot_height_map / (gt['gt_bot_height_map'][0] + 1e-2),
+                pred_bot_height_map / (gt["gt_bot_height_map"][0] + 1e-2),
                 ones,
-                reduction='none')
-            gt_height = (
-                gt['gt_top_height_map'][0] + gt['gt_bot_height_map'][0])
+                reduction="none",
+            )
+            gt_height = gt["gt_top_height_map"][0] + gt["gt_bot_height_map"][0]
             loss_height = paddle.sum(
-                (paddle.log(gt_height + 1) *
-                 (loss_top + loss_bot)) * center_mask) / paddle.sum(center_mask)
+                (paddle.log(gt_height + 1) * (loss_top + loss_bot)) * center_mask
+            ) / paddle.sum(center_mask)
 
             loss_sin = paddle.sum(
-                F.smooth_l1_loss(
-                    pred_sin_map, gt['gt_sin_map'][0],
-                    reduction='none') * center_mask) / paddle.sum(center_mask)
+                F.smooth_l1_loss(pred_sin_map, gt["gt_sin_map"][0], reduction="none")
+                * center_mask
+            ) / paddle.sum(center_mask)
             loss_cos = paddle.sum(
-                F.smooth_l1_loss(
-                    pred_cos_map, gt['gt_cos_map'][0],
-                    reduction='none') * center_mask) / paddle.sum(center_mask)
+                F.smooth_l1_loss(pred_cos_map, gt["gt_cos_map"][0], reduction="none")
+                * center_mask
+            ) / paddle.sum(center_mask)
         else:
             loss_height = paddle.to_tensor(0.0)
             loss_sin = paddle.to_tensor(0.0)
@@ -219,6 +228,7 @@ class DRRGLoss(nn.Layer):
             loss_height=loss_height,
             loss_sin=loss_sin,
             loss_cos=loss_cos,
-            loss_gcn=loss_gcn)
+            loss_gcn=loss_gcn,
+        )
 
         return results

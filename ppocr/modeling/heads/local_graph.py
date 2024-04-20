@@ -89,45 +89,61 @@ def feature_embedding(input_feats, out_feat_len):
     residue_dim = out_feat_len % feat_dim
 
     if residue_dim > 0:
-        embed_wave = np.array([
-            np.power(1000, 2.0 * (j // 2) / feat_repeat_times + 1)
-            for j in range(feat_repeat_times + 1)
-        ]).reshape((feat_repeat_times + 1, 1, 1))
+        embed_wave = np.array(
+            [
+                np.power(1000, 2.0 * (j // 2) / feat_repeat_times + 1)
+                for j in range(feat_repeat_times + 1)
+            ]
+        ).reshape((feat_repeat_times + 1, 1, 1))
         repeat_feats = np.repeat(
-            np.expand_dims(
-                input_feats, axis=0), feat_repeat_times, axis=0)
-        residue_feats = np.hstack([
-            input_feats[:, 0:residue_dim], np.zeros(
-                (num_nodes, feat_dim - residue_dim))
-        ])
+            np.expand_dims(input_feats, axis=0), feat_repeat_times, axis=0
+        )
+        residue_feats = np.hstack(
+            [
+                input_feats[:, 0:residue_dim],
+                np.zeros((num_nodes, feat_dim - residue_dim)),
+            ]
+        )
         residue_feats = np.expand_dims(residue_feats, axis=0)
         repeat_feats = np.concatenate([repeat_feats, residue_feats], axis=0)
         embedded_feats = repeat_feats / embed_wave
         embedded_feats[:, 0::2] = np.sin(embedded_feats[:, 0::2])
         embedded_feats[:, 1::2] = np.cos(embedded_feats[:, 1::2])
         embedded_feats = np.transpose(embedded_feats, (1, 0, 2)).reshape(
-            (num_nodes, -1))[:, 0:out_feat_len]
+            (num_nodes, -1)
+        )[:, 0:out_feat_len]
     else:
-        embed_wave = np.array([
-            np.power(1000, 2.0 * (j // 2) / feat_repeat_times)
-            for j in range(feat_repeat_times)
-        ]).reshape((feat_repeat_times, 1, 1))
+        embed_wave = np.array(
+            [
+                np.power(1000, 2.0 * (j // 2) / feat_repeat_times)
+                for j in range(feat_repeat_times)
+            ]
+        ).reshape((feat_repeat_times, 1, 1))
         repeat_feats = np.repeat(
-            np.expand_dims(
-                input_feats, axis=0), feat_repeat_times, axis=0)
+            np.expand_dims(input_feats, axis=0), feat_repeat_times, axis=0
+        )
         embedded_feats = repeat_feats / embed_wave
         embedded_feats[:, 0::2] = np.sin(embedded_feats[:, 0::2])
         embedded_feats[:, 1::2] = np.cos(embedded_feats[:, 1::2])
-        embedded_feats = np.transpose(embedded_feats, (1, 0, 2)).reshape(
-            (num_nodes, -1)).astype(np.float32)
+        embedded_feats = (
+            np.transpose(embedded_feats, (1, 0, 2))
+            .reshape((num_nodes, -1))
+            .astype(np.float32)
+        )
 
     return embedded_feats
 
 
 class LocalGraphs:
-    def __init__(self, k_at_hops, num_adjacent_linkages, node_geo_feat_len,
-                 pooling_scale, pooling_output_size, local_graph_thr):
-
+    def __init__(
+        self,
+        k_at_hops,
+        num_adjacent_linkages,
+        node_geo_feat_len,
+        pooling_scale,
+        pooling_output_size,
+        local_graph_thr,
+    ):
         assert len(k_at_hops) == 2
         assert all(isinstance(n, int) for n in k_at_hops)
         assert isinstance(num_adjacent_linkages, int)
@@ -160,20 +176,22 @@ class LocalGraphs:
         """
 
         assert sorted_dist_inds.ndim == 2
-        assert (sorted_dist_inds.shape[0] == sorted_dist_inds.shape[1] ==
-                gt_comp_labels.shape[0])
+        assert (
+            sorted_dist_inds.shape[0]
+            == sorted_dist_inds.shape[1]
+            == gt_comp_labels.shape[0]
+        )
 
-        knn_graph = sorted_dist_inds[:, 1:self.k_at_hops[0] + 1]
+        knn_graph = sorted_dist_inds[:, 1 : self.k_at_hops[0] + 1]
         pivot_local_graphs = []
         pivot_knns = []
         for pivot_ind, knn in enumerate(knn_graph):
-
             local_graph_neighbors = set(knn)
 
             for neighbor_ind in knn:
                 local_graph_neighbors.update(
-                    set(sorted_dist_inds[neighbor_ind, 1:self.k_at_hops[1] +
-                                         1]))
+                    set(sorted_dist_inds[neighbor_ind, 1 : self.k_at_hops[1] + 1])
+                )
 
             local_graph_neighbors.discard(pivot_ind)
             pivot_local_graph = list(local_graph_neighbors)
@@ -190,18 +208,21 @@ class LocalGraphs:
                     added_local_graph = pivot_local_graphs[graph_ind]
 
                     union = len(
-                        set(pivot_local_graph[1:]).union(
-                            set(added_local_graph[1:])))
+                        set(pivot_local_graph[1:]).union(set(added_local_graph[1:]))
+                    )
                     intersect = len(
                         set(pivot_local_graph[1:]).intersection(
-                            set(added_local_graph[1:])))
+                            set(added_local_graph[1:])
+                        )
+                    )
                     local_graph_iou = intersect / (union + 1e-8)
 
-                    if (local_graph_iou > self.local_graph_thr and
-                            pivot_ind in added_knn and
-                            gt_comp_labels[added_pivot_ind] ==
-                            gt_comp_labels[pivot_ind] and
-                            gt_comp_labels[pivot_ind] != 0):
+                    if (
+                        local_graph_iou > self.local_graph_thr
+                        and pivot_ind in added_knn
+                        and gt_comp_labels[added_pivot_ind] == gt_comp_labels[pivot_ind]
+                        and gt_comp_labels[pivot_ind] != 0
+                    ):
                         add_flag = False
                         break
                 if add_flag:
@@ -210,8 +231,14 @@ class LocalGraphs:
 
         return pivot_local_graphs, pivot_knns
 
-    def generate_gcn_input(self, node_feat_batch, node_label_batch,
-                           local_graph_batch, knn_batch, sorted_dist_ind_batch):
+    def generate_gcn_input(
+        self,
+        node_feat_batch,
+        node_label_batch,
+        local_graph_batch,
+        knn_batch,
+        sorted_dist_ind_batch,
+    ):
         """Generate graph convolution network input data.
 
         Args:
@@ -239,11 +266,13 @@ class LocalGraphs:
         assert isinstance(knn_batch, list)
         assert isinstance(sorted_dist_ind_batch, list)
 
-        num_max_nodes = max([
-            len(pivot_local_graph)
-            for pivot_local_graphs in local_graph_batch
-            for pivot_local_graph in pivot_local_graphs
-        ])
+        num_max_nodes = max(
+            [
+                len(pivot_local_graph)
+                for pivot_local_graphs in local_graph_batch
+                for pivot_local_graph in pivot_local_graphs
+            ]
+        )
 
         local_graphs_node_feat = []
         adjacent_matrices = []
@@ -262,42 +291,47 @@ class LocalGraphs:
                 pivot_ind = pivot_local_graph[0]
                 node2ind_map = {j: i for i, j in enumerate(pivot_local_graph)}
 
-                knn_inds = paddle.to_tensor(
-                    [node2ind_map[i] for i in pivot_knn[1:]])
+                knn_inds = paddle.to_tensor([node2ind_map[i] for i in pivot_knn[1:]])
                 pivot_feats = node_feats[pivot_ind]
-                normalized_feats = node_feats[paddle.to_tensor(
-                    pivot_local_graph)] - pivot_feats
+                normalized_feats = (
+                    node_feats[paddle.to_tensor(pivot_local_graph)] - pivot_feats
+                )
 
-                adjacent_matrix = np.zeros(
-                    (num_nodes, num_nodes), dtype=np.float32)
+                adjacent_matrix = np.zeros((num_nodes, num_nodes), dtype=np.float32)
                 for node in pivot_local_graph:
-                    neighbors = sorted_dist_inds[node, 1:
-                                                 self.num_adjacent_linkages + 1]
+                    neighbors = sorted_dist_inds[
+                        node, 1 : self.num_adjacent_linkages + 1
+                    ]
                     for neighbor in neighbors:
                         if neighbor in pivot_local_graph:
-
-                            adjacent_matrix[node2ind_map[node], node2ind_map[
-                                neighbor]] = 1
-                            adjacent_matrix[node2ind_map[neighbor],
-                                            node2ind_map[node]] = 1
+                            adjacent_matrix[
+                                node2ind_map[node], node2ind_map[neighbor]
+                            ] = 1
+                            adjacent_matrix[
+                                node2ind_map[neighbor], node2ind_map[node]
+                            ] = 1
 
                 adjacent_matrix = normalize_adjacent_matrix(adjacent_matrix)
-                pad_adjacent_matrix = paddle.zeros(
-                    (num_max_nodes, num_max_nodes))
+                pad_adjacent_matrix = paddle.zeros((num_max_nodes, num_max_nodes))
                 pad_adjacent_matrix[:num_nodes, :num_nodes] = paddle.cast(
-                    paddle.to_tensor(adjacent_matrix), 'float32')
+                    paddle.to_tensor(adjacent_matrix), "float32"
+                )
 
                 pad_normalized_feats = paddle.concat(
                     [
-                        normalized_feats, paddle.zeros(
-                            (num_max_nodes - num_nodes,
-                             normalized_feats.shape[1]))
+                        normalized_feats,
+                        paddle.zeros(
+                            (num_max_nodes - num_nodes, normalized_feats.shape[1])
+                        ),
                     ],
-                    axis=0)
+                    axis=0,
+                )
                 local_graph_labels = node_labels[pivot_local_graph]
                 knn_labels = local_graph_labels[knn_inds.numpy()]
-                link_labels = ((node_labels[pivot_ind] == knn_labels) &
-                               (node_labels[pivot_ind] > 0)).astype(np.int64)
+                link_labels = (
+                    (node_labels[pivot_ind] == knn_labels)
+                    & (node_labels[pivot_ind] > 0)
+                ).astype(np.int64)
                 link_labels = paddle.to_tensor(link_labels)
 
                 local_graphs_node_feat.append(pad_normalized_feats)
@@ -310,8 +344,12 @@ class LocalGraphs:
         pivots_knn_inds = paddle.stack(pivots_knn_inds, 0)
         pivots_gt_linkage = paddle.stack(pivots_gt_linkage, 0)
 
-        return (local_graphs_node_feat, adjacent_matrices, pivots_knn_inds,
-                pivots_gt_linkage)
+        return (
+            local_graphs_node_feat,
+            adjacent_matrices,
+            pivots_knn_inds,
+            pivots_gt_linkage,
+        )
 
     def __call__(self, feat_maps, comp_attribs):
         """Generate local graphs as GCN input.
@@ -343,34 +381,32 @@ class LocalGraphs:
         for batch_ind in range(comp_attribs.shape[0]):
             num_comps = int(comp_attribs[batch_ind, 0, 0])
             comp_geo_attribs = comp_attribs[batch_ind, :num_comps, 1:7]
-            node_labels = comp_attribs[batch_ind, :num_comps, 7].astype(
-                np.int32)
+            node_labels = comp_attribs[batch_ind, :num_comps, 7].astype(np.int32)
 
             comp_centers = comp_geo_attribs[:, 0:2]
-            distance_matrix = euclidean_distance_matrix(comp_centers,
-                                                        comp_centers)
+            distance_matrix = euclidean_distance_matrix(comp_centers, comp_centers)
 
-            batch_id = np.zeros(
-                (comp_geo_attribs.shape[0], 1), dtype=np.float32) * batch_ind
+            batch_id = (
+                np.zeros((comp_geo_attribs.shape[0], 1), dtype=np.float32) * batch_ind
+            )
             comp_geo_attribs[:, -2] = np.clip(comp_geo_attribs[:, -2], -1, 1)
             angle = np.arccos(comp_geo_attribs[:, -2]) * np.sign(
-                comp_geo_attribs[:, -1])
+                comp_geo_attribs[:, -1]
+            )
             angle = angle.reshape((-1, 1))
-            rotated_rois = np.hstack(
-                [batch_id, comp_geo_attribs[:, :-2], angle])
+            rotated_rois = np.hstack([batch_id, comp_geo_attribs[:, :-2], angle])
             rois = paddle.to_tensor(rotated_rois)
-            content_feats = self.pooling(feat_maps[batch_ind].unsqueeze(0),
-                                         rois)
+            content_feats = self.pooling(feat_maps[batch_ind].unsqueeze(0), rois)
 
             content_feats = content_feats.reshape([content_feats.shape[0], -1])
-            geo_feats = feature_embedding(comp_geo_attribs,
-                                          self.node_geo_feat_dim)
+            geo_feats = feature_embedding(comp_geo_attribs, self.node_geo_feat_dim)
             geo_feats = paddle.to_tensor(geo_feats)
             node_feats = paddle.concat([content_feats, geo_feats], axis=-1)
 
             sorted_dist_inds = np.argsort(distance_matrix, axis=1)
             pivot_local_graphs, pivot_knns = self.generate_local_graphs(
-                sorted_dist_inds, node_labels)
+                sorted_dist_inds, node_labels
+            )
 
             node_feat_batch.append(node_feats)
             node_label_batch.append(node_labels)
@@ -378,11 +414,12 @@ class LocalGraphs:
             knn_batch.append(pivot_knns)
             sorted_dist_inds_batch.append(sorted_dist_inds)
 
-        (node_feats, adjacent_matrices, knn_inds, gt_linkage) = \
-            self.generate_gcn_input(node_feat_batch,
-                                    node_label_batch,
-                                    local_graph_batch,
-                                    knn_batch,
-                                    sorted_dist_inds_batch)
+        (node_feats, adjacent_matrices, knn_inds, gt_linkage) = self.generate_gcn_input(
+            node_feat_batch,
+            node_label_batch,
+            local_graph_batch,
+            knn_batch,
+            sorted_dist_inds_batch,
+        )
 
         return node_feats, adjacent_matrices, knn_inds, gt_linkage

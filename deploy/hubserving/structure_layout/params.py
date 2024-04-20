@@ -25,8 +25,8 @@ def read_params():
     cfg = Config()
 
     # params for layout analysis
-    cfg.layout_model_dir = './inference/picodet_lcnet_x1_0_fgd_layout_infer/'
-    cfg.layout_dict_path = './ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt'
+    cfg.layout_model_dir = "./inference/picodet_lcnet_x1_0_fgd_layout_infer/"
+    cfg.layout_dict_path = "./ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt"
     cfg.layout_score_threshold = 0.5
     cfg.layout_nms_threshold = 0.5
     return cfg

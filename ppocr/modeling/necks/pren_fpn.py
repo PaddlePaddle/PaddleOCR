@@ -46,14 +46,26 @@ class PoolAggregate(nn.Layer):
         for i in range(self.n_r):
             aggs.append(
                 self.add_sublayer(
-                    '{}'.format(i),
+                    "{}".format(i),
                     nn.Sequential(
-                        ('conv1', nn.Conv2D(
-                            self.d_in, self.d_middle, 3, 2, 1, bias_attr=False)
-                         ), ('bn1', nn.BatchNorm(self.d_middle)),
-                        ('act', self.act), ('conv2', nn.Conv2D(
-                            self.d_middle, self.d_out, 3, 2, 1, bias_attr=False
-                        )), ('bn2', nn.BatchNorm(self.d_out)))))
+                        (
+                            "conv1",
+                            nn.Conv2D(
+                                self.d_in, self.d_middle, 3, 2, 1, bias_attr=False
+                            ),
+                        ),
+                        ("bn1", nn.BatchNorm(self.d_middle)),
+                        ("act", self.act),
+                        (
+                            "conv2",
+                            nn.Conv2D(
+                                self.d_middle, self.d_out, 3, 2, 1, bias_attr=False
+                            ),
+                        ),
+                        ("bn2", nn.BatchNorm(self.d_out)),
+                    ),
+                )
+            )
         return aggs
 
     def forward(self, x):
@@ -80,19 +92,20 @@ class WeightAggregate(nn.Layer):
         self.act = nn.Swish()
 
         self.conv_n = nn.Sequential(
-            ('conv1', nn.Conv2D(
-                d_in, d_in, 3, 1, 1,
-                bias_attr=False)), ('bn1', nn.BatchNorm(d_in)),
-            ('act1', self.act), ('conv2', nn.Conv2D(
-                d_in, n_r, 1, bias_attr=False)), ('bn2', nn.BatchNorm(n_r)),
-            ('act2', nn.Sigmoid()))
+            ("conv1", nn.Conv2D(d_in, d_in, 3, 1, 1, bias_attr=False)),
+            ("bn1", nn.BatchNorm(d_in)),
+            ("act1", self.act),
+            ("conv2", nn.Conv2D(d_in, n_r, 1, bias_attr=False)),
+            ("bn2", nn.BatchNorm(n_r)),
+            ("act2", nn.Sigmoid()),
+        )
         self.conv_d = nn.Sequential(
-            ('conv1', nn.Conv2D(
-                d_in, d_middle, 3, 1, 1,
-                bias_attr=False)), ('bn1', nn.BatchNorm(d_middle)),
-            ('act1', self.act), ('conv2', nn.Conv2D(
-                d_middle, d_out, 1,
-                bias_attr=False)), ('bn2', nn.BatchNorm(d_out)))
+            ("conv1", nn.Conv2D(d_in, d_middle, 3, 1, 1, bias_attr=False)),
+            ("bn1", nn.BatchNorm(d_middle)),
+            ("act1", self.act),
+            ("conv2", nn.Conv2D(d_middle, d_out, 1, bias_attr=False)),
+            ("bn2", nn.BatchNorm(d_out)),
+        )
 
     def forward(self, x):
         b, _, h, w = x.shape
@@ -101,7 +114,8 @@ class WeightAggregate(nn.Layer):
         fmaps = self.conv_d(x)
         r = paddle.bmm(
             hmaps.reshape((b, self.n_r, h * w)),
-            fmaps.reshape((b, self.d_out, h * w)).transpose((0, 2, 1)))
+            fmaps.reshape((b, self.d_out, h * w)).transpose((0, 2, 1)),
+        )
         return r
 
 

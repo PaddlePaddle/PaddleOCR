@@ -15,7 +15,7 @@ import paddle
 
 
 class ClsPostProcess(object):
-    """ Convert between text-label and text-index """
+    """Convert between text-label and text-index"""
 
     def __init__(self, label_list=None, key=None, **kwargs):
         super(ClsPostProcess, self).__init__()
@@ -34,8 +34,9 @@ class ClsPostProcess(object):
             preds = preds.numpy()
 
         pred_idxs = preds.argmax(axis=1)
-        decode_out = [(label_list[idx], preds[i, idx])
-                      for i, idx in enumerate(pred_idxs)]
+        decode_out = [
+            (label_list[idx], preds[i, idx]) for i, idx in enumerate(pred_idxs)
+        ]
         if label is None:
             return decode_out
         label = [(label_list[idx], 1.0) for idx in label]

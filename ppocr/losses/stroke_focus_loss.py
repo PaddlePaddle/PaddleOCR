@@ -31,13 +31,12 @@ class StrokeFocusLoss(nn.Layer):
         self.mse_loss = nn.MSELoss()
         self.ce_loss = nn.CrossEntropyLoss()
         self.l1_loss = nn.L1Loss()
-        self.english_stroke_alphabet = '0123456789'
+        self.english_stroke_alphabet = "0123456789"
         self.english_stroke_dict = {}
         for index in range(len(self.english_stroke_alphabet)):
-            self.english_stroke_dict[self.english_stroke_alphabet[
-                index]] = index
+            self.english_stroke_dict[self.english_stroke_alphabet[index]] = index
 
-        stroke_decompose_lines = open(character_dict_path, 'r').readlines()
+        stroke_decompose_lines = open(character_dict_path, "r").readlines()
         self.dic = {}
         for line in stroke_decompose_lines:
             line = line.strip()
@@ -45,7 +44,6 @@ class StrokeFocusLoss(nn.Layer):
             self.dic[character] = sequence
 
     def forward(self, pred, data):
-
         sr_img = pred["sr_img"]
         hr_img = pred["hr_img"]
 
@@ -56,13 +54,10 @@ class StrokeFocusLoss(nn.Layer):
         hr_pred = pred["hr_pred"]
         sr_pred = pred["sr_pred"]
 
-        attention_loss = paddle.nn.functional.l1_loss(word_attention_map_gt,
-                                                      word_attention_map_pred)
+        attention_loss = paddle.nn.functional.l1_loss(
+            word_attention_map_gt, word_attention_map_pred
+        )
 
         loss = (mse_loss + attention_loss * 50) * 100
 
-        return {
-            "mse_loss": mse_loss,
-            "attention_loss": attention_loss,
-            "loss": loss
-        }
+        return {"mse_loss": mse_loss, "attention_loss": attention_loss, "loss": loss}
