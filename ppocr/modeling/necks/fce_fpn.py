@@ -23,25 +23,26 @@ from paddle.nn.initializer import XavierUniform
 from paddle.nn.initializer import Normal
 from paddle.regularizer import L2Decay
 
-__all__ = ['FCEFPN']
+__all__ = ["FCEFPN"]
 
 
 class ConvNormLayer(nn.Layer):
-    def __init__(self,
-                 ch_in,
-                 ch_out,
-                 filter_size,
-                 stride,
-                 groups=1,
-                 norm_type='bn',
-                 norm_decay=0.,
-                 norm_groups=32,
-                 lr_scale=1.,
-                 freeze_norm=False,
-                 initializer=Normal(
-                     mean=0., std=0.01)):
+    def __init__(
+        self,
+        ch_in,
+        ch_out,
+        filter_size,
+        stride,
+        groups=1,
+        norm_type="bn",
+        norm_decay=0.0,
+        norm_groups=32,
+        lr_scale=1.0,
+        freeze_norm=False,
+        initializer=Normal(mean=0.0, std=0.01),
+    ):
         super(ConvNormLayer, self).__init__()
-        assert norm_type in ['bn', 'sync_bn', 'gn']
+        assert norm_type in ["bn", "sync_bn", "gn"]
 
         bias_attr = False
 
@@ -52,29 +53,34 @@ class ConvNormLayer(nn.Layer):
             stride=stride,
             padding=(filter_size - 1) // 2,
             groups=groups,
-            weight_attr=ParamAttr(
-                initializer=initializer, learning_rate=1.),
-            bias_attr=bias_attr)
+            weight_attr=ParamAttr(initializer=initializer, learning_rate=1.0),
+            bias_attr=bias_attr,
+        )
 
-        norm_lr = 0. if freeze_norm else 1.
+        norm_lr = 0.0 if freeze_norm else 1.0
         param_attr = ParamAttr(
             learning_rate=norm_lr,
-            regularizer=L2Decay(norm_decay) if norm_decay is not None else None)
+            regularizer=L2Decay(norm_decay) if norm_decay is not None else None,
+        )
         bias_attr = ParamAttr(
             learning_rate=norm_lr,
-            regularizer=L2Decay(norm_decay) if norm_decay is not None else None)
-        if norm_type == 'bn':
+            regularizer=L2Decay(norm_decay) if norm_decay is not None else None,
+        )
+        if norm_type == "bn":
             self.norm = nn.BatchNorm2D(
-                ch_out, weight_attr=param_attr, bias_attr=bias_attr)
-        elif norm_type == 'sync_bn':
+                ch_out, weight_attr=param_attr, bias_attr=bias_attr
+            )
+        elif norm_type == "sync_bn":
             self.norm = nn.SyncBatchNorm(
-                ch_out, weight_attr=param_attr, bias_attr=bias_attr)
-        elif norm_type == 'gn':
+                ch_out, weight_attr=param_attr, bias_attr=bias_attr
+            )
+        elif norm_type == "gn":
             self.norm = nn.GroupNorm(
                 num_groups=norm_groups,
                 num_channels=ch_out,
                 weight_attr=param_attr,
-                bias_attr=bias_attr)
+                bias_attr=bias_attr,
+            )
 
     def forward(self, inputs):
         out = self.conv(inputs)
@@ -86,45 +92,47 @@ class FCEFPN(nn.Layer):
     """
     Feature Pyramid Network, see https://arxiv.org/abs/1612.03144
     Args:
-        in_channels (list[int]): input channels of each level which can be 
+        in_channels (list[int]): input channels of each level which can be
             derived from the output shape of backbone by from_config
         out_channels (list[int]): output channel of each level
         spatial_scales (list[float]): the spatial scales between input feature
-            maps and original input image which can be derived from the output 
+            maps and original input image which can be derived from the output
             shape of backbone by from_config
         has_extra_convs (bool): whether to add extra conv to the last level.
             default False
         extra_stage (int): the number of extra stages added to the last level.
             default 1
-        use_c5 (bool): Whether to use c5 as the input of extra stage, 
+        use_c5 (bool): Whether to use c5 as the input of extra stage,
             otherwise p5 is used. default True
-        norm_type (string|None): The normalization type in FPN module. If 
-            norm_type is None, norm will not be used after conv and if 
+        norm_type (string|None): The normalization type in FPN module. If
+            norm_type is None, norm will not be used after conv and if
             norm_type is string, bn, gn, sync_bn are available. default None
         norm_decay (float): weight decay for normalization layer weights.
             default 0.
-        freeze_norm (bool): whether to freeze normalization layer.  
+        freeze_norm (bool): whether to freeze normalization layer.
             default False
         relu_before_extra_convs (bool): whether to add relu before extra convs.
             default False
-        
+
     """
 
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 spatial_scales=[0.25, 0.125, 0.0625, 0.03125],
-                 has_extra_convs=False,
-                 extra_stage=1,
-                 use_c5=True,
-                 norm_type=None,
-                 norm_decay=0.,
-                 freeze_norm=False,
-                 relu_before_extra_convs=True):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        spatial_scales=[0.25, 0.125, 0.0625, 0.03125],
+        has_extra_convs=False,
+        extra_stage=1,
+        use_c5=True,
+        norm_type=None,
+        norm_decay=0.0,
+        freeze_norm=False,
+        relu_before_extra_convs=True,
+    ):
         super(FCEFPN, self).__init__()
         self.out_channels = out_channels
         for s in range(extra_stage):
-            spatial_scales = spatial_scales + [spatial_scales[-1] / 2.]
+            spatial_scales = spatial_scales + [spatial_scales[-1] / 2.0]
         self.spatial_scales = spatial_scales
         self.has_extra_convs = has_extra_convs
         self.extra_stage = extra_stage
@@ -144,9 +152,9 @@ class FCEFPN(nn.Layer):
         ed_stage = st_stage + len(in_channels) - 1
         for i in range(st_stage, ed_stage + 1):
             if i == 3:
-                lateral_name = 'fpn_inner_res5_sum'
+                lateral_name = "fpn_inner_res5_sum"
             else:
-                lateral_name = 'fpn_inner_res{}_sum_lateral'.format(i + 2)
+                lateral_name = "fpn_inner_res{}_sum_lateral".format(i + 2)
             in_c = in_channels[i - st_stage]
             if self.norm_type is not None:
                 lateral = self.add_sublayer(
@@ -159,7 +167,9 @@ class FCEFPN(nn.Layer):
                         norm_type=self.norm_type,
                         norm_decay=self.norm_decay,
                         freeze_norm=self.freeze_norm,
-                        initializer=XavierUniform(fan_out=in_c)))
+                        initializer=XavierUniform(fan_out=in_c),
+                    ),
+                )
             else:
                 lateral = self.add_sublayer(
                     lateral_name,
@@ -167,12 +177,13 @@ class FCEFPN(nn.Layer):
                         in_channels=in_c,
                         out_channels=out_channels,
                         kernel_size=1,
-                        weight_attr=ParamAttr(
-                            initializer=XavierUniform(fan_out=in_c))))
+                        weight_attr=ParamAttr(initializer=XavierUniform(fan_out=in_c)),
+                    ),
+                )
             self.lateral_convs.append(lateral)
 
         for i in range(st_stage, ed_stage + 1):
-            fpn_name = 'fpn_res{}_sum'.format(i + 2)
+            fpn_name = "fpn_res{}_sum".format(i + 2)
             if self.norm_type is not None:
                 fpn_conv = self.add_sublayer(
                     fpn_name,
@@ -184,7 +195,9 @@ class FCEFPN(nn.Layer):
                         norm_type=self.norm_type,
                         norm_decay=self.norm_decay,
                         freeze_norm=self.freeze_norm,
-                        initializer=XavierUniform(fan_out=fan)))
+                        initializer=XavierUniform(fan_out=fan),
+                    ),
+                )
             else:
                 fpn_conv = self.add_sublayer(
                     fpn_name,
@@ -193,8 +206,9 @@ class FCEFPN(nn.Layer):
                         out_channels=out_channels,
                         kernel_size=3,
                         padding=1,
-                        weight_attr=ParamAttr(
-                            initializer=XavierUniform(fan_out=fan))))
+                        weight_attr=ParamAttr(initializer=XavierUniform(fan_out=fan)),
+                    ),
+                )
             self.fpn_convs.append(fpn_conv)
 
         # add extra conv levels for RetinaNet(use_c5)/FCOS(use_p5)
@@ -205,7 +219,7 @@ class FCEFPN(nn.Layer):
                     in_c = in_channels[-1]
                 else:
                     in_c = out_channels
-                extra_fpn_name = 'fpn_{}'.format(lvl + 2)
+                extra_fpn_name = "fpn_{}".format(lvl + 2)
                 if self.norm_type is not None:
                     extra_fpn_conv = self.add_sublayer(
                         extra_fpn_name,
@@ -217,7 +231,9 @@ class FCEFPN(nn.Layer):
                             norm_type=self.norm_type,
                             norm_decay=self.norm_decay,
                             freeze_norm=self.freeze_norm,
-                            initializer=XavierUniform(fan_out=fan)))
+                            initializer=XavierUniform(fan_out=fan),
+                        ),
+                    )
                 else:
                     extra_fpn_conv = self.add_sublayer(
                         extra_fpn_name,
@@ -228,14 +244,17 @@ class FCEFPN(nn.Layer):
                             stride=2,
                             padding=1,
                             weight_attr=ParamAttr(
-                                initializer=XavierUniform(fan_out=fan))))
+                                initializer=XavierUniform(fan_out=fan)
+                            ),
+                        ),
+                    )
                 self.fpn_convs.append(extra_fpn_conv)
 
     @classmethod
     def from_config(cls, cfg, input_shape):
         return {
-            'in_channels': [i.channels for i in input_shape],
-            'spatial_scales': [1.0 / i.stride for i in input_shape],
+            "in_channels": [i.channels for i in input_shape],
+            "spatial_scales": [1.0 / i.stride for i in input_shape],
         }
 
     def forward(self, body_feats):
@@ -249,8 +268,9 @@ class FCEFPN(nn.Layer):
             lvl = num_levels - i
             upsample = F.interpolate(
                 laterals[lvl],
-                scale_factor=2.,
-                mode='nearest', )
+                scale_factor=2.0,
+                mode="nearest",
+            )
             laterals[lvl - 1] += upsample
 
         fpn_output = []
@@ -260,7 +280,9 @@ class FCEFPN(nn.Layer):
         if self.extra_stage > 0:
             # use max pool to get more levels on top of outputs (Faster R-CNN, Mask R-CNN)
             if not self.has_extra_convs:
-                assert self.extra_stage == 1, 'extra_stage should be 1 if FPN has not extra convs'
+                assert (
+                    self.extra_stage == 1
+                ), "extra_stage should be 1 if FPN has not extra convs"
                 fpn_output.append(F.max_pool2d(fpn_output[-1], 1, stride=2))
             # add extra conv levels for RetinaNet(use_c5)/FCOS(use_p5)
             else:
@@ -272,9 +294,11 @@ class FCEFPN(nn.Layer):
 
                 for i in range(1, self.extra_stage):
                     if self.relu_before_extra_convs:
-                        fpn_output.append(self.fpn_convs[num_levels + i](F.relu(
-                            fpn_output[-1])))
+                        fpn_output.append(
+                            self.fpn_convs[num_levels + i](F.relu(fpn_output[-1]))
+                        )
                     else:
-                        fpn_output.append(self.fpn_convs[num_levels + i](
-                            fpn_output[-1]))
+                        fpn_output.append(
+                            self.fpn_convs[num_levels + i](fpn_output[-1])
+                        )
         return fpn_output

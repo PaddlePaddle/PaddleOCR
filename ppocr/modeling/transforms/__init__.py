@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['build_transform']
+__all__ = ["build_transform"]
 
 
 def build_transform(config):
@@ -22,10 +22,11 @@ def build_transform(config):
     from .tbsrn import TBSRN
     from .gaspin_transformer import GA_SPIN_Transformer as GA_SPIN
 
-    support_dict = ['TPS', 'STN_ON', 'GA_SPIN', 'TSRN', 'TBSRN']
+    support_dict = ["TPS", "STN_ON", "GA_SPIN", "TSRN", "TBSRN"]
 
-    module_name = config.pop('name')
+    module_name = config.pop("name")
     assert module_name in support_dict, Exception(
-        'transform only support {}'.format(support_dict))
+        "transform only support {}".format(support_dict)
+    )
     module_class = eval(module_name)(**config)
     return module_class

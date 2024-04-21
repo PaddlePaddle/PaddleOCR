@@ -24,7 +24,7 @@ class DictCollator(object):
     """
 
     def __call__(self, batch):
-        # todo：support batch operators 
+        # todo：support batch operators
         data_dict = defaultdict(list)
         to_tensor_keys = []
         for sample in batch:
@@ -44,7 +44,7 @@ class ListCollator(object):
     """
 
     def __call__(self, batch):
-        # todo：support batch operators 
+        # todo：support batch operators
         data_dict = defaultdict(list)
         to_tensor_idxs = []
         for sample in batch:
@@ -88,24 +88,24 @@ class DyMaskCollator(object):
         bs, channel = len(batch), batch[0][0].shape[0]
         proper_items = []
         for item in batch:
-            if item[0].shape[1] * max_width > 1600 * 320 or item[0].shape[
-                    2] * max_height > 1600 * 320:
+            if (
+                item[0].shape[1] * max_width > 1600 * 320
+                or item[0].shape[2] * max_height > 1600 * 320
+            ):
                 continue
-            max_height = item[0].shape[1] if item[0].shape[
-                1] > max_height else max_height
-            max_width = item[0].shape[2] if item[0].shape[
-                2] > max_width else max_width
-            max_length = len(item[1]) if len(item[
-                1]) > max_length else max_length
+            max_height = (
+                item[0].shape[1] if item[0].shape[1] > max_height else max_height
+            )
+            max_width = item[0].shape[2] if item[0].shape[2] > max_width else max_width
+            max_length = len(item[1]) if len(item[1]) > max_length else max_length
             proper_items.append(item)
 
         images, image_masks = np.zeros(
-            (len(proper_items), channel, max_height, max_width),
-            dtype='float32'), np.zeros(
-                (len(proper_items), 1, max_height, max_width), dtype='float32')
+            (len(proper_items), channel, max_height, max_width), dtype="float32"
+        ), np.zeros((len(proper_items), 1, max_height, max_width), dtype="float32")
         labels, label_masks = np.zeros(
-            (len(proper_items), max_length), dtype='int64'), np.zeros(
-                (len(proper_items), max_length), dtype='int64')
+            (len(proper_items), max_length), dtype="int64"
+        ), np.zeros((len(proper_items), max_length), dtype="int64")
 
         for i in range(len(proper_items)):
             _, h, w = proper_items[i][0].shape

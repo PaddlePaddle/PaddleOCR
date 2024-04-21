@@ -29,13 +29,9 @@ from paddle.nn.initializer import KaimingNormal, Uniform, Constant
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 num_channels,
-                 filter_size,
-                 num_filters,
-                 stride,
-                 padding,
-                 num_groups=1):
+    def __init__(
+        self, num_channels, filter_size, num_filters, stride, padding, num_groups=1
+    ):
         super(ConvBNLayer, self).__init__()
 
         self.conv = nn.Conv2D(
@@ -45,12 +41,14 @@ class ConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=num_groups,
-            bias_attr=False)
+            bias_attr=False,
+        )
 
         self.bn = nn.BatchNorm2D(
             num_filters,
             weight_attr=ParamAttr(initializer=Constant(1)),
-            bias_attr=ParamAttr(initializer=Constant(0)))
+            bias_attr=ParamAttr(initializer=Constant(0)),
+        )
         self.relu = nn.ReLU()
 
     def forward(self, inputs):
@@ -61,21 +59,23 @@ class ConvBNLayer(nn.Layer):
 
 
 class SATRNEncoderLayer(nn.Layer):
-    def __init__(self,
-                 d_model=512,
-                 d_inner=512,
-                 n_head=8,
-                 d_k=64,
-                 d_v=64,
-                 dropout=0.1,
-                 qkv_bias=False):
+    def __init__(
+        self,
+        d_model=512,
+        d_inner=512,
+        n_head=8,
+        d_k=64,
+        d_v=64,
+        dropout=0.1,
+        qkv_bias=False,
+    ):
         super().__init__()
         self.norm1 = nn.LayerNorm(d_model)
         self.attn = MultiHeadAttention(
-            n_head, d_model, d_k, d_v, qkv_bias=qkv_bias, dropout=dropout)
+            n_head, d_model, d_k, d_v, qkv_bias=qkv_bias, dropout=dropout
+        )
         self.norm2 = nn.LayerNorm(d_model)
-        self.feed_forward = LocalityAwareFeedforward(
-            d_model, d_inner, dropout=dropout)
+        self.feed_forward = LocalityAwareFeedforward(d_model, d_inner, dropout=dropout)
 
     def forward(self, x, h, w, mask=None):
         n, hw, c = x.shape
@@ -93,15 +93,17 @@ class SATRNEncoderLayer(nn.Layer):
 
 class LocalityAwareFeedforward(nn.Layer):
     def __init__(
-            self,
-            d_in,
-            d_hid,
-            dropout=0.1, ):
+        self,
+        d_in,
+        d_hid,
+        dropout=0.1,
+    ):
         super().__init__()
         self.conv1 = ConvBNLayer(d_in, 1, d_hid, stride=1, padding=0)
 
         self.depthwise_conv = ConvBNLayer(
-            d_hid, 3, d_hid, stride=1, padding=1, num_groups=d_hid)
+            d_hid, 3, d_hid, stride=1, padding=1, num_groups=d_hid
+        )
 
         self.conv2 = ConvBNLayer(d_hid, 1, d_in, stride=1, padding=0)
 
@@ -125,8 +127,8 @@ class Adaptive2DPositionalEncoding(nn.Layer):
         w_position_encoder = w_position_encoder.transpose([1, 0])
         w_position_encoder = w_position_encoder.reshape([1, d_hid, 1, n_width])
 
-        self.register_buffer('h_position_encoder', h_position_encoder)
-        self.register_buffer('w_position_encoder', w_position_encoder)
+        self.register_buffer("h_position_encoder", h_position_encoder)
+        self.register_buffer("w_position_encoder", w_position_encoder)
 
         self.h_scale = self.scale_factor_generate(d_hid)
         self.w_scale = self.scale_factor_generate(d_hid)
@@ -135,13 +137,11 @@ class Adaptive2DPositionalEncoding(nn.Layer):
 
     def _get_sinusoid_encoding_table(self, n_position, d_hid):
         """Sinusoid position encoding table."""
-        denominator = paddle.to_tensor([
-            1.0 / np.power(10000, 2 * (hid_j // 2) / d_hid)
-            for hid_j in range(d_hid)
-        ])
+        denominator = paddle.to_tensor(
+            [1.0 / np.power(10000, 2 * (hid_j // 2) / d_hid) for hid_j in range(d_hid)]
+        )
         denominator = denominator.reshape([1, -1])
-        pos_tensor = paddle.cast(
-            paddle.arange(n_position).unsqueeze(-1), 'float32')
+        pos_tensor = paddle.cast(paddle.arange(n_position).unsqueeze(-1), "float32")
         sinusoid_table = pos_tensor * denominator
         sinusoid_table[:, 0::2] = paddle.sin(sinusoid_table[:, 0::2])
         sinusoid_table[:, 1::2] = paddle.cos(sinusoid_table[:, 1::2])
@@ -151,7 +151,10 @@ class Adaptive2DPositionalEncoding(nn.Layer):
     def scale_factor_generate(self, d_hid):
         scale_factor = nn.Sequential(
             nn.Conv2D(d_hid, d_hid, 1),
-            nn.ReLU(), nn.Conv2D(d_hid, d_hid, 1), nn.Sigmoid())
+            nn.ReLU(),
+            nn.Conv2D(d_hid, d_hid, 1),
+            nn.Sigmoid(),
+        )
 
         return scale_factor
 
@@ -160,10 +163,8 @@ class Adaptive2DPositionalEncoding(nn.Layer):
 
         avg_pool = self.pool(x)
 
-        h_pos_encoding = \
-            self.h_scale(avg_pool) * self.h_position_encoder[:, :, :h, :]
-        w_pos_encoding = \
-            self.w_scale(avg_pool) * self.w_position_encoder[:, :, :, :w]
+        h_pos_encoding = self.h_scale(avg_pool) * self.h_position_encoder[:, :, :h, :]
+        w_pos_encoding = self.w_scale(avg_pool) * self.w_position_encoder[:, :, :, :w]
 
         out = x + h_pos_encoding + w_pos_encoding
 
@@ -196,13 +197,9 @@ class ScaledDotProductAttention(nn.Layer):
 
 
 class MultiHeadAttention(nn.Layer):
-    def __init__(self,
-                 n_head=8,
-                 d_model=512,
-                 d_k=64,
-                 d_v=64,
-                 dropout=0.1,
-                 qkv_bias=False):
+    def __init__(
+        self, n_head=8, d_model=512, d_k=64, d_v=64, dropout=0.1, qkv_bias=False
+    ):
         super().__init__()
         self.n_head = n_head
         self.d_k = d_k
@@ -228,8 +225,11 @@ class MultiHeadAttention(nn.Layer):
         k = self.linear_k(k).reshape([batch_size, len_k, self.n_head, self.d_k])
         v = self.linear_v(v).reshape([batch_size, len_k, self.n_head, self.d_v])
 
-        q, k, v = q.transpose([0, 2, 1, 3]), k.transpose(
-            [0, 2, 1, 3]), v.transpose([0, 2, 1, 3])
+        q, k, v = (
+            q.transpose([0, 2, 1, 3]),
+            k.transpose([0, 2, 1, 3]),
+            v.transpose([0, 2, 1, 3]),
+        )
 
         if mask is not None:
             if mask.dim() == 3:
@@ -240,7 +240,8 @@ class MultiHeadAttention(nn.Layer):
         attn_out, _ = self.attention(q, k, v, mask=mask)
 
         attn_out = attn_out.transpose([0, 2, 1, 3]).reshape(
-            [batch_size, len_q, self.dim_v])
+            [batch_size, len_q, self.dim_v]
+        )
 
         attn_out = self.fc(attn_out)
         attn_out = self.proj_drop(attn_out)
@@ -249,27 +250,28 @@ class MultiHeadAttention(nn.Layer):
 
 
 class SATRNEncoder(nn.Layer):
-    def __init__(self,
-                 n_layers=12,
-                 n_head=8,
-                 d_k=64,
-                 d_v=64,
-                 d_model=512,
-                 n_position=100,
-                 d_inner=256,
-                 dropout=0.1):
+    def __init__(
+        self,
+        n_layers=12,
+        n_head=8,
+        d_k=64,
+        d_v=64,
+        d_model=512,
+        n_position=100,
+        d_inner=256,
+        dropout=0.1,
+    ):
         super().__init__()
         self.d_model = d_model
         self.position_enc = Adaptive2DPositionalEncoding(
-            d_hid=d_model,
-            n_height=n_position,
-            n_width=n_position,
-            dropout=dropout)
-        self.layer_stack = nn.LayerList([
-            SATRNEncoderLayer(
-                d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
-            for _ in range(n_layers)
-        ])
+            d_hid=d_model, n_height=n_position, n_width=n_position, dropout=dropout
+        )
+        self.layer_stack = nn.LayerList(
+            [
+                SATRNEncoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
+                for _ in range(n_layers)
+            ]
+        )
         self.layer_norm = nn.LayerNorm(d_model)
 
     def forward(self, feat, valid_ratios=None):
@@ -284,7 +286,7 @@ class SATRNEncoder(nn.Layer):
         """
         if valid_ratios is None:
             bs = feat.shape[0]
-            valid_ratios = paddle.full((bs, 1), 1., dtype=paddle.float32)
+            valid_ratios = paddle.full((bs, 1), 1.0, dtype=paddle.float32)
 
         feat = self.position_enc(feat)
         n, c, h, w = feat.shape
@@ -330,18 +332,16 @@ class PositionalEncoding(nn.Layer):
         # Not a parameter
         # Position table of shape (1, n_position, d_hid)
         self.register_buffer(
-            'position_table',
-            self._get_sinusoid_encoding_table(n_position, d_hid))
+            "position_table", self._get_sinusoid_encoding_table(n_position, d_hid)
+        )
 
     def _get_sinusoid_encoding_table(self, n_position, d_hid):
         """Sinusoid position encoding table."""
-        denominator = paddle.to_tensor([
-            1.0 / np.power(10000, 2 * (hid_j // 2) / d_hid)
-            for hid_j in range(d_hid)
-        ])
+        denominator = paddle.to_tensor(
+            [1.0 / np.power(10000, 2 * (hid_j // 2) / d_hid) for hid_j in range(d_hid)]
+        )
         denominator = denominator.reshape([1, -1])
-        pos_tensor = paddle.cast(
-            paddle.arange(n_position).unsqueeze(-1), 'float32')
+        pos_tensor = paddle.cast(paddle.arange(n_position).unsqueeze(-1), "float32")
         sinusoid_table = pos_tensor * denominator
         sinusoid_table[:, 0::2] = paddle.sin(sinusoid_table[:, 0::2])
         sinusoid_table[:, 1::2] = paddle.cos(sinusoid_table[:, 1::2])
@@ -349,20 +349,22 @@ class PositionalEncoding(nn.Layer):
         return sinusoid_table.unsqueeze(0)
 
     def forward(self, x):
-        x = x + self.position_table[:, :x.shape[1]].clone().detach()
+        x = x + self.position_table[:, : x.shape[1]].clone().detach()
         return self.dropout(x)
 
 
 class TFDecoderLayer(nn.Layer):
-    def __init__(self,
-                 d_model=512,
-                 d_inner=256,
-                 n_head=8,
-                 d_k=64,
-                 d_v=64,
-                 dropout=0.1,
-                 qkv_bias=False,
-                 operation_order=None):
+    def __init__(
+        self,
+        d_model=512,
+        d_inner=256,
+        n_head=8,
+        d_k=64,
+        d_v=64,
+        dropout=0.1,
+        qkv_bias=False,
+        operation_order=None,
+    ):
         super().__init__()
 
         self.norm1 = nn.LayerNorm(d_model)
@@ -370,52 +372,74 @@ class TFDecoderLayer(nn.Layer):
         self.norm3 = nn.LayerNorm(d_model)
 
         self.self_attn = MultiHeadAttention(
-            n_head, d_model, d_k, d_v, dropout=dropout, qkv_bias=qkv_bias)
+            n_head, d_model, d_k, d_v, dropout=dropout, qkv_bias=qkv_bias
+        )
 
         self.enc_attn = MultiHeadAttention(
-            n_head, d_model, d_k, d_v, dropout=dropout, qkv_bias=qkv_bias)
+            n_head, d_model, d_k, d_v, dropout=dropout, qkv_bias=qkv_bias
+        )
 
         self.mlp = PositionwiseFeedForward(d_model, d_inner, dropout=dropout)
 
         self.operation_order = operation_order
         if self.operation_order is None:
-            self.operation_order = ('norm', 'self_attn', 'norm', 'enc_dec_attn',
-                                    'norm', 'ffn')
+            self.operation_order = (
+                "norm",
+                "self_attn",
+                "norm",
+                "enc_dec_attn",
+                "norm",
+                "ffn",
+            )
         assert self.operation_order in [
-            ('norm', 'self_attn', 'norm', 'enc_dec_attn', 'norm', 'ffn'),
-            ('self_attn', 'norm', 'enc_dec_attn', 'norm', 'ffn', 'norm')
+            ("norm", "self_attn", "norm", "enc_dec_attn", "norm", "ffn"),
+            ("self_attn", "norm", "enc_dec_attn", "norm", "ffn", "norm"),
         ]
 
-    def forward(self,
-                dec_input,
-                enc_output,
-                self_attn_mask=None,
-                dec_enc_attn_mask=None):
-        if self.operation_order == ('self_attn', 'norm', 'enc_dec_attn', 'norm',
-                                    'ffn', 'norm'):
-            dec_attn_out = self.self_attn(dec_input, dec_input, dec_input,
-                                          self_attn_mask)
+    def forward(
+        self, dec_input, enc_output, self_attn_mask=None, dec_enc_attn_mask=None
+    ):
+        if self.operation_order == (
+            "self_attn",
+            "norm",
+            "enc_dec_attn",
+            "norm",
+            "ffn",
+            "norm",
+        ):
+            dec_attn_out = self.self_attn(
+                dec_input, dec_input, dec_input, self_attn_mask
+            )
             dec_attn_out += dec_input
             dec_attn_out = self.norm1(dec_attn_out)
 
-            enc_dec_attn_out = self.enc_attn(dec_attn_out, enc_output,
-                                             enc_output, dec_enc_attn_mask)
+            enc_dec_attn_out = self.enc_attn(
+                dec_attn_out, enc_output, enc_output, dec_enc_attn_mask
+            )
             enc_dec_attn_out += dec_attn_out
             enc_dec_attn_out = self.norm2(enc_dec_attn_out)
 
             mlp_out = self.mlp(enc_dec_attn_out)
             mlp_out += enc_dec_attn_out
             mlp_out = self.norm3(mlp_out)
-        elif self.operation_order == ('norm', 'self_attn', 'norm',
-                                      'enc_dec_attn', 'norm', 'ffn'):
+        elif self.operation_order == (
+            "norm",
+            "self_attn",
+            "norm",
+            "enc_dec_attn",
+            "norm",
+            "ffn",
+        ):
             dec_input_norm = self.norm1(dec_input)
-            dec_attn_out = self.self_attn(dec_input_norm, dec_input_norm,
-                                          dec_input_norm, self_attn_mask)
+            dec_attn_out = self.self_attn(
+                dec_input_norm, dec_input_norm, dec_input_norm, self_attn_mask
+            )
             dec_attn_out += dec_input
 
             enc_dec_attn_in = self.norm2(dec_attn_out)
-            enc_dec_attn_out = self.enc_attn(enc_dec_attn_in, enc_output,
-                                             enc_output, dec_enc_attn_mask)
+            enc_dec_attn_out = self.enc_attn(
+                enc_dec_attn_in, enc_output, enc_output, dec_enc_attn_mask
+            )
             enc_dec_attn_out += dec_attn_out
 
             mlp_out = self.mlp(self.norm3(enc_dec_attn_out))
@@ -425,20 +449,22 @@ class TFDecoderLayer(nn.Layer):
 
 
 class SATRNDecoder(nn.Layer):
-    def __init__(self,
-                 n_layers=6,
-                 d_embedding=512,
-                 n_head=8,
-                 d_k=64,
-                 d_v=64,
-                 d_model=512,
-                 d_inner=256,
-                 n_position=200,
-                 dropout=0.1,
-                 num_classes=93,
-                 max_seq_len=40,
-                 start_idx=1,
-                 padding_idx=92):
+    def __init__(
+        self,
+        n_layers=6,
+        d_embedding=512,
+        n_head=8,
+        d_k=64,
+        d_v=64,
+        d_model=512,
+        d_inner=256,
+        n_position=200,
+        dropout=0.1,
+        num_classes=93,
+        max_seq_len=40,
+        start_idx=1,
+        padding_idx=92,
+    ):
         super().__init__()
 
         self.padding_idx = padding_idx
@@ -446,17 +472,18 @@ class SATRNDecoder(nn.Layer):
         self.max_seq_len = max_seq_len
 
         self.trg_word_emb = nn.Embedding(
-            num_classes, d_embedding, padding_idx=padding_idx)
+            num_classes, d_embedding, padding_idx=padding_idx
+        )
 
-        self.position_enc = PositionalEncoding(
-            d_embedding, n_position=n_position)
+        self.position_enc = PositionalEncoding(d_embedding, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
 
-        self.layer_stack = nn.LayerList([
-            TFDecoderLayer(
-                d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
-            for _ in range(n_layers)
-        ])
+        self.layer_stack = nn.LayerList(
+            [
+                TFDecoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
+                for _ in range(n_layers)
+            ]
+        )
         self.layer_norm = nn.LayerNorm(d_model, epsilon=1e-6)
 
         pred_num_class = num_classes - 1  # ignore padding_idx
@@ -464,16 +491,14 @@ class SATRNDecoder(nn.Layer):
 
     @staticmethod
     def get_pad_mask(seq, pad_idx):
-
         return (seq != pad_idx).unsqueeze(-2)
 
     @staticmethod
     def get_subsequent_mask(seq):
         """For masking out the subsequent info."""
         len_s = seq.shape[1]
-        subsequent_mask = 1 - paddle.triu(
-            paddle.ones((len_s, len_s)), diagonal=1)
-        subsequent_mask = paddle.cast(subsequent_mask.unsqueeze(0), 'bool')
+        subsequent_mask = 1 - paddle.triu(paddle.ones((len_s, len_s)), diagonal=1)
+        subsequent_mask = paddle.cast(subsequent_mask.unsqueeze(0), "bool")
 
         return subsequent_mask
 
@@ -483,15 +508,13 @@ class SATRNDecoder(nn.Layer):
         tgt = self.dropout(trg_pos_encoded)
 
         trg_mask = self.get_pad_mask(
-            trg_seq,
-            pad_idx=self.padding_idx) & self.get_subsequent_mask(trg_seq)
+            trg_seq, pad_idx=self.padding_idx
+        ) & self.get_subsequent_mask(trg_seq)
         output = tgt
         for dec_layer in self.layer_stack:
             output = dec_layer(
-                output,
-                src,
-                self_attn_mask=trg_mask,
-                dec_enc_attn_mask=src_mask)
+                output, src, self_attn_mask=trg_mask, dec_enc_attn_mask=src_mask
+            )
         output = self.layer_norm(output)
 
         return output
@@ -518,17 +541,20 @@ class SATRNDecoder(nn.Layer):
         src_mask = self._get_mask(out_enc, valid_ratio)
         N = out_enc.shape[0]
         init_target_seq = paddle.full(
-            (N, self.max_seq_len + 1), self.padding_idx, dtype='int64')
+            (N, self.max_seq_len + 1), self.padding_idx, dtype="int64"
+        )
         # bsz * seq_len
         init_target_seq[:, 0] = self.start_idx
 
         outputs = []
         for step in range(0, paddle.to_tensor(self.max_seq_len)):
             decoder_output = self._attention(
-                init_target_seq, out_enc, src_mask=src_mask)
+                init_target_seq, out_enc, src_mask=src_mask
+            )
             # bsz * seq_len * C
             step_result = F.softmax(
-                self.classifier(decoder_output[:, step, :]), axis=-1)
+                self.classifier(decoder_output[:, step, :]), axis=-1
+            )
             # bsz * num_classes
             outputs.append(step_result)
             step_max_index = paddle.argmax(step_result, axis=-1)

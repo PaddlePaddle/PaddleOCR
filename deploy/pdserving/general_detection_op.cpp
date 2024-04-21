@@ -32,12 +32,12 @@ namespace paddle_serving {
 namespace serving {
 
 using baidu::paddle_serving::Timer;
-using baidu::paddle_serving::predictor::MempoolWrapper;
-using baidu::paddle_serving::predictor::general_model::Tensor;
-using baidu::paddle_serving::predictor::general_model::Response;
-using baidu::paddle_serving::predictor::general_model::Request;
 using baidu::paddle_serving::predictor::InferManager;
+using baidu::paddle_serving::predictor::MempoolWrapper;
 using baidu::paddle_serving::predictor::PaddleGeneralModelConfig;
+using baidu::paddle_serving::predictor::general_model::Request;
+using baidu::paddle_serving::predictor::general_model::Response;
+using baidu::paddle_serving::predictor::general_model::Tensor;
 
 int GeneralDetectionOp::inference() {
   VLOG(2) << "Going to run inference";

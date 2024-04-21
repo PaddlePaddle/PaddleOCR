@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['build_head']
+__all__ = ["build_head"]
 
 
 def build_head(config):
@@ -24,6 +24,7 @@ def build_head(config):
     from .det_fce_head import FCEHead
     from .e2e_pg_head import PGHead
     from .det_ct_head import CT_Head
+
     # rec head
     from .rec_ctc_head import CTCHead
     from .rec_att_head import AttentionHead
@@ -46,30 +47,56 @@ def build_head(config):
     # cls head
     from .cls_head import ClsHead
 
-    #kie head
+    # kie head
     from .kie_sdmgr_head import SDMGRHead
 
     from .table_att_head import TableAttentionHead, SLAHead
     from .table_master_head import TableMasterHead
 
     support_dict = [
-        'DBHead', 'PSEHead', 'FCEHead', 'EASTHead', 'SASTHead', 'CTCHead',
-        'ClsHead', 'AttentionHead', 'SRNHead', 'PGHead', 'Transformer',
-        'TableAttentionHead', 'SARHead', 'AsterHead', 'SDMGRHead', 'PRENHead',
-        'MultiHead', 'ABINetHead', 'TableMasterHead', 'SPINAttentionHead',
-        'VLHead', 'SLAHead', 'RobustScannerHead', 'CT_Head', 'RFLHead',
-        'DRRGHead', 'CANHead', 'SATRNHead', 'PFHeadLocal', 'ParseQHead',
-        'CPPDHead'
+        "DBHead",
+        "PSEHead",
+        "FCEHead",
+        "EASTHead",
+        "SASTHead",
+        "CTCHead",
+        "ClsHead",
+        "AttentionHead",
+        "SRNHead",
+        "PGHead",
+        "Transformer",
+        "TableAttentionHead",
+        "SARHead",
+        "AsterHead",
+        "SDMGRHead",
+        "PRENHead",
+        "MultiHead",
+        "ABINetHead",
+        "TableMasterHead",
+        "SPINAttentionHead",
+        "VLHead",
+        "SLAHead",
+        "RobustScannerHead",
+        "CT_Head",
+        "RFLHead",
+        "DRRGHead",
+        "CANHead",
+        "SATRNHead",
+        "PFHeadLocal",
+        "ParseQHead",
+        "CPPDHead",
     ]
 
-    if config['name'] == 'DRRGHead':
+    if config["name"] == "DRRGHead":
         from .det_drrg_head import DRRGHead
-        support_dict.append('DRRGHead')
 
-    #table head
+        support_dict.append("DRRGHead")
 
-    module_name = config.pop('name')
-    assert module_name in support_dict, Exception('head only support {}'.format(
-        support_dict))
+    # table head
+
+    module_name = config.pop("name")
+    assert module_name in support_dict, Exception(
+        "head only support {}".format(support_dict)
+    )
     module_class = eval(module_name)(**config)
     return module_class

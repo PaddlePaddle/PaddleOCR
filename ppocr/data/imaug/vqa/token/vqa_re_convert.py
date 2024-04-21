@@ -21,31 +21,29 @@ class TensorizeEntitiesRelations(object):
         self.infer_mode = infer_mode
 
     def __call__(self, data):
-        entities = data['entities']
-        relations = data['relations']
+        entities = data["entities"]
+        relations = data["relations"]
 
         entities_new = np.full(
-            shape=[self.max_seq_len + 1, 3], fill_value=-1, dtype='int64')
-        entities_new[0, 0] = len(entities['start'])
-        entities_new[0, 1] = len(entities['end'])
-        entities_new[0, 2] = len(entities['label'])
-        entities_new[1:len(entities['start']) + 1, 0] = np.array(entities[
-            'start'])
-        entities_new[1:len(entities['end']) + 1, 1] = np.array(entities['end'])
-        entities_new[1:len(entities['label']) + 1, 2] = np.array(entities[
-            'label'])
+            shape=[self.max_seq_len + 1, 3], fill_value=-1, dtype="int64"
+        )
+        entities_new[0, 0] = len(entities["start"])
+        entities_new[0, 1] = len(entities["end"])
+        entities_new[0, 2] = len(entities["label"])
+        entities_new[1 : len(entities["start"]) + 1, 0] = np.array(entities["start"])
+        entities_new[1 : len(entities["end"]) + 1, 1] = np.array(entities["end"])
+        entities_new[1 : len(entities["label"]) + 1, 2] = np.array(entities["label"])
 
         relations_new = np.full(
             shape=[self.max_seq_len * self.max_seq_len + 1, 2],
             fill_value=-1,
-            dtype='int64')
-        relations_new[0, 0] = len(relations['head'])
-        relations_new[0, 1] = len(relations['tail'])
-        relations_new[1:len(relations['head']) + 1, 0] = np.array(relations[
-            'head'])
-        relations_new[1:len(relations['tail']) + 1, 1] = np.array(relations[
-            'tail'])
+            dtype="int64",
+        )
+        relations_new[0, 0] = len(relations["head"])
+        relations_new[0, 1] = len(relations["tail"])
+        relations_new[1 : len(relations["head"]) + 1, 0] = np.array(relations["head"])
+        relations_new[1 : len(relations["tail"]) + 1, 1] = np.array(relations["tail"])
 
-        data['entities'] = entities_new
-        data['relations'] = relations_new
+        data["entities"] = entities_new
+        data["relations"] = relations_new
         return data

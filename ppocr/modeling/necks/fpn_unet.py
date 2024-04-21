@@ -29,11 +29,14 @@ class UpBlock(nn.Layer):
         assert isinstance(out_channels, int)
 
         self.conv1x1 = nn.Conv2D(
-            in_channels, in_channels, kernel_size=1, stride=1, padding=0)
+            in_channels, in_channels, kernel_size=1, stride=1, padding=0
+        )
         self.conv3x3 = nn.Conv2D(
-            in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+            in_channels, out_channels, kernel_size=3, stride=1, padding=1
+        )
         self.deconv = nn.Conv2DTranspose(
-            out_channels, out_channels, kernel_size=4, stride=2, padding=1)
+            out_channels, out_channels, kernel_size=4, stride=2, padding=1
+        )
 
     def forward(self, x):
         x = F.relu(self.conv1x1(x))
@@ -53,16 +56,19 @@ class FPN_UNet(nn.Layer):
         blocks_out_channels = [out_channels] + [
             min(out_channels * 2**i, 256) for i in range(4)
         ]
-        blocks_in_channels = [blocks_out_channels[1]] + [
-            in_channels[i] + blocks_out_channels[i + 2] for i in range(3)
-        ] + [in_channels[3]]
+        blocks_in_channels = (
+            [blocks_out_channels[1]]
+            + [in_channels[i] + blocks_out_channels[i + 2] for i in range(3)]
+            + [in_channels[3]]
+        )
 
         self.up4 = nn.Conv2DTranspose(
             blocks_in_channels[4],
             blocks_out_channels[4],
             kernel_size=4,
             stride=2,
-            padding=1)
+            padding=1,
+        )
         self.up_block3 = UpBlock(blocks_in_channels[3], blocks_out_channels[3])
         self.up_block2 = UpBlock(blocks_in_channels[2], blocks_out_channels[2])
         self.up_block1 = UpBlock(blocks_in_channels[1], blocks_out_channels[1])

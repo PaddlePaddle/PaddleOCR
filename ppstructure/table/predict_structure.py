@@ -16,9 +16,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "../..")))
 
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["FLAGS_allocator_strategy"] = "auto_growth"
 
 import cv2
 import numpy as np
@@ -37,32 +37,30 @@ logger = get_logger()
 
 
 def build_pre_process_list(args):
-    resize_op = {'ResizeTableImage': {'max_len': args.table_max_len, }}
-    pad_op = {
-        'PaddingTableImage': {
-            'size': [args.table_max_len, args.table_max_len]
+    resize_op = {
+        "ResizeTableImage": {
+            "max_len": args.table_max_len,
         }
     }
+    pad_op = {"PaddingTableImage": {"size": [args.table_max_len, args.table_max_len]}}
     normalize_op = {
-        'NormalizeImage': {
-            'std': [0.229, 0.224, 0.225] if
-            args.table_algorithm not in ['TableMaster'] else [0.5, 0.5, 0.5],
-            'mean': [0.485, 0.456, 0.406] if
-            args.table_algorithm not in ['TableMaster'] else [0.5, 0.5, 0.5],
-            'scale': '1./255.',
-            'order': 'hwc'
+        "NormalizeImage": {
+            "std": [0.229, 0.224, 0.225]
+            if args.table_algorithm not in ["TableMaster"]
+            else [0.5, 0.5, 0.5],
+            "mean": [0.485, 0.456, 0.406]
+            if args.table_algorithm not in ["TableMaster"]
+            else [0.5, 0.5, 0.5],
+            "scale": "1./255.",
+            "order": "hwc",
         }
     }
-    to_chw_op = {'ToCHWImage': None}
-    keep_keys_op = {'KeepKeys': {'keep_keys': ['image', 'shape']}}
-    if args.table_algorithm not in ['TableMaster']:
-        pre_process_list = [
-            resize_op, normalize_op, pad_op, to_chw_op, keep_keys_op
-        ]
+    to_chw_op = {"ToCHWImage": None}
+    keep_keys_op = {"KeepKeys": {"keep_keys": ["image", "shape"]}}
+    if args.table_algorithm not in ["TableMaster"]:
+        pre_process_list = [resize_op, normalize_op, pad_op, to_chw_op, keep_keys_op]
     else:
-        pre_process_list = [
-            resize_op, pad_op, normalize_op, to_chw_op, keep_keys_op
-        ]
+        pre_process_list = [resize_op, pad_op, normalize_op, to_chw_op, keep_keys_op]
     return pre_process_list
 
 
@@ -71,27 +69,32 @@ class TableStructurer(object):
         self.args = args
         self.use_onnx = args.use_onnx
         pre_process_list = build_pre_process_list(args)
-        if args.table_algorithm not in ['TableMaster']:
+        if args.table_algorithm not in ["TableMaster"]:
             postprocess_params = {
-                'name': 'TableLabelDecode',
+                "name": "TableLabelDecode",
                 "character_dict_path": args.table_char_dict_path,
-                'merge_no_span_structure': args.merge_no_span_structure
+                "merge_no_span_structure": args.merge_no_span_structure,
             }
         else:
             postprocess_params = {
-                'name': 'TableMasterLabelDecode',
+                "name": "TableMasterLabelDecode",
                 "character_dict_path": args.table_char_dict_path,
-                'box_shape': 'pad',
-                'merge_no_span_structure': args.merge_no_span_structure
+                "box_shape": "pad",
+                "merge_no_span_structure": args.merge_no_span_structure,
             }
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors, self.config = \
-            utility.create_predictor(args, 'table', logger)
+        (
+            self.predictor,
+            self.input_tensor,
+            self.output_tensors,
+            self.config,
+        ) = utility.create_predictor(args, "table", logger)
 
         if args.benchmark:
             import auto_log
+
             pid = os.getpid()
             gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
@@ -99,16 +102,15 @@ class TableStructurer(object):
                 model_precision=args.precision,
                 batch_size=1,
                 data_shape="dynamic",
-                save_path=None,  #args.save_log_path,
+                save_path=None,  # args.save_log_path,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
                 gpu_ids=gpu_id if args.use_gpu else None,
-                time_keys=[
-                    'preprocess_time', 'inference_time', 'postprocess_time'
-                ],
+                time_keys=["preprocess_time", "inference_time", "postprocess_time"],
                 warmup=0,
-                logger=logger)
+                logger=logger,
+            )
 
     def __call__(self, img):
         starttime = time.time()
@@ -116,7 +118,7 @@ class TableStructurer(object):
             self.autolog.times.start()
 
         ori_im = img.copy()
-        data = {'image': img}
+        data = {"image": img}
         data = transform(data, self.preprocess_op)
         img = data[0]
         if img is None:
@@ -140,18 +142,20 @@ class TableStructurer(object):
                 self.autolog.times.stamp()
 
         preds = {}
-        preds['structure_probs'] = outputs[1]
-        preds['loc_preds'] = outputs[0]
+        preds["structure_probs"] = outputs[1]
+        preds["loc_preds"] = outputs[0]
 
         shape_list = np.expand_dims(data[-1], axis=0)
         post_result = self.postprocess_op(preds, [shape_list])
 
-        structure_str_list = post_result['structure_batch_list'][0]
-        bbox_list = post_result['bbox_batch_list'][0]
+        structure_str_list = post_result["structure_batch_list"][0]
+        bbox_list = post_result["bbox_batch_list"][0]
         structure_str_list = structure_str_list[0]
-        structure_str_list = [
-            '<html>', '<body>', '<table>'
-        ] + structure_str_list + ['</table>', '</body>', '</html>']
+        structure_str_list = (
+            ["<html>", "<body>", "<table>"]
+            + structure_str_list
+            + ["</table>", "</body>", "</html>"]
+        )
         elapse = time.time() - starttime
         if self.args.benchmark:
             self.autolog.times.end(stamp=True)
@@ -165,8 +169,8 @@ def main(args):
     total_time = 0
     os.makedirs(args.output, exist_ok=True)
     with open(
-            os.path.join(args.output, 'infer.txt'), mode='w',
-            encoding='utf-8') as f_w:
+        os.path.join(args.output, "infer.txt"), mode="w", encoding="utf-8"
+    ) as f_w:
         for image_file in image_file_list:
             img, flag, _ = check_and_read(image_file)
             if not flag:
@@ -177,17 +181,14 @@ def main(args):
             structure_res, elapse = table_structurer(img)
             structure_str_list, bbox_list = structure_res
             bbox_list_str = json.dumps(bbox_list.tolist())
-            logger.info("result: {}, {}".format(structure_str_list,
-                                                bbox_list_str))
-            f_w.write("result: {}, {}\n".format(structure_str_list,
-                                                bbox_list_str))
+            logger.info("result: {}, {}".format(structure_str_list, bbox_list_str))
+            f_w.write("result: {}, {}\n".format(structure_str_list, bbox_list_str))
 
             if len(bbox_list) > 0 and len(bbox_list[0]) == 4:
                 img = draw_rectangle(image_file, bbox_list)
             else:
                 img = utility.draw_boxes(img, bbox_list)
-            img_save_path = os.path.join(args.output,
-                                         os.path.basename(image_file))
+            img_save_path = os.path.join(args.output, os.path.basename(image_file))
             cv2.imwrite(img_save_path, img)
             logger.info("save vis result to {}".format(img_save_path))
             if count > 0:

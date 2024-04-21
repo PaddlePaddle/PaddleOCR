@@ -21,11 +21,13 @@ class FileCorpus(object):
         self.logger = get_logger()
         self.logger.info("using FileCorpus")
 
-        self.char_list = " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        self.char_list = (
+            " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+        )
 
         corpus_file = config["CorpusGenerator"]["corpus_file"]
         self.language = config["CorpusGenerator"]["language"]
-        with open(corpus_file, 'r') as f:
+        with open(corpus_file, "r") as f:
             corpus_raw = f.read()
         self.corpus_list = corpus_raw.split("\n")[:-1]
         assert len(self.corpus_list) > 0

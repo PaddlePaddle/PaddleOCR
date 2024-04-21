@@ -40,14 +40,16 @@ def get_para_bias_attr(l2_decay, k):
 
 
 class TableAttentionHead(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 hidden_size,
-                 in_max_len=488,
-                 max_text_length=800,
-                 out_channels=30,
-                 loc_reg_num=4,
-                 **kwargs):
+    def __init__(
+        self,
+        in_channels,
+        hidden_size,
+        in_max_len=488,
+        max_text_length=800,
+        out_channels=30,
+        loc_reg_num=4,
+        **kwargs
+    ):
         super(TableAttentionHead, self).__init__()
         self.input_size = in_channels[-1]
         self.hidden_size = hidden_size
@@ -55,7 +57,8 @@ class TableAttentionHead(nn.Layer):
         self.max_text_length = max_text_length
 
         self.structure_attention_cell = AttentionGRUCell(
-            self.input_size, hidden_size, self.out_channels, use_gru=False)
+            self.input_size, hidden_size, self.out_channels, use_gru=False
+        )
         self.structure_generator = nn.Linear(hidden_size, self.out_channels)
         self.in_max_len = in_max_len
 
@@ -65,8 +68,7 @@ class TableAttentionHead(nn.Layer):
             self.loc_fea_trans = nn.Linear(625, self.max_text_length + 1)
         else:
             self.loc_fea_trans = nn.Linear(256, self.max_text_length + 1)
-        self.loc_generator = nn.Linear(self.input_size + hidden_size,
-                                       loc_reg_num)
+        self.loc_generator = nn.Linear(self.input_size + hidden_size, loc_reg_num)
 
     def _char_to_onehot(self, input_char, onehot_dim):
         input_ont_hot = F.one_hot(input_char, onehot_dim)
@@ -83,14 +85,17 @@ class TableAttentionHead(nn.Layer):
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
         output_hiddens = paddle.zeros(
-            (batch_size, self.max_text_length + 1, self.hidden_size))
+            (batch_size, self.max_text_length + 1, self.hidden_size)
+        )
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
                 elem_onehots = self._char_to_onehot(
-                    structure[:, i], onehot_dim=self.out_channels)
+                    structure[:, i], onehot_dim=self.out_channels
+                )
                 (outputs, hidden), alpha = self.structure_attention_cell(
-                    hidden, fea, elem_onehots)
+                    hidden, fea, elem_onehots
+                )
                 output_hiddens[:, i, :] = outputs
             structure_probs = self.structure_generator(output_hiddens)
             loc_fea = fea.transpose([0, 2, 1])
@@ -109,9 +114,11 @@ class TableAttentionHead(nn.Layer):
             max_text_length = paddle.to_tensor(self.max_text_length)
             for i in range(max_text_length + 1):
                 elem_onehots = self._char_to_onehot(
-                    temp_elem, onehot_dim=self.out_channels)
+                    temp_elem, onehot_dim=self.out_channels
+                )
                 (outputs, hidden), alpha = self.structure_attention_cell(
-                    hidden, fea, elem_onehots)
+                    hidden, fea, elem_onehots
+                )
                 output_hiddens[:, i, :] = outputs
                 structure_probs_step = self.structure_generator(outputs)
                 temp_elem = structure_probs_step.argmax(axis=1, dtype="int32")
@@ -124,18 +131,20 @@ class TableAttentionHead(nn.Layer):
             loc_concat = paddle.concat([output_hiddens, loc_fea], axis=2)
             loc_preds = self.loc_generator(loc_concat)
             loc_preds = F.sigmoid(loc_preds)
-        return {'structure_probs': structure_probs, 'loc_preds': loc_preds}
+        return {"structure_probs": structure_probs, "loc_preds": loc_preds}
 
 
 class SLAHead(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 hidden_size,
-                 out_channels=30,
-                 max_text_length=500,
-                 loc_reg_num=4,
-                 fc_decay=0.0,
-                 **kwargs):
+    def __init__(
+        self,
+        in_channels,
+        hidden_size,
+        out_channels=30,
+        max_text_length=500,
+        loc_reg_num=4,
+        fc_decay=0.0,
+        **kwargs
+    ):
         """
         @param in_channels: input shape
         @param hidden_size: hidden_size for RNN and Embedding
@@ -152,41 +161,48 @@ class SLAHead(nn.Layer):
 
         # structure
         self.structure_attention_cell = AttentionGRUCell(
-            in_channels, hidden_size, self.num_embeddings)
-        weight_attr, bias_attr = get_para_bias_attr(
-            l2_decay=fc_decay, k=hidden_size)
+            in_channels, hidden_size, self.num_embeddings
+        )
+        weight_attr, bias_attr = get_para_bias_attr(l2_decay=fc_decay, k=hidden_size)
         weight_attr1_1, bias_attr1_1 = get_para_bias_attr(
-            l2_decay=fc_decay, k=hidden_size)
+            l2_decay=fc_decay, k=hidden_size
+        )
         weight_attr1_2, bias_attr1_2 = get_para_bias_attr(
-            l2_decay=fc_decay, k=hidden_size)
+            l2_decay=fc_decay, k=hidden_size
+        )
         self.structure_generator = nn.Sequential(
             nn.Linear(
                 self.hidden_size,
                 self.hidden_size,
                 weight_attr=weight_attr1_2,
-                bias_attr=bias_attr1_2),
+                bias_attr=bias_attr1_2,
+            ),
             nn.Linear(
-                hidden_size,
-                out_channels,
-                weight_attr=weight_attr,
-                bias_attr=bias_attr))
+                hidden_size, out_channels, weight_attr=weight_attr, bias_attr=bias_attr
+            ),
+        )
         # loc
         weight_attr1, bias_attr1 = get_para_bias_attr(
-            l2_decay=fc_decay, k=self.hidden_size)
+            l2_decay=fc_decay, k=self.hidden_size
+        )
         weight_attr2, bias_attr2 = get_para_bias_attr(
-            l2_decay=fc_decay, k=self.hidden_size)
+            l2_decay=fc_decay, k=self.hidden_size
+        )
         self.loc_generator = nn.Sequential(
             nn.Linear(
                 self.hidden_size,
                 self.hidden_size,
                 weight_attr=weight_attr1,
-                bias_attr=bias_attr1),
+                bias_attr=bias_attr1,
+            ),
             nn.Linear(
                 self.hidden_size,
                 loc_reg_num,
                 weight_attr=weight_attr2,
-                bias_attr=bias_attr2),
-            nn.Sigmoid())
+                bias_attr=bias_attr2,
+            ),
+            nn.Sigmoid(),
+        )
 
     def forward(self, inputs, targets=None):
         fea = inputs[-1]
@@ -197,16 +213,19 @@ class SLAHead(nn.Layer):
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
         structure_preds = paddle.zeros(
-            (batch_size, self.max_text_length + 1, self.num_embeddings))
+            (batch_size, self.max_text_length + 1, self.num_embeddings)
+        )
         loc_preds = paddle.zeros(
-            (batch_size, self.max_text_length + 1, self.loc_reg_num))
+            (batch_size, self.max_text_length + 1, self.loc_reg_num)
+        )
         structure_preds.stop_gradient = True
         loc_preds.stop_gradient = True
         if self.training and targets is not None:
             structure = targets[0]
             for i in range(self.max_text_length + 1):
-                hidden, structure_step, loc_step = self._decode(structure[:, i],
-                                                                fea, hidden)
+                hidden, structure_step, loc_step = self._decode(
+                    structure[:, i], fea, hidden
+                )
                 structure_preds[:, i, :] = structure_step
                 loc_preds[:, i, :] = loc_step
         else:
@@ -215,14 +234,13 @@ class SLAHead(nn.Layer):
             # for export
             loc_step, structure_step = None, None
             for i in range(max_text_length + 1):
-                hidden, structure_step, loc_step = self._decode(pre_chars, fea,
-                                                                hidden)
+                hidden, structure_step, loc_step = self._decode(pre_chars, fea, hidden)
                 pre_chars = structure_step.argmax(axis=1, dtype="int32")
                 structure_preds[:, i, :] = structure_step
                 loc_preds[:, i, :] = loc_step
         if not self.training:
             structure_preds = F.softmax(structure_preds)
-        return {'structure_probs': structure_preds, 'loc_preds': loc_preds}
+        return {"structure_probs": structure_preds, "loc_preds": loc_preds}
 
     def _decode(self, pre_chars, features, hidden):
         """
@@ -235,7 +253,8 @@ class SLAHead(nn.Layer):
         emb_feature = self.emb(pre_chars)
         # output shape is b * self.hidden_size
         (output, hidden), alpha = self.structure_attention_cell(
-            hidden, features, emb_feature)
+            hidden, features, emb_feature
+        )
 
         # structure
         structure_step = self.structure_generator(output)

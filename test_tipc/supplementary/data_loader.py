@@ -7,8 +7,7 @@ from paddle.io import Dataset, DataLoader, DistributedBatchSampler
 
 
 def term_mp(sig_num, frame):
-    """ kill all child processes
-    """
+    """kill all child processes"""
     pid = os.getpid()
     pgid = os.getpgid(os.getpid())
     print("main proc {} exit, kill process group " "{}".format(pid, pgid))
@@ -16,25 +15,20 @@ def term_mp(sig_num, frame):
     return
 
 
-def build_dataloader(mode,
-                     batch_size=4,
-                     seed=None,
-                     num_workers=0,
-                     device='gpu:0'):
-
-    normalize = Normalize(
-        mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5], data_format='HWC')
+def build_dataloader(mode, batch_size=4, seed=None, num_workers=0, device="gpu:0"):
+    normalize = Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5], data_format="HWC")
 
     if mode.lower() == "train":
         dataset = Cifar100(mode=mode, transform=normalize)
-    elif mode.lower() in ["test", 'valid', 'eval']:
+    elif mode.lower() in ["test", "valid", "eval"]:
         dataset = Cifar100(mode="test", transform=normalize)
     else:
         raise ValueError(f"{mode} should be one of ['train', 'test']")
 
     # define batch sampler
     batch_sampler = DistributedBatchSampler(
-        dataset=dataset, batch_size=batch_size, shuffle=False, drop_last=True)
+        dataset=dataset, batch_size=batch_size, shuffle=False, drop_last=True
+    )
 
     data_loader = DataLoader(
         dataset=dataset,
@@ -42,7 +36,8 @@ def build_dataloader(mode,
         places=device,
         num_workers=num_workers,
         return_list=True,
-        use_shared_memory=False)
+        use_shared_memory=False,
+    )
 
     # support exit using ctrl+c
     signal.signal(signal.SIGINT, term_mp)

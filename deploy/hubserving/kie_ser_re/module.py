@@ -18,6 +18,7 @@ from __future__ import print_function
 
 import os
 import sys
+
 sys.path.insert(0, ".")
 import copy
 
@@ -42,7 +43,8 @@ from deploy.hubserving.kie_ser_re.params import read_params
     summary="kie ser re service",
     author="paddle-dev",
     author_email="paddle-dev@baidu.com",
-    type="cv/KIE_SER_RE")
+    type="cv/KIE_SER_RE",
+)
 class KIESerRE(hub.Module):
     def _initialize(self, use_gpu=False, enable_mkldnn=False):
         """
@@ -67,7 +69,9 @@ class KIESerRE(hub.Module):
 
         self.ser_re_predictor = SerRePredictor(cfg)
 
-    def merge_configs(self, ):
+    def merge_configs(
+        self,
+    ):
         # deafult cfg
         backup_argv = copy.deepcopy(sys.argv)
         sys.argv = sys.argv[:1]
@@ -84,8 +88,9 @@ class KIESerRE(hub.Module):
     def read_images(self, paths=[]):
         images = []
         for img_path in paths:
-            assert os.path.isfile(
-                img_path), "The {} isn't a valid file.".format(img_path)
+            assert os.path.isfile(img_path), "The {} isn't a valid file.".format(
+                img_path
+            )
             img = cv2.imread(img_path)
             if img is None:
                 logger.info("error in loading image:{}".format(img_path))
@@ -109,7 +114,9 @@ class KIESerRE(hub.Module):
         else:
             raise TypeError("The input data is inconsistent with expectations.")
 
-        assert predicted_data != [], "There is not any image to be predicted. Please check the input data."
+        assert (
+            predicted_data != []
+        ), "There is not any image to be predicted. Please check the input data."
 
         all_results = []
         for img in predicted_data:
@@ -136,12 +143,12 @@ class KIESerRE(hub.Module):
         return results
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ocr = OCRSystem()
     ocr._initialize()
     image_path = [
-        './doc/imgs/11.jpg',
-        './doc/imgs/12.jpg',
+        "./doc/imgs/11.jpg",
+        "./doc/imgs/12.jpg",
     ]
     res = ocr.predict(paths=image_path)
     print(res)

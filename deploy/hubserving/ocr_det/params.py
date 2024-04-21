@@ -24,13 +24,13 @@ class Config(object):
 def read_params():
     cfg = Config()
 
-    #params for text detector
+    # params for text detector
     cfg.det_algorithm = "DB"
     cfg.det_model_dir = "./inference/ch_PP-OCRv3_det_infer/"
     cfg.det_limit_side_len = 960
-    cfg.det_limit_type = 'max'
+    cfg.det_limit_type = "max"
 
-    #DB parmas
+    # DB parmas
     cfg.det_db_thresh = 0.3
     cfg.det_db_box_thresh = 0.6
     cfg.det_db_unclip_ratio = 1.5

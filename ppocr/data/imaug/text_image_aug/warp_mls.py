@@ -20,7 +20,7 @@ import numpy as np
 
 
 class WarpMLS:
-    def __init__(self, src, src_pts, dst_pts, dst_w, dst_h, trans_ratio=1.):
+    def __init__(self, src, src_pts, dst_pts, dst_w, dst_h, trans_ratio=1.0):
         self.src = src
         self.src_pts = src_pts
         self.dst_pts = dst_pts
@@ -34,8 +34,7 @@ class WarpMLS:
 
     @staticmethod
     def __bilinear_interp(x, y, v11, v12, v21, v22):
-        return (v11 * (1 - y) + v12 * y) * (1 - x) + (v21 *
-                                                      (1 - y) + v22 * y) * x
+        return (v11 * (1 - y) + v12 * y) * (1 - x) + (v21 * (1 - y) + v22 * y) * x
 
     def generate(self):
         self.calc_delta()
@@ -72,9 +71,10 @@ class WarpMLS:
                     if i == self.dst_pts[k][0] and j == self.dst_pts[k][1]:
                         break
 
-                    w[k] = 1. / (
-                        (i - self.dst_pts[k][0]) * (i - self.dst_pts[k][0]) +
-                        (j - self.dst_pts[k][1]) * (j - self.dst_pts[k][1]))
+                    w[k] = 1.0 / (
+                        (i - self.dst_pts[k][0]) * (i - self.dst_pts[k][0])
+                        + (j - self.dst_pts[k][1]) * (j - self.dst_pts[k][1])
+                    )
 
                     sw += w[k]
                     swp = swp + w[k] * np.array(self.dst_pts[k])
@@ -102,11 +102,15 @@ class WarpMLS:
                         pt_j = np.array([-pt_i[1], pt_i[0]])
 
                         tmp_pt = np.zeros(2, dtype=np.float32)
-                        tmp_pt[0] = np.sum(pt_i * cur_pt) * self.src_pts[k][0] - \
-                                    np.sum(pt_j * cur_pt) * self.src_pts[k][1]
-                        tmp_pt[1] = -np.sum(pt_i * cur_pt_j) * self.src_pts[k][0] + \
-                                    np.sum(pt_j * cur_pt_j) * self.src_pts[k][1]
-                        tmp_pt *= (w[k] / miu_s)
+                        tmp_pt[0] = (
+                            np.sum(pt_i * cur_pt) * self.src_pts[k][0]
+                            - np.sum(pt_j * cur_pt) * self.src_pts[k][1]
+                        )
+                        tmp_pt[1] = (
+                            -np.sum(pt_i * cur_pt_j) * self.src_pts[k][0]
+                            + np.sum(pt_j * cur_pt_j) * self.src_pts[k][1]
+                        )
+                        tmp_pt *= w[k] / miu_s
                         new_pt += tmp_pt
 
                     new_pt += qstar
@@ -138,11 +142,21 @@ class WarpMLS:
                 di = np.reshape(np.arange(h), (-1, 1))
                 dj = np.reshape(np.arange(w), (1, -1))
                 delta_x = self.__bilinear_interp(
-                    di / h, dj / w, self.rdx[i, j], self.rdx[i, nj],
-                    self.rdx[ni, j], self.rdx[ni, nj])
+                    di / h,
+                    dj / w,
+                    self.rdx[i, j],
+                    self.rdx[i, nj],
+                    self.rdx[ni, j],
+                    self.rdx[ni, nj],
+                )
                 delta_y = self.__bilinear_interp(
-                    di / h, dj / w, self.rdy[i, j], self.rdy[i, nj],
-                    self.rdy[ni, j], self.rdy[ni, nj])
+                    di / h,
+                    dj / w,
+                    self.rdy[i, j],
+                    self.rdy[i, nj],
+                    self.rdy[ni, j],
+                    self.rdy[ni, nj],
+                )
                 nx = j + dj + delta_x * self.trans_ratio
                 ny = i + di + delta_y * self.trans_ratio
                 nx = np.clip(nx, 0, src_w - 1)
@@ -158,9 +172,14 @@ class WarpMLS:
                 else:
                     x = ny - nyi
                     y = nx - nxi
-                dst[i:i + h, j:j + w] = self.__bilinear_interp(
-                    x, y, self.src[nyi, nxi], self.src[nyi, nxi1],
-                    self.src[nyi1, nxi], self.src[nyi1, nxi1])
+                dst[i : i + h, j : j + w] = self.__bilinear_interp(
+                    x,
+                    y,
+                    self.src[nyi, nxi],
+                    self.src[nyi, nxi1],
+                    self.src[nyi1, nxi],
+                    self.src[nyi1, nxi1],
+                )
 
         dst = np.clip(dst, 0, 255)
         dst = np.array(dst, dtype=np.uint8)

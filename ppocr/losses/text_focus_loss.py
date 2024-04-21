@@ -21,14 +21,14 @@ import paddle
 import numpy as np
 import pickle as pkl
 
-standard_alphebet = '-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+standard_alphebet = "-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 standard_dict = {}
 for index in range(len(standard_alphebet)):
     standard_dict[standard_alphebet[index]] = index
 
 
 def load_confuse_matrix(confuse_dict_path):
-    f = open(confuse_dict_path, 'rb')
+    f = open(confuse_dict_path, "rb")
     data = pkl.load(f)
     f.close()
     number = data[:10]
@@ -42,12 +42,14 @@ def load_confuse_matrix(confuse_dict_path):
     rearrange_data[rearrange_data == np.inf] = 1
     rearrange_data = paddle.to_tensor(rearrange_data)
 
-    lower_alpha = 'abcdefghijklmnopqrstuvwxyz'
+    lower_alpha = "abcdefghijklmnopqrstuvwxyz"
     # upper_alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     for i in range(63):
         for j in range(63):
             if i != j and standard_alphebet[j] in lower_alpha:
-                rearrange_data[i][j] = max(rearrange_data[i][j], rearrange_data[i][j + 26])
+                rearrange_data[i][j] = max(
+                    rearrange_data[i][j], rearrange_data[i][j + 26]
+                )
     rearrange_data = rearrange_data[:37, :37]
 
     return rearrange_data
@@ -60,7 +62,9 @@ def weight_cross_entropy(pred, gt, weight_table):
     pred_exp_weight = weight * pred_exp
     loss = 0
     for i in range(len(gt)):
-        loss -= paddle.log(pred_exp_weight[i][gt[i]] / paddle.sum(pred_exp_weight, 1)[i])
+        loss -= paddle.log(
+            pred_exp_weight[i][gt[i]] / paddle.sum(pred_exp_weight, 1)[i]
+        )
     return loss / batch
 
 
@@ -84,8 +88,4 @@ class TelescopeLoss(nn.Layer):
         attention_loss = self.l1_loss(word_attention_map_gt, word_attention_map_pred)
         recognition_loss = weight_cross_entropy(sr_pred, text_gt, self.weight_table)
         loss = mse_loss + attention_loss * 10 + recognition_loss * 0.0005
-        return {
-            "mse_loss": mse_loss,
-            "attention_loss": attention_loss,
-            "loss": loss
-        }
+        return {"mse_loss": mse_loss, "attention_loss": attention_loss, "loss": loss}

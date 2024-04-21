@@ -20,38 +20,39 @@ import os
 def parse_arguments():
     import argparse
     import ast
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--det_model", required=True, help="Path of Detection model of PPOCR.")
+        "--det_model", required=True, help="Path of Detection model of PPOCR."
+    )
     parser.add_argument(
-        "--cls_model",
-        required=True,
-        help="Path of Classification model of PPOCR.")
+        "--cls_model", required=True, help="Path of Classification model of PPOCR."
+    )
     parser.add_argument(
-        "--rec_model",
-        required=True,
-        help="Path of Recognization model of PPOCR.")
+        "--rec_model", required=True, help="Path of Recognization model of PPOCR."
+    )
     parser.add_argument(
-        "--rec_label_file",
-        required=True,
-        help="Path of Recognization model of PPOCR.")
+        "--rec_label_file", required=True, help="Path of Recognization model of PPOCR."
+    )
     parser.add_argument(
-        "--image", type=str, required=True, help="Path of test image file.")
+        "--image", type=str, required=True, help="Path of test image file."
+    )
     parser.add_argument(
         "--device",
         type=str,
-        default='cpu',
-        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.")
+        default="cpu",
+        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.",
+    )
     parser.add_argument(
         "--cpu_thread_num",
         type=int,
         default=9,
-        help="Number of threads while inference on CPU.")
+        help="Number of threads while inference on CPU.",
+    )
     return parser.parse_args()
 
 
 def build_option(args):
-
     det_option = fd.RuntimeOption()
     cls_option = fd.RuntimeOption()
     rec_option = fd.RuntimeOption()
@@ -92,23 +93,20 @@ det_option, cls_option, rec_option = build_option(args)
 det_format, cls_format, rec_format = build_format(args)
 
 det_model = fd.vision.ocr.DBDetector(
-    det_model_file,
-    det_params_file,
-    runtime_option=det_option,
-    model_format=det_format)
+    det_model_file, det_params_file, runtime_option=det_option, model_format=det_format
+)
 
 cls_model = fd.vision.ocr.Classifier(
-    cls_model_file,
-    cls_params_file,
-    runtime_option=cls_option,
-    model_format=cls_format)
+    cls_model_file, cls_params_file, runtime_option=cls_option, model_format=cls_format
+)
 
 rec_model = fd.vision.ocr.Recognizer(
     rec_model_file,
     rec_params_file,
     rec_label_file,
     runtime_option=rec_option,
-    model_format=rec_format)
+    model_format=rec_format,
+)
 
 # Det,Rec模型启用静态shape推理
 det_model.preprocessor.static_shape_infer = True
@@ -124,7 +122,8 @@ if args.device == "npu":
 
 # 创建PP-OCR，串联3个模型，其中cls_model可选，如无需求，可设置为None
 ppocr_v3 = fd.vision.ocr.PPOCRv3(
-    det_model=det_model, cls_model=cls_model, rec_model=rec_model)
+    det_model=det_model, cls_model=cls_model, rec_model=rec_model
+)
 
 # Cls模型和Rec模型的batch size 必须设置为1, 开启静态shape推理
 ppocr_v3.cls_batch_size = 1
@@ -133,7 +132,7 @@ ppocr_v3.rec_batch_size = 1
 # 预测图片准备
 im = cv2.imread(args.image)
 
-#预测并打印结果
+# 预测并打印结果
 result = ppocr_v3.predict(im)
 
 print(result)

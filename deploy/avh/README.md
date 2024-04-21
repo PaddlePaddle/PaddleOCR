@@ -31,7 +31,7 @@ You can refer to this [guide](https://arm-software.github.io/AVH/main/examples/h
 Case 2: If the demo is run in the [ci_cpu Docker container](https://github.com/apache/tvm/blob/main/docker/Dockerfile.ci_cpu) provided with [TVM](https://github.com/apache/tvm), then the following software will already be installed.
 
 Case 3: If the demo is not run in the ci_cpu Docker container, then you will need the following:
-- Software required to build and run the demo (These can all be installed by running 
+- Software required to build and run the demo (These can all be installed by running
   tvm/docker/install/ubuntu_install_ethosu_driver_stack.sh.)
   - [Fixed Virtual Platform (FVP) based on Arm(R) Corstone(TM)-300 software](https://developer.arm.com/tools-and-software/open-source-software/arm-platforms-software/arm-ecosystem-fvps)
   - [cmake 3.19.5](https://github.com/Kitware/CMake/releases/)
@@ -45,7 +45,7 @@ Case 3: If the demo is not run in the ci_cpu Docker container, then you will nee
     ```
 
 In case2 and case3:  
-    
+
 You will need to update your PATH environment variable to include the path to cmake 3.19.5 and the FVP.
 For example if you've installed these in ```/opt/arm``` , then you would do the following:
 ```bash
@@ -112,5 +112,3 @@ PP-OCRv3 is the third version of the PP-OCR series model. This series of models 
   - PP-OCRv3: ultra-lightweight OCR system: detection (3.6M) + direction classifier (1.4M) + recognition (12M) = 17.0M
   - Support more than 80 kinds of multi-language recognition models, including English, Chinese, French, German, Arabic, Korean, Japanese and so on. For details
   - Support vertical text recognition, and long text recognition
-
-

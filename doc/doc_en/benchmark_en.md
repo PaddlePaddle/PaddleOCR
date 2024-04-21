@@ -1,8 +1,8 @@
-# Benchmark 
+# Benchmark
 
 This document gives the performance of the series models for Chinese and English recognition.
 
-## Test Data 
+## Test Data
 
 We collected 300 images for different real application scenarios to evaluate the overall OCR system, including contract samples, license plates, nameplates, train tickets, test sheets, forms, certificates, street view images, business cards, digital meter, etc. The following figure shows some images of the test set.
 

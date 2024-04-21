@@ -46,7 +46,7 @@ class TritonPythonModel:
           * model_name: Model name
         """
         # You must parse model_config. JSON string is not parsed here
-        self.model_config = json.loads(args['model_config'])
+        self.model_config = json.loads(args["model_config"])
         print("model_config:", self.model_config)
 
         self.input_names = []
@@ -84,18 +84,19 @@ class TritonPythonModel:
         """
         responses = []
         for request in requests:
-            data = pb_utils.get_input_tensor_by_name(request,
-                                                     self.input_names[0])
+            data = pb_utils.get_input_tensor_by_name(request, self.input_names[0])
             data = data.as_numpy()
             outputs, im_infos = self.preprocessor.run(data)
             dlpack_tensor = outputs[0].to_dlpack()
-            output_tensor_0 = pb_utils.Tensor.from_dlpack(self.output_names[0],
-                                                          dlpack_tensor)
+            output_tensor_0 = pb_utils.Tensor.from_dlpack(
+                self.output_names[0], dlpack_tensor
+            )
             output_tensor_1 = pb_utils.Tensor(
-                self.output_names[1], np.array(
-                    im_infos, dtype=np.int32))
+                self.output_names[1], np.array(im_infos, dtype=np.int32)
+            )
             inference_response = pb_utils.InferenceResponse(
-                output_tensors=[output_tensor_0, output_tensor_1])
+                output_tensors=[output_tensor_0, output_tensor_1]
+            )
             responses.append(inference_response)
         return responses
 
@@ -104,4 +105,4 @@ class TritonPythonModel:
         Implementing `finalize` function is optional. This function allows
         the model to perform any necessary clean ups before exit.
         """
-        print('Cleaning up...')
+        print("Cleaning up...")
