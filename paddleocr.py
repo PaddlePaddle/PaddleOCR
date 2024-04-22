@@ -531,6 +531,7 @@ def check_img(img, alpha_color=(255, 255, 255)):
         alpha_color: Background color in images in RGBA format
         return: numpy.array (h, w, 3)
     """
+    flag_gif, flag_pdf = False, False
     if isinstance(img, bytes):
         img = img_decode(img)
     if isinstance(img, str):
@@ -570,7 +571,7 @@ def check_img(img, alpha_color=(255, 255, 255)):
     # four channel image array.shape:h,w,c
     if isinstance(img, np.ndarray) and len(img.shape) == 3 and img.shape[2] == 4:
         img = alpha_to_color(img, alpha_color)
-    return img
+    return img, flag_gif, flag_pdf
 
 
 class PaddleOCR(predict_system.TextSystem):
@@ -656,9 +657,9 @@ class PaddleOCR(predict_system.TextSystem):
                 'Since the angle classifier is not initialized, it will not be used during the forward process'
             )
 
-        img = check_img(img, alpha_color)
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
         # for infer pdf file
-        if isinstance(img, list):
+        if isinstance(img, list) and flag_pdf:
             if self.page_num > len(img) or self.page_num == 0:
                 imgs = img
             else:
@@ -775,7 +776,14 @@ class PPStructure(StructureSystem):
         super().__init__(params)
 
     def __call__(self, img, return_ocr_result_in_table=False, img_idx=0, alpha_color=(255, 255, 255)):
-        img = check_img(img, alpha_color)
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
+        if flag_pdf:
+            res_list = []
+            for index, pdf_img in enumerate(img):
+                res, _ = super().__call__(
+                    pdf_img, return_ocr_result_in_table, img_idx=index)
+                res_list.append(res)
+                return res_list
         res, _ = super().__call__(
             img, return_ocr_result_in_table, img_idx=img_idx)
         return res
