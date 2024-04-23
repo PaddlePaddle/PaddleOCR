@@ -842,7 +842,9 @@ class PPStructure(StructureSystem):
         if isinstance(img, list) and flag_pdf:
             res_list = []
             for index, pdf_img in enumerate(img):
-                res, _ = super().__call__(pdf_img, return_ocr_result_in_table, img_idx=index)
+                res, _ = super().__call__(
+                    pdf_img, return_ocr_result_in_table, img_idx=index
+                )
                 res_list.append(res)
             return res_list
         res, _ = super().__call__(img, return_ocr_result_in_table, img_idx=img_idx)
