@@ -775,7 +775,13 @@ class PPStructure(StructureSystem):
         logger.debug(params)
         super().__init__(params)
 
-    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0, alpha_color=(255, 255, 255)):
+    def __call__(
+        self,
+        img,
+        return_ocr_result_in_table=False,
+        img_idx=0,
+        alpha_color=(255, 255, 255),
+    ):
         img, flag_gif, flag_pdf = check_img(img, alpha_color)
         if isinstance(img, list) and flag_pdf:
             res_list = []
@@ -784,8 +790,7 @@ class PPStructure(StructureSystem):
                     pdf_img, return_ocr_result_in_table, img_idx=index)
                 res_list.append(res)
             return res_list
-        res, _ = super().__call__(
-            img, return_ocr_result_in_table, img_idx=img_idx)
+        res, _ = super().__call__(img, return_ocr_result_in_table, img_idx=img_idx)
         return res
 
 
