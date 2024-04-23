@@ -229,8 +229,8 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 log 中自动打印如下信息：
 
-|  字段   |   含义   |    
-| :----: | :------: | 
+|  字段   |   含义   |  
+| :----: | :------: |
 |  epoch | 当前迭代轮次 |
 |  iter  | 当前迭代次数 |
 |  lr    | 当前学习率 |

@@ -44,4 +44,3 @@ OCR识别算法的输入数据一般是文本行，背景信息不多，文字�
 PaddleOCR 中集成了很多OCR算法，文本检测算法有DB、EAST、SAST等等，文本识别算法有CRNN、RARE、StarNet、Rosetta、SRN等算法。
 
 其中PaddleOCR针对中英文自然场景通用OCR，推出了PP-OCR系列模型，PP-OCR模型由DB+CRNN算法组成，利用海量中文数据训练加上模型调优方法，在中文场景上具备较高的文本检测识别能力。并且PaddleOCR推出了高精度超轻量PP-OCRv2模型，检测模型仅3M，识别模型仅8.5M，利用[PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim)的模型量化方法，可以在保持精度不降低的情况下，将检测模型压缩到0.8M，识别压缩到3M，更加适用于移动端部署场景。
-

@@ -24,25 +24,25 @@ class Config(object):
 def read_params():
     cfg = Config()
 
-    #params for text detector
+    # params for text detector
     cfg.det_algorithm = "DB"
     cfg.det_model_dir = "./inference/ch_PP-OCRv3_det_infer/"
     cfg.det_limit_side_len = 960
-    cfg.det_limit_type = 'max'
+    cfg.det_limit_type = "max"
 
-    #DB parmas
+    # DB parmas
     cfg.det_db_thresh = 0.3
     cfg.det_db_box_thresh = 0.5
     cfg.det_db_unclip_ratio = 1.6
     cfg.use_dilation = False
     cfg.det_db_score_mode = "fast"
 
-    #EAST parmas
+    # EAST parmas
     cfg.det_east_score_thresh = 0.8
     cfg.det_east_cover_thresh = 0.1
     cfg.det_east_nms_thresh = 0.2
 
-    #params for text recognizer
+    # params for text recognizer
     cfg.rec_algorithm = "CRNN"
     cfg.rec_model_dir = "./inference/ch_PP-OCRv3_rec_infer/"
 
@@ -53,11 +53,11 @@ def read_params():
     cfg.rec_char_dict_path = "./ppocr/utils/ppocr_keys_v1.txt"
     cfg.use_space_char = True
 
-    #params for text classifier
+    # params for text classifier
     cfg.use_angle_cls = True
     cfg.cls_model_dir = "./inference/ch_ppocr_mobile_v2.0_cls_infer/"
     cfg.cls_image_shape = "3, 48, 192"
-    cfg.label_list = ['0', '180']
+    cfg.label_list = ["0", "180"]
     cfg.cls_batch_num = 30
     cfg.cls_thresh = 0.9
 

@@ -34,13 +34,28 @@ class VQASerTokenLayoutLMLoss(nn.Layer):
         labels = batch[5]
         attention_mask = batch[2]
         if attention_mask is not None:
-            active_loss = attention_mask.reshape([-1, ]) == 1
-            active_output = predicts.reshape(
-                [-1, self.num_classes])[active_loss]
-            active_label = labels.reshape([-1, ])[active_loss]
+            active_loss = (
+                attention_mask.reshape(
+                    [
+                        -1,
+                    ]
+                )
+                == 1
+            )
+            active_output = predicts.reshape([-1, self.num_classes])[active_loss]
+            active_label = labels.reshape(
+                [
+                    -1,
+                ]
+            )[active_loss]
             loss = self.loss_class(active_output, active_label)
         else:
             loss = self.loss_class(
                 predicts.reshape([-1, self.num_classes]),
-                labels.reshape([-1, ]))
-        return {'loss': loss}
+                labels.reshape(
+                    [
+                        -1,
+                    ]
+                ),
+            )
+        return {"loss": loss}

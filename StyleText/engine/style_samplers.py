@@ -35,7 +35,7 @@ class DatasetSampler(object):
             self.index = 0
         if self.dataset_with_label:
             path_label = self.path_label_list[self.index]
-            rel_image_path, label = path_label.split('\t')
+            rel_image_path, label = path_label.split("\t")
         else:
             rel_image_path = self.path_label_list[self.index]
             label = None

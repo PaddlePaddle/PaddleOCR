@@ -62,6 +62,7 @@ from .combined_loss import CombinedLoss
 # table loss
 from .table_att_loss import TableAttentionLoss, SLALoss
 from .table_master_loss import TableMasterLoss
+
 # vqa token loss
 from .vqa_token_layoutlm_loss import VQASerTokenLayoutLMLoss
 
@@ -72,17 +73,45 @@ from .text_focus_loss import TelescopeLoss
 
 def build_loss(config):
     support_dict = [
-        'DBLoss', 'PSELoss', 'EASTLoss', 'SASTLoss', 'FCELoss', 'CTCLoss',
-        'ClsLoss', 'AttentionLoss', 'SRNLoss', 'PGLoss', 'CombinedLoss',
-        'CELoss', 'TableAttentionLoss', 'SARLoss', 'AsterLoss', 'SDMGRLoss',
-        'VQASerTokenLayoutLMLoss', 'LossFromOutput', 'PRENLoss', 'MultiLoss',
-        'TableMasterLoss', 'SPINAttentionLoss', 'VLLoss', 'StrokeFocusLoss',
-        'SLALoss', 'CTLoss', 'RFLLoss', 'DRRGLoss', 'CANLoss', 'TelescopeLoss',
-        'SATRNLoss', 'NRTRLoss', 'ParseQLoss', 'CPPDLoss'
+        "DBLoss",
+        "PSELoss",
+        "EASTLoss",
+        "SASTLoss",
+        "FCELoss",
+        "CTCLoss",
+        "ClsLoss",
+        "AttentionLoss",
+        "SRNLoss",
+        "PGLoss",
+        "CombinedLoss",
+        "CELoss",
+        "TableAttentionLoss",
+        "SARLoss",
+        "AsterLoss",
+        "SDMGRLoss",
+        "VQASerTokenLayoutLMLoss",
+        "LossFromOutput",
+        "PRENLoss",
+        "MultiLoss",
+        "TableMasterLoss",
+        "SPINAttentionLoss",
+        "VLLoss",
+        "StrokeFocusLoss",
+        "SLALoss",
+        "CTLoss",
+        "RFLLoss",
+        "DRRGLoss",
+        "CANLoss",
+        "TelescopeLoss",
+        "SATRNLoss",
+        "NRTRLoss",
+        "ParseQLoss",
+        "CPPDLoss",
     ]
     config = copy.deepcopy(config)
-    module_name = config.pop('name')
-    assert module_name in support_dict, Exception('loss only support {}'.format(
-        support_dict))
+    module_name = config.pop("name")
+    assert module_name in support_dict, Exception(
+        "loss only support {}".format(support_dict)
+    )
     module_class = eval(module_name)(**config)
     return module_class

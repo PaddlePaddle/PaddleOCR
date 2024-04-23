@@ -8,7 +8,7 @@ English | [简体中文](README_ch.md)
 <a name="1"></a>
 ## Paddle Deployment Introduction
 
-Paddle provides a variety of deployment schemes to meet the deployment requirements of different scenarios. Please choose according to the actual situation: 
+Paddle provides a variety of deployment schemes to meet the deployment requirements of different scenarios. Please choose according to the actual situation:
 
 <div align="center">
     <img src="../doc/deployment_en.png" width="800">

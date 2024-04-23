@@ -23,16 +23,18 @@ from paddle import ParamAttr
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 padding,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride,
+        padding,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -43,8 +45,9 @@ class ConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
 
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
@@ -52,7 +55,8 @@ class ConvBNLayer(nn.Layer):
             param_attr=ParamAttr(name="bn_" + name + "_scale"),
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
-            moving_variance_name="bn_" + name + "_variance")
+            moving_variance_name="bn_" + name + "_variance",
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -61,16 +65,18 @@ class ConvBNLayer(nn.Layer):
 
 
 class DeConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 padding,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride,
+        padding,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(DeConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -81,15 +87,17 @@ class DeConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
             act=act,
             param_attr=ParamAttr(name="bn_" + name + "_scale"),
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
-            moving_variance_name="bn_" + name + "_variance")
+            moving_variance_name="bn_" + name + "_variance",
+        )
 
     def forward(self, x):
         x = self.deconv(x)
@@ -107,32 +115,35 @@ class EASTFPN(nn.Layer):
             self.out_channels = 64
         self.in_channels = in_channels[::-1]
         self.h1_conv = ConvBNLayer(
-            in_channels=self.out_channels+self.in_channels[1],
+            in_channels=self.out_channels + self.in_channels[1],
             out_channels=self.out_channels,
             kernel_size=3,
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_h_1")
+            act="relu",
+            name="unet_h_1",
+        )
         self.h2_conv = ConvBNLayer(
-            in_channels=self.out_channels+self.in_channels[2],
+            in_channels=self.out_channels + self.in_channels[2],
             out_channels=self.out_channels,
             kernel_size=3,
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_h_2")
+            act="relu",
+            name="unet_h_2",
+        )
         self.h3_conv = ConvBNLayer(
-            in_channels=self.out_channels+self.in_channels[3],
+            in_channels=self.out_channels + self.in_channels[3],
             out_channels=self.out_channels,
             kernel_size=3,
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_h_3")
+            act="relu",
+            name="unet_h_3",
+        )
         self.g0_deconv = DeConvBNLayer(
             in_channels=self.in_channels[0],
             out_channels=self.out_channels,
@@ -140,8 +151,9 @@ class EASTFPN(nn.Layer):
             stride=2,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_g_0")
+            act="relu",
+            name="unet_g_0",
+        )
         self.g1_deconv = DeConvBNLayer(
             in_channels=self.out_channels,
             out_channels=self.out_channels,
@@ -149,8 +161,9 @@ class EASTFPN(nn.Layer):
             stride=2,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_g_1")
+            act="relu",
+            name="unet_g_1",
+        )
         self.g2_deconv = DeConvBNLayer(
             in_channels=self.out_channels,
             out_channels=self.out_channels,
@@ -158,8 +171,9 @@ class EASTFPN(nn.Layer):
             stride=2,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_g_2")
+            act="relu",
+            name="unet_g_2",
+        )
         self.g3_conv = ConvBNLayer(
             in_channels=self.out_channels,
             out_channels=self.out_channels,
@@ -167,8 +181,9 @@ class EASTFPN(nn.Layer):
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="unet_g_3")
+            act="relu",
+            name="unet_g_3",
+        )
 
     def forward(self, x):
         f = x[::-1]

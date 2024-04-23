@@ -32,10 +32,12 @@ class SSIM(nn.Layer):
         self.window = self.create_window(window_size, self.channel)
 
     def gaussian(self, window_size, sigma):
-        gauss = paddle.to_tensor([
-            exp(-(x - window_size // 2)**2 / float(2 * sigma**2))
-            for x in range(window_size)
-        ])
+        gauss = paddle.to_tensor(
+            [
+                exp(-((x - window_size // 2) ** 2) / float(2 * sigma**2))
+                for x in range(window_size)
+            ]
+        )
         return gauss / gauss.sum()
 
     def create_window(self, window_size, channel):
@@ -44,8 +46,7 @@ class SSIM(nn.Layer):
         window = _2D_window.expand([channel, 1, window_size, window_size])
         return window
 
-    def _ssim(self, img1, img2, window, window_size, channel,
-              size_average=True):
+    def _ssim(self, img1, img2, window, window_size, channel, size_average=True):
         mu1 = F.conv2d(img1, window, padding=window_size // 2, groups=channel)
         mu2 = F.conv2d(img2, window, padding=window_size // 2, groups=channel)
 
@@ -53,21 +54,25 @@ class SSIM(nn.Layer):
         mu2_sq = mu2.pow(2)
         mu1_mu2 = mu1 * mu2
 
-        sigma1_sq = F.conv2d(
-            img1 * img1, window, padding=window_size // 2,
-            groups=channel) - mu1_sq
-        sigma2_sq = F.conv2d(
-            img2 * img2, window, padding=window_size // 2,
-            groups=channel) - mu2_sq
-        sigma12 = F.conv2d(
-            img1 * img2, window, padding=window_size // 2,
-            groups=channel) - mu1_mu2
+        sigma1_sq = (
+            F.conv2d(img1 * img1, window, padding=window_size // 2, groups=channel)
+            - mu1_sq
+        )
+        sigma2_sq = (
+            F.conv2d(img2 * img2, window, padding=window_size // 2, groups=channel)
+            - mu2_sq
+        )
+        sigma12 = (
+            F.conv2d(img1 * img2, window, padding=window_size // 2, groups=channel)
+            - mu1_mu2
+        )
 
         C1 = 0.01**2
         C2 = 0.03**2
 
         ssim_map = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2)) / (
-            (mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2))
+            (mu1_sq + mu2_sq + C1) * (sigma1_sq + sigma2_sq + C2)
+        )
 
         if size_average:
             return ssim_map.mean()
@@ -78,8 +83,7 @@ class SSIM(nn.Layer):
         (_, channel, _, _) = img1.shape
         window = self.create_window(window_size, channel)
 
-        return self._ssim(img1, img2, window, window_size, channel,
-                          size_average)
+        return self._ssim(img1, img2, window, window_size, channel, size_average)
 
     def forward(self, img1, img2):
         (_, channel, _, _) = img1.shape
@@ -92,12 +96,13 @@ class SSIM(nn.Layer):
             self.window = window
             self.channel = channel
 
-        return self._ssim(img1, img2, window, self.window_size, channel,
-                          self.size_average)
+        return self._ssim(
+            img1, img2, window, self.window_size, channel, self.size_average
+        )
 
 
 class SRMetric(object):
-    def __init__(self, main_indicator='all', **kwargs):
+    def __init__(self, main_indicator="all", **kwargs):
         self.main_indicator = main_indicator
         self.eps = 1e-5
         self.psnr_result = []
@@ -114,14 +119,15 @@ class SRMetric(object):
 
     def calculate_psnr(self, img1, img2):
         # img1 and img2 have range [0, 1]
-        mse = ((img1 * 255 - img2 * 255)**2).mean()
+        mse = ((img1 * 255 - img2 * 255) ** 2).mean()
         if mse == 0:
-            return float('inf')
+            return float("inf")
         return 20 * paddle.log10(255.0 / paddle.sqrt(mse))
 
     def _normalize_text(self, text):
-        text = ''.join(
-            filter(lambda x: x in (string.digits + string.ascii_letters), text))
+        text = "".join(
+            filter(lambda x: x in (string.digits + string.ascii_letters), text)
+        )
         return text.lower()
 
     def __call__(self, pred_label, *args, **kwargs):
@@ -149,7 +155,7 @@ class SRMetric(object):
 
         self.reset()
         return {
-            'psnr_avg': self.psnr_avg,
+            "psnr_avg": self.psnr_avg,
             "ssim_avg": self.ssim_avg,
-            "all": self.all_avg
+            "all": self.all_avg,
         }

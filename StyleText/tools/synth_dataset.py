@@ -17,7 +17,7 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..")))
 
 from engine.synthesisers import DatasetSynthesiser
 
@@ -27,5 +27,5 @@ def synth_dataset():
     dataset_synthesiser.synth_dataset()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     synth_dataset()

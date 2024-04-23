@@ -133,7 +133,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
     - [テキスト認識](../doc_en/algorithm_overview_en.md)
     - [エンド・ツー・エンド OCR](../doc_en/algorithm_overview_en.md)
     - [表認識](../doc_en/algorithm_overview_en.md)
-    - [キー情報抽出](../doc_en/algorithm_overview_en.md)    
+    - [キー情報抽出](../doc_en/algorithm_overview_en.md)  
     - [PaddleOCR に新しいアルゴリズムを追加する](../doc_en/add_new_algorithm_en.md)
 - データの注釈と合成
     - [半自動注釈ツール: PPOCRLabel](./PPOCRLabel/README.md)
@@ -212,7 +212,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 3. RE (関係抽出)
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>   
+</div>  
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
 </div>

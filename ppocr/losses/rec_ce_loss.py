@@ -4,22 +4,18 @@ import paddle.nn.functional as F
 
 
 class CELoss(nn.Layer):
-    def __init__(self,
-                 smoothing=False,
-                 with_all=False,
-                 ignore_index=-1,
-                 **kwargs):
+    def __init__(self, smoothing=False, with_all=False, ignore_index=-1, **kwargs):
         super(CELoss, self).__init__()
         if ignore_index >= 0:
             self.loss_func = nn.CrossEntropyLoss(
-                reduction='mean', ignore_index=ignore_index)
+                reduction="mean", ignore_index=ignore_index
+            )
         else:
-            self.loss_func = nn.CrossEntropyLoss(reduction='mean')
+            self.loss_func = nn.CrossEntropyLoss(reduction="mean")
         self.smoothing = smoothing
         self.with_all = with_all
 
     def forward(self, pred, batch):
-
         if isinstance(pred, dict):  # for ABINet
             loss = {}
             loss_sum = []
@@ -33,9 +29,9 @@ class CELoss(nn.Layer):
                 else:
                     flt_logtis = logits.reshape([-1, logits.shape[2]])
                     flt_tgt = batch[1].reshape([-1])
-                loss[name + '_loss'] = self.loss_func(flt_logtis, flt_tgt)
-                loss_sum.append(loss[name + '_loss'])
-            loss['loss'] = sum(loss_sum)
+                loss[name + "_loss"] = self.loss_func(flt_logtis, flt_tgt)
+                loss_sum.append(loss[name + "_loss"])
+            loss["loss"] = sum(loss_sum)
             return loss
         else:
             if self.with_all:  # for ViTSTR
@@ -43,24 +39,23 @@ class CELoss(nn.Layer):
                 pred = pred.reshape([-1, pred.shape[2]])
                 tgt = tgt.reshape([-1])
                 loss = self.loss_func(pred, tgt)
-                return {'loss': loss}
+                return {"loss": loss}
             else:  # for NRTR
                 max_len = batch[2].max()
-                tgt = batch[1][:, 1:2 + max_len]
+                tgt = batch[1][:, 1 : 2 + max_len]
                 pred = pred.reshape([-1, pred.shape[2]])
                 tgt = tgt.reshape([-1])
                 if self.smoothing:
                     eps = 0.1
                     n_class = pred.shape[1]
                     one_hot = F.one_hot(tgt, pred.shape[1])
-                    one_hot = one_hot * (1 - eps) + (1 - one_hot) * eps / (
-                        n_class - 1)
+                    one_hot = one_hot * (1 - eps) + (1 - one_hot) * eps / (n_class - 1)
                     log_prb = F.log_softmax(pred, axis=1)
                     non_pad_mask = paddle.not_equal(
-                        tgt, paddle.zeros(
-                            tgt.shape, dtype=tgt.dtype))
+                        tgt, paddle.zeros(tgt.shape, dtype=tgt.dtype)
+                    )
                     loss = -(one_hot * log_prb).sum(axis=1)
                     loss = loss.masked_select(non_pad_mask).mean()
                 else:
                     loss = self.loss_func(pred, tgt)
-                return {'loss': loss}
+                return {"loss": loss}

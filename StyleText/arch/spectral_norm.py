@@ -16,20 +16,21 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 
 
-def normal_(x, mean=0., std=1.):
+def normal_(x, mean=0.0, std=1.0):
     temp_value = paddle.normal(mean, std, shape=x.shape)
     x.set_value(temp_value)
     return x
 
 
 class SpectralNorm(object):
-    def __init__(self, name='weight', n_power_iterations=1, dim=0, eps=1e-12):
+    def __init__(self, name="weight", n_power_iterations=1, dim=0, eps=1e-12):
         self.name = name
         self.dim = dim
         if n_power_iterations <= 0:
-            raise ValueError('Expected n_power_iterations to be positive, but '
-                             'got n_power_iterations={}'.format(
-                                 n_power_iterations))
+            raise ValueError(
+                "Expected n_power_iterations to be positive, but "
+                "got n_power_iterations={}".format(n_power_iterations)
+            )
         self.n_power_iterations = n_power_iterations
         self.eps = eps
 
@@ -37,19 +38,18 @@ class SpectralNorm(object):
         weight_mat = weight
         if self.dim != 0:
             # transpose dim to front
-            weight_mat = weight_mat.transpose([
-                self.dim,
-                * [d for d in range(weight_mat.dim()) if d != self.dim]
-            ])
+            weight_mat = weight_mat.transpose(
+                [self.dim, *[d for d in range(weight_mat.dim()) if d != self.dim]]
+            )
 
         height = weight_mat.shape[0]
 
         return weight_mat.reshape([height, -1])
 
     def compute_weight(self, module, do_power_iteration):
-        weight = getattr(module, self.name + '_orig')
-        u = getattr(module, self.name + '_u')
-        v = getattr(module, self.name + '_v')
+        weight = getattr(module, self.name + "_orig")
+        u = getattr(module, self.name + "_u")
+        v = getattr(module, self.name + "_v")
         weight_mat = self.reshape_weight_to_matrix(weight)
 
         if do_power_iteration:
@@ -58,18 +58,20 @@ class SpectralNorm(object):
                     v.set_value(
                         F.normalize(
                             paddle.matmul(
-                                weight_mat,
-                                u,
-                                transpose_x=True,
-                                transpose_y=False),
+                                weight_mat, u, transpose_x=True, transpose_y=False
+                            ),
                             axis=0,
-                            epsilon=self.eps, ))
+                            epsilon=self.eps,
+                        )
+                    )
 
                     u.set_value(
                         F.normalize(
                             paddle.matmul(weight_mat, v),
                             axis=0,
-                            epsilon=self.eps, ))
+                            epsilon=self.eps,
+                        )
+                    )
                 if self.n_power_iterations > 0:
                     u = u.clone()
                     v = v.clone()
@@ -82,9 +84,9 @@ class SpectralNorm(object):
         with paddle.no_grad():
             weight = self.compute_weight(module, do_power_iteration=False)
         delattr(module, self.name)
-        delattr(module, self.name + '_u')
-        delattr(module, self.name + '_v')
-        delattr(module, self.name + '_orig')
+        delattr(module, self.name + "_u")
+        delattr(module, self.name + "_v")
+        delattr(module, self.name + "_orig")
 
         module.add_parameter(self.name, weight.detach())
 
@@ -92,8 +94,8 @@ class SpectralNorm(object):
         setattr(
             module,
             self.name,
-            self.compute_weight(
-                module, do_power_iteration=module.training))
+            self.compute_weight(module, do_power_iteration=module.training),
+        )
 
     @staticmethod
     def apply(module, name, n_power_iterations, dim, eps):
@@ -101,7 +103,8 @@ class SpectralNorm(object):
             if isinstance(hook, SpectralNorm) and hook.name == name:
                 raise RuntimeError(
                     "Cannot register two spectral_norm hooks on "
-                    "the same parameter {}".format(name))
+                    "the same parameter {}".format(name)
+                )
 
         fn = SpectralNorm(name, n_power_iterations, dim, eps)
         weight = module._parameters[name]
@@ -112,9 +115,9 @@ class SpectralNorm(object):
 
             # randomly initialize u and v
             u = module.create_parameter([h])
-            u = normal_(u, 0., 1.)
+            u = normal_(u, 0.0, 1.0)
             v = module.create_parameter([w])
-            v = normal_(v, 0., 1.)
+            v = normal_(v, 0.0, 1.0)
             u = F.normalize(u, axis=0, epsilon=fn.eps)
             v = F.normalize(v, axis=0, epsilon=fn.eps)
 
@@ -134,15 +137,12 @@ class SpectralNorm(object):
         return fn
 
 
-def spectral_norm(module,
-                  name='weight',
-                  n_power_iterations=1,
-                  eps=1e-12,
-                  dim=None):
-
+def spectral_norm(module, name="weight", n_power_iterations=1, eps=1e-12, dim=None):
     if dim is None:
-        if isinstance(module, (nn.Conv1DTranspose, nn.Conv2DTranspose,
-                               nn.Conv3DTranspose, nn.Linear)):
+        if isinstance(
+            module,
+            (nn.Conv1DTranspose, nn.Conv2DTranspose, nn.Conv3DTranspose, nn.Linear),
+        ):
             dim = 1
         else:
             dim = 0

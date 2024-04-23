@@ -1,6 +1,7 @@
 from paddle.optimizer import lr
 import logging
-__all__ = ['Polynomial']
+
+__all__ = ["Polynomial"]
 
 
 class Polynomial(object):
@@ -18,20 +19,22 @@ class Polynomial(object):
         by_epoch: Whether the set parameter is based on epoch or iter, when set to true,, epochs and warmup_epoch will be automatically multiplied by step_each_epoch. Default: True
     """
 
-    def __init__(self,
-                 learning_rate,
-                 epochs,
-                 step_each_epoch,
-                 end_lr=0.0,
-                 power=1.0,
-                 warmup_epoch=0,
-                 warmup_start_lr=0.0,
-                 last_epoch=-1,
-                 by_epoch=True,
-                 **kwargs):
+    def __init__(
+        self,
+        learning_rate,
+        epochs,
+        step_each_epoch,
+        end_lr=0.0,
+        power=1.0,
+        warmup_epoch=0,
+        warmup_start_lr=0.0,
+        last_epoch=-1,
+        by_epoch=True,
+        **kwargs,
+    ):
         super().__init__()
         if warmup_epoch >= epochs:
-            msg = f"When using warm up, the value of \"epochs\" must be greater than value of \"Optimizer.lr.warmup_epoch\". The value of \"Optimizer.lr.warmup_epoch\" has been set to {epochs}."
+            msg = f'When using warm up, the value of "epochs" must be greater than value of "Optimizer.lr.warmup_epoch". The value of "Optimizer.lr.warmup_epoch" has been set to {epochs}.'
             logging.warning(msg)
             warmup_epoch = epochs
         self.learning_rate = learning_rate
@@ -47,18 +50,23 @@ class Polynomial(object):
             self.warmup_epoch = int(self.warmup_epoch * step_each_epoch)
 
     def __call__(self):
-        learning_rate = lr.PolynomialDecay(
-            learning_rate=self.learning_rate,
-            decay_steps=self.epochs,
-            end_lr=self.end_lr,
-            power=self.power,
-            last_epoch=self.
-            last_epoch) if self.epochs > 0 else self.learning_rate
+        learning_rate = (
+            lr.PolynomialDecay(
+                learning_rate=self.learning_rate,
+                decay_steps=self.epochs,
+                end_lr=self.end_lr,
+                power=self.power,
+                last_epoch=self.last_epoch,
+            )
+            if self.epochs > 0
+            else self.learning_rate
+        )
         if self.warmup_epoch > 0:
             learning_rate = lr.LinearWarmup(
                 learning_rate=learning_rate,
                 warmup_steps=self.warmup_epoch,
                 start_lr=self.warmup_start_lr,
                 end_lr=self.learning_rate,
-                last_epoch=self.last_epoch)
+                last_epoch=self.last_epoch,
+            )
         return learning_rate

@@ -36,31 +36,28 @@ def sample_uniform(low, high, size=None):
     return np.random.uniform(low, high, size=size)
 
 
-def get_interpolation(type='random'):
-    if type == 'random':
-        choice = [
-            cv2.INTER_NEAREST, cv2.INTER_LINEAR, cv2.INTER_CUBIC, cv2.INTER_AREA
-        ]
+def get_interpolation(type="random"):
+    if type == "random":
+        choice = [cv2.INTER_NEAREST, cv2.INTER_LINEAR, cv2.INTER_CUBIC, cv2.INTER_AREA]
         interpolation = choice[random.randint(0, len(choice) - 1)]
-    elif type == 'nearest':
+    elif type == "nearest":
         interpolation = cv2.INTER_NEAREST
-    elif type == 'linear':
+    elif type == "linear":
         interpolation = cv2.INTER_LINEAR
-    elif type == 'cubic':
+    elif type == "cubic":
         interpolation = cv2.INTER_CUBIC
-    elif type == 'area':
+    elif type == "area":
         interpolation = cv2.INTER_AREA
     else:
         raise TypeError(
-            'Interpolation types only nearest, linear, cubic, area are supported!'
+            "Interpolation types only nearest, linear, cubic, area are supported!"
         )
     return interpolation
 
 
 class CVRandomRotation(object):
     def __init__(self, degrees=15):
-        assert isinstance(degrees,
-                          numbers.Number), "degree should be a single number."
+        assert isinstance(degrees, numbers.Number), "degree should be a single number."
         assert degrees >= 0, "degree must be positive."
         self.degrees = degrees
 
@@ -72,7 +69,8 @@ class CVRandomRotation(object):
         angle = self.get_params(self.degrees)
         src_h, src_w = img.shape[:2]
         M = cv2.getRotationMatrix2D(
-            center=(src_w / 2, src_h / 2), angle=angle, scale=1.0)
+            center=(src_w / 2, src_h / 2), angle=angle, scale=1.0
+        )
         abs_cos, abs_sin = abs(M[0, 0]), abs(M[0, 1])
         dst_w = int(src_h * abs_sin + src_w * abs_cos)
         dst_h = int(src_h * abs_cos + src_w * abs_sin)
@@ -81,31 +79,29 @@ class CVRandomRotation(object):
 
         flags = get_interpolation()
         return cv2.warpAffine(
-            img,
-            M, (dst_w, dst_h),
-            flags=flags,
-            borderMode=cv2.BORDER_REPLICATE)
+            img, M, (dst_w, dst_h), flags=flags, borderMode=cv2.BORDER_REPLICATE
+        )
 
 
 class CVRandomAffine(object):
     def __init__(self, degrees, translate=None, scale=None, shear=None):
-        assert isinstance(degrees,
-                          numbers.Number), "degree should be a single number."
+        assert isinstance(degrees, numbers.Number), "degree should be a single number."
         assert degrees >= 0, "degree must be positive."
         self.degrees = degrees
 
         if translate is not None:
-            assert isinstance(translate, (tuple, list)) and len(translate) == 2, \
-                "translate should be a list or tuple and it must be of length 2."
+            assert (
+                isinstance(translate, (tuple, list)) and len(translate) == 2
+            ), "translate should be a list or tuple and it must be of length 2."
             for t in translate:
                 if not (0.0 <= t <= 1.0):
-                    raise ValueError(
-                        "translation values should be between 0 and 1")
+                    raise ValueError("translation values should be between 0 and 1")
         self.translate = translate
 
         if scale is not None:
-            assert isinstance(scale, (tuple, list)) and len(scale) == 2, \
-                "scale should be a list or tuple and it must be of length 2."
+            assert (
+                isinstance(scale, (tuple, list)) and len(scale) == 2
+            ), "scale should be a list or tuple and it must be of length 2."
             for s in scale:
                 if s <= 0:
                     raise ValueError("scale values should be positive")
@@ -115,17 +111,18 @@ class CVRandomAffine(object):
             if isinstance(shear, numbers.Number):
                 if shear < 0:
                     raise ValueError(
-                        "If shear is a single number, it must be positive.")
+                        "If shear is a single number, it must be positive."
+                    )
                 self.shear = [shear]
             else:
-                assert isinstance(shear, (tuple, list)) and (len(shear) == 2), \
-                    "shear should be a list or tuple and it must be of length 2."
+                assert isinstance(shear, (tuple, list)) and (
+                    len(shear) == 2
+                ), "shear should be a list or tuple and it must be of length 2."
                 self.shear = shear
         else:
             self.shear = shear
 
-    def _get_inverse_affine_matrix(self, center, angle, translate, scale,
-                                   shear):
+    def _get_inverse_affine_matrix(self, center, angle, translate, scale, shear):
         # https://github.com/pytorch/vision/blob/v0.4.0/torchvision/transforms/functional.py#L717
         from numpy import sin, cos, tan
 
@@ -134,8 +131,9 @@ class CVRandomAffine(object):
 
         if not isinstance(shear, (tuple, list)) and len(shear) == 2:
             raise ValueError(
-                "Shear should be a single value or a tuple/list containing " +
-                "two values. Got {}".format(shear))
+                "Shear should be a single value or a tuple/list containing "
+                + "two values. Got {}".format(shear)
+            )
 
         rot = math.radians(angle)
         sx, sy = [math.radians(s) for s in shear]
@@ -169,8 +167,7 @@ class CVRandomAffine(object):
         if translate is not None:
             max_dx = translate[0] * height
             max_dy = translate[1] * height
-            translations = (np.round(sample_sym(max_dx)),
-                            np.round(sample_sym(max_dy)))
+            translations = (np.round(sample_sym(max_dx)), np.round(sample_sym(max_dy)))
         else:
             translations = (0, 0)
 
@@ -181,7 +178,7 @@ class CVRandomAffine(object):
 
         if shears is not None:
             if len(shears) == 1:
-                shear = [sample_sym(shears[0]), 0.]
+                shear = [sample_sym(shears[0]), 0.0]
             elif len(shears) == 2:
                 shear = [sample_sym(shears[0]), sample_sym(shears[1])]
         else:
@@ -192,17 +189,19 @@ class CVRandomAffine(object):
     def __call__(self, img):
         src_h, src_w = img.shape[:2]
         angle, translate, scale, shear = self.get_params(
-            self.degrees, self.translate, self.scale, self.shear, src_h)
+            self.degrees, self.translate, self.scale, self.shear, src_h
+        )
 
-        M = self._get_inverse_affine_matrix((src_w / 2, src_h / 2), angle,
-                                            (0, 0), scale, shear)
+        M = self._get_inverse_affine_matrix(
+            (src_w / 2, src_h / 2), angle, (0, 0), scale, shear
+        )
         M = np.array(M).reshape(2, 3)
 
-        startpoints = [(0, 0), (src_w - 1, 0), (src_w - 1, src_h - 1),
-                       (0, src_h - 1)]
+        startpoints = [(0, 0), (src_w - 1, 0), (src_w - 1, src_h - 1), (0, src_h - 1)]
         project = lambda x, y, a, b, c: int(a * x + b * y + c)
-        endpoints = [(project(x, y, *M[0]), project(x, y, *M[1]))
-                     for x, y in startpoints]
+        endpoints = [
+            (project(x, y, *M[0]), project(x, y, *M[1])) for x, y in startpoints
+        ]
 
         rect = cv2.minAreaRect(np.array(endpoints))
         bbox = cv2.boxPoints(rect).astype(dtype=np.int32)
@@ -217,15 +216,15 @@ class CVRandomAffine(object):
         # add translate
         dst_w += int(abs(translate[0]))
         dst_h += int(abs(translate[1]))
-        if translate[0] < 0: M[0, 2] += abs(translate[0])
-        if translate[1] < 0: M[1, 2] += abs(translate[1])
+        if translate[0] < 0:
+            M[0, 2] += abs(translate[0])
+        if translate[1] < 0:
+            M[1, 2] += abs(translate[1])
 
         flags = get_interpolation()
         return cv2.warpAffine(
-            img,
-            M, (dst_w, dst_h),
-            flags=flags,
-            borderMode=cv2.BORDER_REPLICATE)
+            img, M, (dst_w, dst_h), flags=flags, borderMode=cv2.BORDER_REPLICATE
+        )
 
 
 class CVRandomPerspective(object):
@@ -233,21 +232,18 @@ class CVRandomPerspective(object):
         self.distortion = distortion
 
     def get_params(self, width, height, distortion):
-        offset_h = sample_asym(
-            distortion * height / 2, size=4).astype(dtype=np.int32)
-        offset_w = sample_asym(
-            distortion * width / 2, size=4).astype(dtype=np.int32)
+        offset_h = sample_asym(distortion * height / 2, size=4).astype(dtype=np.int32)
+        offset_w = sample_asym(distortion * width / 2, size=4).astype(dtype=np.int32)
         topleft = (offset_w[0], offset_h[0])
         topright = (width - 1 - offset_w[1], offset_h[1])
         botright = (width - 1 - offset_w[2], height - 1 - offset_h[2])
         botleft = (offset_w[3], height - 1 - offset_h[3])
 
-        startpoints = [(0, 0), (width - 1, 0), (width - 1, height - 1),
-                       (0, height - 1)]
+        startpoints = [(0, 0), (width - 1, 0), (width - 1, height - 1), (0, height - 1)]
         endpoints = [topleft, topright, botright, botleft]
-        return np.array(
-            startpoints, dtype=np.float32), np.array(
-                endpoints, dtype=np.float32)
+        return np.array(startpoints, dtype=np.float32), np.array(
+            endpoints, dtype=np.float32
+        )
 
     def __call__(self, img):
         height, width = img.shape[:2]
@@ -263,18 +259,16 @@ class CVRandomPerspective(object):
 
         flags = get_interpolation()
         img = cv2.warpPerspective(
-            img,
-            M, (max_x, max_y),
-            flags=flags,
-            borderMode=cv2.BORDER_REPLICATE)
+            img, M, (max_x, max_y), flags=flags, borderMode=cv2.BORDER_REPLICATE
+        )
         img = img[min_y:, min_x:]
         return img
 
 
 class CVRescale(object):
     def __init__(self, factor=4, base_size=(128, 512)):
-        """ Define image scales using gaussian pyramid and rescale image to target scale.
-        
+        """Define image scales using gaussian pyramid and rescale image to target scale.
+
         Args:
             factor: the decayed factor from base size, factor=4 keeps target scale by default.
             base_size: base size the build the bottom layer of pyramid
@@ -284,20 +278,21 @@ class CVRescale(object):
         elif isinstance(factor, (tuple, list)) and len(factor) == 2:
             self.factor = round(sample_uniform(factor[0], factor[1]))
         else:
-            raise Exception('factor must be number or list with length 2')
+            raise Exception("factor must be number or list with length 2")
         # assert factor is valid
         self.base_h, self.base_w = base_size[:2]
 
     def __call__(self, img):
-        if self.factor == 0: return img
+        if self.factor == 0:
+            return img
         src_h, src_w = img.shape[:2]
         cur_w, cur_h = self.base_w, self.base_h
-        scale_img = cv2.resize(
-            img, (cur_w, cur_h), interpolation=get_interpolation())
+        scale_img = cv2.resize(img, (cur_w, cur_h), interpolation=get_interpolation())
         for _ in range(self.factor):
             scale_img = cv2.pyrDown(scale_img)
         scale_img = cv2.resize(
-            scale_img, (src_w, src_h), interpolation=get_interpolation())
+            scale_img, (src_w, src_h), interpolation=get_interpolation()
+        )
         return scale_img
 
 
@@ -309,12 +304,13 @@ class CVGaussianNoise(object):
         elif isinstance(var, (tuple, list)) and len(var) == 2:
             self.var = int(sample_uniform(var[0], var[1]))
         else:
-            raise Exception('degree must be number or list with length 2')
+            raise Exception("degree must be number or list with length 2")
 
     def __call__(self, img):
         noise = np.random.normal(self.mean, self.var**0.5, img.shape)
         img = np.clip(img + noise, 0, 255).astype(np.uint8)
         return img
+
 
 class CVPossionNoise(object):
     def __init__(self, lam=20):
@@ -324,12 +320,13 @@ class CVPossionNoise(object):
         elif isinstance(lam, (tuple, list)) and len(lam) == 2:
             self.lam = int(sample_uniform(lam[0], lam[1]))
         else:
-            raise Exception('lam must be number or list with length 2')
+            raise Exception("lam must be number or list with length 2")
 
     def __call__(self, img):
         noise = np.random.poisson(lam=self.lam, size=img.shape)
         img = np.clip(img + noise, 0, 255).astype(np.uint8)
         return img
+
 
 class CVGaussionBlur(object):
     def __init__(self, radius):
@@ -339,12 +336,13 @@ class CVGaussionBlur(object):
         elif isinstance(radius, (tuple, list)) and len(radius) == 2:
             self.radius = int(sample_uniform(radius[0], radius[1]))
         else:
-            raise Exception('radius must be number or list with length 2')
+            raise Exception("radius must be number or list with length 2")
 
     def __call__(self, img):
         fil = cv2.getGaussianKernel(ksize=self.radius, sigma=1, ktype=cv2.CV_32F)
         img = cv2.sepFilter2D(img, -1, fil, fil)
         return img
+
 
 class CVMotionBlur(object):
     def __init__(self, degrees=12, angle=90):
@@ -353,16 +351,16 @@ class CVMotionBlur(object):
         elif isinstance(degrees, (tuple, list)) and len(degrees) == 2:
             self.degree = int(sample_uniform(degrees[0], degrees[1]))
         else:
-            raise Exception('degree must be number or list with length 2')
+            raise Exception("degree must be number or list with length 2")
         self.angle = sample_uniform(-angle, angle)
 
     def __call__(self, img):
-        M = cv2.getRotationMatrix2D((self.degree // 2, self.degree // 2),
-                                    self.angle, 1)
+        M = cv2.getRotationMatrix2D((self.degree // 2, self.degree // 2), self.angle, 1)
         motion_blur_kernel = np.zeros((self.degree, self.degree))
         motion_blur_kernel[self.degree // 2, :] = 1
-        motion_blur_kernel = cv2.warpAffine(motion_blur_kernel, M,
-                                            (self.degree, self.degree))
+        motion_blur_kernel = cv2.warpAffine(
+            motion_blur_kernel, M, (self.degree, self.degree)
+        )
         motion_blur_kernel = motion_blur_kernel / self.degree
         img = cv2.filter2D(img, -1, motion_blur_kernel)
         img = np.clip(img, 0, 255).astype(np.uint8)
@@ -370,20 +368,23 @@ class CVMotionBlur(object):
 
 
 class CVGeometry(object):
-    def __init__(self,
-                 degrees=15,
-                 translate=(0.3, 0.3),
-                 scale=(0.5, 2.),
-                 shear=(45, 15),
-                 distortion=0.5,
-                 p=0.5):
+    def __init__(
+        self,
+        degrees=15,
+        translate=(0.3, 0.3),
+        scale=(0.5, 2.0),
+        shear=(45, 15),
+        distortion=0.5,
+        p=0.5,
+    ):
         self.p = p
         type_p = random.random()
         if type_p < 0.33:
             self.transforms = CVRandomRotation(degrees=degrees)
         elif type_p < 0.66:
             self.transforms = CVRandomAffine(
-                degrees=degrees, translate=translate, scale=scale, shear=shear)
+                degrees=degrees, translate=translate, scale=scale, shear=shear
+            )
         else:
             self.transforms = CVRandomPerspective(distortion=distortion)
 
@@ -411,29 +412,23 @@ class CVDeterioration(object):
 
     def __call__(self, img):
         if random.random() < self.p:
-
             return self.transforms(img)
         else:
             return img
 
 
 class CVColorJitter(object):
-    def __init__(self,
-                 brightness=0.5,
-                 contrast=0.5,
-                 saturation=0.5,
-                 hue=0.1,
-                 p=0.5):
+    def __init__(self, brightness=0.5, contrast=0.5, saturation=0.5, hue=0.1, p=0.5):
         self.p = p
         self.transforms = ColorJitter(
-            brightness=brightness,
-            contrast=contrast,
-            saturation=saturation,
-            hue=hue)
+            brightness=brightness, contrast=contrast, saturation=saturation, hue=hue
+        )
 
     def __call__(self, img):
-        if random.random() < self.p: return self.transforms(img)
-        else: return img
+        if random.random() < self.p:
+            return self.transforms(img)
+        else:
+            return img
 
 
 class SVTRDeterioration(object):
@@ -455,6 +450,7 @@ class SVTRDeterioration(object):
             return transforms(img)
         else:
             return img
+
 
 class ParseQDeterioration(object):
     def __init__(self, var, degrees, lam, radius, factor, p=0.5):
@@ -480,29 +476,34 @@ class ParseQDeterioration(object):
         else:
             return img
 
+
 class SVTRGeometry(object):
-    def __init__(self,
-                 aug_type=0,
-                 degrees=15,
-                 translate=(0.3, 0.3),
-                 scale=(0.5, 2.),
-                 shear=(45, 15),
-                 distortion=0.5,
-                 p=0.5):
+    def __init__(
+        self,
+        aug_type=0,
+        degrees=15,
+        translate=(0.3, 0.3),
+        scale=(0.5, 2.0),
+        shear=(45, 15),
+        distortion=0.5,
+        p=0.5,
+    ):
         self.aug_type = aug_type
         self.p = p
         self.transforms = []
         self.transforms.append(CVRandomRotation(degrees=degrees))
         self.transforms.append(
             CVRandomAffine(
-                degrees=degrees, translate=translate, scale=scale, shear=shear))
+                degrees=degrees, translate=translate, scale=scale, shear=shear
+            )
+        )
         self.transforms.append(CVRandomPerspective(distortion=distortion))
 
     def __call__(self, img):
         if random.random() < self.p:
             if self.aug_type:
                 random.shuffle(self.transforms)
-                transforms = Compose(self.transforms[:random.randint(1, 3)])
+                transforms = Compose(self.transforms[: random.randint(1, 3)])
                 img = transforms(img)
             else:
                 img = self.transforms[random.randint(0, 2)](img)

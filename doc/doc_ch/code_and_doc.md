@@ -14,14 +14,14 @@
 
 PaddleOCR的Python代码遵循 [PEP8规范](https://www.python.org/dev/peps/pep-0008/)，其中一些关注的重点包括如下内容
 
-- 空格 
+- 空格
 
   - 空格应该加在逗号、分号、冒号后，而非他们的前面
 
     ```python
     # 正确：
     print(x, y)
-    
+
     # 错误：
     print(x , y)
     ```
@@ -53,27 +53,27 @@ PaddleOCR的Python代码遵循 [PEP8规范](https://www.python.org/dev/peps/pep-
     ```python
     def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
         """Fetches rows from a Bigtable.
-    
+
         Retrieves rows pertaining to the given keys from the Table instance
         represented by big_table.  Silly things may happen if
         other_silly_variable is not None.
-    
+
         Args:
             big_table: An open Bigtable Table instance.
             keys: A sequence of strings representing the key of each table row
                 to fetch.
             other_silly_variable: Another optional variable, that has a much
                 longer name than the other args, and which does nothing.
-    
+
         Returns:
             A dict mapping keys to the corresponding table row data
             fetched. Each row is represented as a tuple of strings. For
             example:
-    
+
             {'Serak': ('Rigel VII', 'Preparer'),
              'Zim': ('Irk', 'Invader'),
              'Lrrr': ('Omicron Persei 8', 'Emperor')}
-    
+
             If a key from the keys argument is missing from the dictionary,
             then that row was not found in the table.
         """
@@ -92,7 +92,7 @@ PaddleOCR的Python代码遵循 [PEP8规范](https://www.python.org/dev/peps/pep-
 
 - 新增Markdown文档格式：目录 - 正文 - FAQ
 
-  > 目录生成方法可以使用 [此网站](https://ecotrust-canada.github.io/markdown-toc/) 将md内容复制之后自动提取目录，然后在md文件的每个标题前添加 `<a name="XXXX"></a>` 
+  > 目录生成方法可以使用 [此网站](https://ecotrust-canada.github.io/markdown-toc/) 将md内容复制之后自动提取目录，然后在md文件的每个标题前添加 `<a name="XXXX"></a>`
 
 - 中英双语：任何对文档的改动或新增都需要分别在中文和英文文档上进行。
 
@@ -211,7 +211,7 @@ git checkout -b new_branch upstream/dygraph
 > ```
 > # 基于用户远程仓库(origin)的dygraph创建new_branch分支
 > git checkout -b new_branch origin/dygraph
-> 
+>
 > # 基于用户远程仓库(origin)的默认分支创建new_branch分支
 > git checkout -b new_branch
 > ```
@@ -257,12 +257,12 @@ pre-commit
 提交修改，并写明修改内容（"your commit info"）
 
 ```
-git commit -m "your commit info" 
+git commit -m "your commit info"
 ```
 
 #### 3.2.6 Push到远程仓库
 
-使用push命令将修改的commit提交到 `远程仓库` 
+使用push命令将修改的commit提交到 `远程仓库`
 
 ```
 git push origin new_branch
@@ -299,7 +299,7 @@ git push origin new_branch
   ```
   # 切换到dygraph分支，否则无法删除当前分支
   git checkout dygraph
-  
+
   # 删除new_branch分支
   git branch -D new_branch
   ```

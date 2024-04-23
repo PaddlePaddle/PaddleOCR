@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <chrono>
 #include "paddle_api.h" // NOLINT
 #include "paddle_place.h"
+#include <chrono>
 
+#include "AutoLog/auto_log/lite_autolog.h"
 #include "cls_process.h"
 #include "crnn_process.h"
 #include "db_post_process.h"
-#include "AutoLog/auto_log/lite_autolog.h"
 
 using namespace paddle::lite_api; // NOLINT
 using namespace std;
@@ -161,8 +161,7 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
                  std::vector<float> &rec_text_score,
                  std::vector<std::string> charactor_dict,
                  std::shared_ptr<PaddlePredictor> predictor_cls,
-                 int use_direction_classify,
-                 std::vector<double> *times,
+                 int use_direction_classify, std::vector<double> *times,
                  int rec_image_height) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
@@ -234,18 +233,20 @@ void RunRecModel(std::vector<std::vector<std::vector<int>>> boxes, cv::Mat img,
     rec_text_score.push_back(score);
     auto postprocess_end = std::chrono::steady_clock::now();
 
-    std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+    std::chrono::duration<float> preprocess_diff =
+        preprocess_end - preprocess_start;
     time_info[0] += double(preprocess_diff.count() * 1000);
-    std::chrono::duration<float> inference_diff = inference_end - inference_start;
+    std::chrono::duration<float> inference_diff =
+        inference_end - inference_start;
     time_info[1] += double(inference_diff.count() * 1000);
-    std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+    std::chrono::duration<float> postprocess_diff =
+        postprocess_end - postprocess_start;
     time_info[2] += double(postprocess_diff.count() * 1000);
-
   }
 
-times->push_back(time_info[0]);
-times->push_back(time_info[1]);
-times->push_back(time_info[2]);
+  times->push_back(time_info[0]);
+  times->push_back(time_info[1]);
+  times->push_back(time_info[2]);
 }
 
 std::vector<std::vector<std::vector<int>>>
@@ -257,7 +258,7 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
 
   cv::Mat srcimg;
   img.copyTo(srcimg);
-  
+
   auto preprocess_start = std::chrono::steady_clock::now();
   std::vector<float> ratio_hw;
   img = DetResizeImg(img, max_side_len, ratio_hw);
@@ -318,17 +319,20 @@ RunDetModel(std::shared_ptr<PaddlePredictor> predictor, cv::Mat img,
       FilterTagDetRes(boxes, ratio_hw[0], ratio_hw[1], srcimg);
   auto postprocess_end = std::chrono::steady_clock::now();
 
-  std::chrono::duration<float> preprocess_diff = preprocess_end - preprocess_start;
+  std::chrono::duration<float> preprocess_diff =
+      preprocess_end - preprocess_start;
   times->push_back(double(preprocess_diff.count() * 1000));
   std::chrono::duration<float> inference_diff = inference_end - inference_start;
   times->push_back(double(inference_diff.count() * 1000));
-  std::chrono::duration<float> postprocess_diff = postprocess_end - postprocess_start;
+  std::chrono::duration<float> postprocess_diff =
+      postprocess_end - postprocess_start;
   times->push_back(double(postprocess_diff.count() * 1000));
 
   return filter_boxes;
 }
 
-std::shared_ptr<PaddlePredictor> loadModel(std::string model_file, int num_threads) {
+std::shared_ptr<PaddlePredictor> loadModel(std::string model_file,
+                                           int num_threads) {
   MobileConfig config;
   config.set_model_from_file(model_file);
 
@@ -393,36 +397,45 @@ std::map<std::string, double> LoadConfigTxt(std::string config_path) {
 }
 
 void check_params(int argc, char **argv) {
-  if (argc<=1 || (strcmp(argv[1], "det")!=0 && strcmp(argv[1], "rec")!=0 && strcmp(argv[1], "system")!=0)) {
+  if (argc <= 1 ||
+      (strcmp(argv[1], "det") != 0 && strcmp(argv[1], "rec") != 0 &&
+       strcmp(argv[1], "system") != 0)) {
     std::cerr << "Please choose one mode of [det, rec, system] !" << std::endl;
     exit(1);
   }
   if (strcmp(argv[1], "det") == 0) {
-      if (argc < 9){
-        std::cerr << "[ERROR] usage:" << argv[0]
-                  << " det det_model runtime_device num_threads batchsize img_dir det_config lite_benchmark_value" << std::endl;
-        exit(1);
-      }
+    if (argc < 9) {
+      std::cerr << "[ERROR] usage:" << argv[0]
+                << " det det_model runtime_device num_threads batchsize "
+                   "img_dir det_config lite_benchmark_value"
+                << std::endl;
+      exit(1);
+    }
   }
 
   if (strcmp(argv[1], "rec") == 0) {
-      if (argc < 9){
-        std::cerr << "[ERROR] usage:" << argv[0]
-                  << " rec rec_model runtime_device num_threads batchsize img_dir key_txt lite_benchmark_value" << std::endl;
-        exit(1);
-      }
+    if (argc < 9) {
+      std::cerr << "[ERROR] usage:" << argv[0]
+                << " rec rec_model runtime_device num_threads batchsize "
+                   "img_dir key_txt lite_benchmark_value"
+                << std::endl;
+      exit(1);
+    }
   }
 
   if (strcmp(argv[1], "system") == 0) {
-      if (argc < 12){
-        std::cerr << "[ERROR] usage:" << argv[0]
-                  << " system det_model rec_model clas_model runtime_device num_threads batchsize img_dir det_config key_txt lite_benchmark_value" << std::endl;
-        exit(1);
-      }
+    if (argc < 12) {
+      std::cerr << "[ERROR] usage:" << argv[0]
+                << " system det_model rec_model clas_model runtime_device "
+                   "num_threads batchsize img_dir det_config key_txt "
+                   "lite_benchmark_value"
+                << std::endl;
+      exit(1);
+    }
   }
 }
 
-void system(char **argv){
+void system(char **argv) {
   std::string det_model_file = argv[2];
   std::string rec_model_file = argv[3];
   std::string cls_model_file = argv[4];
@@ -435,8 +448,8 @@ void system(char **argv){
   std::string dict_path = argv[11];
 
   if (strcmp(argv[6], "FP32") != 0 && strcmp(argv[6], "INT8") != 0) {
-      std::cerr << "Only support FP32 or INT8." << std::endl;
-      exit(1);
+    std::cerr << "Only support FP32 or INT8." << std::endl;
+    exit(1);
   }
 
   std::vector<cv::String> cv_all_img_names;
@@ -462,28 +475,29 @@ void system(char **argv){
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
 
     if (!srcimg.data) {
-      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      std::cerr << "[ERROR] image read failed! image path: "
+                << cv_all_img_names[i] << std::endl;
       exit(1);
     }
 
     std::vector<double> det_times;
     auto boxes = RunDetModel(det_predictor, srcimg, Config, &det_times);
-  
+
     std::vector<std::string> rec_text;
     std::vector<float> rec_text_score;
-  
+
     std::vector<double> rec_times;
     RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
-                charactor_dict, cls_predictor, use_direction_classify, &rec_times, rec_image_height);
-  
+                charactor_dict, cls_predictor, use_direction_classify,
+                &rec_times, rec_image_height);
+
     //// visualization
     auto img_vis = Visualization(srcimg, boxes);
-  
+
     //// print recognized text
     for (int i = 0; i < rec_text.size(); i++) {
       std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
-                <<  std::endl;
-
+                << std::endl;
     }
 
     det_time_info[0] += det_times[0];
@@ -494,22 +508,14 @@ void system(char **argv){
     rec_time_info[2] += rec_times[2];
   }
   if (strcmp(argv[12], "True") == 0) {
-    AutoLogger autolog_det(det_model_file, 
-                       runtime_device,
-                       std::stoi(num_threads),
-                       std::stoi(batchsize), 
-                       "dynamic", 
-                       precision, 
-                       det_time_info, 
-                       cv_all_img_names.size());
-    AutoLogger autolog_rec(rec_model_file, 
-                       runtime_device,
-                       std::stoi(num_threads),
-                       std::stoi(batchsize), 
-                       "dynamic", 
-                       precision, 
-                       rec_time_info, 
-                       cv_all_img_names.size());
+    AutoLogger autolog_det(det_model_file, runtime_device,
+                           std::stoi(num_threads), std::stoi(batchsize),
+                           "dynamic", precision, det_time_info,
+                           cv_all_img_names.size());
+    AutoLogger autolog_rec(rec_model_file, runtime_device,
+                           std::stoi(num_threads), std::stoi(batchsize),
+                           "dynamic", precision, rec_time_info,
+                           cv_all_img_names.size());
 
     autolog_det.report();
     std::cout << std::endl;
@@ -527,8 +533,8 @@ void det(int argc, char **argv) {
   std::string det_config_path = argv[8];
 
   if (strcmp(argv[4], "FP32") != 0 && strcmp(argv[4], "INT8") != 0) {
-      std::cerr << "Only support FP32 or INT8." << std::endl;
-      exit(1);
+    std::cerr << "Only support FP32 or INT8." << std::endl;
+    exit(1);
   }
 
   std::vector<cv::String> cv_all_img_names;
@@ -545,7 +551,8 @@ void det(int argc, char **argv) {
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
 
     if (!srcimg.data) {
-      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      std::cerr << "[ERROR] image read failed! image path: "
+                << cv_all_img_names[i] << std::endl;
       exit(1);
     }
 
@@ -556,10 +563,10 @@ void det(int argc, char **argv) {
     auto img_vis = Visualization(srcimg, boxes);
     std::cout << boxes.size() << " bboxes have detected:" << std::endl;
 
-    for (int i=0; i<boxes.size(); i++){
+    for (int i = 0; i < boxes.size(); i++) {
       std::cout << "The " << i << " box:" << std::endl;
-      for (int j=0; j<4; j++){
-        for (int k=0; k<2; k++){
+      for (int j = 0; j < 4; j++) {
+        for (int k = 0; k < 2; k++) {
           std::cout << boxes[i][j][k] << "\t";
         }
       }
@@ -571,13 +578,8 @@ void det(int argc, char **argv) {
   }
 
   if (strcmp(argv[9], "True") == 0) {
-    AutoLogger autolog(det_model_file, 
-                       runtime_device,
-                       std::stoi(num_threads),
-                       std::stoi(batchsize), 
-                       "dynamic", 
-                       precision, 
-                       time_info, 
+    AutoLogger autolog(det_model_file, runtime_device, std::stoi(num_threads),
+                       std::stoi(batchsize), "dynamic", precision, time_info,
                        cv_all_img_names.size());
     autolog.report();
   }
@@ -594,8 +596,8 @@ void rec(int argc, char **argv) {
   std::string config_path = argv[9];
 
   if (strcmp(argv[4], "FP32") != 0 && strcmp(argv[4], "INT8") != 0) {
-      std::cerr << "Only support FP32 or INT8." << std::endl;
-      exit(1);
+    std::cerr << "Only support FP32 or INT8." << std::endl;
+    exit(1);
   }
 
   auto Config = LoadConfigTxt(config_path);
@@ -618,7 +620,8 @@ void rec(int argc, char **argv) {
     cv::Mat srcimg = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
 
     if (!srcimg.data) {
-      std::cerr << "[ERROR] image read failed! image path: " << cv_all_img_names[i] << std::endl;
+      std::cerr << "[ERROR] image read failed! image path: "
+                << cv_all_img_names[i] << std::endl;
       exit(1);
     }
 
@@ -627,8 +630,9 @@ void rec(int argc, char **argv) {
     std::vector<int> upper_left = {0, 0};
     std::vector<int> upper_right = {width, 0};
     std::vector<int> lower_right = {width, height};
-    std::vector<int> lower_left  = {0, height};
-    std::vector<std::vector<int>> box = {upper_left, upper_right, lower_right, lower_left};
+    std::vector<int> lower_left = {0, height};
+    std::vector<std::vector<int>> box = {upper_left, upper_right, lower_right,
+                                         lower_left};
     std::vector<std::vector<std::vector<int>>> boxes = {box};
 
     std::vector<std::string> rec_text;
@@ -636,7 +640,7 @@ void rec(int argc, char **argv) {
     std::vector<double> times;
     RunRecModel(boxes, srcimg, rec_predictor, rec_text, rec_text_score,
                 charactor_dict, cls_predictor, 0, &times, rec_image_height);
-  
+
     //// print recognized text
     for (int i = 0; i < rec_text.size(); i++) {
       std::cout << i << "\t" << rec_text[i] << "\t" << rec_text_score[i]
@@ -648,13 +652,8 @@ void rec(int argc, char **argv) {
   }
   // TODO: support autolog
   if (strcmp(argv[9], "True") == 0) {
-    AutoLogger autolog(rec_model_file, 
-                       runtime_device,
-                       std::stoi(num_threads),
-                       std::stoi(batchsize), 
-                       "dynamic", 
-                       precision, 
-                       time_info, 
+    AutoLogger autolog(rec_model_file, runtime_device, std::stoi(num_threads),
+                       std::stoi(batchsize), "dynamic", precision, time_info,
                        cv_all_img_names.size());
     autolog.report();
   }

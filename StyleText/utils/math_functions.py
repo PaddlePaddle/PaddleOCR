@@ -39,7 +39,10 @@ def compute_mean_covariance(img):
 def dice_coefficient(y_true_cls, y_pred_cls, training_mask):
     eps = 1e-5
     intersection = paddle.sum(y_true_cls * y_pred_cls * training_mask)
-    union = paddle.sum(y_true_cls * training_mask) + paddle.sum(
-        y_pred_cls * training_mask) + eps
-    loss = 1. - (2 * intersection / union)
+    union = (
+        paddle.sum(y_true_cls * training_mask)
+        + paddle.sum(y_pred_cls * training_mask)
+        + eps
+    )
+    loss = 1.0 - (2 * intersection / union)
     return loss

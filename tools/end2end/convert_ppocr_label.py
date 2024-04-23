@@ -30,40 +30,42 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
 
     assert label_dir != save_dir, "hahahhaha"
 
-    label_file = open(label_dir, 'r')
+    label_file = open(label_dir, "r")
     data = label_file.readlines()
 
     gt_dict = {}
 
     for line in data:
         try:
-            tmp = line.split('\t')
+            tmp = line.split("\t")
             assert len(tmp) == 2, ""
         except:
-            tmp = line.strip().split('    ')
+            tmp = line.strip().split("    ")
 
         gt_lists = []
 
-        if tmp[0].split('/')[0] is not None:
+        if tmp[0].split("/")[0] is not None:
             img_path = tmp[0]
             anno = json.loads(tmp[1])
             gt_collect = []
             for dic in anno:
-                #txt = dic['transcription'].replace(' ', '')  # ignore blank
-                txt = dic['transcription']
-                if 'score' in dic and float(dic['score']) < 0.5:
+                # txt = dic['transcription'].replace(' ', '')  # ignore blank
+                txt = dic["transcription"]
+                if "score" in dic and float(dic["score"]) < 0.5:
                     continue
-                if u'\u3000' in txt: txt = txt.replace(u'\u3000', u' ')
-                #while ' ' in txt:
+                if "\u3000" in txt:
+                    txt = txt.replace("\u3000", " ")
+                # while ' ' in txt:
                 #    txt = txt.replace(' ', '')
-                poly = np.array(dic['points']).flatten()
+                poly = np.array(dic["points"]).flatten()
                 if txt == "###":
                     txt_tag = 1  ## ignore 1
                 else:
                     txt_tag = 0
                 if mode == "gt":
-                    gt_label = poly_to_string(poly) + "\t" + str(
-                        txt_tag) + "\t" + txt + "\n"
+                    gt_label = (
+                        poly_to_string(poly) + "\t" + str(txt_tag) + "\t" + txt + "\n"
+                    )
                 else:
                     gt_label = poly_to_string(poly) + "\t" + txt + "\n"
 
@@ -87,6 +89,7 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
 
 def parse_args():
     import argparse
+
     parser = argparse.ArgumentParser(description="args")
     parser.add_argument("--label_path", type=str, required=True)
     parser.add_argument("--save_folder", type=str, required=True)

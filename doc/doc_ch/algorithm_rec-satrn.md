@@ -102,7 +102,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" 
 
 ```bibtex
 @article{lee2019recognizing,
-      title={On Recognizing Texts of Arbitrary Shapes with 2D Self-Attention}, 
+      title={On Recognizing Texts of Arbitrary Shapes with 2D Self-Attention},
       author={Junyeop Lee and Sungrae Park and Jeonghun Baek and Seong Joon Oh and Seonghyeon Kim and Hwalsuk Lee},
       year={2019},
       eprint={1910.04396},
