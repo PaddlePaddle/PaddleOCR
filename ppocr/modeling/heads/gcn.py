@@ -26,12 +26,14 @@ import paddle.nn.functional as F
 
 
 class BatchNorm1D(nn.BatchNorm1D):
-    def __init__(self,
-                 num_features,
-                 eps=1e-05,
-                 momentum=0.1,
-                 affine=True,
-                 track_running_stats=True):
+    def __init__(
+        self,
+        num_features,
+        eps=1e-05,
+        momentum=0.1,
+        affine=True,
+        track_running_stats=True,
+    ):
         momentum = 1 - momentum
         weight_attr = None
         bias_attr = None
@@ -44,7 +46,8 @@ class BatchNorm1D(nn.BatchNorm1D):
             epsilon=eps,
             weight_attr=weight_attr,
             bias_attr=bias_attr,
-            use_global_stats=track_running_stats)
+            use_global_stats=track_running_stats,
+        )
 
 
 class MeanAggregator(nn.Layer):
@@ -59,12 +62,13 @@ class GraphConv(nn.Layer):
         self.in_dim = in_dim
         self.out_dim = out_dim
         self.weight = self.create_parameter(
-            [in_dim * 2, out_dim],
-            default_initializer=nn.initializer.XavierUniform())
+            [in_dim * 2, out_dim], default_initializer=nn.initializer.XavierUniform()
+        )
         self.bias = self.create_parameter(
             [out_dim],
             is_bias=True,
-            default_initializer=nn.initializer.Assign([0] * out_dim))
+            default_initializer=nn.initializer.Assign([0] * out_dim),
+        )
 
         self.aggregator = MeanAggregator()
 
@@ -73,7 +77,7 @@ class GraphConv(nn.Layer):
         assert d == self.in_dim
         agg_feats = self.aggregator(features, A)
         cat_feats = paddle.concat([features, agg_feats], axis=2)
-        out = paddle.einsum('bnd,df->bnf', cat_feats, self.weight)
+        out = paddle.einsum("bnd,df->bnf", cat_feats, self.weight)
         out = F.relu(out + self.bias)
         return out
 
@@ -87,10 +91,10 @@ class GCN(nn.Layer):
         self.conv3 = GraphConv(256, 128)
         self.conv4 = GraphConv(128, 64)
         self.classifier = nn.Sequential(
-            nn.Linear(64, 32), nn.PReLU(32), nn.Linear(32, 2))
+            nn.Linear(64, 32), nn.PReLU(32), nn.Linear(32, 2)
+        )
 
     def forward(self, x, A, knn_inds):
-
         num_local_graphs, num_max_nodes, feat_len = x.shape
 
         x = x.reshape([-1, feat_len])
@@ -105,8 +109,9 @@ class GCN(nn.Layer):
         mid_feat_len = x.shape[-1]
         edge_feat = paddle.zeros([num_local_graphs, k, mid_feat_len])
         for graph_ind in range(num_local_graphs):
-            edge_feat[graph_ind, :, :] = x[graph_ind][paddle.to_tensor(knn_inds[
-                graph_ind])]
+            edge_feat[graph_ind, :, :] = x[graph_ind][
+                paddle.to_tensor(knn_inds[graph_ind])
+            ]
         edge_feat = edge_feat.reshape([-1, mid_feat_len])
         pred = self.classifier(edge_feat)
 

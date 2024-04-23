@@ -16,7 +16,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 
 def _check_image_file(path):
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
+    img_end = {"jpg", "bmp", "png", "jpeg", "rgb", "tif", "tiff", "gif", "pdf"}
     return any([path.lower().endswith(e) for e in img_end])
 
 
@@ -25,7 +25,7 @@ def get_image_file_list(img_file):
     if img_file is None or not os.path.exists(img_file):
         raise Exception("not found any img file in {}".format(img_file))
 
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif', 'pdf'}
+    img_end = {"jpg", "bmp", "png", "jpeg", "rgb", "tif", "tiff", "gif", "pdf"}
     if os.path.isfile(img_file) and _check_image_file(img_file):
         imgs_lists.append(img_file)
     elif os.path.isdir(img_file):
@@ -39,12 +39,12 @@ def get_image_file_list(img_file):
     return imgs_lists
 
 
-def setup_logger(log_file_path: str=None):
+def setup_logger(log_file_path: str = None):
     import logging
+
     logging._warn_preinit_stderr = 0
-    logger = logging.getLogger('DBNet.paddle')
-    formatter = logging.Formatter(
-        '%(asctime)s %(name)s %(levelname)s: %(message)s')
+    logger = logging.getLogger("DBNet.paddle")
+    formatter = logging.Formatter("%(asctime)s %(name)s %(levelname)s: %(message)s")
     ch = logging.StreamHandler()
     ch.setFormatter(formatter)
     logger.addHandler(ch)
@@ -69,29 +69,28 @@ def exe_time(func):
 
 def load(file_path: str):
     file_path = pathlib.Path(file_path)
-    func_dict = {'.txt': _load_txt, '.json': _load_json, '.list': _load_txt}
+    func_dict = {".txt": _load_txt, ".json": _load_json, ".list": _load_txt}
     assert file_path.suffix in func_dict
     return func_dict[file_path.suffix](file_path)
 
 
 def _load_txt(file_path: str):
-    with open(file_path, 'r', encoding='utf8') as f:
+    with open(file_path, "r", encoding="utf8") as f:
         content = [
-            x.strip().strip('\ufeff').strip('\xef\xbb\xbf')
-            for x in f.readlines()
+            x.strip().strip("\ufeff").strip("\xef\xbb\xbf") for x in f.readlines()
         ]
     return content
 
 
 def _load_json(file_path: str):
-    with open(file_path, 'r', encoding='utf8') as f:
+    with open(file_path, "r", encoding="utf8") as f:
         content = json.load(f)
     return content
 
 
 def save(data, file_path):
     file_path = pathlib.Path(file_path)
-    func_dict = {'.txt': _save_txt, '.json': _save_json}
+    func_dict = {".txt": _save_txt, ".json": _save_json}
     assert file_path.suffix in func_dict
     return func_dict[file_path.suffix](data, file_path)
 
@@ -105,22 +104,22 @@ def _save_txt(data, file_path):
     """
     if not isinstance(data, list):
         data = [data]
-    with open(file_path, mode='w', encoding='utf8') as f:
-        f.write('\n'.join(data))
+    with open(file_path, mode="w", encoding="utf8") as f:
+        f.write("\n".join(data))
 
 
 def _save_json(data, file_path):
-    with open(file_path, 'w', encoding='utf-8') as json_file:
+    with open(file_path, "w", encoding="utf-8") as json_file:
         json.dump(data, json_file, ensure_ascii=False, indent=4)
 
 
-def show_img(imgs: np.ndarray, title='img'):
-    color = (len(imgs.shape) == 3 and imgs.shape[-1] == 3)
+def show_img(imgs: np.ndarray, title="img"):
+    color = len(imgs.shape) == 3 and imgs.shape[-1] == 3
     imgs = np.expand_dims(imgs, axis=0)
     for i, img in enumerate(imgs):
         plt.figure()
-        plt.title('{}_{}'.format(title, i))
-        plt.imshow(img, cmap=None if color else 'gray')
+        plt.title("{}_{}".format(title, i))
+        plt.imshow(img, cmap=None if color else "gray")
     plt.show()
 
 
@@ -135,11 +134,7 @@ def draw_bbox(img_path, result, color=(255, 0, 0), thickness=2):
     return img_path
 
 
-def cal_text_score(texts,
-                   gt_texts,
-                   training_masks,
-                   running_metric_text,
-                   thred=0.5):
+def cal_text_score(texts, gt_texts, training_masks, running_metric_text, thred=0.5):
     training_masks = training_masks.numpy()
     pred_text = texts.numpy() * training_masks
     pred_text[pred_text <= thred] = 0
@@ -180,34 +175,37 @@ def get_datalist(train_data_path):
     """
     train_data = []
     for p in train_data_path:
-        with open(p, 'r', encoding='utf-8') as f:
+        with open(p, "r", encoding="utf-8") as f:
             for line in f.readlines():
-                line = line.strip('\n').replace('.jpg ', '.jpg\t').split('\t')
+                line = line.strip("\n").replace(".jpg ", ".jpg\t").split("\t")
                 if len(line) > 1:
-                    img_path = pathlib.Path(line[0].strip(' '))
-                    label_path = pathlib.Path(line[1].strip(' '))
-                    if img_path.exists() and img_path.stat(
-                    ).st_size > 0 and label_path.exists() and label_path.stat(
-                    ).st_size > 0:
+                    img_path = pathlib.Path(line[0].strip(" "))
+                    label_path = pathlib.Path(line[1].strip(" "))
+                    if (
+                        img_path.exists()
+                        and img_path.stat().st_size > 0
+                        and label_path.exists()
+                        and label_path.stat().st_size > 0
+                    ):
                         train_data.append((str(img_path), str(label_path)))
     return train_data
 
 
 def save_result(result_path, box_list, score_list, is_output_polygon):
     if is_output_polygon:
-        with open(result_path, 'wt') as res:
+        with open(result_path, "wt") as res:
             for i, box in enumerate(box_list):
                 box = box.reshape(-1).tolist()
                 result = ",".join([str(int(x)) for x in box])
                 score = score_list[i]
-                res.write(result + ',' + str(score) + "\n")
+                res.write(result + "," + str(score) + "\n")
     else:
-        with open(result_path, 'wt') as res:
+        with open(result_path, "wt") as res:
             for i, box in enumerate(box_list):
                 score = score_list[i]
                 box = box.reshape(-1).tolist()
                 result = ",".join([str(int(x)) for x in box])
-                res.write(result + ',' + str(score) + "\n")
+                res.write(result + "," + str(score) + "\n")
 
 
 def expand_polygon(polygon):
@@ -225,7 +223,7 @@ def expand_polygon(polygon):
 
 
 def _merge_dict(config, merge_dct):
-    """ Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
+    """Recursive dict merge. Inspired by :meth:``dict.update()``, instead of
     updating only top-level keys, dict_merge recurses down into dicts nested
     to an arbitrary depth, updating keys. The ``merge_dct`` is merged into
     ``dct``.
@@ -235,12 +233,15 @@ def _merge_dict(config, merge_dct):
     Returns: dct
     """
     for key, value in merge_dct.items():
-        sub_keys = key.split('.')
+        sub_keys = key.split(".")
         key = sub_keys[0]
         if key in config and len(sub_keys) > 1:
-            _merge_dict(config[key], {'.'.join(sub_keys[1:]): value})
-        elif key in config and isinstance(config[key], dict) and isinstance(
-                value, Mapping):
+            _merge_dict(config[key], {".".join(sub_keys[1:]): value})
+        elif (
+            key in config
+            and isinstance(config[key], dict)
+            and isinstance(value, Mapping)
+        ):
             _merge_dict(config[key], value)
         else:
             config[key] = value
@@ -265,19 +266,19 @@ def print_dict(cfg, print_func=print, delimiter=0):
 
 
 class Config(object):
-    def __init__(self, config_path, BASE_KEY='base'):
+    def __init__(self, config_path, BASE_KEY="base"):
         self.BASE_KEY = BASE_KEY
         self.cfg = self._load_config_with_base(config_path)
 
     def _load_config_with_base(self, file_path):
         """
-               Load config from file.
-               Args:
-                   file_path (str): Path of the config file to be loaded.
-               Returns: global config
-               """
+        Load config from file.
+        Args:
+            file_path (str): Path of the config file to be loaded.
+        Returns: global config
+        """
         _, ext = os.path.splitext(file_path)
-        assert ext in ['.yml', '.yaml'], "only support yaml files for now"
+        assert ext in [".yml", ".yaml"], "only support yaml files for now"
 
         with open(file_path) as f:
             file_cfg = yaml.load(f, Loader=yaml.Loader)
@@ -293,7 +294,7 @@ class Config(object):
 
             del file_cfg[self.BASE_KEY]
             file_cfg = _merge_dict(all_base_cfg, file_cfg)
-        file_cfg['filename'] = os.path.splitext(os.path.split(file_path)[-1])[0]
+        file_cfg["filename"] = os.path.splitext(os.path.split(file_path)[-1])[0]
         return file_cfg
 
     def merge_dict(self, args):
@@ -304,37 +305,34 @@ class Config(object):
         Recursively visualize a dict and
         indenting acrrording by the relationship of keys.
         """
-        print_func('----------- Config -----------')
+        print_func("----------- Config -----------")
         print_dict(self.cfg, print_func)
-        print_func('---------------------------------------------')
+        print_func("---------------------------------------------")
 
     def save(self, p):
-        with open(p, 'w') as f:
-            yaml.dump(
-                dict(self.cfg), f, default_flow_style=False, sort_keys=False)
+        with open(p, "w") as f:
+            yaml.dump(dict(self.cfg), f, default_flow_style=False, sort_keys=False)
 
 
 class ArgsParser(ArgumentParser):
     def __init__(self):
-        super(ArgsParser, self).__init__(
-            formatter_class=RawDescriptionHelpFormatter)
+        super(ArgsParser, self).__init__(formatter_class=RawDescriptionHelpFormatter)
+        self.add_argument("-c", "--config_file", help="configuration file to use")
+        self.add_argument("-o", "--opt", nargs="*", help="set configuration options")
         self.add_argument(
-            "-c", "--config_file", help="configuration file to use")
-        self.add_argument(
-            "-o", "--opt", nargs='*', help="set configuration options")
-        self.add_argument(
-            '-p',
-            '--profiler_options',
+            "-p",
+            "--profiler_options",
             type=str,
             default=None,
-            help='The option of profiler, which should be in format ' \
-                 '\"key1=value1;key2=value2;key3=value3\".'
+            help="The option of profiler, which should be in format "
+            '"key1=value1;key2=value2;key3=value3".',
         )
 
     def parse_args(self, argv=None):
         args = super(ArgsParser, self).parse_args(argv)
-        assert args.config_file is not None, \
-            "Please specify --config_file=configure_file_path."
+        assert (
+            args.config_file is not None
+        ), "Please specify --config_file=configure_file_path."
         args.opt = self._parse_opt(args.opt)
         return args
 
@@ -344,11 +342,11 @@ class ArgsParser(ArgumentParser):
             return config
         for s in opts:
             s = s.strip()
-            k, v = s.split('=', 1)
-            if '.' not in k:
+            k, v = s.split("=", 1)
+            if "." not in k:
                 config[k] = yaml.load(v, Loader=yaml.Loader)
             else:
-                keys = k.split('.')
+                keys = k.split(".")
                 if keys[0] not in config:
                     config[keys[0]] = {}
                 cur = config[keys[0]]
@@ -361,7 +359,7 @@ class ArgsParser(ArgumentParser):
         return config
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     img = np.zeros((1, 3, 640, 640))
     show_img(img[0][0])
     plt.show()

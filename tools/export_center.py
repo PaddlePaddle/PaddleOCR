@@ -22,7 +22,7 @@ import pickle
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..")))
 
 from ppocr.data import build_dataloader, set_signal_handlers
 from ppocr.modeling.architectures import build_model
@@ -33,46 +33,45 @@ import tools.program as program
 
 
 def main():
-    global_config = config['Global']
+    global_config = config["Global"]
     # build dataloader
-    config['Eval']['dataset']['name'] = config['Train']['dataset']['name']
-    config['Eval']['dataset']['data_dir'] = config['Train']['dataset'][
-        'data_dir']
-    config['Eval']['dataset']['label_file_list'] = config['Train']['dataset'][
-        'label_file_list']
+    config["Eval"]["dataset"]["name"] = config["Train"]["dataset"]["name"]
+    config["Eval"]["dataset"]["data_dir"] = config["Train"]["dataset"]["data_dir"]
+    config["Eval"]["dataset"]["label_file_list"] = config["Train"]["dataset"][
+        "label_file_list"
+    ]
     set_signal_handlers()
-    eval_dataloader = build_dataloader(config, 'Eval', device, logger)
+    eval_dataloader = build_dataloader(config, "Eval", device, logger)
 
     # build post process
-    post_process_class = build_post_process(config['PostProcess'],
-                                            global_config)
+    post_process_class = build_post_process(config["PostProcess"], global_config)
 
     # build model
     # for rec algorithm
-    if hasattr(post_process_class, 'character'):
-        char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
+    if hasattr(post_process_class, "character"):
+        char_num = len(getattr(post_process_class, "character"))
+        config["Architecture"]["Head"]["out_channels"] = char_num
 
-    #set return_features = True
-    config['Architecture']["Head"]["return_feats"] = True
+    # set return_features = True
+    config["Architecture"]["Head"]["return_feats"] = True
 
-    model = build_model(config['Architecture'])
+    model = build_model(config["Architecture"])
 
     best_model_dict = load_model(config, model)
     if len(best_model_dict):
-        logger.info('metric in ckpt ***************')
+        logger.info("metric in ckpt ***************")
         for k, v in best_model_dict.items():
-            logger.info('{}:{}'.format(k, v))
+            logger.info("{}:{}".format(k, v))
 
     # get features from train data
     char_center = program.get_center(model, eval_dataloader, post_process_class)
 
-    #serialize to disk
-    with open("train_center.pkl", 'wb') as f:
+    # serialize to disk
+    with open("train_center.pkl", "wb") as f:
         pickle.dump(char_center, f)
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess()
     main()

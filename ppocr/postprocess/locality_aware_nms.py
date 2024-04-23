@@ -34,7 +34,7 @@ def intersection_iog(g, p):
     if not g.is_valid or not p.is_valid:
         return 0
     inter = Polygon(g).intersection(Polygon(p)).area
-    #union = g.area + p.area - inter
+    # union = g.area + p.area - inter
     union = p.area
     if union == 0:
         print("p_area is very small")
@@ -48,7 +48,7 @@ def weighted_merge(g, p):
     Weighted merge.
     """
     g[:8] = (g[8] * g[:8] + p[8] * p[:8]) / (g[8] + p[8])
-    g[8] = (g[8] + p[8])
+    g[8] = g[8] + p[8]
     return g
 
 
@@ -126,21 +126,21 @@ def soft_nms(boxes_in, Nt_thres=0.3, threshold=0.8, sigma=0.5, method=2):
         tbox = boxes[i].copy()
         ti = inds[i]
         pos = i + 1
-        #get max box
+        # get max box
         while pos < N:
             if maxscore < boxes[pos, 8]:
                 maxscore = boxes[pos, 8]
                 maxpos = pos
             pos = pos + 1
-        #add max box as a detection
+        # add max box as a detection
         boxes[i, :] = boxes[maxpos, :]
         inds[i] = inds[maxpos]
-        #swap
+        # swap
         boxes[maxpos, :] = tbox
         inds[maxpos] = ti
         tbox = boxes[i].copy()
         pos = i + 1
-        #NMS iteration
+        # NMS iteration
         while pos < N:
             sbox = boxes[pos].copy()
             ts_iou_val = intersection(tbox, sbox)
@@ -158,8 +158,8 @@ def soft_nms(boxes_in, Nt_thres=0.3, threshold=0.8, sigma=0.5, method=2):
                     else:
                         weight = 1
                 boxes[pos, 8] = weight * boxes[pos, 8]
-                #if box score falls below thresold, discard the box by
-                #swaping last box update N
+                # if box score falls below thresold, discard the box by
+                # swaping last box update N
                 if boxes[pos, 8] < threshold:
                     boxes[pos, :] = boxes[N - 1, :]
                     inds[pos] = inds[N - 1]
@@ -193,8 +193,6 @@ def nms_locality(polys, thres=0.3):
     return standard_nms(np.array(S), thres)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 343,350,448,135,474,143,369,359
-    print(
-        Polygon(np.array([[343, 350], [448, 135], [474, 143], [369, 359]]))
-        .area)
+    print(Polygon(np.array([[343, 350], [448, 135], [474, 143], [369, 359]])).area)

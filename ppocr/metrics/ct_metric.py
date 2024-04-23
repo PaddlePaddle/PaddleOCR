@@ -24,7 +24,7 @@ from ppocr.utils.e2e_metric.Deteval import combine_results, get_score_C
 
 
 class CTMetric(object):
-    def __init__(self, main_indicator, delimiter='\t', **kwargs):
+    def __init__(self, main_indicator, delimiter="\t", **kwargs):
         self.delimiter = delimiter
         self.main_indicator = main_indicator
         self.reset()
@@ -33,12 +33,11 @@ class CTMetric(object):
         self.results = []  # clear results
 
     def __call__(self, preds, batch, **kwargs):
-        # NOTE: only support bs=1 now, as the label length of different sample is Unequal 
-        assert len(
-            preds) == 1, "CentripetalText test now only suuport batch_size=1."
+        # NOTE: only support bs=1 now, as the label length of different sample is Unequal
+        assert len(preds) == 1, "CentripetalText test now only suuport batch_size=1."
         label = batch[2]
         text = batch[3]
-        pred = preds[0]['points']
+        pred = preds[0]["points"]
         result = get_score_C(label, text, pred)
 
         self.results.append(result)

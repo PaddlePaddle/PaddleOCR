@@ -340,12 +340,12 @@ RoIAlignRotatedCUDAForward(const paddle::Tensor &input,
 
   PD_DISPATCH_FLOATING_TYPES(
       input.type(), "roi_align_rotated_cuda_forward_kernel", ([&] {
-        roi_align_rotated_cuda_forward_kernel<
-            data_t><<<GET_BLOCKS(output_size), THREADS_PER_BLOCK>>>(
-            output_size, input.data<data_t>(), rois.data<data_t>(),
-            static_cast<data_t>(spatial_scale), sampling_ratio, aligned,
-            clockwise, channels, height, width, aligned_height, aligned_width,
-            output.data<data_t>());
+        roi_align_rotated_cuda_forward_kernel<data_t>
+            <<<GET_BLOCKS(output_size), THREADS_PER_BLOCK>>>(
+                output_size, input.data<data_t>(), rois.data<data_t>(),
+                static_cast<data_t>(spatial_scale), sampling_ratio, aligned,
+                clockwise, channels, height, width, aligned_height,
+                aligned_width, output.data<data_t>());
       }));
 
   return {output};
@@ -370,11 +370,12 @@ std::vector<paddle::Tensor> RoIAlignRotatedCUDABackward(
 
   PD_DISPATCH_FLOATING_TYPES(
       grad_output.type(), "roi_align_rotated_backward_cuda_kernel", ([&] {
-        roi_align_rotated_backward_cuda_kernel<
-            data_t><<<GET_BLOCKS(output_size), THREADS_PER_BLOCK>>>(
-            output_size, grad_output.data<data_t>(), rois.data<data_t>(),
-            spatial_scale, sampling_ratio, aligned, clockwise, channels, height,
-            width, aligned_height, aligned_width, grad_input.data<data_t>());
+        roi_align_rotated_backward_cuda_kernel<data_t>
+            <<<GET_BLOCKS(output_size), THREADS_PER_BLOCK>>>(
+                output_size, grad_output.data<data_t>(), rois.data<data_t>(),
+                spatial_scale, sampling_ratio, aligned, clockwise, channels,
+                height, width, aligned_height, aligned_width,
+                grad_input.data<data_t>());
       }));
   return {grad_input};
 }

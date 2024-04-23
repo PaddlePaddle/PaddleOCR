@@ -7,24 +7,26 @@ import math
 
 
 class MultiScaleSampler(Sampler):
-    def __init__(self,
-                 data_source,
-                 scales,
-                 first_bs=128,
-                 fix_bs=True,
-                 divided_factor=[8, 16],
-                 is_training=True,
-                 ratio_wh=0.8,
-                 max_w=480.,
-                 seed=None):
+    def __init__(
+        self,
+        data_source,
+        scales,
+        first_bs=128,
+        fix_bs=True,
+        divided_factor=[8, 16],
+        is_training=True,
+        ratio_wh=0.8,
+        max_w=480.0,
+        seed=None,
+    ):
         """
-            multi scale samper
-            Args:
-                data_source(dataset)
-                scales(list): several scales for image resolution
-                first_bs(int): batch size for the first scale in scales
-                divided_factor(list[w, h]): ImageNet models down-sample images by a factor, ensure that width and height dimensions are multiples are multiple of devided_factor.
-                is_training(boolean): mode 
+        multi scale samper
+        Args:
+            data_source(dataset)
+            scales(list): several scales for image resolution
+            first_bs(int): batch size for the first scale in scales
+            divided_factor(list[w, h]): ImageNet models down-sample images by a factor, ensure that width and height dimensions are multiples are multiple of devided_factor.
+            is_training(boolean): mode
         """
         # min. and max. spatial dimensions
         self.data_source = data_source
@@ -62,17 +64,15 @@ class MultiScaleSampler(Sampler):
             # ImageNet models down-sample images by a factor of 32.
             # Ensure that width and height dimensions are multiples are multiple of 32.
             width_dims = [
-                int((w // divided_factor[0]) * divided_factor[0])
-                for w in width_dims
+                int((w // divided_factor[0]) * divided_factor[0]) for w in width_dims
             ]
             height_dims = [
-                int((h // divided_factor[1]) * divided_factor[1])
-                for h in height_dims
+                int((h // divided_factor[1]) * divided_factor[1]) for h in height_dims
             ]
 
             img_batch_pairs = list()
             base_elements = base_im_w * base_im_h * base_batch_size
-            for (h, w) in zip(height_dims, width_dims):
+            for h, w in zip(height_dims, width_dims):
                 if fix_bs:
                     batch_size = base_batch_size
                 else:
@@ -92,16 +92,14 @@ class MultiScaleSampler(Sampler):
         self.batch_list = []
         self.current = 0
         last_index = num_samples_per_replica * num_replicas
-        indices_rank_i = self.img_indices[self.rank:last_index:
-                                          self.num_replicas]
+        indices_rank_i = self.img_indices[self.rank : last_index : self.num_replicas]
         while self.current < self.n_samples_per_replica:
             for curr_w, curr_h, curr_bsz in self.img_batch_pairs:
-                end_index = min(self.current + curr_bsz,
-                                self.n_samples_per_replica)
-                batch_ids = indices_rank_i[self.current:end_index]
+                end_index = min(self.current + curr_bsz, self.n_samples_per_replica)
+                batch_ids = indices_rank_i[self.current : end_index]
                 n_batch_samples = len(batch_ids)
                 if n_batch_samples != curr_bsz:
-                    batch_ids += indices_rank_i[:(curr_bsz - n_batch_samples)]
+                    batch_ids += indices_rank_i[: (curr_bsz - n_batch_samples)]
                 self.current += curr_bsz
 
                 if len(batch_ids) > 0:
@@ -110,9 +108,7 @@ class MultiScaleSampler(Sampler):
         random.shuffle(self.batch_list)
         self.length = len(self.batch_list)
         self.batchs_in_one_epoch = self.iter()
-        self.batchs_in_one_epoch_id = [
-            i for i in range(len(self.batchs_in_one_epoch))
-        ]
+        self.batchs_in_one_epoch_id = [i for i in range(len(self.batchs_in_one_epoch))]
 
     def __iter__(self):
         if self.seed is None:
@@ -133,11 +129,13 @@ class MultiScaleSampler(Sampler):
             if not self.ds_width:
                 random.shuffle(self.img_indices)
             random.shuffle(self.img_batch_pairs)
-            indices_rank_i = self.img_indices[self.rank:len(self.img_indices):
-                                              self.num_replicas]
+            indices_rank_i = self.img_indices[
+                self.rank : len(self.img_indices) : self.num_replicas
+            ]
         else:
-            indices_rank_i = self.img_indices[self.rank:len(self.img_indices):
-                                              self.num_replicas]
+            indices_rank_i = self.img_indices[
+                self.rank : len(self.img_indices) : self.num_replicas
+            ]
 
         start_index = 0
         batchs_in_one_epoch = []
@@ -147,19 +145,21 @@ class MultiScaleSampler(Sampler):
             batch_ids = indices_rank_i[start_index:end_index]
             n_batch_samples = len(batch_ids)
             if n_batch_samples != curr_bsz:
-                batch_ids += indices_rank_i[:(curr_bsz - n_batch_samples)]
+                batch_ids += indices_rank_i[: (curr_bsz - n_batch_samples)]
             start_index += curr_bsz
 
             if len(batch_ids) > 0:
                 if self.ds_width:
-                    wh_ratio_current = self.wh_ratio[self.wh_ratio_sort[
-                        batch_ids]]
+                    wh_ratio_current = self.wh_ratio[self.wh_ratio_sort[batch_ids]]
                     ratio_current = wh_ratio_current.mean()
-                    ratio_current = ratio_current if ratio_current * curr_h < self.max_w else self.max_w / curr_h
+                    ratio_current = (
+                        ratio_current
+                        if ratio_current * curr_h < self.max_w
+                        else self.max_w / curr_h
+                    )
                 else:
                     ratio_current = None
-                batch = [(curr_w, curr_h, b_id, ratio_current)
-                         for b_id in batch_ids]
+                batch = [(curr_w, curr_h, b_id, ratio_current) for b_id in batch_ids]
                 # yield batch
                 batchs_in_one_epoch.append(batch)
         return batchs_in_one_epoch

@@ -4,7 +4,8 @@
 namespace ppredictor {
 PPredictor::PPredictor(int use_opencl, int thread_num, int net_flag,
                        paddle::lite_api::PowerMode mode)
-    : _use_opencl(use_opencl), _thread_num(thread_num), _net_flag(net_flag), _mode(mode) {}
+    : _use_opencl(use_opencl), _thread_num(thread_num), _net_flag(net_flag),
+      _mode(mode) {}
 
 int PPredictor::init_nb(const std::string &model_content) {
   paddle::lite_api::MobileConfig config;
@@ -19,7 +20,8 @@ int PPredictor::init_from_file(const std::string &model_content) {
 }
 
 template <typename ConfigT> int PPredictor::_init(ConfigT &config) {
-  bool is_opencl_backend_valid = paddle::lite_api::IsOpenCLBackendValid(/*check_fp16_valid = false*/);
+  bool is_opencl_backend_valid =
+      paddle::lite_api::IsOpenCLBackendValid(/*check_fp16_valid = false*/);
   if (is_opencl_backend_valid) {
     if (_use_opencl != 0) {
       // Make sure you have write permission of the binary path.
@@ -35,7 +37,8 @@ template <typename ConfigT> int PPredictor::_init(ConfigT &config) {
       // CL_TUNE_EXHAUSTIVE: 3
       const std::string tuned_path = "/data/local/tmp/";
       const std::string tuned_name = "lite_opencl_tuned.bin";
-      config.set_opencl_tune(paddle::lite_api::CL_TUNE_NORMAL, tuned_path, tuned_name);
+      config.set_opencl_tune(paddle::lite_api::CL_TUNE_NORMAL, tuned_path,
+                             tuned_name);
 
       // opencl precision option
       // CL_PRECISION_AUTO: 0, first fp16 if valid, default
@@ -84,7 +87,8 @@ std::vector<PredictorOutput> PPredictor::infer() {
   for (int i = 0; i < _predictor->GetOutputNames().size(); i++) {
     std::unique_ptr<const paddle::lite_api::Tensor> output_tensor =
         _predictor->GetOutput(i);
-    LOGI("ocr cpp output tensor[%d] size %ld", i, product(output_tensor->shape()));
+    LOGI("ocr cpp output tensor[%d] size %ld", i,
+         product(output_tensor->shape()));
     PredictorOutput result{std::move(output_tensor), i, _net_flag};
     results.emplace_back(std::move(result));
   }
@@ -92,4 +96,4 @@ std::vector<PredictorOutput> PPredictor::infer() {
 }
 
 NET_TYPE PPredictor::get_net_flag() const { return (NET_TYPE)_net_flag; }
-}
+} // namespace ppredictor

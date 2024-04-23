@@ -15,6 +15,7 @@
 import os
 import sys
 import pathlib
+
 __dir__ = pathlib.Path(os.path.abspath(__file__))
 sys.path.append(str(__dir__))
 sys.path.append(str(__dir__.parent.parent))
@@ -33,7 +34,7 @@ from utils.util import draw_bbox, save_result
 
 class InferenceEngine(object):
     """InferenceEngine
-    
+
     Inference engina class which contains preprocess, run, postprocess
     """
 
@@ -47,35 +48,48 @@ class InferenceEngine(object):
         self.args = args
 
         # init inference engine
-        self.predictor, self.config, self.input_tensor, self.output_tensor = self.load_predictor(
+        (
+            self.predictor,
+            self.config,
+            self.input_tensor,
+            self.output_tensor,
+        ) = self.load_predictor(
             os.path.join(args.model_dir, "inference.pdmodel"),
-            os.path.join(args.model_dir, "inference.pdiparams"))
+            os.path.join(args.model_dir, "inference.pdiparams"),
+        )
 
         # build transforms
-        self.transforms = transforms.Compose([
-            transforms.ToTensor(), transforms.Normalize(
-                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-        ])
+        self.transforms = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+                ),
+            ]
+        )
 
         # wamrup
         if self.args.warmup > 0:
             for idx in range(args.warmup):
                 print(idx)
-                x = np.random.rand(1, 3, self.args.crop_size,
-                                   self.args.crop_size).astype("float32")
+                x = np.random.rand(
+                    1, 3, self.args.crop_size, self.args.crop_size
+                ).astype("float32")
                 self.input_tensor.copy_from_cpu(x)
                 self.predictor.run()
                 self.output_tensor.copy_to_cpu()
 
-        self.post_process = get_post_processing({
-            'type': 'SegDetectorRepresenter',
-            'args': {
-                'thresh': 0.3,
-                'box_thresh': 0.7,
-                'max_candidates': 1000,
-                'unclip_ratio': 1.5
+        self.post_process = get_post_processing(
+            {
+                "type": "SegDetectorRepresenter",
+                "args": {
+                    "thresh": 0.3,
+                    "box_thresh": 0.7,
+                    "max_candidates": 1000,
+                    "unclip_ratio": 1.5,
+                },
             }
-        })
+        )
 
     def load_predictor(self, model_file_path, params_file_path):
         """load_predictor
@@ -98,20 +112,18 @@ class InferenceEngine(object):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.
-                    min_subgraph_size,  # skip the minmum trt subgraph
-                    use_calib_mode=False)
+                    min_subgraph_size=args.min_subgraph_size,  # skip the minmum trt subgraph
+                    use_calib_mode=False,
+                )
 
                 # collect shape
                 trt_shape_f = os.path.join(model_dir, "_trt_dynamic_shape.txt")
 
                 if not os.path.exists(trt_shape_f):
                     config.collect_shape_range_info(trt_shape_f)
-                    logger.info(
-                        f"collect dynamic shape info into : {trt_shape_f}")
+                    logger.info(f"collect dynamic shape info into : {trt_shape_f}")
                 try:
-                    config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f,
-                                                               True)
+                    config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f, True)
                 except Exception as E:
                     logger.info(E)
                     logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
@@ -162,7 +174,7 @@ class InferenceEngine(object):
         img = resize_image(img, short_size)
         img = self.transforms(img)
         img = np.expand_dims(img, axis=0)
-        shape_info = {'shape': [(h, w)]}
+        shape_info = {"shape": [(h, w)]}
         return img, shape_info
 
     def postprocess(self, x, shape_info, is_output_polygon):
@@ -173,7 +185,8 @@ class InferenceEngine(object):
         Returns: Output data after argmax.
         """
         box_list, score_list = self.post_process(
-            shape_info, x, is_output_polygon=is_output_polygon)
+            shape_info, x, is_output_polygon=is_output_polygon
+        )
         box_list, score_list = box_list[0], score_list[0]
         if len(box_list) > 0:
             if is_output_polygon:
@@ -181,8 +194,7 @@ class InferenceEngine(object):
                 box_list = [box_list[i] for i, v in enumerate(idx) if v]
                 score_list = [score_list[i] for i, v in enumerate(idx) if v]
             else:
-                idx = box_list.reshape(box_list.shape[0], -1).sum(
-                    axis=1) > 0  # 去掉全为0的框
+                idx = box_list.reshape(box_list.shape[0], -1).sum(axis=1) > 0  # 去掉全为0的框
                 box_list, score_list = box_list[idx], score_list[idx]
         else:
             box_list, score_list = [], []
@@ -211,19 +223,17 @@ def get_args(add_help=True):
         return v.lower() in ("true", "t", "1")
 
     parser = argparse.ArgumentParser(
-        description="PaddlePaddle Classification Training", add_help=add_help)
+        description="PaddlePaddle Classification Training", add_help=add_help
+    )
 
     parser.add_argument("--model_dir", default=None, help="inference model dir")
     parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument(
-        "--short_size", default=1024, type=int, help="short size")
+    parser.add_argument("--short_size", default=1024, type=int, help="short size")
     parser.add_argument("--img_path", default="./images/demo.jpg")
 
-    parser.add_argument(
-        "--benchmark", default=False, type=str2bool, help="benchmark")
+    parser.add_argument("--benchmark", default=False, type=str2bool, help="benchmark")
     parser.add_argument("--warmup", default=0, type=int, help="warmup iter")
-    parser.add_argument(
-        '--polygon', action='store_true', help='output polygon or box')
+    parser.add_argument("--polygon", action="store_true", help="output polygon or box")
 
     parser.add_argument("--use_gpu", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
@@ -251,19 +261,20 @@ def main(args):
     # init benchmark
     if args.benchmark:
         import auto_log
+
         autolog = auto_log.AutoLogger(
             model_name="db",
             batch_size=args.batch_size,
             inference_config=inference_engine.config,
-            gpu_ids="auto" if args.use_gpu else None)
+            gpu_ids="auto" if args.use_gpu else None,
+        )
 
     # enable benchmark
     if args.benchmark:
         autolog.times.start()
 
     # preprocess
-    img, shape_info = inference_engine.preprocess(args.img_path,
-                                                  args.short_size)
+    img, shape_info = inference_engine.preprocess(args.img_path, args.short_size)
 
     if args.benchmark:
         autolog.times.stamp()
@@ -274,8 +285,9 @@ def main(args):
         autolog.times.stamp()
 
     # postprocess
-    box_list, score_list = inference_engine.postprocess(output, shape_info,
-                                                        args.polygon)
+    box_list, score_list = inference_engine.postprocess(
+        output, shape_info, args.polygon
+    )
 
     if args.benchmark:
         autolog.times.stamp()
@@ -284,13 +296,16 @@ def main(args):
 
     img = draw_bbox(cv2.imread(args.img_path)[:, :, ::-1], box_list)
     # 保存结果到路径
-    os.makedirs('output', exist_ok=True)
+    os.makedirs("output", exist_ok=True)
     img_path = pathlib.Path(args.img_path)
-    output_path = os.path.join('output', img_path.stem + '_infer_result.jpg')
+    output_path = os.path.join("output", img_path.stem + "_infer_result.jpg")
     cv2.imwrite(output_path, img[:, :, ::-1])
     save_result(
-        output_path.replace('_infer_result.jpg', '.txt'), box_list, score_list,
-        args.polygon)
+        output_path.replace("_infer_result.jpg", ".txt"),
+        box_list,
+        score_list,
+        args.polygon,
+    )
 
 
 if __name__ == "__main__":

@@ -19,24 +19,26 @@ import sys
 import locale
 from libs.ustr import ustr
 
-__dir__ = os.path.dirname(os.path.abspath(__file__)) # 获取本程序文件路径
-__dirpath__ = os.path.abspath(os.path.join(__dir__, '../resources/strings'))
+__dir__ = os.path.dirname(os.path.abspath(__file__))  # 获取本程序文件路径
+__dirpath__ = os.path.abspath(os.path.join(__dir__, "../resources/strings"))
 
 try:
     from PyQt5.QtCore import *
 except ImportError:
     if sys.version_info.major >= 3:
         import sip
-        sip.setapi('QVariant', 2)
+
+        sip.setapi("QVariant", 2)
     from PyQt4.QtCore import *
 
 
 class StringBundle:
-
     __create_key = object()
 
     def __init__(self, create_key, localeStr):
-        assert(create_key == StringBundle.__create_key), "StringBundle must be created using StringBundle.getBundle"
+        assert (
+            create_key == StringBundle.__create_key
+        ), "StringBundle must be created using StringBundle.getBundle"
         self.idToMessage = {}
         paths = self.__createLookupFallbackList(localeStr)
         for path in paths:
@@ -46,34 +48,37 @@ class StringBundle:
     def getBundle(cls, localeStr=None):
         if localeStr is None:
             try:
-                localeStr = locale.getlocale()[0] if locale.getlocale() and len(
-                    locale.getlocale()) > 0 else os.getenv('LANG')
+                localeStr = (
+                    locale.getlocale()[0]
+                    if locale.getlocale() and len(locale.getlocale()) > 0
+                    else os.getenv("LANG")
+                )
             except:
-                print('Invalid locale')
-                localeStr = 'en'
+                print("Invalid locale")
+                localeStr = "en"
 
         return StringBundle(cls.__create_key, localeStr)
 
     def getString(self, stringId):
-        assert(stringId in self.idToMessage), "Missing string id : " + stringId
+        assert stringId in self.idToMessage, "Missing string id : " + stringId
         return self.idToMessage[stringId]
 
     def __createLookupFallbackList(self, localeStr):
         resultPaths = []
-        basePath = "\strings" if os.name == 'nt' else "/strings"
+        basePath = "\strings" if os.name == "nt" else "/strings"
         resultPaths.append(basePath)
         if localeStr is not None:
             # Don't follow standard BCP47. Simple fallback
-            tags = re.split('[^a-zA-Z]', localeStr)
+            tags = re.split("[^a-zA-Z]", localeStr)
             for tag in tags:
                 lastPath = resultPaths[-1]
-                resultPaths.append(lastPath + '-' + tag)
+                resultPaths.append(lastPath + "-" + tag)
             resultPaths[-1] = __dirpath__ + resultPaths[-1] + ".properties"
 
         return resultPaths
 
     def __loadBundle(self, path):
-        PROP_SEPERATOR = '='
+        PROP_SEPERATOR = "="
         f = QFile(path)
         if f.exists():
             if f.open(QIODevice.ReadOnly | QFile.Text):

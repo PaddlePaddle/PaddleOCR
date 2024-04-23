@@ -4,8 +4,7 @@ import copy
 
 
 def org_tcl_rois(batch_size, pos_lists, pos_masks, label_lists, tcl_bs):
-    """
-    """
+    """ """
     pos_lists_, pos_masks_, label_lists_ = [], [], []
     img_bs = batch_size
     ngpu = int(batch_size / img_bs)
@@ -51,8 +50,9 @@ def org_tcl_rois(batch_size, pos_lists, pos_masks, label_lists, tcl_bs):
     return pos_lists_, pos_masks_, label_lists_
 
 
-def pre_process(label_list, pos_list, pos_mask, max_text_length, max_text_nums,
-                pad_num, tcl_bs):
+def pre_process(
+    label_list, pos_list, pos_mask, max_text_length, max_text_nums, pad_num, tcl_bs
+):
     label_list = label_list.numpy()
     batch, _, _, _ = label_list.shape
     pos_list = pos_list.numpy()
@@ -66,8 +66,9 @@ def pre_process(label_list, pos_list, pos_mask, max_text_length, max_text_nums,
                 pos_list_t.append(pos_list[i][j])
                 pos_mask_t.append(pos_mask[i][j])
                 label_list_t.append(label_list[i][j])
-    pos_list, pos_mask, label_list = org_tcl_rois(batch, pos_list_t, pos_mask_t,
-                                                  label_list_t, tcl_bs)
+    pos_list, pos_mask, label_list = org_tcl_rois(
+        batch, pos_list_t, pos_mask_t, label_list_t, tcl_bs
+    )
     label = []
     tt = [l.tolist() for l in label_list]
     for i in range(tcl_bs):
@@ -79,9 +80,9 @@ def pre_process(label_list, pos_list, pos_mask, max_text_length, max_text_nums,
                 break
         label.append(k)
     label = paddle.to_tensor(label)
-    label = paddle.cast(label, dtype='int64')
+    label = paddle.cast(label, dtype="int64")
     pos_list = paddle.to_tensor(pos_list)
     pos_mask = paddle.to_tensor(pos_mask)
     label_list = paddle.squeeze(paddle.to_tensor(label_list), axis=2)
-    label_list = paddle.cast(label_list, dtype='int32')
+    label_list = paddle.cast(label_list, dtype="int32")
     return pos_list, pos_mask, label_list, label

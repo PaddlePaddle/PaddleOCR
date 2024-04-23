@@ -37,9 +37,7 @@ class SDMGRLoss(nn.Layer):
         batch = len(tag)
         for i in range(batch):
             num, recoder_len = tag[i][0], tag[i][1]
-            temp_gts.append(
-                paddle.to_tensor(
-                    gts[i, :num, :num + 1], dtype='int64'))
+            temp_gts.append(paddle.to_tensor(gts[i, :num, : num + 1], dtype="int64"))
         return temp_gts
 
     def accuracy(self, pred, target, topk=1, thresh=None):
@@ -63,28 +61,28 @@ class SDMGRLoss(nn.Layer):
         """
         assert isinstance(topk, (int, tuple))
         if isinstance(topk, int):
-            topk = (topk, )
+            topk = (topk,)
             return_single = True
         else:
             return_single = False
 
         maxk = max(topk)
         if pred.shape[0] == 0:
-            accu = [pred.new_tensor(0.) for i in range(len(topk))]
+            accu = [pred.new_tensor(0.0) for i in range(len(topk))]
             return accu[0] if return_single else accu
         pred_value, pred_label = paddle.topk(pred, maxk, axis=1)
-        pred_label = pred_label.transpose(
-            [1, 0])  # transpose to shape (maxk, N)
-        correct = paddle.equal(pred_label,
-                               (target.reshape([1, -1]).expand_as(pred_label)))
+        pred_label = pred_label.transpose([1, 0])  # transpose to shape (maxk, N)
+        correct = paddle.equal(
+            pred_label, (target.reshape([1, -1]).expand_as(pred_label))
+        )
         res = []
         for k in topk:
-            correct_k = paddle.sum(correct[:k].reshape([-1]).astype('float32'),
-                                   axis=0,
-                                   keepdim=True)
+            correct_k = paddle.sum(
+                correct[:k].reshape([-1]).astype("float32"), axis=0, keepdim=True
+            )
             res.append(
-                paddle.multiply(correct_k,
-                                paddle.to_tensor(100.0 / pred.shape[0])))
+                paddle.multiply(correct_k, paddle.to_tensor(100.0 / pred.shape[0]))
+            )
         return res[0] if return_single else res
 
     def forward(self, pred, batch):
@@ -109,7 +107,10 @@ class SDMGRLoss(nn.Layer):
             loss_edge=loss_edge,
             acc_node=self.accuracy(
                 paddle.gather(node_preds, node_valids),
-                paddle.gather(node_gts, node_valids)),
+                paddle.gather(node_gts, node_valids),
+            ),
             acc_edge=self.accuracy(
                 paddle.gather(edge_preds, edge_valids),
-                paddle.gather(edge_gts, edge_valids)))
+                paddle.gather(edge_gts, edge_valids),
+            ),
+        )

@@ -16,7 +16,7 @@ import collections
 import numpy as np
 import datetime
 
-__all__ = ['TrainingStats', 'Time']
+__all__ = ["TrainingStats", "Time"]
 
 
 class SmoothedValue(object):
@@ -35,22 +35,20 @@ class SmoothedValue(object):
 
 
 def Time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 
 
 class TrainingStats(object):
     def __init__(self, window_size, stats_keys):
         self.window_size = window_size
         self.smoothed_losses_and_metrics = {
-            key: SmoothedValue(window_size)
-            for key in stats_keys
+            key: SmoothedValue(window_size) for key in stats_keys
         }
 
     def update(self, stats):
         for k, v in stats.items():
             if k not in self.smoothed_losses_and_metrics:
-                self.smoothed_losses_and_metrics[k] = SmoothedValue(
-                    self.window_size)
+                self.smoothed_losses_and_metrics[k] = SmoothedValue(self.window_size)
             self.smoothed_losses_and_metrics[k].add_value(v)
 
     def get(self, extras=None):
@@ -67,6 +65,6 @@ class TrainingStats(object):
         d = self.get(extras)
         strs = []
         for k, v in d.items():
-            strs.append('{}: {:x<6f}'.format(k, v))
-        strs = ', '.join(strs)
+            strs.append("{}: {:x<6f}".format(k, v))
+        strs = ", ".join(strs)
         return strs

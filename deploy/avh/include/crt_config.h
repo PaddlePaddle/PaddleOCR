@@ -23,4 +23,4 @@
 /*! Log level of the CRT runtime */
 #define TVM_CRT_LOG_LEVEL TVM_CRT_LOG_LEVEL_DEBUG
 
-#endif  // TVM_RUNTIME_CRT_CONFIG_H_
+#endif // TVM_RUNTIME_CRT_CONFIG_H_

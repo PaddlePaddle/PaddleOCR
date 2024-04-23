@@ -37,7 +37,9 @@ class UniqueLabelQListWidget(EscapableQListWidget):
         if color is None:
             qlabel.setText(f"{label}")
         else:
-            qlabel.setText('<font color="#{:02x}{:02x}{:02x}">●</font> {} '.format(*color, label))
+            qlabel.setText(
+                '<font color="#{:02x}{:02x}{:02x}">●</font> {} '.format(*color, label)
+            )
         qlabel.setAlignment(Qt.AlignBottom)
 
         # item.setSizeHint(qlabel.sizeHint())

@@ -30,9 +30,9 @@ class ParseQLoss(nn.Layer):
         max_step = paddle.max(label_len).cpu().numpy()[0] + 2
         tgt = label[:, :max_step]
 
-        logits_list = predicts['logits_list']
-        pad_id = predicts['pad_id']
-        eos_id = predicts['eos_id']
+        logits_list = predicts["logits_list"]
+        pad_id = predicts["pad_id"]
+        eos_id = predicts["eos_id"]
 
         tgt_out = tgt[:, 1:]
         loss = 0
@@ -40,11 +40,13 @@ class ParseQLoss(nn.Layer):
         n = (tgt_out != pad_id).sum().item()
 
         for i, logits in enumerate(logits_list):
-            loss += n * paddle.nn.functional.cross_entropy(input=logits, label=tgt_out.flatten(), ignore_index=pad_id)
+            loss += n * paddle.nn.functional.cross_entropy(
+                input=logits, label=tgt_out.flatten(), ignore_index=pad_id
+            )
             loss_numel += n
             if i == 1:
                 tgt_out = paddle.where(condition=tgt_out == eos_id, x=pad_id, y=tgt_out)
                 n = (tgt_out != pad_id).sum().item()
         loss /= loss_numel
 
-        return {'loss': loss}
+        return {"loss": loss}

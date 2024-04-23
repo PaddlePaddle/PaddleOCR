@@ -23,4 +23,4 @@ int64_t PredictorOutput::get_size() const {
 const std::vector<int64_t> PredictorOutput::get_shape() const {
   return _tensor->shape();
 }
-}
+} // namespace ppredictor

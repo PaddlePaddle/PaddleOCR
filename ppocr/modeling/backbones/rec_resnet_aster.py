@@ -25,18 +25,15 @@ import math
 def conv3x3(in_planes, out_planes, stride=1):
     """3x3 convolution with padding"""
     return nn.Conv2D(
-        in_planes,
-        out_planes,
-        kernel_size=3,
-        stride=stride,
-        padding=1,
-        bias_attr=False)
+        in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias_attr=False
+    )
 
 
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
     return nn.Conv2D(
-        in_planes, out_planes, kernel_size=1, stride=stride, bias_attr=False)
+        in_planes, out_planes, kernel_size=1, stride=stride, bias_attr=False
+    )
 
 
 def get_sinusoid_encoding(n_position, feat_dim, wave_length=10000):
@@ -46,9 +43,7 @@ def get_sinusoid_encoding(n_position, feat_dim, wave_length=10000):
     dim_range = paddle.arange(0, feat_dim)
     dim_range = paddle.pow(wave_length, 2 * (dim_range // 2) / feat_dim)
     # [n_position, feat_dim]
-    angles = paddle.unsqueeze(
-        positions, axis=1) / paddle.unsqueeze(
-            dim_range, axis=0)
+    angles = paddle.unsqueeze(positions, axis=1) / paddle.unsqueeze(dim_range, axis=0)
     angles = paddle.cast(angles, "float32")
     angles[:, 0::2] = paddle.sin(angles[:, 0::2])
     angles[:, 1::2] = paddle.cos(angles[:, 1::2])
@@ -96,9 +91,11 @@ class ResNet_ASTER(nn.Layer):
                 kernel_size=(3, 3),
                 stride=1,
                 padding=1,
-                bias_attr=False),
+                bias_attr=False,
+            ),
             nn.BatchNorm2D(32),
-            nn.ReLU())
+            nn.ReLU(),
+        )
 
         self.inplanes = 32
         self.layer1 = self._make_layer(32, 3, [2, 2])  # [16, 50]
@@ -117,7 +114,8 @@ class ResNet_ASTER(nn.Layer):
         downsample = None
         if stride != [1, 1] or self.inplanes != planes:
             downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes, stride), nn.BatchNorm2D(planes))
+                conv1x1(self.inplanes, planes, stride), nn.BatchNorm2D(planes)
+            )
 
         layers = []
         layers.append(AsterBlock(self.inplanes, planes, stride, downsample))
