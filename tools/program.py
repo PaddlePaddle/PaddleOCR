@@ -795,10 +795,11 @@ def preprocess(is_train=False):
 
     loggers = []
 
-    if "use_visualdl" in config["Global"] and config["Global"]["use_visualdl"]:        save_model_dir = config['Global']['save_model_dir']
+    if "use_visualdl" in config["Global"] and config["Global"]["use_visualdl"]:
         logger.warning(
             "You are using VisualDL, the VisualDL is deprecated and "
-            "removed in ppocr!")
+            "removed in ppocr!"
+        )
         log_writer = None
     if (
         "use_wandb" in config["Global"] and config["Global"]["use_wandb"]
