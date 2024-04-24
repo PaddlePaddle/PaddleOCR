@@ -14,14 +14,14 @@
 
     The Python code of PaddleOCR follows [PEP8 Specification]( https://www.python.org/dev/peps/pep-0008/ ), some of the key concerns include the following
 
-    - Space 
+    - Space
 
       - Spaces should be added after commas, semicolons, colons, not before them
 
         ```python
         # true:
         print(x, y)
-        
+
         # false:
         print(x , y)
         ```
@@ -53,27 +53,27 @@
         ```python
         def fetch_bigtable_rows(big_table, keys, other_silly_variable=None):
             """Fetches rows from a Bigtable.
-        
+
             Retrieves rows pertaining to the given keys from the Table instance
             represented by big_table.  Silly things may happen if
             other_silly_variable is not None.
-        
+
             Args:
                 big_table: An open Bigtable Table instance.
                 keys: A sequence of strings representing the key of each table row
                     to fetch.
                 other_silly_variable: Another optional variable, that has a much
                     longer name than the other args, and which does nothing.
-        
+
             Returns:
                 A dict mapping keys to the corresponding table row data
                 fetched. Each row is represented as a tuple of strings. For
                 example:
-        
+
                 {'Serak': ('Rigel VII', 'Preparer'),
                  'Zim': ('Irk', 'Invader'),
                  'Lrrr': ('Omicron Persei 8', 'Emperor')}
-        
+
                 If a key from the keys argument is missing from the dictionary,
                 then that row was not found in the table.
             """
@@ -166,23 +166,23 @@
     ```
 
     Only the information of the clone `remote repo`, i.e. the PaddleOCR under your username, is available. Due to the change in Github's login method, you need to reconfigure the `remote repo` address by means of a Token. The token is generated as follows:
-    
+
     1. Find Personal Access Tokens: Click on your avatar in the upper right corner of the Github page and choose Settings --> Developer settings --> Personal access tokens,
-    
+
     2. Click Generate new token: Fill in the token name in Note, such as 'paddle'. In Select scopes, select repo (required), admin:repo_hook, delete_repo, etc. You can check them according to your needs. Then click Generate token to generate the token, and finally copy the generated token.
 
     Delete the original origin configuration
-   
+
     ```
     git remote rm origin
     ```
-    
+
     Change the remote branch to `https://oauth2:{token}@github.com/{your_name}/PaddleOCR.git`. For example, if the token value is 12345 and your user name is PPOCR, run the following command
-    
+
     ```
     git remote add origin https://oauth2:12345@github.com/PPOCR/PaddleOCR.git
     ```
-    
+
     This establishes a connection to our own `remote repo`. Next we create a remote host of the original PaddleOCR repo, named upstream.
 
     ```
@@ -203,19 +203,19 @@
     #### 3.2.3 Create Local Branch
 
     First get the latest code of upstream, then create a new_branch branch based on the dygraph of the upstream repo (upstream).
-    
+
     ```
     git fetch upstream
     git checkout -b new_branch upstream/dygraph
     ```
-    
+
     > If for a newly forked PaddleOCR project, the user's remote repo (origin) has the same branch updates as the upstream repository (upstream), you can also create a new local branch based on the default branch of the origin repo or a specified branch with the following command
     >
     > ```
     > # Create new_branch branch on user remote repo (origin) based on develop branch
     > git checkout -b new_branch origin/develop
     > # Create new_branch branch based on upstream remote repo develop branch
-    > # If you need to create a new branch from upstream, 
+    > # If you need to create a new branch from upstream,
     > # you need to first use git fetch upstream to get upstream code
     > git checkout -b new_branch upstream/develop
     > ```
@@ -226,9 +226,9 @@
     Branch new_branch set up to track remote branch develop from upstream.
     Switched to a new branch 'new_branch'
     ```
-    
+
     After switching branches, file changes can be made on this branch
-    
+
     #### 3.2.4 Use Pre-Commit Hook
 
     Paddle developers use the pre-commit tool to manage Git pre-submit hooks. It helps us format the source code (C++, Python) and automatically check for basic things (such as having only one EOL per file, not adding large files to Git) before committing it.
@@ -310,7 +310,7 @@
   ```
       # Switch to the development branch, otherwise the current branch cannot be deleted
       git checkout develop
-      
+
       # Delete new_ Branch Branch
       git branch -D new_branch
   ```
@@ -322,28 +322,28 @@
     In order for official maintainers to better focus on the code itself when reviewing it, please follow the following conventions each time you submit your code:
 
     1）Please ensure that the unit tests in Travis-CI pass smoothly. If not, indicate that there is a problem with the submitted code, and the official maintainer generally does not review it.
-    
+
     2）Before submitting a Pull Request.
-    
+
     - Note the number of commits.
 
       Reason: If you only modify one file and submit more than a dozen commits, each commit will only make a few modifications, which can be very confusing to the reviewer. The reviewer needs to look at each commit individually to see what changes have been made, and does not exclude the fact that changes between commits overlap each other.
-      
+
       Suggestion: Keep as few commits as possible each time you submit, and supplement your last commit with git commit --amend. For multiple commits that have been Push to a remote warehouse, you can refer to [squash commits after push](https://stackoverflow.com/questions/5667884/how-to-squash-commits-in-git-after-they-have-been-pushed ).
 
     - Note the name of each commit: it should reflect the content of the current commit, not be too arbitrary.
 
 
     3） If you have solved a problem, add in the first comment box of the Pull Request:fix #issue_number，This will automatically close the corresponding Issue when the Pull Request is merged. Key words include:close, closes, closed, fix, fixes, fixed, resolve, resolves, resolved,please choose the right vocabulary. Detailed reference [Closing issues via commit messages](https://help.github.com/articles/closing-issues-via-commit-messages).
-    
+
     In addition, in response to the reviewer's comments, you are requested to abide by the following conventions:
-    
+
     1） Each review comment from an official maintainer would like a response, which would better enhance the contribution of the open source community.
-    
+
     - If you agree to the review opinion and modify it accordingly, give a simple Done.
     - If you disagree with the review, please give your own reasons for refuting.
-    
+
     2）If there are many reviews:
-    
+
     - Please give an overview of the changes.
     - Please reply with `start a review', not directly. The reason is that each reply sends an e-mail message, which can cause a mail disaster.

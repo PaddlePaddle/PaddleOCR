@@ -1,6 +1,6 @@
 # Environment Preparation
 
-Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment. 
+Windows and Mac users are recommended to use Anaconda to build a Python environment, and Linux users are recommended to use docker to build a Python environment.
 
 Recommended working environment:
 - PaddlePaddle >= 2.1.2

@@ -20,21 +20,23 @@ import paddle.nn as nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
 
-__all__ = ['CSPPAN']
+__all__ = ["CSPPAN"]
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channel=96,
-                 out_channel=96,
-                 kernel_size=3,
-                 stride=1,
-                 groups=1,
-                 act='leaky_relu'):
+    def __init__(
+        self,
+        in_channel=96,
+        out_channel=96,
+        kernel_size=3,
+        stride=1,
+        groups=1,
+        act="leaky_relu",
+    ):
         super(ConvBNLayer, self).__init__()
         initializer = nn.initializer.KaimingUniform()
         self.act = act
-        assert self.act in ['leaky_relu', "hard_swish"]
+        assert self.act in ["leaky_relu", "hard_swish"]
         self.conv = nn.Conv2D(
             in_channels=in_channel,
             out_channels=out_channel,
@@ -43,7 +45,8 @@ class ConvBNLayer(nn.Layer):
             padding=(kernel_size - 1) // 2,
             stride=stride,
             weight_attr=ParamAttr(initializer=initializer),
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn = nn.BatchNorm2D(out_channel)
 
     def forward(self, x):
@@ -67,12 +70,9 @@ class DPModule(nn.Layer):
                    Now support `leaky_relu` and `hard_swish`.
     """
 
-    def __init__(self,
-                 in_channel=96,
-                 out_channel=96,
-                 kernel_size=3,
-                 stride=1,
-                 act='leaky_relu'):
+    def __init__(
+        self, in_channel=96, out_channel=96, kernel_size=3, stride=1, act="leaky_relu"
+    ):
         super(DPModule, self).__init__()
         initializer = nn.initializer.KaimingUniform()
         self.act = act
@@ -84,7 +84,8 @@ class DPModule(nn.Layer):
             padding=(kernel_size - 1) // 2,
             stride=stride,
             weight_attr=ParamAttr(initializer=initializer),
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn1 = nn.BatchNorm2D(out_channel)
         self.pwconv = nn.Conv2D(
             in_channels=out_channel,
@@ -93,7 +94,8 @@ class DPModule(nn.Layer):
             groups=1,
             padding=0,
             weight_attr=ParamAttr(initializer=initializer),
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn2 = nn.BatchNorm2D(out_channel)
 
     def act_func(self, x):
@@ -125,30 +127,30 @@ class DarknetBottleneck(nn.Layer):
             Default: False
     """
 
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size=3,
-                 expansion=0.5,
-                 add_identity=True,
-                 use_depthwise=False,
-                 act="leaky_relu"):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=3,
+        expansion=0.5,
+        add_identity=True,
+        use_depthwise=False,
+        act="leaky_relu",
+    ):
         super(DarknetBottleneck, self).__init__()
         hidden_channels = int(out_channels * expansion)
         conv_func = DPModule if use_depthwise else ConvBNLayer
         self.conv1 = ConvBNLayer(
-            in_channel=in_channels,
-            out_channel=hidden_channels,
-            kernel_size=1,
-            act=act)
+            in_channel=in_channels, out_channel=hidden_channels, kernel_size=1, act=act
+        )
         self.conv2 = conv_func(
             in_channel=hidden_channels,
             out_channel=out_channels,
             kernel_size=kernel_size,
             stride=1,
-            act=act)
-        self.add_identity = \
-            add_identity and in_channels == out_channels
+            act=act,
+        )
+        self.add_identity = add_identity and in_channels == out_channels
 
     def forward(self, x):
         identity = x
@@ -175,32 +177,37 @@ class CSPLayer(nn.Layer):
             blocks. Default: False
     """
 
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size=3,
-                 expand_ratio=0.5,
-                 num_blocks=1,
-                 add_identity=True,
-                 use_depthwise=False,
-                 act="leaky_relu"):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=3,
+        expand_ratio=0.5,
+        num_blocks=1,
+        add_identity=True,
+        use_depthwise=False,
+        act="leaky_relu",
+    ):
         super().__init__()
         mid_channels = int(out_channels * expand_ratio)
         self.main_conv = ConvBNLayer(in_channels, mid_channels, 1, act=act)
         self.short_conv = ConvBNLayer(in_channels, mid_channels, 1, act=act)
-        self.final_conv = ConvBNLayer(
-            2 * mid_channels, out_channels, 1, act=act)
+        self.final_conv = ConvBNLayer(2 * mid_channels, out_channels, 1, act=act)
 
-        self.blocks = nn.Sequential(* [
-            DarknetBottleneck(
-                mid_channels,
-                mid_channels,
-                kernel_size,
-                1.0,
-                add_identity,
-                use_depthwise,
-                act=act) for _ in range(num_blocks)
-        ])
+        self.blocks = nn.Sequential(
+            *[
+                DarknetBottleneck(
+                    mid_channels,
+                    mid_channels,
+                    kernel_size,
+                    1.0,
+                    add_identity,
+                    use_depthwise,
+                    act=act,
+                )
+                for _ in range(num_blocks)
+            ]
+        )
 
     def forward(self, x):
         x_short = self.short_conv(x)
@@ -213,16 +220,11 @@ class CSPLayer(nn.Layer):
 
 
 class Channel_T(nn.Layer):
-    def __init__(self,
-                 in_channels=[116, 232, 464],
-                 out_channels=96,
-                 act="leaky_relu"):
+    def __init__(self, in_channels=[116, 232, 464], out_channels=96, act="leaky_relu"):
         super(Channel_T, self).__init__()
         self.convs = nn.LayerList()
         for i in range(len(in_channels)):
-            self.convs.append(
-                ConvBNLayer(
-                    in_channels[i], out_channels, 1, act=act))
+            self.convs.append(ConvBNLayer(in_channels[i], out_channels, 1, act=act))
 
     def forward(self, x):
         outs = [self.convs[i](x[i]) for i in range(len(x))]
@@ -240,13 +242,15 @@ class CSPPAN(nn.Layer):
             blocks. Default: True
     """
 
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size=5,
-                 num_csp_blocks=1,
-                 use_depthwise=True,
-                 act='hard_swish'):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=5,
+        num_csp_blocks=1,
+        use_depthwise=True,
+        act="hard_swish",
+    ):
         super(CSPPAN, self).__init__()
         self.in_channels = in_channels
         self.out_channels = [out_channels] * len(in_channels)
@@ -255,7 +259,7 @@ class CSPPAN(nn.Layer):
         self.conv_t = Channel_T(in_channels, out_channels, act=act)
 
         # build top-down blocks
-        self.upsample = nn.Upsample(scale_factor=2, mode='nearest')
+        self.upsample = nn.Upsample(scale_factor=2, mode="nearest")
         self.top_down_blocks = nn.LayerList()
         for idx in range(len(in_channels) - 1, 0, -1):
             self.top_down_blocks.append(
@@ -266,7 +270,9 @@ class CSPPAN(nn.Layer):
                     num_blocks=num_csp_blocks,
                     add_identity=False,
                     use_depthwise=use_depthwise,
-                    act=act))
+                    act=act,
+                )
+            )
 
         # build bottom-up blocks
         self.downsamples = nn.LayerList()
@@ -278,7 +284,9 @@ class CSPPAN(nn.Layer):
                     out_channels,
                     kernel_size=kernel_size,
                     stride=2,
-                    act=act))
+                    act=act,
+                )
+            )
             self.bottom_up_blocks.append(
                 CSPLayer(
                     out_channels * 2,
@@ -287,7 +295,9 @@ class CSPPAN(nn.Layer):
                     num_blocks=num_csp_blocks,
                     add_identity=False,
                     use_depthwise=use_depthwise,
-                    act=act))
+                    act=act,
+                )
+            )
 
     def forward(self, inputs):
         """
@@ -305,10 +315,12 @@ class CSPPAN(nn.Layer):
             feat_heigh = inner_outs[0]
             feat_low = inputs[idx - 1]
             upsample_feat = F.upsample(
-                feat_heigh, size=paddle.shape(feat_low)[2:4], mode="nearest")
+                feat_heigh, size=feat_low.shape[2:4], mode="nearest"
+            )
 
             inner_out = self.top_down_blocks[len(self.in_channels) - 1 - idx](
-                paddle.concat([upsample_feat, feat_low], 1))
+                paddle.concat([upsample_feat, feat_low], 1)
+            )
             inner_outs.insert(0, inner_out)
 
         # bottom-up path
@@ -317,8 +329,9 @@ class CSPPAN(nn.Layer):
             feat_low = outs[-1]
             feat_height = inner_outs[idx + 1]
             downsample_feat = self.downsamples[idx](feat_low)
-            out = self.bottom_up_blocks[idx](paddle.concat(
-                [downsample_feat, feat_height], 1))
+            out = self.bottom_up_blocks[idx](
+                paddle.concat([downsample_feat, feat_height], 1)
+            )
             outs.append(out)
 
         return tuple(outs)

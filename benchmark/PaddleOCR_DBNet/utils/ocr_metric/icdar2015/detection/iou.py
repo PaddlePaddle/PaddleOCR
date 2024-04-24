@@ -6,7 +6,7 @@ from shapely.geometry import Polygon
 import cv2
 
 
-def iou_rotate(box_a, box_b, method='union'):
+def iou_rotate(box_a, box_b, method="union"):
     rect_a = cv2.minAreaRect(box_a)
     rect_b = cv2.minAreaRect(box_b)
     r1 = cv2.rotatedRectangleIntersection(rect_a, rect_b)
@@ -19,9 +19,9 @@ def iou_rotate(box_a, box_b, method='union'):
         union_area = area_a + area_b - inter_area
         if union_area == 0 or inter_area == 0:
             return 0
-        if method == 'union':
+        if method == "union":
             iou = inter_area / union_area
-        elif method == 'intersection':
+        elif method == "intersection":
             iou = inter_area / min(area_a, area_b)
         else:
             raise NotImplementedError
@@ -29,10 +29,9 @@ def iou_rotate(box_a, box_b, method='union'):
 
 
 class DetectionIoUEvaluator(object):
-    def __init__(self,
-                 is_output_polygon=False,
-                 iou_constraint=0.5,
-                 area_precision_constraint=0.5):
+    def __init__(
+        self, is_output_polygon=False, iou_constraint=0.5, area_precision_constraint=0.5
+    ):
         self.is_output_polygon = is_output_polygon
         self.iou_constraint = iou_constraint
         self.area_precision_constraint = area_precision_constraint
@@ -71,7 +70,7 @@ class DetectionIoUEvaluator(object):
 
         matchedSum = 0
 
-        Rectangle = namedtuple('Rectangle', 'xmin ymin xmax ymax')
+        Rectangle = namedtuple("Rectangle", "xmin ymin xmax ymax")
 
         numGlobalCareGt = 0
         numGlobalCareDet = 0
@@ -107,9 +106,9 @@ class DetectionIoUEvaluator(object):
         evaluationLog = ""
 
         for n in range(len(gt)):
-            points = gt[n]['points']
+            points = gt[n]["points"]
             # transcription = gt[n]['text']
-            dontCare = gt[n]['ignore']
+            dontCare = gt[n]["ignore"]
 
             if not Polygon(points).is_valid or not Polygon(points).is_simple:
                 continue
@@ -120,12 +119,18 @@ class DetectionIoUEvaluator(object):
             if dontCare:
                 gtDontCarePolsNum.append(len(gtPols) - 1)
 
-        evaluationLog += "GT polygons: " + str(len(gtPols)) + (
-            " (" + str(len(gtDontCarePolsNum)) + " don't care)\n"
-            if len(gtDontCarePolsNum) > 0 else "\n")
+        evaluationLog += (
+            "GT polygons: "
+            + str(len(gtPols))
+            + (
+                " (" + str(len(gtDontCarePolsNum)) + " don't care)\n"
+                if len(gtDontCarePolsNum) > 0
+                else "\n"
+            )
+        )
 
         for n in range(len(pred)):
-            points = pred[n]['points']
+            points = pred[n]["points"]
             if not Polygon(points).is_valid or not Polygon(points).is_simple:
                 continue
 
@@ -137,14 +142,22 @@ class DetectionIoUEvaluator(object):
                     dontCarePol = gtPols[dontCarePol]
                     intersected_area = get_intersection(dontCarePol, detPol)
                     pdDimensions = Polygon(detPol).area
-                    precision = 0 if pdDimensions == 0 else intersected_area / pdDimensions
-                    if (precision > self.area_precision_constraint):
+                    precision = (
+                        0 if pdDimensions == 0 else intersected_area / pdDimensions
+                    )
+                    if precision > self.area_precision_constraint:
                         detDontCarePolsNum.append(len(detPols) - 1)
                         break
 
-        evaluationLog += "DET polygons: " + str(len(detPols)) + (
-            " (" + str(len(detDontCarePolsNum)) + " don't care)\n"
-            if len(detDontCarePolsNum) > 0 else "\n")
+        evaluationLog += (
+            "DET polygons: "
+            + str(len(detPols))
+            + (
+                " (" + str(len(detDontCarePolsNum)) + " don't care)\n"
+                if len(detDontCarePolsNum) > 0
+                else "\n"
+            )
+        )
 
         if len(gtPols) > 0 and len(detPols) > 0:
             # Calculate IoU and precision matrixs
@@ -157,8 +170,7 @@ class DetectionIoUEvaluator(object):
                     for detNum in range(len(detPols)):
                         pG = gtPols[gtNum]
                         pD = detPols[detNum]
-                        iouMat[gtNum, detNum] = get_intersection_over_union(pD,
-                                                                            pG)
+                        iouMat[gtNum, detNum] = get_intersection_over_union(pD, pG)
             else:
                 # gtPols = np.float32(gtPols)
                 # detPols = np.float32(detPols)
@@ -169,19 +181,28 @@ class DetectionIoUEvaluator(object):
                         iouMat[gtNum, detNum] = iou_rotate(pD, pG)
             for gtNum in range(len(gtPols)):
                 for detNum in range(len(detPols)):
-                    if gtRectMat[gtNum] == 0 and detRectMat[
-                            detNum] == 0 and gtNum not in gtDontCarePolsNum and detNum not in detDontCarePolsNum:
+                    if (
+                        gtRectMat[gtNum] == 0
+                        and detRectMat[detNum] == 0
+                        and gtNum not in gtDontCarePolsNum
+                        and detNum not in detDontCarePolsNum
+                    ):
                         if iouMat[gtNum, detNum] > self.iou_constraint:
                             gtRectMat[gtNum] = 1
                             detRectMat[detNum] = 1
                             detMatched += 1
-                            pairs.append({'gt': gtNum, 'det': detNum})
+                            pairs.append({"gt": gtNum, "det": detNum})
                             detMatchedNums.append(detNum)
-                            evaluationLog += "Match GT #" + \
-                                             str(gtNum) + " with Det #" + str(detNum) + "\n"
+                            evaluationLog += (
+                                "Match GT #"
+                                + str(gtNum)
+                                + " with Det #"
+                                + str(detNum)
+                                + "\n"
+                            )
 
-        numGtCare = (len(gtPols) - len(gtDontCarePolsNum))
-        numDetCare = (len(detPols) - len(detDontCarePolsNum))
+        numGtCare = len(gtPols) - len(gtDontCarePolsNum)
+        numDetCare = len(detPols) - len(detDontCarePolsNum)
         if numGtCare == 0:
             recall = float(1)
             precision = float(0) if numDetCare > 0 else float(1)
@@ -189,27 +210,30 @@ class DetectionIoUEvaluator(object):
             recall = float(detMatched) / numGtCare
             precision = 0 if numDetCare == 0 else float(detMatched) / numDetCare
 
-        hmean = 0 if (precision + recall) == 0 else 2.0 * \
-                                                    precision * recall / (precision + recall)
+        hmean = (
+            0
+            if (precision + recall) == 0
+            else 2.0 * precision * recall / (precision + recall)
+        )
 
         matchedSum += detMatched
         numGlobalCareGt += numGtCare
         numGlobalCareDet += numDetCare
 
         perSampleMetrics = {
-            'precision': precision,
-            'recall': recall,
-            'hmean': hmean,
-            'pairs': pairs,
-            'iouMat': [] if len(detPols) > 100 else iouMat.tolist(),
-            'gtPolPoints': gtPolPoints,
-            'detPolPoints': detPolPoints,
-            'gtCare': numGtCare,
-            'detCare': numDetCare,
-            'gtDontCare': gtDontCarePolsNum,
-            'detDontCare': detDontCarePolsNum,
-            'detMatched': detMatched,
-            'evaluationLog': evaluationLog
+            "precision": precision,
+            "recall": recall,
+            "hmean": hmean,
+            "pairs": pairs,
+            "iouMat": [] if len(detPols) > 100 else iouMat.tolist(),
+            "gtPolPoints": gtPolPoints,
+            "detPolPoints": detPolPoints,
+            "gtCare": numGtCare,
+            "detCare": numDetCare,
+            "gtDontCare": gtDontCarePolsNum,
+            "detDontCare": detDontCarePolsNum,
+            "detMatched": detMatched,
+            "evaluationLog": evaluationLog,
         }
 
         return perSampleMetrics
@@ -219,43 +243,56 @@ class DetectionIoUEvaluator(object):
         numGlobalCareDet = 0
         matchedSum = 0
         for result in results:
-            numGlobalCareGt += result['gtCare']
-            numGlobalCareDet += result['detCare']
-            matchedSum += result['detMatched']
+            numGlobalCareGt += result["gtCare"]
+            numGlobalCareDet += result["detCare"]
+            matchedSum += result["detMatched"]
 
-        methodRecall = 0 if numGlobalCareGt == 0 else float(
-            matchedSum) / numGlobalCareGt
-        methodPrecision = 0 if numGlobalCareDet == 0 else float(
-            matchedSum) / numGlobalCareDet
-        methodHmean = 0 if methodRecall + methodPrecision == 0 else 2 * \
-                                                                    methodRecall * methodPrecision / (
-                                                                            methodRecall + methodPrecision)
+        methodRecall = (
+            0 if numGlobalCareGt == 0 else float(matchedSum) / numGlobalCareGt
+        )
+        methodPrecision = (
+            0 if numGlobalCareDet == 0 else float(matchedSum) / numGlobalCareDet
+        )
+        methodHmean = (
+            0
+            if methodRecall + methodPrecision == 0
+            else 2 * methodRecall * methodPrecision / (methodRecall + methodPrecision)
+        )
 
         methodMetrics = {
-            'precision': methodPrecision,
-            'recall': methodRecall,
-            'hmean': methodHmean
+            "precision": methodPrecision,
+            "recall": methodRecall,
+            "hmean": methodHmean,
         }
 
         return methodMetrics
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     evaluator = DetectionIoUEvaluator()
-    preds = [[{
-        'points': [(0.1, 0.1), (0.5, 0), (0.5, 1), (0, 1)],
-        'text': 1234,
-        'ignore': False,
-    }, {
-        'points': [(0.5, 0.1), (1, 0), (1, 1), (0.5, 1)],
-        'text': 5678,
-        'ignore': False,
-    }]]
-    gts = [[{
-        'points': [(0.1, 0.1), (1, 0), (1, 1), (0, 1)],
-        'text': 123,
-        'ignore': False,
-    }]]
+    preds = [
+        [
+            {
+                "points": [(0.1, 0.1), (0.5, 0), (0.5, 1), (0, 1)],
+                "text": 1234,
+                "ignore": False,
+            },
+            {
+                "points": [(0.5, 0.1), (1, 0), (1, 1), (0.5, 1)],
+                "text": 5678,
+                "ignore": False,
+            },
+        ]
+    ]
+    gts = [
+        [
+            {
+                "points": [(0.1, 0.1), (1, 0), (1, 1), (0, 1)],
+                "text": 123,
+                "ignore": False,
+            }
+        ]
+    ]
     results = []
     for gt, pred in zip(gts, preds):
         results.append(evaluator.evaluate_image(gt, pred))

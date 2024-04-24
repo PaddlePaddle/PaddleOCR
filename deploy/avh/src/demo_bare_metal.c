@@ -27,9 +27,9 @@
 #include "inputs.h"
 #include "outputs.h"
 
-
-int main(int argc, char** argv) {
-  char dict[]={"#0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~!\"#$%&'()*+,-./  "};
+int main(int argc, char **argv) {
+  char dict[] = {"#0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+                 "abcdefghijklmnopqrstuvwxyz{|}~!\"#$%&'()*+,-./  "};
   int char_dict_nums = 97;
   uart_init();
   printf("Starting ocr rec inference\n");
@@ -44,17 +44,17 @@ int main(int argc, char** argv) {
 
   // post process
   int char_nums = output_len / char_dict_nums;
-  
+
   int last_index = 0;
   float score = 0.f;
   int count = 0;
-  
+
   printf("text: ");
   for (int i = 0; i < char_nums; i++) {
     int argmax_idx = 0;
     float max_value = 0.0f;
-    for (int j = 0; j < char_dict_nums; j++){
-      if (output[i * char_dict_nums + j] > max_value){
+    for (int j = 0; j < char_dict_nums; j++) {
+      if (output[i * char_dict_nums + j] > max_value) {
         max_value = output[i * char_dict_nums + j];
         argmax_idx = j;
       }
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
   }
   score /= count;
   printf(", score: %f\n", score);
-  
+
   // The FVP will shut down when it receives "EXITTHESIM" on the UART
   printf("EXITTHESIM\n");
   while (1 == 1)

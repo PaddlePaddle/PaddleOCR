@@ -21,7 +21,7 @@ Paper:
 > Darwin Bautista, Rowel Atienza
 > ECCV, 2021
 
-Using real datasets (real) and synthetic datsets (synth) for training respectively，and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets. 
+Using real datasets (real) and synthetic datsets (synth) for training respectively，and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets.
 - The real datasets include COCO-Text, RCTW17, Uber-Text, ArT, LSVT, MLT19, ReCTS, TextOCR and OpenVINO datasets.
 - The synthesis datasets include MJSynth and SynthText datasets.
 

@@ -20,26 +20,30 @@ import os
 def parse_arguments():
     import argparse
     import ast
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--det_model", required=True, help="Path of Detection model of PPOCR.")
+        "--det_model", required=True, help="Path of Detection model of PPOCR."
+    )
     parser.add_argument(
-        "--image", type=str, required=True, help="Path of test image file.")
+        "--image", type=str, required=True, help="Path of test image file."
+    )
     parser.add_argument(
         "--device",
         type=str,
-        default='cpu',
-        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.")
+        default="cpu",
+        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.",
+    )
     parser.add_argument(
         "--device_id",
         type=int,
         default=0,
-        help="Define which GPU card used to run model.")
+        help="Define which GPU card used to run model.",
+    )
     return parser.parse_args()
 
 
 def build_option(args):
-
     det_option = fd.RuntimeOption()
 
     if args.device.lower() == "gpu":
@@ -58,7 +62,8 @@ det_option = build_option(args)
 
 # Create the det_model
 det_model = fd.vision.ocr.DBDetector(
-    det_model_file, det_params_file, runtime_option=det_option)
+    det_model_file, det_params_file, runtime_option=det_option
+)
 
 # Set the preporcessing parameters
 det_model.preprocessor.max_side_len = 960

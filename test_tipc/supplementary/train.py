@@ -3,6 +3,7 @@ import numpy as np
 import os
 import paddle.nn as nn
 import paddle.distributed as dist
+
 dist.get_world_size()
 dist.init_parallel_env()
 
@@ -30,54 +31,50 @@ def _mkdir_if_not_exist(path, logger):
         except OSError as e:
             if e.errno == errno.EEXIST and os.path.isdir(path):
                 logger.warning(
-                    'be happy if some process has already created {}'.format(
-                        path))
+                    "be happy if some process has already created {}".format(path)
+                )
             else:
-                raise OSError('Failed to mkdir {}'.format(path))
+                raise OSError("Failed to mkdir {}".format(path))
 
 
-def save_model(model,
-               optimizer,
-               model_path,
-               logger,
-               is_best=False,
-               prefix='ppocr',
-               **kwargs):
+def save_model(
+    model, optimizer, model_path, logger, is_best=False, prefix="ppocr", **kwargs
+):
     """
     save model to the target path
     """
     _mkdir_if_not_exist(model_path, logger)
     model_prefix = os.path.join(model_path, prefix)
-    paddle.save(model.state_dict(), model_prefix + '.pdparams')
+    paddle.save(model.state_dict(), model_prefix + ".pdparams")
     if type(optimizer) is list:
-        paddle.save(optimizer[0].state_dict(), model_prefix + '.pdopt')
-        paddle.save(optimizer[1].state_dict(), model_prefix + "_1" + '.pdopt')
+        paddle.save(optimizer[0].state_dict(), model_prefix + ".pdopt")
+        paddle.save(optimizer[1].state_dict(), model_prefix + "_1" + ".pdopt")
 
     else:
-        paddle.save(optimizer.state_dict(), model_prefix + '.pdopt')
+        paddle.save(optimizer.state_dict(), model_prefix + ".pdopt")
 
     # # save metric and config
     # with open(model_prefix + '.states', 'wb') as f:
     #     pickle.dump(kwargs, f, protocol=2)
     if is_best:
-        logger.info('save best model is to {}'.format(model_prefix))
+        logger.info("save best model is to {}".format(model_prefix))
     else:
         logger.info("save model in {}".format(model_prefix))
 
 
 def amp_scaler(config):
-    if 'AMP' in config and config['AMP']['use_amp'] is True:
+    if "AMP" in config and config["AMP"]["use_amp"] is True:
         AMP_RELATED_FLAGS_SETTING = {
-            'FLAGS_cudnn_batchnorm_spatial_persistent': 1,
-            'FLAGS_max_inplace_grad_add': 8,
+            "FLAGS_cudnn_batchnorm_spatial_persistent": 1,
+            "FLAGS_max_inplace_grad_add": 8,
         }
         paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["AMP"].get("scale_loss", 1.0)
-        use_dynamic_loss_scaling = config["AMP"].get("use_dynamic_loss_scaling",
-                                                     False)
+        use_dynamic_loss_scaling = config["AMP"].get("use_dynamic_loss_scaling", False)
         scaler = paddle.amp.GradScaler(
             init_loss_scaling=scale_loss,
-            use_dynamic_loss_scaling=use_dynamic_loss_scaling)
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling,
+        )
         return scaler
     else:
         return None
@@ -89,13 +86,14 @@ def set_seed(seed):
 
 
 def train(config, scaler=None):
-    EPOCH = config['epoch']
-    topk = config['topk']
+    EPOCH = config["epoch"]
+    topk = config["topk"]
 
-    batch_size = config['TRAIN']['batch_size']
-    num_workers = config['TRAIN']['num_workers']
+    batch_size = config["TRAIN"]["batch_size"]
+    num_workers = config["TRAIN"]["num_workers"]
     train_loader = build_dataloader(
-        'train', batch_size=batch_size, num_workers=num_workers)
+        "train", batch_size=batch_size, num_workers=num_workers
+    )
 
     # build metric
     metric_func = create_metric
@@ -104,22 +102,24 @@ def train(config, scaler=None):
     # model = MobileNetV3_large_x0_5(class_dim=100)
     model = build_model(config)
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
-        config, parameter_list=model.parameters())
+        config, parameter_list=model.parameters()
+    )
 
     # load model
     pre_best_model_dict = load_model(config, model, optimizer)
     if len(pre_best_model_dict) > 0:
-        pre_str = 'The metric of loaded metric as follows {}'.format(', '.join(
-            ['{}: {}'.format(k, v) for k, v in pre_best_model_dict.items()]))
+        pre_str = "The metric of loaded metric as follows {}".format(
+            ", ".join(["{}: {}".format(k, v) for k, v in pre_best_model_dict.items()])
+        )
         logger.info(pre_str)
 
     # about slim prune and quant
-    if "quant_train" in config and config['quant_train'] is True:
+    if "quant_train" in config and config["quant_train"] is True:
         quanter = QAT(config=quant_config, act_preprocess=PACT)
         quanter.quantize(model)
-    elif "prune_train" in config and config['prune_train'] is True:
+    elif "prune_train" in config and config["prune_train"] is True:
         model = prune_model(model, [1, 3, 32, 32], 0.1)
     else:
         pass
@@ -146,7 +146,7 @@ def train(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
+            # cal metric
             acc = metric_func(outs, label)
 
             # cal loss
@@ -169,16 +169,18 @@ def train(config, scaler=None):
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
                 strs += f"loss: {float(avg_loss)}"
-                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                strs += (
+                    f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                )
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model)
-            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc["top5"]) > best_acc["top5"]:
                 best_acc = acc
-                best_acc['epoch'] = epoch
+                best_acc["epoch"] = epoch
                 is_best = True
             else:
                 is_best = False
@@ -188,20 +190,22 @@ def train(config, scaler=None):
             save_model(
                 model,
                 optimizer,
-                config['save_model_dir'],
+                config["save_model_dir"],
                 logger,
                 is_best,
-                prefix="cls")
+                prefix="cls",
+            )
 
 
 def train_distill(config, scaler=None):
-    EPOCH = config['epoch']
-    topk = config['topk']
+    EPOCH = config["epoch"]
+    topk = config["topk"]
 
-    batch_size = config['TRAIN']['batch_size']
-    num_workers = config['TRAIN']['num_workers']
+    batch_size = config["TRAIN"]["batch_size"]
+    num_workers = config["TRAIN"]["num_workers"]
     train_loader = build_dataloader(
-        'train', batch_size=batch_size, num_workers=num_workers)
+        "train", batch_size=batch_size, num_workers=num_workers
+    )
 
     # build metric
     metric_func = create_metric
@@ -210,32 +214,34 @@ def train_distill(config, scaler=None):
     model = build_model(config)
 
     # pact quant train
-    if "quant_train" in config and config['quant_train'] is True:
+    if "quant_train" in config and config["quant_train"] is True:
         quanter = QAT(config=quant_config, act_preprocess=PACT)
         quanter.quantize(model)
-    elif "prune_train" in config and config['prune_train'] is True:
+    elif "prune_train" in config and config["prune_train"] is True:
         model = prune_model(model, [1, 3, 32, 32], 0.1)
     else:
         pass
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
-        config, parameter_list=model.parameters())
+        config, parameter_list=model.parameters()
+    )
 
     # load model
     pre_best_model_dict = load_model(config, model, optimizer)
     if len(pre_best_model_dict) > 0:
-        pre_str = 'The metric of loaded metric as follows {}'.format(', '.join(
-            ['{}: {}'.format(k, v) for k, v in pre_best_model_dict.items()]))
+        pre_str = "The metric of loaded metric as follows {}".format(
+            ", ".join(["{}: {}".format(k, v) for k, v in pre_best_model_dict.items()])
+        )
         logger.info(pre_str)
 
     model.train()
     model = paddle.DataParallel(model)
 
     # build loss function
-    loss_func_distill = LossDistill(model_name_list=['student', 'student1'])
-    loss_func_dml = DMLLoss(model_name_pairs=['student', 'student1'])
-    loss_func_js = KLJSLoss(mode='js')
+    loss_func_distill = LossDistill(model_name_list=["student", "student1"])
+    loss_func_dml = DMLLoss(model_name_pairs=["student", "student1"])
+    loss_func_js = KLJSLoss(mode="js")
 
     data_num = len(train_loader)
 
@@ -252,13 +258,15 @@ def train_distill(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
-            acc = metric_func(outs['student'], label)
+            # cal metric
+            acc = metric_func(outs["student"], label)
 
             # cal loss
-            avg_loss = loss_func_distill(outs, label)['student'] + \
-                       loss_func_distill(outs, label)['student1'] + \
-                       loss_func_dml(outs, label)['student_student1']
+            avg_loss = (
+                loss_func_distill(outs, label)["student"]
+                + loss_func_distill(outs, label)["student1"]
+                + loss_func_dml(outs, label)["student_student1"]
+            )
 
             # backward
             if scaler is None:
@@ -277,16 +285,18 @@ def train_distill(config, scaler=None):
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
                 strs += f"loss: {float(avg_loss)}"
-                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                strs += (
+                    f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                )
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model._layers.student)
-            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc["top5"]) > best_acc["top5"]:
                 best_acc = acc
-                best_acc['epoch'] = epoch
+                best_acc["epoch"] = epoch
                 is_best = True
             else:
                 is_best = False
@@ -297,20 +307,22 @@ def train_distill(config, scaler=None):
             save_model(
                 model,
                 optimizer,
-                config['save_model_dir'],
+                config["save_model_dir"],
                 logger,
                 is_best,
-                prefix="cls_distill")
+                prefix="cls_distill",
+            )
 
 
 def train_distill_multiopt(config, scaler=None):
-    EPOCH = config['epoch']
-    topk = config['topk']
+    EPOCH = config["epoch"]
+    topk = config["topk"]
 
-    batch_size = config['TRAIN']['batch_size']
-    num_workers = config['TRAIN']['num_workers']
+    batch_size = config["TRAIN"]["batch_size"]
+    num_workers = config["TRAIN"]["num_workers"]
     train_loader = build_dataloader(
-        'train', batch_size=batch_size, num_workers=num_workers)
+        "train", batch_size=batch_size, num_workers=num_workers
+    )
 
     # build metric
     metric_func = create_metric
@@ -318,24 +330,27 @@ def train_distill_multiopt(config, scaler=None):
     # model = distillmv3_large_x0_5(class_dim=100)
     model = build_model(config)
 
-    # build_optimizer 
+    # build_optimizer
     optimizer, lr_scheduler = create_optimizer(
-        config, parameter_list=model.student.parameters())
+        config, parameter_list=model.student.parameters()
+    )
     optimizer1, lr_scheduler1 = create_optimizer(
-        config, parameter_list=model.student1.parameters())
+        config, parameter_list=model.student1.parameters()
+    )
 
     # load model
     pre_best_model_dict = load_model(config, model, optimizer)
     if len(pre_best_model_dict) > 0:
-        pre_str = 'The metric of loaded metric as follows {}'.format(', '.join(
-            ['{}: {}'.format(k, v) for k, v in pre_best_model_dict.items()]))
+        pre_str = "The metric of loaded metric as follows {}".format(
+            ", ".join(["{}: {}".format(k, v) for k, v in pre_best_model_dict.items()])
+        )
         logger.info(pre_str)
 
     # quant train
-    if "quant_train" in config and config['quant_train'] is True:
+    if "quant_train" in config and config["quant_train"] is True:
         quanter = QAT(config=quant_config, act_preprocess=PACT)
         quanter.quantize(model)
-    elif "prune_train" in config and config['prune_train'] is True:
+    elif "prune_train" in config and config["prune_train"] is True:
         model = prune_model(model, [1, 3, 32, 32], 0.1)
     else:
         pass
@@ -345,9 +360,9 @@ def train_distill_multiopt(config, scaler=None):
     model = paddle.DataParallel(model)
 
     # build loss function
-    loss_func_distill = LossDistill(model_name_list=['student', 'student1'])
-    loss_func_dml = DMLLoss(model_name_pairs=['student', 'student1'])
-    loss_func_js = KLJSLoss(mode='js')
+    loss_func_distill = LossDistill(model_name_list=["student", "student1"])
+    loss_func_dml = DMLLoss(model_name_pairs=["student", "student1"])
+    loss_func_js = KLJSLoss(mode="js")
 
     data_num = len(train_loader)
     best_acc = {}
@@ -364,16 +379,18 @@ def train_distill_multiopt(config, scaler=None):
             else:
                 outs = model(img_batch)
 
-            # cal metric 
-            acc = metric_func(outs['student'], label)
+            # cal metric
+            acc = metric_func(outs["student"], label)
 
             # cal loss
-            avg_loss = loss_func_distill(outs,
-                                         label)['student'] + loss_func_dml(
-                                             outs, label)['student_student1']
-            avg_loss1 = loss_func_distill(outs,
-                                          label)['student1'] + loss_func_dml(
-                                              outs, label)['student_student1']
+            avg_loss = (
+                loss_func_distill(outs, label)["student"]
+                + loss_func_dml(outs, label)["student_student1"]
+            )
+            avg_loss1 = (
+                loss_func_distill(outs, label)["student1"]
+                + loss_func_dml(outs, label)["student_student1"]
+            )
 
             if scaler is None:
                 # backward
@@ -402,16 +419,18 @@ def train_distill_multiopt(config, scaler=None):
                 et = time.time()
                 strs = f"epoch: [{epoch}/{EPOCH}], iter: [{idx}/{data_num}], "
                 strs += f"loss: {float(avg_loss)}, loss1: {float(avg_loss1)}"
-                strs += f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                strs += (
+                    f", acc_topk1: {float(acc['top1'])}, acc_top5: {float(acc['top5'])}"
+                )
                 strs += f", batch_time: {round(et-st, 4)} s"
                 logger.info(strs)
                 st = time.time()
 
         if epoch % 10 == 0:
             acc = eval(config, model._layers.student)
-            if len(best_acc) < 1 or float(acc['top5']) > best_acc['top5']:
+            if len(best_acc) < 1 or float(acc["top5"]) > best_acc["top5"]:
                 best_acc = acc
-                best_acc['epoch'] = epoch
+                best_acc["epoch"] = epoch
                 is_best = True
             else:
                 is_best = False
@@ -419,18 +438,21 @@ def train_distill_multiopt(config, scaler=None):
                 f"The best acc: acc_topk1: {float(best_acc['top1'])}, acc_top5: {float(best_acc['top5'])}, best_epoch: {best_acc['epoch']}"
             )
             save_model(
-                model, [optimizer, optimizer1],
-                config['save_model_dir'],
+                model,
+                [optimizer, optimizer1],
+                config["save_model_dir"],
                 logger,
                 is_best,
-                prefix="cls_distill_multiopt")
+                prefix="cls_distill_multiopt",
+            )
 
 
 def eval(config, model):
-    batch_size = config['VALID']['batch_size']
-    num_workers = config['VALID']['num_workers']
+    batch_size = config["VALID"]["batch_size"]
+    num_workers = config["VALID"]["num_workers"]
     valid_loader = build_dataloader(
-        'test', batch_size=batch_size, num_workers=num_workers)
+        "test", batch_size=batch_size, num_workers=num_workers
+    )
 
     # build metric
     metric_func = create_metric
@@ -456,13 +478,12 @@ def eval(config, model):
 
 
 if __name__ == "__main__":
-
     config, logger = preprocess(is_train=False)
 
     # AMP scaler
     scaler = amp_scaler(config)
 
-    model_type = config['model_type']
+    model_type = config["model_type"]
 
     if model_type == "cls":
         train(config)

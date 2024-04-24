@@ -14,11 +14,12 @@
 import os
 import sys
 from PIL import Image
+
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, __dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "../..")))
 
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["FLAGS_allocator_strategy"] = "auto_growth"
 
 import cv2
 import numpy as np
@@ -40,11 +41,16 @@ class TextSR(object):
         self.sr_image_shape = [int(v) for v in args.sr_image_shape.split(",")]
         self.sr_batch_num = args.sr_batch_num
 
-        self.predictor, self.input_tensor, self.output_tensors, self.config = \
-            utility.create_predictor(args, 'sr', logger)
+        (
+            self.predictor,
+            self.input_tensor,
+            self.output_tensors,
+            self.config,
+        ) = utility.create_predictor(args, "sr", logger)
         self.benchmark = args.benchmark
         if args.benchmark:
             import auto_log
+
             pid = os.getpid()
             gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
@@ -52,16 +58,15 @@ class TextSR(object):
                 model_precision=args.precision,
                 batch_size=args.sr_batch_num,
                 data_shape="dynamic",
-                save_path=None,  #args.save_log_path,
+                save_path=None,  # args.save_log_path,
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
                 gpu_ids=gpu_id if args.use_gpu else None,
-                time_keys=[
-                    'preprocess_time', 'inference_time', 'postprocess_time'
-                ],
+                time_keys=["preprocess_time", "inference_time", "postprocess_time"],
                 warmup=0,
-                logger=logger)
+                logger=logger,
+            )
 
     def resize_norm_img(self, img):
         imgC, imgH, imgW = self.sr_image_shape
@@ -133,15 +138,20 @@ def main(args):
         for beg_no in range(len(preds)):
             sr_img = preds[beg_no][1]
             lr_img = preds[beg_no][0]
-            for i in (range(sr_img.shape[0])):
+            for i in range(sr_img.shape[0]):
                 fm_sr = (sr_img[i] * 255).transpose(1, 2, 0).astype(np.uint8)
                 fm_lr = (lr_img[i] * 255).transpose(1, 2, 0).astype(np.uint8)
-                img_name_pure = os.path.split(valid_image_file_list[
-                    beg_no * args.sr_batch_num + i])[-1]
-                cv2.imwrite("infer_result/sr_{}".format(img_name_pure),
-                            fm_sr[:, :, ::-1])
-                logger.info("The visualized image saved in infer_result/sr_{}".
-                            format(img_name_pure))
+                img_name_pure = os.path.split(
+                    valid_image_file_list[beg_no * args.sr_batch_num + i]
+                )[-1]
+                cv2.imwrite(
+                    "infer_result/sr_{}".format(img_name_pure), fm_sr[:, :, ::-1]
+                )
+                logger.info(
+                    "The visualized image saved in infer_result/sr_{}".format(
+                        img_name_pure
+                    )
+                )
 
     except Exception as E:
         logger.info(traceback.format_exc())

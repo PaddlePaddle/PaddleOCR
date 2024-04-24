@@ -24,7 +24,6 @@ BB = QDialogButtonBox
 
 
 class LabelDialog(QDialog):
-
     def __init__(self, text="Enter object label", parent=None, listItem=None):
         super(LabelDialog, self).__init__(parent)
 
@@ -43,8 +42,8 @@ class LabelDialog(QDialog):
         layout = QVBoxLayout()
         layout.addWidget(self.edit)
         self.buttonBox = bb = BB(BB.Ok | BB.Cancel, Qt.Horizontal, self)
-        bb.button(BB.Ok).setIcon(newIcon('done'))
-        bb.button(BB.Cancel).setIcon(newIcon('undo'))
+        bb.button(BB.Ok).setIcon(newIcon("done"))
+        bb.button(BB.Cancel).setIcon(newIcon("undo"))
         bb.accepted.connect(self.validate)
         bb.rejected.connect(self.reject)
         layout.addWidget(bb)
@@ -77,15 +76,23 @@ class LabelDialog(QDialog):
             self.edit.setText(self.edit.text())
             print(self.edit.text())
 
-    def popUp(self, text='', move=True):
+    def popUp(self, text="", move=True):
         self.edit.setText(text)
         self.edit.setSelection(0, len(text))
         self.edit.setFocus(Qt.PopupFocusReason)
         if move:
             cursor_pos = QCursor.pos()
             parent_bottomRight = self.parentWidget().geometry()
-            max_x = parent_bottomRight.x() + parent_bottomRight.width() - self.sizeHint().width()
-            max_y = parent_bottomRight.y() + parent_bottomRight.height() - self.sizeHint().height()
+            max_x = (
+                parent_bottomRight.x()
+                + parent_bottomRight.width()
+                - self.sizeHint().width()
+            )
+            max_y = (
+                parent_bottomRight.y()
+                + parent_bottomRight.height()
+                - self.sizeHint().height()
+            )
             max_global = self.parentWidget().mapToGlobal(QPoint(max_x, max_y))
             if cursor_pos.x() > max_global.x():
                 cursor_pos.setX(max_global.x())

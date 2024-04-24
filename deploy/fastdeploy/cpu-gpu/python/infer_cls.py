@@ -20,28 +20,30 @@ import os
 def parse_arguments():
     import argparse
     import ast
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--cls_model",
-        required=True,
-        help="Path of Classification model of PPOCR.")
+        "--cls_model", required=True, help="Path of Classification model of PPOCR."
+    )
     parser.add_argument(
-        "--image", type=str, required=True, help="Path of test image file.")
+        "--image", type=str, required=True, help="Path of test image file."
+    )
     parser.add_argument(
         "--device",
         type=str,
-        default='cpu',
-        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.")
+        default="cpu",
+        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.",
+    )
     parser.add_argument(
         "--device_id",
         type=int,
         default=0,
-        help="Define which GPU card used to run model.")
+        help="Define which GPU card used to run model.",
+    )
     return parser.parse_args()
 
 
 def build_option(args):
-
     cls_option = fd.RuntimeOption()
 
     if args.device.lower() == "gpu":
@@ -60,7 +62,8 @@ cls_option = build_option(args)
 
 # Create the cls_model
 cls_model = fd.vision.ocr.Classifier(
-    cls_model_file, cls_params_file, runtime_option=cls_option)
+    cls_model_file, cls_params_file, runtime_option=cls_option
+)
 
 # Set the postprocessing parameters
 cls_model.postprocessor.cls_thresh = 0.9

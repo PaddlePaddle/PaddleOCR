@@ -44,7 +44,7 @@ class Loss(object):
 
 
 def build_loss(config, epsilon=None):
-    class_dim = config['class_dim']
+    class_dim = config["class_dim"]
     loss_func = Loss(class_dim=class_dim, epsilon=epsilon)
     return loss_func
 
@@ -72,9 +72,13 @@ class LossDistill(Loss):
 
 
 class KLJSLoss(object):
-    def __init__(self, mode='kl'):
-        assert mode in ['kl', 'js', 'KL', 'JS'
-                        ], "mode can only be one of ['kl', 'js', 'KL', 'JS']"
+    def __init__(self, mode="kl"):
+        assert mode in [
+            "kl",
+            "js",
+            "KL",
+            "JS",
+        ], "mode can only be one of ['kl', 'js', 'KL', 'JS']"
         self.mode = mode
 
     def __call__(self, p1, p2, reduction="mean"):
@@ -84,8 +88,7 @@ class KLJSLoss(object):
         loss = paddle.multiply(p2, paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
 
         if self.mode.lower() == "js":
-            loss += paddle.multiply(
-                p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
+            loss += paddle.multiply(p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
             loss *= 0.5
         if reduction == "mean":
             loss = paddle.mean(loss)
@@ -97,8 +100,7 @@ class KLJSLoss(object):
 
 
 class DMLLoss(object):
-    def __init__(self, model_name_pairs, mode='js'):
-
+    def __init__(self, model_name_pairs, mode="js"):
         self.model_name_pairs = self._check_model_name_pairs(model_name_pairs)
         self.kljs_loss = KLJSLoss(mode=mode)
 
@@ -106,7 +108,8 @@ class DMLLoss(object):
         if not isinstance(model_name_pairs, list):
             return []
         elif isinstance(model_name_pairs[0], list) and isinstance(
-                model_name_pairs[0][0], str):
+            model_name_pairs[0][0], str
+        ):
             return model_name_pairs
         else:
             return [model_name_pairs]

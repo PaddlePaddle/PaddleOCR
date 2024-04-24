@@ -23,11 +23,26 @@ from .random_crop_data import EastRandomCropData, RandomCropImgMask
 from .make_pse_gt import MakePseGt
 
 
-
-from .rec_img_aug import BaseDataAugmentation, RecAug, RecConAug, RecResizeImg, ClsResizeImg, \
-    SRNRecResizeImg, GrayRecResizeImg, SARRecResizeImg, PRENResizeImg, \
-    ABINetRecResizeImg, SVTRRecResizeImg, ABINetRecAug, VLRecResizeImg, SPINRecResizeImg, RobustScannerRecResizeImg, \
-    RFLRecResizeImg, SVTRRecAug, ParseQRecAug
+from .rec_img_aug import (
+    BaseDataAugmentation,
+    RecAug,
+    RecConAug,
+    RecResizeImg,
+    ClsResizeImg,
+    SRNRecResizeImg,
+    GrayRecResizeImg,
+    SARRecResizeImg,
+    PRENResizeImg,
+    ABINetRecResizeImg,
+    SVTRRecResizeImg,
+    ABINetRecAug,
+    VLRecResizeImg,
+    SPINRecResizeImg,
+    RobustScannerRecResizeImg,
+    RFLRecResizeImg,
+    SVTRRecAug,
+    ParseQRecAug,
+)
 from .ssl_img_aug import SSLRotateResize
 from .randaugment import RandAugment
 from .copy_paste import CopyPaste
@@ -49,7 +64,7 @@ from .drrg_targets import DRRGTargets
 
 
 def transform(data, ops=None):
-    """ transform """
+    """transform"""
     if ops is None:
         ops = []
     for op in ops:
@@ -66,11 +81,10 @@ def create_operators(op_param_list, global_config=None):
     Args:
         params(list): a dict list, used to create some operators
     """
-    assert isinstance(op_param_list, list), ('operator config should be a list')
+    assert isinstance(op_param_list, list), "operator config should be a list"
     ops = []
     for operator in op_param_list:
-        assert isinstance(operator,
-                          dict) and len(operator) == 1, "yaml format error"
+        assert isinstance(operator, dict) and len(operator) == 1, "yaml format error"
         op_name = list(operator)[0]
         param = {} if operator[op_name] is None else operator[op_name]
         if global_config is not None:

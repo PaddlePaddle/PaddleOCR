@@ -23,15 +23,17 @@ from paddle import ParamAttr
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -42,16 +44,18 @@ class ConvBNLayer(nn.Layer):
             stride=stride,
             padding=(kernel_size - 1) // 2,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
-  
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
+
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
             act=act,
             param_attr=ParamAttr(name="bn_" + name + "_scale"),
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
-            moving_variance_name="bn_" + name + "_variance")
+            moving_variance_name="bn_" + name + "_variance",
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -60,15 +64,17 @@ class ConvBNLayer(nn.Layer):
 
 
 class DeConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(DeConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -79,15 +85,17 @@ class DeConvBNLayer(nn.Layer):
             stride=stride,
             padding=(kernel_size - 1) // 2,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
             act=act,
             param_attr=ParamAttr(name="bn_" + name + "_scale"),
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
-            moving_variance_name="bn_" + name + "_variance")
+            moving_variance_name="bn_" + name + "_variance",
+        )
 
     def forward(self, x):
         x = self.deconv(x)
@@ -100,31 +108,64 @@ class FPN_Up_Fusion(nn.Layer):
         super(FPN_Up_Fusion, self).__init__()
         in_channels = in_channels[::-1]
         out_channels = [256, 256, 192, 192, 128]
-                
-        self.h0_conv = ConvBNLayer(in_channels[0], out_channels[0], 1, 1, act=None, name='fpn_up_h0')
-        self.h1_conv = ConvBNLayer(in_channels[1], out_channels[1], 1, 1, act=None, name='fpn_up_h1')
-        self.h2_conv = ConvBNLayer(in_channels[2], out_channels[2], 1, 1, act=None, name='fpn_up_h2')
-        self.h3_conv = ConvBNLayer(in_channels[3], out_channels[3], 1, 1, act=None, name='fpn_up_h3')
-        self.h4_conv = ConvBNLayer(in_channels[4], out_channels[4], 1, 1, act=None, name='fpn_up_h4')
 
-        self.g0_conv = DeConvBNLayer(out_channels[0], out_channels[1], 4, 2, act=None, name='fpn_up_g0')
+        self.h0_conv = ConvBNLayer(
+            in_channels[0], out_channels[0], 1, 1, act=None, name="fpn_up_h0"
+        )
+        self.h1_conv = ConvBNLayer(
+            in_channels[1], out_channels[1], 1, 1, act=None, name="fpn_up_h1"
+        )
+        self.h2_conv = ConvBNLayer(
+            in_channels[2], out_channels[2], 1, 1, act=None, name="fpn_up_h2"
+        )
+        self.h3_conv = ConvBNLayer(
+            in_channels[3], out_channels[3], 1, 1, act=None, name="fpn_up_h3"
+        )
+        self.h4_conv = ConvBNLayer(
+            in_channels[4], out_channels[4], 1, 1, act=None, name="fpn_up_h4"
+        )
+
+        self.g0_conv = DeConvBNLayer(
+            out_channels[0], out_channels[1], 4, 2, act=None, name="fpn_up_g0"
+        )
 
         self.g1_conv = nn.Sequential(
-            ConvBNLayer(out_channels[1], out_channels[1], 3, 1, act='relu', name='fpn_up_g1_1'),
-            DeConvBNLayer(out_channels[1], out_channels[2], 4, 2, act=None, name='fpn_up_g1_2')
+            ConvBNLayer(
+                out_channels[1], out_channels[1], 3, 1, act="relu", name="fpn_up_g1_1"
+            ),
+            DeConvBNLayer(
+                out_channels[1], out_channels[2], 4, 2, act=None, name="fpn_up_g1_2"
+            ),
         )
         self.g2_conv = nn.Sequential(
-            ConvBNLayer(out_channels[2], out_channels[2], 3, 1, act='relu', name='fpn_up_g2_1'),
-            DeConvBNLayer(out_channels[2], out_channels[3], 4, 2, act=None, name='fpn_up_g2_2')
+            ConvBNLayer(
+                out_channels[2], out_channels[2], 3, 1, act="relu", name="fpn_up_g2_1"
+            ),
+            DeConvBNLayer(
+                out_channels[2], out_channels[3], 4, 2, act=None, name="fpn_up_g2_2"
+            ),
         )
         self.g3_conv = nn.Sequential(
-            ConvBNLayer(out_channels[3], out_channels[3], 3, 1, act='relu', name='fpn_up_g3_1'),
-            DeConvBNLayer(out_channels[3], out_channels[4], 4, 2, act=None, name='fpn_up_g3_2')
+            ConvBNLayer(
+                out_channels[3], out_channels[3], 3, 1, act="relu", name="fpn_up_g3_1"
+            ),
+            DeConvBNLayer(
+                out_channels[3], out_channels[4], 4, 2, act=None, name="fpn_up_g3_2"
+            ),
         )
 
         self.g4_conv = nn.Sequential(
-            ConvBNLayer(out_channels[4], out_channels[4], 3, 1, act='relu', name='fpn_up_fusion_1'),
-            ConvBNLayer(out_channels[4], out_channels[4], 1, 1, act=None, name='fpn_up_fusion_2')
+            ConvBNLayer(
+                out_channels[4],
+                out_channels[4],
+                3,
+                1,
+                act="relu",
+                name="fpn_up_fusion_1",
+            ),
+            ConvBNLayer(
+                out_channels[4], out_channels[4], 1, 1, act=None, name="fpn_up_fusion_2"
+            ),
         )
 
     def _add_relu(self, x1, x2):
@@ -155,20 +196,46 @@ class FPN_Down_Fusion(nn.Layer):
         super(FPN_Down_Fusion, self).__init__()
         out_channels = [32, 64, 128]
 
-        self.h0_conv = ConvBNLayer(in_channels[0], out_channels[0], 3, 1, act=None, name='fpn_down_h0')
-        self.h1_conv = ConvBNLayer(in_channels[1], out_channels[1], 3, 1, act=None, name='fpn_down_h1')
-        self.h2_conv = ConvBNLayer(in_channels[2], out_channels[2], 3, 1, act=None, name='fpn_down_h2')
+        self.h0_conv = ConvBNLayer(
+            in_channels[0], out_channels[0], 3, 1, act=None, name="fpn_down_h0"
+        )
+        self.h1_conv = ConvBNLayer(
+            in_channels[1], out_channels[1], 3, 1, act=None, name="fpn_down_h1"
+        )
+        self.h2_conv = ConvBNLayer(
+            in_channels[2], out_channels[2], 3, 1, act=None, name="fpn_down_h2"
+        )
 
-        self.g0_conv = ConvBNLayer(out_channels[0], out_channels[1], 3, 2, act=None, name='fpn_down_g0')
+        self.g0_conv = ConvBNLayer(
+            out_channels[0], out_channels[1], 3, 2, act=None, name="fpn_down_g0"
+        )
 
         self.g1_conv = nn.Sequential(
-            ConvBNLayer(out_channels[1], out_channels[1], 3, 1, act='relu', name='fpn_down_g1_1'),
-            ConvBNLayer(out_channels[1], out_channels[2], 3, 2, act=None, name='fpn_down_g1_2')            
+            ConvBNLayer(
+                out_channels[1], out_channels[1], 3, 1, act="relu", name="fpn_down_g1_1"
+            ),
+            ConvBNLayer(
+                out_channels[1], out_channels[2], 3, 2, act=None, name="fpn_down_g1_2"
+            ),
         )
 
         self.g2_conv = nn.Sequential(
-            ConvBNLayer(out_channels[2], out_channels[2], 3, 1, act='relu', name='fpn_down_fusion_1'),
-            ConvBNLayer(out_channels[2], out_channels[2], 1, 1, act=None, name='fpn_down_fusion_2')            
+            ConvBNLayer(
+                out_channels[2],
+                out_channels[2],
+                3,
+                1,
+                act="relu",
+                name="fpn_down_fusion_1",
+            ),
+            ConvBNLayer(
+                out_channels[2],
+                out_channels[2],
+                1,
+                1,
+                act=None,
+                name="fpn_down_fusion_2",
+            ),
         )
 
     def forward(self, x):
@@ -189,40 +256,55 @@ class FPN_Down_Fusion(nn.Layer):
 class Cross_Attention(nn.Layer):
     def __init__(self, in_channels):
         super(Cross_Attention, self).__init__()
-        self.theta_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act='relu', name='f_theta')
-        self.phi_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act='relu', name='f_phi')
-        self.g_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act='relu', name='f_g')
+        self.theta_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act="relu", name="f_theta"
+        )
+        self.phi_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act="relu", name="f_phi"
+        )
+        self.g_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act="relu", name="f_g"
+        )
 
-        self.fh_weight_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act=None, name='fh_weight')
-        self.fh_sc_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act=None, name='fh_sc')
+        self.fh_weight_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act=None, name="fh_weight"
+        )
+        self.fh_sc_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act=None, name="fh_sc"
+        )
 
-        self.fv_weight_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act=None, name='fv_weight')
-        self.fv_sc_conv = ConvBNLayer(in_channels, in_channels, 1, 1, act=None, name='fv_sc')
+        self.fv_weight_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act=None, name="fv_weight"
+        )
+        self.fv_sc_conv = ConvBNLayer(
+            in_channels, in_channels, 1, 1, act=None, name="fv_sc"
+        )
 
-        self.f_attn_conv = ConvBNLayer(in_channels * 2, in_channels, 1, 1, act='relu', name='f_attn')
+        self.f_attn_conv = ConvBNLayer(
+            in_channels * 2, in_channels, 1, 1, act="relu", name="f_attn"
+        )
 
     def _cal_fweight(self, f, shape):
         f_theta, f_phi, f_g = f
-        #flatten
+        # flatten
         f_theta = paddle.transpose(f_theta, [0, 2, 3, 1])
         f_theta = paddle.reshape(f_theta, [shape[0] * shape[1], shape[2], 128])
         f_phi = paddle.transpose(f_phi, [0, 2, 3, 1])
         f_phi = paddle.reshape(f_phi, [shape[0] * shape[1], shape[2], 128])
         f_g = paddle.transpose(f_g, [0, 2, 3, 1])
         f_g = paddle.reshape(f_g, [shape[0] * shape[1], shape[2], 128])
-        #correlation
+        # correlation
         f_attn = paddle.matmul(f_theta, paddle.transpose(f_phi, [0, 2, 1]))
-        #scale
+        # scale
         f_attn = f_attn / (128**0.5)
         f_attn = F.softmax(f_attn)
-        #weighted sum
+        # weighted sum
         f_weight = paddle.matmul(f_attn, f_g)
-        f_weight = paddle.reshape(
-            f_weight, [shape[0], shape[1], shape[2], 128])
+        f_weight = paddle.reshape(f_weight, [shape[0], shape[1], shape[2], 128])
         return f_weight
 
     def forward(self, f_common):
-        f_shape = paddle.shape(f_common)
+        f_shape = f_common.shape
         # print('f_shape: ', f_shape)
 
         f_theta = self.theta_conv(f_common)
@@ -230,11 +312,12 @@ class Cross_Attention(nn.Layer):
         f_g = self.g_conv(f_common)
 
         ######## horizon ########
-        fh_weight = self._cal_fweight([f_theta, f_phi, f_g], 
-                                        [f_shape[0], f_shape[2], f_shape[3]])
+        fh_weight = self._cal_fweight(
+            [f_theta, f_phi, f_g], [f_shape[0], f_shape[2], f_shape[3]]
+        )
         fh_weight = paddle.transpose(fh_weight, [0, 3, 1, 2])
         fh_weight = self.fh_weight_conv(fh_weight)
-        #short cut
+        # short cut
         fh_sc = self.fh_sc_conv(f_common)
         f_h = F.relu(fh_weight + fh_sc)
 
@@ -242,11 +325,12 @@ class Cross_Attention(nn.Layer):
         fv_theta = paddle.transpose(f_theta, [0, 1, 3, 2])
         fv_phi = paddle.transpose(f_phi, [0, 1, 3, 2])
         fv_g = paddle.transpose(f_g, [0, 1, 3, 2])
-        fv_weight = self._cal_fweight([fv_theta, fv_phi, fv_g], 
-                                        [f_shape[0], f_shape[3], f_shape[2]])
+        fv_weight = self._cal_fweight(
+            [fv_theta, fv_phi, fv_g], [f_shape[0], f_shape[3], f_shape[2]]
+        )
         fv_weight = paddle.transpose(fv_weight, [0, 3, 2, 1])
         fv_weight = self.fv_weight_conv(fv_weight)
-        #short cut
+        # short cut
         fv_sc = self.fv_sc_conv(f_common)
         f_v = F.relu(fv_weight + fv_sc)
 
@@ -267,13 +351,13 @@ class SASTFPN(nn.Layer):
         self.cross_attention = Cross_Attention(self.out_channels)
 
     def forward(self, x):
-        #down fpn
+        # down fpn
         f_down = self.FPN_Down_Fusion(x)
 
-        #up fpn
+        # up fpn
         f_up = self.FPN_Up_Fusion(x)
 
-        #fusion
+        # fusion
         f_common = paddle.add(x=f_down, y=f_up)
         f_common = F.relu(f_common)
 

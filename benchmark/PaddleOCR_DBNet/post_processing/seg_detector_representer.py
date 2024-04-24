@@ -5,12 +5,10 @@ import paddle
 from shapely.geometry import Polygon
 
 
-class SegDetectorRepresenter():
-    def __init__(self,
-                 thresh=0.3,
-                 box_thresh=0.7,
-                 max_candidates=1000,
-                 unclip_ratio=1.5):
+class SegDetectorRepresenter:
+    def __init__(
+        self, thresh=0.3, box_thresh=0.7, max_candidates=1000, unclip_ratio=1.5
+    ):
         self.min_size = 3
         self.thresh = thresh
         self.box_thresh = box_thresh
@@ -18,7 +16,7 @@ class SegDetectorRepresenter():
         self.unclip_ratio = unclip_ratio
 
     def __call__(self, batch, pred, is_output_polygon=False):
-        '''
+        """
         batch: (image, polygons, ignore_tags
         batch: a dict produced by dataloaders.
             image: tensor of shape (N, C, H, W).
@@ -30,7 +28,7 @@ class SegDetectorRepresenter():
             binary: text region segmentation map, with shape (N, H, W)
             thresh: [if exists] thresh hold prediction with shape (N, H, W)
             thresh_binary: [if exists] binarized with threshhold, (N, H, W)
-        '''
+        """
         if isinstance(pred, paddle.Tensor):
             pred = pred.numpy()
         pred = pred[:, 0, :, :]
@@ -38,13 +36,15 @@ class SegDetectorRepresenter():
         boxes_batch = []
         scores_batch = []
         for batch_index in range(pred.shape[0]):
-            height, width = batch['shape'][batch_index]
+            height, width = batch["shape"][batch_index]
             if is_output_polygon:
                 boxes, scores = self.polygons_from_bitmap(
-                    pred[batch_index], segmentation[batch_index], width, height)
+                    pred[batch_index], segmentation[batch_index], width, height
+                )
             else:
                 boxes, scores = self.boxes_from_bitmap(
-                    pred[batch_index], segmentation[batch_index], width, height)
+                    pred[batch_index], segmentation[batch_index], width, height
+                )
             boxes_batch.append(boxes)
             scores_batch.append(scores)
         return boxes_batch, scores_batch
@@ -53,10 +53,10 @@ class SegDetectorRepresenter():
         return pred > self.thresh
 
     def polygons_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
-        '''
+        """
         _bitmap: single map with shape (H, W),
             whose values are binarized as {0, 1}
-        '''
+        """
 
         assert len(_bitmap.shape) == 2
         bitmap = _bitmap  # The first channel
@@ -64,10 +64,11 @@ class SegDetectorRepresenter():
         boxes = []
         scores = []
 
-        contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8),
-                                       cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            (bitmap * 255).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
 
-        for contour in contours[:self.max_candidates]:
+        for contour in contours[: self.max_candidates]:
             epsilon = 0.005 * cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, epsilon, True)
             points = approx.reshape((-1, 2))
@@ -95,28 +96,29 @@ class SegDetectorRepresenter():
                 dest_width = dest_width.item()
                 dest_height = dest_height.item()
 
-            box[:, 0] = np.clip(
-                np.round(box[:, 0] / width * dest_width), 0, dest_width)
+            box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
-                np.round(box[:, 1] / height * dest_height), 0, dest_height)
+                np.round(box[:, 1] / height * dest_height), 0, dest_height
+            )
             boxes.append(box)
             scores.append(score)
         return boxes, scores
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
-        '''
+        """
         _bitmap: single map with shape (H, W),
             whose values are binarized as {0, 1}
-        '''
+        """
 
         assert len(_bitmap.shape) == 2
         bitmap = _bitmap  # The first channel
         height, width = bitmap.shape
-        contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8),
-                                       cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            (bitmap * 255).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
         num_contours = min(len(contours), self.max_candidates)
         boxes = np.zeros((num_contours, 4, 2), dtype=np.int16)
-        scores = np.zeros((num_contours, ), dtype=np.float32)
+        scores = np.zeros((num_contours,), dtype=np.float32)
 
         for index in range(num_contours):
             contour = contours[index].squeeze(1)
@@ -128,8 +130,7 @@ class SegDetectorRepresenter():
             if self.box_thresh > score:
                 continue
 
-            box = self.unclip(
-                points, unclip_ratio=self.unclip_ratio).reshape(-1, 1, 2)
+            box = self.unclip(points, unclip_ratio=self.unclip_ratio).reshape(-1, 1, 2)
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
                 continue
@@ -138,10 +139,10 @@ class SegDetectorRepresenter():
                 dest_width = dest_width.item()
                 dest_height = dest_height.item()
 
-            box[:, 0] = np.clip(
-                np.round(box[:, 0] / width * dest_width), 0, dest_width)
+            box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
-                np.round(box[:, 1] / height * dest_height), 0, dest_height)
+                np.round(box[:, 1] / height * dest_height), 0, dest_height
+            )
             boxes[index, :, :] = box.astype(np.int16)
             scores[index] = score
         return boxes, scores
@@ -172,9 +173,7 @@ class SegDetectorRepresenter():
             index_2 = 3
             index_3 = 2
 
-        box = [
-            points[index_1], points[index_2], points[index_3], points[index_4]
-        ]
+        box = [points[index_1], points[index_2], points[index_3], points[index_4]]
         return box, min(bounding_box[1])
 
     def box_score_fast(self, bitmap, _box):
@@ -189,4 +188,4 @@ class SegDetectorRepresenter():
         box[:, 0] = box[:, 0] - xmin
         box[:, 1] = box[:, 1] - ymin
         cv2.fillPoly(mask, box.reshape(1, -1, 2).astype(np.int32), 1)
-        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+        return cv2.mean(bitmap[ymin : ymax + 1, xmin : xmax + 1], mask)[0]

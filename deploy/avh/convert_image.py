@@ -30,8 +30,7 @@ def resize_norm_img(img, image_shape, padding=True):
     h = img.shape[0]
     w = img.shape[1]
     if not padding:
-        resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = cv2.resize(img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_w = imgW
     else:
         ratio = w / float(h)
@@ -40,7 +39,7 @@ def resize_norm_img(img, image_shape, padding=True):
         else:
             resized_w = int(math.ceil(imgH * ratio))
         resized_image = cv2.resize(img, (resized_w, imgH))
-    resized_image = resized_image.astype('float32')
+    resized_image = resized_image.astype("float32")
     if image_shape[0] == 1:
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]
@@ -62,8 +61,9 @@ def create_header_file(name, tensor_name, tensor_data, output_path):
     raw_path = file_path.with_suffix(".h").resolve()
     with open(raw_path, "w") as header_file:
         header_file.write(
-            "\n" + f"const size_t {tensor_name}_len = {tensor_data.size};\n" +
-            f'__attribute__((section(".data.tvm"), aligned(16))) float {tensor_name}[] = '
+            "\n"
+            + f"const size_t {tensor_name}_len = {tensor_data.size};\n"
+            + f'__attribute__((section(".data.tvm"), aligned(16))) float {tensor_name}[] = '
         )
 
         header_file.write("{")
@@ -94,7 +94,8 @@ def create_headers(image_name):
         "outputs",
         "output",
         output_data,
-        "./include", )
+        "./include",
+    )
 
 
 if __name__ == "__main__":

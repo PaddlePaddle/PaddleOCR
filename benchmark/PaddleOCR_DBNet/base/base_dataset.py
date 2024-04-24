@@ -7,24 +7,24 @@ from data_loader.modules import *
 
 
 class BaseDataSet(Dataset):
-    def __init__(self,
-                 data_path: str,
-                 img_mode,
-                 pre_processes,
-                 filter_keys,
-                 ignore_tags,
-                 transform=None,
-                 target_transform=None):
-        assert img_mode in ['RGB', 'BRG', 'GRAY']
+    def __init__(
+        self,
+        data_path: str,
+        img_mode,
+        pre_processes,
+        filter_keys,
+        ignore_tags,
+        transform=None,
+        target_transform=None,
+    ):
+        assert img_mode in ["RGB", "BRG", "GRAY"]
         self.ignore_tags = ignore_tags
         self.data_list = self.load_data(data_path)
-        item_keys = [
-            'img_path', 'img_name', 'text_polys', 'texts', 'ignore_tags'
-        ]
+        item_keys = ["img_path", "img_name", "text_polys", "texts", "ignore_tags"]
         for item in item_keys:
-            assert item in self.data_list[
-                0], 'data_list from load_data must contains {}'.format(
-                    item_keys)
+            assert (
+                item in self.data_list[0]
+            ), "data_list from load_data must contains {}".format(item_keys)
         self.img_mode = img_mode
         self.filter_keys = filter_keys
         self.transform = transform
@@ -35,14 +35,14 @@ class BaseDataSet(Dataset):
         self.aug = []
         if pre_processes is not None:
             for aug in pre_processes:
-                if 'args' not in aug:
+                if "args" not in aug:
                     args = {}
                 else:
-                    args = aug['args']
+                    args = aug["args"]
                 if isinstance(args, dict):
-                    cls = eval(aug['type'])(**args)
+                    cls = eval(aug["type"])(**args)
                 else:
-                    cls = eval(aug['type'])(args)
+                    cls = eval(aug["type"])(args)
                 self.aug.append(cls)
 
     def load_data(self, data_path: str) -> list:
@@ -61,17 +61,16 @@ class BaseDataSet(Dataset):
     def __getitem__(self, index):
         try:
             data = copy.deepcopy(self.data_list[index])
-            im = cv2.imread(data['img_path'], 1
-                            if self.img_mode != 'GRAY' else 0)
-            if self.img_mode == 'RGB':
+            im = cv2.imread(data["img_path"], 1 if self.img_mode != "GRAY" else 0)
+            if self.img_mode == "RGB":
                 im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-            data['img'] = im
-            data['shape'] = [im.shape[0], im.shape[1]]
+            data["img"] = im
+            data["shape"] = [im.shape[0], im.shape[1]]
             data = self.apply_pre_processes(data)
 
             if self.transform:
-                data['img'] = self.transform(data['img'])
-            data['text_polys'] = data['text_polys'].tolist()
+                data["img"] = self.transform(data["img"])
+            data["text_polys"] = data["text_polys"].tolist()
             if len(self.filter_keys):
                 data_dict = {}
                 for k, v in data.items():

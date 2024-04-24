@@ -5,13 +5,15 @@ import numpy as np
 
 
 # random crop algorithm similar to https://github.com/argman/EAST
-class EastRandomCropData():
-    def __init__(self,
-                 size=(640, 640),
-                 max_tries=50,
-                 min_crop_side_ratio=0.1,
-                 require_original_image=False,
-                 keep_ratio=True):
+class EastRandomCropData:
+    def __init__(
+        self,
+        size=(640, 640),
+        max_tries=50,
+        min_crop_side_ratio=0.1,
+        require_original_image=False,
+        keep_ratio=True,
+    ):
         self.size = size
         self.max_tries = max_tries
         self.min_crop_side_ratio = min_crop_side_ratio
@@ -24,13 +26,11 @@ class EastRandomCropData():
         :param data: {'img':,'text_polys':,'texts':,'ignore_tags':}
         :return:
         """
-        im = data['img']
-        text_polys = data['text_polys']
-        ignore_tags = data['ignore_tags']
-        texts = data['texts']
-        all_care_polys = [
-            text_polys[i] for i, tag in enumerate(ignore_tags) if not tag
-        ]
+        im = data["img"]
+        text_polys = data["text_polys"]
+        ignore_tags = data["ignore_tags"]
+        texts = data["texts"]
+        all_care_polys = [text_polys[i] for i, tag in enumerate(ignore_tags) if not tag]
         # 计算crop区域
         crop_x, crop_y, crop_w, crop_h = self.crop_area(im, all_care_polys)
         # crop 图片 保持比例填充
@@ -41,16 +41,17 @@ class EastRandomCropData():
         w = int(crop_w * scale)
         if self.keep_ratio:
             if len(im.shape) == 3:
-                padimg = np.zeros((self.size[1], self.size[0], im.shape[2]),
-                                  im.dtype)
+                padimg = np.zeros((self.size[1], self.size[0], im.shape[2]), im.dtype)
             else:
                 padimg = np.zeros((self.size[1], self.size[0]), im.dtype)
             padimg[:h, :w] = cv2.resize(
-                im[crop_y:crop_y + crop_h, crop_x:crop_x + crop_w], (w, h))
+                im[crop_y : crop_y + crop_h, crop_x : crop_x + crop_w], (w, h)
+            )
             img = padimg
         else:
-            img = cv2.resize(im[crop_y:crop_y + crop_h, crop_x:crop_x + crop_w],
-                             tuple(self.size))
+            img = cv2.resize(
+                im[crop_y : crop_y + crop_h, crop_x : crop_x + crop_w], tuple(self.size)
+            )
         # crop 文本框
         text_polys_crop = []
         ignore_tags_crop = []
@@ -61,10 +62,10 @@ class EastRandomCropData():
                 text_polys_crop.append(poly)
                 ignore_tags_crop.append(tag)
                 texts_crop.append(text)
-        data['img'] = img
-        data['text_polys'] = np.float32(text_polys_crop)
-        data['ignore_tags'] = ignore_tags_crop
-        data['texts'] = texts_crop
+        data["img"] = img
+        data["text_polys"] = np.float32(text_polys_crop)
+        data["ignore_tags"] = ignore_tags_crop
+        data["texts"] = texts_crop
         return data
 
     def is_poly_in_rect(self, poly, x, y, w, h):
@@ -144,13 +145,17 @@ class EastRandomCropData():
             else:
                 ymin, ymax = self.random_select(h_axis, h)
 
-            if xmax - xmin < self.min_crop_side_ratio * w or ymax - ymin < self.min_crop_side_ratio * h:
+            if (
+                xmax - xmin < self.min_crop_side_ratio * w
+                or ymax - ymin < self.min_crop_side_ratio * h
+            ):
                 # area too small
                 continue
             num_poly_in_rect = 0
             for poly in text_polys:
-                if not self.is_poly_outside_rect(poly, xmin, ymin, xmax - xmin,
-                                                 ymax - ymin):
+                if not self.is_poly_outside_rect(
+                    poly, xmin, ymin, xmax - xmin, ymax - ymin
+                ):
                     num_poly_in_rect += 1
                     break
 
@@ -160,12 +165,12 @@ class EastRandomCropData():
         return 0, 0, w, h
 
 
-class PSERandomCrop():
+class PSERandomCrop:
     def __init__(self, size):
         self.size = size
 
     def __call__(self, data):
-        imgs = data['imgs']
+        imgs = data["imgs"]
 
         h, w = imgs[0].shape[0:2]
         th, tw = self.size
@@ -188,7 +193,7 @@ class PSERandomCrop():
                 i = random.randint(tl[0], br[0])
                 j = random.randint(tl[1], br[1])
                 # 保证shrink_label_map有文本
-                if imgs[1][i:i + th, j:j + tw].sum() <= 0:
+                if imgs[1][i : i + th, j : j + tw].sum() <= 0:
                     continue
                 else:
                     break
@@ -199,8 +204,8 @@ class PSERandomCrop():
         # return i, j, th, tw
         for idx in range(len(imgs)):
             if len(imgs[idx].shape) == 3:
-                imgs[idx] = imgs[idx][i:i + th, j:j + tw, :]
+                imgs[idx] = imgs[idx][i : i + th, j : j + tw, :]
             else:
-                imgs[idx] = imgs[idx][i:i + th, j:j + tw]
-        data['imgs'] = imgs
+                imgs[idx] = imgs[idx][i : i + th, j : j + tw]
+        data["imgs"] = imgs
         return data

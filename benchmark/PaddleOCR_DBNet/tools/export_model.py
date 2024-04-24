@@ -26,13 +26,13 @@ def load_checkpoint(model, checkpoint_path):
     :param checkpoint_path: Checkpoint path to be loaded
     """
     checkpoint = paddle.load(checkpoint_path)
-    model.set_state_dict(checkpoint['state_dict'])
-    print('load checkpoint from {}'.format(checkpoint_path))
+    model.set_state_dict(checkpoint["state_dict"])
+    print("load checkpoint from {}".format(checkpoint_path))
 
 
 def main(config):
-    model = build_model(config['arch'])
-    load_checkpoint(model, config['trainer']['resume_checkpoint'])
+    model = build_model(config["arch"])
+    load_checkpoint(model, config["trainer"]["resume_checkpoint"])
     model.eval()
 
     save_path = config["trainer"]["output_dir"]
@@ -41,9 +41,9 @@ def main(config):
     model = to_static(
         model,
         input_spec=[
-            paddle.static.InputSpec(
-                shape=[None] + infer_shape, dtype="float32")
-        ])
+            paddle.static.InputSpec(shape=[None] + infer_shape, dtype="float32")
+        ],
+    )
 
     paddle.jit.save(model, save_path)
     print("inference model is saved to {}".format(save_path))

@@ -20,32 +20,33 @@ import os
 def parse_arguments():
     import argparse
     import ast
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--rec_model",
-        required=True,
-        help="Path of Recognization model of PPOCR.")
+        "--rec_model", required=True, help="Path of Recognization model of PPOCR."
+    )
     parser.add_argument(
-        "--rec_label_file",
-        required=True,
-        help="Path of Recognization model of PPOCR.")
+        "--rec_label_file", required=True, help="Path of Recognization model of PPOCR."
+    )
     parser.add_argument(
-        "--image", type=str, required=True, help="Path of test image file.")
+        "--image", type=str, required=True, help="Path of test image file."
+    )
     parser.add_argument(
         "--device",
         type=str,
-        default='cpu',
-        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.")
+        default="cpu",
+        help="Type of inference device, support 'cpu', 'kunlunxin' or 'gpu'.",
+    )
     parser.add_argument(
         "--device_id",
         type=int,
         default=0,
-        help="Define which GPU card used to run model.")
+        help="Define which GPU card used to run model.",
+    )
     return parser.parse_args()
 
 
 def build_option(args):
-
     rec_option = fd.RuntimeOption()
 
     if args.device.lower() == "gpu":
@@ -65,7 +66,8 @@ rec_option = build_option(args)
 
 # Create the rec_model
 rec_model = fd.vision.ocr.Recognizer(
-    rec_model_file, rec_params_file, rec_label_file, runtime_option=rec_option)
+    rec_model_file, rec_params_file, rec_label_file, runtime_option=rec_option
+)
 
 # Read the image
 im = cv2.imread(args.image)

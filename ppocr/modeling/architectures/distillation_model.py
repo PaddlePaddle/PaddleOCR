@@ -23,7 +23,7 @@ from ppocr.modeling.heads import build_head
 from .base_model import BaseModel
 from ppocr.utils.save_load import load_pretrained_params
 
-__all__ = ['DistillationModel']
+__all__ = ["DistillationModel"]
 
 
 class DistillationModel(nn.Layer):

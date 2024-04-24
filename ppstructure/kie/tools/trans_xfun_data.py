@@ -16,12 +16,12 @@ import json
 
 
 def transfer_xfun_data(json_path=None, output_file=None):
-    with open(json_path, "r", encoding='utf-8') as fin:
+    with open(json_path, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
 
     json_info = json.loads(lines[0])
     documents = json_info["documents"]
-    with open(output_file, "w", encoding='utf-8') as fout:
+    with open(output_file, "w", encoding="utf-8") as fout:
         for idx, document in enumerate(documents):
             label_info = []
             img_info = document["img"]
@@ -31,27 +31,31 @@ def transfer_xfun_data(json_path=None, output_file=None):
             for doc in document:
                 x1, y1, x2, y2 = doc["box"]
                 points = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
-                label_info.append({
-                    "transcription": doc["text"],
-                    "label": doc["label"],
-                    "points": points,
-                    "id": doc["id"],
-                    "linking": doc["linking"]
-                })
+                label_info.append(
+                    {
+                        "transcription": doc["text"],
+                        "label": doc["label"],
+                        "points": points,
+                        "id": doc["id"],
+                        "linking": doc["linking"],
+                    }
+                )
 
-            fout.write(image_path + "\t" + json.dumps(
-                label_info, ensure_ascii=False) + "\n")
+            fout.write(
+                image_path + "\t" + json.dumps(label_info, ensure_ascii=False) + "\n"
+            )
 
     print("===ok====")
 
 
 def parser_args():
     import argparse
+
     parser = argparse.ArgumentParser(description="args for paddleserving")
     parser.add_argument(
-        "--ori_gt_path", type=str, required=True, help='origin xfun gt path')
-    parser.add_argument(
-        "--output_path", type=str, required=True, help='path to save')
+        "--ori_gt_path", type=str, required=True, help="origin xfun gt path"
+    )
+    parser.add_argument("--output_path", type=str, required=True, help="path to save")
     args = parser.parse_args()
     return args
 
