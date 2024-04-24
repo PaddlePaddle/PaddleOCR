@@ -12,10 +12,11 @@
   - [2.2 Python脚本使用](#22-Python脚本使用)
     - [2.2.1 图像方向分类+版面分析+表格识别](#221-图像方向分类版面分析表格识别)
     - [2.2.2 版面分析+表格识别](#222-版面分析表格识别)
-    - [2.2.3 版面分析](#223-版面分析)
-    - [2.2.4 表格识别](#224-表格识别)
-    - [2.2.5 关键信息抽取](#225-关键信息抽取)
-    - [2.2.6 版面恢复](#226-版面恢复)
+    - [2.2.3 版面分析+文本识别](#223-版面分析文本识别)
+    - [2.2.4 版面分析](#224-版面分析)
+    - [2.2.5 表格识别](#225-表格识别)
+    - [2.2.6 关键信息抽取](#226-关键信息抽取)
+    - [2.2.7 版面恢复](#227-版面恢复)
   - [2.3 返回结果说明](#23-返回结果说明)
     - [2.3.1 版面分析+表格识别](#231-版面分析表格识别)
     - [2.3.2 关键信息抽取](#232-关键信息抽取)
@@ -189,7 +190,29 @@ im_show.save('result.jpg')
 ```
 
 <a name="223"></a>
-#### 2.2.3 版面分析
+#### 2.2.3 版面分析+文本识别
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+
+ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
+
+save_folder = './output'
+img_path = 'ppstructure/recovery/UnrealText.pdf'
+result = ocr_engine(img_path)
+for index, res in enumerate(result):
+    save_structure_res(res, save_folder, os.path.basename(img_path).split('.')[0], index)
+
+for res in result:
+    for line in res:
+        line.pop('img')
+        print(line)
+```
+
+<a name="224"></a>
+#### 2.2.4 版面分析
 
 ```python
 import os
@@ -209,9 +232,9 @@ for line in result:
     print(line)
 ```
 
-<a name="224"></a>
+<a name="225"></a>
 
-#### 2.2.4 表格识别
+#### 2.2.5 表格识别
 
 ```python
 import os
@@ -231,14 +254,14 @@ for line in result:
     print(line)
 ```
 
-<a name="225"></a>
-#### 2.2.5 关键信息抽取
+<a name="226"></a>
+#### 2.2.6 关键信息抽取
 
 关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[inference文档](./inference.md)。
 
-<a name="226"></a>
+<a name="227"></a>
 
-#### 2.2.6 版面恢复
+#### 2.2.7 版面恢复
 
 ```python
 import os

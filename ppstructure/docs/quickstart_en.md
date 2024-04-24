@@ -12,10 +12,11 @@
   - [2.2 Use by python script](#22-use-by-python-script)
     - [2.2.1 image orientation + layout analysis + table recognition](#221-image-orientation--layout-analysis--table-recognition)
     - [2.2.2 layout analysis + table recognition](#222-layout-analysis--table-recognition)
-    - [2.2.3 layout analysis](#223-layout-analysis)
-    - [2.2.4 table recognition](#224-table-recognition)
-    - [2.2.5 Key Information Extraction](#225-Key-Information-Extraction)
-    - [2.2.6 layout recovery](#226-layout-recovery)  
+    - [2.2.3 layout analysis + text recognition](#223-layout-analysis--text-recognition)
+    - [2.2.4 layout analysis](#224-layout-analysis)
+    - [2.2.5 table recognition](#225-table-recognition)
+    - [2.2.6 Key Information Extraction](#226-Key-Information-Extraction)
+    - [2.2.7 layout recovery](#227-layout-recovery)  
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
     - [2.3.2 Key Information Extraction](#232-Key-Information-Extraction)
@@ -172,7 +173,29 @@ im_show.save('result.jpg')
 ```
 
 <a name="223"></a>
-#### 2.2.3 layout analysis
+#### 2.2.3 layout analysis + text recognition
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+
+ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
+
+save_folder = './output'
+img_path = 'ppstructure/recovery/UnrealText.pdf'
+result = ocr_engine(img_path)
+for index, res in enumerate(result):
+    save_structure_res(res, save_folder, os.path.basename(img_path).split('.')[0], index)
+
+for res in result:
+    for line in res:
+        line.pop('img')
+        print(line)
+```
+
+<a name="224"></a>
+#### 2.2.4 layout analysis
 
 ```python
 import os
@@ -192,8 +215,8 @@ for line in result:
     print(line)
 ```
 
-<a name="224"></a>
-#### 2.2.4 table recognition
+<a name="225"></a>
+#### 2.2.5 table recognition
 
 ```python
 import os
@@ -213,13 +236,13 @@ for line in result:
     print(line)
 ```
 
-<a name="225"></a>
-#### 2.2.5 Key Information Extraction
+<a name="226"></a>
+#### 2.2.6 Key Information Extraction
 
 Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Key Information Extraction](../kie/README.md).
 
-<a name="226"></a>
-#### 2.2.6 layout recovery
+<a name="227"></a>
+#### 2.2.7 layout recovery
 
 ```python
 import os
