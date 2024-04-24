@@ -135,5 +135,3 @@ The STAR-Net model also supports the following inference deployment methods:
   year={2016}
 }
 ```
-
-

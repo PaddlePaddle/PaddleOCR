@@ -18,7 +18,7 @@ import glob
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.append(os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..")))
 
 from utils.config import ArgsParser
 from engine.synthesisers import ImageSynthesiser
@@ -77,6 +77,6 @@ def batch_synth_images():
             print(cno, corpus_num, sno, style_img_num)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # batch_synth_images()
     synth_image()

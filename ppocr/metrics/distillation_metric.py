@@ -24,11 +24,7 @@ from .vqa_token_re_metric import VQAReTokenMetric
 
 
 class DistillationMetric(object):
-    def __init__(self,
-                 key=None,
-                 base_metric_name=None,
-                 main_indicator=None,
-                 **kwargs):
+    def __init__(self, key=None, base_metric_name=None, main_indicator=None, **kwargs):
         self.main_indicator = main_indicator
         self.key = key
         self.main_indicator = main_indicator
@@ -41,7 +37,8 @@ class DistillationMetric(object):
         mod = importlib.import_module(__name__)
         for key in preds:
             self.metrics[key] = getattr(mod, self.base_metric_name)(
-                main_indicator=self.main_indicator, **self.kwargs)
+                main_indicator=self.main_indicator, **self.kwargs
+            )
             self.metrics[key].reset()
 
     def __call__(self, preds, batch, **kwargs):

@@ -20,11 +20,9 @@ import string
 
 
 class RecMetric(object):
-    def __init__(self,
-                 main_indicator='acc',
-                 is_filter=False,
-                 ignore_space=True,
-                 **kwargs):
+    def __init__(
+        self, main_indicator="acc", is_filter=False, ignore_space=True, **kwargs
+    ):
         self.main_indicator = main_indicator
         self.is_filter = is_filter
         self.ignore_space = ignore_space
@@ -32,8 +30,9 @@ class RecMetric(object):
         self.reset()
 
     def _normalize_text(self, text):
-        text = ''.join(
-            filter(lambda x: x in (string.digits + string.ascii_letters), text))
+        text = "".join(
+            filter(lambda x: x in (string.digits + string.ascii_letters), text)
+        )
         return text.lower()
 
     def __call__(self, pred_label, *args, **kwargs):
@@ -56,8 +55,8 @@ class RecMetric(object):
         self.all_num += all_num
         self.norm_edit_dis += norm_edit_dis
         return {
-            'acc': correct_num / (all_num + self.eps),
-            'norm_edit_dis': 1 - norm_edit_dis / (all_num + self.eps)
+            "acc": correct_num / (all_num + self.eps),
+            "norm_edit_dis": 1 - norm_edit_dis / (all_num + self.eps),
         }
 
     def get_metric(self):
@@ -70,7 +69,7 @@ class RecMetric(object):
         acc = 1.0 * self.correct_num / (self.all_num + self.eps)
         norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num + self.eps)
         self.reset()
-        return {'acc': acc, 'norm_edit_dis': norm_edit_dis}
+        return {"acc": acc, "norm_edit_dis": norm_edit_dis}
 
     def reset(self):
         self.correct_num = 0
@@ -79,7 +78,7 @@ class RecMetric(object):
 
 
 class CNTMetric(object):
-    def __init__(self, main_indicator='acc', **kwargs):
+    def __init__(self, main_indicator="acc", **kwargs):
         self.main_indicator = main_indicator
         self.eps = 1e-5
         self.reset()
@@ -94,7 +93,9 @@ class CNTMetric(object):
             all_num += 1
         self.correct_num += correct_num
         self.all_num += all_num
-        return {'acc': correct_num / (all_num + self.eps), }
+        return {
+            "acc": correct_num / (all_num + self.eps),
+        }
 
     def get_metric(self):
         """
@@ -104,7 +105,7 @@ class CNTMetric(object):
         """
         acc = 1.0 * self.correct_num / (self.all_num + self.eps)
         self.reset()
-        return {'acc': acc}
+        return {"acc": acc}
 
     def reset(self):
         self.correct_num = 0
@@ -112,7 +113,7 @@ class CNTMetric(object):
 
 
 class CANMetric(object):
-    def __init__(self, main_indicator='exp_rate', **kwargs):
+    def __init__(self, main_indicator="exp_rate", **kwargs):
         self.main_indicator = main_indicator
         self.word_right = []
         self.exp_right = []
@@ -136,20 +137,19 @@ class CANMetric(object):
         word_pred = word_pred.cpu().detach().numpy()
         word_scores = [
             SequenceMatcher(
-                None,
-                s1[:int(np.sum(s3))],
-                s2[:int(np.sum(s3))],
-                autojunk=False).ratio() * (
-                    len(s1[:int(np.sum(s3))]) + len(s2[:int(np.sum(s3))])) /
-            len(s1[:int(np.sum(s3))]) / 2
+                None, s1[: int(np.sum(s3))], s2[: int(np.sum(s3))], autojunk=False
+            ).ratio()
+            * (len(s1[: int(np.sum(s3))]) + len(s2[: int(np.sum(s3))]))
+            / len(s1[: int(np.sum(s3))])
+            / 2
             for s1, s2, s3 in zip(word_label, word_pred, word_label_mask)
         ]
         batch_size = len(word_scores)
         for i in range(batch_size):
             if word_scores[i] == 1:
                 line_right += 1
-        self.word_rate = np.mean(word_scores)  #float
-        self.exp_rate = line_right / batch_size  #float
+        self.word_rate = np.mean(word_scores)  # float
+        self.exp_rate = line_right / batch_size  # float
         exp_length, word_length = word_label.shape[:2]
         self.word_right.append(self.word_rate * word_length)
         self.exp_right.append(self.exp_rate * exp_length)
@@ -166,7 +166,7 @@ class CANMetric(object):
         cur_word_rate = sum(self.word_right) / self.word_total_length
         cur_exp_rate = sum(self.exp_right) / self.exp_total_num
         self.reset()
-        return {'word_rate': cur_word_rate, "exp_rate": cur_exp_rate}
+        return {"word_rate": cur_word_rate, "exp_rate": cur_exp_rate}
 
     def reset(self):
         self.word_rate = 0

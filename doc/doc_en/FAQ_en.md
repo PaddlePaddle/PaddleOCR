@@ -51,6 +51,8 @@ Solution: TPS does not support variable shape. Please set --rec_image_shape='3,3
 11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**  
 The used custom dictionary path is not set when making prediction. The solution is setting parameter `rec_char_dict_path` to the corresponding dictionary file.
 
-
 12. **Results of cpp_infer and python_inference are very different**  
 Versions of exported inference model and inference library should be same. For example, on Windows platform, version of the inference library that PaddlePaddle provides is 1.8, but version of the inference model that PaddleOCR provides is 1.7, you should export model yourself(`tools/export_model.py`) on PaddlePaddle 1.8 and then use the exported model for inference.
+
+13. **How to identify artistic fonts in signs or advertising images**  
+Recognizing artistic fonts in signs or advertising images is a very challenging task because the variation in individual characters is much greater compared to standard fonts. If the artistic font to be identified is within a dictionary list, each word in the dictionary can be treated as a template for recognition using a general image retrieval system. You can try using PaddleClas image recognition system.

@@ -37,7 +37,7 @@ def parse_ser_results_fp(fp, fp_type="gt", ignore_background=True):
     assert fp_type in ["gt", "pred"]
     key = "label" if fp_type == "gt" else "pred"
     res_dict = dict()
-    with open(fp, "r", encoding='utf-8') as fin:
+    with open(fp, "r", encoding="utf-8") as fin:
         lines = fin.readlines()
 
     for _, line in enumerate(lines):
@@ -71,8 +71,7 @@ def polygon_iou(poly1, poly2):
     """
     Intersection over union between two shapely polygons.
     """
-    if not poly1.intersects(
-            poly2):  # this test is fast and can accelerate calculation
+    if not poly1.intersects(poly2):  # this test is fast and can accelerate calculation
         iou = 0
     else:
         try:
@@ -82,7 +81,7 @@ def polygon_iou(poly1, poly2):
         except shapely.geos.TopologicalError:
             # except Exception as e:
             #     print(e)
-            print('shapely.geos.TopologicalError occurred, iou set to 0')
+            print("shapely.geos.TopologicalError occurred, iou set to 0")
             iou = 0
     return iou
 
@@ -109,11 +108,11 @@ def convert_bbox_to_polygon(bbox):
 
 def eval_e2e(args):
     # gt
-    gt_results = parse_ser_results_fp(args.gt_json_path, "gt",
-                                      args.ignore_background)
+    gt_results = parse_ser_results_fp(args.gt_json_path, "gt", args.ignore_background)
     # pred
-    dt_results = parse_ser_results_fp(args.pred_json_path, "pred",
-                                      args.ignore_background)
+    dt_results = parse_ser_results_fp(
+        args.pred_json_path, "pred", args.ignore_background
+    )
     iou_thresh = args.iou_thres
     num_gt_chars = 0
     gt_count = 0
@@ -144,8 +143,7 @@ def eval_e2e(args):
                 iou = polygon_iou(dt_poly, gt_poly)
                 if iou >= iou_thresh:
                     all_ious[(index_gt, index_dt)] = iou
-        sorted_ious = sorted(
-            all_ious.items(), key=operator.itemgetter(1), reverse=True)
+        sorted_ious = sorted(all_ious.items(), key=operator.itemgetter(1), reverse=True)
         sorted_gt_dt_pairs = [item[0] for item in sorted_ious]
 
         # matched gt and dt
@@ -169,14 +167,14 @@ def eval_e2e(args):
                         if args.ignore_ser_prediction or gt_label == dt_label:
                             hit += 1
 
-# unmatched dt
+        # unmatched dt
         for tindex, dt_match_flag in enumerate(dt_match):
             if dt_match_flag == False:
                 dt_text = dt_info[tindex]["text"]
                 gt_text = ""
                 ed_sum += ed(args, dt_text, gt_text)
 
-# unmatched gt
+        # unmatched gt
         for tindex, gt_match_flag in enumerate(gt_match):
             if gt_match_flag == False:
                 dt_text = ""
@@ -186,7 +184,7 @@ def eval_e2e(args):
 
     eps = 1e-9
     print("config: ", args)
-    print('hit, dt_count, gt_count', hit, dt_count, gt_count)
+    print("hit, dt_count, gt_count", hit, dt_count, gt_count)
     precision = hit / (dt_count + eps)
     recall = hit / (gt_count + eps)
     fmeasure = 2.0 * precision * recall / (precision + recall + eps)
@@ -194,19 +192,18 @@ def eval_e2e(args):
     avg_edit_dist_field = ed_sum / (gt_count + eps)
     character_acc = 1 - ed_sum / (num_gt_chars + eps)
 
-    print('character_acc: %.2f' % (character_acc * 100) + "%")
-    print('avg_edit_dist_field: %.2f' % (avg_edit_dist_field))
-    print('avg_edit_dist_img: %.2f' % (avg_edit_dist_img))
-    print('precision: %.2f' % (precision * 100) + "%")
-    print('recall: %.2f' % (recall * 100) + "%")
-    print('fmeasure: %.2f' % (fmeasure * 100) + "%")
+    print("character_acc: %.2f" % (character_acc * 100) + "%")
+    print("avg_edit_dist_field: %.2f" % (avg_edit_dist_field))
+    print("avg_edit_dist_img: %.2f" % (avg_edit_dist_img))
+    print("precision: %.2f" % (precision * 100) + "%")
+    print("recall: %.2f" % (recall * 100) + "%")
+    print("fmeasure: %.2f" % (fmeasure * 100) + "%")
 
     return
 
 
 def parse_args():
-    """
-    """
+    """ """
 
     def str2bool(v):
         return v.lower() in ("true", "t", "1")
@@ -217,12 +214,14 @@ def parse_args():
         "--gt_json_path",
         default=None,
         type=str,
-        required=True, )
+        required=True,
+    )
     parser.add_argument(
         "--pred_json_path",
         default=None,
         type=str,
-        required=True, )
+        required=True,
+    )
 
     parser.add_argument("--iou_thres", default=0.5, type=float)
 
@@ -230,30 +229,31 @@ def parse_args():
         "--ignore_case",
         default=False,
         type=str2bool,
-        help="whether to do lower case for the strs")
+        help="whether to do lower case for the strs",
+    )
 
     parser.add_argument(
-        "--ignore_space",
-        default=True,
-        type=str2bool,
-        help="whether to ignore space")
+        "--ignore_space", default=True, type=str2bool, help="whether to ignore space"
+    )
 
     parser.add_argument(
         "--ignore_background",
         default=True,
         type=str2bool,
-        help="whether to ignore other label")
+        help="whether to ignore other label",
+    )
 
     parser.add_argument(
         "--ignore_ser_prediction",
         default=False,
         type=str2bool,
-        help="whether to ignore ocr pred results")
+        help="whether to ignore ocr pred results",
+    )
 
     args = parser.parse_args()
     return args
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = parse_args()
     eval_e2e(args)

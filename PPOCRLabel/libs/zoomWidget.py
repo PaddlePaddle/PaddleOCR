@@ -20,14 +20,13 @@ except ImportError:
 
 
 class ZoomWidget(QSpinBox):
-
     def __init__(self, value=100):
         super(ZoomWidget, self).__init__()
         self.setButtonSymbols(QAbstractSpinBox.NoButtons)
         self.setRange(1, 500)
-        self.setSuffix(' %')
+        self.setSuffix(" %")
         self.setValue(value)
-        self.setToolTip(u'Zoom Level')
+        self.setToolTip("Zoom Level")
         self.setStatusTip(self.toolTip())
         self.setAlignment(Qt.AlignCenter)
 

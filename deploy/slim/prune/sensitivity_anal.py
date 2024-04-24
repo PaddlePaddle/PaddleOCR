@@ -21,8 +21,8 @@ import sys
 
 __dir__ = os.path.dirname(__file__)
 sys.path.append(__dir__)
-sys.path.append(os.path.join(__dir__, '..', '..', '..'))
-sys.path.append(os.path.join(__dir__, '..', '..', '..', 'tools'))
+sys.path.append(os.path.join(__dir__, "..", "..", ".."))
+sys.path.append(os.path.join(__dir__, "..", "..", "..", "tools"))
 
 import paddle
 import paddle.distributed as dist
@@ -42,84 +42,95 @@ def get_pruned_params(parameters):
     params = []
 
     for param in parameters:
-        if len(
-                param.shape
-        ) == 4 and 'depthwise' not in param.name and 'transpose' not in param.name and "conv2d_57" not in param.name and "conv2d_56" not in param.name:
+        if (
+            len(param.shape) == 4
+            and "depthwise" not in param.name
+            and "transpose" not in param.name
+            and "conv2d_57" not in param.name
+            and "conv2d_56" not in param.name
+        ):
             params.append(param.name)
     return params
 
 
 def main(config, device, logger, vdl_writer):
     # init dist environment
-    if config['Global']['distributed']:
+    if config["Global"]["distributed"]:
         dist.init_parallel_env()
 
-    global_config = config['Global']
+    global_config = config["Global"]
 
     # build dataloader
     set_signal_handlers()
-    train_dataloader = build_dataloader(config, 'Train', device, logger)
-    if config['Eval']:
-        valid_dataloader = build_dataloader(config, 'Eval', device, logger)
+    train_dataloader = build_dataloader(config, "Train", device, logger)
+    if config["Eval"]:
+        valid_dataloader = build_dataloader(config, "Eval", device, logger)
     else:
         valid_dataloader = None
 
     # build post process
-    post_process_class = build_post_process(config['PostProcess'],
-                                            global_config)
+    post_process_class = build_post_process(config["PostProcess"], global_config)
 
     # build model
     # for rec algorithm
-    if hasattr(post_process_class, 'character'):
-        char_num = len(getattr(post_process_class, 'character'))
-        config['Architecture']["Head"]['out_channels'] = char_num
-    model = build_model(config['Architecture'])
-    if config['Architecture']['model_type'] == 'det':
+    if hasattr(post_process_class, "character"):
+        char_num = len(getattr(post_process_class, "character"))
+        config["Architecture"]["Head"]["out_channels"] = char_num
+    model = build_model(config["Architecture"])
+    if config["Architecture"]["model_type"] == "det":
         input_shape = [1, 3, 640, 640]
-    elif config['Architecture']['model_type'] == 'rec':
+    elif config["Architecture"]["model_type"] == "rec":
         input_shape = [1, 3, 32, 320]
     flops = paddle.flops(model, input_shape)
 
     logger.info("FLOPs before pruning: {}".format(flops))
 
     from paddleslim.dygraph import FPGMFilterPruner
+
     model.train()
 
     pruner = FPGMFilterPruner(model, input_shape)
 
     # build loss
-    loss_class = build_loss(config['Loss'])
+    loss_class = build_loss(config["Loss"])
 
     # build optim
     optimizer, lr_scheduler = build_optimizer(
-        config['Optimizer'],
-        epochs=config['Global']['epoch_num'],
+        config["Optimizer"],
+        epochs=config["Global"]["epoch_num"],
         step_each_epoch=len(train_dataloader),
-        model=model)
+        model=model,
+    )
 
     # build metric
-    eval_class = build_metric(config['Metric'])
+    eval_class = build_metric(config["Metric"])
     # load pretrain model
     pre_best_model_dict = load_model(config, model, optimizer)
 
-    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
-                format(len(train_dataloader), len(valid_dataloader)))
+    logger.info(
+        "train dataloader has {} iters, valid dataloader has {} iters".format(
+            len(train_dataloader), len(valid_dataloader)
+        )
+    )
     # build metric
-    eval_class = build_metric(config['Metric'])
+    eval_class = build_metric(config["Metric"])
 
-    logger.info('train dataloader has {} iters, valid dataloader has {} iters'.
-                format(len(train_dataloader), len(valid_dataloader)))
+    logger.info(
+        "train dataloader has {} iters, valid dataloader has {} iters".format(
+            len(train_dataloader), len(valid_dataloader)
+        )
+    )
 
     def eval_fn():
-        metric = program.eval(model, valid_dataloader, post_process_class,
-                              eval_class, False)
-        if config['Architecture']['model_type'] == 'det':
-            main_indicator = 'hmean'
+        metric = program.eval(
+            model, valid_dataloader, post_process_class, eval_class, False
+        )
+        if config["Architecture"]["model_type"] == "det":
+            main_indicator = "hmean"
         else:
-            main_indicator = 'acc'
+            main_indicator = "acc"
 
-        logger.info("metric[{}]: {}".format(main_indicator, metric[
-            main_indicator]))
+        logger.info("metric[{}]: {}".format(main_indicator, metric[main_indicator]))
         return metric[main_indicator]
 
     run_sensitive_analysis = False
@@ -141,21 +152,22 @@ def main(config, device, logger, vdl_writer):
             eval_func=eval_fn,
             sen_file="./deploy/slim/prune/sen.pickle",
             skip_vars=[
-                "conv2d_57.w_0", "conv2d_transpose_2.w_0",
-                "conv2d_transpose_3.w_0"
-            ])
+                "conv2d_57.w_0",
+                "conv2d_transpose_2.w_0",
+                "conv2d_transpose_3.w_0",
+            ],
+        )
         logger.info(
             "The sensitivity analysis results of model parameters saved in sen.pickle"
         )
         # calculate pruned params's ratio
-        params_sensitive = pruner._get_ratios_by_loss(
-            params_sensitive, loss=0.02)
+        params_sensitive = pruner._get_ratios_by_loss(params_sensitive, loss=0.02)
         for key in params_sensitive.keys():
             logger.info("{}, {}".format(key, params_sensitive[key]))
     else:
         params_sensitive = {}
         for param in model.parameters():
-            if 'transpose' not in param.name and 'linear' not in param.name:
+            if "transpose" not in param.name and "linear" not in param.name:
                 # set prune ratio as 10%. The larger the value, the more convolution weights will be cropped
                 params_sensitive[param.name] = 0.1
 
@@ -166,11 +178,23 @@ def main(config, device, logger, vdl_writer):
 
     # start train
 
-    program.train(config, train_dataloader, valid_dataloader, device, model,
-                  loss_class, optimizer, lr_scheduler, post_process_class,
-                  eval_class, pre_best_model_dict, logger, vdl_writer)
+    program.train(
+        config,
+        train_dataloader,
+        valid_dataloader,
+        device,
+        model,
+        loss_class,
+        optimizer,
+        lr_scheduler,
+        post_process_class,
+        eval_class,
+        pre_best_model_dict,
+        logger,
+        vdl_writer,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     main(config, device, logger, vdl_writer)

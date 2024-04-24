@@ -23,8 +23,9 @@ class RandomNoise:
         """
         if random.random() > self.random_rate:
             return data
-        data['img'] = (random_noise(
-            data['img'], mode='gaussian', clip=True) * 255).astype(im.dtype)
+        data["img"] = (
+            random_noise(data["img"], mode="gaussian", clip=True) * 255
+        ).astype(im.dtype)
         return data
 
 
@@ -46,16 +47,16 @@ class RandomScale:
         """
         if random.random() > self.random_rate:
             return data
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         tmp_text_polys = text_polys.copy()
         rd_scale = float(np.random.choice(self.scales))
         im = cv2.resize(im, dsize=None, fx=rd_scale, fy=rd_scale)
         tmp_text_polys *= rd_scale
 
-        data['img'] = im
-        data['text_polys'] = tmp_text_polys
+        data["img"] = im
+        data["text_polys"] = tmp_text_polys
         return data
 
 
@@ -69,18 +70,18 @@ class RandomRotateImgBox:
         """
         if isinstance(degrees, numbers.Number):
             if degrees < 0:
-                raise ValueError(
-                    "If degrees is a single number, it must be positive.")
+                raise ValueError("If degrees is a single number, it must be positive.")
             degrees = (-degrees, degrees)
-        elif isinstance(degrees, list) or isinstance(
-                degrees, tuple) or isinstance(degrees, np.ndarray):
+        elif (
+            isinstance(degrees, list)
+            or isinstance(degrees, tuple)
+            or isinstance(degrees, np.ndarray)
+        ):
             if len(degrees) != 2:
-                raise ValueError(
-                    "If degrees is a sequence, it must be of len 2.")
+                raise ValueError("If degrees is a sequence, it must be of len 2.")
             degrees = degrees
         else:
-            raise Exception(
-                'degrees must in Number or list or tuple or np.ndarray')
+            raise Exception("degrees must in Number or list or tuple or np.ndarray")
         self.degrees = degrees
         self.same_size = same_size
         self.random_rate = random_rate
@@ -93,8 +94,8 @@ class RandomRotateImgBox:
         """
         if random.random() > self.random_rate:
             return data
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         # ---------------------- 旋转图像 ----------------------
         w = im.shape[1]
@@ -108,21 +109,22 @@ class RandomRotateImgBox:
             # 角度变弧度
             rangle = np.deg2rad(angle)
             # 计算旋转之后图像的w, h
-            nw = (abs(np.sin(rangle) * h) + abs(np.cos(rangle) * w))
-            nh = (abs(np.cos(rangle) * h) + abs(np.sin(rangle) * w))
+            nw = abs(np.sin(rangle) * h) + abs(np.cos(rangle) * w)
+            nh = abs(np.cos(rangle) * h) + abs(np.sin(rangle) * w)
         # 构造仿射矩阵
         rot_mat = cv2.getRotationMatrix2D((nw * 0.5, nh * 0.5), angle, 1)
         # 计算原图中心点到新图中心点的偏移量
-        rot_move = np.dot(rot_mat,
-                          np.array([(nw - w) * 0.5, (nh - h) * 0.5, 0]))
+        rot_move = np.dot(rot_mat, np.array([(nw - w) * 0.5, (nh - h) * 0.5, 0]))
         # 更新仿射矩阵
         rot_mat[0, 2] += rot_move[0]
         rot_mat[1, 2] += rot_move[1]
         # 仿射变换
         rot_img = cv2.warpAffine(
             im,
-            rot_mat, (int(math.ceil(nw)), int(math.ceil(nh))),
-            flags=cv2.INTER_LANCZOS4)
+            rot_mat,
+            (int(math.ceil(nw)), int(math.ceil(nh))),
+            flags=cv2.INTER_LANCZOS4,
+        )
 
         # ---------------------- 矫正bbox坐标 ----------------------
         # rot_mat是最终的旋转矩阵
@@ -134,8 +136,8 @@ class RandomRotateImgBox:
             point3 = np.dot(rot_mat, np.array([bbox[2, 0], bbox[2, 1], 1]))
             point4 = np.dot(rot_mat, np.array([bbox[3, 0], bbox[3, 1], 1]))
             rot_text_polys.append([point1, point2, point3, point4])
-        data['img'] = rot_img
-        data['text_polys'] = np.array(rot_text_polys)
+        data["img"] = rot_img
+        data["text_polys"] = np.array(rot_text_polys)
         return data
 
 
@@ -150,17 +152,19 @@ class RandomResize:
         if isinstance(size, numbers.Number):
             if size < 0:
                 raise ValueError(
-                    "If input_size is a single number, it must be positive.")
+                    "If input_size is a single number, it must be positive."
+                )
             size = (size, size)
-        elif isinstance(size, list) or isinstance(size, tuple) or isinstance(
-                size, np.ndarray):
+        elif (
+            isinstance(size, list)
+            or isinstance(size, tuple)
+            or isinstance(size, np.ndarray)
+        ):
             if len(size) != 2:
-                raise ValueError(
-                    "If input_size is a sequence, it must be of len 2.")
+                raise ValueError("If input_size is a sequence, it must be of len 2.")
             size = (size[0], size[1])
         else:
-            raise Exception(
-                'input_size must in Number or list or tuple or np.ndarray')
+            raise Exception("input_size must in Number or list or tuple or np.ndarray")
         self.size = size
         self.keep_ratio = keep_ratio
         self.random_rate = random_rate
@@ -173,8 +177,8 @@ class RandomResize:
         """
         if random.random() > self.random_rate:
             return data
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         if self.keep_ratio:
             # 将图片短边pad到和长边一样
@@ -192,8 +196,8 @@ class RandomResize:
         text_polys[:, :, 0] *= w_scale
         text_polys[:, :, 1] *= h_scale
 
-        data['img'] = im
-        data['text_polys'] = text_polys
+        data["img"] = im
+        data["text_polys"] = text_polys
         return data
 
 
@@ -226,8 +230,8 @@ class ResizeShortSize:
         :param data: {'img':,'text_polys':,'texts':,'ignore_tags':}
         :return:
         """
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         h, w, _ = im.shape
         short_edge = min(h, w)
@@ -242,8 +246,8 @@ class ResizeShortSize:
                 text_polys[:, 0] *= scale[0]
                 text_polys[:, 1] *= scale[1]
 
-        data['img'] = im
-        data['text_polys'] = text_polys
+        data["img"] = im
+        data["text_polys"] = text_polys
         return data
 
 
@@ -263,16 +267,16 @@ class HorizontalFlip:
         """
         if random.random() > self.random_rate:
             return data
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         flip_text_polys = text_polys.copy()
         flip_im = cv2.flip(im, 1)
         h, w, _ = flip_im.shape
         flip_text_polys[:, :, 0] = w - flip_text_polys[:, :, 0]
 
-        data['img'] = flip_im
-        data['text_polys'] = flip_text_polys
+        data["img"] = flip_im
+        data["text_polys"] = flip_text_polys
         return data
 
 
@@ -292,13 +296,13 @@ class VerticallFlip:
         """
         if random.random() > self.random_rate:
             return data
-        im = data['img']
-        text_polys = data['text_polys']
+        im = data["img"]
+        text_polys = data["text_polys"]
 
         flip_text_polys = text_polys.copy()
         flip_im = cv2.flip(im, 0)
         h, w, _ = flip_im.shape
         flip_text_polys[:, :, 1] = h - flip_text_polys[:, :, 1]
-        data['img'] = flip_im
-        data['text_polys'] = flip_text_polys
+        data["img"] = flip_im
+        data["text_polys"] = flip_text_polys
         return data

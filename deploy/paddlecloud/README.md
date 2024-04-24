@@ -1,6 +1,6 @@
 # 云上飞桨部署工具
 
-[云上飞桨（PaddleCloud）](https://github.com/PaddlePaddle/PaddleCloud) 是面向飞桨框架及其模型套件的部署工具， 
+[云上飞桨（PaddleCloud）](https://github.com/PaddlePaddle/PaddleCloud) 是面向飞桨框架及其模型套件的部署工具，
 为用户提供了模型套件Docker化部署和Kubernetes集群部署两种方式，可以满足不同场景与环境的部署需求。
 本章节我们将使用PaddleCloud提供的OCR标准镜像以及云原生组件来训练和部署PP-OCRv3识别模型。
 
@@ -146,7 +146,7 @@ $ tar xf /home/PaddleOCR/pre_train/ch_PP-OCRv3_det_distill_train.tar -C /home/Pa
 
 启动训练，训练模型默认保存在`output`目录下，加载PP-OCRv3检测预训练模型。
 
-```bash 
+```bash
 # 这里以 GPU 训练为例，使用 CPU 进行训练的话，需要指定参数 Global.use_gpu=false
 python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.save_model_dir=./output/ Global.pretrained_model=./pre_train/ch_PP-OCRv3_det_distill_train/best_accuracy
 ```
@@ -163,10 +163,10 @@ python3 -m paddle.distributed.launch --log_dir=./debug/ --gpus '0,1,2,3' tools/t
 训练过程中保存的模型在output目录下，包含以下文件：
 
 ```
-best_accuracy.states    
+best_accuracy.states  
 best_accuracy.pdparams  # 默认保存最优精度的模型参数
 best_accuracy.pdopt     # 默认保存最优精度的优化器相关参数
-latest.states    
+latest.states  
 latest.pdparams  # 默认保存的最新模型参数
 latest.pdopt     # 默认保存的最新模型的优化器相关参数
 ```

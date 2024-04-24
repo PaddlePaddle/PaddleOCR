@@ -91,7 +91,7 @@ pip install scikit-image imgaug
 ```shell
 git clone -b release/2.7 https://github.com/PaddlePaddle/PaddleOCR.git
 cd PaddleOCR/
-pip install -r requirements.txt 
+pip install -r requirements.txt
 ```
 
 ### 3.2 准备数据集
@@ -184,7 +184,7 @@ TensorRT预测环境配置：
 ##### 4.1.1 使用测试脚本进行批量测试：
 
 我们提供两个脚本文件用于测试模型自动化压缩的效果，分别是[test_ocr_det.sh](./test_ocr_det.sh)和[test_ocr_rec.sh](./test_ocr_rec.sh)，这两个脚本都接收一个`model_type`参数，用于区分是测试mobile模型还是server模型，可选参数为`mobile`和`server`，使用示例：
-  
+
   ```shell
   # 测试mobile模型
   bash test_ocr_det.sh mobile
@@ -273,7 +273,7 @@ Eval:
     name: SimpleDataSet
     data_dir: datasets/v4_4_test_dataset
     label_file_list:
-      - datasets/v4_4_test_dataset/label.txt        
+      - datasets/v4_4_test_dataset/label.txt  
 ```
 
 ### 5.2 软件环境一致，硬件不同导致精度差异很大？
@@ -291,7 +291,7 @@ if args.precision == 'int8' and "ppocrv4_det_server_qat_dist.yaml" in args.confi
         use_static=True,
         use_calib_mode=False, )
     pred_cfg.exp_disable_tensorrt_ops(["elementwise_add"])
-else:    
+else:  
     pred_cfg.enable_tensorrt_engine(
     workspace_size=1 << 30,
     max_batch_size=1,

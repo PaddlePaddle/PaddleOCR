@@ -35,26 +35,29 @@ def tia_distort(src, segment=4):
     src_pts.append([0, img_h])
 
     dst_pts.append([np.random.randint(thresh), np.random.randint(thresh)])
+    dst_pts.append([img_w - np.random.randint(thresh), np.random.randint(thresh)])
     dst_pts.append(
-        [img_w - np.random.randint(thresh), np.random.randint(thresh)])
-    dst_pts.append(
-        [img_w - np.random.randint(thresh), img_h - np.random.randint(thresh)])
-    dst_pts.append(
-        [np.random.randint(thresh), img_h - np.random.randint(thresh)])
+        [img_w - np.random.randint(thresh), img_h - np.random.randint(thresh)]
+    )
+    dst_pts.append([np.random.randint(thresh), img_h - np.random.randint(thresh)])
 
     half_thresh = thresh * 0.5
 
     for cut_idx in np.arange(1, segment, 1):
         src_pts.append([cut * cut_idx, 0])
         src_pts.append([cut * cut_idx, img_h])
-        dst_pts.append([
-            cut * cut_idx + np.random.randint(thresh) - half_thresh,
-            np.random.randint(thresh) - half_thresh
-        ])
-        dst_pts.append([
-            cut * cut_idx + np.random.randint(thresh) - half_thresh,
-            img_h + np.random.randint(thresh) - half_thresh
-        ])
+        dst_pts.append(
+            [
+                cut * cut_idx + np.random.randint(thresh) - half_thresh,
+                np.random.randint(thresh) - half_thresh,
+            ]
+        )
+        dst_pts.append(
+            [
+                cut * cut_idx + np.random.randint(thresh) - half_thresh,
+                img_h + np.random.randint(thresh) - half_thresh,
+            ]
+        )
 
     trans = WarpMLS(src, src_pts, dst_pts, img_w, img_h)
     dst = trans.generate()

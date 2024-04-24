@@ -27,18 +27,18 @@ class DetResizeForTest(object):
     def __init__(self, **kwargs):
         super(DetResizeForTest, self).__init__()
         self.resize_type = 0
-        if 'image_shape' in kwargs:
-            self.image_shape = kwargs['image_shape']
+        if "image_shape" in kwargs:
+            self.image_shape = kwargs["image_shape"]
             self.resize_type = 1
-        elif 'limit_side_len' in kwargs:
-            self.limit_side_len = kwargs['limit_side_len']
-            self.limit_type = kwargs.get('limit_type', 'min')
-        elif 'resize_short' in kwargs:
+        elif "limit_side_len" in kwargs:
+            self.limit_side_len = kwargs["limit_side_len"]
+            self.limit_type = kwargs.get("limit_type", "min")
+        elif "resize_short" in kwargs:
             self.limit_side_len = 736
-            self.limit_type = 'min'
+            self.limit_type = "min"
         else:
             self.resize_type = 2
-            self.resize_long = kwargs.get('resize_long', 960)
+            self.resize_long = kwargs.get("resize_long", 960)
 
     def __call__(self, data):
         img = deepcopy(data)
@@ -73,14 +73,14 @@ class DetResizeForTest(object):
         h, w, _ = img.shape
 
         # limit the max side
-        if self.limit_type == 'max':
+        if self.limit_type == "max":
             if max(h, w) > limit_side_len:
                 if h > w:
                     ratio = float(limit_side_len) / h
                 else:
                     ratio = float(limit_side_len) / w
             else:
-                ratio = 1.
+                ratio = 1.0
         else:
             if min(h, w) < limit_side_len:
                 if h < w:
@@ -88,7 +88,7 @@ class DetResizeForTest(object):
                 else:
                     ratio = float(limit_side_len) / w
             else:
-                ratio = 1.
+                ratio = 1.0
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
 
@@ -133,20 +133,48 @@ class DetResizeForTest(object):
 
 
 class BaseRecLabelDecode(object):
-    """ Convert between text-label and text-index """
+    """Convert between text-label and text-index"""
 
     def __init__(self, config):
         support_character_type = [
-            'ch', 'en', 'EN_symbol', 'french', 'german', 'japan', 'korean',
-            'it', 'xi', 'pu', 'ru', 'ar', 'ta', 'ug', 'fa', 'ur', 'rs', 'oc',
-            'rsc', 'bg', 'uk', 'be', 'te', 'ka', 'chinese_cht', 'hi', 'mr',
-            'ne', 'EN'
+            "ch",
+            "en",
+            "EN_symbol",
+            "french",
+            "german",
+            "japan",
+            "korean",
+            "it",
+            "xi",
+            "pu",
+            "ru",
+            "ar",
+            "ta",
+            "ug",
+            "fa",
+            "ur",
+            "rs",
+            "oc",
+            "rsc",
+            "bg",
+            "uk",
+            "be",
+            "te",
+            "ka",
+            "chinese_cht",
+            "hi",
+            "mr",
+            "ne",
+            "EN",
         ]
-        character_type = config['character_type']
-        character_dict_path = config['character_dict_path']
+        character_type = config["character_type"]
+        character_dict_path = config["character_dict_path"]
         use_space_char = True
-        assert character_type in support_character_type, "Only {} are supported now but get {}".format(
-            support_character_type, character_type)
+        assert (
+            character_type in support_character_type
+        ), "Only {} are supported now but get {}".format(
+            support_character_type, character_type
+        )
 
         self.beg_str = "sos"
         self.end_str = "eos"
@@ -160,12 +188,15 @@ class BaseRecLabelDecode(object):
             dict_character = list(self.character_str)
         elif character_type in support_character_type:
             self.character_str = ""
-            assert character_dict_path is not None, "character_dict_path should not be None when character_type is {}".format(
-                character_type)
+            assert (
+                character_dict_path is not None
+            ), "character_dict_path should not be None when character_type is {}".format(
+                character_type
+            )
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
-                    line = line.decode('utf-8').strip("\n").strip("\r\n")
+                    line = line.decode("utf-8").strip("\n").strip("\r\n")
                     self.character_str += line
             if use_space_char:
                 self.character_str += " "
@@ -184,7 +215,7 @@ class BaseRecLabelDecode(object):
         return dict_character
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
+        """convert text-index into text-label."""
         result_list = []
         ignored_tokens = self.get_ignored_tokens()
         batch_size = len(text_index)
@@ -196,16 +227,17 @@ class BaseRecLabelDecode(object):
                     continue
                 if is_remove_duplicate:
                     # only for predict
-                    if idx > 0 and text_index[batch_idx][idx - 1] == text_index[
-                            batch_idx][idx]:
+                    if (
+                        idx > 0
+                        and text_index[batch_idx][idx - 1] == text_index[batch_idx][idx]
+                    ):
                         continue
-                char_list.append(self.character[int(text_index[batch_idx][
-                    idx])])
+                char_list.append(self.character[int(text_index[batch_idx][idx])])
                 if text_prob is not None:
                     conf_list.append(text_prob[batch_idx][idx])
                 else:
                     conf_list.append(1)
-            text = ''.join(char_list)
+            text = "".join(char_list)
             result_list.append((text, np.mean(conf_list)))
         return result_list
 
@@ -214,15 +246,16 @@ class BaseRecLabelDecode(object):
 
 
 class CTCLabelDecode(BaseRecLabelDecode):
-    """ Convert between text-label and text-index """
+    """Convert between text-label and text-index"""
 
     def __init__(
-            self,
-            config,
-            #character_dict_path=None,
-            #character_type='ch',
-            #use_space_char=False,
-            **kwargs):
+        self,
+        config,
+        # character_dict_path=None,
+        # character_type='ch',
+        # use_space_char=False,
+        **kwargs
+    ):
         super(CTCLabelDecode, self).__init__(config)
 
     def __call__(self, preds, label=None, *args, **kwargs):
@@ -235,26 +268,26 @@ class CTCLabelDecode(BaseRecLabelDecode):
         return text, label
 
     def add_special_char(self, dict_character):
-        dict_character = ['blank'] + dict_character
+        dict_character = ["blank"] + dict_character
         return dict_character
 
 
 class CharacterOps(object):
-    """ Convert between text-label and text-index """
+    """Convert between text-label and text-index"""
 
     def __init__(self, config):
-        self.character_type = config['character_type']
-        self.loss_type = config['loss_type']
+        self.character_type = config["character_type"]
+        self.loss_type = config["loss_type"]
         if self.character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
         elif self.character_type == "ch":
-            character_dict_path = config['character_dict_path']
+            character_dict_path = config["character_dict_path"]
             self.character_str = ""
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:
-                    line = line.decode('utf-8').strip("\n").strip("\r\n")
+                    line = line.decode("utf-8").strip("\n").strip("\r\n")
                     self.character_str += line
             dict_character = list(self.character_str)
         elif self.character_type == "en_sensitive":
@@ -263,8 +296,9 @@ class CharacterOps(object):
             dict_character = list(self.character_str)
         else:
             self.character_str = None
-        assert self.character_str is not None, \
-            "Nonsupport type of the character: {}".format(self.character_str)
+        assert (
+            self.character_str is not None
+        ), "Nonsupport type of the character: {}".format(self.character_str)
         self.beg_str = "sos"
         self.end_str = "eos"
         if self.loss_type == "attention":
@@ -296,7 +330,7 @@ class CharacterOps(object):
         return text
 
     def decode(self, text_index, is_remove_duplicate=False):
-        """ convert text-index into text-label. """
+        """convert text-index into text-label."""
         char_list = []
         char_num = self.get_char_num()
 
@@ -314,7 +348,7 @@ class CharacterOps(object):
                 if idx > 0 and text_index[idx - 1] == text_index[idx]:
                     continue
             char_list.append(self.character[text_index[idx]])
-        text = ''.join(char_list)
+        text = "".join(char_list)
         return text
 
     def get_char_num(self):
@@ -327,29 +361,31 @@ class CharacterOps(object):
             elif beg_or_end == "end":
                 idx = np.array(self.dict[self.end_str])
             else:
-                assert False, "Unsupport type %s in get_beg_end_flag_idx"\
-                    % beg_or_end
+                assert False, "Unsupport type %s in get_beg_end_flag_idx" % beg_or_end
             return idx
         else:
-            err = "error in get_beg_end_flag_idx when using the loss %s"\
-                % (self.loss_type)
+            err = "error in get_beg_end_flag_idx when using the loss %s" % (
+                self.loss_type
+            )
             assert False, err
 
 
 class OCRReader(object):
-    def __init__(self,
-                 algorithm="CRNN",
-                 image_shape=[3, 32, 320],
-                 char_type="ch",
-                 batch_num=1,
-                 char_dict_path="./ppocr_keys_v1.txt"):
+    def __init__(
+        self,
+        algorithm="CRNN",
+        image_shape=[3, 32, 320],
+        char_type="ch",
+        batch_num=1,
+        char_dict_path="./ppocr_keys_v1.txt",
+    ):
         self.rec_image_shape = image_shape
         self.character_type = char_type
         self.rec_batch_num = batch_num
         char_ops_params = {}
         char_ops_params["character_type"] = char_type
         char_ops_params["character_dict_path"] = char_dict_path
-        char_ops_params['loss_type'] = 'ctc'
+        char_ops_params["loss_type"] = "ctc"
         self.char_ops = CharacterOps(char_ops_params)
         self.label_ops = CTCLabelDecode(char_ops_params)
 
@@ -365,7 +401,7 @@ class OCRReader(object):
         else:
             resized_w = int(math.ceil(imgH * ratio))
         resized_image = cv2.resize(img, (resized_w, imgH))
-        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.astype("float32")
         resized_image = resized_image.transpose((2, 0, 1)) / 255
         resized_image -= 0.5
         resized_image /= 0.5
@@ -400,6 +436,5 @@ class OCRReader(object):
             pass
         preds_idx = preds.argmax(axis=2)
         preds_prob = preds.max(axis=2)
-        text = self.label_ops.decode(
-            preds_idx, preds_prob, is_remove_duplicate=True)
+        text = self.label_ops.decode(preds_idx, preds_prob, is_remove_duplicate=True)
         return text

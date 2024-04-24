@@ -33,11 +33,11 @@ args = parser.parse_args()
 
 
 def cv2_to_base64(image):
-    return base64.b64encode(image).decode('utf8')
+    return base64.b64encode(image).decode("utf8")
 
 
 def _check_image_file(path):
-    img_end = {'jpg', 'bmp', 'png', 'jpeg', 'rgb', 'tif', 'tiff', 'gif'}
+    img_end = {"jpg", "bmp", "png", "jpeg", "rgb", "tif", "tiff", "gif"}
     return any([path.lower().endswith(e) for e in img_end])
 
 
@@ -56,10 +56,10 @@ if len(test_img_list) == 0:
     raise Exception("not found any img file in {}".format(test_img_dir))
 
 for idx, img_file in enumerate(test_img_list):
-    with open(img_file, 'rb') as file:
+    with open(img_file, "rb") as file:
         image_data1 = file.read()
     # print file name
-    print('{}{}{}'.format('*' * 10, img_file, '*' * 10))
+    print("{}{}{}".format("*" * 10, img_file, "*" * 10))
 
     image = cv2_to_base64(image_data1)
 
@@ -83,7 +83,5 @@ for idx, img_file in enumerate(test_img_list):
                 continue
 
     else:
-        print(
-            "For details about error message, see PipelineServingLogs/pipeline.log"
-        )
+        print("For details about error message, see PipelineServingLogs/pipeline.log")
 print("==> total number of test imgs: ", len(test_img_list))

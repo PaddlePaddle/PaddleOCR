@@ -62,15 +62,16 @@ class TableMatch:
     def __call__(self, structure_res, dt_boxes, rec_res):
         pred_structures, pred_bboxes = structure_res
         if self.filter_ocr_result:
-            dt_boxes, rec_res = self._filter_ocr_result(pred_bboxes, dt_boxes,
-                                                        rec_res)
+            dt_boxes, rec_res = self._filter_ocr_result(pred_bboxes, dt_boxes, rec_res)
         matched_index = self.match_result(dt_boxes, pred_bboxes)
         if self.use_master:
-            pred_html, pred = self.get_pred_html_master(pred_structures,
-                                                        matched_index, rec_res)
+            pred_html, pred = self.get_pred_html_master(
+                pred_structures, matched_index, rec_res
+            )
         else:
-            pred_html, pred = self.get_pred_html(pred_structures, matched_index,
-                                                 rec_res)
+            pred_html, pred = self.get_pred_html(
+                pred_structures, matched_index, rec_res
+            )
         return pred_html
 
     def match_result(self, dt_boxes, pred_bboxes):
@@ -80,16 +81,19 @@ class TableMatch:
             for j, pred_box in enumerate(pred_bboxes):
                 if len(pred_box) == 8:
                     pred_box = [
-                        np.min(pred_box[0::2]), np.min(pred_box[1::2]),
-                        np.max(pred_box[0::2]), np.max(pred_box[1::2])
+                        np.min(pred_box[0::2]),
+                        np.min(pred_box[1::2]),
+                        np.max(pred_box[0::2]),
+                        np.max(pred_box[1::2]),
                     ]
-                distances.append((distance(gt_box, pred_box),
-                                  1. - compute_iou(gt_box, pred_box)
-                                  ))  # compute iou and l1 distance
+                distances.append(
+                    (distance(gt_box, pred_box), 1.0 - compute_iou(gt_box, pred_box))
+                )  # compute iou and l1 distance
             sorted_distances = distances.copy()
             # select det box by iou and l1 distance
             sorted_distances = sorted(
-                sorted_distances, key=lambda item: (item[1], item[0]))
+                sorted_distances, key=lambda item: (item[1], item[0])
+            )
             if distances.index(sorted_distances[0]) not in matched.keys():
                 matched[distances.index(sorted_distances[0])] = [i]
             else:
@@ -100,82 +104,89 @@ class TableMatch:
         end_html = []
         td_index = 0
         for tag in pred_structures:
-            if '</td>' in tag:
-                if '<td></td>' == tag:
-                    end_html.extend('<td>')
+            if "</td>" in tag:
+                if "<td></td>" == tag:
+                    end_html.extend("<td>")
                 if td_index in matched_index.keys():
                     b_with = False
-                    if '<b>' in ocr_contents[matched_index[td_index][
-                            0]] and len(matched_index[td_index]) > 1:
+                    if (
+                        "<b>" in ocr_contents[matched_index[td_index][0]]
+                        and len(matched_index[td_index]) > 1
+                    ):
                         b_with = True
-                        end_html.extend('<b>')
+                        end_html.extend("<b>")
                     for i, td_index_index in enumerate(matched_index[td_index]):
                         content = ocr_contents[td_index_index][0]
                         if len(matched_index[td_index]) > 1:
                             if len(content) == 0:
                                 continue
-                            if content[0] == ' ':
+                            if content[0] == " ":
                                 content = content[1:]
-                            if '<b>' in content:
+                            if "<b>" in content:
                                 content = content[3:]
-                            if '</b>' in content:
+                            if "</b>" in content:
                                 content = content[:-4]
                             if len(content) == 0:
                                 continue
-                            if i != len(matched_index[
-                                    td_index]) - 1 and ' ' != content[-1]:
-                                content += ' '
+                            if (
+                                i != len(matched_index[td_index]) - 1
+                                and " " != content[-1]
+                            ):
+                                content += " "
                         end_html.extend(content)
                     if b_with:
-                        end_html.extend('</b>')
-                if '<td></td>' == tag:
-                    end_html.append('</td>')
+                        end_html.extend("</b>")
+                if "<td></td>" == tag:
+                    end_html.append("</td>")
                 else:
                     end_html.append(tag)
                 td_index += 1
             else:
                 end_html.append(tag)
-        return ''.join(end_html), end_html
+        return "".join(end_html), end_html
 
-    def get_pred_html_master(self, pred_structures, matched_index,
-                             ocr_contents):
+    def get_pred_html_master(self, pred_structures, matched_index, ocr_contents):
         end_html = []
         td_index = 0
         for token in pred_structures:
-            if '</td>' in token:
-                txt = ''
+            if "</td>" in token:
+                txt = ""
                 b_with = False
                 if td_index in matched_index.keys():
-                    if '<b>' in ocr_contents[matched_index[td_index][
-                            0]] and len(matched_index[td_index]) > 1:
+                    if (
+                        "<b>" in ocr_contents[matched_index[td_index][0]]
+                        and len(matched_index[td_index]) > 1
+                    ):
                         b_with = True
                     for i, td_index_index in enumerate(matched_index[td_index]):
                         content = ocr_contents[td_index_index][0]
                         if len(matched_index[td_index]) > 1:
                             if len(content) == 0:
                                 continue
-                            if content[0] == ' ':
+                            if content[0] == " ":
                                 content = content[1:]
-                            if '<b>' in content:
+                            if "<b>" in content:
                                 content = content[3:]
-                            if '</b>' in content:
+                            if "</b>" in content:
                                 content = content[:-4]
                             if len(content) == 0:
                                 continue
-                            if i != len(matched_index[
-                                    td_index]) - 1 and ' ' != content[-1]:
-                                content += ' '
+                            if (
+                                i != len(matched_index[td_index]) - 1
+                                and " " != content[-1]
+                            ):
+                                content += " "
                         txt += content
                 if b_with:
-                    txt = '<b>{}</b>'.format(txt)
-                if '<td></td>' == token:
-                    token = '<td>{}</td>'.format(txt)
+                    txt = "<b>{}</b>".format(txt)
+                if "<td></td>" == token:
+                    token = "<td>{}</td>".format(txt)
                 else:
-                    token = '{}</td>'.format(txt)
+                    token = "{}</td>".format(txt)
                 td_index += 1
             token = deal_eb_token(token)
             end_html.append(token)
-        html = ''.join(end_html)
+        html = "".join(end_html)
         html = deal_bb(html)
         return html, end_html
 

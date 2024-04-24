@@ -23,7 +23,8 @@ from paddleslim.auto_compression import AutoCompression
 from paddleslim.common.dataloader import get_feed_vars
 
 import sys
-sys.path.append('../../../')
+
+sys.path.append("../../../")
 from ppocr.data import build_dataloader
 from ppocr.postprocess import build_post_process
 from ppocr.metrics import build_metric
@@ -34,21 +35,21 @@ logger = get_logger(__name__, level=logging.INFO)
 def argsparser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        '--config_path',
+        "--config_path",
         type=str,
         default=None,
         help="path of compression strategy config.",
-        required=True)
+        required=True,
+    )
     parser.add_argument(
-        '--save_dir',
+        "--save_dir",
         type=str,
-        default='output',
-        help="directory to save compressed model.")
+        default="output",
+        help="directory to save compressed model.",
+    )
     parser.add_argument(
-        '--devices',
-        type=str,
-        default='gpu',
-        help="which device used to compress.")
+        "--devices", type=str, default="gpu", help="which device used to compress."
+    )
     return parser
 
 
@@ -56,7 +57,7 @@ def reader_wrapper(reader, input_name):
     if isinstance(input_name, list) and len(input_name) == 1:
         input_name = input_name[0]
 
-    def gen(): # 形成一个字典输入
+    def gen():  # 形成一个字典输入
         for i, batch in enumerate(reader()):
             yield {input_name: batch[0]}
 
@@ -64,100 +65,106 @@ def reader_wrapper(reader, input_name):
 
 
 def eval_function(exe, compiled_test_program, test_feed_names, test_fetch_list):
-    post_process_class = build_post_process(all_config['PostProcess'],
-                                            global_config)
-    eval_class = build_metric(all_config['Metric'])
-    model_type = global_config['model_type']
+    post_process_class = build_post_process(all_config["PostProcess"], global_config)
+    eval_class = build_metric(all_config["Metric"])
+    model_type = global_config["model_type"]
 
     with tqdm(
-            total=len(val_loader),
-            bar_format='Evaluation stage, Run batch:|{bar}| {n_fmt}/{total_fmt}',
-            ncols=80) as t:
+        total=len(val_loader),
+        bar_format="Evaluation stage, Run batch:|{bar}| {n_fmt}/{total_fmt}",
+        ncols=80,
+    ) as t:
         for batch_id, batch in enumerate(val_loader):
             images = batch[0]
-            
+
             try:
-                preds, = exe.run(compiled_test_program,
-                             feed={test_feed_names[0]: images},
-                             fetch_list=test_fetch_list)
+                (preds,) = exe.run(
+                    compiled_test_program,
+                    feed={test_feed_names[0]: images},
+                    fetch_list=test_fetch_list,
+                )
             except:
-                preds, _ = exe.run(compiled_test_program,
-                             feed={test_feed_names[0]: images},
-                             fetch_list=test_fetch_list)
+                preds, _ = exe.run(
+                    compiled_test_program,
+                    feed={test_feed_names[0]: images},
+                    fetch_list=test_fetch_list,
+                )
 
             batch_numpy = []
             for item in batch:
                 batch_numpy.append(np.array(item))
 
-            if model_type == 'det':
-                preds_map = {'maps': preds}
+            if model_type == "det":
+                preds_map = {"maps": preds}
                 post_result = post_process_class(preds_map, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
-            elif model_type == 'rec':
+            elif model_type == "rec":
                 post_result = post_process_class(preds, batch_numpy[1])
                 eval_class(post_result, batch_numpy)
             t.update()
         metric = eval_class.get_metric()
-    logger.info('metric eval ***************')
+    logger.info("metric eval ***************")
     for k, v in metric.items():
-        logger.info('{}:{}'.format(k, v))
+        logger.info("{}:{}".format(k, v))
 
-    if model_type == 'det':
-        return metric['hmean']
-    elif model_type == 'rec':
-        return metric['acc']
+    if model_type == "det":
+        return metric["hmean"]
+    elif model_type == "rec":
+        return metric["acc"]
     return metric
 
 
 def main():
     rank_id = paddle.distributed.get_rank()
-    if args.devices == 'gpu':
+    if args.devices == "gpu":
         place = paddle.CUDAPlace(rank_id)
-        paddle.set_device('gpu')
+        paddle.set_device("gpu")
     else:
         place = paddle.CPUPlace()
-        paddle.set_device('cpu')
+        paddle.set_device("cpu")
 
     global all_config, global_config
     all_config = load_slim_config(args.config_path)
 
-    if "Global" not in all_config:  
+    if "Global" not in all_config:
         raise KeyError(f"Key 'Global' not found in config file. \n{all_config}")
     global_config = all_config["Global"]
 
     gpu_num = paddle.distributed.get_world_size()
 
-    train_dataloader = build_dataloader(all_config, 'Train', args.devices,
-                                        logger)
+    train_dataloader = build_dataloader(all_config, "Train", args.devices, logger)
 
     global val_loader
-    val_loader = build_dataloader(all_config, 'Eval', args.devices, logger)
+    val_loader = build_dataloader(all_config, "Eval", args.devices, logger)
 
-    if isinstance(all_config['TrainConfig']['learning_rate'],
-                  dict) and all_config['TrainConfig']['learning_rate'][
-                      'type'] == 'CosineAnnealingDecay':
-        steps = len(train_dataloader) * all_config['TrainConfig']['epochs']
-        all_config['TrainConfig']['learning_rate']['T_max'] = steps
-        print('total training steps:', steps)
+    if (
+        isinstance(all_config["TrainConfig"]["learning_rate"], dict)
+        and all_config["TrainConfig"]["learning_rate"]["type"] == "CosineAnnealingDecay"
+    ):
+        steps = len(train_dataloader) * all_config["TrainConfig"]["epochs"]
+        all_config["TrainConfig"]["learning_rate"]["T_max"] = steps
+        print("total training steps:", steps)
 
-    global_config['input_name'] = get_feed_vars(
-        global_config['model_dir'], global_config['model_filename'],
-        global_config['params_filename'])
-    
+    global_config["input_name"] = get_feed_vars(
+        global_config["model_dir"],
+        global_config["model_filename"],
+        global_config["params_filename"],
+    )
+
     ac = AutoCompression(
-        model_dir=global_config['model_dir'],
-        model_filename=global_config['model_filename'],
-        params_filename=global_config['params_filename'],
+        model_dir=global_config["model_dir"],
+        model_filename=global_config["model_filename"],
+        params_filename=global_config["params_filename"],
         save_dir=args.save_dir,
         config=all_config,
-        train_dataloader=reader_wrapper(train_dataloader,
-                                        global_config['input_name']),
+        train_dataloader=reader_wrapper(train_dataloader, global_config["input_name"]),
         eval_callback=eval_function if rank_id == 0 else None,
-        eval_dataloader=reader_wrapper(val_loader, global_config['input_name']))
+        eval_dataloader=reader_wrapper(val_loader, global_config["input_name"]),
+    )
     ac.compress()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     paddle.enable_static()
     parser = argsparser()
     args = parser.parse_args()

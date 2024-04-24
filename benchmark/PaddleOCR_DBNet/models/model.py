@@ -18,22 +18,22 @@ class Model(nn.Layer):
         """
         super().__init__()
         model_config = Dict(model_config)
-        backbone_type = model_config.backbone.pop('type')
-        neck_type = model_config.neck.pop('type')
-        head_type = model_config.head.pop('type')
+        backbone_type = model_config.backbone.pop("type")
+        neck_type = model_config.neck.pop("type")
+        head_type = model_config.head.pop("type")
         self.backbone = build_backbone(backbone_type, **model_config.backbone)
         self.neck = build_neck(
-            neck_type,
-            in_channels=self.backbone.out_channels,
-            **model_config.neck)
+            neck_type, in_channels=self.backbone.out_channels, **model_config.neck
+        )
         self.head = build_head(
-            head_type, in_channels=self.neck.out_channels, **model_config.head)
-        self.name = f'{backbone_type}_{neck_type}_{head_type}'
+            head_type, in_channels=self.neck.out_channels, **model_config.head
+        )
+        self.name = f"{backbone_type}_{neck_type}_{head_type}"
 
     def forward(self, x):
         _, _, H, W = x.shape
         backbone_out = self.backbone(x)
         neck_out = self.neck(backbone_out)
         y = self.head(neck_out)
-        y = F.interpolate(y, size=(H, W), mode='bilinear', align_corners=True)
+        y = F.interpolate(y, size=(H, W), mode="bilinear", align_corners=True)
         return y

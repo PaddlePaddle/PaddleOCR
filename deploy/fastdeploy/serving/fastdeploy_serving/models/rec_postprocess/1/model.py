@@ -48,7 +48,7 @@ class TritonPythonModel:
           * model_name: Model name
         """
         # You must parse model_config. JSON string is not parsed here
-        self.model_config = json.loads(args['model_config'])
+        self.model_config = json.loads(args["model_config"])
         print("model_config:", self.model_config)
 
         self.input_names = []
@@ -66,7 +66,7 @@ class TritonPythonModel:
 
         dir_name = os.path.dirname(os.path.realpath(__file__)) + "/"
         file_name = dir_name + "ppocr_keys_v1.txt"
-        #self.label_list = load_dict()
+        # self.label_list = load_dict()
         self.postprocessor = fd.vision.ocr.RecognizerPostprocessor(file_name)
 
     def execute(self, requests):
@@ -91,16 +91,17 @@ class TritonPythonModel:
         responses = []
         for request in requests:
             infer_outputs = pb_utils.get_input_tensor_by_name(
-                request, self.input_names[0])
+                request, self.input_names[0]
+            )
             infer_outputs = infer_outputs.as_numpy()
             results = self.postprocessor.run([infer_outputs])
             out_tensor_0 = pb_utils.Tensor(
-                self.output_names[0], np.array(
-                    results[0], dtype=np.object_))
-            out_tensor_1 = pb_utils.Tensor(self.output_names[1],
-                                           np.array(results[1]))
+                self.output_names[0], np.array(results[0], dtype=np.object_)
+            )
+            out_tensor_1 = pb_utils.Tensor(self.output_names[1], np.array(results[1]))
             inference_response = pb_utils.InferenceResponse(
-                output_tensors=[out_tensor_0, out_tensor_1])
+                output_tensors=[out_tensor_0, out_tensor_1]
+            )
             responses.append(inference_response)
         return responses
 
@@ -109,4 +110,4 @@ class TritonPythonModel:
         Implementing `finalize` function is optional. This function allows
         the model to perform any necessary clean ups before exit.
         """
-        print('Cleaning up...')
+        print("Cleaning up...")

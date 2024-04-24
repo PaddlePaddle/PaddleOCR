@@ -23,12 +23,13 @@ from utils.logging import get_logger
 
 class StyleTextRecPredictor(object):
     def __init__(self, config):
-        algorithm = config['Predictor']['algorithm']
-        assert algorithm in ["StyleTextRec"
-                             ], "Generator {} not supported.".format(algorithm)
-        use_gpu = config["Global"]['use_gpu']
+        algorithm = config["Predictor"]["algorithm"]
+        assert algorithm in ["StyleTextRec"], "Generator {} not supported.".format(
+            algorithm
+        )
+        use_gpu = config["Global"]["use_gpu"]
         check_gpu(use_gpu)
-        paddle.set_device('gpu' if use_gpu else 'cpu')
+        paddle.set_device("gpu" if use_gpu else "cpu")
         self.logger = get_logger()
         self.generator = getattr(style_text_rec, algorithm)(config)
         self.height = config["Global"]["image_height"]
@@ -41,8 +42,7 @@ class StyleTextRecPredictor(object):
     def reshape_to_same_height(self, img_list):
         h = img_list[0].shape[0]
         for idx in range(1, len(img_list)):
-            new_w = round(1.0 * img_list[idx].shape[1] /
-                          img_list[idx].shape[0] * h)
+            new_w = round(1.0 * img_list[idx].shape[1] / img_list[idx].shape[0] * h)
             img_list[idx] = cv2.resize(img_list[idx], (new_w, h))
         return img_list
 
@@ -50,8 +50,9 @@ class StyleTextRecPredictor(object):
         style_input = self.rep_style_input(style_input, text_input)
         tensor_style_input = self.preprocess(style_input)
         tensor_text_input = self.preprocess(text_input)
-        style_text_result = self.generator.forward(tensor_style_input,
-                                                   tensor_text_input)
+        style_text_result = self.generator.forward(
+            tensor_style_input, tensor_text_input
+        )
         fake_fusion = self.postprocess(style_text_result["fake_fusion"])
         fake_text = self.postprocess(style_text_result["fake_text"])
         fake_sk = self.postprocess(style_text_result["fake_sk"])
@@ -88,7 +89,7 @@ class StyleTextRecPredictor(object):
         return synth_result
 
     def preprocess(self, img):
-        img = (img.astype('float32') * self.scale - self.mean) / self.std
+        img = (img.astype("float32") * self.scale - self.mean) / self.std
         img_height, img_width, channel = img.shape
         assert channel == 3, "Please use an rgb image."
         ratio = img_width / float(img_height)
@@ -98,7 +99,7 @@ class StyleTextRecPredictor(object):
             resized_w = int(math.ceil(self.height * ratio))
         img = cv2.resize(img, (resized_w, self.height))
 
-        new_img = np.zeros([self.height, self.width, 3]).astype('float32')
+        new_img = np.zeros([self.height, self.width, 3]).astype("float32")
         new_img[:, 0:resized_w, :] = img
         img = new_img.transpose((2, 0, 1))
         img = img[np.newaxis, :, :, :]
@@ -110,12 +111,18 @@ class StyleTextRecPredictor(object):
         img = (img * self.std + self.mean) / self.scale
         img = np.maximum(img, 0.0)
         img = np.minimum(img, 255.0)
-        img = img.astype('uint8')
+        img = img.astype("uint8")
         return img
 
     def rep_style_input(self, style_input, text_input):
-        rep_num = int(1.2 * (text_input.shape[1] / text_input.shape[0]) /
-                      (style_input.shape[1] / style_input.shape[0])) + 1
+        rep_num = (
+            int(
+                1.2
+                * (text_input.shape[1] / text_input.shape[0])
+                / (style_input.shape[1] / style_input.shape[0])
+            )
+            + 1
+        )
         style_input = np.tile(style_input, reps=[1, rep_num, 1])
         max_width = int(self.width / self.height * style_input.shape[0])
         style_input = style_input[:, :max_width, :]
