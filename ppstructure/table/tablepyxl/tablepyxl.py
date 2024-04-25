@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
-from premailer import Premailer
+
 from tablepyxl.style import Table
 from paddle.utils import try_import
 
@@ -90,6 +90,9 @@ def document_to_workbook(doc, wb=None, base_url=None):
     every table in the document.
     The workbook is returned
     """
+    try_import("premailer")
+    from premailer import Premailer
+
     if not wb:
         wb = Workbook()
         wb.remove(wb.active)
