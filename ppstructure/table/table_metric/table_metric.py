@@ -12,7 +12,6 @@
 from rapidfuzz.distance import Levenshtein
 from apted import APTED, Config
 from apted.helpers import Tree
-
 from collections import deque
 from .parallel import parallel_process
 from tqdm import tqdm
