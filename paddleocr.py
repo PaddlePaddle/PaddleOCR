@@ -19,6 +19,7 @@ import importlib
 __dir__ = os.path.dirname(__file__)
 
 import paddle
+from paddle.utils import try_import
 
 sys.path.append(os.path.join(__dir__, ""))
 
@@ -910,6 +911,7 @@ def main():
                 img = cv2.imread(img_path)
 
             if args.recovery and args.use_pdf2docx_api and flag_pdf:
+                try_import("pdf2docx")
                 from pdf2docx.converter import Converter
 
                 docx_file = os.path.join(args.output, "{}.docx".format(img_name))
