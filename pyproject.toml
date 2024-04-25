@@ -1,0 +1,110 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paddleocr"
+version = "2.9.0"
+description = "Awesome OCR toolkits based on PaddlePaddle"
+authors = [
+    {name = "???", email = "???@???.???"},
+]
+maintainers = [
+    {name = "???", email = "???@???.???"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+homepage = "https://github.com/PaddlePaddle/PaddleOCR"
+repository = "https://github.com/PaddlePaddle/PaddleOCR"
+keywords = [
+    "ocr", "textdetection", "textrecognition", "paddleocr", "paddlepaddle"
+]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Natural Language :: Chinese (Simplified)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.2",
+    "Programming Language :: Python :: 3.3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Topic :: Utilities",
+]
+dependencies = ["-r requirements.txt", "-r ppstructure/recovery/requirements.txt"]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+???
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+
+
+
+
+
+
+# pyproject.toml
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+name = "paddleocr"
+version = "YOUR_VERSION_HERE"  # 请替换为实际的版本号
+packages = ["paddleocr"]
+package-dir = {"paddleocr": "."}
+entry-points = {"console_scripts": ["paddleocr = paddleocr.paddleocr:main"]}
+install-requires = [
+    # 这里列出你的依赖项，可以从setup.py中的load_requirements函数生成
+    "dependency1",
+    "dependency2",
+    # ...
+]
+description = "Awesome OCR toolkits based on PaddlePaddle"
+long-description = file = "README.md"  # 假设你的长描述在README.md文件中
+long-description-content-type = "text/markdown"
+url = "https://github.com/PaddlePaddle/PaddleOCR"
+download-url = "https://github.com/PaddlePaddle/PaddleOCR.git"
+keywords = [
+    "ocr", "textdetection", "textrecognition", "paddleocr", "crnn", "east", "star-net",
+    "rosetta", "ocrlite", "db", "chineseocr", "chinesetextdetection", "chinesetextrecognition"
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Natural Language :: Chinese (Simplified)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.2",
+    "Programming Language :: Python :: 3.3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Topic :: Utilities",
+]
+
+# 如果需要，你还可以添加其他setuptools工具配置
+# ...
+
+
+
+[tool.poetry]
+name = "paddleocr"
+version = "0.1.0"
+description = ""
+authors = ["Liyulingyue <852433440@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
