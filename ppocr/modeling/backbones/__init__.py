@@ -17,10 +17,24 @@ __all__ = ["build_backbone"]
 
 def build_backbone(config, model_type):
     if model_type == "det" or model_type == "table":
+        from .det_mobilenet_v3 import MobileNetV3
+        from .det_resnet import ResNet
+        from .det_resnet_vd import ResNet_vd
+        from .det_resnet_vd_sast import ResNet_SAST
+        from .det_pp_lcnet import PPLCNet
+        from .rec_lcnetv3 import PPLCNetV3
+        from .rec_hgnet import PPHGNet_small
+        from .rec_vit import ViT
         from .det_pp_lcnet_v2 import PPLCNetV2_base
         support_dict = [
-            "MobileNetV3", "ResNet", "ResNet_vd", "ResNet_SAST", "PPLCNet",
-            "PPLCNetV3", "PPHGNet_small", "PPLCNetV2_base"
+            "MobileNetV3",
+            "ResNet",
+            "ResNet_vd",
+            "ResNet_SAST",
+            "PPLCNet",
+            "PPLCNetV3",
+            "PPHGNet_small",
+            "PPLCNetV2_base"
         ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra

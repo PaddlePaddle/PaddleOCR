@@ -8,8 +8,8 @@ Global:
   # evaluation is run every 1000 iterations after the 0th iteration
   eval_batch_step: [0, 1000]
   cal_metric_during_train: True
-  pretrained_model: #./output/SLANet_lcnetv2/best_accuracy #_32 #./output/SLANet_ft/best_accuracy
-  checkpoints: #./output/SLANet_lcnetv2/latest
+  pretrained_model:
+  checkpoints:
   save_inference_dir: ./SLANet_lcnetv2_infer
   use_visualdl: False
   infer_img: ppstructure/docs/table/table.jpg
@@ -30,10 +30,7 @@ Optimizer:
   beta2: 0.999
   clip_norm: 5.0
   lr:
-    # name: Piecewise
     learning_rate: 0.001
-    # decay_epochs : [40, 60]
-    # values : [0.001, 0.0001, 0.00005]
   regularizer:
     name: 'L2'
     factor: 0.00000
@@ -43,9 +40,6 @@ Architecture:
   algorithm: SLANet
   Backbone:
     name: PPLCNetV2_base
-    # scale: 1.0
-    # pretrained: true
-    # use_ssld: true
   Neck:
     name: CSPPAN
     out_channels: 96
