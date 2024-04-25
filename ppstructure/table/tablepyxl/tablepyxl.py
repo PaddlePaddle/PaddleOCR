@@ -1,8 +1,6 @@
 # Do imports like python3 so our package works for 2 and 3
 from __future__ import absolute_import
 
-from openpyxl import Workbook
-from openpyxl.utils import get_column_letter
 
 from tablepyxl.style import Table
 from paddle.utils import try_import
@@ -30,7 +28,9 @@ def write_rows(worksheet, elem, row, column=1):
     Writes every tr child element of elem to a row in the worksheet
     returns the next row after all rows are written
     """
+    try_import("openpyxl")
     from openpyxl.cell.cell import MergedCell
+    from openpyxl.utils import get_column_letter
 
     initial_column = column
     for table_row in elem.rows:
@@ -91,7 +91,9 @@ def document_to_workbook(doc, wb=None, base_url=None):
     The workbook is returned
     """
     try_import("premailer")
+    try_import("openpyxl")
     from premailer import Premailer
+    from openpyxl import Workbook
 
     if not wb:
         wb = Workbook()
