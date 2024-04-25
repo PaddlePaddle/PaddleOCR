@@ -12,11 +12,10 @@
   - [2.2 Python脚本使用](#22-Python脚本使用)
     - [2.2.1 图像方向分类+版面分析+表格识别](#221-图像方向分类版面分析表格识别)
     - [2.2.2 版面分析+表格识别](#222-版面分析表格识别)
-    - [2.2.3 版面分析+文本识别](#223-版面分析文本识别)
-    - [2.2.4 版面分析](#224-版面分析)
-    - [2.2.5 表格识别](#225-表格识别)
-    - [2.2.6 关键信息抽取](#226-关键信息抽取)
-    - [2.2.7 版面恢复](#227-版面恢复)
+    - [2.2.3 版面分析](#223-版面分析)
+    - [2.2.4 表格识别](#224-表格识别)
+    - [2.2.5 关键信息抽取](#225-关键信息抽取)
+    - [2.2.6 版面恢复](#226-版面恢复)
   - [2.3 返回结果说明](#23-返回结果说明)
     - [2.3.1 版面分析+表格识别](#231-版面分析表格识别)
     - [2.3.2 关键信息抽取](#232-关键信息抽取)
@@ -190,7 +189,25 @@ im_show.save('result.jpg')
 ```
 
 <a name="223"></a>
-#### 2.2.3 版面分析+文本识别
+#### 2.2.3 版面分析
+
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+
+table_engine = PPStructure(table=False, ocr=False, show_log=True)
+
+save_folder = './output'
+img_path = 'ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+```
 
 ```python
 import os
@@ -211,30 +228,46 @@ for res in result:
         print(line)
 ```
 
-<a name="224"></a>
-#### 2.2.4 版面分析
-
 ```python
 import os
 import cv2
+import numpy as np
 from paddleocr import PPStructure,save_structure_res
+from paddle.utils import try_import
+from PIL import Image
 
-table_engine = PPStructure(table=False, ocr=False, show_log=True)
+ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
 
 save_folder = './output'
-img_path = 'ppstructure/docs/table/1.png'
-img = cv2.imread(img_path)
-result = table_engine(img)
-save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+img_path = 'ppstructure/recovery/UnrealText.pdf'
 
-for line in result:
-    line.pop('img')
-    print(line)
+fitz = try_import("fitz")
+imgs = []
+with fitz.open(img_path) as pdf:
+    for pg in range(0, pdf.page_count):
+        page = pdf[pg]
+        mat = fitz.Matrix(2, 2)
+        pm = page.get_pixmap(matrix=mat, alpha=False)
+
+        # if width or height > 2000 pixels, don't enlarge the image
+        if pm.width > 2000 or pm.height > 2000:
+            pm = page.get_pixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+
+        img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        imgs.append(img)
+
+for index, img in enumerate(imgs):
+    result = ocr_engine(img)
+    save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0], index)
+    for line in result:
+        line.pop('img')
+        print(line)
 ```
 
-<a name="225"></a>
+<a name="224"></a>
 
-#### 2.2.5 表格识别
+#### 2.2.4 表格识别
 
 ```python
 import os
@@ -254,14 +287,14 @@ for line in result:
     print(line)
 ```
 
-<a name="226"></a>
-#### 2.2.6 关键信息抽取
+<a name="225"></a>
+#### 2.2.5 关键信息抽取
 
 关键信息抽取暂不支持通过whl包调用，详细使用教程请参考：[inference文档](./inference.md)。
 
-<a name="227"></a>
+<a name="226"></a>
 
-#### 2.2.7 版面恢复
+#### 2.2.6 版面恢复
 
 ```python
 import os
