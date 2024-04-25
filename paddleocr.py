@@ -559,7 +559,7 @@ def check_img(img, alpha_color=(255, 255, 255)):
             file format: jpg, png and other image formats that opencv can decode, as well as gif and pdf formats
             storage type: binary image, net image file, local image file
         alpha_color: Background color in images in RGBA format
-        return: numpy.array (h, w, 3)
+        return: numpy.array (h, w, 3) or list (p, h, w, 3) (p: page of pdf), boolean, boolean
     """
     flag_gif, flag_pdf = False, False
     if isinstance(img, bytes):
