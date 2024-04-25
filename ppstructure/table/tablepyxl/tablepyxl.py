@@ -1,11 +1,11 @@
 # Do imports like python3 so our package works for 2 and 3
 from __future__ import absolute_import
 
-from lxml import html
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from premailer import Premailer
 from tablepyxl.style import Table
+from paddle.utils import try_import
 
 
 def string_to_int(s):
@@ -15,6 +15,9 @@ def string_to_int(s):
 
 
 def get_Tables(doc):
+    try_import("lxml")
+    from lxml import etree, html
+
     tree = html.fromstring(doc)
     comments = tree.xpath("//comment()")
     for comment in comments:
