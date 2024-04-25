@@ -559,8 +559,9 @@ def check_img(img, alpha_color=(255, 255, 255)):
             file format: jpg, png and other image formats that opencv can decode, as well as gif and pdf formats
             storage type: binary image, net image file, local image file
         alpha_color: Background color in images in RGBA format
-        return: numpy.array (h, w, 3)
+        return: numpy.array (h, w, 3) or list (p, h, w, 3) (p: page of pdf), boolean, boolean
     """
+    flag_gif, flag_pdf = False, False
     if isinstance(img, bytes):
         img = img_decode(img)
     if isinstance(img, str):
@@ -589,17 +590,17 @@ def check_img(img, alpha_color=(255, 255, 255)):
                     img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
                 except:
                     logger.error("error in loading image:{}".format(image_file))
-                    return None
+                    return None, flag_gif, flag_pdf
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
-            return None
+            return None, flag_gif, flag_pdf
     # single channel image array.shape:h,w
     if isinstance(img, np.ndarray) and len(img.shape) == 2:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     # four channel image array.shape:h,w,c
     if isinstance(img, np.ndarray) and len(img.shape) == 3 and img.shape[2] == 4:
         img = alpha_to_color(img, alpha_color)
-    return img
+    return img, flag_gif, flag_pdf
 
 
 class PaddleOCR(predict_system.TextSystem):
@@ -700,9 +701,9 @@ class PaddleOCR(predict_system.TextSystem):
                 "Since the angle classifier is not initialized, it will not be used during the forward process"
             )
 
-        img = check_img(img, alpha_color)
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
         # for infer pdf file
-        if isinstance(img, list):
+        if isinstance(img, list) and flag_pdf:
             if self.page_num > len(img) or self.page_num == 0:
                 imgs = img
             else:
@@ -837,7 +838,16 @@ class PPStructure(StructureSystem):
         img_idx=0,
         alpha_color=(255, 255, 255),
     ):
-        img = check_img(img, alpha_color)
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
+        if isinstance(img, list) and flag_pdf:
+            res_list = []
+            for index, pdf_img in enumerate(img):
+                logger.info("processing {}/{} page:".format(index + 1, len(img)))
+                res, _ = super().__call__(
+                    pdf_img, return_ocr_result_in_table, img_idx=index
+                )
+                res_list.append(res)
+            return res_list
         res, _ = super().__call__(img, return_ocr_result_in_table, img_idx=img_idx)
         return res
 

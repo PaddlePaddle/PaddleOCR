@@ -192,6 +192,62 @@ for line in result:
     print(line)
 ```
 
+```python
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+
+ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
+
+save_folder = './output'
+img_path = 'ppstructure/recovery/UnrealText.pdf'
+result = ocr_engine(img_path)
+for index, res in enumerate(result):
+    save_structure_res(res, save_folder, os.path.basename(img_path).split('.')[0], index)
+
+for res in result:
+    for line in res:
+        line.pop('img')
+        print(line)
+```
+
+```python
+import os
+import cv2
+import numpy as np
+from paddleocr import PPStructure,save_structure_res
+from paddle.utils import try_import
+from PIL import Image
+
+ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
+
+save_folder = './output'
+img_path = 'ppstructure/recovery/UnrealText.pdf'
+
+fitz = try_import("fitz")
+imgs = []
+with fitz.open(img_path) as pdf:
+    for pg in range(0, pdf.page_count):
+        page = pdf[pg]
+        mat = fitz.Matrix(2, 2)
+        pm = page.get_pixmap(matrix=mat, alpha=False)
+
+        # if width or height > 2000 pixels, don't enlarge the image
+        if pm.width > 2000 or pm.height > 2000:
+            pm = page.get_pixmap(matrix=fitz.Matrix(1, 1), alpha=False)
+
+        img = Image.frombytes("RGB", [pm.width, pm.height], pm.samples)
+        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
+        imgs.append(img)
+
+for index, img in enumerate(imgs):
+    result = ocr_engine(img)
+    save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0], index)
+    for line in result:
+        line.pop('img')
+        print(line)
+```
+
 <a name="224"></a>
 #### 2.2.4 table recognition
 
