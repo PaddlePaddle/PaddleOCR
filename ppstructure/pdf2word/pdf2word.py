@@ -25,7 +25,6 @@ from paddle.utils import try_import
 
 fitz = try_import("fitz")
 from PIL import Image
-from pdf2docx.converter import Converter
 from qtpy.QtWidgets import (
     QApplication,
     QWidget,
@@ -209,6 +208,9 @@ class Worker(QThread):
                     break
                 # using use_pdf2docx_api for PDF parsing
                 if self.use_pdf2docx_api and os.path.basename(image_file)[-3:] == "pdf":
+                    try_import("pdf2docx")
+                    from pdf2docx.converter import Converter
+
                     self.totalPageCnt += 1
                     self.progressBarRange.emit(self.totalPageCnt)
                     print("===============using use_pdf2docx_api===============")
