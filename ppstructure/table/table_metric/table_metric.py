@@ -12,10 +12,10 @@
 from rapidfuzz.distance import Levenshtein
 from apted import APTED, Config
 from apted.helpers import Tree
-from lxml import etree, html
 from collections import deque
 from .parallel import parallel_process
 from tqdm import tqdm
+from paddle.utils import try_import
 
 
 class TableTree(Tree):
@@ -161,6 +161,9 @@ class TEDS(object):
         """Computes TEDS score between the prediction and the ground truth of a
         given sample
         """
+        try_import("lxml")
+        from lxml import etree, html
+
         if (not pred) or (not true):
             return 0.0
         parser = html.HTMLParser(remove_comments=True, encoding="utf-8")

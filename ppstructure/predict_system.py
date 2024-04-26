@@ -28,6 +28,7 @@ import time
 import logging
 from copy import deepcopy
 
+from paddle.utils import try_import
 from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from ppocr.utils.visual import draw_ser_results, draw_re_results
@@ -300,6 +301,7 @@ def main(args):
         img_name = os.path.basename(image_file).split(".")[0]
 
         if args.recovery and args.use_pdf2docx_api and flag_pdf:
+            try_import("pdf2docx")
             from pdf2docx.converter import Converter
 
             os.makedirs(args.output, exist_ok=True)

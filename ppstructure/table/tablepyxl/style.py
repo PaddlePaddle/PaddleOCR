@@ -1,19 +1,26 @@
 # This is where we handle translating css styles into openpyxl styles
 # and cascading those from parent to child in the dom.
 
-from openpyxl.cell import cell
-from openpyxl.styles import (
-    Font,
-    Alignment,
-    PatternFill,
-    NamedStyle,
-    Border,
-    Side,
-    Color,
-)
-from openpyxl.styles.fills import FILL_SOLID
-from openpyxl.styles.numbers import FORMAT_CURRENCY_USD_SIMPLE, FORMAT_PERCENTAGE
-from openpyxl.styles.colors import BLACK
+try:
+    from openpyxl.cell import cell
+    from openpyxl.styles import (
+        Font,
+        Alignment,
+        PatternFill,
+        NamedStyle,
+        Border,
+        Side,
+        Color,
+    )
+    from openpyxl.styles.fills import FILL_SOLID
+    from openpyxl.styles.numbers import FORMAT_CURRENCY_USD_SIMPLE, FORMAT_PERCENTAGE
+    from openpyxl.styles.colors import BLACK
+except:
+    import warnings
+
+    warnings.warn(
+        "Can not import openpyxl, some functions in the ppstructure may not work. Please manually install openpyxl before using ppstructure."
+    )
 
 FORMAT_DATE_MMDDYYYY = "mm/dd/yyyy"
 
