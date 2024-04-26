@@ -55,10 +55,7 @@ dependencies = [
 paddleocr = "paddleocr.paddleocr:main"
 
 [tool.setuptools]
+packages = ["paddleocr"]
 package-dir = { "paddleocr" = "" }
 include-package-data = true
-
-[tool.setuptools.packages.find]
-include = ["ppocr", "ppstructure"]
-
 
