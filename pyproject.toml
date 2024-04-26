@@ -51,5 +51,14 @@ dependencies = [
     "fire>=0.3.0",
 ]
 
+[project.scripts]
+paddleocr = "paddleocr.paddleocr:main"
+
+[tool.setuptools]
+package-dir = { "paddleocr" = "" }
+include-package-data = true
+
 [tool.setuptools.packages.find]
 include = ["ppocr", "ppstructure"]
+
+
