@@ -4,8 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paddleocr"
-version = "2.9.0"
-description = "Awesome OCR toolkits based on PaddlePaddle"
+# After each version release, the version number needs to be incremented
+version = "2.8.0"
+description = "Awesome OCR toolkits based on PaddlePaddle(8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embedded and IoT devices)"
 authors = [
     {name = "???", email = "???@???.???"},
 ]
@@ -15,9 +16,21 @@ maintainers = [
 readme = "README.md"
 requires-python = ">=3.8"
 keywords = [
-    "ocr", "textdetection", "textrecognition", "paddleocr", "paddlepaddle"
+    "ocr",
+    "textdetection",
+    "textrecognition",
+    "paddleocr",
+    "crnn",
+    "east",
+    "star-net",
+    "rosetta",
+    "ocrlite",
+    "db",
+    "chineseocr",
+    "chinesetextdetection",
+    "chinesetextrecognition",
 ]
-license = {text = "Apache-2.0"}
+license = {text = "Apache License 2.0"}
 classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
