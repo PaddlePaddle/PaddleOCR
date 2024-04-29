@@ -40,10 +40,11 @@
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
-pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本,包含PP-OCRv3、PP-OCRv2、PP-OCR
 ```
 
 - 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
+- 对于需要使用PP-OCRv4版本的用户，请尝试安装最新版本。
 
 
 <a name="2"></a>
@@ -107,7 +108,8 @@ cd /path/to/ppocr_img
   ```
 
 **版本说明**
-paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
+paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其他版本可通过设置参数`--ocr_version`。注意：如果使用的是"paddleocr=2.0.1"版本，不包含PP-OCRv4，请尝试更新paddleocr。
+具体版本说明如下：
 |  版本名称  |  版本说明 |
 |    ---    |   ---   |
 | PP-OCRv4 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |

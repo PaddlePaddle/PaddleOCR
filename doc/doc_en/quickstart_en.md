@@ -44,12 +44,13 @@ For more software version requirements, please refer to the instructions in [Ins
 ### 1.2 Install PaddleOCR Whl Package
 
 ```bash
-pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
+pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+,contain PP-OCRv3、PP-OCRv2、PP-OCR
 ```
 
 - **For windows users:** If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
 
   Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
+- For users who need to use PP-OCRv4, try installing the latest version.
 
 <a name="2-easy-to-use"></a>
 
@@ -120,7 +121,8 @@ If you do not use the provided test image, you can replace the following `--imag
   ```
 
 **Version**
-paddleocr uses the PP-OCRv4 model by default(`--ocr_version PP-OCRv4`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
+paddleocr uses the PP-OCRv4 model by default(`--ocr_version PP-OCRv4`). If you want to use other versions, you can set the parameter `--ocr_version`, Note: If you are using the "paddleocr=2.0.1" version, which does not include PP-OCRv4, try updating paddleocr.
+the specific version description is as follows:
 |  version name |  description |
 |    ---    |   ---   |
 | PP-OCRv4 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
