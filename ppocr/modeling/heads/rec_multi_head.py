@@ -149,5 +149,5 @@ class MultiHead(nn.Layer):
             head_out["sar"] = sar_out
         else:
             gtc_out = self.gtc_head(self.before_gtc(x), targets[1:])
-            head_out["nrtr"] = gtc_out
+            head_out["gtc"] = gtc_out
         return head_out

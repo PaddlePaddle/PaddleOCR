@@ -55,7 +55,7 @@ class MultiLoss(nn.Layer):
                 )
             elif name == "NRTRLoss":
                 loss = (
-                    loss_func(predicts["nrtr"], batch[:1] + batch[2:])["loss"]
+                    loss_func(predicts["gtc"], batch[:1] + batch[2:])["loss"]
                     * self.weight_2
                 )
             else:
