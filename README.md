@@ -65,6 +65,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 
 - 一行命令快速使用：[快速开始（中英文/多语言/文档分析）](./doc/doc_ch/quickstart.md)
 - 移动端demo体验：[安装包DEMO下载地址](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(基于EasyEdge和Paddle-Lite, 支持iOS和Android系统)
+- Javascript SDK: [@gutenye/ocr](https://github.com/gutenye/ocr)(基于ONNX Runtime, 支持Node.js, Browser和React Native)
 
 <a name="技术交流合作"></a>
 ## 📖 技术交流合作

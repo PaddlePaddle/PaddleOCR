@@ -76,6 +76,8 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - PP-OCRv4：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286
     - PP-ChatOCR：https://aistudio.baidu.com/aistudio/modelsdetail?modelId=332
 - Mobile demo experience：[Installation DEMO](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)(Based on EasyEdge and Paddle-Lite, support iOS and Android systems)
+- Javascript SDK: [@gutenye/ocr](https://github.com/gutenye/ocr)(Based on ONNX Runtime, support Node.js, Browser and React Native)
+
 
 <a name="Technical exchange and cooperation"></a>
 
