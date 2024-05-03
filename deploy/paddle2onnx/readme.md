@@ -75,9 +75,9 @@ paddle2onnx --model_dir ./inference/en_PP-OCRv3_rec_infer \
 --enable_onnx_checker True
 
 paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
---model_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel \
---params_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams \
---save_file ./inferencecls_onnx/model.onnx \
+--model_filename inference.pdmodel \
+--params_filename inference.pdiparams \
+--save_file ./inference/cls_onnx/model.onnx \
 --opset_version 10 \
 --input_shape_dict="{'x':[-1,3,-1,-1]}" \
 --enable_onnx_checker True
