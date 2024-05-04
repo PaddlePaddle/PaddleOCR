@@ -387,7 +387,7 @@ if __name__ == "__main__":
     
     # logger
     log_file = args.save_log_path
-    if os.path.isdir(args.save_log_path):
+    if os.path.isdir(args.save_log_path) or (not os.path.exists(args.save_log_path) and args.save_log_path.endswith("/")):
         log_file = os.path.join(log_file, "benchmark_detection.log")
     logger = get_logger(log_file=log_file)
 
