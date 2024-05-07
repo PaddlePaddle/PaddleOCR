@@ -1,4 +1,4 @@
-name: pre-commit
+name: PaddleOCR Code Style Check
 
 on:
   pull_request:

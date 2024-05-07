@@ -132,7 +132,7 @@ class AttentionRecognitionHead(nn.Layer):
         # Decoder
         state = paddle.zeros([1, batch_size, self.sDim])
 
-        predicted_ids, predicted_scores = [], []
+        predicted_ids, predicted_scores, predicted = [], [], None
         for i in range(self.max_len_labels):
             if i == 0:
                 y_prev = paddle.full(shape=[batch_size], fill_value=self.num_classes)

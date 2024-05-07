@@ -841,11 +841,11 @@ class TableBoxEncode(object):
         return data
 
     def xyxyxyxy2xywh(self, boxes):
-        new_bboxes = np.zeros([len(bboxes), 4])
-        new_bboxes[:, 0] = bboxes[:, 0::2].min()  # x1
-        new_bboxes[:, 1] = bboxes[:, 1::2].min()  # y1
-        new_bboxes[:, 2] = bboxes[:, 0::2].max() - new_bboxes[:, 0]  # w
-        new_bboxes[:, 3] = bboxes[:, 1::2].max() - new_bboxes[:, 1]  # h
+        new_bboxes = np.zeros([len(boxes), 4])
+        new_bboxes[:, 0] = boxes[:, 0::2].min()  # x1
+        new_bboxes[:, 1] = boxes[:, 1::2].min()  # y1
+        new_bboxes[:, 2] = boxes[:, 0::2].max() - new_bboxes[:, 0]  # w
+        new_bboxes[:, 3] = boxes[:, 1::2].max() - new_bboxes[:, 1]  # h
         return new_bboxes
 
     def xyxy2xywh(self, bboxes):
