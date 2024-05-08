@@ -1,0 +1,172 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: curr file",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "train(layout)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py",
+            "args": [
+                "-c", 
+                "configs/my_configs/picodet_lcnet_layout_bubble.yml",
+                "--eval"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleDetection",
+            "justMyCode": false
+        },
+        {
+            "name": "eval(layout)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/eval.py",
+            "args": [
+                "-c", 
+                "configs/my_configs/picodet_lcnet_layout_bubble.yml",
+                "-o",
+                "weights=output/picodet_lcnet_layout_bubble/best_model"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleDetection",
+            "justMyCode": false
+        },
+        {
+            "name": "test(layout)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/infer.py",
+            "args": [
+                "-c", 
+                "configs/my_configs/picodet_lcnet_layout_bubble.yml",
+                "-o",
+                "weights=output/picodet_lcnet_layout_bubble/best_model",
+                "--infer_dir=E:\\projects\\ballooning\\data\\image_unlabeled",
+                "--output_dir=output/picodet_lcnet_layout_bubble/vis",
+                "--draw_threshold=0.5"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleDetection",
+            "justMyCode": false
+        },
+        {
+            "name": "export(layout)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/export_model.py",
+            "args": [
+                "-c", 
+                "configs/my_configs/picodet_lcnet_layout_bubble.yml",
+                "-o",
+                "weights=output/picodet_lcnet_layout_bubble/best_model",
+                "--output_dir=output_inference"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleDetection",
+            "justMyCode": false
+        },
+        {
+            "name": "inference(layout)",
+            "type": "python",
+            "request": "launch",
+            "program": "deploy/python/infer.py",
+            "args": [
+                "--model_dir=output_inference/picodet_lcnet_layout_bubble/", 
+                "--image_file=E:\\projects\\ballooning\\data\\image_unlabeled\\page_1.png",
+                "--device=GPU",
+                "--output_dir=output_inference/picodet_lcnet_layout_bubble/vis"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleDetection",
+            "justMyCode": false
+        },
+        {
+            "name": "train(det)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/train.py",
+            "args": [
+                "-c", 
+                "configs/det/my_configs/det_finetune_ch_PP-OCRv4_det_teacher.yml"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleOCR",
+            "justMyCode": false
+        },
+        {
+            "name": "eval(det)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/eval.py",
+            "args": [
+                "-c", 
+                "configs/det/my_configs/picodet_lcnet_layout_bubble.yml",
+                "-o",
+                "Global.checkpoints=????????????"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleOCR",
+            "justMyCode": false
+        },
+        {
+            "name": "test(det)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/infer_det.py",
+            "args": [
+                "-c", 
+                "configs/det/my_configs/det_mbv3_db_det_bubble.yml",
+                "-o",
+                "Global.infer_img=E:\\projects\\ballooning\\dataset\\det\\val",
+                "Global.pretrained_model=output/det_mbv3_db_det_bubble/best_accuracy"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleOCR",
+            "justMyCode": false
+        },
+        {
+            "name": "export(det)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/export_model.py",
+            "args": [
+                "-c", 
+                "configs/det/my_configs/det_finetune_ch_PP-OCRv3_det_distill_train.yml",
+                "-o",
+                "Global.save_inference_dir=./output_inference/det_finetune_ch_PP-OCRv3_det_distill_train/",
+                "Global.pretrained_model=output/det_finetune_ch_PP-OCRv3_det_distill_train/best_accuracy"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleOCR",
+            "justMyCode": false
+        },
+        {
+            "name": "inference(det)",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/infer/predict_det.py",
+            "args": [
+                "--det_algorithm=DB",
+                "--det_model_dir=./output_inference/det_finetune_ch_PP-OCRv3_det_distill_train/",
+                "--image_dir=E:\\projects\\ballooning\\dataset\\det\\val", 
+                "--use_gpu=True",
+                "--draw_img_save_dir=./output_inference/det_finetune_ch_PP-OCRv3_det_distill_train/vis",
+                "--det_limit_side_len=8000"
+            ],  
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/PaddleOCR",
+            "justMyCode": false
+        },
+    ]
+}
+
