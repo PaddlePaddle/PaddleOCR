@@ -86,8 +86,7 @@ class LayoutPredictor(object):
         if self.use_onnx:
             input_dict = {}
             input_dict[self.input_tensor.name] = img
-            outputs = self.predictor.run(self.output_tensors,
-                                        input_dict)
+            outputs = self.predictor.run(self.output_tensors, input_dict)
             num_outs = int(len(outputs) / 2)
             for out_idx in range(num_outs):
                 np_score_list.append(outputs[out_idx])
@@ -99,11 +98,15 @@ class LayoutPredictor(object):
             num_outs = int(len(output_names) / 2)
             for out_idx in range(num_outs):
                 np_score_list.append(
-                    self.predictor.get_output_handle(output_names[out_idx])
-                    .copy_to_cpu())
+                    self.predictor.get_output_handle(
+                        output_names[out_idx]
+                    ).copy_to_cpu()
+                )
                 np_boxes_list.append(
-                    self.predictor.get_output_handle(output_names[
-                        out_idx + num_outs]).copy_to_cpu())
+                    self.predictor.get_output_handle(
+                        output_names[out_idx + num_outs]
+                    ).copy_to_cpu()
+                )
         preds = dict(boxes=np_score_list, boxes_num=np_boxes_list)
 
         post_preds = self.postprocess_op(ori_im, img, preds)
