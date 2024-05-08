@@ -23,7 +23,7 @@ def test_ocr_det_rec_api(ocr, img, det, rec):
 
 
 def test_ocr_fp16():
-    ocr = PaddleOCR(lang="ch", use_angle_cls=True, precision=True)
+    ocr = PaddleOCR(lang="ch", use_angle_cls=True, precision="fp16")
     img = cv2.imread("doc/imgs/1.jpg")
     result = ocr.ocr(img, det=True, rec=True)
     assert result is not None
