@@ -31,7 +31,7 @@ def test_ocr_fp16():
 
 
 def test_ocr_with_none_image():
-    ocr = PaddleOCR(lang="ch")
+    ocr = PaddleOCR(lang="ch", use_angle_cls=True)
     img = None
     with pytest.raises(AssertionError):
         ocr.ocr(img, det=True, rec=True)
