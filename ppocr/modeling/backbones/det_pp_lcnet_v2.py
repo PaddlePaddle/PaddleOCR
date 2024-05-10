@@ -25,12 +25,9 @@ from paddle.nn.initializer import KaimingNormal
 from paddle.utils.download import get_path_from_url
 
 MODEL_URLS = {
-    "PPLCNetV2_small":
-    "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_small_ssld_pretrained.pdparams",
-    "PPLCNetV2_base":
-    "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_base_ssld_pretrained.pdparams",
-    "PPLCNetV2_large":
-    "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_large_ssld_pretrained.pdparams",
+    "PPLCNetV2_small": "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_small_ssld_pretrained.pdparams",
+    "PPLCNetV2_base": "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_base_ssld_pretrained.pdparams",
+    "PPLCNetV2_large": "https://paddle-imagenet-models-name.bj.bcebos.com/dygraph/legendary_models/PPLCNetV2_large_ssld_pretrained.pdparams",
 }
 
 __all__ = list(MODEL_URLS.keys())
@@ -54,13 +51,9 @@ def make_divisible(v, divisor=8, min_value=None):
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 groups=1,
-                 use_act=True):
+    def __init__(
+        self, in_channels, out_channels, kernel_size, stride, groups=1, use_act=True
+    ):
         super().__init__()
         self.use_act = use_act
         self.conv = Conv2D(
@@ -71,12 +64,14 @@ class ConvBNLayer(nn.Layer):
             padding=(kernel_size - 1) // 2,
             groups=groups,
             weight_attr=ParamAttr(initializer=KaimingNormal()),
-            bias_attr=False)
+            bias_attr=False,
+        )
 
         self.bn = BatchNorm2D(
             out_channels,
             weight_attr=ParamAttr(regularizer=L2Decay(0.0)),
-            bias_attr=ParamAttr(regularizer=L2Decay(0.0)))
+            bias_attr=ParamAttr(regularizer=L2Decay(0.0)),
+        )
         if self.use_act:
             self.act = nn.ReLU()
 
@@ -97,14 +92,16 @@ class SEModule(nn.Layer):
             out_channels=channel // reduction,
             kernel_size=1,
             stride=1,
-            padding=0)
+            padding=0,
+        )
         self.relu = nn.ReLU()
         self.conv2 = Conv2D(
             in_channels=channel // reduction,
             out_channels=channel,
             kernel_size=1,
             stride=1,
-            padding=0)
+            padding=0,
+        )
         self.hardsigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -119,15 +116,17 @@ class SEModule(nn.Layer):
 
 
 class RepDepthwiseSeparable(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 stride,
-                 dw_size=3,
-                 split_pw=False,
-                 use_rep=False,
-                 use_se=False,
-                 use_shortcut=False):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        stride,
+        dw_size=3,
+        split_pw=False,
+        use_rep=False,
+        use_se=False,
+        use_shortcut=False,
+    ):
         super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -137,7 +136,11 @@ class RepDepthwiseSeparable(nn.Layer):
         self.split_pw = split_pw
         self.use_rep = use_rep
         self.use_se = use_se
-        self.use_shortcut = True if use_shortcut and stride == 1 and in_channels == out_channels else False
+        self.use_shortcut = (
+            True
+            if use_shortcut and stride == 1 and in_channels == out_channels
+            else False
+        )
 
         if self.use_rep:
             self.dw_conv_list = nn.LayerList()
@@ -150,7 +153,8 @@ class RepDepthwiseSeparable(nn.Layer):
                     kernel_size=kernel_size,
                     stride=stride,
                     groups=in_channels,
-                    use_act=False)
+                    use_act=False,
+                )
                 self.dw_conv_list.append(dw_conv)
             self.dw_conv = nn.Conv2D(
                 in_channels=in_channels,
@@ -158,14 +162,16 @@ class RepDepthwiseSeparable(nn.Layer):
                 kernel_size=dw_size,
                 stride=stride,
                 padding=(dw_size - 1) // 2,
-                groups=in_channels)
+                groups=in_channels,
+            )
         else:
             self.dw_conv = ConvBNLayer(
                 in_channels=in_channels,
                 out_channels=in_channels,
                 kernel_size=dw_size,
                 stride=stride,
-                groups=in_channels)
+                groups=in_channels,
+            )
 
         self.act = nn.ReLU()
 
@@ -178,18 +184,21 @@ class RepDepthwiseSeparable(nn.Layer):
                 in_channels=in_channels,
                 kernel_size=1,
                 out_channels=int(out_channels * pw_ratio),
-                stride=1)
+                stride=1,
+            )
             self.pw_conv_2 = ConvBNLayer(
                 in_channels=int(out_channels * pw_ratio),
                 kernel_size=1,
                 out_channels=out_channels,
-                stride=1)
+                stride=1,
+            )
         else:
             self.pw_conv = ConvBNLayer(
                 in_channels=in_channels,
                 kernel_size=1,
                 out_channels=out_channels,
-                stride=1)
+                stride=1,
+            )
 
     def forward(self, x):
         if self.use_rep:
@@ -252,74 +261,88 @@ class RepDepthwiseSeparable(nn.Layer):
 
 
 class PPLCNetV2(nn.Layer):
-    def __init__(self,
-                 scale,
-                 depths,
-                 out_indx=[1,2,3,4],
-                 **kwargs):
+    def __init__(self, scale, depths, out_indx=[1, 2, 3, 4], **kwargs):
         super().__init__(**kwargs)
         self.scale = scale
         self.out_channels = [
             # int(NET_CONFIG["blocks3"][-1][2] * scale),
-            int(NET_CONFIG["stage1"][0] * scale *2),
-            int(NET_CONFIG["stage2"][0] * scale *2),
-            int(NET_CONFIG["stage3"][0] * scale *2),
-            int(NET_CONFIG["stage4"][0] * scale *2)
+            int(NET_CONFIG["stage1"][0] * scale * 2),
+            int(NET_CONFIG["stage2"][0] * scale * 2),
+            int(NET_CONFIG["stage3"][0] * scale * 2),
+            int(NET_CONFIG["stage4"][0] * scale * 2),
         ]
-        self.stem = nn.Sequential(* [
-            ConvBNLayer(
-                in_channels=3,
-                kernel_size=3,
-                out_channels=make_divisible(32 * scale),
-                stride=2), RepDepthwiseSeparable(
+        self.stem = nn.Sequential(
+            *[
+                ConvBNLayer(
+                    in_channels=3,
+                    kernel_size=3,
+                    out_channels=make_divisible(32 * scale),
+                    stride=2,
+                ),
+                RepDepthwiseSeparable(
                     in_channels=make_divisible(32 * scale),
                     out_channels=make_divisible(64 * scale),
                     stride=1,
-                    dw_size=3)
-        ])
+                    dw_size=3,
+                ),
+            ]
+        )
         self.out_indx = out_indx
         # stages
         self.stages = nn.LayerList()
         for depth_idx, k in enumerate(NET_CONFIG):
-            in_channels, kernel_size, split_pw, use_rep, use_se, use_shortcut = NET_CONFIG[
-                k]
+            (
+                in_channels,
+                kernel_size,
+                split_pw,
+                use_rep,
+                use_se,
+                use_shortcut,
+            ) = NET_CONFIG[k]
             self.stages.append(
-                nn.Sequential(* [
-                    RepDepthwiseSeparable(
-                        in_channels=make_divisible((in_channels if i == 0 else
-                                                    in_channels * 2) * scale),
-                        out_channels=make_divisible(in_channels * 2 * scale),
-                        stride=2 if i == 0 else 1,
-                        dw_size=kernel_size,
-                        split_pw=split_pw,
-                        use_rep=use_rep,
-                        use_se=use_se,
-                        use_shortcut=use_shortcut)
-                    for i in range(depths[depth_idx])
-                ]))
+                nn.Sequential(
+                    *[
+                        RepDepthwiseSeparable(
+                            in_channels=make_divisible(
+                                (in_channels if i == 0 else in_channels * 2) * scale
+                            ),
+                            out_channels=make_divisible(in_channels * 2 * scale),
+                            stride=2 if i == 0 else 1,
+                            dw_size=kernel_size,
+                            split_pw=split_pw,
+                            use_rep=use_rep,
+                            use_se=use_se,
+                            use_shortcut=use_shortcut,
+                        )
+                        for i in range(depths[depth_idx])
+                    ]
+                )
+            )
 
         # if pretrained:
-        self._load_pretrained(MODEL_URLS['PPLCNetV2_base'], use_ssld=True)
+        self._load_pretrained(MODEL_URLS["PPLCNetV2_base"], use_ssld=True)
 
     def forward(self, x):
         x = self.stem(x)
-        i =1
+        i = 1
         outs = []
         for stage in self.stages:
             x = stage(x)
             if i in self.out_indx:
                 outs.append(x)
-            i+=1
+            i += 1
         return outs
 
     def _load_pretrained(self, pretrained_url, use_ssld=False):
         print(pretrained_url)
         local_weight_path = get_path_from_url(
-            pretrained_url, os.path.expanduser("~/.paddleclas/weights"))
+            pretrained_url, os.path.expanduser("~/.paddleclas/weights")
+        )
         param_state_dict = paddle.load(local_weight_path)
         self.set_dict(param_state_dict)
-        print('load pretrain ssd success!')
+        print("load pretrain ssd success!")
         return
+
 
 def PPLCNetV2_base(in_channels=3, **kwargs):
     """
@@ -331,6 +354,5 @@ def PPLCNetV2_base(in_channels=3, **kwargs):
     Returns:
         model: nn.Layer. Specific `PPLCNetV2_base` model depends on args.
     """
-    model = PPLCNetV2(
-        scale=1.0, depths=[2, 2, 6, 2], **kwargs)
+    model = PPLCNetV2(scale=1.0, depths=[2, 2, 6, 2], **kwargs)
     return model
