@@ -109,4 +109,3 @@ python3.7 table/predict_structure.py --table_model_dir=../inference/slanet_lcnet
 
 <a name="5"></a>
 ## 5. FAQ
-
