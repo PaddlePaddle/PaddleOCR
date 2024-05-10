@@ -23,7 +23,7 @@ Architecture:
   algorithm: DB
   Transform: null
   Backbone:
-    name: repvit_svtr_det
+    name: RepSVTR_det
   Neck:
     name: RSEFPN
     out_channels: 96

@@ -39,7 +39,7 @@ Architecture:
   algorithm: SVTR_HGNet
   Transform:
   Backbone:
-    name: repvit_svtr
+    name: RepSVTR
   Head:
     name: MultiHead
     head_list:

@@ -317,7 +317,7 @@ class RepViT(nn.Layer):
         return x
 
 
-def repvit_svtr(in_channels=3):
+def RepSVTR(in_channels=3):
     """
     Constructs a MobileNetV3-Large model
     """
@@ -340,7 +340,7 @@ def repvit_svtr(in_channels=3):
     return RepViT(cfgs, in_channels=in_channels)
 
 
-def repvit_svtr_det(in_channels=3, out_indices=[2, 5, 10, 13]):
+def RepSVTR_det(in_channels=3, out_indices=[2, 5, 10, 13]):
     """
     Constructs a MobileNetV3-Large model
     """

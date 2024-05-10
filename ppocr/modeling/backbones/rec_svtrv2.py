@@ -236,7 +236,7 @@ class ConvBlock(nn.Layer):
         x = x + self.drop_path(self.mixer(x))
         x = self.norm1(x.flatten(2).transpose([0, 2, 1]))
         x = self.norm2(x + self.drop_path(self.mlp(x)))
-        x = x.transpose([0, 2, 1]).reshape([-1, C, H, W])
+        x = x.transpose([0, 2, 1]).reshape([0, C, H, W])
         return x
 
 
@@ -268,7 +268,7 @@ class SubSample2D(nn.Layer):
         x = self.conv(x)
         C, H, W = x.shape[1:]
         x = self.norm(x.flatten(2).transpose([0, 2, 1]))
-        x = x.transpose([0, 2, 1]).reshape([-1, C, H, W])
+        x = x.transpose([0, 2, 1]).reshape([0, C, H, W])
         return x, [H, W]
 
 
@@ -292,7 +292,7 @@ class SubSample1D(nn.Layer):
 
     def forward(self, x, sz):
         C = x.shape[-1]
-        x = x.transpose([0, 2, 1]).reshape([-1, C, sz[0], sz[1]])
+        x = x.transpose([0, 2, 1]).reshape([0, C, sz[0], sz[1]])
         x = self.conv(x)
         C, H, W = x.shape[1:]
         x = self.norm(x.flatten(2).transpose([0, 2, 1]))
@@ -451,7 +451,7 @@ class LastStage(nn.Layer):
         self.dropout = nn.Dropout(p=last_drop, mode="downscale_in_infer")
 
     def forward(self, x, sz):
-        x = x.reshape([-1, sz[0], sz[1], x.shape[-1]])
+        x = x.reshape([0, sz[0], sz[1], x.shape[-1]])
         x = x.mean(1)
         x = self.last_conv(x)
         x = self.hardswish(x)
@@ -465,7 +465,7 @@ class OutPool(nn.Layer):
 
     def forward(self, x, sz):
         C = x.shape[-1]
-        x = x.transpose([0, 2, 1]).reshape([-1, C, sz[0], sz[1]])
+        x = x.transpose([0, 2, 1]).reshape([0, C, sz[0], sz[1]])
         x = nn.functional.avg_pool2d(x, [sz[0], 2])
         return x, [1, sz[1] // 2]
 
@@ -476,7 +476,7 @@ class Feat2D(nn.Layer):
 
     def forward(self, x, sz):
         C = x.shape[-1]
-        x = x.transpose([0, 2, 1]).reshape([-1, C, sz[0], sz[1]])
+        x = x.transpose([0, 2, 1]).reshape([0, C, sz[0], sz[1]])
         return x, sz
 
 
