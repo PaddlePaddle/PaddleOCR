@@ -104,6 +104,7 @@ class MainWindow(QMainWindow):
         default_predefined_class_file=None,
         default_save_dir=None,
     ):
+        print("KIE mode: ", kie_mode)
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
         self.setWindowState(Qt.WindowMaximized)  # set window max
@@ -139,15 +140,17 @@ class MainWindow(QMainWindow):
             lang=lang,
             show_log=False,
         )
-        self.table_ocr = PPStructure(
-            use_pdserving=False, use_gpu=gpu, lang=lang, layout=False, show_log=False
+        if self.kie_mode:
+            self.table_ocr = PPStructure(
+                use_pdserving=False, use_gpu=gpu, lang=lang, layout=False, show_log=False
         )
 
         if os.path.exists("./data/paddle.png"):
             result = self.ocr.ocr("./data/paddle.png", cls=True, det=True)
-            result = self.table_ocr(
-                "./data/paddle.png", return_ocr_result_in_table=True
-            )
+            if self.kie_mode:
+                result = self.table_ocr(
+                    "./data/paddle.png", return_ocr_result_in_table=True
+                )
 
         # For loading all image under a directory
         self.mImgList = []
