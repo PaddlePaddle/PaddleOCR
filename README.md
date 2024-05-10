@@ -26,7 +26,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
 </div>
 
 ## 📣 近期更新
-- **🔥星河零代码产线(OCR 相关)**：全面覆盖了以下四大OCR核心任务，提供极便捷的Badcase分析和实用的在线体验：
+- **🔥2024.5.10 上线星河零代码产线(OCR 相关)**：全面覆盖了以下四大OCR核心任务，提供极便捷的Badcase分析和实用的在线体验：
   - [通用OCR](https://aistudio.baidu.com/community/app/91661) (PP-OCRv4)。
   - [通用表格识别](https://aistudio.baidu.com/community/app/91661) (SLANet)。
   - [通用图像信息抽取](https://aistudio.baidu.com/community/app/91662) (PP-ChatOCRv2-common)。
