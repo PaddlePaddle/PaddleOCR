@@ -104,7 +104,6 @@ class MainWindow(QMainWindow):
         default_predefined_class_file=None,
         default_save_dir=None,
     ):
-        print("KIE mode: ", kie_mode)
         super(MainWindow, self).__init__()
         self.setWindowTitle(__appname__)
         self.setWindowState(Qt.WindowMaximized)  # set window max
