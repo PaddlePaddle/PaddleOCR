@@ -11,8 +11,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        ref: ${{ github.event.pull_request.head.sha }}
-    - uses: actions/setup-python@v3
+        ref: ${{ github.ref }}
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     # Install Dependencies for Python
