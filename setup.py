@@ -14,12 +14,11 @@
 
 from setuptools import setup
 from io import open
-import sys
 import subprocess
 
 # get version by matchiing, so will not need to setup complex env in github aciton
 p = subprocess.Popen(
-    "grep ^VERSION ./paddleocr.py | cut -d\\' -f 2",
+    "grep ^VERSION ./paddleocr.py | awk '{print $3}' | tr -d '\"'",
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE,
     shell=True,
@@ -57,7 +56,7 @@ setup(
         ["requirements.txt", "ppstructure/recovery/requirements.txt"]
     ),
     license="Apache License 2.0",
-    description="Awesome OCR toolkits based on PaddlePaddle （8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embedded and IoT devices",
+    description="Awesome OCR toolkits based on PaddlePaddle(8.6M ultra-lightweight pre-trained model, support training and deployment among server, mobile, embedded and IoT devices)",
     long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/PaddlePaddle/PaddleOCR",

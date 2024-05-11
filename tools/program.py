@@ -33,7 +33,7 @@ from ppocr.utils.stats import TrainingStats
 from ppocr.utils.save_load import save_model
 from ppocr.utils.utility import print_dict, AverageMeter
 from ppocr.utils.logging import get_logger
-from ppocr.utils.loggers import VDLLogger, WandbLogger, Loggers
+from ppocr.utils.loggers import WandbLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
 
@@ -796,10 +796,11 @@ def preprocess(is_train=False):
     loggers = []
 
     if "use_visualdl" in config["Global"] and config["Global"]["use_visualdl"]:
-        save_model_dir = config["Global"]["save_model_dir"]
-        vdl_writer_path = save_model_dir
-        log_writer = VDLLogger(vdl_writer_path)
-        loggers.append(log_writer)
+        logger.warning(
+            "You are using VisualDL, the VisualDL is deprecated and "
+            "removed in ppocr!"
+        )
+        log_writer = None
     if (
         "use_wandb" in config["Global"] and config["Global"]["use_wandb"]
     ) or "wandb" in config:
