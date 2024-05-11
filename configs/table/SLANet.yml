@@ -101,7 +101,7 @@ Train:
           size: [488, 488]
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+          keep_keys: ['image', 'structure', 'bboxes', 'bbox_masks', 'length', 'shape']
   loader:
     shuffle: True
     batch_size_per_card: 48
@@ -137,7 +137,7 @@ Eval:
           size: [488, 488]
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+          keep_keys: ['image', 'structure', 'bboxes', 'bbox_masks', 'length', 'shape']
   loader:
     shuffle: False
     drop_last: False
