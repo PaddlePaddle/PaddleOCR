@@ -258,6 +258,7 @@ class SLAHead(nn.Layer):
         max_text_length=500,
         loc_reg_num=4,
         fc_decay=0.0,
+        use_attn=False,
         **kwargs
     ):
         """
@@ -299,13 +300,19 @@ class SLAHead(nn.Layer):
         )
         dpr = np.linspace(0, 0.1, 2)
 
-        layer_list = [
-            Block(
-                in_channels, num_heads=2, mlp_ratio=4.0, qkv_bias=True, drop_path=dpr[i]
-            )
-            for i in range(2)
-        ]
-        self.cross_atten = nn.Sequential(*layer_list)
+        self.use_attn = use_attn
+        if use_attn:
+            layer_list = [
+                Block(
+                    in_channels,
+                    num_heads=2,
+                    mlp_ratio=4.0,
+                    qkv_bias=True,
+                    drop_path=dpr[i],
+                )
+                for i in range(2)
+            ]
+            self.cross_atten = nn.Sequential(*layer_list)
         # loc
         weight_attr1, bias_attr1 = get_para_bias_attr(
             l2_decay=fc_decay, k=self.hidden_size
@@ -332,7 +339,8 @@ class SLAHead(nn.Layer):
     def forward(self, inputs, targets=None):
         fea = inputs[-1]
         batch_size = fea.shape[0]
-        fea = fea + self.cross_atten(fea)
+        if self.use_attn:
+            fea = fea + self.cross_atten(fea)
         # reshape
         fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], -1])
         fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
@@ -346,7 +354,6 @@ class SLAHead(nn.Layer):
         )
         structure_preds.stop_gradient = True
         loc_preds.stop_gradient = True
-        #
 
         if self.training and targets is not None:
             structure = targets[0]
