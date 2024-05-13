@@ -50,7 +50,7 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
   - Table Recognition: [TableMaster](doc/doc_en/algorithm_table_master_en.md)
 - **2022.5.9 Release PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - Release [PP-OCRv3](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
-    - Release [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
+    - Release [PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
     - Release interactive e-book [*"Dive into OCR"*](./doc/doc_en/ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
 - [more](./doc/doc_en/update_en.md)
 
@@ -163,7 +163,7 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
     - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)  
     - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
-    - [Semi-automatic Annotation Tool: PPOCRLabel](./PPOCRLabel/README.md)
+    - [Semi-automatic Annotation Tool: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
     - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
     - [Other Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
     - [Other Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)

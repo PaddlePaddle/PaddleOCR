@@ -107,7 +107,7 @@ HEADER
 
 更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](./dataset/kie_datasets.md)。
 
-PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](../../PPOCRLabel/README_ch.md)。
+PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)。
 
 
 # 2. 开始训练

@@ -1,7 +1,7 @@
 # 更新
 - 2022.5.9 发布PaddleOCR v2.5。发布内容包括：
     - [PP-OCRv3](./ppocr_introduction.md#pp-ocrv3)，速度可比情况下，中文场景效果相比于PP-OCRv2再提升5%，英文场景提升11%，80语种多语言模型平均识别准确率提升5%以上；
-    - 半自动标注工具[PPOCRLabelv2](../../PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
+    - 半自动标注工具[PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel)：新增表格文字图像、图像关键信息抽取任务和不规则文字图像的标注功能；
     - OCR产业落地工具集：打通22种训练部署软硬件环境与方式，覆盖企业90%的训练部署环境需求
     - 交互式OCR开源电子书[《动手学OCR》](./ocr_book.md)，覆盖OCR全栈技术的前沿理论与代码实践，并配套教学视频。
 - 2022.5.7 添加对[Weights & Biases](https://docs.wandb.ai/)训练日志记录工具的支持。
@@ -13,7 +13,7 @@
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/pgnet.md)开源，[多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/multi_languages.md)支持种类增加到80+。
 - 2020.12.15 更新数据合成工具[Style-Text](../../StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
 - 2020.12.07 [FAQ](../../doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
-- 2020.11.25 更新半自动标注工具[PPOCRLabel](../../PPOCRLabel/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
+- 2020.11.25 更新半自动标注工具[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941
 - 2020.9.19 更新超轻量压缩ppocr_mobile_slim系列模型，整体模型3.5M(详见PP-OCR Pipeline)，适合在移动端部署使用。
 - 2020.9.17 更新超轻量ppocr_mobile系列和通用ppocr_server系列中英文ocr模型，媲美商业效果。

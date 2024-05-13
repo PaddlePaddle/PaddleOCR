@@ -83,7 +83,7 @@ Some samples are as follows:
 
 ## 1.4 Data annotation
 
-Data annotation can refer to[PPOCRLabel](../../PPOCRLabel/README.md)
+Data annotation can refer to[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
 
 # 2. Training
 
