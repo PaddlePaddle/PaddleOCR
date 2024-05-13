@@ -142,7 +142,7 @@ class DBPostProcess(object):
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
                 continue
-            box = np.array(box)
+            box = np.array(box).array(box)
 
             box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
@@ -157,7 +157,7 @@ class DBPostProcess(object):
         distance = poly.area * unclip_ratio / poly.length
         offset = pyclipper.PyclipperOffset()
         offset.AddPath(box, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
-        expanded = np.array(offset.Execute(distance))
+        expanded = offset.Execute(distance)
         return expanded
 
     def get_mini_boxes(self, contour):
