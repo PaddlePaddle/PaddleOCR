@@ -158,7 +158,7 @@ PaddleOCR旨在打造一套丰富、领先、且实用的OCR工具库，助力�
     - [使用PaddleOCR架构添加新算法](./doc/doc_ch/add_new_algorithm.md)
 - [场景应用](./applications)
 - 数据标注与合成
-    - [半自动标注工具PPOCRLabel](./PPOCRLabel/README_ch.md)
+    - [半自动标注工具PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)
     - [数据合成工具Style-Text](./StyleText/README_ch.md)
     - [其它数据标注工具](./doc/doc_ch/data_annotation.md)
     - [其它数据合成工具](./doc/doc_ch/data_synthesis.md)
