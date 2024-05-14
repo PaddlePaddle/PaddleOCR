@@ -113,7 +113,7 @@ Train:
 - 标注过程中，对于无关于KIE关键信息的文本内容，均需要将其标注为`other`类别，相当于背景信息。如在身份证场景中，如果我们不关注性别信息，那么可以将“性别”与“男”这2个字段的类别均标注为`other`。
 - 标注过程中，需要以**文本行**为单位进行标注，无需标注单个字符的位置信息。
 
-数据量方面，一般来说，对于比较固定的场景，**50张**左右的训练图片即可达到可以接受的效果，可以使用[PPOCRLabel](../../PPOCRLabel/README_ch.md)完成KIE的标注过程。
+数据量方面，一般来说，对于比较固定的场景，**50张**左右的训练图片即可达到可以接受的效果，可以使用[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)完成KIE的标注过程。
 
 模型方面，推荐使用PP-StructureV2中提出的VI-LayoutXLM模型，它基于LayoutXLM模型进行改进，去除其中的视觉特征提取模块，在精度基本无损的情况下，进一步提升了模型推理速度。更多教程请参考：[VI-LayoutXLM算法介绍](../../doc/doc_ch/algorithm_kie_vi_layoutxlm.md)与[KIE关键信息抽取使用教程](../../doc/doc_ch/kie.md)。
 

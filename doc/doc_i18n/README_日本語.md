@@ -43,7 +43,7 @@ PaddleOCR は、さまざまな言語で、優れた最先端かつ実用的な 
 
 - **🔥2022.5.9 リリース PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     -  [PP-OCRv3](../doc_en/ppocr_introduction_en.md#pp-ocrv3)リリース: 同等の速度で、中国語の識別効果は PP-OCRv2 より 5% 向上、英語の識別効果は 11% 向上し、80 言語の多言語モデルの平均認識精度は 5% 以上向上。
-    -  [PPOCRLabelv2](./PPOCRLabel)リリース: 表認識タスク、キー情報抽出タスク、イレギュラーテキスト画像のアノテーション機能を追加。
+    -  [PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel)リリース: 表認識タスク、キー情報抽出タスク、イレギュラーテキスト画像のアノテーション機能を追加。
     - インタラクティブな電子書籍 [*"OCR に没入"*](../doc_en/ocr_book_en.md)、 をリリース。 OCRフルスタック技術の最先端の理論とコードの実践をカバー。
 
 - [もっと](../doc_en/update_en.md)
@@ -136,7 +136,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
     - [キー情報抽出](../doc_en/algorithm_overview_en.md)  
     - [PaddleOCR に新しいアルゴリズムを追加する](../doc_en/add_new_algorithm_en.md)
 - データの注釈と合成
-    - [半自動注釈ツール: PPOCRLabel](./PPOCRLabel/README.md)
+    - [半自動注釈ツール: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
     - [データ合成ツール: Style-Text](./StyleText/README.md)
     - [その他のデータ注釈ツール](../doc_en/data_annotation_en.md)
     - [その他のデータ合成ツール](../doc_en/data_synthesis_en.md)

@@ -41,7 +41,7 @@ PaddleOCR은 사용자들이 보다 나은 모델을 훈련하여 실전에 투�
 
 - **🔥2022년 5월 9일에 패들 OCR 출시 [출시/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - [PP-OCRv3](../doc_en/ppocr_introduction_en.md#pp-ocrv3)출시: 5%.비교 가능한 속도로, 차이니즈 씬의 효과는 PP-OCRv2와 비교해 볼 때 추가로 5% 정도 더 개선되고, 잉글리쉬 씬 효과는 11% 개선되었으며, 80개 언어 다중 언어 모델 평균 인식 정확도는 5% 이상 개선됨.
-    - [PPOCRLabelv2](./PPOCRLabel)출시: 표 인식 업무, 핵심 정보 추출 업무 및 불규칙한 텍스트 이미지주석 기능 추가.
+    - [PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel)출시: 표 인식 업무, 핵심 정보 추출 업무 및 불규칙한 텍스트 이미지주석 기능 추가.
     -  쌍방향e-북 출시 [*"OCR 뛰어들기"*](../doc_en/ocr_book_en.md), 첨단 이론 및 OCR 정식 스택 기술 코드 연습 포함.
 
 - [추가](../doc_en/update_en.md)
@@ -134,7 +134,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
     - [핵심 정보 추출](../doc_en/algorithm_overview_en.md)  
     - [PaddleOCR에 신규 알고리즘 추가](../doc_en/add_new_algorithm_en.md)
 -  데이터 주석 및 합성
-    - [반-자동 주석 툴: PPOCRLabel](./PPOCRLabel/README.md)
+    - [반-자동 주석 툴: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
     - [데이터 합성 툴: 스타일-텍스트](./StyleText/README.md)
     - [기타 데이터 주석 툴](../doc_en/data_annotation_en.md)
     - [기타 데이터 합성 툴](../doc_en/data_synthesis_en.md)
