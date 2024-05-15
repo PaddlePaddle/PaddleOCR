@@ -11,7 +11,7 @@
 - 2021.8.3 发布PaddleOCR v2.2，新增文档结构分析[PP-Structure](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/ppstructure/README_ch.md)工具包，支持版面分析与表格识别（含Excel导出）。
 - 2021.6.29 [FAQ](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/FAQ.md)新增5个高频问题，总数248个，每周一都会更新，欢迎大家持续关注。
 - 2021.4.8 release 2.1版本，新增AAAI 2021论文[端到端识别算法PGNet](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/pgnet.md)开源，[多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.2/doc/doc_ch/multi_languages.md)支持种类增加到80+。
-- 2020.12.15 更新数据合成工具[Style-Text](../../StyleText/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
+- 2020.12.15 更新数据合成工具[Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升。
 - 2020.12.07 [FAQ](../../doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注。
 - 2020.11.25 更新半自动标注工具[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接。
 - 2020.9.22 更新PP-OCR技术文章，https://arxiv.org/abs/2009.09941

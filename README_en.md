@@ -164,7 +164,7 @@ Scan the QR code below on WeChat to add operation students, and reply [paddlex],
     - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
-    - [Data Synthesis Tool: Style-Text](./StyleText/README.md)
+    - [Data Synthesis Tool: Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README.md)
     - [Other Data Annotation Tools](./doc/doc_en/data_annotation_en.md)
     - [Other Data Synthesis Tools](./doc/doc_en/data_synthesis_en.md)
 - Datasets
