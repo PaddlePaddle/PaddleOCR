@@ -137,7 +137,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
     - [पैडलओसीआर में नए एल्गोरिदम जोड़ें](../doc_en/add_new_algorithm_en.md)
 - डेटा एनोटेशन और सिंथेसिस
     - [सेमी-ऑटोमैटिक एनोटेशन टूल: PPओसीआरलेबल](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
-    - [डेटा सिंथेसिस टूल: स्टाइल-टेक्सट](./StyleText/README.md)
+    - [डेटा सिंथेसिस टूल: स्टाइल-टेक्सट](https://github.com/PFCCLab/StyleText/blob/main/README.md)
     - [अन्य डेटा एनोटेशन टूल](../doc_en/data_annotation_en.md)
     - [अन्य डेटा सिंथेसिस टूल](../doc_en/data_synthesis_en.md)
 - डेटा सेट

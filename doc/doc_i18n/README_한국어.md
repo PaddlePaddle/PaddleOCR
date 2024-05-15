@@ -135,7 +135,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
     - [PaddleOCR에 신규 알고리즘 추가](../doc_en/add_new_algorithm_en.md)
 -  데이터 주석 및 합성
     - [반-자동 주석 툴: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
-    - [데이터 합성 툴: 스타일-텍스트](./StyleText/README.md)
+    - [데이터 합성 툴: 스타일-텍스트](https://github.com/PFCCLab/StyleText/blob/main/README.md)
     - [기타 데이터 주석 툴](../doc_en/data_annotation_en.md)
     - [기타 데이터 합성 툴](../doc_en/data_synthesis_en.md)
 -  데이터세트

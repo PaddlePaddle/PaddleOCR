@@ -137,7 +137,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
     - [PaddleOCR に新しいアルゴリズムを追加する](../doc_en/add_new_algorithm_en.md)
 - データの注釈と合成
     - [半自動注釈ツール: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
-    - [データ合成ツール: Style-Text](./StyleText/README.md)
+    - [データ合成ツール: Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README.md)
     - [その他のデータ注釈ツール](../doc_en/data_annotation_en.md)
     - [その他のデータ合成ツール](../doc_en/data_synthesis_en.md)
 - データセット

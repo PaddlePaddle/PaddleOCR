@@ -140,7 +140,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=ru
     - [Добавьте новые алгоритмы в PaddleOCR](../doc_en/add_new_algorithm_en.md)
 - Аннотации и синтез данных
   - [Полуавтоматический инструмент аннотации данных: метка ППOCRR](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
-  - [Инструмент синтеза данных: Стиль-текст](./StyleText/README.md)
+  - [Инструмент синтеза данных: Стиль-текст](https://github.com/PFCCLab/StyleText/blob/main/README.md)
   - [Другие инструменты аннотирования данных](../doc_en/data_annotation_en.md)
   - [Другие инструменты синтеза данных](../doc_en/data_synthesis_en.md)
 - Наборы данных
