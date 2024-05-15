@@ -111,7 +111,7 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 
     a. 人工采集更多的训练数据，最直接也是最有效的方式。
     b. 基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。
-    c. 利用数据生成算法合成数据，例如pix2pix或StyleText等算法。
+    c. 利用数据生成算法合成数据，例如pix2pix或[StyleText](https://github.com/PFCCLab/StyleText)等算法。
 
 <a name="常见问题"></a>
 
