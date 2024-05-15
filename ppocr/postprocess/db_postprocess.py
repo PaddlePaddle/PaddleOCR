@@ -89,7 +89,9 @@ class DBPostProcess(object):
                     continue
             else:
                 continue
-            box = box.reshape(-1, 2)
+            box = np.array(box).reshape(-1, 2)
+            if len(box) == 0:
+                continue
 
             _, sside = self.get_mini_boxes(box.reshape((-1, 1, 2)))
             if sside < self.min_size + 2:
@@ -142,7 +144,7 @@ class DBPostProcess(object):
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
                 continue
-            box = np.array(box).array(box)
+            box = box.array(box)
 
             box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
