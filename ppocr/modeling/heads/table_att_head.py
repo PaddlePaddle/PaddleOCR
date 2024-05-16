@@ -24,6 +24,7 @@ import paddle.nn.functional as F
 import numpy as np
 
 from .rec_att_head import AttentionGRUCell
+from ppocr.modeling.backbones.rec_svtrnet import DropPath, Identity, Mlp
 
 
 def get_para_bias_attr(l2_decay, k):
@@ -134,6 +135,120 @@ class TableAttentionHead(nn.Layer):
         return {"structure_probs": structure_probs, "loc_preds": loc_preds}
 
 
+class HWAttention(nn.Layer):
+    def __init__(
+        self,
+        head_dim=32,
+        qk_scale=None,
+        attn_drop=0.0,
+    ):
+        super().__init__()
+        self.head_dim = head_dim
+        self.scale = qk_scale or self.head_dim**-0.5
+        self.attn_drop = nn.Dropout(attn_drop)
+
+    def forward(self, x):
+        B, N, C = x.shape
+        C = C // 3
+        qkv = x.reshape([B, N, 3, C // self.head_dim, self.head_dim]).transpose(
+            [2, 0, 3, 1, 4]
+        )
+        q, k, v = qkv.unbind(0)
+        attn = q @ k.transpose([0, 1, 3, 2]) * self.scale
+        attn = F.softmax(attn, -1)
+        attn = self.attn_drop(attn)
+        x = attn @ v
+        x = x.transpose([0, 2, 1]).reshape([B, N, C])
+        return x
+
+
+def img2windows(img, H_sp, W_sp):
+    """
+    img: B C H W
+    """
+    B, H, W, C = img.shape
+    img_reshape = img.reshape([B, H // H_sp, H_sp, W // W_sp, W_sp, C])
+    img_perm = img_reshape.transpose([0, 1, 3, 2, 4, 5]).reshape([-1, H_sp * W_sp, C])
+    return img_perm
+
+
+def windows2img(img_splits_hw, H_sp, W_sp, H, W):
+    """
+    img_splits_hw: B' H W C
+    """
+    B = int(img_splits_hw.shape[0] / (H * W / H_sp / W_sp))
+
+    img = img_splits_hw.reshape([B, H // H_sp, W // W_sp, H_sp, W_sp, -1])
+    img = img.transpose([0, 1, 3, 2, 4, 5]).flatten(1, 4)
+    return img
+
+
+class Block(nn.Layer):
+    def __init__(
+        self,
+        dim,
+        num_heads,
+        split_h=4,
+        split_w=4,
+        h_num_heads=None,
+        w_num_heads=None,
+        mlp_ratio=4.0,
+        qkv_bias=False,
+        qk_scale=None,
+        drop=0.0,
+        attn_drop=0.0,
+        drop_path=0.0,
+        act_layer=nn.GELU,
+        norm_layer=nn.LayerNorm,
+        eps=1e-6,
+    ):
+        super().__init__()
+        self.qkv = nn.Linear(dim, dim * 3, bias_attr=qkv_bias)
+        self.proj = nn.Linear(dim, dim)
+        self.split_h = split_h
+        self.split_w = split_w
+        mlp_hidden_dim = int(dim * mlp_ratio)
+        self.norm1 = norm_layer(dim, epsilon=eps)
+        self.h_num_heads = h_num_heads if h_num_heads is not None else num_heads // 2
+        self.w_num_heads = w_num_heads if w_num_heads is not None else num_heads // 2
+        self.head_dim = dim // num_heads
+        self.mixer = HWAttention(
+            head_dim=dim // num_heads,
+            qk_scale=qk_scale,
+            attn_drop=attn_drop,
+        )
+        self.drop_path = DropPath(drop_path) if drop_path > 0.0 else Identity()
+        self.norm2 = norm_layer(dim, epsilon=eps)
+        self.mlp = Mlp(
+            in_features=dim,
+            hidden_features=mlp_hidden_dim,
+            act_layer=act_layer,
+            drop=drop,
+        )
+
+    def forward(self, x):
+        B, C, H, W = x.shape
+        x = x.flatten(2).transpose([0, 2, 1])
+
+        qkv = self.qkv(x).reshape([B, H, W, 3 * C])
+
+        x1 = qkv[:, :, :, : 3 * self.h_num_heads * self.head_dim]  # b, h, w, 3ch
+        x2 = qkv[:, :, :, 3 * self.h_num_heads * self.head_dim :]  # b, h, w, 3cw
+
+        x1 = self.mixer(img2windows(x1, self.split_h, W))  # b*splith, W, 3ch
+        x2 = self.mixer(img2windows(x2, H, self.split_w))  # b*splitw, h, 3ch
+        x1 = windows2img(x1, self.split_h, W, H, W)
+        x2 = windows2img(x2, H, self.split_w, H, W)
+
+        attened_x = paddle.concat([x1, x2], 2)
+        attened_x = self.proj(attened_x)
+
+        x = self.norm1(x + self.drop_path(attened_x))
+        x = self.norm2(x + self.drop_path(self.mlp(x)))
+        x = x.transpose([0, 2, 1]).reshape([-1, C, H, W])
+        return x
+
+
 class SLAHead(nn.Layer):
     def __init__(
         self,
@@ -143,6 +258,7 @@ class SLAHead(nn.Layer):
         max_text_length=500,
         loc_reg_num=4,
         fc_decay=0.0,
+        use_attn=False,
         **kwargs
     ):
         """
@@ -158,6 +274,7 @@ class SLAHead(nn.Layer):
         self.emb = self._char_to_onehot
         self.num_embeddings = out_channels
         self.loc_reg_num = loc_reg_num
+        self.eos = self.num_embeddings - 1
 
         # structure
         self.structure_attention_cell = AttentionGRUCell(
@@ -181,6 +298,21 @@ class SLAHead(nn.Layer):
                 hidden_size, out_channels, weight_attr=weight_attr, bias_attr=bias_attr
             ),
         )
+        dpr = np.linspace(0, 0.1, 2)
+
+        self.use_attn = use_attn
+        if use_attn:
+            layer_list = [
+                Block(
+                    in_channels,
+                    num_heads=2,
+                    mlp_ratio=4.0,
+                    qkv_bias=True,
+                    drop_path=dpr[i],
+                )
+                for i in range(2)
+            ]
+            self.cross_atten = nn.Sequential(*layer_list)
         # loc
         weight_attr1, bias_attr1 = get_para_bias_attr(
             l2_decay=fc_decay, k=self.hidden_size
@@ -207,6 +339,8 @@ class SLAHead(nn.Layer):
     def forward(self, inputs, targets=None):
         fea = inputs[-1]
         batch_size = fea.shape[0]
+        if self.use_attn:
+            fea = fea + self.cross_atten(fea)
         # reshape
         fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], -1])
         fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
@@ -220,15 +354,22 @@ class SLAHead(nn.Layer):
         )
         structure_preds.stop_gradient = True
         loc_preds.stop_gradient = True
+
         if self.training and targets is not None:
             structure = targets[0]
-            for i in range(self.max_text_length + 1):
+            max_len = targets[-2].max()
+            for i in range(max_len + 1):
                 hidden, structure_step, loc_step = self._decode(
                     structure[:, i], fea, hidden
                 )
                 structure_preds[:, i, :] = structure_step
                 loc_preds[:, i, :] = loc_step
+            structure_preds = structure_preds[:, : max_len + 1]
+            loc_preds = loc_preds[:, : max_len + 1]
         else:
+            structure_ids = paddle.zeros(
+                (batch_size, self.max_text_length + 1), dtype=paddle.int64
+            )
             pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
             max_text_length = paddle.to_tensor(self.max_text_length)
             # for export
@@ -238,8 +379,13 @@ class SLAHead(nn.Layer):
                 pre_chars = structure_step.argmax(axis=1, dtype="int32")
                 structure_preds[:, i, :] = structure_step
                 loc_preds[:, i, :] = loc_step
+
+                structure_ids[:, i] = pre_chars
+                if (structure_ids == self.eos).any(-1).all():
+                    break
         if not self.training:
-            structure_preds = F.softmax(structure_preds)
+            structure_preds = F.softmax(structure_preds[:, : i + 1])
+            loc_preds = loc_preds[:, : i + 1]
         return {"structure_probs": structure_preds, "loc_preds": loc_preds}
 
     def _decode(self, pre_chars, features, hidden):

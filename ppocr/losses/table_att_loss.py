@@ -69,7 +69,8 @@ class SLALoss(nn.Layer):
     def forward(self, predicts, batch):
         structure_probs = predicts["structure_probs"]
         structure_targets = batch[1].astype("int64")
-        structure_targets = structure_targets[:, 1:]
+        max_len = batch[-2].max()
+        structure_targets = structure_targets[:, 1 : max_len + 2]
 
         structure_loss = self.loss_func(structure_probs, structure_targets)
 
@@ -78,8 +79,8 @@ class SLALoss(nn.Layer):
         loc_preds = predicts["loc_preds"]
         loc_targets = batch[2].astype("float32")
         loc_targets_mask = batch[3].astype("float32")
-        loc_targets = loc_targets[:, 1:, :]
-        loc_targets_mask = loc_targets_mask[:, 1:, :]
+        loc_targets = loc_targets[:, 1 : max_len + 2]
+        loc_targets_mask = loc_targets_mask[:, 1 : max_len + 2]
 
         loc_loss = (
             F.smooth_l1_loss(

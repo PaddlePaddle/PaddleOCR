@@ -25,6 +25,7 @@ def build_backbone(config, model_type):
         from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
         from .rec_vit import ViT
+        from .det_pp_lcnet_v2 import PPLCNetV2_base
         from .rec_repvit import RepSVTR_det
 
         support_dict = [
@@ -35,6 +36,7 @@ def build_backbone(config, model_type):
             "PPLCNet",
             "PPLCNetV3",
             "PPHGNet_small",
+            "PPLCNetV2_base",
             "RepSVTR_det",
         ]
         if model_type == "table":
