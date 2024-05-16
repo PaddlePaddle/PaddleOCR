@@ -1,7 +1,7 @@
 # RECENT UPDATES
 - 2022.5.9 release PaddleOCR v2.5, including:
     - [PP-OCRv3](./ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
-    - [PPOCRLabelv2](../../PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
+    - [PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md): Add the annotation function for table recognition task, key information extraction task and irregular text image.
     - Interactive e-book [*"Dive into OCR"*](./ocr_book_en.md), covers the cutting-edge theory and code practice of OCR full stack technology.
 - 2022.5.7 Add support for metric and model logging during training to [Weights & Biases](https://docs.wandb.ai/).
 - 2021.12.21 OCR open source online course starts. The lesson starts at 8:30 every night and lasts for ten days. Free registration: https://aistudio.baidu.com/aistudio/course/introduce/25207
@@ -11,8 +11,8 @@
 - 2021.4.8 release end-to-end text recognition algorithm [PGNet](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) which is published in AAAI 2021. Find tutorial [here](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/pgnet_en.md)；release multi language recognition [models](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/multi_languages_en.md), support more than 80 languages recognition; especically, the performance of [English recognition model](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_en/models_list_en.md#English) is Optimized.
 
 - 2021.1.21 update more than 25+ multilingual recognition models [models list](./models_list_en.md), including：English, Chinese, German, French, Japanese，Spanish，Portuguese Russia Arabic and so on.  Models for more languages will continue to be updated [Develop Plan](https://github.com/PaddlePaddle/PaddleOCR/issues/1048).
-- 2020.12.15 update Data synthesis tool, i.e., [Style-Text](../../StyleText/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
-- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](../../PPOCRLabel/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
+- 2020.12.15 update Data synthesis tool, i.e., [Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README.md)，easy to synthesize a large number of images which are similar to the target scene image.
+- 2020.11.25 Update a new data annotation tool, i.e., [PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md), which is helpful to improve the labeling efficiency. Moreover, the labeling results can be used in training of the PP-OCR system directly.
 - 2020.9.22 Update the PP-OCR technical article, https://arxiv.org/abs/2009.09941
 - 2020.9.19 Update the ultra lightweight compressed ppocr_mobile_slim series models, the overall model size is 3.5M, suitable for mobile deployment.
 - 2020.9.17 update English recognition model and Multilingual recognition model, `English`, `Chinese`, `German`, `French`, `Japanese` and `Korean` have been supported. Models for more languages will continue to be updated.

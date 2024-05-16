@@ -123,7 +123,7 @@ Take the ID card scenario as an example. The key information generally includes 
 - In the annotation process of, it is required to annotate the **textline** position rather than the character.
 
 
-In terms of data, generally speaking, for relatively fixed scenes, **50** training images can achieve acceptable effects. You can refer to [PPOCRLabel](../../PPOCRLabel/README.md) for finish the labeling process.
+In terms of data, generally speaking, for relatively fixed scenes, **50** training images can achieve acceptable effects. You can refer to [PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md) for finish the labeling process.
 
 In terms of model, it is recommended to use the VI-layoutXLM model proposed in PP-StructureV2. It is improved based on the LayoutXLM model, removing the visual feature extraction module, and further improving the model inference speed without the significant reduction on model accuracy. For more tutorials, please refer to [VI-LayoutXLM introduction](../../doc/doc_en/algorithm_kie_vi_layoutxlm_en.md) and [KIE tutorial](../../doc/doc_en/kie_en.md).
 

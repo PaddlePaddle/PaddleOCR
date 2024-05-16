@@ -18,7 +18,7 @@
 
 论文信息：
 > [SVTR: Scene Text Recognition with a Single Visual Model](https://arxiv.org/abs/2205.00159)
-> Yongkun Du and Zhineng Chen and Caiyan Jia Xiaoting Yin and Tianlun Zheng and Chenxia Li and Yuning Du and Yu-Gang Jiang
+> Yongkun Du and Zhineng Chen and Caiyan Jia and Xiaoting Yin and Tianlun Zheng and Chenxia Li and Yuning Du and Yu-Gang Jiang
 > IJCAI, 2022
 
 场景文本识别旨在将自然图像中的文本转录为数字字符序列，从而传达对场景理解至关重要的高级语义。这项任务由于文本变形、字体、遮挡、杂乱背景等方面的变化具有一定的挑战性。先前的方法为提高识别精度做出了许多工作。然而文本识别器除了准确度外，还因为实际需求需要考虑推理速度等因素。
@@ -102,7 +102,7 @@ python3 tools/infer_rec.py -c ./rec_svtr_tiny_none_ctc_en_train/rec_svtr_tiny_6l
 
 <a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。下面以基于`SVTR-T`，在英文数据集训练的模型为例（[模型和配置文件下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) )，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。下面以`SVTR-T`在英文数据集训练的模型为例（[模型和配置文件下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/rec_svtr_tiny_none_ctc_en_train.tar) )，可以使用如下命令进行转换：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
