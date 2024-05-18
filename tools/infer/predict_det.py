@@ -179,6 +179,14 @@ class TextDetector(object):
         rect[3] = tmp[np.argmax(diff)]
         return rect
 
+    def pad_polygons(self, polygon, max_points):
+        padding_size = max_points - len(polygon)
+        if padding_size == 0:
+            return polygon
+        last_point = polygon[-1]
+        padding = np.repeat([last_point], padding_size, axis=0)
+        return np.vstack([polygon, padding])
+
     def clip_det_res(self, points, img_height, img_width):
         for pno in range(points.shape[0]):
             points[pno, 0] = int(min(max(points[pno, 0], 0), img_width - 1))
@@ -209,6 +217,13 @@ class TextDetector(object):
                 box = np.array(box)
             box = self.clip_det_res(box, img_height, img_width)
             dt_boxes_new.append(box)
+
+        if len(dt_boxes_new) > 0:
+            max_points = max(len(polygon) for polygon in dt_boxes_new)
+            dt_boxes_new = [
+                self.pad_polygons(polygon, max_points) for polygon in dt_boxes_new
+            ]
+
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
