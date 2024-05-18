@@ -142,7 +142,7 @@ class DBPostProcess(object):
 
             box = self.unclip(points, self.unclip_ratio)
             if len(box) > 1:
-                    continue
+                continue
             box = np.array(box).reshape(-1, 1, 2)
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
