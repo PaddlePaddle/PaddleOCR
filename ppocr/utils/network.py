@@ -24,6 +24,8 @@ MODELS_DIR = os.path.expanduser("~/.paddleocr/models/")
 
 
 def download_with_progressbar(url, save_path):
+    if save_path and os.path.exists(save_path):
+        return
     logger = get_logger()
     response = requests.get(url, stream=True)
     if response.status_code == 200:
