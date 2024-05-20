@@ -9,7 +9,7 @@ Global:
   eval_batch_step:
   - 0
   - 1000
-  cal_metric_during_train: true
+  cal_metric_during_train: false
   checkpoints: null
   pretrained_model: null
   save_inference_dir: null
