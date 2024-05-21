@@ -680,6 +680,7 @@ class PaddleOCR(predict_system.TextSystem):
         bin=False,
         inv=False,
         alpha_color=(255, 255, 255),
+        slice={}
     ):
         """
         OCR with PaddleOCR
@@ -720,11 +721,22 @@ class PaddleOCR(predict_system.TextSystem):
                 _image = binarize_img(_image)
             return _image
 
-        if det and rec:
+        if det and rec and not slice:
             ocr_res = []
             for idx, img in enumerate(imgs):
                 img = preprocess_image(img)
                 dt_boxes, rec_res, _ = self.__call__(img, cls)
+                if not dt_boxes and not rec_res:
+                    ocr_res.append(None)
+                    continue
+                tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
+                ocr_res.append(tmp_res)
+            return ocr_res
+        elif det and rec and slice:
+            ocr_res = []
+            for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
+                dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
                 if not dt_boxes and not rec_res:
                     ocr_res.append(None)
                     continue
