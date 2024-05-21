@@ -31,7 +31,6 @@ import base64
 from io import BytesIO
 from PIL import Image
 from tools.infer import predict_system
-from ppocr import __version__
 
 
 def _import_file(module_name, file_path, make_importable=False):
