@@ -81,7 +81,7 @@ TableGeneration是一个开源表格数据集生成工具，其通过浏览器�
 
 ## 1.4 数据标注
 
-数据标注可参考[PPOCRLabel](../../PPOCRLabel/README_ch.md)
+数据标注可参考[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)
 
 # 2. 开始训练
 

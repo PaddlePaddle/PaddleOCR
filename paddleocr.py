@@ -812,10 +812,11 @@ class PPStructure(StructureSystem):
             layout_model_config["url"],
         )
         # download model
-        maybe_download(params.det_model_dir, det_url)
-        maybe_download(params.rec_model_dir, rec_url)
-        maybe_download(params.table_model_dir, table_url)
-        maybe_download(params.layout_model_dir, layout_url)
+        if not params.use_onnx:
+            maybe_download(params.det_model_dir, det_url)
+            maybe_download(params.rec_model_dir, rec_url)
+            maybe_download(params.table_model_dir, table_url)
+            maybe_download(params.layout_model_dir, layout_url)
 
         if params.rec_char_dict_path is None:
             params.rec_char_dict_path = str(

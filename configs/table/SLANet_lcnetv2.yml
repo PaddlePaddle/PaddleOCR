@@ -1,16 +1,16 @@
 Global:
   use_gpu: true
-  epoch_num: 100
+  epoch_num: 50
   log_smooth_window: 20
-  print_batch_step: 20
-  save_model_dir: ./output/SLANet
-  save_epoch_step: 400
+  print_batch_step: 10
+  save_model_dir: ./output/SLANet_lcnetv2
+  save_epoch_step: 20
   # evaluation is run every 1000 iterations after the 0th iteration
   eval_batch_step: [0, 1000]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
-  save_inference_dir: ./output/SLANet/infer
+  save_inference_dir: ./SLANet_lcnetv2_infer
   use_visualdl: False
   infer_img: ppstructure/docs/table/table.jpg
   # for data or label process
@@ -30,10 +30,7 @@ Optimizer:
   beta2: 0.999
   clip_norm: 5.0
   lr:
-    name: Piecewise
     learning_rate: 0.001
-    decay_epochs : [40, 50]
-    values : [0.001, 0.0001, 0.00005]
   regularizer:
     name: 'L2'
     factor: 0.00000
@@ -42,10 +39,7 @@ Architecture:
   model_type: table
   algorithm: SLANet
   Backbone:
-    name: PPLCNet
-    scale: 1.0
-    pretrained: true
-    use_ssld: true
+    name: PPLCNetV2_base
   Neck:
     name: CSPPAN
     out_channels: 96
@@ -75,8 +69,8 @@ Metric:
 Train:
   dataset:
     name: PubTabDataSet
-    data_dir: train_data/table/pubtabnet/train/
-    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
+    data_dir: ../table_data/pubtabnet/train/
+    label_file_list: [../table_data/pubtabnet/PubTabNet_2.0.0_train.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -101,18 +95,18 @@ Train:
           size: [488, 488]
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: ['image', 'structure', 'bboxes', 'bbox_masks', 'length', 'shape']
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'length', 'shape' ]
   loader:
     shuffle: True
-    batch_size_per_card: 48
+    batch_size_per_card: 24
     drop_last: True
-    num_workers: 1
+    num_workers: 8
 
 Eval:
   dataset:
     name: PubTabDataSet
-    data_dir: train_data/table/pubtabnet/val/
-    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_val.jsonl]
+    data_dir: ../table_data/pubtabnet/val/
+    label_file_list: [../table_data/pubtabnet/PubTabNet_2.0.0_val.jsonl]
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
@@ -137,9 +131,9 @@ Eval:
           size: [488, 488]
       - ToCHWImage:
       - KeepKeys:
-          keep_keys: ['image', 'structure', 'bboxes', 'bbox_masks', 'length', 'shape']
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
   loader:
     shuffle: False
     drop_last: False
     batch_size_per_card: 48
-    num_workers: 1
+    num_workers: 4

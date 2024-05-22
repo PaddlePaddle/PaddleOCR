@@ -1,138 +1,68 @@
 Global:
   debug: false
   use_gpu: true
-  epoch_num: 500
+  epoch_num: &epoch_num 500
   log_smooth_window: 20
-  print_batch_step: 20
-  save_model_dir: ./output/ch_PP-OCRv4
-  save_epoch_step: 50
+  print_batch_step: 100
+  save_model_dir: ./output/det_repsvtr_db
+  save_epoch_step: 10
   eval_batch_step:
   - 0
   - 1000
   cal_metric_during_train: false
-  checkpoints: null
-  pretrained_model: null
+  checkpoints:
+  pretrained_model:
   save_inference_dir: null
   use_visualdl: false
   infer_img: doc/imgs_en/img_10.jpg
   save_res_path: ./checkpoints/det_db/predicts_db.txt
   distributed: true
+
 Architecture:
-  name: DistillationModel
-  algorithm: Distillation
   model_type: det
-  Models:
-    Student:
-      model_type: det
-      algorithm: DB
-      Transform: null
-      Backbone:
-        name: PPLCNetV3
-        scale: 0.75
-        pretrained: false
-        det: true
-      Neck:
-        name: RSEFPN
-        out_channels: 96
-        shortcut: true
-      Head:
-        name: DBHead
-        k: 50
-    Student2:
-      pretrained: null
-      model_type: det
-      algorithm: DB
-      Transform: null
-      Backbone:
-        name: PPLCNetV3
-        scale: 0.75
-        pretrained: true
-        det: true
-      Neck:
-        name: RSEFPN
-        out_channels: 96
-        shortcut: true
-      Head:
-        name: DBHead
-        k: 50
-    Teacher:
-      pretrained: https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_cml_teacher_pretrained/teacher.pdparams
-      freeze_params: true
-      return_all_feats: false
-      model_type: det
-      algorithm: DB
-      Backbone:
-        name: ResNet_vd
-        in_channels: 3
-        layers: 50
-      Neck:
-        name: LKPAN
-        out_channels: 256
-      Head:
-        name: DBHead
-        kernel_list:
-        - 7
-        - 2
-        - 2
-        k: 50
+  algorithm: DB
+  Transform: null
+  Backbone:
+    name: RepSVTR_det
+  Neck:
+    name: RSEFPN
+    out_channels: 96
+    shortcut: True
+  Head:
+    name: DBHead
+    k: 50
+
 Loss:
-  name: CombinedLoss
-  loss_config_list:
-  - DistillationDilaDBLoss:
-      weight: 1.0
-      model_name_pairs:
-      - - Student
-        - Teacher
-      - - Student2
-        - Teacher
-      key: maps
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
-  - DistillationDMLLoss:
-      model_name_pairs:
-      - Student
-      - Student2
-      maps_name: thrink_maps
-      weight: 1.0
-      key: maps
-  - DistillationDBLoss:
-      weight: 1.0
-      model_name_list:
-      - Student
-      - Student2
-      balance_loss: true
-      main_loss_type: DiceLoss
-      alpha: 5
-      beta: 10
-      ohem_ratio: 3
+  name: DBLoss
+  balance_loss: true
+  main_loss_type: DiceLoss
+  alpha: 5
+  beta: 10
+  ohem_ratio: 3
+
 Optimizer:
   name: Adam
   beta1: 0.9
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.001
+    learning_rate: 0.001 #(8*8c)
     warmup_epoch: 2
   regularizer:
     name: L2
     factor: 5.0e-05
+
 PostProcess:
-  name: DistillationDBPostProcess
-  model_name:
-  - Student
-  key: head_out
+  name: DBPostProcess
   thresh: 0.3
   box_thresh: 0.6
   max_candidates: 1000
   unclip_ratio: 1.5
+
 Metric:
-  name: DistillationMetric
-  base_metric_name: DetMetric
+  name: DetMetric
   main_indicator: hmean
-  key: Student
+
 Train:
   dataset:
     name: SimpleDataSet
@@ -145,6 +75,7 @@ Train:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
+    - CopyPaste: null
     - IaaAugment:
         augmenter_args:
         - type: Fliplr
@@ -170,11 +101,11 @@ Train:
         shrink_ratio: 0.4
         thresh_min: 0.3
         thresh_max: 0.7
-        total_epoch: 500
+        total_epoch: *epoch_num
     - MakeShrinkMap:
         shrink_ratio: 0.4
         min_text_size: 8
-        total_epoch: 500
+        total_epoch: *epoch_num
     - NormalizeImage:
         scale: 1./255.
         mean:
@@ -197,8 +128,9 @@ Train:
   loader:
     shuffle: true
     drop_last: false
-    batch_size_per_card: 16
+    batch_size_per_card: 8
     num_workers: 8
+
 Eval:
   dataset:
     name: SimpleDataSet
@@ -210,9 +142,7 @@ Eval:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
-    - DetResizeForTest: 
-        limit_side_len: 960
-        limit_type: max
+    - DetResizeForTest:
     - NormalizeImage:
         scale: 1./255.
         mean:

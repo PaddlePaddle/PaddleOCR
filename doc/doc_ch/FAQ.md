@@ -192,7 +192,7 @@ A：可以看下训练的尺度和预测的尺度是否相同，如果训练的�
 
 #### Q: 如何识别竹简上的古文？
 
-**A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试StyleText工具。
+**A**：对于字符都是普通的汉字字符的情况，只要标注足够的数据，finetune模型就可以了。如果数据量不足，您可以尝试[StyleText](https://github.com/PFCCLab/StyleText)工具。
 而如果使用的字符是特殊的古文字、甲骨文、象形文字等，那么首先需要构建一个古文字的字典，之后再进行训练。
 
 #### Q: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？
@@ -355,6 +355,9 @@ A：当训练数据量少时，可以尝试以下三种方式获取更多的数�
 
 ### 2.4 数据标注与生成
 
+> [!NOTE]  
+> StyleText 已经移动到 [PFCCLab/StyleText](https://github.com/PFCCLab/StyleText)
+
 #### Q: Style-Text 如何不文字风格迁移，就像普通文本生成程序一样默认字体直接输出到分割的背景图？
 
 **A**：使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：
@@ -371,7 +374,7 @@ StyleText的用途主要是：提取style_image中的字体、背景等style信�
 
 #### Q: StyleText批量生成图片为什么没有输出？
 
-**A**：需要检查以下您配置文件中的路径是否都存在。尤其要注意的是[label_file配置](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/StyleText/README_ch.md#%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)。
+**A**：需要检查以下您配置文件中的路径是否都存在。尤其要注意的是[label_file配置](https://github.com/PFCCLab/StyleText/blob/main/README_ch.md#%E4%B8%89%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B)。
 如果您使用的style_image输入没有label信息，您依然需要提供一个图片文件列表。
 
 #### Q：使用StyleText进行数据合成时，文本(TextInput)的长度远超StyleInput的长度，该怎么处理与合成呢？

@@ -708,7 +708,7 @@ class TableLabelEncode(AttnLabelEncode):
         structure = self.encode(new_structure)
         if structure is None:
             return None
-
+        data["length"] = len(structure)
         structure = [self.start_idx] + structure + [self.end_idx]  # add sos abd eos
         structure = structure + [self.pad_idx] * (
             self._max_text_len - len(structure)
