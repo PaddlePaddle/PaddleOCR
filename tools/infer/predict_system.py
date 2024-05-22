@@ -39,6 +39,7 @@ from tools.infer.utility import (
     get_rotate_crop_image,
     get_minarea_rect_crop,
     slice_generator,
+    merge_fragmented,
 )
 
 logger = get_logger()
@@ -89,11 +90,12 @@ class TextSystem(object):
             for (slice_crop, v_start, h_start) in slice_gen: 
                 dt_boxes, elapse = self.text_detector(slice_crop)
                 if dt_boxes.size:
-                    dt_boxes[:,:,0] = dt_boxes[:,:,0]+h_start
-                    dt_boxes[:,:,1] = dt_boxes[:,:,1]+v_start
+                    dt_boxes[:,:,0] = dt_boxes[:,:,0] + h_start
+                    dt_boxes[:,:,1] = dt_boxes[:,:,1] + v_start
                     dt_slice_boxes.append(dt_boxes)
                     elapsed.append(elapse)
             dt_boxes = np.concatenate(dt_slice_boxes)
+            dt_boxes = merge_fragmented(boxes=dt_boxes, x_threshold=slice['merge_x_thres'], y_threshold=slice['merge_y_thres'])
             elapse = sum(elapsed)
         else:
             dt_boxes, elapse = self.text_detector(img)
@@ -126,7 +128,9 @@ class TextSystem(object):
             logger.debug(
                 "cls num  : {}, elapsed : {}".format(len(img_crop_list), elapse)
             )
-
+        if len(img_crop_list) > 1000:
+            logger.debug(f"rec crops num: {len(img_crop_list)}, time and memory cost may be large.")
+            
         rec_res, elapse = self.text_recognizer(img_crop_list)
         time_dict["rec"] = elapse
         logger.debug("rec_res num  : {}, elapsed : {}".format(len(rec_res), elapse))
