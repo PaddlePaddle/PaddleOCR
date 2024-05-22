@@ -144,7 +144,7 @@ class KIESerRE(hub.Module):
 
 
 if __name__ == "__main__":
-    ocr = OCRSystem()
+    ocr = KIESerRE()
     ocr._initialize()
     image_path = [
         "./doc/imgs/11.jpg",

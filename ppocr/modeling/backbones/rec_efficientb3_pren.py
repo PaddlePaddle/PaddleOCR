@@ -27,7 +27,7 @@ import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
 
-__all__ = ["EfficientNetb3"]
+__all__ = ["EfficientNetb3_PREN"]
 
 GlobalParams = collections.namedtuple(
     "GlobalParams",
