@@ -680,7 +680,7 @@ class PaddleOCR(predict_system.TextSystem):
         bin=False,
         inv=False,
         alpha_color=(255, 255, 255),
-        slice={}
+        slice={},
     ):
         """
         OCR with PaddleOCR
