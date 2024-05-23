@@ -691,12 +691,9 @@ def get_minarea_rect_crop(img, points):
     crop_img = get_rotate_crop_image(img, np.array(box))
     return crop_img
 
-def slice_generator(image,
-                    horizontal_stride, 
-                    vertical_stride, 
-                    maximum_slices=500
-):
-    
+
+def slice_generator(image, horizontal_stride, vertical_stride, maximum_slices=500):
+
     if not isinstance(image, np.ndarray):
         image = np.array(image)
 
@@ -704,16 +701,25 @@ def slice_generator(image,
     vertical_num_slices = (image_h + vertical_stride - 1) // vertical_stride
     horizontal_num_slices = (image_w + horizontal_stride - 1) // horizontal_stride
 
-    assert vertical_num_slices > 0,   f'Invalid number ({vertical_num_slices}) of vertical slices'
-    assert horizontal_num_slices > 0, f'Invalid number ({horizontal_num_slices}) of horizontal slices'
+    assert (
+        vertical_num_slices > 0
+    ), f"Invalid number ({vertical_num_slices}) of vertical slices"
+
+    assert (
+        horizontal_num_slices > 0
+    ), f"Invalid number ({horizontal_num_slices}) of horizontal slices"
 
     if vertical_num_slices >= maximum_slices:
         recommended_vertical_stride = max(1, image_h // maximum_slices) + 1
-        assert False, f'Too computationally expensive with {vertical_num_slices} slices, try a higher vertical stride (recommended minimum: {recommended_vertical_stride})'
+        assert (
+            False
+        ), f"Too computationally expensive with {vertical_num_slices} slices, try a higher vertical stride (recommended minimum: {recommended_vertical_stride})"
 
     if horizontal_num_slices >= maximum_slices:
         recommended_horizontal_stride = max(1, image_w // maximum_slices) + 1
-        assert False, f'Too computationally expensive with {horizontal_num_slices} slices, try a higher horizontal stride (recommended minimum: {recommended_horizontal_stride})'
+        assert (
+            False
+        ), f"Too computationally expensive with {horizontal_num_slices} slices, try a higher horizontal stride (recommended minimum: {recommended_horizontal_stride})"
 
     for v_slice_idx in range(vertical_num_slices):
         v_start = max(0, (v_slice_idx * vertical_stride))
@@ -723,7 +729,7 @@ def slice_generator(image,
             h_start = max(0, (h_slice_idx * horizontal_stride))
             h_end = min(((h_slice_idx + 1) * horizontal_stride), image_w)
             horizontal_slice = vertical_slice[:, h_start:h_end]
-            
+
             yield (horizontal_slice, v_start, h_start)
 
 
@@ -737,43 +743,57 @@ def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
 
         current_box = boxes[i]
         merged_box = [current_box[0], current_box[1], current_box[2], current_box[3]]
-        min_x, max_x, min_y, max_y = current_box[0][0], current_box[1][0], current_box[0][1], current_box[2][1]
+        min_x, max_x, min_y, max_y = (
+            current_box[0][0],
+            current_box[1][0],
+            current_box[0][1],
+            current_box[2][1],
+        )
 
         for j in range(len(boxes)):
             if i == j:
                 continue
 
             compare_box = boxes[j]
-            compare_min_x, compare_max_x, compare_min_y, compare_max_y = compare_box[0][0], compare_box[1][0], compare_box[0][1], compare_box[2][1]
+            compare_min_x, compare_max_x, compare_min_y, compare_max_y = (
+                compare_box[0][0],
+                compare_box[1][0],
+                compare_box[0][1],
+                compare_box[2][1],
+            )
 
-            if (abs(min_y - compare_min_y) <= y_threshold and abs(max_y - compare_max_y) <= y_threshold):
+            if (
+                abs(min_y - compare_min_y) <= y_threshold
+                and abs(max_y - compare_max_y) <= y_threshold
+            ):
                 if abs(max_x - compare_min_x) <= x_threshold:
-                    if max_x - compare_min_x > 0: # box to merge is on the left
-                        new_xmin = compare_min_x 
-                        new_xmax = max_x 
-                    elif max_x - compare_min_x < 0: # box to merge is on the right
-                        new_xmin = min_x 
-                        new_xmax = compare_max_x 
+                    if max_x - compare_min_x > 0:  # box to merge is on the left
+                        new_xmin = compare_min_x
+                        new_xmax = max_x
+                    elif max_x - compare_min_x < 0:  # box to merge is on the right
+                        new_xmin = min_x
+                        new_xmax = compare_max_x
 
-                    new_ymin = min(min_y, compare_min_y) 
+                    new_ymin = min(min_y, compare_min_y)
                     new_ymax = max(max_y, compare_max_y)
 
                     merged_box[0][0] = new_xmin
-                    merged_box[0][1] = new_ymin 
+                    merged_box[0][1] = new_ymin
 
                     merged_box[1][0] = new_xmax
                     merged_box[1][1] = new_ymin
 
-                    merged_box[2][0] = new_xmax 
-                    merged_box[2][1] = new_ymax 
+                    merged_box[2][0] = new_xmax
+                    merged_box[2][1] = new_ymax
 
-                    merged_box[3][0] = new_xmin 
-                    merged_box[3][1] = new_ymax 
+                    merged_box[3][0] = new_xmin
+                    merged_box[3][1] = new_ymax
                     visited.add(j)
 
         merged_boxes.append(merged_box)
 
     return np.array(merged_boxes)
+
 
 def check_gpu(use_gpu):
     if use_gpu and (

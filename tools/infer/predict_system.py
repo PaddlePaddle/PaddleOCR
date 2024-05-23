@@ -74,7 +74,7 @@ class TextSystem(object):
         self.crop_image_res_index += bbox_num
 
     def __call__(self, img, cls=True, slice={}):
-        
+
         time_dict = {"det": 0, "rec": 0, "cls": 0, "all": 0}
 
         if img is None:
@@ -84,18 +84,26 @@ class TextSystem(object):
         start = time.time()
         ori_im = img.copy()
         if slice:
-            slice_gen = slice_generator(img, horizontal_stride=slice['horizontal_stride'], vertical_stride=slice['vertical_stride'])
+            slice_gen = slice_generator(
+                img,
+                horizontal_stride=slice["horizontal_stride"],
+                vertical_stride=slice["vertical_stride"],
+            )
             elapsed = []
             dt_slice_boxes = []
-            for (slice_crop, v_start, h_start) in slice_gen: 
+            for slice_crop, v_start, h_start in slice_gen:
                 dt_boxes, elapse = self.text_detector(slice_crop)
                 if dt_boxes.size:
-                    dt_boxes[:,:,0] = dt_boxes[:,:,0] + h_start
-                    dt_boxes[:,:,1] = dt_boxes[:,:,1] + v_start
+                    dt_boxes[:, :, 0] = dt_boxes[:, :, 0] + h_start
+                    dt_boxes[:, :, 1] = dt_boxes[:, :, 1] + v_start
                     dt_slice_boxes.append(dt_boxes)
                     elapsed.append(elapse)
             dt_boxes = np.concatenate(dt_slice_boxes)
-            dt_boxes = merge_fragmented(boxes=dt_boxes, x_threshold=slice['merge_x_thres'], y_threshold=slice['merge_y_thres'])
+            dt_boxes = merge_fragmented(
+                boxes=dt_boxes,
+                x_threshold=slice["merge_x_thres"],
+                y_threshold=slice["merge_y_thres"],
+            )
             elapse = sum(elapsed)
         else:
             dt_boxes, elapse = self.text_detector(img)
@@ -129,8 +137,10 @@ class TextSystem(object):
                 "cls num  : {}, elapsed : {}".format(len(img_crop_list), elapse)
             )
         if len(img_crop_list) > 1000:
-            logger.debug(f"rec crops num: {len(img_crop_list)}, time and memory cost may be large.")
-            
+            logger.debug(
+                f"rec crops num: {len(img_crop_list)}, time and memory cost may be large."
+            )
+
         rec_res, elapse = self.text_recognizer(img_crop_list)
         time_dict["rec"] = elapse
         logger.debug("rec_res num  : {}, elapsed : {}".format(len(rec_res), elapse))
