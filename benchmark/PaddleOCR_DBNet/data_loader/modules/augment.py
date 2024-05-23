@@ -25,7 +25,7 @@ class RandomNoise:
             return data
         data["img"] = (
             random_noise(data["img"], mode="gaussian", clip=True) * 255
-        ).astype(im.dtype)
+        ).astype(data["img"].dtype)
         return data
 
 
