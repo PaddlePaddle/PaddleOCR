@@ -11,9 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import importlib.metadata as importlib_metadata
-
-try:
-    __version__ = importlib_metadata.version(__package__ or __name__)
-except importlib_metadata.PackageNotFoundError:
-    __version__ = "0.0.0"

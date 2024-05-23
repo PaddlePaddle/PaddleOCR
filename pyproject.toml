@@ -68,4 +68,3 @@ include-package-data = true
 
 [tool.setuptools.dynamic]
 version = {file = "VERSION_NUMBER"}
-
