@@ -693,7 +693,6 @@ def get_minarea_rect_crop(img, points):
 
 
 def slice_generator(image, horizontal_stride, vertical_stride, maximum_slices=500):
-
     if not isinstance(image, np.ndarray):
         image = np.array(image)
 
@@ -736,7 +735,7 @@ def slice_generator(image, horizontal_stride, vertical_stride, maximum_slices=50
 def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
     merged_boxes = []
     visited = set()
-
+    merged_counter = 0
     for i in range(len(boxes)):
         if i in visited:
             continue
@@ -761,7 +760,6 @@ def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
                 compare_box[0][1],
                 compare_box[2][1],
             )
-
             if (
                 abs(min_y - compare_min_y) <= y_threshold
                 and abs(max_y - compare_max_y) <= y_threshold
@@ -788,11 +786,16 @@ def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
 
                     merged_box[3][0] = new_xmin
                     merged_box[3][1] = new_ymax
+                    merged_counter += 1
                     visited.add(j)
 
         merged_boxes.append(merged_box)
 
-    return np.array(merged_boxes)
+    merged_boxes = np.array(merged_boxes)
+    if len(merged_boxes) == len(boxes):
+        return merged_boxes
+    else:
+        return merge_fragmented(merged_boxes, x_threshold, y_threshold)
 
 
 def check_gpu(use_gpu):
