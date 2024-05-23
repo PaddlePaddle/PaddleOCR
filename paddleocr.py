@@ -78,6 +78,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ["DB"]
+VERSION = "2.8.0"
 SUPPORT_REC_MODEL = ["CRNN", "SVTR_LCNet"]
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
