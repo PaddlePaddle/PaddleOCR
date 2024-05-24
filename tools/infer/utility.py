@@ -740,61 +740,52 @@ def calculate_box_extents(box):
     return min_x, max_x, min_y, max_y
 
 
+def merge_boxes(box1, box2, x_threshold, y_threshold):
+    min_x1, max_x1, min_y1, max_y1 = calculate_box_extents(box1)
+    min_x2, max_x2, min_y2, max_y2 = calculate_box_extents(box2)
+
+    if (
+        abs(min_y1 - min_y2) <= y_threshold
+        and abs(max_y1 - max_y2) <= y_threshold
+        and abs(max_x1 - min_x2) <= x_threshold
+    ):
+        new_xmin = min(min_x1, min_x2)
+        new_xmax = max(max_x1, max_x2)
+        new_ymin = min(min_y1, min_y2)
+        new_ymax = max(max_y1, max_y2)
+        return [
+            [new_xmin, new_ymin],
+            [new_xmax, new_ymin],
+            [new_xmax, new_ymax],
+            [new_xmin, new_ymax],
+        ]
+    else:
+        return None
+
+
 def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
     merged_boxes = []
     visited = set()
-    for i in range(len(boxes)):
+
+    for i, box1 in enumerate(boxes):
         if i in visited:
             continue
 
-        current_box = boxes[i]
-        merged_box = [current_box[0], current_box[1], current_box[2], current_box[3]]
-        min_x, max_x, min_y, max_y = calculate_box_extents(current_box)
+        merged_box = [point[:] for point in box1]
 
-        for j in range(len(boxes)):
-            if i == j:
-                continue
-
-            compare_box = boxes[j]
-            (
-                compare_min_x,
-                compare_max_x,
-                compare_min_y,
-                compare_max_y,
-            ) = calculate_box_extents(compare_box)
-            if (
-                abs(min_y - compare_min_y) <= y_threshold
-                and abs(max_y - compare_max_y) <= y_threshold
-            ):
-                if abs(max_x - compare_min_x) <= x_threshold:
-                    if max_x - compare_min_x > 0:  # box to merge is on the left
-                        new_xmin = compare_min_x
-                        new_xmax = max_x
-                    elif max_x - compare_min_x < 0:  # box to merge is on the right
-                        new_xmin = min_x
-                        new_xmax = compare_max_x
-
-                    new_ymin = min(min_y, compare_min_y)
-                    new_ymax = max(max_y, compare_max_y)
-
-                    merged_box[0][0] = new_xmin
-                    merged_box[0][1] = new_ymin
-
-                    merged_box[1][0] = new_xmax
-                    merged_box[1][1] = new_ymin
-
-                    merged_box[2][0] = new_xmax
-                    merged_box[2][1] = new_ymax
-
-                    merged_box[3][0] = new_xmin
-                    merged_box[3][1] = new_ymax
+        for j, box2 in enumerate(boxes[i + 1 :], start=i + 1):
+            if j not in visited:
+                merged_result = merge_boxes(
+                    merged_box, box2, x_threshold=x_threshold, y_threshold=y_threshold
+                )
+                if merged_result:
+                    merged_box = merged_result
                     visited.add(j)
 
         merged_boxes.append(merged_box)
 
-    merged_boxes = np.array(merged_boxes)
     if len(merged_boxes) == len(boxes):
-        return merged_boxes
+        return np.array(merged_boxes)
     else:
         return merge_fragmented(merged_boxes, x_threshold, y_threshold)
 
