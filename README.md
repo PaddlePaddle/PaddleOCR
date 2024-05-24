@@ -28,7 +28,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的 OCR 工具库，助�
 PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122). Issues and PRs will be reviewed on a best-effort basis. For a complete overview of PaddlePaddle community, please visit [community](https://github.com/PaddlePaddle/community).
 
 ## 📣 近期更新
-- **📖直播和 OCR 实战打卡营预告**：《OCR 零代码产线重构信息处理新范式》，详细解读四大 OCR 场景任务以及全新开发范式，并启动车牌检测实战打卡营。直播时间：5 月 16 日（周四）19：00。直播报名：https://www.wjx.top/vm/YgdyYKX.aspx?udsid=881730
+- **📚直播和OCR实战打卡营预告：《PP-ChatOCRv2赋能期刊出版，打造千家杂志社数字阅读新体验》，详细解读飞桨特色的复杂文档/图像智能分析解决方案以及全新开发范式，方案适用于出版发行、智慧教育、智慧政务、智慧金融、智慧医疗等行业领域。直播时间：5月30日（周四）19：00。并于6月3日启动【政务采购合同信息抽取】实战打卡营。报名链接：https://www.wjx.top/vm/PG34Mfm.aspx?udsid=970833
 - **🔥2024.5.10 上线星河零代码产线(OCR 相关)**：全面覆盖了以下四大 OCR 核心任务，提供极便捷的 Badcase 分析和实用的在线体验：
   - [通用 OCR](https://aistudio.baidu.com/community/app/91660) (PP-OCRv4)。
   - [通用表格识别](https://aistudio.baidu.com/community/app/91661) (SLANet)。
