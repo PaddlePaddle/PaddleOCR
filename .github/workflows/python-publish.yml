@@ -33,7 +33,7 @@ jobs:
         pip install setuptools
         pip install wheel
     - name: Build package
-      run: python setup.py bdist_wheel
+      run: python -m build
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
