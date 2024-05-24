@@ -93,11 +93,12 @@ class TextSystem(object):
             for slice_crop, v_start, h_start in slice_gen:
                 dt_boxes, elapse = self.text_detector(slice_crop)
                 if dt_boxes.size:
-                    dt_boxes[:, :, 0] = dt_boxes[:, :, 0] + h_start
-                    dt_boxes[:, :, 1] = dt_boxes[:, :, 1] + v_start
+                    dt_boxes[:, :, 0] += h_start
+                    dt_boxes[:, :, 1] += v_start
                     dt_slice_boxes.append(dt_boxes)
                     elapsed.append(elapse)
             dt_boxes = np.concatenate(dt_slice_boxes)
+
             dt_boxes = merge_fragmented(
                 boxes=dt_boxes,
                 x_threshold=slice["merge_x_thres"],

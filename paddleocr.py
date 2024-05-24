@@ -693,6 +693,7 @@ class PaddleOCR(predict_system.TextSystem):
             bin: binarize image to black and white. Default is False.
             inv: invert image colors. Default is False.
             alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
+            slice: use sliding window inference for large images, det and rec must be True. Requires int values for slice["horizontal_stride"], slice["vertical_stride"], slice["merge_x_thres"], slice["merge_y_thres] (See doc/doc_en/slice_en.md). Default is {}.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -721,18 +722,7 @@ class PaddleOCR(predict_system.TextSystem):
                 _image = binarize_img(_image)
             return _image
 
-        if det and rec and not slice:
-            ocr_res = []
-            for idx, img in enumerate(imgs):
-                img = preprocess_image(img)
-                dt_boxes, rec_res, _ = self.__call__(img, cls)
-                if not dt_boxes and not rec_res:
-                    ocr_res.append(None)
-                    continue
-                tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
-                ocr_res.append(tmp_res)
-            return ocr_res
-        elif det and rec and slice:
+        if det and rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
                 img = preprocess_image(img)

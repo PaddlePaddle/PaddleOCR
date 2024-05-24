@@ -732,34 +732,36 @@ def slice_generator(image, horizontal_stride, vertical_stride, maximum_slices=50
             yield (horizontal_slice, v_start, h_start)
 
 
+def calculate_box_extents(box):
+    min_x = box[0][0]
+    max_x = box[1][0]
+    min_y = box[0][1]
+    max_y = box[2][1]
+    return min_x, max_x, min_y, max_y
+
+
 def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
     merged_boxes = []
     visited = set()
-    merged_counter = 0
     for i in range(len(boxes)):
         if i in visited:
             continue
 
         current_box = boxes[i]
         merged_box = [current_box[0], current_box[1], current_box[2], current_box[3]]
-        min_x, max_x, min_y, max_y = (
-            current_box[0][0],
-            current_box[1][0],
-            current_box[0][1],
-            current_box[2][1],
-        )
+        min_x, max_x, min_y, max_y = calculate_box_extents(current_box)
 
         for j in range(len(boxes)):
             if i == j:
                 continue
 
             compare_box = boxes[j]
-            compare_min_x, compare_max_x, compare_min_y, compare_max_y = (
-                compare_box[0][0],
-                compare_box[1][0],
-                compare_box[0][1],
-                compare_box[2][1],
-            )
+            (
+                compare_min_x,
+                compare_max_x,
+                compare_min_y,
+                compare_max_y,
+            ) = calculate_box_extents(compare_box)
             if (
                 abs(min_y - compare_min_y) <= y_threshold
                 and abs(max_y - compare_max_y) <= y_threshold
@@ -786,7 +788,6 @@ def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
 
                     merged_box[3][0] = new_xmin
                     merged_box[3][1] = new_ymax
-                    merged_counter += 1
                     visited.add(j)
 
         merged_boxes.append(merged_box)
