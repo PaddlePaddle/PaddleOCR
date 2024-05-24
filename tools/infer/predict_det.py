@@ -34,7 +34,9 @@ import json
 
 
 class TextDetector(object):
-    def __init__(self, args, logger):
+    def __init__(self, args, logger=None):
+        if logger is None:
+            logger = get_logger()
         self.args = args
         self.det_algorithm = args.det_algorithm
         self.use_onnx = args.use_onnx
