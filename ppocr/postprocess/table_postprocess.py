@@ -142,7 +142,7 @@ class TableMasterLabelDecode(TableLabelDecode):
         character_dict_path,
         box_shape="ori",
         merge_no_span_structure=True,
-        **kwargs
+        **kwargs,
     ):
         super(TableMasterLabelDecode, self).__init__(
             character_dict_path, merge_no_span_structure

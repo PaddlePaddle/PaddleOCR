@@ -50,7 +50,7 @@ class AsterLoss(nn.Layer):
         ignore_index=-100,
         sequence_normalize=False,
         sample_normalize=True,
-        **kwargs
+        **kwargs,
     ):
         super(AsterLoss, self).__init__()
         self.weight = weight

@@ -32,7 +32,7 @@ class MobileNetV3(nn.Layer):
         large_stride=None,
         small_stride=None,
         disable_se=False,
-        **kwargs
+        **kwargs,
     ):
         super(MobileNetV3, self).__init__()
         self.disable_se = disable_se

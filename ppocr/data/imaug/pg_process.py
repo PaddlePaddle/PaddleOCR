@@ -37,7 +37,7 @@ class PGProcessTrain(object):
         min_text_size=4,
         max_text_size=512,
         point_gather_mode=None,
-        **kwargs
+        **kwargs,
     ):
         self.tcl_len = tcl_len
         self.max_text_length = max_text_length

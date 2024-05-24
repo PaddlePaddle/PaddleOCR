@@ -35,7 +35,7 @@ class EnhancedCTCLoss(nn.Layer):
         feat_dim=96,
         init_center=False,
         center_file_path=None,
-        **kwargs
+        **kwargs,
     ):
         super(EnhancedCTCLoss, self).__init__()
         self.ctc_loss_func = CTCLoss(use_focal_loss=use_focal_loss)

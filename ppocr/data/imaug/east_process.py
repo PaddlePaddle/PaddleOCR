@@ -32,7 +32,7 @@ class EASTProcessTrain(object):
         background_ratio=0.125,
         min_crop_side_ratio=0.1,
         min_text_size=10,
-        **kwargs
+        **kwargs,
     ):
         self.input_size = image_shape[1]
         self.random_scale = np.array([0.5, 1, 2.0, 3.0])

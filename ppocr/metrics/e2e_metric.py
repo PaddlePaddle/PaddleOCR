@@ -29,7 +29,7 @@ class E2EMetric(object):
         gt_mat_dir,
         character_dict_path,
         main_indicator="f_score_e2e",
-        **kwargs
+        **kwargs,
     ):
         self.mode = mode
         self.gt_mat_dir = gt_mat_dir

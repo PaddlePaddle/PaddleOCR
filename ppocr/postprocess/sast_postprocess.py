@@ -43,7 +43,7 @@ class SASTPostProcess(object):
         shrink_ratio_of_width=0.3,
         expand_scale=1.0,
         tcl_map_thresh=0.5,
-        **kwargs
+        **kwargs,
     ):
         self.score_thresh = score_thresh
         self.nms_thresh = nms_thresh

@@ -42,7 +42,7 @@ class DSConv(nn.Layer):
         groups=None,
         if_act=True,
         act="relu",
-        **kwargs
+        **kwargs,
     ):
         super(DSConv, self).__init__()
         if groups == None:

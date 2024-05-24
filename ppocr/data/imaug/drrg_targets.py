@@ -38,7 +38,7 @@ class DRRGTargets(object):
         min_rand_half_height=8.0,
         max_rand_half_height=24.0,
         jitter_level=0.2,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.orientation_thr = orientation_thr

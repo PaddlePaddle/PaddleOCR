@@ -49,7 +49,7 @@ class TableAttentionHead(nn.Layer):
         max_text_length=800,
         out_channels=30,
         loc_reg_num=4,
-        **kwargs
+        **kwargs,
     ):
         super(TableAttentionHead, self).__init__()
         self.input_size = in_channels[-1]
@@ -259,7 +259,7 @@ class SLAHead(nn.Layer):
         loc_reg_num=4,
         fc_decay=0.0,
         use_attn=False,
-        **kwargs
+        **kwargs,
     ):
         """
         @param in_channels: input shape

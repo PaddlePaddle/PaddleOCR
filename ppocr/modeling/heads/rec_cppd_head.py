@@ -217,7 +217,7 @@ class CPPDHead(nn.Layer):
         max_len=25,
         vis_seq=50,
         ch=False,
-        **kwargs
+        **kwargs,
     ):
         super(CPPDHead, self).__init__()
 

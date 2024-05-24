@@ -39,7 +39,7 @@ class TableMasterHead(nn.Layer):
         dropout=0,
         max_text_length=500,
         loc_reg_num=4,
-        **kwargs
+        **kwargs,
     ):
         super(TableMasterHead, self).__init__()
         hidden_size = in_channels[-1]

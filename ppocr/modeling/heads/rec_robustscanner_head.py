@@ -695,7 +695,7 @@ class RobustScannerHead(nn.Layer):
         mask=True,
         padding_idx=None,
         encode_value=False,
-        **kwargs
+        **kwargs,
     ):
         super(RobustScannerHead, self).__init__()
 
