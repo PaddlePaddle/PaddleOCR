@@ -237,7 +237,7 @@ class DistillationCTCLabelDecode(CTCLabelDecode):
         model_name=["student"],
         key=None,
         multi_head=False,
-        **kwargs
+        **kwargs,
     ):
         super(DistillationCTCLabelDecode, self).__init__(
             character_dict_path, use_space_char
@@ -836,7 +836,7 @@ class DistillationSARLabelDecode(SARLabelDecode):
         model_name=["student"],
         key=None,
         multi_head=False,
-        **kwargs
+        **kwargs,
     ):
         super(DistillationSARLabelDecode, self).__init__(
             character_dict_path, use_space_char

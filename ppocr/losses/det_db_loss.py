@@ -41,7 +41,7 @@ class DBLoss(nn.Layer):
         beta=10,
         ohem_ratio=3,
         eps=1e-6,
-        **kwargs
+        **kwargs,
     ):
         super(DBLoss, self).__init__()
         self.alpha = alpha

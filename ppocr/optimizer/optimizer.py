@@ -65,7 +65,7 @@ class Adam(object):
         grad_clip=None,
         name=None,
         lazy_mode=False,
-        **kwargs
+        **kwargs,
     ):
         self.learning_rate = learning_rate
         self.beta1 = beta1
@@ -164,7 +164,7 @@ class RMSProp(object):
         epsilon=1e-6,
         weight_decay=None,
         grad_clip=None,
-        **args
+        **args,
     ):
         super(RMSProp, self).__init__()
         self.learning_rate = learning_rate
@@ -200,7 +200,7 @@ class Adadelta(object):
         weight_decay=None,
         grad_clip=None,
         name=None,
-        **kwargs
+        **kwargs,
     ):
         self.learning_rate = learning_rate
         self.epsilon = epsilon
@@ -241,7 +241,7 @@ class AdamW(object):
         one_dim_param_no_weight_decay=False,
         name=None,
         lazy_mode=False,
-        **args
+        **args,
     ):
         super().__init__()
         self.learning_rate = learning_rate

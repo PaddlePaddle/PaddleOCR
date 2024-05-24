@@ -589,7 +589,7 @@ class SRNLabelEncode(BaseRecLabelEncode):
         max_text_length=25,
         character_dict_path=None,
         use_space_char=False,
-        **kwargs
+        **kwargs,
     ):
         super(SRNLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -638,7 +638,7 @@ class TableLabelEncode(AttnLabelEncode):
         merge_no_span_structure=False,
         learn_empty_box=False,
         loc_reg_num=4,
-        **kwargs
+        **kwargs,
     ):
         self.max_text_len = max_text_length
         self.lower = False
@@ -786,7 +786,7 @@ class TableMasterLabelEncode(TableLabelEncode):
         merge_no_span_structure=False,
         learn_empty_box=False,
         loc_reg_num=4,
-        **kwargs
+        **kwargs,
     ):
         super(TableMasterLabelEncode, self).__init__(
             max_text_length,
@@ -795,7 +795,7 @@ class TableMasterLabelEncode(TableLabelEncode):
             merge_no_span_structure,
             learn_empty_box,
             loc_reg_num,
-            **kwargs
+            **kwargs,
         )
         self.pad_idx = self.dict[self.pad_str]
         self.unknown_idx = self.dict[self.unknown_str]
@@ -909,7 +909,7 @@ class SATRNLabelEncode(BaseRecLabelEncode):
         character_dict_path=None,
         use_space_char=False,
         lower=False,
-        **kwargs
+        **kwargs,
     ):
         super(SATRNLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -1019,7 +1019,7 @@ class VQATokenLabelEncode(object):
         order_method=None,
         infer_mode=False,
         ocr_engine=None,
-        **kwargs
+        **kwargs,
     ):
         super(VQATokenLabelEncode, self).__init__()
         from paddlenlp.transformers import (
@@ -1273,7 +1273,7 @@ class MultiLabelEncode(BaseRecLabelEncode):
         character_dict_path=None,
         use_space_char=False,
         gtc_encode=None,
-        **kwargs
+        **kwargs,
     ):
         super(MultiLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -1381,7 +1381,7 @@ class ViTSTRLabelEncode(BaseRecLabelEncode):
         character_dict_path=None,
         use_space_char=False,
         ignore_index=0,
-        **kwargs
+        **kwargs,
     ):
         super(ViTSTRLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -1416,7 +1416,7 @@ class ABINetLabelEncode(BaseRecLabelEncode):
         character_dict_path=None,
         use_space_char=False,
         ignore_index=100,
-        **kwargs
+        **kwargs,
     ):
         super(ABINetLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -1497,7 +1497,7 @@ class SPINLabelEncode(AttnLabelEncode):
         character_dict_path=None,
         use_space_char=False,
         lower=True,
-        **kwargs
+        **kwargs,
     ):
         super(SPINLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char
@@ -1619,7 +1619,7 @@ class CANLabelEncode(BaseRecLabelEncode):
         max_text_length=100,
         use_space_char=False,
         lower=True,
-        **kwargs
+        **kwargs,
     ):
         super(CANLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char, lower
@@ -1654,7 +1654,7 @@ class CPPDLabelEncode(BaseRecLabelEncode):
         use_space_char=False,
         ch=False,
         ignore_index=100,
-        **kwargs
+        **kwargs,
     ):
         super(CPPDLabelEncode, self).__init__(
             max_text_length, character_dict_path, use_space_char

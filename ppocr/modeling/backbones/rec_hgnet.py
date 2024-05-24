@@ -335,7 +335,7 @@ def PPHGNet_small(pretrained=False, use_ssld=False, det=False, **kwargs):
         stage_config=stage_config_det if det else stage_config_rec,
         layer_num=6,
         det=det,
-        **kwargs
+        **kwargs,
     )
     return model
 
@@ -363,6 +363,6 @@ def PPHGNet_base(pretrained=False, use_ssld=True, **kwargs):
         stage_config=stage_config,
         layer_num=7,
         dropout_prob=0.2,
-        **kwargs
+        **kwargs,
     )
     return model

@@ -222,7 +222,7 @@ class ParseQHead(nn.Layer):
         decode_ar,
         refine_iters,
         dropout,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
 

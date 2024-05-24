@@ -26,7 +26,7 @@ class VQATokenPad(object):
         return_overflowing_tokens=False,
         return_special_tokens_mask=False,
         infer_mode=False,
-        **kwargs
+        **kwargs,
     ):
         self.max_seq_len = max_seq_len
         self.pad_to_max_seq_len = max_seq_len

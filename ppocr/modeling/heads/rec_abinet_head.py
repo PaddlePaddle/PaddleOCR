@@ -117,7 +117,7 @@ class PositionAttention(nn.Layer):
         h=8,
         w=32,
         mode="nearest",
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.max_length = max_length

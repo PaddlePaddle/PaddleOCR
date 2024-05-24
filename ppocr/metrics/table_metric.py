@@ -77,7 +77,7 @@ class TableMetric(object):
         compute_bbox_metric=False,
         box_format="xyxy",
         del_thead_tbody=False,
-        **kwargs
+        **kwargs,
     ):
         """
 

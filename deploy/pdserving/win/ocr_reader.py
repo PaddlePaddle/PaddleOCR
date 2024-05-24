@@ -254,7 +254,7 @@ class CTCLabelDecode(BaseRecLabelDecode):
         # character_dict_path=None,
         # character_type='ch',
         # use_space_char=False,
-        **kwargs
+        **kwargs,
     ):
         super(CTCLabelDecode, self).__init__(config)
 

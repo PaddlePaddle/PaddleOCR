@@ -41,7 +41,7 @@ class RecAug(object):
         jitter_prob=0.4,
         blur_prob=0.4,
         hsv_aug_prob=0.4,
-        **kwargs
+        **kwargs,
     ):
         self.tia_prob = tia_prob
         self.bda = BaseDataAugmentation(
@@ -74,7 +74,7 @@ class BaseDataAugmentation(object):
         jitter_prob=0.4,
         blur_prob=0.4,
         hsv_aug_prob=0.4,
-        **kwargs
+        **kwargs,
     ):
         self.crop_prob = crop_prob
         self.reverse_prob = reverse_prob
@@ -151,7 +151,7 @@ class RecConAug(object):
         image_shape=(32, 320, 3),
         max_text_length=25,
         ext_data_num=1,
-        **kwargs
+        **kwargs,
     ):
         self.ext_data_num = ext_data_num
         self.prob = prob
@@ -199,7 +199,7 @@ class SVTRRecAug(object):
         geometry_p=0.5,
         deterioration_p=0.25,
         colorjitter_p=0.25,
-        **kwargs
+        **kwargs,
     ):
         self.transforms = Compose(
             [
@@ -237,7 +237,7 @@ class ParseQRecAug(object):
         geometry_p=0.5,
         deterioration_p=0.25,
         colorjitter_p=0.25,
-        **kwargs
+        **kwargs,
     ):
         self.transforms = Compose(
             [
@@ -289,7 +289,7 @@ class RecResizeImg(object):
         eval_mode=False,
         character_dict_path="./ppocr/utils/ppocr_keys_v1.txt",
         padding=True,
-        **kwargs
+        **kwargs,
     ):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
@@ -315,7 +315,7 @@ class VLRecResizeImg(object):
         infer_mode=False,
         character_dict_path="./ppocr/utils/ppocr_keys_v1.txt",
         padding=True,
-        **kwargs
+        **kwargs,
     ):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
@@ -437,7 +437,7 @@ class SPINRecResizeImg(object):
         interpolation=2,
         mean=(127.5, 127.5, 127.5),
         std=(127.5, 127.5, 127.5),
-        **kwargs
+        **kwargs,
     ):
         self.image_shape = image_shape
 
@@ -485,7 +485,7 @@ class GrayRecResizeImg(object):
         inter_type="Image.Resampling.LANCZOS",
         scale=True,
         padding=False,
-        **kwargs
+        **kwargs,
     ):
         self.image_shape = image_shape
         self.resize_type = resize_type

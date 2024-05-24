@@ -196,7 +196,7 @@ class ViT(nn.Layer):
         epsilon=1e-6,
         act="nn.GELU",
         prenorm=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.embed_dim = embed_dim

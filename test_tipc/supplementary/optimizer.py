@@ -99,7 +99,7 @@ class ExponentialWarmup(LinearWarmup):
         decay_epochs=2.4,
         decay_rate=0.97,
         warmup_epoch=5,
-        **kwargs
+        **kwargs,
     ):
         warmup_step = warmup_epoch * step_each_epoch
         start_lr = 0.0
@@ -222,7 +222,7 @@ class RMSProp(object):
         epsilon=1e-6,
         parameter_list=None,
         regularization=None,
-        **args
+        **args,
     ):
         super(RMSProp, self).__init__()
         self.learning_rate = learning_rate

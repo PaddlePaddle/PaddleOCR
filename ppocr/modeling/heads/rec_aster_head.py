@@ -36,7 +36,7 @@ class AsterHead(nn.Layer):
         max_len_labels,
         time_step=25,
         beam_width=5,
-        **kwargs
+        **kwargs,
     ):
         super(AsterHead, self).__init__()
         self.num_classes = out_channels

@@ -675,7 +675,7 @@ class DistillationNRTRLoss(CELoss):
         multi_head=False,
         smoothing=True,
         name="loss_nrtr",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(smoothing=smoothing)
         self.model_name_list = model_name_list
@@ -713,7 +713,7 @@ class DistillationDBLoss(DBLoss):
         ohem_ratio=3,
         eps=1e-6,
         name="db",
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.model_name_list = model_name_list
@@ -935,7 +935,7 @@ class DistillationVQADistanceLoss(DistanceLoss):
         key=None,
         index=None,
         name="loss_distance",
-        **kargs
+        **kargs,
     ):
         super().__init__(mode=mode, **kargs)
         assert isinstance(model_name_pairs, list)

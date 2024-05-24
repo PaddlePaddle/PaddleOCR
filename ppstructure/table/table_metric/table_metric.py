@@ -145,7 +145,7 @@ class TEDS(object):
                 int(node.attrib.get("colspan", "1")),
                 int(node.attrib.get("rowspan", "1")),
                 cell,
-                *deque()
+                *deque(),
             )
         else:
             new_node = TableTree(node.tag, None, None, None, *deque())

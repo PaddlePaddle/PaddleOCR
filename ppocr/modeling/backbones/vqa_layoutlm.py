@@ -58,7 +58,7 @@ class NLPBaseModel(nn.Layer):
         type="ser",
         pretrained=True,
         checkpoints=None,
-        **kwargs
+        **kwargs,
     ):
         super(NLPBaseModel, self).__init__()
         if checkpoints is not None:  # load the trained model

@@ -51,7 +51,7 @@ class ViTSTR(nn.Layer):
         act_layer="nn.GELU",
         epsilon=1e-6,
         out_channels=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.seqlen = seqlen

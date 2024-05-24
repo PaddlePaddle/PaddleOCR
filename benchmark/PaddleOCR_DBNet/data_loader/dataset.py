@@ -21,7 +21,7 @@ class ICDAR2015Dataset(BaseDataSet):
         filter_keys,
         ignore_tags,
         transform=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             data_path, img_mode, pre_processes, filter_keys, ignore_tags, transform
@@ -75,7 +75,7 @@ class DetDataset(BaseDataSet):
         filter_keys,
         ignore_tags,
         transform=None,
-        **kwargs
+        **kwargs,
     ):
         self.load_char_annotation = kwargs["load_char_annotation"]
         self.expand_one_char = kwargs["expand_one_char"]
@@ -138,7 +138,7 @@ class SynthTextDataset(BaseDataSet):
         pre_processes,
         filter_keys,
         transform=None,
-        **kwargs
+        **kwargs,
     ):
         self.transform = transform
         self.dataRoot = pathlib.Path(data_path)
