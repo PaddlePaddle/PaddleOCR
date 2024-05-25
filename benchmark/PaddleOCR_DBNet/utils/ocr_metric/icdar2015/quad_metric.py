@@ -61,7 +61,9 @@ class QuadMetric:
                 for i in range(pred_polygons.shape[0]):
                     if pred_scores[i] >= box_thresh:
                         # print(pred_polygons[i,:,:].tolist())
-                        pred.append(dict(points=pred_polygons[i, :, :].astype(np.int)))
+                        pred.append(
+                            dict(points=pred_polygons[i, :, :].astype(np.int32))
+                        )
                 # pred = [dict(points=pred_polygons[i,:,:].tolist()) if pred_scores[i] >= box_thresh for i in range(pred_polygons.shape[0])]
             results.append(self.evaluator.evaluate_image(gt, pred))
         return results
