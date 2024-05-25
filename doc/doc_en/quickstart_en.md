@@ -268,7 +268,7 @@ for idx in range(len(result)):
 
 * Detection and Recognition Using Sliding Windows
 
-To perform CR using sliding windows, the following code snippet can be employed:
+To perform OCR using sliding windows, the following code snippet can be employed:
 
 ```Python
 from paddleocr import PaddleOCR
