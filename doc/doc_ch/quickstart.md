@@ -253,6 +253,46 @@ for idx in range(len(result)):
     im_show.save('result_page_{}.jpg'.format(idx))
 ```
 
+* 使用滑动窗口进行检测和识别
+
+要使用滑动窗口进行光学字符识别（OCR），可以使用以下代码片段：
+
+```Python
+from paddleocr import PaddleOCR
+from PIL import Image, ImageDraw, ImageFont
+
+# 初始化OCR引擎
+ocr = PaddleOCR(use_angle_cls=True, lang="en")
+
+img_path = "./very_large_image.jpg"
+slice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}
+results = ocr.ocr(img_path, cls=True, slice=slice)
+
+# 加载图像
+image = Image.open(img_path).convert("RGB")
+draw = ImageDraw.Draw(image)
+font = ImageFont.truetype("./doc/fonts/simfang.ttf", size=20)  # 根据需要调整大小
+
+# 处理并绘制结果
+for res in results:
+    for line in res:
+        box = [tuple(point) for point in line[0]]  # 将列表转换为元组列表
+        # 将四个角转换为两个角
+        box = [(min(point[0] for point in box), min(point[1] for point in box)),
+               (max(point[0] for point in box), max(point[1] for point in box))]
+        txt = line[1][0]
+        draw.rectangle(box, outline="red", width=2)  # 绘制矩形
+        draw.text((box[0][0], box[0][1] - 25), txt, fill="blue", font=font)  # 在矩形上方绘制文本
+
+# 保存结果
+image.save("result.jpg")
+
+```
+
+此示例初始化了启用角度分类的PaddleOCR实例，并将语言设置为英语。然后调用`ocr`方法，并使用多个参数来自定义检测和识别过程，包括处理图像切片的`slice`参数。
+
+要更全面地了解切片操作，请参考[切片操作文档](./slice.md)。
+
 ## 3. 小结
 
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
