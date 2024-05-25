@@ -209,7 +209,7 @@ def train(
     if "global_step" in pre_best_model_dict:
         global_step = pre_best_model_dict["global_step"]
     start_eval_step = 0
-    if type(eval_batch_step) == list and len(eval_batch_step) >= 2:
+    if isinstance(eval_batch_step, list) and len(eval_batch_step) >= 2:
         start_eval_step = eval_batch_step[0] if not eval_batch_epoch else 0
         eval_batch_step = (
             eval_batch_step[1]
