@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🙏 Q&A
+    url: https://github.com/PaddlePaddle/PaddleOCR/discussions/categories/q-a
+    about: Ask the community for help
+  - name: 💡 Feature requests and ideas
+    url: https://github.com/PaddlePaddle/PaddleOCR/discussions/categories/ideas
+    about: Share ideas for new features
+  - name: 🙌 Show and tell
+    url: https://github.com/PaddlePaddle/PaddleOCR/discussions/categories/show-and-tell
+    about: Show off something you've made
