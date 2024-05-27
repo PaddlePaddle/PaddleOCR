@@ -43,7 +43,7 @@ repos:
     -   id: flake8
         args:
             - --count
-            - --select=E9,F63,F7,F82
+            - --select=E9,F63,F7,F82,E721
             - --show-source
             - --statistics
         exclude: ^benchmark/|^test_tipc/
