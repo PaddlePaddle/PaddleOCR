@@ -25,7 +25,7 @@
 
 | APP 图标 | APP 效果 | APP设置项
   | ---     | --- | --- |
-| ![app_pic](https://user-images.githubusercontent.com/14995488/203484427-83de2316-fd60-4baf-93b6-3755f9b5559d.jpg)   | ![app_res](https://user-images.githubusercontent.com/14995488/203495616-af42a5b7-d3bc-4fce-8d5e-2ed88454f618.jpg) |  ![app_setup](https://user-images.githubusercontent.com/14995488/203484436-57fdd041-7dcc-4e0e-b6cb-43e5ac1e729b.jpg) |  
+| ![app_pic](https://user-images.githubusercontent.com/14995488/203484427-83de2316-fd60-4baf-93b6-3755f9b5559d.jpg)   | ![app_res](https://user-images.githubusercontent.com/14995488/203495616-af42a5b7-d3bc-4fce-8d5e-2ed88454f618.jpg) |  ![app_setup](https://user-images.githubusercontent.com/14995488/203484436-57fdd041-7dcc-4e0e-b6cb-43e5ac1e729b.jpg) |
 
 ### PP-OCRv3 Java API 说明
 
@@ -47,7 +47,7 @@ public PPOCRv3();  // 空构造函数，之后可以调用init初始化
 // Constructor w/o classifier
 public PPOCRv3(DBDetector detModel, Recognizer recModel);
 public PPOCRv3(DBDetector detModel, Classifier clsModel, Recognizer recModel);
-```  
+```
 - 模型预测 API：模型预测API包含直接预测的API以及带可视化功能的API。直接预测是指，不保存图片以及不渲染结果到Bitmap上，仅预测推理结果。预测并且可视化是指，预测结果以及可视化，并将可视化后的图片保存到指定的途径，以及将可视化结果渲染在Bitmap(目前支持ARGB8888格式的Bitmap), 后续可将该Bitmap在camera中进行显示。
 ```java
 // 直接预测：不保存图片以及不渲染结果到Bitmap上
@@ -58,13 +58,13 @@ public OCRResult predict(Bitmap ARGB8888Bitmap, boolean rendering); // 只渲染
 ```
 - 模型资源释放 API：调用 release() API 可以释放模型资源，返回true表示释放成功，false表示失败；调用 initialized() 可以判断模型是否初始化成功，true表示初始化成功，false表示失败。
 ```java
-public boolean release(); // 释放native资源  
+public boolean release(); // 释放native资源
 public boolean initialized(); // 检查是否初始化成功
 ```
 
 - RuntimeOption设置说明
 
-```java  
+```java
 public void enableLiteFp16(); // 开启fp16精度推理
 public void disableLiteFP16(); // 关闭fp16精度推理
 public void enableLiteInt8(); // 开启int8精度推理，针对量化模型
@@ -83,13 +83,13 @@ public class OCRResult {
   public float[] mClsScores; // 表示文本框的分类结果的置信度
   public int[] mClsLabels; // 表示文本框的方向分类类别
   public boolean mInitialized = false; // 检测结果是否有效
-}  
+}
 ```
 其他参考：C++/Python对应的OCRResult说明: [api/vision_results/ocr_result.md](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/api/vision_results/ocr_result.md)
 
 
 - 模型调用示例1：使用构造函数
-```java  
+```java
 import java.nio.ByteBuffer;
 import android.graphics.Bitmap;
 import android.opengl.GLES20;
@@ -119,9 +119,9 @@ recOption.setCpuThreadNum(2);
 detOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
 clsOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
 recOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
-detOption.enableLiteFp16();  
-clsOption.enableLiteFp16();  
-recOption.enableLiteFp16();  
+detOption.enableLiteFp16();
+clsOption.enableLiteFp16();
+recOption.enableLiteFp16();
 // 初始化模型
 DBDetector detModel = new DBDetector(detModelFile, detParamsFile, detOption);
 Classifier clsModel = new Classifier(clsModelFile, clsParamsFile, clsOption);
@@ -135,14 +135,14 @@ Bitmap ARGB8888ImageBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.AR
 ARGB8888ImageBitmap.copyPixelsFromBuffer(pixelBuffer);
 
 // 模型推理
-OCRResult result = model.predict(ARGB8888ImageBitmap);  
+OCRResult result = model.predict(ARGB8888ImageBitmap);
 
-// 释放模型资源  
+// 释放模型资源
 model.release();
-```  
+```
 
 - 模型调用示例2: 在合适的程序节点，手动调用init
-```java  
+```java
 // import 同上 ...
 import com.baidu.paddle.fastdeploy.RuntimeOption;
 import com.baidu.paddle.fastdeploy.LitePowerMode;
@@ -151,7 +151,7 @@ import com.baidu.paddle.fastdeploy.vision.ocr.Classifier;
 import com.baidu.paddle.fastdeploy.vision.ocr.DBDetector;
 import com.baidu.paddle.fastdeploy.vision.ocr.Recognizer;
 // 新建空模型
-PPOCRv3 model = new PPOCRv3();  
+PPOCRv3 model = new PPOCRv3();
 // 模型路径
 String detModelFile = "ch_PP-OCRv3_det_infer/inference.pdmodel";
 String detParamsFile = "ch_PP-OCRv3_det_infer/inference.pdiparams";
@@ -170,9 +170,9 @@ recOption.setCpuThreadNum(2);
 detOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
 clsOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
 recOption.setLitePowerMode(LitePowerMode.LITE_POWER_HIGH);
-detOption.enableLiteFp16();  
-clsOption.enableLiteFp16();  
-recOption.enableLiteFp16();  
+detOption.enableLiteFp16();
+clsOption.enableLiteFp16();
+recOption.enableLiteFp16();
 // 使用init函数初始化
 DBDetector detModel = new DBDetector(detModelFile, detParamsFile, detOption);
 Classifier clsModel = new Classifier(clsModelFile, clsParamsFile, clsOption);
@@ -192,10 +192,10 @@ model.init(detModel, clsModel, recModel);
   - 修改 `app/src/main/res/values/strings.xml` 中模型路径的默认值，如：
 ```xml
 <!-- 将这个路径修改成您的模型 -->
-<string name="OCR_MODEL_DIR_DEFAULT">models</string>  
+<string name="OCR_MODEL_DIR_DEFAULT">models</string>
 <string name="OCR_LABEL_PATH_DEFAULT">labels/ppocr_keys_v1.txt</string>
-```  
-## 使用量化模型  
+```
+## 使用量化模型
 如果您使用的是量化格式的模型，只需要使用RuntimeOption的enableLiteInt8()接口设置Int8精度推理即可。
 ```java
 String detModelFile = "ch_ppocrv3_plate_det_quant/inference.pdmodel";
@@ -214,10 +214,10 @@ DBDetector detModel = new DBDetector(detModelFile, detParamsFile, detOption);
 Recognizer recModel = new Recognizer(recModelFile, recParamsFile, recLabelFilePath, recOption);
 predictor.init(detModel, recModel);
 ```
-在App中使用，可以参考 [OcrMainActivity.java](./app/src/main/java/com/baidu/paddle/fastdeploy/app/examples/ocr/OcrMainActivity.java) 中的用法。  
+在App中使用，可以参考 [OcrMainActivity.java](./app/src/main/java/com/baidu/paddle/fastdeploy/app/examples/ocr/OcrMainActivity.java) 中的用法。
 
 ## 更多参考文档
 如果您想知道更多的FastDeploy Java API文档以及如何通过JNI来接入FastDeploy C++ API感兴趣，可以参考以下内容:
 - [在 Android 中使用 FastDeploy Java SDK](https://github.com/PaddlePaddle/FastDeploy/tree/develop/java/android)
-- [在 Android 中使用 FastDeploy C++ SDK](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/use_cpp_sdk_on_android.md)  
+- [在 Android 中使用 FastDeploy C++ SDK](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/faq/use_cpp_sdk_on_android.md)
 - 如果用户想要调整前后处理超参数、单独使用文字检测识别模型、使用其他模型等，更多详细文档与说明请参考[PP-OCR系列在CPU/GPU上的部署](../../cpu-gpu/python/README.md)

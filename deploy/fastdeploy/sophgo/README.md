@@ -2,7 +2,7 @@
 
 # PaddleOCR 模型在SOPHGO上部署方案-FastDeploy
 
-## 1. 说明  
+## 1. 说明
 PaddleOCR支持通过FastDeploy在SOPHGO上部署相关模型.
 
 ## 2.支持模型列表
@@ -19,7 +19,7 @@ PaddleOCR支持通过FastDeploy在SOPHGO上部署相关模型.
 
 ## 3. 准备PP-OCR推理模型以及转换模型
 
-PP-OCRv3包括文本检测模型（ch_PP-OCRv3_det）、方向分类模型（ch_ppocr_mobile_v2.0_cls）、文字识别模型（ch_PP-OCRv3_rec）  
+PP-OCRv3包括文本检测模型（ch_PP-OCRv3_det）、方向分类模型（ch_ppocr_mobile_v2.0_cls）、文字识别模型（ch_PP-OCRv3_rec）
 SOPHGO-TPU部署模型前需要将以上Paddle模型转换成bmodel模型，我们以ch_PP-OCRv3_det模型为例，具体步骤如下:
 - 下载Paddle模型[ch_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar)
 - Pddle模型转换为ONNX模型，请参考[Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX)
@@ -97,6 +97,6 @@ model_deploy.py \
 最终获得可以在BM1684x上能够运行的bmodel模型ch_PP-OCRv3_det_1684x_f32.bmodel。按照上面同样的方法，可以将ch_ppocr_mobile_v2.0_cls，ch_PP-OCRv3_rec转换为bmodel的格式。如果需要进一步对模型进行加速，可以将ONNX模型转换为INT8 bmodel，具体步骤参见[TPU-MLIR文档](https://github.com/sophgo/tpu-mlir/blob/master/README.md)。
 
 
-## 4. 详细部署的部署示例  
+## 4. 详细部署的部署示例
 - [Python部署](python)
 - [C++部署](cpp)

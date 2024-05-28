@@ -1133,9 +1133,11 @@ class VLLabelDecode(BaseRecLabelDecode):
             preds_idx = net_out[start_idx:end_idx].topk(1)[1][:, 0].tolist()
             preds_text = "".join(
                 [
-                    self.character[idx - 1]
-                    if idx > 0 and idx <= len(self.character)
-                    else ""
+                    (
+                        self.character[idx - 1]
+                        if idx > 0 and idx <= len(self.character)
+                        else ""
+                    )
                     for idx in preds_idx
                 ]
             )

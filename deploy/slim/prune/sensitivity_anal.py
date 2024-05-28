@@ -135,14 +135,14 @@ def main(config, device, logger, vdl_writer):
 
     run_sensitive_analysis = False
     """
-    run_sensitive_analysis=True: 
-        Automatically compute the sensitivities of convolutions in a model. 
-        The sensitivity of a convolution is the losses of accuracy on test dataset in 
-        different pruned ratios. The sensitivities can be used to get a group of best 
+    run_sensitive_analysis=True:
+        Automatically compute the sensitivities of convolutions in a model.
+        The sensitivity of a convolution is the losses of accuracy on test dataset in
+        different pruned ratios. The sensitivities can be used to get a group of best
         ratios with some condition.
-    
-    run_sensitive_analysis=False: 
-        Set prune trim ratio to a fixed value, such as 10%. The larger the value, 
+
+    run_sensitive_analysis=False:
+        Set prune trim ratio to a fixed value, such as 10%. The larger the value,
         the more convolution weights will be cropped.
 
     """

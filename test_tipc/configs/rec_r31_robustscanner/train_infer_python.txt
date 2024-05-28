@@ -51,4 +51,3 @@ inference:tools/infer/predict_rec.py --rec_char_dict_path=./ppocr/utils/dict90.t
 null:null
 ===========================infer_benchmark_params==========================
 random_infer_input:[{float32,[3,48,160]}]
-

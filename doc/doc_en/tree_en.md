@@ -10,10 +10,10 @@ PaddleOCR
 │   │   ├── cls_mv3.yml                     // Training config, including backbone network, head, loss, optimizer and data
 │   ├── det                                 // Text detection config files
 │   │   ├── det_mv3_db.yml                  // Training config
-│   │   ...  
+│   │   ...
 │   └── rec                                 // Text recognition config files
 │       ├── rec_mv3_none_bilstm_ctc.yml     // CRNN config
-│       ...  
+│       ...
 ├── deploy                                  // Depoly
 │   ├── android_demo                        // Android demo
 │   │   ...
@@ -33,7 +33,7 @@ PaddleOCR
 │   │   ├── readme.md                       // Documentation
 │   │   ├── ...
 │   │   ├── src                             // Source code files
-│   │   │   ├── clipper.cpp  
+│   │   │   ├── clipper.cpp
 │   │   │   ├── config.cpp
 │   │   │   ├── main.cpp
 │   │   │   ├── ocr_cls.cpp
@@ -58,12 +58,12 @@ PaddleOCR
 │   ├── hubserving                          // hubserving
 │   │   ├── ocr_cls                         // Angle class
 │   │   │   ├── config.json                 // Serving config
-│   │   │   ├── __init__.py  
+│   │   │   ├── __init__.py
 │   │   │   ├── module.py                   // Model
 │   │   │   └── params.py                   // Parameters
 │   │   ├── ocr_det                         // Text detection
 │   │   │   ├── config.json                 // serving config
-│   │   │   ├── __init__.py  
+│   │   │   ├── __init__.py
 │   │   │   ├── module.py                   // Model
 │   │   │   └── params.py                   // Parameters
 │   │   ├── ocr_rec                         // Text recognition
@@ -103,7 +103,7 @@ PaddleOCR
 │   │   ├── readme.md                       // Documentation
 │   │   ├── rec_local_server.py             // Text recognition fast version
 │   │   └── rec_web_server.py               // Text recognition full version
-│   └── slim  
+│   └── slim
 │       └── quantization                    // Quantization
 │           ├── export_model.py             // Export model
 │           ├── quant.py                    // Quantization script
@@ -188,7 +188,7 @@ PaddleOCR
 │   │   └── sast_postprocess.py             // SAST post-processing
 │   └── utils                               // utils
 │       ├── dict                            // Minor language dictionary
-│            ....  
+│            ....
 │       ├── ic15_dict.txt                   // English number dictionary, case sensitive
 │       ├── ppocr_keys_v1.txt               // Chinese dictionary for training Chinese models
 │       ├── logging.py                      // logger

@@ -114,11 +114,11 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
         - [모바일](./deploy/lite/readme.md)
         - [Paddle2ONNX](./deploy/paddle2onnx/readme.md)
         - [패들 클라우드](./deploy/paddlecloud/README.md)
-        - [Benchmark](../doc_en/benchmark_en.md)  
+        - [Benchmark](../doc_en/benchmark_en.md)
 - [PP-Structure 🔥](../../ppstructure/README.md)
     - [신속한 시작](../../ppstructure/docs/quickstart_en.md)
     - [동물원 모델](../../ppstructure/docs/models_list_en.md)
-    - [모델 훈련](../doc_en/training_en.md)  
+    - [모델 훈련](../doc_en/training_en.md)
         - [레이아웃 분석](../../ppstructure/layout/README.md)
         - [표 인식](../../ppstructure/table/README.md)
         - [핵심 정보 추출](../../ppstructure/kie/README.md)
@@ -131,7 +131,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
     - [텍스트 인식](../doc_en/algorithm_overview_en.md)
     - [종단종OCR](../doc_en/algorithm_overview_en.md)
     - [표 인식](../doc_en/algorithm_overview_en.md)
-    - [핵심 정보 추출](../doc_en/algorithm_overview_en.md)  
+    - [핵심 정보 추출](../doc_en/algorithm_overview_en.md)
     - [PaddleOCR에 신규 알고리즘 추가](../doc_en/add_new_algorithm_en.md)
 -  데이터 주석 및 합성
     - [반-자동 주석 툴: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
@@ -210,7 +210,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
 3. RE (관계 추출)
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>  
+</div>
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
 </div>

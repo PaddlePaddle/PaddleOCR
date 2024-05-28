@@ -341,9 +341,11 @@ class PrePostProcessLayer(nn.Layer):
                 )
             elif cmd == "d":  # add dropout
                 self.functors.append(
-                    lambda x: F.dropout(x, p=dropout_rate, mode="downscale_in_infer")
-                    if dropout_rate
-                    else x
+                    lambda x: (
+                        F.dropout(x, p=dropout_rate, mode="downscale_in_infer")
+                        if dropout_rate
+                        else x
+                    )
                 )
 
     def forward(self, x, residual=None):

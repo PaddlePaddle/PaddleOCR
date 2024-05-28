@@ -28,4 +28,3 @@ TRAIN:
 VALID:
     batch_size: 64
     num_workers: 4
-

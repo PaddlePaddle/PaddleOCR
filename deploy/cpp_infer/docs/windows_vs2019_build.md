@@ -45,7 +45,7 @@ paddle_inference
 
 #### 1.2.2 安装配置OpenCV
 
-1. 在OpenCV官网下载适用于Windows平台的Opencv， [下载地址](https://github.com/opencv/opencv/releases)  
+1. 在OpenCV官网下载适用于Windows平台的Opencv， [下载地址](https://github.com/opencv/opencv/releases)
 2. 运行下载的可执行文件，将OpenCV解压至指定目录，如`D:\projects\cpp\opencv`
 
 #### 1.2.3 下载PaddleOCR代码

@@ -207,12 +207,12 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 <details open>
 <summary>PP-Structure 文档分析</summary>
 
-- 版面分析+表格识别  
+- 版面分析+表格识别
 <div align="center">
     <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
 </div>
 
-- SER（语义实体识别）  
+- SER（语义实体识别）
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg" width="600">
 </div>

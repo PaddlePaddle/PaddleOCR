@@ -1,26 +1,22 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: a11d9314b22d8f8c7556443875b731ef05965464
+    rev: v4.6.0
     hooks:
+    -   id: check-added-large-files
+        args: ['--maxkb=512']
+    -   id: check-case-conflict
     -   id: check-merge-conflict
     -   id: check-symlinks
     -   id: detect-private-key
-        files: (?!.*paddle)^.*$
     -   id: end-of-file-fixer
-        files: \.md$
     -   id: trailing-whitespace
-        files: \.md$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.0.1
+    rev: v1.5.1
     hooks:
-    -   id: forbid-crlf
-        files: \.md$
     -   id: remove-crlf
-        files: \.md$
-    -   id: forbid-tabs
-        files: \.md$
     -   id: remove-tabs
-        files: \.md$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
 -   repo: local
     hooks:
     -   id: clang-format
@@ -31,7 +27,7 @@ repos:
         files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|cuh|proto)$
 # For Python files
 -   repo: https://github.com/psf/black.git
-    rev: 23.3.0
+    rev: 24.4.2
     hooks:
     -   id: black
         files: (.*\.(py|pyi|bzl)|BUILD|.*\.BUILD|WORKSPACE)$
@@ -47,4 +43,3 @@ repos:
             - --show-source
             - --statistics
         exclude: ^benchmark/|^test_tipc/
-

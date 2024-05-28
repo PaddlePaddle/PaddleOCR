@@ -155,4 +155,3 @@ if [ ${MODE} = "whole_infer" ]; then
         Count=$(($Count + 1))
     done
 fi
-

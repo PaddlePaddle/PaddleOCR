@@ -241,8 +241,8 @@ class EfficientNetb3_PREN(nn.Layer):
         super(EfficientNetb3_PREN, self).__init__()
         """
         the fllowing are efficientnetb3's superparams,
-        they means efficientnetb3 network's width, depth, resolution and 
-        dropout respectively, to fit for text recognition task, the resolution 
+        they means efficientnetb3 network's width, depth, resolution and
+        dropout respectively, to fit for text recognition task, the resolution
         here is changed from 300 to 64.
         """
         w, d, s, p = 1.2, 1.4, 64, 0.3

@@ -222,7 +222,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 **注意** ppocr默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 如需使用旧版本的PP-OCR模型，则需要设置参数`--rec_img_h=32`。
 
 
-运行方式：  
+运行方式：
 ```shell
 ./build/ppocr [--param1] [--param2] [...]
 ```

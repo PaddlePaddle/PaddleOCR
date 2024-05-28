@@ -50,7 +50,7 @@ Here we have sorted out some Chinese OCR training and prediction tricks, which a
         resized_image /= 0.5
         padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
         padding_im[:, :, 0:resized_w] = resized_image
-        return padding_im  
+        return padding_im
   ```
 
 <a name="SpaceRecognition"></a>

@@ -2,7 +2,7 @@
 
 # PaddleOCR 在昆仑芯上部署方案-FastDeploy
 
-## 1. 说明  
+## 1. 说明
 PaddleOCR支持利用FastDeploy在昆仑芯片上部署模型.
 
 支持如下芯片的部署
@@ -27,6 +27,6 @@ PaddleOCR支持利用FastDeploy在昆仑芯片上部署模型.
 | ch_PP-OCRv2_server |[ch_ppocr_server_v2.0_det](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_ppocr_server_v2.0_rec](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar) |[ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2服务器系列模型, 支持中英文、多语种文本检测，比超轻量模型更大，但效果更好|
 
 
-## 3. 详细部署的部署示例  
+## 3. 详细部署的部署示例
 - [Python部署](python)
 - [C++部署](cpp)

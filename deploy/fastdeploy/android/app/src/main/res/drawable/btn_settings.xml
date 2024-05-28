@@ -3,4 +3,3 @@
     <item android:state_pressed="true" android:drawable="@drawable/btn_settings_pressed"/>
     <item android:drawable="@drawable/btn_settings_default"/>
 </selector>
-

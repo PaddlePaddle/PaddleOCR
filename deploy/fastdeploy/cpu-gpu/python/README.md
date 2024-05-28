@@ -1,11 +1,11 @@
-[English](README.md) | 简体中文  
+[English](README.md) | 简体中文
 # PaddleOCR CPU-GPU Python部署示例
 本目录下提供`infer.py`快速完成PP-OCRv3在CPU/GPU，以及GPU上通过Paddle-TensorRT加速部署的示例.
 
-## 1. 说明  
+## 1. 说明
 PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、Intel GPU(独立显卡/集成显卡)硬件上快速部署OCR模型
 
-## 2. 部署环境准备  
+## 2. 部署环境准备
 在部署前，需确认软硬件环境，同时下载预编译部署库，参考[FastDeploy安装文档](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#FastDeploy预编译库安装)安装FastDeploy预编译库.
 
 ## 3. 部署模型准备
@@ -74,19 +74,19 @@ python infer_rec.py  --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_ke
 ```
 
 运行完成可视化结果如下图所示
-<div  align="center">  
+<div  align="center">
 <img width="640" src="https://user-images.githubusercontent.com/109218879/185826024-f7593a0c-1bd2-4a60-b76c-15588484fa08.jpg">
 </div>
 
-## 5. 部署示例选项说明  
+## 5. 部署示例选项说明
 
 |参数|含义|默认值
-|---|---|---|  
+|---|---|---|
 |--det_model|指定检测模型文件夹所在的路径|None|
 |--cls_model|指定分类模型文件夹所在的路径|None|
 |--rec_model|指定识别模型文件夹所在的路径|None|
 |--rec_label_file|识别模型所需label所在的路径|None|
-|--image|指定测试图片所在的路径|None|  
+|--image|指定测试图片所在的路径|None|
 |--device|指定即将运行的硬件类型，支持的值为`[cpu, gpu]`，当设置为cpu时，可运行在x86 cpu/arm cpu等cpu上|cpu|
 |--device_id|使用gpu时, 指定设备号|0|
 |--backend|部署模型时使用的后端, 支持的值为`[paddle,pptrt,pplite,ort,openvino,trt]` |paddle|

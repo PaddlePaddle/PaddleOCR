@@ -439,9 +439,9 @@ class DRRGTargets(object):
             )
 
         inner_center_sample_mask = np.zeros_like(center_sample_mask)
-        inner_center_sample_mask[
-            margin : h - margin, margin : w - margin
-        ] = center_sample_mask[margin : h - margin, margin : w - margin]
+        inner_center_sample_mask[margin : h - margin, margin : w - margin] = (
+            center_sample_mask[margin : h - margin, margin : w - margin]
+        )
         kernel_size = int(np.clip(max_rand_half_height, 7, 21))
         inner_center_sample_mask = cv2.erode(
             inner_center_sample_mask, np.ones((kernel_size, kernel_size), np.uint8)

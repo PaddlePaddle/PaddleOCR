@@ -119,11 +119,11 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
         - [Mobile](./deploy/lite/readme.md)
         - [Paddle2ONNX](./deploy/paddle2onnx/readme.md)
         - [PaddleCloud](./deploy/paddlecloud/README.md)
-        - [Benchmark](./doc/doc_en/benchmark_en.md)  
+        - [Benchmark](./doc/doc_en/benchmark_en.md)
 - [PP-Structure 🔥](./ppstructure/README.md)
     - [Quick Start](./ppstructure/docs/quickstart_en.md)
     - [Model Zoo](./ppstructure/docs/models_list_en.md)
-    - [Model training](./doc/doc_en/training_en.md)  
+    - [Model training](./doc/doc_en/training_en.md)
         - [Layout Analysis](./ppstructure/layout/README.md)
         - [Table Recognition](./ppstructure/table/README.md)
         - [Key Information Extraction](./ppstructure/kie/README.md)
@@ -136,7 +136,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
     - [Text recognition](./doc/doc_en/algorithm_overview_en.md)
     - [End-to-end OCR](./doc/doc_en/algorithm_overview_en.md)
     - [Table Recognition](./doc/doc_en/algorithm_overview_en.md)
-    - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)  
+    - [Key Information Extraction](./doc/doc_en/algorithm_overview_en.md)
     - [Add New Algorithms to PaddleOCR](./doc/doc_en/add_new_algorithm_en.md)
 - Data Annotation and Synthesis
     - [Semi-automatic Annotation Tool: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
@@ -188,7 +188,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 <details open>
 <summary>PP-StructureV2</summary>
 
-- layout analysis + table recognition  
+- layout analysis + table recognition
 <div align="center">
     <img src="./ppstructure/docs/table/ppstructure.GIF" width="800">
 </div>
@@ -209,7 +209,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 - RE (Relation Extraction)
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>  
+</div>
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">

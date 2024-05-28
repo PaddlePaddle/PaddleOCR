@@ -63,13 +63,13 @@ Linux端基础训练预测功能测试的主程序为`test_train_inference_pytho
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'lite_train_lite_infer'
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'lite_train_lite_infer'
-```  
+```
 
 - 模式2：lite_train_whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt  'lite_train_whole_infer'
 bash test_tipc/test_train_inference_python.sh ../test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'lite_train_whole_infer'
-```  
+```
 
 - 模式3：whole_infer，不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
 ```shell
@@ -78,13 +78,13 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_inf
 bash test_tipc/test_train_inference_python.sh ../test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'whole_infer'
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'whole_infer' '1'
-```  
+```
 
 - 模式4：whole_train_whole_infer，CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'whole_train_whole_infer'
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_ppocr_mobile_v2_0_det/train_infer_python.txt 'whole_train_whole_infer'
-```  
+```
 
 运行相应指令后，在`test_tipc/output`文件夹下自动会保存运行日志。如'lite_train_lite_infer'模式下，会运行训练+inference的链条，因此，在`test_tipc/output`文件夹有以下文件：
 ```
@@ -121,7 +121,7 @@ Run failed with command - python3.7 tools/export_model.py -c tests/configs/det_m
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_pact_infer_python.txt 'lite_train_lite_infer'
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_pact_infer_python.txt 'lite_train_lite_infer'
-```  
+```
 #### 2.2.3 混合精度训练链条
 此外，`test_train_inference_python.sh`还包含混合精度训练模式，命令如下：
 以ch_PP-OCRv2_det为例，如需测试其他模型更换配置即可。
@@ -129,7 +129,7 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_PP-OCRv2_de
 ```shell
 bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_linux_gpu_normal_amp_infer_python_linux_gpu_cpu.txt 'lite_train_lite_infer'
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_linux_gpu_normal_amp_infer_python_linux_gpu_cpu.txt 'lite_train_lite_infer'
-```  
+```
 
 ### 2.3 精度测试
 
@@ -144,7 +144,7 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/ch_PP-OCRv2_de
 python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.txt  --log_file=./test_tipc/output/python_*.log --atol=1e-3 --rtol=1e-3
 ```
 
-参数介绍：  
+参数介绍：
 - gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在test_tipc/result/ 文件夹下
 - log_file: 指向运行test_tipc/test_train_inference_python.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持python_infer_*.log格式传入
 - atol: 设置的绝对误差
@@ -160,6 +160,6 @@ python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.tx
 
 
 ## 3. 更多教程
-本文档为功能测试用，更丰富的训练预测使用教程请参考：  
-[模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)  
+本文档为功能测试用，更丰富的训练预测使用教程请参考：
+[模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)
 [基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_ppocr.md)

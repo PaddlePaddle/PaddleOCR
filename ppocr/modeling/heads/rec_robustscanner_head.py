@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/encoders/channel_reduction_encoder.py
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/decoders/robust_scanner_decoder.py
 """
