@@ -173,7 +173,7 @@ python3 tools/train.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml
 
 log 中自动打印如下信息：
 
-|  字段   |   含义   |  
+|  字段   |   含义   |
 | :----: | :------: |
 |  epoch | 当前迭代轮次 |
 |  iter  | 当前迭代次数 |

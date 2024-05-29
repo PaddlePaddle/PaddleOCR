@@ -61,9 +61,9 @@ bash test_tipc/test_train_inference_python.sh  test_tipc/configs/ch_PP-OCRv3_rec
 输出结果如下，表示命令运行成功。
 
 ```bash
- Run successfully with command - ch_PP-OCRv3_rec - python3.7 -m paddle.distributed.launch --ips=192.168.0.1,192.168.0.2 --gpus=0,1 tools/train.py -c test_tipc/configs/ch_PP-OCRv3_rec/ch_PP-OCRv3_rec_distillation.yml -o  Global.use_gpu=True Global.save_model_dir=./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/norm_train_gpus_0,1_autocast_fp32_nodes_2   Global.epoch_num=3 Global.auto_cast=fp32 Train.loader.batch_size_per_card=16    !  
+ Run successfully with command - ch_PP-OCRv3_rec - python3.7 -m paddle.distributed.launch --ips=192.168.0.1,192.168.0.2 --gpus=0,1 tools/train.py -c test_tipc/configs/ch_PP-OCRv3_rec/ch_PP-OCRv3_rec_distillation.yml -o  Global.use_gpu=True Global.save_model_dir=./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/norm_train_gpus_0,1_autocast_fp32_nodes_2   Global.epoch_num=3 Global.auto_cast=fp32 Train.loader.batch_size_per_card=16    !
  ......
-  Run successfully with command - ch_PP-OCRv3_rec - python3.7 tools/infer/predict_rec.py --rec_image_shape="3,48,320" --use_gpu=False --enable_mkldnn=False --cpu_threads=6 --rec_model_dir=./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/norm_train_gpus_0,1_autocast_fp32_nodes_2/Student --rec_batch_num=1   --image_dir=./inference/rec_inference --benchmark=True --precision=fp32   > ./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/python_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_1.log 2>&1 !  
+  Run successfully with command - ch_PP-OCRv3_rec - python3.7 tools/infer/predict_rec.py --rec_image_shape="3,48,320" --use_gpu=False --enable_mkldnn=False --cpu_threads=6 --rec_model_dir=./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/norm_train_gpus_0,1_autocast_fp32_nodes_2/Student --rec_batch_num=1   --image_dir=./inference/rec_inference --benchmark=True --precision=fp32   > ./test_tipc/output/ch_PP-OCRv3_rec/lite_train_lite_infer/python_infer_cpu_usemkldnn_False_threads_6_precision_fp32_batchsize_1.log 2>&1 !
 ```
 
 在开启benchmark参数时，可以得到测试的详细数据，包含运行环境信息（系统版本、CUDA版本、CUDNN版本、驱动版本），Paddle版本信息，参数设置信息（运行设备、线程数、是否开启内存优化等），模型信息（模型名称、精度），数据信息（batchsize、是否为动态shape等），性能信息（CPU,GPU的占用、运行耗时、预处理耗时、推理耗时、后处理耗时），内容如下所示：

@@ -9,10 +9,10 @@ PaddleOCR
 │   │   ├── cls_mv3.yml                     // 训练配置相关，包括骨干网络、head、loss、优化器和数据
 │   ├── det                                 // 检测相关配置文件
 │   │   ├── det_mv3_db.yml                  // 训练配置
-│   │   ...  
+│   │   ...
 │   └── rec                                 // 识别相关配置文件
 │       ├── rec_mv3_none_bilstm_ctc.yml     // crnn 训练配置
-│       ...  
+│       ...
 ├── deploy                                  // 部署相关
 │   ├── android_demo                        // android_demo
 │   │   ...
@@ -32,7 +32,7 @@ PaddleOCR
 │   │   ├── readme.md                       // 说明文档
 │   │   ├── ...
 │   │   ├── src                             // 源文件
-│   │   │   ├── clipper.cpp  
+│   │   │   ├── clipper.cpp
 │   │   │   ├── config.cpp
 │   │   │   ├── main.cpp
 │   │   │   ├── ocr_cls.cpp
@@ -57,12 +57,12 @@ PaddleOCR
 │   ├── hubserving                          // hubserving
 │   │   ├── ocr_cls                         // 方向分类器
 │   │   │   ├── config.json                 // serving 配置
-│   │   │   ├── __init__.py  
+│   │   │   ├── __init__.py
 │   │   │   ├── module.py                   // 预测模型
 │   │   │   └── params.py                   // 预测参数
 │   │   ├── ocr_det                         // 文字检测
 │   │   │   ├── config.json                 // serving 配置
-│   │   │   ├── __init__.py  
+│   │   │   ├── __init__.py
 │   │   │   ├── module.py                   // 预测模型
 │   │   │   └── params.py                   // 预测参数
 │   │   ├── ocr_rec                         // 文字识别
@@ -102,7 +102,7 @@ PaddleOCR
 │   │   ├── readme.md                       // 说明文档
 │   │   ├── rec_local_server.py             // 识别 快速版
 │   │   └── rec_web_server.py               // 识别 完整版
-│   └── slim  
+│   └── slim
 │       └── quantization                    // 量化相关
 │           ├── export_model.py             // 导出模型
 │           ├── quant.py                    // 量化
@@ -185,7 +185,7 @@ PaddleOCR
 │   │   └── sast_postprocess.py             // SAST 后处理
 │   └── utils                               // 工具
 │       ├── dict                            // 小语种字典
-│            ....  
+│            ....
 │       ├── ic15_dict.txt                   // 英文数字字典，区分大小写
 │       ├── ppocr_keys_v1.txt               // 中文字典，用于训练中文模型
 │       ├── logging.py                      // logger

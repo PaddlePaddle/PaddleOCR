@@ -64,11 +64,11 @@ test_tipc/output/
 其中results_python.log中包含了每条指令的运行状态，如果运行成功会输出：
 
 ```
-Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=20       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=False  !  
-Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=False  !  
-Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=True  !  
-Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls_distill MODEL.siamese=False  !  
-Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls_distill MODEL.siamese=True  !  
+Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=20       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=False  !
+Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=False  !
+Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls MODEL.siamese=True  !
+Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls_distill MODEL.siamese=False  !
+Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls_distill MODEL.siamese=True  !
 Run successfully with command - python3.7 train.py -c mv3_large_x0_5.yml -o  use_gpu=True     epoch=2       AMP.use_amp=True TRAIN.batch_size=1280  use_custom_relu=False model_type=cls_distill_multiopt MODEL.siamese=False  !
 
 ```

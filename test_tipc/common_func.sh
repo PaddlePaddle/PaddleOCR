@@ -65,4 +65,3 @@ function status_check(){
         echo -e "\033[33m Run failed with command - ${model_name} - ${run_command} - ${log_path} \033[0m" | tee -a ${run_log}
     fi
 }
-

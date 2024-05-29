@@ -44,7 +44,7 @@ Case 3: If the demo is not run in the ci_cpu Docker container, then you will nee
     pip install -r ./requirements.txt
     ```
 
-In case2 and case3:  
+In case2 and case3:
 
 You will need to update your PATH environment variable to include the path to cmake 3.19.5 and the FVP.
 For example if you've installed these in ```/opt/arm``` , then you would do the following:

@@ -241,9 +241,11 @@ class ResNet(nn.Layer):
                     bottleneck_block = self.add_sublayer(
                         "bb_%d_%d" % (block, i),
                         BottleneckBlock(
-                            in_channels=num_channels[block]
-                            if i == 0
-                            else num_filters[block] * 4,
+                            in_channels=(
+                                num_channels[block]
+                                if i == 0
+                                else num_filters[block] * 4
+                            ),
                             out_channels=num_filters[block],
                             stride=2 if i == 0 and block != 0 else 1,
                             shortcut=shortcut,
@@ -264,9 +266,9 @@ class ResNet(nn.Layer):
                     basic_block = self.add_sublayer(
                         "bb_%d_%d" % (block, i),
                         BasicBlock(
-                            in_channels=num_channels[block]
-                            if i == 0
-                            else num_filters[block],
+                            in_channels=(
+                                num_channels[block] if i == 0 else num_filters[block]
+                            ),
                             out_channels=num_filters[block],
                             stride=2 if i == 0 and block != 0 else 1,
                             shortcut=shortcut,

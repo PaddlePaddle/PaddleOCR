@@ -194,7 +194,9 @@ class InferenceEngine(object):
                 box_list = [box_list[i] for i, v in enumerate(idx) if v]
                 score_list = [score_list[i] for i, v in enumerate(idx) if v]
             else:
-                idx = box_list.reshape(box_list.shape[0], -1).sum(axis=1) > 0  # 去掉全为0的框
+                idx = (
+                    box_list.reshape(box_list.shape[0], -1).sum(axis=1) > 0
+                )  # 去掉全为0的框
                 box_list, score_list = box_list[idx], score_list[idx]
         else:
             box_list, score_list = [], []

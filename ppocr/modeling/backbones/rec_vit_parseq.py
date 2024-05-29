@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.5/ppcls/arch/backbone/model_zoo/vision_transformer.py
 """
 

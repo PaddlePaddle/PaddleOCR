@@ -11,7 +11,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 
 - [一、训练模型转inference模型](#训练模型转inference模型)
     - [检测模型转inference模型](#检测模型转inference模型)
-    - [识别模型转inference模型](#识别模型转inference模型)  
+    - [识别模型转inference模型](#识别模型转inference模型)
     - [方向分类模型转inference模型](#方向分类模型转inference模型)
 
 
@@ -19,7 +19,7 @@ inference 模型（`paddle.jit.save`保存的模型）
     - [1. 超轻量中文检测模型推理](#超轻量中文检测模型推理)
     - [2. DB文本检测模型推理](#DB文本检测模型推理)
     - [3. EAST文本检测模型推理](#EAST文本检测模型推理)
-    - [4. SAST文本检测模型推理](#SAST文本检测模型推理)  
+    - [4. SAST文本检测模型推理](#SAST文本检测模型推理)
 
 
 - [三、文本识别模型推理](#文本识别模型推理)
@@ -209,7 +209,7 @@ python3 tools/infer/predict_det.py --det_algorithm="EAST" --image_dir="./doc/img
 
 <a name="SAST文本检测模型推理"></a>
 ### 4. SAST文本检测模型推理
-#### (1). 四边形文本检测模型（ICDAR2015）  
+#### (1). 四边形文本检测模型（ICDAR2015）
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在ICDAR2015英文数据集训练的模型为例([模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar))，可以使用如下命令进行转换：
 ```
 python3 tools/export_model.py -c configs/det/det_r50_vd_sast_icdar15.yml -o Global.pretrained_model=./det_r50_vd_sast_icdar15_v2.0_train/best_accuracy  Global.save_inference_dir=./inference/det_sast_ic15
@@ -223,7 +223,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 
 ![](../imgs_results/det_res_img_10_sast.jpg)
 
-#### (2). 弯曲文本检测模型（Total-Text）  
+#### (2). 弯曲文本检测模型（Total-Text）
 首先将SAST文本检测训练过程中保存的模型，转换成inference model。以基于Resnet50_vd骨干网络，在Total-Text英文数据集训练的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar))，可以使用如下命令进行转换：
 
 ```

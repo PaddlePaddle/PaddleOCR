@@ -15,7 +15,7 @@ import numpy as np
 from shapely.geometry import Polygon
 
 """
-:param det_x: [1, N] Xs of detection's vertices 
+:param det_x: [1, N] Xs of detection's vertices
 :param det_y: [1, N] Ys of detection's vertices
 :param gt_x: [1, N] Xs of groundtruth's vertices
 :param gt_y: [1, N] Ys of groundtruth's vertices

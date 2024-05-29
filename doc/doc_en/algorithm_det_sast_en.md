@@ -50,7 +50,7 @@ Please refer to [text detection training tutorial](./detection_en.md). PaddleOCR
 
 <a name="4-1"></a>
 ### 4.1 Python Inference
-#### (1). Quadrangle text detection model (ICDAR2015)  
+#### (1). Quadrangle text detection model (ICDAR2015)
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the ICDAR2015 English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_icdar15_v2.0_train.tar)), you can use the following command to convert:
 
 ```
@@ -67,7 +67,7 @@ The visualized text detection results are saved to the `./inference_results` fol
 
 ![](../imgs_results/det_res_img_10_sast.jpg)
 
-#### (2). Curved text detection model (Total-Text)  
+#### (2). Curved text detection model (Total-Text)
 First, convert the model saved in the SAST text detection training process into an inference model. Taking the model based on the Resnet50_vd backbone network and trained on the Total-Text English dataset as an example ([model download link](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)), you can use the following command to convert:
 
 ```

@@ -163,10 +163,10 @@ python3 -m paddle.distributed.launch --log_dir=./debug/ --gpus '0,1,2,3' tools/t
 训练过程中保存的模型在output目录下，包含以下文件：
 
 ```
-best_accuracy.states  
+best_accuracy.states
 best_accuracy.pdparams  # 默认保存最优精度的模型参数
 best_accuracy.pdopt     # 默认保存最优精度的优化器相关参数
-latest.states  
+latest.states
 latest.pdparams  # 默认保存的最新模型参数
 latest.pdopt     # 默认保存的最新模型的优化器相关参数
 ```

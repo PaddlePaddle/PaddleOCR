@@ -9,7 +9,7 @@ Focal Loss 出自论文《Focal Loss for Dense Object Detection》, 该loss最�
 <img src="./focal_loss_formula.png" width = "600" />
 </div>
 
-其中,  y' 是经过激活函数的输出，取值在0-1之间。其在原始的交叉熵损失的基础上加了一个调制系数（1 – y’)^ &gamma;和平衡因子&alpha;。 当&alpha; = 1，y=1时，其损失函数与交叉熵损失的对比如下图所示:  
+其中,  y' 是经过激活函数的输出，取值在0-1之间。其在原始的交叉熵损失的基础上加了一个调制系数（1 – y’)^ &gamma;和平衡因子&alpha;。 当&alpha; = 1，y=1时，其损失函数与交叉熵损失的对比如下图所示:
 <div align="center">
 <img src="./focal_loss_image.png" width = "600" />
 </div>
@@ -39,7 +39,7 @@ A-CTC Loss是CTC Loss + ACE Loss的简称。 其中ACE Loss出自论文< Aggrega
 </div>
 
 虽然ACELoss确实如上图所说，可以处理2D预测，在内存占用及推理速度方面具备优势，但在实践过程中，我们发现单独使用ACE Loss,  识别效果并不如CTCLoss.  因此，我们尝试将CTCLoss和ACELoss进行结合，同时以CTCLoss为主，将ACELoss 定位为一个辅助监督loss。 这一尝试收到了效果，在我们内部的实验数据集上，相比单独使用CTCLoss，识别准确率可以提升1%左右。
-A_CTC Loss定义如下:  
+A_CTC Loss定义如下:
 <div align="center">
 <img src="./equation_a_ctc.png" width = "300" />
 </div>

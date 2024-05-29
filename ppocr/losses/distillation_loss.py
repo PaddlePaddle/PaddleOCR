@@ -113,9 +113,9 @@ class DistillationDMLLoss(DMLLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -218,9 +218,9 @@ class DistillationKLDivLoss(KLDivLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -329,9 +329,9 @@ class DistillationDKDLoss(DKDLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -472,9 +472,9 @@ class DistillationKLDivLoss(KLDivLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -583,9 +583,9 @@ class DistillationDKDLoss(DKDLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:

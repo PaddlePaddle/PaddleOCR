@@ -45,12 +45,16 @@ def build_pre_process_list(args):
     pad_op = {"PaddingTableImage": {"size": [args.table_max_len, args.table_max_len]}}
     normalize_op = {
         "NormalizeImage": {
-            "std": [0.229, 0.224, 0.225]
-            if args.table_algorithm not in ["TableMaster"]
-            else [0.5, 0.5, 0.5],
-            "mean": [0.485, 0.456, 0.406]
-            if args.table_algorithm not in ["TableMaster"]
-            else [0.5, 0.5, 0.5],
+            "std": (
+                [0.229, 0.224, 0.225]
+                if args.table_algorithm not in ["TableMaster"]
+                else [0.5, 0.5, 0.5]
+            ),
+            "mean": (
+                [0.485, 0.456, 0.406]
+                if args.table_algorithm not in ["TableMaster"]
+                else [0.5, 0.5, 0.5]
+            ),
             "scale": "1./255.",
             "order": "hwc",
         }

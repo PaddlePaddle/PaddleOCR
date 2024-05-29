@@ -48,10 +48,14 @@ class GenTableMask(object):
         in_text = False  # 是否遍历到了字符区内
         box_list = []
         for i in range(len(project_val_array)):
-            if in_text == False and project_val_array[i] > spilt_threshold:  # 进入字符区了
+            if (
+                in_text == False and project_val_array[i] > spilt_threshold
+            ):  # 进入字符区了
                 in_text = True
                 start_idx = i
-            elif project_val_array[i] <= spilt_threshold and in_text == True:  # 进入空白区了
+            elif (
+                project_val_array[i] <= spilt_threshold and in_text == True
+            ):  # 进入空白区了
                 end_idx = i
                 in_text = False
                 if end_idx - start_idx <= 2:
@@ -95,10 +99,14 @@ class GenTableMask(object):
         box_list = []
         spilt_threshold = 0
         for i in range(len(project_val_array)):
-            if in_text == False and project_val_array[i] > spilt_threshold:  # 进入字符区了
+            if (
+                in_text == False and project_val_array[i] > spilt_threshold
+            ):  # 进入字符区了
                 in_text = True
                 start_idx = i
-            elif project_val_array[i] <= spilt_threshold and in_text == True:  # 进入空白区了
+            elif (
+                project_val_array[i] <= spilt_threshold and in_text == True
+            ):  # 进入空白区了
                 end_idx = i
                 in_text = False
                 if end_idx - start_idx <= 2:

@@ -3,10 +3,10 @@
 
 本目录下提供`infer.cs`来调用C# API快速完成PPOCRv3模型在CPU/GPU上部署的示例。
 
-## 1. 说明  
+## 1. 说明
 PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、Intel GPU(独立显卡/集成显卡)硬件上快速部署OCR模型.
 
-## 2. 部署环境准备  
+## 2. 部署环境准备
 在部署前，需确认软硬件环境，同时下载预编译部署库，参考[FastDeploy安装文档](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#FastDeploy预编译库安装)安装FastDeploy预编译库. 在本目录执行如下命令即可在Windows完成编译测试，支持此模型需保证FastDeploy版本1.0.4以上(x.x.x>=1.0.4)
 
 ## 3. 部署模型准备
