@@ -159,7 +159,7 @@ class TextRecognizer(object):
                 model_precision=args.precision,
                 batch_size=args.rec_batch_num,
                 data_shape="dynamic",
-                save_path=None, # not used if logger is not None
+                save_path=None,  # not used if logger is not None
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
@@ -716,7 +716,7 @@ def main(args):
 
     # create text recognizer
     text_recognizer = TextRecognizer(args)
-    
+
     logger.info(
         "In PP-OCRv3, rec_image_shape parameter defaults to '3, 48, 320', "
         "if you are using recognition model with PP-OCRv2 or an older version, please set --rec_image_shape='3,32,320"
