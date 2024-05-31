@@ -7,13 +7,13 @@
 pip安装
 
 ```bash
-pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+pip install paddleocr
 ```
 
 本地构建并安装
 
 ```bash
-python3 setup.py bdist_wheel
+python3 -m build
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
 
