@@ -22,16 +22,16 @@
 
 > 如果您没有基础的Python运行环境，请参考[运行环境准备](./environment.md)。
 
-- 您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+- 您的机器安装的是CUDA 11，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  pip install paddlepaddle-gpu
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  pip install paddlepaddle
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
@@ -40,7 +40,7 @@
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
-pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+pip install paddleocr
 ```
 
 - 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
@@ -276,8 +276,8 @@ font = ImageFont.truetype("./doc/fonts/simfang.ttf", size=20)  # 根据需要调
 # 处理并绘制结果
 for res in results:
     for line in res:
-        box = [tuple(point) for point in line[0]]  # 将列表转换为元组列表
-        # 将四个角转换为两个角
+        box = [tuple(point) for point in line[0]]
+        # 找出边界框
         box = [(min(point[0] for point in box), min(point[1] for point in box)),
                (max(point[0] for point in box), max(point[1] for point in box))]
         txt = line[1][0]
