@@ -25,13 +25,13 @@
 - 您的机器安装的是CUDA 11，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle-gpu  -i https://pypi.tuna.tsinghua.edu.cn/simple
+  pip install paddlepaddle-gpu
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
+  pip install paddlepaddle
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
