@@ -25,7 +25,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的 OCR 工具库，助�
 </div>
 
 ## 🚀 社区
-PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监督。问题和 PR 将在尽力的基础上进行审查。欲了解 PaddlePaddle 社区的完整概况，请访问 [community](https://github.com/PaddlePaddle/community)。
+PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监督。Issues 和 PRs 将在尽力的基础上进行审查。欲了解 PaddlePaddle 社区的完整概况，请访问 [community](https://github.com/PaddlePaddle/community)。
 
 ## 📣 近期更新
 - **📚直播和OCR实战打卡营预告**：《PP-ChatOCRv2赋能期刊出版，打造千家杂志社数字阅读新体验》，详细解读飞桨特色的复杂文档/图像智能分析解决方案以及全新开发范式，方案适用于出版发行、智慧教育、智慧政务、智慧金融、智慧医疗等行业领域。直播时间：5月30日（周四）19：00，并于6月3日启动【政务采购合同信息抽取】实战打卡营。报名链接：https://www.wjx.top/vm/PG34Mfm.aspx?udsid=970833
