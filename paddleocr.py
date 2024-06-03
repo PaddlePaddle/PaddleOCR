@@ -889,16 +889,23 @@ def main():
             )
             if result is not None:
                 lines = []
-                for idx in range(len(result)):
-                    res = result[idx]
+                for res in result:
+                    if res is None:
+                        continue
                     for line in res:
                         logger.info(line)
-                        val = "["
-                        for box in line[0]:
-                            val += str(box[0]) + "," + str(box[1]) + ","
-
-                        val = val[:-1]
-                        val += "]," + line[1][0] + "," + str(line[1][1]) + "\n"
+                        if args.det:
+                            val = (
+                                "["
+                                + ",".join([f"{box[0]},{box[1]}" for box in line[0]])
+                                + "],"
+                                + line[1][0]
+                                + ","
+                                + str(line[1][1])
+                                + "\n"
+                            )
+                        else:
+                            val = line[0] + "," + str(line[1]) + "\n"
                         lines.append(val)
                 if args.savefile:
                     if os.path.exists(args.output) is False:
