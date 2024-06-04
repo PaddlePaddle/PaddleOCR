@@ -891,8 +891,6 @@ def main():
             if result is not None:
                 lines = []
                 for res in result:
-                    if res is None:
-                        continue
                     for line in res:
                         logger.info(line)
                         lines.append(pprint.pformat(line) + "\n")
