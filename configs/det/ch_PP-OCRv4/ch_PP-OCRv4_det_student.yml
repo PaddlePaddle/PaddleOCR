@@ -77,7 +77,7 @@ Train:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
-    - CopyPaste: null
+    # - CopyPaste:
     - IaaAugment:
         augmenter_args:
         - type: Fliplr
