@@ -29,6 +29,7 @@ import numpy as np
 from pathlib import Path
 import base64
 from io import BytesIO
+import pprint
 from PIL import Image
 from tools.infer import predict_system
 
@@ -889,17 +890,10 @@ def main():
             )
             if result is not None:
                 lines = []
-                for idx in range(len(result)):
-                    res = result[idx]
+                for res in result:
                     for line in res:
                         logger.info(line)
-                        val = "["
-                        for box in line[0]:
-                            val += str(box[0]) + "," + str(box[1]) + ","
-
-                        val = val[:-1]
-                        val += "]," + line[1][0] + "," + str(line[1][1]) + "\n"
-                        lines.append(val)
+                        lines.append(pprint.pformat(line) + "\n")
                 if args.savefile:
                     if os.path.exists(args.output) is False:
                         os.mkdir(args.output)
@@ -941,7 +935,6 @@ def main():
             all_res = []
             for index, (new_img_path, img) in enumerate(img_paths):
                 logger.info("processing {}/{} page:".format(index + 1, len(img_paths)))
-                new_img_name = os.path.basename(new_img_path).split(".")[0]
                 result = engine(img, img_idx=index)
                 save_structure_res(result, args.output, img_name, index)
 
