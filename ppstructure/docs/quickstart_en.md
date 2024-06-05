@@ -15,7 +15,7 @@
     - [2.2.3 layout analysis](#223-layout-analysis)
     - [2.2.4 table recognition](#224-table-recognition)
     - [2.2.5 Key Information Extraction](#225-Key-Information-Extraction)
-    - [2.2.6 layout recovery](#226-layout-recovery)  
+    - [2.2.6 layout recovery](#226-layout-recovery)
   - [2.3 Result description](#23-result-description)
     - [2.3.1 layout analysis + table recognition](#231-layout-analysis--table-recognition)
     - [2.3.2 Key Information Extraction](#232-Key-Information-Extraction)

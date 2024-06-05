@@ -41,7 +41,7 @@ class Linear(object):
         power=1.0,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(Linear, self).__init__()
         self.learning_rate = learning_rate
@@ -88,7 +88,7 @@ class Cosine(object):
         epochs,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(Cosine, self).__init__()
         self.learning_rate = learning_rate
@@ -133,7 +133,7 @@ class Step(object):
         gamma,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(Step, self).__init__()
         self.step_size = step_each_epoch * step_size
@@ -177,7 +177,7 @@ class Piecewise(object):
         values,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(Piecewise, self).__init__()
         self.boundaries = [step_each_epoch * e for e in decay_epochs]
@@ -219,7 +219,7 @@ class CyclicalCosine(object):
         cycle,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(CyclicalCosine, self).__init__()
         self.learning_rate = learning_rate
@@ -269,7 +269,7 @@ class OneCycle(object):
         three_phase=False,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(OneCycle, self).__init__()
         self.max_lr = max_lr
@@ -382,7 +382,7 @@ class MultiStepDecay(object):
         gamma,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(MultiStepDecay, self).__init__()
         self.milestones = [step_each_epoch * e for e in milestones]
@@ -427,7 +427,7 @@ class TwoStepCosine(object):
         epochs,
         warmup_epoch=0,
         last_epoch=-1,
-        **kwargs
+        **kwargs,
     ):
         super(TwoStepCosine, self).__init__()
         self.learning_rate = learning_rate

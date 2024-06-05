@@ -692,6 +692,104 @@ def get_minarea_rect_crop(img, points):
     return crop_img
 
 
+def slice_generator(image, horizontal_stride, vertical_stride, maximum_slices=500):
+    if not isinstance(image, np.ndarray):
+        image = np.array(image)
+
+    image_h, image_w = image.shape[:2]
+    vertical_num_slices = (image_h + vertical_stride - 1) // vertical_stride
+    horizontal_num_slices = (image_w + horizontal_stride - 1) // horizontal_stride
+
+    assert (
+        vertical_num_slices > 0
+    ), f"Invalid number ({vertical_num_slices}) of vertical slices"
+
+    assert (
+        horizontal_num_slices > 0
+    ), f"Invalid number ({horizontal_num_slices}) of horizontal slices"
+
+    if vertical_num_slices >= maximum_slices:
+        recommended_vertical_stride = max(1, image_h // maximum_slices) + 1
+        assert (
+            False
+        ), f"Too computationally expensive with {vertical_num_slices} slices, try a higher vertical stride (recommended minimum: {recommended_vertical_stride})"
+
+    if horizontal_num_slices >= maximum_slices:
+        recommended_horizontal_stride = max(1, image_w // maximum_slices) + 1
+        assert (
+            False
+        ), f"Too computationally expensive with {horizontal_num_slices} slices, try a higher horizontal stride (recommended minimum: {recommended_horizontal_stride})"
+
+    for v_slice_idx in range(vertical_num_slices):
+        v_start = max(0, (v_slice_idx * vertical_stride))
+        v_end = min(((v_slice_idx + 1) * vertical_stride), image_h)
+        vertical_slice = image[v_start:v_end, :]
+        for h_slice_idx in range(horizontal_num_slices):
+            h_start = max(0, (h_slice_idx * horizontal_stride))
+            h_end = min(((h_slice_idx + 1) * horizontal_stride), image_w)
+            horizontal_slice = vertical_slice[:, h_start:h_end]
+
+            yield (horizontal_slice, v_start, h_start)
+
+
+def calculate_box_extents(box):
+    min_x = box[0][0]
+    max_x = box[1][0]
+    min_y = box[0][1]
+    max_y = box[2][1]
+    return min_x, max_x, min_y, max_y
+
+
+def merge_boxes(box1, box2, x_threshold, y_threshold):
+    min_x1, max_x1, min_y1, max_y1 = calculate_box_extents(box1)
+    min_x2, max_x2, min_y2, max_y2 = calculate_box_extents(box2)
+
+    if (
+        abs(min_y1 - min_y2) <= y_threshold
+        and abs(max_y1 - max_y2) <= y_threshold
+        and abs(max_x1 - min_x2) <= x_threshold
+    ):
+        new_xmin = min(min_x1, min_x2)
+        new_xmax = max(max_x1, max_x2)
+        new_ymin = min(min_y1, min_y2)
+        new_ymax = max(max_y1, max_y2)
+        return [
+            [new_xmin, new_ymin],
+            [new_xmax, new_ymin],
+            [new_xmax, new_ymax],
+            [new_xmin, new_ymax],
+        ]
+    else:
+        return None
+
+
+def merge_fragmented(boxes, x_threshold=10, y_threshold=10):
+    merged_boxes = []
+    visited = set()
+
+    for i, box1 in enumerate(boxes):
+        if i in visited:
+            continue
+
+        merged_box = [point[:] for point in box1]
+
+        for j, box2 in enumerate(boxes[i + 1 :], start=i + 1):
+            if j not in visited:
+                merged_result = merge_boxes(
+                    merged_box, box2, x_threshold=x_threshold, y_threshold=y_threshold
+                )
+                if merged_result:
+                    merged_box = merged_result
+                    visited.add(j)
+
+        merged_boxes.append(merged_box)
+
+    if len(merged_boxes) == len(boxes):
+        return np.array(merged_boxes)
+    else:
+        return merge_fragmented(merged_boxes, x_threshold, y_threshold)
+
+
 def check_gpu(use_gpu):
     if use_gpu and (
         not paddle.is_compiled_with_cuda() or paddle.device.get_device() == "cpu"

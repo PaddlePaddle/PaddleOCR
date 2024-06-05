@@ -204,7 +204,7 @@ def save_model(
     config,
     is_best=False,
     prefix="ppocr",
-    **kwargs
+    **kwargs,
 ):
     """
     save model to the target path

@@ -46,7 +46,7 @@ class TSRN(nn.Layer):
         mask=False,
         hidden_units=32,
         infer_mode=False,
-        **kwargs
+        **kwargs,
     ):
         super(TSRN, self).__init__()
         in_planes = 3

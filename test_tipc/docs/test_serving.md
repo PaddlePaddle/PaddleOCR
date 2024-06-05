@@ -25,7 +25,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2/model_linux_gpu_normal
 
 # 用法:
 bash test_tipc/test_serving_infer_python.sh ./test_tipc/configs/ch_PP-OCRv2/model_linux_gpu_normal_normal_serving_python_linux_gpu_cpu.txt "serving_infer"
-```  
+```
 **cpp serving**
 先运行`prepare.sh`准备数据和模型，然后运行`test_serving_infer_cpp.sh`进行测试，最终在```test_tipc/output/{model_name}/serving_infer/cpp```目录下生成`cpp_*.log`后缀的日志文件。
 
@@ -34,7 +34,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2/model_linux_gpu_normal
 
 # 用法:
 bash test_tipc/test_serving_infer_cpp.sh ./test_tipc/configs/ch_PP-OCRv2/model_linux_gpu_normal_normal_serving_cpp_linux_gpu_cpu.txt "serving_infer"
-```  
+```
 
 #### 运行结果
 
@@ -60,4 +60,4 @@ Run failed with command - ch_PP-OCRv2_rec - nohup python3.7 web_service_rec.py -
 
 ## 3. 更多教程
 
-本文档为功能测试用，更详细的Serving预测使用教程请参考：[PPOCR 服务化部署](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/pdserving/README_CN.md)  
+本文档为功能测试用，更详细的Serving预测使用教程请参考：[PPOCR 服务化部署](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/deploy/pdserving/README_CN.md)

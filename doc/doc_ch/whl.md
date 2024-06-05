@@ -7,13 +7,13 @@
 pip安装
 
 ```bash
-pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+pip install paddleocr
 ```
 
 本地构建并安装
 
 ```bash
-python3 setup.py bdist_wheel
+python3 -m build
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
 
@@ -456,7 +456,7 @@ for idx in range(len(result)):
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
 | use_gpu                 | 是否使用GPU                                                                                                                                                                                                          | TRUE                    |
 | gpu_mem                 | 初始化占用的GPU内存大小                                                                                                                                                                                              | 8000M                   |
-| image_dir               | 通过命令行调用时执行预测的图片或文件夹路径                                                                                                                                                                           |  
+| image_dir               | 通过命令行调用时执行预测的图片或文件夹路径                                                                                                                                                                           |
 | page_num               | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页                     |        0                 |
 | det_algorithm           | 使用的检测算法类型                                                                                                                                                                                                   | DB                      |
 | det_model_dir          |  检测模型所在文件夹。传参方式有两种，1. None: 自动下载内置模型到 `~/.paddleocr/det`；2.自己转换好的inference模型路径，模型路径下必须包含model和params文件 |   None        |

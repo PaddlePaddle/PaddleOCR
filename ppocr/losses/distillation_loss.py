@@ -78,9 +78,9 @@ class DistillationDMLLoss(DMLLoss):
     def _check_maps_name(self, maps_name):
         if maps_name is None:
             return None
-        elif type(maps_name) == str:
+        elif isinstance(maps_name, str):
             return [maps_name]
-        elif type(maps_name) == list:
+        elif isinstance(maps_name, list):
             return [maps_name]
         else:
             return None
@@ -113,9 +113,9 @@ class DistillationDMLLoss(DMLLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -174,9 +174,9 @@ class DistillationKLDivLoss(KLDivLoss):
     def _check_maps_name(self, maps_name):
         if maps_name is None:
             return None
-        elif type(maps_name) == str:
+        elif isinstance(maps_name, str):
             return [maps_name]
-        elif type(maps_name) == list:
+        elif isinstance(maps_name, list):
             return [maps_name]
         else:
             return None
@@ -218,9 +218,9 @@ class DistillationKLDivLoss(KLDivLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -282,9 +282,9 @@ class DistillationDKDLoss(DKDLoss):
     def _check_maps_name(self, maps_name):
         if maps_name is None:
             return None
-        elif type(maps_name) == str:
+        elif isinstance(maps_name, str):
             return [maps_name]
-        elif type(maps_name) == list:
+        elif isinstance(maps_name, list):
             return [maps_name]
         else:
             return None
@@ -329,9 +329,9 @@ class DistillationDKDLoss(DKDLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -428,9 +428,9 @@ class DistillationKLDivLoss(KLDivLoss):
     def _check_maps_name(self, maps_name):
         if maps_name is None:
             return None
-        elif type(maps_name) == str:
+        elif isinstance(maps_name, str):
             return [maps_name]
-        elif type(maps_name) == list:
+        elif isinstance(maps_name, list):
             return [maps_name]
         else:
             return None
@@ -472,9 +472,9 @@ class DistillationKLDivLoss(KLDivLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -536,9 +536,9 @@ class DistillationDKDLoss(DKDLoss):
     def _check_maps_name(self, maps_name):
         if maps_name is None:
             return None
-        elif type(maps_name) == str:
+        elif isinstance(maps_name, str):
             return [maps_name]
-        elif type(maps_name) == list:
+        elif isinstance(maps_name, list):
             return [maps_name]
         else:
             return None
@@ -583,9 +583,9 @@ class DistillationDKDLoss(DKDLoss):
                     loss = super().forward(out1, out2)
                 if isinstance(loss, dict):
                     for key in loss:
-                        loss_dict[
-                            "{}_{}_{}_{}".format(key, pair[0], pair[1], idx)
-                        ] = loss[key]
+                        loss_dict["{}_{}_{}_{}".format(key, pair[0], pair[1], idx)] = (
+                            loss[key]
+                        )
                 else:
                     loss_dict["{}_{}".format(self.name, idx)] = loss
             else:
@@ -675,7 +675,7 @@ class DistillationNRTRLoss(CELoss):
         multi_head=False,
         smoothing=True,
         name="loss_nrtr",
-        **kwargs
+        **kwargs,
     ):
         super().__init__(smoothing=smoothing)
         self.model_name_list = model_name_list
@@ -713,7 +713,7 @@ class DistillationDBLoss(DBLoss):
         ohem_ratio=3,
         eps=1e-6,
         name="db",
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.model_name_list = model_name_list
@@ -935,7 +935,7 @@ class DistillationVQADistanceLoss(DistanceLoss):
         key=None,
         index=None,
         name="loss_distance",
-        **kargs
+        **kargs,
     ):
         super().__init__(mode=mode, **kargs)
         assert isinstance(model_name_pairs, list)
@@ -1184,7 +1184,9 @@ class DistillCTCLogits(KLCTCLogits):
             loss = super().forward(out1, out2, ctc_label)
             if isinstance(loss, dict):
                 for key in loss:
-                    loss_dict["{}_{}_{}".format(self.name, model_name, idx)] = loss[key]
+                    loss_dict[
+                        "{}_{}_{}".format(self.name, self.model_name_pairs, idx)
+                    ] = loss[key]
             else:
                 loss_dict["{}_{}".format(self.name, idx)] = loss
         return loss_dict

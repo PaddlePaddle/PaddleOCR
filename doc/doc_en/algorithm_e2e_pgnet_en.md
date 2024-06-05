@@ -81,7 +81,7 @@ Download and unzip [totaltext](https://paddleocr.bj.bcebos.com/dataset/total_tex
 /PaddleOCR/train_data/total_text/train/
   |- rgb/            # total_text training data of dataset
       |- img11.png
-      | ...  
+      | ...
   |- train.txt       # total_text training annotation of dataset
 ```
 

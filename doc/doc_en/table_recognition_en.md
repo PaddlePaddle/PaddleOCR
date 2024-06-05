@@ -114,7 +114,7 @@ After starting training normally, you will see the following log output:
 
 The following information is automatically printed in the log:
 
-|  Field   |   Meaning   |  
+|  Field   |   Meaning   |
 | :----: | :------: |
 |  epoch | current iteration round |
 |  global_step  | current iteration count |
@@ -299,13 +299,13 @@ According to the `save_model_dir` and `save_epoch_step` fields set in the config
 
 ```
 output/SLANet/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 Among them, best_accuracy.* is the best model on the evaluation set; latest.* is the model of the last epoch.

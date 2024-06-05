@@ -10,7 +10,7 @@
 ## 2.运行部署示例
 
 ### 2.1 模型准备
-将Paddle模型转换为SOPHGO bmodel模型, 转换步骤参考[文档](../README.md)  
+将Paddle模型转换为SOPHGO bmodel模型, 转换步骤参考[文档](../README.md)
 
 ### 2.2 开始部署
 ```bash
@@ -34,7 +34,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 python3 infer.py --det_model ocr_bmodel/ch_PP-OCRv3_det_1684x_f32.bmodel \
                  --cls_model ocr_bmodel/ch_ppocr_mobile_v2.0_cls_1684x_f32.bmodel \
                  --rec_model ocr_bmodel/ch_PP-OCRv3_rec_1684x_f32.bmodel \
-                 --rec_label_file ../ppocr_keys_v1.txt \  
+                 --rec_label_file ../ppocr_keys_v1.txt \
                  --image ../12.jpg
 
 # 运行完成后返回结果如下所示

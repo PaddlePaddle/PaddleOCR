@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This part code is refered from: 
+This part code is refered from:
 https://github.com/songdejia/EAST/blob/master/data_utils.py
 """
 import math
@@ -33,7 +33,7 @@ class SASTProcessTrain(object):
         min_crop_side_ratio=0.3,
         min_text_size=10,
         max_text_size=512,
-        **kwargs
+        **kwargs,
     ):
         self.input_size = image_shape[1]
         self.min_crop_size = min_crop_size

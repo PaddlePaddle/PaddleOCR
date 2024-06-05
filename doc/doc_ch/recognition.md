@@ -229,7 +229,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 log 中自动打印如下信息：
 
-|  字段   |   含义   |  
+|  字段   |   含义   |
 | :----: | :------: |
 |  epoch | 当前迭代轮次 |
 |  iter  | 当前迭代次数 |
@@ -404,7 +404,7 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  |
 | rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 中文繁体  |
 | rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 英语（区分大小写）   |
-| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |  
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 法语 |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 德语   |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 日语  |
 | rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 韩语  |
@@ -490,16 +490,16 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-
 
 ```
 output/rec/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── iter_epoch_3.pdopt  
-├── iter_epoch_3.pdparams  
-├── iter_epoch_3.states  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── iter_epoch_3.pdopt
+├── iter_epoch_3.pdparams
+├── iter_epoch_3.states
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 其中 best_accuracy.* 是评估集上的最优模型；iter_epoch_x.* 是以 `save_epoch_step` 为间隔保存下来的模型；latest.* 是最后一个epoch的模型。

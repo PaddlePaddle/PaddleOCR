@@ -141,8 +141,7 @@ class GNNLayer(nn.Layer):
             )
             residuals.append(
                 (
-                    residual
-                    * cat_nodes[start : start + num**2].reshape([num, num, -1])
+                    residual * cat_nodes[start : start + num**2].reshape([num, num, -1])
                 ).sum(1)
             )
             start += num**2

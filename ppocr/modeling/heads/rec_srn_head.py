@@ -249,7 +249,7 @@ class SRNHead(nn.Layer):
         num_encoder_TUs,
         num_decoder_TUs,
         hidden_dims,
-        **kwargs
+        **kwargs,
     ):
         super(SRNHead, self).__init__()
         self.char_num = out_channels

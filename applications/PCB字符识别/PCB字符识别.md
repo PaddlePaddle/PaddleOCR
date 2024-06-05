@@ -546,7 +546,7 @@ python3 tools/infer/predict_system.py  \
     --use_gpu=True
 ```
 
-得到保存结果，文本检测识别可视化图保存在`det_rec_infer/`目录下，预测结果保存在`det_rec_infer/system_results.txt`中，格式如下：`0018.jpg	[{"transcription": "E295", "points": [[88, 33], [137, 33], [137, 40], [88, 40]]}]`
+得到保存结果，文本检测识别可视化图保存在`det_rec_infer/`目录下，预测结果保存在`det_rec_infer/system_results.txt`中，格式如下：`0018.jpg   [{"transcription": "E295", "points": [[88, 33], [137, 33], [137, 40], [88, 40]]}]`
 
 2）然后将步骤一保存的数据转换为端对端评测需要的数据格式： 修改 `tools/end2end/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
 ```

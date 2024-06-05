@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/roatienza/deep-text-recognition-benchmark/blob/master/modules/vitstr.py
 """
 
@@ -51,7 +51,7 @@ class ViTSTR(nn.Layer):
         act_layer="nn.GELU",
         epsilon=1e-6,
         out_channels=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.seqlen = seqlen

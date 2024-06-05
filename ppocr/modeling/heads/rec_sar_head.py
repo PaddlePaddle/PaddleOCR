@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/encoders/sar_encoder.py
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/decoders/sar_decoder.py
 """
@@ -47,7 +47,7 @@ class SAREncoder(nn.Layer):
         d_model=512,
         d_enc=512,
         mask=True,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         assert isinstance(enc_bi_rnn, bool)
@@ -167,7 +167,7 @@ class ParallelSARDecoder(BaseDecoder):
         max_text_length=30,
         mask=True,
         pred_concat=True,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
 
@@ -361,7 +361,7 @@ class SARHead(nn.Layer):
         d_k=512,
         pred_dropout=0.1,
         pred_concat=True,
-        **kwargs
+        **kwargs,
     ):
         super(SARHead, self).__init__()
 

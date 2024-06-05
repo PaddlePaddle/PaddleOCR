@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_rcg/models/sequence_heads/counting_head.py
 """
 import paddle
@@ -58,7 +58,7 @@ class RFLHead(nn.Layer):
         out_channels=38,
         use_cnt=True,
         use_seq=True,
-        **kwargs
+        **kwargs,
     ):
         super(RFLHead, self).__init__()
         assert use_cnt or use_seq
@@ -69,14 +69,14 @@ class RFLHead(nn.Layer):
                 embed_size=in_channels,
                 encode_length=batch_max_legnth + 1,
                 out_channels=out_channels,
-                **kwargs
+                **kwargs,
             )
         if self.use_seq:
             self.seq_head = AttentionLSTM(
                 in_channels=in_channels,
                 out_channels=out_channels,
                 hidden_size=hidden_size,
-                **kwargs
+                **kwargs,
             )
         self.batch_max_legnth = batch_max_legnth
         self.num_class = out_channels

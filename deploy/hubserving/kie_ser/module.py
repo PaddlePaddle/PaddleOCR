@@ -142,7 +142,7 @@ class KIESer(hub.Module):
 
 
 if __name__ == "__main__":
-    ocr = OCRSystem()
+    ocr = KIESer()
     ocr._initialize()
     image_path = [
         "./doc/imgs/11.jpg",

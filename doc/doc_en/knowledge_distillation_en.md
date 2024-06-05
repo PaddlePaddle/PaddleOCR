@@ -267,14 +267,14 @@ Loss:
       model_name_list: ["Student", "Teacher"]  # For the prediction results of the distillation model, extract the output of these two sub-networks and calculate the CTC loss with gt
       key: head_out                            # In the sub-network output dict, take the corresponding tensor
   - DistillationDMLLoss:                       # DML loss function, inherited from the standard DMLLoss
-      weight: 1.0  
+      weight: 1.0
       act: "softmax"                           # Activation function, use it to process the input, can be softmax, sigmoid or None, the default is None
       model_name_pairs:                        # The subnet name pair used to calculate DML loss. If you want to calculate the DML loss of other subnets, you can continue to add it below the list
       - ["Student", "Teacher"]
       key: head_out
       multi_head: True                         # whether to use mult_head
       dis_head: ctc                            # assign the head name to calculate loss
-      name: dml_ctc                            # prefix name of the loss  
+      name: dml_ctc                            # prefix name of the loss
   - DistillationDMLLoss:                       # DML loss function, inherited from the standard DMLLoss
       weight: 0.5
       act: "softmax"                           # Activation function, use it to process the input, can be softmax, sigmoid or None, the default is None
@@ -285,11 +285,11 @@ Loss:
       dis_head: sar                            # assign the head name to calculate loss
       name: dml_sar                            # prefix name of the loss
   - DistillationDistanceLoss:                  # Distilled distance loss function
-      weight: 1.0  
+      weight: 1.0
       mode: "l2"                               # Support l1, l2 or smooth_l1
       model_name_pairs:                        # Calculate the distance loss of the subnet name pair
       - ["Student", "Teacher"]
-      key: backbone_out  
+      key: backbone_out
   - DistillationSARLoss:                       # SAR loss function based on distillation, inherited from standard SAR loss
       weight: 1.0                              # The weight of the loss function. In loss_config_list, each loss function must include this field
       model_name_list: ["Student", "Teacher"]  # For the prediction results of the distillation model, extract the output of these two sub-networks and calculate the SAR loss with gt
@@ -445,7 +445,7 @@ The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.y
 
 ```
 Architecture:
-  name: DistillationModel  
+  name: DistillationModel
   algorithm: Distillation
   model_type: det
   Models:
@@ -468,7 +468,7 @@ Architecture:
         kernel_list: [7,2,2]
         k: 50
     Student:                         # Student model configuration for CML distillation
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -486,7 +486,7 @@ Architecture:
         name: DBHead
         k: 50
     Student2:                          # Student2 model configuration for CML distillation
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det

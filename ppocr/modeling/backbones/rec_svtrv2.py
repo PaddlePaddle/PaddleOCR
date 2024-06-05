@@ -323,7 +323,7 @@ class SVTRStage(nn.Layer):
         act=nn.GELU,
         eps=1e-6,
         downsample=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.dim = dim
@@ -506,7 +506,7 @@ class SVTRv2(nn.Layer):
         eps=1e-6,
         use_pool=False,
         feat2d=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         num_stages = len(depths)

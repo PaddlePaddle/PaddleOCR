@@ -40,7 +40,7 @@ class PSEPostProcess(object):
         min_area=16,
         box_type="quad",
         scale=4,
-        **kwargs
+        **kwargs,
     ):
         assert box_type in ["quad", "poly"], "Only quad and poly is supported"
         self.thresh = thresh

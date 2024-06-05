@@ -3,10 +3,10 @@
 
 本目录下提供`infer.c`来调用C API快速完成PP-OCRv3模型在CPU/GPU上部署的示例。
 
-## 1. 说明  
+## 1. 说明
 PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、Intel GPU(独立显卡/集成显卡)硬件上快速部署OCR模型.
 
-## 2. 部署环境准备  
+## 2. 部署环境准备
 在部署前，需确认软硬件环境，同时下载预编译部署库，参考[FastDeploy安装文档](https://github.com/PaddlePaddle/FastDeploy/blob/develop/docs/cn/build_and_install#FastDeploy预编译库安装)安装FastDeploy预编译库.
 以Linux上推理为例，在本目录执行如下命令即可完成编译测试，支持此模型需保证FastDeploy版本1.0.4以上(x.x.x>=1.0.4)
 
@@ -55,7 +55,7 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 # 在GPU上使用Paddle Inference推理
 ./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
 ```
-以上命令只适用于Linux或MacOS, Windows下SDK的使用方式请参考:  
+以上命令只适用于Linux或MacOS, Windows下SDK的使用方式请参考:
 - [如何在Windows中使用FastDeploy C++ SDK](../../../../../docs/cn/faq/use_sdk_on_windows.md)
 
 

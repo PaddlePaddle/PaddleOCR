@@ -185,9 +185,11 @@ class ResNet(nn.Layer):
                     bottleneck_block = self.add_sublayer(
                         conv_name,
                         BottleneckBlock(
-                            num_channels=num_channels[block]
-                            if i == 0
-                            else num_filters[block] * 4,
+                            num_channels=(
+                                num_channels[block]
+                                if i == 0
+                                else num_filters[block] * 4
+                            ),
                             num_filters=num_filters[block],
                             stride=2 if i == 0 and block != 0 else 1,
                             shortcut=shortcut,
@@ -208,9 +210,9 @@ class ResNet(nn.Layer):
                     basic_block = self.add_sublayer(
                         conv_name,
                         BasicBlock(
-                            num_channels=num_channels[block]
-                            if i == 0
-                            else num_filters[block],
+                            num_channels=(
+                                num_channels[block] if i == 0 else num_filters[block]
+                            ),
                             num_filters=num_filters[block],
                             stride=2 if i == 0 and block != 0 else 1,
                             shortcut=shortcut,

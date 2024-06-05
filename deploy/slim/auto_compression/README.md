@@ -273,7 +273,7 @@ Eval:
     name: SimpleDataSet
     data_dir: datasets/v4_4_test_dataset
     label_file_list:
-      - datasets/v4_4_test_dataset/label.txt  
+      - datasets/v4_4_test_dataset/label.txt
 ```
 
 ### 5.2 软件环境一致，硬件不同导致精度差异很大？
@@ -291,7 +291,7 @@ if args.precision == 'int8' and "ppocrv4_det_server_qat_dist.yaml" in args.confi
         use_static=True,
         use_calib_mode=False, )
     pred_cfg.exp_disable_tensorrt_ops(["elementwise_add"])
-else:  
+else:
     pred_cfg.enable_tensorrt_engine(
     workspace_size=1 << 30,
     max_batch_size=1,

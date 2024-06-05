@@ -13,7 +13,7 @@ with open(annotation_file, "r") as f:
     lines = f.readlines()
 
 for i, line in enumerate(lines):
-    image_name = line.split("	")[0]
+    image_name = line.split("   ")[0]
 
     image_path = os.path.join(dataset_path, image_name)
 

@@ -249,6 +249,9 @@ class HtmlToDocx(HTMLParser):
         table = doc.add_table(len(rows), cols_len)
         table.style = doc.styles["Table Grid"]
 
+        num_rows = len(table.rows)
+        num_cols = len(table.columns)
+
         cell_row = 0
         for index, row in enumerate(rows):
             cols = get_table_columns(row)
@@ -260,6 +263,9 @@ class HtmlToDocx(HTMLParser):
                 cell_html = get_cell_html(col)
                 if col.name == "th":
                     cell_html = "<b>%s</b>" % cell_html
+
+                if cell_row >= num_rows or cell_col >= num_cols:
+                    continue
 
                 docx_cell = table.cell(cell_row, cell_col)
 

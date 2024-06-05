@@ -3,7 +3,7 @@
 - [1. Data Preparation](#DATA_PREPARATION)
   * [1.1 Custom Dataset](#Custom_Dataset)
   * [1.2 Dataset Download](#Dataset_download)
-  * [1.3 Dictionary](#Dictionary)  
+  * [1.3 Dictionary](#Dictionary)
   * [1.4 Add Space Category](#Add_space_category)
   * [1.5 Data Augmentation](#Data_Augmentation)
 - [2. Training](#TRAINING)
@@ -323,7 +323,7 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  |
 | rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  |
 | rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English(Case sensitive)   |
-| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese |
 | rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Korean  |
@@ -417,16 +417,16 @@ According to the `save_model_dir` and `save_epoch_step` fields set in the config
 
 ```
 output/rec/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── iter_epoch_3.pdopt  
-├── iter_epoch_3.pdparams  
-├── iter_epoch_3.states  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── iter_epoch_3.pdopt
+├── iter_epoch_3.pdparams
+├── iter_epoch_3.states
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 

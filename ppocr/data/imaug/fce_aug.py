@@ -359,7 +359,7 @@ class RandomRotatePolyInstances:
         max_angle=10,
         pad_with_fixed_color=False,
         pad_value=(0, 0, 0),
-        **kwargs
+        **kwargs,
     ):
         """Randomly rotate images and polygon masks.
 
@@ -487,7 +487,7 @@ class SquareResizePad:
         pad_ratio=0.6,
         pad_with_fixed_color=False,
         pad_value=(0, 0, 0),
-        **kwargs
+        **kwargs,
     ):
         """Resize or pad images to be square shape.
 

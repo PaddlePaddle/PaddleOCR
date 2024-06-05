@@ -76,7 +76,7 @@ class FCEPostProcess(object):
         alpha=1.0,
         beta=1.0,
         box_type="poly",
-        **kwargs
+        **kwargs,
     ):
         self.scales = scales
         self.fourier_degree = fourier_degree

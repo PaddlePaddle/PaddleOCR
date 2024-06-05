@@ -395,7 +395,7 @@ class PPLCNetV3(nn.Layer):
         lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
         lab_lr=0.1,
         det=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.scale = scale

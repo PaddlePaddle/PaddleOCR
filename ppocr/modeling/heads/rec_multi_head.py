@@ -83,7 +83,7 @@ class MultiHead(nn.Layer):
                 self.sar_head = eval(name)(
                     in_channels=in_channels,
                     out_channels=out_channels_list["SARLabelDecode"],
-                    **sar_args
+                    **sar_args,
                 )
             elif name == "NRTRHead":
                 gtc_args = self.head_list[idx][name]
@@ -124,7 +124,7 @@ class MultiHead(nn.Layer):
                 self.ctc_head = eval(name)(
                     in_channels=self.ctc_encoder.out_channels,
                     out_channels=out_channels_list["CTCLabelDecode"],
-                    **head_args
+                    **head_args,
                 )
             else:
                 raise NotImplementedError(

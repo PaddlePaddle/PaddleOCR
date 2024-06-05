@@ -150,7 +150,7 @@ class TBSRN(nn.Layer):
         upsample_block_num = int(math.log(scale_factor, 2))
         self.block1 = nn.Sequential(
             nn.Conv2D(in_planes, 2 * hidden_units, kernel_size=9, padding=4),
-            nn.PReLU()
+            nn.PReLU(),
             # nn.ReLU()
         )
         self.srb_nums = srb_nums

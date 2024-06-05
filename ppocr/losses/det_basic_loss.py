@@ -34,7 +34,7 @@ class BalanceLoss(nn.Layer):
         negative_ratio=3,
         return_origin=False,
         eps=1e-6,
-        **kwargs
+        **kwargs,
     ):
         """
         The BalanceLoss for Differentiable Binarization text detection

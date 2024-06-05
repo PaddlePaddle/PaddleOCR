@@ -1,4 +1,4 @@
-[English](../../README.md) | [简体中文](../../README_ch.md) | हिन्दी | [日本語](./README_日本語.md) | [한국인](./README_한국어.md) | [Pу́сский язы́к](./README_Ру́сский_язы́к.md)
+[English](../../README_en.md) | [简体中文](../../README.md) | हिन्दी | [日本語](./README_日本語.md) | [한국인](./README_한국어.md) | [Pу́сский язы́к](./README_Ру́сский_язы́к.md)
 
 <p align="center">
  <img src="../PaddleOCR_log.png" align="middle" width = "600"/>
@@ -120,7 +120,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 - [PP-Structure 🔥](../../ppstructure/README.md)
     - [क्विक स्टार्ट](../../ppstructure/docs/quickstart_en.md)
     - [मॉडल जू](../../ppstructure/docs/models_list_en.md)
-    - [मॉडल ट्रेनिंग](../doc_en/training_en.md)  
+    - [मॉडल ट्रेनिंग](../doc_en/training_en.md)
         - [लेआउट एनालाइस](../../ppstructure/layout/README.md)
         - [टेबल रिकोगनाइजेशन](../../ppstructure/table/README.md)
         - [की इंफॉर्मेशन एक्स्ट्रेक्शन](../../ppstructure/kie/README.md)
@@ -133,7 +133,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
     - [टेक्स्ट रिकोगनाइजेशन](../doc_en/algorithm_overview_en.md)
     - [एंड-टू-एंड ओसीआर](../doc_en/algorithm_overview_en.md)
     - [टेबल रिकोगनाइजेशन](../doc_en/algorithm_overview_en.md)
-    - [की इंफॉर्मेशन एक्स्ट्रेक्शन](../doc_en/algorithm_overview_en.md)  
+    - [की इंफॉर्मेशन एक्स्ट्रेक्शन](../doc_en/algorithm_overview_en.md)
     - [पैडलओसीआर में नए एल्गोरिदम जोड़ें](../doc_en/add_new_algorithm_en.md)
 - डेटा एनोटेशन और सिंथेसिस
     - [सेमी-ऑटोमैटिक एनोटेशन टूल: PPओसीआरलेबल](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
@@ -213,7 +213,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 3. RE (रिलेशन एक्सट्रैक्शन)
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>  
+</div>
 <div align="center">
     <img src="https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg" width="600">
 </div>

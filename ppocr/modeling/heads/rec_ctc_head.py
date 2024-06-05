@@ -40,7 +40,7 @@ class CTCHead(nn.Layer):
         fc_decay=0.0004,
         mid_channels=None,
         return_feats=False,
-        **kwargs
+        **kwargs,
     ):
         super(CTCHead, self).__init__()
         if mid_channels is None:

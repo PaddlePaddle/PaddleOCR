@@ -118,7 +118,7 @@ class MobileNetV1Enhance(nn.Layer):
         last_conv_stride=1,
         last_pool_type="max",
         last_pool_kernel_size=[3, 2],
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.scale = scale

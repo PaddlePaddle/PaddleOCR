@@ -465,7 +465,7 @@ class SRResize(object):
         min_ratio=1,
         mask=False,
         infer_mode=False,
-        **kwargs
+        **kwargs,
     ):
         self.imgH = imgH
         self.imgW = imgW

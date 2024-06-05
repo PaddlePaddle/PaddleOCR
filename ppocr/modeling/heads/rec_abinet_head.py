@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/FangShancheng/ABINet/tree/main/modules
 """
 
@@ -117,7 +117,7 @@ class PositionAttention(nn.Layer):
         h=8,
         w=32,
         mode="nearest",
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.max_length = max_length

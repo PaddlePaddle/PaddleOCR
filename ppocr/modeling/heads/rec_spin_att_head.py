@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/davarocr/davar_rcg/models/sequence_heads/att_head.py
 """
 

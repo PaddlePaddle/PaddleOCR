@@ -50,7 +50,7 @@ class DRRGHead(nn.Layer):
         center_region_thr=0.2,
         center_region_area_thr=50,
         local_graph_thr=0.7,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
 

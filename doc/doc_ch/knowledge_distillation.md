@@ -405,7 +405,7 @@ Architecture:
         kernel_list: [7,2,2]
         k: 50
     Teacher:                      # 另外一个子网络，这里给的是DML蒸馏示例，
-      freeze_params: true  
+      freeze_params: true
       return_all_feats: false
       model_type: det
       algorithm: DB
@@ -430,7 +430,7 @@ Architecture:
 
 ```
 Architecture:
-  name: DistillationModel  
+  name: DistillationModel
   algorithm: Distillation
   model_type: det
   Models:
@@ -453,7 +453,7 @@ Architecture:
         kernel_list: [7,2,2]
         k: 50
     Student:                         # CML蒸馏的Student模型配置
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -471,7 +471,7 @@ Architecture:
         name: DBHead
         k: 50
     Student2:                          # CML蒸馏的Student2模型配置
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det

@@ -38,7 +38,7 @@ class DRRGTargets(object):
         min_rand_half_height=8.0,
         max_rand_half_height=24.0,
         jitter_level=0.2,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.orientation_thr = orientation_thr
@@ -439,9 +439,9 @@ class DRRGTargets(object):
             )
 
         inner_center_sample_mask = np.zeros_like(center_sample_mask)
-        inner_center_sample_mask[
-            margin : h - margin, margin : w - margin
-        ] = center_sample_mask[margin : h - margin, margin : w - margin]
+        inner_center_sample_mask[margin : h - margin, margin : w - margin] = (
+            center_sample_mask[margin : h - margin, margin : w - margin]
+        )
         kernel_size = int(np.clip(max_rand_half_height, 7, 21))
         inner_center_sample_mask = cv2.erode(
             inner_center_sample_mask, np.ones((kernel_size, kernel_size), np.uint8)

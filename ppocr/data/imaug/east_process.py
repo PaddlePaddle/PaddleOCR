@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refered from: 
+This code is refered from:
 https://github.com/songdejia/EAST/blob/master/data_utils.py
 """
 import math
@@ -32,7 +32,7 @@ class EASTProcessTrain(object):
         background_ratio=0.125,
         min_crop_side_ratio=0.1,
         min_text_size=10,
-        **kwargs
+        **kwargs,
     ):
         self.input_size = image_shape[1]
         self.random_scale = np.array([0.5, 1, 2.0, 3.0])

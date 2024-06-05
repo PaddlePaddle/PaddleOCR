@@ -1,5 +1,8 @@
 import os
 from .base_logger import BaseLogger
+from ppocr.utils.logging import get_logger
+
+logger = get_logger()
 
 
 class WandbLogger(BaseLogger):
@@ -11,7 +14,7 @@ class WandbLogger(BaseLogger):
         entity=None,
         save_dir=None,
         config=None,
-        **kwargs
+        **kwargs,
     ):
         try:
             import wandb

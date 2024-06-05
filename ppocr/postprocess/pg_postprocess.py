@@ -37,7 +37,7 @@ class PGPostProcess(object):
         score_thresh,
         mode,
         point_gather_mode=None,
-        **kwargs
+        **kwargs,
     ):
         self.character_dict_path = character_dict_path
         self.valid_set = valid_set

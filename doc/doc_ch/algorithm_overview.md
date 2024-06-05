@@ -57,7 +57,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 在CTW1500文本检测公开数据集上，算法效果如下：
 
 |模型|骨干网络|precision|recall|Hmean|下载链接|
-| --- | --- | --- | --- | --- | --- |  
+| --- | --- | --- | --- | --- | --- |
 |FCE|ResNet50_dcn|88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
 |DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
 

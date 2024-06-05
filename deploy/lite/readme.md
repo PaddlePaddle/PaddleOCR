@@ -204,7 +204,7 @@ The structure of the OCR demo is as follows after the above command is executed:
 
 ```
 demo/cxx/ocr/
-|-- debug/  
+|-- debug/
 |   |--ch_PP-OCRv3_det_slim_opt.nb           Detection model
 |   |--ch_PP-OCRv3_rec_slim_opt.nb           Recognition model
 |   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           Text direction classification model
@@ -219,7 +219,7 @@ demo/cxx/ocr/
 |-- crnn_process.h
 |-- db_post_process.cc          Pre-processing and post-processing files for the DB model
 |-- db_post_process.h
-|-- Makefile  
+|-- Makefile
 |-- ocr_db_crnn.cc              C++ main code
 ```
 
