@@ -37,7 +37,7 @@ python3.7 -m pip install onnxruntime==1.9.0
 - Paddle 模型下载
 
 有两种方式获取Paddle静态图模型：在 [model_list](../../doc/doc_ch/models_list.md) 中下载PaddleOCR提供的预测模型；
-参考[模型导出说明](../../doc/doc_ch/inference.md#训练模型转inference模型)把训练好的权重转为 inference_model。
+参考[模型导出说明](../../doc/doc_ch/inference_ch.md#训练模型转inference模型)把训练好的权重转为 inference_model。
 
 以 PP-OCRv3 中文检测、识别、分类模型为例：
 
@@ -87,6 +87,32 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
 * 注意：对于OCR模型，转化过程中必须采用动态shape的形式，即加入选项--input_shape_dict="{'x': [-1, 3, -1, -1]}"，否则预测结果可能与直接使用Paddle预测有细微不同。
   另外，以下几个模型暂不支持转换为 ONNX 模型：
   NRTR、SAR、RARE、SRN
+
+* 注意：[当前版本(v2.7.5)](https://github.com/PaddlePaddle/PaddleOCR/releases/tag/v2.7.5)现已不支持动态shape,即动态选项--input_shape_dict="{'x': [-1, 3, -1, -1]}",
+  如果有修改shape、或动态shape调整的需求可参考使用[PaddleUtils](https://github.com/jiangjiajun/PaddleUtils/tree/main)方式使用如下命令进行Paddle模型输入Shape调整。
+  更多细节可参考 [PaddleUtils](https://github.com/jiangjiajun/PaddleUtils/blob/main/README.md)
+
+  另外，如果使用**PaddleUtils**进行Paddle模型输入Shape调整需要**paddlepaddle<=2.5.0**支持
+
+  以 PP-OCRv3 英文识别模型为例：
+
+  ```
+  python ./PaddleUtils/paddle/paddle_infer_shape.py --model_dir ./inference/en_PP-OCRv3_rec_infer/ \
+  --model_filename inference.pdmodel \
+  --params_filename inference.pdiparams \
+  --save_dir ./inference/en_PP-OCRv4_rec_infer \
+  --input_shape_dict="{'x': [-1, 3, -1, -1]}"
+  ```
+
+
+  ```
+  paddle2onnx --model_dir ./inference/en_PP-OCRv3_rec_infer \
+  --model_filename inference.pdmodel \
+  --params_filename inference.pdiparams \
+  --save_file ./inference/en_PP-OCRv3_rec_infer/model.onnx \
+  --opset_version 10 \
+  --enable_onnx_checker True
+  ```
 
 ## 3. 推理预测
 
