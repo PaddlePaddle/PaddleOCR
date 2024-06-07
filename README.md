@@ -124,7 +124,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
         - [基于 C++预测引擎推理](./deploy/cpp_infer/readme_ch.md)
         - [服务化部署](./deploy/pdserving/README_CN.md)
         - [端侧部署](./deploy/lite/readme.md)
-        - [Paddle2ONNX 模型转化与预测](./deploy/paddle2onnx/readme.md)
+        - [Paddle2ONNX 模型转化与预测](./deploy/paddle2onnx/readme_ch.md)
         - [云上飞桨部署工具](./deploy/paddlecloud/README.md)
         - [Benchmark](./doc/doc_ch/benchmark.md)
 - [PP-Structure 文档分析🔥](./ppstructure/README_ch.md)
