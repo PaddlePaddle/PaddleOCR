@@ -12,7 +12,7 @@
 
 ```
 git clone  -b release/2.4 https://github.com/PaddlePaddle/PaddleOCR.git
-cd PaddleOCR && python3.7 setup.py install
+cd PaddleOCR && python3 setup.py install
 ```
 
 ###  Paddle2ONNX
@@ -22,13 +22,13 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 
 - 安装 Paddle2ONNX
 ```
-python3.7 -m pip install paddle2onnx
+python3 -m pip install paddle2onnx
 ```
 
 - 安装 ONNXRuntime
 ```
 # 建议安装 1.9.0 版本，可根据环境更换版本号
-python3.7 -m pip install onnxruntime==1.9.0
+python3 -m pip install onnxruntime==1.9.0
 ```
 
 ## 2. 模型转换
@@ -113,7 +113,7 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
 以中文OCR模型为例，使用 ONNXRuntime 预测可执行如下命令：
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
+python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
@@ -123,7 +123,7 @@ python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 以中文OCR模型为例，使用 Paddle Inference 预测可执行如下命令：
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False \
+python3 tools/infer/predict_system.py --use_gpu=False \
 --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
 --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
 --det_model_dir=./inference/ch_PP-OCRv3_det_infer \
