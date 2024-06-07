@@ -88,9 +88,10 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
   另外，以下几个模型暂不支持转换为 ONNX 模型：
   NRTR、SAR、RARE、SRN
 
-* 注意：[当前Paddle2ONNX版本(v1.2.3)](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3)现已默认支持动态shape,即动态选项**float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]**，
+* 注意：[当前Paddle2ONNX版本(v1.2.3)](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3)现已默认支持动态shape,即
+  `float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]`，
   不再对选项--input_shape_dict进行支持。
-  如果有shape调整的需求可参考使用**onnxsim**方式使用如下命令进行Paddle模型输入Shape调整。
+  如果有shape调整需求可参考使用**onnxsim**方式使用如下命令进行Paddle模型输入Shape调整。
 
 
   以 PP-OCRv3 英文识别模型，设置shape为1,3,-1,-1为例：
