@@ -708,7 +708,7 @@ def main(args):
 
     # logger
     log_file = args.save_log_path
-    if os.path.is_dir(args.save_log_path) or (
+    if os.path.isdir(args.save_log_path) or (
         not os.path.exists(args.save_log_path) and args.save_log_path.endswith("/")
     ):
         log_file = os.path.join(log_file, "benchmark_recognition.log")
