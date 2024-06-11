@@ -25,16 +25,16 @@ import argparse
 import paddle
 from paddle.jit import to_static
 
-from ppocr.modeling.architectures import build_model
-from ppocr.postprocess import build_post_process
-from ppocr.utils.save_load import load_model
-from ppocr.utils.logging import get_logger
-from tools.program import load_config, merge_config, ArgsParser
-from ppocr.metrics import build_metric
+from paddleocr.ppocr.modeling.architectures import build_model
+from paddleocr.ppocr.postprocess import build_post_process
+from paddleocr.ppocr.utils.save_load import load_model
+from paddleocr.ppocr.utils.logging import get_logger
+from paddleocr.tools.program import load_config, merge_config, ArgsParser
+from paddleocr.ppocr.metrics import build_metric
 import tools.program as program
 from paddleslim.dygraph.quant import QAT
-from ppocr.data import build_dataloader, set_signal_handlers
-from tools.export_model import export_single_model
+from paddleocr.ppocr.data import build_dataloader, set_signal_handlers
+from paddleocr.tools.export_model import export_single_model
 
 
 def main():

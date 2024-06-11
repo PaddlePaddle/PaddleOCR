@@ -30,9 +30,9 @@ from paddleslim.common import get_logger
 import sys
 
 sys.path.append("../../../")
-from ppocr.data import build_dataloader
-from ppocr.postprocess import build_post_process
-from ppocr.metrics import build_metric
+from paddleocr.ppocr.data import build_dataloader
+from paddleocr.ppocr.postprocess import build_post_process
+from paddleocr.ppocr.metrics import build_metric
 
 from paddle.inference import create_predictor, PrecisionType
 from paddle.inference import Config as PredictConfig

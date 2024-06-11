@@ -30,10 +30,10 @@ import cv2
 import numpy as np
 import paddlehub as hub
 
-from tools.infer.utility import base64_to_cv2
-from ppstructure.table.predict_table import TableSystem as _TableSystem
-from ppstructure.predict_system import save_structure_res
-from ppstructure.utility import parse_args
+from paddleocr.tools.infer.utility import base64_to_cv2
+from paddleocr.ppstructure.table.predict_table import TableSystem as _TableSystem
+from paddleocr.ppstructure.predict_system import save_structure_res
+from paddleocr.ppstructure.utility import parse_args
 from deploy.hubserving.structure_table.params import read_params
 
 

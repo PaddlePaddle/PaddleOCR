@@ -4,10 +4,7 @@ import pytest
 import paddle
 import numpy as np
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.abspath(os.path.join(current_dir, "..")))
-
-from ppocr.postprocess.cls_postprocess import ClsPostProcess
+from paddleocr.ppocr.postprocess.cls_postprocess import ClsPostProcess
 
 
 # Fixtures for common test inputs

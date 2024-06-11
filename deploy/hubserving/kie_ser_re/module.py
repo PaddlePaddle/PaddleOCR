@@ -30,9 +30,9 @@ import cv2
 import numpy as np
 import paddlehub as hub
 
-from tools.infer.utility import base64_to_cv2
-from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
-from ppstructure.utility import parse_args
+from paddleocr.tools.infer.utility import base64_to_cv2
+from paddleocr.ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
+from paddleocr.ppstructure.utility import parse_args
 
 from deploy.hubserving.kie_ser_re.params import read_params
 

@@ -27,9 +27,9 @@ from paddlehub.module.module import moduleinfo, runnable, serving
 import cv2
 import paddlehub as hub
 
-from tools.infer.utility import base64_to_cv2
-from tools.infer.predict_rec import TextRecognizer
-from tools.infer.utility import parse_args
+from paddleocr.tools.infer.utility import base64_to_cv2
+from paddleocr.tools.infer.predict_rec import TextRecognizer
+from paddleocr.tools.infer.utility import parse_args
 from deploy.hubserving.ocr_rec.params import read_params
 
 

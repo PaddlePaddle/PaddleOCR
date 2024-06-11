@@ -7,8 +7,8 @@ from paddleocr import PaddleOCR, PPStructure
 # Test image paths
 IMAGE_PATHS_OCR = ["./doc/imgs_en/254.jpg", "./doc/imgs_en/img_10.jpg"]
 IMAGE_PATHS_STRUCTURE = [
-    "./ppstructure/docs/table/layout.jpg",
-    "./ppstructure/docs/table/1.png",
+    "./src/paddleocr/ppstructure/docs/table/layout.jpg",
+    "./src/paddleocr/ppstructure/docs/table/1.png",
 ]
 
 

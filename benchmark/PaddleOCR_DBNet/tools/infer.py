@@ -27,7 +27,7 @@ import numpy as np
 from PIL import Image
 
 from paddle.vision import transforms
-from tools.predict import resize_image
+from paddleocr.tools.predict import resize_image
 from post_processing import get_post_processing
 from utils.util import draw_bbox, save_result
 

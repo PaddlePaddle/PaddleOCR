@@ -63,7 +63,7 @@ paddleocr = "paddleocr.paddleocr:main"
 
 [tool.setuptools]
 packages = ["paddleocr"]
-package-dir = { "paddleocr" = "" }
+package-dir = { "paddleocr" = "src/paddleocr" }
 include-package-data = true
 
 [tool.setuptools.dynamic]
