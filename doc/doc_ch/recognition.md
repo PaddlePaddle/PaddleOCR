@@ -170,7 +170,7 @@ PaddleOCR内置了一部分字典，可以按需使用。
 
 - 自定义字典
 
-如需自定义dic文件，请在 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
+如需自定义dic文件，请在 `configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
 
 ## 1.5. 添加空格类别
 
@@ -188,7 +188,7 @@ PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加�
 
 # 2. 开始训练
 
-PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 PP-OCRv3 英文识别模型为例：
+PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 PP-OCRv4 英文识别模型为例：
 
 ## 2.1. 启动训练
 
@@ -196,11 +196,11 @@ PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 PP-O
 
 ```
 cd PaddleOCR/
-# 下载英文PP-OCRv3的预训练模型
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar
+# 下载英文PP-OCRv4的预训练模型
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_train.tar
 # 解压模型参数
 cd pretrain_models
-tar -xf en_PP-OCRv3_rec_train.tar && rm -rf en_PP-OCRv3_rec_train.tar
+tar -xf en_PP-OCRv4_rec_train.tar && rm -rf en_PP-OCRv4_rec_train.tar
 ```
 
 开始训练:
@@ -212,19 +212,22 @@ tar -xf en_PP-OCRv3_rec_train.tar && rm -rf en_PP-OCRv3_rec_train.tar
 # 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
 
 #单卡训练（训练周期长，不建议）
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+python3 tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv4_rec_train/best_accuracy
 
 #多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv4_rec_train/best_accuracy
 ```
 
 正常启动训练后，会看到以下log输出：
 
 ```
-[2022/02/22 07:58:05] root INFO: epoch: [1/800], iter: 10, lr: 0.000000, loss: 0.754281, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.55541 s, batch_cost: 0.91654 s, samples: 1408, ips: 153.62133
-[2022/02/22 07:58:13] root INFO: epoch: [1/800], iter: 20, lr: 0.000001, loss: 0.924677, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.00236 s, batch_cost: 0.28528 s, samples: 1280, ips: 448.68599
-[2022/02/22 07:58:23] root INFO: epoch: [1/800], iter: 30, lr: 0.000002, loss: 0.967231, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.14527 s, batch_cost: 0.42714 s, samples: 1280, ips: 299.66507
-[2022/02/22 07:58:31] root INFO: epoch: [1/800], iter: 40, lr: 0.000003, loss: 0.895318, acc: 0.000000, norm_edit_dis: 0.000008, reader_cost: 0.00173 s, batch_cost: 0.27719 s, samples: 1280, ips: 461.77252
+[2024/06/16 11:28:26] ppocr INFO: epoch: [1/50], global_step: 10, lr: 0.000007, acc: 0.343750, norm_edit_dis: 0.752802, CTCLoss: 13.178495, NRTRLoss: 1.398275, loss: 14.568232, avg_reader_cost: 0.28627 s, avg_batch_cost: 1.04250 s, avg_samples: 67.2, ips: 64.46042 samples/s, eta: 0:57:09, max_mem_reserved: 12078 MB, max_mem_allocated: 11935 MB
+[2024/06/16 11:28:30] ppocr INFO: epoch: [1/50], global_step: 20, lr: 0.000014, acc: 0.361979, norm_edit_dis: 0.764480, CTCLoss: 12.389563, NRTRLoss: 1.389737, loss: 13.795437, avg_reader_cost: 0.00035 s, avg_batch_cost: 0.47960 s, avg_samples: 65.6, ips: 136.78172 samples/s, eta: 0:41:36, max_mem_reserved: 12078 MB, max_mem_allocated: 11949 MB
+[2024/06/16 11:28:35] ppocr INFO: epoch: [1/50], global_step: 30, lr: 0.000030, acc: 0.390625, norm_edit_dis: 0.788205, CTCLoss: 10.617269, NRTRLoss: 1.334532, loss: 11.975240, avg_reader_cost: 0.00035 s, avg_batch_cost: 0.48364 s, avg_samples: 78.4, ips: 162.10323 samples/s, eta: 0:36:26, max_mem_reserved: 12078 MB, max_mem_allocated: 11976 MB
+[2024/06/16 11:28:40] ppocr INFO: epoch: [1/50], global_step: 40, lr: 0.000045, acc: 0.393229, norm_edit_dis: 0.785400, CTCLoss: 10.627735, NRTRLoss: 1.330406, loss: 11.949156, avg_reader_cost: 0.00036 s, avg_batch_cost: 0.48152 s, avg_samples: 73.6, ips: 152.84850 samples/s, eta: 0:33:47, max_mem_reserved: 12078 MB, max_mem_allocated: 11976 MB
+[2024/06/16 11:28:45] ppocr INFO: epoch: [1/50], global_step: 50, lr: 0.000060, acc: 0.401042, norm_edit_dis: 0.804457, CTCLoss: 8.343242, NRTRLoss: 1.220365, loss: 9.561325, avg_reader_cost: 0.00035 s, avg_batch_cost: 0.48413 s, avg_samples: 67.2, ips: 138.80508 samples/s, eta: 0:32:11, max_mem_reserved: 12078 MB, max_mem_allocated: 11976 MB
+[2024/06/16 11:28:50] ppocr INFO: epoch: [1/50], global_step: 60, lr: 0.000075, acc: 0.468750, norm_edit_dis: 0.833311, CTCLoss: 7.356572, NRTRLoss: 1.191381, loss: 8.570213, avg_reader_cost: 0.00028 s, avg_batch_cost: 0.47786 s, avg_samples: 68.8, ips: 143.97404 samples/s, eta: 0:31:02, max_mem_reserved: 12078 MB, max_mem_allocated: 11990 MB
+[2024/06/16 11:28:53] ppocr INFO: epoch: [1/50], global_step: 66, lr: 0.000084, acc: 0.489583, norm_edit_dis: 0.841231, CTCLoss: 7.246758, NRTRLoss: 1.181412, loss: 8.424673, avg_reader_cost: 0.00018 s, avg_batch_cost: 0.28659 s, avg_samples: 36.8, ips: 128.40797 samples/s, eta: 0:30:30, max_mem_reserved: 12078 MB, max_mem_allocated: 11990 MB
 ```
 
 log 中自动打印如下信息：
@@ -243,16 +246,16 @@ log 中自动打印如下信息：
 |  ips  | 每秒处理图片的数量 |
 
 
-PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/en_PP-OCRv3_rec/best_accuracy` 。
+PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/en_PP-OCRv4_rec/best_accuracy` 。
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
 **提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考[前沿算法列表](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/algorithm_overview.md#12-%E6%96%87%E6%9C%AC%E8%AF%86%E5%88%AB%E7%AE%97%E6%B3%95)：
 
 
-训练中文数据，推荐使用[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+训练中文数据，推荐使用[ch_PP-OCRv4_rec_distillation.yml](../../configs/rec/PP-OCRv4/ch_PP-OCRv4_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
-以 `ch_PP-OCRv3_rec_distillation.yml` 为例：
+以 `ch_PP-OCRv4_rec_distillation.yml` 为例：
 ```
 Global:
   ...
@@ -268,7 +271,7 @@ Optimizer:
   # 添加学习率衰减策略
   lr:
     name: Cosine
-    learning_rate: 0.001
+    learning_rate: 0.0005
   ...
 
 ...
@@ -318,7 +321,7 @@ Eval:
 
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
 ```shell
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints=./your/trained/model
+python3 tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.checkpoints=./your/trained/model
 ```
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrained_model`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrained_model`指定的模型。
@@ -374,18 +377,18 @@ args1: args1
 如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
 
 ```shell
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
-     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy \
+python3 tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml \
+     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv4_rec_train/best_accuracy \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
- ```
+```
 
 ## 2.5. 分布式训练
 
 多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
 
 ```bash
-python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
-     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml \
+     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv4_rec_train/best_accuracy
 ```
 
 **注意:** （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为`ifconfig`；（3）更多关于分布式训练的性能优势等信息，请参考：[分布式训练教程](./distributed_training.md)。
@@ -477,7 +480,7 @@ DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`�
 
 ```
 # GPU 评估， Global.checkpoints 为待测权重
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ## 3.2. 测试识别效果
@@ -506,7 +509,7 @@ output/rec/
 
 ```
 # 预测英文结果
-python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
+python3 tools/infer_rec.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 预测图片：
@@ -554,7 +557,7 @@ inference 模型（`paddle.jit.save`保存的模型）
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv4_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv4_rec/
 ```
 
 **注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`为自定义字典文件。
@@ -562,7 +565,7 @@ python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Glo
 转换成功后，在目录下有三个文件：
 
 ```
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv4_rec/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
     └── inference.pdmodel           # 识别inference模型的program文件
