@@ -12,5 +12,3 @@ cython
 Pillow
 pyyaml
 requests
---no-binary=opencv-python
---no-binary=opencv-contrib-python
