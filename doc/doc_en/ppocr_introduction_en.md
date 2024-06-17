@@ -51,7 +51,7 @@ For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/
 <a name="2"></a>
 ## 2. Features
 
-- Ultra lightweight PP-OCRv3 series models: detection (4.7M) + direction classifier (1.4M) + recognition 10M) = 16.1M
+- Ultra lightweight PP-OCRv4 series models: detection (4.7M) + direction classifier (1.4M) + recognition 10M) = 16.1M
 - Ultra lightweight PP-OCRv3 series models: detection (3.6M) + direction classifier (1.4M) + recognition 12M) = 17.0M
 - Ultra lightweight PP-OCRv2 series models: detection (3.1M) + direction classifier (1.4M) + recognition 8.5M) = 13.0M
 - Ultra lightweight PP-OCR mobile series models: detection (3.0M) + direction classifier (1.4M) + recognition (5.0M) = 9.4M

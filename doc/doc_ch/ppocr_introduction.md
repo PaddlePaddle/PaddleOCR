@@ -51,7 +51,9 @@ PP-OCRv3系统pipeline如下：
 
 PP-OCRv4在PP-OCRv3的基础上进一步升级。整体的框架图保持了与PP-OCRv3相同的pipeline，针对检测模型和识别模型进行了数据、网络结构、训练策略等多个模块的优化。 PP-OCRv4系统框图如下所示：
 
-[![img](https://github.com/PaddlePaddle/PaddleOCR/raw/main/doc/ppocr_v4/ppocrv4_framework.png)](https://github.com/PaddlePaddle/PaddleOCR/blob/main/doc/ppocr_v4/ppocrv4_framework.png)
+<div align="center">
+    <img src="../ppocrv4_framework.png" width="800">
+</div>
 
 从算法改进思路上看，分别针对检测和识别模型，进行了共10个方面的改进：
 
