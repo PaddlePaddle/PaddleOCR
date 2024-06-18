@@ -218,7 +218,9 @@ def dump_infer_config(config, path, logger):
     infer_cfg["PreProcess"] = {
         "transform_ops": config['Eval']['dataset']['transforms']
     }
-    infer_cfg["PostProcess"] = config["PostProcess"]
+    postprocess = OrderedDict()
+    for k, v in config["PostProcess"].items():
+        postprocess[k] = v
 
     if config["Global"].get("character_dict_path") is not None:
         with open(
@@ -226,7 +228,9 @@ def dump_infer_config(config, path, logger):
             lines = f.readlines()
             character_dict = [line.strip('\n') for line in lines]
             print(character_dict)
-        infer_cfg["character_dict"] = character_dict
+        postprocess["character_dict"] = character_dict
+
+    infer_cfg["PostProcess"] = postprocess
 
     with open(path, 'w') as f:
         yaml.dump(infer_cfg, f)
