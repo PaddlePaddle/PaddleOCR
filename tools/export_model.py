@@ -227,7 +227,6 @@ def dump_infer_config(config, path, logger):
                 config["Global"]["character_dict_path"], encoding="utf-8") as f:
             lines = f.readlines()
             character_dict = [line.strip('\n') for line in lines]
-            print(character_dict)
         postprocess["character_dict"] = character_dict
 
     infer_cfg["PostProcess"] = postprocess
