@@ -302,7 +302,7 @@ def main():
     model.eval()
 
     save_path = config["Global"]["save_inference_dir"]
-    yaml_path = os.path.join(save_path, "inference.yaml")
+    yaml_path = os.path.join(save_path, "inference.yml")
 
     arch_config = config["Architecture"]
 
