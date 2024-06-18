@@ -232,7 +232,12 @@ def dump_infer_config(config, path, logger):
     infer_cfg["PostProcess"] = postprocess
 
     with open(path, 'w') as f:
-        yaml.dump(infer_cfg, f)
+        yaml.dump(
+            infer_cfg,
+            f,
+            default_flow_style=False,
+            encoding='utf-8',
+            allow_unicode=True)
     logger.info("Export inference config file to {}".format(os.path.join(path)))
 
 
