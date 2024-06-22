@@ -99,6 +99,7 @@ def apply_to_static(model, config, logger):
                 InputSpec(
                     [None, config["Global"]["max_text_length"] + 2, 1], dtype="float32"
                 ),
+                InputSpec([None], dtype="int64"),
                 InputSpec([None, 6], dtype="float64"),
             ]
         )

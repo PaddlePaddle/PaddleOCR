@@ -197,10 +197,18 @@ def create_predictor(args, mode, logger):
             raise ValueError("not find model file path {}".format(model_file_path))
         if args.use_gpu:
             sess = ort.InferenceSession(
-                model_file_path, providers=["CUDAExecutionProvider"]
+                model_file_path,
+                providers=[
+                    (
+                        "CUDAExecutionProvider",
+                        {"device_id": args.gpu_id, "cudnn_conv_algo_search": "DEFAULT"},
+                    )
+                ],
             )
         else:
-            sess = ort.InferenceSession(model_file_path)
+            sess = ort.InferenceSession(
+                model_file_path, providers=["CPUExecutionProvider"]
+            )
         return sess, sess.get_inputs()[0], None, None
 
     else:

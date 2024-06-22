@@ -169,6 +169,7 @@ class StructureSystem(object):
                         "img": roi_img,
                         "res": res,
                         "img_idx": img_idx,
+                        "score": region["score"],
                     }
                 )
 
