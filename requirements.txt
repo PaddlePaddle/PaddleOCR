@@ -6,9 +6,9 @@ lmdb
 tqdm
 numpy<2.0
 rapidfuzz
-opencv-python<=4.6.0.66
-opencv-contrib-python<=4.6.0.66
+opencv-python
+opencv-contrib-python
 cython
-Pillow>=10.0.0
+Pillow
 pyyaml
 requests
