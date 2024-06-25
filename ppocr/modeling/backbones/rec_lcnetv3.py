@@ -23,6 +23,7 @@ from paddle import ParamAttr
 from paddle.nn.initializer import Constant, KaimingNormal
 from paddle.nn import AdaptiveAvgPool2D, BatchNorm2D, Conv2D, Dropout, Hardsigmoid, Hardswish, Identity, Linear, ReLU
 from paddle.regularizer import L2Decay
+from ppocr.modeling.backbones.rec_hgnet import MeanPool2D
 
 NET_CONFIG_det = {
     "blocks2":
@@ -271,7 +272,10 @@ class LearnableRepLayer(nn.Layer):
 class SELayer(nn.Layer):
     def __init__(self, channel, reduction=4, lr_mult=1.0):
         super().__init__()
-        self.avg_pool = AdaptiveAvgPool2D(1)
+        if 'npu' in paddle.device.get_device():
+            self.avg_pool = MeanPool2D(1, 1)
+        else:
+            self.avg_pool = AdaptiveAvgPool2D(1)
         self.conv1 = Conv2D(
             in_channels=channel,
             out_channels=channel // reduction,
