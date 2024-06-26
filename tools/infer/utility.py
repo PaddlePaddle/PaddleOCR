@@ -805,6 +805,26 @@ def check_gpu(use_gpu):
         use_gpu = False
     return use_gpu
 
+def check_xpu(use_xpu):
+    if use_xpu and (
+        not paddle.is_compiled_with_xpu() or paddle.device.get_device() == "cpu"
+    ):
+        use_xpu = False
+    return use_xpu
+
+def check_npu(use_npu):
+    if use_npu and (
+        not paddle.is_compiled_with_custom_device("npu") or paddle.device.get_device() == "cpu"
+    ):
+        use_npu = False
+    return use_npu
+
+def check_mlu(use_mlu):
+    if use_mlu and (
+        not paddle.is_compiled_with_custom_device("mlu") or paddle.device.get_device() == "cpu"
+    ):
+        use_mlu = False
+    return use_mlu
 
 if __name__ == "__main__":
     pass

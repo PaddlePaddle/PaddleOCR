@@ -63,7 +63,7 @@ from ppocr.utils.network import (
     is_link,
     confirm_model_dir_url,
 )
-from tools.infer.utility import draw_ocr, str2bool, check_gpu
+from tools.infer.utility import draw_ocr, str2bool, check_gpu, check_xpu, check_npu, check_mlu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
@@ -619,6 +619,9 @@ class PaddleOCR(predict_system.TextSystem):
             SUPPORT_OCR_MODEL_VERSION, params.ocr_version
         )
         params.use_gpu = check_gpu(params.use_gpu)
+        params.use_xpu = check_xpu(params.use_xpu)
+        params.use_npu = check_npu(params.use_npu)
+        params.use_mlu = check_mlu(params.use_mlu)
 
         if not params.show_log:
             logger.setLevel(logging.INFO)
