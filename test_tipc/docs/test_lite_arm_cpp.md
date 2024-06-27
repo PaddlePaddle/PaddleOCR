@@ -39,7 +39,7 @@ bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_lin
 # 手机端测试:
 bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_cpu.txt
 
-```  
+```
 
 #### 2.1.2 基于ARM\_GPU\_OPENCL测试
 
@@ -54,7 +54,7 @@ bash test_tipc/prepare_lite_cpp.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_lin
 # 手机端测试:
 bash test_lite_arm_cpp.sh model_linux_gpu_normal_normal_lite_cpp_arm_gpu_opencl.txt
 
-```  
+```
 
 
 **注意**：

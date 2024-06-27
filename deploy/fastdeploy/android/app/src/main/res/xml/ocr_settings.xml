@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/OCR_MODEL_DIR_DEFAULT"
+        android:key="@string/CHOOSE_PRE_INSTALLED_MODEL_KEY"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Choose Pre-Installed Models" />
+    <EditTextPreference
+        android:defaultValue="@string/OCR_MODEL_DIR_DEFAULT"
+        android:key="@string/MODEL_DIR_KEY"
+        android:title="Model Dir" />
+    <EditTextPreference
+        android:defaultValue="@string/OCR_REC_LABEL_DEFAULT"
+        android:key="@string/LABEL_PATH_KEY"
+        android:title="Label Path" />
+    <ListPreference
+        android:defaultValue="@string/CPU_THREAD_NUM_DEFAULT"
+        android:entries="@array/cpu_thread_num_entries"
+        android:entryValues="@array/cpu_thread_num_values"
+        android:key="@string/CPU_THREAD_NUM_KEY"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="CPU Thread Num" />
+    <ListPreference
+        android:defaultValue="@string/CPU_POWER_MODE_DEFAULT"
+        android:entries="@array/cpu_power_mode_entries"
+        android:entryValues="@array/cpu_power_mode_values"
+        android:key="@string/CPU_POWER_MODE_KEY"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="CPU Power Mode" />
+    <EditTextPreference
+        android:key="@string/SCORE_THRESHOLD_KEY"
+        android:defaultValue="@string/SCORE_THRESHOLD_DEFAULT"
+        android:title="Score Threshold: (0.0, 1.0)" />
+    <ListPreference
+        android:defaultValue="@string/ENABLE_LITE_FP16_MODE_DEFAULT"
+        android:entries="@array/enable_lite_fp16_mode_entries"
+        android:entryValues="@array/enable_lite_fp16_mode_values"
+        android:key="@string/ENABLE_LITE_FP16_MODE_KEY"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Enable Lite FP16" />
+</PreferenceScreen>

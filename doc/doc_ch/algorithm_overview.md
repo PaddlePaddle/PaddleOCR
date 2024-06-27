@@ -32,6 +32,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 - [x]  [PSENet](./algorithm_det_psenet.md)
 - [x]  [FCENet](./algorithm_det_fcenet.md)
 - [x]  [DRRG](./algorithm_det_drrg.md)
+- [x]  [CT](./algorithm_det_ct.md)
 
 在ICDAR2015文本检测公开数据集上，算法效果如下：
 
@@ -51,11 +52,12 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |模型|骨干网络|precision|recall|Hmean|下载链接|
 | --- | --- | --- | --- | --- | --- |
 |SAST|ResNet50_vd|89.63%|78.44%|83.66%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_sast_totaltext_v2.0_train.tar)|
+|CT|ResNet18_vd|88.68%|81.70%|85.05%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r18_ct_train.tar)|
 
 在CTW1500文本检测公开数据集上，算法效果如下：
 
 |模型|骨干网络|precision|recall|Hmean|下载链接|
-| --- | --- | --- | --- | --- | --- |  
+| --- | --- | --- | --- | --- | --- |
 |FCE|ResNet50_dcn|88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
 |DRRG|ResNet50_vd|89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
 
@@ -84,6 +86,9 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 - [x]  [SPIN](./algorithm_rec_spin.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner.md)
 - [x]  [RFL](./algorithm_rec_rfl.md)
+- [x]  [ParseQ](./algorithm_rec_parseq.md)
+- [x]  [CPPD](./algorithm_rec_cppd.md)
+- [x]  [SATRN](./algorithm_rec_satrn.md)
 
 参考[DTRB](https://arxiv.org/abs/1904.01906)[3]文字识别训练和评估流程，使用MJSynth和SynthText两个文字识别数据集训练，在IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE数据集上进行评估，算法效果如下：
 
@@ -108,6 +113,36 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
+|ParseQ|VIT| 91.24% | rec_vit_parseq_synth | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz) |
+|CPPD|SVTR-Base| 93.8% | rec_svtrnet_cppd_base_en | [训练模型](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_en_train.tar) |
+|SATRN|ShallowCNN| 88.05% | rec_satrn | [训练模型](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a) |
+
+<a name="13"></a>
+
+### 1.3 文本超分辨率算法
+已支持的文本超分辨率算法列表（戳链接获取使用教程）：
+- [x]  [Text Gestalt](./algorithm_sr_gestalt.md)
+- [x]  [Text Telescope](./algorithm_sr_telescope.md)
+
+在TextZoom公开数据集上，算法效果如下：
+
+|模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
+|---|---|---|---|---|---|
+|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](../../configs/sr/sr_tsrn_transformer_strock.yml)|[训练模型](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](../../configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+
+<a name="14"></a>
+
+### 1.4 公式识别算法
+
+已支持的公式识别算法列表（戳链接获取使用教程）：
+- [x]  [CAN](./algorithm_rec_can.md)
+
+在CROHME手写公式数据集上，算法效果如下：
+
+|模型    |骨干网络|配置文件|ExpRate|下载链接|
+| ----- | ----- | ----- | ----- | ----- |
+|CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
 
 
 <a name="13"></a>

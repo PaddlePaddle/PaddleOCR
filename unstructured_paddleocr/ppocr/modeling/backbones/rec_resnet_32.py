@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/davarocr/davar_rcg/models/backbones/ResNet32.py
 """
 
@@ -25,6 +25,7 @@ import paddle.nn as nn
 __all__ = ["ResNet32"]
 
 conv_weight_attr = nn.initializer.KaimingNormal()
+
 
 class ResNet32(nn.Layer):
     """
@@ -55,13 +56,15 @@ class ResNet32(nn.Layer):
         """
         return self.ConvNet(inputs)
 
+
 class BasicBlock(nn.Layer):
     """Res-net Basic Block"""
+
     expansion = 1
 
-    def __init__(self, inplanes, planes,
-                 stride=1, downsample=None,
-                 norm_type='BN', **kwargs):
+    def __init__(
+        self, inplanes, planes, stride=1, downsample=None, norm_type="BN", **kwargs
+    ):
         """
         Args:
             inplanes (int): input channel
@@ -92,10 +95,15 @@ class BasicBlock(nn.Layer):
 
         """
 
-        return nn.Conv2D(in_planes, out_planes,
-                         kernel_size=3, stride=stride,
-                         padding=1, weight_attr=conv_weight_attr,
-                         bias_attr=False)
+        return nn.Conv2D(
+            in_planes,
+            out_planes,
+            kernel_size=3,
+            stride=stride,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
 
     def forward(self, x):
         residual = x
@@ -114,10 +122,11 @@ class BasicBlock(nn.Layer):
 
         return out
 
+
 class ResNet(nn.Layer):
     """Res-Net network structure"""
-    def __init__(self, input_channel,
-                 output_channel, block, layers):
+
+    def __init__(self, input_channel, output_channel, block, layers):
         """
 
         Args:
@@ -128,78 +137,101 @@ class ResNet(nn.Layer):
         """
         super(ResNet, self).__init__()
 
-        self.output_channel_block = [int(output_channel / 4),
-                                     int(output_channel / 2),
-                                     output_channel,
-                                     output_channel]
+        self.output_channel_block = [
+            int(output_channel / 4),
+            int(output_channel / 2),
+            output_channel,
+            output_channel,
+        ]
 
         self.inplanes = int(output_channel / 8)
-        self.conv0_1 = nn.Conv2D(input_channel, int(output_channel / 16),
-                                 kernel_size=3, stride=1, 
-                                 padding=1, 
-                                 weight_attr=conv_weight_attr,
-                                 bias_attr=False)
+        self.conv0_1 = nn.Conv2D(
+            input_channel,
+            int(output_channel / 16),
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn0_1 = nn.BatchNorm2D(int(output_channel / 16))
-        self.conv0_2 = nn.Conv2D(int(output_channel / 16), self.inplanes,
-                                 kernel_size=3, stride=1,
-                                 padding=1, 
-                                 weight_attr=conv_weight_attr,
-                                 bias_attr=False)
+        self.conv0_2 = nn.Conv2D(
+            int(output_channel / 16),
+            self.inplanes,
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn0_2 = nn.BatchNorm2D(self.inplanes)
         self.relu = nn.ReLU()
 
         self.maxpool1 = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
-        self.layer1 = self._make_layer(block,
-                                       self.output_channel_block[0],
-                                       layers[0])
-        self.conv1 = nn.Conv2D(self.output_channel_block[0],
-                               self.output_channel_block[0],
-                               kernel_size=3, stride=1,
-                               padding=1, 
-                               weight_attr=conv_weight_attr,
-                               bias_attr=False)
+        self.layer1 = self._make_layer(block, self.output_channel_block[0], layers[0])
+        self.conv1 = nn.Conv2D(
+            self.output_channel_block[0],
+            self.output_channel_block[0],
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn1 = nn.BatchNorm2D(self.output_channel_block[0])
 
         self.maxpool2 = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
-        self.layer2 = self._make_layer(block,
-                                       self.output_channel_block[1],
-                                       layers[1], stride=1)
-        self.conv2 = nn.Conv2D(self.output_channel_block[1],
-                               self.output_channel_block[1],
-                               kernel_size=3, stride=1,
-                               padding=1, 
-                               weight_attr=conv_weight_attr,
-                               bias_attr=False,)
+        self.layer2 = self._make_layer(
+            block, self.output_channel_block[1], layers[1], stride=1
+        )
+        self.conv2 = nn.Conv2D(
+            self.output_channel_block[1],
+            self.output_channel_block[1],
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn2 = nn.BatchNorm2D(self.output_channel_block[1])
 
-        self.maxpool3 = nn.MaxPool2D(kernel_size=2,
-                                     stride=(2, 1),
-                                     padding=(0, 1))
-        self.layer3 = self._make_layer(block, self.output_channel_block[2],
-                                       layers[2], stride=1)
-        self.conv3 = nn.Conv2D(self.output_channel_block[2],
-                               self.output_channel_block[2],
-                               kernel_size=3, stride=1,
-                               padding=1, 
-                               weight_attr=conv_weight_attr,
-                               bias_attr=False)
+        self.maxpool3 = nn.MaxPool2D(kernel_size=2, stride=(2, 1), padding=(0, 1))
+        self.layer3 = self._make_layer(
+            block, self.output_channel_block[2], layers[2], stride=1
+        )
+        self.conv3 = nn.Conv2D(
+            self.output_channel_block[2],
+            self.output_channel_block[2],
+            kernel_size=3,
+            stride=1,
+            padding=1,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn3 = nn.BatchNorm2D(self.output_channel_block[2])
 
-        self.layer4 = self._make_layer(block, self.output_channel_block[3],
-                                       layers[3], stride=1)
-        self.conv4_1 = nn.Conv2D(self.output_channel_block[3],
-                                 self.output_channel_block[3],
-                                 kernel_size=2, stride=(2, 1),
-                                 padding=(0, 1), 
-                                 weight_attr=conv_weight_attr,
-                                 bias_attr=False)
+        self.layer4 = self._make_layer(
+            block, self.output_channel_block[3], layers[3], stride=1
+        )
+        self.conv4_1 = nn.Conv2D(
+            self.output_channel_block[3],
+            self.output_channel_block[3],
+            kernel_size=2,
+            stride=(2, 1),
+            padding=(0, 1),
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn4_1 = nn.BatchNorm2D(self.output_channel_block[3])
-        self.conv4_2 = nn.Conv2D(self.output_channel_block[3],
-                                 self.output_channel_block[3],
-                                 kernel_size=2, stride=1,
-                                 padding=0, 
-                                 weight_attr=conv_weight_attr,
-                                 bias_attr=False)
+        self.conv4_2 = nn.Conv2D(
+            self.output_channel_block[3],
+            self.output_channel_block[3],
+            kernel_size=2,
+            stride=1,
+            padding=0,
+            weight_attr=conv_weight_attr,
+            bias_attr=False,
+        )
         self.bn4_2 = nn.BatchNorm2D(self.output_channel_block[3])
 
     def _make_layer(self, block, planes, blocks, stride=1):
@@ -218,10 +250,14 @@ class ResNet(nn.Layer):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2D(self.inplanes, planes * block.expansion,
-                          kernel_size=1, stride=stride,
-                          weight_attr=conv_weight_attr, 
-                          bias_attr=False),
+                nn.Conv2D(
+                    self.inplanes,
+                    planes * block.expansion,
+                    kernel_size=1,
+                    stride=stride,
+                    weight_attr=conv_weight_attr,
+                    bias_attr=False,
+                ),
                 nn.BatchNorm2D(planes * block.expansion),
             )
 

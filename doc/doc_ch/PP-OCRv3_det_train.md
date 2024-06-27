@@ -1,5 +1,3 @@
-[English](../doc_en/PP-OCRv3_det_train_en.md) | 简体中文
-
 
 # PP-OCRv3 文本检测模型训练
 
@@ -32,7 +30,7 @@ PP-OCRv3检测训练包括两个步骤：
 
 ### 2.2 训练教师模型
 
-教师模型训练的配置文件是[ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](./knowledge_distillation)。
+教师模型训练的配置文件是[ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](./knowledge_distillation.md)。
 
 
 下载ImageNet预训练模型：
@@ -57,10 +55,10 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 
 训练过程中保存的模型在output目录下，包含以下文件：
 ```
-best_accuracy.states  
+best_accuracy.states
 best_accuracy.pdparams  # 默认保存最优精度的模型参数
 best_accuracy.pdopt     # 默认保存最优精度的优化器相关参数
-latest.states  
+latest.states
 latest.pdparams  # 默认保存的最新模型参数
 latest.pdopt     # 默认保存的最新模型的优化器相关参数
 ```

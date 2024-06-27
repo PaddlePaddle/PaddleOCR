@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['build_neck']
+__all__ = ["build_neck"]
 
 
 def build_neck(config):
@@ -29,15 +29,29 @@ def build_neck(config):
     from .ct_fpn import CTFPN
     from .fpn_unet import FPN_UNet
     from .rf_adaptor import RFAdaptor
+
     support_dict = [
-        'FPN', 'FCEFPN', 'LKPAN', 'DBFPN', 'RSEFPN', 'EASTFPN', 'SASTFPN',
-        'SequenceEncoder', 'PGFPN', 'TableFPN', 'PRENFPN', 'CSPPAN', 'CTFPN',
-        'RFAdaptor', 'FPN_UNet'
+        "FPN",
+        "FCEFPN",
+        "LKPAN",
+        "DBFPN",
+        "RSEFPN",
+        "EASTFPN",
+        "SASTFPN",
+        "SequenceEncoder",
+        "PGFPN",
+        "TableFPN",
+        "PRENFPN",
+        "CSPPAN",
+        "CTFPN",
+        "RFAdaptor",
+        "FPN_UNet",
     ]
 
-    module_name = config.pop('name')
-    assert module_name in support_dict, Exception('neck only support {}'.format(
-        support_dict))
+    module_name = config.pop("name")
+    assert module_name in support_dict, Exception(
+        "neck only support {}".format(support_dict)
+    )
 
     module_class = eval(module_name)(**config)
     return module_class

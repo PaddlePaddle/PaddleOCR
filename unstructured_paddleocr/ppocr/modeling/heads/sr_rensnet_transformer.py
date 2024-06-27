@@ -25,13 +25,13 @@ import paddle.nn.functional as F
 
 def subsequent_mask(size):
     """Generate a square mask for the sequence. The masked positions are filled with float('-inf').
-        Unmasked positions are filled with float(0.0).
+    Unmasked positions are filled with float(0.0).
     """
-    mask = paddle.ones([1, size, size], dtype='float32')
+    mask = paddle.ones([1, size, size], dtype="float32")
     mask_inf = paddle.triu(
-        paddle.full(
-            shape=[1, size, size], dtype='float32', fill_value='-inf'),
-        diagonal=1)
+        paddle.full(shape=[1, size, size], dtype="float32", fill_value="-inf"),
+        diagonal=1,
+    )
     mask = mask + mask_inf
     padding_mask = paddle.equal(mask, paddle.to_tensor(1, dtype=mask.dtype))
     return padding_mask
@@ -48,11 +48,10 @@ def masked_fill(x, mask, value):
 
 def attention(query, key, value, mask=None, dropout=None, attention_map=None):
     d_k = query.shape[-1]
-    scores = paddle.matmul(query,
-                           paddle.transpose(key, [0, 1, 3, 2])) / math.sqrt(d_k)
+    scores = paddle.matmul(query, paddle.transpose(key, [0, 1, 3, 2])) / math.sqrt(d_k)
 
     if mask is not None:
-        scores = masked_fill(scores, mask == 0, float('-inf'))
+        scores = masked_fill(scores, mask == 0, float("-inf"))
     else:
         pass
 
@@ -80,9 +79,12 @@ class MultiHeadedAttention(nn.Layer):
             mask = mask.unsqueeze(1)
         nbatches = query.shape[0]
 
-        query, key, value = \
-            [paddle.transpose(l(x).reshape([nbatches, -1, self.h, self.d_k]), [0,2,1,3])
-             for l, x in zip(self.linears, (query, key, value))]
+        query, key, value = [
+            paddle.transpose(
+                l(x).reshape([nbatches, -1, self.h, self.d_k]), [0, 2, 1, 3]
+            )
+            for l, x in zip(self.linears, (query, key, value))
+        ]
 
         x, attention_map = attention(
             query,
@@ -90,11 +92,12 @@ class MultiHeadedAttention(nn.Layer):
             value,
             mask=mask,
             dropout=self.dropout,
-            attention_map=attention_map)
+            attention_map=attention_map,
+        )
 
         x = paddle.reshape(
-            paddle.transpose(x, [0, 2, 1, 3]),
-            [nbatches, -1, self.h * self.d_k])
+            paddle.transpose(x, [0, 2, 1, 3]), [nbatches, -1, self.h * self.d_k]
+        )
 
         return self.linears[-1](x), attention_map
 
@@ -137,12 +140,11 @@ class ResNet(nn.Layer):
         self.layer4_conv2_relu = nn.ReLU()
 
     def _make_layer(self, block, inplanes, planes, blocks):
-
         if inplanes != planes:
             downsample = nn.Sequential(
                 nn.Conv2D(inplanes, planes, 3, 1, 1),
-                nn.BatchNorm2D(
-                    planes, use_global_stats=True), )
+                nn.BatchNorm2D(planes, use_global_stats=True),
+            )
         else:
             downsample = None
         layers = []
@@ -222,15 +224,15 @@ class PositionalEncoding(nn.Layer):
         pe = paddle.zeros([max_len, dim])
         position = paddle.arange(0, max_len, dtype=paddle.float32).unsqueeze(1)
         div_term = paddle.exp(
-            paddle.arange(0, dim, 2).astype('float32') *
-            (-math.log(10000.0) / dim))
+            paddle.arange(0, dim, 2).astype("float32") * (-math.log(10000.0) / dim)
+        )
         pe[:, 0::2] = paddle.sin(position * div_term)
         pe[:, 1::2] = paddle.cos(position * div_term)
         pe = paddle.unsqueeze(pe, 0)
-        self.register_buffer('pe', pe)
+        self.register_buffer("pe", pe)
 
     def forward(self, x):
-        x = x + self.pe[:, :paddle.shape(x)[1]]
+        x = x + self.pe[:, : x.shape[1]]
         return self.dropout(x)
 
 
@@ -277,11 +279,11 @@ class LayerNorm(nn.Layer):
     def __init__(self, features, eps=1e-6):
         super(LayerNorm, self).__init__()
         self.a_2 = self.create_parameter(
-            shape=[features],
-            default_initializer=paddle.nn.initializer.Constant(1.0))
+            shape=[features], default_initializer=paddle.nn.initializer.Constant(1.0)
+        )
         self.b_2 = self.create_parameter(
-            shape=[features],
-            default_initializer=paddle.nn.initializer.Constant(0.0))
+            shape=[features], default_initializer=paddle.nn.initializer.Constant(0.0)
+        )
         self.eps = eps
 
     def forward(self, x):
@@ -294,8 +296,7 @@ class Decoder(nn.Layer):
     def __init__(self):
         super(Decoder, self).__init__()
 
-        self.mask_multihead = MultiHeadedAttention(
-            h=16, d_model=1024, dropout=0.1)
+        self.mask_multihead = MultiHeadedAttention(h=16, d_model=1024, dropout=0.1)
         self.mul_layernorm1 = LayerNorm(1024)
 
         self.multihead = MultiHeadedAttention(h=16, d_model=1024, dropout=0.1)
@@ -308,17 +309,14 @@ class Decoder(nn.Layer):
         text_max_length = text.shape[1]
         mask = subsequent_mask(text_max_length)
         result = text
-        result = self.mul_layernorm1(result + self.mask_multihead(
-            text, text, text, mask=mask)[0])
+        result = self.mul_layernorm1(
+            result + self.mask_multihead(text, text, text, mask=mask)[0]
+        )
         b, c, h, w = conv_feature.shape
-        conv_feature = paddle.transpose(
-            conv_feature.reshape([b, c, h * w]), [0, 2, 1])
+        conv_feature = paddle.transpose(conv_feature.reshape([b, c, h * w]), [0, 2, 1])
         word_image_align, attention_map = self.multihead(
-            result,
-            conv_feature,
-            conv_feature,
-            mask=None,
-            attention_map=attention_map)
+            result, conv_feature, conv_feature, mask=None, attention_map=attention_map
+        )
         result = self.mul_layernorm2(result + word_image_align)
         result = self.mul_layernorm3(result + self.pff(result))
 
@@ -328,12 +326,10 @@ class Decoder(nn.Layer):
 class BasicBlock(nn.Layer):
     def __init__(self, inplanes, planes, downsample):
         super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2D(
-            inplanes, planes, kernel_size=3, stride=1, padding=1)
+        self.conv1 = nn.Conv2D(inplanes, planes, kernel_size=3, stride=1, padding=1)
         self.bn1 = nn.BatchNorm2D(planes, use_global_stats=True)
         self.relu = nn.ReLU()
-        self.conv2 = nn.Conv2D(
-            planes, planes, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2D(planes, planes, kernel_size=3, stride=1, padding=1)
         self.bn2 = nn.BatchNorm2D(planes, use_global_stats=True)
         self.downsample = downsample
 
@@ -367,7 +363,7 @@ class Encoder(nn.Layer):
 
 
 class Transformer(nn.Layer):
-    def __init__(self, in_channels=1, alphabet='0123456789'):
+    def __init__(self, in_channels=1, alphabet="0123456789"):
         super(Transformer, self).__init__()
         self.alphabet = alphabet
         word_n_class = self.get_alphabet_len()
@@ -397,18 +393,21 @@ class Transformer(nn.Layer):
         text_input = text_input[:, :max_length]
 
         text_embedding = self.embedding_word_with_upperword(
-            text_input)  # batch, text_max_length, 512
+            text_input
+        )  # batch, text_max_length, 512
         postion_embedding = self.pe(
-            paddle.zeros(text_embedding.shape))  # batch, text_max_length, 512
-        text_input_with_pe = paddle.concat([text_embedding, postion_embedding],
-                                           2)  # batch, text_max_length, 1024
+            paddle.zeros(text_embedding.shape)
+        )  # batch, text_max_length, 512
+        text_input_with_pe = paddle.concat(
+            [text_embedding, postion_embedding], 2
+        )  # batch, text_max_length, 1024
         batch, seq_len, _ = text_input_with_pe.shape
 
         text_input_with_pe, word_attention_map = self.decoder(
-            text_input_with_pe, conv_feature)
+            text_input_with_pe, conv_feature
+        )
 
-        word_decoder_result = self.generator_word_with_upperword(
-            text_input_with_pe)
+        word_decoder_result = self.generator_word_with_upperword(text_input_with_pe)
 
         if self.training:
             total_length = paddle.sum(text_length)
@@ -417,8 +416,9 @@ class Transformer(nn.Layer):
 
             for index, length in enumerate(text_length):
                 length = int(length.numpy())
-                probs_res[start:start + length, :] = word_decoder_result[
-                    index, 0:0 + length, :]
+                probs_res[start : start + length, :] = word_decoder_result[
+                    index, 0 : 0 + length, :
+                ]
 
                 start = start + length
 

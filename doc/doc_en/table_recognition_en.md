@@ -6,6 +6,7 @@ This article provides a full-process guide for the PaddleOCR table recognition m
   - [1.1. DataSet Format](#11-dataset-format)
   - [1.2. Data Download](#12-data-download)
   - [1.3. Dataset Generation](#13-dataset-generation)
+  - [1.4 Data annotation](#14-data-annotation)
 - [2. Training](#2-training)
   - [2.1. Start Training](#21-start-training)
   - [2.2. Resume Training](#22-resume-training)
@@ -80,6 +81,10 @@ Some samples are as follows:
 |Simple Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/simple.jpg)|
 |Simple Color Table|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/color.jpg)|
 
+## 1.4 Data annotation
+
+Data annotation can refer to[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
+
 # 2. Training
 
 PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the [SLANet](../../configs/table/SLANet.yml) model will be used as an example:
@@ -109,7 +114,7 @@ After starting training normally, you will see the following log output:
 
 The following information is automatically printed in the log:
 
-|  Field   |   Meaning   |  
+|  Field   |   Meaning   |
 | :----: | :------: |
 |  epoch | current iteration round |
 |  global_step  | current iteration count |
@@ -294,13 +299,13 @@ According to the `save_model_dir` and `save_epoch_step` fields set in the config
 
 ```
 output/SLANet/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 Among them, best_accuracy.* is the best model on the evaluation set; latest.* is the model of the last epoch.

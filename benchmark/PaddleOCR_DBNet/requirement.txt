@@ -1,0 +1,14 @@
+anyconfig
+future
+imgaug
+matplotlib
+numpy
+opencv-python
+Polygon3
+pyclipper
+PyYAML
+scikit-image
+Shapely
+tqdm
+addict
+visualdl

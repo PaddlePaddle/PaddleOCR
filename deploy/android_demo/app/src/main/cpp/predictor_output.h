@@ -28,4 +28,4 @@ private:
   int _index;
   int _net_flag;
 };
-}
+} // namespace ppredictor

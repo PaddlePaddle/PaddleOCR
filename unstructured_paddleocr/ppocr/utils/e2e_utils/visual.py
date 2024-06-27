@@ -47,8 +47,7 @@ def resize_image(im, max_side_len=512):
 
 
 def resize_image_min(im, max_side_len=512):
-    """
-    """
+    """ """
     h, w, _ = im.shape
 
     resize_w = w
@@ -72,8 +71,7 @@ def resize_image_min(im, max_side_len=512):
 
 
 def resize_image_for_totaltext(im, max_side_len=512):
-    """
-    """
+    """ """
     h, w, _ = im.shape
 
     resize_w = w
@@ -103,8 +101,11 @@ def point_pair2poly(point_pair_list):
         pair_length = np.linalg.norm(point_pair[0] - point_pair[1])
         pair_length_list.append(pair_length)
     pair_length_list = np.array(pair_length_list)
-    pair_info = (pair_length_list.max(), pair_length_list.min(),
-                 pair_length_list.mean())
+    pair_info = (
+        pair_length_list.max(),
+        pair_length_list.min(),
+        pair_length_list.mean(),
+    )
 
     point_num = len(point_pair_list) * 2
     point_list = [0] * point_num
@@ -114,12 +115,11 @@ def point_pair2poly(point_pair_list):
     return np.array(point_list).reshape(-1, 2), pair_info
 
 
-def shrink_quad_along_width(quad, begin_width_ratio=0., end_width_ratio=1.):
+def shrink_quad_along_width(quad, begin_width_ratio=0.0, end_width_ratio=1.0):
     """
     Generate shrink_quad_along_width.
     """
-    ratio_pair = np.array(
-        [[begin_width_ratio], [end_width_ratio]], dtype=np.float32)
+    ratio_pair = np.array([[begin_width_ratio], [end_width_ratio]], dtype=np.float32)
     p0_1 = quad[0] + (quad[1] - quad[0]) * ratio_pair
     p3_2 = quad[3] + (quad[2] - quad[3]) * ratio_pair
     return np.array([p0_1[0], p0_1[1], p3_2[1], p3_2[0]])
@@ -130,20 +130,25 @@ def expand_poly_along_width(poly, shrink_ratio_of_width=0.3):
     expand poly along width.
     """
     point_num = poly.shape[0]
-    left_quad = np.array(
-        [poly[0], poly[1], poly[-2], poly[-1]], dtype=np.float32)
-    left_ratio = -shrink_ratio_of_width * np.linalg.norm(left_quad[0] - left_quad[3]) / \
-                 (np.linalg.norm(left_quad[0] - left_quad[1]) + 1e-6)
+    left_quad = np.array([poly[0], poly[1], poly[-2], poly[-1]], dtype=np.float32)
+    left_ratio = (
+        -shrink_ratio_of_width
+        * np.linalg.norm(left_quad[0] - left_quad[3])
+        / (np.linalg.norm(left_quad[0] - left_quad[1]) + 1e-6)
+    )
     left_quad_expand = shrink_quad_along_width(left_quad, left_ratio, 1.0)
     right_quad = np.array(
         [
-            poly[point_num // 2 - 2], poly[point_num // 2 - 1],
-            poly[point_num // 2], poly[point_num // 2 + 1]
+            poly[point_num // 2 - 2],
+            poly[point_num // 2 - 1],
+            poly[point_num // 2],
+            poly[point_num // 2 + 1],
         ],
-        dtype=np.float32)
-    right_ratio = 1.0 + \
-                  shrink_ratio_of_width * np.linalg.norm(right_quad[0] - right_quad[3]) / \
-                  (np.linalg.norm(right_quad[0] - right_quad[1]) + 1e-6)
+        dtype=np.float32,
+    )
+    right_ratio = 1.0 + shrink_ratio_of_width * np.linalg.norm(
+        right_quad[0] - right_quad[3]
+    ) / (np.linalg.norm(right_quad[0] - right_quad[1]) + 1e-6)
     right_quad_expand = shrink_quad_along_width(right_quad, 0.0, right_ratio)
     poly[0] = left_quad_expand[0]
     poly[-1] = left_quad_expand[-1]

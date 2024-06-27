@@ -103,6 +103,66 @@ It is recommended to choose the PP-OCRv3 model (configuration file: [ch_PP-OCRv3
 
 For more PP-OCR series models, please refer to [PP-OCR Series Model Library](./models_list_en.md)。
 
+The PP-OCRv3 model uses the GTC strategy. The SAR branch has a large number of parameters. When the training data is a simple scene, the model is easy to overfit, resulting in poor fine-tuning effect. It is recommended to remove the GTC strategy. The configuration file of the model structure is modified as follows:
+
+```yaml
+Architecture:
+  model_type: rec
+  algorithm: SVTR
+  Transform:
+  Backbone:
+    name: MobileNetV1Enhance
+    scale: 0.5
+    last_conv_stride: [1, 2]
+    last_pool_type: avg
+  Neck:
+    name: SequenceEncoder
+    encoder_type: svtr
+    dims: 64
+    depth: 2
+    hidden_dims: 120
+    use_guide: False
+  Head:
+    name: CTCHead
+    fc_decay: 0.00001
+Loss:
+  name: CTCLoss
+
+Train:
+  dataset:
+  ......
+    transforms:
+    # remove RecConAug
+    # - RecConAug:
+    #     prob: 0.5
+    #     ext_data_num: 2
+    #     image_shape: [48, 320, 3]
+    #     max_text_length: *max_text_length
+    - RecAug:
+    # modify Encode
+    - CTCLabelEncode:
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label
+        - length
+...
+
+Eval:
+  dataset:
+  ...
+    transforms:
+    ...
+    - CTCLabelEncode:
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label
+        - length
+...
+
+
+```
 
 ### 3.3 Training hyperparameter
 
@@ -165,3 +225,5 @@ Train:
 ### 3.4 training optimization
 
 The training process does not happen overnight. After completing a stage of training evaluation, it is recommended to collect and analyze the badcase of the current model in the real scene, adjust the proportion of training data in a targeted manner, or further add synthetic data. Through multiple iterations of training, the model effect is continuously optimized.
+
+If you modify the custom dictionary during training, since the parameters of the last layer of FC cannot be loaded, it is normal for acc=0 at the beginning of the iteration. Don't worry, loading the pre-trained model can still speed up the model convergence.

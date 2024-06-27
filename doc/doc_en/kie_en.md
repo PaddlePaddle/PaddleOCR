@@ -113,7 +113,7 @@ If you do not have local dataset, you can donwload the source files of [XFUND](h
 
 For more information about public KIE datasets, please refer to [KIE dataset tutorial](./dataset/kie_datasets_en.md).
 
-PaddleOCR also supports the annotation of KIE models. Please refer to [PPOCRLabel tutorial](../../PPOCRLabel/README.md).
+PaddleOCR also supports the annotation of KIE models. Please refer to [PPOCRLabel tutorial](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md).
 
 # 2. Training
 

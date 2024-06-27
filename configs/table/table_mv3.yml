@@ -20,6 +20,7 @@ Global:
   max_text_length: &max_text_length 500
   box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
   infer_mode: False
+  amp_custom_black_list: ['matmul_v2','elementwise_add']
 
 Optimizer:
   name: Adam

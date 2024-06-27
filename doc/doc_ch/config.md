@@ -13,7 +13,7 @@
 |         FLAG             |     支持脚本    |        用途        |      默认值       |         备注         |
 | :----------------------: | :------------: | :---------------: | :--------------: | :-----------------: |
 |          -c              |      ALL       |  指定配置文件  |  None  |  **配置模块说明请参考 参数介绍** |
-|          -o              |      ALL       |  设置配置文件里的参数内容  |  None  |  使用-o配置相较于-c选择的配置文件具有更高的优先级。例如：`-o Global.use_gpu=false`  |  
+|          -o              |      ALL       |  设置配置文件里的参数内容  |  None  |  使用-o配置相较于-c选择的配置文件具有更高的优先级。例如：`-o Global.use_gpu=false`  |
 
 <a name="2"></a>
 
@@ -223,4 +223,4 @@ PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi
 | rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 斯拉夫字母  |
 | rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | 梵文字母  |
 
-更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md#%E8%AF%AD%E7%A7%8D%E7%BC%A9%E5%86%99)
+更多支持语种请参考: [多语言模型](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/multi_languages.md)

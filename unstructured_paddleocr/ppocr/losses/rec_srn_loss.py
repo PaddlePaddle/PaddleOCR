@@ -26,12 +26,12 @@ class SRNLoss(nn.Layer):
         self.loss_func = paddle.nn.loss.CrossEntropyLoss(reduction="sum")
 
     def forward(self, predicts, batch):
-        predict = predicts['predict']
-        word_predict = predicts['word_out']
-        gsrm_predict = predicts['gsrm_out']
+        predict = predicts["predict"]
+        word_predict = predicts["word_out"]
+        gsrm_predict = predicts["gsrm_out"]
         label = batch[1]
 
-        casted_label = paddle.cast(x=label, dtype='int64')
+        casted_label = paddle.cast(x=label, dtype="int64")
         casted_label = paddle.reshape(x=casted_label, shape=[-1, 1])
 
         cost_word = self.loss_func(word_predict, label=casted_label)
@@ -44,4 +44,4 @@ class SRNLoss(nn.Layer):
 
         sum_cost = cost_word * 3.0 + cost_vsfd + cost_gsrm * 0.15
 
-        return {'loss': sum_cost, 'word_loss': cost_word, 'img_loss': cost_vsfd}
+        return {"loss": sum_cost, "word_loss": cost_word, "img_loss": cost_vsfd}

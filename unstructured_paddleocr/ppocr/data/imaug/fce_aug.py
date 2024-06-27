@@ -24,7 +24,7 @@ from ppocr.utils.poly_nms import poly_intersection
 
 
 class RandomScaling:
-    def __init__(self, size=800, scale=(3. / 4, 5. / 2), **kwargs):
+    def __init__(self, size=800, scale=(3.0 / 4, 5.0 / 2), **kwargs):
         """Random scale the image while keeping aspect.
 
         Args:
@@ -34,12 +34,11 @@ class RandomScaling:
         assert isinstance(size, int)
         assert isinstance(scale, float) or isinstance(scale, tuple)
         self.size = size
-        self.scale = scale if isinstance(scale, tuple) \
-            else (1 - scale, 1 + scale)
+        self.scale = scale if isinstance(scale, tuple) else (1 - scale, 1 + scale)
 
     def __call__(self, data):
-        image = data['image']
-        text_polys = data['polys']
+        image = data["image"]
+        text_polys = data["polys"]
         h, w, _ = image.shape
 
         aspect_ratio = np.random.uniform(min(self.scale), max(self.scale))
@@ -48,21 +47,18 @@ class RandomScaling:
         out_size = (int(h * scales[1]), int(w * scales[0]))
         image = cv2.resize(image, out_size[::-1])
 
-        data['image'] = image
+        data["image"] = image
         text_polys[:, :, 0::2] = text_polys[:, :, 0::2] * scales[1]
         text_polys[:, :, 1::2] = text_polys[:, :, 1::2] * scales[0]
-        data['polys'] = text_polys
+        data["polys"] = text_polys
 
         return data
 
 
 class RandomCropFlip:
-    def __init__(self,
-                 pad_ratio=0.1,
-                 crop_ratio=0.5,
-                 iter_num=1,
-                 min_area_ratio=0.2,
-                 **kwargs):
+    def __init__(
+        self, pad_ratio=0.1, crop_ratio=0.5, iter_num=1, min_area_ratio=0.2, **kwargs
+    ):
         """Random crop and flip a patch of the image.
 
         Args:
@@ -88,9 +84,9 @@ class RandomCropFlip:
         return results
 
     def random_crop_flip(self, results):
-        image = results['image']
-        polygons = results['polys']
-        ignore_tags = results['ignore_tags']
+        image = results["image"]
+        polygons = results["polys"]
+        ignore_tags = results["ignore_tags"]
         if len(polygons) == 0:
             return results
 
@@ -101,8 +97,7 @@ class RandomCropFlip:
         area = h * w
         pad_h = int(h * self.pad_ratio)
         pad_w = int(w * self.pad_ratio)
-        h_axis, w_axis = self.generate_crop_target(image, polygons, pad_h,
-                                                   pad_w)
+        h_axis, w_axis = self.generate_crop_target(image, polygons, pad_h, pad_w)
         if len(h_axis) == 0 or len(w_axis) == 0:
             return results
 
@@ -127,15 +122,18 @@ class RandomCropFlip:
                 # area too small
                 continue
 
-            pts = np.stack([[xmin, xmax, xmax, xmin],
-                            [ymin, ymin, ymax, ymax]]).T.astype(np.int32)
+            pts = np.stack(
+                [[xmin, xmax, xmax, xmin], [ymin, ymin, ymax, ymax]]
+            ).T.astype(np.int32)
             pp = Polygon(pts)
             fail_flag = False
             for polygon, ignore_tag in zip(polygons, ignore_tags):
                 ppi = Polygon(polygon.reshape(-1, 2))
                 ppiou, _ = poly_intersection(ppi, pp, buffer=0)
-                if np.abs(ppiou - float(ppi.area)) > self.epsilon and \
-                        np.abs(ppiou) > self.epsilon:
+                if (
+                    np.abs(ppiou - float(ppi.area)) > self.epsilon
+                    and np.abs(ppiou) > self.epsilon
+                ):
                     fail_flag = True
                     break
                 elif np.abs(ppiou - float(ppi.area)) < self.epsilon:
@@ -159,7 +157,7 @@ class RandomCropFlip:
         else:
             img = np.ascontiguousarray(cropped[::-1, ::-1])
         image[ymin:ymax, xmin:xmax, :] = img
-        results['img'] = image
+        results["img"] = image
 
         if len(polys_new) != 0:
             height, width, _ = cropped.shape
@@ -181,8 +179,8 @@ class RandomCropFlip:
                     polys_new[idx] = poly
             polygons = polys_keep + polys_new
             ignore_tags = ignore_tags_keep + ignore_tags_new
-            results['polys'] = np.array(polygons)
-            results['ignore_tags'] = ignore_tags
+            results["polys"] = np.array(polygons)
+            results["ignore_tags"] = ignore_tags
 
         return results
 
@@ -208,7 +206,7 @@ class RandomCropFlip:
         for polygon in all_polys:
             rect = cv2.minAreaRect(polygon.astype(np.int32).reshape(-1, 2))
             box = cv2.boxPoints(rect)
-            box = np.int0(box)
+            box = np.int64(box)
             text_polys.append([box[0], box[1], box[2], box[3]])
 
         polys = np.array(text_polys, dtype=np.int32)
@@ -216,10 +214,10 @@ class RandomCropFlip:
             poly = np.round(poly, decimals=0).astype(np.int32)
             minx = np.min(poly[:, 0])
             maxx = np.max(poly[:, 0])
-            w_array[minx + pad_w:maxx + pad_w] = 1
+            w_array[minx + pad_w : maxx + pad_w] = 1
             miny = np.min(poly[:, 1])
             maxy = np.max(poly[:, 1])
-            h_array[miny + pad_h:maxy + pad_h] = 1
+            h_array[miny + pad_h : maxy + pad_h] = 1
 
         h_axis = np.where(h_array == 0)[0]
         w_axis = np.where(w_array == 0)[0]
@@ -236,7 +234,6 @@ class RandomCropPolyInstances:
         self.min_side_ratio = min_side_ratio
 
     def sample_valid_start_end(self, valid_array, min_len, max_start, min_end):
-
         assert isinstance(min_len, int)
         assert len(valid_array) > min_len
 
@@ -248,8 +245,7 @@ class RandomCropPolyInstances:
         region_starts = np.where(diff_array < 0)[0]
         region_ends = np.where(diff_array > 0)[0]
         region_ind = np.random.randint(0, len(region_starts))
-        start = np.random.randint(region_starts[region_ind],
-                                  region_ends[region_ind])
+        start = np.random.randint(region_starts[region_ind], region_ends[region_ind])
 
         end_array = valid_array.copy()
         min_end = max(start + min_len, min_end)
@@ -259,8 +255,7 @@ class RandomCropPolyInstances:
         region_starts = np.where(diff_array < 0)[0]
         region_ends = np.where(diff_array > 0)[0]
         region_ind = np.random.randint(0, len(region_starts))
-        end = np.random.randint(region_starts[region_ind],
-                                region_ends[region_ind])
+        end = np.random.randint(region_starts[region_ind], region_ends[region_ind])
         return start, end
 
     def sample_crop_box(self, img_size, results):
@@ -274,7 +269,7 @@ class RandomCropPolyInstances:
         assert isinstance(img_size, tuple)
         h, w = img_size[:2]
 
-        key_masks = results['polys']
+        key_masks = results["polys"]
 
         x_valid_array = np.ones(w, dtype=np.int32)
         y_valid_array = np.ones(h, dtype=np.int32)
@@ -293,16 +288,18 @@ class RandomCropPolyInstances:
             min_x, max_x = np.min(clip_x), np.max(clip_x)
             min_y, max_y = np.min(clip_y), np.max(clip_y)
 
-            x_valid_array[min_x - 2:max_x + 3] = 0
-            y_valid_array[min_y - 2:max_y + 3] = 0
+            x_valid_array[min_x - 2 : max_x + 3] = 0
+            y_valid_array[min_y - 2 : max_y + 3] = 0
 
         min_w = int(w * self.min_side_ratio)
         min_h = int(h * self.min_side_ratio)
 
-        x1, x2 = self.sample_valid_start_end(x_valid_array, min_w, max_x_start,
-                                             min_x_end)
-        y1, y2 = self.sample_valid_start_end(y_valid_array, min_h, max_y_start,
-                                             min_y_end)
+        x1, x2 = self.sample_valid_start_end(
+            x_valid_array, min_w, max_x_start, min_x_end
+        )
+        y1, y2 = self.sample_valid_start_end(
+            y_valid_array, min_h, max_y_start, min_y_end
+        )
 
         return np.array([x1, y1, x2, y2])
 
@@ -311,20 +308,19 @@ class RandomCropPolyInstances:
         h, w, _ = img.shape
         assert 0 <= bbox[1] < bbox[3] <= h
         assert 0 <= bbox[0] < bbox[2] <= w
-        return img[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+        return img[bbox[1] : bbox[3], bbox[0] : bbox[2]]
 
     def __call__(self, results):
-        image = results['image']
-        polygons = results['polys']
-        ignore_tags = results['ignore_tags']
+        image = results["image"]
+        polygons = results["polys"]
+        ignore_tags = results["ignore_tags"]
         if len(polygons) < 1:
             return results
 
         if np.random.random_sample() < self.crop_ratio:
-
             crop_box = self.sample_crop_box(image.shape, results)
             img = self.crop_img(image, crop_box)
-            results['image'] = img
+            results["image"] = img
             # crop and filter masks
             x1, y1, x2, y2 = crop_box
             w = max(x2 - x1, 1)
@@ -335,17 +331,19 @@ class RandomCropPolyInstances:
             valid_masks_list = []
             valid_tags_list = []
             for ind, polygon in enumerate(polygons):
-                if (polygon[:, ::2] > -4).all() and (
-                        polygon[:, ::2] < w + 4).all() and (
-                            polygon[:, 1::2] > -4).all() and (
-                                polygon[:, 1::2] < h + 4).all():
+                if (
+                    (polygon[:, ::2] > -4).all()
+                    and (polygon[:, ::2] < w + 4).all()
+                    and (polygon[:, 1::2] > -4).all()
+                    and (polygon[:, 1::2] < h + 4).all()
+                ):
                     polygon[:, ::2] = np.clip(polygon[:, ::2], 0, w)
                     polygon[:, 1::2] = np.clip(polygon[:, 1::2], 0, h)
                     valid_masks_list.append(polygon)
                     valid_tags_list.append(ignore_tags[ind])
 
-            results['polys'] = np.array(valid_masks_list)
-            results['ignore_tags'] = valid_tags_list
+            results["polys"] = np.array(valid_masks_list)
+            results["ignore_tags"] = valid_tags_list
 
         return results
 
@@ -355,12 +353,14 @@ class RandomCropPolyInstances:
 
 
 class RandomRotatePolyInstances:
-    def __init__(self,
-                 rotate_ratio=0.5,
-                 max_angle=10,
-                 pad_with_fixed_color=False,
-                 pad_value=(0, 0, 0),
-                 **kwargs):
+    def __init__(
+        self,
+        rotate_ratio=0.5,
+        max_angle=10,
+        pad_with_fixed_color=False,
+        pad_value=(0, 0, 0),
+        **kwargs,
+    ):
         """Randomly rotate images and polygon masks.
 
         Args:
@@ -387,8 +387,8 @@ class RandomRotatePolyInstances:
         cos = math.cos(theta)
         sin = math.sin(theta)
 
-        x = (x - center_x)
-        y = (y - center_y)
+        x = x - center_x
+        y = y - center_y
 
         _x = center_x + x * cos - y * sin + center_shift[0]
         _y = -(center_y + x * sin + y * cos) + center_shift[1]
@@ -422,47 +422,56 @@ class RandomRotatePolyInstances:
         if self.pad_with_fixed_color:
             target_img = cv2.warpAffine(
                 img,
-                rotation_matrix, (canvas_size[1], canvas_size[0]),
+                rotation_matrix,
+                (canvas_size[1], canvas_size[0]),
                 flags=cv2.INTER_NEAREST,
-                borderValue=self.pad_value)
+                borderValue=self.pad_value,
+            )
         else:
             mask = np.zeros_like(img)
-            (h_ind, w_ind) = (np.random.randint(0, h * 7 // 8),
-                              np.random.randint(0, w * 7 // 8))
-            img_cut = img[h_ind:(h_ind + h // 9), w_ind:(w_ind + w // 9)]
+            (h_ind, w_ind) = (
+                np.random.randint(0, h * 7 // 8),
+                np.random.randint(0, w * 7 // 8),
+            )
+            img_cut = img[h_ind : (h_ind + h // 9), w_ind : (w_ind + w // 9)]
             img_cut = cv2.resize(img_cut, (canvas_size[1], canvas_size[0]))
 
             mask = cv2.warpAffine(
                 mask,
-                rotation_matrix, (canvas_size[1], canvas_size[0]),
-                borderValue=[1, 1, 1])
+                rotation_matrix,
+                (canvas_size[1], canvas_size[0]),
+                borderValue=[1, 1, 1],
+            )
             target_img = cv2.warpAffine(
                 img,
-                rotation_matrix, (canvas_size[1], canvas_size[0]),
-                borderValue=[0, 0, 0])
+                rotation_matrix,
+                (canvas_size[1], canvas_size[0]),
+                borderValue=[0, 0, 0],
+            )
             target_img = target_img + img_cut * mask
 
         return target_img
 
     def __call__(self, results):
         if np.random.random_sample() < self.rotate_ratio:
-            image = results['image']
-            polygons = results['polys']
+            image = results["image"]
+            polygons = results["polys"]
             h, w = image.shape[:2]
 
             angle = self.sample_angle(self.max_angle)
             canvas_size = self.cal_canvas_size((h, w), angle)
-            center_shift = (int((canvas_size[1] - w) / 2), int(
-                (canvas_size[0] - h) / 2))
+            center_shift = (
+                int((canvas_size[1] - w) / 2),
+                int((canvas_size[0] - h) / 2),
+            )
             image = self.rotate_img(image, angle, canvas_size)
-            results['image'] = image
+            results["image"] = image
             # rotate polygons
             rotated_masks = []
             for mask in polygons:
-                rotated_mask = self.rotate((w / 2, h / 2), mask, angle,
-                                           center_shift)
+                rotated_mask = self.rotate((w / 2, h / 2), mask, angle, center_shift)
                 rotated_masks.append(rotated_mask)
-            results['polys'] = np.array(rotated_masks)
+            results["polys"] = np.array(rotated_masks)
 
         return results
 
@@ -472,12 +481,14 @@ class RandomRotatePolyInstances:
 
 
 class SquareResizePad:
-    def __init__(self,
-                 target_size,
-                 pad_ratio=0.6,
-                 pad_with_fixed_color=False,
-                 pad_value=(0, 0, 0),
-                 **kwargs):
+    def __init__(
+        self,
+        target_size,
+        pad_ratio=0.6,
+        pad_with_fixed_color=False,
+        pad_value=(0, 0, 0),
+        **kwargs,
+    ):
         """Resize or pad images to be square shape.
 
         Args:
@@ -516,15 +527,17 @@ class SquareResizePad:
             expand_img = np.ones((pad_size, pad_size, 3), dtype=np.uint8)
             expand_img[:] = self.pad_value
         else:
-            (h_ind, w_ind) = (np.random.randint(0, h * 7 // 8),
-                              np.random.randint(0, w * 7 // 8))
-            img_cut = img[h_ind:(h_ind + h // 9), w_ind:(w_ind + w // 9)]
+            (h_ind, w_ind) = (
+                np.random.randint(0, h * 7 // 8),
+                np.random.randint(0, w * 7 // 8),
+            )
+            img_cut = img[h_ind : (h_ind + h // 9), w_ind : (w_ind + w // 9)]
             expand_img = cv2.resize(img_cut, (pad_size, pad_size))
         if h > w:
             y0, x0 = 0, (h - w) // 2
         else:
             y0, x0 = (w - h) // 2, 0
-        expand_img[y0:y0 + h, x0:x0 + w] = img
+        expand_img[y0 : y0 + h, x0 : x0 + w] = img
         offset = (x0, y0)
 
         return expand_img, offset
@@ -537,8 +550,8 @@ class SquareResizePad:
         return pad_points
 
     def __call__(self, results):
-        image = results['image']
-        polygons = results['polys']
+        image = results["image"]
+        polygons = results["polys"]
         h, w = image.shape[:2]
 
         if np.random.random_sample() < self.pad_ratio:
@@ -547,15 +560,13 @@ class SquareResizePad:
         else:
             image, out_size = self.resize_img(image, keep_ratio=False)
             offset = (0, 0)
-        results['image'] = image
+        results["image"] = image
         try:
-            polygons[:, :, 0::2] = polygons[:, :, 0::2] * out_size[
-                1] / w + offset[0]
-            polygons[:, :, 1::2] = polygons[:, :, 1::2] * out_size[
-                0] / h + offset[1]
+            polygons[:, :, 0::2] = polygons[:, :, 0::2] * out_size[1] / w + offset[0]
+            polygons[:, :, 1::2] = polygons[:, :, 1::2] * out_size[0] / h + offset[1]
         except:
             pass
-        results['polys'] = polygons
+        results["polys"] = polygons
 
         return results
 

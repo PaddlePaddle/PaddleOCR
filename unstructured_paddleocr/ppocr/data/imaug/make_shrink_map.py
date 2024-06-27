@@ -26,27 +26,30 @@ import cv2
 from shapely.geometry import Polygon
 import pyclipper
 
-__all__ = ['MakeShrinkMap']
+__all__ = ["MakeShrinkMap"]
 
 
 class MakeShrinkMap(object):
-    r'''
+    r"""
     Making binary mask from detection data with ICDAR format.
     Typically following the process of class `MakeICDARData`.
-    '''
+    """
 
     def __init__(self, min_text_size=8, shrink_ratio=0.4, **kwargs):
         self.min_text_size = min_text_size
         self.shrink_ratio = shrink_ratio
+        if "total_epoch" in kwargs and "epoch" in kwargs and kwargs["epoch"] != "None":
+            self.shrink_ratio = self.shrink_ratio + 0.2 * kwargs["epoch"] / float(
+                kwargs["total_epoch"]
+            )
 
     def __call__(self, data):
-        image = data['image']
-        text_polys = data['polys']
-        ignore_tags = data['ignore_tags']
+        image = data["image"]
+        text_polys = data["polys"]
+        ignore_tags = data["ignore_tags"]
 
         h, w = image.shape[:2]
-        text_polys, ignore_tags = self.validate_polygons(text_polys,
-                                                         ignore_tags, h, w)
+        text_polys, ignore_tags = self.validate_polygons(text_polys, ignore_tags, h, w)
         gt = np.zeros((h, w), dtype=np.float32)
         mask = np.ones((h, w), dtype=np.float32)
         for i in range(len(text_polys)):
@@ -54,33 +57,32 @@ class MakeShrinkMap(object):
             height = max(polygon[:, 1]) - min(polygon[:, 1])
             width = max(polygon[:, 0]) - min(polygon[:, 0])
             if ignore_tags[i] or min(height, width) < self.min_text_size:
-                cv2.fillPoly(mask,
-                             polygon.astype(np.int32)[np.newaxis, :, :], 0)
+                cv2.fillPoly(mask, polygon.astype(np.int32)[np.newaxis, :, :], 0)
                 ignore_tags[i] = True
             else:
                 polygon_shape = Polygon(polygon)
                 subject = [tuple(l) for l in polygon]
                 padding = pyclipper.PyclipperOffset()
-                padding.AddPath(subject, pyclipper.JT_ROUND,
-                                pyclipper.ET_CLOSEDPOLYGON)
+                padding.AddPath(subject, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
                 shrinked = []
 
                 # Increase the shrink ratio every time we get multiple polygon returned back
-                possible_ratios = np.arange(self.shrink_ratio, 1,
-                                            self.shrink_ratio)
+                possible_ratios = np.arange(self.shrink_ratio, 1, self.shrink_ratio)
                 np.append(possible_ratios, 1)
                 # print(possible_ratios)
                 for ratio in possible_ratios:
                     # print(f"Change shrink ratio to {ratio}")
-                    distance = polygon_shape.area * (
-                        1 - np.power(ratio, 2)) / polygon_shape.length
+                    distance = (
+                        polygon_shape.area
+                        * (1 - np.power(ratio, 2))
+                        / polygon_shape.length
+                    )
                     shrinked = padding.Execute(-distance)
                     if len(shrinked) == 1:
                         break
 
                 if shrinked == []:
-                    cv2.fillPoly(mask,
-                                 polygon.astype(np.int32)[np.newaxis, :, :], 0)
+                    cv2.fillPoly(mask, polygon.astype(np.int32)[np.newaxis, :, :], 0)
                     ignore_tags[i] = True
                     continue
 
@@ -88,14 +90,14 @@ class MakeShrinkMap(object):
                     shirnk = np.array(each_shirnk).reshape(-1, 2)
                     cv2.fillPoly(gt, [shirnk.astype(np.int32)], 1)
 
-        data['shrink_map'] = gt
-        data['shrink_mask'] = mask
+        data["shrink_map"] = gt
+        data["shrink_mask"] = mask
         return data
 
     def validate_polygons(self, polygons, ignore_tags, h, w):
-        '''
+        """
         polygons (numpy.array, required): of shape (num_instances, num_points, 2)
-        '''
+        """
         if len(polygons) == 0:
             return polygons, ignore_tags
         assert len(polygons) == len(ignore_tags)

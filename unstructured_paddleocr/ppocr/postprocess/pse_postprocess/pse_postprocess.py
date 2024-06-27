@@ -33,14 +33,16 @@ class PSEPostProcess(object):
     The post process for PSE.
     """
 
-    def __init__(self,
-                 thresh=0.5,
-                 box_thresh=0.85,
-                 min_area=16,
-                 box_type='quad',
-                 scale=4,
-                 **kwargs):
-        assert box_type in ['quad', 'poly'], 'Only quad and poly is supported'
+    def __init__(
+        self,
+        thresh=0.5,
+        box_thresh=0.85,
+        min_area=16,
+        box_type="quad",
+        scale=4,
+        **kwargs,
+    ):
+        assert box_type in ["quad", "poly"], "Only quad and poly is supported"
         self.thresh = thresh
         self.box_thresh = box_thresh
         self.min_area = min_area
@@ -48,15 +50,14 @@ class PSEPostProcess(object):
         self.scale = scale
 
     def __call__(self, outs_dict, shape_list):
-        pred = outs_dict['maps']
+        pred = outs_dict["maps"]
         if not isinstance(pred, paddle.Tensor):
             pred = paddle.to_tensor(pred)
-        pred = F.interpolate(
-            pred, scale_factor=4 // self.scale, mode='bilinear')
+        pred = F.interpolate(pred, scale_factor=4 // self.scale, mode="bilinear")
 
         score = F.sigmoid(pred[:, 0, :, :])
 
-        kernels = (pred > self.thresh).astype('float32')
+        kernels = (pred > self.thresh).astype("float32")
         text_mask = kernels[:, 0, :, :]
         text_mask = paddle.unsqueeze(text_mask, axis=1)
 
@@ -67,11 +68,11 @@ class PSEPostProcess(object):
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):
-            boxes, scores = self.boxes_from_bitmap(score[batch_index],
-                                                   kernels[batch_index],
-                                                   shape_list[batch_index])
+            boxes, scores = self.boxes_from_bitmap(
+                score[batch_index], kernels[batch_index], shape_list[batch_index]
+            )
 
-            boxes_batch.append({'points': boxes, 'scores': scores})
+            boxes_batch.append({"points": boxes, "scores": scores})
         return boxes_batch
 
     def boxes_from_bitmap(self, score, kernels, shape):
@@ -97,18 +98,19 @@ class PSEPostProcess(object):
                 label[ind] = 0
                 continue
 
-            if self.box_type == 'quad':
+            if self.box_type == "quad":
                 rect = cv2.minAreaRect(points)
                 bbox = cv2.boxPoints(rect)
-            elif self.box_type == 'poly':
+            elif self.box_type == "poly":
                 box_height = np.max(points[:, 1]) + 10
                 box_width = np.max(points[:, 0]) + 10
 
                 mask = np.zeros((box_height, box_width), np.uint8)
                 mask[points[:, 1], points[:, 0]] = 255
 
-                contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,
-                                               cv2.CHAIN_APPROX_SIMPLE)
+                contours, _ = cv2.findContours(
+                    mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+                )
                 bbox = np.squeeze(contours[0], 1)
             else:
                 raise NotImplementedError

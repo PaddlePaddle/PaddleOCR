@@ -31,15 +31,17 @@ class DBPostProcess(object):
     The post process for Differentiable Binarization (DB).
     """
 
-    def __init__(self,
-                 thresh=0.3,
-                 box_thresh=0.7,
-                 max_candidates=1000,
-                 unclip_ratio=2.0,
-                 use_dilation=False,
-                 score_mode="fast",
-                 box_type='quad',
-                 **kwargs):
+    def __init__(
+        self,
+        thresh=0.3,
+        box_thresh=0.7,
+        max_candidates=1000,
+        unclip_ratio=2.0,
+        use_dilation=False,
+        score_mode="fast",
+        box_type="quad",
+        **kwargs,
+    ):
         self.thresh = thresh
         self.box_thresh = box_thresh
         self.max_candidates = max_candidates
@@ -48,17 +50,17 @@ class DBPostProcess(object):
         self.score_mode = score_mode
         self.box_type = box_type
         assert score_mode in [
-            "slow", "fast"
+            "slow",
+            "fast",
         ], "Score mode must be in [slow, fast] but got: {}".format(score_mode)
 
-        self.dilation_kernel = None if not use_dilation else np.array(
-            [[1, 1], [1, 1]])
+        self.dilation_kernel = None if not use_dilation else np.array([[1, 1], [1, 1]])
 
     def polygons_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
-        '''
+        """
         _bitmap: single map with shape (1, H, W),
             whose values are binarized as {0, 1}
-        '''
+        """
 
         bitmap = _bitmap
         height, width = bitmap.shape
@@ -66,10 +68,11 @@ class DBPostProcess(object):
         boxes = []
         scores = []
 
-        contours, _ = cv2.findContours((bitmap * 255).astype(np.uint8),
-                                       cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+        contours, _ = cv2.findContours(
+            (bitmap * 255).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
 
-        for contour in contours[:self.max_candidates]:
+        for contour in contours[: self.max_candidates]:
             epsilon = 0.002 * cv2.arcLength(contour, True)
             approx = cv2.approxPolyDP(contour, epsilon, True)
             points = approx.reshape((-1, 2))
@@ -86,32 +89,35 @@ class DBPostProcess(object):
                     continue
             else:
                 continue
-            box = box.reshape(-1, 2)
+            box = np.array(box).reshape(-1, 2)
+            if len(box) == 0:
+                continue
 
             _, sside = self.get_mini_boxes(box.reshape((-1, 1, 2)))
             if sside < self.min_size + 2:
                 continue
 
             box = np.array(box)
-            box[:, 0] = np.clip(
-                np.round(box[:, 0] / width * dest_width), 0, dest_width)
+            box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
-                np.round(box[:, 1] / height * dest_height), 0, dest_height)
+                np.round(box[:, 1] / height * dest_height), 0, dest_height
+            )
             boxes.append(box.tolist())
             scores.append(score)
         return boxes, scores
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
-        '''
+        """
         _bitmap: single map with shape (1, H, W),
                 whose values are binarized as {0, 1}
-        '''
+        """
 
         bitmap = _bitmap
         height, width = bitmap.shape
 
-        outs = cv2.findContours((bitmap * 255).astype(np.uint8), cv2.RETR_LIST,
-                                cv2.CHAIN_APPROX_SIMPLE)
+        outs = cv2.findContours(
+            (bitmap * 255).astype(np.uint8), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE
+        )
         if len(outs) == 3:
             img, contours, _ = outs[0], outs[1], outs[2]
         elif len(outs) == 2:
@@ -134,16 +140,19 @@ class DBPostProcess(object):
             if self.box_thresh > score:
                 continue
 
-            box = self.unclip(points, self.unclip_ratio).reshape(-1, 1, 2)
+            box = self.unclip(points, self.unclip_ratio)
+            if len(box) > 1:
+                continue
+            box = np.array(box).reshape(-1, 1, 2)
             box, sside = self.get_mini_boxes(box)
             if sside < self.min_size + 2:
                 continue
             box = np.array(box)
 
-            box[:, 0] = np.clip(
-                np.round(box[:, 0] / width * dest_width), 0, dest_width)
+            box[:, 0] = np.clip(np.round(box[:, 0] / width * dest_width), 0, dest_width)
             box[:, 1] = np.clip(
-                np.round(box[:, 1] / height * dest_height), 0, dest_height)
+                np.round(box[:, 1] / height * dest_height), 0, dest_height
+            )
             boxes.append(box.astype("int32"))
             scores.append(score)
         return np.array(boxes, dtype="int32"), scores
@@ -153,7 +162,7 @@ class DBPostProcess(object):
         distance = poly.area * unclip_ratio / poly.length
         offset = pyclipper.PyclipperOffset()
         offset.AddPath(box, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
-        expanded = np.array(offset.Execute(distance))
+        expanded = offset.Execute(distance)
         return expanded
 
     def get_mini_boxes(self, contour):
@@ -174,15 +183,13 @@ class DBPostProcess(object):
             index_2 = 3
             index_3 = 2
 
-        box = [
-            points[index_1], points[index_2], points[index_3], points[index_4]
-        ]
+        box = [points[index_1], points[index_2], points[index_3], points[index_4]]
         return box, min(bounding_box[1])
 
     def box_score_fast(self, bitmap, _box):
-        '''
+        """
         box_score_fast: use bbox mean score as the mean score
-        '''
+        """
         h, w = bitmap.shape[:2]
         box = _box.copy()
         xmin = np.clip(np.floor(box[:, 0].min()).astype("int32"), 0, w - 1)
@@ -194,12 +201,12 @@ class DBPostProcess(object):
         box[:, 0] = box[:, 0] - xmin
         box[:, 1] = box[:, 1] - ymin
         cv2.fillPoly(mask, box.reshape(1, -1, 2).astype("int32"), 1)
-        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+        return cv2.mean(bitmap[ymin : ymax + 1, xmin : xmax + 1], mask)[0]
 
     def box_score_slow(self, bitmap, contour):
-        '''
+        """
         box_score_slow: use polyon mean score as the mean score
-        '''
+        """
         h, w = bitmap.shape[:2]
         contour = contour.copy()
         contour = np.reshape(contour, (-1, 2))
@@ -215,10 +222,10 @@ class DBPostProcess(object):
         contour[:, 1] = contour[:, 1] - ymin
 
         cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype("int32"), 1)
-        return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
+        return cv2.mean(bitmap[ymin : ymax + 1, xmin : xmax + 1], mask)[0]
 
     def __call__(self, outs_dict, shape_list):
-        pred = outs_dict['maps']
+        pred = outs_dict["maps"]
         if isinstance(pred, paddle.Tensor):
             pred = pred.numpy()
         pred = pred[:, 0, :, :]
@@ -230,34 +237,39 @@ class DBPostProcess(object):
             if self.dilation_kernel is not None:
                 mask = cv2.dilate(
                     np.array(segmentation[batch_index]).astype(np.uint8),
-                    self.dilation_kernel)
+                    self.dilation_kernel,
+                )
             else:
                 mask = segmentation[batch_index]
-            if self.box_type == 'poly':
-                boxes, scores = self.polygons_from_bitmap(pred[batch_index],
-                                                          mask, src_w, src_h)
-            elif self.box_type == 'quad':
-                boxes, scores = self.boxes_from_bitmap(pred[batch_index], mask,
-                                                       src_w, src_h)
+            if self.box_type == "poly":
+                boxes, scores = self.polygons_from_bitmap(
+                    pred[batch_index], mask, src_w, src_h
+                )
+            elif self.box_type == "quad":
+                boxes, scores = self.boxes_from_bitmap(
+                    pred[batch_index], mask, src_w, src_h
+                )
             else:
                 raise ValueError("box_type can only be one of ['quad', 'poly']")
 
-            boxes_batch.append({'points': boxes})
+            boxes_batch.append({"points": boxes})
         return boxes_batch
 
 
 class DistillationDBPostProcess(object):
-    def __init__(self,
-                 model_name=["student"],
-                 key=None,
-                 thresh=0.3,
-                 box_thresh=0.6,
-                 max_candidates=1000,
-                 unclip_ratio=1.5,
-                 use_dilation=False,
-                 score_mode="fast",
-                 box_type='quad',
-                 **kwargs):
+    def __init__(
+        self,
+        model_name=["student"],
+        key=None,
+        thresh=0.3,
+        box_thresh=0.6,
+        max_candidates=1000,
+        unclip_ratio=1.5,
+        use_dilation=False,
+        score_mode="fast",
+        box_type="quad",
+        **kwargs,
+    ):
         self.model_name = model_name
         self.key = key
         self.post_process = DBPostProcess(
@@ -267,7 +279,8 @@ class DistillationDBPostProcess(object):
             unclip_ratio=unclip_ratio,
             use_dilation=use_dilation,
             score_mode=score_mode,
-            box_type=box_type)
+            box_type=box_type,
+        )
 
     def __call__(self, predicts, shape_list):
         results = {}

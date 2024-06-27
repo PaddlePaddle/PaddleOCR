@@ -23,9 +23,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
 
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["FLAGS_allocator_strategy"] = "auto_growth"
 
 import cv2
 import json
@@ -41,15 +41,12 @@ from PIL import Image, ImageDraw, ImageFont
 import math
 
 
-def draw_e2e_res_for_chinese(image,
-                             boxes,
-                             txts,
-                             config,
-                             img_name,
-                             font_path="./doc/simfang.ttf"):
+def draw_e2e_res_for_chinese(
+    image, boxes, txts, config, img_name, font_path="./doc/simfang.ttf"
+):
     h, w = image.height, image.width
     img_left = image.copy()
-    img_right = Image.new('RGB', (w, h), (255, 255, 255))
+    img_right = Image.new("RGB", (w, h), (255, 255, 255))
 
     import random
 
@@ -59,19 +56,17 @@ def draw_e2e_res_for_chinese(image,
     for idx, (box, txt) in enumerate(zip(boxes, txts)):
         box = np.array(box)
         box = [tuple(x) for x in box]
-        color = (random.randint(0, 255), random.randint(0, 255),
-                 random.randint(0, 255))
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw_left.polygon(box, fill=color)
         draw_right.polygon(box, outline=color)
         font = ImageFont.truetype(font_path, 15, encoding="utf-8")
         draw_right.text([box[0][0], box[0][1]], txt, fill=(0, 0, 0), font=font)
     img_left = Image.blend(image, img_left, 0.5)
-    img_show = Image.new('RGB', (w * 2, h), (255, 255, 255))
+    img_show = Image.new("RGB", (w * 2, h), (255, 255, 255))
     img_show.paste(img_left, (0, 0, w, h))
     img_show.paste(img_right, (w, 0, w * 2, h))
 
-    save_e2e_path = os.path.dirname(config['Global'][
-        'save_res_path']) + "/e2e_results/"
+    save_e2e_path = os.path.dirname(config["Global"]["save_res_path"]) + "/e2e_results/"
     if not os.path.exists(save_e2e_path):
         os.makedirs(save_e2e_path)
     save_path = os.path.join(save_e2e_path, os.path.basename(img_name))
@@ -92,9 +87,11 @@ def draw_e2e_res(dt_boxes, strs, config, img, img_name):
                 fontFace=cv2.FONT_HERSHEY_COMPLEX,
                 fontScale=0.7,
                 color=(0, 255, 0),
-                thickness=1)
-        save_det_path = os.path.dirname(config['Global'][
-            'save_res_path']) + "/e2e_results/"
+                thickness=1,
+            )
+        save_det_path = (
+            os.path.dirname(config["Global"]["save_res_path"]) + "/e2e_results/"
+        )
         if not os.path.exists(save_det_path):
             os.makedirs(save_det_path)
         save_path = os.path.join(save_det_path, os.path.basename(img_name))
@@ -103,72 +100,71 @@ def draw_e2e_res(dt_boxes, strs, config, img, img_name):
 
 
 def main():
-    global_config = config['Global']
+    global_config = config["Global"]
 
     # build model
-    model = build_model(config['Architecture'])
+    model = build_model(config["Architecture"])
 
     load_model(config, model)
 
     # build post process
-    post_process_class = build_post_process(config['PostProcess'],
-                                            global_config)
+    post_process_class = build_post_process(config["PostProcess"], global_config)
 
     # create data ops
     transforms = []
-    for op in config['Eval']['dataset']['transforms']:
+    for op in config["Eval"]["dataset"]["transforms"]:
         op_name = list(op)[0]
-        if 'Label' in op_name:
+        if "Label" in op_name:
             continue
-        elif op_name == 'KeepKeys':
-            op[op_name]['keep_keys'] = ['image', 'shape']
+        elif op_name == "KeepKeys":
+            op[op_name]["keep_keys"] = ["image", "shape"]
         transforms.append(op)
 
     ops = create_operators(transforms, global_config)
 
-    save_res_path = config['Global']['save_res_path']
+    save_res_path = config["Global"]["save_res_path"]
     if not os.path.exists(os.path.dirname(save_res_path)):
         os.makedirs(os.path.dirname(save_res_path))
 
     model.eval()
     with open(save_res_path, "wb") as fout:
-        for file in get_image_file_list(config['Global']['infer_img']):
+        for file in get_image_file_list(config["Global"]["infer_img"]):
             logger.info("infer_img: {}".format(file))
-            with open(file, 'rb') as f:
+            with open(file, "rb") as f:
                 img = f.read()
-                data = {'image': img}
+                data = {"image": img}
             batch = transform(data, ops)
             images = np.expand_dims(batch[0], axis=0)
             shape_list = np.expand_dims(batch[1], axis=0)
             images = paddle.to_tensor(images)
             preds = model(images)
             post_result = post_process_class(preds, shape_list)
-            points, strs = post_result['points'], post_result['texts']
+            points, strs = post_result["points"], post_result["texts"]
             # write result
             dt_boxes_json = []
             for poly, str in zip(points, strs):
                 tmp_json = {"transcription": str}
-                tmp_json['points'] = poly.tolist()
+                tmp_json["points"] = poly.tolist()
                 dt_boxes_json.append(tmp_json)
             otstr = file + "\t" + json.dumps(dt_boxes_json) + "\n"
             fout.write(otstr.encode())
             src_img = cv2.imread(file)
-            if global_config['infer_visual_type'] == 'EN':
+            if global_config["infer_visual_type"] == "EN":
                 draw_e2e_res(points, strs, config, src_img, file)
-            elif global_config['infer_visual_type'] == 'CN':
-                src_img = Image.fromarray(
-                    cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB))
+            elif global_config["infer_visual_type"] == "CN":
+                src_img = Image.fromarray(cv2.cvtColor(src_img, cv2.COLOR_BGR2RGB))
                 draw_e2e_res_for_chinese(
                     src_img,
                     points,
                     strs,
                     config,
                     file,
-                    font_path="./doc/fonts/simfang.ttf")
+                    font_path="./doc/fonts/simfang.ttf",
+                )
 
     logger.info("success!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess()
     main()

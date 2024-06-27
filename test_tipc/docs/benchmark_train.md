@@ -59,18 +59,18 @@ train_log/
 |模型名称|配置文件|大数据集 float32 fps |小数据集 float32 fps |diff |大数据集 float16 fps|小数据集 float16 fps| diff | 大数据集大小 | 小数据集大小 |
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | ch_ppocr_mobile_v2.0_det |[config](../configs/ch_ppocr_mobile_v2.0_det/train_infer_python.txt) | 53.836 | 53.343 / 53.914 / 52.785 |0.020940758 | 45.574 | 45.57 / 46.292 / 46.213 | 0.015596647 | 10,000| 2,000|
-| ch_ppocr_mobile_v2.0_rec |[config](../configs/ch_ppocr_mobile_v2.0_rec/train_infer_python.txt) | 2083.311 | 2043.194	/ 2066.372 / 2093.317 |0.023944295 | 2153.261 | 2167.561 /	2165.726 /	2155.614| 0.005511725 | 600,000| 160,000|
-| ch_ppocr_server_v2.0_det |[config](../configs/ch_ppocr_server_v2.0_det/train_infer_python.txt) | 20.716 | 20.739 /	20.807 /	20.755 |0.003268131 | 20.592 | 20.498 /	20.993 /	20.75| 0.023579288 | 10,000| 2,000|
-| ch_ppocr_server_v2.0_rec |[config](../configs/ch_ppocr_server_v2.0_rec/train_infer_python.txt) | 528.56 | 528.386 /	528.991 /	528.391 |0.001143687 | 1189.788 | 1190.007 /	1176.332 /	1192.084| 0.013213834 |  600,000| 160,000|
-| ch_PP-OCRv2_det	 |[config](../configs/ch_PP-OCRv2_det/train_infer_python.txt) | 13.87 | 13.386 /	13.529 /	13.428 |0.010569887 | 17.847 | 17.746 /	17.908 /	17.96| 0.011915367 | 10,000| 2,000|
-| ch_PP-OCRv2_rec	 |[config](../configs/ch_PP-OCRv2_rec/train_infer_python.txt) | 109.248 | 106.32 /	106.318 /	108.587 |0.020895687 | 117.491 | 117.62 /	117.757 /	117.726| 0.001163413 | 140,000| 40,000|
-| det_mv3_db_v2.0	 |[config](../configs/det_mv3_db_v2_0/train_infer_python.txt) | 61.802 | 62.078 /	61.802 /	62.008 |0.00444602 | 82.947 | 84.294 /	84.457 /	84.005| 0.005351836 | 10,000| 2,000|
-| det_r50_vd_db_v2.0	 |[config](../configs/det_r50_vd_db_v2.0/train_infer_python.txt) | 29.955 | 29.092 /	29.31 /	28.844 |0.015899011 | 51.097 |50.367 /	50.879 /	50.227| 0.012814717 | 10,000| 2,000|
-| det_r50_vd_east_v2.0	 |[config](../configs/det_r50_vd_east_v2.0/train_infer_python.txt) | 42.485 | 42.624 /	42.663 /	42.561 |0.00239083 | 67.61 |67.825/ 	68.299/ 	68.51| 0.00999854 | 10,000| 2,000|
-| det_r50_vd_pse_v2.0	 |[config](../configs/det_r50_vd_pse_v2.0/train_infer_python.txt) | 16.455 | 16.517 / 16.555 /	16.353 |0.012201752 | 27.02 |27.288 /	27.152 /	27.408| 0.009340339 | 10,000| 2,000|
-| rec_mv3_none_bilstm_ctc_v2.0	 |[config](../configs/rec_mv3_none_bilstm_ctc_v2.0/train_infer_python.txt) | 2288.358 | 2291.906 /	2293.725 /	2290.05 |0.001602197 | 2336.17 |2327.042 /	2328.093 /	2344.915| 0.007622025 | 600,000| 160,000|
-| layoutxlm_ser	 |[config](../configs/layoutxlm/train_infer_python.txt) | 18.001 | 18.114 /	18.107 /	18.307 |0.010924783 | 21.982 | 21.507 /	21.116 /	21.406| 0.018180127 | 1490 | 1490|
-| PP-Structure-table	 |[config](../configs/en_table_structure/train_infer_python.txt) | 14.151 | 14.077 /	14.23 /	14.25 |0.012140351 | 16.285 | 16.595 /	16.878 /	16.531 | 0.020559308 | 20,000| 5,000|
-| det_r50_dcn_fce_ctw_v2.0	 |[config](../configs/det_r50_dcn_fce_ctw_v2.0/train_infer_python.txt) | 14.057 | 14.029 /	14.02 /	14.014 |0.001069214 | 18.298 |18.411 /	18.376 /	18.331| 0.004345228 | 10,000| 2,000|
-| ch_PP-OCRv3_det	 |[config](../configs/ch_PP-OCRv3_det/train_infer_python.txt) | 8.622 | 8.431 /	8.423 /	8.479|0.006604552 | 14.203 |14.346	14.468	14.23| 0.016450097 | 10,000| 2,000|
-| ch_PP-OCRv3_rec	 |[config](../configs/ch_PP-OCRv3_rec/train_infer_python.txt) | 90.239 | 90.077 /	91.513 /	91.325|0.01569176 | | |  | 160,000| 40,000|
+| ch_ppocr_mobile_v2.0_rec |[config](../configs/ch_ppocr_mobile_v2.0_rec/train_infer_python.txt) | 2083.311 | 2043.194  / 2066.372 / 2093.317 |0.023944295 | 2153.261 | 2167.561 /  2165.726 /  2155.614| 0.005511725 | 600,000| 160,000|
+| ch_ppocr_server_v2.0_det |[config](../configs/ch_ppocr_server_v2.0_det/train_infer_python.txt) | 20.716 | 20.739 /    20.807 /    20.755 |0.003268131 | 20.592 | 20.498 / 20.993 /    20.75| 0.023579288 | 10,000| 2,000|
+| ch_ppocr_server_v2.0_rec |[config](../configs/ch_ppocr_server_v2.0_rec/train_infer_python.txt) | 528.56 | 528.386 /   528.991 /   528.391 |0.001143687 | 1189.788 | 1190.007 /    1176.332 /  1192.084| 0.013213834 |  600,000| 160,000|
+| ch_PP-OCRv2_det    |[config](../configs/ch_PP-OCRv2_det/train_infer_python.txt) | 13.87 | 13.386 /    13.529 /    13.428 |0.010569887 | 17.847 | 17.746 / 17.908 /    17.96| 0.011915367 | 10,000| 2,000|
+| ch_PP-OCRv2_rec    |[config](../configs/ch_PP-OCRv2_rec/train_infer_python.txt) | 109.248 | 106.32 /  106.318 /   108.587 |0.020895687 | 117.491 | 117.62 /   117.757 /   117.726| 0.001163413 | 140,000| 40,000|
+| det_mv3_db_v2.0    |[config](../configs/det_mv3_db_v2_0/train_infer_python.txt) | 61.802 | 62.078 /   61.802 /    62.008 |0.00444602 | 82.947 | 84.294 /  84.457 /    84.005| 0.005351836 | 10,000| 2,000|
+| det_r50_vd_db_v2.0     |[config](../configs/det_r50_vd_db_v2.0/train_infer_python.txt) | 29.955 | 29.092 /    29.31 / 28.844 |0.015899011 | 51.097 |50.367 /  50.879 /    50.227| 0.012814717 | 10,000| 2,000|
+| det_r50_vd_east_v2.0   |[config](../configs/det_r50_vd_east_v2.0/train_infer_python.txt) | 42.485 | 42.624 /  42.663 /    42.561 |0.00239083 | 67.61 |67.825/     68.299/     68.51| 0.00999854 | 10,000| 2,000|
+| det_r50_vd_pse_v2.0    |[config](../configs/det_r50_vd_pse_v2.0/train_infer_python.txt) | 16.455 | 16.517 / 16.555 /  16.353 |0.012201752 | 27.02 |27.288 /   27.152 /    27.408| 0.009340339 | 10,000| 2,000|
+| rec_mv3_none_bilstm_ctc_v2.0   |[config](../configs/rec_mv3_none_bilstm_ctc_v2.0/train_infer_python.txt) | 2288.358 | 2291.906 /  2293.725 /  2290.05 |0.001602197 | 2336.17 |2327.042 /  2328.093 /  2344.915| 0.007622025 | 600,000| 160,000|
+| layoutxlm_ser  |[config](../configs/layoutxlm/train_infer_python.txt) | 18.001 | 18.114 / 18.107 /    18.307 |0.010924783 | 21.982 | 21.507 / 21.116 /    21.406| 0.018180127 | 1490 | 1490|
+| PP-Structure-table     |[config](../configs/en_table_structure/train_infer_python.txt) | 14.151 | 14.077 /    14.23 / 14.25 |0.012140351 | 16.285 | 16.595 /  16.878 /    16.531 | 0.020559308 | 20,000| 5,000|
+| det_r50_dcn_fce_ctw_v2.0   |[config](../configs/det_r50_dcn_fce_ctw_v2.0/train_infer_python.txt) | 14.057 | 14.029 /  14.02 / 14.014 |0.001069214 | 18.298 |18.411 /  18.376 /    18.331| 0.004345228 | 10,000| 2,000|
+| ch_PP-OCRv3_det    |[config](../configs/ch_PP-OCRv3_det/train_infer_python.txt) | 8.622 | 8.431 / 8.423 / 8.479|0.006604552 | 14.203 |14.346  14.468  14.23| 0.016450097 | 10,000| 2,000|
+| ch_PP-OCRv3_rec    |[config](../configs/ch_PP-OCRv3_rec/train_infer_python.txt) | 90.239 | 90.077 /   91.513 /    91.325|0.01569176 | | |  | 160,000| 40,000|

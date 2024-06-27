@@ -1,22 +1,27 @@
 import os
 from .base_logger import BaseLogger
+from ppocr.utils.logging import get_logger
+
+logger = get_logger()
+
 
 class WandbLogger(BaseLogger):
-    def __init__(self, 
-        project=None, 
-        name=None, 
-        id=None, 
-        entity=None, 
-        save_dir=None, 
+    def __init__(
+        self,
+        project=None,
+        name=None,
+        id=None,
+        entity=None,
+        save_dir=None,
         config=None,
-        **kwargs):
+        **kwargs,
+    ):
         try:
             import wandb
+
             self.wandb = wandb
         except ModuleNotFoundError:
-            raise ModuleNotFoundError(
-                "Please install wandb using `pip install wandb`"
-                )
+            raise ModuleNotFoundError("Please install wandb using `pip install wandb`")
 
         self.project = project
         self.name = name
@@ -32,7 +37,7 @@ class WandbLogger(BaseLogger):
             id=self.id,
             entity=self.entity,
             dir=self.save_dir,
-            resume="allow"
+            resume="allow",
         )
         self._wandb_init.update(**kwargs)
 
@@ -60,12 +65,14 @@ class WandbLogger(BaseLogger):
         if not prefix:
             prefix = ""
         updated_metrics = {prefix.lower() + "/" + k: v for k, v in metrics.items()}
-        
+
         self.run.log(updated_metrics, step=step)
 
     def log_model(self, is_best, prefix, metadata=None):
-        model_path = os.path.join(self.save_dir, prefix + '.pdparams')
-        artifact = self.wandb.Artifact('model-{}'.format(self.run.id), type='model', metadata=metadata)
+        model_path = os.path.join(self.save_dir, prefix + ".pdparams")
+        artifact = self.wandb.Artifact(
+            "model-{}".format(self.run.id), type="model", metadata=metadata
+        )
         artifact.add_file(model_path, name="model_ckpt.pdparams")
 
         aliases = [prefix]

@@ -19,6 +19,7 @@ Global:
   infer_mode: false
   use_space_char: true
   save_res_path: ./output/rec/predicts_svtr_tiny_ch_all.txt
+  d2s_train_image_shape: [3, 32, 320]
 Optimizer:
   name: AdamW
   beta1: 0.9

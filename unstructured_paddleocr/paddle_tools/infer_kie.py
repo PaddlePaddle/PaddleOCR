@@ -24,9 +24,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
 
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["FLAGS_allocator_strategy"] = "auto_growth"
 
 import cv2
 import paddle
@@ -59,34 +59,43 @@ def draw_kie_result(batch, node, idx_to_cls, count):
     for i, box in enumerate(boxes):
         if i >= len(node_pred_label):
             break
-        new_box = [[box[0], box[1]], [box[2], box[1]], [box[2], box[3]],
-                   [box[0], box[3]]]
+        new_box = [
+            [box[0], box[1]],
+            [box[2], box[1]],
+            [box[2], box[3]],
+            [box[0], box[3]],
+        ]
         Pts = np.array([new_box], np.int32)
         cv2.polylines(
-            img, [Pts.reshape((-1, 1, 2))],
-            True,
-            color=(255, 255, 0),
-            thickness=1)
+            img, [Pts.reshape((-1, 1, 2))], True, color=(255, 255, 0), thickness=1
+        )
         x_min = int(min([point[0] for point in new_box]))
         y_min = int(min([point[1] for point in new_box]))
 
         pred_label = node_pred_label[i]
         if pred_label in idx_to_cls:
             pred_label = idx_to_cls[pred_label]
-        pred_score = '{:.2f}'.format(node_pred_score[i])
-        text = pred_label + '(' + pred_score + ')'
-        cv2.putText(pred_img, text, (x_min * 2, y_min),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+        pred_score = "{:.2f}".format(node_pred_score[i])
+        text = pred_label + "(" + pred_score + ")"
+        cv2.putText(
+            pred_img,
+            text,
+            (x_min * 2, y_min),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.5,
+            (255, 0, 0),
+            1,
+        )
     vis_img = np.ones((h, w * 3, 3), dtype=np.uint8) * 255
     vis_img[:, :w] = img
     vis_img[:, w:] = pred_img
-    save_kie_path = os.path.dirname(config['Global'][
-        'save_res_path']) + "/kie_results/"
+    save_kie_path = os.path.dirname(config["Global"]["save_res_path"]) + "/kie_results/"
     if not os.path.exists(save_kie_path):
         os.makedirs(save_kie_path)
     save_path = os.path.join(save_kie_path, str(count) + ".png")
     cv2.imwrite(save_path, vis_img)
     logger.info("The Kie Image saved in {}".format(save_path))
+
 
 def write_kie_result(fout, node, data):
     """
@@ -94,42 +103,44 @@ def write_kie_result(fout, node, data):
     The format keeps the same as the input with additional score attribute.
     """
     import json
-    label = data['label']
+
+    label = data["label"]
     annotations = json.loads(label)
     max_value, max_idx = paddle.max(node, -1), paddle.argmax(node, -1)
     node_pred_label = max_idx.numpy().tolist()
     node_pred_score = max_value.numpy().tolist()
     res = []
     for i, label in enumerate(node_pred_label):
-        pred_score = '{:.2f}'.format(node_pred_score[i])
+        pred_score = "{:.2f}".format(node_pred_score[i])
         pred_res = {
-                'label': label,
-                'transcription': annotations[i]['transcription'],
-                'score': pred_score,
-                'points': annotations[i]['points'],
-            }
+            "label": label,
+            "transcription": annotations[i]["transcription"],
+            "score": pred_score,
+            "points": annotations[i]["points"],
+        }
         res.append(pred_res)
-    res.sort(key=lambda x: x['label'])
-    fout.writelines([json.dumps(res, ensure_ascii=False) + '\n'])
+    res.sort(key=lambda x: x["label"])
+    fout.writelines([json.dumps(res, ensure_ascii=False) + "\n"])
+
 
 def main():
-    global_config = config['Global']
+    global_config = config["Global"]
 
     # build model
-    model = build_model(config['Architecture'])
+    model = build_model(config["Architecture"])
     load_model(config, model)
 
     # create data ops
     transforms = []
-    for op in config['Eval']['dataset']['transforms']:
+    for op in config["Eval"]["dataset"]["transforms"]:
         transforms.append(op)
 
-    data_dir = config['Eval']['dataset']['data_dir']
+    data_dir = config["Eval"]["dataset"]["data_dir"]
 
     ops = create_operators(transforms, global_config)
 
-    save_res_path = config['Global']['save_res_path']
-    class_path = config['Global']['class_path']
+    save_res_path = config["Global"]["save_res_path"]
+    class_path = config["Global"]["class_path"]
     idx_to_cls = read_class_list(class_path)
     os.makedirs(os.path.dirname(save_res_path), exist_ok=True)
 
@@ -138,25 +149,23 @@ def main():
     warmup_times = 0
     count_t = []
     with open(save_res_path, "w") as fout:
-        with open(config['Global']['infer_img'], "rb") as f:
+        with open(config["Global"]["infer_img"], "rb") as f:
             lines = f.readlines()
             for index, data_line in enumerate(lines):
                 if index == 10:
                     warmup_t = time.time()
-                data_line = data_line.decode('utf-8')
+                data_line = data_line.decode("utf-8")
                 substr = data_line.strip("\n").split("\t")
                 img_path, label = data_dir + "/" + substr[0], substr[1]
-                data = {'img_path': img_path, 'label': label}
-                with open(data['img_path'], 'rb') as f:
+                data = {"img_path": img_path, "label": label}
+                with open(data["img_path"], "rb") as f:
                     img = f.read()
-                    data['image'] = img
+                    data["image"] = img
                 st = time.time()
                 batch = transform(data, ops)
                 batch_pred = [0] * len(batch)
                 for i in range(len(batch)):
-                    batch_pred[i] = paddle.to_tensor(
-                        np.expand_dims(
-                            batch[i], axis=0))
+                    batch_pred[i] = paddle.to_tensor(np.expand_dims(batch[i], axis=0))
                 st = time.time()
                 node, edge = model(batch_pred)
                 node = F.softmax(node, -1)
@@ -165,12 +174,13 @@ def main():
                 write_kie_result(fout, node, data)
         fout.close()
     logger.info("success!")
-    logger.info("It took {} s for predict {} images.".format(
-        np.sum(count_t), len(count_t)))
+    logger.info(
+        "It took {} s for predict {} images.".format(np.sum(count_t), len(count_t))
+    )
     ips = len(count_t[warmup_times:]) / np.sum(count_t[warmup_times:])
     logger.info("The ips is {} images/s".format(ips))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess()
     main()

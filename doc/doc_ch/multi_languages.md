@@ -29,7 +29,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 
 - [1 安装](#安装)
     - [1.1 paddle 安装](#paddle安装)
-    - [1.2 paddleocr package 安装](#paddleocr_package_安装)  
+    - [1.2 paddleocr package 安装](#paddleocr_package_安装)
 
 - [2 快速使用](#快速使用)
     - [2.1 命令行运行](#命令行运行)
@@ -57,11 +57,12 @@ pip install paddlepaddle-gpu
 
 pip 安装
 ```
-pip install "paddleocr>=2.0.6" # 推荐使用2.0.6版本
+pip install paddleocr
 ```
+
 本地构建并安装
 ```
-python3 setup.py bdist_wheel
+python3 -m build
 pip3 install dist/paddleocr-x.x.x-py3-none-any.whl # x.x.x是paddleocr的版本号
 ```
 

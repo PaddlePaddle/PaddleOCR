@@ -17,7 +17,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <iostream>
 #include <vector>
 
 const std::string CHARACTER_TYPE = "ch";

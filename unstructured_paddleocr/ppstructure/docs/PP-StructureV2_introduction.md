@@ -24,9 +24,9 @@ PP-StructureV2在PP-StructureV1的基础上进一步改进，主要有以下3个
 
  * **系统功能升级** ：新增图像矫正和版面复原模块，图像转word/pdf、关键信息抽取能力全覆盖！
  * **系统性能优化** ：
-	 * 版面分析：发布轻量级版面分析模型，速度提升**11倍**，平均CPU耗时仅需**41ms**！
-	 * 表格识别：设计3大优化策略，预测耗时不变情况下，模型精度提升**6%**。
-	 * 关键信息抽取：设计视觉无关模型结构，语义实体识别精度提升**2.8%**，关系抽取精度提升**9.1%**。
+     * 版面分析：发布轻量级版面分析模型，速度提升**11倍**，平均CPU耗时仅需**41ms**！
+     * 表格识别：设计3大优化策略，预测耗时不变情况下，模型精度提升**6%**。
+     * 关键信息抽取：设计视觉无关模型结构，语义实体识别精度提升**2.8%**，关系抽取精度提升**9.1%**。
  * **中文场景适配** ：完成对版面分析与表格识别的中文场景适配，开源**开箱即用**的中文场景版面结构化模型！
 
 PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正模块，判断整图方向并完成转正，随后可以完成版面信息分析与关键信息抽取2类任务。版面分析任务中，图像首先经过版面分析模型，将图像划分为文本、表格、图像等不同区域，随后对这些区域分别进行识别，如，将表格区域送入表格识别模块进行结构化识别，将文本区域送入OCR引擎进行文字识别，最后使用版面恢复模块将其恢复为与原始图像布局一致的word或者pdf格式的文件；关键信息抽取任务中，首先使用OCR引擎提取文本内容，然后由语义实体识别模块获取图像中的语义实体，最后经关系抽取模块获取语义实体之间的对应关系，从而提取需要的关键信息。
@@ -39,18 +39,18 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 从算法改进思路来看，对系统中的3个关键子模块，共进行了8个方面的改进。
 
 * 版面分析
-	* PP-PicoDet：轻量级版面分析模型
-	* FGD：兼顾全局与局部特征的模型蒸馏算法
+    * PP-PicoDet：轻量级版面分析模型
+    * FGD：兼顾全局与局部特征的模型蒸馏算法
 
 * 表格识别
-	* PP-LCNet:  CPU友好型轻量级骨干网络
-	* CSP-PAN：轻量级高低层特征融合模块
-	* SLAHead：结构与位置信息对齐的特征解码模块
+    * PP-LCNet:  CPU友好型轻量级骨干网络
+    * CSP-PAN：轻量级高低层特征融合模块
+    * SLAHead：结构与位置信息对齐的特征解码模块
 
 * 关键信息抽取
-	* VI-LayoutXLM：视觉特征无关的多模态预训练模型结构
-	* TB-YX：考虑阅读顺序的文本行排序逻辑
-	* UDML：联合互学习知识蒸馏策略
+    * VI-LayoutXLM：视觉特征无关的多模态预训练模型结构
+    * TB-YX：考虑阅读顺序的文本行排序逻辑
+    * UDML：联合互学习知识蒸馏策略
 
 最终，与PP-StructureV1相比：
 
@@ -87,8 +87,8 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 | 5    | PP-PicoDet-LCNet1.0x(800*608) + FGD |  9.7  | 94.00% |41.20|
 
 * 测试条件
-	* paddle版本：2.3.0
-	* CPU：Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz，开启mkldnn，线程数为10
+    * paddle版本：2.3.0
+    * CPU：Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz，开启mkldnn，线程数为10
 
 在PubLayNet数据集上，与其他方法的性能对比如下表所示。可以看到，和基于Detectron2的版面分析工具layoutparser相比，我们的模型精度高出大约5%，预测速度快约69倍。
 
@@ -167,11 +167,11 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 
 |策略|Acc|TEDS|推理速度(CPU+MKLDNN)|模型大小|
 |---|---|---|---|---|
-|TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
-|+PP-LCNet|	74.71% |94.37%	|778ms|	8.7M|
-|+CSP-PAN|	75.68%| 94.72%	|708ms|	9.3M|
-|+SLAHead|	77.70%|94.85%|	766ms|	9.2M|
-|+MergeToken|	76.31%|	95.89%|766ms|	9.2M|
+|TableRec-RARE| 71.73% | 93.88% |779ms  |6.8M|
+|+PP-LCNet| 74.71% |94.37%  |778ms| 8.7M|
+|+CSP-PAN|  75.68%| 94.72%  |708ms| 9.3M|
+|+SLAHead|  77.70%|94.85%|  766ms|  9.2M|
+|+MergeToken|   76.31%| 95.89%|766ms|   9.2M|
 
 * 测试环境
     * paddle版本：2.3.1
@@ -182,8 +182,8 @@ FGD（Focal and Global Knowledge Distillation for Detectors），是一种兼顾
 |策略|Acc|TEDS|推理速度(CPU+MKLDNN)|模型大小|
 |---|---|---|---|---|
 |TableMaster|77.90%|96.12%|2144ms|253.0M|
-|TableRec-RARE|	71.73% | 93.88% |779ms	|6.8M|
-|SLANet|76.31%|	95.89%|766ms|9.2M|
+|TableRec-RARE| 71.73% | 93.88% |779ms  |6.8M|
+|SLANet|76.31%| 95.89%|766ms|9.2M|
 
 #### 4.2.1 优化策略
 
@@ -283,9 +283,9 @@ XFUND-zh数据集上，SER任务的消融实验如下所示。
 | 5    | 实验3 + UDML蒸馏                | 1.1     | **93.19%** | **15.49**       | **675.58**      |
 
 * 测试条件
-	* paddle版本：2.3.0
-	* GPU：V100，实验5的GPU预测耗时使用`trt+fp16`测试得到，环境为cuda10.2+ cudnn8.1.1 + trt7.2.3.4，其他实验的预测耗时统计中没有使用TRT。
-	* CPU：Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz，开启mkldnn，线程数为10
+    * paddle版本：2.3.0
+    * GPU：V100，实验5的GPU预测耗时使用`trt+fp16`测试得到，环境为cuda10.2+ cudnn8.1.1 + trt7.2.3.4，其他实验的预测耗时统计中没有使用TRT。
+    * CPU：Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz，开启mkldnn，线程数为10
 
 在XFUND数据集上，与其他方法的效果对比如下所示。
 
@@ -318,10 +318,10 @@ LayoutLMv2以及LayoutXLM中引入视觉骨干网络，用于提取视觉特征�
 
 ```py
 def order_by_tbyx(ocr_info, th=20):
-	"""
-	ocr_info: a list of dict, which contains bbox information([x1, y1, x2, y2])
-	th: threshold of the position threshold
-	"""
+    """
+    ocr_info: a list of dict, which contains bbox information([x1, y1, x2, y2])
+    th: threshold of the position threshold
+    """
     res = sorted(ocr_info, key=lambda r: (r["bbox"][1], r["bbox"][0])) # sort using y1 first and then x1
     for i in range(len(res) - 1):
         for j in range(i, 0, -1):

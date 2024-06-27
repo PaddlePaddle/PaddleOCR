@@ -125,4 +125,3 @@ scp -P 8022 test.txt u0_a374@172.24.162.117:/home/storage/test
 ## 3. 更多教程
 
 本教程可以完成Termux基本配置，更多关于Termux的用法，请参考：[Termux高级终端安装使用配置教程](https://www.sqlsec.com/2018/05/termux.html)。
-

@@ -103,7 +103,7 @@ opencv3/
 <a name="131"></a>
 #### 1.3.1 直接下载安装
 
-[Paddle预测库官网](https://paddleinference.paddlepaddle.org.cn/user_guides/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
+[Paddle预测库官网](https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
 
 下载之后解压:
 
@@ -222,7 +222,7 @@ CUDNN_LIB_DIR=/your_cudnn_lib_dir
 **注意** ppocr默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 如需使用旧版本的PP-OCR模型，则需要设置参数`--rec_img_h=32`。
 
 
-运行方式：  
+运行方式：
 ```shell
 ./build/ppocr [--param1] [--param2] [...]
 ```

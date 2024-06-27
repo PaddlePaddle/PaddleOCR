@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="action_btn_size">120dp</dimen>
+    <dimen name="action_btn_text_size">46px</dimen>
+
+    <dimen name="operation_btn_margin_top_take_picture">126px</dimen>
+    <dimen name="operation_btn_margin_top">136px</dimen>
+
+    <dimen name="result_list_view_text_size">46px</dimen>
+
+    <dimen name="result_list_popview_text_size">36px</dimen>
+
+    <dimen name="result_list_padding_lr">15dp</dimen>
+
+    <dimen name="result_list_gap_width">15dp</dimen>
+
+</resources>

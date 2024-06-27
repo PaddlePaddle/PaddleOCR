@@ -24,9 +24,10 @@ import numpy as np
 import functools
 from .tps import GridGenerator
 
-'''This code is refer from:
+"""This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/davarocr/davar_rcg/models/transformations/gaspin_transformation.py
-'''
+"""
+
 
 class SP_TransformerNetwork(nn.Layer):
     """
@@ -35,7 +36,7 @@ class SP_TransformerNetwork(nn.Layer):
     """
 
     def __init__(self, nc=1, default_type=5):
-        """ Based on SPIN
+        """Based on SPIN
         Args:
             nc (int): number of input channels (usually in 1 or 3)
             default_type (int): the complexity of transformation intensities (by default set to 6 as the paper)
@@ -56,11 +57,14 @@ class SP_TransformerNetwork(nn.Layer):
 
         """
         from math import log
+
         x = []
         if k != 0:
-            for i in range(1, k+1):
-                lower = round(log(1-(0.5/(k+1))*i)/log((0.5/(k+1))*i), 2)
-                upper = round(1/lower, 2)
+            for i in range(1, k + 1):
+                lower = round(
+                    log(1 - (0.5 / (k + 1)) * i) / log((0.5 / (k + 1)) * i), 2
+                )
+                upper = round(1 / lower, 2)
                 x.append(lower)
                 x.append(upper)
         x.append(1.00)
@@ -83,7 +87,7 @@ class SP_TransformerNetwork(nn.Layer):
         """
         batch_I = (batch_I + 1) * 0.5
         if offsets is not None:
-            batch_I = batch_I*(1-lambda_color) + offsets*lambda_color
+            batch_I = batch_I * (1 - lambda_color) + offsets * lambda_color
         batch_weight_params = paddle.unsqueeze(paddle.unsqueeze(weights, -1), -1)
         batch_I_power = paddle.stack([batch_I.pow(p) for p in self.power_list], axis=1)
 
@@ -93,6 +97,7 @@ class SP_TransformerNetwork(nn.Layer):
         batch_weight_sum = batch_weight_sum * 2 - 1
         return batch_weight_sum
 
+
 class GA_SPIN_Transformer(nn.Layer):
     """
     Geometric-Absorbed SPIN Transformation (GA-SPIN) proposed in Ref. [1]
@@ -101,13 +106,16 @@ class GA_SPIN_Transformer(nn.Layer):
     Ref: [1] SPIN: Structure-Preserving Inner Offset Network for Scene Text Recognition. AAAI-2021.
     """
 
-    def __init__(self, in_channels=1,
-                 I_r_size=(32, 100),
-                 offsets=False,
-                 norm_type='BN',
-                 default_type=6,
-                 loc_lr=1,
-                 stn=True):
+    def __init__(
+        self,
+        in_channels=1,
+        I_r_size=(32, 100),
+        offsets=False,
+        norm_type="BN",
+        default_type=6,
+        loc_lr=1,
+        stn=True,
+    ):
         """
         Args:
             in_channels (int): channel of input features,
@@ -130,78 +138,87 @@ class GA_SPIN_Transformer(nn.Layer):
         self.stn = stn  # set to True in GA-SPIN, while set it to False in SPIN
         self.I_r_size = I_r_size
         self.out_channels = in_channels
-        if norm_type == 'BN':
+        if norm_type == "BN":
             norm_layer = functools.partial(nn.BatchNorm2D, use_global_stats=True)
-        elif norm_type == 'IN':
-            norm_layer = functools.partial(nn.InstanceNorm2D, weight_attr=False,
-                                           use_global_stats=False)
+        elif norm_type == "IN":
+            norm_layer = functools.partial(
+                nn.InstanceNorm2D, weight_attr=False, use_global_stats=False
+            )
         else:
-            raise NotImplementedError('normalization layer [%s] is not found' % norm_type)
+            raise NotImplementedError(
+                "normalization layer [%s] is not found" % norm_type
+            )
 
         if self.spt:
-            self.sp_net = SP_TransformerNetwork(in_channels,
-                                                default_type)
+            self.sp_net = SP_TransformerNetwork(in_channels, default_type)
             self.spt_convnet = nn.Sequential(
-                                  # 32*100
-                                  nn.Conv2D(in_channels, 32, 3, 1, 1, bias_attr=False),
-                                  norm_layer(32), nn.ReLU(),
-                                  nn.MaxPool2D(kernel_size=2, stride=2),
-                                  # 16*50
-                                  nn.Conv2D(32, 64, 3, 1, 1, bias_attr=False),
-                                  norm_layer(64), nn.ReLU(),
-                                  nn.MaxPool2D(kernel_size=2, stride=2),
-                                  # 8*25
-                                  nn.Conv2D(64, 128, 3, 1, 1, bias_attr=False),
-                                  norm_layer(128), nn.ReLU(),
-                                  nn.MaxPool2D(kernel_size=2, stride=2),
-                                  # 4*12
+                # 32*100
+                nn.Conv2D(in_channels, 32, 3, 1, 1, bias_attr=False),
+                norm_layer(32),
+                nn.ReLU(),
+                nn.MaxPool2D(kernel_size=2, stride=2),
+                # 16*50
+                nn.Conv2D(32, 64, 3, 1, 1, bias_attr=False),
+                norm_layer(64),
+                nn.ReLU(),
+                nn.MaxPool2D(kernel_size=2, stride=2),
+                # 8*25
+                nn.Conv2D(64, 128, 3, 1, 1, bias_attr=False),
+                norm_layer(128),
+                nn.ReLU(),
+                nn.MaxPool2D(kernel_size=2, stride=2),
+                # 4*12
             )
             self.stucture_fc1 = nn.Sequential(
-                                  nn.Conv2D(128, 256, 3, 1, 1, bias_attr=False),
-                                  norm_layer(256), nn.ReLU(),
-                                  nn.MaxPool2D(kernel_size=2, stride=2),
-                                  nn.Conv2D(256, 256, 3, 1, 1, bias_attr=False),
-                                  norm_layer(256), nn.ReLU(),  # 2*6
-                                  nn.MaxPool2D(kernel_size=2, stride=2),
-                                  nn.Conv2D(256, 512, 3, 1, 1, bias_attr=False),
-                                  norm_layer(512), nn.ReLU(),  # 1*3
-                                  nn.AdaptiveAvgPool2D(1),
-                                  nn.Flatten(1, -1),  # batch_size x 512
-                                  nn.Linear(512, 256, weight_attr=nn.initializer.Normal(0.001)),
-                                  nn.BatchNorm1D(256), nn.ReLU()
-                                )
-            self.out_weight = 2*default_type+1
-            self.spt_length = 2*default_type+1
+                nn.Conv2D(128, 256, 3, 1, 1, bias_attr=False),
+                norm_layer(256),
+                nn.ReLU(),
+                nn.MaxPool2D(kernel_size=2, stride=2),
+                nn.Conv2D(256, 256, 3, 1, 1, bias_attr=False),
+                norm_layer(256),
+                nn.ReLU(),  # 2*6
+                nn.MaxPool2D(kernel_size=2, stride=2),
+                nn.Conv2D(256, 512, 3, 1, 1, bias_attr=False),
+                norm_layer(512),
+                nn.ReLU(),  # 1*3
+                nn.AdaptiveAvgPool2D(1),
+                nn.Flatten(1, -1),  # batch_size x 512
+                nn.Linear(512, 256, weight_attr=nn.initializer.Normal(0.001)),
+                nn.BatchNorm1D(256),
+                nn.ReLU(),
+            )
+            self.out_weight = 2 * default_type + 1
+            self.spt_length = 2 * default_type + 1
             if offsets:
                 self.out_weight += 1
             if self.stn:
                 self.F = 20
                 self.out_weight += self.F * 2
-                self.GridGenerator = GridGenerator(self.F*2, self.F)
-                
+                self.GridGenerator = GridGenerator(self.F * 2, self.F)
+
             # self.out_weight*=nc
             # Init structure_fc2 in LocalizationNetwork
-            initial_bias = self.init_spin(default_type*2)
+            initial_bias = self.init_spin(default_type * 2)
             initial_bias = initial_bias.reshape(-1)
             param_attr = ParamAttr(
                 learning_rate=loc_lr,
-                initializer=nn.initializer.Assign(np.zeros([256, self.out_weight])))
+                initializer=nn.initializer.Assign(np.zeros([256, self.out_weight])),
+            )
             bias_attr = ParamAttr(
-                learning_rate=loc_lr,
-                initializer=nn.initializer.Assign(initial_bias))
-            self.stucture_fc2 = nn.Linear(256, self.out_weight,
-                                weight_attr=param_attr,
-                                bias_attr=bias_attr)
+                learning_rate=loc_lr, initializer=nn.initializer.Assign(initial_bias)
+            )
+            self.stucture_fc2 = nn.Linear(
+                256, self.out_weight, weight_attr=param_attr, bias_attr=bias_attr
+            )
             self.sigmoid = nn.Sigmoid()
 
             if offsets:
-                self.offset_fc1 = nn.Sequential(nn.Conv2D(128, 16,
-                                                          3, 1, 1,
-                                                          bias_attr=False),
-                                                norm_layer(16),
-                                                nn.ReLU(),)
-                self.offset_fc2 = nn.Conv2D(16, in_channels,
-                                            3, 1, 1)
+                self.offset_fc1 = nn.Sequential(
+                    nn.Conv2D(128, 16, 3, 1, 1, bias_attr=False),
+                    norm_layer(16),
+                    nn.ReLU(),
+                )
+                self.offset_fc2 = nn.Conv2D(16, in_channels, 3, 1, 1)
                 self.pool = nn.MaxPool2D(2, 2)
 
     def init_spin(self, nz):
@@ -210,7 +227,7 @@ class GA_SPIN_Transformer(nn.Layer):
             nz (int): number of paired \betas exponents, which means the value of K x 2
 
         """
-        init_id = [0.00]*nz+[5.00]
+        init_id = [0.00] * nz + [5.00]
         if self.offsets:
             init_id += [-5.00]
             # init_id *=3
@@ -243,11 +260,15 @@ class GA_SPIN_Transformer(nn.Layer):
             feat = self.spt_convnet(x)
             fc1 = self.stucture_fc1(feat)
             sp_weight_fusion = self.stucture_fc2(fc1)
-            sp_weight_fusion = sp_weight_fusion.reshape([x.shape[0], self.out_weight, 1])
+            sp_weight_fusion = sp_weight_fusion.reshape(
+                [x.shape[0], self.out_weight, 1]
+            )
             if self.offsets:  # SPIN w. AIN
                 lambda_color = sp_weight_fusion[:, self.spt_length, 0]
-                lambda_color = self.sigmoid(lambda_color).unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
-                sp_weight = sp_weight_fusion[:, :self.spt_length, :]
+                lambda_color = (
+                    self.sigmoid(lambda_color).unsqueeze(-1).unsqueeze(-1).unsqueeze(-1)
+                )
+                sp_weight = sp_weight_fusion[:, : self.spt_length, :]
                 offsets = self.pool(self.offset_fc2(self.offset_fc1(feat)))
 
                 assert offsets.shape[2] == 2  # 2
@@ -256,29 +277,43 @@ class GA_SPIN_Transformer(nn.Layer):
 
                 if return_weight:
                     return offsets
-                offsets = nn.functional.upsample(offsets, size=(x.shape[2], x.shape[3]), mode='bilinear')
+                offsets = nn.functional.upsample(
+                    offsets, size=(x.shape[2], x.shape[3]), mode="bilinear"
+                )
 
                 if self.stn:
-                    batch_C_prime = sp_weight_fusion[:, (self.spt_length + 1):, :].reshape([x.shape[0], self.F, 2])
+                    batch_C_prime = sp_weight_fusion[
+                        :, (self.spt_length + 1) :, :
+                    ].reshape([x.shape[0], self.F, 2])
                     build_P_prime = self.GridGenerator(batch_C_prime, self.I_r_size)
-                    build_P_prime_reshape = build_P_prime.reshape([build_P_prime.shape[0],
-                                                                   self.I_r_size[0],
-                                                                   self.I_r_size[1],
-                                                                   2])
+                    build_P_prime_reshape = build_P_prime.reshape(
+                        [build_P_prime.shape[0], self.I_r_size[0], self.I_r_size[1], 2]
+                    )
 
             else:  # SPIN w.o. AIN
-                sp_weight = sp_weight_fusion[:, :self.spt_length, :]
+                sp_weight = sp_weight_fusion[:, : self.spt_length, :]
                 lambda_color, offsets = None, None
 
                 if self.stn:
-                    batch_C_prime = sp_weight_fusion[:, self.spt_length:, :].reshape([x.shape[0], self.F, 2])
+                    batch_C_prime = sp_weight_fusion[:, self.spt_length :, :].reshape(
+                        [x.shape[0], self.F, 2]
+                    )
                     build_P_prime = self.GridGenerator(batch_C_prime, self.I_r_size)
-                    build_P_prime_reshape = build_P_prime.reshape([build_P_prime.shape[0],
-                                                                   self.I_r_size[0],
-                                                                   self.I_r_size[1],
-                                                                   2])
+                    build_P_prime_reshape = build_P_prime.reshape(
+                        [build_P_prime.shape[0], self.I_r_size[0], self.I_r_size[1], 2]
+                    )
 
             x = self.sp_net(x, sp_weight, offsets, lambda_color)
             if self.stn:
-                x = F.grid_sample(x=x, grid=build_P_prime_reshape, padding_mode='border')
+                is_fp16 = False
+                if build_P_prime_reshape.dtype != paddle.float32:
+                    data_type = build_P_prime_reshape.dtype
+                    x = x.cast(paddle.float32)
+                    build_P_prime_reshape = build_P_prime_reshape.cast(paddle.float32)
+                    is_fp16 = True
+                x = F.grid_sample(
+                    x=x, grid=build_P_prime_reshape, padding_mode="border"
+                )
+                if is_fp16:
+                    x = x.cast(data_type)
         return x

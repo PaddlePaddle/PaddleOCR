@@ -50,6 +50,10 @@ PP-StructureV2 supports the independent use or flexible collocation of each modu
 The figure shows the pipeline of layout analysis + table recognition. The image is first divided into four areas of image, text, title and table by layout analysis, and then OCR detection and recognition is performed on the three areas of image, text and title, and the table is performed table recognition, where the image will also be stored for use.
 <img src="docs/table/ppstructure.GIF" width="100%"/>
 
+### 3.1.1 版面识别返回单字坐标
+The following figure shows the result of layout analysis on single word， please refer to the [doc](./return_word_pos.md)。
+![show_0_mdf_v2](https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/799450d4-d2c5-4b61-b490-e160dc0f515c)
+
 ### 3.2 Layout recovery
 
 The following figure shows the effect of layout recovery based on the results of layout analysis and table recognition in the previous section.
@@ -87,7 +91,7 @@ In the figure, the red box represents `Question`, the blue box represents `Answe
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png" width="600">
-</div>  
+</div>
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/25809855/186095641-5843b4da-34d7-4c1c-943a-b1036a859fe3.png" width="600">

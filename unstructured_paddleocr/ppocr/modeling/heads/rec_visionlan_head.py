@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/wangyuxin87/VisionLAN
 """
 
@@ -32,10 +32,11 @@ class PositionalEncoding(nn.Layer):
     def __init__(self, d_hid, n_position=200):
         super(PositionalEncoding, self).__init__()
         self.register_buffer(
-            'pos_table', self._get_sinusoid_encoding_table(n_position, d_hid))
+            "pos_table", self._get_sinusoid_encoding_table(n_position, d_hid)
+        )
 
     def _get_sinusoid_encoding_table(self, n_position, d_hid):
-        ''' Sinusoid position encoding table '''
+        """Sinusoid position encoding table"""
 
         def get_position_angle_vec(position):
             return [
@@ -44,15 +45,16 @@ class PositionalEncoding(nn.Layer):
             ]
 
         sinusoid_table = np.array(
-            [get_position_angle_vec(pos_i) for pos_i in range(n_position)])
+            [get_position_angle_vec(pos_i) for pos_i in range(n_position)]
+        )
         sinusoid_table[:, 0::2] = np.sin(sinusoid_table[:, 0::2])  # dim 2i
         sinusoid_table[:, 1::2] = np.cos(sinusoid_table[:, 1::2])  # dim 2i+1
-        sinusoid_table = paddle.to_tensor(sinusoid_table, dtype='float32')
+        sinusoid_table = paddle.to_tensor(sinusoid_table, dtype="float32")
         sinusoid_table = paddle.unsqueeze(sinusoid_table, axis=0)
         return sinusoid_table
 
     def forward(self, x):
-        return x + self.pos_table[:, :x.shape[1]].clone().detach()
+        return x + self.pos_table[:, : x.shape[1]].clone().detach()
 
 
 class ScaledDotProductAttention(nn.Layer):
@@ -76,7 +78,8 @@ class ScaledDotProductAttention(nn.Layer):
                 mask = paddle.unsqueeze(mask, axis=1)
                 mask = paddle.unsqueeze(mask, axis=1)
             repeat_times = [
-                attn.shape[1] // mask.shape[1], attn.shape[2] // mask.shape[2]
+                attn.shape[1] // mask.shape[1],
+                attn.shape[2] // mask.shape[2],
             ]
             mask = paddle.tile(mask, [1, repeat_times[0], repeat_times[1], 1])
             attn[mask == 0] = -1e9
@@ -87,7 +90,7 @@ class ScaledDotProductAttention(nn.Layer):
 
 
 class MultiHeadAttention(nn.Layer):
-    " Multi-Head Attention module"
+    "Multi-Head Attention module"
 
     def __init__(self, n_head, d_model, d_k, d_v, dropout=0.1):
         super(MultiHeadAttention, self).__init__()
@@ -97,26 +100,30 @@ class MultiHeadAttention(nn.Layer):
         self.w_qs = nn.Linear(
             d_model,
             n_head * d_k,
-            weight_attr=ParamAttr(initializer=Normal(
-                mean=0, std=np.sqrt(2.0 / (d_model + d_k)))))
+            weight_attr=ParamAttr(
+                initializer=Normal(mean=0, std=np.sqrt(2.0 / (d_model + d_k)))
+            ),
+        )
         self.w_ks = nn.Linear(
             d_model,
             n_head * d_k,
-            weight_attr=ParamAttr(initializer=Normal(
-                mean=0, std=np.sqrt(2.0 / (d_model + d_k)))))
+            weight_attr=ParamAttr(
+                initializer=Normal(mean=0, std=np.sqrt(2.0 / (d_model + d_k)))
+            ),
+        )
         self.w_vs = nn.Linear(
             d_model,
             n_head * d_v,
-            weight_attr=ParamAttr(initializer=Normal(
-                mean=0, std=np.sqrt(2.0 / (d_model + d_v)))))
+            weight_attr=ParamAttr(
+                initializer=Normal(mean=0, std=np.sqrt(2.0 / (d_model + d_v)))
+            ),
+        )
 
-        self.attention = ScaledDotProductAttention(temperature=np.power(d_k,
-                                                                        0.5))
+        self.attention = ScaledDotProductAttention(temperature=np.power(d_k, 0.5))
         self.layer_norm = nn.LayerNorm(d_model)
         self.fc = nn.Linear(
-            n_head * d_v,
-            d_model,
-            weight_attr=ParamAttr(initializer=XavierNormal()))
+            n_head * d_v, d_model, weight_attr=ParamAttr(initializer=XavierNormal())
+        )
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, q, k, v, mask=None):
@@ -127,8 +134,7 @@ class MultiHeadAttention(nn.Layer):
         residual = q
 
         q = self.w_qs(q)
-        q = paddle.reshape(
-            q, shape=[-1, len_q, n_head, d_k])  # 4*21*512 ---- 4*21*8*64
+        q = paddle.reshape(q, shape=[-1, len_q, n_head, d_k])  # 4*21*512 ---- 4*21*8*64
         k = self.w_ks(k)
         k = paddle.reshape(k, shape=[-1, len_k, n_head, d_k])
         v = self.w_vs(v)
@@ -141,14 +147,15 @@ class MultiHeadAttention(nn.Layer):
         v = paddle.transpose(v, perm=[2, 0, 1, 3])
         v = paddle.reshape(v, shape=[-1, len_v, d_v])  # (n*b) x lv x dv
 
-        mask = paddle.tile(
-            mask,
-            [n_head, 1, 1]) if mask is not None else None  # (n*b) x .. x ..
+        mask = (
+            paddle.tile(mask, [n_head, 1, 1]) if mask is not None else None
+        )  # (n*b) x .. x ..
         output = self.attention(q, k, v, mask=mask)
         output = paddle.reshape(output, shape=[n_head, -1, len_q, d_v])
         output = paddle.transpose(output, perm=[1, 2, 0, 3])
         output = paddle.reshape(
-            output, shape=[-1, len_q, n_head * d_v])  # b x lq x (n*dv)
+            output, shape=[-1, len_q, n_head * d_v]
+        )  # b x lq x (n*dv)
         output = self.dropout(self.fc(output))
         output = self.layer_norm(output + residual)
         return output
@@ -173,47 +180,45 @@ class PositionwiseFeedForward(nn.Layer):
 
 
 class EncoderLayer(nn.Layer):
-    ''' Compose with two layers '''
+    """Compose with two layers"""
 
     def __init__(self, d_model, d_inner, n_head, d_k, d_v, dropout=0.1):
         super(EncoderLayer, self).__init__()
-        self.slf_attn = MultiHeadAttention(
-            n_head, d_model, d_k, d_v, dropout=dropout)
-        self.pos_ffn = PositionwiseFeedForward(
-            d_model, d_inner, dropout=dropout)
+        self.slf_attn = MultiHeadAttention(n_head, d_model, d_k, d_v, dropout=dropout)
+        self.pos_ffn = PositionwiseFeedForward(d_model, d_inner, dropout=dropout)
 
     def forward(self, enc_input, slf_attn_mask=None):
-        enc_output = self.slf_attn(
-            enc_input, enc_input, enc_input, mask=slf_attn_mask)
+        enc_output = self.slf_attn(enc_input, enc_input, enc_input, mask=slf_attn_mask)
         enc_output = self.pos_ffn(enc_output)
         return enc_output
 
 
 class Transformer_Encoder(nn.Layer):
-    def __init__(self,
-                 n_layers=2,
-                 n_head=8,
-                 d_word_vec=512,
-                 d_k=64,
-                 d_v=64,
-                 d_model=512,
-                 d_inner=2048,
-                 dropout=0.1,
-                 n_position=256):
+    def __init__(
+        self,
+        n_layers=2,
+        n_head=8,
+        d_word_vec=512,
+        d_k=64,
+        d_v=64,
+        d_model=512,
+        d_inner=2048,
+        dropout=0.1,
+        n_position=256,
+    ):
         super(Transformer_Encoder, self).__init__()
-        self.position_enc = PositionalEncoding(
-            d_word_vec, n_position=n_position)
+        self.position_enc = PositionalEncoding(d_word_vec, n_position=n_position)
         self.dropout = nn.Dropout(p=dropout)
-        self.layer_stack = nn.LayerList([
-            EncoderLayer(
-                d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
-            for _ in range(n_layers)
-        ])
+        self.layer_stack = nn.LayerList(
+            [
+                EncoderLayer(d_model, d_inner, n_head, d_k, d_v, dropout=dropout)
+                for _ in range(n_layers)
+            ]
+        )
         self.layer_norm = nn.LayerNorm(d_model, epsilon=1e-6)
 
     def forward(self, enc_output, src_mask, return_attns=False):
-        enc_output = self.dropout(
-            self.position_enc(enc_output))  # position embeding
+        enc_output = self.dropout(self.position_enc(enc_output))  # position embeding
         for enc_layer in self.layer_stack:
             enc_output = enc_layer(enc_output, slf_attn_mask=src_mask)
         enc_output = self.layer_norm(enc_output)
@@ -222,7 +227,6 @@ class Transformer_Encoder(nn.Layer):
 
 class PP_layer(nn.Layer):
     def __init__(self, n_dim=512, N_max_character=25, n_position=256):
-
         super(PP_layer, self).__init__()
         self.character_len = N_max_character
         self.f0_embedding = nn.Embedding(N_max_character, n_dim)
@@ -234,17 +238,18 @@ class PP_layer(nn.Layer):
 
     def forward(self, enc_output):
         # enc_output: b,256,512
-        reading_order = paddle.arange(self.character_len, dtype='int64')
+        reading_order = paddle.arange(self.character_len, dtype="int64")
         reading_order = reading_order.unsqueeze(0).expand(
-            [enc_output.shape[0], self.character_len])  # (S,) -> (B, S)
+            [enc_output.shape[0], self.character_len]
+        )  # (S,) -> (B, S)
         reading_order = self.f0_embedding(reading_order)  # b,25,512
 
         # calculate attention
         reading_order = paddle.transpose(reading_order, perm=[0, 2, 1])
         t = self.w0(reading_order)  # b,512,256
         t = self.active(
-            paddle.transpose(
-                t, perm=[0, 2, 1]) + self.wv(enc_output))  # b,256,512
+            paddle.transpose(t, perm=[0, 2, 1]) + self.wv(enc_output)
+        )  # b,256,512
         t = self.we(t)  # b,256,25
         t = self.softmax(paddle.transpose(t, perm=[0, 2, 1]))  # b,25,256
         g_output = paddle.bmm(t, enc_output)  # b,25,512
@@ -252,22 +257,19 @@ class PP_layer(nn.Layer):
 
 
 class Prediction(nn.Layer):
-    def __init__(self,
-                 n_dim=512,
-                 n_position=256,
-                 N_max_character=25,
-                 n_class=37):
+    def __init__(self, n_dim=512, n_position=256, N_max_character=25, n_class=37):
         super(Prediction, self).__init__()
         self.pp = PP_layer(
-            n_dim=n_dim, N_max_character=N_max_character, n_position=n_position)
+            n_dim=n_dim, N_max_character=N_max_character, n_position=n_position
+        )
         self.pp_share = PP_layer(
-            n_dim=n_dim, N_max_character=N_max_character, n_position=n_position)
+            n_dim=n_dim, N_max_character=N_max_character, n_position=n_position
+        )
         self.w_vrm = nn.Linear(n_dim, n_class)  # output layer
         self.w_share = nn.Linear(n_dim, n_class)  # output layer
         self.nclass = n_class
 
-    def forward(self, cnn_feature, f_res, f_sub, train_mode=False,
-                use_mlm=True):
+    def forward(self, cnn_feature, f_res, f_sub, train_mode=False, use_mlm=True):
         if train_mode:
             if not use_mlm:
                 g_output = self.pp(cnn_feature)  # b,25,512
@@ -294,9 +296,11 @@ class MLM(nn.Layer):
     def __init__(self, n_dim=512, n_position=256, max_text_length=25):
         super(MLM, self).__init__()
         self.MLM_SequenceModeling_mask = Transformer_Encoder(
-            n_layers=2, n_position=n_position)
+            n_layers=2, n_position=n_position
+        )
         self.MLM_SequenceModeling_WCL = Transformer_Encoder(
-            n_layers=1, n_position=n_position)
+            n_layers=1, n_position=n_position
+        )
         self.pos_embedding = nn.Embedding(max_text_length, n_dim)
         self.w0_linear = nn.Linear(1, n_position)
         self.wv = nn.Linear(n_dim, n_dim)
@@ -308,7 +312,7 @@ class MLM(nn.Layer):
         # transformer unit for generating mask_c
         feature_v_seq = self.MLM_SequenceModeling_mask(x, src_mask=None)
         # position embedding layer
-        label_pos = paddle.to_tensor(label_pos, dtype='int64')
+        label_pos = paddle.to_tensor(label_pos, dtype="int64")
         pos_emb = self.pos_embedding(label_pos)
         pos_emb = self.w0_linear(paddle.unsqueeze(pos_emb, axis=2))
         pos_emb = paddle.transpose(pos_emb, perm=[0, 2, 1])
@@ -351,24 +355,23 @@ class MLM_VRM(nn.Layer):
     mask_c_show: visualization of Mask_c
     """
 
-    def __init__(self,
-                 n_layers=3,
-                 n_position=256,
-                 n_dim=512,
-                 max_text_length=25,
-                 nclass=37):
+    def __init__(
+        self, n_layers=3, n_position=256, n_dim=512, max_text_length=25, nclass=37
+    ):
         super(MLM_VRM, self).__init__()
-        self.MLM = MLM(n_dim=n_dim,
-                       n_position=n_position,
-                       max_text_length=max_text_length)
+        self.MLM = MLM(
+            n_dim=n_dim, n_position=n_position, max_text_length=max_text_length
+        )
         self.SequenceModeling = Transformer_Encoder(
-            n_layers=n_layers, n_position=n_position)
+            n_layers=n_layers, n_position=n_position
+        )
         self.Prediction = Prediction(
             n_dim=n_dim,
             n_position=n_position,
-            N_max_character=max_text_length +
-            1,  # N_max_character = 1 eos + 25 characters
-            n_class=nclass)
+            N_max_character=max_text_length
+            + 1,  # N_max_character = 1 eos + 25 characters
+            n_class=nclass,
+        )
         self.nclass = nclass
         self.max_text_length = max_text_length
 
@@ -379,22 +382,24 @@ class MLM_VRM(nn.Layer):
         x = paddle.reshape(x, [-1, c, h * w])
         x = paddle.transpose(x, perm=[0, 2, 1])
         if train_mode:
-            if training_step == 'LF_1':
+            if training_step == "LF_1":
                 f_res = 0
                 f_sub = 0
                 x = self.SequenceModeling(x, src_mask=None)
                 text_pre, test_rem, text_mas = self.Prediction(
-                    x, f_res, f_sub, train_mode=True, use_mlm=False)
+                    x, f_res, f_sub, train_mode=True, use_mlm=False
+                )
                 return text_pre, text_pre, text_pre, text_pre
-            elif training_step == 'LF_2':
+            elif training_step == "LF_2":
                 # MLM
                 f_res, f_sub, mask_c = self.MLM(x, label_pos)
                 x = self.SequenceModeling(x, src_mask=None)
                 text_pre, test_rem, text_mas = self.Prediction(
-                    x, f_res, f_sub, train_mode=True)
+                    x, f_res, f_sub, train_mode=True
+                )
                 mask_c_show = trans_1d_2d(mask_c)
                 return text_pre, test_rem, text_mas, mask_c_show
-            elif training_step == 'LA':
+            elif training_step == "LA":
                 # MLM
                 f_res, f_sub, mask_c = self.MLM(x, label_pos)
                 ## use the mask_c (1 for occluded character and 0 for remaining characters) to occlude input
@@ -413,7 +418,8 @@ class MLM_VRM(nn.Layer):
                 x = self.SequenceModeling(x, src_mask=None)
                 ## prediction layer for MLM and VSR
                 text_pre, test_rem, text_mas = self.Prediction(
-                    x, f_res, f_sub, train_mode=True)
+                    x, f_res, f_sub, train_mode=True
+                )
                 mask_c_show = trans_1d_2d(mask_c)
                 return text_pre, test_rem, text_mas, mask_c_show
             else:
@@ -423,13 +429,9 @@ class MLM_VRM(nn.Layer):
             f_sub = 0
             contextual_feature = self.SequenceModeling(x, src_mask=None)
             text_pre = self.Prediction(
-                contextual_feature,
-                f_res,
-                f_sub,
-                train_mode=False,
-                use_mlm=False)
-            text_pre = paddle.transpose(
-                text_pre, perm=[1, 0, 2])  # (26, b, 37))
+                contextual_feature, f_res, f_sub, train_mode=False, use_mlm=False
+            )
+            text_pre = paddle.transpose(text_pre, perm=[1, 0, 2])  # (26, b, 37))
             return text_pre, x
 
 
@@ -438,31 +440,35 @@ class VLHead(nn.Layer):
     Architecture of VisionLAN
     """
 
-    def __init__(self,
-                 in_channels,
-                 out_channels=36,
-                 n_layers=3,
-                 n_position=256,
-                 n_dim=512,
-                 max_text_length=25,
-                 training_step='LA'):
+    def __init__(
+        self,
+        in_channels,
+        out_channels=36,
+        n_layers=3,
+        n_position=256,
+        n_dim=512,
+        max_text_length=25,
+        training_step="LA",
+    ):
         super(VLHead, self).__init__()
         self.MLM_VRM = MLM_VRM(
             n_layers=n_layers,
             n_position=n_position,
             n_dim=n_dim,
             max_text_length=max_text_length,
-            nclass=out_channels + 1)
+            nclass=out_channels + 1,
+        )
         self.training_step = training_step
 
     def forward(self, feat, targets=None):
-
         if self.training:
             label_pos = targets[-2]
             text_pre, test_rem, text_mas, mask_map = self.MLM_VRM(
-                feat, label_pos, self.training_step, train_mode=True)
+                feat, label_pos, self.training_step, train_mode=True
+            )
             return text_pre, test_rem, text_mas, mask_map
         else:
             text_pre, x = self.MLM_VRM(
-                feat, targets, self.training_step, train_mode=False)
+                feat, targets, self.training_step, train_mode=False
+            )
             return text_pre, x

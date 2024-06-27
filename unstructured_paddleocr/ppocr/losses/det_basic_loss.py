@@ -27,23 +27,25 @@ import paddle.nn.functional as F
 
 
 class BalanceLoss(nn.Layer):
-    def __init__(self,
-                 balance_loss=True,
-                 main_loss_type='DiceLoss',
-                 negative_ratio=3,
-                 return_origin=False,
-                 eps=1e-6,
-                 **kwargs):
+    def __init__(
+        self,
+        balance_loss=True,
+        main_loss_type="DiceLoss",
+        negative_ratio=3,
+        return_origin=False,
+        eps=1e-6,
+        **kwargs,
+    ):
         """
-               The BalanceLoss for Differentiable Binarization text detection
-               args:
-                   balance_loss (bool): whether balance loss or not, default is True
-                   main_loss_type (str): can only be one of ['CrossEntropy','DiceLoss',
-                       'Euclidean','BCELoss', 'MaskL1Loss'], default is  'DiceLoss'.
-                   negative_ratio (int|float): float, default is 3.
-                   return_origin (bool): whether return unbalanced loss or not, default is False.
-                   eps (float): default is 1e-6.
-               """
+        The BalanceLoss for Differentiable Binarization text detection
+        args:
+            balance_loss (bool): whether balance loss or not, default is True
+            main_loss_type (str): can only be one of ['CrossEntropy','DiceLoss',
+                'Euclidean','BCELoss', 'MaskL1Loss'], default is  'DiceLoss'.
+            negative_ratio (int|float): float, default is 3.
+            return_origin (bool): whether return unbalanced loss or not, default is False.
+            eps (float): default is 1e-6.
+        """
         super(BalanceLoss, self).__init__()
         self.balance_loss = balance_loss
         self.main_loss_type = main_loss_type
@@ -58,16 +60,22 @@ class BalanceLoss(nn.Layer):
         elif self.main_loss_type == "DiceLoss":
             self.loss = DiceLoss(self.eps)
         elif self.main_loss_type == "BCELoss":
-            self.loss = BCELoss(reduction='none')
+            self.loss = BCELoss(reduction="none")
         elif self.main_loss_type == "MaskL1Loss":
             self.loss = MaskL1Loss(self.eps)
         else:
             loss_type = [
-                'CrossEntropy', 'DiceLoss', 'Euclidean', 'BCELoss', 'MaskL1Loss'
+                "CrossEntropy",
+                "DiceLoss",
+                "Euclidean",
+                "BCELoss",
+                "MaskL1Loss",
             ]
             raise Exception(
                 "main_loss_type in BalanceLoss() can only be one of {}".format(
-                    loss_type))
+                    loss_type
+                )
+            )
 
     def forward(self, pred, gt, mask=None):
         """
@@ -82,8 +90,7 @@ class BalanceLoss(nn.Layer):
         negative = (1 - gt) * mask
 
         positive_count = int(positive.sum())
-        negative_count = int(
-            min(negative.sum(), positive_count * self.negative_ratio))
+        negative_count = int(min(negative.sum(), positive_count * self.negative_ratio))
         loss = self.loss(pred, gt, mask=mask)
 
         if not self.balance_loss:
@@ -97,7 +104,8 @@ class BalanceLoss(nn.Layer):
             negative_loss = sort_loss[:negative_count]
             # negative_loss, _ = paddle.topk(negative_loss, k=negative_count_int)
             balance_loss = (positive_loss.sum() + negative_loss.sum()) / (
-                positive_count + negative_count + self.eps)
+                positive_count + negative_count + self.eps
+            )
         else:
             balance_loss = positive_loss.sum() / (positive_count + self.eps)
         if self.return_origin:
@@ -144,7 +152,7 @@ class MaskL1Loss(nn.Layer):
 
 
 class BCELoss(nn.Layer):
-    def __init__(self, reduction='mean'):
+    def __init__(self, reduction="mean"):
         super(BCELoss, self).__init__()
         self.reduction = reduction
 

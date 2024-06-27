@@ -6,7 +6,7 @@ PaddleOCR provides two service deployment methods:
 - Based on **PaddleHub Serving**: Code path is "`./deploy/hubserving`". Please refer to the [tutorial](../../deploy/hubserving/readme_en.md)
 - Based on **PaddleServing**: Code path is "`./deploy/pdserving`". Please follow this tutorial.
 
-# Service deployment based on PaddleServing  
+# Service deployment based on PaddleServing
 
 This document will introduce how to use the [PaddleServing](https://github.com/PaddlePaddle/Serving/blob/develop/README.md) to deploy the PPOCR dynamic graph model as a pipeline online service.
 
@@ -101,13 +101,13 @@ python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_rec_infer/ \
 After the detection model is converted, there will be additional folders of `ppocr_det_v3_serving` and `ppocr_det_v3_client` in the current folder, with the following format:
 ```
 |- ppocr_det_v3_serving/
-  |- __model__  
+  |- __model__
   |- __params__
-  |- serving_server_conf.prototxt  
+  |- serving_server_conf.prototxt
   |- serving_server_conf.stream.prototxt
 
 |- ppocr_det_v3_client
-  |- serving_client_conf.prototxt  
+  |- serving_client_conf.prototxt
   |- serving_client_conf.stream.prototxt
 
 ```
@@ -120,7 +120,7 @@ The recognition model is the same.
     ```
     git clone https://github.com/PaddlePaddle/PaddleOCR
 
-    # Enter the working directory  
+    # Enter the working directory
     cd PaddleOCR/deploy/pdserving/
     ```
 
@@ -146,7 +146,7 @@ The recognition model is the same.
     python3 pipeline_http_client.py
     ```
     After successfully running, the predicted result of the model will be printed in the cmd window. An example of the result is:
-    ![](./imgs/results.png)  
+    ![](./imgs/results.png)
 
     Adjust the number of concurrency in config.yml to get the largest QPS. Generally, the number of concurrent detection and recognition is 2:1
 
@@ -243,7 +243,7 @@ The C++ service deployment is the same as python in the environment setup and da
     python3 ocr_cpp_client.py ppocr_det_v3_client ppocr_rec_v3_client
     ```
     After successfully running, the predicted result of the model will be printed in the cmd window. An example of the result is:
-    ![](./imgs/results.png)  
+    ![](./imgs/results.png)
 
 ## WINDOWS Users
 
@@ -282,4 +282,4 @@ python3 ocr_web_client.py
 ```
 unset https_proxy
 unset http_proxy
-```  
+```

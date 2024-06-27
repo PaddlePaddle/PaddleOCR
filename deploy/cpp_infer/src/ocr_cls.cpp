@@ -21,11 +21,11 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
                      std::vector<float> &cls_scores,
                      std::vector<double> &times) {
   std::chrono::duration<float> preprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
+      std::chrono::duration<float>::zero();
   std::chrono::duration<float> inference_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
+      std::chrono::duration<float>::zero();
   std::chrono::duration<float> postprocess_diff =
-      std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
+      std::chrono::duration<float>::zero();
 
   int img_num = img_list.size();
   std::vector<int> cls_image_shape = {3, 48, 192};

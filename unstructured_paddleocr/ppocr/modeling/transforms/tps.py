@@ -28,14 +28,16 @@ import numpy as np
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride=1,
-                 groups=1,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride=1,
+        groups=1,
+        act=None,
+        name=None,
+    ):
         super(ConvBNLayer, self).__init__()
         self.conv = nn.Conv2D(
             in_channels=in_channels,
@@ -45,15 +47,17 @@ class ConvBNLayer(nn.Layer):
             padding=(kernel_size - 1) // 2,
             groups=groups,
             weight_attr=ParamAttr(name=name + "_weights"),
-            bias_attr=False)
+            bias_attr=False,
+        )
         bn_name = "bn_" + name
         self.bn = nn.BatchNorm(
             out_channels,
             act=act,
-            param_attr=ParamAttr(name=bn_name + '_scale'),
-            bias_attr=ParamAttr(bn_name + '_offset'),
-            moving_mean_name=bn_name + '_mean',
-            moving_variance_name=bn_name + '_variance')
+            param_attr=ParamAttr(name=bn_name + "_scale"),
+            bias_attr=ParamAttr(bn_name + "_offset"),
+            moving_mean_name=bn_name + "_mean",
+            moving_variance_name=bn_name + "_variance",
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -83,8 +87,10 @@ class LocalizationNetwork(nn.Layer):
                     in_channels=in_channels,
                     out_channels=num_filters,
                     kernel_size=3,
-                    act='relu',
-                    name=name))
+                    act="relu",
+                    name=name,
+                ),
+            )
             self.block_list.append(conv)
             if fno == len(num_filters_list) - 1:
                 pool = nn.AdaptiveAvgPool2D(1)
@@ -100,9 +106,11 @@ class LocalizationNetwork(nn.Layer):
             weight_attr=ParamAttr(
                 learning_rate=loc_lr,
                 name=name + "_w",
-                initializer=nn.initializer.Uniform(-stdv, stdv)),
-            bias_attr=ParamAttr(name=name + '.b_0'),
-            name=name)
+                initializer=nn.initializer.Uniform(-stdv, stdv),
+            ),
+            bias_attr=ParamAttr(name=name + ".b_0"),
+            name=name,
+        )
 
         # Init fc2 in LocalizationNetwork
         initial_bias = self.get_initial_fiducials()
@@ -111,26 +119,25 @@ class LocalizationNetwork(nn.Layer):
         param_attr = ParamAttr(
             learning_rate=loc_lr,
             initializer=nn.initializer.Assign(np.zeros([fc_dim, F * 2])),
-            name=name + "_w")
+            name=name + "_w",
+        )
         bias_attr = ParamAttr(
             learning_rate=loc_lr,
             initializer=nn.initializer.Assign(initial_bias),
-            name=name + "_b")
+            name=name + "_b",
+        )
         self.fc2 = nn.Linear(
-            fc_dim,
-            F * 2,
-            weight_attr=param_attr,
-            bias_attr=bias_attr,
-            name=name)
+            fc_dim, F * 2, weight_attr=param_attr, bias_attr=bias_attr, name=name
+        )
         self.out_channels = F * 2
 
     def forward(self, x):
         """
-           Estimating parameters of geometric transformation
-           Args:
-               image: input
-           Return:
-               batch_C_prime: the matrix of the geometric transformation
+        Estimating parameters of geometric transformation
+        Args:
+            image: input
+        Return:
+            batch_C_prime: the matrix of the geometric transformation
         """
         B = x.shape[0]
         i = 0
@@ -145,7 +152,7 @@ class LocalizationNetwork(nn.Layer):
         return x
 
     def get_initial_fiducials(self):
-        """ see RARE paper Fig. 6 (a) """
+        """see RARE paper Fig. 6 (a)"""
         F = self.F
         ctrl_pts_x = np.linspace(-1.0, 1.0, int(F / 2))
         ctrl_pts_y_top = np.linspace(0.0, -1.0, num=int(F / 2))
@@ -165,15 +172,14 @@ class GridGenerator(nn.Layer):
         name = "ex_fc"
         initializer = nn.initializer.Constant(value=0.0)
         param_attr = ParamAttr(
-            learning_rate=0.0, initializer=initializer, name=name + "_w")
+            learning_rate=0.0, initializer=initializer, name=name + "_w"
+        )
         bias_attr = ParamAttr(
-            learning_rate=0.0, initializer=initializer, name=name + "_b")
+            learning_rate=0.0, initializer=initializer, name=name + "_b"
+        )
         self.fc = nn.Linear(
-            in_channels,
-            6,
-            weight_attr=param_attr,
-            bias_attr=bias_attr,
-            name=name)
+            in_channels, 6, weight_attr=param_attr, bias_attr=bias_attr, name=name
+        )
 
     def forward(self, batch_C_prime, I_r_size):
         """
@@ -187,9 +193,8 @@ class GridGenerator(nn.Layer):
         C = self.build_C_paddle()
         P = self.build_P_paddle(I_r_size)
 
-        inv_delta_C_tensor = self.build_inv_delta_C_paddle(C).astype('float32')
-        P_hat_tensor = self.build_P_hat_paddle(
-            C, paddle.to_tensor(P)).astype('float32')
+        inv_delta_C_tensor = self.build_inv_delta_C_paddle(C).astype("float32")
+        P_hat_tensor = self.build_P_hat_paddle(C, paddle.to_tensor(P)).astype("float32")
 
         inv_delta_C_tensor.stop_gradient = True
         P_hat_tensor.stop_gradient = True
@@ -199,17 +204,18 @@ class GridGenerator(nn.Layer):
         batch_C_ex_part_tensor.stop_gradient = True
 
         batch_C_prime_with_zeros = paddle.concat(
-            [batch_C_prime, batch_C_ex_part_tensor], axis=1)
+            [batch_C_prime, batch_C_ex_part_tensor], axis=1
+        )
         batch_T = paddle.matmul(inv_delta_C_tensor, batch_C_prime_with_zeros)
         batch_P_prime = paddle.matmul(P_hat_tensor, batch_T)
         return batch_P_prime
 
     def build_C_paddle(self):
-        """ Return coordinates of fiducial points in I_r; C """
+        """Return coordinates of fiducial points in I_r; C"""
         F = self.F
-        ctrl_pts_x = paddle.linspace(-1.0, 1.0, int(F / 2), dtype='float64')
-        ctrl_pts_y_top = -1 * paddle.ones([int(F / 2)], dtype='float64')
-        ctrl_pts_y_bottom = paddle.ones([int(F / 2)], dtype='float64')
+        ctrl_pts_x = paddle.linspace(-1.0, 1.0, int(F / 2), dtype="float64")
+        ctrl_pts_y_top = -1 * paddle.ones([int(F / 2)], dtype="float64")
+        ctrl_pts_y_bottom = paddle.ones([int(F / 2)], dtype="float64")
         ctrl_pts_top = paddle.stack([ctrl_pts_x, ctrl_pts_y_top], axis=1)
         ctrl_pts_bottom = paddle.stack([ctrl_pts_x, ctrl_pts_y_bottom], axis=1)
         C = paddle.concat([ctrl_pts_top, ctrl_pts_bottom], axis=0)
@@ -217,13 +223,13 @@ class GridGenerator(nn.Layer):
 
     def build_P_paddle(self, I_r_size):
         I_r_height, I_r_width = I_r_size
-        I_r_grid_x = (paddle.arange(
-            -I_r_width, I_r_width, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_width]))
+        I_r_grid_x = (
+            paddle.arange(-I_r_width, I_r_width, 2, dtype="float64") + 1.0
+        ) / paddle.to_tensor(np.array([I_r_width])).astype("float64")
 
-        I_r_grid_y = (paddle.arange(
-            -I_r_height, I_r_height, 2, dtype='float64') + 1.0
-                      ) / paddle.to_tensor(np.array([I_r_height]))
+        I_r_grid_y = (
+            paddle.arange(-I_r_height, I_r_height, 2, dtype="float64") + 1.0
+        ) / paddle.to_tensor(np.array([I_r_height])).astype("float64")
 
         # P: self.I_r_width x self.I_r_height x 2
         P = paddle.stack(paddle.meshgrid(I_r_grid_x, I_r_grid_y), axis=2)
@@ -232,33 +238,35 @@ class GridGenerator(nn.Layer):
         return P.reshape([-1, 2])
 
     def build_inv_delta_C_paddle(self, C):
-        """ Return inv_delta_C which is needed to calculate T """
+        """Return inv_delta_C which is needed to calculate T"""
         F = self.F
-        hat_eye = paddle.eye(F, dtype='float64')  # F x F
-        hat_C = paddle.norm(
-            C.reshape([1, F, 2]) - C.reshape([F, 1, 2]), axis=2) + hat_eye
+        hat_eye = paddle.eye(F, dtype="float64")  # F x F
+        hat_C = (
+            paddle.norm(C.reshape([1, F, 2]) - C.reshape([F, 1, 2]), axis=2) + hat_eye
+        )
         hat_C = (hat_C**2) * paddle.log(hat_C)
         delta_C = paddle.concat(  # F+3 x F+3
             [
                 paddle.concat(
-                    [paddle.ones(
-                        (F, 1), dtype='float64'), C, hat_C], axis=1),  # F x F+3
+                    [paddle.ones((F, 1), dtype="float64"), C, hat_C], axis=1
+                ),  # F x F+3
                 paddle.concat(
                     [
-                        paddle.zeros(
-                            (2, 3), dtype='float64'), paddle.transpose(
-                                C, perm=[1, 0])
+                        paddle.zeros((2, 3), dtype="float64"),
+                        paddle.transpose(C, perm=[1, 0]),
                     ],
-                    axis=1),  # 2 x F+3
+                    axis=1,
+                ),  # 2 x F+3
                 paddle.concat(
                     [
-                        paddle.zeros(
-                            (1, 3), dtype='float64'), paddle.ones(
-                                (1, F), dtype='float64')
+                        paddle.zeros((1, 3), dtype="float64"),
+                        paddle.ones((1, F), dtype="float64"),
                     ],
-                    axis=1)  # 1 x F+3
+                    axis=1,
+                ),  # 1 x F+3
             ],
-            axis=0)
+            axis=0,
+        )
         inv_delta_C = paddle.inverse(delta_C)
         return inv_delta_C  # F+3 x F+3
 
@@ -274,11 +282,8 @@ class GridGenerator(nn.Layer):
         rbf_norm = paddle.norm(P_diff, p=2, axis=2, keepdim=False)
 
         # rbf: n x F
-        rbf = paddle.multiply(
-            paddle.square(rbf_norm), paddle.log(rbf_norm + eps))
-        P_hat = paddle.concat(
-            [paddle.ones(
-                (n, 1), dtype='float64'), P, rbf], axis=1)
+        rbf = paddle.multiply(paddle.square(rbf_norm), paddle.log(rbf_norm + eps))
+        P_hat = paddle.concat([paddle.ones((n, 1), dtype="float64"), P, rbf], axis=1)
         return P_hat  # n x F+3
 
     def get_expand_tensor(self, batch_C_prime):
@@ -292,17 +297,25 @@ class GridGenerator(nn.Layer):
 class TPS(nn.Layer):
     def __init__(self, in_channels, num_fiducial, loc_lr, model_name):
         super(TPS, self).__init__()
-        self.loc_net = LocalizationNetwork(in_channels, num_fiducial, loc_lr,
-                                           model_name)
-        self.grid_generator = GridGenerator(self.loc_net.out_channels,
-                                            num_fiducial)
+        self.loc_net = LocalizationNetwork(
+            in_channels, num_fiducial, loc_lr, model_name
+        )
+        self.grid_generator = GridGenerator(self.loc_net.out_channels, num_fiducial)
         self.out_channels = in_channels
 
     def forward(self, image):
         image.stop_gradient = False
         batch_C_prime = self.loc_net(image)
         batch_P_prime = self.grid_generator(batch_C_prime, image.shape[2:])
-        batch_P_prime = batch_P_prime.reshape(
-            [-1, image.shape[2], image.shape[3], 2])
+        batch_P_prime = batch_P_prime.reshape([-1, image.shape[2], image.shape[3], 2])
+        is_fp16 = False
+        if batch_P_prime.dtype != paddle.float32:
+            data_type = batch_P_prime.dtype
+            image = image.cast(paddle.float32)
+            batch_P_prime = batch_P_prime.cast(paddle.float32)
+            is_fp16 = True
         batch_I_r = F.grid_sample(x=image, grid=batch_P_prime)
+        if is_fp16:
+            batch_I_r = batch_I_r.cast(data_type)
+
         return batch_I_r

@@ -16,16 +16,16 @@ OCR_PPredictor::OCR_PPredictor(const OCR_Config &config) : _config(config) {}
 int OCR_PPredictor::init(const std::string &det_model_content,
                          const std::string &rec_model_content,
                          const std::string &cls_model_content) {
-  _det_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl,_config.thread_num, NET_OCR, _config.mode});
+  _det_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR, _config.mode});
   _det_predictor->init_nb(det_model_content);
 
-  _rec_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl,_config.thread_num, NET_OCR_INTERNAL, _config.mode});
+  _rec_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR_INTERNAL, _config.mode});
   _rec_predictor->init_nb(rec_model_content);
 
-  _cls_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl,_config.thread_num, NET_OCR_INTERNAL, _config.mode});
+  _cls_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR_INTERNAL, _config.mode});
   _cls_predictor->init_nb(cls_model_content);
   return RETURN_OK;
 }
@@ -33,17 +33,16 @@ int OCR_PPredictor::init(const std::string &det_model_content,
 int OCR_PPredictor::init_from_file(const std::string &det_model_path,
                                    const std::string &rec_model_path,
                                    const std::string &cls_model_path) {
-  _det_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl, _config.thread_num, NET_OCR, _config.mode});
+  _det_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR, _config.mode});
   _det_predictor->init_from_file(det_model_path);
 
-
-  _rec_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl,_config.thread_num, NET_OCR_INTERNAL, _config.mode});
+  _rec_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR_INTERNAL, _config.mode});
   _rec_predictor->init_from_file(rec_model_path);
 
-  _cls_predictor = std::unique_ptr<PPredictor>(
-      new PPredictor{_config.use_opencl,_config.thread_num, NET_OCR_INTERNAL, _config.mode});
+  _cls_predictor = std::unique_ptr<PPredictor>(new PPredictor{
+      _config.use_opencl, _config.thread_num, NET_OCR_INTERNAL, _config.mode});
   _cls_predictor->init_from_file(cls_model_path);
   return RETURN_OK;
 }
@@ -78,22 +77,23 @@ visual_img(const std::vector<std::vector<std::vector<int>>> &filter_boxes,
 }
 
 std::vector<OCRPredictResult>
-OCR_PPredictor::infer_ocr(cv::Mat &origin,int max_size_len, int run_det, int run_cls, int run_rec) {
+OCR_PPredictor::infer_ocr(cv::Mat &origin, int max_size_len, int run_det,
+                          int run_cls, int run_rec) {
   LOGI("ocr cpp start *****************");
   LOGI("ocr cpp det: %d, cls: %d, rec: %d", run_det, run_cls, run_rec);
   std::vector<OCRPredictResult> ocr_results;
-  if(run_det){
+  if (run_det) {
     infer_det(origin, max_size_len, ocr_results);
   }
-  if(run_rec){
-    if(ocr_results.size()==0){
+  if (run_rec) {
+    if (ocr_results.size() == 0) {
       OCRPredictResult res;
       ocr_results.emplace_back(std::move(res));
     }
-    for(int i = 0; i < ocr_results.size();i++) {
+    for (int i = 0; i < ocr_results.size(); i++) {
       infer_rec(origin, run_cls, ocr_results[i]);
     }
-  }else if(run_cls){
+  } else if (run_cls) {
     ClsPredictResult cls_res = infer_cls(origin);
     OCRPredictResult res;
     res.cls_score = cls_res.cls_score;
@@ -144,7 +144,8 @@ cv::Mat DetResizeImg(const cv::Mat img, int max_size_len,
   return resize_img;
 }
 
-void OCR_PPredictor::infer_det(cv::Mat &origin, int max_size_len, std::vector<OCRPredictResult> &ocr_results) {
+void OCR_PPredictor::infer_det(cv::Mat &origin, int max_size_len,
+                               std::vector<OCRPredictResult> &ocr_results) {
   std::vector<float> mean = {0.485f, 0.456f, 0.406f};
   std::vector<float> scale = {1 / 0.229f, 1 / 0.224f, 1 / 0.225f};
 
@@ -160,22 +161,27 @@ void OCR_PPredictor::infer_det(cv::Mat &origin, int max_size_len, std::vector<OC
 
   neon_mean_scale(dimg, input.get_mutable_float_data(), input_size, mean,
                   scale);
-  LOGI("ocr cpp det shape %d,%d", input_image.rows,input_image.cols);
+  LOGI("ocr cpp det shape %d,%d", input_image.rows, input_image.cols);
   std::vector<PredictorOutput> results = _det_predictor->infer();
   PredictorOutput &res = results.at(0);
-  std::vector<std::vector<std::vector<int>>> filtered_box = calc_filtered_boxes(
-          res.get_float_data(), res.get_size(), input_image.rows, input_image.cols, origin);
+  std::vector<std::vector<std::vector<int>>> filtered_box =
+      calc_filtered_boxes(res.get_float_data(), res.get_size(),
+                          input_image.rows, input_image.cols, origin);
   LOGI("ocr cpp det Filter_box size %ld", filtered_box.size());
 
-  for(int i = 0;i<filtered_box.size();i++){
-    LOGI("ocr cpp box  %d,%d,%d,%d,%d,%d,%d,%d", filtered_box[i][0][0],filtered_box[i][0][1], filtered_box[i][1][0],filtered_box[i][1][1], filtered_box[i][2][0],filtered_box[i][2][1], filtered_box[i][3][0],filtered_box[i][3][1]);
+  for (int i = 0; i < filtered_box.size(); i++) {
+    LOGI("ocr cpp box  %d,%d,%d,%d,%d,%d,%d,%d", filtered_box[i][0][0],
+         filtered_box[i][0][1], filtered_box[i][1][0], filtered_box[i][1][1],
+         filtered_box[i][2][0], filtered_box[i][2][1], filtered_box[i][3][0],
+         filtered_box[i][3][1]);
     OCRPredictResult res;
     res.points = filtered_box[i];
     ocr_results.push_back(res);
   }
 }
 
-void OCR_PPredictor::infer_rec(const cv::Mat &origin_img, int run_cls, OCRPredictResult& ocr_result) {
+void OCR_PPredictor::infer_rec(const cv::Mat &origin_img, int run_cls,
+                               OCRPredictResult &ocr_result) {
   std::vector<float> mean = {0.5f, 0.5f, 0.5f};
   std::vector<float> scale = {1 / 0.5f, 1 / 0.5f, 1 / 0.5f};
   std::vector<int64_t> dims = {1, 3, 0, 0};
@@ -184,20 +190,18 @@ void OCR_PPredictor::infer_rec(const cv::Mat &origin_img, int run_cls, OCRPredic
 
   const std::vector<std::vector<int>> &box = ocr_result.points;
   cv::Mat crop_img;
-  if(box.size()>0){
+  if (box.size() > 0) {
     crop_img = get_rotate_crop_image(origin_img, box);
-  }
-  else{
+  } else {
     crop_img = origin_img;
   }
 
-  if(run_cls){
+  if (run_cls) {
     ClsPredictResult cls_res = infer_cls(crop_img);
     crop_img = cls_res.img;
     ocr_result.cls_score = cls_res.cls_score;
     ocr_result.cls_label = cls_res.cls_label;
   }
-
 
   float wh_ratio = float(crop_img.cols) / float(crop_img.rows);
   cv::Mat input_image = crnn_resize_img(crop_img, wh_ratio);
@@ -347,4 +351,4 @@ float OCR_PPredictor::postprocess_rec_score(const PredictorOutput &res) {
 }
 
 NET_TYPE OCR_PPredictor::get_net_flag() const { return NET_OCR; }
-}
+} // namespace ppredictor

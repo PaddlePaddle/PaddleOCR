@@ -29,7 +29,7 @@ def get_dict(character_dict_path):
     with open(character_dict_path, "rb") as fin:
         lines = fin.readlines()
         for line in lines:
-            line = line.decode('utf-8').strip("\n").strip("\r\n")
+            line = line.decode("utf-8").strip("\n").strip("\r\n")
             character_str += line
         dict_character = list(character_str)
     return dict_character
@@ -44,8 +44,11 @@ def point_pair2poly(point_pair_list):
         pair_length = np.linalg.norm(point_pair[0] - point_pair[1])
         pair_length_list.append(pair_length)
     pair_length_list = np.array(pair_length_list)
-    pair_info = (pair_length_list.max(), pair_length_list.min(),
-                 pair_length_list.mean())
+    pair_info = (
+        pair_length_list.max(),
+        pair_length_list.min(),
+        pair_length_list.mean(),
+    )
 
     point_num = len(point_pair_list) * 2
     point_list = [0] * point_num
@@ -55,12 +58,11 @@ def point_pair2poly(point_pair_list):
     return np.array(point_list).reshape(-1, 2), pair_info
 
 
-def shrink_quad_along_width(quad, begin_width_ratio=0., end_width_ratio=1.):
+def shrink_quad_along_width(quad, begin_width_ratio=0.0, end_width_ratio=1.0):
     """
     Generate shrink_quad_along_width.
     """
-    ratio_pair = np.array(
-        [[begin_width_ratio], [end_width_ratio]], dtype=np.float32)
+    ratio_pair = np.array([[begin_width_ratio], [end_width_ratio]], dtype=np.float32)
     p0_1 = quad[0] + (quad[1] - quad[0]) * ratio_pair
     p3_2 = quad[3] + (quad[2] - quad[3]) * ratio_pair
     return np.array([p0_1[0], p0_1[1], p3_2[1], p3_2[0]])
@@ -71,20 +73,25 @@ def expand_poly_along_width(poly, shrink_ratio_of_width=0.3):
     expand poly along width.
     """
     point_num = poly.shape[0]
-    left_quad = np.array(
-        [poly[0], poly[1], poly[-2], poly[-1]], dtype=np.float32)
-    left_ratio = -shrink_ratio_of_width * np.linalg.norm(left_quad[0] - left_quad[3]) / \
-                 (np.linalg.norm(left_quad[0] - left_quad[1]) + 1e-6)
+    left_quad = np.array([poly[0], poly[1], poly[-2], poly[-1]], dtype=np.float32)
+    left_ratio = (
+        -shrink_ratio_of_width
+        * np.linalg.norm(left_quad[0] - left_quad[3])
+        / (np.linalg.norm(left_quad[0] - left_quad[1]) + 1e-6)
+    )
     left_quad_expand = shrink_quad_along_width(left_quad, left_ratio, 1.0)
     right_quad = np.array(
         [
-            poly[point_num // 2 - 2], poly[point_num // 2 - 1],
-            poly[point_num // 2], poly[point_num // 2 + 1]
+            poly[point_num // 2 - 2],
+            poly[point_num // 2 - 1],
+            poly[point_num // 2],
+            poly[point_num // 2 + 1],
         ],
-        dtype=np.float32)
-    right_ratio = 1.0 + \
-                  shrink_ratio_of_width * np.linalg.norm(right_quad[0] - right_quad[3]) / \
-                  (np.linalg.norm(right_quad[0] - right_quad[1]) + 1e-6)
+        dtype=np.float32,
+    )
+    right_ratio = 1.0 + shrink_ratio_of_width * np.linalg.norm(
+        right_quad[0] - right_quad[3]
+    ) / (np.linalg.norm(right_quad[0] - right_quad[1]) + 1e-6)
     right_quad_expand = shrink_quad_along_width(right_quad, 0.0, right_ratio)
     poly[0] = left_quad_expand[0]
     poly[-1] = left_quad_expand[-1]
@@ -141,14 +148,13 @@ def ctc_greedy_decoder(probs_seq, blank=95, keep_blank_in_idxs=True):
     raw_str = np.argmax(np.array(probs_seq), axis=1)
     remove_blank_in_pos = None if keep_blank_in_idxs else blank
     dedup_str, keep_idx_list = get_keep_pos_idxs(
-        raw_str, remove_blank=remove_blank_in_pos)
+        raw_str, remove_blank=remove_blank_in_pos
+    )
     dst_str = remove_blank(dedup_str, blank=blank)
     return dst_str, keep_idx_list
 
 
-def instance_ctc_greedy_decoder(gather_info,
-                                logits_map,
-                                keep_blank_in_idxs=True):
+def instance_ctc_greedy_decoder(gather_info, logits_map, keep_blank_in_idxs=True):
     """
     gather_info: [[x, y], [x, y] ...]
     logits_map: H x W X (n_chars + 1)
@@ -158,20 +164,21 @@ def instance_ctc_greedy_decoder(gather_info,
     logits_seq = logits_map[list(ys), list(xs)]  # n x 96
     probs_seq = softmax(logits_seq)
     dst_str, keep_idx_list = ctc_greedy_decoder(
-        probs_seq, blank=C - 1, keep_blank_in_idxs=keep_blank_in_idxs)
+        probs_seq, blank=C - 1, keep_blank_in_idxs=keep_blank_in_idxs
+    )
     keep_gather_list = [gather_info[idx] for idx in keep_idx_list]
     return dst_str, keep_gather_list
 
 
-def ctc_decoder_for_image(gather_info_list, logits_map,
-                          keep_blank_in_idxs=True):
+def ctc_decoder_for_image(gather_info_list, logits_map, keep_blank_in_idxs=True):
     """
     CTC decoder using multiple processes.
     """
     decoder_results = []
     for gather_info in gather_info_list:
         res = instance_ctc_greedy_decoder(
-            gather_info, logits_map, keep_blank_in_idxs=keep_blank_in_idxs)
+            gather_info, logits_map, keep_blank_in_idxs=keep_blank_in_idxs
+        )
         decoder_results.append(res)
     return decoder_results
 
@@ -194,8 +201,7 @@ def sort_with_direction(pos_list, f_direction):
     pos_list = np.array(pos_list).reshape(-1, 2)
     point_direction = f_direction[pos_list[:, 0], pos_list[:, 1]]  # x, y
     point_direction = point_direction[:, ::-1]  # x, y -> y, x
-    sorted_point, sorted_direction = sort_part_with_direction(pos_list,
-                                                              point_direction)
+    sorted_point, sorted_direction = sort_part_with_direction(pos_list, point_direction)
 
     point_num = len(sorted_point)
     if point_num >= 16:
@@ -203,12 +209,14 @@ def sort_with_direction(pos_list, f_direction):
         first_part_point = sorted_point[:middle_num]
         first_point_direction = sorted_direction[:middle_num]
         sorted_fist_part_point, sorted_fist_part_direction = sort_part_with_direction(
-            first_part_point, first_point_direction)
+            first_part_point, first_point_direction
+        )
 
         last_part_point = sorted_point[middle_num:]
         last_point_direction = sorted_direction[middle_num:]
         sorted_last_part_point, sorted_last_part_direction = sort_part_with_direction(
-            last_part_point, last_point_direction)
+            last_part_point, last_point_direction
+        )
         sorted_point = sorted_fist_part_point + sorted_last_part_point
         sorted_direction = sorted_fist_part_direction + sorted_last_part_direction
 
@@ -237,7 +245,7 @@ def sort_and_expand_with_direction(pos_list, f_direction):
     point_num = len(sorted_list)
     sub_direction_len = max(point_num // 3, 2)
     left_direction = point_direction[:sub_direction_len, :]
-    right_dirction = point_direction[point_num - sub_direction_len:, :]
+    right_dirction = point_direction[point_num - sub_direction_len :, :]
 
     left_average_direction = -np.mean(left_direction, axis=0, keepdims=True)
     left_average_len = np.linalg.norm(left_average_direction)
@@ -249,17 +257,24 @@ def sort_and_expand_with_direction(pos_list, f_direction):
     right_step = right_average_direction / (right_average_len + 1e-6)
     right_start = np.array(sorted_list[-1])
 
-    append_num = max(
-        int((left_average_len + right_average_len) / 2.0 * 0.15), 1)
+    append_num = max(int((left_average_len + right_average_len) / 2.0 * 0.15), 1)
     left_list = []
     right_list = []
     for i in range(append_num):
-        ly, lx = np.round(left_start + left_step * (i + 1)).flatten().astype(
-            'int32').tolist()
+        ly, lx = (
+            np.round(left_start + left_step * (i + 1))
+            .flatten()
+            .astype("int32")
+            .tolist()
+        )
         if ly < h and lx < w and (ly, lx) not in left_list:
             left_list.append((ly, lx))
-        ry, rx = np.round(right_start + right_step * (i + 1)).flatten().astype(
-            'int32').tolist()
+        ry, rx = (
+            np.round(right_start + right_step * (i + 1))
+            .flatten()
+            .astype("int32")
+            .tolist()
+        )
         if ry < h and rx < w and (ry, rx) not in right_list:
             right_list.append((ry, rx))
 
@@ -280,7 +295,7 @@ def sort_and_expand_with_direction_v2(pos_list, f_direction, binary_tcl_map):
     point_num = len(sorted_list)
     sub_direction_len = max(point_num // 3, 2)
     left_direction = point_direction[:sub_direction_len, :]
-    right_dirction = point_direction[point_num - sub_direction_len:, :]
+    right_dirction = point_direction[point_num - sub_direction_len :, :]
 
     left_average_direction = -np.mean(left_direction, axis=0, keepdims=True)
     left_average_len = np.linalg.norm(left_average_direction)
@@ -292,15 +307,18 @@ def sort_and_expand_with_direction_v2(pos_list, f_direction, binary_tcl_map):
     right_step = right_average_direction / (right_average_len + 1e-6)
     right_start = np.array(sorted_list[-1])
 
-    append_num = max(
-        int((left_average_len + right_average_len) / 2.0 * 0.15), 1)
+    append_num = max(int((left_average_len + right_average_len) / 2.0 * 0.15), 1)
     max_append_num = 2 * append_num
 
     left_list = []
     right_list = []
     for i in range(max_append_num):
-        ly, lx = np.round(left_start + left_step * (i + 1)).flatten().astype(
-            'int32').tolist()
+        ly, lx = (
+            np.round(left_start + left_step * (i + 1))
+            .flatten()
+            .astype("int32")
+            .tolist()
+        )
         if ly < h and lx < w and (ly, lx) not in left_list:
             if binary_tcl_map[ly, lx] > 0.5:
                 left_list.append((ly, lx))
@@ -308,8 +326,12 @@ def sort_and_expand_with_direction_v2(pos_list, f_direction, binary_tcl_map):
                 break
 
     for i in range(max_append_num):
-        ry, rx = np.round(right_start + right_step * (i + 1)).flatten().astype(
-            'int32').tolist()
+        ry, rx = (
+            np.round(right_start + right_step * (i + 1))
+            .flatten()
+            .astype("int32")
+            .tolist()
+        )
         if ry < h and rx < w and (ry, rx) not in right_list:
             if binary_tcl_map[ry, rx] > 0.5:
                 right_list.append((ry, rx))
@@ -320,13 +342,15 @@ def sort_and_expand_with_direction_v2(pos_list, f_direction, binary_tcl_map):
     return all_list
 
 
-def generate_pivot_list_curved(p_score,
-                               p_char_maps,
-                               f_direction,
-                               score_thresh=0.5,
-                               is_expand=True,
-                               is_backbone=False,
-                               image_id=0):
+def generate_pivot_list_curved(
+    p_score,
+    p_char_maps,
+    f_direction,
+    score_thresh=0.5,
+    is_expand=True,
+    is_backbone=False,
+    image_id=0,
+):
     """
     return center point and end point of TCL instance; filter with the char maps;
     """
@@ -335,7 +359,8 @@ def generate_pivot_list_curved(p_score,
     p_tcl_map = (p_score > score_thresh) * 1.0
     skeleton_map = thin(p_tcl_map)
     instance_count, instance_label_map = cv2.connectedComponents(
-        skeleton_map.astype(np.uint8), connectivity=8)
+        skeleton_map.astype(np.uint8), connectivity=8
+    )
 
     # get TCL Instance
     all_pos_yxs = []
@@ -355,7 +380,8 @@ def generate_pivot_list_curved(p_score,
 
             if is_expand:
                 pos_list_sorted = sort_and_expand_with_direction_v2(
-                    pos_list, f_direction, p_tcl_map)
+                    pos_list, f_direction, p_tcl_map
+                )
             else:
                 pos_list_sorted, _ = sort_with_direction(pos_list, f_direction)
             all_pos_yxs.append(pos_list_sorted)
@@ -363,7 +389,8 @@ def generate_pivot_list_curved(p_score,
     # use decoder to filter backgroud points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
-        all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True)
+        all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True
+    )
     for decoded_str, keep_yxs_list in decode_res:
         if is_backbone:
             keep_yxs_list_with_id = add_id(keep_yxs_list, image_id=image_id)
@@ -379,12 +406,9 @@ def generate_pivot_list_curved(p_score,
         return center_pos_yxs, end_points_yxs
 
 
-def generate_pivot_list_horizontal(p_score,
-                                   p_char_maps,
-                                   f_direction,
-                                   score_thresh=0.5,
-                                   is_backbone=False,
-                                   image_id=0):
+def generate_pivot_list_horizontal(
+    p_score, p_char_maps, f_direction, score_thresh=0.5, is_backbone=False, image_id=0
+):
     """
     return center point and end point of TCL instance; filter with the char maps;
     """
@@ -392,7 +416,8 @@ def generate_pivot_list_horizontal(p_score,
     f_direction = f_direction.transpose(1, 2, 0)
     p_tcl_map_bi = (p_score > score_thresh) * 1.0
     instance_count, instance_label_map = cv2.connectedComponents(
-        p_tcl_map_bi.astype(np.uint8), connectivity=8)
+        p_tcl_map_bi.astype(np.uint8), connectivity=8
+    )
 
     # get TCL Instance
     all_pos_yxs = []
@@ -411,12 +436,11 @@ def generate_pivot_list_horizontal(p_score,
                 continue
 
             # add rule here
-            main_direction = extract_main_direction(pos_list,
-                                                    f_direction)  # y x
+            main_direction = extract_main_direction(pos_list, f_direction)  # y x
             reference_directin = np.array([0, 1]).reshape([-1, 2])  # y x
-            is_h_angle = abs(np.sum(
-                main_direction * reference_directin)) < math.cos(math.pi / 180 *
-                                                                 70)
+            is_h_angle = abs(np.sum(main_direction * reference_directin)) < math.cos(
+                math.pi / 180 * 70
+            )
 
             point_yxs = np.array(pos_list)
             max_y, max_x = np.max(point_yxs, axis=0)
@@ -427,24 +451,24 @@ def generate_pivot_list_horizontal(p_score,
             if is_h_len:
                 xs = np.unique(xs)
                 for x in xs:
-                    ys = instance_label_map[:, x].copy().reshape((-1, ))
+                    ys = instance_label_map[:, x].copy().reshape((-1,))
                     y = int(np.where(ys == instance_id)[0].mean())
                     pos_list_final.append((y, x))
             else:
                 ys = np.unique(ys)
                 for y in ys:
-                    xs = instance_label_map[y, :].copy().reshape((-1, ))
+                    xs = instance_label_map[y, :].copy().reshape((-1,))
                     x = int(np.where(xs == instance_id)[0].mean())
                     pos_list_final.append((y, x))
 
-            pos_list_sorted, _ = sort_with_direction(pos_list_final,
-                                                     f_direction)
+            pos_list_sorted, _ = sort_with_direction(pos_list_final, f_direction)
             all_pos_yxs.append(pos_list_sorted)
 
     # use decoder to filter backgroud points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
-        all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True)
+        all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True
+    )
     for decoded_str, keep_yxs_list in decode_res:
         if is_backbone:
             keep_yxs_list_with_id = add_id(keep_yxs_list, image_id=image_id)
@@ -459,13 +483,15 @@ def generate_pivot_list_horizontal(p_score,
         return center_pos_yxs, end_points_yxs
 
 
-def generate_pivot_list_slow(p_score,
-                             p_char_maps,
-                             f_direction,
-                             score_thresh=0.5,
-                             is_backbone=False,
-                             is_curved=True,
-                             image_id=0):
+def generate_pivot_list_slow(
+    p_score,
+    p_char_maps,
+    f_direction,
+    score_thresh=0.5,
+    is_backbone=False,
+    is_curved=True,
+    image_id=0,
+):
     """
     Warp all the function together.
     """
@@ -477,7 +503,8 @@ def generate_pivot_list_slow(p_score,
             score_thresh=score_thresh,
             is_expand=True,
             is_backbone=is_backbone,
-            image_id=image_id)
+            image_id=image_id,
+        )
     else:
         return generate_pivot_list_horizontal(
             p_score,
@@ -485,7 +512,8 @@ def generate_pivot_list_slow(p_score,
             f_direction,
             score_thresh=score_thresh,
             is_backbone=is_backbone,
-            image_id=image_id)
+            image_id=image_id,
+        )
 
 
 # for refine module
@@ -498,8 +526,7 @@ def extract_main_direction(pos_list, f_direction):
     point_direction = f_direction[pos_list[:, 0], pos_list[:, 1]]
     point_direction = point_direction[:, ::-1]  # x, y -> y, x
     average_direction = np.mean(point_direction, axis=0, keepdims=True)
-    average_direction = average_direction / (
-        np.linalg.norm(average_direction) + 1e-6)
+    average_direction = average_direction / (np.linalg.norm(average_direction) + 1e-6)
     return average_direction
 
 
@@ -537,8 +564,7 @@ def sort_by_direction_with_image_id(pos_list, f_direction):
     pos_list = np.array(pos_list).reshape(-1, 3)
     point_direction = f_direction[pos_list[:, 1], pos_list[:, 2]]  # x, y
     point_direction = point_direction[:, ::-1]  # x, y -> y, x
-    sorted_point, sorted_direction = sort_part_with_direction(pos_list,
-                                                              point_direction)
+    sorted_point, sorted_direction = sort_part_with_direction(pos_list, point_direction)
 
     point_num = len(sorted_point)
     if point_num >= 16:
@@ -546,25 +572,29 @@ def sort_by_direction_with_image_id(pos_list, f_direction):
         first_part_point = sorted_point[:middle_num]
         first_point_direction = sorted_direction[:middle_num]
         sorted_fist_part_point, sorted_fist_part_direction = sort_part_with_direction(
-            first_part_point, first_point_direction)
+            first_part_point, first_point_direction
+        )
 
         last_part_point = sorted_point[middle_num:]
         last_point_direction = sorted_direction[middle_num:]
         sorted_last_part_point, sorted_last_part_direction = sort_part_with_direction(
-            last_part_point, last_point_direction)
+            last_part_point, last_point_direction
+        )
         sorted_point = sorted_fist_part_point + sorted_last_part_point
         sorted_direction = sorted_fist_part_direction + sorted_last_part_direction
 
     return sorted_point
 
 
-def generate_pivot_list_tt_inference(p_score,
-                                     p_char_maps,
-                                     f_direction,
-                                     score_thresh=0.5,
-                                     is_backbone=False,
-                                     is_curved=True,
-                                     image_id=0):
+def generate_pivot_list_tt_inference(
+    p_score,
+    p_char_maps,
+    f_direction,
+    score_thresh=0.5,
+    is_backbone=False,
+    is_curved=True,
+    image_id=0,
+):
     """
     return center point and end point of TCL instance; filter with the char maps;
     """
@@ -573,7 +603,8 @@ def generate_pivot_list_tt_inference(p_score,
     p_tcl_map = (p_score > score_thresh) * 1.0
     skeleton_map = thin(p_tcl_map)
     instance_count, instance_label_map = cv2.connectedComponents(
-        skeleton_map.astype(np.uint8), connectivity=8)
+        skeleton_map.astype(np.uint8), connectivity=8
+    )
 
     # get TCL Instance
     all_pos_yxs = []
@@ -586,7 +617,8 @@ def generate_pivot_list_tt_inference(p_score,
             if len(pos_list) < 3:
                 continue
             pos_list_sorted = sort_and_expand_with_direction_v2(
-                pos_list, f_direction, p_tcl_map)
+                pos_list, f_direction, p_tcl_map
+            )
             pos_list_sorted_with_id = add_id(pos_list_sorted, image_id=image_id)
             all_pos_yxs.append(pos_list_sorted_with_id)
     return all_pos_yxs

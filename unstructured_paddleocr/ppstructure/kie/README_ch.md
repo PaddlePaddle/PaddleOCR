@@ -170,6 +170,10 @@ python3 ./tools/infer_kie_token_ser_re.py \
 
 `Global.save_res_path`目录中会保存可视化的结果图像以及预测的文本文件。
 
+如果想使用自定义OCR模型，可通过如下字段进行设置
+- `Global.kie_det_model_dir`: 设置检测inference模型地址
+- `Global.kie_rec_model_dir`: 设置识别inference模型地址
+
 
 如果希望加载标注好的文本检测与识别结果，仅预测可以使用下面的命令进行预测。
 
@@ -239,6 +243,9 @@ python3 kie/predict_kie_token_ser_re.py \
 
 可视化结果保存在`output`目录下。
 
+如果想使用自定义OCR模型，可通过如下字段进行设置
+- `--det_model_dir`: 设置检测inference模型地址
+- `--rec_model_dir`: 设置识别inference模型地址
 
 ### 4.3 更多
 

@@ -4,12 +4,14 @@ imgaug
 pyclipper
 lmdb
 tqdm
-numpy
-visualdl
+numpy<2.0
 rapidfuzz
 opencv-python==4.8.0.76
 opencv-contrib-python==4.8.0.76
 cython
+Pillow
+pyyaml
+requests
 lxml
 premailer
 openpyxl

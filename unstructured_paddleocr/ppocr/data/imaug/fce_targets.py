@@ -22,9 +22,11 @@ from numpy.fft import fft
 from numpy.linalg import norm
 import sys
 
+
 def vector_slope(vec):
     assert len(vec) == 2
     return abs(vec[1] / (vec[0] + 1e-8))
+
 
 class FCENetTargets:
     """Generate the ground truth targets of FCENet: Fourier Contour Embedding
@@ -43,15 +45,16 @@ class FCENetTargets:
             assigned to each level.
     """
 
-    def __init__(self,
-                 fourier_degree=5,
-                 resample_step=4.0,
-                 center_region_shrink_ratio=0.3,
-                 level_size_divisors=(8, 16, 32),
-                 level_proportion_range=((0, 0.25), (0.2, 0.65), (0.55, 1.0)),
-                 orientation_thr=2.0,
-                 **kwargs):
-
+    def __init__(
+        self,
+        fourier_degree=5,
+        resample_step=4.0,
+        center_region_shrink_ratio=0.3,
+        level_size_divisors=(8, 16, 32),
+        level_proportion_range=((0, 0.25), (0.2, 0.65), (0.55, 1.0)),
+        orientation_thr=2.0,
+        **kwargs,
+    ):
         super().__init__()
         assert isinstance(level_size_divisors, tuple)
         assert isinstance(level_proportion_range, tuple)
@@ -73,9 +76,7 @@ class FCENetTargets:
             unit_vec2 = vec2 / (norm(vec2, axis=-1) + 1e-8).reshape((-1, 1))
         else:
             unit_vec2 = vec2 / (norm(vec2, axis=-1) + 1e-8)
-        return np.arccos(
-            np.clip(
-                np.sum(unit_vec1 * unit_vec2, axis=-1), -1.0, 1.0))
+        return np.arccos(np.clip(np.sum(unit_vec1 * unit_vec2, axis=-1), -1.0, 1.0))
 
     def resample_line(self, line, n):
         """Resample n points on a line.
@@ -94,9 +95,7 @@ class FCENetTargets:
         assert isinstance(n, int)
         assert n > 0
 
-        length_list = [
-            norm(line[i + 1] - line[i]) for i in range(len(line) - 1)
-        ]
+        length_list = [norm(line[i + 1] - line[i]) for i in range(len(line) - 1)]
         total_length = sum(length_list)
         length_cumsum = np.cumsum([0.0] + length_list)
         delta_length = total_length / (float(n) + 1e-8)
@@ -107,19 +106,22 @@ class FCENetTargets:
         for i in range(1, n):
             current_line_len = i * delta_length
 
-            while current_edge_ind + 1 < len(length_cumsum) and current_line_len >= length_cumsum[current_edge_ind + 1]:
+            while (
+                current_edge_ind + 1 < len(length_cumsum)
+                and current_line_len >= length_cumsum[current_edge_ind + 1]
+            ):
                 current_edge_ind += 1
 
-            current_edge_end_shift = current_line_len - length_cumsum[
-                current_edge_ind]
+            current_edge_end_shift = current_line_len - length_cumsum[current_edge_ind]
 
             if current_edge_ind >= len(length_list):
                 break
-            end_shift_ratio = current_edge_end_shift / length_list[
-                current_edge_ind]
-            current_point = line[current_edge_ind] + (line[current_edge_ind + 1]
-                                                      - line[current_edge_ind]
-                                                      ) * end_shift_ratio
+            end_shift_ratio = current_edge_end_shift / length_list[current_edge_ind]
+            current_point = (
+                line[current_edge_ind]
+                + (line[current_edge_ind + 1] - line[current_edge_ind])
+                * end_shift_ratio
+            )
             resampled_line.append(current_point)
         resampled_line.append(line[-1])
         resampled_line = np.array(resampled_line)
@@ -154,11 +156,9 @@ class FCENetTargets:
         pad_points = np.vstack([points, points])
         if tail_inds[1] < 1:
             tail_inds[1] = len(points)
-        sideline1 = pad_points[head_inds[1]:tail_inds[1]]
-        sideline2 = pad_points[tail_inds[1]:(head_inds[1] + len(points))]
-        sideline_mean_shift = np.mean(
-            sideline1, axis=0) - np.mean(
-                sideline2, axis=0)
+        sideline1 = pad_points[head_inds[1] : tail_inds[1]]
+        sideline2 = pad_points[tail_inds[1] : (head_inds[1] + len(points))]
+        sideline_mean_shift = np.mean(sideline1, axis=0) - np.mean(sideline2, axis=0)
 
         if sideline_mean_shift[1] > 0:
             top_sideline, bot_sideline = sideline2, sideline1
@@ -195,20 +195,19 @@ class FCENetTargets:
             for i, edge_vec1 in enumerate(edge_vec):
                 adjacent_ind = [x % len(edge_vec) for x in [i - 1, i + 1]]
                 adjacent_edge_vec = edge_vec[adjacent_ind]
-                temp_theta_sum = np.sum(
-                    self.vector_angle(edge_vec1, adjacent_edge_vec))
-                temp_adjacent_theta = self.vector_angle(adjacent_edge_vec[0],
-                                                        adjacent_edge_vec[1])
+                temp_theta_sum = np.sum(self.vector_angle(edge_vec1, adjacent_edge_vec))
+                temp_adjacent_theta = self.vector_angle(
+                    adjacent_edge_vec[0], adjacent_edge_vec[1]
+                )
                 theta_sum.append(temp_theta_sum)
                 adjacent_vec_theta.append(temp_adjacent_theta)
             theta_sum_score = np.array(theta_sum) / np.pi
             adjacent_theta_score = np.array(adjacent_vec_theta) / np.pi
             poly_center = np.mean(points, axis=0)
             edge_dist = np.maximum(
-                norm(
-                    pad_points[1:] - poly_center, axis=-1),
-                norm(
-                    pad_points[:-1] - poly_center, axis=-1))
+                norm(pad_points[1:] - poly_center, axis=-1),
+                norm(pad_points[:-1] - poly_center, axis=-1),
+            )
             dist_score = edge_dist / np.max(edge_dist)
             position_score = np.zeros(len(edge_vec))
             score = 0.5 * theta_sum_score + 0.15 * adjacent_theta_score
@@ -220,15 +219,21 @@ class FCENetTargets:
             pad_score = np.concatenate([score, score])
             score_matrix = np.zeros((len(score), len(score) - 3))
             x = np.arange(len(score) - 3) / float(len(score) - 4)
-            gaussian = 1. / (np.sqrt(2. * np.pi) * 0.5) * np.exp(-np.power(
-                (x - 0.5) / 0.5, 2.) / 2)
+            gaussian = (
+                1.0
+                / (np.sqrt(2.0 * np.pi) * 0.5)
+                * np.exp(-np.power((x - 0.5) / 0.5, 2.0) / 2)
+            )
             gaussian = gaussian / np.max(gaussian)
             for i in range(len(score)):
-                score_matrix[i, :] = score[i] + pad_score[(i + 2):(i + len(
-                    score) - 1)] * gaussian * 0.3
+                score_matrix[i, :] = (
+                    score[i]
+                    + pad_score[(i + 2) : (i + len(score) - 1)] * gaussian * 0.3
+                )
 
-            head_start, tail_increment = np.unravel_index(score_matrix.argmax(),
-                                                          score_matrix.shape)
+            head_start, tail_increment = np.unravel_index(
+                score_matrix.argmax(), score_matrix.shape
+            )
             tail_start = (head_start + tail_increment + 2) % len(points)
             head_end = (head_start + 1) % len(points)
             tail_end = (tail_start + 1) % len(points)
@@ -240,22 +245,26 @@ class FCENetTargets:
             tail_inds = [tail_start, tail_end]
         else:
             if vector_slope(points[1] - points[0]) + vector_slope(
-                    points[3] - points[2]) < vector_slope(points[
-                        2] - points[1]) + vector_slope(points[0] - points[
-                            3]):
+                points[3] - points[2]
+            ) < vector_slope(points[2] - points[1]) + vector_slope(
+                points[0] - points[3]
+            ):
                 horizontal_edge_inds = [[0, 1], [2, 3]]
                 vertical_edge_inds = [[3, 0], [1, 2]]
             else:
                 horizontal_edge_inds = [[3, 0], [1, 2]]
                 vertical_edge_inds = [[0, 1], [2, 3]]
 
-            vertical_len_sum = norm(points[vertical_edge_inds[0][0]] - points[
-                vertical_edge_inds[0][1]]) + norm(points[vertical_edge_inds[1][
-                    0]] - points[vertical_edge_inds[1][1]])
-            horizontal_len_sum = norm(points[horizontal_edge_inds[0][
-                0]] - points[horizontal_edge_inds[0][1]]) + norm(points[
-                    horizontal_edge_inds[1][0]] - points[horizontal_edge_inds[1]
-                                                         [1]])
+            vertical_len_sum = norm(
+                points[vertical_edge_inds[0][0]] - points[vertical_edge_inds[0][1]]
+            ) + norm(
+                points[vertical_edge_inds[1][0]] - points[vertical_edge_inds[1][1]]
+            )
+            horizontal_len_sum = norm(
+                points[horizontal_edge_inds[0][0]] - points[horizontal_edge_inds[0][1]]
+            ) + norm(
+                points[horizontal_edge_inds[1][0]] - points[horizontal_edge_inds[1][1]]
+            )
 
             if vertical_len_sum > horizontal_len_sum * orientation_thr:
                 head_inds = horizontal_edge_inds[0]
@@ -288,14 +297,12 @@ class FCENetTargets:
         assert sideline2.shape[0] >= 2
         assert isinstance(resample_step, float)
 
-        length1 = sum([
-            norm(sideline1[i + 1] - sideline1[i])
-            for i in range(len(sideline1) - 1)
-        ])
-        length2 = sum([
-            norm(sideline2[i + 1] - sideline2[i])
-            for i in range(len(sideline2) - 1)
-        ])
+        length1 = sum(
+            [norm(sideline1[i + 1] - sideline1[i]) for i in range(len(sideline1) - 1)]
+        )
+        length2 = sum(
+            [norm(sideline2[i + 1] - sideline2[i]) for i in range(len(sideline2) - 1)]
+        )
 
         total_length = (length1 + length2) / 2
         resample_point_num = max(int(float(total_length) / resample_step), 1)
@@ -329,39 +336,54 @@ class FCENetTargets:
             polygon_points = poly.reshape(-1, 2)
             _, _, top_line, bot_line = self.reorder_poly_edge(polygon_points)
             resampled_top_line, resampled_bot_line = self.resample_sidelines(
-                top_line, bot_line, self.resample_step)
+                top_line, bot_line, self.resample_step
+            )
             resampled_bot_line = resampled_bot_line[::-1]
             if len(resampled_top_line) != len(resampled_bot_line):
                 continue
             center_line = (resampled_top_line + resampled_bot_line) / 2
 
-            line_head_shrink_len = norm(resampled_top_line[0] -
-                                        resampled_bot_line[0]) / 4.0
-            line_tail_shrink_len = norm(resampled_top_line[-1] -
-                                        resampled_bot_line[-1]) / 4.0
+            line_head_shrink_len = (
+                norm(resampled_top_line[0] - resampled_bot_line[0]) / 4.0
+            )
+            line_tail_shrink_len = (
+                norm(resampled_top_line[-1] - resampled_bot_line[-1]) / 4.0
+            )
             head_shrink_num = int(line_head_shrink_len // self.resample_step)
             tail_shrink_num = int(line_tail_shrink_len // self.resample_step)
             if len(center_line) > head_shrink_num + tail_shrink_num + 2:
-                center_line = center_line[head_shrink_num:len(center_line) -
-                                          tail_shrink_num]
-                resampled_top_line = resampled_top_line[head_shrink_num:len(
-                    resampled_top_line) - tail_shrink_num]
-                resampled_bot_line = resampled_bot_line[head_shrink_num:len(
-                    resampled_bot_line) - tail_shrink_num]
+                center_line = center_line[
+                    head_shrink_num : len(center_line) - tail_shrink_num
+                ]
+                resampled_top_line = resampled_top_line[
+                    head_shrink_num : len(resampled_top_line) - tail_shrink_num
+                ]
+                resampled_bot_line = resampled_bot_line[
+                    head_shrink_num : len(resampled_bot_line) - tail_shrink_num
+                ]
 
             for i in range(0, len(center_line) - 1):
-                tl = center_line[i] + (resampled_top_line[i] - center_line[i]
-                                       ) * self.center_region_shrink_ratio
-                tr = center_line[i + 1] + (resampled_top_line[i + 1] -
-                                           center_line[i + 1]
-                                           ) * self.center_region_shrink_ratio
-                br = center_line[i + 1] + (resampled_bot_line[i + 1] -
-                                           center_line[i + 1]
-                                           ) * self.center_region_shrink_ratio
-                bl = center_line[i] + (resampled_bot_line[i] - center_line[i]
-                                       ) * self.center_region_shrink_ratio
-                current_center_box = np.vstack([tl, tr, br,
-                                                bl]).astype(np.int32)
+                tl = (
+                    center_line[i]
+                    + (resampled_top_line[i] - center_line[i])
+                    * self.center_region_shrink_ratio
+                )
+                tr = (
+                    center_line[i + 1]
+                    + (resampled_top_line[i + 1] - center_line[i + 1])
+                    * self.center_region_shrink_ratio
+                )
+                br = (
+                    center_line[i + 1]
+                    + (resampled_bot_line[i + 1] - center_line[i + 1])
+                    * self.center_region_shrink_ratio
+                )
+                bl = (
+                    center_line[i]
+                    + (resampled_bot_line[i] - center_line[i])
+                    * self.center_region_shrink_ratio
+                )
+                current_center_box = np.vstack([tl, tr, br, bl]).astype(np.int32)
                 center_region_boxes.append(current_center_box)
 
         cv2.fillPoly(center_region_mask, center_region_boxes, 1)
@@ -384,7 +406,7 @@ class FCENetTargets:
                 p2 = polygon[0]
             else:
                 p2 = polygon[i + 1]
-            length.append(((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)**0.5)
+            length.append(((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5)
 
         total_length = sum(length)
         n_on_each_line = (np.array(length) / (total_length + 1e-8)) * n
@@ -438,7 +460,7 @@ class FCENetTargets:
         """
         points = polygon[:, 0] + polygon[:, 1] * 1j
         c_fft = fft(points) / len(points)
-        c = np.hstack((c_fft[-fourier_degree:], c_fft[:fourier_degree + 1]))
+        c = np.hstack((c_fft[-fourier_degree:], c_fft[: fourier_degree + 1]))
         return c
 
     def clockwise(self, c, fourier_degree):
@@ -509,10 +531,14 @@ class FCENetTargets:
             fourier_coeff = self.cal_fourier_signature(polygon[0], k)
             for i in range(-k, k + 1):
                 if i != 0:
-                    real_map[i + k, :, :] = mask * fourier_coeff[i + k, 0] + (
-                        1 - mask) * real_map[i + k, :, :]
-                    imag_map[i + k, :, :] = mask * fourier_coeff[i + k, 1] + (
-                        1 - mask) * imag_map[i + k, :, :]
+                    real_map[i + k, :, :] = (
+                        mask * fourier_coeff[i + k, 0]
+                        + (1 - mask) * real_map[i + k, :, :]
+                    )
+                    imag_map[i + k, :, :] = (
+                        mask * fourier_coeff[i + k, 1]
+                        + (1 - mask) * imag_map[i + k, :, :]
+                    )
                 else:
                     yx = np.argwhere(mask > 0.5)
                     k_ind = np.ones((len(yx)), dtype=np.int64) * k
@@ -582,7 +608,7 @@ class FCENetTargets:
         lv_ignore_polys = [[] for i in range(len(lv_size_divs))]
         level_maps = []
         for poly in text_polys:
-            polygon = np.array(poly, dtype=np.int).reshape((1, -1, 2))
+            polygon = np.array(poly, dtype=np.int32).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
 
@@ -591,7 +617,7 @@ class FCENetTargets:
                     lv_text_polys[ind].append(poly / lv_size_divs[ind])
 
         for ignore_poly in ignore_polys:
-            polygon = np.array(ignore_poly, dtype=np.int).reshape((1, -1, 2))
+            polygon = np.array(ignore_poly, dtype=np.int32).reshape((1, -1, 2))
             _, _, box_w, box_h = cv2.boundingRect(polygon)
             proportion = max(box_h, box_w) / (h + 1e-8)
 
@@ -604,19 +630,23 @@ class FCENetTargets:
             level_img_size = (h // size_divisor, w // size_divisor)
 
             text_region = self.generate_text_region_mask(
-                level_img_size, lv_text_polys[ind])[None]
+                level_img_size, lv_text_polys[ind]
+            )[None]
             current_level_maps.append(text_region)
 
             center_region = self.generate_center_region_mask(
-                level_img_size, lv_text_polys[ind])[None]
+                level_img_size, lv_text_polys[ind]
+            )[None]
             current_level_maps.append(center_region)
 
             effective_mask = self.generate_effective_mask(
-                level_img_size, lv_ignore_polys[ind])[None]
+                level_img_size, lv_ignore_polys[ind]
+            )[None]
             current_level_maps.append(effective_mask)
 
             fourier_real_map, fourier_image_maps = self.generate_fourier_maps(
-                level_img_size, lv_text_polys[ind])
+                level_img_size, lv_text_polys[ind]
+            )
             current_level_maps.append(fourier_real_map)
             current_level_maps.append(fourier_image_maps)
 
@@ -635,9 +665,9 @@ class FCENetTargets:
         """
 
         assert isinstance(results, dict)
-        image = results['image']
-        polygons = results['polys']
-        ignore_tags = results['ignore_tags']
+        image = results["image"]
+        polygons = results["polys"]
+        ignore_tags = results["ignore_tags"]
         h, w, _ = image.shape
 
         polygon_masks = []
@@ -648,13 +678,14 @@ class FCENetTargets:
             else:
                 polygon_masks.append(polygon)
 
-        level_maps = self.generate_level_targets((h, w), polygon_masks,
-                                                 polygon_masks_ignore)
+        level_maps = self.generate_level_targets(
+            (h, w), polygon_masks, polygon_masks_ignore
+        )
 
         mapping = {
-            'p3_maps': level_maps[0],
-            'p4_maps': level_maps[1],
-            'p5_maps': level_maps[2]
+            "p3_maps": level_maps[0],
+            "p4_maps": level_maps[1],
+            "p5_maps": level_maps[2],
         }
         for key, value in mapping.items():
             results[key] = value
