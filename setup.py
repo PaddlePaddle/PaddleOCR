@@ -46,7 +46,7 @@ setup(
         "pyclipper",
         "lmdb",
         "tqdm",
-        "numpy",
+        "numpy<2.0",
         "visualdl",
         "rapidfuzz",
         "opencv-python==4.8.0.76",
