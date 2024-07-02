@@ -56,7 +56,6 @@ setup(
         "premailer",
         "openpyxl",
         "attrdict",
-        "Polygon3",
         "lanms-neo==1.0.2",
         "pdf2image",
     ],
