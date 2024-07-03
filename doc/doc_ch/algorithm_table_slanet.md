@@ -13,7 +13,7 @@
 <a name="1"></a>
 ## 1. 算法简介
 
-PaddleOCR 算法模型挑战赛 - 赛题二：通用表格识别任务排行榜第一算法。核心思路：
+该算法由来自北京交通大学机器学习与认识计算研究团队的ocr识别队研发，其在PaddleOCR算法模型挑战赛 - 赛题二：通用表格识别任务中排行榜荣获一等奖，排行榜精度相比PP-Structure表格识别模型提升0.8%，推理速度提升3倍。优化思路如下：
 
 - 1. 改善推理过程，至EOS停止，速度提升3倍
 - 2. 升级Backbone为LCNetV2（SSLD版本）
@@ -23,9 +23,9 @@ PaddleOCR 算法模型挑战赛 - 赛题二：通用表格识别任务排行榜�
 
 在PubTabNet表格识别公开数据集上，算法复现效果如下：
 
-|模型|骨干网络|配置文件|acc|
-| --- | --- | --- | --- |
-|SLANet|LCNetV2|[configs/table/SLANet_lcnetv2.yml](../../configs/table/SLANet_lcnetv2.yml)|76.67%|
+|模型|骨干网络|配置文件|acc|下载链接|
+| --- | --- | --- | --- | --- |
+|SLANet|LCNetV2|[configs/table/SLANet_lcnetv2.yml](../../configs/table/SLANet_lcnetv2.yml)|76.67%| [训练模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_train.tar) /[推理模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_infer.tar) |
 
 
 <a name="2"></a>
@@ -78,7 +78,7 @@ python3 tools/export_model.py -c configs/table/SLANet_lcnetv2.yml -o Global.pret
 
 ```shell
 cd ppstructure/
-python3.7 table/predict_structure.py --table_model_dir=../inference/slanet_lcnetv2_infer/ --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt --image_dir=docs/table/table.jpg --output=../output/table_slanet_lcnetv2 --use_gpu=False --benchmark=True --enable_mkldnn=True
+python table/predict_structure.py --table_model_dir=../inference/slanet_lcnetv2_infer/ --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt --image_dir=docs/table/table.jpg --output=../output/table_slanet_lcnetv2 --use_gpu=False --benchmark=True --enable_mkldnn=True --table_max_len=512
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='docs/table'。
 ```
 
