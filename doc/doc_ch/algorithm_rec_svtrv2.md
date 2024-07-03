@@ -19,8 +19,15 @@
 ### SVTRv2算法简介
 
 <a name="1"></a>
-[PaddleOCR 算法模型挑战赛 - 赛题一：OCR 端到端识别任务](https://aistudio.baidu.com/competition/detail/1131/0/introduction)排行榜第一算法。主要思路：1、检测和识别模型的Backbone升级为RepSVTR；2、识别教师模型升级为SVTRv2，可识别长文本。
+🔥 该算法由来自复旦大学视觉与学习实验室([FVL](https://fvl.fudan.edu.cn))的[OpenOCR](https://github.com/Topdu/OpenOCR)团队研发，其在[PaddleOCR 算法模型挑战赛 - 赛题一：OCR 端到端识别任务](https://aistudio.baidu.com/competition/detail/1131/0/introduction)中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。主要思路：1、检测和识别模型的Backbone升级为RepSVTR；2、识别教师模型升级为SVTRv2，可识别长文本。
 
+|模型|配置文件|端到端|下载链接|
+| --- | --- | --- | --- |
+|PP-OCRv4| |A榜 62.77% / B榜62.51%| [Model List](../../doc/doc_ch/models_list.md) | 
+|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/rec_svtrv2_ch.yml](../../configs/rec/SVTRv2/rec_svtrv2_ch.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型]() / [推理模型]() |
+|RepSVTR(Mobile)|[识别](../../configs/rec/SVTRv2/rec_repsvtr_ch.yml) / [检测](../../configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型]() / [推理模型]() 检测: [训练模型]() / [推理模型]() |
+
+🚀 快速使用：参考PP-OCR推理[说明文档](../../doc/doc_ch/inference_ppocr.md)，将检测和识别模型替换为上表中RepSVTR或SVTRv2的对应推理模型即可使用。
 
 <a name="2"></a>
 ## 2. 环境配置
