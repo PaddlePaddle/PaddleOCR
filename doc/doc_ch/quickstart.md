@@ -43,7 +43,7 @@
 pip install paddleocr
 ```
 
-- 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
+- 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://pypi.org/project/shapely/#files)下载shapely安装包完成安装。
 
 
 <a name="2"></a>
