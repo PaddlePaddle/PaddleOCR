@@ -136,7 +136,7 @@ def poly_nms(polygons, threshold):
         keep_poly.append(polygons[index[-1]].tolist())
         A = polygons[index[-1]][:-1]
         index = np.delete(index, -1)
-        iou_list = np.zeros((len(index), ))
+        iou_list = np.zeros((len(index),))
         for i in range(len(index)):
             B = polygons[index[i]][:-1]
             iou_list[i] = boundary_iou(A, B)

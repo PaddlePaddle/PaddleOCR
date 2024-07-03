@@ -112,7 +112,3 @@ if [ ${MODE} = "lite_train_lite_infer" ] || [ ${MODE} = "whole_train_whole_infer
         done
     done
 fi
-
-
-
-

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_rcg/models/connects/single_block/RFAdaptor.py
 """
 
@@ -21,12 +21,12 @@ import paddle.nn as nn
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal, KaimingNormal
 
 kaiming_init_ = KaimingNormal()
-zeros_ = Constant(value=0.)
-ones_ = Constant(value=1.)
+zeros_ = Constant(value=0.0)
+ones_ = Constant(value=1.0)
 
 
 class S2VAdaptor(nn.Layer):
-    """ Semantic to Visual adaptation module"""
+    """Semantic to Visual adaptation module"""
 
     def __init__(self, in_channels=512):
         super(S2VAdaptor, self).__init__()
@@ -35,7 +35,8 @@ class S2VAdaptor(nn.Layer):
 
         # feature strengthen module, channel attention
         self.channel_inter = nn.Linear(
-            self.in_channels, self.in_channels, bias_attr=False)
+            self.in_channels, self.in_channels, bias_attr=False
+        )
         self.channel_bn = nn.BatchNorm1D(self.in_channels)
         self.channel_act = nn.ReLU()
         self.apply(self.init_weights)
@@ -53,8 +54,7 @@ class S2VAdaptor(nn.Layer):
         semantic_source = semantic  # batch, channel, height, width
 
         # feature transformation
-        semantic = semantic.squeeze(2).transpose(
-            [0, 2, 1])  # batch, width, channel
+        semantic = semantic.squeeze(2).transpose([0, 2, 1])  # batch, width, channel
         channel_att = self.channel_inter(semantic)  # batch, width, channel
         channel_att = channel_att.transpose([0, 2, 1])  # batch, channel, width
         channel_bn = self.channel_bn(channel_att)  # batch, channel, width
@@ -62,13 +62,14 @@ class S2VAdaptor(nn.Layer):
 
         # Feature enhancement
         channel_output = semantic_source * channel_att.unsqueeze(
-            -2)  # batch, channel, 1, width
+            -2
+        )  # batch, channel, 1, width
 
         return channel_output
 
 
 class V2SAdaptor(nn.Layer):
-    """ Visual to Semantic adaptation module"""
+    """Visual to Semantic adaptation module"""
 
     def __init__(self, in_channels=512, return_mask=False):
         super(V2SAdaptor, self).__init__()
@@ -79,7 +80,8 @@ class V2SAdaptor(nn.Layer):
 
         # output transformation
         self.channel_inter = nn.Linear(
-            self.in_channels, self.in_channels, bias_attr=False)
+            self.in_channels, self.in_channels, bias_attr=False
+        )
         self.channel_bn = nn.BatchNorm1D(self.in_channels)
         self.channel_act = nn.ReLU()
 
@@ -115,9 +117,15 @@ class RFAdaptor(nn.Layer):
     def forward(self, x):
         visual_feature, rcg_feature = x
         if visual_feature is not None:
-            batch, source_channels, v_source_height, v_source_width = visual_feature.shape
+            (
+                batch,
+                source_channels,
+                v_source_height,
+                v_source_width,
+            ) = visual_feature.shape
             visual_feature = visual_feature.reshape(
-                [batch, source_channels, 1, v_source_height * v_source_width])
+                [batch, source_channels, 1, v_source_height * v_source_width]
+            )
 
         if self.neck_v2s is not None:
             v_rcg_feature = rcg_feature * self.neck_v2s(visual_feature)
@@ -131,7 +139,8 @@ class RFAdaptor(nn.Layer):
         if v_rcg_feature is not None:
             batch, source_channels, source_height, source_width = v_rcg_feature.shape
             v_rcg_feature = v_rcg_feature.reshape(
-                [batch, source_channels, 1, source_height * source_width])
+                [batch, source_channels, 1, source_height * source_width]
+            )
 
             v_rcg_feature = v_rcg_feature.squeeze(2).transpose([0, 2, 1])
         return v_visual_feature, v_rcg_feature

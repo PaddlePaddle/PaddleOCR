@@ -1,30 +1,22 @@
--   repo: https://github.com/PaddlePaddle/mirrors-yapf.git
-    sha: 0d79c0c469bab64f7229c9aca2b1186ef47f0e37
-    hooks:
-    -   id: yapf
-        files: \.py$
+repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    sha: a11d9314b22d8f8c7556443875b731ef05965464
+    rev: v4.6.0
     hooks:
+    -   id: check-added-large-files
+        args: ['--maxkb=512']
+    -   id: check-case-conflict
     -   id: check-merge-conflict
     -   id: check-symlinks
     -   id: detect-private-key
-        files: (?!.*paddle)^.*$
     -   id: end-of-file-fixer
-        files: \.md$
     -   id: trailing-whitespace
-        files: \.md$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
-    sha: v1.0.1
+    rev: v1.5.1
     hooks:
-    -   id: forbid-crlf
-        files: \.md$
     -   id: remove-crlf
-        files: \.md$
-    -   id: forbid-tabs
-        files: \.md$
     -   id: remove-tabs
-        files: \.md$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
 -   repo: local
     hooks:
     -   id: clang-format
@@ -33,3 +25,21 @@
         entry: bash .clang_format.hook -i
         language: system
         files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|cuh|proto)$
+# For Python files
+-   repo: https://github.com/psf/black.git
+    rev: 24.4.2
+    hooks:
+    -   id: black
+        files: (.*\.(py|pyi|bzl)|BUILD|.*\.BUILD|WORKSPACE)$
+
+# Flake8
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+    -   id: flake8
+        args:
+            - --count
+            - --select=E9,F63,F7,F82,E721
+            - --show-source
+            - --statistics
+        exclude: ^benchmark/|^test_tipc/

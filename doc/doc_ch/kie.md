@@ -107,7 +107,7 @@ HEADER
 
 更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](./dataset/kie_datasets.md)。
 
-PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](../../PPOCRLabel/README_ch.md)。
+PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)。
 
 
 # 2. 开始训练
@@ -173,7 +173,7 @@ python3 tools/train.py -c configs/kie/vi_layoutxlm/re_vi_layoutxlm_xfund_zh.yml
 
 log 中自动打印如下信息：
 
-|  字段   |   含义   |  
+|  字段   |   含义   |
 | :----: | :------: |
 |  epoch | 当前迭代轮次 |
 |  iter  | 当前迭代次数 |
@@ -205,7 +205,7 @@ Architecture:
     name: LayoutXLMForSer
     pretrained: True
     mode: vi
-    # 假设字典中包含n个字段（包含other），由于采用BIO标注，则类别数为2n-1
+    # 由于采用BIO标注，假设字典中包含n个字段（包含other）时，则类别数为2n-1; 假设字典中包含n个字段（不含other）时，则类别数为2n+1。否则在train过程会报：IndexError: (OutOfRange) label value should less than the shape of axis dimension 。
     num_classes: &num_classes 7
 
 PostProcess:

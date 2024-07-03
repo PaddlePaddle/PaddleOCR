@@ -16,9 +16,9 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "../..")))
 
-os.environ["FLAGS_allocator_strategy"] = 'auto_growth'
+os.environ["FLAGS_allocator_strategy"] = "auto_growth"
 
 import cv2
 import numpy as np
@@ -31,36 +31,36 @@ from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.data import create_operators, transform
 from ppocr.postprocess import build_post_process
 import json
-logger = get_logger()
 
 
 class TextDetector(object):
-    def __init__(self, args):
+    def __init__(self, args, logger=None):
+        if logger is None:
+            logger = get_logger()
         self.args = args
         self.det_algorithm = args.det_algorithm
         self.use_onnx = args.use_onnx
-        pre_process_list = [{
-            'DetResizeForTest': {
-                'limit_side_len': args.det_limit_side_len,
-                'limit_type': args.det_limit_type,
-            }
-        }, {
-            'NormalizeImage': {
-                'std': [0.229, 0.224, 0.225],
-                'mean': [0.485, 0.456, 0.406],
-                'scale': '1./255.',
-                'order': 'hwc'
-            }
-        }, {
-            'ToCHWImage': None
-        }, {
-            'KeepKeys': {
-                'keep_keys': ['image', 'shape']
-            }
-        }]
+        pre_process_list = [
+            {
+                "DetResizeForTest": {
+                    "limit_side_len": args.det_limit_side_len,
+                    "limit_type": args.det_limit_type,
+                }
+            },
+            {
+                "NormalizeImage": {
+                    "std": [0.229, 0.224, 0.225],
+                    "mean": [0.485, 0.456, 0.406],
+                    "scale": "1./255.",
+                    "order": "hwc",
+                }
+            },
+            {"ToCHWImage": None},
+            {"KeepKeys": {"keep_keys": ["image", "shape"]}},
+        ]
         postprocess_params = {}
         if self.det_algorithm == "DB":
-            postprocess_params['name'] = 'DBPostProcess'
+            postprocess_params["name"] = "DBPostProcess"
             postprocess_params["thresh"] = args.det_db_thresh
             postprocess_params["box_thresh"] = args.det_db_box_thresh
             postprocess_params["max_candidates"] = 1000
@@ -69,7 +69,7 @@ class TextDetector(object):
             postprocess_params["score_mode"] = args.det_db_score_mode
             postprocess_params["box_type"] = args.det_box_type
         elif self.det_algorithm == "DB++":
-            postprocess_params['name'] = 'DBPostProcess'
+            postprocess_params["name"] = "DBPostProcess"
             postprocess_params["thresh"] = args.det_db_thresh
             postprocess_params["box_thresh"] = args.det_db_box_thresh
             postprocess_params["max_candidates"] = 1000
@@ -78,30 +78,27 @@ class TextDetector(object):
             postprocess_params["score_mode"] = args.det_db_score_mode
             postprocess_params["box_type"] = args.det_box_type
             pre_process_list[1] = {
-                'NormalizeImage': {
-                    'std': [1.0, 1.0, 1.0],
-                    'mean':
-                    [0.48109378172549, 0.45752457890196, 0.40787054090196],
-                    'scale': '1./255.',
-                    'order': 'hwc'
+                "NormalizeImage": {
+                    "std": [1.0, 1.0, 1.0],
+                    "mean": [0.48109378172549, 0.45752457890196, 0.40787054090196],
+                    "scale": "1./255.",
+                    "order": "hwc",
                 }
             }
         elif self.det_algorithm == "EAST":
-            postprocess_params['name'] = 'EASTPostProcess'
+            postprocess_params["name"] = "EASTPostProcess"
             postprocess_params["score_thresh"] = args.det_east_score_thresh
             postprocess_params["cover_thresh"] = args.det_east_cover_thresh
             postprocess_params["nms_thresh"] = args.det_east_nms_thresh
         elif self.det_algorithm == "SAST":
             pre_process_list[0] = {
-                'DetResizeForTest': {
-                    'resize_long': args.det_limit_side_len
-                }
+                "DetResizeForTest": {"resize_long": args.det_limit_side_len}
             }
-            postprocess_params['name'] = 'SASTPostProcess'
+            postprocess_params["name"] = "SASTPostProcess"
             postprocess_params["score_thresh"] = args.det_sast_score_thresh
             postprocess_params["nms_thresh"] = args.det_sast_nms_thresh
 
-            if args.det_box_type == 'poly':
+            if args.det_box_type == "poly":
                 postprocess_params["sample_pts_num"] = 6
                 postprocess_params["expand_scale"] = 1.2
                 postprocess_params["shrink_ratio_of_width"] = 0.2
@@ -111,48 +108,49 @@ class TextDetector(object):
                 postprocess_params["shrink_ratio_of_width"] = 0.3
 
         elif self.det_algorithm == "PSE":
-            postprocess_params['name'] = 'PSEPostProcess'
+            postprocess_params["name"] = "PSEPostProcess"
             postprocess_params["thresh"] = args.det_pse_thresh
             postprocess_params["box_thresh"] = args.det_pse_box_thresh
             postprocess_params["min_area"] = args.det_pse_min_area
             postprocess_params["box_type"] = args.det_box_type
             postprocess_params["scale"] = args.det_pse_scale
         elif self.det_algorithm == "FCE":
-            pre_process_list[0] = {
-                'DetResizeForTest': {
-                    'rescale_img': [1080, 736]
-                }
-            }
-            postprocess_params['name'] = 'FCEPostProcess'
+            pre_process_list[0] = {"DetResizeForTest": {"rescale_img": [1080, 736]}}
+            postprocess_params["name"] = "FCEPostProcess"
             postprocess_params["scales"] = args.scales
             postprocess_params["alpha"] = args.alpha
             postprocess_params["beta"] = args.beta
             postprocess_params["fourier_degree"] = args.fourier_degree
             postprocess_params["box_type"] = args.det_box_type
         elif self.det_algorithm == "CT":
-            pre_process_list[0] = {'ScaleAlignedShort': {'short_size': 640}}
-            postprocess_params['name'] = 'CTPostProcess'
+            pre_process_list[0] = {"ScaleAlignedShort": {"short_size": 640}}
+            postprocess_params["name"] = "CTPostProcess"
         else:
             logger.info("unknown det_algorithm:{}".format(self.det_algorithm))
             sys.exit(0)
 
         self.preprocess_op = create_operators(pre_process_list)
         self.postprocess_op = build_post_process(postprocess_params)
-        self.predictor, self.input_tensor, self.output_tensors, self.config = utility.create_predictor(
-            args, 'det', logger)
+        (
+            self.predictor,
+            self.input_tensor,
+            self.output_tensors,
+            self.config,
+        ) = utility.create_predictor(args, "det", logger)
 
         if self.use_onnx:
             img_h, img_w = self.input_tensor.shape[2:]
-            if img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
+            if isinstance(img_h, str) or isinstance(img_w, str):
+                pass
+            elif img_h is not None and img_w is not None and img_h > 0 and img_w > 0:
                 pre_process_list[0] = {
-                    'DetResizeForTest': {
-                        'image_shape': [img_h, img_w]
-                    }
+                    "DetResizeForTest": {"image_shape": [img_h, img_w]}
                 }
         self.preprocess_op = create_operators(pre_process_list)
 
         if args.benchmark:
             import auto_log
+
             pid = os.getpid()
             gpu_id = utility.get_infer_gpuid()
             self.autolog = auto_log.AutoLogger(
@@ -160,16 +158,15 @@ class TextDetector(object):
                 model_precision=args.precision,
                 batch_size=1,
                 data_shape="dynamic",
-                save_path=None,
+                save_path=None,  # not used if logger is not None
                 inference_config=self.config,
                 pids=pid,
                 process_name=None,
                 gpu_ids=gpu_id if args.use_gpu else None,
-                time_keys=[
-                    'preprocess_time', 'inference_time', 'postprocess_time'
-                ],
+                time_keys=["preprocess_time", "inference_time", "postprocess_time"],
                 warmup=2,
-                logger=logger)
+                logger=logger,
+            )
 
     def order_points_clockwise(self, pts):
         rect = np.zeros((4, 2), dtype="float32")
@@ -181,6 +178,14 @@ class TextDetector(object):
         rect[1] = tmp[np.argmin(diff)]
         rect[3] = tmp[np.argmax(diff)]
         return rect
+
+    def pad_polygons(self, polygon, max_points):
+        padding_size = max_points - len(polygon)
+        if padding_size == 0:
+            return polygon
+        last_point = polygon[-1]
+        padding = np.repeat([last_point], padding_size, axis=0)
+        return np.vstack([polygon, padding])
 
     def clip_det_res(self, points, img_height, img_width):
         for pno in range(points.shape[0]):
@@ -212,12 +217,19 @@ class TextDetector(object):
                 box = np.array(box)
             box = self.clip_det_res(box, img_height, img_width)
             dt_boxes_new.append(box)
+
+        if len(dt_boxes_new) > 0:
+            max_points = max(len(polygon) for polygon in dt_boxes_new)
+            dt_boxes_new = [
+                self.pad_polygons(polygon, max_points) for polygon in dt_boxes_new
+            ]
+
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
-    def __call__(self, img):
+    def predict(self, img):
         ori_im = img.copy()
-        data = {'image': img}
+        data = {"image": img}
 
         st = time.time()
 
@@ -250,28 +262,28 @@ class TextDetector(object):
 
         preds = {}
         if self.det_algorithm == "EAST":
-            preds['f_geo'] = outputs[0]
-            preds['f_score'] = outputs[1]
-        elif self.det_algorithm == 'SAST':
-            preds['f_border'] = outputs[0]
-            preds['f_score'] = outputs[1]
-            preds['f_tco'] = outputs[2]
-            preds['f_tvo'] = outputs[3]
-        elif self.det_algorithm in ['DB', 'PSE', 'DB++']:
-            preds['maps'] = outputs[0]
-        elif self.det_algorithm == 'FCE':
+            preds["f_geo"] = outputs[0]
+            preds["f_score"] = outputs[1]
+        elif self.det_algorithm == "SAST":
+            preds["f_border"] = outputs[0]
+            preds["f_score"] = outputs[1]
+            preds["f_tco"] = outputs[2]
+            preds["f_tvo"] = outputs[3]
+        elif self.det_algorithm in ["DB", "PSE", "DB++"]:
+            preds["maps"] = outputs[0]
+        elif self.det_algorithm == "FCE":
             for i, output in enumerate(outputs):
-                preds['level_{}'.format(i)] = output
+                preds["level_{}".format(i)] = output
         elif self.det_algorithm == "CT":
-            preds['maps'] = outputs[0]
-            preds['score'] = outputs[1]
+            preds["maps"] = outputs[0]
+            preds["score"] = outputs[1]
         else:
             raise NotImplementedError
 
         post_result = self.postprocess_op(preds, shape_list)
-        dt_boxes = post_result[0]['points']
+        dt_boxes = post_result[0]["points"]
 
-        if self.args.det_box_type == 'poly':
+        if self.args.det_box_type == "poly":
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
         else:
             dt_boxes = self.filter_tag_det_res(dt_boxes, ori_im.shape)
@@ -281,14 +293,125 @@ class TextDetector(object):
         et = time.time()
         return dt_boxes, et - st
 
+    def __call__(self, img):
+        # For image like poster with one side much greater than the other side,
+        # splitting recursively and processing with overlap to enhance performance.
+        MIN_BOUND_DISTANCE = 50
+        dt_boxes = np.zeros((0, 4, 2), dtype=np.float32)
+        elapse = 0
+        if (
+            img.shape[0] / img.shape[1] > 2
+            and img.shape[0] > self.args.det_limit_side_len
+        ):
+            start_h = 0
+            end_h = 0
+            while end_h <= img.shape[0]:
+                end_h = start_h + img.shape[1] * 3 // 4
+                subimg = img[start_h:end_h, :]
+                if len(subimg) == 0:
+                    break
+                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                offset = start_h
+                # To prevent text blocks from being cut off, roll back a certain buffer area.
+                if (
+                    len(sub_dt_boxes) == 0
+                    or img.shape[1] - max([x[-1][1] for x in sub_dt_boxes])
+                    > MIN_BOUND_DISTANCE
+                ):
+                    start_h = end_h
+                else:
+                    sorted_indices = np.argsort(sub_dt_boxes[:, 2, 1])
+                    sub_dt_boxes = sub_dt_boxes[sorted_indices]
+                    bottom_line = (
+                        0
+                        if len(sub_dt_boxes) <= 1
+                        else int(np.max(sub_dt_boxes[:-1, 2, 1]))
+                    )
+                    if bottom_line > 0:
+                        start_h += bottom_line
+                        sub_dt_boxes = sub_dt_boxes[
+                            sub_dt_boxes[:, 2, 1] <= bottom_line
+                        ]
+                    else:
+                        start_h = end_h
+                if len(sub_dt_boxes) > 0:
+                    if dt_boxes.shape[0] == 0:
+                        dt_boxes = sub_dt_boxes + np.array(
+                            [0, offset], dtype=np.float32
+                        )
+                    else:
+                        dt_boxes = np.append(
+                            dt_boxes,
+                            sub_dt_boxes + np.array([0, offset], dtype=np.float32),
+                            axis=0,
+                        )
+                elapse += sub_elapse
+        elif (
+            img.shape[1] / img.shape[0] > 3
+            and img.shape[1] > self.args.det_limit_side_len * 3
+        ):
+            start_w = 0
+            end_w = 0
+            while end_w <= img.shape[1]:
+                end_w = start_w + img.shape[0] * 3 // 4
+                subimg = img[:, start_w:end_w]
+                if len(subimg) == 0:
+                    break
+                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                offset = start_w
+                if (
+                    len(sub_dt_boxes) == 0
+                    or img.shape[0] - max([x[-1][0] for x in sub_dt_boxes])
+                    > MIN_BOUND_DISTANCE
+                ):
+                    start_w = end_w
+                else:
+                    sorted_indices = np.argsort(sub_dt_boxes[:, 2, 0])
+                    sub_dt_boxes = sub_dt_boxes[sorted_indices]
+                    right_line = (
+                        0
+                        if len(sub_dt_boxes) <= 1
+                        else int(np.max(sub_dt_boxes[:-1, 1, 0]))
+                    )
+                    if right_line > 0:
+                        start_w += right_line
+                        sub_dt_boxes = sub_dt_boxes[sub_dt_boxes[:, 1, 0] <= right_line]
+                    else:
+                        start_w = end_w
+                if len(sub_dt_boxes) > 0:
+                    if dt_boxes.shape[0] == 0:
+                        dt_boxes = sub_dt_boxes + np.array(
+                            [offset, 0], dtype=np.float32
+                        )
+                    else:
+                        dt_boxes = np.append(
+                            dt_boxes,
+                            sub_dt_boxes + np.array([offset, 0], dtype=np.float32),
+                            axis=0,
+                        )
+                elapse += sub_elapse
+        else:
+            dt_boxes, elapse = self.predict(img)
+        return dt_boxes, elapse
+
 
 if __name__ == "__main__":
     args = utility.parse_args()
     image_file_list = get_image_file_list(args.image_dir)
-    text_detector = TextDetector(args)
     total_time = 0
     draw_img_save_dir = args.draw_img_save_dir
     os.makedirs(draw_img_save_dir, exist_ok=True)
+
+    # logger
+    log_file = args.save_log_path
+    if os.path.isdir(args.save_log_path) or (
+        not os.path.exists(args.save_log_path) and args.save_log_path.endswith("/")
+    ):
+        log_file = os.path.join(log_file, "benchmark_detection.log")
+    logger = get_logger(log_file=log_file)
+
+    # create text detector
+    text_detector = TextDetector(args, logger)
 
     if args.warmup:
         img = np.random.uniform(0, 255, [640, 640, 3]).astype(np.uint8)
@@ -316,37 +439,49 @@ if __name__ == "__main__":
             elapse = time.time() - st
             total_time += elapse
             if len(imgs) > 1:
-                save_pred = os.path.basename(image_file) + '_' + str(
-                    index) + "\t" + str(
-                        json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+                save_pred = (
+                    os.path.basename(image_file)
+                    + "_"
+                    + str(index)
+                    + "\t"
+                    + str(json.dumps([x.tolist() for x in dt_boxes]))
+                    + "\n"
+                )
             else:
-                save_pred = os.path.basename(image_file) + "\t" + str(
-                    json.dumps([x.tolist() for x in dt_boxes])) + "\n"
+                save_pred = (
+                    os.path.basename(image_file)
+                    + "\t"
+                    + str(json.dumps([x.tolist() for x in dt_boxes]))
+                    + "\n"
+                )
             save_results.append(save_pred)
             logger.info(save_pred)
             if len(imgs) > 1:
-                logger.info("{}_{} The predict time of {}: {}".format(
-                    idx, index, image_file, elapse))
+                logger.info(
+                    "{}_{} The predict time of {}: {}".format(
+                        idx, index, image_file, elapse
+                    )
+                )
             else:
-                logger.info("{} The predict time of {}: {}".format(
-                    idx, image_file, elapse))
+                logger.info(
+                    "{} The predict time of {}: {}".format(idx, image_file, elapse)
+                )
 
             src_im = utility.draw_text_det_res(dt_boxes, img)
 
             if flag_gif:
                 save_file = image_file[:-3] + "png"
             elif flag_pdf:
-                save_file = image_file.replace('.pdf',
-                                               '_' + str(index) + '.png')
+                save_file = image_file.replace(".pdf", "_" + str(index) + ".png")
             else:
                 save_file = image_file
             img_path = os.path.join(
-                draw_img_save_dir,
-                "det_res_{}".format(os.path.basename(save_file)))
+                draw_img_save_dir, "det_res_{}".format(os.path.basename(save_file))
+            )
             cv2.imwrite(img_path, src_im)
             logger.info("The visualized image saved in {}".format(img_path))
 
-    with open(os.path.join(draw_img_save_dir, "det_results.txt"), 'w') as f:
+    with open(os.path.join(draw_img_save_dir, "det_results.txt"), "w") as f:
         f.writelines(save_results)
         f.close()
     if args.benchmark:

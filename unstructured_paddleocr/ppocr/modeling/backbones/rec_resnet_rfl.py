@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/hikopensource/DAVAR-Lab-OCR/blob/main/davarocr/davar_rcg/models/backbones/ResNetRFL.py
 """
 
@@ -26,21 +26,18 @@ import paddle.nn as nn
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal, KaimingNormal
 
 kaiming_init_ = KaimingNormal()
-zeros_ = Constant(value=0.)
-ones_ = Constant(value=1.)
+zeros_ = Constant(value=0.0)
+ones_ = Constant(value=1.0)
 
 
 class BasicBlock(nn.Layer):
     """Res-net Basic Block"""
+
     expansion = 1
 
-    def __init__(self,
-                 inplanes,
-                 planes,
-                 stride=1,
-                 downsample=None,
-                 norm_type='BN',
-                 **kwargs):
+    def __init__(
+        self, inplanes, planes, stride=1, downsample=None, norm_type="BN", **kwargs
+    ):
         """
         Args:
             inplanes (int): input channel
@@ -60,14 +57,14 @@ class BasicBlock(nn.Layer):
         self.stride = stride
 
     def _conv3x3(self, in_planes, out_planes, stride=1):
-
         return nn.Conv2D(
             in_planes,
             out_planes,
             kernel_size=3,
             stride=stride,
             padding=1,
-            bias_attr=False)
+            bias_attr=False,
+        )
 
     def forward(self, x):
         residual = x
@@ -88,11 +85,7 @@ class BasicBlock(nn.Layer):
 
 
 class ResNetRFL(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels=512,
-                 use_cnt=True,
-                 use_seq=True):
+    def __init__(self, in_channels, out_channels=512, use_cnt=True, use_seq=True):
         """
 
         Args:
@@ -106,8 +99,10 @@ class ResNetRFL(nn.Layer):
 
         self.out_channels = out_channels
         self.out_channels_block = [
-            int(self.out_channels / 4), int(self.out_channels / 2),
-            self.out_channels, self.out_channels
+            int(self.out_channels / 4),
+            int(self.out_channels / 2),
+            self.out_channels,
+            self.out_channels,
         ]
         block = BasicBlock
         layers = [1, 2, 5, 3]
@@ -115,28 +110,31 @@ class ResNetRFL(nn.Layer):
 
         self.relu = nn.ReLU()
         if self.use_seq:
-            self.maxpool3 = nn.MaxPool2D(
-                kernel_size=2, stride=(2, 1), padding=(0, 1))
+            self.maxpool3 = nn.MaxPool2D(kernel_size=2, stride=(2, 1), padding=(0, 1))
             self.layer3 = self._make_layer(
-                block, self.out_channels_block[2], layers[2], stride=1)
+                block, self.out_channels_block[2], layers[2], stride=1
+            )
             self.conv3 = nn.Conv2D(
                 self.out_channels_block[2],
                 self.out_channels_block[2],
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.bn3 = nn.BatchNorm(self.out_channels_block[2])
 
             self.layer4 = self._make_layer(
-                block, self.out_channels_block[3], layers[3], stride=1)
+                block, self.out_channels_block[3], layers[3], stride=1
+            )
             self.conv4_1 = nn.Conv2D(
                 self.out_channels_block[3],
                 self.out_channels_block[3],
                 kernel_size=2,
                 stride=(2, 1),
                 padding=(0, 1),
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.bn4_1 = nn.BatchNorm(self.out_channels_block[3])
             self.conv4_2 = nn.Conv2D(
                 self.out_channels_block[3],
@@ -144,33 +142,37 @@ class ResNetRFL(nn.Layer):
                 kernel_size=2,
                 stride=1,
                 padding=0,
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.bn4_2 = nn.BatchNorm(self.out_channels_block[3])
 
         if self.use_cnt:
             self.inplanes = int(self.out_channels // 2)
-            self.v_maxpool3 = nn.MaxPool2D(
-                kernel_size=2, stride=(2, 1), padding=(0, 1))
+            self.v_maxpool3 = nn.MaxPool2D(kernel_size=2, stride=(2, 1), padding=(0, 1))
             self.v_layer3 = self._make_layer(
-                block, self.out_channels_block[2], layers[2], stride=1)
+                block, self.out_channels_block[2], layers[2], stride=1
+            )
             self.v_conv3 = nn.Conv2D(
                 self.out_channels_block[2],
                 self.out_channels_block[2],
                 kernel_size=3,
                 stride=1,
                 padding=1,
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.v_bn3 = nn.BatchNorm(self.out_channels_block[2])
 
             self.v_layer4 = self._make_layer(
-                block, self.out_channels_block[3], layers[3], stride=1)
+                block, self.out_channels_block[3], layers[3], stride=1
+            )
             self.v_conv4_1 = nn.Conv2D(
                 self.out_channels_block[3],
                 self.out_channels_block[3],
                 kernel_size=2,
                 stride=(2, 1),
                 padding=(0, 1),
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.v_bn4_1 = nn.BatchNorm(self.out_channels_block[3])
             self.v_conv4_2 = nn.Conv2D(
                 self.out_channels_block[3],
@@ -178,11 +180,11 @@ class ResNetRFL(nn.Layer):
                 kernel_size=2,
                 stride=1,
                 padding=0,
-                bias_attr=False)
+                bias_attr=False,
+            )
             self.v_bn4_2 = nn.BatchNorm(self.out_channels_block[3])
 
     def _make_layer(self, block, planes, blocks, stride=1):
-
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
@@ -191,8 +193,10 @@ class ResNetRFL(nn.Layer):
                     planes * block.expansion,
                     kernel_size=1,
                     stride=stride,
-                    bias_attr=False),
-                nn.BatchNorm(planes * block.expansion), )
+                    bias_attr=False,
+                ),
+                nn.BatchNorm(planes * block.expansion),
+            )
 
         layers = list()
         layers.append(block(self.inplanes, planes, stride, downsample))
@@ -246,8 +250,10 @@ class ResNetBase(nn.Layer):
         super(ResNetBase, self).__init__()
 
         self.out_channels_block = [
-            int(out_channels / 4), int(out_channels / 2), out_channels,
-            out_channels
+            int(out_channels / 4),
+            int(out_channels / 2),
+            out_channels,
+            out_channels,
         ]
 
         self.inplanes = int(out_channels / 8)
@@ -257,7 +263,8 @@ class ResNetBase(nn.Layer):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn0_1 = nn.BatchNorm(int(out_channels / 16))
         self.conv0_2 = nn.Conv2D(
             int(out_channels / 16),
@@ -265,32 +272,35 @@ class ResNetBase(nn.Layer):
             kernel_size=3,
             stride=1,
             padding=1,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn0_2 = nn.BatchNorm(self.inplanes)
         self.relu = nn.ReLU()
 
         self.maxpool1 = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
-        self.layer1 = self._make_layer(block, self.out_channels_block[0],
-                                       layers[0])
+        self.layer1 = self._make_layer(block, self.out_channels_block[0], layers[0])
         self.conv1 = nn.Conv2D(
             self.out_channels_block[0],
             self.out_channels_block[0],
             kernel_size=3,
             stride=1,
             padding=1,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn1 = nn.BatchNorm(self.out_channels_block[0])
 
         self.maxpool2 = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
         self.layer2 = self._make_layer(
-            block, self.out_channels_block[1], layers[1], stride=1)
+            block, self.out_channels_block[1], layers[1], stride=1
+        )
         self.conv2 = nn.Conv2D(
             self.out_channels_block[1],
             self.out_channels_block[1],
             kernel_size=3,
             stride=1,
             padding=1,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn2 = nn.BatchNorm(self.out_channels_block[1])
 
     def _make_layer(self, block, planes, blocks, stride=1):
@@ -302,8 +312,10 @@ class ResNetBase(nn.Layer):
                     planes * block.expansion,
                     kernel_size=1,
                     stride=stride,
-                    bias_attr=False),
-                nn.BatchNorm(planes * block.expansion), )
+                    bias_attr=False,
+                ),
+                nn.BatchNorm(planes * block.expansion),
+            )
 
         layers = list()
         layers.append(block(self.inplanes, planes, stride, downsample))
@@ -337,12 +349,11 @@ class ResNetBase(nn.Layer):
 
 
 class RFLBase(nn.Layer):
-    """ Reciprocal feature learning share backbone network"""
+    """Reciprocal feature learning share backbone network"""
 
     def __init__(self, in_channels, out_channels=512):
         super(RFLBase, self).__init__()
-        self.ConvNet = ResNetBase(in_channels, out_channels, BasicBlock,
-                                  [1, 2, 5, 3])
+        self.ConvNet = ResNetBase(in_channels, out_channels, BasicBlock, [1, 2, 5, 3])
 
     def forward(self, inputs):
         return self.ConvNet(inputs)

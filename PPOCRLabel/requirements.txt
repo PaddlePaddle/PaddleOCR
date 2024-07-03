@@ -1,3 +1,0 @@
-pyqt5
-unstructured.paddleocr
-xlrd==1.2.0

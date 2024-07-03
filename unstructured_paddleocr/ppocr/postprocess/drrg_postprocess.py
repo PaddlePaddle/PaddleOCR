@@ -43,7 +43,7 @@ class Node:
         link_node.__links.add(self)
 
 
-def graph_propagation(edges, scores, text_comps, edge_len_thr=50.):
+def graph_propagation(edges, scores, text_comps, edge_len_thr=50.0):
     assert edges.ndim == 2
     assert edges.shape[1] == 2
     assert edges.shape[0] == scores.shape[0]
@@ -63,12 +63,13 @@ def graph_propagation(edges, scores, text_comps, edge_len_thr=50.):
                 scores[i] = 0
         if (edge[0], edge[1]) in score_dict:
             score_dict[edge[0], edge[1]] = 0.5 * (
-                score_dict[edge[0], edge[1]] + scores[i])
+                score_dict[edge[0], edge[1]] + scores[i]
+            )
         else:
             score_dict[edge[0], edge[1]] = scores[i]
 
     nodes = np.sort(np.unique(edges.flatten()))
-    mapping = -1 * np.ones((np.max(nodes) + 1), dtype=np.int)
+    mapping = -1 * np.ones((np.max(nodes) + 1), dtype=np.int32)
     mapping[nodes] = np.arange(nodes.shape[0])
     order_inds = mapping[edges]
     vertices = [Node(node) for node in nodes]
@@ -92,11 +93,13 @@ def connected_components(nodes, score_dict, link_thr):
         node_queue = [node]
         while node_queue:
             node = node_queue.pop(0)
-            neighbors = set([
-                neighbor for neighbor in node.links
-                if score_dict[tuple(sorted([node.ind, neighbor.ind]))] >=
-                link_thr
-            ])
+            neighbors = set(
+                [
+                    neighbor
+                    for neighbor in node.links
+                    if score_dict[tuple(sorted([node.ind, neighbor.ind]))] >= link_thr
+                ]
+            )
             neighbors.difference_update(cluster)
             nodes.difference_update(neighbors)
             cluster.update(neighbors)
@@ -108,8 +111,7 @@ def connected_components(nodes, score_dict, link_thr):
 def clusters2labels(clusters, num_nodes):
     assert isinstance(clusters, list)
     assert all([isinstance(cluster, list) for cluster in clusters])
-    assert all(
-        [isinstance(node, Node) for cluster in clusters for node in cluster])
+    assert all([isinstance(node, Node) for cluster in clusters for node in cluster])
     assert isinstance(num_nodes, int)
 
     node_labels = np.zeros(num_nodes)
@@ -126,7 +128,7 @@ def remove_single(text_comps, comp_pred_labels):
     single_flags = np.zeros_like(comp_pred_labels)
     pred_labels = np.unique(comp_pred_labels)
     for label in pred_labels:
-        current_label_flag = (comp_pred_labels == label)
+        current_label_flag = comp_pred_labels == label
         if np.sum(current_label_flag) == 1:
             single_flags[np.where(current_label_flag)[0][0]] = 1
     keep_ind = [i for i in range(len(comp_pred_labels)) if not single_flags[i]]
@@ -137,7 +139,7 @@ def remove_single(text_comps, comp_pred_labels):
 
 
 def norm2(point1, point2):
-    return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
+    return ((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2) ** 0.5
 
 
 def min_connect_path(points):
@@ -226,8 +228,9 @@ def comps2boundaries(text_comps, comp_pred_labels):
         return boundaries
     for cluster_ind in range(0, int(np.max(comp_pred_labels)) + 1):
         cluster_comp_inds = np.where(comp_pred_labels == cluster_ind)
-        text_comp_boxes = text_comps[cluster_comp_inds, :8].reshape(
-            (-1, 4, 2)).astype(np.int32)
+        text_comp_boxes = (
+            text_comps[cluster_comp_inds, :8].reshape((-1, 4, 2)).astype(np.int32)
+        )
         score = np.mean(text_comps[cluster_comp_inds, -1])
 
         if text_comp_boxes.shape[0] < 1:
@@ -237,12 +240,15 @@ def comps2boundaries(text_comps, comp_pred_labels):
             centers = np.mean(text_comp_boxes, axis=1).astype(np.int32).tolist()
             shortest_path = min_connect_path(centers)
             text_comp_boxes = text_comp_boxes[shortest_path]
-            top_line = np.mean(
-                text_comp_boxes[:, 0:2, :], axis=1).astype(np.int32).tolist()
-            bot_line = np.mean(
-                text_comp_boxes[:, 2:4, :], axis=1).astype(np.int32).tolist()
+            top_line = (
+                np.mean(text_comp_boxes[:, 0:2, :], axis=1).astype(np.int32).tolist()
+            )
+            bot_line = (
+                np.mean(text_comp_boxes[:, 2:4, :], axis=1).astype(np.int32).tolist()
+            )
             top_line, bot_line = fix_corner(
-                top_line, bot_line, text_comp_boxes[0], text_comp_boxes[-1])
+                top_line, bot_line, text_comp_boxes[0], text_comp_boxes[-1]
+            )
             boundary_points = top_line + bot_line[::-1]
 
         else:
@@ -299,7 +305,8 @@ class DRRGPostprocess(object):
             boundaries = []
 
         boundaries, scores = self.resize_boundary(
-            boundaries, (1 / shape_list[0, 2:]).tolist()[::-1])
+            boundaries, (1 / shape_list[0, 2:]).tolist()[::-1]
+        )
         boxes_batch = [dict(points=boundaries, scores=scores)]
         return boxes_batch
 
@@ -319,8 +326,13 @@ class DRRGPostprocess(object):
         for b in boundaries:
             sz = len(b)
             scores.append(b[-1])
-            b = (np.array(b[:sz - 1]) *
-                 (np.tile(scale_factor[:2], int(
-                     (sz - 1) / 2)).reshape(1, sz - 1))).flatten().tolist()
+            b = (
+                (
+                    np.array(b[: sz - 1])
+                    * (np.tile(scale_factor[:2], int((sz - 1) / 2)).reshape(1, sz - 1))
+                )
+                .flatten()
+                .tolist()
+            )
             boxes.append(np.array(b).reshape([-1, 2]))
         return boxes, scores

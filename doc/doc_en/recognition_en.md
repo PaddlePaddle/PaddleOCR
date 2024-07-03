@@ -3,7 +3,7 @@
 - [1. Data Preparation](#DATA_PREPARATION)
   * [1.1 Custom Dataset](#Custom_Dataset)
   * [1.2 Dataset Download](#Dataset_download)
-  * [1.3 Dictionary](#Dictionary)  
+  * [1.3 Dictionary](#Dictionary)
   * [1.4 Add Space Category](#Add_space_category)
   * [1.5 Data Augmentation](#Data_Augmentation)
 - [2. Training](#TRAINING)
@@ -27,7 +27,7 @@
 
 ### 1.1 DataSet Preparation
 
-To prepare datasets, refer to [ocr_datasets](./dataset/ocr_datasets.md) .
+To prepare datasets, refer to [ocr_datasets](./dataset/datasets_en.md) .
 
 PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
 
@@ -80,7 +80,7 @@ PaddleOCR has built-in dictionaries, which can be used on demand.
 
 `ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
 
-`ppocr/utils/ic15_dict.txt` is an English dictionary with 63 characters
+`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters
 
 `ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
 
@@ -129,11 +129,11 @@ First download the pretrain model, you can download the trained model to finetun
 
 ```
 cd PaddleOCR/
-# Download the pre-trained model of en_PP-OCRv3
-wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar
+# Download the pre-trained model of en_PP-OCRv4
+wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_train.tar
 # Decompress model parameters
 cd pretrain_models
-tar -xf en_PP-OCRv3_rec_train.tar && rm -rf en_PP-OCRv3_rec_train.tar
+tar -xf en_PP-OCRv4_rec_train.tar && rm -rf en_PP-OCRv4_rec_train.tar
 ```
 
 Start training:
@@ -143,10 +143,10 @@ Start training:
 # Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 
 #specify the single card training(Long training time, not recommended)
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
+python3 tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=en_PP-OCRv4_rec_train/best_accuracy
 
 #specify the card number through --gpus
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=en_PP-OCRv4_rec_train/best_accuracy
 ```
 
 
@@ -154,13 +154,13 @@ PaddleOCR supports alternating training and evaluation. You can modify `eval_bat
 
 If the evaluation set is large, the test will be time-consuming. It is recommended to reduce the number of evaluations, or evaluate after training.
 
-* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/algorithm_overview.md):
+* Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_en/algorithm_overview_en.md):
 
 
 For training Chinese data, it is recommended to use
-[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+[ch_PP-OCRv4_rec_distillation.yml](../../configs/rec/PP-OCRv4/ch_PP-OCRv4_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 
-Take `ch_PP-OCRv3_rec_distillation.yml` as an example:
+Take `ch_PP-OCRv4_rec_distillation.yml` as an example:
 ```
 Global:
   ...
@@ -293,9 +293,9 @@ If you want to speed up your training further, you can use [Auto Mixed Precision
 
 ```shell
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml \
-     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train \
+     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
- ```
+```
 
 <a name="25-distributed-training"></a>
 ### 2.5 Distributed Training
@@ -304,7 +304,7 @@ During multi-machine multi-gpu training, use the `--ips` parameter to set the us
 
 ```bash
 python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_icdar15_train.yml \
-     -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train
+     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
 **Note:** (1) When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. (2) Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`. (3) For more details about the distributed training speedup ratio, please refer to [Distributed Training Tutorial](./distributed_training_en.md).
@@ -323,7 +323,7 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 | :--------: |  :-------:   | :-------:  |   :-------:   |   :-----:   |  :-----:   | :-----:  |
 | rec_chinese_cht_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | chinese traditional  |
 | rec_en_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | English(Case sensitive)   |
-| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |  
+| rec_french_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | French |
 | rec_ger_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | German   |
 | rec_japan_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Japanese |
 | rec_korean_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | Korean  |
@@ -396,12 +396,12 @@ In actual use, it is recommended to load the official pre-trained model and fine
 <a name="31-evaluation"></a>
 ### 3.1 Evaluation
 
-The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` file.
+The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml` file.
 
 
 ```
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 <a name="32-test"></a>
@@ -417,16 +417,16 @@ According to the `save_model_dir` and `save_epoch_step` fields set in the config
 
 ```
 output/rec/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── iter_epoch_3.pdopt  
-├── iter_epoch_3.pdparams  
-├── iter_epoch_3.states  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── iter_epoch_3.pdopt
+├── iter_epoch_3.pdparams
+├── iter_epoch_3.states
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 
@@ -434,7 +434,7 @@ Among them, best_accuracy.* is the best model on the evaluation set; iter_epoch_
 
 ```
 # Predict English results
-python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
+python3 tools/infer_rec.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 
@@ -484,7 +484,7 @@ The recognition model is converted to the inference model in the same way as the
 # Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv4/en_PP-OCRv4_rec.yml -o Global.pretrained_model=en_PP-OCRv4_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv4_rec/
 ```
 
 If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
@@ -493,7 +493,7 @@ After the conversion is successful, there are three files in the model save dire
 
 ```
 
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv4_rec/
     ├── inference.pdiparams         # The parameter file of recognition inference model
     ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
     └── inference.pdmodel           # The program file of recognition model

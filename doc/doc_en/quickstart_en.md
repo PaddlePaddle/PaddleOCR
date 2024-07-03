@@ -25,19 +25,19 @@
 
 > If you do not have a Python environment, please refer to [Environment Preparation](./environment_en.md).
 
-- If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
+- If you have CUDA 11 installed on your machine, please run the following command to install
 
   ```bash
-  python -m pip install paddlepaddle-gpu -i https://pypi.tuna.tsinghua.edu.cn/simple
+  pip install paddlepaddle-gpu
   ```
 
 - If you have no available GPU on your machine, please run the following command to install the CPU version
 
   ```bash
-  python -m pip install paddlepaddle -i https://pypi.tuna.tsinghua.edu.cn/simple
+  python -m pip install paddlepaddle
   ```
 
-For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
+For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/en/install/quick) for operation.
 
 <a name="12-install-paddleocr-whl-package"></a>
 
@@ -120,9 +120,10 @@ If you do not use the provided test image, you can replace the following `--imag
   ```
 
 **Version**
-paddleocr uses the PP-OCRv3 model by default(`--ocr_version PP-OCRv3`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
+paddleocr uses the PP-OCRv4 model by default(`--ocr_version PP-OCRv4`). If you want to use other versions, you can set the parameter `--ocr_version`, the specific version description is as follows:
 |  version name |  description |
 |    ---    |   ---   |
+| PP-OCRv4 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 | PP-OCRv3 | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 | PP-OCRv2 | only supports Chinese and English detection and recognition, direction classifier, multilingual model is not updated |
 | PP-OCR   | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
@@ -223,11 +224,16 @@ from paddleocr import PaddleOCR, draw_ocr
 # Paddleocr supports Chinese, English, French, German, Korean and Japanese.
 # You can set the parameter `lang` as `ch`, `en`, `fr`, `german`, `korean`, `japan`
 # to switch the language model in order.
-ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=2)  # need to run only once to download and load model into memory
-img_path = './xxx.pdf'
-result = ocr.ocr(img_path, cls=True)
+PAGE_NUM = 10 # Set the recognition page number
+pdf_path = 'default.pdf'
+ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM)  # need to run only once to download and load model into memory
+# ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM,use_gpu=0) # To Use GPU,uncomment this line and comment the above one.
+result = ocr.ocr(pdf_path, cls=True)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None: # Skip when empty result detected to avoid TypeError:NoneType
+        print(f"[DEBUG] Empty page {idx+1} detected, skip it.")
+        continue
     for line in res:
         print(line)
 
@@ -236,6 +242,8 @@ import pdf2image
 imgs = pdf2image.convert_from_path(img_path)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None:
+        continue
     image = imgs[idx]
     boxes = [line[0] for line in res]
     txts = [line[1][0] for line in res]
@@ -245,10 +253,50 @@ for idx in range(len(result)):
     im_show.save('result_page_{}.jpg'.format(idx))
 ```
 
+* Detection and Recognition Using Sliding Windows
+
+To perform OCR using sliding windows, the following code snippet can be employed:
+
+```Python
+from paddleocr import PaddleOCR
+from PIL import Image, ImageDraw, ImageFont
+
+# Initialize OCR engine
+ocr = PaddleOCR(use_angle_cls=True, lang="en")
+
+img_path = "./very_large_image.jpg"
+slice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}
+results = ocr.ocr(img_path, cls=True, slice=slice)
+
+# Load image
+image = Image.open(img_path).convert("RGB")
+draw = ImageDraw.Draw(image)
+font = ImageFont.truetype("./doc/fonts/simfang.ttf", size=20)  # Adjust size as needed
+
+# Process and draw results
+for res in results:
+    for line in res:
+        box = [tuple(point) for point in line[0]]
+        # Finding the bounding box
+        box = [(min(point[0] for point in box), min(point[1] for point in box)),
+               (max(point[0] for point in box), max(point[1] for point in box))]
+        txt = line[1][0]
+        draw.rectangle(box, outline="red", width=2)  # Draw rectangle
+        draw.text((box[0][0], box[0][1] - 25), txt, fill="blue", font=font)  # Draw text above the box
+
+# Save result
+image.save("result.jpg")
+
+```
+
+This example initializes the PaddleOCR instance with angle classification enabled and sets the language to English. The `ocr` method is then called with several parameters to customize the detection and recognition process, including the `slice` parameter for handling image slices.
+
+For a more comprehensive understanding of the slicing operation, please refer to the [slice operation documentation](./slice_en.md).
+
 <a name="3"></a>
 
 ## 3. Summary
 
 In this section, you have mastered the use of PaddleOCR whl package.
 
-PaddleOCR is a rich and practical OCR tool library that get through the whole process of data production, model training, compression, inference and deployment, please refer to the [tutorials](../../README.md#tutorials) to start the journey of PaddleOCR.
+PaddleX provides a high-quality ecological model of the paddle. It is a one-stop full-process high-efficiency development platform for training, pressing and pushing. Its mission is to help AI technology to be implemented quickly. The vision is to make everyone an AI Developer! Currently PP-OCRv4 has been launched on PaddleX, you can enter [General OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286) to experience the whole process of model training, compression and inference deployment.

@@ -26,7 +26,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_no
 bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt
 # 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
 bash test_tipc/test_inference_cpp.sh test_tipc/configs/ch_PP-OCRv2_rec/model_linux_gpu_normal_normal_infer_cpp_linux_gpu_cpu.txt '1'
-```  
+```
 
 运行预测指令后，在`test_tipc/output`文件夹下自动会保存运行日志，包括以下文件：
 
@@ -66,7 +66,7 @@ Run failed with command - ch_PP-OCRv2_rec - ./deploy/cpp_infer/build/ppocr --rec
 python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/cpp_*.txt  --log_file=./test_tipc/output/cpp_*.log --atol=1e-3 --rtol=1e-3
 ```
 
-参数介绍：  
+参数介绍：
 - gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在test_tipc/result/ 文件夹下
 - log_file: 指向运行test_tipc/test_inference_cpp.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持cpp_infer_*.log格式传入
 - atol: 设置的绝对误差
@@ -83,4 +83,4 @@ python3.7 test_tipc/compare_results.py --gt_file=./test_tipc/results/cpp_*.txt  
 
 ## 3. 更多教程
 
-本文档为功能测试用，更详细的c++预测使用教程请参考：[服务器端C++预测](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer)  
+本文档为功能测试用，更详细的c++预测使用教程请参考：[服务器端C++预测](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer)

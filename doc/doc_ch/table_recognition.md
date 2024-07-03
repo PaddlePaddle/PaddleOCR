@@ -6,6 +6,7 @@
   - [1.1. 数据集格式](#11-数据集格式)
   - [1.2. 数据下载](#12-数据下载)
   - [1.3. 数据集生成](#13-数据集生成)
+  - [1.4 数据标注](#14-数据标注)
 - [2. 开始训练](#2-开始训练)
   - [2.1. 启动训练](#21-启动训练)
   - [2.2. 断点训练](#22-断点训练)
@@ -39,15 +40,15 @@ img_label
 每一行的json格式为:
 ```txt
 {
-   'filename': PMC5755158_010_01.png,							# 图像名
-   'split': ’train‘, 									# 图像属于训练集还是验证集
-   'imgid': 0,								 		# 图像的index
+   'filename': PMC5755158_010_01.png,                            # 图像名
+   'split': ’train‘,                                     # 图像属于训练集还是验证集
+   'imgid': 0,                                         # 图像的index
    'html': {
-     'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]}, 			# 表格的HTML字符串
+     'structure': {'tokens': ['<thead>', '<tr>', '<td>', ...]},             # 表格的HTML字符串
      'cells': [
        {
-         'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'], 	# 表格中的单个文本
-         'bbox': [x0, y0, x1, y1]  							# 表格中的单个文本的坐标
+         'tokens': ['P', 'a', 'd', 'd', 'l', 'e', 'P', 'a', 'd', 'd', 'l', 'e'],     # 表格中的单个文本
+         'bbox': [x0, y0, x1, y1]                              # 表格中的单个文本的坐标
        }
      ]
    }
@@ -78,6 +79,10 @@ TableGeneration是一个开源表格数据集生成工具，其通过浏览器�
 |简单表格|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/simple.jpg)|
 |彩色表格|![](https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/color.jpg)|
 
+## 1.4 数据标注
+
+数据标注可参考[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)
+
 # 2. 开始训练
 
 PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 [SLANet](../../configs/table/SLANet.yml) 模型训练PubTabNet英文数据集为例：
@@ -107,7 +112,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 log 中自动打印如下信息：
 
-|  字段   |   含义   |  
+|  字段   |   含义   |
 | :----: | :------: |
 |  epoch | 当前迭代轮次 |
 |  global_step  | 当前迭代次数 |
@@ -285,13 +290,13 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/table/S
 
 ```
 output/SLANet/
-├── best_accuracy.pdopt  
-├── best_accuracy.pdparams  
-├── best_accuracy.states  
-├── config.yml  
-├── latest.pdopt  
-├── latest.pdparams  
-├── latest.states  
+├── best_accuracy.pdopt
+├── best_accuracy.pdparams
+├── best_accuracy.states
+├── config.yml
+├── latest.pdopt
+├── latest.pdparams
+├── latest.states
 └── train.log
 ```
 其中 best_accuracy.* 是评估集上的最优模型；latest.* 是最后一个epoch的模型。

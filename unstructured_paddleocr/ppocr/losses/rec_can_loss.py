@@ -22,20 +22,23 @@ import numpy as np
 
 
 class CANLoss(nn.Layer):
-    '''
+    """
     CANLoss is consist of two part:
         word_average_loss: average accuracy of the symbol
         counting_loss: counting loss of every symbol
-    '''
+    """
 
     def __init__(self):
         super(CANLoss, self).__init__()
 
         self.use_label_mask = False
         self.out_channel = 111
-        self.cross = nn.CrossEntropyLoss(
-            reduction='none') if self.use_label_mask else nn.CrossEntropyLoss()
-        self.counting_loss = nn.SmoothL1Loss(reduction='mean')
+        self.cross = (
+            nn.CrossEntropyLoss(reduction="none")
+            if self.use_label_mask
+            else nn.CrossEntropyLoss()
+        )
+        self.counting_loss = nn.SmoothL1Loss(reduction="mean")
         self.ratio = 16
 
     def forward(self, preds, batch):
@@ -46,18 +49,24 @@ class CANLoss(nn.Layer):
         labels = batch[2]
         labels_mask = batch[3]
         counting_labels = gen_counting_label(labels, self.out_channel, True)
-        counting_loss = self.counting_loss(counting_preds1, counting_labels) + self.counting_loss(counting_preds2, counting_labels) \
-                        + self.counting_loss(counting_preds, counting_labels)
+        counting_loss = (
+            self.counting_loss(counting_preds1, counting_labels)
+            + self.counting_loss(counting_preds2, counting_labels)
+            + self.counting_loss(counting_preds, counting_labels)
+        )
 
         word_loss = self.cross(
             paddle.reshape(word_probs, [-1, word_probs.shape[-1]]),
-            paddle.reshape(labels, [-1]))
-        word_average_loss = paddle.sum(
-            paddle.reshape(word_loss * labels_mask, [-1])) / (
-                paddle.sum(labels_mask) + 1e-10
-            ) if self.use_label_mask else word_loss
+            paddle.reshape(labels, [-1]),
+        )
+        word_average_loss = (
+            paddle.sum(paddle.reshape(word_loss * labels_mask, [-1]))
+            / (paddle.sum(labels_mask) + 1e-10)
+            if self.use_label_mask
+            else word_loss
+        )
         loss = word_average_loss + counting_loss
-        return {'loss': loss}
+        return {"loss": loss}
 
 
 def gen_counting_label(labels, channel, tag):
@@ -75,5 +84,5 @@ def gen_counting_label(labels, channel, tag):
                 continue
             else:
                 counting_labels[i][k] += 1
-    counting_labels = paddle.to_tensor(counting_labels, dtype='float32')
+    counting_labels = paddle.to_tensor(counting_labels, dtype="float32")
     return counting_labels

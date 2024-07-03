@@ -8,11 +8,11 @@ Need to prepare PaddleOCR, Paddle2ONNX model conversion environment, and ONNXRun
 
 ###  PaddleOCR
 
-Clone the PaddleOCR repository, use the release/2.6 branch, and install it.
+Clone the PaddleOCR repository, use the main branch, and install it.
 
 ```
-git clone  -b release/2.6 https://github.com/PaddlePaddle/PaddleOCR.git
-cd PaddleOCR && python3.7 setup.py install
+git clone  -b main https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR && python3 pip install -e .
 ```
 
 ###  Paddle2ONNX
@@ -23,13 +23,12 @@ For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/
 
 - install Paddle2ONNX
 ```
-python3.7 -m pip install paddle2onnx
+python3 -m pip install paddle2onnx
 ```
 
 - install ONNXRuntime
 ```
-# It is recommended to install version 1.9.0, and the version number can be changed according to the environment
-python3.7 -m pip install onnxruntime==1.9.0
+python3 -m pip install onnxruntime
 ```
 
 ## 2. Model conversion
@@ -62,31 +61,36 @@ paddle2onnx --model_dir ./inference/en_PP-OCRv3_det_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/det_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--opset_version 11 \
 --enable_onnx_checker True
 
 paddle2onnx --model_dir ./inference/en_PP-OCRv3_rec_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/rec_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--opset_version 11 \
 --enable_onnx_checker True
 
 paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
---model_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel \
---params_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams \
---save_file ./inferencecls_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--model_filename inference.pdmodel \
+--params_filename inference.pdiparams \
+--save_file ./inference/cls_onnx/model.onnx \
+--opset_version 11 \
 --enable_onnx_checker True
 ```
 After execution, the ONNX model will be saved in `./inference/det_onnx/`, `./inference/rec_onnx/`, `./inference/cls_onnx/` paths respectively
 
-* Note: For the OCR model, the conversion process must be in the form of dynamic shape, that is, add the option --input_shape_dict="{'x': [-1, 3, -1, -1]}", otherwise the prediction result may be the same as Predicting directly with Paddle is slightly different.
+* Note: For the OCR model, the conversion process must be in the form of dynamic shape, otherwise the prediction result may be the same as Predicting directly with Paddle is slightly different.
   In addition, the following models do not currently support conversion to ONNX models:
   NRTR, SAR, RARE, SRN
+
+* Note: The current Paddle2ONNX version (v1.2.3) now supports dynamic shapes by default, i.e., float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]. The `--input_shape_dict` option has been deprecated. If you need to adjust the shape, you can use the following command to adjust the input shape of the Paddle model.
+
+  ```
+  python3 -m paddle2onnx.optimize --input_model inference/det_onnx/model.onnx \
+    --output_model inference/det_onnx/model.onnx \
+    --input_shape_dict "{'x': [-1,3,-1,-1]}"
+  ```
 
 ## 3. prediction
 

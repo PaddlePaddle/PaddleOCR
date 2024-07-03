@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/liyunsheng13/micronet/blob/main/backbone/micronet.py
 https://github.com/liyunsheng13/micronet/blob/main/backbone/activation.py
 """
@@ -76,7 +76,7 @@ M3_cfgs = [
 
 
 def get_micronet_config(mode):
-    return eval(mode + '_cfgs')
+    return eval(mode + "_cfgs")
 
 
 class MaxGroupPooling(nn.Layer):
@@ -104,18 +104,26 @@ class SpatialSepConvSF(nn.Layer):
         self.conv = nn.Sequential(
             nn.Conv2D(
                 inp,
-                oup1, (kernel_size, 1), (stride, 1), (kernel_size // 2, 0),
+                oup1,
+                (kernel_size, 1),
+                (stride, 1),
+                (kernel_size // 2, 0),
                 bias_attr=False,
-                groups=1),
+                groups=1,
+            ),
             nn.BatchNorm2D(oup1),
             nn.Conv2D(
                 oup1,
-                oup1 * oup2, (1, kernel_size), (1, stride),
+                oup1 * oup2,
+                (1, kernel_size),
+                (1, stride),
                 (0, kernel_size // 2),
                 bias_attr=False,
-                groups=oup1),
+                groups=oup1,
+            ),
             nn.BatchNorm2D(oup1 * oup2),
-            ChannelShuffle(oup1), )
+            ChannelShuffle(oup1),
+        )
 
     def forward(self, x):
         out = self.conv(x)
@@ -148,7 +156,8 @@ class StemLayer(nn.Layer):
         g1, g2 = groups
         self.stem = nn.Sequential(
             SpatialSepConvSF(inp, groups, 3, stride),
-            MaxGroupPooling(2) if g1 * g2 == 2 * oup else nn.ReLU6())
+            MaxGroupPooling(2) if g1 * g2 == 2 * oup else nn.ReLU6(),
+        )
 
     def forward(self, x):
         out = self.stem(x)
@@ -167,18 +176,25 @@ class DepthSpatialSepConv(nn.Layer):
         self.conv = nn.Sequential(
             nn.Conv2D(
                 inp,
-                inp * exp1, (kernel_size, 1), (stride, 1),
+                inp * exp1,
+                (kernel_size, 1),
+                (stride, 1),
                 (kernel_size // 2, 0),
                 bias_attr=False,
-                groups=inp),
+                groups=inp,
+            ),
             nn.BatchNorm2D(inp * exp1),
             nn.Conv2D(
                 hidden_dim,
-                oup, (1, kernel_size),
-                1, (0, kernel_size // 2),
+                oup,
+                (1, kernel_size),
+                1,
+                (0, kernel_size // 2),
                 bias_attr=False,
-                groups=hidden_dim),
-            nn.BatchNorm2D(oup))
+                groups=hidden_dim,
+            ),
+            nn.BatchNorm2D(oup),
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -192,9 +208,9 @@ class GroupConv(nn.Layer):
         self.oup = oup
         self.groups = groups
         self.conv = nn.Sequential(
-            nn.Conv2D(
-                inp, oup, 1, 1, 0, bias_attr=False, groups=self.groups[0]),
-            nn.BatchNorm2D(oup))
+            nn.Conv2D(inp, oup, 1, 1, 0, bias_attr=False, groups=self.groups[0]),
+            nn.BatchNorm2D(oup),
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -212,8 +228,10 @@ class DepthConv(nn.Layer):
                 stride,
                 kernel_size // 2,
                 bias_attr=False,
-                groups=inp),
-            nn.BatchNorm2D(oup))
+                groups=inp,
+            ),
+            nn.BatchNorm2D(oup),
+        )
 
     def forward(self, x):
         out = self.conv(x)
@@ -221,23 +239,27 @@ class DepthConv(nn.Layer):
 
 
 class DYShiftMax(nn.Layer):
-    def __init__(self,
-                 inp,
-                 oup,
-                 reduction=4,
-                 act_max=1.0,
-                 act_relu=True,
-                 init_a=[0.0, 0.0],
-                 init_b=[0.0, 0.0],
-                 relu_before_pool=False,
-                 g=None,
-                 expansion=False):
+    def __init__(
+        self,
+        inp,
+        oup,
+        reduction=4,
+        act_max=1.0,
+        act_relu=True,
+        init_a=[0.0, 0.0],
+        init_b=[0.0, 0.0],
+        relu_before_pool=False,
+        g=None,
+        expansion=False,
+    ):
         super(DYShiftMax, self).__init__()
         self.oup = oup
         self.act_max = act_max * 2
         self.act_relu = act_relu
-        self.avg_pool = nn.Sequential(nn.ReLU() if relu_before_pool == True else
-                                      nn.Sequential(), nn.AdaptiveAvgPool2D(1))
+        self.avg_pool = nn.Sequential(
+            nn.ReLU() if relu_before_pool == True else nn.Sequential(),
+            nn.AdaptiveAvgPool2D(1),
+        )
 
         self.exp = 4 if act_relu else 2
         self.init_a = init_a
@@ -250,7 +272,10 @@ class DYShiftMax(nn.Layer):
 
         self.fc = nn.Sequential(
             nn.Linear(inp, squeeze),
-            nn.ReLU(), nn.Linear(squeeze, oup * self.exp), nn.Hardsigmoid())
+            nn.ReLU(),
+            nn.Linear(squeeze, oup * self.exp),
+            nn.Hardsigmoid(),
+        )
 
         if g is None:
             g = 1
@@ -309,25 +334,27 @@ class DYShiftMax(nn.Layer):
 
 
 class DYMicroBlock(nn.Layer):
-    def __init__(self,
-                 inp,
-                 oup,
-                 kernel_size=3,
-                 stride=1,
-                 ch_exp=(2, 2),
-                 ch_per_group=4,
-                 groups_1x1=(1, 1),
-                 depthsep=True,
-                 shuffle=False,
-                 activation_cfg=None):
+    def __init__(
+        self,
+        inp,
+        oup,
+        kernel_size=3,
+        stride=1,
+        ch_exp=(2, 2),
+        ch_per_group=4,
+        groups_1x1=(1, 1),
+        depthsep=True,
+        shuffle=False,
+        activation_cfg=None,
+    ):
         super(DYMicroBlock, self).__init__()
 
         self.identity = stride == 1 and inp == oup
 
-        y1, y2, y3 = activation_cfg['dy']
-        act_reduction = 8 * activation_cfg['ratio']
-        init_a = activation_cfg['init_a']
-        init_b = activation_cfg['init_b']
+        y1, y2, y3 = activation_cfg["dy"]
+        act_reduction = 8 * activation_cfg["ratio"]
+        init_a = activation_cfg["init_a"]
+        init_b = activation_cfg["init_b"]
 
         t1 = ch_exp
         gs1 = ch_per_group
@@ -337,92 +364,139 @@ class DYMicroBlock(nn.Layer):
         if gs1[0] == 0:
             self.layers = nn.Sequential(
                 DepthSpatialSepConv(inp, t1, kernel_size, stride),
-                DYShiftMax(
-                    hidden_dim2,
-                    hidden_dim2,
-                    act_max=2.0,
-                    act_relu=True if y2 == 2 else False,
-                    init_a=init_a,
-                    reduction=act_reduction,
-                    init_b=init_b,
-                    g=gs1,
-                    expansion=False) if y2 > 0 else nn.ReLU6(),
+                (
+                    DYShiftMax(
+                        hidden_dim2,
+                        hidden_dim2,
+                        act_max=2.0,
+                        act_relu=True if y2 == 2 else False,
+                        init_a=init_a,
+                        reduction=act_reduction,
+                        init_b=init_b,
+                        g=gs1,
+                        expansion=False,
+                    )
+                    if y2 > 0
+                    else nn.ReLU6()
+                ),
                 ChannelShuffle(gs1[1]) if shuffle else nn.Sequential(),
-                ChannelShuffle(hidden_dim2 // 2)
-                if shuffle and y2 != 0 else nn.Sequential(),
+                (
+                    ChannelShuffle(hidden_dim2 // 2)
+                    if shuffle and y2 != 0
+                    else nn.Sequential()
+                ),
                 GroupConv(hidden_dim2, oup, (g1, g2)),
-                DYShiftMax(
-                    oup,
-                    oup,
-                    act_max=2.0,
-                    act_relu=False,
-                    init_a=[1.0, 0.0],
-                    reduction=act_reduction // 2,
-                    init_b=[0.0, 0.0],
-                    g=(g1, g2),
-                    expansion=False) if y3 > 0 else nn.Sequential(),
+                (
+                    DYShiftMax(
+                        oup,
+                        oup,
+                        act_max=2.0,
+                        act_relu=False,
+                        init_a=[1.0, 0.0],
+                        reduction=act_reduction // 2,
+                        init_b=[0.0, 0.0],
+                        g=(g1, g2),
+                        expansion=False,
+                    )
+                    if y3 > 0
+                    else nn.Sequential()
+                ),
                 ChannelShuffle(g2) if shuffle else nn.Sequential(),
-                ChannelShuffle(oup // 2)
-                if shuffle and oup % 2 == 0 and y3 != 0 else nn.Sequential(), )
+                (
+                    ChannelShuffle(oup // 2)
+                    if shuffle and oup % 2 == 0 and y3 != 0
+                    else nn.Sequential()
+                ),
+            )
         elif g2 == 0:
             self.layers = nn.Sequential(
                 GroupConv(inp, hidden_dim2, gs1),
-                DYShiftMax(
-                    hidden_dim2,
-                    hidden_dim2,
-                    act_max=2.0,
-                    act_relu=False,
-                    init_a=[1.0, 0.0],
-                    reduction=act_reduction,
-                    init_b=[0.0, 0.0],
-                    g=gs1,
-                    expansion=False) if y3 > 0 else nn.Sequential(), )
+                (
+                    DYShiftMax(
+                        hidden_dim2,
+                        hidden_dim2,
+                        act_max=2.0,
+                        act_relu=False,
+                        init_a=[1.0, 0.0],
+                        reduction=act_reduction,
+                        init_b=[0.0, 0.0],
+                        g=gs1,
+                        expansion=False,
+                    )
+                    if y3 > 0
+                    else nn.Sequential()
+                ),
+            )
         else:
             self.layers = nn.Sequential(
                 GroupConv(inp, hidden_dim2, gs1),
-                DYShiftMax(
-                    hidden_dim2,
-                    hidden_dim2,
-                    act_max=2.0,
-                    act_relu=True if y1 == 2 else False,
-                    init_a=init_a,
-                    reduction=act_reduction,
-                    init_b=init_b,
-                    g=gs1,
-                    expansion=False) if y1 > 0 else nn.ReLU6(),
+                (
+                    DYShiftMax(
+                        hidden_dim2,
+                        hidden_dim2,
+                        act_max=2.0,
+                        act_relu=True if y1 == 2 else False,
+                        init_a=init_a,
+                        reduction=act_reduction,
+                        init_b=init_b,
+                        g=gs1,
+                        expansion=False,
+                    )
+                    if y1 > 0
+                    else nn.ReLU6()
+                ),
                 ChannelShuffle(gs1[1]) if shuffle else nn.Sequential(),
-                DepthSpatialSepConv(hidden_dim2, (1, 1), kernel_size, stride)
-                if depthsep else
-                DepthConv(hidden_dim2, hidden_dim2, kernel_size, stride),
+                (
+                    DepthSpatialSepConv(hidden_dim2, (1, 1), kernel_size, stride)
+                    if depthsep
+                    else DepthConv(hidden_dim2, hidden_dim2, kernel_size, stride)
+                ),
                 nn.Sequential(),
-                DYShiftMax(
-                    hidden_dim2,
-                    hidden_dim2,
-                    act_max=2.0,
-                    act_relu=True if y2 == 2 else False,
-                    init_a=init_a,
-                    reduction=act_reduction,
-                    init_b=init_b,
-                    g=gs1,
-                    expansion=True) if y2 > 0 else nn.ReLU6(),
-                ChannelShuffle(hidden_dim2 // 4)
-                if shuffle and y1 != 0 and y2 != 0 else nn.Sequential()
-                if y1 == 0 and y2 == 0 else ChannelShuffle(hidden_dim2 // 2),
+                (
+                    DYShiftMax(
+                        hidden_dim2,
+                        hidden_dim2,
+                        act_max=2.0,
+                        act_relu=True if y2 == 2 else False,
+                        init_a=init_a,
+                        reduction=act_reduction,
+                        init_b=init_b,
+                        g=gs1,
+                        expansion=True,
+                    )
+                    if y2 > 0
+                    else nn.ReLU6()
+                ),
+                (
+                    ChannelShuffle(hidden_dim2 // 4)
+                    if shuffle and y1 != 0 and y2 != 0
+                    else (
+                        nn.Sequential()
+                        if y1 == 0 and y2 == 0
+                        else ChannelShuffle(hidden_dim2 // 2)
+                    )
+                ),
                 GroupConv(hidden_dim2, oup, (g1, g2)),
-                DYShiftMax(
-                    oup,
-                    oup,
-                    act_max=2.0,
-                    act_relu=False,
-                    init_a=[1.0, 0.0],
-                    reduction=act_reduction // 2
-                    if oup < hidden_dim2 else act_reduction,
-                    init_b=[0.0, 0.0],
-                    g=(g1, g2),
-                    expansion=False) if y3 > 0 else nn.Sequential(),
+                (
+                    DYShiftMax(
+                        oup,
+                        oup,
+                        act_max=2.0,
+                        act_relu=False,
+                        init_a=[1.0, 0.0],
+                        reduction=(
+                            act_reduction // 2 if oup < hidden_dim2 else act_reduction
+                        ),
+                        init_b=[0.0, 0.0],
+                        g=(g1, g2),
+                        expansion=False,
+                    )
+                    if y3 > 0
+                    else nn.Sequential()
+                ),
                 ChannelShuffle(g2) if shuffle else nn.Sequential(),
-                ChannelShuffle(oup // 2)
-                if shuffle and y3 != 0 else nn.Sequential(), )
+                ChannelShuffle(oup // 2) if shuffle and y3 != 0 else nn.Sequential(),
+            )
 
     def forward(self, x):
         identity = x
@@ -436,46 +510,45 @@ class DYMicroBlock(nn.Layer):
 
 class MicroNet(nn.Layer):
     """
-        the MicroNet backbone network for recognition module.
-        Args:
-            mode(str): {'M0', 'M1', 'M2', 'M3'} 
-                Four models are proposed based on four different computational costs (4M, 6M, 12M, 21M MAdds)
-                Default: 'M3'.
+    the MicroNet backbone network for recognition module.
+    Args:
+        mode(str): {'M0', 'M1', 'M2', 'M3'}
+            Four models are proposed based on four different computational costs (4M, 6M, 12M, 21M MAdds)
+            Default: 'M3'.
     """
 
-    def __init__(self, mode='M3', **kwargs):
+    def __init__(self, mode="M3", **kwargs):
         super(MicroNet, self).__init__()
 
         self.cfgs = get_micronet_config(mode)
 
         activation_cfg = {}
-        if mode == 'M0':
+        if mode == "M0":
             input_channel = 4
             stem_groups = 2, 2
             out_ch = 384
-            activation_cfg['init_a'] = 1.0, 1.0
-            activation_cfg['init_b'] = 0.0, 0.0
-        elif mode == 'M1':
+            activation_cfg["init_a"] = 1.0, 1.0
+            activation_cfg["init_b"] = 0.0, 0.0
+        elif mode == "M1":
             input_channel = 6
             stem_groups = 3, 2
             out_ch = 576
-            activation_cfg['init_a'] = 1.0, 1.0
-            activation_cfg['init_b'] = 0.0, 0.0
-        elif mode == 'M2':
+            activation_cfg["init_a"] = 1.0, 1.0
+            activation_cfg["init_b"] = 0.0, 0.0
+        elif mode == "M2":
             input_channel = 8
             stem_groups = 4, 2
             out_ch = 768
-            activation_cfg['init_a'] = 1.0, 1.0
-            activation_cfg['init_b'] = 0.0, 0.0
-        elif mode == 'M3':
+            activation_cfg["init_a"] = 1.0, 1.0
+            activation_cfg["init_b"] = 0.0, 0.0
+        elif mode == "M3":
             input_channel = 12
             stem_groups = 4, 3
             out_ch = 432
-            activation_cfg['init_a'] = 1.0, 0.5
-            activation_cfg['init_b'] = 0.0, 0.5
+            activation_cfg["init_a"] = 1.0, 0.5
+            activation_cfg["init_b"] = 0.0, 0.5
         else:
-            raise NotImplementedError("mode[" + mode +
-                                      "_model] is not implemented!")
+            raise NotImplementedError("mode[" + mode + "_model] is not implemented!")
 
         layers = [StemLayer(3, input_channel, stride=2, groups=stem_groups)]
 
@@ -485,8 +558,8 @@ class MicroNet(nn.Layer):
             t1 = (c1, c2)
             gs1 = (g1, g2)
             gs2 = (c3, g3, g4)
-            activation_cfg['dy'] = [y1, y2, y3]
-            activation_cfg['ratio'] = r
+            activation_cfg["dy"] = [y1, y2, y3]
+            activation_cfg["ratio"] = r
 
             output_channel = c
             layers.append(
@@ -500,7 +573,9 @@ class MicroNet(nn.Layer):
                     groups_1x1=gs2,
                     depthsep=True,
                     shuffle=True,
-                    activation_cfg=activation_cfg, ))
+                    activation_cfg=activation_cfg,
+                )
+            )
             input_channel = output_channel
             for i in range(1, n):
                 layers.append(
@@ -514,7 +589,9 @@ class MicroNet(nn.Layer):
                         groups_1x1=gs2,
                         depthsep=True,
                         shuffle=True,
-                        activation_cfg=activation_cfg, ))
+                        activation_cfg=activation_cfg,
+                    )
+                )
                 input_channel = output_channel
         self.features = nn.Sequential(*layers)
 

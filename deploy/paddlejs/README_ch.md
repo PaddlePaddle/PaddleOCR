@@ -7,7 +7,7 @@
 
 ## Web Demo使用
 
-在浏览器中直接运行官方OCR demo参考[教程](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo)
+在浏览器中直接运行官方OCR demo参考[教程](https://github.com/PaddlePaddle/FastDeploy/blob/develop/examples/application/js/WebDemo.md)
 
 |demo名称|web demo目录|可视化|
 |-|-|-|
@@ -29,7 +29,3 @@
 <div align="center">
     <img src="https://user-images.githubusercontent.com/26592129/197918203-c7d46f8a-75d4-47f9-9687-405ee0d6727e.gif" width="800">
 </div>
-
-<a href="https://trackgit.com">
-<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lb0jzfbyyttdxne1imal" alt="trackgit-views" />
-</a>

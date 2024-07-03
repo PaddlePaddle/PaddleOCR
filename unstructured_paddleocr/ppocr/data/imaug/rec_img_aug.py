@@ -18,27 +18,38 @@ import numpy as np
 import random
 import copy
 from PIL import Image
+import PIL
 from .text_image_aug import tia_perspective, tia_stretch, tia_distort
-from .abinet_aug import CVGeometry, CVDeterioration, CVColorJitter, SVTRGeometry, SVTRDeterioration
+from .abinet_aug import (
+    CVGeometry,
+    CVDeterioration,
+    CVColorJitter,
+    SVTRGeometry,
+    SVTRDeterioration,
+    ParseQDeterioration,
+)
 from paddle.vision.transforms import Compose
 
 
 class RecAug(object):
-    def __init__(self,
-                 tia_prob=0.4,
-                 crop_prob=0.4,
-                 reverse_prob=0.4,
-                 noise_prob=0.4,
-                 jitter_prob=0.4,
-                 blur_prob=0.4,
-                 hsv_aug_prob=0.4,
-                 **kwargs):
+    def __init__(
+        self,
+        tia_prob=0.4,
+        crop_prob=0.4,
+        reverse_prob=0.4,
+        noise_prob=0.4,
+        jitter_prob=0.4,
+        blur_prob=0.4,
+        hsv_aug_prob=0.4,
+        **kwargs,
+    ):
         self.tia_prob = tia_prob
-        self.bda = BaseDataAugmentation(crop_prob, reverse_prob, noise_prob,
-                                        jitter_prob, blur_prob, hsv_aug_prob)
+        self.bda = BaseDataAugmentation(
+            crop_prob, reverse_prob, noise_prob, jitter_prob, blur_prob, hsv_aug_prob
+        )
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         h, w, _ = img.shape
 
         # tia
@@ -46,39 +57,44 @@ class RecAug(object):
             if h >= 20 and w >= 20:
                 img = tia_distort(img, random.randint(3, 6))
                 img = tia_stretch(img, random.randint(3, 6))
-            img = tia_perspective(img)
+                img = tia_perspective(img)
 
         # bda
-        data['image'] = img
+        data["image"] = img
         data = self.bda(data)
         return data
 
 
 class BaseDataAugmentation(object):
-    def __init__(self,
-                 crop_prob=0.4,
-                 reverse_prob=0.4,
-                 noise_prob=0.4,
-                 jitter_prob=0.4,
-                 blur_prob=0.4,
-                 hsv_aug_prob=0.4,
-                 **kwargs):
+    def __init__(
+        self,
+        crop_prob=0.4,
+        reverse_prob=0.4,
+        noise_prob=0.4,
+        jitter_prob=0.4,
+        blur_prob=0.4,
+        hsv_aug_prob=0.4,
+        **kwargs,
+    ):
         self.crop_prob = crop_prob
         self.reverse_prob = reverse_prob
         self.noise_prob = noise_prob
         self.jitter_prob = jitter_prob
         self.blur_prob = blur_prob
         self.hsv_aug_prob = hsv_aug_prob
+        # for GaussianBlur
+        self.fil = cv2.getGaussianKernel(ksize=5, sigma=1, ktype=cv2.CV_32F)
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         h, w, _ = img.shape
 
         if random.random() <= self.crop_prob and h >= 20 and w >= 20:
             img = get_crop(img)
 
         if random.random() <= self.blur_prob:
-            img = blur(img)
+            # GaussianBlur
+            img = cv2.sepFilter2D(img, -1, self.fil, self.fil)
 
         if random.random() <= self.hsv_aug_prob:
             img = hsv_aug(img)
@@ -92,47 +108,51 @@ class BaseDataAugmentation(object):
         if random.random() <= self.reverse_prob:
             img = 255 - img
 
-        data['image'] = img
+        data["image"] = img
         return data
 
 
 class ABINetRecAug(object):
-    def __init__(self,
-                 geometry_p=0.5,
-                 deterioration_p=0.25,
-                 colorjitter_p=0.25,
-                 **kwargs):
-        self.transforms = Compose([
-            CVGeometry(
-                degrees=45,
-                translate=(0.0, 0.0),
-                scale=(0.5, 2.),
-                shear=(45, 15),
-                distortion=0.5,
-                p=geometry_p), CVDeterioration(
-                    var=20, degrees=6, factor=4, p=deterioration_p),
-            CVColorJitter(
-                brightness=0.5,
-                contrast=0.5,
-                saturation=0.5,
-                hue=0.1,
-                p=colorjitter_p)
-        ])
+    def __init__(
+        self, geometry_p=0.5, deterioration_p=0.25, colorjitter_p=0.25, **kwargs
+    ):
+        self.transforms = Compose(
+            [
+                CVGeometry(
+                    degrees=45,
+                    translate=(0.0, 0.0),
+                    scale=(0.5, 2.0),
+                    shear=(45, 15),
+                    distortion=0.5,
+                    p=geometry_p,
+                ),
+                CVDeterioration(var=20, degrees=6, factor=4, p=deterioration_p),
+                CVColorJitter(
+                    brightness=0.5,
+                    contrast=0.5,
+                    saturation=0.5,
+                    hue=0.1,
+                    p=colorjitter_p,
+                ),
+            ]
+        )
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         img = self.transforms(img)
-        data['image'] = img
+        data["image"] = img
         return data
 
 
 class RecConAug(object):
-    def __init__(self,
-                 prob=0.5,
-                 image_shape=(32, 320, 3),
-                 max_text_length=25,
-                 ext_data_num=1,
-                 **kwargs):
+    def __init__(
+        self,
+        prob=0.5,
+        image_shape=(32, 320, 3),
+        max_text_length=25,
+        ext_data_num=1,
+        **kwargs,
+    ):
         self.ext_data_num = ext_data_num
         self.prob = prob
         self.max_text_length = max_text_length
@@ -140,15 +160,17 @@ class RecConAug(object):
         self.max_wh_ratio = self.image_shape[1] / self.image_shape[0]
 
     def merge_ext_data(self, data, ext_data):
-        ori_w = round(data['image'].shape[1] / data['image'].shape[0] *
-                      self.image_shape[0])
-        ext_w = round(ext_data['image'].shape[1] / ext_data['image'].shape[0] *
-                      self.image_shape[0])
-        data['image'] = cv2.resize(data['image'], (ori_w, self.image_shape[0]))
-        ext_data['image'] = cv2.resize(ext_data['image'],
-                                       (ext_w, self.image_shape[0]))
-        data['image'] = np.concatenate(
-            [data['image'], ext_data['image']], axis=1)
+        ori_w = round(
+            data["image"].shape[1] / data["image"].shape[0] * self.image_shape[0]
+        )
+        ext_w = round(
+            ext_data["image"].shape[1]
+            / ext_data["image"].shape[0]
+            * self.image_shape[0]
+        )
+        data["image"] = cv2.resize(data["image"], (ori_w, self.image_shape[0]))
+        ext_data["image"] = cv2.resize(ext_data["image"], (ext_w, self.image_shape[0]))
+        data["image"] = np.concatenate([data["image"], ext_data["image"]], axis=1)
         data["label"] += ext_data["label"]
         return data
 
@@ -157,11 +179,12 @@ class RecConAug(object):
         if rnd_num > self.prob:
             return data
         for idx, ext_data in enumerate(data["ext_data"]):
-            if len(data["label"]) + len(ext_data[
-                    "label"]) > self.max_text_length:
+            if len(data["label"]) + len(ext_data["label"]) > self.max_text_length:
                 break
-            concat_ratio = data['image'].shape[1] / data['image'].shape[
-                0] + ext_data['image'].shape[1] / ext_data['image'].shape[0]
+            concat_ratio = (
+                data["image"].shape[1] / data["image"].shape[0]
+                + ext_data["image"].shape[1] / ext_data["image"].shape[0]
+            )
             if concat_ratio > self.max_wh_ratio:
                 break
             data = self.merge_ext_data(data, ext_data)
@@ -170,34 +193,80 @@ class RecConAug(object):
 
 
 class SVTRRecAug(object):
-    def __init__(self,
-                 aug_type=0,
-                 geometry_p=0.5,
-                 deterioration_p=0.25,
-                 colorjitter_p=0.25,
-                 **kwargs):
-        self.transforms = Compose([
-            SVTRGeometry(
-                aug_type=aug_type,
-                degrees=45,
-                translate=(0.0, 0.0),
-                scale=(0.5, 2.),
-                shear=(45, 15),
-                distortion=0.5,
-                p=geometry_p), SVTRDeterioration(
-                    var=20, degrees=6, factor=4, p=deterioration_p),
-            CVColorJitter(
-                brightness=0.5,
-                contrast=0.5,
-                saturation=0.5,
-                hue=0.1,
-                p=colorjitter_p)
-        ])
+    def __init__(
+        self,
+        aug_type=0,
+        geometry_p=0.5,
+        deterioration_p=0.25,
+        colorjitter_p=0.25,
+        **kwargs,
+    ):
+        self.transforms = Compose(
+            [
+                SVTRGeometry(
+                    aug_type=aug_type,
+                    degrees=45,
+                    translate=(0.0, 0.0),
+                    scale=(0.5, 2.0),
+                    shear=(45, 15),
+                    distortion=0.5,
+                    p=geometry_p,
+                ),
+                SVTRDeterioration(var=20, degrees=6, factor=4, p=deterioration_p),
+                CVColorJitter(
+                    brightness=0.5,
+                    contrast=0.5,
+                    saturation=0.5,
+                    hue=0.1,
+                    p=colorjitter_p,
+                ),
+            ]
+        )
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         img = self.transforms(img)
-        data['image'] = img
+        data["image"] = img
+        return data
+
+
+class ParseQRecAug(object):
+    def __init__(
+        self,
+        aug_type=0,
+        geometry_p=0.5,
+        deterioration_p=0.25,
+        colorjitter_p=0.25,
+        **kwargs,
+    ):
+        self.transforms = Compose(
+            [
+                SVTRGeometry(
+                    aug_type=aug_type,
+                    degrees=45,
+                    translate=(0.0, 0.0),
+                    scale=(0.5, 2.0),
+                    shear=(45, 15),
+                    distortion=0.5,
+                    p=geometry_p,
+                ),
+                ParseQDeterioration(
+                    var=20, degrees=6, lam=20, radius=2.0, factor=4, p=deterioration_p
+                ),
+                CVColorJitter(
+                    brightness=0.5,
+                    contrast=0.5,
+                    saturation=0.5,
+                    hue=0.1,
+                    p=colorjitter_p,
+                ),
+            ]
+        )
+
+    def __call__(self, data):
+        img = data["image"]
+        img = self.transforms(img)
+        data["image"] = img
         return data
 
 
@@ -206,57 +275,60 @@ class ClsResizeImg(object):
         self.image_shape = image_shape
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         norm_img, _ = resize_norm_img(img, self.image_shape)
-        data['image'] = norm_img
+        data["image"] = norm_img
         return data
 
 
 class RecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 infer_mode=False,
-                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
-                 padding=True,
-                 **kwargs):
+    def __init__(
+        self,
+        image_shape,
+        infer_mode=False,
+        eval_mode=False,
+        character_dict_path="./ppocr/utils/ppocr_keys_v1.txt",
+        padding=True,
+        **kwargs,
+    ):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
+        self.eval_mode = eval_mode
         self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):
-        img = data['image']
-        if self.infer_mode and self.character_dict_path is not None:
-            norm_img, valid_ratio = resize_norm_img_chinese(img,
-                                                            self.image_shape)
+        img = data["image"]
+        if self.eval_mode or (self.infer_mode and self.character_dict_path is not None):
+            norm_img, valid_ratio = resize_norm_img_chinese(img, self.image_shape)
         else:
-            norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
-                                                    self.padding)
-        data['image'] = norm_img
-        data['valid_ratio'] = valid_ratio
+            norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
+        data["image"] = norm_img
+        data["valid_ratio"] = valid_ratio
         return data
 
 
 class VLRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 infer_mode=False,
-                 character_dict_path='./ppocr/utils/ppocr_keys_v1.txt',
-                 padding=True,
-                 **kwargs):
+    def __init__(
+        self,
+        image_shape,
+        infer_mode=False,
+        character_dict_path="./ppocr/utils/ppocr_keys_v1.txt",
+        padding=True,
+        **kwargs,
+    ):
         self.image_shape = image_shape
         self.infer_mode = infer_mode
         self.character_dict_path = character_dict_path
         self.padding = padding
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
 
         imgC, imgH, imgW = self.image_shape
-        resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        resized_image = cv2.resize(img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
         resized_w = imgW
-        resized_image = resized_image.astype('float32')
+        resized_image = resized_image.astype("float32")
         if self.image_shape[0] == 1:
             resized_image = resized_image / 255
             norm_img = resized_image[np.newaxis, :]
@@ -264,8 +336,8 @@ class VLRecResizeImg(object):
             norm_img = resized_image.transpose((2, 0, 1)) / 255
         valid_ratio = min(1.0, float(resized_w / imgW))
 
-        data['image'] = norm_img
-        data['valid_ratio'] = valid_ratio
+        data["image"] = norm_img
+        data["valid_ratio"] = valid_ratio
         return data
 
 
@@ -287,12 +359,13 @@ class RFLRecResizeImg(object):
             raise Exception("Unsupported interpolation type !!!")
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         norm_img, valid_ratio = resize_norm_img(
-            img, self.image_shape, self.padding, self.interpolation)
-        data['image'] = norm_img
-        data['valid_ratio'] = valid_ratio
+            img, self.image_shape, self.padding, self.interpolation
+        )
+        data["image"] = norm_img
+        data["valid_ratio"] = valid_ratio
         return data
 
 
@@ -303,16 +376,20 @@ class SRNRecResizeImg(object):
         self.max_text_length = max_text_length
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         norm_img = resize_norm_img_srn(img, self.image_shape)
-        data['image'] = norm_img
-        [encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2] = \
-            srn_other_inputs(self.image_shape, self.num_heads, self.max_text_length)
+        data["image"] = norm_img
+        [
+            encoder_word_pos,
+            gsrm_word_pos,
+            gsrm_slf_attn_bias1,
+            gsrm_slf_attn_bias2,
+        ] = srn_other_inputs(self.image_shape, self.num_heads, self.max_text_length)
 
-        data['encoder_word_pos'] = encoder_word_pos
-        data['gsrm_word_pos'] = gsrm_word_pos
-        data['gsrm_slf_attn_bias1'] = gsrm_slf_attn_bias1
-        data['gsrm_slf_attn_bias2'] = gsrm_slf_attn_bias2
+        data["encoder_word_pos"] = encoder_word_pos
+        data["gsrm_word_pos"] = gsrm_word_pos
+        data["gsrm_slf_attn_bias1"] = gsrm_slf_attn_bias1
+        data["gsrm_slf_attn_bias2"] = gsrm_slf_attn_bias2
         return data
 
 
@@ -322,42 +399,46 @@ class SARRecResizeImg(object):
         self.width_downsample_ratio = width_downsample_ratio
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
-            img, self.image_shape, self.width_downsample_ratio)
-        data['image'] = norm_img
-        data['resized_shape'] = resize_shape
-        data['pad_shape'] = pad_shape
-        data['valid_ratio'] = valid_ratio
+            img, self.image_shape, self.width_downsample_ratio
+        )
+        data["image"] = norm_img
+        data["resized_shape"] = resize_shape
+        data["pad_shape"] = pad_shape
+        data["valid_ratio"] = valid_ratio
         return data
 
 
 class PRENResizeImg(object):
     def __init__(self, image_shape, **kwargs):
         """
-        Accroding to original paper's realization, it's a hard resize method here. 
+        Accroding to original paper's realization, it's a hard resize method here.
         So maybe you should optimize it to fit for your task better.
         """
         self.dst_h, self.dst_w = image_shape
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         resized_img = cv2.resize(
-            img, (self.dst_w, self.dst_h), interpolation=cv2.INTER_LINEAR)
+            img, (self.dst_w, self.dst_h), interpolation=cv2.INTER_LINEAR
+        )
         resized_img = resized_img.transpose((2, 0, 1)) / 255
         resized_img -= 0.5
         resized_img /= 0.5
-        data['image'] = resized_img.astype(np.float32)
+        data["image"] = resized_img.astype(np.float32)
         return data
 
 
 class SPINRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 interpolation=2,
-                 mean=(127.5, 127.5, 127.5),
-                 std=(127.5, 127.5, 127.5),
-                 **kwargs):
+    def __init__(
+        self,
+        image_shape,
+        interpolation=2,
+        mean=(127.5, 127.5, 127.5),
+        std=(127.5, 127.5, 127.5),
+        **kwargs,
+    ):
         self.image_shape = image_shape
 
         self.mean = np.array(mean, dtype=np.float32)
@@ -365,7 +446,7 @@ class SPINRecResizeImg(object):
         self.interpolation = interpolation
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # different interpolation type corresponding the OpenCV
         if self.interpolation == 0:
@@ -392,18 +473,20 @@ class SPINRecResizeImg(object):
         stdinv = 1 / np.float64(self.std.reshape(1, -1))
         img -= mean
         img *= stdinv
-        data['image'] = img
+        data["image"] = img
         return data
 
 
 class GrayRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 resize_type,
-                 inter_type='Image.ANTIALIAS',
-                 scale=True,
-                 padding=False,
-                 **kwargs):
+    def __init__(
+        self,
+        image_shape,
+        resize_type,
+        inter_type="Image.Resampling.LANCZOS",
+        scale=True,
+        padding=False,
+        **kwargs,
+    ):
         self.image_shape = image_shape
         self.resize_type = resize_type
         self.padding = padding
@@ -411,7 +494,7 @@ class GrayRecResizeImg(object):
         self.scale = scale
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         image_shape = self.image_shape
         if self.padding:
@@ -427,23 +510,23 @@ class GrayRecResizeImg(object):
             resized_image = cv2.resize(img, (resized_w, imgH))
             norm_img = np.expand_dims(resized_image, -1)
             norm_img = norm_img.transpose((2, 0, 1))
-            resized_image = norm_img.astype(np.float32) / 128. - 1.
+            resized_image = norm_img.astype(np.float32) / 128.0 - 1.0
             padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
             padding_im[:, :, 0:resized_w] = resized_image
-            data['image'] = padding_im
+            data["image"] = padding_im
             return data
-        if self.resize_type == 'PIL':
+        if self.resize_type == "PIL":
             image_pil = Image.fromarray(np.uint8(img))
             img = image_pil.resize(self.image_shape, self.inter_type)
             img = np.array(img)
-        if self.resize_type == 'OpenCV':
+        if self.resize_type == "OpenCV":
             img = cv2.resize(img, self.image_shape)
         norm_img = np.expand_dims(img, -1)
         norm_img = norm_img.transpose((2, 0, 1))
         if self.scale:
-            data['image'] = norm_img.astype(np.float32) / 128. - 1.
+            data["image"] = norm_img.astype(np.float32) / 128.0 - 1.0
         else:
-            data['image'] = norm_img.astype(np.float32) / 255.
+            data["image"] = norm_img.astype(np.float32) / 255.0
         return data
 
 
@@ -452,10 +535,10 @@ class ABINetRecResizeImg(object):
         self.image_shape = image_shape
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
-        data['image'] = norm_img
-        data['valid_ratio'] = valid_ratio
+        data["image"] = norm_img
+        data["valid_ratio"] = valid_ratio
         return data
 
 
@@ -465,35 +548,33 @@ class SVTRRecResizeImg(object):
         self.padding = padding
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
 
-        norm_img, valid_ratio = resize_norm_img(img, self.image_shape,
-                                                self.padding)
-        data['image'] = norm_img
-        data['valid_ratio'] = valid_ratio
+        norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
+        data["image"] = norm_img
+        data["valid_ratio"] = valid_ratio
         return data
 
 
 class RobustScannerRecResizeImg(object):
-    def __init__(self,
-                 image_shape,
-                 max_text_length,
-                 width_downsample_ratio=0.25,
-                 **kwargs):
+    def __init__(
+        self, image_shape, max_text_length, width_downsample_ratio=0.25, **kwargs
+    ):
         self.image_shape = image_shape
         self.width_downsample_ratio = width_downsample_ratio
         self.max_text_length = max_text_length
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
         norm_img, resize_shape, pad_shape, valid_ratio = resize_norm_img_sar(
-            img, self.image_shape, self.width_downsample_ratio)
-        word_positons = np.array(range(0, self.max_text_length)).astype('int64')
-        data['image'] = norm_img
-        data['resized_shape'] = resize_shape
-        data['pad_shape'] = pad_shape
-        data['valid_ratio'] = valid_ratio
-        data['word_positons'] = word_positons
+            img, self.image_shape, self.width_downsample_ratio
+        )
+        word_positons = np.array(range(0, self.max_text_length)).astype("int64")
+        data["image"] = norm_img
+        data["resized_shape"] = resize_shape
+        data["pad_shape"] = pad_shape
+        data["valid_ratio"] = valid_ratio
+        data["word_positons"] = word_positons
         return data
 
 
@@ -515,8 +596,8 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
         valid_ratio = min(1.0, 1.0 * resize_w / imgW_max)
         resize_w = min(imgW_max, resize_w)
     resized_image = cv2.resize(img, (resize_w, imgH))
-    resized_image = resized_image.astype('float32')
-    # norm 
+    resized_image = resized_image.astype("float32")
+    # norm
     if image_shape[0] == 1:
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]
@@ -532,16 +613,12 @@ def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     return padding_im, resize_shape, pad_shape, valid_ratio
 
 
-def resize_norm_img(img,
-                    image_shape,
-                    padding=True,
-                    interpolation=cv2.INTER_LINEAR):
+def resize_norm_img(img, image_shape, padding=True, interpolation=cv2.INTER_LINEAR):
     imgC, imgH, imgW = image_shape
     h = img.shape[0]
     w = img.shape[1]
     if not padding:
-        resized_image = cv2.resize(
-            img, (imgW, imgH), interpolation=interpolation)
+        resized_image = cv2.resize(img, (imgW, imgH), interpolation=interpolation)
         resized_w = imgW
     else:
         ratio = w / float(h)
@@ -550,7 +627,7 @@ def resize_norm_img(img,
         else:
             resized_w = int(math.ceil(imgH * ratio))
         resized_image = cv2.resize(img, (resized_w, imgH))
-    resized_image = resized_image.astype('float32')
+    resized_image = resized_image.astype("float32")
     if image_shape[0] == 1:
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]
@@ -577,7 +654,7 @@ def resize_norm_img_chinese(img, image_shape):
     else:
         resized_w = int(math.ceil(imgH * ratio))
     resized_image = cv2.resize(img, (resized_w, imgH))
-    resized_image = resized_image.astype('float32')
+    resized_image = resized_image.astype("float32")
     if image_shape[0] == 1:
         resized_image = resized_image / 255
         resized_image = resized_image[np.newaxis, :]
@@ -609,7 +686,7 @@ def resize_norm_img_srn(img, image_shape):
 
     img_np = np.asarray(img_new)
     img_np = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
-    img_black[:, 0:img_np.shape[1]] = img_np
+    img_black[:, 0 : img_np.shape[1]] = img_np
     img_black = img_black[:, :, np.newaxis]
 
     row, col, c = img_black.shape
@@ -621,48 +698,46 @@ def resize_norm_img_srn(img, image_shape):
 def resize_norm_img_abinet(img, image_shape):
     imgC, imgH, imgW = image_shape
 
-    resized_image = cv2.resize(
-        img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+    resized_image = cv2.resize(img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
     resized_w = imgW
-    resized_image = resized_image.astype('float32')
-    resized_image = resized_image / 255.
+    resized_image = resized_image.astype("float32")
+    resized_image = resized_image / 255.0
 
     mean = np.array([0.485, 0.456, 0.406])
     std = np.array([0.229, 0.224, 0.225])
-    resized_image = (
-        resized_image - mean[None, None, ...]) / std[None, None, ...]
+    resized_image = (resized_image - mean[None, None, ...]) / std[None, None, ...]
     resized_image = resized_image.transpose((2, 0, 1))
-    resized_image = resized_image.astype('float32')
+    resized_image = resized_image.astype("float32")
 
     valid_ratio = min(1.0, float(resized_w / imgW))
     return resized_image, valid_ratio
 
 
 def srn_other_inputs(image_shape, num_heads, max_text_length):
-
     imgC, imgH, imgW = image_shape
     feature_dim = int((imgH / 8) * (imgW / 8))
 
-    encoder_word_pos = np.array(range(0, feature_dim)).reshape(
-        (feature_dim, 1)).astype('int64')
-    gsrm_word_pos = np.array(range(0, max_text_length)).reshape(
-        (max_text_length, 1)).astype('int64')
+    encoder_word_pos = (
+        np.array(range(0, feature_dim)).reshape((feature_dim, 1)).astype("int64")
+    )
+    gsrm_word_pos = (
+        np.array(range(0, max_text_length))
+        .reshape((max_text_length, 1))
+        .astype("int64")
+    )
 
     gsrm_attn_bias_data = np.ones((1, max_text_length, max_text_length))
     gsrm_slf_attn_bias1 = np.triu(gsrm_attn_bias_data, 1).reshape(
-        [1, max_text_length, max_text_length])
-    gsrm_slf_attn_bias1 = np.tile(gsrm_slf_attn_bias1,
-                                  [num_heads, 1, 1]) * [-1e9]
+        [1, max_text_length, max_text_length]
+    )
+    gsrm_slf_attn_bias1 = np.tile(gsrm_slf_attn_bias1, [num_heads, 1, 1]) * [-1e9]
 
     gsrm_slf_attn_bias2 = np.tril(gsrm_attn_bias_data, -1).reshape(
-        [1, max_text_length, max_text_length])
-    gsrm_slf_attn_bias2 = np.tile(gsrm_slf_attn_bias2,
-                                  [num_heads, 1, 1]) * [-1e9]
+        [1, max_text_length, max_text_length]
+    )
+    gsrm_slf_attn_bias2 = np.tile(gsrm_slf_attn_bias2, [num_heads, 1, 1]) * [-1e9]
 
-    return [
-        encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1,
-        gsrm_slf_attn_bias2
-    ]
+    return [encoder_word_pos, gsrm_word_pos, gsrm_slf_attn_bias1, gsrm_slf_attn_bias2]
 
 
 def flag():
@@ -704,7 +779,7 @@ def jitter(img):
         s = int(random.random() * thres * 0.01)
         src_img = img.copy()
         for i in range(s):
-            img[i:, i:, :] = src_img[:w - i, :h - i, :]
+            img[i:, i:, :] = src_img[: w - i, : h - i, :]
         return img
     else:
         return img
@@ -736,7 +811,7 @@ def get_crop(image):
     if ratio:
         crop_img = crop_img[top_crop:h, :, :]
     else:
-        crop_img = crop_img[0:h - top_crop, :, :]
+        crop_img = crop_img[0 : h - top_crop, :, :]
     return crop_img
 
 
@@ -751,30 +826,57 @@ def get_warpR(config):
     """
     get_warpR
     """
-    anglex, angley, anglez, fov, w, h, r = \
-        config.anglex, config.angley, config.anglez, config.fov, config.w, config.h, config.r
+    anglex, angley, anglez, fov, w, h, r = (
+        config.anglex,
+        config.angley,
+        config.anglez,
+        config.fov,
+        config.w,
+        config.h,
+        config.r,
+    )
     if w > 69 and w < 112:
         anglex = anglex * 1.5
 
     z = np.sqrt(w**2 + h**2) / 2 / np.tan(rad(fov / 2))
     # Homogeneous coordinate transformation matrix
-    rx = np.array([[1, 0, 0, 0],
-                   [0, np.cos(rad(anglex)), -np.sin(rad(anglex)), 0], [
-                       0,
-                       -np.sin(rad(anglex)),
-                       np.cos(rad(anglex)),
-                       0,
-                   ], [0, 0, 0, 1]], np.float32)
-    ry = np.array([[np.cos(rad(angley)), 0, np.sin(rad(angley)), 0],
-                   [0, 1, 0, 0], [
-                       -np.sin(rad(angley)),
-                       0,
-                       np.cos(rad(angley)),
-                       0,
-                   ], [0, 0, 0, 1]], np.float32)
-    rz = np.array([[np.cos(rad(anglez)), np.sin(rad(anglez)), 0, 0],
-                   [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0, 0],
-                   [0, 0, 1, 0], [0, 0, 0, 1]], np.float32)
+    rx = np.array(
+        [
+            [1, 0, 0, 0],
+            [0, np.cos(rad(anglex)), -np.sin(rad(anglex)), 0],
+            [
+                0,
+                -np.sin(rad(anglex)),
+                np.cos(rad(anglex)),
+                0,
+            ],
+            [0, 0, 0, 1],
+        ],
+        np.float32,
+    )
+    ry = np.array(
+        [
+            [np.cos(rad(angley)), 0, np.sin(rad(angley)), 0],
+            [0, 1, 0, 0],
+            [
+                -np.sin(rad(angley)),
+                0,
+                np.cos(rad(angley)),
+                0,
+            ],
+            [0, 0, 0, 1],
+        ],
+        np.float32,
+    )
+    rz = np.array(
+        [
+            [np.cos(rad(anglez)), np.sin(rad(anglez)), 0, 0],
+            [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1],
+        ],
+        np.float32,
+    )
     r = rx.dot(ry).dot(rz)
     # generate 4 points
     pcenter = np.array([h / 2, w / 2, 0, 0], np.float32)
@@ -806,11 +908,11 @@ def get_warpR(config):
 
         dx = -c1
         dy = -r1
-        T1 = np.float32([[1., 0, dx], [0, 1., dy], [0, 0, 1.0 / ratio]])
+        T1 = np.float32([[1.0, 0, dx], [0, 1.0, dy], [0, 0, 1.0 / ratio]])
         ret = T1.dot(warpR)
     except:
         ratio = 1.0
-        T1 = np.float32([[1., 0, 0], [0, 1., 0], [0, 0, 1.]])
+        T1 = np.float32([[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]])
         ret = T1
     return ret, (-r1, -c1), ratio, dst
 
@@ -820,6 +922,11 @@ def get_warpAffine(config):
     get_warpAffine
     """
     anglez = config.anglez
-    rz = np.array([[np.cos(rad(anglez)), np.sin(rad(anglez)), 0],
-                   [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0]], np.float32)
+    rz = np.array(
+        [
+            [np.cos(rad(anglez)), np.sin(rad(anglez)), 0],
+            [-np.sin(rad(anglez)), np.cos(rad(anglez)), 0],
+        ],
+        np.float32,
+    )
     return rz

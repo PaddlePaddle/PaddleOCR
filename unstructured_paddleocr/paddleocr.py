@@ -19,6 +19,7 @@ import importlib
 __dir__ = os.path.dirname(__file__)
 
 import paddle
+from paddle.utils import try_import
 
 sys.path.append(os.path.join(__dir__, ""))
 
@@ -26,12 +27,20 @@ import cv2
 import logging
 import numpy as np
 from pathlib import Path
-
+import base64
+from io import BytesIO
+import pprint
+from PIL import Image
 from .paddle_tools.infer import predict_system
 from .ppocr.utils.logging import get_logger
 
 logger = get_logger()
-from .ppocr.utils.utility import check_and_read, get_image_file_list
+from .ppocr.utils.utility import (
+    check_and_read,
+    get_image_file_list,
+    alpha_to_color,
+    binarize_img,
+)
 from .ppocr.utils.network import (
     maybe_download,
     download_with_progressbar,
@@ -40,11 +49,7 @@ from .ppocr.utils.network import (
 )
 from .paddle_tools.infer.utility import draw_ocr, str2bool, check_gpu
 from .ppstructure.utility import init_args, draw_structure_result
-from .ppstructure.predict_system import (
-    StructureSystem,
-    save_structure_res,
-    to_excel,
-)
+from .ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
 __all__ = [
     "PaddleOCR",
@@ -57,16 +62,83 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ["DB"]
-VERSION = "2.6.1.2"
 SUPPORT_REC_MODEL = ["CRNN", "SVTR_LCNet"]
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
-DEFAULT_OCR_MODEL_VERSION = "PP-OCRv3"
-SUPPORT_OCR_MODEL_VERSION = ["PP-OCR", "PP-OCRv2", "PP-OCRv3"]
+DEFAULT_OCR_MODEL_VERSION = "PP-OCRv4"
+SUPPORT_OCR_MODEL_VERSION = ["PP-OCR", "PP-OCRv2", "PP-OCRv3", "PP-OCRv4"]
 DEFAULT_STRUCTURE_MODEL_VERSION = "PP-StructureV2"
 SUPPORT_STRUCTURE_MODEL_VERSION = ["PP-Structure", "PP-StructureV2"]
 MODEL_URLS = {
     "OCR": {
+        "PP-OCRv4": {
+            "det": {
+                "ch": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar",
+                },
+                "en": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar",
+                },
+                "ml": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/Multilingual_PP-OCRv3_det_infer.tar"
+                },
+            },
+            "rec": {
+                "ch": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/ppocr_keys_v1.txt",
+                },
+                "en": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/en_dict.txt",
+                },
+                "korean": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/korean_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/korean_dict.txt",
+                },
+                "japan": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/japan_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/japan_dict.txt",
+                },
+                "chinese_cht": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/chinese_cht_dict.txt",
+                },
+                "ta": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ta_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/ta_dict.txt",
+                },
+                "te": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/te_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/te_dict.txt",
+                },
+                "ka": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/ka_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/ka_dict.txt",
+                },
+                "latin": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/latin_dict.txt",
+                },
+                "arabic": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/arabic_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/arabic_dict.txt",
+                },
+                "cyrillic": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/cyrillic_PP-OCRv3_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/cyrillic_dict.txt",
+                },
+                "devanagari": {
+                    "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/multilingual/devanagari_PP-OCRv4_rec_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/devanagari_dict.txt",
+                },
+            },
+            "cls": {
+                "ch": {
+                    "url": "https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar",
+                }
+            },
+        },
         "PP-OCRv3": {
             "det": {
                 "ch": {
@@ -278,13 +350,14 @@ def parse_args(mMain=True):
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--type", type=str, default="ocr")
+    parser.add_argument("--savefile", type=str2bool, default=False)
     parser.add_argument(
         "--ocr_version",
         type=str,
         choices=SUPPORT_OCR_MODEL_VERSION,
-        default="PP-OCRv3",
+        default="PP-OCRv4",
         help="OCR Model version, the current model support list is as follows: "
-        "1. PP-OCRv3 Support Chinese and English detection and recognition model, and direction classifier model"
+        "1. PP-OCRv4/v3 Support Chinese and English detection and recognition model, and direction classifier model"
         "2. PP-OCRv2 Support Chinese detection and recognition model. "
         "3. PP-OCR support Chinese detection, recognition and direction classifier and multilingual recognition model.",
     )
@@ -299,7 +372,11 @@ def parse_args(mMain=True):
     )
 
     for action in parser._actions:
-        if action.dest in ["rec_char_dict_path", "table_char_dict_path", "layout_dict_path"]:
+        if action.dest in [
+            "rec_char_dict_path",
+            "table_char_dict_path",
+            "layout_dict_path",
+        ]:
             action.default = None
     if mMain:
         return parser.parse_args()
@@ -441,7 +518,9 @@ def get_model_config(type, version, model_type, lang):
         else:
             logger.error(
                 "lang {} is not support, we only support {} for {} models".format(
-                    lang, model_urls[DEFAULT_MODEL_VERSION][model_type].keys(), model_type
+                    lang,
+                    model_urls[DEFAULT_MODEL_VERSION][model_type].keys(),
+                    model_type,
                 )
             )
             sys.exit(-1)
@@ -450,10 +529,23 @@ def get_model_config(type, version, model_type, lang):
 
 def img_decode(content: bytes):
     np_arr = np.frombuffer(content, dtype=np.uint8)
-    return cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+    return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
 
 
-def check_img(img):
+def check_img(img, alpha_color=(255, 255, 255)):
+    """
+    Check the image data. If it is another type of image file, try to decode it into a numpy array.
+    The inference network requires three-channel images, So the following channel conversions are done
+        single channel image: Gray to RGB R←Y,G←Y,B←Y
+        four channel image: alpha_to_color
+    args:
+        img: image data
+            file format: jpg, png and other image formats that opencv can decode, as well as gif and pdf formats
+            storage type: binary image, net image file, local image file
+        alpha_color: Background color in images in RGBA format
+        return: numpy.array (h, w, 3) or list (p, h, w, 3) (p: page of pdf), boolean, boolean
+    """
+    flag_gif, flag_pdf = False, False
     if isinstance(img, bytes):
         img = img_decode(img)
     if isinstance(img, str):
@@ -465,14 +557,34 @@ def check_img(img):
         img, flag_gif, flag_pdf = check_and_read(image_file)
         if not flag_gif and not flag_pdf:
             with open(image_file, "rb") as f:
-                img = img_decode(f.read())
+                img_str = f.read()
+                img = img_decode(img_str)
+            if img is None:
+                try:
+                    buf = BytesIO()
+                    image = BytesIO(img_str)
+                    im = Image.open(image)
+                    rgb = im.convert("RGB")
+                    rgb.save(buf, "jpeg")
+                    buf.seek(0)
+                    image_bytes = buf.read()
+                    data_base64 = str(base64.b64encode(image_bytes), encoding="utf-8")
+                    image_decode = base64.b64decode(data_base64)
+                    img_array = np.frombuffer(image_decode, np.uint8)
+                    img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+                except:
+                    logger.error("error in loading image:{}".format(image_file))
+                    return None, flag_gif, flag_pdf
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
-            return None
+            return None, flag_gif, flag_pdf
+    # single channel image array.shape:h,w
     if isinstance(img, np.ndarray) and len(img.shape) == 2:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-
-    return img
+    # four channel image array.shape:h,w,c
+    if isinstance(img, np.ndarray) and len(img.shape) == 3 and img.shape[2] == 4:
+        img = alpha_to_color(img, alpha_color)
+    return img, flag_gif, flag_pdf
 
 
 class PaddleOCR(predict_system.TextSystem):
@@ -511,9 +623,11 @@ class PaddleOCR(predict_system.TextSystem):
         )
         cls_model_config = get_model_config("OCR", params.ocr_version, "cls", "ch")
         params.cls_model_dir, cls_url = confirm_model_dir_url(
-            params.cls_model_dir, os.path.join(BASE_DIR, "whl", "cls"), cls_model_config["url"]
+            params.cls_model_dir,
+            os.path.join(BASE_DIR, "whl", "cls"),
+            cls_model_config["url"],
         )
-        if params.ocr_version == "PP-OCRv3":
+        if params.ocr_version in ["PP-OCRv3", "PP-OCRv4"]:
             params.rec_image_shape = "3, 48, 320"
         else:
             params.rec_image_shape = "3, 32, 320"
@@ -531,21 +645,38 @@ class PaddleOCR(predict_system.TextSystem):
             sys.exit(0)
 
         if params.rec_char_dict_path is None:
-            params.rec_char_dict_path = str(Path(__file__).parent / rec_model_config["dict_path"])
+            params.rec_char_dict_path = str(
+                Path(__file__).parent / rec_model_config["dict_path"]
+            )
 
         logger.debug(params)
         # init det_model and rec_model
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(self, img, det=True, rec=True, cls=True):
+    def ocr(
+        self,
+        img,
+        det=True,
+        rec=True,
+        cls=True,
+        bin=False,
+        inv=False,
+        alpha_color=(255, 255, 255),
+        slice={},
+    ):
         """
-        ocr with paddleocr
-        args：
-            img: img for ocr, support ndarray, img_path and list or ndarray
-            det: use text detection or not. If false, only rec will be exec. Default is True
-            rec: use text recognition or not. If false, only det will be exec. Default is True
-            cls: use angle classifier or not. Default is True. If true, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+        OCR with PaddleOCR
+
+        args:
+            img: img for OCR, support ndarray, img_path and list or ndarray
+            det: use text detection or not. If False, only rec will be exec. Default is True
+            rec: use text recognition or not. If False, only det will be exec. Default is True
+            cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
+            bin: binarize image to black and white. Default is False.
+            inv: invert image colors. Default is False.
+            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
+            slice: use sliding window inference for large images, det and rec must be True. Requires int values for slice["horizontal_stride"], slice["vertical_stride"], slice["merge_x_thres"], slice["merge_y_thres] (See doc/doc_en/slice_en.md). Default is {}.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -553,28 +684,46 @@ class PaddleOCR(predict_system.TextSystem):
             exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
-                "Since the angle classifier is not initialized, the angle classifier will not be uesd during the forward process"
+                "Since the angle classifier is not initialized, it will not be used during the forward process"
             )
 
-        img = check_img(img)
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
         # for infer pdf file
-        if isinstance(img, list):
+        if isinstance(img, list) and flag_pdf:
             if self.page_num > len(img) or self.page_num == 0:
-                self.page_num = len(img)
-            imgs = img[: self.page_num]
+                imgs = img
+            else:
+                imgs = img[: self.page_num]
         else:
             imgs = [img]
+
+        def preprocess_image(_image):
+            _image = alpha_to_color(_image, alpha_color)
+            if inv:
+                _image = cv2.bitwise_not(_image)
+            if bin:
+                _image = binarize_img(_image)
+            return _image
+
         if det and rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
-                dt_boxes, rec_res, _ = self.__call__(img, cls)
+                img = preprocess_image(img)
+                dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
+                if not dt_boxes and not rec_res:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
                 ocr_res.append(tmp_res)
             return ocr_res
         elif det and not rec:
             ocr_res = []
             for idx, img in enumerate(imgs):
+                img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
+                if dt_boxes.size == 0:
+                    ocr_res.append(None)
+                    continue
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
             return ocr_res
@@ -583,6 +732,7 @@ class PaddleOCR(predict_system.TextSystem):
             cls_res = []
             for idx, img in enumerate(imgs):
                 if not isinstance(img, list):
+                    img = preprocess_image(img)
                     img = [img]
                 if self.use_angle_cls and cls:
                     img, cls_res_tmp, elapse = self.text_classifier(img)
@@ -647,24 +797,44 @@ class PPStructure(StructureSystem):
             layout_model_config["url"],
         )
         # download model
-        maybe_download(params.det_model_dir, det_url)
-        maybe_download(params.rec_model_dir, rec_url)
-        maybe_download(params.table_model_dir, table_url)
-        maybe_download(params.layout_model_dir, layout_url)
+        if not params.use_onnx:
+            maybe_download(params.det_model_dir, det_url)
+            maybe_download(params.rec_model_dir, rec_url)
+            maybe_download(params.table_model_dir, table_url)
+            maybe_download(params.layout_model_dir, layout_url)
 
         if params.rec_char_dict_path is None:
-            params.rec_char_dict_path = str(Path(__file__).parent / rec_model_config["dict_path"])
+            params.rec_char_dict_path = str(
+                Path(__file__).parent / rec_model_config["dict_path"]
+            )
         if params.table_char_dict_path is None:
             params.table_char_dict_path = str(
                 Path(__file__).parent / table_model_config["dict_path"]
             )
         if params.layout_dict_path is None:
-            params.layout_dict_path = str(Path(__file__).parent / layout_model_config["dict_path"])
+            params.layout_dict_path = str(
+                Path(__file__).parent / layout_model_config["dict_path"]
+            )
         logger.debug(params)
         super().__init__(params)
 
-    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
-        img = check_img(img)
+    def __call__(
+        self,
+        img,
+        return_ocr_result_in_table=False,
+        img_idx=0,
+        alpha_color=(255, 255, 255),
+    ):
+        img, flag_gif, flag_pdf = check_img(img, alpha_color)
+        if isinstance(img, list) and flag_pdf:
+            res_list = []
+            for index, pdf_img in enumerate(img):
+                logger.info("processing {}/{} page:".format(index + 1, len(img)))
+                res, _ = super().__call__(
+                    pdf_img, return_ocr_result_in_table, img_idx=index
+                )
+                res_list.append(res)
+            return res_list
         res, _ = super().__call__(img, return_ocr_result_in_table, img_idx=img_idx)
         return res
 
@@ -692,18 +862,35 @@ def main():
         img_name = os.path.basename(img_path).split(".")[0]
         logger.info("{}{}{}".format("*" * 10, img_path, "*" * 10))
         if args.type == "ocr":
-            result = engine.ocr(img_path, det=args.det, rec=args.rec, cls=args.use_angle_cls)
+            result = engine.ocr(
+                img_path,
+                det=args.det,
+                rec=args.rec,
+                cls=args.use_angle_cls,
+                bin=args.binarize,
+                inv=args.invert,
+                alpha_color=args.alphacolor,
+            )
             if result is not None:
-                for idx in range(len(result)):
-                    res = result[idx]
+                lines = []
+                for res in result:
                     for line in res:
                         logger.info(line)
+                        lines.append(pprint.pformat(line) + "\n")
+                if args.savefile:
+                    if os.path.exists(args.output) is False:
+                        os.mkdir(args.output)
+                    outfile = args.output + "/" + img_name + ".txt"
+                    with open(outfile, "w", encoding="utf-8") as f:
+                        f.writelines(lines)
+
         elif args.type == "structure":
             img, flag_gif, flag_pdf = check_and_read(img_path)
             if not flag_gif and not flag_pdf:
                 img = cv2.imread(img_path)
 
             if args.recovery and args.use_pdf2docx_api and flag_pdf:
+                try_import("pdf2docx")
                 from pdf2docx.converter import Converter
 
                 docx_file = os.path.join(args.output, "{}.docx".format(img_name))
@@ -731,8 +918,7 @@ def main():
             all_res = []
             for index, (new_img_path, img) in enumerate(img_paths):
                 logger.info("processing {}/{} page:".format(index + 1, len(img_paths)))
-                new_img_name = os.path.basename(new_img_path).split(".")[0]
-                result = engine(new_img_path, img_idx=index)
+                result = engine(img, img_idx=index)
                 save_structure_res(result, args.output, img_name, index)
 
                 if args.recovery and result != []:
@@ -751,7 +937,9 @@ def main():
                     convert_info_docx(img, all_res, args.output, img_name)
                 except Exception as ex:
                     logger.error(
-                        "error in layout recovery image:{}, err msg: {}".format(img_name, ex)
+                        "error in layout recovery image:{}, err msg: {}".format(
+                            img_name, ex
+                        )
                     )
                     continue
 

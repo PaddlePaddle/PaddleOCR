@@ -1,0 +1,70 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+    </style>
+
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="list_result_view_item_style">
+        <item name="android:textColor">@color/table_result_item_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">30px</item>
+    </style>
+
+    <style name="list_result_popview_item_style">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">15px</item>
+        <item name="android:background">@color/result_popview_tablebody_bk</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:alpha">0.5</item>
+    </style>
+
+    <style name="list_result_view_tablehead_style">
+        <item name="android:textColor">@color/table_result_item_text_color</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">15px</item>
+    </style>
+
+    <style name="list_result_popview_tablehead_style">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">left</item>
+        <item name="android:padding">20px</item>
+    </style>
+
+    <style name="action_btn">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:background">@color/bk_black</item>
+    </style>
+
+    <style name="action_btn_selected">
+        <item name="android:textColor">@color/textColorHighlight</item>
+        <item name="android:background">@color/bk_black</item>
+    </style>
+
+
+</resources>

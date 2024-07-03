@@ -22,7 +22,7 @@ import numpy as np
 import pyclipper
 from shapely.geometry import Polygon
 
-__all__ = ['MakePseGt']
+__all__ = ["MakePseGt"]
 
 
 class MakePseGt(object):
@@ -32,10 +32,9 @@ class MakePseGt(object):
         self.size = size
 
     def __call__(self, data):
-
-        image = data['image']
-        text_polys = data['polys']
-        ignore_tags = data['ignore_tags']
+        image = data["image"]
+        text_polys = data["polys"]
+        ignore_tags = data["ignore_tags"]
 
         h, w, _ = image.shape
         short_edge = min(h, w)
@@ -48,34 +47,30 @@ class MakePseGt(object):
         gt_kernels = []
         for i in range(1, self.kernel_num + 1):
             # s1->sn, from big to small
-            rate = 1.0 - (1.0 - self.min_shrink_ratio) / (self.kernel_num - 1
-                                                          ) * i
+            rate = 1.0 - (1.0 - self.min_shrink_ratio) / (self.kernel_num - 1) * i
             text_kernel, ignore_tags = self.generate_kernel(
-                image.shape[0:2], rate, text_polys, ignore_tags)
+                image.shape[0:2], rate, text_polys, ignore_tags
+            )
             gt_kernels.append(text_kernel)
 
-        training_mask = np.ones(image.shape[0:2], dtype='uint8')
+        training_mask = np.ones(image.shape[0:2], dtype="uint8")
         for i in range(text_polys.shape[0]):
             if ignore_tags[i]:
-                cv2.fillPoly(training_mask,
-                             text_polys[i].astype(np.int32)[np.newaxis, :, :],
-                             0)
+                cv2.fillPoly(
+                    training_mask, text_polys[i].astype(np.int32)[np.newaxis, :, :], 0
+                )
 
         gt_kernels = np.array(gt_kernels)
         gt_kernels[gt_kernels > 0] = 1
 
-        data['image'] = image
-        data['polys'] = text_polys
-        data['gt_kernels'] = gt_kernels[0:]
-        data['gt_text'] = gt_kernels[0]
-        data['mask'] = training_mask.astype('float32')
+        data["image"] = image
+        data["polys"] = text_polys
+        data["gt_kernels"] = gt_kernels[0:]
+        data["gt_text"] = gt_kernels[0]
+        data["mask"] = training_mask.astype("float32")
         return data
 
-    def generate_kernel(self,
-                        img_size,
-                        shrink_ratio,
-                        text_polys,
-                        ignore_tags=None):
+    def generate_kernel(self, img_size, shrink_ratio, text_polys, ignore_tags=None):
         """
         Refer to part of the code:
         https://github.com/open-mmlab/mmocr/blob/main/mmocr/datasets/pipelines/textdet_targets/base_textdet_targets.py
@@ -85,8 +80,11 @@ class MakePseGt(object):
         text_kernel = np.zeros((h, w), dtype=np.float32)
         for i, poly in enumerate(text_polys):
             polygon = Polygon(poly)
-            distance = polygon.area * (1 - shrink_ratio * shrink_ratio) / (
-                polygon.length + 1e-6)
+            distance = (
+                polygon.area
+                * (1 - shrink_ratio * shrink_ratio)
+                / (polygon.length + 1e-6)
+            )
             subject = [tuple(l) for l in poly]
             pco = pyclipper.PyclipperOffset()
             pco.AddPath(subject, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)

@@ -6,7 +6,7 @@ Linux GPU/CPU KL离线量化训练推理测试的主程序为`test_ptq_inference
 - 训练相关：
 
 | 算法名称 | 模型名称 | 单机单卡 |
-|  :----: |   :----:  |    :----:  |  
+|  :----: |   :----:  |    :----:  |
 |    | model_name | KL离线量化训练 |
 
 - 推理相关：
@@ -26,7 +26,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_ptq_infer_py
 
 # 用法:
 bash test_tipc/test_ptq_inference_python.sh ./test_tipc/configs/ch_PP-OCRv2_det/train_ptq_infer_python.txt "whole_infer"
-```  
+```
 
 #### 运行结果
 
@@ -48,4 +48,4 @@ Run failed with command - ch_PP-OCRv2_det_KL - python3.7 deploy/slim/quantizatio
 
 ## 3. 更多教程
 
-本文档为功能测试用，更详细的量化使用教程请参考：[量化](../../deploy/slim/quantization/README.md)  
+本文档为功能测试用，更详细的量化使用教程请参考：[量化](../../deploy/slim/quantization/README.md)

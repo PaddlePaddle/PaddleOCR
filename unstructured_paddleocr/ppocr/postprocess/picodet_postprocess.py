@@ -41,8 +41,8 @@ def hard_nms(box_scores, iou_threshold, top_k=-1, candidate_size=200):
         rest_boxes = boxes[indexes, :]
         iou = iou_of(
             rest_boxes,
-            np.expand_dims(
-                current_box, axis=0), )
+            np.expand_dims(current_box, axis=0),
+        )
         indexes = indexes[iou <= iou_threshold]
 
     return box_scores[picked, :]
@@ -78,6 +78,24 @@ def area_of(left_top, right_bottom):
     return hw[..., 0] * hw[..., 1]
 
 
+def calculate_containment(boxes0, boxes1):
+    """
+    Calculate the containment of the boxes.
+    Args:
+        boxes0 (N, 4): ground truth boxes.
+        boxes1 (N or 1, 4): predicted boxes.
+    Returns:
+        containment (N): containment values.
+    """
+    overlap_left_top = np.maximum(boxes0[..., :2], boxes1[..., :2])
+    overlap_right_bottom = np.minimum(boxes0[..., 2:], boxes1[..., 2:])
+
+    overlap_area = area_of(overlap_left_top, overlap_right_bottom)
+    area0 = area_of(boxes0[..., :2], boxes0[..., 2:])
+    area1 = area_of(boxes1[..., :2], boxes1[..., 2:])
+    return overlap_area / np.minimum(area0, np.expand_dims(area1, axis=0))
+
+
 class PicoDetPostProcess(object):
     """
     Args:
@@ -87,13 +105,15 @@ class PicoDetPostProcess(object):
         enable_mkldnn (bool): whether to open MKLDNN
     """
 
-    def __init__(self,
-                 layout_dict_path,
-                 strides=[8, 16, 32, 64],
-                 score_threshold=0.4,
-                 nms_threshold=0.5,
-                 nms_top_k=1000,
-                 keep_top_k=100):
+    def __init__(
+        self,
+        layout_dict_path,
+        strides=[8, 16, 32, 64],
+        score_threshold=0.4,
+        nms_threshold=0.5,
+        nms_top_k=1000,
+        keep_top_k=100,
+    ):
         self.labels = self.load_layout_dict(layout_dict_path)
         self.strides = strides
         self.score_threshold = score_threshold
@@ -102,27 +122,28 @@ class PicoDetPostProcess(object):
         self.keep_top_k = keep_top_k
 
     def load_layout_dict(self, layout_dict_path):
-        with open(layout_dict_path, 'r', encoding='utf-8') as fp:
+        with open(layout_dict_path, "r", encoding="utf-8") as fp:
             labels = fp.readlines()
-        return [label.strip('\n') for label in labels]
+        return [label.strip("\n") for label in labels]
 
     def warp_boxes(self, boxes, ori_shape):
-        """Apply transform to boxes
-        """
+        """Apply transform to boxes"""
         width, height = ori_shape[1], ori_shape[0]
         n = len(boxes)
         if n:
             # warp points
             xy = np.ones((n * 4, 3))
             xy[:, :2] = boxes[:, [0, 1, 2, 3, 0, 3, 2, 1]].reshape(
-                n * 4, 2)  # x1y1, x2y2, x1y2, x2y1
+                n * 4, 2
+            )  # x1y1, x2y2, x1y2, x2y1
             # xy = xy @ M.T  # transform
             xy = (xy[:, :2] / xy[:, 2:3]).reshape(n, 8)  # rescale
             # create new boxes
             x = xy[:, [0, 2, 4, 6]]
             y = xy[:, [1, 3, 5, 7]]
-            xy = np.concatenate(
-                (x.min(1), y.min(1), x.max(1), y.max(1))).reshape(4, n).T
+            xy = (
+                np.concatenate((x.min(1), y.min(1), x.max(1), y.max(1))).reshape(4, n).T
+            )
             # clip boxes
             xy[:, [0, 2]] = xy[:, [0, 2]].clip(0, width)
             xy[:, [1, 3]] = xy[:, [1, 3]].clip(0, height)
@@ -138,13 +159,13 @@ class PicoDetPostProcess(object):
         scale_factor = np.array([im_scale_y, im_scale_x], dtype=np.float32)
         img_shape = np.array(img.shape[2:], dtype=np.float32)
 
-        input_shape = np.array(img).astype('float32').shape[2:]
-        ori_shape = np.array((img_shape, )).astype('float32')
-        scale_factor = np.array((scale_factor, )).astype('float32')
+        input_shape = np.array(img).astype("float32").shape[2:]
+        ori_shape = np.array((img_shape,)).astype("float32")
+        scale_factor = np.array((scale_factor,)).astype("float32")
         return ori_shape, input_shape, scale_factor
 
     def __call__(self, ori_img, img, preds):
-        scores, raw_boxes = preds['boxes'], preds['boxes_num']
+        scores, raw_boxes = preds["boxes"], preds["boxes_num"]
         batch_size = raw_boxes[0].shape[0]
         reg_max = int(raw_boxes[0].shape[-1] / 4 - 1)
         out_boxes_num = []
@@ -156,8 +177,7 @@ class PicoDetPostProcess(object):
             # generate centers
             decode_boxes = []
             select_scores = []
-            for stride, box_distribute, score in zip(self.strides, raw_boxes,
-                                                     scores):
+            for stride, box_distribute, score in zip(self.strides, raw_boxes, scores):
                 box_distribute = box_distribute[batch_id]
                 score = score[batch_id]
                 # centers
@@ -180,7 +200,7 @@ class PicoDetPostProcess(object):
 
                 # top K candidate
                 topk_idx = np.argsort(score.max(axis=1))[::-1]
-                topk_idx = topk_idx[:self.nms_top_k]
+                topk_idx = topk_idx[: self.nms_top_k]
                 center = center[topk_idx]
                 score = score[topk_idx]
                 box_distance = box_distance[topk_idx]
@@ -203,12 +223,12 @@ class PicoDetPostProcess(object):
                 if probs.shape[0] == 0:
                     continue
                 subset_boxes = bboxes[mask, :]
-                box_probs = np.concatenate(
-                    [subset_boxes, probs.reshape(-1, 1)], axis=1)
+                box_probs = np.concatenate([subset_boxes, probs.reshape(-1, 1)], axis=1)
                 box_probs = hard_nms(
                     box_probs,
                     iou_threshold=self.nms_threshold,
-                    top_k=self.keep_top_k, )
+                    top_k=self.keep_top_k,
+                )
                 picked_box_probs.append(box_probs)
                 picked_labels.extend([class_index] * box_probs.shape[0])
 
@@ -221,22 +241,23 @@ class PicoDetPostProcess(object):
 
                 # resize output boxes
                 picked_box_probs[:, :4] = self.warp_boxes(
-                    picked_box_probs[:, :4], ori_shape[batch_id])
-                im_scale = np.concatenate([
-                    scale_factor[batch_id][::-1], scale_factor[batch_id][::-1]
-                ])
+                    picked_box_probs[:, :4], ori_shape[batch_id]
+                )
+                im_scale = np.concatenate(
+                    [scale_factor[batch_id][::-1], scale_factor[batch_id][::-1]]
+                )
                 picked_box_probs[:, :4] /= im_scale
                 # clas score box
                 out_boxes_list.append(
                     np.concatenate(
                         [
-                            np.expand_dims(
-                                np.array(picked_labels),
-                                axis=-1), np.expand_dims(
-                                    picked_box_probs[:, 4], axis=-1),
-                            picked_box_probs[:, :4]
+                            np.expand_dims(np.array(picked_labels), axis=-1),
+                            np.expand_dims(picked_box_probs[:, 4], axis=-1),
+                            picked_box_probs[:, :4],
                         ],
-                        axis=1))
+                        axis=1,
+                    )
+                )
                 out_boxes_num.append(len(picked_labels))
 
         out_boxes_list = np.concatenate(out_boxes_list, axis=0)
@@ -245,6 +266,32 @@ class PicoDetPostProcess(object):
         for dt in out_boxes_list:
             clsid, bbox, score = int(dt[0]), dt[2:], dt[1]
             label = self.labels[clsid]
-            result = {'bbox': bbox, 'label': label}
+            result = {"bbox": bbox, "label": label, "score": score}
             results.append(result)
+
+        # Handle conflict where a box is simultaneously recognized as multiple labels.
+        # Use IoU to find similar boxes. Prioritize labels as table, text, and others when deduplicate similar boxes.
+        bboxes = np.array([x["bbox"] for x in results])
+        duplicate_idx = list()
+        for i in range(len(results)):
+            if i in duplicate_idx:
+                continue
+            containments = calculate_containment(bboxes, bboxes[i, ...])
+            overlaps = np.where(containments > 0.5)[0]
+            if len(overlaps) > 1:
+                table_box = [x for x in overlaps if results[x]["label"] == "table"]
+                if len(table_box) > 0:
+                    keep = sorted(
+                        [(x, results[x]) for x in table_box],
+                        key=lambda x: x[1]["score"],
+                        reverse=True,
+                    )[0][0]
+                else:
+                    keep = sorted(
+                        [(x, results[x]) for x in overlaps],
+                        key=lambda x: x[1]["score"],
+                        reverse=True,
+                    )[0][0]
+                duplicate_idx.extend([x for x in overlaps if x != keep])
+        results = [x for i, x in enumerate(results) if i not in duplicate_idx]
         return results

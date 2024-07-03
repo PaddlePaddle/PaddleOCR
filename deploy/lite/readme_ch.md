@@ -202,7 +202,7 @@ paddle_lite_opt --model_file=./ch_ppocr_mobile_v2.0_cls_slim_infer/inference.pdm
 
 ```
 demo/cxx/ocr/
-|-- debug/  
+|-- debug/
 |   |--ch_PP-OCRv3_det_slim_opt.nb           优化后的检测模型文件
 |   |--ch_PP-OCRv3_rec_slim_opt.nb           优化后的识别模型文件
 |   |--ch_ppocr_mobile_v2.0_cls_slim_opt.nb           优化后的文字方向分类器模型文件

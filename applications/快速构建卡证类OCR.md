@@ -223,7 +223,7 @@ AIStudio项目链接：[快速构建卡证类OCR](https://aistudio.baidu.com/ais
 
 2）获取并解压预训练模型，如果要使用其他模型可以从模型库里自主选择合适模型。
 ```
-!wget -P work/pre_trained/   https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar 
+!wget -P work/pre_trained/   https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
 !tar -vxf /home/aistudio/work/pre_trained/ch_PP-OCRv3_det_distill_train.tar -C /home/aistudio/work/pre_trained
 ```
 3） 安装必要依赖
@@ -275,7 +275,7 @@ AIStudio项目链接：[快速构建卡证类OCR](https://aistudio.baidu.com/ais
 
 ```python
 class DetLabelEncode(object):
-   
+
     # 修改检测标签的编码处，新增了参数分类数：num_classes，重写初始化方法，以及分类标签的读取
 
     def __init__(self, label_list, num_classes=8, **kwargs):
@@ -315,11 +315,11 @@ class DetLabelEncode(object):
                     classes.append(int(self.label_list.index(txt)))
 
         if len(boxes) == 0:
-            
+
             return None
         boxes = self.expand_points_num(boxes)
         boxes = np.array(boxes, dtype=np.float32)
-        txt_tags = np.array(txt_tags, dtype=np.bool)
+        txt_tags = np.array(txt_tags, dtype=np.bool_)
         classes = classes
         data['polys'] = boxes
         data['texts'] = txts
@@ -410,10 +410,10 @@ class MakeShrinkMap(object):
 
 
         data['shrink_map'] = gt
-       
+
         if self.num_classes > 1:
             data['class_mask'] = gt_class
-        
+
         data['shrink_mask'] = mask
         return data
 ```
@@ -634,10 +634,10 @@ class DBPostProcess(object):
         '''
         h, w = bitmap.shape[:2]
         box = _box.copy()
-        xmin = np.clip(np.floor(box[:, 0].min()).astype(np.int), 0, w - 1)
-        xmax = np.clip(np.ceil(box[:, 0].max()).astype(np.int), 0, w - 1)
-        ymin = np.clip(np.floor(box[:, 1].min()).astype(np.int), 0, h - 1)
-        ymax = np.clip(np.ceil(box[:, 1].max()).astype(np.int), 0, h - 1)
+        xmin = np.clip(np.floor(box[:, 0].min()).astype(np.int32), 0, w - 1)
+        xmax = np.clip(np.ceil(box[:, 0].max()).astype(np.int32), 0, w - 1)
+        ymin = np.clip(np.floor(box[:, 1].min()).astype(np.int32), 0, h - 1)
+        ymax = np.clip(np.ceil(box[:, 1].max()).astype(np.int32), 0, h - 1)
 
         mask = np.zeros((ymax - ymin + 1, xmax - xmin + 1), dtype=np.uint8)
         box[:, 0] = box[:, 0] - xmin
@@ -752,11 +752,11 @@ class DBPostProcess(object):
 其他命令：
 ```
 !python /home/aistudio/work/PaddleOCR/tools/eval.py  -c  /home/aistudio/work/PaddleOCR/configs/det/det_mv3_db.yml
-!python /home/aistudio/work/PaddleOCR/tools/infer_det.py  -c  /home/aistudio/work/PaddleOCR/configs/det/det_mv3_db.yml 
+!python /home/aistudio/work/PaddleOCR/tools/infer_det.py  -c  /home/aistudio/work/PaddleOCR/configs/det/det_mv3_db.yml
 ```
 模型推理
 ```
-!python /home/aistudio/work/PaddleOCR/tools/infer/predict_det.py --image_dir="/home/aistudio/work/test_img/" --det_model_dir="/home/aistudio/work/PaddleOCR/output/infer" 
+!python /home/aistudio/work/PaddleOCR/tools/infer/predict_det.py --image_dir="/home/aistudio/work/test_img/" --det_model_dir="/home/aistudio/work/PaddleOCR/output/infer"
 ```
 
 ## 5 总结

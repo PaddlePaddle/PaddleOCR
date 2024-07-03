@@ -30,12 +30,9 @@ class Momentum(object):
         regularization (WeightDecayRegularizer, optional) - The strategy of regularization.
     """
 
-    def __init__(self,
-                 learning_rate,
-                 momentum,
-                 weight_decay=None,
-                 grad_clip=None,
-                 **args):
+    def __init__(
+        self, learning_rate, momentum, weight_decay=None, grad_clip=None, **args
+    ):
         super(Momentum, self).__init__()
         self.learning_rate = learning_rate
         self.momentum = momentum
@@ -51,22 +48,25 @@ class Momentum(object):
             momentum=self.momentum,
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
-            parameters=train_params)
+            parameters=train_params,
+        )
         return opt
 
 
 class Adam(object):
-    def __init__(self,
-                 learning_rate=0.001,
-                 beta1=0.9,
-                 beta2=0.999,
-                 epsilon=1e-08,
-                 parameter_list=None,
-                 weight_decay=None,
-                 grad_clip=None,
-                 name=None,
-                 lazy_mode=False,
-                 **kwargs):
+    def __init__(
+        self,
+        learning_rate=0.001,
+        beta1=0.9,
+        beta2=0.999,
+        epsilon=1e-08,
+        parameter_list=None,
+        weight_decay=None,
+        grad_clip=None,
+        name=None,
+        lazy_mode=False,
+        **kwargs,
+    ):
         self.learning_rate = learning_rate
         self.beta1 = beta1
         self.beta2 = beta2
@@ -77,26 +77,26 @@ class Adam(object):
         self.grad_clip = grad_clip
         self.name = name
         self.lazy_mode = lazy_mode
-        self.group_lr = kwargs.get('group_lr', False)
-        self.training_step = kwargs.get('training_step', None)
+        self.group_lr = kwargs.get("group_lr", False)
+        self.training_step = kwargs.get("training_step", None)
 
     def __call__(self, model):
         if self.group_lr:
-            if self.training_step == 'LF_2':
+            if self.training_step == "LF_2":
                 import paddle
-                if isinstance(model, paddle.fluid.dygraph.parallel.
-                              DataParallel):  # multi gpu
+
+                if isinstance(model, paddle.DataParallel):  # multi gpu
                     mlm = model._layers.head.MLM_VRM.MLM.parameters()
-                    pre_mlm_pp = model._layers.head.MLM_VRM.Prediction.pp_share.parameters(
+                    pre_mlm_pp = (
+                        model._layers.head.MLM_VRM.Prediction.pp_share.parameters()
                     )
-                    pre_mlm_w = model._layers.head.MLM_VRM.Prediction.w_share.parameters(
+                    pre_mlm_w = (
+                        model._layers.head.MLM_VRM.Prediction.w_share.parameters()
                     )
                 else:  # single gpu
                     mlm = model.head.MLM_VRM.MLM.parameters()
-                    pre_mlm_pp = model.head.MLM_VRM.Prediction.pp_share.parameters(
-                    )
-                    pre_mlm_w = model.head.MLM_VRM.Prediction.w_share.parameters(
-                    )
+                    pre_mlm_pp = model.head.MLM_VRM.Prediction.pp_share.parameters()
+                    pre_mlm_w = model.head.MLM_VRM.Prediction.w_share.parameters()
 
                 total = []
                 for param in mlm:
@@ -110,23 +110,20 @@ class Adam(object):
                     param for param in model.parameters() if id(param) in total
                 ]
                 group_small_params = [
-                    param for param in model.parameters()
-                    if id(param) not in total
+                    param for param in model.parameters() if id(param) not in total
                 ]
-                train_params = [{
-                    'params': group_base_params
-                }, {
-                    'params': group_small_params,
-                    'learning_rate': self.learning_rate.values[0] * 0.1
-                }]
+                train_params = [
+                    {"params": group_base_params},
+                    {
+                        "params": group_small_params,
+                        "learning_rate": self.learning_rate.values[0] * 0.1,
+                    },
+                ]
 
             else:
-                print(
-                    'group lr currently only support VisionLAN in LF_2 training step'
-                )
+                print("group lr currently only support VisionLAN in LF_2 training step")
                 train_params = [
-                    param for param in model.parameters()
-                    if param.trainable is True
+                    param for param in model.parameters() if param.trainable is True
                 ]
         else:
             train_params = [
@@ -142,7 +139,8 @@ class Adam(object):
             grad_clip=self.grad_clip,
             name=self.name,
             lazy_mode=self.lazy_mode,
-            parameters=train_params)
+            parameters=train_params,
+        )
         return opt
 
 
@@ -158,14 +156,16 @@ class RMSProp(object):
         regularization (WeightDecayRegularizer, optional) - The strategy of regularization.
     """
 
-    def __init__(self,
-                 learning_rate,
-                 momentum=0.0,
-                 rho=0.95,
-                 epsilon=1e-6,
-                 weight_decay=None,
-                 grad_clip=None,
-                 **args):
+    def __init__(
+        self,
+        learning_rate,
+        momentum=0.0,
+        rho=0.95,
+        epsilon=1e-6,
+        weight_decay=None,
+        grad_clip=None,
+        **args,
+    ):
         super(RMSProp, self).__init__()
         self.learning_rate = learning_rate
         self.momentum = momentum
@@ -185,20 +185,23 @@ class RMSProp(object):
             epsilon=self.epsilon,
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
-            parameters=train_params)
+            parameters=train_params,
+        )
         return opt
 
 
 class Adadelta(object):
-    def __init__(self,
-                 learning_rate=0.001,
-                 epsilon=1e-08,
-                 rho=0.95,
-                 parameter_list=None,
-                 weight_decay=None,
-                 grad_clip=None,
-                 name=None,
-                 **kwargs):
+    def __init__(
+        self,
+        learning_rate=0.001,
+        epsilon=1e-08,
+        rho=0.95,
+        parameter_list=None,
+        weight_decay=None,
+        grad_clip=None,
+        name=None,
+        **kwargs,
+    ):
         self.learning_rate = learning_rate
         self.epsilon = epsilon
         self.rho = rho
@@ -219,24 +222,27 @@ class Adadelta(object):
             weight_decay=self.weight_decay,
             grad_clip=self.grad_clip,
             name=self.name,
-            parameters=train_params)
+            parameters=train_params,
+        )
         return opt
 
 
 class AdamW(object):
-    def __init__(self,
-                 learning_rate=0.001,
-                 beta1=0.9,
-                 beta2=0.999,
-                 epsilon=1e-8,
-                 weight_decay=0.01,
-                 multi_precision=False,
-                 grad_clip=None,
-                 no_weight_decay_name=None,
-                 one_dim_param_no_weight_decay=False,
-                 name=None,
-                 lazy_mode=False,
-                 **args):
+    def __init__(
+        self,
+        learning_rate=0.001,
+        beta1=0.9,
+        beta2=0.999,
+        epsilon=1e-8,
+        weight_decay=0.01,
+        multi_precision=False,
+        grad_clip=None,
+        no_weight_decay_name=None,
+        one_dim_param_no_weight_decay=False,
+        name=None,
+        lazy_mode=False,
+        **args,
+    ):
         super().__init__()
         self.learning_rate = learning_rate
         self.beta1 = beta1
@@ -248,17 +254,17 @@ class AdamW(object):
         self.name = name
         self.lazy_mode = lazy_mode
         self.multi_precision = multi_precision
-        self.no_weight_decay_name_list = no_weight_decay_name.split(
-        ) if no_weight_decay_name else []
+        self.no_weight_decay_name_list = (
+            no_weight_decay_name.split() if no_weight_decay_name else []
+        )
         self.one_dim_param_no_weight_decay = one_dim_param_no_weight_decay
 
     def __call__(self, model):
-        parameters = [
-            param for param in model.parameters() if param.trainable is True
-        ]
+        parameters = [param for param in model.parameters() if param.trainable is True]
 
         self.no_weight_decay_param_name_list = [
-            p.name for n, p in model.named_parameters()
+            p.name
+            for n, p in model.named_parameters()
             if any(nd in n for nd in self.no_weight_decay_name_list)
         ]
 
@@ -278,7 +284,8 @@ class AdamW(object):
             grad_clip=self.grad_clip,
             name=self.name,
             lazy_mode=self.lazy_mode,
-            apply_decay_param_fun=self._apply_decay_param_fun)
+            apply_decay_param_fun=self._apply_decay_param_fun,
+        )
         return opt
 
     def _apply_decay_param_fun(self, name):

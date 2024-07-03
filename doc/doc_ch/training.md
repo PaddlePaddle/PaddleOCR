@@ -78,12 +78,12 @@ Optimizer:
 ### 3.1 训练数据
 目前开源的模型，数据集和量级如下：
 
-    - 检测：  
-        - 英文数据集，ICDAR2015  
+    - 检测：
+        - 英文数据集，ICDAR2015
         - 中文数据集，LSVT街景数据集训练数据3w张图片
 
-    - 识别：  
-        - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。  
+    - 识别：
+        - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。
         - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
         - 小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。
 
@@ -111,7 +111,7 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 
     a. 人工采集更多的训练数据，最直接也是最有效的方式。
     b. 基于PIL和opencv基本图像处理或者变换。例如PIL中ImageFont, Image, ImageDraw三个模块将文字写到背景中，opencv的旋转仿射变换，高斯滤波等。
-    c. 利用数据生成算法合成数据，例如pix2pix或StyleText等算法。
+    c. 利用数据生成算法合成数据，例如pix2pix或[StyleText](https://github.com/PFCCLab/StyleText)等算法。
 
 <a name="常见问题"></a>
 
@@ -145,7 +145,7 @@ PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+�
 
 - [文本检测模型训练](./detection.md)
 
-- [文本识别模型训练](./recognition.md)  
+- [文本识别模型训练](./recognition.md)
 
-- [文本方向分类器训练](./angle_class.md)  
+- [文本方向分类器训练](./angle_class.md)
 - [知识蒸馏](./knowledge_distillation.md)

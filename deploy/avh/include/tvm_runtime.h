@@ -33,22 +33,26 @@ void __attribute__((noreturn)) TVMPlatformAbort(tvm_crt_error_t error_code) {
   exit(-1);
 }
 
-tvm_crt_error_t TVMPlatformMemoryAllocate(size_t num_bytes, DLDevice dev, void** out_ptr) {
+tvm_crt_error_t TVMPlatformMemoryAllocate(size_t num_bytes, DLDevice dev,
+                                          void **out_ptr) {
   return kTvmErrorFunctionCallNotImplemented;
 }
 
-tvm_crt_error_t TVMPlatformMemoryFree(void* ptr, DLDevice dev) {
+tvm_crt_error_t TVMPlatformMemoryFree(void *ptr, DLDevice dev) {
   return kTvmErrorFunctionCallNotImplemented;
 }
 
-void TVMLogf(const char* msg, ...) {
+void TVMLogf(const char *msg, ...) {
   va_list args;
   va_start(args, msg);
   vfprintf(stdout, msg, args);
   va_end(args);
 }
 
-TVM_DLL int TVMFuncRegisterGlobal(const char* name, TVMFunctionHandle f, int override) { return 0; }
+TVM_DLL int TVMFuncRegisterGlobal(const char *name, TVMFunctionHandle f,
+                                  int override) {
+  return 0;
+}
 
 #ifdef __cplusplus
 }

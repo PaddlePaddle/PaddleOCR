@@ -8,27 +8,26 @@
 
 ###  PaddleOCR
 
-克隆PaddleOCR的仓库，使用release/2.4分支，并进行安装，由于PaddleOCR仓库比较大，git clone速度比较慢，所以本教程已下载
+克隆PaddleOCR的仓库，使用 main 分支，并进行安装，由于 PaddleOCR 仓库比较大，git clone 速度比较慢，所以本教程已下载
 
 ```
-git clone  -b release/2.4 https://github.com/PaddlePaddle/PaddleOCR.git
-cd PaddleOCR && python3.7 setup.py install
+git clone  -b main https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR && python3 -m pip install -e .
 ```
 
 ###  Paddle2ONNX
 
-Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 9~11，部分Paddle算子支持更低的ONNX Opset转换。
+Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 9~18，部分Paddle算子支持更低的ONNX Opset转换。
 更多细节可参考 [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_zh.md)
 
 - 安装 Paddle2ONNX
 ```
-python3.7 -m pip install paddle2onnx
+python3 -m pip install paddle2onnx
 ```
 
 - 安装 ONNXRuntime
 ```
-# 建议安装 1.9.0 版本，可根据环境更换版本号
-python3.7 -m pip install onnxruntime==1.9.0
+python3 -m pip install onnxruntime
 ```
 
 ## 2. 模型转换
@@ -61,39 +60,44 @@ paddle2onnx --model_dir ./inference/ch_PP-OCRv3_det_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/det_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--opset_version 11 \
 --enable_onnx_checker True
 
 paddle2onnx --model_dir ./inference/ch_PP-OCRv3_rec_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/rec_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--opset_version 11 \
 --enable_onnx_checker True
 
 paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
---model_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel \
---params_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams \
---save_file ./inferencecls_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
+--model_filename inference.pdmodel \
+--params_filename inference.pdiparams \
+--save_file ./inference/cls_onnx/model.onnx \
+--opset_version 11 \
 --enable_onnx_checker True
 ```
 
 执行完毕后，ONNX 模型会被分别保存在 `./inference/det_onnx/`，`./inference/rec_onnx/`，`./inference/cls_onnx/`路径下
 
-* 注意：对于OCR模型，转化过程中必须采用动态shape的形式，即加入选项--input_shape_dict="{'x': [-1, 3, -1, -1]}"，否则预测结果可能与直接使用Paddle预测有细微不同。
+* 注意：对于OCR模型，转化过程中必须采用动态shape的形式，否则预测结果可能与直接使用Paddle预测有细微不同。
   另外，以下几个模型暂不支持转换为 ONNX 模型：
   NRTR、SAR、RARE、SRN
+
+* 注意：[当前Paddle2ONNX版本(v1.2.3)](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3)现已默认支持动态shape，即 `float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]`，选项 `--input_shape_dict` 已废弃。如果有shape调整需求可使用如下命令进行Paddle模型输入shape调整。
+
+  ```
+  python3 -m paddle2onnx.optimize --input_model inference/det_onnx/model.onnx \
+    --output_model inference/det_onnx/model.onnx \
+    --input_shape_dict "{'x': [-1,3,-1,-1]}"
+  ```
 
 ## 3. 推理预测
 
 以中文OCR模型为例，使用 ONNXRuntime 预测可执行如下命令：
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
+python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
@@ -103,7 +107,7 @@ python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 以中文OCR模型为例，使用 Paddle Inference 预测可执行如下命令：
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False \
+python3 tools/infer/predict_system.py --use_gpu=False \
 --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
 --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
 --det_model_dir=./inference/ch_PP-OCRv3_det_infer \

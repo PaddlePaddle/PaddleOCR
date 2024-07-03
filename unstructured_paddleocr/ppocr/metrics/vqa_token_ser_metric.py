@@ -19,11 +19,11 @@ from __future__ import print_function
 import numpy as np
 import paddle
 
-__all__ = ['KIEMetric']
+__all__ = ["VQASerTokenMetric"]
 
 
 class VQASerTokenMetric(object):
-    def __init__(self, main_indicator='hmean', **kwargs):
+    def __init__(self, main_indicator="hmean", **kwargs):
         self.main_indicator = main_indicator
         self.reset()
 
@@ -34,6 +34,7 @@ class VQASerTokenMetric(object):
 
     def get_metric(self):
         from seqeval.metrics import f1_score, precision_score, recall_score
+
         metrics = {
             "precision": precision_score(self.gt_list, self.pred_list),
             "recall": recall_score(self.gt_list, self.pred_list),

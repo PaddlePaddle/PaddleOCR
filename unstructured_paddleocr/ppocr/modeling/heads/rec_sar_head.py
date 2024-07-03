@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refer from: 
+This code is refer from:
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/encoders/sar_encoder.py
 https://github.com/open-mmlab/mmocr/blob/main/mmocr/models/textrecog/decoders/sar_decoder.py
 """
@@ -39,14 +39,16 @@ class SAREncoder(nn.Layer):
         mask (bool): If True, mask padding in RNN sequence.
     """
 
-    def __init__(self,
-                 enc_bi_rnn=False,
-                 enc_drop_rnn=0.1,
-                 enc_gru=False,
-                 d_model=512,
-                 d_enc=512,
-                 mask=True,
-                 **kwargs):
+    def __init__(
+        self,
+        enc_bi_rnn=False,
+        enc_drop_rnn=0.1,
+        enc_gru=False,
+        d_model=512,
+        d_enc=512,
+        mask=True,
+        **kwargs,
+    ):
         super().__init__()
         assert isinstance(enc_bi_rnn, bool)
         assert isinstance(enc_drop_rnn, (int, float))
@@ -62,16 +64,17 @@ class SAREncoder(nn.Layer):
 
         # LSTM Encoder
         if enc_bi_rnn:
-            direction = 'bidirectional'
+            direction = "bidirectional"
         else:
-            direction = 'forward'
+            direction = "forward"
         kwargs = dict(
             input_size=d_model,
             hidden_size=d_enc,
             num_layers=2,
             time_major=False,
             dropout=enc_drop_rnn,
-            direction=direction)
+            direction=direction,
+        )
         if enc_gru:
             self.rnn_encoder = nn.GRU(**kwargs)
         else:
@@ -83,15 +86,14 @@ class SAREncoder(nn.Layer):
 
     def forward(self, feat, img_metas=None):
         if img_metas is not None:
-            assert len(img_metas[0]) == paddle.shape(feat)[0]
+            assert len(img_metas[0]) == feat.shape[0]
 
         valid_ratios = None
         if img_metas is not None and self.mask:
             valid_ratios = img_metas[-1]
 
         h_feat = feat.shape[2]  # bsz c h w
-        feat_v = F.max_pool2d(
-            feat, kernel_size=(h_feat, 1), stride=1, padding=0)
+        feat_v = F.max_pool2d(feat, kernel_size=(h_feat, 1), stride=1, padding=0)
         feat_v = feat_v.squeeze(2)  # bsz * C * W
         feat_v = paddle.transpose(feat_v, perm=[0, 2, 1])  # bsz * W * C
         holistic_feat = self.rnn_encoder(feat_v)[0]  # bsz * T * C
@@ -99,9 +101,11 @@ class SAREncoder(nn.Layer):
         if valid_ratios is not None:
             valid_hf = []
             T = paddle.shape(holistic_feat)[1]
-            for i in range(paddle.shape(valid_ratios)[0]):
-                valid_step = paddle.minimum(
-                    T, paddle.ceil(valid_ratios[i] * T).astype('int32')) - 1
+            for i in range(valid_ratios.shape[0]):
+                valid_step = (
+                    paddle.minimum(T, paddle.ceil(valid_ratios[i] * T).astype(T.dtype))
+                    - 1
+                )
                 valid_hf.append(holistic_feat[i, valid_step, :])
             valid_hf = paddle.stack(valid_hf, axis=0)
         else:
@@ -121,12 +125,7 @@ class BaseDecoder(nn.Layer):
     def forward_test(self, feat, out_enc, img_metas):
         raise NotImplementedError
 
-    def forward(self,
-                feat,
-                out_enc,
-                label=None,
-                img_metas=None,
-                train_mode=True):
+    def forward(self, feat, out_enc, label=None, img_metas=None, train_mode=True):
         self.train_mode = train_mode
 
         if train_mode:
@@ -155,20 +154,21 @@ class ParallelSARDecoder(BaseDecoder):
     """
 
     def __init__(
-            self,
-            out_channels,  # 90 + unknown + start + padding
-            enc_bi_rnn=False,
-            dec_bi_rnn=False,
-            dec_drop_rnn=0.0,
-            dec_gru=False,
-            d_model=512,
-            d_enc=512,
-            d_k=64,
-            pred_dropout=0.1,
-            max_text_length=30,
-            mask=True,
-            pred_concat=True,
-            **kwargs):
+        self,
+        out_channels,  # 90 + unknown + start + padding
+        enc_bi_rnn=False,
+        dec_bi_rnn=False,
+        dec_drop_rnn=0.0,
+        dec_gru=False,
+        d_model=512,
+        d_enc=512,
+        d_k=64,
+        pred_dropout=0.1,
+        max_text_length=30,
+        mask=True,
+        pred_concat=True,
+        **kwargs,
+    ):
         super().__init__()
 
         self.num_classes = out_channels
@@ -185,15 +185,14 @@ class ParallelSARDecoder(BaseDecoder):
 
         # 2D attention layer
         self.conv1x1_1 = nn.Linear(decoder_rnn_out_size, d_k)
-        self.conv3x3_1 = nn.Conv2D(
-            d_model, d_k, kernel_size=3, stride=1, padding=1)
+        self.conv3x3_1 = nn.Conv2D(d_model, d_k, kernel_size=3, stride=1, padding=1)
         self.conv1x1_2 = nn.Linear(d_k, 1)
 
         # Decoder RNN layer
         if dec_bi_rnn:
-            direction = 'bidirectional'
+            direction = "bidirectional"
         else:
-            direction = 'forward'
+            direction = "forward"
 
         kwargs = dict(
             input_size=encoder_rnn_out_size,
@@ -201,7 +200,8 @@ class ParallelSARDecoder(BaseDecoder):
             num_layers=2,
             time_major=False,
             dropout=dec_drop_rnn,
-            direction=direction)
+            direction=direction,
+        )
         if dec_gru:
             self.rnn_decoder = nn.GRU(**kwargs)
         else:
@@ -209,9 +209,8 @@ class ParallelSARDecoder(BaseDecoder):
 
         # Decoder input embedding
         self.embedding = nn.Embedding(
-            self.num_classes,
-            encoder_rnn_out_size,
-            padding_idx=self.padding_idx)
+            self.num_classes, encoder_rnn_out_size, padding_idx=self.padding_idx
+        )
 
         # Prediction layer
         self.pred_dropout = nn.Dropout(pred_dropout)
@@ -222,12 +221,7 @@ class ParallelSARDecoder(BaseDecoder):
             fc_in_channel = d_model
         self.prediction = nn.Linear(fc_in_channel, pred_num_classes)
 
-    def _2d_attention(self,
-                      decoder_input,
-                      feat,
-                      holistic_feat,
-                      valid_ratios=None):
-
+    def _2d_attention(self, decoder_input, feat, holistic_feat, valid_ratios=None):
         y = self.rnn_decoder(decoder_input)[0]
         # y: bsz * (seq_len + 1) * hidden_size
 
@@ -253,11 +247,12 @@ class ParallelSARDecoder(BaseDecoder):
 
         if valid_ratios is not None:
             # cal mask of attention weight
-            for i in range(paddle.shape(valid_ratios)[0]):
+            for i in range(valid_ratios.shape[0]):
                 valid_width = paddle.minimum(
-                    w, paddle.ceil(valid_ratios[i] * w).astype("int32"))
+                    w, paddle.ceil(valid_ratios[i] * w).astype("int32")
+                )
                 if valid_width < w:
-                    attn_weight[i, :, :, valid_width:, :] = float('-inf')
+                    attn_weight[i, :, :, valid_width:, :] = float("-inf")
 
         attn_weight = paddle.reshape(attn_weight, [bsz, T, -1])
         attn_weight = F.softmax(attn_weight, axis=-1)
@@ -266,17 +261,20 @@ class ParallelSARDecoder(BaseDecoder):
         attn_weight = paddle.transpose(attn_weight, perm=[0, 1, 4, 2, 3])
         # attn_weight: bsz * T * c * h * w
         # feat: bsz * c * h * w
-        attn_feat = paddle.sum(paddle.multiply(feat.unsqueeze(1), attn_weight),
-                               (3, 4),
-                               keepdim=False)
+        attn_feat = paddle.sum(
+            paddle.multiply(feat.unsqueeze(1), attn_weight), (3, 4), keepdim=False
+        )
         # bsz * (seq_len + 1) * C
 
         # Linear transformation
         if self.pred_concat:
             hf_c = holistic_feat.shape[-1]
-            holistic_feat = paddle.expand(
-                holistic_feat, shape=[bsz, seq_len, hf_c])
-            y = self.prediction(paddle.concat((y, attn_feat, holistic_feat), 2))
+            holistic_feat = paddle.expand(holistic_feat, shape=[bsz, seq_len, hf_c])
+            y = self.prediction(
+                paddle.concat(
+                    (y, attn_feat.astype(y.dtype), holistic_feat.astype(y.dtype)), 2
+                )
+            )
         else:
             y = self.prediction(attn_feat)
         # bsz * (seq_len + 1) * num_classes
@@ -286,11 +284,11 @@ class ParallelSARDecoder(BaseDecoder):
         return y
 
     def forward_train(self, feat, out_enc, label, img_metas):
-        '''
+        """
         img_metas: [label, valid_ratio]
-        '''
+        """
         if img_metas is not None:
-            assert paddle.shape(img_metas[0])[0] == paddle.shape(feat)[0]
+            assert img_metas[0].shape[0] == feat.shape[0]
 
         valid_ratios = None
         if img_metas is not None and self.mask:
@@ -298,12 +296,11 @@ class ParallelSARDecoder(BaseDecoder):
 
         lab_embedding = self.embedding(label)
         # bsz * seq_len * emb_dim
-        out_enc = out_enc.unsqueeze(1)
+        out_enc = out_enc.unsqueeze(1).astype(lab_embedding.dtype)
         # bsz * 1 * emb_dim
         in_dec = paddle.concat((out_enc, lab_embedding), axis=1)
         # bsz * (seq_len + 1) * C
-        out_dec = self._2d_attention(
-            in_dec, feat, out_enc, valid_ratios=valid_ratios)
+        out_dec = self._2d_attention(in_dec, feat, out_enc, valid_ratios=valid_ratios)
 
         return out_dec[:, 1:, :]  # bsz * seq_len * num_classes
 
@@ -317,8 +314,7 @@ class ParallelSARDecoder(BaseDecoder):
 
         seq_len = self.max_seq_len
         bsz = feat.shape[0]
-        start_token = paddle.full(
-            (bsz, ), fill_value=self.start_idx, dtype='int64')
+        start_token = paddle.full((bsz,), fill_value=self.start_idx, dtype="int64")
         # bsz
         start_token = self.embedding(start_token)
         # bsz * emb_dim
@@ -334,7 +330,8 @@ class ParallelSARDecoder(BaseDecoder):
         outputs = []
         for i in range(1, seq_len + 1):
             decoder_output = self._2d_attention(
-                decoder_input, feat, out_enc, valid_ratios=valid_ratios)
+                decoder_input, feat, out_enc, valid_ratios=valid_ratios
+            )
             char_output = decoder_output[:, i, :]  # bsz * num_classes
             char_output = F.softmax(char_output, -1)
             outputs.append(char_output)
@@ -349,21 +346,23 @@ class ParallelSARDecoder(BaseDecoder):
 
 
 class SARHead(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 enc_dim=512,
-                 max_text_length=30,
-                 enc_bi_rnn=False,
-                 enc_drop_rnn=0.1,
-                 enc_gru=False,
-                 dec_bi_rnn=False,
-                 dec_drop_rnn=0.0,
-                 dec_gru=False,
-                 d_k=512,
-                 pred_dropout=0.1,
-                 pred_concat=True,
-                 **kwargs):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        enc_dim=512,
+        max_text_length=30,
+        enc_bi_rnn=False,
+        enc_drop_rnn=0.1,
+        enc_gru=False,
+        dec_bi_rnn=False,
+        dec_drop_rnn=0.0,
+        dec_gru=False,
+        d_k=512,
+        pred_dropout=0.1,
+        pred_concat=True,
+        **kwargs,
+    ):
         super(SARHead, self).__init__()
 
         # encoder module
@@ -372,7 +371,8 @@ class SARHead(nn.Layer):
             enc_drop_rnn=enc_drop_rnn,
             enc_gru=enc_gru,
             d_model=in_channels,
-            d_enc=enc_dim)
+            d_enc=enc_dim,
+        )
 
         # decoder module
         self.decoder = ParallelSARDecoder(
@@ -386,25 +386,22 @@ class SARHead(nn.Layer):
             d_k=d_k,
             pred_dropout=pred_dropout,
             max_text_length=max_text_length,
-            pred_concat=pred_concat)
+            pred_concat=pred_concat,
+        )
 
     def forward(self, feat, targets=None):
-        '''
+        """
         img_metas: [label, valid_ratio]
-        '''
+        """
         holistic_feat = self.encoder(feat, targets)  # bsz c
 
         if self.training:
             label = targets[0]  # label
-            final_out = self.decoder(
-                feat, holistic_feat, label, img_metas=targets)
+            final_out = self.decoder(feat, holistic_feat, label, img_metas=targets)
         else:
             final_out = self.decoder(
-                feat,
-                holistic_feat,
-                label=None,
-                img_metas=targets,
-                train_mode=False)
+                feat, holistic_feat, label=None, img_metas=targets, train_mode=False
+            )
             # (bsz, seq_len, num_classes)
 
         return final_out

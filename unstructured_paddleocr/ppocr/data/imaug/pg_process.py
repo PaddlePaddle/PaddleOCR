@@ -16,25 +16,29 @@ import math
 import cv2
 import numpy as np
 from skimage.morphology._skeletonize import thin
-from ppocr.utils.e2e_utils.extract_textpoint_fast import sort_and_expand_with_direction_v2
+from ppocr.utils.e2e_utils.extract_textpoint_fast import (
+    sort_and_expand_with_direction_v2,
+)
 
-__all__ = ['PGProcessTrain']
+__all__ = ["PGProcessTrain"]
 
 
 class PGProcessTrain(object):
-    def __init__(self,
-                 character_dict_path,
-                 max_text_length,
-                 max_text_nums,
-                 tcl_len,
-                 batch_size=14,
-                 use_resize=True,
-                 use_random_crop=False,
-                 min_crop_size=24,
-                 min_text_size=4,
-                 max_text_size=512,
-                 point_gather_mode=None,
-                 **kwargs):
+    def __init__(
+        self,
+        character_dict_path,
+        max_text_length,
+        max_text_nums,
+        tcl_len,
+        batch_size=14,
+        use_resize=True,
+        use_random_crop=False,
+        min_crop_size=24,
+        min_text_size=4,
+        max_text_size=512,
+        point_gather_mode=None,
+        **kwargs,
+    ):
         self.tcl_len = tcl_len
         self.max_text_length = max_text_length
         self.max_text_nums = max_text_nums
@@ -55,7 +59,7 @@ class PGProcessTrain(object):
         with open(character_dict_path, "rb") as fin:
             lines = fin.readlines()
             for line in lines:
-                line = line.decode('utf-8').strip("\n").strip("\r\n")
+                line = line.decode("utf-8").strip("\n").strip("\r\n")
                 character_str += line
             dict_character = list(character_str)
         return dict_character
@@ -66,11 +70,13 @@ class PGProcessTrain(object):
         :param poly:
         :return:
         """
-        edge = [(poly[1][0] - poly[0][0]) * (poly[1][1] + poly[0][1]),
-                (poly[2][0] - poly[1][0]) * (poly[2][1] + poly[1][1]),
-                (poly[3][0] - poly[2][0]) * (poly[3][1] + poly[2][1]),
-                (poly[0][0] - poly[3][0]) * (poly[0][1] + poly[3][1])]
-        return np.sum(edge) / 2.
+        edge = [
+            (poly[1][0] - poly[0][0]) * (poly[1][1] + poly[0][1]),
+            (poly[2][0] - poly[1][0]) * (poly[2][1] + poly[1][1]),
+            (poly[3][0] - poly[2][0]) * (poly[3][1] + poly[2][1]),
+            (poly[0][0] - poly[3][0]) * (poly[0][1] + poly[3][1]),
+        ]
+        return np.sum(edge) / 2.0
 
     def gen_quad_from_poly(self, poly):
         """
@@ -78,17 +84,20 @@ class PGProcessTrain(object):
         """
         point_num = poly.shape[0]
         min_area_quad = np.zeros((4, 2), dtype=np.float32)
-        rect = cv2.minAreaRect(poly.astype(
-            np.int32))  # (center (x,y), (width, height), angle of rotation)
+        rect = cv2.minAreaRect(
+            poly.astype(np.int32)
+        )  # (center (x,y), (width, height), angle of rotation)
         box = np.array(cv2.boxPoints(rect))
 
         first_point_idx = 0
         min_dist = 1e4
         for i in range(4):
-            dist = np.linalg.norm(box[(i + 0) % 4] - poly[0]) + \
-                   np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1]) + \
-                   np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2]) + \
-                   np.linalg.norm(box[(i + 3) % 4] - poly[-1])
+            dist = (
+                np.linalg.norm(box[(i + 0) % 4] - poly[0])
+                + np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1])
+                + np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2])
+                + np.linalg.norm(box[(i + 3) % 4] - poly[-1])
+            )
             if dist < min_dist:
                 min_dist = dist
                 first_point_idx = i
@@ -118,20 +127,21 @@ class PGProcessTrain(object):
             quad = self.gen_quad_from_poly(poly)
             p_area = self.quad_area(quad)
             if abs(p_area) < 1:
-                print('invalid poly')
+                print("invalid poly")
                 continue
             if p_area > 0:
                 if tag == False:
-                    print('poly in wrong direction')
+                    print("poly in wrong direction")
                     tag = True  # reversed cases should be ignore
-                poly = poly[(0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
-                             1), :]
+                poly = poly[(0, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1), :]
                 quad = quad[(0, 3, 2, 1), :]
 
-            len_w = np.linalg.norm(quad[0] - quad[1]) + np.linalg.norm(quad[3] -
-                                                                       quad[2])
-            len_h = np.linalg.norm(quad[0] - quad[3]) + np.linalg.norm(quad[1] -
-                                                                       quad[2])
+            len_w = np.linalg.norm(quad[0] - quad[1]) + np.linalg.norm(
+                quad[3] - quad[2]
+            )
+            len_h = np.linalg.norm(quad[0] - quad[3]) + np.linalg.norm(
+                quad[1] - quad[2]
+            )
             hv_tag = 1
 
             if len_w * 2.0 < len_h:
@@ -140,17 +150,11 @@ class PGProcessTrain(object):
             validated_polys.append(poly)
             validated_tags.append(tag)
             hv_tags.append(hv_tag)
-        return np.array(validated_polys), np.array(validated_tags), np.array(
-            hv_tags)
+        return np.array(validated_polys), np.array(validated_tags), np.array(hv_tags)
 
-    def crop_area(self,
-                  im,
-                  polys,
-                  tags,
-                  hv_tags,
-                  txts,
-                  crop_background=False,
-                  max_tries=25):
+    def crop_area(
+        self, im, polys, tags, hv_tags, txts, crop_background=False, max_tries=25
+    ):
         """
         make random crop from the input image
         :param im:
@@ -169,10 +173,10 @@ class PGProcessTrain(object):
             poly = np.round(poly, decimals=0).astype(np.int32)
             minx = np.min(poly[:, 0])
             maxx = np.max(poly[:, 0])
-            w_array[minx + pad_w:maxx + pad_w] = 1
+            w_array[minx + pad_w : maxx + pad_w] = 1
             miny = np.min(poly[:, 1])
             maxy = np.max(poly[:, 1])
-            h_array[miny + pad_h:maxy + pad_h] = 1
+            h_array[miny + pad_h : maxy + pad_h] = 1
         # ensure the cropped area not across a text
         h_axis = np.where(h_array == 0)[0]
         w_axis = np.where(w_array == 0)[0]
@@ -189,14 +193,16 @@ class PGProcessTrain(object):
             ymax = np.max(yy) - pad_h
             ymin = np.clip(ymin, 0, h - 1)
             ymax = np.clip(ymax, 0, h - 1)
-            if xmax - xmin < self.min_crop_size or \
-                    ymax - ymin < self.min_crop_size:
+            if xmax - xmin < self.min_crop_size or ymax - ymin < self.min_crop_size:
                 continue
             if polys.shape[0] != 0:
-                poly_axis_in_area = (polys[:, :, 0] >= xmin) & (polys[:, :, 0] <= xmax) \
-                                    & (polys[:, :, 1] >= ymin) & (polys[:, :, 1] <= ymax)
-                selected_polys = np.where(
-                    np.sum(poly_axis_in_area, axis=1) == 4)[0]
+                poly_axis_in_area = (
+                    (polys[:, :, 0] >= xmin)
+                    & (polys[:, :, 0] <= xmax)
+                    & (polys[:, :, 1] >= ymin)
+                    & (polys[:, :, 1] <= ymax)
+                )
+                selected_polys = np.where(np.sum(poly_axis_in_area, axis=1) == 4)[0]
             else:
                 selected_polys = []
             if len(selected_polys) == 0:
@@ -206,11 +212,16 @@ class PGProcessTrain(object):
                     for selected_poly in selected_polys:
                         txts_tmp.append(txts[selected_poly])
                     txts = txts_tmp
-                    return im[ymin: ymax + 1, xmin: xmax + 1, :], \
-                           polys[selected_polys], tags[selected_polys], hv_tags[selected_polys], txts
+                    return (
+                        im[ymin : ymax + 1, xmin : xmax + 1, :],
+                        polys[selected_polys],
+                        tags[selected_polys],
+                        hv_tags[selected_polys],
+                        txts,
+                    )
                 else:
                     continue
-            im = im[ymin:ymax + 1, xmin:xmax + 1, :]
+            im = im[ymin : ymax + 1, xmin : xmax + 1, :]
             polys = polys[selected_polys]
             tags = tags[selected_polys]
             hv_tags = hv_tags[selected_polys]
@@ -224,14 +235,16 @@ class PGProcessTrain(object):
 
         return im, polys, tags, hv_tags, txts
 
-    def fit_and_gather_tcl_points_v2(self,
-                                     min_area_quad,
-                                     poly,
-                                     max_h,
-                                     max_w,
-                                     fixed_point_num=64,
-                                     img_id=0,
-                                     reference_height=3):
+    def fit_and_gather_tcl_points_v2(
+        self,
+        min_area_quad,
+        poly,
+        max_h,
+        max_w,
+        fixed_point_num=64,
+        img_id=0,
+        reference_height=3,
+    ):
         """
         Find the center point of poly as key_points, then fit and gather.
         """
@@ -244,22 +257,21 @@ class PGProcessTrain(object):
         tmp_image = np.zeros(
             shape=(
                 max_h,
-                max_w, ), dtype='float32')
-        cv2.polylines(tmp_image, [np.array(key_point_xys).astype('int32')],
-                      False, 1.0)
+                max_w,
+            ),
+            dtype="float32",
+        )
+        cv2.polylines(tmp_image, [np.array(key_point_xys).astype("int32")], False, 1.0)
         ys, xs = np.where(tmp_image > 0)
-        xy_text = np.array(list(zip(xs, ys)), dtype='float32')
+        xy_text = np.array(list(zip(xs, ys)), dtype="float32")
 
-        left_center_pt = (
-            (min_area_quad[0] - min_area_quad[1]) / 2.0).reshape(1, 2)
-        right_center_pt = (
-            (min_area_quad[1] - min_area_quad[2]) / 2.0).reshape(1, 2)
+        left_center_pt = ((min_area_quad[0] - min_area_quad[1]) / 2.0).reshape(1, 2)
+        right_center_pt = ((min_area_quad[1] - min_area_quad[2]) / 2.0).reshape(1, 2)
         proj_unit_vec = (right_center_pt - left_center_pt) / (
-            np.linalg.norm(right_center_pt - left_center_pt) + 1e-6)
-        proj_unit_vec_tile = np.tile(proj_unit_vec,
-                                     (xy_text.shape[0], 1))  # (n, 2)
-        left_center_pt_tile = np.tile(left_center_pt,
-                                      (xy_text.shape[0], 1))  # (n, 2)
+            np.linalg.norm(right_center_pt - left_center_pt) + 1e-6
+        )
+        proj_unit_vec_tile = np.tile(proj_unit_vec, (xy_text.shape[0], 1))  # (n, 2)
+        left_center_pt_tile = np.tile(left_center_pt, (xy_text.shape[0], 1))  # (n, 2)
         xy_text_to_left_center = xy_text - left_center_pt_tile
         proj_value = np.sum(xy_text_to_left_center * proj_unit_vec_tile, axis=1)
         xy_text = xy_text[np.argsort(proj_value)]
@@ -277,77 +289,86 @@ class PGProcessTrain(object):
         keep = int(min(len(pos_info), fixed_point_num))
         if np.random.rand() < 0.2 and reference_height >= 3:
             dl = (np.random.rand(keep) - 0.5) * reference_height * 0.3
-            random_float = np.array([1, 0]).reshape([1, 2]) * dl.reshape(
-                [keep, 1])
+            random_float = np.array([1, 0]).reshape([1, 2]) * dl.reshape([keep, 1])
             pos_info += random_float
             pos_info[:, 0] = np.clip(pos_info[:, 0], 0, max_h - 1)
             pos_info[:, 1] = np.clip(pos_info[:, 1], 0, max_w - 1)
 
         # padding to fixed length
         pos_l = np.zeros((self.tcl_len, 3), dtype=np.int32)
-        pos_l[:, 0] = np.ones((self.tcl_len, )) * img_id
+        pos_l[:, 0] = np.ones((self.tcl_len,)) * img_id
         pos_m = np.zeros((self.tcl_len, 1), dtype=np.float32)
         pos_l[:keep, 1:] = np.round(pos_info).astype(np.int32)
         pos_m[:keep] = 1.0
         return pos_l, pos_m
 
-    def fit_and_gather_tcl_points_v3(self,
-                                     min_area_quad,
-                                     poly,
-                                     max_h,
-                                     max_w,
-                                     fixed_point_num=64,
-                                     img_id=0,
-                                     reference_height=3):
+    def fit_and_gather_tcl_points_v3(
+        self,
+        min_area_quad,
+        poly,
+        max_h,
+        max_w,
+        fixed_point_num=64,
+        img_id=0,
+        reference_height=3,
+    ):
         """
         Find the center point of poly as key_points, then fit and gather.
         """
-        det_mask = np.zeros((int(max_h / self.ds_ratio),
-                             int(max_w / self.ds_ratio))).astype(np.float32)
+        det_mask = np.zeros(
+            (int(max_h / self.ds_ratio), int(max_w / self.ds_ratio))
+        ).astype(np.float32)
 
         # score_big_map
-        cv2.fillPoly(det_mask,
-                     np.round(poly / self.ds_ratio).astype(np.int32), 1.0)
-        det_mask = cv2.resize(
-            det_mask, dsize=None, fx=self.ds_ratio, fy=self.ds_ratio)
-        det_mask = np.array(det_mask > 1e-3, dtype='float32')
+        cv2.fillPoly(det_mask, np.round(poly / self.ds_ratio).astype(np.int32), 1.0)
+        det_mask = cv2.resize(det_mask, dsize=None, fx=self.ds_ratio, fy=self.ds_ratio)
+        det_mask = np.array(det_mask > 1e-3, dtype="float32")
 
         f_direction = self.f_direction
         skeleton_map = thin(det_mask.astype(np.uint8))
         instance_count, instance_label_map = cv2.connectedComponents(
-            skeleton_map.astype(np.uint8), connectivity=8)
+            skeleton_map.astype(np.uint8), connectivity=8
+        )
 
         ys, xs = np.where(instance_label_map == 1)
         pos_list = list(zip(ys, xs))
         if len(pos_list) < 3:
             return None
         pos_list_sorted = sort_and_expand_with_direction_v2(
-            pos_list, f_direction, det_mask)
+            pos_list, f_direction, det_mask
+        )
 
         pos_list_sorted = np.array(pos_list_sorted)
         length = len(pos_list_sorted) - 1
         insert_num = 0
         for index in range(length):
-            stride_y = np.abs(pos_list_sorted[index + insert_num][0] -
-                              pos_list_sorted[index + 1 + insert_num][0])
-            stride_x = np.abs(pos_list_sorted[index + insert_num][1] -
-                              pos_list_sorted[index + 1 + insert_num][1])
+            stride_y = np.abs(
+                pos_list_sorted[index + insert_num][0]
+                - pos_list_sorted[index + 1 + insert_num][0]
+            )
+            stride_x = np.abs(
+                pos_list_sorted[index + insert_num][1]
+                - pos_list_sorted[index + 1 + insert_num][1]
+            )
             max_points = int(max(stride_x, stride_y))
 
-            stride = (pos_list_sorted[index + insert_num] -
-                      pos_list_sorted[index + 1 + insert_num]) / (max_points)
+            stride = (
+                pos_list_sorted[index + insert_num]
+                - pos_list_sorted[index + 1 + insert_num]
+            ) / (max_points)
             insert_num_temp = max_points - 1
 
             for i in range(int(insert_num_temp)):
-                insert_value = pos_list_sorted[index + insert_num] - (i + 1
-                                                                      ) * stride
+                insert_value = pos_list_sorted[index + insert_num] - (i + 1) * stride
                 insert_index = index + i + 1 + insert_num
                 pos_list_sorted = np.insert(
-                    pos_list_sorted, insert_index, insert_value, axis=0)
+                    pos_list_sorted, insert_index, insert_value, axis=0
+                )
             insert_num += insert_num_temp
 
-        pos_info = np.array(pos_list_sorted).reshape(-1, 2).astype(
-            np.float32)  # xy-> yx
+        pos_info = (
+            np.array(pos_list_sorted).reshape(-1, 2).astype(np.float32)
+        )  # xy-> yx
 
         point_num = len(pos_info)
         if point_num > fixed_point_num:
@@ -358,14 +379,15 @@ class PGProcessTrain(object):
             pos_info = pos_info[keep_ids, :]
 
         keep = int(min(len(pos_info), fixed_point_num))
-        reference_width = (np.abs(poly[0, 0, 0] - poly[-1, 1, 0]) +
-                           np.abs(poly[0, 3, 0] - poly[-1, 2, 0])) // 2
+        reference_width = (
+            np.abs(poly[0, 0, 0] - poly[-1, 1, 0])
+            + np.abs(poly[0, 3, 0] - poly[-1, 2, 0])
+        ) // 2
         if np.random.rand() < 1:
             dh = (np.random.rand(keep) - 0.5) * reference_height
             offset = np.random.rand() - 0.5
             dw = np.array([[0, offset * reference_width * 0.2]])
-            random_float_h = np.array([1, 0]).reshape([1, 2]) * dh.reshape(
-                [keep, 1])
+            random_float_h = np.array([1, 0]).reshape([1, 2]) * dh.reshape([keep, 1])
             random_float_w = dw.repeat(keep, axis=0)
             pos_info += random_float_h
             pos_info += random_float_w
@@ -374,61 +396,68 @@ class PGProcessTrain(object):
 
         # padding to fixed length
         pos_l = np.zeros((self.tcl_len, 3), dtype=np.int32)
-        pos_l[:, 0] = np.ones((self.tcl_len, )) * img_id
+        pos_l[:, 0] = np.ones((self.tcl_len,)) * img_id
         pos_m = np.zeros((self.tcl_len, 1), dtype=np.float32)
         pos_l[:keep, 1:] = np.round(pos_info).astype(np.int32)
         pos_m[:keep] = 1.0
         return pos_l, pos_m
 
     def generate_direction_map(self, poly_quads, n_char, direction_map):
-        """
-        """
+        """ """
         width_list = []
         height_list = []
         for quad in poly_quads:
-            quad_w = (np.linalg.norm(quad[0] - quad[1]) +
-                      np.linalg.norm(quad[2] - quad[3])) / 2.0
-            quad_h = (np.linalg.norm(quad[0] - quad[3]) +
-                      np.linalg.norm(quad[2] - quad[1])) / 2.0
+            quad_w = (
+                np.linalg.norm(quad[0] - quad[1]) + np.linalg.norm(quad[2] - quad[3])
+            ) / 2.0
+            quad_h = (
+                np.linalg.norm(quad[0] - quad[3]) + np.linalg.norm(quad[2] - quad[1])
+            ) / 2.0
             width_list.append(quad_w)
             height_list.append(quad_h)
         norm_width = max(sum(width_list) / n_char, 1.0)
         average_height = max(sum(height_list) / len(height_list), 1.0)
         k = 1
         for quad in poly_quads:
-            direct_vector_full = (
-                (quad[1] + quad[2]) - (quad[0] + quad[3])) / 2.0
-            direct_vector = direct_vector_full / (
-                np.linalg.norm(direct_vector_full) + 1e-6) * norm_width
+            direct_vector_full = ((quad[1] + quad[2]) - (quad[0] + quad[3])) / 2.0
+            direct_vector = (
+                direct_vector_full
+                / (np.linalg.norm(direct_vector_full) + 1e-6)
+                * norm_width
+            )
             direction_label = tuple(
-                map(float,
-                    [direct_vector[0], direct_vector[1], 1.0 / average_height]))
-            cv2.fillPoly(direction_map,
-                         quad.round().astype(np.int32)[np.newaxis, :, :],
-                         direction_label)
+                map(float, [direct_vector[0], direct_vector[1], 1.0 / average_height])
+            )
+            cv2.fillPoly(
+                direction_map,
+                quad.round().astype(np.int32)[np.newaxis, :, :],
+                direction_label,
+            )
             k += 1
         return direction_map
 
     def calculate_average_height(self, poly_quads):
-        """
-        """
+        """ """
         height_list = []
         for quad in poly_quads:
-            quad_h = (np.linalg.norm(quad[0] - quad[3]) +
-                      np.linalg.norm(quad[2] - quad[1])) / 2.0
+            quad_h = (
+                np.linalg.norm(quad[0] - quad[3]) + np.linalg.norm(quad[2] - quad[1])
+            ) / 2.0
             height_list.append(quad_h)
         average_height = max(sum(height_list) / len(height_list), 1.0)
         return average_height
 
-    def generate_tcl_ctc_label(self,
-                               h,
-                               w,
-                               polys,
-                               tags,
-                               text_strs,
-                               ds_ratio,
-                               tcl_ratio=0.3,
-                               shrink_ratio_of_width=0.15):
+    def generate_tcl_ctc_label(
+        self,
+        h,
+        w,
+        polys,
+        tags,
+        text_strs,
+        ds_ratio,
+        tcl_ratio=0.3,
+        shrink_ratio_of_width=0.15,
+    ):
         """
         Generate polygon.
         """
@@ -436,25 +465,38 @@ class PGProcessTrain(object):
         score_map_big = np.zeros(
             (
                 h,
-                w, ), dtype=np.float32)
+                w,
+            ),
+            dtype=np.float32,
+        )
         h, w = int(h * ds_ratio), int(w * ds_ratio)
         polys = polys * ds_ratio
 
         score_map = np.zeros(
             (
                 h,
-                w, ), dtype=np.float32)
+                w,
+            ),
+            dtype=np.float32,
+        )
         score_label_map = np.zeros(
             (
                 h,
-                w, ), dtype=np.float32)
+                w,
+            ),
+            dtype=np.float32,
+        )
         tbo_map = np.zeros((h, w, 5), dtype=np.float32)
         training_mask = np.ones(
             (
                 h,
-                w, ), dtype=np.float32)
+                w,
+            ),
+            dtype=np.float32,
+        )
         direction_map = np.ones((h, w, 3)) * np.array([0, 0, 1]).reshape(
-            [1, 1, 3]).astype(np.float32)
+            [1, 1, 3]
+        ).astype(np.float32)
 
         label_idx = 0
         score_label_map_text_label_list = []
@@ -466,26 +508,32 @@ class PGProcessTrain(object):
             # generate min_area_quad
             min_area_quad, center_point = self.gen_min_area_quad_from_poly(poly)
             min_area_quad_h = 0.5 * (
-                np.linalg.norm(min_area_quad[0] - min_area_quad[3]) +
-                np.linalg.norm(min_area_quad[1] - min_area_quad[2]))
+                np.linalg.norm(min_area_quad[0] - min_area_quad[3])
+                + np.linalg.norm(min_area_quad[1] - min_area_quad[2])
+            )
             min_area_quad_w = 0.5 * (
-                np.linalg.norm(min_area_quad[0] - min_area_quad[1]) +
-                np.linalg.norm(min_area_quad[2] - min_area_quad[3]))
+                np.linalg.norm(min_area_quad[0] - min_area_quad[1])
+                + np.linalg.norm(min_area_quad[2] - min_area_quad[3])
+            )
 
-            if min(min_area_quad_h, min_area_quad_w) < self.min_text_size * ds_ratio \
-                    or min(min_area_quad_h, min_area_quad_w) > self.max_text_size * ds_ratio:
+            if (
+                min(min_area_quad_h, min_area_quad_w) < self.min_text_size * ds_ratio
+                or min(min_area_quad_h, min_area_quad_w) > self.max_text_size * ds_ratio
+            ):
                 continue
 
             if tag:
-                cv2.fillPoly(training_mask,
-                             poly.astype(np.int32)[np.newaxis, :, :], 0.15)
+                cv2.fillPoly(
+                    training_mask, poly.astype(np.int32)[np.newaxis, :, :], 0.15
+                )
             else:
                 text_label = text_strs[poly_idx]
-                text_label = self.prepare_text_label(text_label,
-                                                     self.Lexicon_Table)
-                text_label_index_list = [[self.Lexicon_Table.index(c_)]
-                                         for c_ in text_label
-                                         if c_ in self.Lexicon_Table]
+                text_label = self.prepare_text_label(text_label, self.Lexicon_Table)
+                text_label_index_list = [
+                    [self.Lexicon_Table.index(c_)]
+                    for c_ in text_label
+                    if c_ in self.Lexicon_Table
+                ]
                 if len(text_label_index_list) < 1:
                     continue
 
@@ -496,42 +544,48 @@ class PGProcessTrain(object):
                 stcl_quads, quad_index = self.shrink_poly_along_width(
                     tcl_quads,
                     shrink_ratio_of_width=shrink_ratio_of_width,
-                    expand_height_ratio=1.0 / tcl_ratio)
+                    expand_height_ratio=1.0 / tcl_ratio,
+                )
 
-                cv2.fillPoly(score_map,
-                             np.round(stcl_quads).astype(np.int32), 1.0)
-                cv2.fillPoly(score_map_big,
-                             np.round(stcl_quads / ds_ratio).astype(np.int32),
-                             1.0)
+                cv2.fillPoly(score_map, np.round(stcl_quads).astype(np.int32), 1.0)
+                cv2.fillPoly(
+                    score_map_big, np.round(stcl_quads / ds_ratio).astype(np.int32), 1.0
+                )
 
                 for idx, quad in enumerate(stcl_quads):
                     quad_mask = np.zeros((h, w), dtype=np.float32)
                     quad_mask = cv2.fillPoly(
                         quad_mask,
-                        np.round(quad[np.newaxis, :, :]).astype(np.int32), 1.0)
-                    tbo_map = self.gen_quad_tbo(poly_quads[quad_index[idx]],
-                                                quad_mask, tbo_map)
+                        np.round(quad[np.newaxis, :, :]).astype(np.int32),
+                        1.0,
+                    )
+                    tbo_map = self.gen_quad_tbo(
+                        poly_quads[quad_index[idx]], quad_mask, tbo_map
+                    )
 
                 # score label map and score_label_map_text_label_list for refine
                 if label_idx == 0:
-                    text_pos_list_ = [[len(self.Lexicon_Table)], ]
+                    text_pos_list_ = [
+                        [len(self.Lexicon_Table)],
+                    ]
                     score_label_map_text_label_list.append(text_pos_list_)
 
                 label_idx += 1
-                cv2.fillPoly(score_label_map,
-                             np.round(poly_quads).astype(np.int32), label_idx)
+                cv2.fillPoly(
+                    score_label_map, np.round(poly_quads).astype(np.int32), label_idx
+                )
                 score_label_map_text_label_list.append(text_label_index_list)
 
                 # direction info, fix-me
                 n_char = len(text_label_index_list)
-                direction_map = self.generate_direction_map(poly_quads, n_char,
-                                                            direction_map)
+                direction_map = self.generate_direction_map(
+                    poly_quads, n_char, direction_map
+                )
 
                 # pos info
-                average_shrink_height = self.calculate_average_height(
-                    stcl_quads)
+                average_shrink_height = self.calculate_average_height(stcl_quads)
 
-                if self.point_gather_mode == 'align':
+                if self.point_gather_mode == "align":
                     self.f_direction = direction_map[:, :, :-1].copy()
                     pos_res = self.fit_and_gather_tcl_points_v3(
                         min_area_quad,
@@ -540,7 +594,8 @@ class PGProcessTrain(object):
                         max_w=w,
                         fixed_point_num=64,
                         img_id=self.img_id,
-                        reference_height=average_shrink_height)
+                        reference_height=average_shrink_height,
+                    )
                     if pos_res is None:
                         continue
                     pos_l, pos_m = pos_res[0], pos_res[1]
@@ -553,7 +608,8 @@ class PGProcessTrain(object):
                         max_w=w,
                         fixed_point_num=64,
                         img_id=self.img_id,
-                        reference_height=average_shrink_height)
+                        reference_height=average_shrink_height,
+                    )
 
                 label_l = text_label_index_list
                 if len(text_label_index_list) < 2:
@@ -565,11 +621,21 @@ class PGProcessTrain(object):
 
         # use big score_map for smooth tcl lines
         score_map_big_resized = cv2.resize(
-            score_map_big, dsize=None, fx=ds_ratio, fy=ds_ratio)
-        score_map = np.array(score_map_big_resized > 1e-3, dtype='float32')
+            score_map_big, dsize=None, fx=ds_ratio, fy=ds_ratio
+        )
+        score_map = np.array(score_map_big_resized > 1e-3, dtype="float32")
 
-        return score_map, score_label_map, tbo_map, direction_map, training_mask, \
-               pos_list, pos_mask, label_list, score_label_map_text_label_list
+        return (
+            score_map,
+            score_label_map,
+            tbo_map,
+            direction_map,
+            training_mask,
+            pos_list,
+            pos_mask,
+            label_list,
+            score_label_map_text_label_list,
+        )
 
     def adjust_point(self, poly):
         """
@@ -589,7 +655,8 @@ class PGProcessTrain(object):
             vector_1 = poly[0] - poly[1]
             vector_2 = poly[1] - poly[2]
             cos_theta = np.dot(vector_1, vector_2) / (
-                np.linalg.norm(vector_1) * np.linalg.norm(vector_2) + 1e-6)
+                np.linalg.norm(vector_1) * np.linalg.norm(vector_2) + 1e-6
+            )
             theta = np.arccos(np.round(cos_theta, decimals=4))
 
             if abs(theta) > (70 / 180 * math.pi):
@@ -607,18 +674,21 @@ class PGProcessTrain(object):
             min_area_quad = poly
             center_point = np.sum(poly, axis=0) / 4
         else:
-            rect = cv2.minAreaRect(poly.astype(
-                np.int32))  # (center (x,y), (width, height), angle of rotation)
+            rect = cv2.minAreaRect(
+                poly.astype(np.int32)
+            )  # (center (x,y), (width, height), angle of rotation)
             center_point = rect[0]
             box = np.array(cv2.boxPoints(rect))
 
             first_point_idx = 0
             min_dist = 1e4
             for i in range(4):
-                dist = np.linalg.norm(box[(i + 0) % 4] - poly[0]) + \
-                       np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1]) + \
-                       np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2]) + \
-                       np.linalg.norm(box[(i + 3) % 4] - poly[-1])
+                dist = (
+                    np.linalg.norm(box[(i + 0) % 4] - poly[0])
+                    + np.linalg.norm(box[(i + 1) % 4] - poly[point_num // 2 - 1])
+                    + np.linalg.norm(box[(i + 2) % 4] - poly[point_num // 2])
+                    + np.linalg.norm(box[(i + 3) % 4] - poly[-1])
+                )
                 if dist < min_dist:
                     min_dist = dist
                     first_point_idx = i
@@ -628,23 +698,20 @@ class PGProcessTrain(object):
 
         return min_area_quad, center_point
 
-    def shrink_quad_along_width(self,
-                                quad,
-                                begin_width_ratio=0.,
-                                end_width_ratio=1.):
+    def shrink_quad_along_width(self, quad, begin_width_ratio=0.0, end_width_ratio=1.0):
         """
         Generate shrink_quad_along_width.
         """
         ratio_pair = np.array(
-            [[begin_width_ratio], [end_width_ratio]], dtype=np.float32)
+            [[begin_width_ratio], [end_width_ratio]], dtype=np.float32
+        )
         p0_1 = quad[0] + (quad[1] - quad[0]) * ratio_pair
         p3_2 = quad[3] + (quad[2] - quad[3]) * ratio_pair
         return np.array([p0_1[0], p0_1[1], p3_2[1], p3_2[0]])
 
-    def shrink_poly_along_width(self,
-                                quads,
-                                shrink_ratio_of_width,
-                                expand_height_ratio=1.0):
+    def shrink_poly_along_width(
+        self, quads, shrink_ratio_of_width, expand_height_ratio=1.0
+    ):
         """
         shrink poly with given length.
         """
@@ -662,28 +729,30 @@ class PGProcessTrain(object):
             upper_edge_list.append(upper_edge_len)
 
         # length of left edge and right edge.
-        left_length = np.linalg.norm(quads[0][0] - quads[0][
-            3]) * expand_height_ratio
-        right_length = np.linalg.norm(quads[-1][1] - quads[-1][
-            2]) * expand_height_ratio
+        left_length = np.linalg.norm(quads[0][0] - quads[0][3]) * expand_height_ratio
+        right_length = np.linalg.norm(quads[-1][1] - quads[-1][2]) * expand_height_ratio
 
-        shrink_length = min(left_length, right_length,
-                            sum(upper_edge_list)) * shrink_ratio_of_width
+        shrink_length = (
+            min(left_length, right_length, sum(upper_edge_list)) * shrink_ratio_of_width
+        )
         # shrinking length
         upper_len_left = shrink_length
         upper_len_right = sum(upper_edge_list) - shrink_length
 
         left_idx, left_ratio = get_cut_info(upper_edge_list, upper_len_left)
         left_quad = self.shrink_quad_along_width(
-            quads[left_idx], begin_width_ratio=left_ratio, end_width_ratio=1)
+            quads[left_idx], begin_width_ratio=left_ratio, end_width_ratio=1
+        )
         right_idx, right_ratio = get_cut_info(upper_edge_list, upper_len_right)
         right_quad = self.shrink_quad_along_width(
-            quads[right_idx], begin_width_ratio=0, end_width_ratio=right_ratio)
+            quads[right_idx], begin_width_ratio=0, end_width_ratio=right_ratio
+        )
 
         out_quad_list = []
         if left_idx == right_idx:
             out_quad_list.append(
-                [left_quad[0], right_quad[1], right_quad[2], left_quad[3]])
+                [left_quad[0], right_quad[1], right_quad[2], left_quad[3]]
+            )
         else:
             out_quad_list.append(left_quad)
             for idx in range(left_idx + 1, right_idx):
@@ -742,7 +811,7 @@ class PGProcessTrain(object):
         d = a1 * b2 - a2 * b1
 
         if d == 0:
-            print('Cross point does not exist')
+            print("Cross point does not exist")
             return np.array([0, 0], dtype=np.float32)
         else:
             x = (b1 * c2 - b2 * c1) / d
@@ -754,8 +823,7 @@ class PGProcessTrain(object):
         """
         Generate center line by poly clock-wise point. (4, 2)
         """
-        ratio_pair = np.array(
-            [[0.5 - ratio / 2], [0.5 + ratio / 2]], dtype=np.float32)
+        ratio_pair = np.array([[0.5 - ratio / 2], [0.5 + ratio / 2]], dtype=np.float32)
         p0_3 = poly[0] + (poly[3] - poly[0]) * ratio_pair
         p1_2 = poly[1] + (poly[2] - poly[1]) * ratio_pair
         return np.array([p0_3[0], p1_2[0], p1_2[1], p0_3[1]])
@@ -764,14 +832,14 @@ class PGProcessTrain(object):
         """
         Generate center line by poly clock-wise point.
         """
-        ratio_pair = np.array(
-            [[0.5 - ratio / 2], [0.5 + ratio / 2]], dtype=np.float32)
+        ratio_pair = np.array([[0.5 - ratio / 2], [0.5 + ratio / 2]], dtype=np.float32)
         tcl_poly = np.zeros_like(poly)
         point_num = poly.shape[0]
 
         for idx in range(point_num // 2):
-            point_pair = poly[idx] + (poly[point_num - 1 - idx] - poly[idx]
-                                      ) * ratio_pair
+            point_pair = (
+                poly[idx] + (poly[point_num - 1 - idx] - poly[idx]) * ratio_pair
+            )
             tcl_poly[idx] = point_pair[0]
             tcl_poly[point_num - 1 - idx] = point_pair[1]
         return tcl_poly
@@ -784,10 +852,12 @@ class PGProcessTrain(object):
         up_line = self.line_cross_two_point(quad[0], quad[1])
         lower_line = self.line_cross_two_point(quad[3], quad[2])
 
-        quad_h = 0.5 * (np.linalg.norm(quad[0] - quad[3]) +
-                        np.linalg.norm(quad[1] - quad[2]))
-        quad_w = 0.5 * (np.linalg.norm(quad[0] - quad[1]) +
-                        np.linalg.norm(quad[2] - quad[3]))
+        quad_h = 0.5 * (
+            np.linalg.norm(quad[0] - quad[3]) + np.linalg.norm(quad[1] - quad[2])
+        )
+        quad_w = 0.5 * (
+            np.linalg.norm(quad[0] - quad[1]) + np.linalg.norm(quad[2] - quad[3])
+        )
 
         # average angle of left and right line.
         angle = self.average_angle(quad)
@@ -824,8 +894,9 @@ class PGProcessTrain(object):
         quad_num = point_num // 2 - 1
         for idx in range(quad_num):
             # reshape and adjust to clock-wise
-            quad_list.append((np.array(point_pair_list)[[idx, idx + 1]]
-                              ).reshape(4, 2)[[0, 2, 3, 1]])
+            quad_list.append(
+                (np.array(point_pair_list)[[idx, idx + 1]]).reshape(4, 2)[[0, 2, 3, 1]]
+            )
 
         return np.array(quad_list)
 
@@ -852,23 +923,30 @@ class PGProcessTrain(object):
             poly = []
             for j in range(4):  # 16->4
                 sx, sy = wordBB[j][0], wordBB[j][1]
-                dx = math.cos(rot_angle) * (sx - cx) - math.sin(rot_angle) * (
-                    sy - cy) + ncx
-                dy = math.sin(rot_angle) * (sx - cx) + math.cos(rot_angle) * (
-                    sy - cy) + ncy
+                dx = (
+                    math.cos(rot_angle) * (sx - cx)
+                    - math.sin(rot_angle) * (sy - cy)
+                    + ncx
+                )
+                dy = (
+                    math.sin(rot_angle) * (sx - cx)
+                    + math.cos(rot_angle) * (sy - cy)
+                    + ncy
+                )
                 poly.append([dx, dy])
             dst_polys.append(poly)
         return dst_im, np.array(dst_polys, dtype=np.float32)
 
     def __call__(self, data):
         input_size = 512
-        im = data['image']
-        text_polys = data['polys']
-        text_tags = data['ignore_tags']
-        text_strs = data['texts']
+        im = data["image"]
+        text_polys = data["polys"]
+        text_tags = data["ignore_tags"]
+        text_strs = data["texts"]
         h, w, _ = im.shape
         text_polys, text_tags, hv_tags = self.check_and_validate_polys(
-            text_polys, text_tags, (h, w))
+            text_polys, text_tags, (h, w)
+        )
         if text_polys.shape[0] <= 0:
             return None
         # set aspect ratio and keep area fix
@@ -909,12 +987,8 @@ class PGProcessTrain(object):
 
             # no background
             im, text_polys, text_tags, hv_tags, text_strs = self.crop_area(
-                im,
-                text_polys,
-                text_tags,
-                hv_tags,
-                text_strs,
-                crop_background=False)
+                im, text_polys, text_tags, hv_tags, text_strs, crop_background=False
+            )
 
         if text_polys.shape[0] == 0:
             return None
@@ -927,7 +1001,8 @@ class PGProcessTrain(object):
         # resize image
         std_ratio = float(input_size) / max(new_w, new_h)
         rand_scales = np.array(
-            [0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.0, 1.0, 1.0, 1.0])
+            [0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.0, 1.0, 1.0, 1.0]
+        )
         rz_scale = std_ratio * np.random.choice(rand_scales)
         im = cv2.resize(im, dsize=None, fx=rz_scale, fy=rz_scale)
         text_polys[:, :, 0] *= rz_scale
@@ -966,16 +1041,23 @@ class PGProcessTrain(object):
             sw = int(np.random.rand() * del_w)
 
         # Padding
-        im_padded[sh:sh + new_h, sw:sw + new_w, :] = im.copy()
+        im_padded[sh : sh + new_h, sw : sw + new_w, :] = im.copy()
         text_polys[:, :, 0] += sw
         text_polys[:, :, 1] += sh
 
-        score_map, score_label_map, border_map, direction_map, training_mask, \
-        pos_list, pos_mask, label_list, score_label_map_text_label = self.generate_tcl_ctc_label(input_size,
-                                                                                                 input_size,
-                                                                                                 text_polys,
-                                                                                                 text_tags,
-                                                                                                 text_strs, 0.25)
+        (
+            score_map,
+            score_label_map,
+            border_map,
+            direction_map,
+            training_mask,
+            pos_list,
+            pos_mask,
+            label_list,
+            score_label_map_text_label,
+        ) = self.generate_tcl_ctc_label(
+            input_size, input_size, text_polys, text_tags, text_strs, 0.25
+        )
         if len(label_list) <= 0:  # eliminate negative samples
             return None
         pos_list_temp = np.zeros([64, 3])
@@ -985,7 +1067,7 @@ class PGProcessTrain(object):
         for i, label in enumerate(label_list):
             n = len(label)
             if n > self.max_text_length:
-                label_list[i] = label[:self.max_text_length]
+                label_list[i] = label[: self.max_text_length]
                 continue
             while n < self.max_text_length:
                 label.append([self.pad_num])
@@ -1009,9 +1091,9 @@ class PGProcessTrain(object):
         im_padded[:, :, 2] -= 0.485 * 255
         im_padded[:, :, 1] -= 0.456 * 255
         im_padded[:, :, 0] -= 0.406 * 255
-        im_padded[:, :, 2] /= (255.0 * 0.229)
-        im_padded[:, :, 1] /= (255.0 * 0.224)
-        im_padded[:, :, 0] /= (255.0 * 0.225)
+        im_padded[:, :, 2] /= 255.0 * 0.229
+        im_padded[:, :, 1] /= 255.0 * 0.224
+        im_padded[:, :, 0] /= 255.0 * 0.225
         im_padded = im_padded.transpose((2, 0, 1))
         images = im_padded[::-1, :, :]
         tcl_maps = score_map[np.newaxis, :, :]
@@ -1022,13 +1104,13 @@ class PGProcessTrain(object):
         pos_list = np.array(pos_list)
         pos_mask = np.array(pos_mask)
         label_list = np.array(label_list)
-        data['images'] = images
-        data['tcl_maps'] = tcl_maps
-        data['tcl_label_maps'] = tcl_label_maps
-        data['border_maps'] = border_maps
-        data['direction_maps'] = direction_maps
-        data['training_masks'] = training_masks
-        data['label_list'] = label_list
-        data['pos_list'] = pos_list
-        data['pos_mask'] = pos_mask
+        data["images"] = images
+        data["tcl_maps"] = tcl_maps
+        data["tcl_label_maps"] = tcl_label_maps
+        data["border_maps"] = border_maps
+        data["direction_maps"] = direction_maps
+        data["training_masks"] = training_masks
+        data["label_list"] = label_list
+        data["pos_list"] = pos_list
+        data["pos_mask"] = pos_mask
         return data

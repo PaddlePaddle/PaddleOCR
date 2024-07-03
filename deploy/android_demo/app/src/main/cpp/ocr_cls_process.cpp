@@ -17,7 +17,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <iostream>
 #include <vector>
 
 const std::vector<int> CLS_IMAGE_SHAPE = {3, 48, 192};

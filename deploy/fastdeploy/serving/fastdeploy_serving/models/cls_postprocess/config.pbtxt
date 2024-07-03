@@ -1,0 +1,30 @@
+name: "cls_postprocess"
+backend: "python"
+max_batch_size: 128
+input [
+  {
+    name: "POST_INPUT_0"
+    data_type: TYPE_FP32
+    dims: [ 2 ]
+  }
+]
+
+output [
+  {
+    name: "POST_OUTPUT_0"
+    data_type: TYPE_INT32
+    dims: [ 1 ]
+  },
+  {
+    name: "POST_OUTPUT_1"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+
+instance_group [
+  {
+      count: 1
+      kind: KIND_CPU
+  }
+]

@@ -25,21 +25,17 @@ import sys
 
 import math
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal
-ones_ = Constant(value=1.)
-zeros_ = Constant(value=0.)
+
+ones_ = Constant(value=1.0)
+zeros_ = Constant(value=0.0)
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, '../../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "../../..")))
 
 
 class Conv_BN_ReLU(nn.Layer):
-    def __init__(self,
-                 in_planes,
-                 out_planes,
-                 kernel_size=1,
-                 stride=1,
-                 padding=0):
+    def __init__(self, in_planes, out_planes, kernel_size=1, stride=1, padding=0):
         super(Conv_BN_ReLU, self).__init__()
         self.conv = nn.Conv2D(
             in_planes,
@@ -47,14 +43,15 @@ class Conv_BN_ReLU(nn.Layer):
             kernel_size=kernel_size,
             stride=stride,
             padding=padding,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn = nn.BatchNorm2D(out_planes)
         self.relu = nn.ReLU()
 
         for m in self.sublayers():
             if isinstance(m, nn.Conv2D):
                 n = m._kernel_size[0] * m._kernel_size[1] * m._out_channels
-                normal_ = Normal(mean=0.0, std=math.sqrt(2. / n))
+                normal_ = Normal(mean=0.0, std=math.sqrt(2.0 / n))
                 normal_(m.weight)
             elif isinstance(m, nn.BatchNorm2D):
                 zeros_(m.bias)
@@ -75,7 +72,8 @@ class FPEM(nn.Layer):
             stride=1,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer3_1 = Conv_BN_ReLU(planes, planes)
 
         self.dwconv2_1 = nn.Conv2D(
@@ -85,7 +83,8 @@ class FPEM(nn.Layer):
             stride=1,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer2_1 = Conv_BN_ReLU(planes, planes)
 
         self.dwconv1_1 = nn.Conv2D(
@@ -95,7 +94,8 @@ class FPEM(nn.Layer):
             stride=1,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer1_1 = Conv_BN_ReLU(planes, planes)
 
         self.dwconv2_2 = nn.Conv2D(
@@ -105,7 +105,8 @@ class FPEM(nn.Layer):
             stride=2,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer2_2 = Conv_BN_ReLU(planes, planes)
 
         self.dwconv3_2 = nn.Conv2D(
@@ -115,7 +116,8 @@ class FPEM(nn.Layer):
             stride=2,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer3_2 = Conv_BN_ReLU(planes, planes)
 
         self.dwconv4_2 = nn.Conv2D(
@@ -125,11 +127,12 @@ class FPEM(nn.Layer):
             stride=2,
             padding=1,
             groups=planes,
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.smooth_layer4_2 = Conv_BN_ReLU(planes, planes)
 
     def _upsample_add(self, x, y):
-        return F.upsample(x, scale_factor=2, mode='bilinear') + y
+        return F.upsample(x, scale_factor=2, mode="bilinear") + y
 
     def forward(self, f1, f2, f3, f4):
         # up-down
@@ -159,7 +162,7 @@ class CTFPN(nn.Layer):
         self.fpem2 = FPEM(in_channels=(64, 128, 256, 512), out_channels=128)
 
     def _upsample(self, x, scale=1):
-        return F.upsample(x, scale_factor=scale, mode='bilinear')
+        return F.upsample(x, scale_factor=scale, mode="bilinear")
 
     def forward(self, f):
         # # reduce channel

@@ -24,16 +24,18 @@ from paddle import ParamAttr
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_channels,
-                 out_channels,
-                 kernel_size,
-                 stride,
-                 padding,
-                 groups=1,
-                 if_act=True,
-                 act=None,
-                 name=None):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size,
+        stride,
+        padding,
+        groups=1,
+        if_act=True,
+        act=None,
+        name=None,
+    ):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -44,8 +46,9 @@ class ConvBNLayer(nn.Layer):
             stride=stride,
             padding=padding,
             groups=groups,
-            weight_attr=ParamAttr(name=name + '_weights'),
-            bias_attr=False)
+            weight_attr=ParamAttr(name=name + "_weights"),
+            bias_attr=False,
+        )
 
         self.bn = nn.BatchNorm(
             num_channels=out_channels,
@@ -53,7 +56,8 @@ class ConvBNLayer(nn.Layer):
             param_attr=ParamAttr(name="bn_" + name + "_scale"),
             bias_attr=ParamAttr(name="bn_" + name + "_offset"),
             moving_mean_name="bn_" + name + "_mean",
-            moving_variance_name="bn_" + name + "_variance")
+            moving_variance_name="bn_" + name + "_variance",
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -62,8 +66,8 @@ class ConvBNLayer(nn.Layer):
 
 
 class EASTHead(nn.Layer):
-    """
-    """
+    """ """
+
     def __init__(self, in_channels, model_name, **kwargs):
         super(EASTHead, self).__init__()
         self.model_name = model_name
@@ -79,8 +83,9 @@ class EASTHead(nn.Layer):
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="det_head1")
+            act="relu",
+            name="det_head1",
+        )
         self.det_conv2 = ConvBNLayer(
             in_channels=num_outputs[0],
             out_channels=num_outputs[1],
@@ -88,8 +93,9 @@ class EASTHead(nn.Layer):
             stride=1,
             padding=1,
             if_act=True,
-            act='relu',
-            name="det_head2")
+            act="relu",
+            name="det_head2",
+        )
         self.score_conv = ConvBNLayer(
             in_channels=num_outputs[1],
             out_channels=num_outputs[2],
@@ -98,7 +104,8 @@ class EASTHead(nn.Layer):
             padding=0,
             if_act=False,
             act=None,
-            name="f_score")
+            name="f_score",
+        )
         self.geo_conv = ConvBNLayer(
             in_channels=num_outputs[1],
             out_channels=num_outputs[3],
@@ -107,7 +114,8 @@ class EASTHead(nn.Layer):
             padding=0,
             if_act=False,
             act=None,
-            name="f_geo")
+            name="f_geo",
+        )
 
     def forward(self, x, targets=None):
         f_det = self.det_conv1(x)
@@ -117,5 +125,5 @@ class EASTHead(nn.Layer):
         f_geo = self.geo_conv(f_det)
         f_geo = (F.sigmoid(f_geo) - 0.5) * 2 * 800
 
-        pred = {'f_score': f_score, 'f_geo': f_geo}
+        pred = {"f_score": f_score, "f_geo": f_geo}
         return pred

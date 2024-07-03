@@ -59,8 +59,8 @@ test_tipc/output/
 
 其中`results_python.log`中包含了每条指令的运行状态，如果运行成功会输出：
 ```
-Run successfully with command - python tools/infer/predict_det.py --use_gpu=True --use_tensorrt=False --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True   > ./test_tipc/output/python_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log 2>&1 !  
-Run successfully with command - python tools/infer/predict_det.py --use_gpu=True --use_tensorrt=True --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True   > ./test_tipc/output/python_infer_gpu_usetrt_True_precision_fp32_batchsize_1.log 2>&1 !  
+Run successfully with command - python tools/infer/predict_det.py --use_gpu=True --use_tensorrt=False --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True   > ./test_tipc/output/python_infer_gpu_usetrt_False_precision_fp32_batchsize_1.log 2>&1 !
+Run successfully with command - python tools/infer/predict_det.py --use_gpu=True --use_tensorrt=True --precision=fp32 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True   > ./test_tipc/output/python_infer_gpu_usetrt_True_precision_fp32_batchsize_1.log 2>&1 !
 Run successfully with command - python tools/infer/predict_det.py --use_gpu=True --use_tensorrt=True --precision=fp16 --det_model_dir=./inference/ch_ppocr_mobile_v2.0_det_infer/ --rec_batch_num=1 --image_dir=./inference/ch_det_data_50/all-sum-510/ --benchmark=True   > ./test_tipc/output/python_infer_gpu_usetrt_True_precision_fp16_batchsize_1.log 2>&1 !
 ```
 如果运行失败，会输出：
@@ -84,7 +84,7 @@ Run failed with command - python tools/infer/predict_det.py --use_gpu=True --use
 python test_tipc/compare_results.py --gt_file=./test_tipc/results/python_*.txt  --log_file=./test_tipc/output/python_*.log --atol=1e-3 --rtol=1e-3
 ```
 
-参数介绍：  
+参数介绍：
 - gt_file： 指向事先保存好的预测结果路径，支持*.txt 结尾，会自动索引*.txt格式的文件，文件默认保存在test_tipc/result/ 文件夹下
 - log_file: 指向运行test_tipc/test_train_inference_python.sh 脚本的infer模式保存的预测日志，预测日志中打印的有预测结果，比如：文本框，预测文本，类别等等，同样支持python_infer_*.log格式传入
 - atol: 设置的绝对误差
@@ -108,6 +108,6 @@ ValueError: The results of python_infer_gpu_usetrt_True_precision_fp32_batchsize
 
 
 ## 3. 更多教程
-本文档为功能测试用，更丰富的训练预测使用教程请参考：  
-[模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)  
+本文档为功能测试用，更丰富的训练预测使用教程请参考：
+[模型训练](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/training.md)
 [基于Python预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/inference_ppocr.md)

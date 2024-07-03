@@ -14,19 +14,18 @@
 
 import os
 import cv2
+import paddle
 import random
 import pyclipper
-import paddle
-
 import numpy as np
-import Polygon as plg
-import scipy.io as scio
-
 from PIL import Image
+
 import paddle.vision.transforms as transforms
 
+from ppocr.utils.utility import check_install
 
-class RandomScale():
+
+class RandomScale:
     def __init__(self, short_size=640, **kwargs):
         self.short_size = short_size
 
@@ -44,19 +43,19 @@ class RandomScale():
         return img, factor_h, factor_w
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
 
         h, w = img.shape[0:2]
         random_scale = np.array([0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3])
         scale = (np.random.choice(random_scale) * self.short_size) / min(h, w)
         img, factor_h, factor_w = self.scale_aligned(img, scale)
 
-        data['scale_factor'] = (factor_w, factor_h)
-        data['image'] = img
+        data["scale_factor"] = (factor_w, factor_h)
+        data["image"] = img
         return data
 
 
-class MakeShrink():
+class MakeShrink:
     def __init__(self, kernel_scale=0.7, **kwargs):
         self.kernel_scale = kernel_scale
 
@@ -70,6 +69,9 @@ class MakeShrink():
         return peri
 
     def shrink(self, bboxes, rate, max_shr=20):
+        check_install("Polygon", "Polygon3")
+        import Polygon as plg
+
         rate = rate * rate
         shrinked_bboxes = []
         for bbox in bboxes:
@@ -78,10 +80,8 @@ class MakeShrink():
 
             try:
                 pco = pyclipper.PyclipperOffset()
-                pco.AddPath(bbox, pyclipper.JT_ROUND,
-                            pyclipper.ET_CLOSEDPOLYGON)
-                offset = min(
-                    int(area * (1 - rate) / (peri + 0.001) + 0.5), max_shr)
+                pco.AddPath(bbox, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
+                offset = min(int(area * (1 - rate) / (peri + 0.001) + 0.5), max_shr)
 
                 shrinked_bbox = pco.Execute(-offset)
                 if len(shrinked_bbox) == 0:
@@ -100,40 +100,41 @@ class MakeShrink():
         return shrinked_bboxes
 
     def __call__(self, data):
-        img = data['image']
-        bboxes = data['polys']
-        words = data['texts']
-        scale_factor = data['scale_factor']
+        img = data["image"]
+        bboxes = data["polys"]
+        words = data["texts"]
+        scale_factor = data["scale_factor"]
 
-        gt_instance = np.zeros(img.shape[0:2], dtype='uint8')  # h,w
-        training_mask = np.ones(img.shape[0:2], dtype='uint8')
-        training_mask_distance = np.ones(img.shape[0:2], dtype='uint8')
-
-        for i in range(len(bboxes)):
-            bboxes[i] = np.reshape(bboxes[i] * (
-                [scale_factor[0], scale_factor[1]] * (bboxes[i].shape[0] // 2)),
-                                   (bboxes[i].shape[0] // 2, 2)).astype('int32')
+        gt_instance = np.zeros(img.shape[0:2], dtype="uint8")  # h,w
+        training_mask = np.ones(img.shape[0:2], dtype="uint8")
+        training_mask_distance = np.ones(img.shape[0:2], dtype="uint8")
 
         for i in range(len(bboxes)):
-            #different value for different bbox
+            bboxes[i] = np.reshape(
+                bboxes[i]
+                * ([scale_factor[0], scale_factor[1]] * (bboxes[i].shape[0] // 2)),
+                (bboxes[i].shape[0] // 2, 2),
+            ).astype("int32")
+
+        for i in range(len(bboxes)):
+            # different value for different bbox
             cv2.drawContours(gt_instance, [bboxes[i]], -1, i + 1, -1)
 
             # set training mask to 0
             cv2.drawContours(training_mask, [bboxes[i]], -1, 0, -1)
 
             # for not accurate annotation, use training_mask_distance
-            if words[i] == '###' or words[i] == '???':
+            if words[i] == "###" or words[i] == "???":
                 cv2.drawContours(training_mask_distance, [bboxes[i]], -1, 0, -1)
 
         # make shrink
-        gt_kernel_instance = np.zeros(img.shape[0:2], dtype='uint8')
+        gt_kernel_instance = np.zeros(img.shape[0:2], dtype="uint8")
         kernel_bboxes = self.shrink(bboxes, self.kernel_scale)
         for i in range(len(bboxes)):
-            cv2.drawContours(gt_kernel_instance, [kernel_bboxes[i]], -1, i + 1,
-                             -1)
+            cv2.drawContours(gt_kernel_instance, [kernel_bboxes[i]], -1, i + 1, -1)
 
             # for training mask, kernel and background= 1, box region=0
-            if words[i] != '###' and words[i] != '???':
+            if words[i] != "###" and words[i] != "???":
                 cv2.drawContours(training_mask, [kernel_bboxes[i]], -1, 1, -1)
 
         gt_kernel = gt_kernel_instance.copy()
@@ -157,33 +158,38 @@ class MakeShrink():
         # gt_kernel_inner: text kernel reference
         # training_mask_distance: word without anno = 0, else 1
 
-        data['image'] = [
-            img, gt_instance, training_mask, gt_kernel_instance, gt_kernel,
-            gt_kernel_inner, training_mask_distance
+        data["image"] = [
+            img,
+            gt_instance,
+            training_mask,
+            gt_kernel_instance,
+            gt_kernel,
+            gt_kernel_inner,
+            training_mask_distance,
         ]
         return data
 
 
-class GroupRandomHorizontalFlip():
+class GroupRandomHorizontalFlip:
     def __init__(self, p=0.5, **kwargs):
         self.p = p
 
     def __call__(self, data):
-        imgs = data['image']
+        imgs = data["image"]
 
         if random.random() < self.p:
             for i in range(len(imgs)):
                 imgs[i] = np.flip(imgs[i], axis=1).copy()
-        data['image'] = imgs
+        data["image"] = imgs
         return data
 
 
-class GroupRandomRotate():
+class GroupRandomRotate:
     def __init__(self, **kwargs):
         pass
 
     def __call__(self, data):
-        imgs = data['image']
+        imgs = data["image"]
 
         max_angle = 10
         angle = random.random() * 2 * max_angle - max_angle
@@ -192,19 +198,20 @@ class GroupRandomRotate():
             w, h = img.shape[:2]
             rotation_matrix = cv2.getRotationMatrix2D((h / 2, w / 2), angle, 1)
             img_rotation = cv2.warpAffine(
-                img, rotation_matrix, (h, w), flags=cv2.INTER_NEAREST)
+                img, rotation_matrix, (h, w), flags=cv2.INTER_NEAREST
+            )
             imgs[i] = img_rotation
 
-        data['image'] = imgs
+        data["image"] = imgs
         return data
 
 
-class GroupRandomCropPadding():
+class GroupRandomCropPadding:
     def __init__(self, target_size=(640, 640), **kwargs):
         self.target_size = target_size
 
     def __call__(self, data):
-        imgs = data['image']
+        imgs = data["image"]
 
         h, w = imgs[0].shape[0:2]
         t_w, t_h = self.target_size
@@ -234,7 +241,7 @@ class GroupRandomCropPadding():
         for idx in range(len(imgs)):
             if len(imgs[idx].shape) == 3:
                 s3_length = int(imgs[idx].shape[-1])
-                img = imgs[idx][i:i + t_h, j:j + t_w, :]
+                img = imgs[idx][i : i + t_h, j : j + t_w, :]
                 img_p = cv2.copyMakeBorder(
                     img,
                     0,
@@ -242,9 +249,10 @@ class GroupRandomCropPadding():
                     0,
                     p_w - t_w,
                     borderType=cv2.BORDER_CONSTANT,
-                    value=tuple(0 for i in range(s3_length)))
+                    value=tuple(0 for i in range(s3_length)),
+                )
             else:
-                img = imgs[idx][i:i + t_h, j:j + t_w]
+                img = imgs[idx][i : i + t_h, j : j + t_w]
                 img_p = cv2.copyMakeBorder(
                     img,
                     0,
@@ -252,14 +260,15 @@ class GroupRandomCropPadding():
                     0,
                     p_w - t_w,
                     borderType=cv2.BORDER_CONSTANT,
-                    value=(0, ))
+                    value=(0,),
+                )
             n_imgs.append(img_p)
 
-        data['image'] = n_imgs
+        data["image"] = n_imgs
         return data
 
 
-class MakeCentripetalShift():
+class MakeCentripetalShift:
     def __init__(self, **kwargs):
         pass
 
@@ -268,20 +277,32 @@ class MakeCentripetalShift():
         B = Bs.shape[0]  # large
 
         dis = np.sqrt(
-            np.sum((As[:, np.newaxis, :].repeat(
-                B, axis=1) - Bs[np.newaxis, :, :].repeat(
-                    A, axis=0))**2,
-                   axis=-1))
+            np.sum(
+                (
+                    As[:, np.newaxis, :].repeat(B, axis=1)
+                    - Bs[np.newaxis, :, :].repeat(A, axis=0)
+                )
+                ** 2,
+                axis=-1,
+            )
+        )
 
         ind = np.argmin(dis, axis=-1)
 
         return ind
 
     def __call__(self, data):
-        imgs = data['image']
+        imgs = data["image"]
 
-        img, gt_instance, training_mask, gt_kernel_instance, gt_kernel, gt_kernel_inner, training_mask_distance = \
-                        imgs[0], imgs[1], imgs[2], imgs[3], imgs[4], imgs[5], imgs[6]
+        (
+            img,
+            gt_instance,
+            training_mask,
+            gt_kernel_instance,
+            gt_kernel,
+            gt_kernel_inner,
+            training_mask_distance,
+        ) = (imgs[0], imgs[1], imgs[2], imgs[3], imgs[4], imgs[5], imgs[6])
 
         max_instance = np.max(gt_instance)  # num bbox
 
@@ -289,23 +310,23 @@ class MakeCentripetalShift():
         gt_distance = np.zeros((2, *img.shape[0:2]), dtype=np.float32)
         for i in range(1, max_instance + 1):
             # kernel_reference
-            ind = (gt_kernel_inner == i)
+            ind = gt_kernel_inner == i
 
             if np.sum(ind) == 0:
                 training_mask[gt_instance == i] = 0
                 training_mask_distance[gt_instance == i] = 0
                 continue
 
-            kpoints = np.array(np.where(ind)).transpose(
-                (1, 0))[:, ::-1].astype('float32')
+            kpoints = (
+                np.array(np.where(ind)).transpose((1, 0))[:, ::-1].astype("float32")
+            )
 
             ind = (gt_instance == i) * (gt_kernel_instance == 0)
             if np.sum(ind) == 0:
                 continue
             pixels = np.where(ind)
 
-            points = np.array(pixels).transpose(
-                (1, 0))[:, ::-1].astype('float32')
+            points = np.array(pixels).transpose((1, 0))[:, ::-1].astype("float32")
 
             bbox_ind = self.jaccard(points, kpoints)
 
@@ -314,7 +335,7 @@ class MakeCentripetalShift():
             gt_distance[:, pixels[0], pixels[1]] = offset_gt.T * 0.1
 
         img = Image.fromarray(img)
-        img = img.convert('RGB')
+        img = img.convert("RGB")
 
         data["image"] = img
         data["gt_kernel"] = gt_kernel.astype("int64")
@@ -327,12 +348,12 @@ class MakeCentripetalShift():
         return data
 
 
-class ScaleAlignedShort():
+class ScaleAlignedShort:
     def __init__(self, short_size=640, **kwargs):
         self.short_size = short_size
 
     def __call__(self, data):
-        img = data['image']
+        img = data["image"]
 
         org_img_shape = img.shape
 
@@ -349,7 +370,7 @@ class ScaleAlignedShort():
         new_img_shape = img.shape
         img_shape = np.array(org_img_shape + new_img_shape)
 
-        data['shape'] = img_shape
-        data['image'] = img
+        data["shape"] = img_shape
+        data["image"] = img
 
         return data

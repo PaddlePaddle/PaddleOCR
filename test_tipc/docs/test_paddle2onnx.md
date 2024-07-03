@@ -7,7 +7,7 @@ PaddleServing预测功能测试的主程序为`test_paddle2onnx.sh`，可以测�
 基于训练是否使用量化，进行本测试的模型可以分为`正常模型`和`量化模型`，这两类模型对应的Paddle2ONNX预测功能汇总如下：
 
 | 模型类型 |device |
-|  ----   |  ---- |  
+|  ----   |  ---- |
 | 正常模型 | GPU |
 | 正常模型 | CPU |
 | 量化模型 | GPU |
@@ -22,7 +22,7 @@ bash test_tipc/prepare.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_no
 
 # 用法:
 bash test_tipc/test_paddle2onnx.sh ./test_tipc/configs/ch_PP-OCRv2_det/model_linux_gpu_normal_normal_paddle2onnx_python_linux_cpu.txt
-```  
+```
 
 #### 运行结果
 
@@ -45,4 +45,4 @@ Run failed with command - ch_PP-OCRv2_det -  paddle2onnx --model_dir=./inference
 
 ## 3. 更多教程
 
-本文档为功能测试用，更详细的Paddle2onnx预测使用教程请参考：[Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX)  
+本文档为功能测试用，更详细的Paddle2onnx预测使用教程请参考：[Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX)

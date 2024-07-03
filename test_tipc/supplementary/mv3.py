@@ -28,10 +28,12 @@ from paddle.regularizer import L2Decay
 import math
 
 from paddle.utils.cpp_extension import load
+
 # jit compile custom op
 custom_ops = load(
     name="custom_jit_ops",
-    sources=["./custom_op/custom_relu_op.cc", "./custom_op/custom_relu_op.cu"])
+    sources=["./custom_op/custom_relu_op.cc", "./custom_op/custom_relu_op.cu"],
+)
 
 
 def make_divisible(v, divisor=8, min_value=None):
@@ -44,12 +46,14 @@ def make_divisible(v, divisor=8, min_value=None):
 
 
 class MobileNetV3(nn.Layer):
-    def __init__(self,
-                 scale=1.0,
-                 model_name="small",
-                 dropout_prob=0.2,
-                 class_dim=1000,
-                 use_custom_relu=False):
+    def __init__(
+        self,
+        scale=1.0,
+        model_name="small",
+        dropout_prob=0.2,
+        class_dim=1000,
+        use_custom_relu=False,
+    ):
         super(MobileNetV3, self).__init__()
         self.use_custom_relu = use_custom_relu
 
@@ -94,7 +98,8 @@ class MobileNetV3(nn.Layer):
             self.cls_ch_expand = 1280
         else:
             raise NotImplementedError(
-                "mode[{}_model] is not implemented!".format(model_name))
+                "mode[{}_model] is not implemented!".format(model_name)
+            )
 
         self.conv1 = ConvBNLayer(
             in_c=3,
@@ -106,12 +111,13 @@ class MobileNetV3(nn.Layer):
             if_act=True,
             act="hardswish",
             name="conv1",
-            use_custom_relu=self.use_custom_relu)
+            use_custom_relu=self.use_custom_relu,
+        )
 
         self.block_list = []
         i = 0
         inplanes = make_divisible(inplanes * scale)
-        for (k, exp, c, se, nl, s) in self.cfg:
+        for k, exp, c, se, nl, s in self.cfg:
             block = self.add_sublayer(
                 "conv" + str(i + 2),
                 ResidualUnit(
@@ -123,7 +129,9 @@ class MobileNetV3(nn.Layer):
                     use_se=se,
                     act=nl,
                     name="conv" + str(i + 2),
-                    use_custom_relu=self.use_custom_relu))
+                    use_custom_relu=self.use_custom_relu,
+                ),
+            )
             self.block_list.append(block)
             inplanes = make_divisible(scale * c)
             i += 1
@@ -138,7 +146,8 @@ class MobileNetV3(nn.Layer):
             if_act=True,
             act="hardswish",
             name="conv_last",
-            use_custom_relu=self.use_custom_relu)
+            use_custom_relu=self.use_custom_relu,
+        )
 
         self.pool = AdaptiveAvgPool2D(1)
 
@@ -149,7 +158,8 @@ class MobileNetV3(nn.Layer):
             stride=1,
             padding=0,
             weight_attr=ParamAttr(),
-            bias_attr=False)
+            bias_attr=False,
+        )
 
         self.dropout = Dropout(p=dropout_prob, mode="downscale_in_infer")
 
@@ -157,7 +167,8 @@ class MobileNetV3(nn.Layer):
             self.cls_ch_expand,
             class_dim,
             weight_attr=ParamAttr(),
-            bias_attr=ParamAttr())
+            bias_attr=ParamAttr(),
+        )
 
     def forward(self, inputs, label=None):
         x = self.conv1(inputs)
@@ -177,18 +188,20 @@ class MobileNetV3(nn.Layer):
 
 
 class ConvBNLayer(nn.Layer):
-    def __init__(self,
-                 in_c,
-                 out_c,
-                 filter_size,
-                 stride,
-                 padding,
-                 num_groups=1,
-                 if_act=True,
-                 act=None,
-                 use_cudnn=True,
-                 name="",
-                 use_custom_relu=False):
+    def __init__(
+        self,
+        in_c,
+        out_c,
+        filter_size,
+        stride,
+        padding,
+        num_groups=1,
+        if_act=True,
+        act=None,
+        use_cudnn=True,
+        name="",
+        use_custom_relu=False,
+    ):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
         self.act = act
@@ -200,12 +213,14 @@ class ConvBNLayer(nn.Layer):
             padding=padding,
             groups=num_groups,
             weight_attr=ParamAttr(),
-            bias_attr=False)
+            bias_attr=False,
+        )
         self.bn = BatchNorm(
             num_channels=out_c,
             act=None,
             param_attr=ParamAttr(regularizer=L2Decay(0.0)),
-            bias_attr=ParamAttr(regularizer=L2Decay(0.0)))
+            bias_attr=ParamAttr(regularizer=L2Decay(0.0)),
+        )
         # moving_mean_name=name + "_bn_mean",
         # moving_variance_name=name + "_bn_variance")
 
@@ -229,16 +244,18 @@ class ConvBNLayer(nn.Layer):
 
 
 class ResidualUnit(nn.Layer):
-    def __init__(self,
-                 in_c,
-                 mid_c,
-                 out_c,
-                 filter_size,
-                 stride,
-                 use_se,
-                 act=None,
-                 name='',
-                 use_custom_relu=False):
+    def __init__(
+        self,
+        in_c,
+        mid_c,
+        out_c,
+        filter_size,
+        stride,
+        use_se,
+        act=None,
+        name="",
+        use_custom_relu=False,
+    ):
         super(ResidualUnit, self).__init__()
         self.if_shortcut = stride == 1 and in_c == out_c
         self.if_se = use_se
@@ -254,7 +271,8 @@ class ResidualUnit(nn.Layer):
             if_act=True,
             act=act,
             name=name + "_expand",
-            use_custom_relu=self.use_custom_relu)
+            use_custom_relu=self.use_custom_relu,
+        )
         self.bottleneck_conv = ConvBNLayer(
             in_c=mid_c,
             out_c=mid_c,
@@ -265,7 +283,8 @@ class ResidualUnit(nn.Layer):
             if_act=True,
             act=act,
             name=name + "_depthwise",
-            use_custom_relu=self.use_custom_relu)
+            use_custom_relu=self.use_custom_relu,
+        )
         if self.if_se:
             self.mid_se = SEModule(mid_c, name=name + "_se")
         self.linear_conv = ConvBNLayer(
@@ -277,7 +296,8 @@ class ResidualUnit(nn.Layer):
             if_act=False,
             act=None,
             name=name + "_linear",
-            use_custom_relu=self.use_custom_relu)
+            use_custom_relu=self.use_custom_relu,
+        )
 
     def forward(self, inputs):
         x = self.expand_conv(inputs)
@@ -301,7 +321,8 @@ class SEModule(nn.Layer):
             stride=1,
             padding=0,
             weight_attr=ParamAttr(),
-            bias_attr=ParamAttr())
+            bias_attr=ParamAttr(),
+        )
         self.conv2 = Conv2D(
             in_channels=channel // reduction,
             out_channels=channel,
@@ -309,7 +330,8 @@ class SEModule(nn.Layer):
             stride=1,
             padding=0,
             weight_attr=ParamAttr(),
-            bias_attr=ParamAttr())
+            bias_attr=ParamAttr(),
+        )
 
     def forward(self, inputs):
         outputs = self.avg_pool(inputs)
@@ -371,31 +393,35 @@ def MobileNetV3_large_x1_25(**args):
 
 
 class DistillMV3(nn.Layer):
-    def __init__(self,
-                 scale=1.0,
-                 model_name="small",
-                 dropout_prob=0.2,
-                 class_dim=1000,
-                 args=None,
-                 use_custom_relu=False):
+    def __init__(
+        self,
+        scale=1.0,
+        model_name="small",
+        dropout_prob=0.2,
+        class_dim=1000,
+        args=None,
+        use_custom_relu=False,
+    ):
         super(DistillMV3, self).__init__()
 
         self.student = MobileNetV3(
             model_name=model_name,
             scale=scale,
             class_dim=class_dim,
-            use_custom_relu=use_custom_relu)
+            use_custom_relu=use_custom_relu,
+        )
 
         self.student1 = MobileNetV3(
             model_name=model_name,
             scale=scale,
             class_dim=class_dim,
-            use_custom_relu=use_custom_relu)
+            use_custom_relu=use_custom_relu,
+        )
 
     def forward(self, inputs, label=None):
         predicts = dict()
-        predicts['student'] = self.student(inputs, label)
-        predicts['student1'] = self.student1(inputs, label)
+        predicts["student"] = self.student(inputs, label)
+        predicts["student1"] = self.student1(inputs, label)
         return predicts
 
 
@@ -405,25 +431,29 @@ def distillmv3_large_x0_5(**args):
 
 
 class SiameseMV3(nn.Layer):
-    def __init__(self,
-                 scale=1.0,
-                 model_name="small",
-                 dropout_prob=0.2,
-                 class_dim=1000,
-                 args=None,
-                 use_custom_relu=False):
+    def __init__(
+        self,
+        scale=1.0,
+        model_name="small",
+        dropout_prob=0.2,
+        class_dim=1000,
+        args=None,
+        use_custom_relu=False,
+    ):
         super(SiameseMV3, self).__init__()
 
         self.net = MobileNetV3(
             model_name=model_name,
             scale=scale,
             class_dim=class_dim,
-            use_custom_relu=use_custom_relu)
+            use_custom_relu=use_custom_relu,
+        )
         self.net1 = MobileNetV3(
             model_name=model_name,
             scale=scale,
             class_dim=class_dim,
-            use_custom_relu=use_custom_relu)
+            use_custom_relu=use_custom_relu,
+        )
 
     def forward(self, inputs, label=None):
         # net
@@ -431,7 +461,7 @@ class SiameseMV3(nn.Layer):
         for block in self.net.block_list:
             x = block(x)
 
-        # net1 
+        # net1
         x1 = self.net1.conv1(inputs)
         for block in self.net1.block_list:
             x1 = block(x1)
@@ -454,33 +484,34 @@ def siamese_mv3(class_dim, use_custom_relu):
         scale=0.5,
         model_name="large",
         class_dim=class_dim,
-        use_custom_relu=use_custom_relu)
+        use_custom_relu=use_custom_relu,
+    )
     return model
 
 
 def build_model(config):
-    model_type = config['model_type']
+    model_type = config["model_type"]
     if model_type == "cls":
-        class_dim = config['MODEL']['class_dim']
-        use_custom_relu = config['MODEL']['use_custom_relu']
-        if 'siamese' in config['MODEL'] and config['MODEL']['siamese'] is True:
-            model = siamese_mv3(
-                class_dim=class_dim, use_custom_relu=use_custom_relu)
+        class_dim = config["MODEL"]["class_dim"]
+        use_custom_relu = config["MODEL"]["use_custom_relu"]
+        if "siamese" in config["MODEL"] and config["MODEL"]["siamese"] is True:
+            model = siamese_mv3(class_dim=class_dim, use_custom_relu=use_custom_relu)
         else:
             model = MobileNetV3_large_x0_5(
-                class_dim=class_dim, use_custom_relu=use_custom_relu)
+                class_dim=class_dim, use_custom_relu=use_custom_relu
+            )
 
     elif model_type == "cls_distill":
-        class_dim = config['MODEL']['class_dim']
-        use_custom_relu = config['MODEL']['use_custom_relu']
+        class_dim = config["MODEL"]["class_dim"]
+        use_custom_relu = config["MODEL"]["use_custom_relu"]
         model = distillmv3_large_x0_5(
-            class_dim=class_dim, use_custom_relu=use_custom_relu)
+            class_dim=class_dim, use_custom_relu=use_custom_relu
+        )
 
     elif model_type == "cls_distill_multiopt":
-        class_dim = config['MODEL']['class_dim']
-        use_custom_relu = config['MODEL']['use_custom_relu']
-        model = distillmv3_large_x0_5(
-            class_dim=100, use_custom_relu=use_custom_relu)
+        class_dim = config["MODEL"]["class_dim"]
+        use_custom_relu = config["MODEL"]["use_custom_relu"]
+        model = distillmv3_large_x0_5(class_dim=100, use_custom_relu=use_custom_relu)
     else:
         raise ValueError("model_type should be one of ['']")
 

@@ -1,0 +1,54 @@
+name: "cls_pp"
+platform: "ensemble"
+max_batch_size: 128
+input [
+  {
+    name: "x"
+    data_type: TYPE_FP32
+    dims: [ 3, -1, -1 ]
+  }
+]
+output [
+  {
+    name: "cls_labels"
+    data_type: TYPE_INT32
+    dims: [ 1 ]
+  },
+  {
+    name: "cls_scores"
+    data_type: TYPE_FP32
+    dims: [ 1 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "cls_runtime"
+      model_version: 1
+      input_map {
+        key: "x"
+        value: "x"
+      }
+      output_map {
+        key: "softmax_0.tmp_0"
+        value: "infer_output"
+      }
+    },
+    {
+      model_name: "cls_postprocess"
+      model_version: 1
+      input_map {
+        key: "POST_INPUT_0"
+        value: "infer_output"
+      }
+      output_map {
+        key: "POST_OUTPUT_0"
+        value: "cls_labels"
+      }
+      output_map {
+        key: "POST_OUTPUT_1"
+        value: "cls_scores"
+      }
+    }
+  ]
+}

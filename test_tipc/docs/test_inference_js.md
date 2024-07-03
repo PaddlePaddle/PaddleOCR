@@ -44,7 +44,7 @@ bash test_tipc/test_inference_js.sh
  2. 启动 Jest 测试服务，通过 jest-puppeteer 插件完成 chrome 操作，加载 @paddlejs-models/ocr 脚本完成推理流程
  3. 测试用例为原图识别后的文本结果与预期文本结果（expect.json）进行对比，测试通过有两个标准：
     * 原图识别结果逐字符与预期结果对比，误差不超过 **10个字符**；
-    * 原图识别结果每个文本框字符内容与预期结果进行相似度对比，相似度不小于 0.9（全部一致则相似度为1）。 
+    * 原图识别结果每个文本框字符内容与预期结果进行相似度对比，相似度不小于 0.9（全部一致则相似度为1）。
 
     只有满足上述两个标准，视为测试通过。通过为如下显示：
  <img width="600" src="https://user-images.githubusercontent.com/43414102/146406599-80b30c66-f2f8-4f57-a68a-007c479ff0f7.png">

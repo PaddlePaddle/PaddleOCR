@@ -22,16 +22,16 @@
 
 > 如果您没有基础的Python运行环境，请参考[运行环境准备](./environment.md)。
 
-- 您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+- 您的机器安装的是CUDA 11，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  pip install paddlepaddle-gpu
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  pip install paddlepaddle
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
@@ -40,7 +40,7 @@
 ### 1.2 安装PaddleOCR whl包
 
 ```bash
-pip install "paddleocr>=2.0.1" # 推荐使用2.0.1+版本
+pip install paddleocr
 ```
 
 - 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
@@ -107,9 +107,10 @@ cd /path/to/ppocr_img
   ```
 
 **版本说明**
-paddleocr默认使用PP-OCRv3模型(`--ocr_version PP-OCRv3`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
+paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其他版本可通过设置参数`--ocr_version`，具体版本说明如下：
 |  版本名称  |  版本说明 |
 |    ---    |   ---   |
+| PP-OCRv4 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv3 | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 | PP-OCRv2 | 支持中英文的检测和识别，方向分类器，多语言暂未更新 |
 | PP-OCR   | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
@@ -176,14 +177,13 @@ for idx in range(len(result)):
         print(line)
 
 # 显示结果
-# 如果本地没有simfang.ttf，可以在doc/fonts目录下下载
 from PIL import Image
 result = result[0]
 image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='./fonts/simfang.ttf')
 im_show = Image.fromarray(im_show)
 im_show.save('result.jpg')
 ```
@@ -211,19 +211,25 @@ from paddleocr import PaddleOCR, draw_ocr
 
 # Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换
 # 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`
-ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=2)  # need to run only once to download and load model into memory
-img_path = './xxx.pdf'
-result = ocr.ocr(img_path, cls=True)
+PAGE_NUM = 10 # 将识别页码前置作为全局，防止后续打开pdf的参数和前文识别参数不一致 / Set the recognition page number
+pdf_path = 'default.pdf'
+ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM)  # need to run only once to download and load model into memory
+# ocr = PaddleOCR(use_angle_cls=True, lang="ch", page_num=PAGE_NUM,use_gpu=0) # 如果需要使用GPU，请取消此行的注释 并注释上一行 / To Use GPU,uncomment this line and comment the above one.
+result = ocr.ocr(pdf_path, cls=True)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None: # 识别到空页就跳过，防止程序报错 / Skip when empty result detected to avoid TypeError:NoneType
+        print(f"[DEBUG] Empty page {idx+1} detected, skip it.")
+        continue
     for line in res:
         print(line)
-
 # 显示结果
 import pdf2image
 imgs = pdf2image.convert_from_path(img_path)
 for idx in range(len(result)):
     res = result[idx]
+    if res == None:
+        continue
     image = imgs[idx]
     boxes = [line[0] for line in res]
     txts = [line[1][0] for line in res]
@@ -233,8 +239,48 @@ for idx in range(len(result)):
     im_show.save('result_page_{}.jpg'.format(idx))
 ```
 
+* 使用滑动窗口进行检测和识别
+
+要使用滑动窗口进行光学字符识别（OCR），可以使用以下代码片段：
+
+```Python
+from paddleocr import PaddleOCR
+from PIL import Image, ImageDraw, ImageFont
+
+# 初始化OCR引擎
+ocr = PaddleOCR(use_angle_cls=True, lang="en")
+
+img_path = "./very_large_image.jpg"
+slice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}
+results = ocr.ocr(img_path, cls=True, slice=slice)
+
+# 加载图像
+image = Image.open(img_path).convert("RGB")
+draw = ImageDraw.Draw(image)
+font = ImageFont.truetype("./doc/fonts/simfang.ttf", size=20)  # 根据需要调整大小
+
+# 处理并绘制结果
+for res in results:
+    for line in res:
+        box = [tuple(point) for point in line[0]]
+        # 找出边界框
+        box = [(min(point[0] for point in box), min(point[1] for point in box)),
+               (max(point[0] for point in box), max(point[1] for point in box))]
+        txt = line[1][0]
+        draw.rectangle(box, outline="red", width=2)  # 绘制矩形
+        draw.text((box[0][0], box[0][1] - 25), txt, fill="blue", font=font)  # 在矩形上方绘制文本
+
+# 保存结果
+image.save("result.jpg")
+
+```
+
+此示例初始化了启用角度分类的PaddleOCR实例，并将语言设置为英语。然后调用`ocr`方法，并使用多个参数来自定义检测和识别过程，包括处理图像切片的`slice`参数。
+
+要更全面地了解切片操作，请参考[切片操作文档](./slice.md)。
+
 ## 3. 小结
 
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
 
-PaddleOCR是一套丰富领先实用的OCR工具库，打通数据、模型训练、压缩和推理部署全流程，您可以参考[文档教程](../../README_ch.md#文档教程)，正式开启PaddleOCR的应用之旅。
+飞桨AI套件（PaddleX）提供了飞桨生态优质模型，是训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！目前PP-OCRv4已上线PaddleX，您可以进入[通用OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)体验模型训练、压缩和推理部署全流程。

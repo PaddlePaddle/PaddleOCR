@@ -1,18 +1,18 @@
-#copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
 #
-#Licensed under the Apache License, Version 2.0 (the "License");
-#you may not use this file except in compliance with the License.
-#You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
 #    http://www.apache.org/licenses/LICENSE-2.0
 #
-#Unless required by applicable law or agreed to in writing, software
-#distributed under the License is distributed on an "AS IS" BASIS,
-#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#See the License for the specific language governing permissions and
-#limitations under the License.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 """
-This code is refered from: 
+This code is refered from:
 https://github.com/songdejia/EAST/blob/master/data_utils.py
 """
 import math
@@ -22,16 +22,18 @@ import json
 import sys
 import os
 
-__all__ = ['EASTProcessTrain']
+__all__ = ["EASTProcessTrain"]
 
 
 class EASTProcessTrain(object):
-    def __init__(self,
-                 image_shape=[512, 512],
-                 background_ratio=0.125,
-                 min_crop_side_ratio=0.1,
-                 min_text_size=10,
-                 **kwargs):
+    def __init__(
+        self,
+        image_shape=[512, 512],
+        background_ratio=0.125,
+        min_crop_side_ratio=0.1,
+        min_text_size=10,
+        **kwargs,
+    ):
         self.input_size = image_shape[1]
         self.random_scale = np.array([0.5, 1, 2.0, 3.0])
         self.background_ratio = background_ratio
@@ -83,10 +85,16 @@ class EASTProcessTrain(object):
             poly = []
             for j in range(4):
                 sx, sy = wordBB[j][0], wordBB[j][1]
-                dx = math.cos(rot_angle) * (sx - cx)\
-                    - math.sin(rot_angle) * (sy - cy) + ncx
-                dy = math.sin(rot_angle) * (sx - cx)\
-                    + math.cos(rot_angle) * (sy - cy) + ncy
+                dx = (
+                    math.cos(rot_angle) * (sx - cx)
+                    - math.sin(rot_angle) * (sy - cy)
+                    + ncx
+                )
+                dy = (
+                    math.sin(rot_angle) * (sx - cx)
+                    + math.cos(rot_angle) * (sy - cy)
+                    + ncy
+                )
                 poly.append([dx, dy])
             dst_polys.append(poly)
         dst_polys = np.array(dst_polys, dtype=np.float32)
@@ -98,11 +106,13 @@ class EASTProcessTrain(object):
         :param poly:
         :return:
         """
-        edge = [(poly[1][0] - poly[0][0]) * (poly[1][1] + poly[0][1]),
-                (poly[2][0] - poly[1][0]) * (poly[2][1] + poly[1][1]),
-                (poly[3][0] - poly[2][0]) * (poly[3][1] + poly[2][1]),
-                (poly[0][0] - poly[3][0]) * (poly[0][1] + poly[3][1])]
-        return np.sum(edge) / 2.
+        edge = [
+            (poly[1][0] - poly[0][0]) * (poly[1][1] + poly[0][1]),
+            (poly[2][0] - poly[1][0]) * (poly[2][1] + poly[1][1]),
+            (poly[3][0] - poly[2][0]) * (poly[3][1] + poly[2][1]),
+            (poly[0][0] - poly[3][0]) * (poly[0][1] + poly[3][1]),
+        ]
+        return np.sum(edge) / 2.0
 
     def check_and_validate_polys(self, polys, tags, img_height, img_width):
         """
@@ -122,13 +132,13 @@ class EASTProcessTrain(object):
         validated_tags = []
         for poly, tag in zip(polys, tags):
             p_area = self.polygon_area(poly)
-            #invalid poly
+            # invalid poly
             if abs(p_area) < 1:
                 continue
             if p_area > 0:
                 #'poly in wrong direction'
                 if not tag:
-                    tag = True  #reversed cases should be ignore
+                    tag = True  # reversed cases should be ignore
                 poly = poly[(0, 3, 2, 1), :]
             validated_polys.append(poly)
             validated_tags.append(tag)
@@ -148,6 +158,7 @@ class EASTProcessTrain(object):
             box = box.astype(np.int32).reshape((-1, 1, 2))
             cv2.polylines(img, [box], True, color=(255, 255, 0), thickness=2)
         import random
+
         ino = random.randint(0, 100)
         cv2.imwrite("tmp_%d.jpg" % ino, img)
         return
@@ -170,29 +181,25 @@ class EASTProcessTrain(object):
         if dist0 + dist1 > dist2 + dist3:
             # first move (p0, p1), (p2, p3), then (p0, p3), (p1, p2)
             ## p0, p1
-            theta = np.arctan2((poly[1][1] - poly[0][1]),
-                               (poly[1][0] - poly[0][0]))
+            theta = np.arctan2((poly[1][1] - poly[0][1]), (poly[1][0] - poly[0][0]))
             poly[0][0] += R * r[0] * np.cos(theta)
             poly[0][1] += R * r[0] * np.sin(theta)
             poly[1][0] -= R * r[1] * np.cos(theta)
             poly[1][1] -= R * r[1] * np.sin(theta)
             ## p2, p3
-            theta = np.arctan2((poly[2][1] - poly[3][1]),
-                               (poly[2][0] - poly[3][0]))
+            theta = np.arctan2((poly[2][1] - poly[3][1]), (poly[2][0] - poly[3][0]))
             poly[3][0] += R * r[3] * np.cos(theta)
             poly[3][1] += R * r[3] * np.sin(theta)
             poly[2][0] -= R * r[2] * np.cos(theta)
             poly[2][1] -= R * r[2] * np.sin(theta)
             ## p0, p3
-            theta = np.arctan2((poly[3][0] - poly[0][0]),
-                               (poly[3][1] - poly[0][1]))
+            theta = np.arctan2((poly[3][0] - poly[0][0]), (poly[3][1] - poly[0][1]))
             poly[0][0] += R * r[0] * np.sin(theta)
             poly[0][1] += R * r[0] * np.cos(theta)
             poly[3][0] -= R * r[3] * np.sin(theta)
             poly[3][1] -= R * r[3] * np.cos(theta)
             ## p1, p2
-            theta = np.arctan2((poly[2][0] - poly[1][0]),
-                               (poly[2][1] - poly[1][1]))
+            theta = np.arctan2((poly[2][0] - poly[1][0]), (poly[2][1] - poly[1][1]))
             poly[1][0] += R * r[1] * np.sin(theta)
             poly[1][1] += R * r[1] * np.cos(theta)
             poly[2][0] -= R * r[2] * np.sin(theta)
@@ -200,29 +207,25 @@ class EASTProcessTrain(object):
         else:
             ## p0, p3
             # print poly
-            theta = np.arctan2((poly[3][0] - poly[0][0]),
-                               (poly[3][1] - poly[0][1]))
+            theta = np.arctan2((poly[3][0] - poly[0][0]), (poly[3][1] - poly[0][1]))
             poly[0][0] += R * r[0] * np.sin(theta)
             poly[0][1] += R * r[0] * np.cos(theta)
             poly[3][0] -= R * r[3] * np.sin(theta)
             poly[3][1] -= R * r[3] * np.cos(theta)
             ## p1, p2
-            theta = np.arctan2((poly[2][0] - poly[1][0]),
-                               (poly[2][1] - poly[1][1]))
+            theta = np.arctan2((poly[2][0] - poly[1][0]), (poly[2][1] - poly[1][1]))
             poly[1][0] += R * r[1] * np.sin(theta)
             poly[1][1] += R * r[1] * np.cos(theta)
             poly[2][0] -= R * r[2] * np.sin(theta)
             poly[2][1] -= R * r[2] * np.cos(theta)
             ## p0, p1
-            theta = np.arctan2((poly[1][1] - poly[0][1]),
-                               (poly[1][0] - poly[0][0]))
+            theta = np.arctan2((poly[1][1] - poly[0][1]), (poly[1][0] - poly[0][0]))
             poly[0][0] += R * r[0] * np.cos(theta)
             poly[0][1] += R * r[0] * np.sin(theta)
             poly[1][0] -= R * r[1] * np.cos(theta)
             poly[1][1] -= R * r[1] * np.sin(theta)
             ## p2, p3
-            theta = np.arctan2((poly[2][1] - poly[3][1]),
-                               (poly[2][0] - poly[3][0]))
+            theta = np.arctan2((poly[2][1] - poly[3][1]), (poly[2][0] - poly[3][0]))
             poly[3][0] += R * r[3] * np.cos(theta)
             poly[3][1] += R * r[3] * np.sin(theta)
             poly[2][0] -= R * r[2] * np.cos(theta)
@@ -250,24 +253,23 @@ class EASTProcessTrain(object):
                 dist2 = np.linalg.norm(poly[i] - poly[(i - 1) % 4])
                 r[i] = min(dist1, dist2)
             # score map
-            shrinked_poly = self.shrink_poly(
-                poly.copy(), r).astype(np.int32)[np.newaxis, :, :]
+            shrinked_poly = self.shrink_poly(poly.copy(), r).astype(np.int32)[
+                np.newaxis, :, :
+            ]
             cv2.fillPoly(score_map, shrinked_poly, 1)
             cv2.fillPoly(poly_mask, shrinked_poly, poly_idx + 1)
             # if the poly is too small, then ignore it during training
             poly_h = min(
-                np.linalg.norm(poly[0] - poly[3]),
-                np.linalg.norm(poly[1] - poly[2]))
+                np.linalg.norm(poly[0] - poly[3]), np.linalg.norm(poly[1] - poly[2])
+            )
             poly_w = min(
-                np.linalg.norm(poly[0] - poly[1]),
-                np.linalg.norm(poly[2] - poly[3]))
+                np.linalg.norm(poly[0] - poly[1]), np.linalg.norm(poly[2] - poly[3])
+            )
             if min(poly_h, poly_w) < self.min_text_size:
-                cv2.fillPoly(training_mask,
-                             poly.astype(np.int32)[np.newaxis, :, :], 0)
+                cv2.fillPoly(training_mask, poly.astype(np.int32)[np.newaxis, :, :], 0)
 
             if tag:
-                cv2.fillPoly(training_mask,
-                             poly.astype(np.int32)[np.newaxis, :, :], 0)
+                cv2.fillPoly(training_mask, poly.astype(np.int32)[np.newaxis, :, :], 0)
 
             xy_in_poly = np.argwhere(poly_mask == (poly_idx + 1))
             # geo map.
@@ -277,12 +279,13 @@ class EASTProcessTrain(object):
             poly[:, 1] = np.minimum(np.maximum(poly[:, 1], 0), h)
             for pno in range(4):
                 geo_channel_beg = pno * 2
-                geo_map[y_in_poly, x_in_poly, geo_channel_beg] =\
+                geo_map[y_in_poly, x_in_poly, geo_channel_beg] = (
                     x_in_poly - poly[pno, 0]
-                geo_map[y_in_poly, x_in_poly, geo_channel_beg+1] =\
+                )
+                geo_map[y_in_poly, x_in_poly, geo_channel_beg + 1] = (
                     y_in_poly - poly[pno, 1]
-            geo_map[y_in_poly, x_in_poly, 8] = \
-                1.0 / max(min(poly_h, poly_w), 1.0)
+                )
+            geo_map[y_in_poly, x_in_poly, 8] = 1.0 / max(min(poly_h, poly_w), 1.0)
         return score_map, geo_map, training_mask
 
     def crop_area(self, im, polys, tags, crop_background=False, max_tries=50):
@@ -304,10 +307,10 @@ class EASTProcessTrain(object):
             poly = np.round(poly, decimals=0).astype(np.int32)
             minx = np.min(poly[:, 0])
             maxx = np.max(poly[:, 0])
-            w_array[minx + pad_w:maxx + pad_w] = 1
+            w_array[minx + pad_w : maxx + pad_w] = 1
             miny = np.min(poly[:, 1])
             maxy = np.max(poly[:, 1])
-            h_array[miny + pad_h:maxy + pad_h] = 1
+            h_array[miny + pad_h : maxy + pad_h] = 1
         # ensure the cropped area not across a text
         h_axis = np.where(h_array == 0)[0]
         w_axis = np.where(w_array == 0)[0]
@@ -325,31 +328,34 @@ class EASTProcessTrain(object):
             ymax = np.max(yy) - pad_h
             ymin = np.clip(ymin, 0, h - 1)
             ymax = np.clip(ymax, 0, h - 1)
-            if xmax - xmin < self.min_crop_side_ratio * w or \
-               ymax - ymin < self.min_crop_side_ratio * h:
+            if (
+                xmax - xmin < self.min_crop_side_ratio * w
+                or ymax - ymin < self.min_crop_side_ratio * h
+            ):
                 # area too small
                 continue
             if polys.shape[0] != 0:
-                poly_axis_in_area = (polys[:, :, 0] >= xmin)\
-                    & (polys[:, :, 0] <= xmax)\
-                    & (polys[:, :, 1] >= ymin)\
+                poly_axis_in_area = (
+                    (polys[:, :, 0] >= xmin)
+                    & (polys[:, :, 0] <= xmax)
+                    & (polys[:, :, 1] >= ymin)
                     & (polys[:, :, 1] <= ymax)
-                selected_polys = np.where(
-                    np.sum(poly_axis_in_area, axis=1) == 4)[0]
+                )
+                selected_polys = np.where(np.sum(poly_axis_in_area, axis=1) == 4)[0]
             else:
                 selected_polys = []
 
             if len(selected_polys) == 0:
                 # no text in this area
                 if crop_background:
-                    im = im[ymin:ymax + 1, xmin:xmax + 1, :]
+                    im = im[ymin : ymax + 1, xmin : xmax + 1, :]
                     polys = []
                     tags = []
                     return im, polys, tags
                 else:
                     continue
 
-            im = im[ymin:ymax + 1, xmin:xmax + 1, :]
+            im = im[ymin : ymax + 1, xmin : xmax + 1, :]
             polys = polys[selected_polys]
             tags = tags[selected_polys]
             polys[:, :, 0] -= xmin
@@ -359,7 +365,8 @@ class EASTProcessTrain(object):
 
     def crop_background_infor(self, im, text_polys, text_tags):
         im, text_polys, text_tags = self.crop_area(
-            im, text_polys, text_tags, crop_background=True)
+            im, text_polys, text_tags, crop_background=True
+        )
 
         if len(text_polys) > 0:
             return None
@@ -373,11 +380,12 @@ class EASTProcessTrain(object):
 
     def crop_foreground_infor(self, im, text_polys, text_tags):
         im, text_polys, text_tags = self.crop_area(
-            im, text_polys, text_tags, crop_background=False)
+            im, text_polys, text_tags, crop_background=False
+        )
 
         if text_polys.shape[0] == 0:
             return None
-        #continue for all ignore case
+        # continue for all ignore case
         if np.sum((text_tags * 1.0)) >= text_tags.size:
             return None
         # pad and resize image
@@ -389,24 +397,26 @@ class EASTProcessTrain(object):
         #         print(im.shape)
         #         self.draw_img_polys(im, text_polys)
         score_map, geo_map, training_mask = self.generate_quad(
-            (new_h, new_w), text_polys, text_tags)
+            (new_h, new_w), text_polys, text_tags
+        )
         return im, score_map, geo_map, training_mask
 
     def __call__(self, data):
-        im = data['image']
-        text_polys = data['polys']
-        text_tags = data['ignore_tags']
+        im = data["image"]
+        text_polys = data["polys"]
+        text_tags = data["ignore_tags"]
         if im is None:
             return None
         if text_polys.shape[0] == 0:
             return None
 
-        #add rotate cases
+        # add rotate cases
         if np.random.rand() < 0.5:
             im, text_polys = self.rotate_im_poly(im, text_polys)
         h, w, _ = im.shape
-        text_polys, text_tags = self.check_and_validate_polys(text_polys,
-                                                              text_tags, h, w)
+        text_polys, text_tags = self.check_and_validate_polys(
+            text_polys, text_tags, h, w
+        )
         if text_polys.shape[0] == 0:
             return None
 
@@ -429,8 +439,8 @@ class EASTProcessTrain(object):
         training_mask = training_mask[np.newaxis, ::4, ::4]
         training_mask = training_mask.astype(np.float32)
 
-        data['image'] = im[0]
-        data['score_map'] = score_map
-        data['geo_map'] = geo_map
-        data['training_mask'] = training_mask
+        data["image"] = im[0]
+        data["score_map"] = score_map
+        data["geo_map"] = geo_map
+        data["training_mask"] = training_mask
         return data

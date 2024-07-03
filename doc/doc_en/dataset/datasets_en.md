@@ -33,24 +33,24 @@ In addition to opensource data, users can also use synthesis tools to synthesize
 - **Data sources**：https://aistudio.baidu.com/aistudio/competition/detail/8
 - **Introduction**：A total of 290000 pictures are included, of which 210000 are used as training sets (with labels) and 80000 are used as test sets (without labels). The dataset is collected from the Chinese street view, and is formed by by cutting out the text line area (such as shop signs, landmarks, etc.) in the street view picture. All the images are preprocessed: by using affine transform, the text area is proportionally mapped to a picture with a height of 48 pixels, as shown in the figure:
 
-    ![](../../datasets/ch_street_rec_1.png)  
-    (a) Label: 魅派集成吊顶  
-    ![](../../datasets/ch_street_rec_2.png)  
-    (b) Label: 母婴用品连锁  
+    ![](../../datasets/ch_street_rec_1.png)
+    (a) Label: 魅派集成吊顶
+    ![](../../datasets/ch_street_rec_2.png)
+    (b) Label: 母婴用品连锁
 - **Download link**
 https://aistudio.baidu.com/aistudio/datasetdetail/8429
 
 <a name="中文文档文字识别"></a>
 #### 4. Chinese Document Text Recognition
-- **Data sources**：https://github.com/YCG09/chinese_ocr  
-- **Introduction**：  
+- **Data sources**：https://github.com/YCG09/chinese_ocr
+- **Introduction**：
     - A total of 3.64 million pictures are divided into training set and validation set according to 99:1.
     - Using Chinese corpus (news + classical Chinese), the data is randomly generated through changes in font, size, grayscale, blur, perspective, stretching, etc.
     - 5990 characters including Chinese characters, English letters, numbers and punctuation（Characters set: https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt ）
     - Each sample is fixed with 10 characters, and the characters are randomly intercepted from the sentences in the corpus
-    - Image resolution is 280x32  
-    ![](../../datasets/ch_doc1.jpg)  
-    ![](../../datasets/ch_doc3.jpg)  
+    - Image resolution is 280x32
+    ![](../../datasets/ch_doc1.jpg)
+    ![](../../datasets/ch_doc3.jpg)
 - **Download link**：https://pan.baidu.com/s/1QkI7kjah8SPHwOQ40rS1Pw (Password: lu7m)
 
 <a name="ICDAR2019-ArT"></a>

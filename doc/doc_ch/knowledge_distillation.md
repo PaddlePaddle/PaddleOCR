@@ -69,7 +69,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ```yaml
 Architecture:
-  model_type: &model_type "rec"    # 模型类别，rec、det等，每个子网络的模型类别都与
+  model_type: &model_type "rec"    # 模型类别，rec、det等，每个子网络的模型类别
   name: DistillationModel          # 结构名称，蒸馏任务中，为DistillationModel，用于构建对应的结构
   algorithm: Distillation          # 算法名称
   Models:                          # 模型，包含子网络的配置信息
@@ -405,7 +405,7 @@ Architecture:
         kernel_list: [7,2,2]
         k: 50
     Teacher:                      # 另外一个子网络，这里给的是DML蒸馏示例，
-      freeze_params: true  
+      freeze_params: true
       return_all_feats: false
       model_type: det
       algorithm: DB
@@ -430,7 +430,7 @@ Architecture:
 
 ```
 Architecture:
-  name: DistillationModel  
+  name: DistillationModel
   algorithm: Distillation
   model_type: det
   Models:
@@ -453,7 +453,7 @@ Architecture:
         kernel_list: [7,2,2]
         k: 50
     Student:                         # CML蒸馏的Student模型配置
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det
@@ -471,7 +471,7 @@ Architecture:
         name: DBHead
         k: 50
     Student2:                          # CML蒸馏的Student2模型配置
-      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained  
+      pretrained: ./pretrain_models/MobileNetV3_large_x0_5_pretrained
       freeze_params: false
       return_all_feats: false
       model_type: det

@@ -87,9 +87,9 @@ Demo results for SER task are as follows.
 
 Boxes of different colors in the image represent different categories.
 
-The invoice and application form images have three categories: `request`, `answer` and `header`. The `question` and 'answer' can be used to extract the relationship.
+The invoice and application form images have three categories: `request`, `answer` and `header`. The `question` and `answer` can be used to extract the relationship.
 
-For the ID card image, the model can directly identify the key information such as `name`, `gender`, `nationality`, so that the subsequent relationship extraction process is not required, and the key information extraction task can be completed using only on model.
+For the ID card image, the model can directly identify the key information such as `name`, `gender`, `nationality`, so that the subsequent relationship extraction process is not required, and the key information extraction task can be completed using only one model.
 
 ### 3.2 RE
 
@@ -108,7 +108,7 @@ Demo results for RE task are as follows.
     <img src="https://user-images.githubusercontent.com/14270174/185540291-f64e5daf-6d42-4e7c-bbbb-471e3fac4fcc.png" width="600">
 </div>
 
-Red boxes are questions, blue boxes are answers. The green lines means the two conected objects are a pair.
+Red boxes are questions, blue boxes are answers. The green lines means the two connected objects are a pair.
 
 
 ## 4. Usage
@@ -186,6 +186,10 @@ python3 ./tools/infer_kie_token_ser_re.py \
 
 The visual result images and the predicted text file will be saved in the `Global.save_res_path` directory.
 
+If you want to use a custom ocr model, you can set it through the following fields
+- `Global.kie_det_model_dir`: the detection inference model path
+- `Global.kie_rec_model_dir`: the recognition inference model path
+
 
 If you want to load the text detection and recognition results collected before, you can use the following command to predict.
 
@@ -257,6 +261,9 @@ python3 kie/predict_kie_token_ser_re.py \
 
 The visual results and text file will be saved in directory `output`.
 
+If you want to use a custom ocr model, you can set it through the following fields
+- `--det_model_dir`: the detection inference model path
+- `--rec_model_dir`: the recognition inference model path
 
 ### 4.3 More
 

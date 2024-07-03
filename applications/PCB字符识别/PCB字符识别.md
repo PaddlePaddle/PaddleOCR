@@ -206,11 +206,11 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
         limit_type: 'min'
 ```
 
-如需获取已训练模型，请扫码填写问卷，加入PaddleOCR官方交流群获取全部OCR垂类模型下载链接、《动手学OCR》电子书等全套OCR学习资料🎁
-<div align="left">
-<img src="https://ai-studio-static-online.cdn.bcebos.com/dd721099bd50478f9d5fb13d8dd00fad69c22d6848244fd3a1d3980d7fefc63e"  width = "150" height = "150" />
-</div>
-将下载或训练完成的模型放置在对应目录下即可完成模型评估。
+如需获取已训练模型，请加入PaddleX官方交流频道，获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
+
+- PaddleX官方交流频道：https://aistudio.baidu.com/community/channel/610
+
+将下载或训练完成的模型放置在对应目录下即可完成模型推理
 
 
 ```python
@@ -546,7 +546,7 @@ python3 tools/infer/predict_system.py  \
     --use_gpu=True
 ```
 
-得到保存结果，文本检测识别可视化图保存在`det_rec_infer/`目录下，预测结果保存在`det_rec_infer/system_results.txt`中，格式如下：`0018.jpg	[{"transcription": "E295", "points": [[88, 33], [137, 33], [137, 40], [88, 40]]}]`
+得到保存结果，文本检测识别可视化图保存在`det_rec_infer/`目录下，预测结果保存在`det_rec_infer/system_results.txt`中，格式如下：`0018.jpg   [{"transcription": "E295", "points": [[88, 33], [137, 33], [137, 40], [88, 40]]}]`
 
 2）然后将步骤一保存的数据转换为端对端评测需要的数据格式： 修改 `tools/end2end/convert_ppocr_label.py`中的代码，convert_label函数中设置输入标签路径，Mode，保存标签路径等，对预测数据的GTlabel和预测结果的label格式进行转换。
 ```
