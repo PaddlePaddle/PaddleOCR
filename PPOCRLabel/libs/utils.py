@@ -125,17 +125,6 @@ def natural_sort(list, key=lambda s: s):
 
 
 def get_rotate_crop_image(img, points):
-    # Use Green's theory to judge clockwise or counterclockwise
-    # author: biyanhua
-    # d = 0.0
-    # for index in range(-1, 3):
-    #     d += -0.5 * (points[index + 1][1] + points[index][1]) * (
-    #             points[index + 1][0] - points[index][0])
-    # if d < 0:  # counterclockwise
-    #     tmp = np.array(points)
-    #     points[1], points[3] = tmp[3], tmp[1]
-
-    # For saveRecResult, when saving the crop images, they are smooth, not inverted/rotated
     min_xy = min(points, key=lambda p: (p[0], p[1]))
     max_xy = max(points, key=lambda p: (p[0], p[1]))
     maxX_minY = max(points, key=lambda p: (p[0], -p[1]))
@@ -160,9 +149,7 @@ def get_rotate_crop_image(img, points):
             M, (img_crop_width, img_crop_height),
             borderMode=cv2.BORDER_REPLICATE,
             flags=cv2.INTER_CUBIC)
-        # dst_img_height, dst_img_width = dst_img.shape[0:2]
-        # if dst_img_height * 1.0 / dst_img_width >= 1.5:
-        #     dst_img = np.rot90(dst_img)
+        
         return dst_img
     except Exception as e:
         print(e)
