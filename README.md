@@ -31,6 +31,11 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 📣 近期更新
 - **📚直播和OCR实战打卡营预告**：《PP-ChatOCRv2赋能金融报告信息智能化抽取，新金融效率再升级》课程上线，破解复杂版面、表格识别、信息抽取OCR解析难题，直播时间：6月6日（周四）19：00。并于6月11日启动【政务采购合同信息抽取】实战打卡营。报名链接：https://www.wjx.top/vm/eBcYmqO.aspx?udsid=197406
+
+- **🔥2024.7 添加 PaddleOCR 算法模型挑战赛冠军方案**：
+    - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](doc/doc_ch/algorithm_rec_svtrv2.md)；
+    - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](doc/doc_ch/algorithm_table_slanet.md)。
+
 - **🔥2024.5.10 上线星河零代码产线(OCR 相关)**：全面覆盖了以下四大 OCR 核心任务，提供极便捷的 Badcase 分析和实用的在线体验：
   - [通用 OCR](https://aistudio.baidu.com/community/app/91660) (PP-OCRv4)。
   - [通用表格识别](https://aistudio.baidu.com/community/app/91661) (SLANet)。
