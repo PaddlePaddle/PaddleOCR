@@ -19,8 +19,15 @@
 ### SVTRv2算法简介
 
 <a name="1"></a>
-[PaddleOCR 算法模型挑战赛 - 赛题一：OCR 端到端识别任务](https://aistudio.baidu.com/competition/detail/1131/0/introduction)排行榜第一算法。主要思路：1、检测和识别模型的Backbone升级为RepSVTR；2、识别教师模型升级为SVTRv2，可识别长文本。
+🔥 该算法由来自复旦大学视觉与学习实验室([FVL](https://fvl.fudan.edu.cn))的[OpenOCR](https://github.com/Topdu/OpenOCR)团队研发，其在[PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务](https://aistudio.baidu.com/competition/detail/1131/0/introduction)中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。主要思路：1、检测和识别模型的Backbone升级为RepSVTR；2、识别教师模型升级为SVTRv2，可识别长文本。
 
+|模型|配置文件|端到端|下载链接|
+| --- | --- | --- | --- |
+|PP-OCRv4| |A榜 62.77% <br> B榜 62.51%| [Model List](../../doc/doc_ch/models_list.md) |
+|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/rec_svtrv2_ch.yml](../../configs/rec/SVTRv2/rec_svtrv2_ch.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
+|RepSVTR(Mobile)|[识别](../../configs/rec/SVTRv2/rec_repsvtr_ch.yml) <br> [识别蒸馏](../../configs/rec/SVTRv2/rec_svtrv2_ch_distillation.yml) <br> [检测](../../configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
+
+🚀 快速使用：参考PP-OCR推理[说明文档](../../doc/doc_ch/inference_ppocr.md)，将检测和识别模型替换为上表中对应的RepSVTR或SVTRv2推理模型即可使用。
 
 <a name="2"></a>
 ## 2. 环境配置
@@ -115,7 +122,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 <a name="4-2"></a>
 ### 4.2 C++推理部署
 
-由于C++预处理后处理还未支持SVTRv2
+准备好推理模型后，参考[cpp infer](../../deploy/cpp_infer/)教程进行操作即可。
 
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
@@ -125,7 +132,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 <a name="4-4"></a>
 ### 4.4 更多推理部署
 
-暂不支持
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../deploy/paddle2onnx/)教程操作。
 
 <a name="5"></a>
 ## 5. FAQ
