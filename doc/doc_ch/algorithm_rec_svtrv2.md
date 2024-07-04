@@ -23,7 +23,7 @@
 
 |模型|配置文件|端到端|下载链接|
 | --- | --- | --- | --- |
-|PP-OCRv4| |A榜 62.77% <br> B榜 62.51%| [Model List](../../doc/doc_ch/models_list.md) | 
+|PP-OCRv4| |A榜 62.77% <br> B榜 62.51%| [Model List](../../doc/doc_ch/models_list.md) |
 |SVTRv2(Rec Sever)|[configs/rec/SVTRv2/rec_svtrv2_ch.yml](../../configs/rec/SVTRv2/rec_svtrv2_ch.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
 |RepSVTR(Mobile)|[识别](../../configs/rec/SVTRv2/rec_repsvtr_ch.yml) <br> [识别蒸馏](../../configs/rec/SVTRv2/rec_svtrv2_ch_distillation.yml) <br> [检测](../../configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
 
