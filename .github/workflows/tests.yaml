@@ -23,7 +23,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install "paddlepaddle==2.5"
+        pip install paddlepaddle==0.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/cpu-mkl/develop.html
         pip install -e .
     - name: Test with pytest
       run: |
