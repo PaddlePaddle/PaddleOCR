@@ -121,7 +121,7 @@ class StructureSystem(object):
                 time_dict["layout"] += elapse
             else:
                 h, w = ori_im.shape[:2]
-                layout_res = [dict(bbox=None, label="table")]
+                layout_res = [dict(bbox=None, label="table", score=0.0)]
 
             # As reported in issues such as #10270 and #11665, the old
             # implementation, which recognizes texts from the layout regions,
