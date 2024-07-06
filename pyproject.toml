@@ -58,6 +58,12 @@ dependencies = [
     "fire>=0.3.0",
 ]
 
+[project.urls]
+homepage = "https://github.com/PaddlePaddle/PaddleOCR"
+documentation = "https://github.com/PaddlePaddle/PaddleOCR/blob/main/README.md"
+repository = "https://github.com/PaddlePaddle/PaddleOCR.git"
+issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
+
 [project.scripts]
 paddleocr = "paddleocr.paddleocr:main"
 
