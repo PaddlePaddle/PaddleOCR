@@ -50,7 +50,6 @@ ppocr = importlib.import_module("ppocr", "paddleocr")
 ppstructure = importlib.import_module("ppstructure", "paddleocr")
 from ppocr.utils.logging import get_logger
 
-logger = get_logger()
 from ppocr.utils.utility import (
     check_and_read,
     get_image_file_list,
@@ -68,6 +67,7 @@ from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 
 logger = get_logger()
+
 __all__ = [
     "PaddleOCR",
     "PPStructure",
