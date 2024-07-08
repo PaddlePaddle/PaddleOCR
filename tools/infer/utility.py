@@ -346,7 +346,7 @@ def get_infer_gpuid():
         gpu_id_str = os.environ.get("HIP_VISIBLE_DEVICES", "0")
 
     gpu_ids = gpu_id_str.split(",")
-    logger.info(
+    logger.warning(
         "The first GPU is used for inference by default, GPU ID: {}".format(gpu_ids[0])
     )
     return int(gpu_ids[0])
