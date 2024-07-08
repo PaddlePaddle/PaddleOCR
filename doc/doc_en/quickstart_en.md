@@ -47,10 +47,6 @@ For more software version requirements, please refer to the instructions in [Ins
 pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
 ```
 
-- **For windows users:** If you getting this error `OSError: [WinError 126] The specified module could not be found` when you install shapely on windows. Please try to download Shapely whl file [here](http://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely).
-
-  Reference: [Solve shapely installation on windows](https://stackoverflow.com/questions/44398265/install-shapely-oserror-winerror-126-the-specified-module-could-not-be-found)
-
 <a name="2-easy-to-use"></a>
 
 ## 2. Easy-to-Use
