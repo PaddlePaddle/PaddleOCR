@@ -35,9 +35,8 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
     - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](doc/doc_ch/algorithm_rec_svtrv2.md)；
     - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](doc/doc_ch/algorithm_table_slanet.md)。
 
-- **💥2024.6.27 飞桨低代码开发工具 PaddleX 3.0 重磅更新！**
-  - 丰富的模型产线：精选 68 个优质飞桨模型，涵盖图像分类、目标检测、图像分割、OCR、文本图像版面分析、时序分析等任务场景；
-  - 低代码开发范式：支持单模型和模型产线全流程低代码开发，提供 Python API，支持用户自定义串联模型；
+- **💥2024.6.27 飞桨低代码开发工具 [PaddleX 3.0](https://github.com/paddlepaddle/paddlex) 重磅更新！**
+  - 低代码开发范式：支持 OCR 模型全流程低代码开发，提供 Python API，支持用户自定义串联模型；
   - 多硬件训推支持：支持英伟达 GPU、昆仑芯、昇腾和寒武纪等多种硬件进行模型训练与推理。PaddleOCR支持的模型见 [模型列表](doc/doc_ch/hardware/supported_models.md)
 
 - **📚直播和OCR实战打卡营预告**：《PP-ChatOCRv2赋能金融报告信息智能化抽取，新金融效率再升级》课程上线，破解复杂版面、表格识别、信息抽取OCR解析难题，直播时间：6月6日（周四）19：00。并于6月11日启动【政务采购合同信息抽取】实战打卡营。报名链接：https://www.wjx.top/vm/eBcYmqO.aspx?udsid=197406
