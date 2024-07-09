@@ -293,7 +293,7 @@ class TextDetector(object):
         et = time.time()
         return dt_boxes, et - st
 
-    def __call__(self, img):
+    def __call__(self, img, use_slice=False):
         # For image like poster with one side much greater than the other side,
         # splitting recursively and processing with overlap to enhance performance.
         MIN_BOUND_DISTANCE = 50
@@ -302,6 +302,7 @@ class TextDetector(object):
         if (
             img.shape[0] / img.shape[1] > 2
             and img.shape[0] > self.args.det_limit_side_len
+            and use_slice
         ):
             start_h = 0
             end_h = 0
@@ -349,6 +350,7 @@ class TextDetector(object):
         elif (
             img.shape[1] / img.shape[0] > 3
             and img.shape[1] > self.args.det_limit_side_len * 3
+            and use_slice
         ):
             start_w = 0
             end_w = 0
