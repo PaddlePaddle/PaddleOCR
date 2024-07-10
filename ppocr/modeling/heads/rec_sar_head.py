@@ -70,7 +70,7 @@ class SAREncoder(nn.Layer):
         kwargs = dict(
             input_size=d_model,
             hidden_size=d_enc,
-            num_layers=2,
+            num_layers=1,
             time_major=False,
             dropout=enc_drop_rnn,
             direction=direction,
@@ -197,7 +197,7 @@ class ParallelSARDecoder(BaseDecoder):
         kwargs = dict(
             input_size=encoder_rnn_out_size,
             hidden_size=encoder_rnn_out_size,
-            num_layers=2,
+            num_layers=1,
             time_major=False,
             dropout=dec_drop_rnn,
             direction=direction,

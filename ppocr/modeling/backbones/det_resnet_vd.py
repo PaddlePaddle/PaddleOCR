@@ -45,6 +45,7 @@ class DeformableConvV2(nn.Layer):
         skip_quant=False,
         dcn_bias_regularizer=L2Decay(0.0),
         dcn_bias_lr_scale=2.0,
+        data_format="NCHW",
     ):
         super(DeformableConvV2, self).__init__()
         self.offset_channel = 2 * kernel_size**2 * groups
@@ -70,6 +71,7 @@ class DeformableConvV2(nn.Layer):
             deformable_groups=groups,
             weight_attr=weight_attr,
             bias_attr=dcn_bias_attr,
+            data_format=data_format,
         )
 
         if lr_scale == 1 and regularizer is None:
@@ -88,6 +90,7 @@ class DeformableConvV2(nn.Layer):
             padding=(kernel_size - 1) // 2,
             weight_attr=ParamAttr(initializer=Constant(0.0)),
             bias_attr=offset_bias_attr,
+            data_format=data_format,
         )
         if skip_quant:
             self.conv_offset.skip_quant = True
@@ -116,12 +119,13 @@ class ConvBNLayer(nn.Layer):
         is_vd_mode=False,
         act=None,
         is_dcn=False,
+        data_format="NCHW",
     ):
         super(ConvBNLayer, self).__init__()
 
         self.is_vd_mode = is_vd_mode
         self._pool2d_avg = nn.AvgPool2D(
-            kernel_size=2, stride=2, padding=0, ceil_mode=True
+            kernel_size=2, stride=2, padding=0, ceil_mode=True, data_format=data_format
         )
         if not is_dcn:
             self._conv = nn.Conv2D(
@@ -132,6 +136,7 @@ class ConvBNLayer(nn.Layer):
                 padding=(kernel_size - 1) // 2,
                 groups=groups,
                 bias_attr=False,
+                data_format=data_format,
             )
         else:
             self._conv = DeformableConvV2(
@@ -142,8 +147,9 @@ class ConvBNLayer(nn.Layer):
                 padding=(kernel_size - 1) // 2,
                 groups=dcn_groups,  # groups,
                 bias_attr=False,
+                data_format=data_format,
             )
-        self._batch_norm = nn.BatchNorm(out_channels, act=act)
+        self._batch_norm = nn.BatchNorm(out_channels, act=act, data_layout=data_format)
 
     def forward(self, inputs):
         if self.is_vd_mode:
@@ -162,6 +168,7 @@ class BottleneckBlock(nn.Layer):
         shortcut=True,
         if_first=False,
         is_dcn=False,
+        data_format="NCHW",
     ):
         super(BottleneckBlock, self).__init__()
 
@@ -170,6 +177,7 @@ class BottleneckBlock(nn.Layer):
             out_channels=out_channels,
             kernel_size=1,
             act="relu",
+            data_format=data_format,
         )
         self.conv1 = ConvBNLayer(
             in_channels=out_channels,
@@ -179,12 +187,14 @@ class BottleneckBlock(nn.Layer):
             act="relu",
             is_dcn=is_dcn,
             dcn_groups=2,
+            data_format=data_format,
         )
         self.conv2 = ConvBNLayer(
             in_channels=out_channels,
             out_channels=out_channels * 4,
             kernel_size=1,
             act=None,
+            data_format=data_format,
         )
 
         if not shortcut:
@@ -194,6 +204,7 @@ class BottleneckBlock(nn.Layer):
                 kernel_size=1,
                 stride=1,
                 is_vd_mode=False if if_first else True,
+                data_format=data_format,
             )
 
         self.shortcut = shortcut
@@ -220,6 +231,7 @@ class BasicBlock(nn.Layer):
         stride,
         shortcut=True,
         if_first=False,
+        data_format="NCHW",
     ):
         super(BasicBlock, self).__init__()
         self.stride = stride
@@ -229,9 +241,14 @@ class BasicBlock(nn.Layer):
             kernel_size=3,
             stride=stride,
             act="relu",
+            data_format=data_format,
         )
         self.conv1 = ConvBNLayer(
-            in_channels=out_channels, out_channels=out_channels, kernel_size=3, act=None
+            in_channels=out_channels,
+            out_channels=out_channels,
+            kernel_size=3,
+            act=None,
+            data_format=data_format,
         )
 
         if not shortcut:
@@ -241,6 +258,7 @@ class BasicBlock(nn.Layer):
                 kernel_size=1,
                 stride=1,
                 is_vd_mode=False if if_first else True,
+                data_format=data_format,
             )
 
         self.shortcut = shortcut
@@ -260,7 +278,13 @@ class BasicBlock(nn.Layer):
 
 class ResNet_vd(nn.Layer):
     def __init__(
-        self, in_channels=3, layers=50, dcn_stage=None, out_indices=None, **kwargs
+        self,
+        in_channels=3,
+        layers=50,
+        dcn_stage=None,
+        out_indices=None,
+        data_format="NCHW",
+        **kwargs,
     ):
         super(ResNet_vd, self).__init__()
 
@@ -296,14 +320,27 @@ class ResNet_vd(nn.Layer):
             kernel_size=3,
             stride=2,
             act="relu",
+            data_format=data_format,
         )
         self.conv1_2 = ConvBNLayer(
-            in_channels=32, out_channels=32, kernel_size=3, stride=1, act="relu"
+            in_channels=32,
+            out_channels=32,
+            kernel_size=3,
+            stride=1,
+            act="relu",
+            data_format=data_format,
         )
         self.conv1_3 = ConvBNLayer(
-            in_channels=32, out_channels=64, kernel_size=3, stride=1, act="relu"
+            in_channels=32,
+            out_channels=64,
+            kernel_size=3,
+            stride=1,
+            act="relu",
+            data_format=data_format,
         )
-        self.pool2d_max = nn.MaxPool2D(kernel_size=3, stride=2, padding=1)
+        self.pool2d_max = nn.MaxPool2D(
+            kernel_size=3, stride=2, padding=1, data_format=data_format
+        )
 
         self.stages = []
         self.out_channels = []
@@ -326,6 +363,7 @@ class ResNet_vd(nn.Layer):
                             shortcut=shortcut,
                             if_first=block == i == 0,
                             is_dcn=is_dcn,
+                            data_format=data_format,
                         ),
                     )
                     shortcut = True
@@ -348,6 +386,7 @@ class ResNet_vd(nn.Layer):
                             stride=2 if i == 0 and block != 0 else 1,
                             shortcut=shortcut,
                             if_first=block == i == 0,
+                            data_format=data_format,
                         ),
                     )
                     shortcut = True
@@ -357,6 +396,8 @@ class ResNet_vd(nn.Layer):
                 self.stages.append(nn.Sequential(*block_list))
 
     def forward(self, inputs):
+        if not self.nchw:
+            inputs = inputs.transpose([0, 2, 3, 1])  # NCHW -> NHWC
         y = self.conv1_1(inputs)
         y = self.conv1_2(y)
         y = self.conv1_3(y)

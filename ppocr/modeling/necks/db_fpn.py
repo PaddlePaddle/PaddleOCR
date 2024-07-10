@@ -42,6 +42,7 @@ class DSConv(nn.Layer):
         groups=None,
         if_act=True,
         act="relu",
+        data_format="NCHW",
         **kwargs,
     ):
         super(DSConv, self).__init__()
@@ -57,9 +58,12 @@ class DSConv(nn.Layer):
             padding=padding,
             groups=groups,
             bias_attr=False,
+            data_format=data_format,
         )
 
-        self.bn1 = nn.BatchNorm(num_channels=in_channels, act=None)
+        self.bn1 = nn.BatchNorm(
+            num_channels=in_channels, act=None, data_layout=data_format
+        )
 
         self.conv2 = nn.Conv2D(
             in_channels=in_channels,
@@ -67,9 +71,12 @@ class DSConv(nn.Layer):
             kernel_size=1,
             stride=1,
             bias_attr=False,
+            data_format=data_format,
         )
 
-        self.bn2 = nn.BatchNorm(num_channels=int(in_channels * 4), act=None)
+        self.bn2 = nn.BatchNorm(
+            num_channels=int(in_channels * 4), act=None, data_layout=data_format
+        )
 
         self.conv3 = nn.Conv2D(
             in_channels=int(in_channels * 4),
@@ -77,6 +84,7 @@ class DSConv(nn.Layer):
             kernel_size=1,
             stride=1,
             bias_attr=False,
+            data_format=data_format,
         )
         self._c = [in_channels, out_channels]
         if in_channels != out_channels:
@@ -86,6 +94,7 @@ class DSConv(nn.Layer):
                 kernel_size=1,
                 stride=1,
                 bias_attr=False,
+                data_format=data_format,
             )
 
     def forward(self, inputs):
@@ -114,11 +123,14 @@ class DSConv(nn.Layer):
 
 
 class DBFPN(nn.Layer):
-    def __init__(self, in_channels, out_channels, use_asf=False, **kwargs):
+    def __init__(
+        self, in_channels, out_channels, use_asf=False, data_format="NCHW", **kwargs
+    ):
         super(DBFPN, self).__init__()
         self.out_channels = out_channels
         self.use_asf = use_asf
         weight_attr = paddle.nn.initializer.KaimingUniform()
+        self.data_format = data_format
 
         self.in2_conv = nn.Conv2D(
             in_channels=in_channels[0],
@@ -126,6 +138,7 @@ class DBFPN(nn.Layer):
             kernel_size=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.in3_conv = nn.Conv2D(
             in_channels=in_channels[1],
@@ -133,6 +146,7 @@ class DBFPN(nn.Layer):
             kernel_size=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.in4_conv = nn.Conv2D(
             in_channels=in_channels[2],
@@ -140,6 +154,7 @@ class DBFPN(nn.Layer):
             kernel_size=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.in5_conv = nn.Conv2D(
             in_channels=in_channels[3],
@@ -147,6 +162,7 @@ class DBFPN(nn.Layer):
             kernel_size=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.p5_conv = nn.Conv2D(
             in_channels=self.out_channels,
@@ -155,6 +171,7 @@ class DBFPN(nn.Layer):
             padding=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.p4_conv = nn.Conv2D(
             in_channels=self.out_channels,
@@ -163,6 +180,7 @@ class DBFPN(nn.Layer):
             padding=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.p3_conv = nn.Conv2D(
             in_channels=self.out_channels,
@@ -171,6 +189,7 @@ class DBFPN(nn.Layer):
             padding=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
         self.p2_conv = nn.Conv2D(
             in_channels=self.out_channels,
@@ -179,6 +198,7 @@ class DBFPN(nn.Layer):
             padding=1,
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
 
         if self.use_asf is True:
@@ -193,24 +213,56 @@ class DBFPN(nn.Layer):
         in2 = self.in2_conv(c2)
 
         out4 = in4 + F.upsample(
-            in5, scale_factor=2, mode="nearest", align_mode=1
+            in5,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/16
         out3 = in3 + F.upsample(
-            out4, scale_factor=2, mode="nearest", align_mode=1
+            out4,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/8
         out2 = in2 + F.upsample(
-            out3, scale_factor=2, mode="nearest", align_mode=1
+            out3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/4
 
         p5 = self.p5_conv(in5)
         p4 = self.p4_conv(out4)
         p3 = self.p3_conv(out3)
         p2 = self.p2_conv(out2)
-        p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
-        p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)
-        p3 = F.upsample(p3, scale_factor=2, mode="nearest", align_mode=1)
+        p5 = F.upsample(
+            p5,
+            scale_factor=8,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p4 = F.upsample(
+            p4,
+            scale_factor=4,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p3 = F.upsample(
+            p3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
 
-        fuse = paddle.concat([p5, p4, p3, p2], axis=1)
+        fuse = paddle.concat(
+            [p5, p4, p3, p2], axis=1 if "NCHW" == self.data_format else 3
+        )
 
         if self.use_asf is True:
             fuse = self.asf(fuse, [p5, p4, p3, p2])
@@ -219,7 +271,9 @@ class DBFPN(nn.Layer):
 
 
 class RSELayer(nn.Layer):
-    def __init__(self, in_channels, out_channels, kernel_size, shortcut=True):
+    def __init__(
+        self, in_channels, out_channels, kernel_size, shortcut=True, data_format="NCHW"
+    ):
         super(RSELayer, self).__init__()
         weight_attr = paddle.nn.initializer.KaimingUniform()
         self.out_channels = out_channels
@@ -230,8 +284,9 @@ class RSELayer(nn.Layer):
             padding=int(kernel_size // 2),
             weight_attr=ParamAttr(initializer=weight_attr),
             bias_attr=False,
+            data_format=data_format,
         )
-        self.se_block = SEModule(self.out_channels)
+        self.se_block = SEModule(self.out_channels, data_format=data_format)
         self.shortcut = shortcut
 
     def forward(self, ins):
@@ -244,26 +299,48 @@ class RSELayer(nn.Layer):
 
 
 class RSEFPN(nn.Layer):
-    def __init__(self, in_channels, out_channels, shortcut=True, **kwargs):
+    def __init__(
+        self, in_channels, out_channels, shortcut=True, data_format="NCHW", **kwargs
+    ):
         super(RSEFPN, self).__init__()
         self.out_channels = out_channels
+        self.nchw = data_format == "NCHW"
+        self.data_format = data_format
         self.ins_conv = nn.LayerList()
         self.inp_conv = nn.LayerList()
         self.intracl = False
         if "intracl" in kwargs.keys() and kwargs["intracl"] is True:
             self.intracl = kwargs["intracl"]
-            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl1 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl2 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl3 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl4 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
 
         for i in range(len(in_channels)):
             self.ins_conv.append(
-                RSELayer(in_channels[i], out_channels, kernel_size=1, shortcut=shortcut)
+                RSELayer(
+                    in_channels[i],
+                    out_channels,
+                    kernel_size=1,
+                    shortcut=shortcut,
+                    data_format=data_format,
+                )
             )
             self.inp_conv.append(
                 RSELayer(
-                    out_channels, out_channels // 4, kernel_size=3, shortcut=shortcut
+                    out_channels,
+                    out_channels // 4,
+                    kernel_size=3,
+                    shortcut=shortcut,
+                    data_format=data_format,
                 )
             )
 
@@ -276,13 +353,25 @@ class RSEFPN(nn.Layer):
         in2 = self.ins_conv[0](c2)
 
         out4 = in4 + F.upsample(
-            in5, scale_factor=2, mode="nearest", align_mode=1
+            in5,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/16
         out3 = in3 + F.upsample(
-            out4, scale_factor=2, mode="nearest", align_mode=1
+            out4,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/8
         out2 = in2 + F.upsample(
-            out3, scale_factor=2, mode="nearest", align_mode=1
+            out3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/4
 
         p5 = self.inp_conv[3](in5)
@@ -296,18 +385,40 @@ class RSEFPN(nn.Layer):
             p3 = self.incl2(p3)
             p2 = self.incl1(p2)
 
-        p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
-        p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)
-        p3 = F.upsample(p3, scale_factor=2, mode="nearest", align_mode=1)
+        p5 = F.upsample(
+            p5,
+            scale_factor=8,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p4 = F.upsample(
+            p4,
+            scale_factor=4,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p3 = F.upsample(
+            p3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
 
-        fuse = paddle.concat([p5, p4, p3, p2], axis=1)
+        fuse = paddle.concat([p5, p4, p3, p2], axis=1 if self.nchw else 3)
         return fuse
 
 
 class LKPAN(nn.Layer):
-    def __init__(self, in_channels, out_channels, mode="large", **kwargs):
+    def __init__(
+        self, in_channels, out_channels, mode="large", data_format="NCHW", **kwargs
+    ):
         super(LKPAN, self).__init__()
         self.out_channels = out_channels
+        self.nchw = data_format == "NCHW"
+        self.data_format = data_format
         weight_attr = paddle.nn.initializer.KaimingUniform()
 
         self.ins_conv = nn.LayerList()
@@ -335,6 +446,7 @@ class LKPAN(nn.Layer):
                     kernel_size=1,
                     weight_attr=ParamAttr(initializer=weight_attr),
                     bias_attr=False,
+                    data_format=data_format,
                 )
             )
 
@@ -346,6 +458,7 @@ class LKPAN(nn.Layer):
                     padding=4,
                     weight_attr=ParamAttr(initializer=weight_attr),
                     bias_attr=False,
+                    data_format=data_format,
                 )
             )
 
@@ -359,6 +472,7 @@ class LKPAN(nn.Layer):
                         stride=2,
                         weight_attr=ParamAttr(initializer=weight_attr),
                         bias_attr=False,
+                        data_format=data_format,
                     )
                 )
             self.pan_lat_conv.append(
@@ -369,16 +483,25 @@ class LKPAN(nn.Layer):
                     padding=4,
                     weight_attr=ParamAttr(initializer=weight_attr),
                     bias_attr=False,
+                    data_format=data_format,
                 )
             )
 
         self.intracl = False
         if "intracl" in kwargs.keys() and kwargs["intracl"] is True:
             self.intracl = kwargs["intracl"]
-            self.incl1 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl2 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl3 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
-            self.incl4 = IntraCLBlock(self.out_channels // 4, reduce_factor=2)
+            self.incl1 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl2 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl3 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
+            self.incl4 = IntraCLBlock(
+                self.out_channels // 4, reduce_factor=2, data_format=data_format
+            )
 
     def forward(self, x):
         c2, c3, c4, c5 = x
@@ -389,13 +512,25 @@ class LKPAN(nn.Layer):
         in2 = self.ins_conv[0](c2)
 
         out4 = in4 + F.upsample(
-            in5, scale_factor=2, mode="nearest", align_mode=1
+            in5,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/16
         out3 = in3 + F.upsample(
-            out4, scale_factor=2, mode="nearest", align_mode=1
+            out4,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/8
         out2 = in2 + F.upsample(
-            out3, scale_factor=2, mode="nearest", align_mode=1
+            out3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
         )  # 1/4
 
         f5 = self.inp_conv[3](in5)
@@ -418,11 +553,29 @@ class LKPAN(nn.Layer):
             p3 = self.incl2(p3)
             p2 = self.incl1(p2)
 
-        p5 = F.upsample(p5, scale_factor=8, mode="nearest", align_mode=1)
-        p4 = F.upsample(p4, scale_factor=4, mode="nearest", align_mode=1)
-        p3 = F.upsample(p3, scale_factor=2, mode="nearest", align_mode=1)
+        p5 = F.upsample(
+            p5,
+            scale_factor=8,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p4 = F.upsample(
+            p4,
+            scale_factor=4,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
+        p3 = F.upsample(
+            p3,
+            scale_factor=2,
+            mode="nearest",
+            align_mode=1,
+            data_format=self.data_format,
+        )
 
-        fuse = paddle.concat([p5, p4, p3, p2], axis=1)
+        fuse = paddle.concat([p5, p4, p3, p2], axis=1 if self.nchw else 3)
         return fuse
 
 

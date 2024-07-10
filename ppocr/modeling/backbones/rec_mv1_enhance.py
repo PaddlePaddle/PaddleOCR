@@ -42,6 +42,7 @@ class ConvBNLayer(nn.Layer):
         channels=None,
         num_groups=1,
         act="hard_swish",
+        data_format="NCHW",
     ):
         super(ConvBNLayer, self).__init__()
 
@@ -54,6 +55,7 @@ class ConvBNLayer(nn.Layer):
             groups=num_groups,
             weight_attr=ParamAttr(initializer=KaimingNormal()),
             bias_attr=False,
+            data_format=data_format,
         )
 
         self._batch_norm = BatchNorm(
@@ -61,6 +63,7 @@ class ConvBNLayer(nn.Layer):
             act=act,
             param_attr=ParamAttr(regularizer=L2Decay(0.0)),
             bias_attr=ParamAttr(regularizer=L2Decay(0.0)),
+            data_layout=data_format,
         )
 
     def forward(self, inputs):
@@ -81,6 +84,7 @@ class DepthwiseSeparable(nn.Layer):
         dw_size=3,
         padding=1,
         use_se=False,
+        data_format="NCHW",
     ):
         super(DepthwiseSeparable, self).__init__()
         self.use_se = use_se
@@ -91,15 +95,17 @@ class DepthwiseSeparable(nn.Layer):
             stride=stride,
             padding=padding,
             num_groups=int(num_groups * scale),
+            data_format=data_format,
         )
         if use_se:
-            self._se = SEModule(int(num_filters1 * scale))
+            self._se = SEModule(int(num_filters1 * scale), data_format=data_format)
         self._pointwise_conv = ConvBNLayer(
             num_channels=int(num_filters1 * scale),
             filter_size=1,
             num_filters=int(num_filters2 * scale),
             stride=1,
             padding=0,
+            data_format=data_format,
         )
 
     def forward(self, inputs):
@@ -118,6 +124,7 @@ class MobileNetV1Enhance(nn.Layer):
         last_conv_stride=1,
         last_pool_type="max",
         last_pool_kernel_size=[3, 2],
+        data_format="NCHW",
         **kwargs,
     ):
         super().__init__()
@@ -131,6 +138,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_filters=int(32 * scale),
             stride=2,
             padding=1,
+            data_format=data_format,
         )
 
         conv2_1 = DepthwiseSeparable(
@@ -140,6 +148,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=32,
             stride=1,
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv2_1)
 
@@ -150,6 +159,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=64,
             stride=1,
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv2_2)
 
@@ -160,6 +170,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=128,
             stride=1,
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv3_1)
 
@@ -170,6 +181,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=128,
             stride=(2, 1),
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv3_2)
 
@@ -180,6 +192,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=256,
             stride=1,
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv4_1)
 
@@ -190,6 +203,7 @@ class MobileNetV1Enhance(nn.Layer):
             num_groups=256,
             stride=(2, 1),
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv4_2)
 
@@ -204,6 +218,7 @@ class MobileNetV1Enhance(nn.Layer):
                 padding=2,
                 scale=scale,
                 use_se=False,
+                data_format=data_format,
             )
             self.block_list.append(conv5)
 
@@ -217,6 +232,7 @@ class MobileNetV1Enhance(nn.Layer):
             padding=2,
             scale=scale,
             use_se=True,
+            data_format=data_format,
         )
         self.block_list.append(conv5_6)
 
@@ -230,6 +246,7 @@ class MobileNetV1Enhance(nn.Layer):
             padding=2,
             use_se=True,
             scale=scale,
+            data_format=data_format,
         )
         self.block_list.append(conv6)
 
@@ -239,12 +256,17 @@ class MobileNetV1Enhance(nn.Layer):
                 kernel_size=last_pool_kernel_size,
                 stride=last_pool_kernel_size,
                 padding=0,
+                data_format=data_format,
             )
         else:
-            self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
+            self.pool = nn.MaxPool2D(
+                kernel_size=2, stride=2, padding=0, data_format=data_format
+            )
         self.out_channels = int(1024 * scale)
 
     def forward(self, inputs):
+        if self.data_format == "NHWC":
+            inputs = paddle.tensor.transpose(inputs, [0, 2, 3, 1])
         y = self.conv1(inputs)
         y = self.block_list(y)
         y = self.pool(y)
@@ -252,9 +274,9 @@ class MobileNetV1Enhance(nn.Layer):
 
 
 class SEModule(nn.Layer):
-    def __init__(self, channel, reduction=4):
+    def __init__(self, channel, reduction=4, data_format="NCHW"):
         super(SEModule, self).__init__()
-        self.avg_pool = AdaptiveAvgPool2D(1)
+        self.avg_pool = AdaptiveAvgPool2D(1, data_format=data_format)
         self.conv1 = Conv2D(
             in_channels=channel,
             out_channels=channel // reduction,
@@ -263,6 +285,7 @@ class SEModule(nn.Layer):
             padding=0,
             weight_attr=ParamAttr(),
             bias_attr=ParamAttr(),
+            data_format=data_format,
         )
         self.conv2 = Conv2D(
             in_channels=channel // reduction,
@@ -272,6 +295,7 @@ class SEModule(nn.Layer):
             padding=0,
             weight_attr=ParamAttr(),
             bias_attr=ParamAttr(),
+            data_format=data_format,
         )
 
     def forward(self, inputs):

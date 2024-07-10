@@ -35,7 +35,13 @@ def make_divisible(v, divisor=8, min_value=None):
 
 class MobileNetV3(nn.Layer):
     def __init__(
-        self, in_channels=3, model_name="large", scale=0.5, disable_se=False, **kwargs
+        self,
+        in_channels=3,
+        model_name="large",
+        scale=0.5,
+        disable_se=False,
+        data_format="NCHW",
+        **kwargs,
     ):
         """
         the MobilenetV3 backbone network for detection module.
@@ -46,6 +52,7 @@ class MobileNetV3(nn.Layer):
 
         self.disable_se = disable_se
 
+        self.nchw = data_format == "NCHW"
         if model_name == "large":
             cfg = [
                 # k, exp, c,  se,     nl,  s,
@@ -102,6 +109,7 @@ class MobileNetV3(nn.Layer):
             groups=1,
             if_act=True,
             act="hardswish",
+            data_format=data_format,
         )
 
         self.stages = []
@@ -125,6 +133,7 @@ class MobileNetV3(nn.Layer):
                     stride=s,
                     use_se=se,
                     act=nl,
+                    data_format=data_format,
                 )
             )
             inplanes = make_divisible(scale * c)
@@ -139,6 +148,7 @@ class MobileNetV3(nn.Layer):
                 groups=1,
                 if_act=True,
                 act="hardswish",
+                data_format=data_format,
             )
         )
         self.stages.append(nn.Sequential(*block_list))
@@ -147,6 +157,8 @@ class MobileNetV3(nn.Layer):
             self.add_sublayer(sublayer=stage, name="stage{}".format(i))
 
     def forward(self, x):
+        if not self.nchw:
+            x = x.transpose([0, 2, 3, 1])
         x = self.conv(x)
         out_list = []
         for stage in self.stages:
@@ -166,6 +178,7 @@ class ConvBNLayer(nn.Layer):
         groups=1,
         if_act=True,
         act=None,
+        data_format="NCHW",
     ):
         super(ConvBNLayer, self).__init__()
         self.if_act = if_act
@@ -178,9 +191,12 @@ class ConvBNLayer(nn.Layer):
             padding=padding,
             groups=groups,
             bias_attr=False,
+            data_format=data_format,
         )
 
-        self.bn = nn.BatchNorm(num_channels=out_channels, act=None)
+        self.bn = nn.BatchNorm(
+            num_channels=out_channels, act=None, data_layout=data_format
+        )
 
     def forward(self, x):
         x = self.conv(x)
@@ -210,6 +226,7 @@ class ResidualUnit(nn.Layer):
         stride,
         use_se,
         act=None,
+        data_format="NCHW",
     ):
         super(ResidualUnit, self).__init__()
         self.if_shortcut = stride == 1 and in_channels == out_channels
@@ -223,6 +240,7 @@ class ResidualUnit(nn.Layer):
             padding=0,
             if_act=True,
             act=act,
+            data_format=data_format,
         )
         self.bottleneck_conv = ConvBNLayer(
             in_channels=mid_channels,
@@ -233,9 +251,10 @@ class ResidualUnit(nn.Layer):
             groups=mid_channels,
             if_act=True,
             act=act,
+            data_format=data_format,
         )
         if self.if_se:
-            self.mid_se = SEModule(mid_channels)
+            self.mid_se = SEModule(mid_channels, data_format=data_format)
         self.linear_conv = ConvBNLayer(
             in_channels=mid_channels,
             out_channels=out_channels,
@@ -244,6 +263,7 @@ class ResidualUnit(nn.Layer):
             padding=0,
             if_act=False,
             act=None,
+            data_format=data_format,
         )
 
     def forward(self, inputs):
@@ -258,15 +278,16 @@ class ResidualUnit(nn.Layer):
 
 
 class SEModule(nn.Layer):
-    def __init__(self, in_channels, reduction=4):
+    def __init__(self, in_channels, reduction=4, data_format="NCHW"):
         super(SEModule, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2D(1)
+        self.avg_pool = nn.AdaptiveAvgPool2D(1, data_format=data_format)
         self.conv1 = nn.Conv2D(
             in_channels=in_channels,
             out_channels=in_channels // reduction,
             kernel_size=1,
             stride=1,
             padding=0,
+            data_format=data_format,
         )
         self.conv2 = nn.Conv2D(
             in_channels=in_channels // reduction,
@@ -274,6 +295,7 @@ class SEModule(nn.Layer):
             kernel_size=1,
             stride=1,
             padding=0,
+            data_format=data_format,
         )
 
     def forward(self, inputs):

@@ -32,7 +32,9 @@ def get_bias_attr(k):
 
 
 class Head(nn.Layer):
-    def __init__(self, in_channels, kernel_list=[3, 2, 2], **kwargs):
+    def __init__(
+        self, in_channels, kernel_list=[3, 2, 2], data_format="NCHw", **kwargs
+    ):
         super(Head, self).__init__()
 
         self.conv1 = nn.Conv2D(
@@ -42,12 +44,14 @@ class Head(nn.Layer):
             padding=int(kernel_list[0] // 2),
             weight_attr=ParamAttr(),
             bias_attr=False,
+            data_format=data_format,
         )
         self.conv_bn1 = nn.BatchNorm(
             num_channels=in_channels // 4,
             param_attr=ParamAttr(initializer=paddle.nn.initializer.Constant(value=1.0)),
             bias_attr=ParamAttr(initializer=paddle.nn.initializer.Constant(value=1e-4)),
             act="relu",
+            data_layout=data_format,
         )
 
         self.conv2 = nn.Conv2DTranspose(
@@ -57,12 +61,14 @@ class Head(nn.Layer):
             stride=2,
             weight_attr=ParamAttr(initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4),
+            data_format=data_format,
         )
         self.conv_bn2 = nn.BatchNorm(
             num_channels=in_channels // 4,
             param_attr=ParamAttr(initializer=paddle.nn.initializer.Constant(value=1.0)),
             bias_attr=ParamAttr(initializer=paddle.nn.initializer.Constant(value=1e-4)),
             act="relu",
+            data_layout=data_format,
         )
         self.conv3 = nn.Conv2DTranspose(
             in_channels=in_channels // 4,
@@ -71,6 +77,7 @@ class Head(nn.Layer):
             stride=2,
             weight_attr=ParamAttr(initializer=paddle.nn.initializer.KaimingUniform()),
             bias_attr=get_bias_attr(in_channels // 4),
+            data_format=data_format,
         )
 
     def forward(self, x, return_f=False):
@@ -95,11 +102,12 @@ class DBHead(nn.Layer):
         params(dict): super parameters for build DB network
     """
 
-    def __init__(self, in_channels, k=50, **kwargs):
+    def __init__(self, in_channels, k=50, data_format="NCHW", **kwargs):
         super(DBHead, self).__init__()
         self.k = k
-        self.binarize = Head(in_channels, **kwargs)
-        self.thresh = Head(in_channels, **kwargs)
+        self.binarize = Head(in_channels, data_format=data_format, **kwargs)
+        self.thresh = Head(in_channels, data_format=data_format, **kwargs)
+        self.data_format = data_format
 
     def step_function(self, x, y):
         return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
@@ -107,11 +115,18 @@ class DBHead(nn.Layer):
     def forward(self, x, targets=None):
         shrink_maps = self.binarize(x)
         if not self.training:
+            if "NHWC" == self.data_format:
+                shrink_maps = paddle.tensor.transpose(shrink_maps, [0, 3, 1, 2])
             return {"maps": shrink_maps}
 
         threshold_maps = self.thresh(x)
         binary_maps = self.step_function(shrink_maps, threshold_maps)
-        y = paddle.concat([shrink_maps, threshold_maps, binary_maps], axis=1)
+        y = paddle.concat(
+            [shrink_maps, threshold_maps, binary_maps],
+            axis=1 if "NCHW" == self.data_format else 3,
+        )
+        if "NHWC" == self.data_format:
+            y = paddle.tensor.transpose(y, [0, 3, 1, 2])
         return {"maps": y}
 
 

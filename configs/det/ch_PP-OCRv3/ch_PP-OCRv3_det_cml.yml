@@ -35,13 +35,16 @@ Architecture:
         scale: 0.5
         model_name: large
         disable_se: true
+        data_format: NHWC
       Neck:
         name: RSEFPN
         out_channels: 96
         shortcut: True
+        data_format: NHWC
       Head:
         name: DBHead
         k: 50
+        data_format: NHWC
     Student2:
       pretrained:
       model_type: det
@@ -52,13 +55,16 @@ Architecture:
         scale: 0.5
         model_name: large
         disable_se: true
+        data_format: NHWC
       Neck:
         name: RSEFPN
         out_channels: 96
         shortcut: True
+        data_format: NHWC
       Head:
         name: DBHead
         k: 50
+        data_format: NHWC
     Teacher:
       freeze_params: true
       return_all_feats: false
@@ -68,13 +74,16 @@ Architecture:
         name: ResNet_vd
         in_channels: 3
         layers: 50
+        data_format: NHWC
       Neck:
         name: LKPAN
         out_channels: 256
+        data_format: NHWC
       Head:
         name: DBHead
         kernel_list: [7,2,2]
         k: 50
+        data_format: NHWC
 
 Loss:
   name: CombinedLoss
