@@ -31,7 +31,6 @@ import base64
 from io import BytesIO
 import pprint
 from PIL import Image
-from tools.infer import predict_system
 
 
 def _import_file(module_name, file_path, make_importable=False):
@@ -62,6 +61,7 @@ from ppocr.utils.network import (
     is_link,
     confirm_model_dir_url,
 )
+from tools.infer import predict_system
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
