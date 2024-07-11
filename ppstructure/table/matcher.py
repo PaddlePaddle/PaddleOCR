@@ -14,6 +14,7 @@
 
 import numpy as np
 from ppstructure.table.table_master_match import deal_eb_token, deal_bb
+import html
 
 
 def distance(box_1, box_2):
@@ -133,6 +134,8 @@ class TableMatch:
                                 and " " != content[-1]
                             ):
                                 content += " "
+                        # escape content
+                        content = html.escape(content)
                         end_html.extend(content)
                     if b_with:
                         end_html.extend("</b>")

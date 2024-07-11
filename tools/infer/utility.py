@@ -15,7 +15,6 @@
 import argparse
 import os
 import sys
-import platform
 import cv2
 import numpy as np
 import paddle
@@ -23,9 +22,11 @@ import PIL
 from PIL import Image, ImageDraw, ImageFont
 import math
 from paddle import inference
-import time
 import random
 from ppocr.utils.logging import get_logger
+
+
+logger = get_logger()
 
 
 def str2bool(v):
@@ -333,20 +334,22 @@ def get_output_tensors(args, mode, predictor):
 
 
 def get_infer_gpuid():
-    sysstr = platform.system()
-    if sysstr == "Windows":
-        return 0
+    """
+    Get the GPU ID to be used for inference.
 
+    Returns:
+        int: The GPU ID to be used for inference.
+    """
     if not paddle.device.is_compiled_with_rocm:
-        cmd = "env | grep CUDA_VISIBLE_DEVICES"
+        gpu_id_str = os.environ.get("CUDA_VISIBLE_DEVICES", "0")
     else:
-        cmd = "env | grep HIP_VISIBLE_DEVICES"
-    env_cuda = os.popen(cmd).readlines()
-    if len(env_cuda) == 0:
-        return 0
-    else:
-        gpu_id = env_cuda[0].strip().split("=")[1]
-        return int(gpu_id[0])
+        gpu_id_str = os.environ.get("HIP_VISIBLE_DEVICES", "0")
+
+    gpu_ids = gpu_id_str.split(",")
+    logger.warning(
+        "The first GPU is used for inference by default, GPU ID: {}".format(gpu_ids[0])
+    )
+    return int(gpu_ids[0])
 
 
 def draw_e2e_res(dt_boxes, strs, img_path):
