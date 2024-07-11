@@ -56,7 +56,14 @@ dependencies = [
     "beautifulsoup4",
     "fonttools>=4.24.0",
     "fire>=0.3.0",
+    "requests"
 ]
+
+[project.urls]
+homepage = "https://github.com/PaddlePaddle/PaddleOCR"
+documentation = "https://github.com/PaddlePaddle/PaddleOCR/blob/main/README.md"
+repository = "https://github.com/PaddlePaddle/PaddleOCR.git"
+issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 
 [project.scripts]
 paddleocr = "paddleocr.paddleocr:main"

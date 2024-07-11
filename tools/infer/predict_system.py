@@ -91,7 +91,7 @@ class TextSystem(object):
             elapsed = []
             dt_slice_boxes = []
             for slice_crop, v_start, h_start in slice_gen:
-                dt_boxes, elapse = self.text_detector(slice_crop)
+                dt_boxes, elapse = self.text_detector(slice_crop, use_slice=True)
                 if dt_boxes.size:
                     dt_boxes[:, :, 0] += h_start
                     dt_boxes[:, :, 1] += v_start
