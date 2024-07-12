@@ -78,7 +78,7 @@ python3 tools/export_model.py -c configs/table/SLANet_lcnetv2.yml -o Global.pret
 
 ```shell
 cd ppstructure/
-python table/predict_structure.py --table_model_dir=../inference/slanet_lcnetv2_infer/ --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt --image_dir=docs/table/table.jpg --output=../output/table_slanet_lcnetv2 --use_gpu=False --benchmark=True --enable_mkldnn=True --table_max_len=512
+python table/predict_structure.py --table_model_dir=../inference/slanet_lcnetv2_infer/ --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt --image_dir=docs/table/table.jpg --output=../output/table_slanet_lcnetv2 --use_gpu=False --benchmark=True --enable_mkldnn=True --table_max_len=512
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='docs/table'。
 ```
 
