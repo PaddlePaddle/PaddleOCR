@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: ['main', 'release/*']
+  paths:
+    - '!**.md'
 
 jobs:
   check-code-style:

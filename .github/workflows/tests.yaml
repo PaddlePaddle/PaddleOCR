@@ -4,6 +4,8 @@ on:
   push:
   pull_request:
     branches: ["main", "release/*"]
+  paths:
+    - '!**.md'
 
 permissions:
   contents: read
