@@ -18,7 +18,6 @@ import importlib
 
 __dir__ = os.path.dirname(__file__)
 
-import paddle
 from paddle.utils import try_import
 
 sys.path.append(os.path.join(__dir__, ""))
@@ -685,15 +684,30 @@ class PaddleOCR(predict_system.TextSystem):
         """
         OCR with PaddleOCR
 
-        args:
-            img: img for OCR, support ndarray, img_path and list or ndarray
-            det: use text detection or not. If False, only rec will be exec. Default is True
-            rec: use text recognition or not. If False, only det will be exec. Default is True
-            cls: use angle classifier or not. Default is True. If True, the text with rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with rotation of 90 or 270 degrees can be recognized even if cls=False.
-            bin: binarize image to black and white. Default is False.
-            inv: invert image colors. Default is False.
-            alpha_color: set RGB color Tuple for transparent parts replacement. Default is pure white.
-            slice: use sliding window inference for large images, det and rec must be True. Requires int values for slice["horizontal_stride"], slice["vertical_stride"], slice["merge_x_thres"], slice["merge_y_thres] (See doc/doc_en/slice_en.md). Default is {}.
+        Args:
+            img: Image for OCR. It can be an ndarray, img_path, or a list of ndarrays.
+            det: Use text detection or not. If False, only text recognition will be executed. Default is True.
+            rec: Use text recognition or not. If False, only text detection will be executed. Default is True.
+            cls: Use angle classifier or not. Default is True. If True, the text with a rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance.
+            bin: Binarize image to black and white. Default is False.
+            inv: Invert image colors. Default is False.
+            alpha_color: Set RGB color Tuple for transparent parts replacement. Default is pure white.
+            slice: Use sliding window inference for large images. Both det and rec must be True. Requires int values for slice["horizontal_stride"], slice["vertical_stride"], slice["merge_x_thres"], slice["merge_y_thres"] (See doc/doc_en/slice_en.md). Default is {}.
+
+        Returns:
+            If both det and rec are True, returns a list of OCR results for each image. Each OCR result is a list of bounding boxes and recognized text for each detected text region.
+            If det is True and rec is False, returns a list of detected bounding boxes for each image.
+            If det is False and rec is True, returns a list of recognized text for each image.
+            If both det and rec are False, returns a list of angle classification results for each image.
+
+        Raises:
+            AssertionError: If the input image is not of type ndarray, list, str, or bytes.
+            SystemExit: If det is True and the input is a list of images.
+
+        Note:
+            - If the angle classifier is not initialized (use_angle_cls=False), it will not be used during the forward process.
+            - For PDF files, if the input is a list of images and the page_num is specified, only the first page_num images will be processed.
+            - The preprocess_image function is used to preprocess the input image by applying alpha color replacement, inversion, and binarization if specified.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
@@ -763,7 +777,21 @@ class PaddleOCR(predict_system.TextSystem):
 
 
 class PPStructure(StructureSystem):
+    """
+    PPStructure class represents the structure analysis system for PaddleOCR.
+    """
+
     def __init__(self, **kwargs):
+        """
+        Initializes the PPStructure object with the given parameters.
+
+        Args:
+            **kwargs: Additional keyword arguments to customize the behavior of the structure analysis system.
+
+        Raises:
+            AssertionError: If the structure version is not supported.
+
+        """
         params = parse_args(mMain=False)
         params.__dict__.update(**kwargs)
         assert (
@@ -842,6 +870,19 @@ class PPStructure(StructureSystem):
         img_idx=0,
         alpha_color=(255, 255, 255),
     ):
+        """
+        Performs structure analysis on the input image.
+
+        Args:
+            img (str or numpy.ndarray): The input image to perform structure analysis on.
+            return_ocr_result_in_table (bool, optional): Whether to return OCR results in table format. Defaults to False.
+            img_idx (int, optional): The index of the image. Defaults to 0.
+            alpha_color (tuple, optional): The alpha color for transparent images. Defaults to (255, 255, 255).
+
+        Returns:
+            list or dict: The structure analysis results.
+
+        """
         img, flag_gif, flag_pdf = check_img(img, alpha_color)
         if isinstance(img, list) and flag_pdf:
             res_list = []
@@ -857,6 +898,17 @@ class PPStructure(StructureSystem):
 
 
 def main():
+    """
+    Main function for running PaddleOCR or PPStructure.
+
+    This function takes command line arguments, processes the images, and performs OCR or structure analysis based on the specified type.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     # for cmd
     args = parse_args(mMain=True)
     image_dir = args.image_dir
