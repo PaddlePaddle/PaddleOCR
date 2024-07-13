@@ -688,7 +688,7 @@ class PaddleOCR(predict_system.TextSystem):
             img: Image for OCR. It can be an ndarray, img_path, or a list of ndarrays.
             det: Use text detection or not. If False, only text recognition will be executed. Default is True.
             rec: Use text recognition or not. If False, only text detection will be executed. Default is True.
-            cls: Use angle classifier or not. Default is True. If True, the text with a rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance. Text with a rotation of 90 or 270 degrees can be recognized even if cls=False.
+            cls: Use angle classifier or not. Default is True. If True, the text with a rotation of 180 degrees can be recognized. If no text is rotated by 180 degrees, use cls=False to get better performance.
             bin: Binarize image to black and white. Default is False.
             inv: Invert image colors. Default is False.
             alpha_color: Set RGB color Tuple for transparent parts replacement. Default is pure white.
