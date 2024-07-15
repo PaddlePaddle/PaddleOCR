@@ -133,6 +133,11 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char,
             }
+        elif self.rec_algorithm == "LaTeXOCR":
+            postprocess_params = {
+                "name": "LaTeXOCRDecode",
+                "fast_tokenizer_file": args.rec_char_dict_path,
+            }
         elif self.rec_algorithm == "ParseQ":
             postprocess_params = {
                 "name": "ParseQLabelDecode",
@@ -448,6 +453,88 @@ class TextRecognizer(object):
         img = np.expand_dims(img, 0) / 255.0  # h,w,c -> c,h,w
         img = img.astype("float32")
 
+        return img
+
+    def pad_(self, img, divable=32):
+        threshold = 128
+        data = np.array(img.convert("LA"))
+        if data[..., -1].var() == 0:
+            data = (data[..., 0]).astype(np.uint8)
+        else:
+            data = (255 - data[..., -1]).astype(np.uint8)
+        data = (data - data.min()) / (data.max() - data.min()) * 255
+        if data.mean() > threshold:
+            # To invert the text to white
+            gray = 255 * (data < threshold).astype(np.uint8)
+        else:
+            gray = 255 * (data > threshold).astype(np.uint8)
+            data = 255 - data
+
+        coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
+        a, b, w, h = cv2.boundingRect(coords)  # Find minimum spanning bounding box
+        rect = data[b : b + h, a : a + w]
+        im = Image.fromarray(rect).convert("L")
+        dims = []
+        for x in [w, h]:
+            div, mod = divmod(x, divable)
+            dims.append(divable * (div + (1 if mod > 0 else 0)))
+        padded = Image.new("L", dims, 255)
+        padded.paste(im, (0, 0, im.size[0], im.size[1]))
+        return padded
+
+    def minmax_size_(
+        self,
+        img,
+        max_dimensions,
+        min_dimensions,
+    ):
+        if max_dimensions is not None:
+            ratios = [a / b for a, b in zip(img.size, max_dimensions)]
+            if any([r > 1 for r in ratios]):
+                size = np.array(img.size) // max(ratios)
+                img = img.resize(tuple(size.astype(int)), Image.BILINEAR)
+        if min_dimensions is not None:
+            # hypothesis: there is a dim in img smaller than min_dimensions, and return a proper dim >= min_dimensions
+            padded_size = [
+                max(img_dim, min_dim)
+                for img_dim, min_dim in zip(img.size, min_dimensions)
+            ]
+            if padded_size != list(img.size):  # assert hypothesis
+                padded_im = Image.new("L", padded_size, 255)
+                padded_im.paste(img, img.getbbox())
+                img = padded_im
+        return img
+
+    def norm_img_latexocr(self, img):
+        # CAN only predict gray scale image
+        shape = (1, 1, 3)
+        mean = [0.7931, 0.7931, 0.7931]
+        std = [0.1738, 0.1738, 0.1738]
+        scale = 255.0
+        min_dimensions = [32, 32]
+        max_dimensions = [672, 192]
+        mean = np.array(mean).reshape(shape).astype("float32")
+        std = np.array(std).reshape(shape).astype("float32")
+        img = (img.astype("float32") * scale - mean) / std
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        im_h, im_w = img.shape[:2]
+        if (
+            min_dimensions[0] <= im_w <= max_dimensions[0]
+            and min_dimensions[1] <= im_h <= max_dimensions[1]
+        ):
+            pass
+        else:
+            img = Image.fromarray(np.uint8(img))
+            img = self.minmax_size_(self.pad_(img), max_dimensions, min_dimensions)
+            img = np.array(img)
+            img = np.dstack((img, img, img))
+        divide_h = math.ceil(im_h / 16) * 16
+        divide_w = math.ceil(im_w / 16) * 16
+        img = np.pad(
+            img, ((0, divide_h - im_h), (0, divide_w - im_w)), constant_values=(1, 1)
+        )
+        img = img[:, :, np.newaxis].transpose(2, 0, 1)
+        img = img.astype("float32")
         return img
 
     def __call__(self, img_list):

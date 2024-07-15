@@ -99,7 +99,7 @@ class MinMaxResize:
         self.max_dimensions = max_dimensions
         # pass
 
-    def pad_(img, divable=32):
+    def pad_(self, img, divable=32):
         threshold = 128
         data = np.array(img.convert("LA"))
         if data[..., -1].var() == 0:
@@ -126,11 +126,7 @@ class MinMaxResize:
         padded.paste(im, (0, 0, im.size[0], im.size[1]))
         return padded
 
-    def minmax_size_(
-        img,
-        max_dimensions,
-        min_dimensions,
-    ):
+    def minmax_size_(self, img, max_dimensions, min_dimensions):
         if max_dimensions is not None:
             ratios = [a / b for a, b in zip(img.size, max_dimensions)]
             if any([r > 1 for r in ratios]):

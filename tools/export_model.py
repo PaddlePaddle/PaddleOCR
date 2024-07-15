@@ -131,6 +131,11 @@ def export_single_model(
             ]
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "LaTeXOCR":
+        other_shape = [
+            paddle.static.InputSpec(shape=[None, 1, None, None], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [
             paddle.static.InputSpec(shape=[None, 512], dtype="int64"),  # input_ids
