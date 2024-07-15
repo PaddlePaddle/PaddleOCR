@@ -17,6 +17,7 @@ from difflib import SequenceMatcher
 
 import numpy as np
 import string
+from .bleu import compute_blue_score, compute_edit_distance
 
 
 class RecMetric(object):
@@ -176,4 +177,122 @@ class CANMetric(object):
         self.word_right = []
         self.exp_right = []
         self.word_total_length = 0
+        self.exp_total_num = 0
+
+
+class LaTeXOCRMetric(object):
+    def __init__(self, main_indicator="exp_rate", cal_blue_score=False, **kwargs):
+        self.main_indicator = main_indicator
+        self.cal_blue_score = cal_blue_score
+        self.edit_right = []
+        self.exp_right = []
+        self.blue_right = []
+        self.e1_right = []
+        self.e2_right = []
+        self.e3_right = []
+        self.editdistance_total_length = 0
+        self.exp_total_num = 0
+        self.edit_dist = 0
+        self.exp_rate = 0
+        if self.cal_blue_score:
+            self.blue_score = 0
+        self.e1 = 0
+        self.e2 = 0
+        self.e3 = 0
+        self.reset()
+        self.epoch_reset()
+
+    def __call__(self, preds, batch, **kwargs):
+        for k, v in kwargs.items():
+            epoch_reset = v
+            if epoch_reset:
+                self.epoch_reset()
+        word_pred = preds
+        word_label = batch
+        line_right, e1, e2, e3 = 0, 0, 0, 0
+        lev_dist = []
+        for labels, prediction in zip(word_label, word_pred):
+            if prediction == labels:
+                line_right += 1
+            distance = compute_edit_distance(prediction, labels)
+            lev_dist.append(Levenshtein.normalized_distance(prediction, labels))
+            if distance <= 1:
+                e1 += 1
+            if distance <= 2:
+                e2 += 1
+            if distance <= 3:
+                e3 += 1
+
+        batch_size = len(lev_dist)
+
+        self.edit_dist = sum(lev_dist)  # float
+        self.exp_rate = line_right  # float
+        if self.cal_blue_score:
+            self.blue_score = compute_blue_score(word_pred, word_label)
+        self.e1 = e1
+        self.e2 = e2
+        self.e3 = e3
+        exp_length = len(word_label)
+        self.edit_right.append(self.edit_dist)
+        self.exp_right.append(self.exp_rate)
+        if self.cal_blue_score:
+            self.blue_right.append(self.blue_score * batch_size)
+        self.e1_right.append(self.e1)
+        self.e2_right.append(self.e2)
+        self.e3_right.append(self.e3)
+        self.editdistance_total_length = self.editdistance_total_length + exp_length
+        self.exp_total_num = self.exp_total_num + exp_length
+
+    def get_metric(self):
+        """
+        return {
+            'edit distance': 0,
+            "blue_score": 0,
+            "exp_rate": 0,
+        }
+        """
+        cur_edit_distance = sum(self.edit_right) / self.exp_total_num
+        cur_exp_rate = sum(self.exp_right) / self.exp_total_num
+        if self.cal_blue_score:
+            cur_blue_score = sum(self.blue_right) / self.editdistance_total_length
+        cur_exp_1 = sum(self.e1_right) / self.exp_total_num
+        cur_exp_2 = sum(self.e2_right) / self.exp_total_num
+        cur_exp_3 = sum(self.e3_right) / self.exp_total_num
+        self.reset()
+        if self.cal_blue_score:
+            return {
+                "blue_score ": cur_blue_score,
+                "edit distance ": cur_edit_distance,
+                "exp_rate ": cur_exp_rate,
+                "exp_rate<=1 ": cur_exp_1,
+                "exp_rate<=2 ": cur_exp_2,
+                "exp_rate<=3 ": cur_exp_3,
+            }
+        else:
+            return {
+                "edit distance": cur_edit_distance,
+                "exp_rate": cur_exp_rate,
+                "exp_rate<=1 ": cur_exp_1,
+                "exp_rate<=2 ": cur_exp_2,
+                "exp_rate<=3 ": cur_exp_3,
+            }
+
+    def reset(self):
+        self.edit_dist = 0
+        self.exp_rate = 0
+        if self.cal_blue_score:
+            self.blue_score = 0
+        self.e1 = 0
+        self.e2 = 0
+        self.e3 = 0
+
+    def epoch_reset(self):
+        self.edit_right = []
+        self.exp_right = []
+        if self.cal_blue_score:
+            self.blue_right = []
+        self.e1_right = []
+        self.e2_right = []
+        self.e3_right = []
+        self.editdistance_total_length = 0
         self.exp_total_num = 0
