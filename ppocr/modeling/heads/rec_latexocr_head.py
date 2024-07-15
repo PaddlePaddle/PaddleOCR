@@ -530,6 +530,7 @@ class AttentionLayers(nn.Layer):
         self.residual_attn = residual_attn
         self.cross_residual_attn = cross_residual_attn
         self.cross_attend = cross_attend
+        self.rel_pos = None
 
         norm_class = ScaleNorm if use_scalenorm else nn.LayerNorm
         norm_class = RMSNorm if use_rmsnorm else norm_class
@@ -613,15 +614,9 @@ class AttentionLayers(nn.Layer):
         intermediates = []
         prev_attn = None
         prev_cross_attn = None
+        rotary_pos_emb = None
 
         mems = mems.copy() if exists(mems) else [None] * self.num_attn_layers
-
-        rotary_pos_emb = None
-        if exists(self.rotary_pos_emb):
-            max_rotary_emb_length = max(
-                list(map(lambda m: (m.shape[1] if exists(m) else 0) + x.shape[1], mems))
-            )
-            rotary_pos_emb = self.rotary_pos_emb(max_rotary_emb_length, x.device)
 
         for ind, (layer_type, (norm, block, residual_fn)) in enumerate(
             zip(self.layer_types, self.layers)

@@ -174,9 +174,11 @@ class LatexImageFormat:
         im_h, im_w = img.shape[:2]
         divide_h = math.ceil(im_h / 16) * 16
         divide_w = math.ceil(im_w / 16) * 16
+        # print(img.shape, "pad_shape")
+        img = img[:, :, 0]
         img = np.pad(
             img, ((0, divide_h - im_h), (0, divide_w - im_w)), constant_values=(1, 1)
         )
-        img_expanded = img[:, :, :1].transpose(2, 0, 1)
+        img_expanded = img[:, :, np.newaxis].transpose(2, 0, 1)
         data["image"] = img_expanded
         return data
