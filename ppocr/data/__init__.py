@@ -38,6 +38,7 @@ from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR, LMDBDataSetTable
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
+from ppocr.data.latexocr_dataset import LaTeXOCRDataSet
 
 # for PaddleX dataset_type
 TextDetDataset = SimpleDataSet
@@ -45,6 +46,7 @@ TextRecDataset = SimpleDataSet
 MSTextRecDataset = MultiScaleDataSet
 PubTabTableRecDataset = PubTabDataSet
 KieDataset = SimpleDataSet
+LaTeXOCRDataSet = LaTeXOCRDataSet
 
 __all__ = ["build_dataloader", "transform", "create_operators", "set_signal_handlers"]
 
@@ -94,6 +96,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
         "MSTextRecDataset",
         "PubTabTableRecDataset",
         "KieDataset",
+        "LaTeXOCRDataSet",
     ]
     module_name = config[mode]["dataset"]["name"]
     assert module_name in support_dict, Exception(

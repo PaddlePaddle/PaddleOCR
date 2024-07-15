@@ -78,6 +78,9 @@ Train:
     transforms:
       - DecodeImage:
           channel_first: False
+      - MinMaxResize:
+          min_dimensions: [32, 32]
+          max_dimensions: [672, 192]        
       - LatexTrainTransform:
           bitmap_prob: .04
       - NormalizeImage:
@@ -105,6 +108,9 @@ Eval:
     transforms:
       - DecodeImage:
           channel_first: False
+      - MinMaxResize:
+          min_dimensions: [32, 32]
+          max_dimensions: [672, 192]  
       - LatexTestTransform:
       - NormalizeImage:
           mean: [0.7931, 0.7931, 0.7931]
