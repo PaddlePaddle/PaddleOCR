@@ -442,7 +442,7 @@ def train(
                 and dist.get_rank() == 0
             ):
                 if model_average:
-                    Model_Average = paddle.incubate.optimizer.ModelAverage(
+                    Model_Average = paddle.incubate.ModelAverage(
                         0.15,
                         parameters=model.parameters(),
                         min_average_window=10000,
