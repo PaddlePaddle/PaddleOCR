@@ -47,8 +47,8 @@ class LaTeXOCRDataSet(Dataset):
         self.batchsize = dataset_config.pop("batch_size_per_pair")
         self.keep_smaller_batches = dataset_config.pop("keep_smaller_batches")
         self.max_seq_len = global_config.pop("max_seq_len")
-        self.fast_tokenizer_file = global_config.pop("fast_tokenizer_file")
-        self.tokenizer = LatexOCRLabelEncode(self.fast_tokenizer_file)
+        self.rec_char_dict_path = global_config.pop("rec_char_dict_path")
+        self.tokenizer = LatexOCRLabelEncode(self.rec_char_dict_path)
 
         file = open(pkl_path, "rb")
         data = pickle.load(file)

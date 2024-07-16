@@ -16,7 +16,7 @@ Global:
   infer_img: doc/datasets/pme_demo/0000013.png
   infer_mode: False
   use_space_char: False
-  fast_tokenizer_file:  ppocr/utils/dict/latex_ocr_tokenizer.json
+  rec_char_dict_path:  ppocr/utils/dict/latex_ocr_tokenizer.json
   save_res_path: ./output/rec/predicts_latexocr.txt
 
 Optimizer:
@@ -46,7 +46,6 @@ Architecture:
   Head:
     name: LaTeXOCRHead
     pad_value: 0
-    ignore_index: -100
     is_export: False
     decoder_args:
       attn_on_attn: True
@@ -60,7 +59,7 @@ Loss:
 
 PostProcess:
   name: LaTeXOCRDecode
-  fast_tokenizer_file: ppocr/utils/dict/latex_ocr_tokenizer.json
+  rec_char_dict_path: ppocr/utils/dict/latex_ocr_tokenizer.json
 
 Metric:
   name: LaTeXOCRMetric

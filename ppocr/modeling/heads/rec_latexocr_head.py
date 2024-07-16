@@ -848,7 +848,6 @@ class LaTeXOCRHead(nn.Layer):
         net=None,
         in_channels=256,
         out_channels=256,
-        ignore_index=-100,
         pad_value=0,
         decoder_args=None,
         is_export=False,
@@ -868,7 +867,6 @@ class LaTeXOCRHead(nn.Layer):
         self.eos_token = 2
         self.max_length = 512
         self.pad_value = pad_value
-        self.ignore_index = ignore_index
 
         self.net = transformer_decoder
         self.max_seq_len = self.net.max_seq_len

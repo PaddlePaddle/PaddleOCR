@@ -1777,10 +1777,10 @@ class CPPDLabelEncode(BaseRecLabelEncode):
 class LatexOCRLabelEncode(object):
     def __init__(
         self,
-        fast_tokenizer_file,
+        rec_char_dict_path,
         **kwargs,
     ):
-        self.tokenizer = TokenizerFast.from_file(fast_tokenizer_file)
+        self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
         self.model_input_names = ["input_ids", "token_type_ids", "attention_mask"]
         self.pad_token_id = 0
         self.bos_token_id = 1

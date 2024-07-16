@@ -136,7 +136,7 @@ class TextRecognizer(object):
         elif self.rec_algorithm == "LaTeXOCR":
             postprocess_params = {
                 "name": "LaTeXOCRDecode",
-                "fast_tokenizer_file": args.rec_char_dict_path,
+                "rec_char_dict_path": args.rec_char_dict_path,
             }
         elif self.rec_algorithm == "ParseQ":
             postprocess_params = {
@@ -515,8 +515,7 @@ class TextRecognizer(object):
         max_dimensions = [672, 192]
         mean = np.array(mean).reshape(shape).astype("float32")
         std = np.array(std).reshape(shape).astype("float32")
-        img = (img.astype("float32") * scale - mean) / std
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
         im_h, im_w = img.shape[:2]
         if (
             min_dimensions[0] <= im_w <= max_dimensions[0]
@@ -527,7 +526,10 @@ class TextRecognizer(object):
             img = Image.fromarray(np.uint8(img))
             img = self.minmax_size_(self.pad_(img), max_dimensions, min_dimensions)
             img = np.array(img)
-            img = np.dstack((img, img, img))
+            im_h, im_w = img.shape[:2]
+            img = np.dstack([img, img, img])
+        img = (img.astype("float32") * scale - mean) / std
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         divide_h = math.ceil(im_h / 16) * 16
         divide_w = math.ceil(im_w / 16) * 16
         img = np.pad(

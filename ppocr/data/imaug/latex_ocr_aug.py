@@ -25,7 +25,7 @@ from __future__ import unicode_literals
 import math
 import cv2
 import numpy as np
-import albumentations as alb
+import albumentations as A
 from PIL import Image
 
 
@@ -33,11 +33,11 @@ class LatexTrainTransform:
     def __init__(self, bitmap_prob=0.04, **kwargs):
         # your init code
         self.bitmap_prob = bitmap_prob
-        self.train_transform = alb.Compose(
+        self.train_transform = A.Compose(
             [
-                alb.Compose(
+                A.Compose(
                     [
-                        alb.ShiftScaleRotate(
+                        A.ShiftScaleRotate(
                             shift_limit=0,
                             scale_limit=(-0.15, 0),
                             rotate_limit=1,
@@ -46,7 +46,7 @@ class LatexTrainTransform:
                             value=[255, 255, 255],
                             p=1,
                         ),
-                        alb.GridDistortion(
+                        A.GridDistortion(
                             distort_limit=0.1,
                             border_mode=0,
                             interpolation=3,
@@ -56,13 +56,11 @@ class LatexTrainTransform:
                     ],
                     p=0.15,
                 ),
-                alb.RGBShift(
-                    r_shift_limit=15, g_shift_limit=15, b_shift_limit=15, p=0.3
-                ),
-                alb.GaussNoise(10, p=0.2),
-                alb.RandomBrightnessContrast(0.05, (-0.2, 0), True, p=0.2),
-                alb.ImageCompression(95, p=0.3),
-                alb.ToGray(always_apply=True),
+                A.RGBShift(r_shift_limit=15, g_shift_limit=15, b_shift_limit=15, p=0.3),
+                A.GaussNoise(10, p=0.2),
+                A.RandomBrightnessContrast(0.05, (-0.2, 0), True, p=0.2),
+                A.ImageCompression(95, p=0.3),
+                A.ToGray(always_apply=True),
             ]
         )
 
@@ -71,7 +69,6 @@ class LatexTrainTransform:
         if np.random.random() < self.bitmap_prob:
             img[img != 255] = 0
         img = self.train_transform(image=img)["image"]
-        # print(img.shape)
         data["image"] = img
         return data
 
@@ -79,9 +76,9 @@ class LatexTrainTransform:
 class LatexTestTransform:
     def __init__(self, **kwargs):
         # your init code
-        self.test_transform = alb.Compose(
+        self.test_transform = A.Compose(
             [
-                alb.ToGray(always_apply=True),
+                A.ToGray(always_apply=True),
             ]
         )
 
@@ -170,11 +167,9 @@ class LatexImageFormat:
 
     def __call__(self, data):
         img = data["image"]
-        # H, W, C
         im_h, im_w = img.shape[:2]
         divide_h = math.ceil(im_h / 16) * 16
         divide_w = math.ceil(im_w / 16) * 16
-        # print(img.shape, "pad_shape")
         img = img[:, :, 0]
         img = np.pad(
             img, ((0, divide_h - im_h), (0, divide_w - im_w)), constant_values=(1, 1)

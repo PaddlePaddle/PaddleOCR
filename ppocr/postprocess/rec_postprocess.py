@@ -1216,9 +1216,9 @@ class CPPDLabelDecode(NRTRLabelDecode):
 class LaTeXOCRDecode(object):
     """Convert between latex-symbol and symbol-index"""
 
-    def __init__(self, fast_tokenizer_file=None, **kwargs):
+    def __init__(self, rec_char_dict_path, **kwargs):
         super(LaTeXOCRDecode, self).__init__()
-        self.tokenizer = TokenizerFast.from_file(fast_tokenizer_file)
+        self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
 
     def post_process(self, s):
         text_reg = r"(\\(operatorname|mathrm|text|mathbf)\s?\*? {.*?})"

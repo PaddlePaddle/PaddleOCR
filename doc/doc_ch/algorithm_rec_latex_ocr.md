@@ -75,7 +75,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 - 默认每训练22个epoch（60000次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
 ```
-python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_step=[0, {length_of_dataset//batch_size*22}]
+python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_step=[0,{length_of_dataset//batch_size*22}]
 ```
 
 <a name="3-2"></a>
@@ -115,7 +115,7 @@ python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrai
 # 目前的静态图模型支持的最大输出长度为512
 ```
 **注意：**
-- 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否是所需要的字典文件。
+- 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请检查配置文件中的`rec_char_dict_path`是否为所需要的字典文件。
 - [转换后模型下载地址](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_infer.tar)
 
 转换成功后，在目录下有三个文件：
