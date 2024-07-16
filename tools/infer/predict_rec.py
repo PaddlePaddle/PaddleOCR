@@ -639,6 +639,10 @@ class TextRecognizer(object):
                     word_label_list = []
                     norm_img_mask_batch.append(norm_image_mask)
                     word_label_list.append(word_label)
+                elif self.rec_algorithm == "LaTeXOCR":
+                    norm_img = self.norm_img_latexocr(img_list[indices[ino]])
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
                 else:
                     norm_img = self.resize_norm_img(
                         img_list[indices[ino]], max_wh_ratio
@@ -753,6 +757,29 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs
+            elif self.rec_algorithm == "LaTeXOCR":
+                inputs = [norm_img_batch]
+                if self.use_onnx:
+                    input_dict = {}
+                    input_dict[self.input_tensor.name] = norm_img_batch
+                    outputs = self.predictor.run(self.output_tensors, input_dict)
+                    preds = outputs
+                else:
+                    input_names = self.predictor.get_input_names()
+                    input_tensor = []
+                    for i in range(len(input_names)):
+                        input_tensor_i = self.predictor.get_input_handle(input_names[i])
+                        input_tensor_i.copy_from_cpu(inputs[i])
+                        input_tensor.append(input_tensor_i)
+                    self.input_tensor = input_tensor
+                    self.predictor.run()
+                    outputs = []
+                    for output_tensor in self.output_tensors:
+                        output = output_tensor.copy_to_cpu()
+                        outputs.append(output)
+                    if self.benchmark:
+                        self.autolog.times.stamp()
+                    preds = outputs
             else:
                 if self.use_onnx:
                     input_dict = {}
@@ -779,6 +806,9 @@ class TextRecognizer(object):
                     wh_ratio_list=wh_ratio_list,
                     max_wh_ratio=max_wh_ratio,
                 )
+            elif self.postprocess_params["name"] == "LaTeXOCRDecode":
+                preds = [p.reshape([-1]) for p in preds]
+                rec_result = self.postprocess_op(preds)
             else:
                 rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):

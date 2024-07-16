@@ -6,7 +6,7 @@ Global:
   save_model_dir: ./output/rec/latex_ocr/
   save_epoch_step: 5
   max_seq_len: 512
-  # evaluation is run every 60000 iterations (20 epoch)(batch_size = 56)
+  # evaluation is run every 60000 iterations (22 epoch)(batch_size = 56)
   eval_batch_step: [0, 60000]
   cal_metric_during_train: True
   pretrained_model:
@@ -70,7 +70,7 @@ Metric:
 Train:
   dataset:
     name: LaTeXOCRDataSet
-    data: /workspace/code/paddle_ocr/mycode/pickle_file_paddle/latexocr_train.pkl
+    data: ./train_data/LaTeXOCR/latexocr_train.pkl
     min_dimensions: [32, 32]
     max_dimensions: [672, 192]
     batch_size_per_pair: 56
@@ -100,7 +100,7 @@ Train:
 Eval:
   dataset:
     name: LaTeXOCRDataSet
-    data: /workspace/code/paddle_ocr/mycode/pickle_file_paddle/latexocr_val.pkl
+    data: ./train_data/LaTeXOCR/latexocr_val.pkl
     min_dimensions: [32, 32]
     max_dimensions: [672, 192]
     batch_size_per_pair: 10

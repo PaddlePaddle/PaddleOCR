@@ -831,6 +831,18 @@ def top_k(logits, thres=0.9):
 
 
 class LaTeXOCRHead(nn.Layer):
+    """Implementation of LaTeX OCR decoder.
+
+    Args:
+      encoded_feat: The encoded features with shape[N, 1, H//16, W//16]
+      tgt_seq: LaTeX-OCR labels with shape [N, L] , L is the max sequence length
+      xi: The first N-1 LaTeX-OCR sequences in tgt_seq with shape [N, L-1]
+      mask: The first N-1 LaTeX-OCR attention mask with shape [N, L-1]  , L is the max sequence length
+
+    Returns:
+      The predicted LaTeX sequences with shape [N, L-1, C], C is the number of LaTeX classes
+    """
+
     def __init__(
         self,
         net=None,

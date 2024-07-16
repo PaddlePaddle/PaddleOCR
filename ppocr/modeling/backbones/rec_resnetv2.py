@@ -1087,7 +1087,14 @@ def create_resnetv2_stem(
 
 
 class ResNetV2(nn.Layer):
-    """Implementation of Pre-activation (v2) ResNet mode."""
+    """Implementation of Pre-activation (v2) ResNet mode.
+
+    Args:
+      x: input images with shape [N, 1, H, W]
+
+    Returns:
+      The extracted features [N, 1, H//16, W//16]
+    """
 
     def __init__(
         self,

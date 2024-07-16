@@ -282,6 +282,17 @@ class Block(nn.Layer):
 
 
 class HybridTransformer(nn.Layer):
+    """Implementation of HybridTransformer.
+
+    Args:
+      x: input images with shape [N, 1, H, W]
+      label: LaTeX-OCR labels with shape [N, L] , L is the max sequence length
+      attention_mask: LaTeX-OCR attention mask with shape [N, L]  , L is the max sequence length
+
+    Returns:
+      The encoded features with shape [N, 1, H//16, W//16]
+    """
+
     def __init__(
         self,
         backbone_layers=[2, 3, 7],
@@ -467,10 +478,13 @@ class HybridTransformer(nn.Layer):
 
     def forward(self, input_data):
 
-        if self.is_predict:
-            x = input_data
-        else:
+        if self.training:
             x, label, attention_mask = input_data
+        else:
+            if isinstance(input_data, list):
+                x = input_data[0]
+            else:
+                x = input_data
         x = self.forward_features(x)
         x = self.head(x)
         if self.training:

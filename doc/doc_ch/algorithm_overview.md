@@ -137,12 +137,20 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 
 已支持的公式识别算法列表（戳链接获取使用教程）：
 - [x]  [CAN](./algorithm_rec_can.md)
+- [x]  [LaTeX-OCR](./algorithm_rec_latex_ocr.md)
 
 在CROHME手写公式数据集上，算法效果如下：
 
 |模型    |骨干网络|配置文件|ExpRate|下载链接|
 | ----- | ----- | ----- | ----- | ----- |
 |CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
+
+在LaTeX-OCR印刷公式数据集上，算法效果如下：
+
+| 模型        | 骨干网络       |配置文件 | BLEU score  | normed edit distance  |  ExpRate  |下载链接|
+|-----------|------------| ----- |:-----------:|:---------------------:|:---------:| ----- |
+| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](../../configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+
 
 <a name="2"></a>
 
