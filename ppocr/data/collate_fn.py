@@ -129,6 +129,5 @@ class LaTeXOCRCollator(object):
     """
 
     def __call__(self, batch):
-        # print(len(batch))
         images, labels, attention_mask = batch[0]
         return images, labels, attention_mask
