@@ -116,3 +116,18 @@ class DyMaskCollator(object):
             label_masks[i][:l] = 1
 
         return images, image_masks, labels, label_masks
+
+
+class LaTeXOCRCollator(object):
+    """
+    batch: [
+        image [batch_size, channel, maxHinbatch, maxWinbatch]
+        label [batch_size, maxLabelLen]
+        label_mask [batch_size, maxLabelLen]
+        ...
+    ]
+    """
+
+    def __call__(self, batch):
+        images, labels, attention_mask = batch[0]
+        return images, labels, attention_mask

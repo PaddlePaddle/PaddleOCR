@@ -61,6 +61,7 @@ from .fce_aug import *
 from .fce_targets import FCENetTargets
 from .ct_process import *
 from .drrg_targets import DRRGTargets
+from .latex_ocr_aug import *
 
 
 def transform(data, ops=None):

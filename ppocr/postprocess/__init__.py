@@ -42,6 +42,7 @@ from .rec_postprocess import (
     SATRNLabelDecode,
     ParseQLabelDecode,
     CPPDLabelDecode,
+    LaTeXOCRDecode,
 )
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
@@ -96,6 +97,7 @@ def build_post_process(config, global_config=None):
         "SATRNLabelDecode",
         "ParseQLabelDecode",
         "CPPDLabelDecode",
+        "LaTeXOCRDecode",
     ]
 
     if config["name"] == "PSEPostProcess":
