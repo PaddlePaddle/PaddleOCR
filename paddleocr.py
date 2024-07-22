@@ -23,6 +23,7 @@ from paddle.utils import try_import
 sys.path.append(os.path.join(__dir__, ""))
 
 import cv2
+from copy import deepcopy
 import logging
 import numpy as np
 from pathlib import Path
@@ -64,6 +65,7 @@ from tools.infer import predict_system
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
+from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
 
 logger = get_logger()
 
@@ -75,6 +77,8 @@ __all__ = [
     "save_structure_res",
     "download_with_progressbar",
     "to_excel",
+    "sorted_layout_boxes",
+    "convert_info_docx",
 ]
 
 SUPPORT_DET_MODEL = ["DB"]
@@ -991,9 +995,6 @@ def main():
                 save_structure_res(result, args.output, img_name, index)
 
                 if args.recovery and result != []:
-                    from copy import deepcopy
-                    from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes
-
                     h, w, _ = img.shape
                     result_cp = deepcopy(result)
                     result_sorted = sorted_layout_boxes(result_cp, w)
@@ -1001,8 +1002,6 @@ def main():
 
             if args.recovery and all_res != []:
                 try:
-                    from ppstructure.recovery.recovery_to_doc import convert_info_docx
-
                     convert_info_docx(img, all_res, args.output, img_name)
                 except Exception as ex:
                     logger.error(
