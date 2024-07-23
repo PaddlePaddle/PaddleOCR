@@ -3,7 +3,7 @@ scikit-image
 pyclipper
 lmdb
 tqdm
-numpy<2.0
+numpy
 rapidfuzz
 opencv-python
 opencv-contrib-python
@@ -11,6 +11,6 @@ cython
 Pillow
 pyyaml
 requests
-albumentations==1.4.10
+albumentations
 tokenizers==0.19.1
 imagesize
