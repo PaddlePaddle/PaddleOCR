@@ -26,7 +26,6 @@ import copy
 import random
 from random import sample
 from collections import defaultdict
-from tokenizers import Tokenizer as TokenizerFast
 
 from ppocr.utils.logging import get_logger
 from ppocr.data.imaug.vqa.augment import order_by_tbyx
@@ -1780,6 +1779,8 @@ class LatexOCRLabelEncode(object):
         rec_char_dict_path,
         **kwargs,
     ):
+        from tokenizers import Tokenizer as TokenizerFast
+
         self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
         self.model_input_names = ["input_ids", "token_type_ids", "attention_mask"]
         self.pad_token_id = 0
