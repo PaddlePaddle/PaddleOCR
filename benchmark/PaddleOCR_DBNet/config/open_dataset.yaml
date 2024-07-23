@@ -9,9 +9,9 @@ dataset:
         pre_processes: # 数据的预处理过程，包含augment和标签制作
           - type: IaaAugment # 使用imgaug进行变换
             args:
-              - {'type':Fliplr, 'args':{'p':0.5}}
+              - {'type':HorizontalFlip, 'args':{'p':0.5}}
               - {'type': Affine, 'args':{'rotate':[-10,10]}}
-              - {'type':Resize,'args':{'size':[0.5,3]}}
+              - {'type':RandomScale ,'args':{'scale_limit':[0.5,3]}}
           - type: EastRandomCropData
             args:
               size: [640,640]

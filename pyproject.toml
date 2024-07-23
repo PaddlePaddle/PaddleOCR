@@ -41,7 +41,7 @@ classifiers = [
 dependencies = [
     "shapely",
     "scikit-image",
-    "imgaug",
+    "albumentations",
     "pyclipper",
     "lmdb",
     "tqdm",

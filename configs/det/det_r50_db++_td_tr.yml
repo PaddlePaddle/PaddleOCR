@@ -75,7 +75,7 @@ Train:
     - DetLabelEncode: null
     - IaaAugment:
         augmenter_args:
-        - type: Fliplr
+        - type: HorizontalFlip
           args:
             p: 0.5
         - type: Affine
@@ -83,9 +83,9 @@ Train:
             rotate:
             - -10
             - 10
-        - type: Resize
+        - type: RandomScale 
           args:
-            size:
+            scale_limit:
             - 0.5
             - 3
     - EastRandomCropData:

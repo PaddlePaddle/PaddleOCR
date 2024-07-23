@@ -80,8 +80,8 @@ Train:
           saturation: 0.5
       - IaaAugment:
           augmenter_args:
-            - { 'type': Resize, 'args': { 'size': [ 0.5, 3 ] } }
-            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
+            - { 'type': RandomScale, 'args': { 'scale_limit': ( 0.5, 3 ) } }
+            - { 'type': HorizontalFlip, 'args': { 'p': 0.5 } }
             - { 'type': Affine, 'args': { 'rotate': [ -10, 10 ] } }
       - MakePseGt:
           kernel_num: 7

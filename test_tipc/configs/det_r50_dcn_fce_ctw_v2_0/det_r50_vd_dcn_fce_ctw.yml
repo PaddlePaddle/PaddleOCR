@@ -91,7 +91,7 @@ Train:
           pad_ratio: 0.6
       - IaaAugment:
           augmenter_args:
-            - { 'type': Fliplr, 'args': { 'p': 0.5 } }
+            - { 'type': HorizontalFlip, 'args': { 'p': 0.5 } }
       - FCENetTargets:
           fourier_degree: 5
       - NormalizeImage:
