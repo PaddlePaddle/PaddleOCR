@@ -13,5 +13,3 @@ Pillow
 pyyaml
 requests
 albumentations==1.4.10
-tokenizers==0.19.1
-imagesize

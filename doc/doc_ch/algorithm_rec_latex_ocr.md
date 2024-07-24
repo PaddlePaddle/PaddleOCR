@@ -33,6 +33,11 @@
 ## 2. 环境配置
 请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目代码。
 
+此外，需要安装额外的依赖：
+```shell
+pip install "tokenizers==0.19.1" "imagesize"
+```
+
 <a name="3"></a>
 ## 3. 模型训练、评估、预测
 

@@ -31,6 +31,10 @@ Using LaTeX-OCR printed mathematical expression recognition datasets for trainin
 ## 2. Environment
 Please refer to ["Environment Preparation"](./environment_en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
 
+Furthermore, additional dependencies need to be installed:
+```shell
+pip install "tokenizers==0.19.1" "imagesize"
+```
 
 <a name="3"></a>
 ## 3. Model Training / Evaluation / Prediction
