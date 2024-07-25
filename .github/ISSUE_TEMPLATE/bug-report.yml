@@ -1,19 +1,15 @@
 # PaddleOCR
 
 name: 🐛 Bug Report
-
-# title: " "
-
 description: Problems with PaddleOCR
-labels: [bug, triage]
+labels: [bug]
 body:
-
-- type: markdown
+  - type: markdown
     attributes:
       value: |
         Thank you for submitting a PaddleOCR 🐛 Bug Report!
 
-- type: checkboxes
+  - type: checkboxes
     attributes:
       label: Search before asking
       description: >
@@ -29,7 +25,7 @@ body:
             I have searched the PaddleOCR [Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) and found no similar bug report.
           required: true
 
-- type: textarea
+  - type: textarea
     attributes:
       label: Bug
       description: Provide console output with error messages and/or screenshots of the bug.
@@ -38,7 +34,7 @@ body:
     validations:
       required: true
 
-- type: textarea
+  - type: textarea
     attributes:
       label: Environment
       description: Please specify the software and hardware you used to produce the bug.
@@ -57,7 +53,7 @@ body:
     validations:
       required: false
 
-- type: textarea
+  - type: textarea
     attributes:
       label: Minimal Reproducible Example
       description: >
@@ -70,12 +66,12 @@ body:
     validations:
       required: false
 
-- type: textarea
+  - type: textarea
     attributes:
       label: Additional
       description: Anything else you would like to share?
 
-- type: checkboxes
+  - type: checkboxes
     attributes:
       label: Are you willing to submit a PR?
       description: >
