@@ -19,7 +19,7 @@ body:
             I have searched the PaddleOCR [Docs](https://paddlepaddle.github.io/PaddleOCR/) and found no similar bug report.
           required: true
         - label: >
-            I have searched the PaddleOCR [Issues](https://github.com/ultralytics/ultralytics/issues) and found no similar bug report.
+            I have searched the PaddleOCR [Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) and found no similar bug report.
           required: true
         - label: >
             I have searched the PaddleOCR [Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) and found no similar bug report.
