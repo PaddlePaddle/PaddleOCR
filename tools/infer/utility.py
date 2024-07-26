@@ -230,7 +230,12 @@ def create_predictor(args, mode, logger):
                 )
             )
 
-        config = inference.Config(model_file_path, params_file_path)
+        if paddle.__version__ == "0.0.0" or paddle.__version__ >= "3.0.0":
+            model_path = model_dir
+            model_prefix = file_name
+            config = inference.Config(model_path, model_prefix)
+        else:
+            config = inference.Config(model_file_path, params_file_path)
 
         if hasattr(args, "precision"):
             if args.precision == "fp16" and args.use_tensorrt:
