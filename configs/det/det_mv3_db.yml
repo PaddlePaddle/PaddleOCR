@@ -25,12 +25,15 @@ Architecture:
     name: MobileNetV3
     scale: 0.5
     model_name: large
+    data_format: NHWC
   Neck:
     name: DBFPN
     out_channels: 256
+    data_format: NHWC
   Head:
     name: DBHead
     k: 50
+    data_format: NHWC
 
 Loss:
   name: DBLoss
@@ -64,7 +67,7 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/icdar2015/text_localization/
+    data_dir: ./
     label_file_list:
       - ./train_data/icdar2015/text_localization/train_icdar2015_label.txt
     ratio_list: [1.0]
@@ -107,7 +110,7 @@ Train:
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/icdar2015/text_localization/
+    data_dir: ./
     label_file_list:
       - ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
     transforms:

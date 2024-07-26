@@ -30,15 +30,21 @@ from ppocr.modeling.backbones.rec_svtrnet import (
 
 
 class Im2Seq(nn.Layer):
-    def __init__(self, in_channels, **kwargs):
+    def __init__(self, in_channels, data_format="NCHW", **kwargs):
         super().__init__()
         self.out_channels = in_channels
+        self.nchw = data_format == "NCHW"
 
     def forward(self, x):
-        B, C, H, W = x.shape
-        assert H == 1
-        x = x.squeeze(axis=2)
-        x = x.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
+        if self.nchw:
+            B, C, H, W = x.shape
+            assert H == 1
+            x = x.squeeze(axis=2)
+            x = x.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
+        else:
+            B, H, W, C = x.shape
+            assert H == 1
+            x = x.squeeze(axis=1)
         return x
 
 
@@ -152,19 +158,26 @@ class EncoderWithSVTR(nn.Layer):
         drop_path=0.0,
         kernel_size=[3, 3],
         qk_scale=None,
+        data_format="NCHW",
     ):
         super(EncoderWithSVTR, self).__init__()
         self.depth = depth
         self.use_guide = use_guide
+        self.nchw = data_format == "NCHW"
         self.conv1 = ConvBNLayer(
             in_channels,
             in_channels // 8,
             kernel_size=kernel_size,
             padding=[kernel_size[0] // 2, kernel_size[1] // 2],
             act=nn.Swish,
+            data_format=data_format,
         )
         self.conv2 = ConvBNLayer(
-            in_channels // 8, hidden_dims, kernel_size=1, act=nn.Swish
+            in_channels // 8,
+            hidden_dims,
+            kernel_size=1,
+            act=nn.Swish,
+            data_format=data_format,
         )
 
         self.svtr_block = nn.LayerList(
@@ -189,7 +202,13 @@ class EncoderWithSVTR(nn.Layer):
             ]
         )
         self.norm = nn.LayerNorm(hidden_dims, epsilon=1e-6)
-        self.conv3 = ConvBNLayer(hidden_dims, in_channels, kernel_size=1, act=nn.Swish)
+        self.conv3 = ConvBNLayer(
+            hidden_dims,
+            in_channels,
+            kernel_size=1,
+            act=nn.Swish,
+            data_format=data_format,
+        )
         # last conv-nxn, the input is concat of input tensor and conv3 output tensor
         self.conv4 = ConvBNLayer(
             2 * in_channels,
@@ -197,9 +216,12 @@ class EncoderWithSVTR(nn.Layer):
             kernel_size=kernel_size,
             padding=[kernel_size[0] // 2, kernel_size[1] // 2],
             act=nn.Swish,
+            data_format=data_format,
         )
 
-        self.conv1x1 = ConvBNLayer(in_channels // 8, dims, kernel_size=1, act=nn.Swish)
+        self.conv1x1 = ConvBNLayer(
+            in_channels // 8, dims, kernel_size=1, act=nn.Swish, data_format=data_format
+        )
         self.out_channels = dims
         self.apply(self._init_weights)
 
@@ -225,23 +247,33 @@ class EncoderWithSVTR(nn.Layer):
         z = self.conv1(z)
         z = self.conv2(z)
         # SVTR global block
-        B, C, H, W = z.shape
-        z = z.flatten(2).transpose([0, 2, 1])
+        if self.nchw:
+            B, C, H, W = z.shape
+            z = z.flatten(2).transpose([0, 2, 1])
+        else:
+            B, H, W, C = z.shape
+            z = z.flatten(start_axis=1, stop_axis=2)
+
         for blk in self.svtr_block:
             z = blk(z)
         z = self.norm(z)
         # last stage
-        z = z.reshape([0, H, W, C]).transpose([0, 3, 1, 2])
+        if self.nchw:
+            z = z.reshape([0, H, W, C]).transpose([0, 3, 1, 2])
+        else:
+            z = z.reshape([0, H, W, C])
         z = self.conv3(z)
-        z = paddle.concat((h, z), axis=1)
+        z = paddle.concat((h, z), axis=1 if self.nchw else 3)
         z = self.conv1x1(self.conv4(z))
         return z
 
 
 class SequenceEncoder(nn.Layer):
-    def __init__(self, in_channels, encoder_type, hidden_size=48, **kwargs):
+    def __init__(
+        self, in_channels, encoder_type, hidden_size=48, data_format="NCHW", **kwargs
+    ):
         super(SequenceEncoder, self).__init__()
-        self.encoder_reshape = Im2Seq(in_channels)
+        self.encoder_reshape = Im2Seq(in_channels, data_format=data_format)
         self.out_channels = self.encoder_reshape.out_channels
         self.encoder_type = encoder_type
         if encoder_type == "reshape":
@@ -259,15 +291,20 @@ class SequenceEncoder(nn.Layer):
             )
             if encoder_type == "svtr":
                 self.encoder = support_encoder_dict[encoder_type](
-                    self.encoder_reshape.out_channels, **kwargs
+                    self.encoder_reshape.out_channels, data_format=data_format, **kwargs
                 )
             elif encoder_type == "cascadernn":
                 self.encoder = support_encoder_dict[encoder_type](
-                    self.encoder_reshape.out_channels, hidden_size, **kwargs
+                    self.encoder_reshape.out_channels,
+                    hidden_size,
+                    data_format=data_format,
+                    **kwargs,
                 )
             else:
                 self.encoder = support_encoder_dict[encoder_type](
-                    self.encoder_reshape.out_channels, hidden_size
+                    self.encoder_reshape.out_channels,
+                    hidden_size,
+                    data_format=data_format,
                 )
             self.out_channels = self.encoder.out_channels
             self.only_reshape = False

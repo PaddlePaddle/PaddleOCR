@@ -32,10 +32,12 @@ class MobileNetV3(nn.Layer):
         large_stride=None,
         small_stride=None,
         disable_se=False,
+        data_format="NCHW",
         **kwargs,
     ):
         super(MobileNetV3, self).__init__()
         self.disable_se = disable_se
+        self.nchw = data_format == "NCHW"
         if small_stride is None:
             small_stride = [2, 2, 2, 2]
         if large_stride is None:
@@ -113,6 +115,7 @@ class MobileNetV3(nn.Layer):
             groups=1,
             if_act=True,
             act="hardswish",
+            data_format=data_format,
         )
         i = 0
         block_list = []
@@ -128,6 +131,7 @@ class MobileNetV3(nn.Layer):
                     stride=s,
                     use_se=se,
                     act=nl,
+                    data_format=data_format,
                 )
             )
             inplanes = make_divisible(scale * c)
@@ -143,12 +147,17 @@ class MobileNetV3(nn.Layer):
             groups=1,
             if_act=True,
             act="hardswish",
+            data_format=data_format,
         )
 
-        self.pool = nn.MaxPool2D(kernel_size=2, stride=2, padding=0)
+        self.pool = nn.MaxPool2D(
+            kernel_size=2, stride=2, padding=0, data_format=data_format
+        )
         self.out_channels = make_divisible(scale * cls_ch_squeeze)
 
     def forward(self, x):
+        if not self.nchw:
+            x = x.transpose([0, 2, 3, 1])  # NCHW -> NHWC
         x = self.conv1(x)
         x = self.blocks(x)
         x = self.conv2(x)

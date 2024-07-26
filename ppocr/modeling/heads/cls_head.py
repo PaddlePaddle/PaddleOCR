@@ -31,9 +31,10 @@ class ClsHead(nn.Layer):
         params(dict): super parameters for build Class network
     """
 
-    def __init__(self, in_channels, class_dim, **kwargs):
+    def __init__(self, in_channels, class_dim, data_format="NCHW", **kwargs):
         super(ClsHead, self).__init__()
         self.pool = nn.AdaptiveAvgPool2D(1)
+        self.nchw = data_format == "NCHW"
         stdv = 1.0 / math.sqrt(in_channels * 1.0)
         self.fc = nn.Linear(
             in_channels,
@@ -46,7 +47,7 @@ class ClsHead(nn.Layer):
 
     def forward(self, x, targets=None):
         x = self.pool(x)
-        x = paddle.reshape(x, shape=[x.shape[0], x.shape[1]])
+        x = paddle.reshape(x, shape=[x.shape[0], x.shape[1 if self.nchw else 3]])
         x = self.fc(x)
         if not self.training:
             x = F.softmax(x, axis=1)

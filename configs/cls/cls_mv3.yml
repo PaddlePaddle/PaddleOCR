@@ -23,10 +23,12 @@ Architecture:
     name: MobileNetV3
     scale: 0.35
     model_name: small
+    data_format: NHWC
   Neck:
   Head:
     name: ClsHead
     class_dim: 2
+    data_format: NHWC
 
 Loss:
   name: ClsLoss

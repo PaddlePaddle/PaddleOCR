@@ -54,6 +54,7 @@ Architecture:
         last_conv_stride: [1, 2]
         last_pool_type: avg
         last_pool_kernel_size: [2, 2]
+        data_format: 'NHWC'
       Head:
         name: MultiHead
         head_list:
@@ -69,6 +70,7 @@ Architecture:
           - SARHead:
               enc_dim: 512
               max_text_length: *max_text_length
+        data_format: 'NHWC'
     Student:
       pretrained:
       freeze_params: false
@@ -82,6 +84,7 @@ Architecture:
         last_conv_stride: [1, 2]
         last_pool_type: avg
         last_pool_kernel_size: [2, 2]
+        data_format: 'NHWC'
       Head:
         name: MultiHead
         head_list:
@@ -97,6 +100,7 @@ Architecture:
           - SARHead:
               enc_dim: 512
               max_text_length: *max_text_length
+        data_format: 'NHWC'
 Loss:
   name: CombinedLoss
   loss_config_list:

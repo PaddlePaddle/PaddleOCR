@@ -51,6 +51,7 @@ class ConvBNLayer(nn.Layer):
         bias_attr=False,
         groups=1,
         act=nn.GELU,
+        data_format="NCHW",
     ):
         super().__init__()
         self.conv = nn.Conv2D(
@@ -62,8 +63,9 @@ class ConvBNLayer(nn.Layer):
             groups=groups,
             weight_attr=paddle.ParamAttr(initializer=nn.initializer.KaimingUniform()),
             bias_attr=bias_attr,
+            data_format=data_format,
         )
-        self.norm = nn.BatchNorm2D(out_channels)
+        self.norm = nn.BatchNorm2D(out_channels, data_format=data_format)
         self.act = act()
 
     def forward(self, inputs):

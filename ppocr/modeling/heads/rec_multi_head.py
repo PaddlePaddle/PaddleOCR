@@ -65,14 +65,17 @@ class AddPos(nn.Layer):
 
 
 class MultiHead(nn.Layer):
-    def __init__(self, in_channels, out_channels_list, **kwargs):
+    def __init__(self, in_channels, out_channels_list, data_format="NCHW", **kwargs):
         super().__init__()
         self.head_list = kwargs.pop("head_list")
         self.use_pool = kwargs.get("use_pool", False)
         self.use_pos = kwargs.get("use_pos", False)
         self.in_channels = in_channels
+        self.nchw = data_format == "NCHW"
         if self.use_pool:
-            self.pool = nn.AvgPool2D(kernel_size=[3, 2], stride=[3, 2], padding=0)
+            self.pool = nn.AvgPool2D(
+                kernel_size=[3, 2], stride=[3, 2], padding=0, data_format=data_format
+            )
         self.gtc_head = "sar"
         assert len(self.head_list) >= 2
         for idx, head_name in enumerate(self.head_list):
@@ -113,18 +116,21 @@ class MultiHead(nn.Layer):
                 )
             elif name == "CTCHead":
                 # ctc neck
-                self.encoder_reshape = Im2Seq(in_channels)
+                self.encoder_reshape = Im2Seq(in_channels, data_format=data_format)
                 neck_args = self.head_list[idx][name]["Neck"]
                 encoder_type = neck_args.pop("name")
                 self.ctc_encoder = SequenceEncoder(
-                    in_channels=in_channels, encoder_type=encoder_type, **neck_args
+                    in_channels=in_channels,
+                    encoder_type=encoder_type,
+                    data_format=data_format,
+                    **neck_args,
                 )
                 # ctc head
                 head_args = self.head_list[idx][name]["Head"]
                 self.ctc_head = eval(name)(
                     in_channels=self.ctc_encoder.out_channels,
                     out_channels=out_channels_list["CTCLabelDecode"],
-                    **head_args,
+                    data_format=data_format**head_args,
                 )
             else:
                 raise NotImplementedError(
@@ -144,6 +150,8 @@ class MultiHead(nn.Layer):
         # eval mode
         if not self.training:
             return ctc_out
+        if not self.nchw:
+            x = x.transpose([0, 3, 1, 2])
         if self.gtc_head == "sar":
             sar_out = self.sar_head(x, targets[1:])
             head_out["sar"] = sar_out
