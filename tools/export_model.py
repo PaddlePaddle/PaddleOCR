@@ -21,9 +21,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
 
 import argparse
 
+import yaml
 import paddle
 from paddle.jit import to_static
-
+from collections import OrderedDict
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
@@ -201,6 +202,38 @@ def export_single_model(
     return
 
 
+def represent_dictionary_order(self, dict_data):
+    return self.represent_mapping("tag:yaml.org,2002:map", dict_data.items())
+
+
+def setup_orderdict():
+    yaml.add_representer(OrderedDict, represent_dictionary_order)
+
+
+def dump_infer_config(config, path, logger):
+    setup_orderdict()
+    infer_cfg = OrderedDict()
+
+    infer_cfg["PreProcess"] = {"transform_ops": config["Eval"]["dataset"]["transforms"]}
+    postprocess = OrderedDict()
+    for k, v in config["PostProcess"].items():
+        postprocess[k] = v
+
+    if config["Global"].get("character_dict_path") is not None:
+        with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
+            lines = f.readlines()
+            character_dict = [line.strip("\n") for line in lines]
+        postprocess["character_dict"] = character_dict
+
+    infer_cfg["PostProcess"] = postprocess
+
+    with open(path, "w") as f:
+        yaml.dump(
+            infer_cfg, f, default_flow_style=False, encoding="utf-8", allow_unicode=True
+        )
+    logger.info("Export inference config file to {}".format(os.path.join(path)))
+
+
 def main():
     FLAGS = ArgsParser().parse_args()
     config = load_config(FLAGS.config)
@@ -260,6 +293,7 @@ def main():
     model.eval()
 
     save_path = config["Global"]["save_inference_dir"]
+    yaml_path = os.path.join(save_path, "inference.yml")
 
     arch_config = config["Architecture"]
 
@@ -294,6 +328,7 @@ def main():
         export_single_model(
             model, arch_config, save_path, logger, input_shape=input_shape
         )
+    dump_infer_config(config, yaml_path, logger)
 
 
 if __name__ == "__main__":

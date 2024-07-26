@@ -20,6 +20,7 @@ import paddle
 from paddle import nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
+from ppocr.modeling.backbones.rec_hgnet import MeanPool2D
 
 __all__ = ["MobileNetV3"]
 
@@ -260,7 +261,10 @@ class ResidualUnit(nn.Layer):
 class SEModule(nn.Layer):
     def __init__(self, in_channels, reduction=4):
         super(SEModule, self).__init__()
-        self.avg_pool = nn.AdaptiveAvgPool2D(1)
+        if "npu" in paddle.device.get_device():
+            self.avg_pool = MeanPool2D(1, 1)
+        else:
+            self.avg_pool = nn.AdaptiveAvgPool2D(1)
         self.conv1 = nn.Conv2D(
             in_channels=in_channels,
             out_channels=in_channels // reduction,
