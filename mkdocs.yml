@@ -99,6 +99,7 @@ plugins:
           nav_translations:
             Home: Home
             快速开始: Quick Start
+            近期更新: Recently Update
             模型: Model
             概述: Overview
             PP-OCR 文本检测识别: PP-OCR
@@ -253,6 +254,7 @@ extra_css:
 nav:
   - Home: index.md
   - 快速开始: quick_start.md
+  - 近期更新: update.md
   - 模型:
     - 概览: model/index.md
     - 多硬件安装飞桨:
