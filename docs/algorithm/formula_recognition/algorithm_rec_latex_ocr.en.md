@@ -1,20 +1,5 @@
 # LaTeX-OCR
 
-- [1. Introduction](#1)
-- [2. Environment](#2)
-- [3. Model Training / Evaluation / Prediction](#3)
-    - [3.1 Pickle File Generation](#3-1)
-    - [3.2 Training](#3-2)
-    - [3.3 Evaluation](#3-3)
-    - [3.4 Prediction](#3-4)
-- [4. Inference and Deployment](#4)
-    - [4.1 Python Inference](#4-1)
-    - [4.2 C++ Inference](#4-2)
-    - [4.3 Serving](#4-3)
-    - [4.4 More](#4-4)
-- [5. FAQ](#5)
-
-<a name="1"></a>
 ## 1. Introduction
 
 Original Project:
@@ -25,21 +10,19 @@ Using LaTeX-OCR printed mathematical expression recognition datasets for trainin
 
 | Model       | Backbone |config| BLEU score  | normed edit distance  |  ExpRate  |Download link|
 |-----------|----------| ---- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](../../configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
-<a name="2"></a>
 ## 2. Environment
-Please refer to ["Environment Preparation"](./environment_en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](./clone_en.md) to clone the project code.
+Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](../../ppocr/blog/clone.en.md) to clone the project code.
 
 Furthermore, additional dependencies need to be installed:
 ```shell
 pip install "tokenizers==0.19.1" "imagesize"
 ```
 
-<a name="3"></a>
 ## 3. Model Training / Evaluation / Prediction
 
-Please refer to [Text Recognition Tutorial](./recognition_en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
+Please refer to [Text Recognition Tutorial](../../ppocr/model_train/recognition.en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
 
 Pickle File Generation:
 
@@ -90,10 +73,8 @@ Prediction:
 python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Backbone.is_predict=True Architecture.Backbone.is_export=True Architecture.Head.is_export=True Global.infer_img='./doc/datasets/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 ```
 
-<a name="4"></a>
 ## 4. Inference and Deployment
 
-<a name="4-1"></a>
 ### 4.1 Python Inference
 First, the model saved during the LaTeX-OCR printed mathematical expression recognition training process is converted into an inference model. you can use the following command to convert:
 
@@ -109,23 +90,16 @@ For LaTeX-OCR printed mathematical expression recognition model inference, the f
 python3 tools/infer/predict_rec.py --image_dir='./doc/datasets/pme_demo/0000295.png' --rec_algorithm="LaTeXOCR" --rec_batch_num=1 --rec_model_dir="./inference/rec_latex_ocr_infer/"  --rec_char_dict_path="./ppocr/utils/dict/latex_ocr_tokenizer.json"
 ```
 
-<a name="4-2"></a>
 ### 4.2 C++ Inference
 
 Not supported
 
-<a name="4-3"></a>
 ### 4.3 Serving
 
 Not supported
 
-<a name="4-4"></a>
 ### 4.4 More
 
 Not supported
 
-<a name="5"></a>
 ## 5. FAQ
-
-
-```

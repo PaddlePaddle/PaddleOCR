@@ -126,6 +126,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 已支持的公式识别算法列表（戳链接获取使用教程）：
 
 - [x]  [CAN](./formula_recognition/algorithm_rec_can.md)
+- [x]  [LaTeX-OCR](./formula_recognition/algorithm_rec_latex_ocr.md)
 
 在CROHME手写公式数据集上，算法效果如下：
 
