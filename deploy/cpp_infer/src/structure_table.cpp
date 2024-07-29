@@ -143,8 +143,7 @@ void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
-    }
-    else {
+    } else {
       config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
