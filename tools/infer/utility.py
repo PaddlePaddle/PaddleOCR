@@ -226,7 +226,7 @@ def create_predictor(args, mode, logger):
 
         if not os.path.exists(
             "{}/{}.pdmodel".format(model_dir, file_name)
-        ) or not os.path.exists("{}/{}.json".format(model_dir, file_name)):
+        ) and not os.path.exists("{}/{}.json".format(model_dir, file_name)):
             raise ValueError(
                 f"not find {file_name}.json or {file_name}.pdmodel  in {model_dir}"
             )
