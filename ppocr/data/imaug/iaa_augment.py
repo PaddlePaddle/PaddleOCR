@@ -38,8 +38,11 @@ class AugmenterBuilder(object):
         elif isinstance(args, list):
             if root:
                 sequence = [self.build(value, root=False) for value in args]
-                return A.Compose(
-                    sequence, keypoint_params=A.KeypointParams(format="xy")
+                return A.ReplayCompose(
+                    sequence,
+                    keypoint_params=A.KeypointParams(
+                        format="xy", remove_invisible=False
+                    ),
                 )
             else:
                 return getattr(A, args[0])(
@@ -71,24 +74,26 @@ class IaaAugment:
         image = data["image"]
 
         if self.augmenter:
-            # note: Affine could work incorrectly in ReplayMode if set_deterministic(True)
-            # self.augmenter.set_deterministic(True)
-            data["image"] = self.augmenter(image=image)["image"]
-            data = self.may_augment_annotation(data)
+            transformed_data = self.augmenter(image=image)
+            data["image"] = transformed_data["image"]
+            replay = transformed_data["replay"]
+            data = self.may_augment_annotation(data, replay)
         return data
 
-    def may_augment_annotation(self, data):
+    def may_augment_annotation(self, data, replay):
         if self.augmenter is None:
             return data
 
         line_polys = []
         for poly in data["polys"]:
-            new_poly = self.may_augment_poly(data["image"], poly)
+            new_poly = self.may_augment_poly(data["image"], poly, replay)
             line_polys.append(new_poly)
         data["polys"] = np.array(line_polys)
         return data
 
-    def may_augment_poly(self, image, poly):
+    def may_augment_poly(self, image, poly, replay):
         keypoints = [(p[0], p[1]) for p in poly]
-        poly = self.augmenter(image=image, keypoints=keypoints)["keypoints"]
+        poly = A.ReplayCompose.replay(replay, image=image, keypoints=keypoints)[
+            "keypoints"
+        ]
         return poly
