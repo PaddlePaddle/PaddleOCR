@@ -15,7 +15,6 @@
 import numpy as np
 import paddle
 from paddle.nn import functional as F
-from tokenizers import Tokenizer as TokenizerFast
 import re
 
 
@@ -1217,6 +1216,8 @@ class LaTeXOCRDecode(object):
     """Convert between latex-symbol and symbol-index"""
 
     def __init__(self, rec_char_dict_path, **kwargs):
+        from tokenizers import Tokenizer as TokenizerFast
+
         super(LaTeXOCRDecode, self).__init__()
         self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
 

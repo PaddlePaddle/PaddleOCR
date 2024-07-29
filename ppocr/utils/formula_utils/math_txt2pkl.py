@@ -15,8 +15,7 @@
 import pickle
 from tqdm import tqdm
 import os
-import cv2
-import imagesize
+from paddle.utils import try_import
 from collections import defaultdict
 import glob
 from os.path import join
@@ -24,6 +23,7 @@ import argparse
 
 
 def txt2pickle(images, equations, save_dir):
+    imagesize = try_import("imagesize")
     save_p = os.path.join(save_dir, "latexocr_{}.pkl".format(images.split("/")[-1]))
     min_dimensions = (32, 32)
     max_dimensions = (672, 192)

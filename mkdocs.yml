@@ -1,0 +1,399 @@
+site_name: PaddleOCR 文档
+site_url: https://paddlepaddle.github.io/PaddleOCR/
+site_author: PaddleOCR PMC
+site_description:
+  Awesome multilingual OCR toolkits based on PaddlePaddle (practical ultra lightweight OCR system, support 80+ languages recognition, provide data annotation and synthesis tools, support training and deployment among server, mobile, embedded and IoT devices)
+
+repo_name: PaddlePaddle/PaddleOCR
+repo_url: https://github.com/PaddlePaddle/PaddleOCR
+
+copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
+
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: ./static/images/logo.jpg
+  favicon: ./static/images/logo.jpg
+  custom_dir: overrides
+  features:
+    - announce.dismiss
+    - content.tooltips
+    - content.code.copy
+    - content.tabs.link
+    - content.footnote.tooltips
+    - content.action.edit
+    - content.action.view
+    - navigation.expand  # 默认打开所有的字节
+    - navigation.tabs # 顶级索引被作为tab
+    - navigation.tabs.sticky # tab始终可见
+    - navigation.top # 开启顶部导航栏
+    - navigation.tracking # 导航栏跟踪
+    - navigation.footer
+    - navigation.indexes
+    - search.highlight # 搜索高亮
+    - search.share # 搜索分享
+    - search.suggest # 搜索建议
+    - toc.follow # 目录跟踪-页面右侧的小目录
+
+  palette:
+    - media: "(prefers-color-scheme: light)" # 浅色
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)" # 深色
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  icon:
+    logo: logo
+    previous: fontawesome/solid/angle-left
+    next: fontawesome/solid/angle-right
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+    tag:
+      default-tag: fontawesome/solid/tag
+      hardware-tag: fontawesome/solid/microchip
+      software-tag: fontawesome/solid/laptop-code
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+
+plugins:
+  - tags
+  - offline
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\: )"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: zh
+          name: 简体中文
+          default: true
+          build: true
+        - locale: en
+          name: English
+          site_name: PaddleOCR Documentation
+          link: /en/
+          nav_translations:
+            Home: Home
+            快速开始: Quick Start
+            模型: Model
+            概述: Overview
+            PP-OCR 文本检测识别: PP-OCR
+            概述: Overview
+            快速开始: Quick Start
+            快速安装: Quick Installation
+            效果展示: Visualization
+            运行环境: Environment Preparation
+            模型库: Model
+            模型训练: Model Training
+            基本概念: Basic concepts
+            文本检测: Text Detection
+            文本识别: Text Recognition
+            文本方向分类器: Text Angle Classification
+            关键信息提取: Key Information Extraction
+            模型微调: Fine-tune
+            模型压缩: Model Compression
+            模型量化: Model Quantization
+            模型裁剪: Model Prune
+            知识蒸馏: Knowledge Distillation
+            推理部署: Model Deploy
+            概述: Overview
+            基于Python预测引擎推理: Python Inference
+            基于C++预测引擎推理: CPP Inference
+            Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
+            服务化部署: Sever Deployment
+            Jetson部署: Jetson Deployment
+            端侧部署: Device-side Deployment
+            网页前端部署: Paddle.js Web Deployment
+            Paddle2ONNX模型转化与预测: Paddle2ONNX
+            云上飞桨部署工具: Paddle Cloud
+            Benchmark: Benchmark
+            博客: Blog
+            paddleocr package使用说明: Paddleocr Package Instructions
+            多语言模型: Multi-language model
+            动手学OCR: Dive into OCR
+            切片操作: Slice
+            PaddleOCR模型推理参数解释: PaddleOCR Model Inference Parameter Explanation
+            分布式训练: Distributed training
+            项目克隆: Project Clone
+            配置文件内容与生成: Configuration
+            如何生产自定义超轻量模型？: How To Make Your own lightweight OCR model?
+            PP-Structure文档分析: PP-Structure
+            概述: Overview
+            快速开始: Quick Start
+            模型库: Model
+            模型训练: Model Training
+            基本概念: Basic concepts
+            版面分析: Layout Analysis
+            版面恢复: Recovery To Doc
+            表格识别: Table Recognition
+            关键信息提取: Key Information Extraction
+            推理部署: Deploy
+            概述: Overview
+            基于Python预测引擎推理: Python Inference
+            基于C++预测引擎推理: CPP Inference
+            服务化部署: Sever Deployment
+            博客: Blog
+            返回识别位置: Return Recognition Location
+            怎样完成基于图像数据的信息抽取任务: Key Information Extraction Pipeline
+            前沿算法与模型: Academic Algorithms
+            概述: algorithm/overview.md
+            文本检测算法: Text Detection Algorithms
+            DB与DB++: DB and DB++
+            文本识别算法: Text Recognition Algorithms
+            文本超分辨率算法: Text Super-Resolution Algorithm
+            公式识别算法: Formulat Recognition
+            端到端OCR算法: End-to-End OCR Algorithms
+            表格识别算法: Table Recognition Algorithms
+            关键信息抽取算法: Key Information Extraction Algorithms
+            使用PaddleOCR架构添加新算法: Add new algorithms
+            场景应用: Applications
+            数据标注与合成: Data Annotation and Synthesis
+            概述: Overview
+            其它数据标注工具: Other data annotation tools
+            其它数据合成工具: Others data synthesis tools
+            数据集: Datasets
+            通用中英文OCR数据集: General Chinese and English OCR dataset
+            手写中文OCR数据集: Handwritten Chinese OCR Dataset
+            垂类多语言OCR数据集: Vertical multi-language OCR dataset
+            版面分析数据集: Layout Analysis Dataset
+            表格识别数据集: Table recognition dataset
+            关键信息提取数据集: Key Information Extraction Dataset
+            FAQ: FAQ
+            社区: Community
+            社区贡献: Community Contribution
+            附录: Appendix
+        - locale: "null"
+          name: Help translating
+          build: false
+          fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
+  - git-committers:
+      repository: PaddlePaddle/PaddleOCR
+      branch: main
+      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+  - git-revision-date-localized:
+      enable_creation_date: true
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - footnotes
+  - def_list
+  - md_in_html
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/PaddlePaddle/PaddleOCR
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/paddleocr/
+
+extra_javascript:
+  - javascripts/katex.min.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+
+nav:
+  - Home: index.md
+  - 快速开始: quick_start.md
+  - 模型:
+    - 概览: model/index.md
+    - 多硬件安装飞桨:
+      - 多硬件安装飞桨: model/hardware/install_other_devices.md
+      - 支持硬件列表: model/hardware/supported_models.md
+  - PP-OCR 文本检测识别:
+    - 概述: ppocr/overview.md
+    - 快速开始: ppocr/quick_start.md
+    - 快速安装: ppocr/installation.md
+    - 效果展示: ppocr/visualization.md
+    - 运行环境: ppocr/environment.md
+    - 模型库: ppocr/model_list.md
+    - 模型训练:
+      - 基本概念: ppocr/model_train/training.md
+      - 文本检测: ppocr/model_train/detection.md
+      - 文本识别: ppocr/model_train/recognition.md
+      - 文本方向分类器: ppocr/model_train/angle_class.md
+      - 关键信息提取: ppocr/model_train/kie.md
+      - 模型微调: ppocr/model_train/finetune.md
+    - 模型压缩:
+      - 模型量化: ppocr/model_compress/quantization.md
+      - 模型裁剪: ppocr/model_compress/prune.md
+      - 知识蒸馏: ppocr/model_compress/knowledge_distillation.md
+    - 推理部署:
+      - 概述: ppocr/infer_deploy/index.md
+      - 基于Python预测引擎推理: ppocr/infer_deploy/python_infer.md
+      - 基于C++预测引擎推理: ppocr/infer_deploy/cpp_infer.md
+      - Visual Studio 2019 Community CMake 编译指南: ppocr/infer_deploy/windows_vs2019_build.md
+      - 服务化部署: ppocr/infer_deploy/paddle_server.md
+      - Jetson部署: ppocr/infer_deploy/Jetson_infer.md
+      - 端侧部署: ppocr/infer_deploy/lite.md
+      - 网页前端部署: ppocr/infer_deploy/paddle_js.md
+      - Paddle2ONNX模型转化与预测: ppocr/infer_deploy/paddle2onnx.md
+      - 云上飞桨部署工具: ppocr/infer_deploy/paddle_cloud.md
+      - Benchmark: ppocr/infer_deploy/benchmark.md
+    - 博客:
+      - PP-OCRv3技术报告: ppocr/blog/PP-OCRv3_introduction.md
+      - PP-OCRv4技术报告: ppocr/blog/PP-OCRv4_introduction.md
+      - paddleocr package使用说明: ppocr/blog/whl.md
+      - 多语言模型: ppocr/blog/multi_languages.md
+      - 动手学OCR: ppocr/blog/ocr_book.md
+      - Enhanced CTC Loss: ppocr/blog/enhanced_ctc_loss.md
+      - 切片操作: ppocr/blog/slice.md
+      - PaddleOCR模型推理参数解释: ppocr/blog/inference_args.md
+      - 分布式训练: ppocr/blog/distributed_training.md
+      - 项目克隆: ppocr/blog/clone.md
+      - 配置文件内容与生成: ppocr/blog/config.md
+      - 如何生产自定义超轻量模型？: ppocr/blog/customize.md
+  - PP-Structure文档分析:
+    - 概述: ppstructure/overview.md
+    - 快速开始: ppstructure/quick_start.md
+    - 模型库: ppstructure/models_list.md
+    - 模型训练:
+      - 基本概念: ppstructure/model_train/training.md
+      - 版面分析: ppstructure/model_train/train_layout.md
+      - 表格识别: ppstructure/model_train/train_table.md
+      - 版面恢复: ppstructure/model_train/recovery_to_doc.md
+      - 关键信息提取: ppstructure/model_train/train_kie.md
+    - 推理部署:
+      - 概述: ppstructure/infer_deploy/index.md
+      - 基于Python预测引擎推理: ppstructure/infer_deploy/python_infer.md
+      - 基于C++预测引擎推理: ppstructure/infer_deploy/cpp_infer.md
+      - 服务化部署: ppstructure/infer_deploy/paddle_server.md
+    - 博客:
+      - 返回识别位置: ppstructure/blog/return_word_pos.md
+      - 怎样完成基于图像数据的信息抽取任务: ppstructure/blog/how_to_do_kie.md
+  - 前沿算法与模型:
+    - 概述: algorithm/overview.md
+    - 文本检测算法:
+      - DB与DB++: algorithm/text_detection/algorithm_det_db.md
+      - EAST: algorithm/text_detection/algorithm_det_east.md
+      - SAST: algorithm/text_detection/algorithm_det_sast.md
+      - PSENet: algorithm/text_detection/algorithm_det_psenet.md
+      - FCENet: algorithm/text_detection/algorithm_det_fcenet.md
+      - DRRG: algorithm/text_detection/algorithm_det_drrg.md
+      - CT: algorithm/text_detection/algorithm_det_ct.md
+    - 文本识别算法:
+      - CRNN: algorithm/text_recognition/algorithm_rec_crnn.md
+      - Rosetta: algorithm/text_recognition/algorithm_rec_rosetta.md
+      - STAR-Net: algorithm/text_recognition/algorithm_rec_starnet.md
+      - RARE: algorithm/text_recognition/algorithm_rec_rare.md
+      - SRN: algorithm/text_recognition/algorithm_rec_srn.md
+      - NRTR: algorithm/text_recognition/algorithm_rec_nrtr.md
+      - SAR: algorithm/text_recognition/algorithm_rec_sar.md
+      - SEED: algorithm/text_recognition/algorithm_rec_seed.md
+      - SVTR: algorithm/text_recognition/algorithm_rec_svtr.md
+      - ViTSTR: algorithm/text_recognition/algorithm_rec_vitstr.md
+      - ABINet: algorithm/text_recognition/algorithm_rec_abinet.md
+      - VisionLAN: algorithm/text_recognition/algorithm_rec_visionlan.md
+      - SPIN: algorithm/text_recognition/algorithm_rec_spin.md
+      - RobustScanner: algorithm/text_recognition/algorithm_rec_robustscanner.md
+      - RFL: algorithm/text_recognition/algorithm_rec_rfl.md
+      - ParseQ: algorithm/text_recognition/algorithm_rec_parseq.md
+      - CPPD: algorithm/text_recognition/algorithm_rec_cppd.md
+      - SATRN: algorithm/text_recognition/algorithm_rec_satrn.md
+    - 文本超分辨率算法:
+      - Text Gestalt: algorithm/super_resolution/algorithm_sr_gestalt.md
+      - Text Telescope: algorithm/super_resolution/algorithm_sr_telescope.md
+    - 公式识别算法:
+      - CAN: algorithm/formula_recognition/algorithm_rec_can.md
+    - 端到端OCR算法:
+      - PGNet: algorithm/end_to_end/algorithm_e2e_pgnet.md
+    - 表格识别算法:
+      - TableMaster: algorithm/table_recognition/algorithm_table_master.md
+      - TableSLANet: algorithm/table_recognition/algorithm_table_slanet.md
+    - 关键信息抽取算法:
+      - VI-LayoutXLM: algorithm/kie/algorithm_kie_vi_layoutxlm.md
+      - LayoutLM: algorithm/kie/algorithm_kie_layoutxlm.md
+      # - LayoutLMv2: algorithm/kie/algorithm_kie_layoutxlm.md
+      # - LayoutXLM: algorithm/kie/algorithm_kie_layoutxlm.md
+      - SDMGR: algorithm/kie/./algorithm_kie_sdmgr.md
+    - 使用PaddleOCR架构添加新算法: algorithm/add_new_algorithm.md
+  - 场景应用:
+    - 通用:
+      - 高精度中文场景文本识别模型SVTR: applications/高精度中文识别模型.md
+      - 手写体识别: applications/手写文字识别.md
+    - 制造:
+      - 数码管识别: applications/光功率计数码管字符识别.md
+      - 液晶屏读数识别: applications/液晶屏读数识别.md
+      - 包装生产日期: applications/包装生产日期识别.md
+      - PCB文字识别: applications/PCB字符识别.md
+    - 金融:
+      - 表单VQA: applications/多模态表单识别.md
+      - 增值税发票: applications/发票关键信息抽取.md
+      - 印章检测与识别: applications/印章弯曲文字识别.md
+      - 通用卡证识别: applications/快速构建卡证类OCR.md
+      - 合同比对: applications/扫描合同关键信息提取.md
+    - 交通:
+      - 车牌识别: applications/轻量级车牌识别.md
+  - 数据标注与合成:
+    - 概述: data_anno_synth/overview.md
+    - 其它数据标注工具: data_anno_synth/data_annotation.md
+    - 其它数据合成工具: data_anno_synth/data_synthesis.md
+  - 数据集:
+    - 通用中英文OCR数据集: datasets/datasets.md
+    - 手写中文OCR数据集: datasets/handwritten_datasets.md
+    - 垂类多语言OCR数据集: datasets/vertical_and_multilingual_datasets.md
+    - 版面分析数据集: datasets/layout_datasets.md
+    - 表格识别数据集: datasets/table_datasets.md
+    - 关键信息提取数据集: datasets/kie_datasets.md
+  - FAQ: FAQ.md
+  - 社区:
+    - 社区贡献: community/community_contribution.md
+    - 附录: community/code_and_doc.md

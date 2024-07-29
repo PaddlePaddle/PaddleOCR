@@ -11,6 +11,4 @@ cython
 Pillow
 pyyaml
 requests
-albumentations
-tokenizers==0.19.1
-imagesize
+albumentations==1.4.10
