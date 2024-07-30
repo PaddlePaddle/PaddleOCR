@@ -62,7 +62,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 ## 🎖 贡献者
 
 <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20" />
+  <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
 </a>
 
 ## ⭐️ Star
