@@ -1,7 +1,7 @@
-[English](README_en.md) | 简体中文 | [हिन्दी](./doc/doc_i18n/README_हिन्द.md) | [日本語](./doc/doc_i18n/README_日本語.md) | [한국인](./doc/doc_i18n/README_한국어.md) | [Pу́сский язы́к](./doc/doc_i18n/README_Ру́сский_язы́к.md)
+[English](README_en.md) | 简体中文
 
 <p align="center">
- <img src="./doc/PaddleOCR_log.png" align="middle" width = "600"/>
+ <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/PaddleOCR_logo.png" align="middle" width = "600"/>
 <p align="center">
 <p align="center">
     <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
@@ -43,7 +43,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 🌟 特性
 
-支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./doc/doc_ch/ppocr_introduction.md)、[PP-Structure](./ppstructure/README_ch.md)和[PP-ChatOCRv2](https://aistudio.baidu.com/community/app/70303)，并打通数据生产、模型训练、压缩、预测部署全流程。
+支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](https://paddlepaddle.github.io/PaddleOCR/ppocr/overview.html)、[PP-Structure](https://paddlepaddle.github.io/PaddleOCR/ppstructure/overview.html)和[PP-ChatOCRv2](https://aistudio.baidu.com/community/app/70303)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
 <div align="center">
     <img src="./docs/images/ppocrv4.png">
