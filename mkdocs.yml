@@ -368,6 +368,7 @@ nav:
       - SDMGR: algorithm/kie/./algorithm_kie_sdmgr.md
     - 使用PaddleOCR架构添加新算法: algorithm/add_new_algorithm.md
   - 场景应用:
+    - 概述: applications/overview.md
     - 通用:
       - 高精度中文场景文本识别模型SVTR: applications/高精度中文识别模型.md
       - 手写体识别: applications/手写文字识别.md
