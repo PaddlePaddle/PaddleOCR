@@ -1,47 +1,26 @@
 # 印刷数学公式识别算法-LaTeX-OCR
 
-- [1. 算法简介](#1)
-- [2. 环境配置](#2)
-- [3. 模型训练、评估、预测](#3)
-    - [3.1 pickle 标签文件生成](#3-1)
-    - [3.2 训练](#3-2)
-    - [3.3 评估](#3-3)
-    - [3.4 预测](#3-4)
-- [4. 推理部署](#4)
-    - [4.1 Python推理](#4-1)
-    - [4.2 C++推理](#4-2)
-    - [4.3 Serving服务化部署](#4-3)
-    - [4.4 更多推理部署](#4-4)
-- [5. FAQ](#5)
-
-<a name="1"></a>
 ## 1. 算法简介
 
 原始项目：
 > [https://github.com/lukas-blecher/LaTeX-OCR](https://github.com/lukas-blecher/LaTeX-OCR)
 
 
-
-<a name="model"></a>
 `LaTeX-OCR`使用[`LaTeX-OCR印刷公式数据集`](https://drive.google.com/drive/folders/13CA4vAmOmD_I_dSbvLp-Lf0s6KiaNfuO)进行训练，在对应测试集上的精度如下：
 
 | 模型        | 骨干网络       |配置文件 | BLEU score  | normed edit distance  |  ExpRate  |下载链接|
 |-----------|------------| ----- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](../../configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
-<a name="2"></a>
 ## 2. 环境配置
-请先参考[《运行环境准备》](./environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](./clone.md)克隆项目代码。
+请先参考[《运行环境准备》](../../ppocr/environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](../../ppocr/blog/clone.md)克隆项目代码。
 
 此外，需要安装额外的依赖：
 ```shell
 pip install "tokenizers==0.19.1" "imagesize"
 ```
 
-<a name="3"></a>
 ## 3. 模型训练、评估、预测
-
-<a name="3-1"></a>
 
 ### 3.1 pickle 标签文件生成
 从[谷歌云盘](https://drive.google.com/drive/folders/13CA4vAmOmD_I_dSbvLp-Lf0s6KiaNfuO)中下载 formulae.zip 和 math.txt，之后，使用如下命令，生成 pickle 标签文件。
@@ -63,7 +42,7 @@ python ppocr/utils/formula_utils/math_txt2pkl.py --image_dir=train_data/LaTeXOCR
 
 ### 3.2 模型训练
 
-请参考[文本识别训练教程](./recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](../../configs/rec/rec_latex_ocr.yml)。
+请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)。
 
 #### 启动训练
 
@@ -83,7 +62,6 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_step=[0,{length_of_dataset//batch_size*22}]
 ```
 
-<a name="3-2"></a>
 ### 3.3 评估
 
 可下载已训练完成的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)，使用如下命令进行评估：
@@ -96,7 +74,6 @@ python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_mode
 python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Metric.cal_blue_score=True Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
-<a name="3-3"></a>
 ### 3.4 预测
 
 使用如下命令进行单张图片预测：
@@ -106,12 +83,10 @@ python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Ba
 # 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/datasets/pme_demo/'。
 ```
 
-<a name="4"></a>
 ## 4. 推理部署
 
-<a name="4-1"></a>
 ### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar) )，可以使用如下命令进行转换：
+首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)），可以使用如下命令进行转换：
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
@@ -140,7 +115,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/datasets/pme_demo/0000295.
 ```
 &nbsp;
 
-![测试图片样例](../datasets/pme_demo/0000295.png)
+![测试图片样例](../../datasets/images/pme_demo/0000295.png)
 
 执行命令后，上面图像的预测结果（识别的文本）会打印到屏幕上，示例如下：
 ```shell
@@ -155,22 +130,18 @@ Predicts of ./doc/datasets/pme_demo/0000295.png:\zeta_{0}(\nu)=-{\frac{\nu\varrh
 - 如果您修改了预处理方法，需修改`tools/infer/predict_rec.py`中 LaTeX-OCR 的预处理为您的预处理方法。
 
 
-<a name="4-2"></a>
 ### 4.2 C++推理部署
 
 由于C++预处理后处理还未支持 LaTeX-OCR，所以暂未支持
 
-<a name="4-3"></a>
 ### 4.3 Serving服务化部署
 
 暂不支持
 
-<a name="4-4"></a>
 ### 4.4 更多推理部署
 
 暂不支持
 
-<a name="5"></a>
 ## 5. FAQ
 
 1. LaTeX-OCR 数据集来自于[LaTeXOCR源repo](https://github.com/lukas-blecher/LaTeX-OCR) 。

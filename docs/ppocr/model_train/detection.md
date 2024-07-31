@@ -124,6 +124,8 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
 ```
 
+**注意:** 文本检测模型使用AMP时可能遇到训练不收敛问题，可以参考[discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions/12445)中的临时解决方案进行使用。
+
 ### 2.5 分布式训练
 
 多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
