@@ -69,7 +69,7 @@ class SLALoss(nn.Layer):
     def forward(self, predicts, batch):
         structure_probs = predicts["structure_probs"]
         structure_targets = batch[1].astype("int64")
-        max_len = batch[-2].max()
+        max_len = batch[-2].max().astype("int32")
         structure_targets = structure_targets[:, 1 : max_len + 2]
 
         structure_loss = self.loss_func(structure_probs, structure_targets)
