@@ -5,10 +5,10 @@ on:
   pull_request:
     branches: ["main", "release/*"]
     paths-ignore:
-      - **.md
-      - **.txt
-      - **.yml
-      - **.yaml
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
+      - '**.yaml'
 
 permissions:
   contents: read
