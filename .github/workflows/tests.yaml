@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
     branches: ["main", "release/*"]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
+      - '**.yaml'
 
 permissions:
   contents: read
