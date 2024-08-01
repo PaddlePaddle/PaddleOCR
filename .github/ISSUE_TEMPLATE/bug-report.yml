@@ -39,7 +39,6 @@ body:
       label: Environment
       description: Please specify the software and hardware you used to produce the bug.
       placeholder: |
-
         ```
         OS                  macOS-13.5.2
         Environment         Jupyter
@@ -51,7 +50,7 @@ body:
         CUDA                None
         ```
     validations:
-      required: false
+      required: true
 
   - type: textarea
     attributes:
@@ -64,7 +63,7 @@ body:
         # Code to reproduce your issue here
         ```
     validations:
-      required: false
+      required: true
 
   - type: textarea
     attributes:
