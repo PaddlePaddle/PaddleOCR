@@ -1,5 +1,8 @@
 ---
 comments: true
+hide:
+  - navigation
+  - toc
 ---
 
 ### Recently Update
