@@ -204,6 +204,7 @@ def train(
     eval_batch_step = config["Global"]["eval_batch_step"]
     eval_batch_epoch = config["Global"].get("eval_batch_epoch", None)
     profiler_options = config["profiler_options"]
+    print_mem_info = config["Global"].get("print_mem_info", True)
 
     global_step = 0
     if "global_step" in pre_best_model_dict:
@@ -406,9 +407,8 @@ def train(
                     metrics=train_stats.get(), prefix="TRAIN", step=global_step
                 )
 
-            if dist.get_rank() == 0 and (
-                (global_step > 0 and global_step % print_batch_step == 0)
-                or (idx >= len(train_dataloader) - 1)
+            if (global_step > 0 and global_step % print_batch_step == 0) or (
+                idx >= len(train_dataloader) - 1
             ):
                 logs = train_stats.log()
 
@@ -418,13 +418,13 @@ def train(
                 eta_sec_format = str(datetime.timedelta(seconds=int(eta_sec)))
                 max_mem_reserved_str = ""
                 max_mem_allocated_str = ""
-                if paddle.device.is_compiled_with_cuda():
-                    max_mem_reserved_str = f"max_mem_reserved: {paddle.device.cuda.max_memory_reserved() // (1024 ** 2)} MB,"
-                    max_mem_allocated_str = f"max_mem_allocated: {paddle.device.cuda.max_memory_allocated() // (1024 ** 2)} MB"
+                if paddle.device.is_compiled_with_cuda() and print_mem_info:
+                    max_mem_reserved_str = f", max_mem_reserved: {paddle.device.cuda.max_memory_reserved() // (1024 ** 2)} MB,"
+                    max_mem_allocated_str = f" max_mem_allocated: {paddle.device.cuda.max_memory_allocated() // (1024 ** 2)} MB"
                 strs = (
                     "epoch: [{}/{}], global_step: {}, {}, avg_reader_cost: "
                     "{:.5f} s, avg_batch_cost: {:.5f} s, avg_samples: {}, "
-                    "ips: {:.5f} samples/s, eta: {}, {} {}".format(
+                    "ips: {:.5f} samples/s, eta: {}{}{}".format(
                         epoch,
                         epoch_num,
                         global_step,
@@ -740,7 +740,9 @@ def preprocess(is_train=False):
         log_file = "{}/train.log".format(save_model_dir)
     else:
         log_file = None
-    logger = get_logger(log_file=log_file)
+
+    log_ranks = config["Global"].get("log_ranks", "0")
+    logger = get_logger(log_file=log_file, log_ranks=log_ranks)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config["Global"].get("use_gpu", False)

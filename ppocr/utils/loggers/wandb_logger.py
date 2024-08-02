@@ -2,8 +2,6 @@ import os
 from .base_logger import BaseLogger
 from ppocr.utils.logging import get_logger
 
-logger = get_logger()
-
 
 class WandbLogger(BaseLogger):
     def __init__(
@@ -40,6 +38,7 @@ class WandbLogger(BaseLogger):
             resume="allow",
         )
         self._wandb_init.update(**kwargs)
+        self.logger = get_logger()
 
         _ = self.run
 
@@ -50,7 +49,7 @@ class WandbLogger(BaseLogger):
     def run(self):
         if self._run is None:
             if self.wandb.run is not None:
-                logger.info(
+                self.logger.info(
                     "There is a wandb run already in progress "
                     "and newly created instances of `WandbLogger` will reuse"
                     " this run. If this is not desired, call `wandb.finish()`"
