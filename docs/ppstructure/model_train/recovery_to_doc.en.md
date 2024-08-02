@@ -86,14 +86,14 @@ pip3 install pdf2docx-0.0.0-py3-none-any.whl
 ```bash linenums="1"
 # install paddleocr
 pip3 install "paddleocr>=2.6"
-paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
 ```
 
 Command line:
 
 ```bash linenums="1"
 python3 predict_system.py \
-    --image_dir=ppstructure/recovery/UnrealText.pdf \
+    --image_dir=ppstructure/docs/recovery/UnrealText.pdf \
     --recovery=True \
     --use_pdf2docx_api=True \
     --output=../output/
