@@ -99,7 +99,7 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 通过PDF解析(只支持pdf格式的输入)：
 
 ```bash
-paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
 ```
 
 通过OCR技术：
@@ -112,7 +112,7 @@ paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --rec
 通过PDF解析(只支持pdf格式的输入)：
 
 ```bash
-paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
 ```
 
 通过OCR技术：
@@ -123,7 +123,7 @@ paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=t
 # 英文测试图
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 # pdf测试文件
-paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
 ```
 
 <a name="22"></a>
@@ -217,7 +217,7 @@ from paddleocr import PPStructure,save_structure_res
 ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
 
 save_folder = './output'
-img_path = 'ppstructure/recovery/UnrealText.pdf'
+img_path = 'ppstructure/docs/recovery/UnrealText.pdf'
 result = ocr_engine(img_path)
 for index, res in enumerate(result):
     save_structure_res(res, save_folder, os.path.basename(img_path).split('.')[0], index)
@@ -239,7 +239,7 @@ from PIL import Image
 ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
 
 save_folder = './output'
-img_path = 'ppstructure/recovery/UnrealText.pdf'
+img_path = 'ppstructure/docs/recovery/UnrealText.pdf'
 
 fitz = try_import("fitz")
 imgs = []

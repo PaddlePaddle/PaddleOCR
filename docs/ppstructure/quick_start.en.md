@@ -76,7 +76,7 @@ Two layout recovery methods are provided, For detailed usage tutorials, please r
 Recovery by using PDF parse (only support pdf as input):
 
 ```bash linenums="1"
-paddleocr --image_dir=ppstructure/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
 ```
 
 Recovery by using OCR：
@@ -171,7 +171,7 @@ from paddleocr import PPStructure,save_structure_res
 ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
 
 save_folder = './output'
-img_path = 'ppstructure/recovery/UnrealText.pdf'
+img_path = 'ppstructure/docs/recovery/UnrealText.pdf'
 result = ocr_engine(img_path)
 for index, res in enumerate(result):
     save_structure_res(res, save_folder, os.path.basename(img_path).split('.')[0], index)
@@ -193,7 +193,7 @@ from PIL import Image
 ocr_engine = PPStructure(table=False, ocr=True, show_log=True)
 
 save_folder = './output'
-img_path = 'ppstructure/recovery/UnrealText.pdf'
+img_path = 'ppstructure/docs/recovery/UnrealText.pdf'
 
 fitz = try_import("fitz")
 imgs = []
