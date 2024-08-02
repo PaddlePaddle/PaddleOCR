@@ -24,6 +24,6 @@ typora-copy-images-to: images
 
 ## 资料地址
 
-- 中文版电子书下载请扫描首页二维码入群后领取
+-  🎁《动手学OCR》、《OCR产业范例20讲》电子书、OCR垂类模型、PDF2Word软件以及其他学习大礼包领取链接：[百度网盘 PaddleOCR 开源大礼包](https://pan.baidu.com/s/1h__OYbbQ_rASB-m8ZC1bCA)，提取码：4232
 - [notebook教程](https://github.com/PaddleOCR-Community/Dive-into-OCR)
 - [教学视频](https://aistudio.baidu.com/aistudio/education/group/info/25207)
