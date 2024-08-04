@@ -25,6 +25,7 @@ import json
 import copy
 import random
 from random import sample
+from collections import defaultdict
 
 from ppocr.utils.logging import get_logger
 from ppocr.data.imaug.vqa.augment import order_by_tbyx
@@ -1770,3 +1771,108 @@ class CPPDLabelEncode(BaseRecLabelEncode):
         if len(text_list) == 0:
             return None, None, None
         return text_list, text_node_index, text_node_num
+
+
+class LatexOCRLabelEncode(object):
+    def __init__(
+        self,
+        rec_char_dict_path,
+        **kwargs,
+    ):
+        from tokenizers import Tokenizer as TokenizerFast
+
+        self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
+        self.model_input_names = ["input_ids", "token_type_ids", "attention_mask"]
+        self.pad_token_id = 0
+        self.bos_token_id = 1
+        self.eos_token_id = 2
+
+    def _convert_encoding(
+        self,
+        encoding,
+        return_token_type_ids=None,
+        return_attention_mask=None,
+        return_overflowing_tokens=False,
+        return_special_tokens_mask=False,
+        return_offsets_mapping=False,
+        return_length=False,
+        verbose=True,
+    ):
+
+        if return_token_type_ids is None:
+            return_token_type_ids = "token_type_ids" in self.model_input_names
+        if return_attention_mask is None:
+            return_attention_mask = "attention_mask" in self.model_input_names
+
+        if return_overflowing_tokens and encoding.overflowing is not None:
+            encodings = [encoding] + encoding.overflowing
+        else:
+            encodings = [encoding]
+
+        encoding_dict = defaultdict(list)
+        for e in encodings:
+            encoding_dict["input_ids"].append(e.ids)
+
+            if return_token_type_ids:
+                encoding_dict["token_type_ids"].append(e.type_ids)
+            if return_attention_mask:
+                encoding_dict["attention_mask"].append(e.attention_mask)
+            if return_special_tokens_mask:
+                encoding_dict["special_tokens_mask"].append(e.special_tokens_mask)
+            if return_offsets_mapping:
+                encoding_dict["offset_mapping"].append(e.offsets)
+            if return_length:
+                encoding_dict["length"].append(len(e.ids))
+
+        return encoding_dict, encodings
+
+    def encode(
+        self,
+        text,
+        text_pair=None,
+        return_token_type_ids=False,
+        add_special_tokens=True,
+        is_split_into_words=False,
+    ):
+        batched_input = text
+        encodings = self.tokenizer.encode_batch(
+            batched_input,
+            add_special_tokens=add_special_tokens,
+            is_pretokenized=is_split_into_words,
+        )
+        tokens_and_encodings = [
+            self._convert_encoding(
+                encoding=encoding,
+                return_token_type_ids=False,
+                return_attention_mask=None,
+                return_overflowing_tokens=False,
+                return_special_tokens_mask=False,
+                return_offsets_mapping=False,
+                return_length=False,
+                verbose=True,
+            )
+            for encoding in encodings
+        ]
+        sanitized_tokens = {}
+        for key in tokens_and_encodings[0][0].keys():
+            stack = [e for item, _ in tokens_and_encodings for e in item[key]]
+            sanitized_tokens[key] = stack
+        return sanitized_tokens
+
+    def __call__(self, eqs):
+        topk = self.encode(eqs)
+        for k, p in zip(topk, [[self.bos_token_id, self.eos_token_id], [1, 1]]):
+            process_seq = [[p[0]] + x + [p[1]] for x in topk[k]]
+            max_length = 0
+            for seq in process_seq:
+                max_length = max(max_length, len(seq))
+            labels = np.zeros((len(process_seq), max_length), dtype="int64")
+            for idx, seq in enumerate(process_seq):
+                l = len(seq)
+                labels[idx][:l] = seq
+            topk[k] = labels
+        return (
+            np.array(topk["input_ids"]).astype(np.int64),
+            np.array(topk["attention_mask"]).astype(np.int64),
+            max_length,
+        )

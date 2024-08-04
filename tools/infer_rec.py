@@ -183,6 +183,8 @@ def main():
             elif isinstance(post_result, list) and isinstance(post_result[0], int):
                 # for RFLearning CNT branch
                 info = str(post_result[0])
+            elif config["Architecture"]["algorithm"] == "LaTeXOCR":
+                info = str(post_result[0])
             else:
                 if len(post_result[0]) >= 2:
                     info = post_result[0][0] + "\t" + str(post_result[0][1])

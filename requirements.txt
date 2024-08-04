@@ -12,3 +12,4 @@ cython
 Pillow
 pyyaml
 requests
+albumentations==1.4.10

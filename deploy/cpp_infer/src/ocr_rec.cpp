@@ -158,6 +158,8 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
       config.EnableMKLDNN();
       // cache 10 different shapes for mkldnn to avoid memory leak
       config.SetMkldnnCacheCapacity(10);
+    } else {
+      config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
   }

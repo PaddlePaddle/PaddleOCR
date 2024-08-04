@@ -1210,3 +1210,55 @@ class CPPDLabelDecode(NRTRLabelDecode):
     def add_special_char(self, dict_character):
         dict_character = ["</s>"] + dict_character
         return dict_character
+
+
+class LaTeXOCRDecode(object):
+    """Convert between latex-symbol and symbol-index"""
+
+    def __init__(self, rec_char_dict_path, **kwargs):
+        from tokenizers import Tokenizer as TokenizerFast
+
+        super(LaTeXOCRDecode, self).__init__()
+        self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
+
+    def post_process(self, s):
+        text_reg = r"(\\(operatorname|mathrm|text|mathbf)\s?\*? {.*?})"
+        letter = "[a-zA-Z]"
+        noletter = "[\W_^\d]"
+        names = [x[0].replace(" ", "") for x in re.findall(text_reg, s)]
+        s = re.sub(text_reg, lambda match: str(names.pop(0)), s)
+        news = s
+        while True:
+            s = news
+            news = re.sub(r"(?!\\ )(%s)\s+?(%s)" % (noletter, noletter), r"\1\2", s)
+            news = re.sub(r"(?!\\ )(%s)\s+?(%s)" % (noletter, letter), r"\1\2", news)
+            news = re.sub(r"(%s)\s+?(%s)" % (letter, noletter), r"\1\2", news)
+            if news == s:
+                break
+        return s
+
+    def decode(self, tokens):
+        if len(tokens.shape) == 1:
+            tokens = tokens[None, :]
+        dec = [self.tokenizer.decode(tok) for tok in tokens]
+        dec_str_list = [
+            "".join(detok.split(" "))
+            .replace("Ġ", " ")
+            .replace("[EOS]", "")
+            .replace("[BOS]", "")
+            .replace("[PAD]", "")
+            .strip()
+            for detok in dec
+        ]
+        return [self.post_process(dec_str) for dec_str in dec_str_list]
+
+    def __call__(self, preds, label=None, mode="eval", *args, **kwargs):
+        if mode == "train":
+            preds_idx = np.array(preds.argmax(axis=2))
+            text = self.decode(preds_idx)
+        else:
+            text = self.decode(np.array(preds))
+        if label is None:
+            return text
+        label = self.decode(np.array(label))
+        return text, label

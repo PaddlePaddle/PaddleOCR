@@ -357,7 +357,7 @@ class SLAHead(nn.Layer):
 
         if self.training and targets is not None:
             structure = targets[0]
-            max_len = targets[-2].max()
+            max_len = targets[-2].max().astype("int32")
             for i in range(max_len + 1):
                 hidden, structure_step, loc_step = self._decode(
                     structure[:, i], fea, hidden

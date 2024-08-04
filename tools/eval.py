@@ -105,6 +105,8 @@ def main():
     if "model_type" in config["Architecture"].keys():
         if config["Architecture"]["algorithm"] == "CAN":
             model_type = "can"
+        elif config["Architecture"]["algorithm"] == "LaTeXOCR":
+            model_type = "latexocr"
         else:
             model_type = config["Architecture"]["model_type"]
     else:

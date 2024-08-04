@@ -137,12 +137,21 @@ On the TextZoom public dataset, the effect of the algorithm is as follows:
 Supported formula recognition algorithms (Click the link to get the tutorial):
 
 - [x]  [CAN](./algorithm_rec_can_en.md)
+- [x]  [LaTeX-OCR](./algorithm_rec_latex_ocr_en.md)
+
 
 On the CROHME handwritten formula dataset, the effect of the algorithm is as follows:
 
 |Model    |Backbone|Config|ExpRate|Download link|
 | ----- | ----- | ----- | ----- | ----- |
 |CAN|DenseNet|[rec_d28_can.yml](../../configs/rec/rec_d28_can.yml)|51.72%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_d28_can_train.tar)|
+
+
+On the LaTeX-OCR printed formula dataset, the effect of the algorithm is as follows:
+
+| Model       | Backbone |config| BLEU score  | normed edit distance  |  ExpRate  |Download link|
+|-----------|----------| ---- |:-----------:|:---------------------:|:---------:| ----- |
+| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](../../configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 
 <a name="2"></a>

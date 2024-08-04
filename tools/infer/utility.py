@@ -26,9 +26,6 @@ import random
 from ppocr.utils.logging import get_logger
 
 
-logger = get_logger()
-
-
 def str2bool(v):
     return v.lower() in ("true", "yes", "t", "y", "1")
 
@@ -340,6 +337,7 @@ def get_infer_gpuid():
     Returns:
         int: The GPU ID to be used for inference.
     """
+    logger = get_logger()
     if not paddle.device.is_compiled_with_rocm:
         gpu_id_str = os.environ.get("CUDA_VISIBLE_DEVICES", "0")
     else:

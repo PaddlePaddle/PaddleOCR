@@ -202,7 +202,7 @@ class TritonPythonModel:
                         image_list[index] = cv2.rotate(
                             image_list[index].astype(np.float32), 1
                         )
-                        image_list[index] = np.astype(np.uint8)
+                        image_list[index] = image_list[index].astype(np.uint8)
 
                 rec_pre_tensors = self.rec_preprocessor.run(image_list)
                 rec_dlpack_tensor = rec_pre_tensors[0].to_dlpack()
