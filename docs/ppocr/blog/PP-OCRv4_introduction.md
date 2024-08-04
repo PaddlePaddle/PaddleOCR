@@ -14,18 +14,18 @@ PP-OCRv4在PP-OCRv3的基础上进一步升级。整体的框架图保持了与P
 从算法改进思路上看，分别针对检测和识别模型，进行了共10个方面的改进：
 
 * 检测模块：
-  * LCNetV3：精度更高的骨干网络
-  * PFHead：并行head分支融合结构
-  * DSR: 训练中动态增加shrink ratio
-  * CML：添加Student和Teacher网络输出的KL div loss
+    * LCNetV3：精度更高的骨干网络
+    * PFHead：并行head分支融合结构
+    * DSR: 训练中动态增加shrink ratio
+    * CML：添加Student和Teacher网络输出的KL div loss
 
 * 识别模块：
-  * SVTR_LCNetV3：精度更高的骨干网络
-  * Lite-Neck：精简的Neck结构
-  * GTC-NRTR：稳定的Attention指导分支
-  * Multi-Scale：多尺度训练策略
-  * DF: 数据挖掘方案
-  * DKD ：DKD蒸馏策略
+    * SVTR_LCNetV3：精度更高的骨干网络
+    * Lite-Neck：精简的Neck结构
+    * GTC-NRTR：稳定的Attention指导分支
+    * Multi-Scale：多尺度训练策略
+    * DF: 数据挖掘方案
+    * DKD ：DKD蒸馏策略
 
 从效果上看，速度可比情况下，多种场景精度均有大幅提升：
 
