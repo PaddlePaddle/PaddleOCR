@@ -14,17 +14,17 @@ PP-OCRv3在PP-OCRv2的基础上进一步升级。整体的框架图保持了与P
 从算法改进思路上看，分别针对检测和识别模型，进行了共9个方面的改进：
 
 - 检测模块：
-  - LK-PAN：大感受野的PAN结构；
-  - DML：教师模型互学习策略；
-  - RSE-FPN：残差注意力机制的FPN结构；
+    - LK-PAN：大感受野的PAN结构；
+    - DML：教师模型互学习策略；
+    - RSE-FPN：残差注意力机制的FPN结构；
 
 - 识别模块：
-  - SVTR_LCNet：轻量级文本识别网络；
-  - GTC：Attention指导CTC训练策略；
-  - TextConAug：挖掘文字上下文信息的数据增广策略；
-  - TextRotNet：自监督的预训练模型；
-  - UDML：联合互学习策略；
-  - UIM：无标注数据挖掘方案。
+    - SVTR_LCNet：轻量级文本识别网络；
+    - GTC：Attention指导CTC训练策略；
+    - TextConAug：挖掘文字上下文信息的数据增广策略；
+    - TextRotNet：自监督的预训练模型；
+    - UDML：联合互学习策略；
+    - UIM：无标注数据挖掘方案。
 
 从效果上看，速度可比情况下，多种场景精度均有大幅提升：
 
