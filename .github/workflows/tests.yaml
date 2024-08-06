@@ -2,6 +2,12 @@ name: PaddleOCR PR Tests
 
 on:
   push:
+    branches: ["main", "release/*"]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
+      - '**.yaml'
   pull_request:
     branches: ["main", "release/*"]
     paths-ignore:
