@@ -28,7 +28,7 @@ class CopyPaste(object):
         self.ext_data_num = 1
         self.objects_paste_ratio = objects_paste_ratio
         self.limit_paste = limit_paste
-        augmenter_args = [{"type": "Resize", "args": {"size": [0.5, 3]}}]
+        augmenter_args = [{"type": "RandomScale ", "args": {"scale_limit": [0.5, 3]}}]
         self.aug = IaaAugment(augmenter_args)
 
     def __call__(self, data):
