@@ -36,6 +36,7 @@ from ppocr.metrics import build_metric
 from ppocr.utils.save_load import load_model
 from ppocr.utils.utility import set_seed
 from ppocr.modeling.architectures import apply_to_static
+from ppocr.modeling.architectures import NaiveSyncBatchNorm
 import tools.program as program
 
 dist.get_world_size()
@@ -138,8 +139,12 @@ def main(config, device, logger, vdl_writer):
 
     use_sync_bn = config["Global"].get("use_sync_bn", False)
     if use_sync_bn:
-        model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-        logger.info("convert_sync_batchnorm")
+        if "npu" in paddle.get_device() and dist.ParallelEnv().nranks > 1:
+            model = NaiveSyncBatchNorm.convert_sync_batchnorm(model)
+            logger.info("convert_sync_batchnorm for NPU")
+        else:
+            model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
+            logger.info("convert_sync_batchnorm")
 
     model = apply_to_static(model, config, logger)
 
