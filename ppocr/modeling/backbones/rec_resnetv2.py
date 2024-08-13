@@ -630,9 +630,7 @@ class GroupNormAct(nn.GroupNorm):
             self.act = nn.Identity()
 
     def forward(self, x):
-        x = group_norm(
-            x, self._num_groups, self._epsilon, weight=self.weight, bias=self.bias
-        )
+        x = paddle.nn.functional.group_norm(x, num_groups=self._num_groups, weight=self.weight, bias=self.bias)
         x = self.act(x)
         return x
 
