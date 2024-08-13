@@ -296,7 +296,7 @@ def main():
     # for sr algorithm
     if config["Architecture"]["model_type"] == "sr":
         config["Architecture"]["Transform"]["infer_mode"] = True
-    
+
     # for latexocr algorithm
     if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
         config["Architecture"]["Backbone"]["is_predict"] = True

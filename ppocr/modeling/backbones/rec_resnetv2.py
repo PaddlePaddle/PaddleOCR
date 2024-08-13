@@ -546,6 +546,7 @@ from paddle.common_ops_import import (
     check_variable_and_dtype,
 )
 
+
 class GroupNormAct(nn.GroupNorm):
     # NOTE num_channel and num_groups order flipped for easier layer swaps / binding of fixed args
     def __init__(
@@ -571,7 +572,9 @@ class GroupNormAct(nn.GroupNorm):
             self.act = nn.Identity()
 
     def forward(self, x):
-        x = F.group_norm(x, num_groups=self._num_groups, weight=self.weight, bias=self.bias)
+        x = F.group_norm(
+            x, num_groups=self._num_groups, weight=self.weight, bias=self.bias
+        )
         x = self.act(x)
         return x
 

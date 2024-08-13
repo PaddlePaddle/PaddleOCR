@@ -269,6 +269,7 @@ class LaTeXOCRMetric(object):
                 "exp_rate<=3 ": cur_exp_3,
             }
         else:
+
             return {
                 "edit distance": cur_edit_distance,
                 "exp_rate": cur_exp_rate,
