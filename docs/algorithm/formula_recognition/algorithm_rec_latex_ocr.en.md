@@ -17,7 +17,7 @@ Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to co
 
 Furthermore, additional dependencies need to be installed:
 ```shell
-pip install "tokenizers==0.19.1" "imagesize"
+pip install -r docs/algorithm/formula_recognition/requirements.txt
 ```
 
 ## 3. Model Training / Evaluation / Prediction
@@ -61,16 +61,16 @@ Evaluation:
 ```
 # GPU evaluation
 # Validation set evaluation
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Metric.cal_blue_score=True
+python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # Test set evaluation
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Metric.cal_blue_score=True Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
+python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
 Prediction:
 
 ```
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Backbone.is_predict=True Architecture.Backbone.is_export=True Architecture.Head.is_export=True Global.infer_img='./doc/datasets/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 ```
 
 ## 4. Inference and Deployment
@@ -79,7 +79,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Ba
 First, the model saved during the LaTeX-OCR printed mathematical expression recognition training process is converted into an inference model. you can use the following command to convert:
 
 ```
-python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ Architecture.Backbone.is_predict=True Architecture.Backbone.is_export=True Architecture.Head.is_export=True
+python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
 
 # The default output max length of the model is 512.
 ```
@@ -87,7 +87,7 @@ python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrai
 For LaTeX-OCR printed mathematical expression recognition model inference, the following commands can be executed:
 
 ```
-python3 tools/infer/predict_rec.py --image_dir='./doc/datasets/pme_demo/0000295.png' --rec_algorithm="LaTeXOCR" --rec_batch_num=1 --rec_model_dir="./inference/rec_latex_ocr_infer/"  --rec_char_dict_path="./ppocr/utils/dict/latex_ocr_tokenizer.json"
+python3 tools/infer/predict_rec.py --image_dir='./docs/datasets/images/pme_demo/0000295.png' --rec_algorithm="LaTeXOCR" --rec_batch_num=1 --rec_model_dir="./inference/rec_latex_ocr_infer/"  --rec_char_dict_path="./ppocr/utils/dict/latex_ocr_tokenizer.json"
 ```
 
 ### 4.2 C++ Inference

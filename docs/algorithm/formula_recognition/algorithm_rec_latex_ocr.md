@@ -17,7 +17,7 @@
 
 此外，需要安装额外的依赖：
 ```shell
-pip install "tokenizers==0.19.1" "imagesize"
+pip install -r docs/algorithm/formula_recognition/requirements.txt
 ```
 
 ## 3. 模型训练、评估、预测
@@ -69,9 +69,9 @@ python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_ste
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
 # 验证集评估
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Metric.cal_blue_score=True
+python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # 测试集评估
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Metric.cal_blue_score=True Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
+python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
 ### 3.4 预测
@@ -79,7 +79,7 @@ python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_mode
 使用如下命令进行单张图片预测：
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Backbone.is_predict=True Architecture.Backbone.is_export=True Architecture.Head.is_export=True Global.infer_img='./doc/datasets/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/datasets/pme_demo/'。
 ```
 
@@ -90,7 +90,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Architecture.Ba
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ Architecture.Backbone.is_predict=True Architecture.Backbone.is_export=True Architecture.Head.is_export=True
+python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
 
 # 目前的静态图模型支持的最大输出长度为512
 ```
@@ -109,7 +109,7 @@ python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrai
 执行如下命令进行模型推理：
 
 ```shell
-python3 tools/infer/predict_rec.py --image_dir='./doc/datasets/pme_demo/0000295.png' --rec_algorithm="LaTeXOCR" --rec_batch_num=1 --rec_model_dir="./inference/rec_latex_ocr_infer/"  --rec_char_dict_path="./ppocr/utils/dict/latex_ocr_tokenizer.json"
+python3 tools/infer/predict_rec.py --image_dir='./docs/datasets/images/pme_demo/0000295.png' --rec_algorithm="LaTeXOCR" --rec_batch_num=1 --rec_model_dir="./inference/rec_latex_ocr_infer/"  --rec_char_dict_path="./ppocr/utils/dict/latex_ocr_tokenizer.json"
 
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/datasets/pme_demo/'。
 ```
