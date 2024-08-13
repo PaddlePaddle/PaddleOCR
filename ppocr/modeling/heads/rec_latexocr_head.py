@@ -953,10 +953,7 @@ class LaTeXOCRHead(nn.Layer):
             mask = paddle.full_like(out, True, dtype=paddle.bool)
 
         i_idx = paddle.full([], 0)
-        # i_idx = 0
         while i_idx < paddle.to_tensor(seq_len):
-        # import pdb;pdb.set_trace()
-        # while i_idx < seq_len:
             x = out[:, -self.max_seq_len :]
             paddle.jit.api.set_dynamic_shape(x, [-1, -1])
             mask = mask[:, -self.max_seq_len :]
