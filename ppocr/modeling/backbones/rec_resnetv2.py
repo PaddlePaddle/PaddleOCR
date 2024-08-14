@@ -540,13 +540,6 @@ class EvoNormSample2d(nn.Layer):
         return x * self.weight.reshape([1, -1, 1, 1]) + self.bias.reshape([1, -1, 1, 1])
 
 
-from paddle.common_ops_import import (
-    LayerHelper,
-    check_type,
-    check_variable_and_dtype,
-)
-
-
 class GroupNormAct(nn.GroupNorm):
     # NOTE num_channel and num_groups order flipped for easier layer swaps / binding of fixed args
     def __init__(
@@ -573,7 +566,11 @@ class GroupNormAct(nn.GroupNorm):
 
     def forward(self, x):
         x = F.group_norm(
-            x, num_groups=self._num_groups, weight=self.weight, bias=self.bias
+            x,
+            num_groups=self._num_groups,
+            epsilon=self._epsilon,
+            weight=self.weight,
+            bias=self.bias,
         )
         x = self.act(x)
         return x
