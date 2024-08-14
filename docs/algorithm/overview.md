@@ -6,9 +6,8 @@ comments: true
 
 本文给出了PaddleOCR已支持的OCR算法列表，以及每个算法在**英文公开数据集**上的模型和指标，主要用于算法简介和算法性能对比，更多包括中文在内的其他数据集上的模型请参考[PP-OCRv3 系列模型下载](../ppocr/model_list.md)。
 
->
-PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广大开发者合作共建，贡献更多算法，合入有奖🎁！具体可查看[社区常规赛](https://github.com/PaddlePaddle/PaddleOCR/issues/4982)。**
->
+PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广大开发者合作共建，贡献更多算法。**
+
 新增算法可参考教程：[使用PaddleOCR架构添加新算法](./add_new_algorithm.md)
 
 ## 1. 两阶段算法
