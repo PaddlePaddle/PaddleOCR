@@ -154,12 +154,28 @@ class BaseRecLabelEncode(object):
         if self.lower:
             text = text.lower()
         text_list = []
-        for char in text:
-            if char not in self.dict:
-                # logger = get_logger()
-                # logger.warning('{} is not in dict'.format(char))
-                continue
-            text_list.append(self.dict[char])
+        
+        # for char in text:
+        #     if char not in self.dict:
+        #         # logger = get_logger()
+        #         # logger.warning('{} is not in dict'.format(char))
+        #         continue
+        #     text_list.append(self.dict[char])
+
+        # 训练标签全字匹配字典行
+        i = 0
+        while i < len(text):
+            matched = False
+            for j in range(len(self.character), 0, -1):
+                if text[i:i+j] in self.dict:
+                    text_list.append(self.dict[text[i:i+j]])
+                    i += j
+                    matched = True
+                    break
+            if not matched:
+                return None
+        #        
+        
         if len(text_list) == 0:
             return None
         return text_list
