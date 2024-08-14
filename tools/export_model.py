@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
 import argparse
 
 import yaml
+import json
 import paddle
 from paddle.jit import to_static
 from collections import OrderedDict
@@ -219,11 +220,18 @@ def dump_infer_config(config, path, logger):
     for k, v in config["PostProcess"].items():
         postprocess[k] = v
 
-    if config["Global"].get("character_dict_path") is not None:
-        with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
-            lines = f.readlines()
-            character_dict = [line.strip("\n") for line in lines]
-        postprocess["character_dict"] = character_dict
+    if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
+        tokenizer_file = config["Global"].get("rec_char_dict_path")
+        if tokenizer_file is not None:
+            with open(tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"] = character_dict
+    else:
+        if config["Global"].get("character_dict_path") is not None:
+            with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
+                lines = f.readlines()
+                character_dict = [line.strip("\n") for line in lines]
+            postprocess["character_dict"] = character_dict
 
     infer_cfg["PostProcess"] = postprocess
 
@@ -288,6 +296,12 @@ def main():
     # for sr algorithm
     if config["Architecture"]["model_type"] == "sr":
         config["Architecture"]["Transform"]["infer_mode"] = True
+
+    # for latexocr algorithm
+    if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
+        config["Architecture"]["Backbone"]["is_predict"] = True
+        config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
     model = build_model(config["Architecture"])
     load_model(config, model, model_type=config["Architecture"]["model_type"])
     model.eval()
