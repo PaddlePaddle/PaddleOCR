@@ -51,10 +51,6 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## ⚡ [快速开始](https://paddlepaddle.github.io/PaddleOCR/quick_start.html)
 
-## 📖 技术交流合作
-
-- 飞桨低代码开发工具 PaddleX 官方交流频道：<https://aistudio.baidu.com/community/channel/610>
-
 ## 📚《动手学 OCR》电子书
 
 - [《动手学 OCR》电子书](https://paddlepaddle.github.io/PaddleOCR/ppocr/blog/ocr_book.html)
