@@ -154,6 +154,7 @@ class BaseRecLabelEncode(object):
         if self.lower:
             text = text.lower()
         text_list = []
+        """Full word matching dictionary line"""
         i = 0
         while i < len(text):
             matched = False
