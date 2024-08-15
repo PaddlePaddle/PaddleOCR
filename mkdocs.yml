@@ -341,6 +341,7 @@ nav:
       - SAR: algorithm/text_recognition/algorithm_rec_sar.md
       - SEED: algorithm/text_recognition/algorithm_rec_seed.md
       - SVTR: algorithm/text_recognition/algorithm_rec_svtr.md
+      - SVTRv2: algorithm/text_recognition/algorithm_rec_svtrv2.md
       - ViTSTR: algorithm/text_recognition/algorithm_rec_vitstr.md
       - ABINet: algorithm/text_recognition/algorithm_rec_abinet.md
       - VisionLAN: algorithm/text_recognition/algorithm_rec_visionlan.md
