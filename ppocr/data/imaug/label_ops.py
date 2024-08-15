@@ -159,8 +159,8 @@ class BaseRecLabelEncode(object):
         while i < len(text):
             matched = False
             for j in range(len(self.character), 0, -1):
-                if text[i:i+j] in self.dict:
-                    text_list.append(self.dict[text[i:i+j]])
+                if text[i : i + j] in self.dict:
+                    text_list.append(self.dict[text[i : i + j]])
                     i += j
                     matched = True
                     break
