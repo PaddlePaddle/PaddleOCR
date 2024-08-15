@@ -30,8 +30,8 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 ## 📣 Recent updates ([more](https://paddlepaddle.github.io/PaddleOCR/en/update.html))
 
 - **🔥2024.7 Added PaddleOCR Algorithm Model Challenge Champion Solutions**:
-    - Challenge One, OCR End-to-End Recognition Task Champion Solution: [Scene Text Recognition Algorithm-SVTRv2](doc/doc_ch/algorithm_rec_svtrv2.md);
-    - Challenge Two, General Table Recognition Task Champion Solution: [Table Recognition Algorithm-SLANet-LCNetV2](doc/doc_ch/algorithm_table_slanet.md).
+    - Challenge One, OCR End-to-End Recognition Task Champion Solution: [Scene Text Recognition Algorithm-SVTRv2](https://paddlepaddle.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2.html);
+    - Challenge Two, General Table Recognition Task Champion Solution: [Table Recognition Algorithm-SLANet-LCNetV2](https://paddlepaddle.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_slanet.html).
 
 ## 📚 Documentation
 
