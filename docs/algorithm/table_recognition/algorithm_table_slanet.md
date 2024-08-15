@@ -18,7 +18,7 @@ comments: true
 
 |模型|骨干网络|配置文件|acc|下载链接|
 | --- | --- | --- | --- | --- |
-|SLANet|LCNetV2|[configs/table/SLANet_lcnetv2.yml](../../configs/table/SLANet_lcnetv2.yml)|76.67%| [训练模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_train.tar) /[推理模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_infer.tar) |
+|SLANet|LCNetV2|[configs/table/SLANet_lcnetv2.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/table/SLANet_lcnetv2.yml)|76.67%| [训练模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_train.tar) /[推理模型](https://paddleocr.bj.bcebos.com/openatom/ch_ppstructure_openatom_SLANetv2_infer.tar) |
 
 ## 2. 环境配置
 
