@@ -218,7 +218,6 @@ def test_ctc_label_encode_call_valid_text_tibetan(
     encoder = setup_ctc_label_encode_tibetan
     data = {"label": label}
     encoded_data = encoder(data)
-    print(f"Encoded data for label '{label}': {encoded_data}")
     assert np.array_equal(
         encoded_data["label"], expected_result
     ), f"Failed for Tibetan text: {label}"
