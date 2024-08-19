@@ -30,8 +30,11 @@ comments: true
 
 - **数据来源**：<https://aistudio.baidu.com/aistudio/competition/detail/8>
 - **数据简介**：ICDAR2019-LSVT行识别任务，共包括29万张图片，其中21万张图片作为训练集（带标注），8万张作为测试集（无标注）。数据集采自中国街景，并由街景图片中的文字行区域（例如店铺标牌、地标等等）截取出来而形成。所有图像都经过一些预处理，将文字区域利用仿射变化，等比映射为一张高为48像素的图片，如图所示：
+
     ![](./images/ch_street_rec_1.png)
+
     (a) 标注：魅派集成吊顶
+
     ![](./images/ch_street_rec_2.png)
     (b) 标注：母婴用品连锁
 - **下载地址**
@@ -41,13 +44,15 @@ comments: true
 
 - **数据来源**：<https://github.com/YCG09/chinese_ocr>
 - **数据简介**：
-  - 共约364万张图片，按照99:1划分成训练集和验证集。
-  - 数据利用中文语料库（新闻 + 文言文），通过字体、大小、灰度、模糊、透视、拉伸等变化随机生成
-  - 包含汉字、英文字母、数字和标点共5990个字符（字符集合：<https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt> ）
-  - 每个样本固定10个字符，字符随机截取自语料库中的句子
-  - 图片分辨率统一为280x32
-    ![](./images/ch_doc1.jpg)
-    ![](./images/ch_doc3.jpg)
+    - 共约364万张图片，按照99:1划分成训练集和验证集。
+    - 数据利用中文语料库（新闻 + 文言文），通过字体、大小、灰度、模糊、透视、拉伸等变化随机生成
+    - 包含汉字、英文字母、数字和标点共5990个字符（字符集合：<https://github.com/YCG09/chinese_ocr/blob/master/train/char_std_5990.txt> ）
+    - 每个样本固定10个字符，字符随机截取自语料库中的句子
+    - 图片分辨率统一为280x32
+
+      ![](./images/ch_doc1.jpg)
+
+      ![](./images/ch_doc3.jpg)
 - **下载地址**：<https://pan.baidu.com/s/1QkI7kjah8SPHwOQ40rS1Pw> (密码：lu7m)
 
 #### 5、ICDAR2019-ArT
