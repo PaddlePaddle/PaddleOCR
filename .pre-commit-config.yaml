@@ -10,13 +10,13 @@ repos:
     -   id: detect-private-key
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
-        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py)$
 -   repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.1
     hooks:
     -   id: remove-crlf
     -   id: remove-tabs
-        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py|md)$
+        files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|py)$
 -   repo: local
     hooks:
     -   id: clang-format

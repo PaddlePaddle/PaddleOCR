@@ -25,6 +25,20 @@ zeros_ = Constant(value=0.0)
 ones_ = Constant(value=1.0)
 
 
+class MeanPool2D(nn.Layer):
+    def __init__(self, w, h):
+        super().__init__()
+        self.w = w
+        self.h = h
+
+    def forward(self, feat):
+        batch_size, channels, _, _ = feat.shape
+        feat_flat = paddle.reshape(feat, [batch_size, channels, -1])
+        feat_mean = paddle.mean(feat_flat, axis=2)
+        feat_mean = paddle.reshape(feat_mean, [batch_size, channels, self.w, self.h])
+        return feat_mean
+
+
 class ConvBNAct(nn.Layer):
     def __init__(
         self, in_channels, out_channels, kernel_size, stride, groups=1, use_act=True
@@ -59,7 +73,10 @@ class ConvBNAct(nn.Layer):
 class ESEModule(nn.Layer):
     def __init__(self, channels):
         super().__init__()
-        self.avg_pool = AdaptiveAvgPool2D(1)
+        if "npu" in paddle.device.get_device():
+            self.avg_pool = MeanPool2D(1, 1)
+        else:
+            self.avg_pool = AdaptiveAvgPool2D(1)
         self.conv = Conv2D(
             in_channels=channels,
             out_channels=channels,

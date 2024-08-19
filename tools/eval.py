@@ -107,6 +107,7 @@ def main():
             model_type = "can"
         elif config["Architecture"]["algorithm"] == "LaTeXOCR":
             model_type = "latexocr"
+            config["Metric"]["cal_blue_score"] = True
         else:
             model_type = config["Architecture"]["model_type"]
     else:

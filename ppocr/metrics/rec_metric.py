@@ -261,14 +261,15 @@ class LaTeXOCRMetric(object):
         self.reset()
         if self.cal_blue_score:
             return {
-                "blue_score ": cur_blue_score,
-                "edit distance ": cur_edit_distance,
-                "exp_rate ": cur_exp_rate,
+                "blue_score": cur_blue_score,
+                "edit distance": cur_edit_distance,
+                "exp_rate": cur_exp_rate,
                 "exp_rate<=1 ": cur_exp_1,
                 "exp_rate<=2 ": cur_exp_2,
                 "exp_rate<=3 ": cur_exp_3,
             }
         else:
+
             return {
                 "edit distance": cur_edit_distance,
                 "exp_rate": cur_exp_rate,

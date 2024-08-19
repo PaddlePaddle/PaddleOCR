@@ -977,10 +977,7 @@ class LaTeXOCRHead(nn.Layer):
                     paddle.cumsum((out == eos_token).cast(paddle.int64), 1)[:, -1] >= 1
                 ).all()
             ):
-                out = out[:, t:]
-                if num_dims == 1:
-                    out = out.squeeze(0)
-                return out
+                break
             i_idx += 1
         out = out[:, t:]
         if num_dims == 1:
