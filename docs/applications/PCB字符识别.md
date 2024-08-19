@@ -180,11 +180,7 @@ Eval.dataset.transforms.DetResizeForTest:  尺寸
         limit_type: 'min'
 ```
 
-如需获取已训练模型，请加入PaddleX官方交流频道，获取20G OCR学习大礼包（内含《动手学OCR》电子书、课程回放视频、前沿论文等重磅资料）
-
-- PaddleX官方交流频道：<https://aistudio.baidu.com/community/channel/610>
-
-将下载或训练完成的模型放置在对应目录下即可完成模型推理
+将训练完成的模型放置在对应目录下即可完成模型推理
 
 ```python linenums="1"
 cd /home/aistudio/PaddleOCR
