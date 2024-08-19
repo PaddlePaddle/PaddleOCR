@@ -47,8 +47,6 @@ def setup_ctc_label_encode_tibetan(tmp_path):
     character_dict_path = generate_character_dict(
         tmp_path, ["ཀ", "ཁ", "ག", "ང", "ཀྵ", "ཀྪོ", "ཀྩོ", "ཀྤྲེ", "ཀླཱ", "གྒྲ"]
     )
-    with open(character_dict_path, "r", encoding="utf-8") as f:
-        print(f"Character dictionary content:\n{f.read()}")
     return CTCLabelEncode(max_text_length=25, character_dict_path=character_dict_path)
 
 
