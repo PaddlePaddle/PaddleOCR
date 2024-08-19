@@ -47,9 +47,8 @@ def setup_ctc_label_encode_tibetan(tmp_path):
     character_dict_path = generate_character_dict(
         tmp_path, ["ཀ", "ཁ", "ག", "ང", "ཀྵ", "ཀྪོ", "ཀྩོ", "ཀྤྲེ", "ཀླཱ", "གྒྲ"]
     )
-    print(f"Character dictionary path: {character_dict_path}")
     with open(character_dict_path, "r", encoding="utf-8") as f:
-        print(f"Character dictionary content:\n{f.read()}")    
+        print(f"Character dictionary content:\n{f.read()}")
     return CTCLabelEncode(max_text_length=25, character_dict_path=character_dict_path)
 
 
@@ -103,7 +102,7 @@ def test_cls_label_encode_call(setup_cls_label_encode, label, expected):
         ("unknown", None),
         ("", None),
         ("a" * 20, None),
-    ]
+    ],
 )
 def test_ctc_label_encode_call(setup_ctc_label_encode, label, expected):
     encoder = setup_ctc_label_encode
@@ -262,7 +261,7 @@ def test_attn_label_encode_call(
             encoded_data is None
         ), f"Expected None for label: {label}, but got {encoded_data}"
 
- 
+
 @pytest.mark.parametrize(
     "label, expected_shape, expected_length",
     [
