@@ -69,6 +69,7 @@ Metric:
 Train:
   dataset:
     name: LaTeXOCRDataSet
+    data_dir: ./train_data/LaTeXOCR/train
     data: ./train_data/LaTeXOCR/latexocr_train.pkl
     min_dimensions: [32, 32]
     max_dimensions: [672, 192]
@@ -99,6 +100,7 @@ Train:
 Eval:
   dataset:
     name: LaTeXOCRDataSet
+    data_dir: ./train_data/LaTeXOCR/val
     data: ./train_data/LaTeXOCR/latexocr_val.pkl
     min_dimensions: [32, 32]
     max_dimensions: [672, 192]
