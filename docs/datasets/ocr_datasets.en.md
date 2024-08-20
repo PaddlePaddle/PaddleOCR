@@ -14,7 +14,7 @@ Here is a list of public datasets commonly used in OCR, which are being continuo
 The annotation file formats supported by the PaddleOCR text detection algorithm are as follows, separated by "\t":
 
 ```text linenums="1"
-" Image file name             Image annotation information encoded by json.dumps"
+"Image file name             Image annotation information encoded by json.dumps"
 ch4_test_images/img_61.jpg    [{"transcription": "MASA", "points": [[310, 104], [416, 141], [418, 216], [312, 179]]}, {...}]
 ```
 
