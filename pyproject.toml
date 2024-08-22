@@ -74,3 +74,4 @@ package-dir = { "paddleocr" = "" }
 include-package-data = true
 
 [tool.setuptools_scm]
+version_scheme = 'release-branch-semver'
