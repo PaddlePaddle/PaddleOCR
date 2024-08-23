@@ -1,10 +1,22 @@
-include LICENSE
-include README.md
-
-recursive-include ppocr/utils *.*
-recursive-include ppocr/data *.py
-recursive-include ppocr/postprocess *.py
-recursive-include tools/infer *.py
-recursive-include tools __init__.py
-recursive-include ppocr/utils/e2e_utils *.py
-recursive-include ppstructure *.py
+prune .github
+prune applications
+prune benchmark
+prune configs
+prune deploy
+prune doc
+prune docs
+prune overrides
+prune ppocr/ext_op
+prune ppocr/losses
+prune ppocr/metrics
+prune ppocr/modeling
+prune ppocr/optimizer
+prune ppstructure/docs
+prune test_tipc
+prune tests
+exclude .clang_format.hook
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude .style.yapf
+exclude mkdocs.yml
+exclude train.sh
