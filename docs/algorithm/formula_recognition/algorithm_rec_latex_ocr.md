@@ -71,7 +71,7 @@ python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_ste
 # 验证集评估
 python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # 测试集评估
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
+python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data_dir=./train_data/LaTeXOCR/test Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
 ### 3.4 预测

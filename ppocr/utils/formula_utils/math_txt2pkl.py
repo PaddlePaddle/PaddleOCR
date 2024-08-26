@@ -44,6 +44,7 @@ def txt2pickle(images, equations, save_dir):
             ):
                 divide_h = math.ceil(height / 16) * 16
                 divide_w = math.ceil(width / 16) * 16
+                im = os.path.basename(im)
                 data[(divide_w, divide_h)].append((eqs[indices[i]], im))
         data = dict(data)
         with open(save_p, "wb") as file:
