@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools==72.1.0", "wheel"]
+requires = ["setuptools==72.1.0", "wheel", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -73,5 +73,5 @@ packages = ["paddleocr"]
 package-dir = { "paddleocr" = "" }
 include-package-data = true
 
-[tool.setuptools.dynamic]
-version = {file = "VERSION_NUMBER"}
+[tool.setuptools_scm]
+version_scheme = 'release-branch-semver'
