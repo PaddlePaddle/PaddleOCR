@@ -742,7 +742,7 @@ class PaddleOCR(predict_system.TextSystem):
 
         if det and rec:
             ocr_res = []
-            for idx, img in enumerate(imgs):
+            for img in imgs:
                 img = preprocess_image(img)
                 dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
                 if not dt_boxes and not rec_res:
@@ -753,7 +753,7 @@ class PaddleOCR(predict_system.TextSystem):
             return ocr_res
         elif det and not rec:
             ocr_res = []
-            for idx, img in enumerate(imgs):
+            for img in imgs:
                 img = preprocess_image(img)
                 dt_boxes, elapse = self.text_detector(img)
                 if dt_boxes.size == 0:
@@ -765,7 +765,7 @@ class PaddleOCR(predict_system.TextSystem):
         else:
             ocr_res = []
             cls_res = []
-            for idx, img in enumerate(imgs):
+            for img in imgs:
                 if not isinstance(img, list):
                     img = preprocess_image(img)
                     img = [img]
