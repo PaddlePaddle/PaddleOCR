@@ -540,71 +540,6 @@ class EvoNormSample2d(nn.Layer):
         return x * self.weight.reshape([1, -1, 1, 1]) + self.bias.reshape([1, -1, 1, 1])
 
 
-from paddle.common_ops_import import (
-    LayerHelper,
-    check_type,
-    check_variable_and_dtype,
-)
-
-
-def group_norm(
-    input,
-    groups,
-    epsilon=1e-05,
-    weight=None,
-    bias=None,
-    act=None,
-    data_layout="NCHW",
-    name=None,
-):
-    helper = LayerHelper("group_norm", **locals())
-    dtype = helper.input_dtype()
-    check_variable_and_dtype(
-        input,
-        "input",
-        ["float16", "uint16", "float32", "float64"],
-        "group_norm",
-    )
-    # create intput and parameters
-    inputs = {"X": input}
-    input_shape = input.shape
-    if len(input_shape) < 2:
-        raise ValueError(
-            f"The dimensions of Op(static.nn.group_norm)'s input should be more than 1. But received {len(input_shape)}"
-        )
-    if data_layout != "NCHW" and data_layout != "NHWC":
-        raise ValueError(
-            "Param(data_layout) of Op(static.nn.group_norm) got wrong value: received "
-            + data_layout
-            + " but only NCHW or NHWC supported."
-        )
-    channel_num = input_shape[1] if data_layout == "NCHW" else input_shape[-1]
-    param_shape = [channel_num]
-    inputs["Scale"] = weight
-    inputs["Bias"] = bias
-    # create output
-    mean_out = helper.create_variable(dtype=dtype, stop_gradient=True)
-    variance_out = helper.create_variable(dtype=dtype, stop_gradient=True)
-    group_norm_out = helper.create_variable(dtype=dtype)
-
-    helper.append_op(
-        type="group_norm",
-        inputs=inputs,
-        outputs={
-            "Y": group_norm_out,
-            "Mean": mean_out,
-            "Variance": variance_out,
-        },
-        attrs={
-            "epsilon": epsilon,
-            "groups": groups,
-            "data_layout": data_layout,
-        },
-    )
-
-    return helper.append_activation(group_norm_out)
-
-
 class GroupNormAct(nn.GroupNorm):
     # NOTE num_channel and num_groups order flipped for easier layer swaps / binding of fixed args
     def __init__(
@@ -630,8 +565,12 @@ class GroupNormAct(nn.GroupNorm):
             self.act = nn.Identity()
 
     def forward(self, x):
-        x = group_norm(
-            x, self._num_groups, self._epsilon, weight=self.weight, bias=self.bias
+        x = F.group_norm(
+            x,
+            num_groups=self._num_groups,
+            epsilon=self._epsilon,
+            weight=self.weight,
+            bias=self.bias,
         )
         x = self.act(x)
         return x

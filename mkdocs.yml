@@ -283,6 +283,7 @@ nav:
       - 基于C++预测引擎推理: ppocr/infer_deploy/cpp_infer.md
       - Visual Studio 2019 Community CMake 编译指南: ppocr/infer_deploy/windows_vs2019_build.md
       - 服务化部署: ppocr/infer_deploy/paddle_server.md
+      - Android部署: ppocr/infer_deploy/android_demo.md
       - Jetson部署: ppocr/infer_deploy/Jetson_infer.md
       - 端侧部署: ppocr/infer_deploy/lite.md
       - 网页前端部署: ppocr/infer_deploy/paddle_js.md
@@ -340,6 +341,7 @@ nav:
       - SAR: algorithm/text_recognition/algorithm_rec_sar.md
       - SEED: algorithm/text_recognition/algorithm_rec_seed.md
       - SVTR: algorithm/text_recognition/algorithm_rec_svtr.md
+      - SVTRv2: algorithm/text_recognition/algorithm_rec_svtrv2.md
       - ViTSTR: algorithm/text_recognition/algorithm_rec_vitstr.md
       - ABINet: algorithm/text_recognition/algorithm_rec_abinet.md
       - VisionLAN: algorithm/text_recognition/algorithm_rec_visionlan.md

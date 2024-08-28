@@ -45,5 +45,5 @@ comments: true
 **注：** 这里对于类别为`Ignore`或者`Others`的文本，没有进行可视化。
 
 - **下载地址**：
-  - 原始数据下载地址：[链接](https://download.openmmlab.com/mmocr/data/wildreceipt.tar)
-  - 数据格式转换后适配于PaddleOCR训练的数据下载地址：[链接](https://paddleocr.bj.bcebos.com/ppstructure/dataset/wildreceipt.tar)
+    - 原始数据下载地址：[链接](https://download.openmmlab.com/mmocr/data/wildreceipt.tar)
+    - 数据格式转换后适配于PaddleOCR训练的数据下载地址：[链接](https://paddleocr.bj.bcebos.com/ppstructure/dataset/wildreceipt.tar)

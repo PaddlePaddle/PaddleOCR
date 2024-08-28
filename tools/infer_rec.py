@@ -82,6 +82,12 @@ def main():
             config["Architecture"]["Head"]["out_channels_list"] = out_channels_list
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
+
+    if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
+        config["Architecture"]["Backbone"]["is_predict"] = True
+        config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
+
     model = build_model(config["Architecture"])
 
     load_model(config, model)

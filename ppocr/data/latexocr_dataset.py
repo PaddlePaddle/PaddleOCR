@@ -42,6 +42,7 @@ class LaTeXOCRDataSet(Dataset):
         loader_config = config[mode]["loader"]
 
         pkl_path = dataset_config.pop("data")
+        self.data_dir = dataset_config["data_dir"]
         self.min_dimensions = dataset_config.pop("min_dimensions")
         self.max_dimensions = dataset_config.pop("max_dimensions")
         self.batchsize = dataset_config.pop("batch_size_per_pair")
@@ -128,7 +129,8 @@ class LaTeXOCRDataSet(Dataset):
 
             images_transform = []
 
-            for img_path in ims:
+            for file_name in ims:
+                img_path = os.path.join(self.data_dir, file_name)
                 data = {
                     "img_path": img_path,
                 }
