@@ -15,8 +15,8 @@ comments: true
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|RFL-CNT|ResNetRFL|[rec_resnet_rfl_visual.yml](../../configs/rec/rec_resnet_rfl_visual.yml)|93.40%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_visual_train.tar)|
-|RFL-Att|ResNetRFL|[rec_resnet_rfl_att.yml](../../configs/rec/rec_resnet_rfl_att.yml)|88.63%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar)|
+|RFL-CNT|ResNetRFL|[rec_resnet_rfl_visual.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_rfl_visual.yml)|93.40%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_visual_train.tar)|
+|RFL-Att|ResNetRFL|[rec_resnet_rfl_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_rfl_att.yml)|88.63%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar)|
 
 ## 2. 环境配置
 
@@ -26,7 +26,7 @@ comments: true
 
 ### 3.1 模型训练
 
-PaddleOCR对代码进行了模块化，训练`RFL`识别模型时需要**更换配置文件**为`RFL`的[配置文件](../../configs/rec/rec_resnet_rfl_att.yml)。
+PaddleOCR对代码进行了模块化，训练`RFL`识别模型时需要**更换配置文件**为`RFL`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_rfl_att.yml)。
 
 #### 启动训练
 

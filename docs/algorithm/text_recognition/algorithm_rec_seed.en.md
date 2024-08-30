@@ -17,7 +17,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|ACC|config|Download link|
 | --- | --- | --- | --- | --- |
-|SEED|Aster_Resnet| 85.20% | [configs/rec/rec_resnet_stn_bilstm_att.yml](../../configs/rec/rec_resnet_stn_bilstm_att.yml) | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
+|SEED|Aster_Resnet| 85.20% | [configs/rec/rec_resnet_stn_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_stn_bilstm_att.yml) | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_resnet_stn_bilstm_att.tar) |
 
 ## 2. Environment
 

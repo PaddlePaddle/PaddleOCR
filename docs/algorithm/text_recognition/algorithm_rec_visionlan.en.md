@@ -15,7 +15,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|VisionLAN|ResNet45|[rec_r45_visionlan.yml](../../configs/rec/rec_r45_visionlan.yml)|90.30%|[model link](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar)|
+|VisionLAN|ResNet45|[rec_r45_visionlan.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r45_visionlan.yml)|90.30%|[model link](https://paddleocr.bj.bcebos.com/VisionLAN/rec_r45_visionlan_train.tar)|
 
 ## 2. Environment
 

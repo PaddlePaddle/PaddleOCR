@@ -15,7 +15,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|ABINet|ResNet45|[rec_r45_abinet.yml](../../configs/rec/rec_r45_abinet.yml)|90.75%|[pretrained & trained model](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
+|ABINet|ResNet45|[rec_r45_abinet.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r45_abinet.yml)|90.75%|[pretrained & trained model](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
 
 ## 2. Environment
 

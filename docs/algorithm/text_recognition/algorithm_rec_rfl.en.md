@@ -15,8 +15,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|RFL-CNT|ResNetRFL|[rec_resnet_rfl_visual.yml](../../configs/rec/rec_resnet_rfl_visual.yml)|93.40%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_visual_train.tar)|
-|RFL-Att|ResNetRFL|[rec_resnet_rfl_att.yml](../../configs/rec/rec_resnet_rfl_att.yml)|88.63%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar)|
+|RFL-CNT|ResNetRFL|[rec_resnet_rfl_visual.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_rfl_visual.yml)|93.40%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_visual_train.tar)|
+|RFL-Att|ResNetRFL|[rec_resnet_rfl_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_resnet_rfl_att.yml)|88.63%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar)|
 
 ## 2. Environment
 

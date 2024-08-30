@@ -15,7 +15,7 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- |
-|NRTR|MTB|[rec_mtb_nrtr.yml](../../configs/rec/rec_mtb_nrtr.yml)|84.21%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar)|
+|NRTR|MTB|[rec_mtb_nrtr.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_mtb_nrtr.yml)|84.21%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mtb_nrtr_train.tar)|
 
 ## 2. Environment
 

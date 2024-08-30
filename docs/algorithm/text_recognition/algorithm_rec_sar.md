@@ -15,7 +15,7 @@ comments: true
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|SAR|ResNet31|[rec_r31_sar.yml](../../configs/rec/rec_r31_sar.yml)|87.20%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar)|
+|SAR|ResNet31|[rec_r31_sar.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r31_sar.yml)|87.20%|[训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/rec/rec_r31_sar_train.tar)|
 
 注：除了使用MJSynth和SynthText两个文字识别数据集外，还加入了[SynthAdd](https://pan.baidu.com/share/init?surl=uV0LtoNmcxbO-0YA7Ch4dg)数据（提取码：627x），和部分真实数据，具体数据细节可以参考论文。
 

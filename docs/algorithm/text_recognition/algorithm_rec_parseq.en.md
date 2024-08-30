@@ -20,8 +20,8 @@ the algorithm reproduction effect is as follows:
 
 |Training Dataset|Model|Backbone|config|Acc|Download link|
 | --- | --- | --- | --- | --- | --- |
-|Synth|ParseQ|VIT|[rec_vit_parseq.yml](../../configs/rec/rec_vit_parseq.yml)|91.24%|[train model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz)|
-|Real|ParseQ|VIT|[rec_vit_parseq.yml](../../configs/rec/rec_vit_parseq.yml)|94.74%|[train model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_real.tgz)|
+|Synth|ParseQ|VIT|[rec_vit_parseq.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_vit_parseq.yml)|91.24%|[train model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz)|
+|Real|ParseQ|VIT|[rec_vit_parseq.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_vit_parseq.yml)|94.74%|[train model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_real.tgz)|
 
 ## 2. Environment
 
