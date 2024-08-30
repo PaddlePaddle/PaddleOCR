@@ -129,13 +129,13 @@ comments: true
 
 ## 3. 多语言配置文件生成
 
-PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 您有两种方式创建所需的配置文件：
 
 1. 通过脚本自动生成
 
-[generate_multi_language_configs.py](../../configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
+[generate_multi_language_configs.py](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
 
 * 以意大利语为例，如果您的数据是按如下格式准备的：
 

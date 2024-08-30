@@ -16,8 +16,8 @@ On the ICDAR2015 dataset, the text detection result is as follows:
 
 |Model|Backbone|Configuration|Precision|Recall|Hmean|Download|
 | --- | --- | --- | --- | --- | --- | --- |
-|EAST|ResNet50_vd| [det_r50_vd_east.yml](../../configs/det/det_r50_vd_east.yml)|88.71%|    81.36%|    84.88%|    [model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
-|EAST|MobileNetV3|[det_mv3_east.yml](../../configs/det/det_mv3_east.yml) | 78.20%|    79.10%|    78.65%|    [model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
+|EAST|ResNet50_vd| [det_r50_vd_east.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_r50_vd_east.yml)|88.71%|    81.36%|    84.88%|    [model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_r50_vd_east_v2.0_train.tar)|
+|EAST|MobileNetV3|[det_mv3_east.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_mv3_east.yml) | 78.20%|    79.10%|    78.65%|    [model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/det_mv3_east_v2.0_train.tar)|
 
 ## 2. Environment
 

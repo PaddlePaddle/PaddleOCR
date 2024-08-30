@@ -259,9 +259,9 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 ### 2.5. Train with Knowledge Distillation
 
-Knowledge distillation is supported in PaddleOCR for KIE model training process. The configuration file is [ser_vi_layoutxlm_xfund_zh_udml.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml). For more information, please refer to [doc](../model_compress/knowledge_distillation.en.md).
+Knowledge distillation is supported in PaddleOCR for KIE model training process. The configuration file is [ser_vi_layoutxlm_xfund_zh_udml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml). For more information, please refer to [doc](../model_compress/knowledge_distillation.en.md).
 
-**Note:** The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is [ser_vi_layoutxlm_xfund_zh.yml](../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml).
+**Note:** The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is [ser_vi_layoutxlm_xfund_zh.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml).
 
 ### 2.6. Training on other platform
 

@@ -40,7 +40,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ### 2.1 识别配置文件解析
 
-配置文件在[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)。
+配置文件在[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)。
 
 #### 2.1.1 模型结构
 
@@ -316,7 +316,7 @@ Metric:
 
 对蒸馏得到的识别蒸馏进行微调有2种方式。
 
-（1）基于知识蒸馏的微调：这种情况比较简单，下载预训练模型，在[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)中配置好预训练模型路径以及自己的数据路径，即可进行模型微调训练。
+（1）基于知识蒸馏的微调：这种情况比较简单，下载预训练模型，在[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)中配置好预训练模型路径以及自己的数据路径，即可进行模型微调训练。
 
 （2）微调时不使用知识蒸馏：这种情况，需要首先将预训练模型中的学生模型参数提取出来，具体步骤如下：
 
@@ -344,7 +344,7 @@ print(s_params.keys())
 paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 ```
 
-转化完成之后，使用[ch_PP-OCRv3_rec.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml)，修改预训练模型的路径（为导出的`student.pdparams`模型路径）以及自己的数据路径，即可进行模型微调。
+转化完成之后，使用[ch_PP-OCRv3_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml)，修改预训练模型的路径（为导出的`student.pdparams`模型路径）以及自己的数据路径，即可进行模型微调。
 
 ### 2.2 检测配置文件解析
 
@@ -398,9 +398,9 @@ Architecture:
 
 ```
 
-如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[ch_PP-OCRv3_det_dml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。
+如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。
 
-下面介绍[ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)的配置文件参数：
+下面介绍[ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)的配置文件参数：
 
 ```yaml linenums="1"
 Architecture:

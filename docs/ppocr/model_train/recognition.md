@@ -231,7 +231,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_P
 
 **提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考[前沿算法列表](../../algorithm/overview.md)：
 
-训练中文数据，推荐使用[ch_PP-OCRv3_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+训练中文数据，推荐使用[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
 以 `ch_PP-OCRv3_rec_distillation.yml` 为例：
 
@@ -381,7 +381,7 @@ PaddleOCR支持了基于知识蒸馏的文本识别模型训练过程，更多�
 
 ### 2.7. 多语言模型训练
 
-PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 按语系划分，目前PaddleOCR支持的语种有：
 
