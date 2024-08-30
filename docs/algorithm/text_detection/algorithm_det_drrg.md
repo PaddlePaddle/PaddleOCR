@@ -16,7 +16,7 @@ comments: true
 
 | 模型  |骨干网络|配置文件|precision|recall|Hmean|下载链接|
 |-----| --- | --- | --- | --- | --- | --- |
-| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](../../configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
+| DRRG | ResNet50_vd | [configs/det/det_r50_drrg_ctw.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_r50_drrg_ctw.yml)| 89.92%|80.91%|85.18%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_drrg_ctw_train.tar)|
 
 ## 2. 环境配置
 

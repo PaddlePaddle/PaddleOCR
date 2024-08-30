@@ -16,7 +16,7 @@ comments: true
 
 | 模型  |骨干网络|配置文件|precision|recall|Hmean|下载链接|
 |-----| --- | --- | --- | --- | --- | --- |
-| FCE | ResNet50_dcn | [configs/det/det_r50_vd_dcn_fce_ctw.yml](../../configs/det/det_r50_vd_dcn_fce_ctw.yml)| 88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
+| FCE | ResNet50_dcn | [configs/det/det_r50_vd_dcn_fce_ctw.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_r50_vd_dcn_fce_ctw.yml)| 88.39%|82.18%|85.27%|[训练模型](https://paddleocr.bj.bcebos.com/contribution/det_r50_dcn_fce_ctw_v2.0_train.tar)|
 
 ## 2. 环境配置
 

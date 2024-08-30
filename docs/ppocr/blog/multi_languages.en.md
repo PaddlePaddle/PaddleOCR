@@ -161,7 +161,7 @@ PPOCR also supports direction classification. For more detailed usage, please re
 
 ## 3 Custom training
 
-PPOCR supports using your own data for custom training or fine-tune, where the recognition model can refer to [French configuration file](../../configs/rec/multi_language/rec_french_lite_train.yml)
+PPOCR supports using your own data for custom training or fine-tune, where the recognition model can refer to [French configuration file](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_french_lite_train.yml)
 Modify the training data path, dictionary and other parameters.
 
 For specific data preparation and training process, please refer to: [Text Detection](../doc_en/detection_en.md), [Text Recognition](../doc_en/recognition_en.md), more functions such as predictive deployment,

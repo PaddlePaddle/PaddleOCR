@@ -48,7 +48,7 @@ The following takes the knowledge distillation configuration file for recognitio
 
 ### 2.1 Recognition Model Configuration File Analysis
 
-The configuration file is in [ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml).
+The configuration file is in [ch_PP-OCRv2_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml).
 
 #### 2.1.1 Model Structure
 
@@ -328,7 +328,7 @@ For more specific implementation of `DistillationMetric`, please refer to: [dist
 
 There are two ways to fine-tune the recognition distillation task.
 
-1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [ch_PP-OCRv2_rec_distillation.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) to perform fine-tuning training of the model.
+1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [ch_PP-OCRv2_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) to perform fine-tuning training of the model.
 2. Do not use knowledge distillation in fine-tuning: In this case, you need to first extract the student model parameters from the pre-training model. The specific steps are as follows.
 
 - First download the pre-trained model and unzip it.
@@ -354,7 +354,7 @@ print(s_params.keys())
 paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 ```
 
-After the extraction is complete, use [ch_PP-OCRv3_rec.yml](../../configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
+After the extraction is complete, use [ch_PP-OCRv3_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
 
 ### 2.2 Detection Model Configuration File Analysis
 
@@ -410,9 +410,9 @@ Architecture:
 ```
 
 If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
+Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
 
-The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](../../configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
+The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
 
 ```yaml linenums="1"
 Architecture:

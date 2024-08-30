@@ -160,7 +160,7 @@ ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明
 
 ## 3 自定义训练
 
-ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考[法语配置文件](../../configs/rec/multi_language/rec_french_lite_train.yml)
+ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考[法语配置文件](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_french_lite_train.yml)
 修改训练数据路径、字典等参数。
 
 详细数据准备、训练过程可参考：[文本识别](../doc_ch/recognition.md)、[文本检测](../doc_ch/detection.md)。

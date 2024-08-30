@@ -15,7 +15,7 @@ comments: true
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|ABINet|ResNet45|[rec_r45_abinet.yml](../../configs/rec/rec_r45_abinet.yml)|90.75%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
+|ABINet|ResNet45|[rec_r45_abinet.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r45_abinet.yml)|90.75%|[预训练、训练模型](https://paddleocr.bj.bcebos.com/rec_r45_abinet_train.tar)|
 
 ## 2. 环境配置
 
@@ -25,7 +25,7 @@ comments: true
 
 ### 3.1 模型训练
 
-请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`ABINet`识别模型时需要**更换配置文件**为`ABINet`的[配置文件](../../configs/rec/rec_r45_abinet.yml)。
+请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`ABINet`识别模型时需要**更换配置文件**为`ABINet`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r45_abinet.yml)。
 
 #### 启动训练
 

@@ -14,7 +14,7 @@ comments: true
 
 |模型|骨干网络|Avg Accuracy|配置文件|下载链接|
 |---|---|---|---|---|
-|SATRN|ShallowCNN|88.05%|[configs/rec/rec_satrn.yml](../../configs/rec/rec_satrn.yml)|[训练模型](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a)|
+|SATRN|ShallowCNN|88.05%|[configs/rec/rec_satrn.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_satrn.yml)|[训练模型](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a)|
 
 ## 2. 环境配置
 

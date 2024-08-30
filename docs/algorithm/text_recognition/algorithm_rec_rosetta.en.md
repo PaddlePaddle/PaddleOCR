@@ -15,8 +15,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Models|Backbone Networks|Configuration Files|Avg Accuracy|Download Links|
 | --- | --- | --- | --- | --- |
-|Rosetta|Resnet34_vd|[configs/rec/rec_r34_vd_none_none_ctc.yml](../../configs/rec/rec_r34_vd_none_none_ctc.yml)|79.11%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
-|Rosetta|MobileNetV3|[configs/rec/rec_mv3_none_none_ctc.yml](../../configs/rec/rec_mv3_none_none_ctc.yml)|75.80%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar)|
+|Rosetta|Resnet34_vd|[configs/rec/rec_r34_vd_none_none_ctc.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r34_vd_none_none_ctc.yml)|79.11%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_none_none_ctc_v2.0_train.tar)|
+|Rosetta|MobileNetV3|[configs/rec/rec_mv3_none_none_ctc.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_mv3_none_none_ctc.yml)|75.80%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_none_none_ctc_v2.0_train.tar)|
 
 ## 2. Environment
 
