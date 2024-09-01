@@ -122,6 +122,8 @@ pip install -r ppstructure/kie/requirements.txt
 pip install paddleocr -U
 ```
 
+NOTE: 对于KIE任务需要降低Paddle框架版本（Paddle<2.6），和PaddleNLP版本（PaddleNLP<2.6）。
+
 ### 4.2 快速开始
 
 下面XFUND数据集，快速体验SER模型与RE模型。

@@ -128,6 +128,8 @@ pip install -r ppstructure/kie/requirements.txt
 pip install paddleocr -U
 ```
 
+NOTE: For KIE tasks, it is necessary to downgrade the Paddle framework version (Paddle<2.6) and the PaddleNLP version (PaddleNLP<2.6).
+
 The visualized results of SER are saved in the `./output` folder by default. Examples of results are as follows.
 
 
