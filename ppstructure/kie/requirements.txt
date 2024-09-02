@@ -4,4 +4,4 @@ seqeval
 pypandoc
 attrdict3
 python_docx
-paddlenlp>=2.5.2
+paddlenlp==2.5.2
