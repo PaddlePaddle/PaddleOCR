@@ -129,8 +129,11 @@ class TableLabelDecode(AttnLabelDecode):
 
     def _bbox_decode(self, bbox, shape):
         h, w, ratio_h, ratio_w, pad_h, pad_w = shape
+        h, w = pad_h, pad_w
         bbox[0::2] *= w
         bbox[1::2] *= h
+        bbox[0::2] /= ratio_w
+        bbox[1::2] /= ratio_h
         return bbox
 
 
