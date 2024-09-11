@@ -291,6 +291,8 @@ def create_predictor(args, mode, logger):
         config.disable_glog_info()
         config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
+        if mode == "rec" and args.rec_algorithm == "SRN":
+            config.delete_pass("gpu_cpu_map_matmul_v2_to_matmul_pass")
         if mode == "re":
             config.delete_pass("simplify_with_basic_ops_pass")
         if mode == "table":
