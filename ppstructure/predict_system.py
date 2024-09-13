@@ -33,6 +33,7 @@ from ppocr.utils.utility import get_image_file_list, check_and_read
 from ppocr.utils.logging import get_logger
 from ppocr.utils.visual import draw_ser_results, draw_re_results
 from tools.infer.predict_system import TextSystem
+from tools.infer.predict_rec import TextRecognizer
 from ppstructure.layout.predict_layout import LayoutPredictor
 from ppstructure.table.predict_table import TableSystem, to_excel
 from ppstructure.utility import parse_args, draw_structure_result, cal_ocr_word_box
@@ -65,6 +66,7 @@ class StructureSystem(object):
             self.layout_predictor = None
             self.text_system = None
             self.table_system = None
+            self.formula_system = None
             if args.layout:
                 self.layout_predictor = LayoutPredictor(args)
                 if args.ocr:
@@ -78,6 +80,13 @@ class StructureSystem(object):
                     )
                 else:
                     self.table_system = TableSystem(args)
+            if args.formula:
+                args_fomula = deepcopy(args)
+                args_fomula.rec_algorithm = args.formula_algorithm
+                args_fomula.rec_model_dir = args.formula_model_dir
+                args_fomula.rec_char_dict_path = args.formula_char_dict_path
+                args_fomula.rec_batch_num = args.formula_batch_num
+                self.formula_system = TextRecognizer(args_fomula)
 
         elif self.mode == "kie":
             from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
@@ -92,6 +101,7 @@ class StructureSystem(object):
             "layout": 0,
             "table": 0,
             "table_match": 0,
+            "formula": 0,
             "det": 0,
             "rec": 0,
             "kie": 0,
@@ -157,6 +167,12 @@ class StructureSystem(object):
                         time_dict["table_match"] += table_time_dict["match"]
                         time_dict["det"] += table_time_dict["det"]
                         time_dict["rec"] += table_time_dict["rec"]
+
+                elif region["label"] == "equation" and self.formula_system is not None:
+                    latex_res, formula_time = self.formula_system([roi_img])
+                    time_dict["formula"] += formula_time
+                    res = {"latex": latex_res[0]}
+
                 else:
                     if text_res is not None:
                         # Filter the text results whose regions intersect with the current layout bbox.
@@ -332,7 +348,9 @@ def main(args):
             )
             os.makedirs(os.path.join(save_folder, img_name), exist_ok=True)
             if structure_sys.mode == "structure" and res != []:
-                draw_img = draw_structure_result(img, res, args.vis_font_path)
+                draw_img = draw_structure_result(
+                    img, res, args.vis_font_path, args.formula
+                )
                 save_structure_res(res, save_folder, img_name, index)
             elif structure_sys.mode == "kie":
                 if structure_sys.kie_predictor.predictor is not None:
@@ -357,6 +375,9 @@ def main(args):
                     sorted_layout_boxes,
                     convert_info_docx,
                 )
+                from ppstructure.recovery.recovery_to_markdown import (
+                    convert_info_markdown,
+                )
 
                 h, w, _ = img.shape
                 res = sorted_layout_boxes(res, w)
@@ -365,6 +386,8 @@ def main(args):
         if args.recovery and all_res != []:
             try:
                 convert_info_docx(img, all_res, save_folder, img_name)
+                if args.recovery_to_markdown:
+                    convert_info_markdown(all_res, save_folder, img_name)
             except Exception as ex:
                 logger.error(
                     "error in layout recovery image:{}, err msg: {}".format(
