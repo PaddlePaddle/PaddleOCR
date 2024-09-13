@@ -372,8 +372,6 @@ class SLAHead(nn.Layer):
             )
             pre_chars = paddle.zeros(shape=[batch_size], dtype="int32")
             max_text_length = paddle.to_tensor(self.max_text_length)
-            # for export
-            loc_step, structure_step = None, None
             for i in range(max_text_length + 1):
                 hidden, structure_step, loc_step = self._decode(pre_chars, fea, hidden)
                 pre_chars = structure_step.argmax(axis=1, dtype="int32")
