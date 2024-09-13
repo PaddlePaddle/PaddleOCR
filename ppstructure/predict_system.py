@@ -348,9 +348,7 @@ def main(args):
             )
             os.makedirs(os.path.join(save_folder, img_name), exist_ok=True)
             if structure_sys.mode == "structure" and res != []:
-                draw_img = draw_structure_result(
-                    img, res, args.vis_font_path, args.formula
-                )
+                draw_img = draw_structure_result(img, res, args.vis_font_path)
                 save_structure_res(res, save_folder, img_name, index)
             elif structure_sys.mode == "kie":
                 if structure_sys.kie_predictor.predictor is not None:

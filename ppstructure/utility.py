@@ -156,7 +156,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def draw_structure_result(image, result, font_path, enable_formula):
+def draw_structure_result(image, result, font_path):
     if isinstance(image, np.ndarray):
         image = Image.fromarray(image)
     boxes, txts, scores = [], [], []
@@ -204,7 +204,7 @@ def draw_structure_result(image, result, font_path, enable_formula):
         )
 
         if region["type"] == "table" or (
-            region["type"] == "equation" and enable_formula
+            region["type"] == "equation" and "latex" in region["res"]
         ):
             pass
         else:

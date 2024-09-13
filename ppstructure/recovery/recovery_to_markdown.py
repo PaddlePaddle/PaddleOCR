@@ -162,7 +162,7 @@ def convert_info_markdown(res, save_folder, img_name):
             markdown_string.append(region["res"]["html"])
         elif region["type"].lower() == "header" or region["type"].lower() == "footer":
             pass
-        elif region["type"].lower() == "equation":
+        elif region["type"].lower() == "equation" and "latex" in region["res"]:
             markdown_string.append(f"""$${region["res"]["latex"]}$$""")
         elif region["type"].lower() == "text":
             merge_func = check_merge_method(region)
