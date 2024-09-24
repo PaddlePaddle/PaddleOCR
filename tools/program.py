@@ -27,6 +27,7 @@ import paddle.distributed as dist
 from tqdm import tqdm
 import cv2
 import numpy as np
+import copy
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 from ppocr.utils.stats import TrainingStats
@@ -36,6 +37,7 @@ from ppocr.utils.logging import get_logger
 from ppocr.utils.loggers import WandbLogger, Loggers
 from ppocr.utils import profiler
 from ppocr.data import build_dataloader
+from ppocr.utils.export_model import export
 
 
 class ArgsParser(ArgumentParser):
@@ -205,6 +207,7 @@ def train(
     eval_batch_epoch = config["Global"].get("eval_batch_epoch", None)
     profiler_options = config["profiler_options"]
     print_mem_info = config["Global"].get("print_mem_info", True)
+    uniform_output_enabled = config["Global"].get("uniform_output_enabled", False)
 
     global_step = 0
     if "global_step" in pre_best_model_dict:
@@ -303,6 +306,7 @@ def train(
             )
 
         for idx, batch in enumerate(train_dataloader):
+            model.train()
             profiler.add_profiler_step(profiler_options)
             train_reader_cost += time.time() - reader_start
             if idx >= max_iter:
@@ -484,14 +488,29 @@ def train(
                 if cur_metric[main_indicator] >= best_model_dict[main_indicator]:
                     best_model_dict.update(cur_metric)
                     best_model_dict["best_epoch"] = epoch
+                    prefix = "best_accuracy"
+                    if uniform_output_enabled:
+                        export(
+                            config,
+                            model,
+                            os.path.join(save_model_dir, prefix, "inference"),
+                        )
+                        model_info = {"epoch": epoch, "metric": best_model_dict}
+                    else:
+                        model_info = None
                     save_model(
                         model,
                         optimizer,
-                        save_model_dir,
+                        (
+                            os.path.join(save_model_dir, prefix)
+                            if uniform_output_enabled
+                            else save_model_dir
+                        ),
                         logger,
                         config,
                         is_best=True,
-                        prefix="best_accuracy",
+                        prefix=prefix,
+                        save_model_info=model_info,
                         best_model_dict=best_model_dict,
                         epoch=epoch,
                         global_step=global_step,
@@ -520,14 +539,25 @@ def train(
 
             reader_start = time.time()
         if dist.get_rank() == 0:
+            prefix = "latest"
+            if uniform_output_enabled:
+                export(config, model, os.path.join(save_model_dir, prefix, "inference"))
+                model_info = {"epoch": epoch, "metric": best_model_dict}
+            else:
+                model_info = None
             save_model(
                 model,
                 optimizer,
-                save_model_dir,
+                (
+                    os.path.join(save_model_dir, prefix)
+                    if uniform_output_enabled
+                    else save_model_dir
+                ),
                 logger,
                 config,
                 is_best=False,
-                prefix="latest",
+                prefix=prefix,
+                save_model_info=model_info,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step,
@@ -537,17 +567,29 @@ def train(
                 log_writer.log_model(is_best=False, prefix="latest")
 
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
+            prefix = "iter_epoch_{}".format(epoch)
+            if uniform_output_enabled:
+                export(config, model, os.path.join(save_model_dir, prefix, "inference"))
+                model_info = {"epoch": epoch, "metric": best_model_dict}
+            else:
+                model_info = None
             save_model(
                 model,
                 optimizer,
-                save_model_dir,
+                (
+                    os.path.join(save_model_dir, prefix)
+                    if uniform_output_enabled
+                    else save_model_dir
+                ),
                 logger,
                 config,
                 is_best=False,
-                prefix="iter_epoch_{}".format(epoch),
+                prefix=prefix,
+                save_model_info=model_info,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step,
+                done_flag=epoch == config["Global"]["epoch_num"],
             )
             if log_writer is not None:
                 log_writer.log_model(

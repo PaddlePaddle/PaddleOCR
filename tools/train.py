@@ -166,6 +166,15 @@ def main(config, device, logger, vdl_writer, seed):
     amp_dtype = config["Global"].get("amp_dtype", "float16")
     amp_custom_black_list = config["Global"].get("amp_custom_black_list", [])
     amp_custom_white_list = config["Global"].get("amp_custom_white_list", [])
+    if os.path.exists(
+        os.path.join(config["Global"]["save_model_dir"], "train_results.json")
+    ):
+        try:
+            os.remove(
+                os.path.join(config["Global"]["save_model_dir"], "train_results.json")
+            )
+        except:
+            pass
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             "FLAGS_max_inplace_grad_add": 8,
