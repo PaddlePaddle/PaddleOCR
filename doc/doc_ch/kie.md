@@ -380,8 +380,7 @@ python3 ./tools/infer_kie_token_ser_re.py \
   -o Architecture.Backbone.checkpoints=./pretrain_models/re_vi_layoutxlm_udml_xfund_zh/best_accuracy/ \
   Global.infer_img=./train_data/XFUND/zh_val/image/ \
   -c_ser configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml \
-  -o_ser Architecture.Backbone.checkpoints=pretrain_models/ \
-  ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
+  -o_ser Architecture.Backbone.checkpoints=pretrain_models/ser_vi_layoutxlm_udml_xfund_zh/best_accuracy/
 ```
 
 预测结果如下所示。
