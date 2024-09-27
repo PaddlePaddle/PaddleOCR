@@ -81,12 +81,12 @@ class StructureSystem(object):
                 else:
                     self.table_system = TableSystem(args)
             if args.formula:
-                args_fomula = deepcopy(args)
-                args_fomula.rec_algorithm = args.formula_algorithm
-                args_fomula.rec_model_dir = args.formula_model_dir
-                args_fomula.rec_char_dict_path = args.formula_char_dict_path
-                args_fomula.rec_batch_num = args.formula_batch_num
-                self.formula_system = TextRecognizer(args_fomula)
+                args_formula = deepcopy(args)
+                args_formula.rec_algorithm = args.formula_algorithm
+                args_formula.rec_model_dir = args.formula_model_dir
+                args_formula.rec_char_dict_path = args.formula_char_dict_path
+                args_formula.rec_batch_num = args.formula_batch_num
+                self.formula_system = TextRecognizer(args_formula)
 
         elif self.mode == "kie":
             from ppstructure.kie.predict_kie_token_ser_re import SerRePredictor
