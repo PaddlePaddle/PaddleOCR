@@ -1,11 +1,14 @@
 site_name: PaddleOCR 文档
-site_url: https://paddlepaddle.github.io/PaddleOCR/
+#site_url: https://paddlepaddle.github.io/PaddleOCR/
 site_author: PaddleOCR PMC
 site_description:
   Awesome multilingual OCR toolkits based on PaddlePaddle (practical ultra lightweight OCR system, support 80+ languages recognition, provide data annotation and synthesis tools, support training and deployment among server, mobile, embedded and IoT devices)
 
-repo_name: PaddlePaddle/PaddleOCR
-repo_url: https://github.com/PaddlePaddle/PaddleOCR
+# repo_name: PaddlePaddle/PaddleOCR
+
+site_url: https://AmberC0209.github.io/repository/
+repo_name: AmberC0209/PaddleOCR
+repo_url: https://github.com/AmberC0209/PaddleOCR
 
 copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
 
