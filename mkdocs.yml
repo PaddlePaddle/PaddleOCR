@@ -101,6 +101,28 @@ plugins:
             快速开始: Quick Start
             近期更新: Recently Update
             模型: Model
+            低代码开发: Low-code development
+            快速安装: Quick installation
+            快速体验: Quick experience
+            产线使用: Production line usage
+            PaddleX产线开发工具本地使用教程: PaddleX production line development tool local usage tutorial
+            文档场景信息抽取v3: Document scene information extraction v3
+            通用表格识别: General table recognition
+            通用OCR: General Optical Character Recognition (OCR)
+            模块使用: Module usage
+            文本检测: Text detection
+            文本识别: Text recognition
+            印章文本检测: Seal text detection
+            版面区域定位: Layout area localization
+            表格结构识别: Table structure recognition
+            产线部署: Production line deployment
+            高性能部署: High-performance deployment
+            服务化部署: Service-oriented deployment
+            端侧部署: Edge deployment
+            数据准备: Data preparation
+            文本检测/文本识别: Text detection/text recognition
+            表格识别: Table recognition
+            多硬件使用: Multi-hardware usage
             概述: Overview
             PP-OCR 文本检测识别: PP-OCR
             概述: Overview
