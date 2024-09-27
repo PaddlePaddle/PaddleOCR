@@ -915,8 +915,10 @@ def main():
     """
     # for cmd
     args = parse_args(mMain=True)
+    logger.info("for usage help, please use `paddleocr --help`")
     image_dir = args.image_dir
     if is_link(image_dir):
+        os.remove("tmp.jpg") if os.path.exists("tmp.jpg") else None
         download_with_progressbar(image_dir, "tmp.jpg")
         image_file_list = ["tmp.jpg"]
     else:
