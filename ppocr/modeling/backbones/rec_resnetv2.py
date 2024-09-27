@@ -89,6 +89,8 @@ class StdConv2dSame(nn.Conv2D):
         self.eps = eps
 
     def forward(self, x):
+        if not self.training:
+            self.export = True
         if self.same_pad:
             if self.export:
                 x = pad_same_export(x, self._kernel_size, self._stride, self._dilation)
@@ -201,6 +203,8 @@ class MaxPool2dSame(nn.MaxPool2D):
         )
 
     def forward(self, x):
+        if not self.training:
+            self.export = True
         if self.export:
             x = pad_same_export(x, self.ksize, self.stride, value=-float("inf"))
         else:
