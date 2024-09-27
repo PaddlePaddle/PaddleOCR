@@ -41,7 +41,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 📚文档
 
-完整文档请移步：[docs](https://paddlepaddle.github.io/PaddleOCR/)
+完整文档请移步：[docs](https://AmberC0209.github.io/PaddleOCR/)
 
 ## 🌟 特性
 
