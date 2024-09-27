@@ -915,7 +915,7 @@ def main():
     """
     # for cmd
     args = parse_args(mMain=True)
-    logger.info("for uage help, please use `paddleocr --help`")
+    logger.info("for usage help, please use `paddleocr --help`")
     image_dir = args.image_dir
     if is_link(image_dir):
         os.remove("tmp.jpg") if os.path.exists("tmp.jpg") else None
