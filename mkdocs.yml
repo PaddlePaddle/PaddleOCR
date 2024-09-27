@@ -77,148 +77,127 @@ theme:
       example: octicons/beaker-16
       quote: octicons/quote-16
 
-plugins:
-  - tags
-  - offline
-  - search:
-      separator: '[\s\u200b\-_,:!=\[\: )"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-  - i18n:
-      docs_structure: suffix
-      fallback_to_default: true
-      reconfigure_material: true
-      reconfigure_search: true
-      languages:
-        - locale: zh
-          name: 简体中文
-          default: true
-          build: true
-        - locale: en
-          name: English
-          site_name: PaddleOCR Documentation
-          link: /en/
-          nav_translations:
-            Home: Home
-            快速开始: Quick Start
-            近期更新: Recently Update
-            模型: Model
-            低代码开发: Low-code development
-            快速安装: Quick installation
-            快速体验: Quick experience
-            产线使用: Production line usage
-            PaddleX产线开发工具本地使用教程: PaddleX production line development tool local usage tutorial
-            文档场景信息抽取v3: Document scene information extraction v3
-            通用表格识别: General table recognition
-            通用OCR: General Optical Character Recognition (OCR)
-            模块使用: Module usage
-            文本检测: Text detection
-            文本识别: Text recognition
-            印章文本检测: Seal text detection
-            版面区域定位: Layout area localization
-            表格结构识别: Table structure recognition
-            产线部署: Production line deployment
-            高性能部署: High-performance deployment
-            服务化部署: Service-oriented deployment
-            端侧部署: Edge deployment
-            数据准备: Data preparation
-            文本检测/文本识别: Text detection/text recognition
-            表格识别: Table recognition
-            多硬件使用: Multi-hardware usage
-            概述: Overview
-            PP-OCR 文本检测识别: PP-OCR
-            概述: Overview
-            快速开始: Quick Start
-            快速安装: Quick Installation
-            效果展示: Visualization
-            运行环境: Environment Preparation
-            模型库: Model
-            模型训练: Model Training
-            基本概念: Basic concepts
-            文本检测: Text Detection
-            文本识别: Text Recognition
-            文本方向分类器: Text Angle Classification
-            关键信息提取: Key Information Extraction
-            模型微调: Fine-tune
-            模型压缩: Model Compression
-            模型量化: Model Quantization
-            模型裁剪: Model Prune
-            知识蒸馏: Knowledge Distillation
-            推理部署: Model Deploy
-            概述: Overview
-            基于Python预测引擎推理: Python Inference
-            基于C++预测引擎推理: CPP Inference
-            Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
-            服务化部署: Sever Deployment
-            Jetson部署: Jetson Deployment
-            端侧部署: Device-side Deployment
-            网页前端部署: Paddle.js Web Deployment
-            Paddle2ONNX模型转化与预测: Paddle2ONNX
-            云上飞桨部署工具: Paddle Cloud
-            Benchmark: Benchmark
-            博客: Blog
-            paddleocr package使用说明: Paddleocr Package Instructions
-            多语言模型: Multi-language model
-            动手学OCR: Dive into OCR
-            切片操作: Slice
-            PaddleOCR模型推理参数解释: PaddleOCR Model Inference Parameter Explanation
-            分布式训练: Distributed training
-            项目克隆: Project Clone
-            配置文件内容与生成: Configuration
-            如何生产自定义超轻量模型？: How To Make Your own lightweight OCR model?
-            PP-Structure文档分析: PP-Structure
-            概述: Overview
-            快速开始: Quick Start
-            模型库: Model
-            模型训练: Model Training
-            基本概念: Basic concepts
-            版面分析: Layout Analysis
-            版面恢复: Recovery To Doc
-            表格识别: Table Recognition
-            关键信息提取: Key Information Extraction
-            推理部署: Deploy
-            概述: Overview
-            基于Python预测引擎推理: Python Inference
-            基于C++预测引擎推理: CPP Inference
-            服务化部署: Sever Deployment
-            博客: Blog
-            返回识别位置: Return Recognition Location
-            怎样完成基于图像数据的信息抽取任务: Key Information Extraction Pipeline
-            前沿算法与模型: Academic Algorithms
-            概述: algorithm/overview.md
-            文本检测算法: Text Detection Algorithms
-            DB与DB++: DB and DB++
-            文本识别算法: Text Recognition Algorithms
-            文本超分辨率算法: Text Super-Resolution Algorithm
-            公式识别算法: Formulat Recognition
-            端到端OCR算法: End-to-End OCR Algorithms
-            表格识别算法: Table Recognition Algorithms
-            关键信息抽取算法: Key Information Extraction Algorithms
-            使用PaddleOCR架构添加新算法: Add new algorithms
-            场景应用: Applications
-            数据标注与合成: Data Annotation and Synthesis
-            概述: Overview
-            其它数据标注工具: Other data annotation tools
-            其它数据合成工具: Others data synthesis tools
-            数据集: Datasets
-            通用中英文OCR数据集: General Chinese and English OCR dataset
-            手写中文OCR数据集: Handwritten Chinese OCR Dataset
-            垂类多语言OCR数据集: Vertical multi-language OCR dataset
-            版面分析数据集: Layout Analysis Dataset
-            表格识别数据集: Table recognition dataset
-            关键信息提取数据集: Key Information Extraction Dataset
-            FAQ: FAQ
-            社区: Community
-            社区贡献: Community Contribution
-            附录: Appendix
-        - locale: "null"
-          name: Help translating
-          build: false
-          fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
-  - git-committers:
-      repository: PaddlePaddle/PaddleOCR
-      branch: main
-      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
-  - git-revision-date-localized:
-      enable_creation_date: true
+# plugins:
+#   - tags
+#   - offline
+#   - search:
+#       separator: '[\s\u200b\-_,:!=\[\: )"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+#   - i18n:
+#       docs_structure: suffix
+#       fallback_to_default: true
+#       reconfigure_material: true
+#       reconfigure_search: true
+#       languages:
+#         - locale: zh
+#           name: 简体中文
+#           default: true
+#           build: true
+#         - locale: en
+#           name: English
+#           site_name: PaddleOCR Documentation
+#           link: /en/
+#           nav_translations:
+#             Home: Home
+#             快速开始: Quick Start
+#             近期更新: Recently Update
+#             模型: Model
+#             概述: Overview
+#             PP-OCR 文本检测识别: PP-OCR
+#             概述: Overview
+#             快速开始: Quick Start
+#             快速安装: Quick Installation
+#             效果展示: Visualization
+#             运行环境: Environment Preparation
+#             模型库: Model
+#             模型训练: Model Training
+#             基本概念: Basic concepts
+#             文本检测: Text Detection
+#             文本识别: Text Recognition
+#             文本方向分类器: Text Angle Classification
+#             关键信息提取: Key Information Extraction
+#             模型微调: Fine-tune
+#             模型压缩: Model Compression
+#             模型量化: Model Quantization
+#             模型裁剪: Model Prune
+#             知识蒸馏: Knowledge Distillation
+#             推理部署: Model Deploy
+#             概述: Overview
+#             基于Python预测引擎推理: Python Inference
+#             基于C++预测引擎推理: CPP Inference
+#             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
+#             服务化部署: Sever Deployment
+#             Jetson部署: Jetson Deployment
+#             端侧部署: Device-side Deployment
+#             网页前端部署: Paddle.js Web Deployment
+#             Paddle2ONNX模型转化与预测: Paddle2ONNX
+#             云上飞桨部署工具: Paddle Cloud
+#             Benchmark: Benchmark
+#             博客: Blog
+#             paddleocr package使用说明: Paddleocr Package Instructions
+#             多语言模型: Multi-language model
+#             动手学OCR: Dive into OCR
+#             切片操作: Slice
+#             PaddleOCR模型推理参数解释: PaddleOCR Model Inference Parameter Explanation
+#             分布式训练: Distributed training
+#             项目克隆: Project Clone
+#             配置文件内容与生成: Configuration
+#             如何生产自定义超轻量模型？: How To Make Your own lightweight OCR model?
+#             PP-Structure文档分析: PP-Structure
+#             概述: Overview
+#             快速开始: Quick Start
+#             模型库: Model
+#             模型训练: Model Training
+#             基本概念: Basic concepts
+#             版面分析: Layout Analysis
+#             版面恢复: Recovery To Doc
+#             表格识别: Table Recognition
+#             关键信息提取: Key Information Extraction
+#             推理部署: Deploy
+#             概述: Overview
+#             基于Python预测引擎推理: Python Inference
+#             基于C++预测引擎推理: CPP Inference
+#             服务化部署: Sever Deployment
+#             博客: Blog
+#             返回识别位置: Return Recognition Location
+#             怎样完成基于图像数据的信息抽取任务: Key Information Extraction Pipeline
+#             前沿算法与模型: Academic Algorithms
+#             概述: algorithm/overview.md
+#             文本检测算法: Text Detection Algorithms
+#             DB与DB++: DB and DB++
+#             文本识别算法: Text Recognition Algorithms
+#             文本超分辨率算法: Text Super-Resolution Algorithm
+#             公式识别算法: Formulat Recognition
+#             端到端OCR算法: End-to-End OCR Algorithms
+#             表格识别算法: Table Recognition Algorithms
+#             关键信息抽取算法: Key Information Extraction Algorithms
+#             使用PaddleOCR架构添加新算法: Add new algorithms
+#             场景应用: Applications
+#             数据标注与合成: Data Annotation and Synthesis
+#             概述: Overview
+#             其它数据标注工具: Other data annotation tools
+#             其它数据合成工具: Others data synthesis tools
+#             数据集: Datasets
+#             通用中英文OCR数据集: General Chinese and English OCR dataset
+#             手写中文OCR数据集: Handwritten Chinese OCR Dataset
+#             垂类多语言OCR数据集: Vertical multi-language OCR dataset
+#             版面分析数据集: Layout Analysis Dataset
+#             表格识别数据集: Table recognition dataset
+#             关键信息提取数据集: Key Information Extraction Dataset
+#             FAQ: FAQ
+#             社区: Community
+#             社区贡献: Community Contribution
+#             附录: Appendix
+#         - locale: "null"
+#           name: Help translating
+#           build: false
+#           fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
+#   - git-committers:
+#       repository: PaddlePaddle/PaddleOCR
+#       branch: main
+#       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+#   - git-revision-date-localized:
+#       enable_creation_date: true
+
 
 markdown_extensions:
   - abbr
