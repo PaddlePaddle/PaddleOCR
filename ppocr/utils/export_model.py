@@ -70,6 +70,7 @@ def dump_infer_config(config, path, logger):
             if hpi_config["Hpi"]["backend_config"].get("tensorrt", None):
                 hpi_config["Hpi"]["supported_backends"]["gpu"].remove("tensorrt")
                 del hpi_config["Hpi"]["backend_config"]["tensorrt"]
+            hpi_config["Hpi"]["selected_backends"]["gpu"] = "paddle_infer"
         infer_cfg["Hpi"] = hpi_config["Hpi"]
     if config["Global"].get("pdx_model_name", None):
         infer_cfg["Global"] = {}

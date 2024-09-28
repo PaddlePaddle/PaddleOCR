@@ -342,6 +342,8 @@ class Attention(nn.Layer):
         mem=None,
         seq_len=0,
     ):
+        if not self.training:
+            self.is_export = True
         b, n, _, h, talking_heads, collab_heads, has_context = (
             *x.shape,
             self.heads,
@@ -987,6 +989,7 @@ class LaTeXOCRHead(nn.Layer):
     # forward for export
     def forward(self, inputs, targets=None):
         if not self.training:
+            self.is_export = True
             encoded_feat = inputs
             batch_num = encoded_feat.shape[0]
             bos_tensor = paddle.full([batch_num, 1], self.bos_token, dtype=paddle.int64)

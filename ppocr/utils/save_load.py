@@ -304,6 +304,8 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
             metric_score = metric_info["metric"]["acc"]
         elif "precision" in metric_info["metric"]:
             metric_score = metric_info["metric"]["precision"]
+        elif "exp_rate" in metric_info["metric"]:
+            metric_score = metric_info["metric"]["exp_rate"]
         else:
             raise ValueError("No metric score found.")
         train_results["models"]["best"]["score"] = metric_score
@@ -326,8 +328,10 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
             metric_score = metric_info["metric"]["acc"]
         elif "precision" in metric_info["metric"]:
             metric_score = metric_info["metric"]["precision"]
+        elif "exp_rate" in metric_info["metric"]:
+            metric_score = metric_info["metric"]["exp_rate"]
         else:
-            raise ValueError("No metric score found.")
+            metric_score = 0
         train_results["models"][f"last_{1}"]["score"] = metric_score
         for tag in save_model_tag:
             train_results["models"][f"last_{1}"][tag] = os.path.join(
