@@ -31,10 +31,20 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 📣 近期更新
 
+- **🔥2024.9.30 发布PaddleOCR release/2.9**:
+  
+  * 发布文档图像智能分析[PP-ChatOCRv3](/docs/paddlex/pipeline_usage/document_scene_information_extraction.md)
+  * 发布PaddleOCR 训练推理[全流程低代码开发方案](/docs/paddlex/quick_start.md)
+    * 🎨 模型丰富一键调用：将**通用OCR、通用表格识别和文档场景信息抽取**的XXX模型整合为3条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。同时覆盖目标检测、语义分割、时序预测等多个热门AI领域**20+单功能模块**，方便开发者进行模型组合使用。
+    * 🚀提高效率降低门槛：实现基于图形界面和统一命令的模型**全流程开发**，支持**高性能部署、服务化部署和端侧部署**等多种部署方式，同时支持英伟达GPU、昆仑芯、昇腾、寒武纪和海光等**多种主流硬件的无缝切换**。
+  * 新增4个高精度[版面分析模型](/docs/paddlex/module_usage/layout_detection.md)
+  * 新增高精度表格结构识别模型[SLANet_Plus](/docs/paddlex/module_usage/table_structure_recognition.md)
+  * 新增版面矫正预测模型[UVDoc](/docs/paddlex/module_usage/image_warping.md)
+  * 新增公式识别模型[LatexOCR](/docs/paddlex/module_usage/formula_recognition.md)
+  
 - **🔥2024.7 添加 PaddleOCR 算法模型挑战赛冠军方案**：
-
-    - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](./algorithm/text_recognition/algorithm_rec_svtrv2.md)；
-    - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](./algorithm/table_recognition/algorithm_table_slanet.md)。
+    - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](https://paddlepaddle.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2.html)；
+    - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](https://paddlepaddle.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_slanet.html)。
 
 - **💥2024.6.27 飞桨低代码开发工具 [PaddleX 3.0](https://github.com/paddlepaddle/paddlex) 重磅更新,低门槛轻松玩转OCR 模型开发！**
     - 🎨 **模型丰富一键调用**：将**文本检测、表格识别、文档场景信息抽取**等OCR领域关键任务整合为3条模型产线，通过极简的Python API**一键调用**，快速体验模型效果。同时覆盖目标检测、语义分割、时序预测等多个热门AI领域的**10条模型产线**和**20+单功能模块**，方便开发者进行模型组合使用。
@@ -42,42 +52,12 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
     - 🌐 **多种场景灵活部署**：支持**高性能部署**、**服务化部署**和**端侧部署**等多种部署方式，确保不同应用场景下模型的高效运行和快速响应。
     - 🔧 **主流硬件高效支持**：支持英伟达 GPU、昆仑芯、昇腾和寒武纪等**多种主流硬件**的无缝切换，确保高效运行。
 
-- **📚直播和OCR实战打卡营预告**：《PP-ChatOCRv2赋能金融报告信息智能化抽取，新金融效率再升级》课程上线，破解复杂版面、表格识别、信息抽取OCR解析难题，直播时间：6月6日（周四）19：00。并于6月11日启动【政务采购合同信息抽取】实战打卡营。报名链接：<https://www.wjx.top/vm/eBcYmqO.aspx?udsid=197406>
-
-- **🔥2024.5.10 上线星河零代码产线(OCR 相关)**：全面覆盖了以下四大 OCR 核心任务，提供极便捷的 Badcase 分析和实用的在线体验：
-
-    - [通用 OCR](https://aistudio.baidu.com/community/app/91660) (PP-OCRv4)。
-    - [通用表格识别](https://aistudio.baidu.com/community/app/91661) (SLANet)。
-    - [通用图像信息抽取](https://aistudio.baidu.com/community/app/91662) (PP-ChatOCRv2-common)。
-    - [文档场景信息抽取](https://aistudio.baidu.com/community/app/70303) (PP-ChatOCRv2-doc)。
-
-    同时采用了 **[全新的场景任务开发范式](https://aistudio.baidu.com/pipeline/mine)** ,将模型统一汇聚，实现训练部署的零代码开发，并支持在线服务化部署和导出离线服务化部署包。
-
-- **🔥2023.8.7 发布 PaddleOCR [release/2.7](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.7)**
-
-    - 发布[PP-OCRv4](./ppocr/blog/PP-OCRv4_introduction.md)，提供 mobile 和 server 两种模型
-    - PP-OCRv4-mobile：速度可比情况下，中文场景效果相比于 PP-OCRv3 再提升 4.5%，英文场景提升 10%，80 语种多语言模型平均识别准确率提升 8%以上
-    - PP-OCRv4-server：发布了目前精度最高的 OCR 模型，中英文场景上检测模型精度提升 4.9%， 识别模型精度提升 2%
-    可参考[快速开始](./quick_start.md) 一行命令快速使用，同时也可在飞桨 AI 套件(PaddleX)中的[通用 OCR 产业方案](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)中低代码完成模型训练、推理、高性能部署全流程
-
-- 🔨**2022.11 新增实现[4 种前沿算法](./algorithm/overview.md)**：文本检测 [DRRG](./algorithm/text_detection/algorithm_det_drrg.md),  文本识别 [RFL](./algorithm/text_recognition/algorithm_rec_rfl.md), 文本超分[Text Telescope](./algorithm/super_resolution/algorithm_sr_telescope.md)，公式识别[CAN](./algorithm/formula_recognition/algorithm_rec_can.md)
-- **2022.10 优化[JS 版 PP-OCRv3 模型](./ppocr/infer_deploy/paddle_js.md)**：模型大小仅 4.3M，预测速度提升 8 倍，配套 web demo 开箱即用
-
-- **💥 直播回放：PaddleOCR 研发团队详解 PP-StructureV2 优化策略**。微信扫描[下方二维码](#开源社区)，关注公众号并填写问卷后进入官方交流群，获取直播回放链接与 20G 重磅 OCR 学习大礼包（内含 PDF 转 Word 应用程序、10 种垂类模型、《动手学 OCR》电子书等）
-
-- **🔥2022.8.24 发布 PaddleOCR [release/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**：
-
-    - 发布[PP-StructureV2](./ppstructure/overview.md)，系统功能性能全面升级，适配中文场景，新增支持[版面复原](./ppstructure/model_train/recovery_to_doc.md)，支持**一行命令完成 PDF 转 Word**；
-    - [版面分析](./ppstructure/model_train/train_layout.md)模型优化：模型存储减少 95%，速度提升 11 倍，平均 CPU 耗时仅需 41ms；
-    - [表格识别](./ppstructure/model_train/train_table.md)模型优化：设计 3 大优化策略，预测耗时不变情况下，模型精度提升 6%；
-    - [关键信息抽取](./ppstructure/model_train/train_kie.md)模型优化：设计视觉无关模型结构，语义实体识别精度提升 2.8%，关系抽取精度提升 9.1%。
-- 🔥**2022.8 发布 [OCR 场景应用集合](./applications/overview.md)**：包含数码管、液晶屏、车牌、高精度 SVTR 模型、手写体识别等**9 个垂类模型**，覆盖通用，制造、金融、交通行业的主要 OCR 垂类应用。
 
 > [更多](./update.md)
 
 ## 🌟 特性
 
-支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./ppocr/overview.md)、[PP-Structure](./ppstructure/overview.md)和[PP-ChatOCRv2](https://aistudio.baidu.com/community/app/70303)，并打通数据生产、模型训练、压缩、预测部署全流程。
+支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](./ppocr/overview.md)、[PP-Structure](./ppstructure/overview.md)和[PP-ChatOCR](https://aistudio.baidu.com/community/app/70303)，并打通数据生产、模型训练、压缩、预测部署全流程。
 
 <img src="./images/ppocrv4.png" width="600" />
 
