@@ -67,6 +67,8 @@ def convert_info_docx(img, res, save_folder, img_name):
             parser = HtmlToDocx()
             parser.table_style = "TableGrid"
             parser.handle_table(region["res"]["html"], doc)
+        elif region["type"] == "equation" and "latex" in region["res"]:
+            pass
         else:
             paragraph = doc.add_paragraph()
             paragraph_format = paragraph.paragraph_format

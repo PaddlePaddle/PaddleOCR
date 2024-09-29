@@ -40,6 +40,15 @@ def init_args():
         type=str,
         default="../ppocr/utils/dict/table_structure_dict_ch.txt",
     )
+    # params for formula recognition
+    parser.add_argument("--formula_algorithm", type=str, default="LaTeXOCR")
+    parser.add_argument("--formula_model_dir", type=str)
+    parser.add_argument(
+        "--formula_char_dict_path",
+        type=str,
+        default="../ppocr/utils/dict/latex_ocr_tokenizer.json",
+    )
+    parser.add_argument("--formula_batch_num", type=int, default=1)
     # params for layout
     parser.add_argument("--layout_model_dir", type=str)
     parser.add_argument(
@@ -90,6 +99,12 @@ def init_args():
         help="In the forward, whether the table area uses table recognition",
     )
     parser.add_argument(
+        "--formula",
+        type=str2bool,
+        default=False,
+        help="Whether to enable formula recognition",
+    )
+    parser.add_argument(
         "--ocr",
         type=str2bool,
         default=True,
@@ -101,6 +116,12 @@ def init_args():
         type=str2bool,
         default=False,
         help="Whether to enable layout of recovery",
+    )
+    parser.add_argument(
+        "--recovery_to_markdown",
+        type=str2bool,
+        default=False,
+        help="Whether to enable layout of recovery to markdown",
     )
     parser.add_argument(
         "--use_pdf2docx_api",
@@ -182,7 +203,9 @@ def draw_structure_result(image, result, font_path):
             (box_layout[0], box_layout[1]), region["type"], fill=text_color, font=font
         )
 
-        if region["type"] == "table":
+        if region["type"] == "table" or (
+            region["type"] == "equation" and "latex" in region["res"]
+        ):
             pass
         else:
             for text_result in region["res"]:
