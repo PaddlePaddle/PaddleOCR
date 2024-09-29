@@ -263,12 +263,12 @@ nav:
     - 多硬件安装飞桨:
       - 多硬件安装飞桨: model/hardware/install_other_devices.md
       - 支持硬件列表: model/hardware/supported_models.md
-  - 低代码开发:
+  - 全流程开发:
     - 概述: paddlex/overview.md
     - 能力支持: paddlex/capability_support.md
     - 快速安装: 
-      - 安装PaddlePaddle: paddlex/paddlepaddle_installation.md
-      - 安装PaddleX: paddlex/installation.md
+      - 安装PaddlePaddle: paddlex/installation/paddlepaddle_installation.md
+      - 安装PaddleX: paddlex/nstallation/installation.md
     - 快速开始: paddlex/quick_start.md
     - 模型产线使用:
       - PaddleX产线开发工具本地使用教程: paddlex/pipeline_usage/pipeline_develop_guide.md
