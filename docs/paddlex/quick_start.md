@@ -1,7 +1,9 @@
 # 快速开始
 
 >**说明：**
+
 >* 飞桨一站式全流程开发工具[PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1)，依托于PaddleOCR的先进技术，支持了OCR领域的**一站式全流程**开发能力。通过一站式全流程开发，可实现简单且高效的模型使用、组合与定制。
+
 >* PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**OCR相关产线**的快速使用，单功能模块的快速使用以及更多功能请参考[PaddleOCR一站式全流程开发](https://paddlepaddle.github.io/PaddleOCR/paddlex/overview.md)中相关章节。
 
 
@@ -11,23 +13,58 @@
 * **安装PaddlePaddle**
 ```bash
 # cpu
-python -m pip install paddlepaddle
+python -m pip install paddlepaddle==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 
 # gpu，该命令仅适用于 CUDA 版本为 11.8 的机器环境
- python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 
 # gpu，该命令仅适用于 CUDA 版本为 12.3 的机器环境
- python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
 ```
 > ❗ 更多飞桨 Wheel 版本请参考[飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html)。
 
 * **安装PaddleX**
 
 ```bash
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0.beta1-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0b1-py3-none-any.whl
 ```
 
-> ❗ 更多安装方式参考[PaddleX安装教程](./installation/installation.md)
+> ❗ 更多安装方式参考[PaddleX安装教程](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/installation/installation.md)
+
+### 📝 Python 脚本使用
+
+三行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
+```python
+from paddlex import create_pipeline
+
+pipeline = create_pipeline(pipeline=[产线名称])
+output = pipeline.predict([输入图片名称])
+for res in output:
+    res.print()
+    res.save_to_img("./output/")
+    res.save_to_json("./output/")
+```
+执行了如下几个步骤：
+
+* `create_pipeline()` 实例化产线对象
+* 传入图片并调用产线对象的 `predict` 方法进行推理预测
+* 对预测结果进行处理
+
+其他产线的 Python 脚本使用，只需将 `create_pipeline()` 方法的 `pipeline` 参数调整为相应产线的名称。下面列出了每个产线对应的参数名称及详细的使用解释：
+<details>
+  <summary><b>👉 更多产线的Python脚本使用</b></summary>
+
+| 产线名称           | 对应参数               | 详细说明                                                                                                      |
+|--------------------|------------------------|---------------------------------------------------------------------------------------------------------------|
+| 文档场景信息抽取v3   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
+| 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
+| 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
+| 印章识别       | coming soon | coming soon |
+| 公式识别       | coming soon | coming soon |
+
+
+</details>
+
 ### 💻 命令行使用
 
 一行命令即可快速体验产线效果，统一的命令行格式为：
@@ -38,11 +75,11 @@ paddlex --pipeline [产线名称] --input [输入图片] --device [运行设备]
 
 只需指定三个参数：
 * `pipeline`：产线名称
-* `input`：待处理的输入图片的本地路径或URL
-* `device`: 使用的GPU序号（例如`gpu:0`表示使用第0块GPU），也可选择使用CPU（`cpu`）
+* `input`：待处理的输入文件（如图片）的本地路径或 URL
+* `device`: 使用的 GPU 序号（例如`gpu:0`表示使用第 0 块 GPU），也可选择使用 CPU（`cpu`）
 
 
-以通用OCR产线为例：
+以通用 OCR 产线为例：
 ```bash
 paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --device gpu:0
 ```
@@ -56,46 +93,20 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 
 可视化结果如下：
 
-![alt text](./imgs/boardingpass.png)
+![alt text](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/boardingpass.png)
 
 </details>
 
-其他产线的命令行使用，只需将`pipeline`参数调整为相应产线的名称。下面列出了每个产线对应的命令：
+其他产线的命令行使用，只需将 `pipeline` 参数调整为相应产线的名称。下面列出了每个产线对应的命令：
 
+<details>
+  <summary><b>👉 更多产线的命令行使用</b></summary>
 
 | 产线名称      | 使用命令                                                                                                                                                                                             |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 文档场景信息抽取  |                                                                                                                                                                                                  |
-| 通用图像分类    | `paddlex --pipeline image_classification --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_image_classification_001.jpg --device gpu:0`                           |
-| 通用OCR     | `paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --device gpu:0`                                                             |
 | 通用表格识别    | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
+|文档场景信息抽取v3 | coming soon |   
+| 印章识别       | coming soon |
+| 公式识别       | coming soon |
 
-
-### 📝 Python脚本使用
-
-几行代码即可完成产线的快速推理，统一的Python脚本格式如下：
-```python
-from paddlex import create_pipeline
-
-pipeline = create_pipeline(pipeline=[产线名称])
-output = pipeline.predict([输入图片名称])
-for batch in output:
-    for item in batch:
-        res = item['result']
-        res.print()
-        res.save_to_img("./output/")
-        res.save_to_json("./output/")
-```
-执行了如下几个步骤：
-
-* `create_pipeline()` 实例化产线对象
-* 传入图片并调用产线对象的`predict` 方法进行推理预测
-* 对预测结果进行处理
-
-其他产线的Python脚本使用，只需将`create_pipeline()`方法的`pipeline`参数调整为相应产线的名称。下面列出了每个产线对应的参数名称及详细的使用解释：
-
-| 产线名称     | 对应参数                 | 详细说明 |
-|----------|----------------------|------|
-| 通用OCR产线 | `OCR` |   [通用OCR产线Python脚本使用说明](./pipeline_usage/OCR.md#222-python脚本方式集成)   |
-| 通用表格识别产线 | `table_recognition` |   [通用表格识别产线Python脚本使用说明](./pipeline_usage/table_recognition.md#22-python脚本方式集成)   |
-| PP-ChatOCRv3产线 | `pp_chatocrv3` |   [PP-ChatOCRv3产线Python脚本使用说明](./pipeline_usage/document_scene_information_extraction.md#222-python脚本方式集成)   |
+</details>
