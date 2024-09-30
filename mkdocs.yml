@@ -5,8 +5,7 @@ site_description:
   Awesome multilingual OCR toolkits based on PaddlePaddle (practical ultra lightweight OCR system, support 80+ languages recognition, provide data annotation and synthesis tools, support training and deployment among server, mobile, embedded and IoT devices)
 
 repo_name: PaddlePaddle/PaddleOCR
-
-
+repo_url: https://github.com/PaddlePaddle/PaddleOCR
 
 copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
 
