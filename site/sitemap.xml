@@ -573,6 +573,22 @@
          <lastmod>2024-09-30</lastmod>
     </url>
     <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/model_list_dcu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/model_list_mlu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/model_list_npu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/model_list_xpu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_DCU/</loc>
          <lastmod>2024-09-30</lastmod>
     </url>
@@ -586,6 +602,22 @@
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_XPU/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/pipelines_list_dcu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/pipelines_list_mlu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/pipelines_list_npu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/pipelines_list_xpu/</loc>
          <lastmod>2024-09-30</lastmod>
     </url>
     <url>
@@ -617,43 +649,11 @@
          <lastmod>2024-09-30</lastmod>
     </url>
     <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_dcu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_mlu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_npu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_xpu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/models_list/</loc>
          <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_dcu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_mlu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_npu/</loc>
-         <lastmod>2024-09-30</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_xpu/</loc>
          <lastmod>2024-09-30</lastmod>
     </url>
     <url>

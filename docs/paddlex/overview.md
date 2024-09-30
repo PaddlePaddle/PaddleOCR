@@ -1,10 +1,11 @@
 ## 1.简介
 
-[PaddleX](https://github.com/PaddlePaddle/PaddleX)，依托于PaddleOCR的先进技术，构建了OCR领域的**低代码全流程**开发范式。通过低代码开发，可实现简单且高效的模型使用、组合与定制。这将显著**减少模型开发的时间消耗**，**降低其开发难度**，大大加快模型在行业中的应用和推广速度。特色如下：
+[PaddleX](https://github.com/PaddlePaddle/PaddleX)，依托于PaddleOCR的先进技术，支持了OCR领域的**低代码全流程**开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。这将显著**减少模型开发的时间消耗**，**降低其开发难度**，大大加快模型在行业中的应用和推广速度。特色如下：
 
  * 🎨 模型丰富一键调用：将文本图像智能分析、通用OCR、通用表格识别、公式识别、印章识别涉及的**17个模型**整合为5条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计**200+模型**，形成20+单功能模块，方便开发者进行**模型组合**使用。
  *  🚀提高效率降低门槛：提供基于**统一命令**和**图形界面**两种方式，实现模型简洁高效的使用、组合与定制。支持**高性能部署、服务化部署和端侧部署**等多种部署方式。此外，对于各种主流硬件如**英伟达GPU、昆仑芯、昇腾、寒武纪和海光**等，进行模型开发时，都可以**无缝切换**。
   
+
 ## 2.能力支持
 
 PaddleX中OCR的5条产线均支持本地**快速推理**，部分产线支持**在线体验**，您可以快速体验各个产线的预训练模型效果，如果您对产线的预训练模型效果满意，可以直接对产线进行[高性能部署](./pipeline_deploy/high_performance_deploy.md)/[服务化部署](./pipeline_deploy/service_deploy.md)/[端侧部署](./pipeline_deploy/lite_deploy.md)，如果不满意，您也可以使用产线的**二次开发**能力，提升效果。
@@ -79,7 +80,7 @@ PaddleX中OCR的5条产线均支持本地**快速推理**，部分产线支持**
 </table>
 
 
-> ❗注：以上功能均基于GPU/CPU实现。PaddleX还可在昆仑、昇腾、寒武纪和海光等主流硬件上进行快速推理和二次开发。下表详细列出了模型产线的支持情况，具体支持的模型列表请参阅[模型列表(MLU)](./support_list/model_list_mlu.md)/[模型列表(NPU)](./support_list/model_list_npu.md)/[模型列表(XPU)](./support_list/model_list_xpu.md)/[模型列表DCU](./support_list/model_list_dcu.md)。我们正在适配更多的模型，并在主流硬件上推动高性能和服务化部署的实施。
+> ❗注：以上功能均基于GPU/CPU实现。PaddleX还可在昆仑、昇腾、寒武纪和海光等主流硬件上进行快速推理和二次开发。下表详细列出了模型产线的支持情况，具体支持的模型列表请参阅[模型列表(MLU)](./other_devices_support/model_list_mlu.md)/[模型列表(NPU)](./other_devices_support/model_list_npu.md)/[模型列表(XPU)](./other_devices_support/model_list_xpu.md)/[模型列表DCU](./other_devices_support/model_list_dcu.md)中的OCR相关模块。我们正在适配更多的模型，并在主流硬件上推动高性能和服务化部署的实施。
 
 <details>
   <summary>👉 国产化硬件能力支持</summary>

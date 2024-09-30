@@ -1,4 +1,10 @@
-# PaddleX快速开始
+# 快速开始
+
+**说明：**
+* [PaddleX](https://github.com/PaddlePaddle/PaddleX)，依托于PaddleOCR的先进技术，支持了OCR领域的**低代码全流程**开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制，详细请参考[PaddleOCR低代码全流程开发概览](./overview.md)。
+* 在PaddleX中，我们致力于实现产线级别的训练、推理与部署，产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**产线**的快速使用方式，单功能模块的快速使用请参考[相关模块教程](#-更多)中的**快速集成**教程。
+
+
 
 ### 🛠️ 安装
 
@@ -103,14 +109,24 @@ PaddleX的各个产线均支持**在线体验**和本地**快速推理**，您�
 
 此外，PaddleX为OCR相关的每个产线和单功能模块都提供了详细的开发教程，您可以根据需要选择对应的产线或模块进行开发：
 
+产线列表：
 * [通用OCR产线使用教程](./pipeline_usage/OCR.md)
 * [通用表格识别产线使用教程](./pipeline_usage/table_recognition.md)
-* [PP-ChatOCRv3产线使用教程](./pipeline_usage/document_scene_information_extraction.md)
+* [文档场景信息抽取v3产线使用教程](./pipeline_usage/document_scene_information_extraction.md)
+
+
+单功能模块：
+
 * [文本检测模块使用教程](./module_usage/text_detection.md)
 * [文本识别模块使用教程](./module_usage/text_recognition.md)
+* [公式识别模块使用教程](./module_usage/formula_recognition.md)
 * [表格结构识别模块使用教程](./module_usage/table_structure_recognition.md)
 * [文本图像矫正模块使用教程](./module_usage/text_image_unwarping.md)
 * [印章文本检测模块使用教程](./module_usage/seal_text_detection.md)
+* [版面区域检测模块使用教程](./module_usage/layout_detection.md)
+* [文档图像方向分类模块使用教程](./module_usage/doc_img_orientation_classification.md)
+
+
 
 
 

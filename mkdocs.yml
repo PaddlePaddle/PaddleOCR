@@ -265,13 +265,12 @@ nav:
       - 支持硬件列表: model/hardware/supported_models.md
   - 低代码全流程开发:
     - 概述: paddlex/overview.md
-    - 能力支持: paddlex/capability_support.md
     - 快速安装: 
       - 安装PaddlePaddle: paddlex/installation/paddlepaddle_installation.md
       - 安装PaddleX: paddlex/nstallation/installation.md
     - 快速开始: paddlex/quick_start.md
     - 模型产线使用:
-      - PaddleX产线开发工具本地使用教程: paddlex/pipeline_usage/pipeline_develop_guide.md
+      - PaddleX产线使用概览: paddlex/pipeline_usage/pipeline_develop_guide.md
       - PP-ChatOCR v3: paddlex/pipeline_usage/document_scene_information_extraction.md
       - 通用表格识别: paddlex/pipeline_usage/table_recognition.md
       - 通用OCR: paddlex/pipeline_usage/OCR.md
@@ -281,17 +280,16 @@ nav:
       - 印章文本检测: paddlex/module_usage/curved_text_detection.md
       - 文本图像矫正: paddlex/module_usage/image_warping.md
       - 表格结构识别: paddlex/module_usage/table_structure_recognition.md
-    - 多模块组合使用: paddlex/modules_combination.md
     - 模型产线部署:
       - 高性能部署: paddlex/pipeline_deploy/high_performance_deploy.md
       - 服务化部署: paddlex/pipeline_deploy/service_deploy.md
       - 端侧部署: paddlex/pipeline_deploy/lite_deploy.md
     - 多硬件支持: 
-      - 多硬件安装: paddlex/installation_other_devices.md
-      - MLU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_MLU.md
-      - DCU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_DCU.md
-      - NPU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_NPU.md
-      - XPU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_XPU.md
+      - 多硬件安装: paddlex/other_devices_support/installation_other_devices.md
+      - MLU模型列表: paddlex/other_devices_support/model_list_mlu.md
+      - DCU模型列表: paddlex/other_devices_support/model_list_dcu.md
+      - NPU模型列表: paddlex/other_devices_support/model_list_npu.md
+      - XPU模型列表: paddlex/other_devices_support/model_list_xpu.md
     - 数据准备:
       - 文本检测/文本识别: paddlex/data_anotation/text_detection\regognition.md
       - 表格识别: paddlex/data_anotation/table_recognition.md
