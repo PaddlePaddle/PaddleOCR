@@ -128,12 +128,12 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9998350143432617)
 <a name="4-3"></a>
 ### 4.3 Serving服务化部署
 
-暂不支持
+暂不支持。
 
 <a name="4-4"></a>
 ### 4.4 更多推理部署
 
-暂不支持
+暂不支持。
 
 <a name="5"></a>
 ## 5. FAQ

@@ -109,9 +109,8 @@ class ABINetRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=geometry_p),
-            CVDeterioration(
-                var=20, degrees=6, factor=4, p=deterioration_p),
+                p=geometry_p), CVDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
             CVColorJitter(
                 brightness=0.5,
                 contrast=0.5,
@@ -185,9 +184,8 @@ class SVTRRecAug(object):
                 scale=(0.5, 2.),
                 shear=(45, 15),
                 distortion=0.5,
-                p=geometry_p),
-            SVTRDeterioration(
-                var=20, degrees=6, factor=4, p=deterioration_p),
+                p=geometry_p), SVTRDeterioration(
+                    var=20, degrees=6, factor=4, p=deterioration_p),
             CVColorJitter(
                 brightness=0.5,
                 contrast=0.5,
@@ -572,7 +570,7 @@ def resize_norm_img_chinese(img, image_shape):
     max_wh_ratio = imgW * 1.0 / imgH
     h, w = img.shape[0], img.shape[1]
     ratio = w * 1.0 / h
-    max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
+    max_wh_ratio = max(max_wh_ratio, ratio)
     imgW = int(imgH * max_wh_ratio)
     if math.ceil(imgH * ratio) > imgW:
         resized_w = imgW
