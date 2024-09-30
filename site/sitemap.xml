@@ -2,1026 +2,1078 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/FAQ.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/FAQ/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/index.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/quick_start.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/quick_start/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/update.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/update/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/add_new_algorithm.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/add_new_algorithm/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/overview.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/end_to_end/algorithm_e2e_pgnet.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/end_to_end/algorithm_e2e_pgnet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/formula_recognition/algorithm_rec_can.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/formula_recognition/algorithm_rec_can/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/formula_recognition/algorithm_rec_latex_ocr.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/formula_recognition/algorithm_rec_latex_ocr/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_layoutxlm.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_layoutxlm/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_sdmgr.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_sdmgr/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_vi_layoutxlm.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/kie/algorithm_kie_vi_layoutxlm/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/super_resolution/algorithm_sr_gestalt.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/super_resolution/algorithm_sr_gestalt/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/super_resolution/algorithm_sr_telescope.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/super_resolution/algorithm_sr_telescope/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_master.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_master/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_slanet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_ct.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_ct/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_db.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_db/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_drrg.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_drrg/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_east.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_east/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_fcenet.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_fcenet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_psenet.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_psenet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_sast.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_detection/algorithm_det_sast/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_abinet.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_abinet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_aster.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_cppd.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_cppd/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_crnn.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_crnn/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_nrtr.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_nrtr/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_parseq.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_parseq/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rare.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rare/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rfl.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rfl/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_robustscanner.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_robustscanner/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rosetta.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_rosetta/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_sar.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_sar/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_satrn.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_satrn/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_seed.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_seed/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_spin.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_spin/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_srn.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_srn/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_starnet.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_starnet/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtr.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtr/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_visionlan.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_visionlan/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_vitstr.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_vitstr/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/PCB%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E4%B8%AD%E6%96%87%E8%A1%A8%E6%A0%BC%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%8C%85%E8%A3%85%E7%94%9F%E4%BA%A7%E6%97%A5%E6%9C%9F%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%8D%B0%E7%AB%A0%E5%BC%AF%E6%9B%B2%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%8F%91%E7%A5%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%A1%A8%E5%8D%95%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%8D%A1%E8%AF%81%E7%B1%BBOCR/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E6%89%8B%E5%86%99%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E6%89%AB%E6%8F%8F%E5%90%88%E5%90%8C%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E6%B6%B2%E6%99%B6%E5%B1%8F%E8%AF%BB%E6%95%B0%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E8%BD%BB%E9%87%8F%E7%BA%A7%E8%BD%A6%E7%89%8C%E8%AF%86%E5%88%AB/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/applications/%E9%AB%98%E7%B2%BE%E5%BA%A6%E4%B8%AD%E6%96%87%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/community/code_and_doc.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/community/code_and_doc/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/community/community_contribution/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/data_annotation.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/data_annotation/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/data_synthesis.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/data_synthesis/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/overview.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/data_anno_synth/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/handwritten_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/handwritten_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/kie_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/kie_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/layout_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/layout_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/ocr_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/ocr_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/table_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/table_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/vertical_and_multilingual_datasets.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/datasets/vertical_and_multilingual_datasets/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/model/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/model/hardware/install_other_devices/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/model/hardware/supported_models/</loc>
-         <lastmod>2024-09-29</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/capability_support/</loc>
-         <lastmod>2024-09-29</lastmod>
-    </url>
-    <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/model_list/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/modules_combination/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/quick_start/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/data_anotation/image_classification/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/data_anotation/object_detection/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/data_anotation/table_recognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/data_anotation/text_detection%5Cregognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/installation/installation/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/installation/paddlepaddle_installation/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/installation/paddlepaddle_install/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/instructions/config_parameters_common/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/instructions/model_python_API/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/curved_text_detection/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/doc_img_orientation_classification/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
-         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/image_warping/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/formula_recognition/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/layout_detection/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/seal_text_detection/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/table_structure_recognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/text_detection/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/text_image_unwarping/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/text_recognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/installation_other_devices/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_DCU/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_MLU/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_NPU/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/other_devices_support/paddlepaddle_install_XPU/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_deploy/high_performance_deploy/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_deploy/lite_deploy/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_deploy/service_deploy/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_usage/OCR/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_usage/document_scene_information_extraction/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_usage/pipeline_develop_guide/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_usage/table_recognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_dcu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_mlu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_npu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/model_list_xpu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/models_list/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_dcu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_mlu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_npu/</loc>
+         <lastmod>2024-09-30</lastmod>
+    </url>
+    <url>
+         <loc>https://AmberC0209.github.io/PaddleOCR/paddlex/support_list/pipelines_list_xpu/</loc>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/environment.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/environment/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/installation.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/installation/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_list.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_list/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/overview.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/quick_start.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/quick_start/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/visualization.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/visualization/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/PP-OCRv3_introduction/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/PP-OCRv4_introduction/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/clone.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/clone/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/config.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/config/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/customize.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/customize/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/distributed_training.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/distributed_training/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/enhanced_ctc_loss.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/enhanced_ctc_loss/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/inference_args.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/inference_args/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/multi_languages.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/multi_languages/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/ocr_book.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/ocr_book/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/slice.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/slice/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/whl.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/blog/whl/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/Jetson_infer.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/Jetson_infer/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/android_demo/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/benchmark.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/benchmark/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/cpp_infer.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/cpp_infer/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/index.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/lite.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/lite/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle2onnx.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle2onnx/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle_cloud/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle_js.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle_js/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle_server.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/paddle_server/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/python_infer.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/python_infer/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/windows_vs2019_build.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/infer_deploy/windows_vs2019_build/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/knowledge_distillation.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/knowledge_distillation/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/prune.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/prune/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/quantization.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_compress/quantization/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/PPOCRv3_det_train.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/PPOCRv3_det_train/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/angle_class.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/angle_class/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/detection.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/detection/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/finetune.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/finetune/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/kie.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/kie/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/recognition.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/recognition/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/training.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppocr/model_train/training/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/models_list.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/models_list/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/overview.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/overview/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/ppstructure_model/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/quick_start.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/quick_start/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/blog/how_to_do_kie.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/blog/how_to_do_kie/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/blog/return_word_pos.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/blog/return_word_pos/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/cpp_infer.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/cpp_infer/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/index.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/paddle_server.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/paddle_server/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/python_infer.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/infer_deploy/python_infer/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/recovery_to_doc.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/recovery_to_doc/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_kie.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_kie/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_layout.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_layout/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_table.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/train_table/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/training.en/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
     <url>
          <loc>https://AmberC0209.github.io/PaddleOCR/ppstructure/model_train/training/</loc>
-         <lastmod>2024-09-29</lastmod>
+         <lastmod>2024-09-30</lastmod>
     </url>
 </urlset>

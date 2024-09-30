@@ -12,28 +12,24 @@
         <meta name="author" content="PaddleOCR PMC">
       
       
-        <link rel="canonical" href="https://AmberC0209.github.io/PaddleOCR/paddlex/capability_support/">
+        <link rel="canonical" href="https://AmberC0209.github.io/PaddleOCR/paddlex/module_usage/text_image_unwarping/">
       
       
-        <link rel="prev" href="../overview/">
       
       
-        <link rel="next" href="../installation/paddlepaddle_installation/">
-      
-      
-      <link rel="icon" href="../../static/images/logo.jpg">
+      <link rel="icon" href="../../../static/images/logo.jpg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.38">
     
     
       
-        <title>能力支持 - PaddleOCR 文档</title>
+        <title>文本图像矫正模块开发教程 - PaddleOCR 文档</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8c3ca2c6.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.8c3ca2c6.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
   
@@ -118,7 +114,7 @@
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -143,6 +139,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -155,9 +156,9 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="PaddleOCR 文档" class="md-header__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
+    <a href="../../.." title="PaddleOCR 文档" class="md-header__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
       
-  <img src="../../static/images/logo.jpg" alt="logo">
+  <img src="../../../static/images/logo.jpg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -174,7 +175,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              能力支持
+              文本图像矫正模块开发教程
             
           </span>
         </div>
@@ -282,7 +283,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
     
@@ -299,7 +300,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../quick_start/" class="md-tabs__link">
+      <a href="../../../quick_start/" class="md-tabs__link">
         
   
     
@@ -316,7 +317,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../update/" class="md-tabs__link">
+      <a href="../../../update/" class="md-tabs__link">
         
   
     
@@ -335,7 +336,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../model/" class="md-tabs__link">
+        <a href="../../../model/" class="md-tabs__link">
           
   
     
@@ -351,18 +352,16 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../overview/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../overview/" class="md-tabs__link">
           
   
     
   
-  全流程开发
+  低代码全流程开发
 
         </a>
       </li>
@@ -377,7 +376,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../ppocr/overview/" class="md-tabs__link">
+        <a href="../../../ppocr/overview/" class="md-tabs__link">
           
   
     
@@ -397,7 +396,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../ppstructure/overview/" class="md-tabs__link">
+        <a href="../../../ppstructure/overview/" class="md-tabs__link">
           
   
     
@@ -417,7 +416,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../algorithm/overview/" class="md-tabs__link">
+        <a href="../../../algorithm/overview/" class="md-tabs__link">
           
   
     
@@ -437,7 +436,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../applications/overview/" class="md-tabs__link">
+        <a href="../../../applications/overview/" class="md-tabs__link">
           
   
     
@@ -457,7 +456,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../data_anno_synth/overview/" class="md-tabs__link">
+        <a href="../../../data_anno_synth/overview/" class="md-tabs__link">
           
   
     
@@ -477,7 +476,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../datasets/datasets/" class="md-tabs__link">
+        <a href="../../../datasets/datasets/" class="md-tabs__link">
           
   
     
@@ -495,7 +494,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../FAQ/" class="md-tabs__link">
+      <a href="../../../FAQ/" class="md-tabs__link">
         
   
     
@@ -514,7 +513,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../community/community_contribution/" class="md-tabs__link">
+        <a href="../../../community/community_contribution/" class="md-tabs__link">
           
   
     
@@ -555,9 +554,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="PaddleOCR 文档" class="md-nav__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
+    <a href="../../.." title="PaddleOCR 文档" class="md-nav__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
       
-  <img src="../../static/images/logo.jpg" alt="logo">
+  <img src="../../../static/images/logo.jpg" alt="logo">
 
     </a>
     PaddleOCR 文档
@@ -584,7 +583,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -604,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../quick_start/" class="md-nav__link">
+      <a href="../../../quick_start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -624,7 +623,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../update/" class="md-nav__link">
+      <a href="../../../update/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -669,7 +668,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../model/" class="md-nav__link ">
+            <a href="../../../model/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -748,7 +747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../model/hardware/install_other_devices/" class="md-nav__link">
+      <a href="../../../model/hardware/install_other_devices/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -769,7 +768,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../model/hardware/supported_models/" class="md-nav__link">
+      <a href="../../../model/hardware/supported_models/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -802,10 +801,8 @@
       
   
   
-    
   
   
-  
     
     
       
@@ -829,39 +826,36 @@
       
         
       
-        
-      
     
     
-      
-        
-        
       
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   <span class="md-ellipsis">
-    全流程开发
+    低代码全流程开发
   </span>
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            全流程开发
+            低代码全流程开发
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -872,7 +866,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../overview/" class="md-nav__link">
+      <a href="../../overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -890,17 +884,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../capability_support.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -909,7 +896,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -968,7 +954,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/paddlepaddle_installation/" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -989,7 +975,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nstallation/installation.md" class="md-nav__link">
+      <a href="../../nstallation/installation.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1018,7 +1004,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick_start/" class="md-nav__link">
+      <a href="../../quick_start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1089,7 +1075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_usage/pipeline_develop_guide/" class="md-nav__link">
+      <a href="../../pipeline_usage/pipeline_develop_guide/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1110,7 +1096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_usage/document_scene_information_extraction/" class="md-nav__link">
+      <a href="../../pipeline_usage/document_scene_information_extraction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1131,7 +1117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_usage/table_recognition/" class="md-nav__link">
+      <a href="../../pipeline_usage/table_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1152,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_usage/OCR/" class="md-nav__link">
+      <a href="../../pipeline_usage/OCR/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1233,7 +1219,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/text_detection/" class="md-nav__link">
+      <a href="../text_detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1254,7 +1240,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/text_recognition/" class="md-nav__link">
+      <a href="../text_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1275,7 +1261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/curved_text_detection/" class="md-nav__link">
+      <a href="../curved_text_detection.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1296,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/image_warping/" class="md-nav__link">
+      <a href="../image_warping.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1317,7 +1303,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/table_structure_recognition/" class="md-nav__link">
+      <a href="../table_structure_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1346,7 +1332,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../modules_combination/" class="md-nav__link">
+      <a href="../../modules_combination/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1415,7 +1401,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_deploy/high_performance_deploy/" class="md-nav__link">
+      <a href="../../pipeline_deploy/high_performance_deploy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1436,7 +1422,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_deploy/service_deploy/" class="md-nav__link">
+      <a href="../../pipeline_deploy/service_deploy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1457,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline_deploy/lite_deploy/" class="md-nav__link">
+      <a href="../../pipeline_deploy/lite_deploy/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1492,6 +1478,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1511,7 +1503,7 @@
             
   
   <span class="md-ellipsis">
-    数据准备
+    多硬件支持
   </span>
   
 
@@ -1520,108 +1512,6 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5_9">
-            <span class="md-nav__icon md-icon"></span>
-            数据准备
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../data_anotation/text_detection%5Cregognition/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本检测/文本识别
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../data_anotation/table_recognition/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    表格识别
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_10" >
-        
-          
-          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    多硬件支持
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_5_10">
             <span class="md-nav__icon md-icon"></span>
             多硬件支持
           </label>
@@ -1634,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation_other_devices.md" class="md-nav__link">
+      <a href="../../installation_other_devices.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1655,7 +1545,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../other_devices_support/paddlepaddle_install_MLU/" class="md-nav__link">
+      <a href="../../other_devices_support/paddlepaddle_install_MLU/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1676,7 +1566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../other_devices_support/paddlepaddle_install_DCU/" class="md-nav__link">
+      <a href="../../other_devices_support/paddlepaddle_install_DCU/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1697,7 +1587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../other_devices_support/paddlepaddle_install_NPU/" class="md-nav__link">
+      <a href="../../other_devices_support/paddlepaddle_install_NPU/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1718,7 +1608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../other_devices_support/paddlepaddle_install_XPU/" class="md-nav__link">
+      <a href="../../other_devices_support/paddlepaddle_install_XPU/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1746,16 +1636,91 @@
   
   
   
+    
+    
+      
+        
+      
+        
+      
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_10" id="__nav_5_10_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    数据准备
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_10">
+            <span class="md-nav__icon md-icon"></span>
+            数据准备
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../model_list/" class="md-nav__link">
+      <a href="../../data_anotation/text_detection%5Cregognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    模型列表
+    文本检测/文本识别
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/table_recognition/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -1837,7 +1802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/overview/" class="md-nav__link">
+      <a href="../../../ppocr/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1858,7 +1823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/quick_start/" class="md-nav__link">
+      <a href="../../../ppocr/quick_start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1879,7 +1844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/installation/" class="md-nav__link">
+      <a href="../../../ppocr/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1900,7 +1865,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/visualization/" class="md-nav__link">
+      <a href="../../../ppocr/visualization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1921,7 +1886,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/environment/" class="md-nav__link">
+      <a href="../../../ppocr/environment/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1942,7 +1907,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_list/" class="md-nav__link">
+      <a href="../../../ppocr/model_list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2017,7 +1982,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/training/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/training/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2038,7 +2003,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/detection/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/detection/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2059,7 +2024,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/recognition/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2080,7 +2045,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/angle_class/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/angle_class/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2101,7 +2066,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/kie/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/kie/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2122,7 +2087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_train/finetune/" class="md-nav__link">
+      <a href="../../../ppocr/model_train/finetune/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2199,7 +2164,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_compress/quantization/" class="md-nav__link">
+      <a href="../../../ppocr/model_compress/quantization/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2220,7 +2185,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_compress/prune/" class="md-nav__link">
+      <a href="../../../ppocr/model_compress/prune/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2241,7 +2206,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/model_compress/knowledge_distillation/" class="md-nav__link">
+      <a href="../../../ppocr/model_compress/knowledge_distillation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2315,7 +2280,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ppocr/infer_deploy/" class="md-nav__link ">
+            <a href="../../../ppocr/infer_deploy/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -2348,7 +2313,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/python_infer/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/python_infer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2369,7 +2334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/cpp_infer/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/cpp_infer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2390,7 +2355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/windows_vs2019_build/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/windows_vs2019_build/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2411,7 +2376,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/paddle_server/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/paddle_server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2432,7 +2397,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/android_demo/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/android_demo/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2453,7 +2418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/Jetson_infer/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/Jetson_infer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2474,7 +2439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/lite/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/lite/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2495,7 +2460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/paddle_js/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/paddle_js/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2516,7 +2481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/paddle2onnx/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/paddle2onnx/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2537,7 +2502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/paddle_cloud/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/paddle_cloud/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2558,7 +2523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/infer_deploy/benchmark/" class="md-nav__link">
+      <a href="../../../ppocr/infer_deploy/benchmark/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2653,7 +2618,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/PP-OCRv3_introduction/" class="md-nav__link">
+      <a href="../../../ppocr/blog/PP-OCRv3_introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2674,7 +2639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/PP-OCRv4_introduction/" class="md-nav__link">
+      <a href="../../../ppocr/blog/PP-OCRv4_introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2695,7 +2660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/whl/" class="md-nav__link">
+      <a href="../../../ppocr/blog/whl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2716,7 +2681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/multi_languages/" class="md-nav__link">
+      <a href="../../../ppocr/blog/multi_languages/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2737,7 +2702,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/ocr_book/" class="md-nav__link">
+      <a href="../../../ppocr/blog/ocr_book/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2758,7 +2723,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/enhanced_ctc_loss/" class="md-nav__link">
+      <a href="../../../ppocr/blog/enhanced_ctc_loss/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2779,7 +2744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/slice/" class="md-nav__link">
+      <a href="../../../ppocr/blog/slice/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2800,7 +2765,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/inference_args/" class="md-nav__link">
+      <a href="../../../ppocr/blog/inference_args/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2821,7 +2786,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/distributed_training/" class="md-nav__link">
+      <a href="../../../ppocr/blog/distributed_training/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2842,7 +2807,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/clone/" class="md-nav__link">
+      <a href="../../../ppocr/blog/clone/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2863,7 +2828,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/config/" class="md-nav__link">
+      <a href="../../../ppocr/blog/config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2884,7 +2849,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppocr/blog/customize/" class="md-nav__link">
+      <a href="../../../ppocr/blog/customize/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2974,7 +2939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/overview/" class="md-nav__link">
+      <a href="../../../ppstructure/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2995,7 +2960,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/quick_start/" class="md-nav__link">
+      <a href="../../../ppstructure/quick_start/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3016,7 +2981,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/models_list/" class="md-nav__link">
+      <a href="../../../ppstructure/models_list/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3089,7 +3054,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/model_train/training/" class="md-nav__link">
+      <a href="../../../ppstructure/model_train/training/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3110,7 +3075,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/model_train/train_layout/" class="md-nav__link">
+      <a href="../../../ppstructure/model_train/train_layout/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3131,7 +3096,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/model_train/train_table/" class="md-nav__link">
+      <a href="../../../ppstructure/model_train/train_table/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3152,7 +3117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/model_train/recovery_to_doc/" class="md-nav__link">
+      <a href="../../../ppstructure/model_train/recovery_to_doc/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3173,7 +3138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/model_train/train_kie/" class="md-nav__link">
+      <a href="../../../ppstructure/model_train/train_kie/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3231,7 +3196,7 @@
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../ppstructure/infer_deploy/" class="md-nav__link ">
+            <a href="../../../ppstructure/infer_deploy/" class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -3264,7 +3229,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/infer_deploy/python_infer/" class="md-nav__link">
+      <a href="../../../ppstructure/infer_deploy/python_infer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3285,7 +3250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/infer_deploy/cpp_infer/" class="md-nav__link">
+      <a href="../../../ppstructure/infer_deploy/cpp_infer/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3306,7 +3271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/infer_deploy/paddle_server/" class="md-nav__link">
+      <a href="../../../ppstructure/infer_deploy/paddle_server/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3381,7 +3346,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/blog/return_word_pos/" class="md-nav__link">
+      <a href="../../../ppstructure/blog/return_word_pos/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3402,7 +3367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../ppstructure/blog/how_to_do_kie/" class="md-nav__link">
+      <a href="../../../ppstructure/blog/how_to_do_kie/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3498,7 +3463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/overview/" class="md-nav__link">
+      <a href="../../../algorithm/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3575,7 +3540,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_db/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_db/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3596,7 +3561,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_east/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_east/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3617,7 +3582,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_sast/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_sast/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3638,7 +3603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_psenet/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_psenet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3659,7 +3624,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_fcenet/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_fcenet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3680,7 +3645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_drrg/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_drrg/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3701,7 +3666,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_detection/algorithm_det_ct/" class="md-nav__link">
+      <a href="../../../algorithm/text_detection/algorithm_det_ct/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3810,7 +3775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_crnn/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_crnn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3831,7 +3796,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_rosetta/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_rosetta/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3852,7 +3817,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_starnet/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_starnet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3873,7 +3838,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_rare/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_rare/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3894,7 +3859,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_srn/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_srn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3915,7 +3880,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_nrtr/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_nrtr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3936,7 +3901,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_sar/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_sar/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3957,7 +3922,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_seed/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_seed/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3978,7 +3943,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_svtr/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_svtr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -3999,7 +3964,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_svtrv2/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_svtrv2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4020,7 +3985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_vitstr/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_vitstr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4041,7 +4006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_abinet/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_abinet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4062,7 +4027,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_visionlan/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_visionlan/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4083,7 +4048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_spin/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_spin/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4104,7 +4069,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_robustscanner/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_robustscanner/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4125,7 +4090,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_rfl/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_rfl/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4146,7 +4111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_parseq/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_parseq/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4167,7 +4132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_cppd/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_cppd/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4188,7 +4153,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/text_recognition/algorithm_rec_satrn/" class="md-nav__link">
+      <a href="../../../algorithm/text_recognition/algorithm_rec_satrn/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4263,7 +4228,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/super_resolution/algorithm_sr_gestalt/" class="md-nav__link">
+      <a href="../../../algorithm/super_resolution/algorithm_sr_gestalt/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4284,7 +4249,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/super_resolution/algorithm_sr_telescope/" class="md-nav__link">
+      <a href="../../../algorithm/super_resolution/algorithm_sr_telescope/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4359,7 +4324,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/formula_recognition/algorithm_rec_can/" class="md-nav__link">
+      <a href="../../../algorithm/formula_recognition/algorithm_rec_can/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4380,7 +4345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/formula_recognition/algorithm_rec_latex_ocr/" class="md-nav__link">
+      <a href="../../../algorithm/formula_recognition/algorithm_rec_latex_ocr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4453,7 +4418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/end_to_end/algorithm_e2e_pgnet/" class="md-nav__link">
+      <a href="../../../algorithm/end_to_end/algorithm_e2e_pgnet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4528,7 +4493,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/table_recognition/algorithm_table_master/" class="md-nav__link">
+      <a href="../../../algorithm/table_recognition/algorithm_table_master/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4549,7 +4514,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/table_recognition/algorithm_table_slanet/" class="md-nav__link">
+      <a href="../../../algorithm/table_recognition/algorithm_table_slanet/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4626,7 +4591,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/kie/algorithm_kie_vi_layoutxlm/" class="md-nav__link">
+      <a href="../../../algorithm/kie/algorithm_kie_vi_layoutxlm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4647,7 +4612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/kie/algorithm_kie_layoutxlm/" class="md-nav__link">
+      <a href="../../../algorithm/kie/algorithm_kie_layoutxlm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4668,7 +4633,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/kie/algorithm_kie_sdmgr/" class="md-nav__link">
+      <a href="../../../algorithm/kie/algorithm_kie_sdmgr/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4697,7 +4662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../algorithm/add_new_algorithm/" class="md-nav__link">
+      <a href="../../../algorithm/add_new_algorithm/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4777,7 +4742,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/overview/" class="md-nav__link">
+      <a href="../../../applications/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4844,7 +4809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E9%AB%98%E7%B2%BE%E5%BA%A6%E4%B8%AD%E6%96%87%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
+      <a href="../../../applications/%E9%AB%98%E7%B2%BE%E5%BA%A6%E4%B8%AD%E6%96%87%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4865,7 +4830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E6%89%8B%E5%86%99%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E6%89%8B%E5%86%99%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4944,7 +4909,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4965,7 +4930,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E6%B6%B2%E6%99%B6%E5%B1%8F%E8%AF%BB%E6%95%B0%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E6%B6%B2%E6%99%B6%E5%B1%8F%E8%AF%BB%E6%95%B0%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -4986,7 +4951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%8C%85%E8%A3%85%E7%94%9F%E4%BA%A7%E6%97%A5%E6%9C%9F%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E5%8C%85%E8%A3%85%E7%94%9F%E4%BA%A7%E6%97%A5%E6%9C%9F%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5007,7 +4972,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/PCB%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/PCB%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5088,7 +5053,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%A1%A8%E5%8D%95%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E5%A4%9A%E6%A8%A1%E6%80%81%E8%A1%A8%E5%8D%95%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5109,7 +5074,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%8F%91%E7%A5%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/" class="md-nav__link">
+      <a href="../../../applications/%E5%8F%91%E7%A5%A8%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5130,7 +5095,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%8D%B0%E7%AB%A0%E5%BC%AF%E6%9B%B2%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E5%8D%B0%E7%AB%A0%E5%BC%AF%E6%9B%B2%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5151,7 +5116,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%8D%A1%E8%AF%81%E7%B1%BBOCR/" class="md-nav__link">
+      <a href="../../../applications/%E5%BF%AB%E9%80%9F%E6%9E%84%E5%BB%BA%E5%8D%A1%E8%AF%81%E7%B1%BBOCR/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5172,7 +5137,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E6%89%AB%E6%8F%8F%E5%90%88%E5%90%8C%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96/" class="md-nav__link">
+      <a href="../../../applications/%E6%89%AB%E6%8F%8F%E5%90%88%E5%90%8C%E5%85%B3%E9%94%AE%E4%BF%A1%E6%81%AF%E6%8F%90%E5%8F%96/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5245,7 +5210,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../applications/%E8%BD%BB%E9%87%8F%E7%BA%A7%E8%BD%A6%E7%89%8C%E8%AF%86%E5%88%AB/" class="md-nav__link">
+      <a href="../../../applications/%E8%BD%BB%E9%87%8F%E7%BA%A7%E8%BD%A6%E7%89%8C%E8%AF%86%E5%88%AB/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5329,7 +5294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data_anno_synth/overview/" class="md-nav__link">
+      <a href="../../../data_anno_synth/overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5350,7 +5315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data_anno_synth/data_annotation/" class="md-nav__link">
+      <a href="../../../data_anno_synth/data_annotation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5371,7 +5336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../data_anno_synth/data_synthesis/" class="md-nav__link">
+      <a href="../../../data_anno_synth/data_synthesis/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5453,7 +5418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/datasets/" class="md-nav__link">
+      <a href="../../../datasets/datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5474,7 +5439,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/handwritten_datasets/" class="md-nav__link">
+      <a href="../../../datasets/handwritten_datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5495,7 +5460,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/vertical_and_multilingual_datasets/" class="md-nav__link">
+      <a href="../../../datasets/vertical_and_multilingual_datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5516,7 +5481,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/layout_datasets/" class="md-nav__link">
+      <a href="../../../datasets/layout_datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5537,7 +5502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/table_datasets/" class="md-nav__link">
+      <a href="../../../datasets/table_datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5558,7 +5523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../datasets/kie_datasets/" class="md-nav__link">
+      <a href="../../../datasets/kie_datasets/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5586,7 +5551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../FAQ/" class="md-nav__link">
+      <a href="../../../FAQ/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5652,7 +5617,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../community/community_contribution/" class="md-nav__link">
+      <a href="../../../community/community_contribution/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5673,7 +5638,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../community/code_and_doc/" class="md-nav__link">
+      <a href="../../../community/code_and_doc/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -5711,6 +5676,52 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、概述
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、支持模型列表
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、快速集成
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、二次开发
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -5725,7 +5736,7 @@
                   
 
   
-    <a href="https://github.com/AmberC0209/PaddleOCR/edit/main/docs/paddlex/capability_support.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/AmberC0209/PaddleOCR/edit/main/docs/paddlex/module_usage/text_image_unwarping.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5734,204 +5745,41 @@
     
       
     
-    <a href="https://github.com/AmberC0209/PaddleOCR/raw/main/docs/paddlex/capability_support.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/AmberC0209/PaddleOCR/raw/main/docs/paddlex/module_usage/text_image_unwarping.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-  <h1>能力支持</h1>
-
-<table >
-    <tr>
-        <td></td>
-        <td>在线体验</td>
-        <td>快速推理</td>
-        <td>高性能部署</td>
-        <td>服务化部署</td>
-        <td>端侧部署</td>
-        <td>二次开发</td>
-        <td><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
-    </tr>
-    <tr>
-        <td>OCR</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91660/webUI?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>表格识别</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91661?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>PP-ChatOCRv3</td>
-        <td>🚧</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-</table>
-
-<blockquote>
-<p>❗<strong>注：上述能力是PaddleX基于GPU/CPU实现的能力，PaddleX还支持英伟达 GPU、昆仑芯、昇腾和寒武纪等多种主流硬件的无缝切换，但不同芯片支持的功能有所差异，以下列出了其他三种硬件支持的能力：</strong></p>
-</blockquote>
+<h1 id="_1">文本图像矫正模块开发教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>文本图像矫正的主要目的是针对图像进行几何变换，以纠正图像中的文档扭曲、倾斜、透视变形等问题，以供后续的文本识别模块进行更准确的识别。</p>
+<h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <details>
-  <summary>👉 昇腾芯能力支持</summary>
+   <summary> 👉模型列表详情</summary>
+|模型|MS-SSIM （%）|GPU推理耗时（ms）|CPU推理耗时|模型存储大小（M)|介绍|
+|-|-|-|-|-|-|
+|UVDoc|54.40|-|-|31|高精度文本图像矫正模型|
 
-<table >
-    <tr>
-        <td></td>
-        <td>在线体验</td>
-        <td>快速推理</td>
-        <td>高性能部署</td>
-        <td>服务化部署</td>
-        <td>端侧部署</td>
-        <td>二次开发</td>
-        <td><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
-    </tr>
-    <tr>
-        <td>OCR</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91660/webUI?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>表格识别</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91661?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>PP-ChatOCRv3</td>
-        <td>🚧</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-</table>
+
+**模型的精度指标测量自**[DocUNet benchmark](https://www3.cs.stonybrook.edu/~cvl/docunet.html)。**GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为 8，精度类型为 FP32。**
 
 </details>
 
-<details>
-  <summary>👉 昆仑芯能力支持</summary>
-
-<table >
-    <tr>
-        <td></td>
-        <td>在线体验</td>
-        <td>快速推理</td>
-        <td>高性能部署</td>
-        <td>服务化部署</td>
-        <td>端侧部署</td>
-        <td>二次开发</td>
-        <td><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
-    </tr>
-    <tr>
-        <td>OCR</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91660/webUI?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>表格识别</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91661?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>PP-ChatOCRv3</td>
-        <td>🚧</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-</table>
-
-</details>
-
-<details>
-  <summary>👉 寒武纪能力支持</summary>
-
-<table >
-    <tr>
-        <td></td>
-        <td>在线体验</td>
-        <td>快速推理</td>
-        <td>高性能部署</td>
-        <td>服务化部署</td>
-        <td>端侧部署</td>
-        <td>二次开发</td>
-        <td><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
-    </tr>
-    <tr>
-        <td>OCR</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91660/webUI?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>表格识别</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/91661?source=appMineRecent">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>PP-ChatOCRv3</td>
-        <td>🚧</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-</table>
-
-</details>
+<h2 id="_4">三、快速集成<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>在快速集成前，首先需要安装PaddleX的wheel包，wheel的安装方式请参考 <a href="../../installation/installation/">PaddleX本地安装教程</a>。完成wheel包的安装后，几行代码即可完成文本检测模块的推理，可以任意切换该模块下的模型，您也可以将文本检测的模块中的模型推理集成到您的项目中。</p>
+<p><div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>from paddlex import create_model
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>model = create_model(&quot;UVDoc&quot;)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>output = model.predict(&quot;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/doc_test.jpg&quot;, batch_size=1)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>for res in output:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    res.print(json_format=False)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    res.save_to_img(&quot;./output/&quot;)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    res.save_to_json(&quot;./output/res.json&quot;)
+</span></code></pre></div>
+关于更多 PaddleX 的单模型推理的 API 的使用方法，可以参考<a href="../../instructions/model_python_API/">PaddleX单模型Python脚本使用说明</a>。</p>
+<h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。</p>
 
 
 
@@ -5964,44 +5812,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 概述">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                概述
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../installation/paddlepaddle_installation/" class="md-footer__link md-footer__link--next" aria-label="Next: 安装PaddlePaddle">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                安装PaddlePaddle
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -6056,12 +5866,12 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.tooltips", "content.code.copy", "content.tabs.link", "content.footnote.tooltips", "content.action.edit", "content.action.view", "navigation.expand", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.tooltips", "content.code.copy", "content.tabs.link", "content.footnote.tooltips", "content.action.edit", "content.action.view", "navigation.expand", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d6f25eb3.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d6f25eb3.min.js"></script>
       
-        <script src="../../javascripts/katex.min.js"></script>
+        <script src="../../../javascripts/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
