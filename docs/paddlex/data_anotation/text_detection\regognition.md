@@ -103,5 +103,3 @@ dataset_dir     # 数据集根目录，目录名称可以改变
 对于组成元素是字典的列表，字典中 `points` 表示文本框的四个顶点的坐标`（x, y）`，从左上角的顶点开始按顺时针排序；字典中`transcription`表示该文本框的文字，若`transcription 的`内容为“###”时，表示该文本框无效，不参与训练。具体可以参考[示例数据集](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar)。
 
 如果您使用了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/PPOCRLabel/README_ch.md)标注数据，只需要在完成数据集划分后将文字检测（det）目录中的`det_gt_train.txt`改名为`train.txt`、`det_gt_test.txt`改名为`val.txt`即可。
-
-

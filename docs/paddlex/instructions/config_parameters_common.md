@@ -48,4 +48,3 @@
 |batch_size|int|预测批大小|-|必需|
 |model_dir|str|预测模型路径|PaddleX模型官方权重|可选|
 |input|str|预测输入路径|-|必需|
-

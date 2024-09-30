@@ -15,4 +15,3 @@ hide:
 - [一键调用17个PaddleOCR核心模型](./paddlex/quick_start.md)
 - 一行命令快速使用：[文本检测识别（中英文/多语言）](./ppocr/overview.md)
 - 一行命令快速使用：[文档分析](./ppstructure/overview.md)
-

@@ -128,10 +128,3 @@ PaddleX的各个产线均支持**在线体验**和本地**快速推理**，您�
 * [印章文本检测模块使用教程](./module_usage/seal_text_detection.md)
 * [版面区域检测模块使用教程](./module_usage/layout_detection.md)
 * [文档图像方向分类模块使用教程](./module_usage/doc_img_orientation_classification.md)
-
-
-
-
-
-
-
