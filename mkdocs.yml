@@ -259,6 +259,9 @@ nav:
     - 多硬件安装飞桨:
       - 多硬件安装飞桨: model/hardware/install_other_devices.md
       - 支持硬件列表: model/hardware/supported_models.md
+  - 一站式全流程开发:
+      - 概述: paddlex/overview.md
+      - 快速开始: paddlex/quick_start.md
   - PP-OCR 文本检测识别:
     - 概述: ppocr/overview.md
     - 快速开始: ppocr/quick_start.md
