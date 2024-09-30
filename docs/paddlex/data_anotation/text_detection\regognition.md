@@ -1,13 +1,11 @@
 # PaddleX文本检测/文本识别任务模块数据标注教程
 
-## 1. 标注数据示例
 
-![alt text](/tmp/images/data_prepare/ocr/01.png)
-##  2. PPOCRLabel标注
-### 2.1 PPOCRLabel标注工具介绍
+##  1. PPOCRLabel标注
+### 1.1 PPOCRLabel标注工具介绍
 [PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel) 是一款适用于OCR领域的半自动化图形标注工具，内置`PP-OCR`模型对数据自动标注和重新识别。使用`Python3`和`PyQT5`编写，支持矩形框标注、表格标注、不规则文本标注、关键信息标注模式。在OCR的标注任务中，标签存储为 `txt` 文件。
 
-### 2.2 安装与运行PPOCRLabel
+### 1.2 安装与运行PPOCRLabel
 PPOCRLabel可通过whl包与Python脚本两种方式启动，whl包形式启动更加方便，这里只提供whl包说明：
 
 * windows 安装：
@@ -29,26 +27,26 @@ pip3 install opencv-contrib-python-headless==4.2.0.32 # 如果下载过慢请添
 # 选择标签模式来启动
 PPOCRLabel --lang ch  # 启动【普通模式】，用于打【检测+识别】场景的标签
 ```
-### 2.3 文本检测和文本识别的标注过程
+### 1.3 文本检测和文本识别的标注过程
 1. 安装与运行：使用上述命令安装与运行程序。
 2. 打开文件夹：在菜单栏点击 “文件” - "打开目录" 选择待标记图片的文件夹.
 
-![alt text](/tmp/images/data_prepare/ocr/02.png)
-3. 自动标注：点击 ”自动标注“，使用PP-OCR超轻量模型对图片文件名前图片状态为 “X” 的图片进行自动标注。
+![alt text](../imgs/ocr/02.png)
+1. 自动标注：点击 ”自动标注“，使用PP-OCR超轻量模型对图片文件名前图片状态为 “X” 的图片进行自动标注。
 
-![alt text](/tmp/images/data_prepare/ocr/03.png)
+![alt text](../imgs/ocr/03.png)
 4. 手动标注：点击 “矩形标注”（推荐直接在英文模式下点击键盘中的 “W”)，用户可对当前图片中模型未检出的部分进行手动绘制标记框。点击键盘Q，则使用四点标注模式（或点击“编辑” - “四点标注”），用户依次点击4个点后，双击左键表示标注完成。
 5. 标记框绘制完成后，用户点击 “确认”，检测框会先被预分配一个 “待识别” 标签。
 6. 重新识别：将图片中的所有检测画绘制/调整完成后，点击 “重新识别”，PP-OCR模型会对当前图片中的**所有检测框**重新识别[3]。
 
-![alt text](/tmp/images/data_prepare/ocr/04.png)
-![alt text](/tmp/images/data_prepare/ocr/05.png)
+![alt text](../imgs/ocr/04.png)
+![alt text](../imgs/ocr/05.png)
 7. 内容更改：单击识别结果，对不准确的识别结果进行手动更改。
 8. **确认标记：点击 “确认”，图片状态切换为 “√”，跳转至下一张。**
 9. 删除：点击 “删除图像”，图片将会被删除至回收站。
 10.  导出结果：用户可以通过菜单中“文件-导出标记结果”手动导出，同时也可以点击“文件 - 自动导出标记结果”开启自动导出。手动确认过的标记将会被存放在所打开图片文件夹下的`Label.txt`中。在菜单栏点击 “文件” - "导出识别结果"后，会将此类图片的识别训练数据保存在`crop_img`文件夹下，识别标签保存在`rec_gt.txt`中。
 
-![alt text](/tmp/images/data_prepare/ocr/06.png)
+![alt text](../imgs/ocr/06.png)
 **注意事项:**
 
 * PPOCRLabel以**文件夹**为基本标记单位，打开待标记的图片文件夹后，不会在窗口栏中显示图片，而是在点击 "选择文件夹" 之后直接将文件夹下的图片导入到程序中。

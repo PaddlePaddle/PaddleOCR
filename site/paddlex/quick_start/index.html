@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://AmberC0209.github.io/PaddleOCR/paddlex/quick_start/">
       
       
-        <link rel="prev" href="../overview/">
+        <link rel="prev" href="../installation/installation/">
       
       
         <link rel="next" href="../pipeline_usage/pipeline_develop_guide/">
@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../nstallation/installation.md" class="md-nav__link">
+      <a href="../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1239,6 +1239,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1321,32 +1327,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../module_usage/curved_text_detection.md" class="md-nav__link">
+      <a href="../module_usage/formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../module_usage/image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1368,6 +1353,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1682,6 +1751,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1748,6 +1821,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -5792,9 +5907,15 @@
 
 
 <h1 id="_1">快速开始<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p><strong>说明：</strong>
-* <a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制，详细请参考<a href="../overview/">PaddleOCR低代码全流程开发概览</a>。
-* 在PaddleX中，我们致力于实现产线级别的训练、推理与部署，产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供<strong>产线</strong>的快速使用方式，单功能模块的快速使用请参考<a href="#-更多">相关模块教程</a>中的<strong>快速集成</strong>教程。</p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>
+<p><a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制，详细请参考<a href="../overview/">PaddleOCR低代码全流程开发概览</a>。</p>
+</li>
+<li>
+<p>在PaddleX中，我们致力于实现产线级别的训练、推理与部署，产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供<strong>产线</strong>的快速使用方式，单功能模块的快速使用请参考<a href="#-更多">相关模块教程</a>中的<strong>快速集成</strong>教程。</p>
+</li>
+</ul>
 <h3 id="_2">🛠️ 安装<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <blockquote>
 <p>❗安装PaddleX前请先确保您有基础的<strong>Python运行环境</strong>。</p>
@@ -5844,7 +5965,7 @@
 
 可视化结果如下：
 
-![alt text](imgs/boardingpass.png)
+![alt text](./imgs/boardingpass.png)
 
 </details>
 
@@ -5912,22 +6033,24 @@
 <tr>
 <td>通用表格识别产线</td>
 <td><code>table_recognition</code></td>
-<td><a href="./pipeline_usage/table_recognition">通用表格识别产线Python脚本使用说明</a></td>
+<td><a href="../pipeline_usage/table_recognition/#22-python脚本方式集成">通用表格识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>PP-ChatOCRv3产线</td>
 <td><code>pp_chatocrv3</code></td>
-<td><a href="./pipeline_usage/document_scene_information_extraction">PP-ChatOCRv3产线Python脚本使用说明</a></td>
+<td><a href="../pipeline_usage/document_scene_information_extraction/#222-python脚本方式集成">PP-ChatOCRv3产线Python脚本使用说明</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="_4">🌟 更多<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
 <p>PaddleX的各个产线均支持<strong>在线体验</strong>和本地<strong>快速推理</strong>，您可以快速体验各个产线的预训练效果，如果您对产线的预训练效果满意，可以直接对产线进行<a href="../pipeline_deploy/high_performance_deploy/">高性能部署</a>/<a href="../pipeline_deploy/service_deploy/">服务化部署</a>/<a href="../pipeline_deploy/lite_deploy/">端侧部署</a>，如果不满意，您也可以对产线进行<strong>二次开发</strong>提升产线效果。完整的产线开发流程请参考<a href="../pipeline_usage/pipeline_develop_guide/">PaddleX模型产线使用概览</a>。</p>
 <p>此外，PaddleX为OCR相关的每个产线和单功能模块都提供了详细的开发教程，您可以根据需要选择对应的产线或模块进行开发：</p>
-<p>产线列表：
-* <a href="../pipeline_usage/OCR/">通用OCR产线使用教程</a>
-* <a href="../pipeline_usage/table_recognition/">通用表格识别产线使用教程</a>
-* <a href="../pipeline_usage/document_scene_information_extraction/">文档场景信息抽取v3产线使用教程</a></p>
+<p>产线列表：</p>
+<ul>
+<li><a href="../pipeline_usage/OCR/">通用OCR产线使用教程</a></li>
+<li><a href="../pipeline_usage/table_recognition/">通用表格识别产线使用教程</a></li>
+<li><a href="../pipeline_usage/document_scene_information_extraction/">文档场景信息抽取v3产线使用教程</a></li>
+</ul>
 <p>单功能模块：</p>
 <ul>
 <li><a href="../module_usage/text_detection/">文本检测模块使用教程</a></li>
@@ -5976,7 +6099,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 概述">
+          <a href="../installation/installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 安装PaddleX">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
@@ -5986,7 +6109,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                概述
+                安装PaddleX
               </div>
             </div>
           </a>

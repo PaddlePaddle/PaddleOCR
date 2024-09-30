@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nstallation/installation.md" class="md-nav__link">
+      <a href="../../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1320,6 +1320,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1402,32 +1408,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../module_usage/curved_text_detection.md" class="md-nav__link">
+      <a href="../../module_usage/formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../module_usage/image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1449,6 +1434,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1763,6 +1832,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1829,6 +1902,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -5957,8 +6072,8 @@
 <h2 id="1-ocr">1. OCR产线介绍<a class="headerlink" href="#1-ocr" title="Permanent link">&para;</a></h2>
 <p>OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。</p>
 <p>通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，PP-OCRv4 是一个端到端 OCR 串联系统，可实现 CPU 上毫秒级的文本内容精准预测，在通用场景上达到开源SOTA。基于该项目，产学研界多方开发者已快速落地多个 OCR 应用，使用场景覆盖通用、制造、金融、交通等各个领域。</p>
-<p><img alt="" src="https://rte.weiyun.baidu.com/wiki/attach/image/api/imageDownloadAddress?attachId=24e487ee25374a109c9ff40210e8b7f2&amp;docGuid=mFtiLCg9OMkp4x" title="" />
-<strong>通用OCR产线中包含了文本检测模块和文本识别模块</strong>，每个模块中包含了若干模型，具体使用哪些模型，您可以根据下边的 benchmark 数据来选择。<strong>如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</strong>。</p>
+<p><img alt="" src="https://rte.weiyun.baidu.com/wiki/attach/image/api/imageDownloadAddress?attachId=24e487ee25374a109c9ff40210e8b7f2&amp;docGuid=mFtiLCg9OMkp4x" title="" /></p>
+<p><strong>通用OCR产线中包含了文本检测模块和文本识别模块</strong>，每个模块中包含了若干模型，具体使用哪些模型，您可以根据下边的 benchmark 数据来选择。<strong>如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</strong>。</p>
 <table>
 <thead>
 <tr>

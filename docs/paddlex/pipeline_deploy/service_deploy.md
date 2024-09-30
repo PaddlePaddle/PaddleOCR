@@ -6,7 +6,7 @@
 
 服务化部署示例图：
 
-![服务化部署示例图](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main//images/pipeline_deploy/serving.png)
+![服务化部署示例图](../imgs/service.png)
 
 ## 1、基本流程
 

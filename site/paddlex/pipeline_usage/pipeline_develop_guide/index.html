@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nstallation/installation.md" class="md-nav__link">
+      <a href="../../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1257,6 +1257,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1339,32 +1345,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../module_usage/curved_text_detection.md" class="md-nav__link">
+      <a href="../../module_usage/formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../module_usage/image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1386,6 +1371,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1700,6 +1769,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1766,6 +1839,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -5844,24 +5959,17 @@
 <p>PaddleX 所提供的预训练的模型产线均可以<strong>快速体验效果</strong>，如果产线效果可以达到您的要求，您可以直接将预训练的模型产线进行<strong>开发集成/部署</strong>，如果效果不及预期，可以使用私有数据对产线中的模型进行<strong>微调</strong>，直到达到满意的效果。</p>
 <p>下面，让我们以登机牌识别的任务为例，介绍PaddleX模型产线工具的本地使用过程，在使用前，请确保您已经按照<a href="../../installation/installation/">PaddleX本地安装教程</a>完成了PaddleX的安装。</p>
 <h2 id="1">1、选择产线<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>PaddleX中每条产线都可以解决特定任务场景的问题如目标检测、时序预测、语义分割等，您需要根据具体任务选择后续进行开发的产线。例如此处为登机牌识别任务，对应 PaddleX 的【通用 OCR 产线】。更多任务与产线的对应关系可以在 <a href="../../support_list/pipelines_list/">PaddleX产线列表(CPU/GPU)</a>查询。</p>
+<p>PaddleX中每条产线都可以解决特定任务场景的问题如目标检测、时序预测、语义分割等，您需要根据具体任务选择后续进行开发的产线。例如此处为登机牌识别任务，对应 PaddleX 的【通用 OCR 】产线</p>
 <h2 id="2">2、快速体验<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p>PaddleX的每条产线都集成了众多预训练模型，您可以先体验PaddleX的预训练模型产线的效果，如果预训练模型产线的效果符合您的预期，即可直接进行<a href="#6开发集成部署">开发集成/部署</a>，如果不符合，再根据后续步骤对产线的效果进行优化。</p>
-<p>PaddleX提供了三种可以快速体验产线效果的方式，您可以根据需要选择合适的方式进行产线效果体验：</p>
-<ul>
-<li>在线快速体验地址：<a href="../../support_list/pipelines_list/">PaddleX产线列表(CPU/GPU)</a></li>
-<li>命令行快速体验：<a href="">PaddleX产线命令行使用说明</a></li>
-<li>Python脚本快速体验：<a href="../../instructions/model_python_API/">PaddleX产线Python脚本使用说明</a></li>
-</ul>
 <p>以实现登机牌识别任务的通用OCR产线为例，一行命令即可快速体验产线效果：</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>gpu:0
 </span></code></pre></div>
 参数说明：</p>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>--pipeline：产线名称，此处为OCR产线
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>--pipeline：产线名称，此处为OCR产线
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>--input：待处理的输入图片的本地路径或URL
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>--device<span class="w"> </span>使用的GPU序号（例如gpu:0表示使用第0块GPU，gpu:1,2表示使用第1、2块GPU），也可选择使用CPU（--device<span class="w"> </span>cpu）
 </span></code></pre></div>
-执行后，将提示选择 OCR 产线配置文件保存路径，默认保存至<em>当前目录</em>，也可 <em>自定义路径</em>。<a href="https://ku.baidu-int.com?t=mention&amp;mt=contact&amp;id=0e9e1070-7ca6-11ef-928f-85a316a9b6e7">@郜廷权</a></p>
 <p>此外，也可在执行命令时加入 <code>-y</code> 参数，则可跳过路径选择，直接将产线配置文件保存至当前目录。</p>
 <p>获取产线配置文件后，可将 <code>--pipeline</code> 替换为配置文件保存路径，即可使配置文件生效。例如，若配置文件保存路径为 <code>./ocr.yaml</code>，只需执行：</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>./ocr.yaml<span class="w"> </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
@@ -5872,9 +5980,9 @@
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>......
 </span></code></pre></div>
 <p>可视化结果如下：</p>
-<p><img alt="" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/boardingpass.png" /></p>
+<p><img alt="" src="../../imgs/boardingpass.png" /></p>
 <h2 id="3">3、模型选择（可选）<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>由于一个产线中可能包含一个或多个模型，在进行模型微调时，您需要根据测试的情况确定微调其中的哪个模型。以此处登机牌识别任务的OCR产线为例，该产线包含文本检测模型（如 <code>PP-OCRv4_mobile_det</code>）和文本识别模型（如 <code>PP-OCRv4_mobile_rec</code>），如发现文字的定位不准，则需要微调文本检测模型，如果发现文字的识别不准，则需要微调文本识别模型。如果您不清楚产线中包含哪些模型，可以查阅 <a href="../../support_list/pipelines_list/">PaddleX产线列表(CPU/GPU)</a></p>
+<p>由于一个产线中可能包含一个或多个模型，在进行模型微调时，您需要根据测试的情况确定微调其中的哪个模型。以此处登机牌识别任务的OCR产线为例，该产线包含文本检测模型（如 <code>PP-OCRv4_mobile_det</code>）和文本识别模型（如 <code>PP-OCRv4_mobile_rec</code>），如发现文字的定位不准，则需要微调文本检测模型，如果发现文字的识别不准，则需要微调文本识别模型。</p>
 <h2 id="4">4、模型微调（可选）<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
 <p>在确定好需要微调的模型后，您需要用私有数据集对模型进行训练，PaddleX提供了单模型开发工具，一行命令即可完成模型的训练：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>-c<span class="w"> </span>paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml<span class="w"> </span><span class="se">\</span>
@@ -5897,7 +6005,7 @@
 <p>如果效果满意，即可将微调后的产线进行<a href="#6开发集成部署">开发集成/部署</a>，如果不满意，即可回到<a href="#3模型选择可选">模型选择</a>尝试继续微调其他任务模块的模型，直到达到满意的效果。</p>
 <h2 id="6">6、开发集成/部署<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
 <p>PaddleX提供了简洁的Python API，用几行代码即可将模型产线集成到您的项目中。此处用于集成登机牌识别的OCR产线示例代码如下：</p>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>from<span class="w"> </span>paddlex<span class="w"> </span>import<span class="w"> </span>create_pipeline
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>from<span class="w"> </span>paddlex<span class="w"> </span>import<span class="w"> </span>create_pipeline
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>create_pipeline<span class="o">(</span><span class="nv">pipeline</span><span class="o">=</span><span class="s2">&quot;OCR&quot;</span><span class="o">)</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>pipeline.predict<span class="o">(</span><span class="s2">&quot;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png&quot;</span><span class="o">)</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">for</span><span class="w"> </span>res<span class="w"> </span><span class="k">in</span><span class="w"> </span>output:
@@ -5905,7 +6013,6 @@
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>res.save_to_img<span class="o">(</span><span class="s2">&quot;./output/&quot;</span><span class="o">)</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span>res.save_to_json<span class="o">(</span><span class="s2">&quot;./output/res.json&quot;</span><span class="o">)</span>
 </span></code></pre></div>
-更详细的模型产线Python集成方法请参考<a href="">PaddleX产线Python脚本使用说明</a></p>
 <p>同时，PaddleX提供了三种部署方式及详细的部署教程：</p>
 <p>🚀 <strong>高性能部署</strong>：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleX 提供高性能推理插件，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能部署流程请参考<a href="../../pipeline_deploy/high_performance_deploy/">PaddleX高性能部署指南</a>。</p>
 <p>☁️ <strong>服务化部署</strong>：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。PaddleX 支持用户以低成本实现产线的服务化部署，详细的服务化部署流程请参考<a href="../../pipeline_deploy/service_deploy/">PaddleX服务化部署指南</a>。</p>

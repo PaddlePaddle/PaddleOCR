@@ -10,9 +10,9 @@ hide:
 #### 🔥🔥 2024.9.30 发布PaddleOCR release/2.9:
   
   
-  * 发布文档图像智能分析[PP-ChatOCRv3](/docs/paddlex/pipeline_usage/document_scene_information_extraction.md)、新增4个高精度[版面分析模型](/docs/paddlex/module_usage/layout_detection.md)、高精度表格结构识别模型[SLANet_Plus](/docs/paddlex/module_usage/table_structure_recognition.md)、版面矫正预测模型[UVDoc](/docs/paddlex/module_usage/image_warping.md)、公式识别模型[LatexOCR](/docs/paddlex/module_usage/formula_recognition.md)
+  * 发布文档图像智能分析[PP-ChatOCRv3](./paddlex/pipeline_usage/document_scene_information_extraction.md)、新增4个高精度[版面分析模型](./paddlex/module_usage/layout_detection.md)、高精度表格结构识别模型[SLANet_Plus](./paddlex/module_usage/table_structure_recognition.md)、版面矫正预测模型[UVDoc](./paddlex/module_usage/text_image_unwarping.md)、公式识别模型[LatexOCR](./paddlex/module_usage/formula_recognition.md)
   
-  * 发布PaddleOCR[低代码全流程开发范式](/docs/paddlex/quick_start.md)：
+  * 发布PaddleOCR[低代码全流程开发范式](./paddlex/quick_start.md)：
      * 🎨 模型丰富一键调用：将文本图像智能分析、通用OCR、通用表格识别、公式识别、印章识别涉及的**17个模型**整合为5条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计**200+模型**，形成20+单功能模块，方便开发者进行**模型组合**使用。
      * 🚀提高效率降低门槛：提供基于**统一命令**和**图形界面**两种方式，实现模型简洁高效的使用、组合与定制。支持**高性能部署、服务化部署和端侧部署**等多种部署方式。此外，对于各种主流硬件如**英伟达GPU、昆仑芯、昇腾、寒武纪和海光**等，进行模型开发时，都可以**无缝切换**。
 

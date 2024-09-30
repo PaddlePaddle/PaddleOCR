@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://AmberC0209.github.io/PaddleOCR/paddlex/pipeline_deploy/high_performance_deploy/">
       
       
-        <link rel="prev" href="../../module_usage/table_structure_recognition/">
+        <link rel="prev" href="../../module_usage/doc_img_orientation_classification/">
       
       
         <link rel="next" href="../service_deploy/">
@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nstallation/installation.md" class="md-nav__link">
+      <a href="../../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1163,6 +1163,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1245,32 +1251,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../module_usage/curved_text_detection.md" class="md-nav__link">
+      <a href="../../module_usage/formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../module_usage/image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1292,6 +1277,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1706,6 +1775,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1772,6 +1845,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -5891,9 +6006,9 @@
 </ul>
 <h3 id="12">1.2 获取序列号与激活<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <p>在 <a href="https://aistudio.baidu.com/paddlex/commercialization">飞桨AI Studio星河社区-人工智能学习与实训社区</a> 页面的“开源模型产线部署序列号咨询与获取”部分选择“立即获取”，如下图所示：</p>
-<p><img alt="" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipeline_deploy/image-1.png" /></p>
+<p><img alt="" src="../../imgs/high_performance_1.png" /></p>
 <p>选择需要部署的产线，并点击“获取”。之后，可以在页面下方的“开源产线部署SDK序列号管理”部分找到获取到的序列号：</p>
-<p><img alt="" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipeline_deploy/image-2.png" /></p>
+<p><img alt="" src="../../imgs/high_performance_2.png" /></p>
 <p>使用序列号完成激活后，即可使用高性能推理插件。PaddleX 提供离线激活和在线激活两种方式（均只支持 Linux 系统）：</p>
 <ul>
 <li>联网激活：在使用推理 API 或 CLI 时，通过参数指定序列号及联网激活，使程序自动完成激活。</li>
@@ -6123,7 +6238,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../../module_usage/table_structure_recognition/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 表格结构识别">
+          <a href="../../module_usage/doc_img_orientation_classification/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 文档图像方向分类">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
@@ -6133,7 +6248,7 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                表格结构识别
+                文档图像方向分类
               </div>
             </div>
           </a>

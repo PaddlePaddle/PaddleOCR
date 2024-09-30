@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nstallation/installation.md" class="md-nav__link">
+      <a href="../../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1314,6 +1314,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
       
@@ -1396,32 +1402,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../module_usage/curved_text_detection.md" class="md-nav__link">
+      <a href="../../module_usage/formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../module_usage/image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1443,6 +1428,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../module_usage/doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1757,6 +1826,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1823,6 +1896,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -5947,11 +6062,7 @@
 <p><img alt="" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition/01.png" /></p>
 <p><strong>通用</strong><strong>表格识别</strong><strong>产线中包含表格结构识别模块、版面区域分析模块、文本检测模块和文本识别模块</strong>。</p>
 <p><strong>如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</strong>。</p>
-<details>
-   <summary> 👉模型列表详情</summary>
-
-**表格识别模块模型：**
-
+<p>支持模型列表：</p>
 <table>
   <tr>
     <th>模型</th>
@@ -5978,40 +6089,109 @@
   </tr>
 </table>
 
-**注：以上精度指标测量PaddleX 内部自建英文表格识别数据集。所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
-
-
-**版面区域分析模块模型：**
-
-|模型名称|mAP（%）|GPU推理耗时（ms）|CPU推理耗时|模型存储大小（M)|
-|-|-|-|-|-|
-|PicoDet_layout_1x|86.8|13.036|91.2634|7.4M |
-|PicoDet-L_layout_3cls|89.3|15.7425|159.771|22.6 M|
-|RT-DETR-H_layout_3cls|95.9|114.644|3832.62|470.1M|
-|RT-DETR-H_layout_17cls|92.6|115.126|3827.25|470.2M|
-
-**注：以上精度指标的评估集是 PaddleX 自建的版面区域分析数据集，包含 1w 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
-
-**文本检测模块模型：**
-
-|模型名称|检测Hmean（%）|GPU推理耗时（ms）|CPU推理耗时|模型存储大小（M)|
-|-|-|-|-|-|
-|PP-OCRv4_mobile_det |77.79|10.6923|120.177|4.2 M|
-|PP-OCRv4_server_det |82.69|83.3501|2434.01|100.1M|
-
-**注：以上精度指标的评估集是 PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
-
-**文本识别模块模型：**
-
-|模型名称|识别Avg Accuracy(%)|GPU推理耗时（ms）|CPU推理耗时|模型存储大小（M)|
-|-|-|-|-|-|
-|PP-OCRv4_mobile_rec |78.20|7.95018|46.7868|10.6 M|
-|PP-OCRv4_server_rec |79.20|7.19439|140.179|71.2 M|
-
-**注：以上精度指标的评估集是 PaddleOCR 自建的中文数据集 ，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
-
+<p><strong>注：以上精度指标测量PaddleX 内部自建英文表格识别数据集。所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。</strong></p>
+<p><strong>版面区域分析模块模型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>模型名称</th>
+<th>mAP（%）</th>
+<th>GPU推理耗时（ms）</th>
+<th>CPU推理耗时</th>
+<th>模型存储大小（M)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PicoDet_layout_1x</td>
+<td>86.8</td>
+<td>13.036</td>
+<td>91.2634</td>
+<td>7.4M</td>
+</tr>
+<tr>
+<td>PicoDet-L_layout_3cls</td>
+<td>89.3</td>
+<td>15.7425</td>
+<td>159.771</td>
+<td>22.6 M</td>
+</tr>
+<tr>
+<td>RT-DETR-H_layout_3cls</td>
+<td>95.9</td>
+<td>114.644</td>
+<td>3832.62</td>
+<td>470.1M</td>
+</tr>
+<tr>
+<td>RT-DETR-H_layout_17cls</td>
+<td>92.6</td>
+<td>115.126</td>
+<td>3827.25</td>
+<td>470.2M</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：以上精度指标的评估集是 PaddleX 自建的版面区域分析数据集，包含 1w 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。</strong></p>
+<p><strong>文本检测模块模型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>模型名称</th>
+<th>检测Hmean（%）</th>
+<th>GPU推理耗时（ms）</th>
+<th>CPU推理耗时</th>
+<th>模型存储大小（M)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-OCRv4_mobile_det</td>
+<td>77.79</td>
+<td>10.6923</td>
+<td>120.177</td>
+<td>4.2 M</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_det</td>
+<td>82.69</td>
+<td>83.3501</td>
+<td>2434.01</td>
+<td>100.1M</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：以上精度指标的评估集是 PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。</strong></p>
+<p><strong>文本识别模块模型：</strong></p>
+<table>
+<thead>
+<tr>
+<th>模型名称</th>
+<th>识别Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）</th>
+<th>CPU推理耗时</th>
+<th>模型存储大小（M)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-OCRv4_mobile_rec</td>
+<td>78.20</td>
+<td>7.95018</td>
+<td>46.7868</td>
+<td>10.6 M</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec</td>
+<td>79.20</td>
+<td>7.19439</td>
+<td>140.179</td>
+<td>71.2 M</td>
+</tr>
+</tbody>
+</table>
+<p><strong>注：以上精度指标的评估集是 PaddleOCR 自建的中文数据集 ，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。以上所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。</strong></p>
 </details>
-
 <h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p>PaddleX 所提供的预训练的模型产线均可以快速体验效果，你可以在线体验通用图像分类产线的效果，也可以在本地使用命令行或 Python 体验通用图像分类产线的效果。</p>
 <h3 id="21">2.1 在线体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
@@ -6248,8 +6428,8 @@
 <ul>
 <li>检测到的表格结构错误（如行列识别错误、单元格位置错误），那么可能是表格结构识别模块存在不足，您需要参考<a href="../../module_usage/table_structure_recognition/">表格结构识别模块开发教程</a>中的二次开发章节，使用您的私有数据集对表格结构识别模型进行微调。</li>
 <li>表格区域在整体版面中定位错误，那么可能是版面区域定位模块存在不足，您需要参考<a href="../../module_usage/layout_detection/">版面区域检测模块开发教程</a>中的二次开发章节，使用您的私有数据集对版面区域定位模型进行微调。</li>
-<li>有较多的文本未被检测出来（即文本漏检现象），那么可能是文本检测模型存在不足，您需要参考<a href="../../module_usage/text_recognition/">文本检测模块开发教程</a>中的二次开发章节，使用您的私有数据集对文本检测模型进行微调。</li>
-<li>已检测到的文本中出现较多的识别错误（即识别出的文本内容与实际文本内容不符），这表明文本识别模型需要进一步改进，您需要参考<a href="../../module_usage/table_structure_recognition/">文本识别模块开发教程</a>中的二次开发章节对文本识别模型进行微调。</li>
+<li>有较多的文本未被检测出来（即文本漏检现象），那么可能是文本检测模型存在不足，您需要参考<a href="../../module_usage/text_detection/">文本检测模块开发教程</a>中的二次开发章节，使用您的私有数据集对文本检测模型进行微调。</li>
+<li>已检测到的文本中出现较多的识别错误（即识别出的文本内容与实际文本内容不符），这表明文本识别模型需要进一步改进，您需要参考<a href="../../module_usage/text_recognition/">文本识别模块开发教程</a>中的二次开发章节对文本识别模型进行微调。</li>
 </ul>
 <h3 id="42">4.2 模型应用<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
 <p>当您使用私有数据集完成微调训练后，可获得本地模型权重文件。</p>

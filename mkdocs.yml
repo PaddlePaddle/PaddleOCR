@@ -266,8 +266,8 @@ nav:
   - 低代码全流程开发:
     - 概述: paddlex/overview.md
     - 快速安装: 
-      - 安装PaddlePaddle: paddlex/installation/paddlepaddle_installation.md
-      - 安装PaddleX: paddlex/nstallation/installation.md
+      - 安装PaddlePaddle: paddlex/installation/paddlepaddle_install.md
+      - 安装PaddleX: paddlex/installation/installation.md
     - 快速开始: paddlex/quick_start.md
     - 模型产线使用:
       - PaddleX产线使用概览: paddlex/pipeline_usage/pipeline_develop_guide.md
@@ -277,9 +277,13 @@ nav:
     - 单功能模块使用:
       - 文本检测: paddlex/module_usage/text_detection.md
       - 文本识别: paddlex/module_usage/text_recognition.md
-      - 印章文本检测: paddlex/module_usage/curved_text_detection.md
-      - 文本图像矫正: paddlex/module_usage/image_warping.md
+      - 公式识别: paddlex/module_usage/formula_recognition.md
       - 表格结构识别: paddlex/module_usage/table_structure_recognition.md
+      - 文本图像矫正: paddlex/module_usage/text_image_unwarping.md
+      - 印章文本检测: paddlex/module_usage/seal_text_detection.md
+      - 版面区域检测: paddlex/module_usage/layout_detection.md
+      - 文档图像方向分类: paddlex/module_usage/doc_img_orientation_classification.md
+      
     - 模型产线部署:
       - 高性能部署: paddlex/pipeline_deploy/high_performance_deploy.md
       - 服务化部署: paddlex/pipeline_deploy/service_deploy.md
@@ -293,6 +297,8 @@ nav:
     - 数据准备:
       - 文本检测/文本识别: paddlex/data_anotation/text_detection\regognition.md
       - 表格识别: paddlex/data_anotation/table_recognition.md
+      - 目标检测: paddlex/data_anotation/object_detection.md
+      - 图像分类: paddlex/data_anotation/image_classification.md
   - PP-OCR 文本检测识别:
     - 概述: ppocr/overview.md
     - 快速开始: ppocr/quick_start.md

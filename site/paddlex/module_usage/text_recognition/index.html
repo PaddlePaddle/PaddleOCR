@@ -18,7 +18,7 @@
         <link rel="prev" href="../text_detection/">
       
       
-        <link rel="next" href="../table_structure_recognition/">
+        <link rel="next" href="../formula_recognition/">
       
       
       <link rel="icon" href="../../../static/images/logo.jpg">
@@ -938,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/paddlepaddle_installation.md" class="md-nav__link">
+      <a href="../../installation/paddlepaddle_install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -959,7 +959,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../nstallation/installation.md" class="md-nav__link">
+      <a href="../../installation/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1154,6 +1154,12 @@
   
     
     
+      
+        
+      
+        
+      
+        
       
         
       
@@ -1426,32 +1432,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../curved_text_detection.md" class="md-nav__link">
+      <a href="../formula_recognition/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    印章文本检测
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../image_warping.md" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    文本图像矫正
+    公式识别
   </span>
   
 
@@ -1473,6 +1458,90 @@
   
   <span class="md-ellipsis">
     表格结构识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../text_image_unwarping/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文本图像矫正
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seal_text_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    印章文本检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../layout_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    版面区域检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../doc_img_orientation_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    文档图像方向分类
   </span>
   
 
@@ -1787,6 +1856,10 @@
       
         
       
+        
+      
+        
+      
     
     
       
@@ -1853,6 +1926,48 @@
   
   <span class="md-ellipsis">
     表格识别
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/object_detection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    目标检测
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anotation/image_classification/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    图像分类
   </span>
   
 
@@ -6153,25 +6268,20 @@
 
 <h4 id="413">4.1.3 数据集格式转换/数据集划分（可选）<a class="headerlink" href="#413" title="Permanent link">&para;</a></h4>
 <p>在您完成数据校验之后，可以通过<strong>修改配置文件</strong>或是<strong>追加超参数</strong>的方式对数据集的格式进行转换，也可以对数据集的训练/验证比例进行重新划分。</p>
-<details>
-  <summary>👉 <b>格式转换/数据集划分详情（点击展开）</b></summary>
-
-
-**（1）数据集格式转换**
-
-文本识别暂不支持数据转换。
-
-**（2）数据集划分**
-
-数据集划分的参数可以通过修改配置文件中 `CheckDataset` 下的字段进行设置，配置文件中部分参数的示例说明如下：
-
-* `CheckDataset`:
-  * `split`:
-    * `enable`: 是否进行重新划分数据集，为 `True` 时进行数据集格式转换，默认为 `False`；
-    * `train_percent`: 如果重新划分数据集，则需要设置训练集的百分比，类型为0-100之间的任意整数，需要保证和 `val_percent` 值加和为100；
-例如，您想重新划分数据集为 训练集占比90%、验证集占比10%，则需将配置文件修改为：
-
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>......
+<p><strong>（1）数据集格式转换</strong></p>
+<p>文本识别暂不支持数据转换。</p>
+<p><strong>（2）数据集划分</strong></p>
+<p>数据集划分的参数可以通过修改配置文件中 <code>CheckDataset</code> 下的字段进行设置，配置文件中部分参数的示例说明如下：</p>
+<ul>
+<li><code>CheckDataset</code>:</li>
+<li><code>split</code>:<ul>
+<li><code>enable</code>: 是否进行重新划分数据集，为 <code>True</code> 时进行数据集格式转换，默认为 <code>False</code>；</li>
+<li><code>train_percent</code>: 如果重新划分数据集，则需要设置训练集的百分比，类型为0-100之间的任意整数，需要保证和 <code>val_percent</code> 值加和为100；
+例如，您想重新划分数据集为 训练集占比90%、验证集占比10%，则需将配置文件修改为：</li>
+</ul>
+</li>
+</ul>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>......
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>CheckDataset:
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>......
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>split:
@@ -6180,16 +6290,13 @@
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span>val_percent:<span class="w"> </span><span class="m">10</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span>......
 </span></code></pre></div>
-随后执行命令：
-
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>-c<span class="w"> </span>paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml<span class="w"> </span><span class="se">\</span>
+随后执行命令：</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>-c<span class="w"> </span>paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>-o<span class="w"> </span>Global.mode<span class="o">=</span>check_dataset<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>-o<span class="w"> </span>Global.dataset_dir<span class="o">=</span>./dataset/ocr_rec_dataset_examples
 </span></code></pre></div>
-数据划分执行之后，原有标注文件会被在原路径下重命名为 `xxx.bak`。
-
-以上参数同样支持通过追加命令行参数的方式进行设置：
-
+数据划分执行之后，原有标注文件会被在原路径下重命名为 <code>xxx.bak</code>。</p>
+<p>以上参数同样支持通过追加命令行参数的方式进行设置：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>-c<span class="w"> </span>paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>-o<span class="w"> </span>Global.mode<span class="o">=</span>check_dataset<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span>-o<span class="w"> </span>Global.dataset_dir<span class="o">=</span>./dataset/ocr_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
@@ -6197,8 +6304,6 @@
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span>-o<span class="w"> </span>CheckDataset.split.train_percent<span class="o">=</span><span class="m">90</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>-o<span class="w"> </span>CheckDataset.split.val_percent<span class="o">=</span><span class="m">10</span>
 </span></code></pre></div>
-</details>
-
 <h3 id="42">4.2 模型训练<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
 <p>一条命令即可完成模型的训练，以此处 PP-OCRv4 移动端文本识别模型（PP-OCRv4_mobile_rec）的训练为例：</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>main.py<span class="w"> </span>-c<span class="w"> </span>paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml<span class="w"> </span><span class="se">\</span>
@@ -6241,16 +6346,9 @@
 <li>指定验证数据集路径：<code>-o Global.dataset_dir</code>
 其他相关参数均可通过修改<code>.yaml</code>配置文件中的<code>Global</code>和<code>Evaluate</code>下的字段来进行设置，详细请参考<a href="../../instructions/config_parameters_common/">PaddleX通用模型配置文件参数说明</a>。</li>
 </ul>
-<details>
-  <summary>👉 <b>更多说明（点击展开）</b></summary>
-
-
-在模型评估时，需要指定模型权重文件路径，每个配置文件中都内置了默认的权重保存路径，如需要改变，只需要通过追加命令行参数的形式进行设置即可，如`-o Evaluate.weight_path=./output/best_accuracy/best_accuracy.pdparams`。
-
-在完成模型评估后，通常有以下产出：`evaluate_result.json，其记录了`评估的结果，具体来说，记录了评估任务是否正常完成，以及模型的评估指标，包含 acc、norm_edit_dis；
-
-</details>
-
+<p><strong>更多说明：</strong></p>
+<p>在模型评估时，需要指定模型权重文件路径，每个配置文件中都内置了默认的权重保存路径，如需要改变，只需要通过追加命令行参数的形式进行设置即可，如<code>-o Evaluate.weight_path=./output/best_accuracy/best_accuracy.pdparams</code>。</p>
+<p>在完成模型评估后，通常有以下产出：<code>evaluate_result.json，其记录了</code>评估的结果，具体来说，记录了评估任务是否正常完成，以及模型的评估指标，包含 acc、norm_edit_dis；</p>
 <h3 id="44"><strong>4.4 模型推理和模型集成</strong><a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
 <p>在完成模型的训练和评估后，即可使用训练好的模型权重进行推理预测或者进行Python集成。</p>
 <h4 id="441">4.4.1 模型推理<a class="headerlink" href="#441" title="Permanent link">&para;</a></h4>
@@ -6328,13 +6426,13 @@
         
         
           
-          <a href="../table_structure_recognition/" class="md-footer__link md-footer__link--next" aria-label="Next: 表格结构识别">
+          <a href="../formula_recognition/" class="md-footer__link md-footer__link--next" aria-label="Next: 公式识别">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                表格结构识别
+                公式识别
               </div>
             </div>
             <div class="md-footer__button md-icon">

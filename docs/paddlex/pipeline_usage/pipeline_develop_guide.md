@@ -25,17 +25,12 @@ PaddleX 所提供的预训练的模型产线均可以**快速体验效果**，�
 
 ## 1、选择产线
 
-PaddleX中每条产线都可以解决特定任务场景的问题如目标检测、时序预测、语义分割等，您需要根据具体任务选择后续进行开发的产线。例如此处为登机牌识别任务，对应 PaddleX 的【通用 OCR 产线】。更多任务与产线的对应关系可以在 [PaddleX产线列表(CPU/GPU)](../support_list/pipelines_list.md)查询。
+PaddleX中每条产线都可以解决特定任务场景的问题如目标检测、时序预测、语义分割等，您需要根据具体任务选择后续进行开发的产线。例如此处为登机牌识别任务，对应 PaddleX 的【通用 OCR 】产线
 
 ## 2、快速体验
 
 PaddleX的每条产线都集成了众多预训练模型，您可以先体验PaddleX的预训练模型产线的效果，如果预训练模型产线的效果符合您的预期，即可直接进行[开发集成/部署](#6开发集成部署)，如果不符合，再根据后续步骤对产线的效果进行优化。
 
-PaddleX提供了三种可以快速体验产线效果的方式，您可以根据需要选择合适的方式进行产线效果体验：
-
-* 在线快速体验地址：[PaddleX产线列表(CPU/GPU)](../support_list/pipelines_list.md)
-* 命令行快速体验：[PaddleX产线命令行使用说明]()
-* Python脚本快速体验：[PaddleX产线Python脚本使用说明](../instructions/model_python_API.md)
 
 以实现登机牌识别任务的通用OCR产线为例，一行命令即可快速体验产线效果：
 
@@ -49,7 +44,6 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 --input：待处理的输入图片的本地路径或URL
 --device 使用的GPU序号（例如gpu:0表示使用第0块GPU，gpu:1,2表示使用第1、2块GPU），也可选择使用CPU（--device cpu）
 ```
-执行后，将提示选择 OCR 产线配置文件保存路径，默认保存至*当前目录*，也可 *自定义路径*。[@郜廷权](https://ku.baidu-int.com?t=mention&mt=contact&id=0e9e1070-7ca6-11ef-928f-85a316a9b6e7)
 
 此外，也可在执行命令时加入 `-y` 参数，则可跳过路径选择，直接将产线配置文件保存至当前目录。
 
@@ -69,10 +63,10 @@ paddlex --pipeline ./ocr.yaml --input https://paddle-model-ecology.bj.bcebos.com
 
 可视化结果如下：
 
-![](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/boardingpass.png)
+![](../imgs/boardingpass.png)
 ## 3、模型选择（可选）
 
-由于一个产线中可能包含一个或多个模型，在进行模型微调时，您需要根据测试的情况确定微调其中的哪个模型。以此处登机牌识别任务的OCR产线为例，该产线包含文本检测模型（如 `PP-OCRv4_mobile_det`）和文本识别模型（如 `PP-OCRv4_mobile_rec`），如发现文字的定位不准，则需要微调文本检测模型，如果发现文字的识别不准，则需要微调文本识别模型。如果您不清楚产线中包含哪些模型，可以查阅 [PaddleX产线列表(CPU/GPU)](../support_list/pipelines_list.md)
+由于一个产线中可能包含一个或多个模型，在进行模型微调时，您需要根据测试的情况确定微调其中的哪个模型。以此处登机牌识别任务的OCR产线为例，该产线包含文本检测模型（如 `PP-OCRv4_mobile_det`）和文本识别模型（如 `PP-OCRv4_mobile_rec`），如发现文字的定位不准，则需要微调文本检测模型，如果发现文字的识别不准，则需要微调文本识别模型。
 
 ## 4、模型微调（可选）
 
@@ -117,7 +111,6 @@ for res in output:
     res.save_to_img("./output/")
     res.save_to_json("./output/res.json")
 ```
-更详细的模型产线Python集成方法请参考[PaddleX产线Python脚本使用说明]()
 
 同时，PaddleX提供了三种部署方式及详细的部署教程：
 

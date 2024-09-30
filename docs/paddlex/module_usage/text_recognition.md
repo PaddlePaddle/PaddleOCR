@@ -165,8 +165,6 @@ python main.py -c paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml \
 #### 4.1.3 数据集格式转换/数据集划分（可选）
 在您完成数据校验之后，可以通过**修改配置文件**或是**追加超参数**的方式对数据集的格式进行转换，也可以对数据集的训练/验证比例进行重新划分。
 
-<details>
-  <summary>👉 <b>格式转换/数据集划分详情（点击展开）</b></summary>
 
 
 **（1）数据集格式转换**
@@ -212,7 +210,6 @@ python main.py -c paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml \
     -o CheckDataset.split.train_percent=90 \
     -o CheckDataset.split.val_percent=10
 ```
-</details>
 
 ### 4.2 模型训练
 一条命令即可完成模型的训练，以此处 PP-OCRv4 移动端文本识别模型（PP-OCRv4_mobile_rec）的训练为例：
@@ -262,15 +259,13 @@ python main.py -c paddlex/configs/text_recognition/PP-OCRv4_mobile_rec.yaml \
 * 指定验证数据集路径：`-o Global.dataset_dir`
 其他相关参数均可通过修改`.yaml`配置文件中的`Global`和`Evaluate`下的字段来进行设置，详细请参考[PaddleX通用模型配置文件参数说明](../instructions/config_parameters_common.md)。
 
-<details>
-  <summary>👉 <b>更多说明（点击展开）</b></summary>
+**更多说明：**
 
 
 在模型评估时，需要指定模型权重文件路径，每个配置文件中都内置了默认的权重保存路径，如需要改变，只需要通过追加命令行参数的形式进行设置即可，如`-o Evaluate.weight_path=./output/best_accuracy/best_accuracy.pdparams`。
 
 在完成模型评估后，通常有以下产出：`evaluate_result.json，其记录了`评估的结果，具体来说，记录了评估任务是否正常完成，以及模型的评估指标，包含 acc、norm_edit_dis；
 
-</details>
 
 ### **4.4 模型推理和模型集成**
 在完成模型的训练和评估后，即可使用训练好的模型权重进行推理预测或者进行Python集成。
