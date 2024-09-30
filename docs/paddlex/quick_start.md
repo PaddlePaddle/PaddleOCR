@@ -31,6 +31,40 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0
 
 > ❗ 更多安装方式参考[PaddleX安装教程](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/installation/installation.md)
 
+### 📝 Python 脚本使用
+
+三行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
+```python
+from paddlex import create_pipeline
+
+pipeline = create_pipeline(pipeline=[产线名称])
+output = pipeline.predict([输入图片名称])
+for res in output:
+    res.print()
+    res.save_to_img("./output/")
+    res.save_to_json("./output/")
+```
+执行了如下几个步骤：
+
+* `create_pipeline()` 实例化产线对象
+* 传入图片并调用产线对象的 `predict` 方法进行推理预测
+* 对预测结果进行处理
+
+其他产线的 Python 脚本使用，只需将 `create_pipeline()` 方法的 `pipeline` 参数调整为相应产线的名称。下面列出了每个产线对应的参数名称及详细的使用解释：
+<details>
+  <summary><b>👉 更多产线的Python脚本使用</b></summary>
+
+| 产线名称           | 对应参数               | 详细说明                                                                                                      |
+|--------------------|------------------------|---------------------------------------------------------------------------------------------------------------|
+| 文档场景信息抽取v3   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
+| 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
+| 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
+| 印章识别       | coming soon | coming soon |
+| 公式识别       | coming soon | coming soon |
+
+
+</details>
+
 ### 💻 命令行使用
 
 一行命令即可快速体验产线效果，统一的命令行格式为：
@@ -71,37 +105,8 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 | 产线名称      | 使用命令                                                                                                                                                                                             |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 通用表格识别    | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
-
-</details>
-
-### 📝 Python 脚本使用
-
-三行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
-```python
-from paddlex import create_pipeline
-
-pipeline = create_pipeline(pipeline=[产线名称])
-output = pipeline.predict([输入图片名称])
-for res in output:
-    res.print()
-    res.save_to_img("./output/")
-    res.save_to_json("./output/")
-```
-执行了如下几个步骤：
-
-* `create_pipeline()` 实例化产线对象
-* 传入图片并调用产线对象的 `predict` 方法进行推理预测
-* 对预测结果进行处理
-
-其他产线的 Python 脚本使用，只需将 `create_pipeline()` 方法的 `pipeline` 参数调整为相应产线的名称。下面列出了每个产线对应的参数名称及详细的使用解释：
-<details>
-  <summary><b>👉 更多产线的Python脚本使用</b></summary>
-
-| 产线名称           | 对应参数               | 详细说明                                                                                                      |
-|--------------------|------------------------|---------------------------------------------------------------------------------------------------------------|
-| 文档场景信息抽取   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
-| 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
-| 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
-
+|文档场景信息抽取v3 | coming soon |   
+| 印章识别       | coming soon |
+| 公式识别       | coming soon |
 
 </details>
