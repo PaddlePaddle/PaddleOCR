@@ -3,7 +3,7 @@
 
 ##  1. PPOCRLabel标注
 ### 1.1 PPOCRLabel标注工具介绍
-[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel) 是一款适用于OCR领域的半自动化图形标注工具，内置`PP-OCR`模型对数据自动标注和重新识别。使用`Python3`和`PyQT5`编写，支持矩形框标注、表格标注、不规则文本标注、关键信息标注模式。在OCR的标注任务中，标签存储为 `txt` 文件。
+[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md) 是一款适用于OCR领域的半自动化图形标注工具，内置`PP-OCR`模型对数据自动标注和重新识别。使用`Python3`和`PyQT5`编写，支持矩形框标注、表格标注、不规则文本标注、关键信息标注模式。在OCR的标注任务中，标签存储为 `txt` 文件。
 
 ### 1.2 安装与运行PPOCRLabel
 PPOCRLabel可通过whl包与Python脚本两种方式启动，whl包形式启动更加方便，这里只提供whl包说明：
@@ -85,7 +85,7 @@ python gen_ocr_train_val_test.py --trainValTestRatio 7:3:0 --datasetRootPath ../
   |- word_003.jpg
   | ...
 ```
-更多工具使用说明请参考[详细说明](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/PPOCRLabel/README_ch.md)
+更多工具使用说明请参考[详细说明](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)
 
 ##  3. 数据格式
 PaddleX针对文本检测任务定义的数据集，名称是`TextDetDataset`，整理标注完成的数据为如下文件组织形式和命名：
