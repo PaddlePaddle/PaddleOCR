@@ -5,7 +5,8 @@
 
 ## 二、支持模型列表
 
-
+<details>
+   <summary> 👉模型列表详情</summary>
 <table>
   <tr>
     <th>模型</th>
@@ -17,18 +18,25 @@
   </tr>
   <tr>
     <td>SLANet</td>
-    <td>76.31</td>
-    <td>791.73</td>
-    <td>379.87</td>
-    <td>9.3</td>
-    <td>SLANet 是百度飞桨视觉团队自研的表格结构识别模型。该模型通过采用CPU 友好型轻量级骨干网络PP-LCNet、高低层特征融合模块CSP-PAN、结构与位置信息对齐的特征解码模块SLA Head，大幅提升了表格结构识别的精度和推理速度。</td>
+    <td>59.52</td>
+    <td>522.536</td>
+    <td>1845.37</td>
+    <td>6.9 M</td>
+    <td rowspan="2">SLANet 是百度飞桨视觉团队自研的表格结构识别模型。该模型通过采用CPU 友好型轻量级骨干网络PP-LCNet、高低层特征融合模块CSP-PAN、结构与位置信息对齐的特征解码模块SLA Head，大幅提升了表格结构识别的精度和推理速度。</td>
+  </tr>
+   <tr>
+    <td>SLANet_plus</td>
+    <td>63.69</td>
+    <td>522.536</td>
+    <td>1845.37</td>
+    <td>6.9 M</td>
   </tr>
 </table>
 
 
-**注：以上精度指标测量自PubtabNet英文表格识别数据集。所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
+**注：以上精度指标测量PaddleX 内部自建英文表格识别数据集。所有模型 GPU 推理耗时基于 NVIDIA Tesla T4 机器，精度类型为 FP32， CPU 推理速度基于 Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz，线程数为8，精度类型为 FP32。**
 
-
+</details>
 
 ## 三、快速集成
 > ❗ 在快速集成前，请先安装 PaddleX 的 wheel 包，详细请参考 [PaddleX本地安装教程](../installation/installation.md)
@@ -47,7 +55,7 @@ for res in output:
 关于更多 PaddleX 的单模型推理的 API 的使用方法，可以参考的使用方法，可以参考[PaddleX单模型Python脚本使用说明](../instructions/model_python_API.md)。
 
 ## 四、二次开发
-如果你追求更高精度的现有模型，可以使用 PaddleX 的二次开发能力，开发更好的表格结构识别模型。在使用 PaddleX 开发表格结构识别模型之前，请务必安装 PaddleX 的 PaddleOCR插件，安装过程可以参考 [PaddleX本地安装教程](](../installation/installation.md)
+如果你追求更高精度的现有模型，可以使用 PaddleX 的二次开发能力，开发更好的表格结构识别模型。在使用 PaddleX 开发表格结构识别模型之前，请务必安装 PaddleX 的 PaddleOCR插件，安装过程可以参考 [PaddleX本地安装教程](../installation/installation.md)
 
 ### 4.1 数据准备
 在进行模型训练前，需要准备相应任务模块的数据集。PaddleX 针对每一个模块提供了数据校验功能，**只有通过数据校验的数据才可以进行模型训练**。此外，PaddleX 为每一个模块都提供了 Demo 数据集，您可以基于官方提供的 Demo 数据完成后续的开发。若您希望用私有数据集进行后续的模型训练，可以参考[PaddleX表格结构识别任务模块数据标注教程](../data_anotation/table_recognition.md)
@@ -197,7 +205,7 @@ python main.py -c paddlex/configs/table_recognition/SLANet.yaml \
 
 * 模型训练过程中，PaddleX 会自动保存模型权重文件，默认为`output`，如需指定保存路径，可通过配置文件中 `-o Global.output` 字段进行设置。
 * PaddleX 对您屏蔽了动态图权重和静态图权重的概念。在模型训练的过程中，会同时产出动态图和静态图的权重，在模型推理时，默认选择静态图权重推理。
-* 训练其他模型时，需要的指定相应的配置文件，模型和配置的文件的对应关系，可以查阅[PaddleX模型列表（CPU/GPU）](../model_list.md)。
+* 训练其他模型时，需要的指定相应的配置文件，模型和配置的文件的对应关系，可以查阅[PaddleX模型列表（CPU/GPU）](../support_list/models_list.md)。
 在完成模型训练后，所有产出保存在指定的输出目录（默认为`./output/`）下，通常有以下产出：
 
 * `train_result.json`：训练结果记录文件，记录了训练任务是否正常完成，以及产出的权重指标、相关文件路径等；
@@ -261,4 +269,4 @@ python main.py -c paddlex/configs/table_recognition/SLANet.yaml  \
 
 2.**模块集成**
 
-您产出的权重可以直接集成到表格结构识别模块中，可以参考[快速集成](#三快速集成)的 Python 示例代码，只需要将模型替换为你训练的到的模型路径即可。
+您产出的权重可以直接集成到表格结构识别模块中，可以参考[快速集成]()的 Python 示例代码，只需要将模型替换为你训练的到的模型路径即可。

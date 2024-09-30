@@ -1,4 +1,4 @@
-# 通用OCR产线开使用教程
+# 通用OCR产线开发使用教程
 
 ## 1. OCR产线介绍
 OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。
@@ -27,7 +27,7 @@ PaddleX 所提供的预训练的模型产线均可以快速体验效果，你可
 如果您对产线运行的效果满意，可以直接对产线进行集成部署，您可以直接从云端下载部署包，也可以使用2.2节本地集成的方式。如果不满意，您也可以利用私有数据**对产线中的模型进行在线微调**。
 
 ### 2.2 本地体验
-在本地使用通用OCR产线前，请确保您已经按照[PaddleX安装教程](/docs_new/installation/installation.md)完成了PaddleX的wheel包安装。
+在本地使用通用OCR产线前，请确保您已经按照[PaddleX安装教程](../installation/installation.md)完成了PaddleX的wheel包安装。
 
 #### 2.2.1 命令行方式体验
 一行命令即可快速体验OCR产线效果
@@ -103,7 +103,7 @@ for batch in output:
 | str        | 支持传入待预测数据文件url，如图像文件的网络url：https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png；                                                                                     |
 | str        | 支持传入本地目录，该目录下需包含待预测数据文件，如本地路径：/root/data/；                                                                                                                                                    |
 | dict       | 支持传入字典类型，字典的key需要与具体产线对应，如OCR产线为"img"，字典的val支持上述类型数据，如：{"img": "/root/data1"}；                                                                                                     |
-| list       | 支持传入列表，列表元素需为上述类型数据，如[numpy.ndarray, numpy.ndarray, ]，["/root/data/img1.jpg", "/root/data/img2.jpg", ]，["/root/data1", "/root/data2", ]，[{"img": "/root/data1"}, {"img": "/root/data2/img.jpg"}, ]； |
+| list       | 支持传入列表，列表元素需为上述类型数据，如`[numpy.ndarray, numpy.ndarray, ]，["/root/data/img1.jpg", "/root/data/img2.jpg", ]，["/root/data1", "/root/data2", ]，[{"img": "/root/data1"}, {"img": "/root/data2/img.jpg"}, ]；` |
 
 * 调用predict方法获取预测结果：`predict` 方法为`generator`，因此需要通过调用获得预测结果，`predict`方法以batch为单位对数据进行预测，因此预测结果为list形式表示的一组预测结果
 * 对预测结果进行处理：每个样本的预测结果均为dict类型，且支持打印，或保存为文件，支持保存的类型与具体产线相关，如：
@@ -188,4 +188,4 @@ paddlex --pipeline OCR --model PP-OCRv4_mobile_det PP-OCRv4_mobile_rec --input h
 ```
 paddlex --pipeline OCR --model PP-OCRv4_mobile_det PP-OCRv4_mobile_rec --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --device npu:0
 ```
-若您想在更多种类的硬件上使用通用OCR产线，请参考[PaddleX多硬件使用指南](/docs_new/installation/installation_other_devices.md)。
+若您想在更多种类的硬件上使用通用OCR产线，请参考[PaddleX多硬件使用指南](../other_devices_support/installation_other_devices.md)。

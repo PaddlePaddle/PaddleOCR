@@ -29,40 +29,37 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 📣 近期更新([more](https://paddlepaddle.github.io/PaddleOCR/update.html))
 
+- 🔥🔥《PaddleX文档信息个性化抽取新升级》，PP-ChatOCRv3创新性提供了基于数据融合技术的OCR模型二次开发功能，具备更强的模型微调能力。百万级高质量通用OCR文本识别数据，按特定比例自动融入垂类模型训练数据，破解产业垂类模型训练导致通用文本识别能力减弱难题。适用自动化办公、金融风控、医疗健康、教育出版、法律党政等产业实际场景。**10月10日（周四）19：00**直播为您详细解读数据融合技术以及如何利用提示词工程实现更好的信息抽取效果。 [报名链接](https://www.wjx.top/vm/mFhGfwx.aspx?udsid=772552)
 - **🔥2024.9.30 发布PaddleOCR release/2.9**:
   
-  * 发布文档图像智能分析[PP-ChatOCRv3](/docs/paddlex/pipeline_usage/document_scene_information_extraction.md)
-  * 发布PaddleOCR 训练推理[全流程低代码开发方案](/docs/paddlex/quick_start.md)
-    * 🎨 模型丰富一键调用：将**通用OCR、通用表格识别和文档场景信息抽取**的XXX模型整合为3条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。同时覆盖目标检测、语义分割、时序预测等多个热门AI领域**20+单功能模块**，方便开发者进行模型组合使用。
-    * 🚀提高效率降低门槛：实现基于图形界面和统一命令的模型**全流程开发**，支持**高性能部署、服务化部署和端侧部署**等多种部署方式，同时支持英伟达GPU、昆仑芯、昇腾、寒武纪和海光等**多种主流硬件的无缝切换**。
-  * 新增4个高精度[版面分析模型](/docs/paddlex/module_usage/layout_detection.md)
-  * 新增高精度表格结构识别模型[SLANet_Plus](/docs/paddlex/module_usage/table_structure_recognition.md)
-  * 新增版面矫正预测模型[UVDoc](/docs/paddlex/module_usage/image_warping.md)
-  * 新增公式识别模型[LatexOCR](/docs/paddlex/module_usage/formula_recognition.md)
+  
+  * 添加文档图像智能分析[PP-ChatOCRv3](/docs/paddlex/pipeline_usage/document_scene_information_extraction.md)、新增4个高精度[版面分析模型](/docs/paddlex/module_usage/layout_detection.md)、高精度表格结构识别模型[SLANet_Plus](/docs/paddlex/module_usage/table_structure_recognition.md)、版面矫正预测模型[UVDoc](/docs/paddlex/module_usage/image_warping.md)、公式识别模型[LatexOCR](/docs/paddlex/module_usage/formula_recognition.md)
+  
+  * 发布PaddleOCR[低代码全流程开发范式](/docs/paddlex/quick_start.md)：
+     * 🎨 模型丰富一键调用：将文本图像智能分析、通用OCR、通用表格识别、公式识别、印章识别涉及的**17个模型**整合为5条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计**200+模型**，形成20+单功能模块，方便开发者进行**模型组合**使用。
+     * 🚀提高效率降低门槛：提供基于**统一命令**和**图形界面**两种方式，实现模型简洁高效的使用、组合与定制。支持**高性能部署、服务化部署和端侧部署**等多种部署方式。此外，对于各种主流硬件如**英伟达GPU、昆仑芯、昇腾、寒武纪和海光**等，进行模型开发时，都可以**无缝切换**。
+
   
 - **🔥2024.7 添加 PaddleOCR 算法模型挑战赛冠军方案**：
     - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](https://paddlepaddle.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2.html)；
     - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](https://paddlepaddle.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_slanet.html)。
 
-- **💥2024.6.27 飞桨低代码开发工具 [PaddleX 3.0](https://github.com/paddlepaddle/paddlex) 重磅更新,低门槛轻松玩转OCR 模型开发！**
-    - 🎨 **模型丰富一键调用**：将**文本检测、表格识别、文档场景信息抽取**等OCR领域关键任务整合为3条模型产线，通过极简的Python API**一键调用**，快速体验模型效果。同时覆盖目标检测、语义分割、时序预测等多个热门AI领域的**10条模型产线**和**20+单功能模块**，方便开发者进行模型组合使用。
-    - 🚀 **提高效率降低门槛**：实现基于图形界面和统一命令的模型**全流程开发**，打造大小模型结合、大模型半监督学习和多模型融合的8条特色模型产线，大幅度降低迭代模型的成本。
-    - 🌐 **多种场景灵活部署**：支持**高性能部署**、**服务化部署**和**端侧部署**等多种部署方式，确保不同应用场景下模型的高效运行和快速响应。
-    - 🔧 **主流硬件高效支持**：支持英伟达 GPU、昆仑芯、昇腾和寒武纪等**多种主流硬件**的无缝切换，确保高效运行。
-
-## 📚文档
-
-完整文档请移步：[docs](https://AmberC0209.github.io/PaddleOCR/)
 
 ## 🌟 特性
 
-支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型[PP-OCR](https://paddlepaddle.github.io/PaddleOCR/ppocr/overview.html)、[PP-Structure](https://paddlepaddle.github.io/PaddleOCR/ppstructure/overview.html)和[PP-ChatOCRv2](https://aistudio.baidu.com/community/app/70303)，并打通数据生产、模型训练、压缩、预测部署全流程。
+支持多种 OCR 相关前沿算法，在此基础上打造产业级特色模型PP-、PP-Structure和PP-ChatOCR，并打通数据生产、模型训练、压缩、预测部署全流程。
 
 <div align="center">
     <img src="./docs/images/ppocrv4.png">
 </div>
 
 ## ⚡ [快速开始](https://paddlepaddle.github.io/PaddleOCR/quick_start.html)
+
+## 🔥 [低代码全流程开发](/docs/paddlex/overview.md)
+
+## 📝 文档
+
+完整文档请移步：[docs](https://AmberC0209.github.io/PaddleOCR/)
 
 ## 📚《动手学 OCR》电子书
 

@@ -5,15 +5,18 @@
 
 ## 二、支持模型列表
 
+<details>
+   <summary> 👉模型列表详情</summary>
 
 |模型|检测Hmean（%）|GPU推理耗时（ms）|CPU推理耗时|模型存储大小（M)|介绍|
 |-|-|-|-|-|-|
 |PP-OCRv4_server_det|82.69|83.3501|2434.01|109|PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署|
 |PP-OCRv4_mobile_det|77.79|10.6923|120.177|4.7|PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署|
 
+</details>
 
 ## 三、快速集成
-> ❗ 在快速集成前，请先安装 PaddleX 的 wheel 包，详细请参考 [PaddleX本地安装教程](](../installation/installation.md)。
+> ❗ 在快速集成前，请先安装 PaddleX 的 wheel 包，详细请参考 [PaddleX本地安装教程](../installation/installation.md)。
 > 
 几行代码即可完成文本检测模块的推理，可以任意切换该模块下的模型，您也可以将文本检测的模块中的模型推理集成到您的项目中。
 
@@ -170,7 +173,7 @@ python main.py -c paddlex/configs/text_detection/PP-OCRv4_mobile_det.yaml \
 
 * 模型训练过程中，PaddleX 会自动保存模型权重文件，默认为`output`，如需指定保存路径，可通过配置文件中 `-o Global.output` 字段进行设置。
 * PaddleX 对您屏蔽了动态图权重和静态图权重的概念。在模型训练的过程中，会同时产出动态图和静态图的权重，在模型推理时，默认选择静态图权重推理。
-* 训练其他模型时，需要的指定相应的配置文件，模型和配置的文件的对应关系，可以查阅 [PaddleX模型列表（CPU/GPU）](../model_list.md)。
+* 训练其他模型时，需要的指定相应的配置文件，模型和配置的文件的对应关系，可以查阅 [PaddleX模型列表（CPU/GPU）](../support_list/models_list.md)。
 在完成模型训练后，所有产出保存在指定的输出目录（默认为`./output/`）下，通常有以下产出：
 
 * `train_result.json`：训练结果记录文件，记录了训练任务是否正常完成，以及产出的权重指标、相关文件路径等；
@@ -222,7 +225,7 @@ python main.py -c paddlex/configs/text_detection/PP-OCRv4_mobile_det.yaml \
 * 指定模式为模型推理预测：`-o Global.mode=predict`
 * 指定模型权重路径：`-o Predict.model_dir="./output/best_accuracy/inference"`
 * 指定输入数据路径：`-o Predict.input="..."`
-其他相关参数均可通过修改`.yaml`配置文件中的`Global`和`Predict`下的字段来进行设置，详细请参考 [PaddleX通用模型配置文件参数说明](../instructions/config_parameters_common.md)。
+其他相关参数均可通过修改`.yaml`配置文件中的`Global`和`Predict`下的字段来进行设置，详细请参考 [PaddleX通用模型配置文件参数说明](../../module_usage/instructions/config_parameters_common.md)。
 
 * 也可以用 PaddleX 的 wheel 包进行推理，方便地将模型集成到您自己的项目中。
 #### 4.4.2 模型集成

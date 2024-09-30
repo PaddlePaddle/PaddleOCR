@@ -263,7 +263,7 @@ nav:
     - 多硬件安装飞桨:
       - 多硬件安装飞桨: model/hardware/install_other_devices.md
       - 支持硬件列表: model/hardware/supported_models.md
-  - 全流程开发:
+  - 低代码全流程开发:
     - 概述: paddlex/overview.md
     - 能力支持: paddlex/capability_support.md
     - 快速安装: 
@@ -286,16 +286,15 @@ nav:
       - 高性能部署: paddlex/pipeline_deploy/high_performance_deploy.md
       - 服务化部署: paddlex/pipeline_deploy/service_deploy.md
       - 端侧部署: paddlex/pipeline_deploy/lite_deploy.md
-    - 数据准备:
-      - 文本检测/文本识别: paddlex/data_anotation/text_detection\regognition.md
-      - 表格识别: paddlex/data_anotation/table_recognition.md
     - 多硬件支持: 
       - 多硬件安装: paddlex/installation_other_devices.md
       - MLU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_MLU.md
       - DCU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_DCU.md
       - NPU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_NPU.md
       - XPU安装PaddlePaddle: paddlex/other_devices_support/paddlepaddle_install_XPU.md
-    - 模型列表: paddlex/model_list.md
+    - 数据准备:
+      - 文本检测/文本识别: paddlex/data_anotation/text_detection\regognition.md
+      - 表格识别: paddlex/data_anotation/table_recognition.md
   - PP-OCR 文本检测识别:
     - 概述: ppocr/overview.md
     - 快速开始: ppocr/quick_start.md

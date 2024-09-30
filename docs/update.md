@@ -7,7 +7,21 @@ hide:
 
 ### 更新
 
-#### 2024-06-06 **📚直播和OCR实战打卡营预告**
+#### 🔥🔥 2024.9.30 发布PaddleOCR release/2.9:
+  
+  
+  * 发布文档图像智能分析[PP-ChatOCRv3](/docs/paddlex/pipeline_usage/document_scene_information_extraction.md)、新增4个高精度[版面分析模型](/docs/paddlex/module_usage/layout_detection.md)、高精度表格结构识别模型[SLANet_Plus](/docs/paddlex/module_usage/table_structure_recognition.md)、版面矫正预测模型[UVDoc](/docs/paddlex/module_usage/image_warping.md)、公式识别模型[LatexOCR](/docs/paddlex/module_usage/formula_recognition.md)
+  
+  * 发布PaddleOCR[低代码全流程开发范式](/docs/paddlex/quick_start.md)：
+     * 🎨 模型丰富一键调用：将文本图像智能分析、通用OCR、通用表格识别、公式识别、印章识别涉及的**17个模型**整合为5条模型产线，通过极简的**Python API一键调用**，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计**200+模型**，形成20+单功能模块，方便开发者进行**模型组合**使用。
+     * 🚀提高效率降低门槛：提供基于**统一命令**和**图形界面**两种方式，实现模型简洁高效的使用、组合与定制。支持**高性能部署、服务化部署和端侧部署**等多种部署方式。此外，对于各种主流硬件如**英伟达GPU、昆仑芯、昇腾、寒武纪和海光**等，进行模型开发时，都可以**无缝切换**。
+
+  
+#### 🔥 2024.7 添加 PaddleOCR 算法模型挑战赛冠军方案：
+    - 赛题一：OCR 端到端识别任务冠军方案——[场景文本识别算法-SVTRv2](https://paddlepaddle.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2.html)；
+    - 赛题二：通用表格识别任务冠军方案——[表格识别算法-SLANet-LCNetV2](https://paddlepaddle.github.io/PaddleOCR/algorithm/table_recognition/algorithm_table_slanet.html)。
+
+#### 2024.6.6 **📚直播和OCR实战打卡营预告**
 
 《PP-ChatOCRv2赋能金融报告信息智能化抽取，新金融效率再升级》课程上线，破解复杂版面、表格识别、信息抽取OCR解析难题，直播时间：6月6日（周四）19：00。并于6月11日启动【政务采购合同信息抽取】实战打卡营。报名链接：<https://www.wjx.top/vm/eBcYmqO.aspx?udsid=197406>
 
