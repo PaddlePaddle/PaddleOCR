@@ -105,4 +105,3 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 |文档场景信息抽取v3 | coming soon |   
 | 印章识别       | coming soon |
 | 公式识别       | coming soon |
-
