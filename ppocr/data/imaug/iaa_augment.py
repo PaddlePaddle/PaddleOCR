@@ -117,7 +117,12 @@ class IaaAugment:
         image = data["image"]
         polys = data["polys"]
         # Flatten polys to a list of keypoints
-        keypoints = [tuple(point) for poly in polys for point in poly]
+        keypoints = []
+        keypoint_lengths = []
+        for poly in polys:
+            points = [tuple(point) for point in poly]
+            keypoints.extend(points)
+            keypoint_lengths.append(len(points))
         if self.augmenter:
             transformed = self.augmenter(image=image, keypoints=keypoints)
             data["image"] = transformed["image"]
@@ -125,12 +130,11 @@ class IaaAugment:
             transformed_keypoints = transformed["keypoints"]
             new_polys = []
             idx = 0
-            for poly in polys:
-                num_points = len(poly)
+            for length in keypoint_lengths:
                 new_poly = np.array(
-                    transformed_keypoints[idx : idx + num_points], dtype=np.float32
+                    transformed_keypoints[idx : idx + length], dtype=np.float32
                 )
                 new_polys.append(new_poly)
-                idx += num_points
+                idx += length
             data["polys"] = new_polys
         return data
