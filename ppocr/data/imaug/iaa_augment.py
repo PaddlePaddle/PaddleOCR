@@ -37,7 +37,11 @@ class AugmenterBuilder:
         elif isinstance(args, list):
             # Recursively build transforms from the list
             transforms = [self.build(value) for value in args if self.build(value)]
-            return A.Compose(transforms, keypoint_params=A.KeypointParams(format="xy"))
+            return A.Compose(
+                transforms,
+                # Use KeypointParams to handle keypoints (polygons represented as keypoints)
+                keypoint_params=A.KeypointParams(format="xy", remove_invisible=False),
+            )
         elif isinstance(args, dict):
             # Get the transform type and its arguments
             transform_type = args.get("type")
@@ -116,13 +120,13 @@ class IaaAugment:
     def __call__(self, data):
         image = data["image"]
         polys = data["polys"]
-        # Flatten polys to a list of keypoints
+        # Flatten polys to keypoints and keep track of groupings
         keypoints = []
-        keypoint_lengths = []
+        keypoint_groups = []
         for poly in polys:
-            points = [tuple(point) for point in poly]
-            keypoints.extend(points)
-            keypoint_lengths.append(len(points))
+            poly_keypoints = [tuple(point) for point in poly]
+            keypoints.extend(poly_keypoints)
+            keypoint_groups.append(len(poly_keypoints))
         if self.augmenter:
             transformed = self.augmenter(image=image, keypoints=keypoints)
             data["image"] = transformed["image"]
@@ -130,11 +134,11 @@ class IaaAugment:
             transformed_keypoints = transformed["keypoints"]
             new_polys = []
             idx = 0
-            for length in keypoint_lengths:
+            for group_length in keypoint_groups:
                 new_poly = np.array(
-                    transformed_keypoints[idx : idx + length], dtype=np.float32
+                    transformed_keypoints[idx : idx + group_length], dtype=np.float32
                 )
                 new_polys.append(new_poly)
-                idx += length
+                idx += group_length
             data["polys"] = new_polys
         return data
