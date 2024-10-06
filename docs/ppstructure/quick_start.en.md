@@ -85,6 +85,20 @@ Recovery by using OCR：
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 ```
 
+#### 2.1.7 layout recovery(PDF to Markdown)
+
+Do not use LaTeXCOR model for formula recognition：
+
+```bash linenums="1"
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --recovery_to_markdown=true --lang='en'
+```
+
+Use LaTeXCOR model for formula recognition, where Chinese layout model must be used：
+
+```bash linenums="1"
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --formula=true --recovery_to_markdown=true --lang='ch'
+```
+
 ### 2.2 Use by python script
 
 #### 2.2.1 image orientation + layout analysis + table recognition
@@ -271,6 +285,35 @@ res = sorted_layout_boxes(result, w)
 convert_info_docx(img, res, save_folder, os.path.basename(img_path).split('.')[0])
 ```
 
+#### 2.2.7 layout recovery(PDF to Markdown)
+
+```python linenums="1"
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes
+from paddleocr.ppstructure.recovery.recovery_to_markdown import convert_info_markdown
+
+# Chinese image
+table_engine = PPStructure(recovery=True)
+# English image
+# table_engine = PPStructure(recovery=True, lang='en')
+
+save_folder = './output'
+img_path = 'ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+
+h, w, _ = img.shape
+res = sorted_layout_boxes(result, w)
+convert_info_markdown(res, save_folder, os.path.basename(img_path).split('.')[0])
+```
+
 ### 2.3 Result description
 
 The return of PP-Structure is a list of dicts, the example is as follows:
@@ -311,28 +354,32 @@ Please refer to: [Key Information Extraction](../ppocr/model_train/kie.en.md) .
 
 ### 2.4 Parameter Description
 
-| field | description | default |
-|---|---|---|
-| output | result save path | ./output/table |
-| table_max_len | long side of the image resize in table structure model | 488 |
-| table_model_dir | Table structure model inference model path| None |
-| table_char_dict_path | The dictionary path of table structure model | ../ppocr/utils/dict/table_structure_dict.txt  |
-| merge_no_span_structure | In the table recognition model, whether to merge '\<td>' and '\</td>' | False |
-| layout_model_dir  | Layout analysis model inference model path| None |
-| layout_dict_path  | The dictionary path of layout analysis model| ../ppocr/utils/dict/layout_publaynet_dict.txt |
-| layout_score_threshold  | The box threshold path of layout analysis model| 0.5|
-| layout_nms_threshold  | The nms threshold path of layout analysis model| 0.5|
-| kie_algorithm  | kie model algorithm| LayoutXLM|
-| ser_model_dir  | Ser model inference model path| None|
-| ser_dict_path  | The dictionary path of Ser model| ../train_data/XFUND/class_list_xfun.txt|
-| mode | structure or kie  | structure   |
-| image_orientation | Whether to perform image orientation classification in forward  | False   |
-| layout | Whether to perform layout analysis in forward  | True   |
-| table  | Whether to perform table recognition in forward  | True   |
-| ocr    | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False| True |
-| recovery    | Whether to perform layout recovery in forward| False |
-| save_pdf    | Whether to convert docx to pdf when recovery| False |
-| structure_version |  Structure version, optional PP-structure and PP-structurev2  | PP-structure |
+| field                   | description                                                                                                                | default |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------|---|
+| output                  | result save path                                                                                                           | ./output/table |
+| table_max_len           | long side of the image resize in table structure model                                                                     | 488 |
+| table_model_dir         | Table structure model inference model path                                                                                 | None |
+| table_char_dict_path    | The dictionary path of table structure model                                                                               | ../ppocr/utils/dict/table_structure_dict.txt  |
+| merge_no_span_structure | In the table recognition model, whether to merge '\<td>' and '\</td>'                                                      | False |
+| formula_model_dir       | Formula recognition model inference model path                                                                             | None                                          |
+| formula_char_dict_path  | The dictionary path of formula recognition model                                                                           | ../ppocr/utils/dict/latex_ocr_tokenizer.json |
+| layout_model_dir        | Layout analysis model inference model path                                                                                 | None |
+| layout_dict_path        | The dictionary path of layout analysis model                                                                               | ../ppocr/utils/dict/layout_publaynet_dict.txt |
+| layout_score_threshold  | The box threshold path of layout analysis model                                                                            | 0.5|
+| layout_nms_threshold    | The nms threshold path of layout analysis model                                                                            | 0.5|
+| kie_algorithm           | kie model algorithm                                                                                                        | LayoutXLM|
+| ser_model_dir           | Ser model inference model path                                                                                             | None|
+| ser_dict_path           | The dictionary path of Ser model                                                                                           | ../train_data/XFUND/class_list_xfun.txt|
+| mode                    | structure or kie                                                                                                           | structure   |
+| image_orientation       | Whether to perform image orientation classification in forward                                                             | False   |
+| layout                  | Whether to perform layout analysis in forward                                                                              | True   |
+| table                   | Whether to perform table recognition in forward                                                                            | True   | 
+| formula                 | Whether to perform formula recognition in forward                                                                          | False |
+| ocr                     | Whether to perform ocr for non-table areas in layout analysis. When layout is False, it will be automatically set to False | True |
+| recovery                | Whether to perform layout recovery in forward                                                                              | False |
+| recovery_to_markdown    | Whether to convert the layout recovery results into a markdown file                                                        | False |
+| save_pdf                | Whether to convert docx to pdf when recovery                                                                               | False |
+| structure_version       | Structure version, optional PP-structure and PP-structurev2                                                                | PP-structure |
 
 Most of the parameters are consistent with the PaddleOCR whl package, see [whl package documentation](../ppocr/blog/whl.en.md)
 

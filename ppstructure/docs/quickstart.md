@@ -9,6 +9,7 @@
     - [2.1.4 表格识别](#214-表格识别)
     - [2.1.5 关键信息抽取](#215-关键信息抽取)
     - [2.1.6 版面恢复](#216-版面恢复)
+    - [2.1.7 版面恢复+转换为markdown文件](#217-版面恢复转换为markdown文件)
   - [2.2 Python脚本使用](#22-Python脚本使用)
     - [2.2.1 图像方向分类+版面分析+表格识别](#221-图像方向分类版面分析表格识别)
     - [2.2.2 版面分析+表格识别](#222-版面分析表格识别)
@@ -16,6 +17,7 @@
     - [2.2.4 表格识别](#224-表格识别)
     - [2.2.5 关键信息抽取](#225-关键信息抽取)
     - [2.2.6 版面恢复](#226-版面恢复)
+    - [2.2.7 版面恢复+转换为markdown文件](#227-版面恢复转换为markdown文件)
   - [2.3 返回结果说明](#23-返回结果说明)
     - [2.3.1 版面分析+表格识别](#231-版面分析表格识别)
     - [2.3.2 关键信息抽取](#232-关键信息抽取)
@@ -124,6 +126,22 @@ paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=t
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true --lang='en'
 # pdf测试文件
 paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --lang='en'
+```
+
+<a name="217"></a>
+
+#### 2.1.7 版面恢复+转换为markdown文件
+
+不使用LaTeXOCR模型进行公式识别：
+
+```bash linenums="1"
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --recovery_to_markdown=true --lang='en'
+```
+
+使用LaTeXOCR模型进行公式识别，其中必须使用中文layout模型：
+
+```bash linenums="1"
+paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --formula=true --recovery_to_markdown=true --lang='ch'
 ```
 
 <a name="22"></a>
@@ -322,6 +340,37 @@ res = sorted_layout_boxes(result, w)
 convert_info_docx(img, res, save_folder, os.path.basename(img_path).split('.')[0])
 ```
 
+<a name="227"></a>
+
+#### 2.2.7 版面恢复+转换为markdown文件
+
+```python linenums="1"
+import os
+import cv2
+from paddleocr import PPStructure,save_structure_res
+from paddleocr.ppstructure.recovery.recovery_to_doc import sorted_layout_boxes
+from paddleocr.ppstructure.recovery.recovery_to_markdown import convert_info_markdown
+
+# 中文测试图
+table_engine = PPStructure(recovery=True)
+# 英文测试图
+# table_engine = PPStructure(recovery=True, lang='en')
+
+save_folder = './output'
+img_path = 'ppstructure/docs/table/1.png'
+img = cv2.imread(img_path)
+result = table_engine(img)
+save_structure_res(result, save_folder, os.path.basename(img_path).split('.')[0])
+
+for line in result:
+    line.pop('img')
+    print(line)
+
+h, w, _ = img.shape
+res = sorted_layout_boxes(result, w)
+convert_info_markdown(res, save_folder, os.path.basename(img_path).split('.')[0])
+```
+
 <a name="23"></a>
 ### 2.3 返回结果说明
 PP-Structure的返回结果为一个dict组成的list，示例如下：
@@ -363,28 +412,32 @@ dict 里各个字段说明如下：
 <a name="24"></a>
 ### 2.4 参数说明
 
-| 字段 | 说明  | 默认值  |
-|---|---|---|
-| output | 结果保存地址 | ./output/table |
-| table_max_len | 表格结构模型预测时，图像的长边resize尺度 | 488 |
-| table_model_dir | 表格结构模型 inference 模型地址| None |
-| table_char_dict_path | 表格结构模型所用字典地址 | ../ppocr/utils/dict/table_structure_dict.txt  |
-| merge_no_span_structure | 表格识别模型中，是否对'\<td>'和'\</td>' 进行合并 | False |
-| layout_model_dir  | 版面分析模型 inference 模型地址 | None |
-| layout_dict_path  | 版面分析模型字典| ../ppocr/utils/dict/layout_publaynet_dict.txt |
-| layout_score_threshold  | 版面分析模型检测框阈值| 0.5|
-| layout_nms_threshold  | 版面分析模型nms阈值| 0.5|
-| kie_algorithm  | kie模型算法| LayoutXLM|
-| ser_model_dir  | ser模型  inference 模型地址| None|
-| ser_dict_path  | ser模型字典| ../train_data/XFUND/class_list_xfun.txt|
-| mode | structure or kie  | structure   |
-| image_orientation | 前向中是否执行图像方向分类  | False   |
-| layout | 前向中是否执行版面分析  | True   |
-| table  | 前向中是否执行表格识别  | True   |
-| ocr    | 对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False| True |
-| recovery    | 前向中是否执行版面恢复| False |
-| save_pdf | 版面恢复导出docx文件的同时，是否导出pdf文件 | False |
-| structure_version |  模型版本，可选 PP-structure和PP-structurev2  | PP-structure |
+| 字段 | 说明                                            | 默认值  |
+|---|-----------------------------------------------|---|
+| output | 结果保存地址                                        | ./output/table |
+| table_max_len | 表格结构模型预测时，图像的长边resize尺度                       | 488 |
+| table_model_dir | 表格结构模型 inference 模型地址                         | None |
+| table_char_dict_path | 表格结构模型所用字典地址                                  | ../ppocr/utils/dict/table_structure_dict.txt  |
+| merge_no_span_structure | 表格识别模型中，是否对'\<td>'和'\</td>' 进行合并              | False |
+| formula_model_dir | 公式识别模型 inference 模型地址                         | None                                          |
+| formula_char_dict_path | 公式识别模型所用字典地址                                  | ../ppocr/utils/dict/latex_ocr_tokenizer.json |
+| layout_model_dir  | 版面分析模型 inference 模型地址                         | None |
+| layout_dict_path  | 版面分析模型字典                                      | ../ppocr/utils/dict/layout_publaynet_dict.txt |
+| layout_score_threshold | 版面分析模型检测框阈值                                   | 0.5|
+| layout_nms_threshold  | 版面分析模型nms阈值                                   | 0.5|
+| kie_algorithm  | kie模型算法                                       | LayoutXLM|
+| ser_model_dir  | ser模型  inference 模型地址                         | None|
+| ser_dict_path  | ser模型字典                                       | ../train_data/XFUND/class_list_xfun.txt|
+| mode | structure or kie                              | structure   |
+| image_orientation | 前向中是否执行图像方向分类                                 | False   |
+| layout | 前向中是否执行版面分析                                   | True   |
+| table  | 前向中是否执行表格识别                                   | True   |
+| formula | 前向中是否执行公式识别                                   | False |
+| ocr    | 对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False | True |
+| recovery    | 前向中是否执行版面恢复                                   | False |
+| recovery_to_markdown | 是否将版面恢复结果转换为markdown文件                        | False |
+| save_pdf | 版面恢复导出docx文件的同时，是否导出pdf文件                     | False |
+| structure_version | 模型版本，可选 PP-structure和PP-structurev2           | PP-structure |
 
 大部分参数和PaddleOCR whl包保持一致，见 [whl包文档](../../doc/doc_ch/whl.md)
 
