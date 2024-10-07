@@ -66,6 +66,7 @@ from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
 from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
 from ppstructure.recovery.recovery_to_doc import sorted_layout_boxes, convert_info_docx
+from ppstructure.recovery.recovery_to_markdown import convert_info_markdown
 
 logger = get_logger()
 
@@ -79,6 +80,7 @@ __all__ = [
     "to_excel",
     "sorted_layout_boxes",
     "convert_info_docx",
+    "convert_info_markdown",
 ]
 
 SUPPORT_DET_MODEL = ["DB"]
@@ -356,6 +358,16 @@ MODEL_URLS = {
                     "dict_path": "ppocr/utils/dict/layout_dict/layout_cdla_dict.txt",
                 },
             },
+            "formula": {
+                "en": {
+                    "url": "https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_infer.tar",
+                    "dict_path": "ppocr/utils/dict/latex_ocr_tokenizer.json",
+                },
+                "ch": {
+                    "url": "https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_infer.tar",
+                    "dict_path": "ppocr/utils/dict/latex_ocr_tokenizer.json",
+                },
+            },
         },
     },
 }
@@ -396,6 +408,7 @@ def parse_args(mMain=True):
             "rec_char_dict_path",
             "table_char_dict_path",
             "layout_dict_path",
+            "formula_char_dict_path",
         ]:
             action.default = None
     if mMain:
@@ -845,12 +858,21 @@ class PPStructure(StructureSystem):
             os.path.join(BASE_DIR, "whl", "layout"),
             layout_model_config["url"],
         )
+        formula_model_config = get_model_config(
+            "STRUCTURE", params.structure_version, "formula", lang
+        )
+        params.formula_model_dir, formula_url = confirm_model_dir_url(
+            params.formula_model_dir,
+            os.path.join(BASE_DIR, "whl", "formula"),
+            formula_model_config["url"],
+        )
         # download model
         if not params.use_onnx:
             maybe_download(params.det_model_dir, det_url)
             maybe_download(params.rec_model_dir, rec_url)
             maybe_download(params.table_model_dir, table_url)
             maybe_download(params.layout_model_dir, layout_url)
+            maybe_download(params.formula_model_dir, formula_url)
 
         if params.rec_char_dict_path is None:
             params.rec_char_dict_path = str(
@@ -863,6 +885,10 @@ class PPStructure(StructureSystem):
         if params.layout_dict_path is None:
             params.layout_dict_path = str(
                 Path(__file__).parent / layout_model_config["dict_path"]
+            )
+        if params.formula_char_dict_path is None:
+            params.formula_char_dict_path = str(
+                Path(__file__).parent / formula_model_config["dict_path"]
             )
         logger.debug(params)
         super().__init__(params)
@@ -1005,6 +1031,8 @@ def main():
             if args.recovery and all_res != []:
                 try:
                     convert_info_docx(img, all_res, args.output, img_name)
+                    if args.recovery_to_markdown:
+                        convert_info_markdown(all_res, args.output, img_name)
                 except Exception as ex:
                     logger.error(
                         "error in layout recovery image:{}, err msg: {}".format(
