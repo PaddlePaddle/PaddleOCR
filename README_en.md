@@ -27,7 +27,7 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 
 ⚠️ Note: The [Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) module is only for reporting program 🐞 bugs, for the rest of the questions, please move to the [Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions). Please note that if the Issue mentioned is not a bug, it will be moved to the Discussions module.
 
-## 📣 Recent updates ([more](https://paddlepaddle.github.io/PaddleOCR/en/update.html))
+## 📣 Recent updates ([more](https://paddlepaddle.github.io/PaddleOCR/latest/en/update.html))
 
 - **🔥2024.7 Added PaddleOCR Algorithm Model Challenge Champion Solutions**:
     - Challenge One, OCR End-to-End Recognition Task Champion Solution: [Scene Text Recognition Algorithm-SVTRv2](https://paddlepaddle.github.io/PaddleOCR/algorithm/text_recognition/algorithm_rec_svtrv2.html);
@@ -35,11 +35,11 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 
 ## 📚 Documentation
 
-Full documentation can be found on [docs](https://paddlepaddle.github.io/PaddleOCR/en/index.html).
+Full documentation can be found on [docs](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
 
 ## 🌟 Features
 
-PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](https://paddlepaddle.github.io/PaddleOCR/en/ppocr/overview.html)、 [PP-Structure](https://paddlepaddle.github.io/PaddleOCR/en/ppstructure/overview.html) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
+PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppocr/overview.html)、 [PP-Structure](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppstructure/overview.html) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
 <div align="center">
     <img src="./docs/images/ppocrv4.png">
@@ -47,7 +47,7 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 > It is recommended to start with the “quick experience” in the document tutorial
 
-## ⚡ [Quick Start](https://paddlepaddle.github.io/PaddleOCR/en/quick_start.html)
+## ⚡ [Quick Start](https://paddlepaddle.github.io/PaddleOCR/latest/en/quick_start.html)
 
 ## 📖 Technical exchange and cooperation
 
