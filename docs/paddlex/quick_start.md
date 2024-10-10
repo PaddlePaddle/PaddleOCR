@@ -4,7 +4,7 @@
 
 >* 飞桨一站式全流程开发工具[PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1)，依托于PaddleOCR的先进技术，支持了OCR领域的**一站式全流程**开发能力。通过一站式全流程开发，可实现简单且高效的模型使用、组合与定制。
 
->* PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**OCR相关产线**的快速使用，单功能模块的快速使用以及更多功能请参考[PaddleOCR一站式全流程开发](https://paddlepaddle.github.io/PaddleOCR/paddlex/overview.html)中相关章节。
+>* PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**OCR相关产线**的快速使用，单功能模块的快速使用以及更多功能请参考[PaddleOCR一站式全流程开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html)中相关章节。
 
 
 ### 🛠️ 安装
