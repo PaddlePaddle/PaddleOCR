@@ -51,9 +51,9 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
     <img src="./docs/images/ppocrv4.png">
 </div>
 
-## ⚡ [快速开始](https://paddlepaddle.github.io/PaddleOCR/quick_start.html)
+## ⚡ [快速开始](https://paddlepaddle.github.io/PaddleOCR/latest/quick_start.html)
 
-## 🔥 [一站式全流程开发](https://paddlepaddle.github.io/PaddleOCR/paddlex/overview.html)
+## 🔥 [一站式全流程开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html)
 
 ## 📝 文档
 
