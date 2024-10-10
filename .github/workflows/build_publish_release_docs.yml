@@ -1,9 +1,9 @@
-name: build_document_site
+name: Build/Publish Release Docs
 on:
   push:
-    branches:
-      - master
-      - main
+    tags:
+      - v*
+
 permissions:
   contents: write
 jobs:
@@ -14,7 +14,7 @@ jobs:
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.email github-actions[bot]@users.noreply.github.com
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
@@ -25,5 +25,8 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n
-      - run: mkdocs gh-deploy --force
+      - run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n
+      - run: |
+          git fetch origin gh-pages --depth=1
+          mike deploy --push "${{ github.ref_name }}" latest
+          mike set-default --push latest

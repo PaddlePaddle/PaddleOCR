@@ -241,6 +241,8 @@ extra:
       link: https://github.com/PaddlePaddle/PaddleOCR
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/paddleocr/
+  version:
+    provider: mike
 
 extra_javascript:
   - javascripts/katex.min.js
