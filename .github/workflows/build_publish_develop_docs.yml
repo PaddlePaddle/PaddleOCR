@@ -27,5 +27,6 @@ jobs:
             mkdocs-material-
       - run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n
       - run: |
+          git fetch origin gh-pages --depth=1
           mike deploy --push --update-aliases main latest
           mike set-default --push latest
