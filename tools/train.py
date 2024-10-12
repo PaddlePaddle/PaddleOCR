@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -40,7 +41,6 @@ import tools.program as program
 import tools.naive_sync_bn as naive_sync_bn
 
 dist.get_world_size()
-
 
 def main(config, device, logger, vdl_writer, seed):
     # init dist environment
@@ -139,7 +139,7 @@ def main(config, device, logger, vdl_writer, seed):
 
     use_sync_bn = config["Global"].get("use_sync_bn", False)
     if use_sync_bn:
-        if config['Global'].get('use_npu', False):
+        if config["Global"].get("use_npu", False):
             naive_sync_bn.convert_syncbn(model)
         else:
             model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)
