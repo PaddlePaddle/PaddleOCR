@@ -42,6 +42,7 @@ import tools.naive_sync_bn as naive_sync_bn
 
 dist.get_world_size()
 
+
 def main(config, device, logger, vdl_writer, seed):
     # init dist environment
     if config["Global"]["distributed"]:

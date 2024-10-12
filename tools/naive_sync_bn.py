@@ -90,10 +90,10 @@ class NaiveSyncBatchNorm(nn.BatchNorm2D):
             total_batch = vec[-1].detach()
             momentum = total_batch.clip(max=1) * (
                 1 - self._momentum
-            )   # no update if total_batch is 0
+            )  # no update if total_batch is 0
             mean, meansqr, _ = paddle.split(
-                vec / total_batch.clip(min=1), [C, C, int(vec.shape[0] - 2*C)]
-            )   # avoid div-by-zero
+                vec / total_batch.clip(min=1), [C, C, int(vec.shape[0] - 2 * C)]
+            )  # avoid div-by-zero
 
         var = meansqr - mean * mean
         invstd = paddle.rsqrt(var + self._epsilon)
