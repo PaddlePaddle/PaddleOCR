@@ -709,7 +709,11 @@ def eval(
 
     pbar.close()
     model.train()
-    metric["fps"] = total_frame / total_time
+    # Avoid ZeroDivisionError
+    if total_time > 0:
+        metric["fps"] = total_frame / total_time
+    else:
+        metric["fps"] = 0  # or set to a fallback value
     return metric
 
 
