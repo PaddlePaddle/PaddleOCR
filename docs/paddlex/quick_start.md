@@ -2,9 +2,9 @@
 
 >**说明：**
 
->* 飞桨低代码开发工具[PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1)，依托于PaddleOCR的先进技术，支持了OCR领域的**低代码**开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。
+>* 飞桨低代码开发工具[PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1)，依托于PaddleOCR的先进技术，支持了OCR领域的**低代码全流程**开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。
 
->* PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**OCR相关产线**的快速使用，单功能模块的快速使用以及更多功能请参考[PaddleOCR低代码开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html)中相关章节。
+>* PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供**OCR相关产线**的快速推理使用，单功能模块的快速使用以及更多功能请参考[PaddleOCR低代码全流程开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html)中相关章节。
 
 
 ### 🛠️ 安装
@@ -59,6 +59,7 @@ for res in output:
 | 文档场景信息抽取v3   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
 | 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
 | 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
+| 通用版面解析       | coming soon | coming soon |
 | 印章识别       | coming soon | coming soon |
 | 公式识别       | coming soon | coming soon |
 
@@ -101,6 +102,7 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 | 产线名称      | 使用命令                                                                                                                                                                                             |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 通用表格识别    | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
-|文档场景信息抽取v3 | coming soon |   
+|文档场景信息抽取v3 | coming soon |
+| 通用版面解析       | coming soon | 
 | 印章识别       | coming soon |
 | 公式识别       | coming soon |
