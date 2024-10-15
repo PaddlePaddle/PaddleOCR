@@ -32,7 +32,7 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 ## 📣 Recent updates
 
 - **🔥 2024.10.1 Added Low-Code Development Capability in the OCR Field**:
-  * PaddleX, a low-code development tool based on PaddleOCR's advanced technology, supports low-code full-process development capabilities in the OCR field:
+  * PaddleX, an All-in-One development tool based on PaddleOCR's advanced technology, supports low-code full-process development capabilities in the OCR field:
   
      * 🎨 [**Rich Model One-Click Call**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html): Integrates **17 models** related to text image intelligent analysis, general OCR, general layout analysis, general table recognition, formula recognition, and stamp recognition into 6 pipelines, which can be quickly experienced through a simple **Python API one-click call**. In addition, the same set of APIs also supports a total of **200+ models** in image classification, object detection, image segmentation, and time series forcasting, forming 20+ single-function modules, making it convenient for developers to use **model combinations**.
   

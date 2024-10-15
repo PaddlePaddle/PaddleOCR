@@ -2,7 +2,7 @@
 
 > **Note:**
 
->* The low-code development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **low-code full-process** development capabilities in the OCR field. Through low-code development, simple and efficient model use, combination, and customization can be achieved.
+>* The All-in-One development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **low-code full-process** development capabilities in the OCR field. Through low-code development, simple and efficient model use, combination, and customization can be achieved.
 
 >* PaddleX is committed to achieving pipeline-level model training, inference, and deployment. A model pipeline refers to a series of predefined development processes for specific AI tasks, including combinations of single models (single-function modules) that can independently complete a type of task. This document provides quick inference usage of the **OCR-related pipelines**. For quick usage of single-function modules and more features, please refer to the relevant sections in [Low-Code Full-Process Development of PaddleOCR](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html).
 
