@@ -171,6 +171,9 @@ class TextDetector(object):
     def order_points_clockwise(self, pts):
         rect = np.zeros((4, 2), dtype="float32")
         s = pts.sum(axis=1)
+        sorted_s = np.sort(s)
+        if sorted_s[0] == sorted_s[1] or sorted_s[2] == sorted_s[3]:
+            return pts
         rect[0] = pts[np.argmin(s)]
         rect[2] = pts[np.argmax(s)]
         tmp = np.delete(pts, (np.argmin(s), np.argmax(s)), axis=0)
