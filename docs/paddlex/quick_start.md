@@ -29,7 +29,7 @@ python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.
 pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0b1-py3-none-any.whl
 ```
 
-> ❗ 更多安装方式参考[PaddleX安装教程](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/installation/installation.md)
+> ❗ 更多安装方式参考[PaddleX安装教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/installation/installation.md)
 
 ### 📝 Python 脚本使用
 
@@ -59,10 +59,9 @@ for res in output:
 | 文档场景信息抽取v3   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
 | 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
 | 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
-| 通用版面解析       | coming soon | coming soon |
-| 印章识别       | coming soon | coming soon |
-| 公式识别       | coming soon | coming soon |
-
+| 通用版面解析       | `layout_parsing`                | [通用版面解析产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.md#22-python脚本方式集成)                                   |
+| 公式识别       | `formula_recognition`                | [公式识别产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md#22-python脚本方式集成)                                   |
+| 印章识别       | `seal_recognition`                | [印章识别产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md#22-python脚本方式集成)                                          |
 
 ### 💻 命令行使用
 
@@ -103,6 +102,7 @@ paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddle
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 通用表格识别    | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
 |文档场景信息抽取v3 | coming soon |
-| 通用版面解析       | coming soon | 
-| 印章识别       | coming soon |
-| 公式识别       | coming soon |
+| 通用版面解析       | `paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --device gpu:0`                                      |
+| 公式识别       | `paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --device gpu:0`                                      |
+| 印章识别       | `paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --device gpu:0`                             |
+
