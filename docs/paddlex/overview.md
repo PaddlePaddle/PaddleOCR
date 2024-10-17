@@ -60,31 +60,31 @@ PaddleX中OCR相关的6条产线均支持本地**快速推理**，部分产线�
     <tr>
         <td>通用版面解析</td>
         <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
     </tr>
     <tr>
         <td>公式识别</td>
         <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
     </tr>
     <tr>
         <td>印章识别</td>
         <td>🚧</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
         <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
-        <td>🚧</td>
+        <td>✅</td>
         <td>🚧</td>
     </tr>
 
@@ -124,6 +124,10 @@ PaddleX中OCR相关的6条产线均支持本地**快速推理**，部分产线�
 - **通用OCR产线**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md)
 - **通用表格识别产线**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md)
 - **文档场景信息抽取v3产线**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md)
+- **通用版面解析**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.md)
+- **公式识别**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md)
+- **印章识别**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md)
+
 
 ## 4. OCR相关单功能模块列表和教程
 
