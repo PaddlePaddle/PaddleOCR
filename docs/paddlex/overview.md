@@ -128,6 +128,7 @@ PaddleX中OCR相关的6条产线均支持本地**快速推理**，部分产线�
 - **公式识别**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md)
 - **印章识别**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md)
 
+
 ## 4. OCR相关单功能模块列表和教程
 
 - **文本检测模块**: [使用教程](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/text_detection.md)
