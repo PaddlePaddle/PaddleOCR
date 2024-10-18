@@ -14,5 +14,3 @@ hide:
 - [One-Click Call for 17 Core PaddleOCR Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html)
 - One line of code quick use: [Text Detection and Recognition (Chinese/English/Multilingual)](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppocr/overview.html)
 - One line of code quick use: [Document Analysis](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppstructure/overview.html)
-
-
