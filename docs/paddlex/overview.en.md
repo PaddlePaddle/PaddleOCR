@@ -120,9 +120,9 @@ In addition, PaddleX provides developers with a full-process efficient model tra
 - **OCR Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR_en.md)
 - **Table Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md)
 - **PP-ChatOCRv3-doc Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md)
-- **Layout Parsing**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md)
-- **Formula Recognition**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md)
-- **Seal Recognition**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md)
+- **Layout Parsing Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md)
+- **Formula Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md)
+- **Seal Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md)
 
 ## 4. List and Tutorials of OCR-Related Modules
 

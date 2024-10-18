@@ -1,7 +1,7 @@
 # Quick Start
 
 > **Note:**
->* The All-in-One development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **all-in-one** development capabilities in the OCR field. Through low-code development, simple and efficient model use, combination, and customization can be achieved.
+>* The All-in-One development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **all-in-one** development capabilities in the OCR field. Through all-in-one development, simple and efficient model use, combination, and customization can be achieved.
 >* PaddleX is committed to achieving pipeline-level model training, inference, and deployment. A model pipeline refers to a series of predefined development processes for specific AI tasks, including combinations of single models (single-function modules) that can independently complete a type of task. This document provides quick inference usage of the **OCR-related pipelines**. For quick usage of single-function modules and more features, please refer to the relevant sections in [All-in-One Development of PaddleOCR](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html).
 
 ### 🛠️ Installation
@@ -52,9 +52,9 @@ For other pipelines in Python scripts, just adjust the `pipeline` parameter of t
 
 | Pipeline Name          | Corresponding Parameter  | Detailed Explanation                                                                                                     |
 |------------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| PP-ChatOCRv3-doc  | `PP-ChatOCRv3-doc` | [Python Script Usage for Document Scene Information Extraction v3 Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md#22-local-experience) |
+| PP-ChatOCRv3-doc  | `PP-ChatOCRv3-doc` | [Python Script Usage for PP-ChatOCRv3-doc Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md#22-local-experience) |
 | General OCR            | `OCR` | [Python Script Usage for General OCR Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR_en.md#22-local-experience) |
-| Table Recognition       | `table_recognition` | [Python Script Usage for General Table Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md#22-local-experience) |
+| Table Recognition       | `table_recognition` | [Python Script Usage for Table Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md#22-local-experience) |
 | Layout Parsing       | `layout_parsing`                | [Python Script Usage for Layout Parsing Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md#22-local-experience)                                   |
 | Formula Recognition       | `formula_recognition`                | [Python Script Usage for Formula Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md#2-quick-start)                                   |
 | Seal Recognition       | `seal_recognition`                | [Python Script Usage for Formula Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md#2--quick-start)                                          |
