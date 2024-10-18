@@ -2,9 +2,9 @@
 
 The All-in-One development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **low-code full-process** development capabilities in the OCR field. Through low-code development, simple and efficient model use, combination, and customization can be achieved. This will significantly **reduce the time consumption** of model development, **lower its development difficulty**, and greatly accelerate the application and promotion speed of models in the industry. Features include:
 
-* 🎨 [**Rich Model One-Click Call**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html): Integrates **17 models** related to text image intelligent analysis, general OCR, general layout parsing, table recognition, formula recognition, and seal recognition into 6 pipelines, which can be quickly experienced through a simple **Python API one-click call**. In addition, the same set of APIs also supports a total of **200+ models** in image classification, object detection, image segmentation, and time series forcasting, forming 20+ single-function modules, making it convenient for developers to use **model combinations**.
+* 🎨 [**Rich Model One-Click Call**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html): Integrates **17 models** related to text image intelligent analysis, general OCR, general layout analysis, general table recognition, formula recognition, and seal text recognition into 6 pipelines, which can be quickly experienced through a simple **Python API one-click call**. In addition, the same set of APIs also supports a total of **200+ models** in image classification, object detection, image segmentation, and time series forcasting, forming 20+ single-function modules, making it convenient for developers to use **model combinations**.
 
-* 🚀 [**High Efficiency and Low barrier of entry**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html): Provides two methods based on **unified commands** and **GUI** to achieve simple and efficient use, combination, and customization of models. Supports multiple deployment methods such as **high-performance inference, service-oriented deployment, and edge deployment**. Additionally, for various mainstream hardware such as **NVIDIA GPU, Kunlunxin XPU, Ascend NPU, Cambricon MLU, and Haiguang DCU**, models can be developed with **seamless switching**.
+* 🚀 [**High Efficiency and Low barrier of entry**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html): Provides two methods based on **unified commands** and **GUI** to achieve simple and efficient use, combination, and customization of models. Supports multiple deployment methods such as **high-performance inference, service-oriented deployment, and edge deployment**. Additionally, for various mainstream hardware such as **NVIDIA GPU, Kunlunxin, Ascend, Cambricon, and Haiguang**, models can be developed with **seamless switching**.
 
 > **Note**: PaddleX is committed to achieving pipeline-level model training, inference, and deployment. A model pipeline refers to a series of predefined development processes for specific AI tasks, including combinations of single models (single-function modules) that can independently complete a type of task.
 ## 2. OCR-Related Capability Support
@@ -76,7 +76,7 @@ In addition, PaddleX provides developers with a full-process efficient model tra
         <td>🚧</td>
     </tr>
     <tr>
-        <td>Seal Recognition</td>
+        <td>Seal Text Recognition</td>
         <td>🚧</td>
         <td>✅</td>
         <td>✅</td>
@@ -95,9 +95,9 @@ In addition, PaddleX provides developers with a full-process efficient model tra
   <tr>
     <th>Pipeline Name</th>
     <th>Ascend 910B</th>
-    <th>Kunlunxin XPU</th>
-    <th>Cambricon MLU</th>
-    <th>Haiguang DCU</th>
+    <th>Kunlun R200/R300</th>
+    <th>Cambricon MLU370X8</th>
+    <th>Haiguang Z100</th>
   </tr>
   <tr>
     <td>General OCR</td>
@@ -119,15 +119,15 @@ In addition, PaddleX provides developers with a full-process efficient model tra
 
 - **OCR Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR_en.md)
 - **Table Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md)
-- **PP-ChatOCRv3-doc Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md)
-- **Layout Parsing Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md)
-- **Formula Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md)
-- **Seal Recognition Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md)
+- **PP-ChatOCRv3 Pipeline**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md)
+- **Layout Parsing**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md)
+- **Formula Recognition**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md)
+- **Seal Text Recognition**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md)
 
 ## 4. List and Tutorials of OCR-Related Modules
 
 - **Text Detection Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/text_detection_en.md)
-- **Seal Detection Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/seal_text_detection_en.md)
+- **Seal Text Detection Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/seal_text_detection_en.md)
 - **Text Recognition Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/text_recognition_en.md)
 - **Formula Recognition Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/formula_recognition_en.md)
 - **Table Structure Recognition Module**: [Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/table_structure_recognition_en.md)

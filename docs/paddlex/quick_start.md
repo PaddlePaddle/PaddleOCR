@@ -60,9 +60,9 @@ for res in output:
 | 文档场景信息抽取v3   | `PP-ChatOCRv3-doc` | [文档场景信息抽取v3产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction.md#22-本地体验) |
 | 通用OCR            | `OCR` | [通用OCR产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成) |
 | 通用表格识别       | `table_recognition` | [通用表格识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成) |
-| 通用版面解析       | `layout_parsing`                | [通用版面解析产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.md#22-python脚本方式集成)                                   |
-| 公式识别       | `formula_recognition`                | [公式识别产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md#22-python脚本方式集成)                                   |
-| 印章文本识别       | `seal_recognition`                | [印章文本识别产线Python脚本使用说明](./docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md#22-python脚本方式集成)                                          |
+| 通用版面解析       | `layout_parsing`                | [通用版面解析产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.md#22-python脚本方式集成)                                   |
+| 公式识别       | `formula_recognition`                | [公式识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md#22-python脚本方式集成)                                   |
+| 印章文本识别       | `seal_recognition`                | [印章文本识别产线Python脚本使用说明](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md#22-python脚本方式集成)                                          |
 
 ### 💻 命令行使用
 
