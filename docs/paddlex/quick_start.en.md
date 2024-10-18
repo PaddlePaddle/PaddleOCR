@@ -54,10 +54,10 @@ For other pipelines in Python scripts, just adjust the `pipeline` parameter of t
 |------------------------|--------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | PP-ChatOCRv3-doc  | `PP-ChatOCRv3-doc` | [Python Script Usage for Document Scene Information Extraction v3 Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extration_pipelines/document_scene_information_extraction_en.md#22-local-experience) |
 | General OCR            | `OCR` | [Python Script Usage for General OCR Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR_en.md#22-local-experience) |
-| General Table Recognition       | `table_recognition` | [Python Script Usage for General Table Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md#22-local-experience) |
+| Table Recognition       | `table_recognition` | [Python Script Usage for General Table Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition_en.md#22-local-experience) |
 | Layout Parsing       | `layout_parsing`                | [Python Script Usage for Layout Parsing Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_en.md#22-local-experience)                                   |
 | Formula Recognition       | `formula_recognition`                | [Python Script Usage for Formula Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition_en.md#2-quick-start)                                   |
-| Seal Text Recognition       | `seal_recognition`                | [Python Script Usage for Formula Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md#2--quick-start)                                          |
+| Seal Recognition       | `seal_recognition`                | [Python Script Usage for Formula Recognition Pipeline](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition_en.md#2--quick-start)                                          |
 
 ### 💻 Command Line Usage
 
@@ -94,7 +94,7 @@ For command line usage of other pipelines, simply adjust the `pipeline` paramete
 
 | Pipeline Name     | Command                                                                                                                                                                                               |
 |-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| General Table Recognition | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
+| Table Recognition | `paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0`                                             |
 | Layout Parsing       | `paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --device gpu:0`                                      |
 | Formula Recognition       | `paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --device gpu:0`                                      |
-| Seal Text Recognition       | `paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --device gpu:0`     
+| Seal Recognition       | `paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --device gpu:0`     
