@@ -97,6 +97,13 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --input_shape_dict "{'x': [-1,3,-1,-1]}"
   ```
 
+如你对导出的 ONNX 模型有优化的需求，推荐使用 `onnxslim` 对模型进行优化:
+
+```bash linenums="1"
+pip install onnxslim
+onnxslim model.onnx slim.onnx
+```
+
 ## 3. 推理预测
 
 以中文OCR模型为例，使用 ONNXRuntime 预测可执行如下命令：
