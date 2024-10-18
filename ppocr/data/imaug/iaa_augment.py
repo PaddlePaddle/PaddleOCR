@@ -19,37 +19,92 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+import os
 
 import numpy as np
-import imgaug
-import imgaug.augmenters as iaa
+
+os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
+import albumentations as A
 
 
-class AugmenterBuilder(object):
+class AugmenterBuilder:
     def __init__(self):
         pass
 
-    def build(self, args, root=True):
-        if args is None or len(args) == 0:
+    def build(self, args):
+        if not args:
             return None
         elif isinstance(args, list):
-            if root:
-                sequence = [self.build(value, root=False) for value in args]
-                return iaa.Sequential(sequence)
-            else:
-                return getattr(iaa, args[0])(
-                    *[self.to_tuple_if_list(a) for a in args[1:]]
-                )
+            # Recursively build transforms from the list
+            transforms = [self.build(value) for value in args if self.build(value)]
+            return A.Compose(
+                transforms,
+                # Use KeypointParams to handle keypoints (polygons represented as keypoints)
+                keypoint_params=A.KeypointParams(format="xy", remove_invisible=False),
+            )
         elif isinstance(args, dict):
-            cls = getattr(iaa, args["type"])
-            return cls(**{k: self.to_tuple_if_list(v) for k, v in args["args"].items()})
+            # Get the transform type and its arguments
+            transform_type = args.get("type")
+            transform_args = args.get("args", {})
+            # Map the transform type to the corresponding function
+            transform_func = self._get_transform_function(
+                transform_type, transform_args
+            )
+            if transform_func:
+                return transform_func
+            else:
+                raise NotImplementedError(
+                    f"Transform {transform_type} not implemented."
+                )
         else:
-            raise RuntimeError("unknown augmenter arg: " + str(args))
+            raise RuntimeError(f"Unknown augmenter arg: {args}")
 
-    def to_tuple_if_list(self, obj):
-        if isinstance(obj, list):
-            return tuple(obj)
-        return obj
+    def _get_transform_function(self, transform_type, transform_args):
+        # Define mapping from transform types to functions
+        transform_mapping = {
+            "Fliplr": self._build_horizontal_flip,
+            "Affine": self._build_affine,
+            "Resize": self._build_resize,
+        }
+        func = transform_mapping.get(transform_type)
+        if func:
+            return func(transform_args)
+        else:
+            return None
+
+    def _build_horizontal_flip(self, transform_args):
+        p = transform_args.get("p", 0.5)
+        return A.HorizontalFlip(p=p)
+
+    def _build_affine(self, transform_args):
+        rotate = transform_args.get("rotate")
+        shear = transform_args.get("shear")
+        translate_percent = transform_args.get("translate_percent")
+        affine_args = {"fit_output": True}
+        if rotate is not None:
+            affine_args["rotate"] = (
+                tuple(rotate) if isinstance(rotate, list) else rotate
+            )
+        if shear is not None:
+            affine_args["shear"] = shear
+        if translate_percent is not None:
+            affine_args["translate_percent"] = translate_percent
+        return A.Affine(**affine_args)
+
+    def _build_resize(self, transform_args):
+        size = transform_args.get("size", [1.0, 1.0])
+        if isinstance(size, list) and len(size) == 2:
+            scale_factor = size[0]
+            height = int(scale_factor * 100)
+            width = int(scale_factor * 100)
+            return A.Resize(height=height, width=width)
+        elif isinstance(size, (int, float)):
+            scale_factor = float(size)
+            height = int(scale_factor * 100)
+            width = int(scale_factor * 100)
+            return A.Resize(height=height, width=width)
+        else:
+            raise ValueError("Invalid size parameter for Resize")
 
 
 class IaaAugment:
@@ -58,35 +113,32 @@ class IaaAugment:
             augmenter_args = [
                 {"type": "Fliplr", "args": {"p": 0.5}},
                 {"type": "Affine", "args": {"rotate": [-10, 10]}},
-                {"type": "Resize", "args": {"size": [0.5, 3]}},
+                {"type": "Resize", "args": {"size": [0.5, 3.0]}},
             ]
         self.augmenter = AugmenterBuilder().build(augmenter_args)
 
     def __call__(self, data):
         image = data["image"]
-        shape = image.shape
-
+        polys = data["polys"]
+        # Flatten polys to keypoints and keep track of groupings
+        keypoints = []
+        keypoint_groups = []
+        for poly in polys:
+            poly_keypoints = [tuple(point) for point in poly]
+            keypoints.extend(poly_keypoints)
+            keypoint_groups.append(len(poly_keypoints))
         if self.augmenter:
-            aug = self.augmenter.to_deterministic()
-            data["image"] = aug.augment_image(image)
-            data = self.may_augment_annotation(aug, data, shape)
+            transformed = self.augmenter(image=image, keypoints=keypoints)
+            data["image"] = transformed["image"]
+            # Reconstruct polys from transformed keypoints
+            transformed_keypoints = transformed["keypoints"]
+            new_polys = []
+            idx = 0
+            for group_length in keypoint_groups:
+                new_poly = np.array(
+                    transformed_keypoints[idx : idx + group_length], dtype=np.float32
+                )
+                new_polys.append(new_poly)
+                idx += group_length
+            data["polys"] = new_polys
         return data
-
-    def may_augment_annotation(self, aug, data, shape):
-        if aug is None:
-            return data
-
-        line_polys = []
-        for poly in data["polys"]:
-            new_poly = self.may_augment_poly(aug, shape, poly)
-            line_polys.append(new_poly)
-        data["polys"] = np.array(line_polys)
-        return data
-
-    def may_augment_poly(self, aug, img_shape, poly):
-        keypoints = [imgaug.Keypoint(p[0], p[1]) for p in poly]
-        keypoints = aug.augment_keypoints(
-            [imgaug.KeypointsOnImage(keypoints, shape=img_shape)]
-        )[0].keypoints
-        poly = [(p.x, p.y) for p in keypoints]
-        return poly
