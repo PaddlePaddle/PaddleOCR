@@ -76,10 +76,12 @@ class Head(nn.Layer):
     def forward(self, x, return_f=False):
         x = self.conv1(x)
         x = self.conv_bn1(x)
-        x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
+        if self.training:
+            x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
         x = self.conv2(x)
         x = self.conv_bn2(x)
-        x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
+        if self.training:
+            x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
         if return_f is True:
             f = x
         x = self.conv3(x)
