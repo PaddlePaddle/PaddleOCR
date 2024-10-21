@@ -56,7 +56,8 @@ dependencies = [
     "beautifulsoup4",
     "fonttools>=4.24.0",
     "fire>=0.3.0",
-    "requests"
+    "requests",
+    "albumentations"
 ]
 
 [project.urls]
