@@ -147,6 +147,7 @@ def init_args():
 
     parser.add_argument("--show_log", type=str2bool, default=True)
     parser.add_argument("--use_onnx", type=str2bool, default=False)
+    parser.add_argument("--onnx_providers", nargs="+", type=str, default=False)
 
     # extended function
     parser.add_argument(
@@ -193,7 +194,10 @@ def create_predictor(args, mode, logger):
         model_file_path = model_dir
         if not os.path.exists(model_file_path):
             raise ValueError("not find model file path {}".format(model_file_path))
-        if args.use_gpu:
+
+        if args.onnx_providers and len(args.onnx_providers) > 0:
+            sess = ort.InferenceSession(model_file_path, providers=args.onnx_providers)
+        elif args.use_gpu:
             sess = ort.InferenceSession(
                 model_file_path,
                 providers=[
