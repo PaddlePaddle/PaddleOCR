@@ -33,6 +33,7 @@ Architecture:
   Head:
     name: DBHead
     k: 50
+    fix_nan: True
 
 Loss:
   name: DBLoss

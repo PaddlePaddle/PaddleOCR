@@ -33,6 +33,7 @@ Architecture:
     name: PFHeadLocal
     k: 50
     mode: "large"
+    fix_nan: True
     
 
 Loss:
