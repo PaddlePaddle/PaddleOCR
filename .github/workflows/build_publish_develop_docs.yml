@@ -25,7 +25,8 @@ jobs:
           restore-keys: |
             mkdocs-material-
       - run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n
+      - name: Set custom var
+        run: echo "VERSION=v$(echo '${{ github.ref_name }}' | cut -d '/' -f2)" >> $GITHUB_ENV
       - run: |
           git fetch origin gh-pages --depth=1
-          VERSION="v"$(${{ github.ref_name }} | cut -d "/" -f2)
-          mike deploy --push VERSION
+          mike deploy --push "${VERSION}"
