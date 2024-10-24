@@ -195,8 +195,14 @@ def create_predictor(args, mode, logger):
         if not os.path.exists(model_file_path):
             raise ValueError("not find model file path {}".format(model_file_path))
 
+        sess_options = args.onnx_sess_options or None
+
         if args.onnx_providers and len(args.onnx_providers) > 0:
-            sess = ort.InferenceSession(model_file_path, providers=args.onnx_providers)
+            sess = ort.InferenceSession(
+                model_file_path,
+                providers=args.onnx_providers,
+                sess_options=sess_options,
+            )
         elif args.use_gpu:
             sess = ort.InferenceSession(
                 model_file_path,
@@ -206,10 +212,13 @@ def create_predictor(args, mode, logger):
                         {"device_id": args.gpu_id, "cudnn_conv_algo_search": "DEFAULT"},
                     )
                 ],
+                sess_options=sess_options,
             )
         else:
             sess = ort.InferenceSession(
-                model_file_path, providers=["CPUExecutionProvider"]
+                model_file_path,
+                providers=["CPUExecutionProvider"],
+                sess_options=sess_options,
             )
         return sess, sess.get_inputs()[0], None, None
 
