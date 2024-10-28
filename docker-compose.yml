@@ -1,0 +1,23 @@
+services:
+  ppocr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - $PWD:/paddle
+      - /home/xiuhao/work/Dataset/MeterPaddle/train_data:/paddle/train_data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all # Use all available GPUs
+              capabilities: [ gpu ]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=5,6,7 # Explicitly set visible devices
+    shm_size: 64G
+    network_mode: host
+    ports:
+      - 8888:8888
+
+#  --shm-size=64G --network=host
