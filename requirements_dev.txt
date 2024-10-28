@@ -1,0 +1,2 @@
+line-profiler==4.1.3
+pdf2image==1.17.0

@@ -1,0 +1,1 @@
+profile/resources/sample_pdf.pdf filter=lfs diff=lfs merge=lfs -text
