@@ -14,7 +14,7 @@ Global:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
   # character_dict_path: ppocr/utils/en_dict.txt
-  character_dict_path: .script/meter_dict.txt
+  character_dict_path: atrain_script/meter_dict.txt
   max_text_length: &max_text_length 6
   infer_mode: false
   use_space_char: true
