@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:365e1fcd64541597ddef7295d827431147d6dc54e4ac00e3d34d4055e48e9cc4"
+content_hash = "sha256:9a7595547beb50e29f11e57526fef8c0c955192d3d6ab4ad1c4a142a5ed031e0"
 
 [[metadata.targets]]
 requires_python = "==3.9.*"
@@ -61,6 +61,17 @@ dependencies = [
 files = [
     {file = "annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"},
     {file = "annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89"},
+]
+
+[[package]]
+name = "astor"
+version = "0.8.1"
+requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+summary = "Read/rewrite/write Python ASTs"
+groups = ["default"]
+files = [
+    {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
+    {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
 ]
 
 [[package]]
@@ -180,6 +191,17 @@ files = [
     {file = "Cython-3.0.11-cp39-cp39-win_amd64.whl", hash = "sha256:8948802e1f5677a673ea5d22a1e7e273ca5f83e7a452786ca286eebf97cee67c"},
     {file = "Cython-3.0.11-py2.py3-none-any.whl", hash = "sha256:0e25f6425ad4a700d7f77cd468da9161e63658837d1bc34861a9861a4ef6346d"},
     {file = "cython-3.0.11.tar.gz", hash = "sha256:7146dd2af8682b4ca61331851e6aebce9fe5158e75300343f80c07ca80b1faff"},
+]
+
+[[package]]
+name = "decorator"
+version = "5.1.1"
+requires_python = ">=3.5"
+summary = "Decorators for Humans"
+groups = ["default"]
+files = [
+    {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
+    {file = "decorator-5.1.1.tar.gz", hash = "sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330"},
 ]
 
 [[package]]
@@ -527,6 +549,20 @@ files = [
 ]
 
 [[package]]
+name = "opt-einsum"
+version = "3.3.0"
+requires_python = ">=3.5"
+summary = "Optimizing numpys einsum function"
+groups = ["default"]
+dependencies = [
+    "numpy>=1.7",
+]
+files = [
+    {file = "opt_einsum-3.3.0-py3-none-any.whl", hash = "sha256:2455e59e3947d3c275477df7f5205b30635e266fe6dc300e3d9f9646bfcea147"},
+    {file = "opt_einsum-3.3.0.tar.gz", hash = "sha256:59f6475f77bbc37dcf7cd748519c0ec60722e91e63ca114e68821c0c54a46549"},
+]
+
+[[package]]
 name = "packaging"
 version = "24.1"
 requires_python = ">=3.8"
@@ -535,6 +571,53 @@ groups = ["default"]
 files = [
     {file = "packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"},
     {file = "packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"},
+]
+
+[[package]]
+name = "paddle-bfloat"
+version = "0.1.7"
+summary = "Paddle numpy bfloat16 package"
+groups = ["default"]
+files = [
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:bf1e30781a9155d44bc5b6ad9c4a868b3c2a22d9896c8f0a07f974487f743ef7"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:59ca62f3fc010c14cb212dacdb4f550e5b789615a4129da153be83ce05fba5cb"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:998061e4a69dca0806746f33964ae6c9a435b56ceda034d3688263ff91205d73"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:496f4db32d413cae615a4301d01956408def048e36dfef4c323ce31737a38461"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:024e6e8ab57d5b50d78a4e630956c9efd21527acad6d0b310d0c6d8f744dc08c"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:8663a39c167d6314b41586ce737a9cf5ec2544f5dfbe4dc88fd19088d6d4aa55"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a83f78441bf39420dfd265d2b33999c348a537ca78ff9803a436c146010c1d9b"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:940eafeab38b1b0d8df979c2152cff04be77930e33f0dfd416a4aed0514aed72"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8f914ad0e58a96b4be371ccdcfc31fcc6a0b3d7bb123834e8b16507483f24a4b"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:01ad0c4d5d7282f80e58479ef769a73016bfeb130c64c4cc76558123d3389be5"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:a7d29ee3ce519eb6915e388d2a5bec908210b2254d501d15e95d05f7ebf5dde9"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:0093d81e18a661443a326b59b74c39d470c56e53f74ee84a2f5a7b7278b73b73"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_ppc64le.whl", hash = "sha256:be621fcdd81af0c8364cdff28284e40ab8aa4cfa1aea076b12ac9d8174405c63"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_s390x.whl", hash = "sha256:7aab27bd5769a2747c04949e1236caaf06887a388b5062e07c541d840e82272f"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:f39fe90f9d654ea238d030ac185ab92664e64d718f1ac6453d7a5c755c6030d0"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-win32.whl", hash = "sha256:b5d547a373fb0dec492b5fc1e9d6eb5b76367cc15c2cc9e8e133a1897787dcbd"},
+    {file = "paddle_bfloat-0.1.7-cp39-cp39-win_amd64.whl", hash = "sha256:f24d1a6754cbffebbca60086710981231c7e2a734a9bb64d73f8a9cca86e8b64"},
+    {file = "paddle_bfloat-0.1.7.tar.gz", hash = "sha256:9ab8d00ad2ec5cebea7871cc8ee331eb916f31f676fb04e1d5aa3d64913ef71c"},
+]
+
+[[package]]
+name = "paddlepaddle-gpu"
+version = "2.4.2"
+summary = "Parallel Distributed Deep Learning"
+groups = ["default"]
+dependencies = [
+    "Pillow",
+    "astor",
+    "decorator",
+    "numpy>=1.13",
+    "opt-einsum==3.3.0",
+    "paddle-bfloat==0.1.7",
+    "protobuf<=3.20.0,>=3.1.0",
+    "requests>=2.20.0",
+    "six",
+]
+files = [
+    {file = "paddlepaddle_gpu-2.4.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:881cfbcbd4e1104b3f574c47d331790181b8e077c8a303ac70dd35d35fe23fed"},
+    {file = "paddlepaddle_gpu-2.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:31991e513fce9dae3fb73da496d900b63495782f60836cb1703639db0d1ae98c"},
 ]
 
 [[package]]
@@ -560,6 +643,22 @@ files = [
     {file = "pillow-11.0.0-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:daffdf51ee5db69a82dd127eabecce20729e21f7a3680cf7cbb23f0829189790"},
     {file = "pillow-11.0.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:7326a1787e3c7b0429659e0a944725e1b03eeaa10edd945a86dead1913383944"},
     {file = "pillow-11.0.0.tar.gz", hash = "sha256:72bacbaf24ac003fea9bff9837d1eedb6088758d41e100c1552930151f677739"},
+]
+
+[[package]]
+name = "protobuf"
+version = "3.20.0"
+requires_python = ">=3.7"
+summary = "Protocol Buffers"
+groups = ["default"]
+files = [
+    {file = "protobuf-3.20.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:1d24c81c2310f0063b8fc1c20c8ed01f3331be9374b4b5c2de846f69e11e21fb"},
+    {file = "protobuf-3.20.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:8be43a91ab66fe995e85ccdbdd1046d9f0443d59e060c0840319290de25b7d33"},
+    {file = "protobuf-3.20.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:7a53d4035427b9dbfbb397f46642754d294f131e93c661d056366f2a31438263"},
+    {file = "protobuf-3.20.0-cp39-cp39-win32.whl", hash = "sha256:32bf4a90c207a0b4e70ca6dd09d43de3cb9898f7d5b69c2e9e3b966a7f342820"},
+    {file = "protobuf-3.20.0-cp39-cp39-win_amd64.whl", hash = "sha256:6efe066a7135233f97ce51a1aa007d4fb0be28ef093b4f88dac4ad1b3a2b7b6f"},
+    {file = "protobuf-3.20.0-py2.py3-none-any.whl", hash = "sha256:4eda68bd9e2a4879385e6b1ea528c976f59cd9728382005cc54c28bcce8db983"},
+    {file = "protobuf-3.20.0.tar.gz", hash = "sha256:71b2c3d1cd26ed1ec7c8196834143258b2ad7f444efff26fdc366c6f5e752702"},
 ]
 
 [[package]]

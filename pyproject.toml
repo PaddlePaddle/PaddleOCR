@@ -55,6 +55,7 @@ dependencies = [
     "requests",
     "albumentations==1.4.10",
     "albucore==0.0.13",
+    "paddlepaddle-gpu==2.4.2",
 ]
 
 [project.urls]
@@ -73,3 +74,8 @@ include-package-data = true
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
+
+[tool.pdm]
+pypi-mirrors = [
+    { url = "https://mirror.baidu.com/pypi/simple", verify_ssl = true }
+]
