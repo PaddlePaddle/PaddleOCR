@@ -10,7 +10,7 @@ hide:
 pip install paddleocr
 ```
 
-### Use
+### Use by code
 
 === "Detection + Classification + Recognition"
 
@@ -161,6 +161,101 @@ pip install paddleocr
         res = result[idx]
         for line in res:
             print(line)
+    ```
+
+    Output will be a list, each item contains classification result and confidence
+
+    ```python linenums="1"
+    ['0', 0.99999964]
+    ```
+
+### Usy by command line
+
+Show help information
+
+```bash linenums="1"
+paddleocr -h
+```
+
+=== "Detection + Classification + Recognition"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
+    ```
+
+    Output will be a list, each item contains bounding box, text and recognition confidence
+
+    ```python linenums="1"
+    [[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+    [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+    [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+    ......
+    ```
+
+    pdf file is also supported, you can infer the first few pages by using the page_num parameter, the default is 0, which means infer all pages
+
+    ```bash linenums="1"
+    paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
+    ```
+
+=== "Detection + Recognition"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
+    ```
+
+    Output will be a list, each item contains bounding box, text and recognition confidence
+
+    ```python linenums="1"
+    [[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+    [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+    [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+    ......
+    ```
+
+=== "Classification + Recognition"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
+    ```
+
+    Output will be a list, each item contains text and recognition confidence
+
+    ```python linenums="1"
+    ['PAIN', 0.990372]
+    ```
+
+=== "Only detection"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --rec false
+    ```
+
+    Output will be a list, each item only contains bounding box
+
+    ```python linenums="1"
+    [[756.0, 812.0], [805.0, 812.0], [805.0, 830.0], [756.0, 830.0]]
+    [[820.0, 803.0], [1085.0, 801.0], [1085.0, 836.0], [820.0, 838.0]]
+    [[393.0, 801.0], [715.0, 805.0], [715.0, 839.0], [393.0, 836.0]]
+    ......
+    ```
+
+=== "Only recognition"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
+    ```
+
+    Output will be a list, each item contains text and recognition confidence
+
+    ```python linenums="1"
+    ['PAIN', 0.990372]
+    ```
+
+=== "Only classification"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --rec false
     ```
 
     Output will be a list, each item contains classification result and confidence
