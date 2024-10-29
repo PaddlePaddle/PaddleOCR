@@ -6,6 +6,27 @@ hide:
 
 ### 安装
 
+#### 1. 安装PaddlePaddle
+
+> 如果您没有基础的Python运行环境，请参考[运行环境准备](./ppocr/environment.md)。
+
+=== "CPU端安装"
+
+    ```bash linenums="1"
+    pip install paddlepaddle
+    ```
+
+=== "GPU端安装"
+
+    由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+
+
+    ```bash linenums="1"
+     python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+    ```
+
+#### 2. 安装`paddleocr`
+
 ```bash linenums="1"
 pip install paddleocr
 ```
@@ -263,6 +284,8 @@ paddleocr -h
     ```python linenums="1"
     ['0', 0.99999964]
     ```
+
+更加详细的文档，请移步：[PaddleOCR快速开始](./ppocr/quick_start.md)
 
 ### 在线demo
 
