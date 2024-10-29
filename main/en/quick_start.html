@@ -712,9 +712,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#use" class="md-nav__link">
+  <a href="#use-by-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Use
+      Use by code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usy-by-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usy by command line
     </span>
   </a>
   
@@ -4984,9 +4993,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#use" class="md-nav__link">
+  <a href="#use-by-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Use
+      Use by code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usy-by-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usy by command line
     </span>
   </a>
   
@@ -5046,7 +5064,7 @@ You're not viewing the latest version.
 <h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>paddleocr
 </span></code></pre></div></td></tr></table></div>
-<h3 id="use">Use<a class="headerlink" href="#use" title="Permanent link">&para;</a></h3>
+<h3 id="use-by-code">Use by code<a class="headerlink" href="#use-by-code" title="Permanent link">&para;</a></h3>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:6"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><input id="__tabbed_1_5" name="__tabbed_1" type="radio" /><input id="__tabbed_1_6" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Detection + Classification + Recognition</label><label for="__tabbed_1_2">Detection + Recognition</label><label for="__tabbed_1_3">Classification + Recognition</label><label for="__tabbed_1_4">Only detection</label><label for="__tabbed_1_5">Only recognition</label><label for="__tabbed_1_6">Only classification</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -5263,6 +5281,77 @@ You're not viewing the latest version.
 </div>
 </div>
 </div>
+<h3 id="usy-by-command-line">Usy by command line<a class="headerlink" href="#usy-by-command-line" title="Permanent link">&para;</a></h3>
+<p>Show help information</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>paddleocr<span class="w"> </span>-h
+</span></code></pre></div></td></tr></table></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><input id="__tabbed_2_6" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Detection + Classification + Recognition</label><label for="__tabbed_2_2">Detection + Recognition</label><label for="__tabbed_2_3">Classification + Recognition</label><label for="__tabbed_2_4">Only detection</label><label for="__tabbed_2_5">Only recognition</label><label for="__tabbed_2_6">Only classification</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--lang<span class="w"> </span>en
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item contains bounding box, text and recognition confidence</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span>
+<span class="normal"><a href="#__codelineno-15-3">3</a></span>
+<span class="normal"><a href="#__codelineno-15-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="o">......</span>
+</span></code></pre></div></td></tr></table></div>
+<p>pdf file is also supported, you can infer the first few pages by using the page_num parameter, the default is 0, which means infer all pages</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>./xxx.pdf<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--use_gpu<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--page_num<span class="w"> </span><span class="m">2</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--lang<span class="w"> </span>en
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item contains bounding box, text and recognition confidence</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
+<span class="normal"><a href="#__codelineno-18-2">2</a></span>
+<span class="normal"><a href="#__codelineno-18-3">3</a></span>
+<span class="normal"><a href="#__codelineno-18-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a><span class="o">......</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--lang<span class="w"> </span>en
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item contains text and recognition confidence</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--rec<span class="w"> </span><span class="nb">false</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item only contains bounding box</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span>
+<span class="normal"><a href="#__codelineno-22-2">2</a></span>
+<span class="normal"><a href="#__codelineno-22-3">3</a></span>
+<span class="normal"><a href="#__codelineno-22-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="p">[[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">]]</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2"></a><span class="p">[[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">803.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">838.0</span><span class="p">]]</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3"></a><span class="p">[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">805.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">839.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">]]</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4"></a><span class="o">......</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--lang<span class="w"> </span>en
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item contains text and recognition confidence</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--rec<span class="w"> </span><span class="nb">false</span>
+</span></code></pre></div></td></tr></table></div>
+<p>Output will be a list, each item contains classification result and confidence</p>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mf">0.99999964</span><span class="p">]</span>
+</span></code></pre></div></td></tr></table></div>
+</div>
+</div>
+</div>
 <h3 id="online-demo">Online Demo<a class="headerlink" href="#online-demo" title="Permanent link">&para;</a></h3>
 <ul>
 <li>PP-OCRv4 online experience：<a href="https://aistudio.baidu.com/aistudio/projectdetail/6611435">https://aistudio.baidu.com/aistudio/projectdetail/6611435</a></li>
@@ -5299,7 +5388,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 28, 2024</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 29, 2024</span>
   </span>
 
     
@@ -5309,7 +5398,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 28, 2024</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 29, 2024</span>
   </span>
 
     
