@@ -10,7 +10,7 @@ hide:
 pip install paddleocr
 ```
 
-### 使用
+### Python脚本使用
 
 === "文本检测+方向分类+文本识别"
 
@@ -161,6 +161,101 @@ pip install paddleocr
         res = result[idx]
         for line in res:
             print(line)
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    ['0', 0.99999964]
+    ```
+
+### 命令行使用
+
+显示帮助信息
+
+```bash linenums="1"
+paddleocr -h
+```
+
+=== "文本检测+方向分类+文本识别"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --use_angle_cls true --lang en
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    [[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+    [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+    [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+    ......
+    ```
+
+    还支持pdf文件，您可以使用`page_num`参数推断前几页，默认值为0，这意味着识别全部页面
+
+    ```bash linenums="1"
+    paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
+    ```
+
+=== "文本检测+文本识别"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --lang en
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    [[[442.0, 173.0], [1169.0, 173.0], [1169.0, 225.0], [442.0, 225.0]], ['ACKNOWLEDGEMENTS', 0.99283075]]
+    [[[393.0, 340.0], [1207.0, 342.0], [1207.0, 389.0], [393.0, 387.0]], ['We would like to thank all the designers and', 0.9357758]]
+    [[[399.0, 398.0], [1204.0, 398.0], [1204.0, 433.0], [399.0, 433.0]], ['contributors whohave been involved in the', 0.9592447]]
+    ......
+    ```
+
+=== "方向分类+文本识别"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --lang en
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    ['PAIN', 0.990372]
+    ```
+
+=== "只有文本检测"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_en/img_12.jpg --rec false
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    [[756.0, 812.0], [805.0, 812.0], [805.0, 830.0], [756.0, 830.0]]
+    [[820.0, 803.0], [1085.0, 801.0], [1085.0, 836.0], [820.0, 838.0]]
+    [[393.0, 801.0], [715.0, 805.0], [715.0, 839.0], [393.0, 836.0]]
+    ......
+    ```
+
+=== "只有识别"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --det false --lang en
+    ```
+
+    输出示例：
+
+    ```python linenums="1"
+    ['PAIN', 0.990372]
+    ```
+
+=== "只有方向分类"
+
+    ```bash linenums="1"
+    paddleocr --image_dir PaddleOCR/doc/imgs_words_en/word_10.png --use_angle_cls true --det false --rec false
     ```
 
     输出示例：
