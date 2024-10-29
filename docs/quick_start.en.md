@@ -6,9 +6,23 @@ hide:
 
 ### Install
 
-```bash linenums="1"
-pip install paddleocr
-```
+#### 1. Install PaddlePaddle
+
+> If you don't have a basic Python runtime environment, please refer to [Running environment preparation](./ppocr/environment.en.md).
+
+=== "CPU installation"
+
+    ```bash linenums="1"
+    pip install paddlepaddle
+    ```
+
+=== "GPU installation"
+
+    Since the GPU needs to be installed and used according to the specific CUDA version, the following only takes the Linux platform, pip installation of NVIDIA GPU, CUDA11.8 as an example. For other platforms, please refer to the instructions in [PaddlePaddle official website installation document](https://www.paddlepaddle.org.cn/en).
+
+    ```bash linenums="1"
+    python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+    ```
 
 ### Use by code
 
@@ -263,6 +277,8 @@ paddleocr -h
     ```python linenums="1"
     ['0', 0.99999964]
     ```
+
+For more detailed documentation, please go to: [PaddleOCR Quick Start](./ppocr/quick_start.en.md)
 
 ### Online Demo
 
