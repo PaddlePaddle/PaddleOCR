@@ -183,7 +183,7 @@ hide:
     ['0', 0.99999964]
     ```
 
-### Usy by command line
+### Use by command line
 
 Show help information
 
