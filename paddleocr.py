@@ -975,6 +975,9 @@ def main():
             if result is not None:
                 lines = []
                 for res in result:
+                    if res is None:
+                        logger.warning(f"No text found in image {img_path}")
+                        continue
                     for line in res:
                         logger.info(line)
                         lines.append(pprint.pformat(line) + "\n")
