@@ -16,6 +16,7 @@
 
 // common args
 DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
+DEFINE_bool(use_mlu, false, "Infering with MLU or CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
 DEFINE_int32(gpu_mem, 4000, "GPU id when infering with GPU.");

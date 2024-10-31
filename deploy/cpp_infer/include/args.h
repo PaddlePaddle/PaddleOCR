@@ -18,6 +18,7 @@
 
 // common args
 DECLARE_bool(use_gpu);
+DECLARE_bool(use_mlu);
 DECLARE_bool(use_tensorrt);
 DECLARE_int32(gpu_id);
 DECLARE_int32(gpu_mem);

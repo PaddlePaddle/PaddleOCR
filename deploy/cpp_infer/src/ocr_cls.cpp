@@ -123,7 +123,9 @@ void Classifier::LoadModel(const std::string &model_dir) {
         config.EnableTunedTensorRtDynamicShape("./trt_cls_shape.txt", true);
       }
     }
-  } else {
+  } else if (this->use_mlu_) {
+    config.EnableCustomDevice("mlu", this->gpu_id_);
+  } else { 
     config.DisableGpu();
     if (this->use_mkldnn_) {
       config.EnableMKLDNN();
