@@ -221,7 +221,7 @@ def create_predictor(args, mode, logger):
                 providers=["CPUExecutionProvider"],
                 sess_options=sess_options,
             )
-        return sess, sess.get_inputs()[0], None, None
+        return sess, [vo.name for vo in sess.get_inputs()], None, None
 
     else:
         file_names = ["model", "inference"]
