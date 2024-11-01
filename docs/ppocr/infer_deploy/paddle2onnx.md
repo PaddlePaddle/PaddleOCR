@@ -41,47 +41,89 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 
 ### Paddle 模型下载
 
-有两种方式获取Paddle静态图模型：在 [model_list](../model_list.md) 中下载PaddleOCR提供的预测模型；
+有两种方式获取Paddle静态图模型：在 [model_list](../model_list.md) 中下载PaddleOCR提供的预测模型；参考[模型导出说明](https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference)把训练好的权重转为推理模型。
 
-以 PP-OCRv3 中文检测、识别、分类模型为例：
+以 PP-OCR 系列中文检测、识别、分类模型为例：
 
-```bash linenums="1"
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && cd ..
+=== "PP-OCRv3"
 
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
-cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && cd ..
+    ```bash linenums="1"
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
+    cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && cd ..
 
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
-cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
-```
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
+    cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && cd ..
+
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+    cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
+    ```
+
+=== "PP-OCRv4"
+
+    ```bash linenums="1"
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar
+    cd ./inference && tar xf ch_PP-OCRv4_det_infer.tar && cd ..
+
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar
+    cd ./inference && tar xf ch_PP-OCRv4_rec_infer.tar && cd ..
+
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+    cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
+    ```
 
 ### 模型转换
 
 使用 Paddle2ONNX 将Paddle静态图模型转换为ONNX模型格式：
 
-```bash linenums="1"
-paddle2onnx --model_dir ./inference/ch_PP-OCRv3_det_infer \
---model_filename inference.pdmodel \
---params_filename inference.pdiparams \
---save_file ./inference/det_onnx/model.onnx \
---opset_version 11 \
---enable_onnx_checker True
+=== "PP-OCRv3"
 
-paddle2onnx --model_dir ./inference/ch_PP-OCRv3_rec_infer \
---model_filename inference.pdmodel \
---params_filename inference.pdiparams \
---save_file ./inference/rec_onnx/model.onnx \
---opset_version 11 \
---enable_onnx_checker True
+    ```bash linenums="1"
+    paddle2onnx --model_dir ./inference/ch_PP-OCRv3_det_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/det_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
 
-paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
---model_filename inference.pdmodel \
---params_filename inference.pdiparams \
---save_file ./inference/cls_onnx/model.onnx \
---opset_version 11 \
---enable_onnx_checker True
-```
+    paddle2onnx --model_dir ./inference/ch_PP-OCRv3_rec_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/rec_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/cls_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+    ```
+
+=== "PP-OCRv4"
+
+    ```bash linenums="1"
+    paddle2onnx --model_dir ./inference/ch_PP-OCRv4_det_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/det_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/ch_PP-OCRv4_rec_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/rec_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/cls_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+    ```
 
 执行完毕后，ONNX 模型会被分别保存在 `./inference/det_onnx/`，`./inference/rec_onnx/`，`./inference/cls_onnx/`路径下
 
@@ -89,7 +131,7 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
   另外，以下几个模型暂不支持转换为 ONNX 模型：
   NRTR、SAR、RARE、SRN
 
-- 注意：[当前Paddle2ONNX版本(v1.2.3)](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3)现已默认支持动态shape，即 `float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]`，选项 `--input_shape_dict` 已废弃。如果有shape调整需求可使用如下命令进行Paddle模型输入shape调整。
+- 注意：[Paddle2ONNX 版本 v1.2.3](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3)后已默认支持动态shape，即 `float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]`，选项 `--input_shape_dict` 已废弃。如果有shape调整需求可使用如下命令进行Paddle模型输入shape调整。
 
   ```bash linenums="1"
   python3 -m paddle2onnx.optimize --input_model inference/det_onnx/model.onnx \
@@ -97,7 +139,7 @@ paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --input_shape_dict "{'x': [-1,3,-1,-1]}"
   ```
 
-如你对导出的 ONNX 模型有优化的需求，推荐使用 `onnxslim` 对模型进行优化:
+如你对导出的 ONNX 模型有优化的需求，推荐使用 [onnxslim](https://github.com/inisis/OnnxSlim) 对模型进行优化:
 
 ```bash linenums="1"
 pip install onnxslim
@@ -113,18 +155,30 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
---image_dir=./deploy/lite/imgs/lite_demo.png
+--image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
 ```
 
 以中文OCR模型为例，使用 Paddle Inference 预测可执行如下命令：
 
-```bash linenums="1"
-python3 tools/infer/predict_system.py --use_gpu=False \
---cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
---rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
---det_model_dir=./inference/ch_PP-OCRv3_det_infer \
---image_dir=./deploy/lite/imgs/lite_demo.png
-```
+=== "PP-OCRv3"
+
+    ```bash linenums="1"
+    python3 tools/infer/predict_system.py --use_gpu=False \
+    --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
+    --det_model_dir=./inference/ch_PP-OCRv3_det_infer \
+    --image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
+    ```
+
+=== "PP-OCRv4"
+
+    ```bash linenums="1"
+    python3 tools/infer/predict_system.py --use_gpu=False \
+    --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=./inference/ch_PP-OCRv4_rec_infer \
+    --det_model_dir=./inference/ch_PP-OCRv4_det_infer \
+    --image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
+    ```
 
 执行命令后在终端会打印出预测的识别信息，并在 `./inference_results/` 下保存可视化结果。
 
