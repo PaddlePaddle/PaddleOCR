@@ -115,7 +115,7 @@ def merge_config(config, opts):
     return config
 
 
-def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
+def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False, use_gcu=False):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.
@@ -153,6 +153,9 @@ def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False):
                     sys.exit(1)
         if use_mlu and not paddle.device.is_compiled_with_mlu():
             print(err.format("use_mlu", "mlu", "mlu", "use_mlu"))
+            sys.exit(1)
+        if use_gcu and not paddle.device.is_compiled_with_custom_device("gcu"):
+            print(err.format("use_gcu", "gcu", "gcu", "use_gcu"))
             sys.exit(1)
     except Exception as e:
         pass
@@ -799,6 +802,7 @@ def preprocess(is_train=False):
     use_xpu = config["Global"].get("use_xpu", False)
     use_npu = config["Global"].get("use_npu", False)
     use_mlu = config["Global"].get("use_mlu", False)
+    use_gcu = config["Global"].get("use_gcu", False)
 
     alg = config["Architecture"]["algorithm"]
     assert alg in [
@@ -853,9 +857,11 @@ def preprocess(is_train=False):
         device = "npu:{0}".format(os.getenv("FLAGS_selected_npus", 0))
     elif use_mlu:
         device = "mlu:{0}".format(os.getenv("FLAGS_selected_mlus", 0))
+    elif use_gcu:  # Use Enflame GCU(General Compute Unit)
+        device = "gcu:{0}".format(os.getenv("FLAGS_selected_gcus", 0))
     else:
         device = "gpu:{}".format(dist.ParallelEnv().dev_id) if use_gpu else "cpu"
-    check_device(use_gpu, use_xpu, use_npu, use_mlu)
+    check_device(use_gpu, use_xpu, use_npu, use_mlu, use_gcu)
 
     device = paddle.set_device(device)
 
