@@ -115,7 +115,9 @@ class SerPredictor(object):
             else:
                 data[idx] = [data[idx]]
         if self.args.use_onnx:
-            input_tensor = {name: data[idx] for idx, name in enumerate(self.input_tensor)}
+            input_tensor = {
+                name: data[idx] for idx, name in enumerate(self.input_tensor)
+            }
             self.output_tensors = self.predictor.run(None, input_tensor)
         else:
             for idx in range(len(self.input_tensor)):
@@ -125,7 +127,9 @@ class SerPredictor(object):
 
         outputs = []
         for output_tensor in self.output_tensors:
-            output = output_tensor if self.args.use_onnx else output_tensor.copy_to_cpu()
+            output = (
+                output_tensor if self.args.use_onnx else output_tensor.copy_to_cpu()
+            )
             outputs.append(output)
         preds = outputs[0]
 
