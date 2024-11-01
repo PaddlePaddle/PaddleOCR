@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../../../static/images/logo.jpg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.42">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.43">
     
     
       
@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#paddle2onnx-model-transformation-and-prediction" class="md-skip">
+        <a href="#paddle2onnx-model-conversion-and-prediction" class="md-skip">
           Skip to content
         </a>
       
@@ -1745,13 +1745,13 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-environment-preparation" class="md-nav__link">
+  <a href="#1-environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Environment preparation
+      1. Environment Setup
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Environment preparation">
+    <nav class="md-nav" aria-label="1. Environment Setup">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1780,26 +1780,26 @@ You're not viewing the latest version.
         <li class="md-nav__item">
   <a href="#2-model-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Model conversion
+      2. Model Conversion
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Model conversion">
+    <nav class="md-nav" aria-label="2. Model Conversion">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paddle-model-download" class="md-nav__link">
+  <a href="#download-paddle-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Paddle model download
+      Download Paddle Models
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#convert-model" class="md-nav__link">
+  <a href="#model-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      Convert model
+      Model Conversion
     </span>
   </a>
   
@@ -1811,9 +1811,9 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-prediction" class="md-nav__link">
+  <a href="#3-inference-and-prediction" class="md-nav__link">
     <span class="md-ellipsis">
-      3. prediction
+      3. Inference and Prediction
     </span>
   </a>
   
@@ -5019,13 +5019,13 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-environment-preparation" class="md-nav__link">
+  <a href="#1-environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Environment preparation
+      1. Environment Setup
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Environment preparation">
+    <nav class="md-nav" aria-label="1. Environment Setup">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -5054,26 +5054,26 @@ You're not viewing the latest version.
         <li class="md-nav__item">
   <a href="#2-model-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Model conversion
+      2. Model Conversion
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Model conversion">
+    <nav class="md-nav" aria-label="2. Model Conversion">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#paddle-model-download" class="md-nav__link">
+  <a href="#download-paddle-models" class="md-nav__link">
     <span class="md-ellipsis">
-      Paddle model download
+      Download Paddle Models
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#convert-model" class="md-nav__link">
+  <a href="#model-conversion" class="md-nav__link">
     <span class="md-ellipsis">
-      Convert model
+      Model Conversion
     </span>
   </a>
   
@@ -5085,9 +5085,9 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-prediction" class="md-nav__link">
+  <a href="#3-inference-and-prediction" class="md-nav__link">
     <span class="md-ellipsis">
-      3. prediction
+      3. Inference and Prediction
     </span>
   </a>
   
@@ -5124,35 +5124,35 @@ You're not viewing the latest version.
   
 
 
-<h1 id="paddle2onnx-model-transformation-and-prediction">Paddle2ONNX model transformation and prediction<a class="headerlink" href="#paddle2onnx-model-transformation-and-prediction" title="Permanent link">&para;</a></h1>
-<p>This chapter describes how the PaddleOCR model is converted into an ONNX model and predicted based on the ONNXRuntime engine.</p>
-<h2 id="1-environment-preparation">1. Environment preparation<a class="headerlink" href="#1-environment-preparation" title="Permanent link">&para;</a></h2>
-<p>Need to prepare PaddleOCR, Paddle2ONNX model conversion environment, and ONNXRuntime prediction environment</p>
+<h1 id="paddle2onnx-model-conversion-and-prediction">Paddle2ONNX Model Conversion and Prediction<a class="headerlink" href="#paddle2onnx-model-conversion-and-prediction" title="Permanent link">&para;</a></h1>
+<p>This chapter introduces how to convert PaddleOCR models to ONNX models and perform predictions based on the ONNXRuntime engine.</p>
+<h2 id="1-environment-setup">1. Environment Setup<a class="headerlink" href="#1-environment-setup" title="Permanent link">&para;</a></h2>
+<p>You need to prepare the environments for PaddleOCR, Paddle2ONNX model conversion, and ONNXRuntime prediction.</p>
 <h3 id="paddleocr">PaddleOCR<a class="headerlink" href="#paddleocr" title="Permanent link">&para;</a></h3>
-<p>Clone the PaddleOCR repository, use the release/2.6 branch, and install it.</p>
+<p>Clone the PaddleOCR repository, use the main branch, and install it. Since the PaddleOCR repository is relatively large and cloning via <code>git clone</code> can be slow, this tutorial has already downloaded it.</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
-<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w">  </span>-b<span class="w"> </span>release/2.6<span class="w"> </span>https://github.com/PaddlePaddle/PaddleOCR.git
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>PaddleOCR<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3.7<span class="w"> </span>setup.py<span class="w"> </span>install
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>main<span class="w"> </span>https://github.com/PaddlePaddle/PaddleOCR.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>PaddleOCR<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </span></code></pre></div></td></tr></table></div>
 <h3 id="paddle2onnx">Paddle2ONNX<a class="headerlink" href="#paddle2onnx" title="Permanent link">&para;</a></h3>
-<p>Paddle2ONNX supports converting the PaddlePaddle model format to the ONNX model format. The operator currently supports exporting ONNX Opset 9~11 stably, and some Paddle operators support lower ONNX Opset conversion.
-For more details, please refer to <a href="https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_en.md">Paddle2ONNX</a></p>
+<p>Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 9~18, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to <a href="https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_en.md">Paddle2ONNX</a>.</p>
 <ul>
-<li>install Paddle2ONNX</li>
+<li>Install Paddle2ONNX</li>
 </ul>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>python3.7<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddle2onnx
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddle2onnx
 </span></code></pre></div></td></tr></table></div>
 <ul>
-<li>install ONNXRuntime</li>
+<li>Install ONNXRuntime</li>
 </ul>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1"># It is recommended to install version 1.9.0, and the version number can be changed according to the environment</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>python3.7<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">onnxruntime</span><span class="o">==</span><span class="m">1</span>.9.0
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>onnxruntime
 </span></code></pre></div></td></tr></table></div>
-<h2 id="2-model-conversion">2. Model conversion<a class="headerlink" href="#2-model-conversion" title="Permanent link">&para;</a></h2>
-<h3 id="paddle-model-download">Paddle model download<a class="headerlink" href="#paddle-model-download" title="Permanent link">&para;</a></h3>
-<p>There are two ways to obtain the Paddle model: Download the prediction model provided by PaddleOCR in <a href="../model_list.html">model_list</a>;</p>
-<p>Take the PP-OCRv3 detection, recognition, and classification model as an example:</p>
+<h2 id="2-model-conversion">2. Model Conversion<a class="headerlink" href="#2-model-conversion" title="Permanent link">&para;</a></h2>
+<h3 id="download-paddle-models">Download Paddle Models<a class="headerlink" href="#download-paddle-models" title="Permanent link">&para;</a></h3>
+<p>There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the <a href="../model_list.html">model list</a>; or refer to the <a href="https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference">Model Export Instructions</a> to convert trained weights into inference models.</p>
+<p>Using the PP-OCR series English detection, recognition, and classification models as examples:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">PP-OCRv3</label><label for="__tabbed_1_2">PP-OCRv4</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
 <span class="normal"><a href="#__codelineno-3-3">3</a></span>
@@ -5169,161 +5169,254 @@ For more details, please refer to <a href="https://github.com/PaddlePaddle/Paddl
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a>wget<span class="w"> </span>-nc<span class="w">  </span>-P<span class="w"> </span>./inference<span class="w"> </span>https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="nb">cd</span><span class="w"> </span>./inference<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>ch_ppocr_mobile_v2.0_cls_infer.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
 </span></code></pre></div></td></tr></table></div>
-<h3 id="convert-model">Convert model<a class="headerlink" href="#convert-model" title="Permanent link">&para;</a></h3>
-<p>Convert Paddle inference model to ONNX model format using Paddle2ONNX:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-4-10">10</a></span>
-<span class="normal"><a href="#__codelineno-4-11">11</a></span>
-<span class="normal"><a href="#__codelineno-4-12">12</a></span>
-<span class="normal"><a href="#__codelineno-4-13">13</a></span>
-<span class="normal"><a href="#__codelineno-4-14">14</a></span>
-<span class="normal"><a href="#__codelineno-4-15">15</a></span>
-<span class="normal"><a href="#__codelineno-4-16">16</a></span>
-<span class="normal"><a href="#__codelineno-4-17">17</a></span>
-<span class="normal"><a href="#__codelineno-4-18">18</a></span>
-<span class="normal"><a href="#__codelineno-4-19">19</a></span>
-<span class="normal"><a href="#__codelineno-4-20">20</a></span>
-<span class="normal"><a href="#__codelineno-4-21">21</a></span>
-<span class="normal"><a href="#__codelineno-4-22">22</a></span>
-<span class="normal"><a href="#__codelineno-4-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a>--opset_version<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>--input_shape_dict<span class="o">=</span><span class="s2">&quot;{&#39;x&#39;:[-1,3,-1,-1]}&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a>--opset_version<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a>--input_shape_dict<span class="o">=</span><span class="s2">&quot;{&#39;x&#39;:[-1,3,-1,-1]}&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a>--model_filename<span class="w"> </span>ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a>--params_filename<span class="w"> </span>ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a>--save_file<span class="w"> </span>./inferencecls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a>--opset_version<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a>--input_shape_dict<span class="o">=</span><span class="s2">&quot;{&#39;x&#39;:[-1,3,-1,-1]}&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a>--enable_onnx_checker<span class="w"> </span>True
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<span class="normal"><a href="#__codelineno-4-2">2</a></span>
+<span class="normal"><a href="#__codelineno-4-3">3</a></span>
+<span class="normal"><a href="#__codelineno-4-4">4</a></span>
+<span class="normal"><a href="#__codelineno-4-5">5</a></span>
+<span class="normal"><a href="#__codelineno-4-6">6</a></span>
+<span class="normal"><a href="#__codelineno-4-7">7</a></span>
+<span class="normal"><a href="#__codelineno-4-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>wget<span class="w"> </span>-nc<span class="w"> </span>-P<span class="w"> </span>./inference<span class="w"> </span>https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nb">cd</span><span class="w"> </span>./inference<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>en_PP-OCRv3_det_infer.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a>wget<span class="w"> </span>-nc<span class="w">  </span>-P<span class="w"> </span>./inference<span class="w"> </span>https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="nb">cd</span><span class="w"> </span>./inference<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>en_PP-OCRv4_rec_infer.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a>wget<span class="w"> </span>-nc<span class="w">  </span>-P<span class="w"> </span>./inference<span class="w"> </span>https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="nb">cd</span><span class="w"> </span>./inference<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>ch_ppocr_mobile_v2.0_cls_infer.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
 </span></code></pre></div></td></tr></table></div>
-<p>After execution, the ONNX model will be saved in <code>./inference/det_onnx/</code>, <code>./inference/rec_onnx/</code>, <code>./inference/cls_onnx/</code> paths respectively</p>
+</div>
+</div>
+</div>
+<h3 id="model-conversion">Model Conversion<a class="headerlink" href="#model-conversion" title="Permanent link">&para;</a></h3>
+<p>Use Paddle2ONNX to convert Paddle static graph models to the ONNX model format:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">PP-OCRv3</label><label for="__tabbed_2_2">PP-OCRv4</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a>--enable_onnx_checker<span class="w"> </span>True
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/en_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20"></a>--enable_onnx_checker<span class="w"> </span>True
+</span></code></pre></div></td></tr></table></div>
+</div>
+</div>
+</div>
+<p>After execution, the ONNX models will be saved respectively under <code>./inference/det_onnx/</code>, <code>./inference/rec_onnx/</code>, and <code>./inference/cls_onnx/</code>.</p>
 <ul>
-<li>Note: For the OCR model, the conversion process must be in the form of dynamic shape, that is, add the option --input_shape_dict="{'x': [-1, 3, -1, -1]}", otherwise the prediction result may be the same as Predicting directly with Paddle is slightly different.</li>
+<li>
+<p><strong>Note</strong>: For OCR models, dynamic shapes must be used during conversion; otherwise, the prediction results may slightly differ from directly using Paddle for prediction. Additionally, the following models currently do not support conversion to ONNX models: NRTR, SAR, RARE, SRN.</p>
+</li>
+<li>
+<p><strong>Note</strong>: After <a href="https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3">Paddle2ONNX version v1.2.3</a>, dynamic shapes are supported by default, i.e., <code>float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]</code>. The option <code>--input_shape_dict</code> has been deprecated. If you need to adjust shapes, you can use the following command to adjust the input shape of the Paddle model.</p>
+</li>
 </ul>
-<p>In addition, the following models do not currently support conversion to ONNX models: NRTR, SAR, RARE, SRN.</p>
-<p>If you have optimization needs for the exported ONNX model, we recommend using <code>onnxslim</code>.</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
-<span class="normal"><a href="#__codelineno-5-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>pip<span class="w"> </span>install<span class="w"> </span>onnxslim
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>onnxslim<span class="w"> </span>model.onnx<span class="w"> </span>slim.onnx
-</span></code></pre></div></td></tr></table></div>
-<h2 id="3-prediction">3. prediction<a class="headerlink" href="#3-prediction" title="Permanent link">&para;</a></h2>
-<p>Take the English OCR model as an example, use <strong>ONNXRuntime</strong> to predict and execute the following commands:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
-<span class="normal"><a href="#__codelineno-6-2">2</a></span>
-<span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span>
-<span class="normal"><a href="#__codelineno-6-5">5</a></span>
-<span class="normal"><a href="#__codelineno-6-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>python3.7<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span>--use_onnx<span class="o">=</span>True<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>--det_model_dir<span class="o">=</span>./inference/det_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>--rec_model_dir<span class="o">=</span>./inference/rec_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>--cls_model_dir<span class="o">=</span>./inference/cls_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>--image_dir<span class="o">=</span>doc/imgs_en/img_12.jpg<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>--rec_char_dict_path<span class="o">=</span>ppocr/utils/en_dict.txt
-</span></code></pre></div></td></tr></table></div>
-<p>Taking the English OCR model as an example, use <strong>Paddle Inference</strong> to predict and execute the following commands:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
 <span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span>
-<span class="normal"><a href="#__codelineno-7-4">4</a></span>
-<span class="normal"><a href="#__codelineno-7-5">5</a></span>
-<span class="normal"><a href="#__codelineno-7-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>python3.7<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>--rec_model_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>--det_model_dir<span class="o">=</span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>--image_dir<span class="o">=</span>doc/imgs_en/img_12.jpg<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>--rec_char_dict_path<span class="o">=</span>ppocr/utils/en_dict.txt
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle2onnx.optimize<span class="w"> </span>--input_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span>--output_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span>--input_shape_dict<span class="w"> </span><span class="s2">&quot;{&#39;x&#39;: [-1,3,-1,-1]}&quot;</span>
 </span></code></pre></div></td></tr></table></div>
-<p>After executing the command, the predicted identification information will be printed out in the terminal, and the visualization results will be saved under <code>./inference_results/</code>.</p>
-<p>ONNXRuntime result：</p>
-<p><img alt="" src="../../../ppocr/infer_deploy/images/lite_demo_onnx.png" /></p>
-<p>Paddle Inference result：</p>
-<p><img alt="" src="../../../ppocr/infer_deploy/images/lite_demo_paddle.png" /></p>
-<p>Using ONNXRuntime to predict, terminal output:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-8-10">10</a></span>
-<span class="normal"><a href="#__codelineno-8-11">11</a></span>
-<span class="normal"><a href="#__codelineno-8-12">12</a></span>
-<span class="normal"><a href="#__codelineno-8-13">13</a></span>
-<span class="normal"><a href="#__codelineno-8-14">14</a></span>
-<span class="normal"><a href="#__codelineno-8-15">15</a></span>
-<span class="normal"><a href="#__codelineno-8-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:28<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.3568880558013916
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6445000171661377
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>doc/imgs_en/img_12.jpg:<span class="w"> </span><span class="m">3</span>.021s
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>ACKNOWLEDGEMENTS,<span class="w"> </span><span class="m">0</span>.997
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>We<span class="w"> </span>would<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>thank<span class="w"> </span>all<span class="w"> </span>the<span class="w"> </span>designers<span class="w"> </span>and,<span class="w"> </span><span class="m">0</span>.976
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>contributors<span class="w"> </span>who<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>involved<span class="w"> </span><span class="k">in</span><span class="w"> </span>the,<span class="w"> </span><span class="m">0</span>.979
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>production<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>book<span class="p">;</span><span class="w"> </span>their<span class="w"> </span>contributions,<span class="w"> </span><span class="m">0</span>.989
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>indispensable<span class="w"> </span>to<span class="w"> </span>its<span class="w"> </span>creation.<span class="w"> </span>We,<span class="w"> </span><span class="m">0</span>.956
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>would<span class="w"> </span>also<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>express<span class="w"> </span>our<span class="w"> </span>gratitude<span class="w"> </span>to<span class="w"> </span>all,<span class="w"> </span><span class="m">0</span>.991
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>producers<span class="w"> </span><span class="k">for</span><span class="w"> </span>their<span class="w"> </span>invaluable<span class="w"> </span>opinions,<span class="w"> </span><span class="m">0</span>.978
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>and<span class="w"> </span>assistance<span class="w"> </span>throughout<span class="w"> </span>this<span class="w"> </span>project.<span class="w"> </span>And<span class="w"> </span>to,<span class="w"> </span><span class="m">0</span>.988
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>many<span class="w"> </span>others<span class="w"> </span>whose<span class="w"> </span>names<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>credited,<span class="w"> </span><span class="m">0</span>.958
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>but<span class="w"> </span>have<span class="w"> </span>made<span class="w"> </span>specific<span class="w"> </span>input<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>book,<span class="w"> </span>we,<span class="w"> </span><span class="m">0</span>.970
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>thank<span class="w"> </span>you<span class="w"> </span><span class="k">for</span><span class="w"> </span>your<span class="w"> </span>continuous<span class="w"> </span>support.,<span class="w"> </span><span class="m">0</span>.998
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/img_12.jpg
-</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">3</span>.2482550144195557
+<p>If you have optimization requirements for the exported ONNX model, it is recommended to use <a href="https://github.com/inisis/OnnxSlim">OnnxSlim</a> to optimize the model:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>pip<span class="w"> </span>install<span class="w"> </span>onnxslim
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>onnxslim<span class="w"> </span>model.onnx<span class="w"> </span>slim.onnx
 </span></code></pre></div></td></tr></table></div>
-<p>Using Paddle Inference to predict, terminal output:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-9-10">10</a></span>
-<span class="normal"><a href="#__codelineno-9-11">11</a></span>
-<span class="normal"><a href="#__codelineno-9-12">12</a></span>
-<span class="normal"><a href="#__codelineno-9-13">13</a></span>
-<span class="normal"><a href="#__codelineno-9-14">14</a></span>
-<span class="normal"><a href="#__codelineno-9-15">15</a></span>
-<span class="normal"><a href="#__codelineno-9-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:28<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.3568880558013916
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6445000171661377
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>doc/imgs_en/img_12.jpg:<span class="w"> </span><span class="m">3</span>.021s
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>ACKNOWLEDGEMENTS,<span class="w"> </span><span class="m">0</span>.997
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>We<span class="w"> </span>would<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>thank<span class="w"> </span>all<span class="w"> </span>the<span class="w"> </span>designers<span class="w"> </span>and,<span class="w"> </span><span class="m">0</span>.976
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>contributors<span class="w"> </span>who<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>involved<span class="w"> </span><span class="k">in</span><span class="w"> </span>the,<span class="w"> </span><span class="m">0</span>.979
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>production<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>book<span class="p">;</span><span class="w"> </span>their<span class="w"> </span>contributions,<span class="w"> </span><span class="m">0</span>.989
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>indispensable<span class="w"> </span>to<span class="w"> </span>its<span class="w"> </span>creation.<span class="w"> </span>We,<span class="w"> </span><span class="m">0</span>.956
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>would<span class="w"> </span>also<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>express<span class="w"> </span>our<span class="w"> </span>gratitude<span class="w"> </span>to<span class="w"> </span>all,<span class="w"> </span><span class="m">0</span>.991
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>producers<span class="w"> </span><span class="k">for</span><span class="w"> </span>their<span class="w"> </span>invaluable<span class="w"> </span>opinions,<span class="w"> </span><span class="m">0</span>.978
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>and<span class="w"> </span>assistance<span class="w"> </span>throughout<span class="w"> </span>this<span class="w"> </span>project.<span class="w"> </span>And<span class="w"> </span>to,<span class="w"> </span><span class="m">0</span>.988
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>many<span class="w"> </span>others<span class="w"> </span>whose<span class="w"> </span>names<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>credited,<span class="w"> </span><span class="m">0</span>.958
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>but<span class="w"> </span>have<span class="w"> </span>made<span class="w"> </span>specific<span class="w"> </span>input<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>book,<span class="w"> </span>we,<span class="w"> </span><span class="m">0</span>.970
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>thank<span class="w"> </span>you<span class="w"> </span><span class="k">for</span><span class="w"> </span>your<span class="w"> </span>continuous<span class="w"> </span>support.,<span class="w"> </span><span class="m">0</span>.998
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/img_12.jpg
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">3</span>.2482550144195557
+<h2 id="3-inference-and-prediction">3. Inference and Prediction<a class="headerlink" href="#3-inference-and-prediction" title="Permanent link">&para;</a></h2>
+<p>Using the Chinese OCR model as an example, you can perform prediction using ONNXRuntime by executing the following command:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span>--use_onnx<span class="o">=</span>True<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>--det_model_dir<span class="o">=</span>./inference/det_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>--rec_model_dir<span class="o">=</span>./inference/rec_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>--cls_model_dir<span class="o">=</span>./inference/cls_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/img_12.jpg<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>--rec_char_dict_path<span class="o">=</span>ppocr/utils/en_dict.txt
+</span></code></pre></div></td></tr></table></div>
+<p>Taking the English OCR model as an example, you can perform prediction using Paddle Inference by executing the following command:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">PP-OCRv3</label><label for="__tabbed_3_2">PP-OCRv4</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">5</a></span>
+<span class="normal"><a href="#__codelineno-10-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>--rec_model_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>--det_model_dir<span class="o">=</span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/img_12.jpg<span class="se">\</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a>--rec_char_dict_path<span class="o">=</span>ppocr/utils/en_dict.txt
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span>
+<span class="normal"><a href="#__codelineno-11-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a>--rec_model_dir<span class="o">=</span>./inference/en_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>--det_model_dir<span class="o">=</span>./inference/en_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/img_12.jpg<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a>--rec_char_dict_path<span class="o">=</span>ppocr/utils/en_dict.txt
+</span></code></pre></div></td></tr></table></div>
+</div>
+</div>
+</div>
+<p>After executing the command, the terminal will print out the predicted recognition information, and the visualization results will be saved under <code>./inference_results/</code>.</p>
+<p><strong>ONNXRuntime Execution Result:</strong></p>
+<p><img alt="" src="../../../ppocr/infer_deploy/images/img_12_result.jpg" /></p>
+<p><strong>Paddle Inference Execution Result:</strong></p>
+<p><img alt="" src="../../../ppocr/infer_deploy/images/img_12_result.jpg" /></p>
+<p>Using ONNXRuntime for prediction, terminal output:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-12-10">10</a></span>
+<span class="normal"><a href="#__codelineno-12-11">11</a></span>
+<span class="normal"><a href="#__codelineno-12-12">12</a></span>
+<span class="normal"><a href="#__codelineno-12-13">13</a></span>
+<span class="normal"><a href="#__codelineno-12-14">14</a></span>
+<span class="normal"><a href="#__codelineno-12-15">15</a></span>
+<span class="normal"><a href="#__codelineno-12-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:28<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.3568880558013916
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6445000171661377
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>doc/imgs_en/img_12.jpg:<span class="w"> </span><span class="m">3</span>.021s
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>ACKNOWLEDGEMENTS,<span class="w"> </span><span class="m">0</span>.997
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>We<span class="w"> </span>would<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>thank<span class="w"> </span>all<span class="w"> </span>the<span class="w"> </span>designers<span class="w"> </span>and,<span class="w"> </span><span class="m">0</span>.976
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>contributors<span class="w"> </span>who<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>involved<span class="w"> </span><span class="k">in</span><span class="w"> </span>the,<span class="w"> </span><span class="m">0</span>.979
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>production<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>book<span class="p">;</span><span class="w"> </span>their<span class="w"> </span>contributions,<span class="w"> </span><span class="m">0</span>.989
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>indispensable<span class="w"> </span>to<span class="w"> </span>its<span class="w"> </span>creation.<span class="w"> </span>We,<span class="w"> </span><span class="m">0</span>.956
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>would<span class="w"> </span>also<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>express<span class="w"> </span>our<span class="w"> </span>gratitude<span class="w"> </span>to<span class="w"> </span>all,<span class="w"> </span><span class="m">0</span>.991
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>producers<span class="w"> </span><span class="k">for</span><span class="w"> </span>their<span class="w"> </span>invaluable<span class="w"> </span>opinions,<span class="w"> </span><span class="m">0</span>.978
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>and<span class="w"> </span>assistance<span class="w"> </span>throughout<span class="w"> </span>this<span class="w"> </span>project.<span class="w"> </span>And<span class="w"> </span>to,<span class="w"> </span><span class="m">0</span>.988
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>many<span class="w"> </span>others<span class="w"> </span>whose<span class="w"> </span>names<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>credited,<span class="w"> </span><span class="m">0</span>.958
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>but<span class="w"> </span>have<span class="w"> </span>made<span class="w"> </span>specific<span class="w"> </span>input<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>book,<span class="w"> </span>we,<span class="w"> </span><span class="m">0</span>.970
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>thank<span class="w"> </span>you<span class="w"> </span><span class="k">for</span><span class="w"> </span>your<span class="w"> </span>continuous<span class="w"> </span>support.,<span class="w"> </span><span class="m">0</span>.998
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/img_12.jpg
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">3</span>.2482550144195557
+</span></code></pre></div></td></tr></table></div>
+<p>Using Paddle Inference for prediction, terminal output:</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span>
+<span class="normal"><a href="#__codelineno-13-14">14</a></span>
+<span class="normal"><a href="#__codelineno-13-15">15</a></span>
+<span class="normal"><a href="#__codelineno-13-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:28<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.3568880558013916
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">11</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6445000171661377
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>doc/imgs_en/img_12.jpg:<span class="w"> </span><span class="m">3</span>.021s
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>ACKNOWLEDGEMENTS,<span class="w"> </span><span class="m">0</span>.997
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>We<span class="w"> </span>would<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>thank<span class="w"> </span>all<span class="w"> </span>the<span class="w"> </span>designers<span class="w"> </span>and,<span class="w"> </span><span class="m">0</span>.976
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>contributors<span class="w"> </span>who<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>involved<span class="w"> </span><span class="k">in</span><span class="w"> </span>the,<span class="w"> </span><span class="m">0</span>.979
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>production<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>book<span class="p">;</span><span class="w"> </span>their<span class="w"> </span>contributions,<span class="w"> </span><span class="m">0</span>.989
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>have<span class="w"> </span>been<span class="w"> </span>indispensable<span class="w"> </span>to<span class="w"> </span>its<span class="w"> </span>creation.<span class="w"> </span>We,<span class="w"> </span><span class="m">0</span>.956
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>would<span class="w"> </span>also<span class="w"> </span>like<span class="w"> </span>to<span class="w"> </span>express<span class="w"> </span>our<span class="w"> </span>gratitude<span class="w"> </span>to<span class="w"> </span>all,<span class="w"> </span><span class="m">0</span>.991
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>producers<span class="w"> </span><span class="k">for</span><span class="w"> </span>their<span class="w"> </span>invaluable<span class="w"> </span>opinions,<span class="w"> </span><span class="m">0</span>.978
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>and<span class="w"> </span>assistance<span class="w"> </span>throughout<span class="w"> </span>this<span class="w"> </span>project.<span class="w"> </span>And<span class="w"> </span>to,<span class="w"> </span><span class="m">0</span>.988
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>the<span class="w"> </span>many<span class="w"> </span>others<span class="w"> </span>whose<span class="w"> </span>names<span class="w"> </span>are<span class="w"> </span>not<span class="w"> </span>credited,<span class="w"> </span><span class="m">0</span>.958
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>but<span class="w"> </span>have<span class="w"> </span>made<span class="w"> </span>specific<span class="w"> </span>input<span class="w"> </span><span class="k">in</span><span class="w"> </span>this<span class="w"> </span>book,<span class="w"> </span>we,<span class="w"> </span><span class="m">0</span>.970
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>thank<span class="w"> </span>you<span class="w"> </span><span class="k">for</span><span class="w"> </span>your<span class="w"> </span>continuous<span class="w"> </span>support.,<span class="w"> </span><span class="m">0</span>.998
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/img_12.jpg
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="o">[</span><span class="m">2022</span>/10/10<span class="w"> </span><span class="m">12</span>:06:31<span class="o">]</span><span class="w"> </span>ppocr<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">3</span>.2482550144195557
 </span></code></pre></div></td></tr></table></div>
 
 
@@ -5347,7 +5440,7 @@ For more details, please refer to <a href="https://github.com/PaddlePaddle/Paddl
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 31, 2024</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 1, 2024</span>
   </span>
 
     
@@ -5357,7 +5450,7 @@ For more details, please refer to <a href="https://github.com/PaddlePaddle/Paddl
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 31, 2024</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 1, 2024</span>
   </span>
 
     
