@@ -14,6 +14,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/local/cudnn/lib
 # export CUDA_ARCH_FLAGS="compute_60,sm_60"  # Pascal 架构对应的配置
 # export PADDLE_CUDA_ARCH_NAME="6.0"         # 明确指定 Pascal 架构版本
 
+# Add environment variable to force Pascal architecture compatibility
+export CUDA_ARCH_NAME=Pascal
+
 run_check() {
     python -c "import paddle; paddle.utils.run_check()"
 }

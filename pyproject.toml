@@ -75,7 +75,7 @@ include-package-data = true
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
 
-[tool.pdm]
-pypi-mirrors = [
-    { url = "https://mirror.baidu.com/pypi/simple", verify_ssl = true }
-]
+[[tool.pdm.source]]
+name = "baidu"
+url = "https://mirror.baidu.com/pypi/simple"
+verify_ssl = false
