@@ -40,6 +40,7 @@ logger = get_logger()
 
 class SerPredictor(object):
     def __init__(self, args):
+        self.args = args
         self.ocr_engine = PaddleOCR(
             use_angle_cls=args.use_angle_cls,
             det_model_dir=args.det_model_dir,
@@ -113,15 +114,22 @@ class SerPredictor(object):
                 data[idx] = np.expand_dims(data[idx], axis=0)
             else:
                 data[idx] = [data[idx]]
+        if self.args.use_onnx:
+            input_tensor = {
+                name: data[idx] for idx, name in enumerate(self.input_tensor)
+            }
+            self.output_tensors = self.predictor.run(None, input_tensor)
+        else:
+            for idx in range(len(self.input_tensor)):
+                self.input_tensor[idx].copy_from_cpu(data[idx])
 
-        for idx in range(len(self.input_tensor)):
-            self.input_tensor[idx].copy_from_cpu(data[idx])
-
-        self.predictor.run()
+            self.predictor.run()
 
         outputs = []
         for output_tensor in self.output_tensors:
-            output = output_tensor.copy_to_cpu()
+            output = (
+                output_tensor if self.args.use_onnx else output_tensor.copy_to_cpu()
+            )
             outputs.append(output)
         preds = outputs[0]
 
