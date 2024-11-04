@@ -55,7 +55,8 @@ dependencies = [
     "requests",
     "albumentations==1.4.10",
     "albucore==0.0.13",
-    "paddlepaddle-gpu==2.4.2",
+    "paddlepaddle",
+    "setuptools>=75.3.0",
 ]
 
 [project.urls]

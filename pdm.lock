@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:b922a1729413935282c193db7d1d4a61c4eaf3f5f1865d08159d4796cf4a3a06"
+content_hash = "sha256:e20eabf759c667286162b17b197759c0377cfbef670cdb288d9458a966afc674"
 
 [[metadata.targets]]
 requires_python = "==3.9.*"
@@ -61,6 +61,23 @@ dependencies = [
 files = [
     {file = "annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"},
     {file = "annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89"},
+]
+
+[[package]]
+name = "anyio"
+version = "4.6.2.post1"
+requires_python = ">=3.9"
+summary = "High level compatibility layer for multiple asynchronous event loop implementations"
+groups = ["default"]
+dependencies = [
+    "exceptiongroup>=1.0.2; python_version < \"3.11\"",
+    "idna>=2.8",
+    "sniffio>=1.1",
+    "typing-extensions>=4.1; python_version < \"3.11\"",
+]
+files = [
+    {file = "anyio-4.6.2.post1-py3-none-any.whl", hash = "sha256:6d170c36fba3bdd840c73d3868c1e777e33676a69c3a72cf0a0d5d6d8009b61d"},
+    {file = "anyio-4.6.2.post1.tar.gz", hash = "sha256:4c8bc31ccdb51c7f7bd251f51c609e038d63e34219b44aa86e47576389880b4c"},
 ]
 
 [[package]]
@@ -205,6 +222,18 @@ files = [
 ]
 
 [[package]]
+name = "exceptiongroup"
+version = "1.2.2"
+requires_python = ">=3.7"
+summary = "Backport of PEP 654 (exception groups)"
+groups = ["default"]
+marker = "python_version < \"3.11\""
+files = [
+    {file = "exceptiongroup-1.2.2-py3-none-any.whl", hash = "sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b"},
+    {file = "exceptiongroup-1.2.2.tar.gz", hash = "sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc"},
+]
+
+[[package]]
 name = "fire"
 version = "0.7.0"
 summary = "A library for automatically generating command line interfaces."
@@ -233,6 +262,53 @@ files = [
     {file = "fonttools-4.54.1-cp39-cp39-win_amd64.whl", hash = "sha256:e8a4b261c1ef91e7188a30571be6ad98d1c6d9fa2427244c545e2fa0a2494dd7"},
     {file = "fonttools-4.54.1-py3-none-any.whl", hash = "sha256:37cddd62d83dc4f72f7c3f3c2bcf2697e89a30efb152079896544a93907733bd"},
     {file = "fonttools-4.54.1.tar.gz", hash = "sha256:957f669d4922f92c171ba01bef7f29410668db09f6c02111e22b2bce446f3285"},
+]
+
+[[package]]
+name = "h11"
+version = "0.14.0"
+requires_python = ">=3.7"
+summary = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
+groups = ["default"]
+dependencies = [
+    "typing-extensions; python_version < \"3.8\"",
+]
+files = [
+    {file = "h11-0.14.0-py3-none-any.whl", hash = "sha256:e3fe4ac4b851c468cc8363d500db52c2ead036020723024a109d37346efaa761"},
+    {file = "h11-0.14.0.tar.gz", hash = "sha256:8f19fbbe99e72420ff35c00b27a34cb9937e902a8b810e2c88300c6f0a3b699d"},
+]
+
+[[package]]
+name = "httpcore"
+version = "1.0.6"
+requires_python = ">=3.8"
+summary = "A minimal low-level HTTP client."
+groups = ["default"]
+dependencies = [
+    "certifi",
+    "h11<0.15,>=0.13",
+]
+files = [
+    {file = "httpcore-1.0.6-py3-none-any.whl", hash = "sha256:27b59625743b85577a8c0e10e55b50b5368a4f2cfe8cc7bcfa9cf00829c2682f"},
+    {file = "httpcore-1.0.6.tar.gz", hash = "sha256:73f6dbd6eb8c21bbf7ef8efad555481853f5f6acdeaff1edb0694289269ee17f"},
+]
+
+[[package]]
+name = "httpx"
+version = "0.27.2"
+requires_python = ">=3.8"
+summary = "The next generation HTTP client."
+groups = ["default"]
+dependencies = [
+    "anyio",
+    "certifi",
+    "httpcore==1.*",
+    "idna",
+    "sniffio",
+]
+files = [
+    {file = "httpx-0.27.2-py3-none-any.whl", hash = "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0"},
+    {file = "httpx-0.27.2.tar.gz", hash = "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2"},
 ]
 
 [[package]]
@@ -574,50 +650,26 @@ files = [
 ]
 
 [[package]]
-name = "paddle-bfloat"
-version = "0.1.7"
-summary = "Paddle numpy bfloat16 package"
-groups = ["default"]
-files = [
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:bf1e30781a9155d44bc5b6ad9c4a868b3c2a22d9896c8f0a07f974487f743ef7"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:59ca62f3fc010c14cb212dacdb4f550e5b789615a4129da153be83ce05fba5cb"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:998061e4a69dca0806746f33964ae6c9a435b56ceda034d3688263ff91205d73"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:496f4db32d413cae615a4301d01956408def048e36dfef4c323ce31737a38461"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:024e6e8ab57d5b50d78a4e630956c9efd21527acad6d0b310d0c6d8f744dc08c"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:8663a39c167d6314b41586ce737a9cf5ec2544f5dfbe4dc88fd19088d6d4aa55"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a83f78441bf39420dfd265d2b33999c348a537ca78ff9803a436c146010c1d9b"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:940eafeab38b1b0d8df979c2152cff04be77930e33f0dfd416a4aed0514aed72"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8f914ad0e58a96b4be371ccdcfc31fcc6a0b3d7bb123834e8b16507483f24a4b"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:01ad0c4d5d7282f80e58479ef769a73016bfeb130c64c4cc76558123d3389be5"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:a7d29ee3ce519eb6915e388d2a5bec908210b2254d501d15e95d05f7ebf5dde9"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_i686.whl", hash = "sha256:0093d81e18a661443a326b59b74c39d470c56e53f74ee84a2f5a7b7278b73b73"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_ppc64le.whl", hash = "sha256:be621fcdd81af0c8364cdff28284e40ab8aa4cfa1aea076b12ac9d8174405c63"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_s390x.whl", hash = "sha256:7aab27bd5769a2747c04949e1236caaf06887a388b5062e07c541d840e82272f"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:f39fe90f9d654ea238d030ac185ab92664e64d718f1ac6453d7a5c755c6030d0"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-win32.whl", hash = "sha256:b5d547a373fb0dec492b5fc1e9d6eb5b76367cc15c2cc9e8e133a1897787dcbd"},
-    {file = "paddle_bfloat-0.1.7-cp39-cp39-win_amd64.whl", hash = "sha256:f24d1a6754cbffebbca60086710981231c7e2a734a9bb64d73f8a9cca86e8b64"},
-    {file = "paddle_bfloat-0.1.7.tar.gz", hash = "sha256:9ab8d00ad2ec5cebea7871cc8ee331eb916f31f676fb04e1d5aa3d64913ef71c"},
-]
-
-[[package]]
-name = "paddlepaddle-gpu"
-version = "2.4.2"
+name = "paddlepaddle"
+version = "2.6.2"
 summary = "Parallel Distributed Deep Learning"
 groups = ["default"]
 dependencies = [
     "Pillow",
     "astor",
     "decorator",
+    "httpx",
     "numpy>=1.13",
     "opt-einsum==3.3.0",
-    "paddle-bfloat==0.1.7",
-    "protobuf<=3.20.0,>=3.1.0",
-    "requests>=2.20.0",
-    "six",
+    "protobuf<=3.20.2,>=3.1.0; platform_system == \"Windows\"",
+    "protobuf>=3.20.2; platform_system != \"Windows\"",
 ]
 files = [
-    {file = "paddlepaddle_gpu-2.4.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:881cfbcbd4e1104b3f574c47d331790181b8e077c8a303ac70dd35d35fe23fed"},
-    {file = "paddlepaddle_gpu-2.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:31991e513fce9dae3fb73da496d900b63495782f60836cb1703639db0d1ae98c"},
+    {file = "paddlepaddle-2.6.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3f0bf5fa69091da8b350ab8eb86e7bc15679454a665d884ca0ac345f253c768d"},
+    {file = "paddlepaddle-2.6.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:c3001acb8cab9e3894eb8ad7bb975cf874ed36b7bb74e560ce840e798034d4bb"},
+    {file = "paddlepaddle-2.6.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:19e13163587ebc48b1c1f9118d3e02315982b617d3b680580f775bdc3ddb0d25"},
+    {file = "paddlepaddle-2.6.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:0defcf113b7752f8f614122d47cdde1575f32b9516bae273639a0f2aac2cd47a"},
+    {file = "paddlepaddle-2.6.2-cp39-cp39-win_amd64.whl", hash = "sha256:3036e654d38ee675cf0b17dd98d81f9f0032ea02014ef79eae8944db81a13174"},
 ]
 
 [[package]]
@@ -647,18 +699,18 @@ files = [
 
 [[package]]
 name = "protobuf"
-version = "3.20.0"
+version = "3.20.2"
 requires_python = ">=3.7"
 summary = "Protocol Buffers"
 groups = ["default"]
 files = [
-    {file = "protobuf-3.20.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:1d24c81c2310f0063b8fc1c20c8ed01f3331be9374b4b5c2de846f69e11e21fb"},
-    {file = "protobuf-3.20.0-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:8be43a91ab66fe995e85ccdbdd1046d9f0443d59e060c0840319290de25b7d33"},
-    {file = "protobuf-3.20.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:7a53d4035427b9dbfbb397f46642754d294f131e93c661d056366f2a31438263"},
-    {file = "protobuf-3.20.0-cp39-cp39-win32.whl", hash = "sha256:32bf4a90c207a0b4e70ca6dd09d43de3cb9898f7d5b69c2e9e3b966a7f342820"},
-    {file = "protobuf-3.20.0-cp39-cp39-win_amd64.whl", hash = "sha256:6efe066a7135233f97ce51a1aa007d4fb0be28ef093b4f88dac4ad1b3a2b7b6f"},
-    {file = "protobuf-3.20.0-py2.py3-none-any.whl", hash = "sha256:4eda68bd9e2a4879385e6b1ea528c976f59cd9728382005cc54c28bcce8db983"},
-    {file = "protobuf-3.20.0.tar.gz", hash = "sha256:71b2c3d1cd26ed1ec7c8196834143258b2ad7f444efff26fdc366c6f5e752702"},
+    {file = "protobuf-3.20.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:291fb4307094bf5ccc29f424b42268640e00d5240bf0d9b86bf3079f7576474d"},
+    {file = "protobuf-3.20.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:b4fdb29c5a7406e3f7ef176b2a7079baa68b5b854f364c21abe327bbeec01cdb"},
+    {file = "protobuf-3.20.2-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:7a5037af4e76c975b88c3becdf53922b5ffa3f2cddf657574a4920a3b33b80f3"},
+    {file = "protobuf-3.20.2-cp39-cp39-win32.whl", hash = "sha256:a9e5ae5a8e8985c67e8944c23035a0dff2c26b0f5070b2f55b217a1c33bbe8b1"},
+    {file = "protobuf-3.20.2-cp39-cp39-win_amd64.whl", hash = "sha256:c184485e0dfba4dfd451c3bd348c2e685d6523543a0f91b9fd4ae90eb09e8422"},
+    {file = "protobuf-3.20.2-py2.py3-none-any.whl", hash = "sha256:c9cdf251c582c16fd6a9f5e95836c90828d51b0069ad22f463761d27c6c19019"},
+    {file = "protobuf-3.20.2.tar.gz", hash = "sha256:712dca319eee507a1e7df3591e639a2b112a2f4a62d40fe7832a16fd19151750"},
 ]
 
 [[package]]
@@ -900,6 +952,17 @@ files = [
 ]
 
 [[package]]
+name = "setuptools"
+version = "75.3.0"
+requires_python = ">=3.8"
+summary = "Easily download, build, install, upgrade, and uninstall Python packages"
+groups = ["default"]
+files = [
+    {file = "setuptools-75.3.0-py3-none-any.whl", hash = "sha256:f2504966861356aa38616760c0f66568e535562374995367b4e69c7143cf6bcd"},
+    {file = "setuptools-75.3.0.tar.gz", hash = "sha256:fba5dd4d766e97be1b1681d98712680ae8f2f26d7881245f2ce9e40714f1a686"},
+]
+
+[[package]]
 name = "shapely"
 version = "2.0.6"
 requires_python = ">=3.7"
@@ -927,6 +990,17 @@ groups = ["default"]
 files = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
+
+[[package]]
+name = "sniffio"
+version = "1.3.1"
+requires_python = ">=3.7"
+summary = "Sniff out which async library your code is running under"
+groups = ["default"]
+files = [
+    {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
+    {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
 ]
 
 [[package]]

@@ -38,3 +38,5 @@ pretrain_models
 train_data
 debug
 core
+data
+ckpt
