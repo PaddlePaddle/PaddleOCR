@@ -29,10 +29,7 @@ run_check || exit 1
 # multiple gpu, seems not work.
 # python3 -m paddle.distributed.launch --log_dir=./debug/ --gpus '5,6,7'  tools/train.py -c atrain_script/configs/en_PP-OCRv3_rec.yml
 
-
 # 在 train.sh 中添加
-python3 -c "import sys; sys.setrecursionlimit(3000)" # 增加递归深度限制
-
 python3 tools/train.py \
     -c atrain_script/configs/en_PP-OCRv3_rec.yml \
     -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
