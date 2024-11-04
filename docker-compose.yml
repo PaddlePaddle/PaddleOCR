@@ -3,8 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ipc: host
     ports:
       - 8888:8888
+    shm_size: '32gb'
     volumes:
       - .:/opt/PaddleOCR
       - /data/xiu-hao/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
