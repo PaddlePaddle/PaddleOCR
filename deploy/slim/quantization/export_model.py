@@ -34,7 +34,7 @@ from ppocr.metrics import build_metric
 import tools.program as program
 from paddleslim.dygraph.quant import QAT
 from ppocr.data import build_dataloader, set_signal_handlers
-from tools.export_model import export_single_model
+from ppocr.utils.export_model import export_single_model
 
 
 def main():

@@ -92,6 +92,13 @@ After execution, the ONNX model will be saved in `./inference/det_onnx/`, `./inf
 
 In addition, the following models do not currently support conversion to ONNX models: NRTR, SAR, RARE, SRN.
 
+If you have optimization needs for the exported ONNX model, we recommend using `onnxslim`.
+
+```bash linenums="1"
+pip install onnxslim
+onnxslim model.onnx slim.onnx
+```
+
 ## 3. prediction
 
 Take the English OCR model as an example, use **ONNXRuntime** to predict and execute the following commands:

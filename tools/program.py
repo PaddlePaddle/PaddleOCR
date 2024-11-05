@@ -17,6 +17,7 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import gc
 import sys
 import platform
 import yaml
@@ -495,6 +496,7 @@ def train(
                             model,
                             os.path.join(save_model_dir, prefix, "inference"),
                         )
+                        gc.collect()
                         model_info = {"epoch": epoch, "metric": best_model_dict}
                     else:
                         model_info = None
@@ -542,6 +544,7 @@ def train(
             prefix = "latest"
             if uniform_output_enabled:
                 export(config, model, os.path.join(save_model_dir, prefix, "inference"))
+                gc.collect()
                 model_info = {"epoch": epoch, "metric": best_model_dict}
             else:
                 model_info = None
@@ -570,6 +573,7 @@ def train(
             prefix = "iter_epoch_{}".format(epoch)
             if uniform_output_enabled:
                 export(config, model, os.path.join(save_model_dir, prefix, "inference"))
+                gc.collect()
                 model_info = {"epoch": epoch, "metric": best_model_dict}
             else:
                 model_info = None
@@ -709,7 +713,11 @@ def eval(
 
     pbar.close()
     model.train()
-    metric["fps"] = total_frame / total_time
+    # Avoid ZeroDivisionError
+    if total_time > 0:
+        metric["fps"] = total_frame / total_time
+    else:
+        metric["fps"] = 0  # or set to a fallback value
     return metric
 
 

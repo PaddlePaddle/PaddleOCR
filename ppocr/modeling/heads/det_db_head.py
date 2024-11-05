@@ -32,7 +32,7 @@ def get_bias_attr(k):
 
 
 class Head(nn.Layer):
-    def __init__(self, in_channels, kernel_list=[3, 2, 2], **kwargs):
+    def __init__(self, in_channels, kernel_list=[3, 2, 2], fix_nan=False, **kwargs):
         super(Head, self).__init__()
 
         self.conv1 = nn.Conv2D(
@@ -73,11 +73,17 @@ class Head(nn.Layer):
             bias_attr=get_bias_attr(in_channels // 4),
         )
 
+        self.fix_nan = fix_nan
+
     def forward(self, x, return_f=False):
         x = self.conv1(x)
         x = self.conv_bn1(x)
+        if self.fix_nan and self.training:
+            x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
         x = self.conv2(x)
         x = self.conv_bn2(x)
+        if self.fix_nan and self.training:
+            x = paddle.where(paddle.isnan(x), paddle.zeros_like(x), x)
         if return_f is True:
             f = x
         x = self.conv3(x)
