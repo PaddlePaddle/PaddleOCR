@@ -4,7 +4,7 @@ Global:
   epoch_num: 800
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/rec_ppocr_v3_distillation
+  save_model_dir: ./output/rec_ppocr_v3_distillation_meter
   save_epoch_step: 3
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
@@ -14,11 +14,12 @@ Global:
   use_visualdl: false
   infer_img: doc/imgs_words/ch/word_1.jpg
   character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  # character_dict_path: ./atrain_script/meter_dict.txt # seems not work.
   max_text_length: &max_text_length 25
   infer_mode: false
   use_space_char: true
   distributed: true
-  save_res_path: ./output/rec/predicts_ppocrv3_distillation.txt
+  save_res_path: ./output/rec/predicts_ppocrv3_distillation_meter.txt
   d2s_train_image_shape: [3, 48, -1]
 
 
