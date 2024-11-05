@@ -1,7 +1,7 @@
 [English](../../README_en.md) | [简体中文](../../README.md) | [हिन्दी](./README_हिन्द.md) | 日本語 | [한국인](./README_한국어.md) | [Pу́сский язы́к](./README_Ру́сский_язы́к.md)
 
 <p align="center">
-<img src="../PaddleOCR_log.png" align="middle" width = "600"/>
+<img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
 <p align="center">
 <p align="left">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
