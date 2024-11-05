@@ -1162,6 +1162,8 @@ You're not viewing the latest version.
       
         
       
+        
+      
     
     
       
@@ -1452,6 +1454,27 @@ You're not viewing the latest version.
   
   <span class="md-ellipsis">
     模型微调
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tricks.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    训练tricks
   </span>
   
 
@@ -5225,17 +5248,21 @@ warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr�
 <h3 id="31">3.1 训练数据<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
 <p>目前开源的模型，数据集和量级如下：</p>
 <ul>
-<li>检测：</li>
-<li>英文数据集，ICDAR2015</li>
 <li>
-<p>中文数据集，LSVT街景数据集训练数据3w张图片</p>
+<p>检测：</p>
+<ul>
+<li>英文数据集，ICDAR2015</li>
+<li>中文数据集，LSVT街景数据集训练数据3w张图片</li>
+</ul>
 </li>
 <li>
 <p>识别：</p>
-</li>
+<ul>
 <li>英文数据集，MJSynth和SynthText合成数据，数据量上千万。</li>
 <li>中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。</li>
 <li>小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。</li>
+</ul>
+</li>
 </ul>
 <p>其中，公开数据集都是开源的，用户可自行搜索下载，也可参考<a href="../../datasets/datasets.html">中文数据集</a>，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括<a href="https://github.com/Sanster/text_renderer">text_renderer</a> 、<a href="https://github.com/ankush-me/SynthText">SynthText</a> 、<a href="https://github.com/Belval/TextRecognitionDataGenerator">TextRecognitionDataGenerator</a> 等。</p>
 <h3 id="32">3.2 垂类场景<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
