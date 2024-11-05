@@ -1,139 +1,196 @@
 ---
+typora-copy-images-to: images
 comments: true
 ---
 
-# Paddle2ONNX model transformation and prediction
+# Paddle2ONNX Model Conversion and Prediction
 
-This chapter describes how the PaddleOCR model is converted into an ONNX model and predicted based on the ONNXRuntime engine.
+This chapter introduces how to convert PaddleOCR models to ONNX models and perform predictions based on the ONNXRuntime engine.
 
-## 1. Environment preparation
+## 1. Environment Setup
 
-Need to prepare PaddleOCR, Paddle2ONNX model conversion environment, and ONNXRuntime prediction environment
+You need to prepare the environments for PaddleOCR, Paddle2ONNX model conversion, and ONNXRuntime prediction.
 
 ### PaddleOCR
 
-Clone the PaddleOCR repository, use the release/2.6 branch, and install it.
+Clone the PaddleOCR repository, use the main branch, and install it. Since the PaddleOCR repository is relatively large and cloning via `git clone` can be slow, this tutorial has already downloaded it.
 
 ```bash linenums="1"
-git clone  -b release/2.6 https://github.com/PaddlePaddle/PaddleOCR.git
-cd PaddleOCR && python3.7 setup.py install
+git clone -b main https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR && python3 -m pip install -e .
 ```
 
 ### Paddle2ONNX
 
-Paddle2ONNX supports converting the PaddlePaddle model format to the ONNX model format. The operator currently supports exporting ONNX Opset 9~11 stably, and some Paddle operators support lower ONNX Opset conversion.
-For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_en.md)
+Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 9~18, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_en.md).
 
-- install Paddle2ONNX
-
-  ```bash linenums="1"
-  python3.7 -m pip install paddle2onnx
-  ```
-
-- install ONNXRuntime
+- Install Paddle2ONNX
 
   ```bash linenums="1"
-  # It is recommended to install version 1.9.0, and the version number can be changed according to the environment
-  python3.7 -m pip install onnxruntime==1.9.0
+  python3 -m pip install paddle2onnx
   ```
 
-## 2. Model conversion
+- Install ONNXRuntime
 
-### Paddle model download
+  ```bash linenums="1"
+  python3 -m pip install onnxruntime
+  ```
 
-There are two ways to obtain the Paddle model: Download the prediction model provided by PaddleOCR in [model_list](../model_list.en.md);
+## 2. Model Conversion
 
-Take the PP-OCRv3 detection, recognition, and classification model as an example:
+### Download Paddle Models
 
-```bash linenums="1"
-wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
-cd ./inference && tar xf en_PP-OCRv3_det_infer.tar && cd ..
+There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../model_list.en.md); or refer to the [Model Export Instructions](https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference) to convert trained weights into inference models.
 
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
-cd ./inference && tar xf en_PP-OCRv3_rec_infer.tar && cd ..
+Using the PP-OCR series English detection, recognition, and classification models as examples:
 
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
-cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
-```
+=== "PP-OCRv3"
 
-### Convert model
+    ```bash linenums="1"
+    wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
+    cd ./inference && tar xf en_PP-OCRv3_det_infer.tar && cd ..
 
-Convert Paddle inference model to ONNX model format using Paddle2ONNX:
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
+    cd ./inference && tar xf en_PP-OCRv3_rec_infer.tar && cd ..
 
-```bash linenums="1"
-paddle2onnx --model_dir ./inference/en_PP-OCRv3_det_infer \
---model_filename inference.pdmodel \
---params_filename inference.pdiparams \
---save_file ./inference/det_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
---enable_onnx_checker True
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+    cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
+    ```
 
-paddle2onnx --model_dir ./inference/en_PP-OCRv3_rec_infer \
---model_filename inference.pdmodel \
---params_filename inference.pdiparams \
---save_file ./inference/rec_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
---enable_onnx_checker True
+=== "PP-OCRv4"
 
-paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
---model_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel \
---params_filename ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams \
---save_file ./inferencecls_onnx/model.onnx \
---opset_version 10 \
---input_shape_dict="{'x':[-1,3,-1,-1]}" \
---enable_onnx_checker True
-```
+    ```bash linenums="1"
+    wget -nc -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar
+    cd ./inference && tar xf en_PP-OCRv3_det_infer.tar && cd ..
 
-After execution, the ONNX model will be saved in `./inference/det_onnx/`, `./inference/rec_onnx/`, `./inference/cls_onnx/` paths respectively
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar
+    cd ./inference && tar xf en_PP-OCRv4_rec_infer.tar && cd ..
 
-- Note: For the OCR model, the conversion process must be in the form of dynamic shape, that is, add the option --input_shape_dict="{'x': [-1, 3, -1, -1]}", otherwise the prediction result may be the same as Predicting directly with Paddle is slightly different.
+    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
+    cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
+    ```
 
-In addition, the following models do not currently support conversion to ONNX models: NRTR, SAR, RARE, SRN.
+### Model Conversion
 
-If you have optimization needs for the exported ONNX model, we recommend using `onnxslim`.
+Use Paddle2ONNX to convert Paddle static graph models to the ONNX model format:
+
+=== "PP-OCRv3"
+
+    ```bash linenums="1"
+    paddle2onnx --model_dir ./inference/en_PP-OCRv3_det_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/det_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/en_PP-OCRv3_rec_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/rec_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/cls_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+    ```
+
+=== "PP-OCRv4"
+
+    ```bash linenums="1"
+    paddle2onnx --model_dir ./inference/en_PP-OCRv3_det_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/det_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/en_PP-OCRv4_rec_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/rec_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+
+    paddle2onnx --model_dir ./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --model_filename inference.pdmodel \
+    --params_filename inference.pdiparams \
+    --save_file ./inference/cls_onnx/model.onnx \
+    --opset_version 11 \
+    --enable_onnx_checker True
+    ```
+
+After execution, the ONNX models will be saved respectively under `./inference/det_onnx/`, `./inference/rec_onnx/`, and `./inference/cls_onnx/`.
+
+- **Note**: For OCR models, dynamic shapes must be used during conversion; otherwise, the prediction results may slightly differ from directly using Paddle for prediction. Additionally, the following models currently do not support conversion to ONNX models: NRTR, SAR, RARE, SRN.
+
+- **Note**: After [Paddle2ONNX version v1.2.3](https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3), dynamic shapes are supported by default, i.e., `float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]`. The option `--input_shape_dict` has been deprecated. If you need to adjust shapes, you can use the following command to adjust the input shape of the Paddle model.
+
+  ```bash linenums="1"
+  python3 -m paddle2onnx.optimize --input_model inference/det_onnx/model.onnx \
+    --output_model inference/det_onnx/model.onnx \
+    --input_shape_dict "{'x': [-1,3,-1,-1]}"
+  ```
+
+If you have optimization requirements for the exported ONNX model, it is recommended to use [OnnxSlim](https://github.com/inisis/OnnxSlim) to optimize the model:
 
 ```bash linenums="1"
 pip install onnxslim
 onnxslim model.onnx slim.onnx
 ```
 
-## 3. prediction
+## 3. Inference and Prediction
 
-Take the English OCR model as an example, use **ONNXRuntime** to predict and execute the following commands:
+Using the Chinese OCR model as an example, you can perform prediction using ONNXRuntime by executing the following command:
 
 ```bash linenums="1"
-python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
+python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
---image_dir=doc/imgs_en/img_12.jpg \
+--image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg \
 --rec_char_dict_path=ppocr/utils/en_dict.txt
 ```
 
-Taking the English OCR model as an example, use **Paddle Inference** to predict and execute the following commands:
+Taking the English OCR model as an example, you can perform prediction using Paddle Inference by executing the following command:
 
-```bash linenums="1"
-python3.7 tools/infer/predict_system.py --use_gpu=False \
---cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
---rec_model_dir=./inference/en_PP-OCRv3_rec_infer \
---det_model_dir=./inference/en_PP-OCRv3_det_infer \
---image_dir=doc/imgs_en/img_12.jpg \
---rec_char_dict_path=ppocr/utils/en_dict.txt
-```
+=== "PP-OCRv3"
 
-After executing the command, the predicted identification information will be printed out in the terminal, and the visualization results will be saved under `./inference_results/`.
+    ```bash linenums="1"
+    python3 tools/infer/predict_system.py --use_gpu=False \
+    --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=./inference/en_PP-OCRv3_rec_infer \
+    --det_model_dir=./inference/en_PP-OCRv3_det_infer \
+    --image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg\
+    --rec_char_dict_path=ppocr/utils/en_dict.txt
+    ```
 
-ONNXRuntime result：
+=== "PP-OCRv4"
 
-![](./images/lite_demo_onnx.png)
+    ```bash linenums="1"
+    python3 tools/infer/predict_system.py --use_gpu=False \
+    --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
+    --rec_model_dir=./inference/en_PP-OCRv4_rec_infer \
+    --det_model_dir=./inference/en_PP-OCRv3_det_infer \
+    --image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg \
+    --rec_char_dict_path=ppocr/utils/en_dict.txt
+    ```
 
-Paddle Inference result：
+After executing the command, the terminal will print out the predicted recognition information, and the visualization results will be saved under `./inference_results/`.
 
-![](./images/lite_demo_paddle.png)
+**ONNXRuntime Execution Result:**
 
-Using ONNXRuntime to predict, terminal output:
+![](./images/img_12_result.jpg)
+
+**Paddle Inference Execution Result:**
+
+![](./images/img_12_result.jpg)
+
+Using ONNXRuntime for prediction, terminal output:
 
 ```bash linenums="1"
 [2022/10/10 12:06:28] ppocr DEBUG: dt_boxes num : 11, elapse : 0.3568880558013916
@@ -154,7 +211,7 @@ Using ONNXRuntime to predict, terminal output:
 [2022/10/10 12:06:31] ppocr INFO: The predict total time is 3.2482550144195557
 ```
 
-Using Paddle Inference to predict, terminal output:
+Using Paddle Inference for prediction, terminal output:
 
 ```bash linenums="1"
 [2022/10/10 12:06:28] ppocr DEBUG: dt_boxes num : 11, elapse : 0.3568880558013916

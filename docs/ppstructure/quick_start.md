@@ -81,19 +81,6 @@ paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure 
 
 通过OCR技术：
 
-版面恢复分为2种方法，详细介绍请参考：[版面恢复教程](./model_train/recovery_to_doc.md)：
-
-- PDF解析
-- OCR技术
-
-通过PDF解析(只支持pdf格式的输入)：
-
-```bash linenums="1"
-paddleocr --image_dir=ppstructure/docs/recovery/UnrealText.pdf --type=structure --recovery=true --use_pdf2docx_api=true
-```
-
-通过OCR技术：
-
 ```bash linenums="1"
 # 中文测试图
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --recovery=true
