@@ -1,144 +1,188 @@
-# copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""
-This code is refer from:
-https://github.com/WenmuZhou/DBNet.pytorch/blob/master/data_loader/modules/iaa_augment.py
-"""
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 import os
 
-import numpy as np
-
+# Prevent automatic updates in Albumentations for stability in augmentation behavior
 os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
+
+import numpy as np
 import albumentations as A
+from albumentations.core.transforms_interface import DualTransform
 
 
-class AugmenterBuilder:
+# Custom resize transformation mimicking Imgaug's behavior with scaling
+class ImgaugLikeResize(DualTransform):
+    def __init__(
+        self, scale_range=(0.5, 3.0), interpolation=1, always_apply=False, p=1.0
+    ):
+        super(ImgaugLikeResize, self).__init__(always_apply, p)
+        self.scale_range = scale_range
+        self.interpolation = interpolation
+
+    # Resize the image based on a randomly chosen scale within the scale range
+    def apply(self, img, scale=1.0, **params):
+        height, width = img.shape[:2]
+        new_height = int(height * scale)
+        new_width = int(width * scale)
+        return A.functional.resize(
+            img, (new_height, new_width), interpolation=self.interpolation
+        )
+
+    # Apply the same scaling transformation to keypoints (e.g., polygon points)
+    def apply_to_keypoints(self, keypoints, scale=1.0, **params):
+        return np.array(
+            [(x * scale, y * scale) + tuple(rest) for x, y, *rest in keypoints]
+        )
+
+    # Get random scale parameter within the specified range
+    def get_params(self):
+        scale = np.random.uniform(self.scale_range[0], self.scale_range[1])
+        return {"scale": scale}
+
+
+# Builder class to translate custom augmenter arguments into Albumentations-compatible format
+class AugmenterBuilder(object):
     def __init__(self):
-        pass
+        # Map common Imgaug transformations to equivalent Albumentations transforms
+        self.imgaug_to_albu = {
+            "Fliplr": "HorizontalFlip",
+            "Flipud": "VerticalFlip",
+            "Affine": "Affine",
+            # Additional mappings can be added here if needed
+        }
 
-    def build(self, args):
-        if not args:
+    # Recursive method to construct augmentation pipeline based on provided arguments
+    def build(self, args, root=True):
+        if args is None or len(args) == 0:
             return None
         elif isinstance(args, list):
-            # Recursively build transforms from the list
-            transforms = [self.build(value) for value in args if self.build(value)]
-            return A.Compose(
-                transforms,
-                # Use KeypointParams to handle keypoints (polygons represented as keypoints)
-                keypoint_params=A.KeypointParams(format="xy", remove_invisible=False),
-            )
-        elif isinstance(args, dict):
-            # Get the transform type and its arguments
-            transform_type = args.get("type")
-            transform_args = args.get("args", {})
-            # Map the transform type to the corresponding function
-            transform_func = self._get_transform_function(
-                transform_type, transform_args
-            )
-            if transform_func:
-                return transform_func
+            # Build the full augmentation sequence if it's a root-level call
+            if root:
+                sequence = [self.build(value, root=False) for value in args]
+                return A.Compose(
+                    sequence,
+                    keypoint_params=A.KeypointParams(
+                        format="xy", remove_invisible=False
+                    ),
+                )
             else:
-                raise NotImplementedError(
-                    f"Transform {transform_type} not implemented."
+                # Build individual augmenters for nested arguments
+                augmenter_type = args[0]
+                augmenter_args = args[1] if len(args) > 1 else {}
+                augmenter_args_mapped = self.map_arguments(
+                    augmenter_type, augmenter_args
+                )
+                augmenter_type_mapped = self.imgaug_to_albu.get(
+                    augmenter_type, augmenter_type
+                )
+                if augmenter_type_mapped == "Resize":
+                    return ImgaugLikeResize(**augmenter_args_mapped)
+                else:
+                    cls = getattr(A, augmenter_type_mapped)
+                    return cls(
+                        **{
+                            k: self.to_tuple_if_list(v)
+                            for k, v in augmenter_args_mapped.items()
+                        }
+                    )
+        elif isinstance(args, dict):
+            # Process individual transformation specified as dictionary
+            augmenter_type = args["type"]
+            augmenter_args = args.get("args", {})
+            augmenter_args_mapped = self.map_arguments(augmenter_type, augmenter_args)
+            augmenter_type_mapped = self.imgaug_to_albu.get(
+                augmenter_type, augmenter_type
+            )
+            if augmenter_type_mapped == "Resize":
+                return ImgaugLikeResize(**augmenter_args_mapped)
+            else:
+                cls = getattr(A, augmenter_type_mapped)
+                return cls(
+                    **{
+                        k: self.to_tuple_if_list(v)
+                        for k, v in augmenter_args_mapped.items()
+                    }
                 )
         else:
-            raise RuntimeError(f"Unknown augmenter arg: {args}")
+            raise RuntimeError("Unknown augmenter arg: " + str(args))
 
-    def _get_transform_function(self, transform_type, transform_args):
-        # Define mapping from transform types to functions
-        transform_mapping = {
-            "Fliplr": self._build_horizontal_flip,
-            "Affine": self._build_affine,
-            "Resize": self._build_resize,
-        }
-        func = transform_mapping.get(transform_type)
-        if func:
-            return func(transform_args)
+    # Map arguments to expected format for each augmenter type
+    def map_arguments(self, augmenter_type, augmenter_args):
+        augmenter_args = augmenter_args.copy()  # Avoid modifying the original arguments
+        if augmenter_type == "Resize":
+            # Ensure size is a valid 2-element list or tuple
+            size = augmenter_args.get("size")
+            if size:
+                if not isinstance(size, (list, tuple)) or len(size) != 2:
+                    raise ValueError(
+                        f"'size' must be a list or tuple of two numbers, but got {size}"
+                    )
+                min_scale, max_scale = size
+                return {
+                    "scale_range": (min_scale, max_scale),
+                    "interpolation": 1,  # Linear interpolation
+                    "p": 1.0,
+                }
+            else:
+                return {"scale_range": (1.0, 1.0), "interpolation": 1, "p": 1.0}
+        elif augmenter_type == "Affine":
+            # Map rotation to a tuple and ensure p=1.0 to apply transformation
+            rotate = augmenter_args.get("rotate", 0)
+            if isinstance(rotate, list):
+                rotate = tuple(rotate)
+            elif isinstance(rotate, (int, float)):
+                rotate = (float(rotate), float(rotate))
+            augmenter_args["rotate"] = rotate
+            augmenter_args["p"] = 1.0
+            return augmenter_args
         else:
-            return None
+            # For other augmenters, ensure 'p' probability is specified
+            p = augmenter_args.get("p", 1.0)
+            augmenter_args["p"] = p
+            return augmenter_args
 
-    def _build_horizontal_flip(self, transform_args):
-        p = transform_args.get("p", 0.5)
-        return A.HorizontalFlip(p=p)
-
-    def _build_affine(self, transform_args):
-        rotate = transform_args.get("rotate")
-        shear = transform_args.get("shear")
-        translate_percent = transform_args.get("translate_percent")
-        affine_args = {"fit_output": True}
-        if rotate is not None:
-            affine_args["rotate"] = (
-                tuple(rotate) if isinstance(rotate, list) else rotate
-            )
-        if shear is not None:
-            affine_args["shear"] = shear
-        if translate_percent is not None:
-            affine_args["translate_percent"] = translate_percent
-        return A.Affine(**affine_args)
-
-    def _build_resize(self, transform_args):
-        size = transform_args.get("size", [1.0, 1.0])
-        if isinstance(size, list) and len(size) == 2:
-            scale_factor = size[0]
-            height = int(scale_factor * 100)
-            width = int(scale_factor * 100)
-            return A.Resize(height=height, width=width)
-        elif isinstance(size, (int, float)):
-            scale_factor = float(size)
-            height = int(scale_factor * 100)
-            width = int(scale_factor * 100)
-            return A.Resize(height=height, width=width)
-        else:
-            raise ValueError("Invalid size parameter for Resize")
+    # Convert lists to tuples for Albumentations compatibility
+    def to_tuple_if_list(self, obj):
+        if isinstance(obj, list):
+            return tuple(obj)
+        return obj
 
 
+# Wrapper class for image and polygon transformations using Imgaug-style augmentation
 class IaaAugment:
     def __init__(self, augmenter_args=None, **kwargs):
         if augmenter_args is None:
+            # Default augmenters if none are specified
             augmenter_args = [
                 {"type": "Fliplr", "args": {"p": 0.5}},
                 {"type": "Affine", "args": {"rotate": [-10, 10]}},
-                {"type": "Resize", "args": {"size": [0.5, 3.0]}},
+                {"type": "Resize", "args": {"size": [0.5, 3]}},
             ]
         self.augmenter = AugmenterBuilder().build(augmenter_args)
 
+    # Apply the augmentations to image and polygon data
     def __call__(self, data):
         image = data["image"]
-        polys = data["polys"]
-        # Flatten polys to keypoints and keep track of groupings
-        keypoints = []
-        keypoint_groups = []
-        for poly in polys:
-            poly_keypoints = [tuple(point) for point in poly]
-            keypoints.extend(poly_keypoints)
-            keypoint_groups.append(len(poly_keypoints))
+
         if self.augmenter:
+            # Flatten polygons to individual keypoints for transformation
+            keypoints = []
+            keypoints_lengths = []
+            for poly in data["polys"]:
+                keypoints.extend([tuple(point) for point in poly])
+                keypoints_lengths.append(len(poly))
+
+            # Apply the augmentation pipeline to image and keypoints
             transformed = self.augmenter(image=image, keypoints=keypoints)
             data["image"] = transformed["image"]
-            # Reconstruct polys from transformed keypoints
+
+            # Extract transformed keypoints and reconstruct polygon structures
             transformed_keypoints = transformed["keypoints"]
+
+            # Reassemble polygons from transformed keypoints
             new_polys = []
             idx = 0
-            for group_length in keypoint_groups:
-                new_poly = np.array(
-                    transformed_keypoints[idx : idx + group_length], dtype=np.float32
-                )
-                new_polys.append(new_poly)
-                idx += group_length
+            for length in keypoints_lengths:
+                new_poly = transformed_keypoints[idx : idx + length]
+                new_polys.append(np.array([kp[:2] for kp in new_poly]))
+                idx += length
             data["polys"] = new_polys
         return data
