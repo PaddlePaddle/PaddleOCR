@@ -6,6 +6,7 @@ os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 import numpy as np
 import albumentations as A
 from albumentations.core.transforms_interface import DualTransform
+from albumentations.augmentations.geometric import functional as fgeometric
 
 
 # Custom resize transformation mimicking Imgaug's behavior with scaling
@@ -22,8 +23,14 @@ class ImgaugLikeResize(DualTransform):
         height, width = img.shape[:2]
         new_height = int(height * scale)
         new_width = int(width * scale)
-        return A.functional.resize(
-            img, (new_height, new_width), interpolation=self.interpolation
+
+        # For compatibility with Albumentations 1.4.15 and later
+        # return fgeometric.resize(
+        #     img, (new_height, new_width), interpolation=self.interpolation
+        # )
+
+        return fgeometric.resize(
+            img, new_height, new_width, interpolation=self.interpolation
         )
 
     # Apply the same scaling transformation to keypoints (e.g., polygon points)
