@@ -63,13 +63,13 @@ Optimizer:
 目前开源的模型，数据集和量级如下：
 
 - 检测：
-  - 英文数据集，ICDAR2015
-  - 中文数据集，LSVT街景数据集训练数据3w张图片
+    - 英文数据集，ICDAR2015
+    - 中文数据集，LSVT街景数据集训练数据3w张图片
 
 - 识别：
-  - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。
-  - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
-  - 小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。
+    - 英文数据集，MJSynth和SynthText合成数据，数据量上千万。
+    - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
+    - 小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。
 
 其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](../../datasets/datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer) 、[SynthText](https://github.com/ankush-me/SynthText) 、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) 等。
 
@@ -101,17 +101,17 @@ c. 利用数据生成算法合成数据，例如pix2pix或[StyleText](https://gi
 **Q**：训练CRNN识别时，如何选择合适的网络输入shape？
 
     A：一般高度采用32，最长宽度的选择，有两种方法：
-    
+
     （1）统计训练样本图像的宽高比分布。最大宽高比的选取考虑满足80%的训练样本。
-    
+
     （2）统计训练样本文字数目。最长字符数目的选取考虑满足80%的训练样本。然后中文字符长宽比近似认为是1，英文认为3：1，预估一个最长宽度。
 
 **Q**：识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？
 
     A：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：
-    
+
     （1）加入更多的增广方式或者调大增广prob的[概率](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/ppocr/data/imaug/rec_img_aug.py#L341)，默认为0.4。
-    
+
     （2）调大系统的[l2 dcay值](https://github.com/PaddlePaddle/PaddleOCR/blob/a501603d54ff5513fc4fc760319472e59da25424/configs/rec/ch_ppocr_v1.1/rec_chinese_lite_train_v1.1.yml#L47)
 
 **Q**: 识别模型训练时，loss能正常下降，但acc一直为0
