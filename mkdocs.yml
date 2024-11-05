@@ -119,7 +119,7 @@ plugins:
             文本方向分类器: Text Angle Classification
             关键信息提取: Key Information Extraction
             模型微调: Fine-tune
-            训练tips: Training Tricks
+            训练tricks: Training Tricks
             模型压缩: Model Compression
             模型量化: Model Quantization
             模型裁剪: Model Prune
