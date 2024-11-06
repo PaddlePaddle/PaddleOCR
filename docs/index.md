@@ -1,6 +1,5 @@
 ---
 comments: true
-typora-copy-images-to: images
 hide:
   - navigation
   - toc
