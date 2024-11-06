@@ -87,7 +87,7 @@ plugins:
       fallback_to_default: true
       reconfigure_material: true
       reconfigure_search: true
-     languages:
+      languages:
         - locale: zh
           name: 简体中文
           default: true
