@@ -41,11 +41,11 @@ classifiers = [
 dependencies = [
     "shapely",
     "scikit-image",
-    "imgaug",
+    "six",
     "pyclipper",
     "lmdb",
     "tqdm",
-    "numpy<2.0",
+    "numpy",
     "rapidfuzz",
     "opencv-python",
     "opencv-contrib-python",
@@ -58,6 +58,7 @@ dependencies = [
     "fire>=0.3.0",
     "requests",
     "albumentations==1.4.10",
+    # to be compatible with albumentations
     "albucore==0.0.13"
 ]
 
