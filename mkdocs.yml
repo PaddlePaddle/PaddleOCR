@@ -191,6 +191,22 @@ plugins:
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
+        - locale: jp
+          name: 日本語
+          site_name: PaddleOCR ドキュメント
+          link: /jp/
+        - locale: ru
+          name: 俄语
+          site_name: Документация PaddleOCR
+          link: /ru/
+        - locale: hindi
+          name: 印地语
+          site_name: पैडलओसीआर दस्तावेज़ीकरण
+          link: /hindi/
+        - locale: korean
+          name: 韩语
+          site_name: PaddleOCR 문서
+          link: /korean/
         - locale: "null"
           name: Help translating
           build: false
