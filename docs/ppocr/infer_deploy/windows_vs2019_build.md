@@ -52,7 +52,7 @@ git clone -b dygraph https://github.com/PaddlePaddle/PaddleOCR
 
 cmake安装完后后系统里会有一个cmake-gui程序，打开cmake-gui，在第一个输入框处填写源代码路径，第二个输入框处填写编译输出路径
 
-![step1](./images/cmake_step1.jpg)
+![step1](./images/cmake_step1.png)
 
 ### Step2: 执行cmake配置
 
