@@ -102,12 +102,8 @@ plugins:
             近期更新: Recently Update
             低代码全流程开发: All-in-One Development
             概述: Overview
-            快速开始: Quick Start
             模型: Model
-            概述: Overview
             PP-OCR 文本检测识别: PP-OCR
-            概述: Overview
-            快速开始: Quick Start
             快速安装: Quick Installation
             效果展示: Visualization
             运行环境: Environment Preparation
@@ -125,7 +121,6 @@ plugins:
             模型裁剪: Model Prune
             知识蒸馏: Knowledge Distillation
             推理部署: Model Deploy
-            概述: Overview
             基于Python预测引擎推理: Python Inference
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
@@ -147,25 +142,12 @@ plugins:
             配置文件内容与生成: Configuration
             如何生产自定义超轻量模型？: How To Make Your own lightweight OCR model?
             PP-Structure文档分析: PP-Structure
-            概述: Overview
-            快速开始: Quick Start
-            模型库: Model
-            模型训练: Model Training
-            基本概念: Basic concepts
             版面分析: Layout Analysis
             版面恢复: Recovery To Doc
             表格识别: Table Recognition
-            关键信息提取: Key Information Extraction
-            推理部署: Deploy
-            概述: Overview
-            基于Python预测引擎推理: Python Inference
-            基于C++预测引擎推理: CPP Inference
-            服务化部署: Sever Deployment
-            博客: Blog
             返回识别位置: Return Recognition Location
             怎样完成基于图像数据的信息抽取任务: Key Information Extraction Pipeline
             前沿算法与模型: Academic Algorithms
-            概述: algorithm/overview.md
             文本检测算法: Text Detection Algorithms
             DB与DB++: DB and DB++
             文本识别算法: Text Recognition Algorithms
@@ -177,7 +159,6 @@ plugins:
             使用PaddleOCR架构添加新算法: Add new algorithms
             场景应用: Applications
             数据标注与合成: Data Annotation and Synthesis
-            概述: Overview
             其它数据标注工具: Other data annotation tools
             其它数据合成工具: Others data synthesis tools
             数据集: Datasets
@@ -198,19 +179,19 @@ plugins:
           nav_translations:
             Home: トップページ
         - locale: ru
-          name: 俄语
+          name: Pу́сский язы́к
           site_name: Документация PaddleOCR
           link: /ru/
           nav_translations:
             Home: Главная страница
         - locale: hi
-          name: 印地语
+          name: हिन्दी
           site_name: पैडलओसीआर दस्तावेज़ीकरण
           link: /hi/
           nav_translations:
             Home: घर पृष्ठ
         - locale: ko
-          name: 韩语
+          name: 한국인
           site_name: PaddleOCR 문서
           link: /ko/
           nav_translations:
