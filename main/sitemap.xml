@@ -23,28 +23,6 @@
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/FAQ.html"/>
     </url>
     <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.korean.html"/>
-    </url>
-    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/quick_start.html</loc>
         <lastmod>2024-11-06</lastmod>
         <changefreq>daily</changefreq>
@@ -1462,28 +1440,6 @@
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainFAQ.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.korean.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/quick_start.html</loc>
@@ -2911,28 +2867,6 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainFAQ.html"/>
     </url>
     <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/main/ja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/main/ja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.korean.html"/>
-    </url>
-    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/quick_start.html</loc>
         <lastmod>2024-11-06</lastmod>
         <changefreq>daily</changefreq>
@@ -4350,28 +4284,6 @@
         <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainFAQ.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/main/ru/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/main/ru/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.korean.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/quick_start.html</loc>
@@ -5793,28 +5705,6 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainFAQ.html"/>
     </url>
     <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/main/hi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/main/hi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.korean.html"/>
-    </url>
-    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/quick_start.html</loc>
         <lastmod>2024-11-06</lastmod>
         <changefreq>daily</changefreq>
@@ -7232,28 +7122,6 @@
         <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/FAQ.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainFAQ.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/index.hindi.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/main/ko/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.hindi.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.hindi.html"/>
-    </url>
-    <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/index.korean.html</loc>
-        <lastmod>2024-11-06</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/main/ko/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.korean.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.korean.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/quick_start.html</loc>
