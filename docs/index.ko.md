@@ -1,28 +1,29 @@
-<p align="center">
- <img src="../PaddleOCR_log.png" align="middle" width = "600"/>
-<p align="center">
-<p align="left">
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
-    <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
-    <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
-    <a href=""><img src="https://img.shields.io/pypi/format/PaddleOCR?color=c77"></a>
-    <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
-</p>
+---
+comments: true
+hide:
+  - navigation
+  - toc
+---
+
+<div align="center">
+ <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
+  <p align="center">
+      <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
+      <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
+      <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
+      <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
+      <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
+  </p>
+</div>
 
 ## 소개
 
 PaddleOCR은 사용자들이 보다 나은 모델을 훈련하여 실전에 투입하는데 도움을 주는 다중 언어로 된 엄청나게 멋지고 주도적이며 실용적인 OCR 툴을 만드는데 목표를 두고 있습니다.
-<div align="center">
-    <img src="https://user-images.githubusercontent.com/50011306/187821591-6cb09459-fdbf-4ad3-8c5a-26af611c211d.png" width="800">
-</div>
-<div align="center">
-    <img src="../imgs_results/PP-OCRv3/en/en_4.png" width="800">
-</div>
 
 <div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
+    <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/demo.gif" width="800">
 </div>
 
 ## 📣최근 업데이트

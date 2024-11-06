@@ -1,29 +1,29 @@
-<p align="center">
+---
+comments: true
+hide:
+  - navigation
+  - toc
+---
+
+<div align="center">
  <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
-<p align="center">
-<p align="left">
-    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
-    <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
-    <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
-    <a href=""><img src="https://img.shields.io/pypi/format/PaddleOCR?color=c77"></a>
-    <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
-</p>
+  <p align="center">
+      <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
+      <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
+      <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
+      <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
+      <a href="https://pypi.org/project/PaddleOCR/"><img src="https://img.shields.io/pypi/dm/PaddleOCR?color=9cf"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/stargazers"><img src="https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf"></a>
+  </p>
+</div>
 
 ## प्रस्तावना
 
 पैडलओसीआर का उद्देश्य बहुभाषी,शानदार , ओसीआर और व्यावहारिक ओसीआरउपकरण बनाना है जो यूजर्स को बेहतर मॉडलों  के लिए प्रशिक्षित करने और उन्हें व्यवहार में लागू करने में मदद करते हैं।
 
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/50011306/187821591-6cb09459-fdbf-4ad3-8c5a-26af611c211d.png" width="800">
-</div>
-<div align="center">
-    <img src="../imgs_results/PP-OCRv3/en/en_4.png" width="800">
-</div>
-
-<div align="center">
-    <img src="../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg" width="800">
+    <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/demo.gif" width="800">
 </div>
 
 ## 📣 हाल के अद्यतन
@@ -63,19 +63,13 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 
 > यदि आपके पास पायथन एनवायरनमेंट नहीं है, कृपया फॉलो कीजिए [एनवायरनमेंट प्रिपेरेशन](../doc_en/environment_en.md).    हम अनुशंसा करते हैं कि आप इसके साथ शुरुआत करें [ट्यूटोरियल](#Tutorials).
 
-<a name="किताब"></a>
-
 ## 📚 ई-बुक: *ओसीआर में गोता लगाएँ*
 
 - [ओसीआर में गोता लगाएँ](../doc_en/ocr_book_en.md)
 
-<a name="कम्युनिटी"></a>
-
 ## 👫 समुदाय
 
 अंतरराष्ट्रीय डेवलपर्स के लिए, हम सम्मान करते हैं [पैडलओसीआर चर्चाएँ] (<https://github.com/PaddlePaddle/PaddleOCR/discussions>) हमारे अंतरराष्ट्रीय कम्युनिटी मंच के रूप में। यहां सभी विचारों और प्रश्नों पर अंग्रेजी में चर्चा की जा सकती है।
-
-<a name="समर्थित-चीनी-मॉडल-लिस्ट"></a>
 
 ## 🛠️ PP-ओसीआर श्रृंखला मॉडल सूची
 
@@ -88,8 +82,6 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 - अधिक मॉडल डाउनलोड (एकाधिक भाषाओं सहित) के लिए, कृपया [PP-ओसीआर सीरीज मॉडल डाउनलोड](../doc_en/models_list_en.md) देखें।
 - एक नए भाषा अनुरोध के लिए, कृपया [नई भाषा अनुरोधों के लिए दिशानिर्देश](#language_requests).
 - स्ट्रक्चर मॉडल डोकोमेंट एनालाइज के लिए, कृपया देखें [PP-Structure models](../../ppstructure/docs/models_list_en.md).
-
-<a name="ट्यूटोरियल"></a>
 
 ## 📖 ट्यूटोरियल
 
@@ -152,8 +144,6 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 - [रेफरेन्सेस](../doc_en/reference_en.md)
 - [लाइसेंस](#LICENSE)
 
-<a name="language_requests"></a>
-
 ## 🇺🇳 नई भाषा अनुरोधों के लिए संयुक्त राष्ट्र दिशानिर्देश
 
 अगर आप **एक नए भाषा मॉडल का अनुरोध करना चाहते हैं**, तो कृपया [बहुभाषी मॉडल अपग्रेड के लिए वोट करें](https://github.com/PaddlePaddle/PaddleOCR/discussions/7253) में वोट करें। हम नियमित रूप से परिणाम के अनुसार मॉडल को अपग्रेड करेंगे। **अपने दोस्तों को एक साथ वोट करने के लिए आमंत्रित करें!**
@@ -161,8 +151,6 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 यदि आपको **एक नए भाषा मॉडल को प्रशिक्षित करने** अपने परिदृश्य के आधार पर, तो यह [बहुभाषी  मॉडल  ट्रेनिंग  प्रोजेक्ट  ट्रेनिंग](https://github.com/PaddlePaddle/PaddleOCR/discussions/7252) ट्यूटोरियल आपको डेटासेट तैयार करने में मदद करेगा और आपको स्टेप बाए स्टेप पूरा प्रोसेस दिखाएगा
 
 मूल [बहुभाषी ओसीआर विकास योजना](https://github.com/PaddlePaddle/PaddleOCR/issues/1048) अभी भी आपको बहुत सारे उपयोगी संग्रह और शब्दकोश दिखाता है
-
-<a name="विसुमलाइजेशन"></a>
 
 ## 👀 विज़ुअलाइज़ेशन [अधिक](../doc_en/visualization_en.md)
 
@@ -217,8 +205,6 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
     <img src="https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg" width="600">
 </div>
 </details>
-
-<a name="लाइसेंस"></a>
 
 ## 📄 लाइसेंस
 
