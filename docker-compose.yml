@@ -9,7 +9,8 @@ services:
     shm_size: '32gb'
     volumes:
       - .:/opt/PaddleOCR
-      - /data/xiu-hao/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
+      # - /data/xiu-hao/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
+      - ~/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
     deploy:
       resources:
         reservations:
