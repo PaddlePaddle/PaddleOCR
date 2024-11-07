@@ -33,7 +33,7 @@ cd ..
 
 ```bash linenums="1"
 python predict_system.py \
---image_dir=./docs/table/1.png \
+--image_dir=../docs/ppstructure/images/table_1.png \
 --det_model_dir=inference/en_PP-OCRv3_det_infer \
 --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
 --rec_char_dict_path=../ppocr/utils/en_dict.txt \
@@ -47,7 +47,7 @@ python predict_system.py \
 --return_word_box=True
 ```
 
-### View the visualization of the inference results under `../output/structure/1/show_0.jpg`, as shown below
+### View the visualization of the inference results under `../output/structure/table_1/show_0.jpg`, as shown below
 
 ![show_0_mdf_v2](./images/799450d4-d2c5-4b61-b490-e160dc0f515c.jpeg)
 
