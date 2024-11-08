@@ -1,0 +1,44 @@
+name: Close inactive issues
+on:
+  schedule:
+    - cron: "30 1 * * *"
+
+jobs:
+  close-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/stale@v5
+        with:
+          days-before-issue-stale: 90
+          days-before-issue-close: 14
+          stale-issue-label: "stale"
+          stale-issue-message: "This issue is stale because it has been open for 90 days with no activity."
+          close-issue-message: "This issue was closed because it has been inactive for 14 days since being marked as stale."
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+    
+  inactivity-lock:
+    name: Lock issues and PRs
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: 🔒 Lock closed issues and PRs
+        uses: klaasnicolaas/action-inactivity-lock@v1
+        id: lock
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          rate-limit-buffer: 200
+          days-inactive-issues: 30
+          days-inactive-prs: -1
+          lock-reason-issues: "This issue was locked because it has been inactive for 30 days since being closed."
+          lock-reason-prs: "This PR was locked because it has been inactive for 30 days since being closed."
+      - name: 🔍 Display locked issues and PRs
+        run: |
+          echo "Locked issues: $(echo '${{ steps.lock.outputs.locked-issues }}' | jq)"
+          echo "Locked PRs: $(echo '${{ steps.lock.outputs.locked-prs }}' | jq)"
