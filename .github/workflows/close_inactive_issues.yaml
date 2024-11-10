@@ -36,8 +36,8 @@ jobs:
           rate-limit-buffer: 200
           days-inactive-issues: 30
           days-inactive-prs: -1
-          lock-reason-issues: "This issue was locked because it has been inactive for 30 days since being closed."
-          lock-reason-prs: "This PR was locked because it has been inactive for 30 days since being closed."
+          lock-reason-issues: "resolved"
+          lock-reason-prs: "resolved"
       - name: 🔍 Display locked issues and PRs
         run: |
           echo "Locked issues: $(echo '${{ steps.lock.outputs.locked-issues }}' | jq)"
