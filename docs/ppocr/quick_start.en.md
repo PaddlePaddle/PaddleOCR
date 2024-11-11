@@ -4,7 +4,7 @@ comments: true
 
 # PaddleOCR Quick Start
 
-**Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../ppstructure/overview.en.md) for the quick use of document analysis related functions.
+**Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../ppstructure/overview.en.md) for the quick use of document analysis related functions. In addition, the All-in-One development tool PaddleX relies on the advanced technology of PaddleOCR to support low-code full-process development capabilities in the OCR field, significantly reducing development time and complexity. It also integrates the 17 models involved in text image intelligent analysis, OCR, layout parsing, table recognition, formula recognition, and seal text recognition into 6 pipelines, which can be invoked with a simple Python API. For more details, please see [Low-Code Full-Process Development](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html).
 
 ## 1. Installation
 

@@ -7,7 +7,9 @@
 ### 🛠️ Installation
 
 > ❗Before installing PaddleX, please ensure you have a basic **Python environment** (Note: Currently supports Python 3.8 to Python 3.10, with more Python versions being adapted).
+
 * **Installing PaddlePaddle**
+
 ```bash
 # cpu
 python -m pip install paddlepaddle==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
