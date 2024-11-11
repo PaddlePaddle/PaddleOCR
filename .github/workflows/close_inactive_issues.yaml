@@ -21,24 +21,3 @@ jobs:
           days-before-pr-close: -1
           repo-token: ${{ secrets.GITHUB_TOKEN }}
     
-  inactivity-lock:
-    name: Lock issues and PRs
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-    steps:
-      - name: 🔒 Lock closed issues and PRs
-        uses: klaasnicolaas/action-inactivity-lock@v1.1.1
-        id: lock
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          rate-limit-buffer: 200
-          days-inactive-issues: 30
-          days-inactive-prs: -1
-          lock-reason-issues: "resolved"
-          lock-reason-prs: "resolved"
-      - name: 🔍 Display locked issues and PRs
-        run: |
-          echo "Locked issues: $(echo '${{ steps.lock.outputs.locked-issues }}' | jq)"
-          echo "Locked PRs: $(echo '${{ steps.lock.outputs.locked-prs }}' | jq)"
