@@ -282,5 +282,3 @@ For a more comprehensive understanding of the slicing operation, please refer to
 ## 3. Summary
 
 In this section, you have mastered the use of PaddleOCR whl package.
-
-PaddleX provides a high-quality ecological model of the paddle. It is a one-stop full-process high-efficiency development platform for training, pressing and pushing. Its mission is to help AI technology to be implemented quickly. The vision is to make everyone an AI Developer! Currently PP-OCRv4 has been launched on PaddleX, you can enter [General OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286) to experience the whole process of model training, compression and inference deployment.
