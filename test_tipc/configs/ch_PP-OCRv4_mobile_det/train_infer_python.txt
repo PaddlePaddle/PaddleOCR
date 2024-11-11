@@ -7,7 +7,7 @@ Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=50
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=4
-Global.pretrained_model:pretrain_models/PPLCNetV3_x0_75_ocr_det.pdparams
+Global.pretrained_model:pretrain_models/ch_PP-OCRv4_det_trained.pdparams
 train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
