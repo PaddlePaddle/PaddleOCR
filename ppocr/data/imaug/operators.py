@@ -20,7 +20,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
-import six
 import cv2
 import numpy as np
 import math
@@ -39,14 +38,7 @@ class DecodeImage(object):
 
     def __call__(self, data):
         img = data["image"]
-        if six.PY2:
-            assert (
-                type(img) is str and len(img) > 0
-            ), "invalid input 'img' in DecodeImage"
-        else:
-            assert (
-                type(img) is bytes and len(img) > 0
-            ), "invalid input 'img' in DecodeImage"
+        assert type(img) is bytes and len(img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype="uint8")
         if self.ignore_orientation:
             img = cv2.imdecode(img, cv2.IMREAD_IGNORE_ORIENTATION | cv2.IMREAD_COLOR)

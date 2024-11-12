@@ -1,6 +1,5 @@
 shapely
 scikit-image
-six
 pyclipper
 lmdb
 tqdm

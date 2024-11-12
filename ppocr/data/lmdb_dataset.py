@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import numpy as np
+import io
 import os
 from paddle.io import Dataset
 import lmdb
 import cv2
 import string
-import six
 import pickle
 from PIL import Image
 
@@ -158,7 +158,7 @@ class LMDBDataSet(Dataset):
 class LMDBDataSetSR(LMDBDataSet):
     def buf2PIL(self, txn, key, type="RGB"):
         imgbuf = txn.get(key)
-        buf = six.BytesIO()
+        buf = io.BytesIO()
         buf.write(imgbuf)
         buf.seek(0)
         im = Image.open(buf).convert(type)

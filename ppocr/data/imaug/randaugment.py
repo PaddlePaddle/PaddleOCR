@@ -20,7 +20,6 @@ from __future__ import unicode_literals
 from PIL import Image, ImageEnhance, ImageOps
 import numpy as np
 import random
-import six
 
 
 class RawRandAugment(object):
@@ -117,10 +116,7 @@ class RandAugment(RawRandAugment):
 
     def __init__(self, prob=0.5, *args, **kwargs):
         self.prob = prob
-        if six.PY2:
-            super(RandAugment, self).__init__(*args, **kwargs)
-        else:
-            super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def __call__(self, data):
         if np.random.rand() > self.prob:
@@ -130,10 +126,7 @@ class RandAugment(RawRandAugment):
             img = np.ascontiguousarray(img)
             img = Image.fromarray(img)
 
-        if six.PY2:
-            img = super(RandAugment, self).__call__(img)
-        else:
-            img = super().__call__(img)
+        img = super().__call__(img)
 
         if isinstance(img, Image.Image):
             img = np.asarray(img)

@@ -132,9 +132,7 @@ def load_model(config, model, optimizer=None):
 
         if os.path.exists(checkpoints + ".states"):
             with open(checkpoints + ".states", "rb") as f:
-                states_dict = (
-                    pickle.load(f) if six.PY2 else pickle.load(f, encoding="latin1")
-                )
+                states_dict = pickle.load(f, encoding="latin1")
             best_model_dict = states_dict.get("best_model_dict", {})
             if "epoch" in states_dict:
                 best_model_dict["start_epoch"] = states_dict["epoch"] + 1
