@@ -10,7 +10,9 @@
 ### 🛠️ 安装
 
 > ❗安装PaddleX前请先确保您有基础的**Python运行环境**。
+
 * **安装PaddlePaddle**
+
 ```bash
 # cpu
 python -m pip install paddlepaddle==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/

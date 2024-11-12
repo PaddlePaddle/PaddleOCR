@@ -2,9 +2,11 @@
 comments: true
 ---
 
+
 # PaddleOCR 快速开始
 
-**说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用，如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/overview.md)。
+ **说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用。如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/overview.md)。此外，飞桨低代码开发工具<b>PaddleX</b>依托PaddleOCR的先进技术，支持了OCR领域的<b>低代码全流程开发能力，大幅减少开发时间和难度</b>，同时将<b>文本图像智能分析、通用OCR、通用版面解析、通用表格识别、公式识别、印章文本识别</b>涉及的17个模型整合为6条模型产线，通过极简的Python API一键调用,详情请见[低代码全流程开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/quick_start.html)。
+
 
 ## 1. 安装
 
@@ -274,5 +276,3 @@ image.save("result.jpg")
 ## 3. 小结
 
 通过本节内容，相信您已经熟练掌握PaddleOCR whl包的使用方法并获得了初步效果。
-
-飞桨AI套件（PaddleX）提供了飞桨生态优质模型，是训压推一站式全流程高效率开发平台，其使命是助力AI技术快速落地，愿景是使人人成为AI Developer！目前PP-OCRv4已上线PaddleX，您可以进入[通用OCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=286)体验模型训练、压缩和推理部署全流程。
