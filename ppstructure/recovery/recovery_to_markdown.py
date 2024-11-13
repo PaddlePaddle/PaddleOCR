@@ -157,7 +157,12 @@ def convert_info_markdown(res, save_folder, img_name):
                 f"""<div align="center">\n\t<img src="{img_name+"/"+img_file_name}">\n</div>"""
             )
         elif region["type"].lower() == "title":
-            markdown_string.append(f"""# {region["res"][0]["text"]}""")
+            sorted_regions = sorted(region['res'], key=lambda x: (x["text_region"][0][1], x["text_region"][0][0]))
+            
+            markdown_string.append(
+                f"""# {sorted_regions[0]['text']}""" + \
+                ''.join([" " + sorted_region['text'] for sorted_region in sorted_regions[1:]])
+            )
         elif region["type"].lower() == "table":
             markdown_string.append(region["res"]["html"])
         elif region["type"].lower() == "header" or region["type"].lower() == "footer":
