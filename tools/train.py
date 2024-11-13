@@ -172,11 +172,11 @@ def main(config, device, logger, vdl_writer, seed):
     amp_custom_black_list = config["Global"].get("amp_custom_black_list", [])
     amp_custom_white_list = config["Global"].get("amp_custom_white_list", [])
     if os.path.exists(
-        os.path.join(config["Global"]["save_model_dir"], "train_results.json")
+        os.path.join(config["Global"]["save_model_dir"], "train_result.json")
     ):
         try:
             os.remove(
-                os.path.join(config["Global"]["save_model_dir"], "train_results.json")
+                os.path.join(config["Global"]["save_model_dir"], "train_result.json")
             )
         except:
             pass
