@@ -268,7 +268,7 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
 
     assert last_num >= 1
     train_results_path = os.path.join(
-        config["Global"]["save_model_dir"], "train_results.json"
+        config["Global"]["save_model_dir"], "train_result.json"
     )
     save_model_tag = ["pdparams", "pdopt", "pdstates"]
     save_inference_tag = ["inference_config", "pdmodel", "pdiparams", "pdiparams.info"]
