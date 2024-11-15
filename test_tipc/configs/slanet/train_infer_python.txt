@@ -13,7 +13,7 @@ train_infer_img_dir:./ppstructure/docs/table/table.jpg
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/table/SLANet_ch.yml -o Global.cal_metric_during_train=False Global.print_batch_step=1 Train.loader.shuffle=false Train.dataset.data_dir=./train_data/pubtabnet Train.dataset.label_file_list=[./train_data/pubtabnet/train.txt] Eval.dataset.data_dir=./train_data/pubtabnet Eval.dataset.label_file_list=[./train_data/pubtabnet/val.txt] Global.d2s_train_image_shape=[3, -1, -1]
+norm_train:tools/train.py -c configs/table/SLANet_ch.yml -o Global.cal_metric_during_train=False Global.print_batch_step=1 Train.loader.shuffle=false Train.dataset.data_dir=./train_data/pubtabnet Train.dataset.label_file_list=[./train_data/pubtabnet/train.txt] Eval.dataset.data_dir=./train_data/pubtabnet Eval.dataset.label_file_list=[./train_data/pubtabnet/val.txt] Global.d2s_train_image_shape='[3, -1, -1]'
 pact_train:null
 fpgm_train:null
 distill_train:null
