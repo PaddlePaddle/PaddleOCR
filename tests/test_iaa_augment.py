@@ -50,7 +50,9 @@ def test_iaa_augment_default(sample_image, sample_polys):
     assert isinstance(
         transformed_data["image"], np.ndarray
     ), "Image should be a numpy array"
-    assert isinstance(transformed_data["polys"], list), "Polys should be a list"
+    assert isinstance(
+        transformed_data["polys"], np.ndarray
+    ), "Polys should be a numpy array"
     assert transformed_data["image"].ndim == 3, "Image should be 3-dimensional"
 
     # Verify that the polygons have been transformed
