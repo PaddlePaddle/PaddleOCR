@@ -230,6 +230,8 @@ def create_predictor(args, mode, logger):
         )
 
     else:
+        from packaging.version import parse as parse_version
+
         file_names = ["model", "inference"]
         for file_name in file_names:
             params_file_path = f"{model_dir}/{file_name}.pdiparams"
@@ -247,10 +249,10 @@ def create_predictor(args, mode, logger):
                 f"neither {file_name}.json nor {file_name}.pdmodel was found in {model_dir}."
             )
 
-        if paddle.__version__ == "0.0.0" or paddle.__version__ >= "3.0.0":
-            model_path = model_dir
-            model_prefix = file_name
-            config = inference.Config(model_path, model_prefix)
+        if parse_version(paddle.__version__) == parse_version("0.0.0") or parse_version(
+            paddle.__version__
+        ) >= parse_version("3.0.0-beta1"):
+            config = inference.Config(model_dir, file_name)
         else:
             model_file_path = f"{model_dir}/{file_name}.pdmodel"
             config = inference.Config(model_file_path, params_file_path)
