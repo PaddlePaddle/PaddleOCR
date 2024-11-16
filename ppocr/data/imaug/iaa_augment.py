@@ -208,5 +208,5 @@ class IaaAugment:
                 new_poly = transformed_keypoints[idx : idx + length]
                 new_polys.append(np.array([kp[:2] for kp in new_poly]))
                 idx += length
-            data["polys"] = new_polys
+            data["polys"] = np.array(new_polys)
         return data
