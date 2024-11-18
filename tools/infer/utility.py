@@ -247,7 +247,7 @@ def create_predictor(args, mode, logger):
                 f"neither {file_name}.json nor {file_name}.pdmodel was found in {model_dir}."
             )
 
-        if not os.path.exists(f"{model_dir}/{file_name}.pdmodel") and os.path.exists(
+        if os.path.exists(
             f"{model_dir}/{file_name}.json"
         ):
             model_file_path = f"{model_dir}/{file_name}.json"
