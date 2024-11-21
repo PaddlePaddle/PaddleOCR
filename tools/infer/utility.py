@@ -41,6 +41,12 @@ def init_args():
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
     parser.add_argument("--use_mlu", type=str2bool, default=False)
+    parser.add_argument(
+        "--use_gcu",
+        type=str2bool,
+        default=False,
+        help="Use Enflame GCU(General Compute Unit)",
+    )
     parser.add_argument("--ir_optim", type=str2bool, default=True)
     parser.add_argument("--use_tensorrt", type=str2bool, default=False)
     parser.add_argument("--min_subgraph_size", type=int, default=15)
@@ -298,6 +304,34 @@ def create_predictor(args, mode, logger):
             config.enable_custom_device("mlu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
+        elif args.use_gcu:  # for Enflame GCU(General Compute Unit)
+            assert paddle.device.is_compiled_with_custom_device("gcu"), (
+                "Args use_gcu cannot be set as True while your paddle "
+                "is not compiled with gcu! \nPlease try: \n"
+                "\t1. Install paddle-custom-gcu to run model on GCU. \n"
+                "\t2. Set use_gcu as False in args to run model on CPU."
+            )
+            import paddle_custom_device.gcu.passes as gcu_passes
+
+            gcu_passes.setUp()
+            if args.precision == "fp16":
+                config.enable_custom_device(
+                    "gcu", 0, paddle.inference.PrecisionType.Half
+                )
+                gcu_passes.set_exp_enable_mixed_precision_ops(config)
+            else:
+                config.enable_custom_device("gcu")
+
+            if paddle.framework.use_pir_api():
+                config.enable_new_ir(True)
+                config.enable_new_executor(True)
+                kPirGcuPasses = gcu_passes.inference_passes(
+                    use_pir=True, name="PaddleOCR"
+                )
+                config.enable_custom_passes(kPirGcuPasses, True)
+            else:
+                pass_builder = config.pass_builder()
+                gcu_passes.append_passes_for_legacy_ir(pass_builder, "PaddleOCR")
         else:
             config.disable_gpu()
             if args.enable_mkldnn:
@@ -314,7 +348,8 @@ def create_predictor(args, mode, logger):
         # enable memory optim
         config.enable_memory_optim()
         config.disable_glog_info()
-        config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
+        if not args.use_gcu:  # for Enflame GCU(General Compute Unit)
+            config.delete_pass("conv_transpose_eltwiseadd_bn_fuse_pass")
         config.delete_pass("matmul_transpose_reshape_fuse_pass")
         if mode == "rec" and args.rec_algorithm == "SRN":
             config.delete_pass("gpu_cpu_map_matmul_v2_to_matmul_pass")
