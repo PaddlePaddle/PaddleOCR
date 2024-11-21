@@ -5080,7 +5080,7 @@ You're not viewing the latest version.
 <p><strong>说明：</strong></p>
 <ul>
 <li>
-<p>飞桨低代码开发工具<a href="https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。</p>
+<p>飞桨低代码开发工具<a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。</p>
 </li>
 <li>
 <p>PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供<strong>OCR相关产线</strong>的快速推理使用，单功能模块的快速使用以及更多功能请参考<a href="https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html">PaddleOCR低代码全流程开发</a>中相关章节。</p>
@@ -5095,24 +5095,22 @@ You're not viewing the latest version.
 <li><strong>安装PaddlePaddle</strong></li>
 </ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># cpu</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 11.8 的机器环境</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 12.3 的机器环境</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
 </span></code></pre></div>
 <blockquote>
-<p>❗ 更多飞桨 Wheel 版本请参考<a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html">飞桨官网</a>。</p>
+<p>❗ 更多飞桨 Wheel 版本请参考<a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html">飞桨官网</a>。
+* <strong>安装PaddleX</strong></p>
 </blockquote>
-<ul>
-<li><strong>安装PaddleX</strong></li>
-</ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0b1-py3-none-any.whl
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0b2-py3-none-any.whl
 </span></code></pre></div>
 <blockquote>
-<p>❗ 更多安装方式参考<a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/installation/installation.md">PaddleX安装教程</a></p>
+<p>❗ 更多安装方式参考<a href="https://paddlepaddle.github.io/PaddleX/latest/installation/installation.html">PaddleX安装教程</a></p>
 </blockquote>
 <h3 id="python">📝 Python 脚本使用<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
 <p>三行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
@@ -5145,32 +5143,32 @@ You're not viewing the latest version.
 <tr>
 <td>文档场景信息抽取v3</td>
 <td><code>PP-ChatOCRv3-doc</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.md#22-本地体验">文档场景信息抽取v3产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">文档场景信息抽取v3产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用OCR</td>
 <td><code>OCR</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/OCR.md#222-python脚本方式集成">通用OCR产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html">通用OCR产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用表格识别</td>
 <td><code>table_recognition</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/table_recognition.md#22-python脚本方式集成">通用表格识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html">通用表格识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用版面解析</td>
 <td><code>layout_parsing</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.md#22-python脚本方式集成">通用版面解析产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">通用版面解析产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>公式识别</td>
 <td><code>formula_recognition</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.md#22-python脚本方式集成">公式识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html">公式识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>印章文本识别</td>
 <td><code>seal_recognition</code></td>
-<td><a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.md#22-python脚本方式集成">印章文本识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html">印章文本识别产线Python脚本使用说明</a></td>
 </tr>
 </tbody>
 </table>
