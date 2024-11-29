@@ -119,6 +119,14 @@ def apply_to_static(model, config, logger):
                 InputSpec([None], dtype="int64"),
             ]
         )
+    elif algo == "LaTeXOCR":
+        specs = [
+            [
+                InputSpec(shape=[None, 1, None, None], dtype="float32"),
+                InputSpec(shape=[None, None], dtype="float32"),
+                InputSpec(shape=[None, None], dtype="float32"),
+            ]
+        ]
     model = to_static(model, input_spec=specs)
     logger.info("Successfully to apply @to_static with specs: {}".format(specs))
     return model

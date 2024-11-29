@@ -101,7 +101,9 @@ class StdConv2dSame(nn.Conv2D):
         if self.export:
             weight = paddle.reshape(
                 F.batch_norm(
-                    self.weight.reshape([1, self._out_channels, -1]),
+                    self.weight.reshape([1, self._out_channels, -1]).cast(
+                        paddle.float32
+                    ),
                     running_mean,
                     running_variance,
                     momentum=0.0,
@@ -113,7 +115,9 @@ class StdConv2dSame(nn.Conv2D):
         else:
             weight = paddle.reshape(
                 F.batch_norm(
-                    self.weight.reshape([1, self._out_channels, -1]),
+                    self.weight.reshape([1, self._out_channels, -1]).cast(
+                        paddle.float32
+                    ),
                     running_mean,
                     running_variance,
                     training=True,
