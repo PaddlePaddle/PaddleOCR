@@ -50,7 +50,7 @@ Full documentation can be found on [docs](https://paddlepaddle.github.io/PaddleO
 PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppocr/overview.html)、 [PP-Structure](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppstructure/overview.html) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
 <div align="center">
-    <img src="./docs/images/ppocrv4.png">
+    <img src="./docs/images/ppocrv4_en.jpg">
 </div>
 
 > It is recommended to start with the “quick experience” in the document tutorial
