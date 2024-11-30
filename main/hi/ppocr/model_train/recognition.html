@@ -5870,7 +5870,7 @@ You're not viewing the latest version.
 </span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a>        <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>在 <a href="../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
+<li>在 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
 </ol>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
 <span class="normal"><a href="#__codelineno-15-2">2</a></span>
@@ -5880,7 +5880,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意</strong>：如果要更换网络的其他模块，可以参考<a href="../../algorithm/add_new_algorithm.html">文档</a>。</p>
 <h3 id="24">2.4. 混合精度训练<a class="headerlink" href="#24" title="Permanent link">&para;</a></h3>
-<p>如果您想进一步加快训练速度，可以使用<a href="https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html">自动混合精度训练</a>， 以单机单卡为例，命令如下：</p>
+<p>如果您想进一步加快训练速度，可以使用<a href="https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/performance_improving/amp_cn.html">自动混合精度训练</a>， 以单机单卡为例，命令如下：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
 <span class="normal"><a href="#__codelineno-16-2">2</a></span>
 <span class="normal"><a href="#__codelineno-16-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span><span class="se">\</span>
@@ -6155,12 +6155,18 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 <span class="normal"><a href="#__codelineno-25-3">3</a></span>
 <span class="normal"><a href="#__codelineno-25-4">4</a></span>
 <span class="normal"><a href="#__codelineno-25-5">5</a></span>
-<span class="normal"><a href="#__codelineno-25-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1"># -c 后面设置训练算法的yml配置文件</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="c1"># -o 配置可选参数</span>
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a><span class="c1"># Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。</span>
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="c1"># Global.save_inference_dir参数设置转换的模型将保存的地址。</span>
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a>
-</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+<span class="normal"><a href="#__codelineno-25-6">6</a></span>
+<span class="normal"><a href="#__codelineno-25-7">7</a></span>
+<span class="normal"><a href="#__codelineno-25-8">8</a></span>
+<span class="normal"><a href="#__codelineno-25-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a><span class="c1"># 开启旧 IR 模式</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_enable_pir_api</span><span class="o">=</span><span class="m">0</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a><span class="c1"># -c 后面设置训练算法的yml配置文件</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5"></a><span class="c1"># -o 配置可选参数</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="c1"># Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7"></a><span class="c1"># Global.save_inference_dir参数设置转换的模型将保存的地址。</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8"></a>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意：</strong>如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的<code>character_dict_path</code>为自定义字典文件。</p>
 <p>转换成功后，在目录下有三个文件：</p>
@@ -6172,11 +6178,23 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 </span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3"></a>    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
 </span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4"></a>    └── inference.pdmodel           # 识别inference模型的program文件
 </span></code></pre></div></td></tr></table></div>
+<p><strong>注意：</strong> 如果需要以新 IR 模式（<code>FLAGS_enable_pir_api=1</code>）存储 <code>.json</code> 文件，请执行以下命令切换到新 IR 模式：</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
+<span class="normal"><a href="#__codelineno-27-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_enable_pir_api</span><span class="o">=</span><span class="m">1</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+</span></code></pre></div></td></tr></table></div>
+<p>转换成功后，在目录下有三个文件：</p>
+<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span>
+<span class="normal"><a href="#__codelineno-28-2">2</a></span>
+<span class="normal"><a href="#__codelineno-28-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a>inference/en_PP-OCRv3_rec/
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2"></a>    ├── inference.pdiparams         # 识别inference模型的参数文件
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a>    └── inference.json              # 识别inference模型的program文件
+</span></code></pre></div></td></tr></table></div>
 <ul>
 <li>自定义模型推理</li>
 </ul>
 <p>如果训练时修改了文本的字典，在使用inference模型预测时，需要通过<code>--rec_char_dict_path</code>指定使用的字典路径，更多关于推理超参数的配置与解释，请参考：<a href="../blog/inference_args.html">模型推理超参数解释教程</a>。</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a>python3<span class="w"> </span>tools/infer/predict_rec.py<span class="w"> </span>--image_dir<span class="o">=</span><span class="s2">&quot;./doc/imgs_words_en/word_336.png&quot;</span><span class="w"> </span>--rec_model_dir<span class="o">=</span><span class="s2">&quot;./your inference model&quot;</span><span class="w"> </span>--rec_image_shape<span class="o">=</span><span class="s2">&quot;3, 48, 320&quot;</span><span class="w"> </span>--rec_char_dict_path<span class="o">=</span><span class="s2">&quot;your text dict path&quot;</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-29-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1"></a>python3<span class="w"> </span>tools/infer/predict_rec.py<span class="w"> </span>--image_dir<span class="o">=</span><span class="s2">&quot;./doc/imgs_words_en/word_336.png&quot;</span><span class="w"> </span>--rec_model_dir<span class="o">=</span><span class="s2">&quot;./your inference model&quot;</span><span class="w"> </span>--rec_image_shape<span class="o">=</span><span class="s2">&quot;3, 48, 320&quot;</span><span class="w"> </span>--rec_char_dict_path<span class="o">=</span><span class="s2">&quot;your text dict path&quot;</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="5-faq">5. FAQ<a class="headerlink" href="#5-faq" title="Permanent link">&para;</a></h2>
 <p>Q1: 训练模型转inference 模型之后预测效果不一致？</p>
@@ -6203,7 +6221,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="आखिरी अपडेट">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2024年11月29日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2024年11月30日</span>
   </span>
 
     
@@ -6213,7 +6231,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="बनाया था">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2024年11月29日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2024年11月30日</span>
   </span>
 
     
