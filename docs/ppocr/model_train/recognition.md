@@ -344,7 +344,7 @@ class MyBackbone(nn.Layer):
         return y
 ```
 
-3. 在 [ppocr/modeling/backbones/\_*init\_*.py](../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
+3. 在 [ppocr/modeling/backbones/\_*init\_*.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
 
 ```yaml linenums="1"
 Backbone:
@@ -356,7 +356,7 @@ args1: args1
 
 ### 2.4. 混合精度训练
 
-如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html)， 以单机单卡为例，命令如下：
+如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/performance_improving/amp_cn.html)， 以单机单卡为例，命令如下：
 
 ```bash linenums="1"
 python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
@@ -534,6 +534,9 @@ inference 模型（`paddle.jit.save`保存的模型）
 识别模型转inference模型与检测的方式相同，如下：
 
 ```bash linenums="1"
+# 开启旧 IR 模式
+export FLAGS_enable_pir_api=0
+
 # -c 后面设置训练算法的yml配置文件
 # -o 配置可选参数
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
@@ -551,6 +554,21 @@ inference/en_PP-OCRv3_rec/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
     └── inference.pdmodel           # 识别inference模型的program文件
+```
+
+**注意：** 如果需要以新 IR 模式（`FLAGS_enable_pir_api=1`）存储 `.json` 文件，请执行以下命令切换到新 IR 模式：
+
+```bash linenums="1"
+export FLAGS_enable_pir_api=1
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+```
+
+转换成功后，在目录下有三个文件：
+
+```text linenums="1"
+inference/en_PP-OCRv3_rec/
+    ├── inference.pdiparams         # 识别inference模型的参数文件
+    └── inference.json              # 识别inference模型的program文件
 ```
 
 - 自定义模型推理

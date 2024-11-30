@@ -10,28 +10,33 @@ comments: true
 
 > If you do not have a Python environment, please refer to [Environment Preparation](../ppocr/environment.en.md).
 
-- If you have CUDA 9 or CUDA 10 installed on your machine, please run the following command to install
+- PaddlePaddle with CUDA 11.8
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
   ```
 
-- If you have no available GPU on your machine, please run the following command to install the CPU version
+- PaddlePaddle with CUDA 12.3
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
   ```
 
-For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/install/quick) for operation.
+- If your machine does not have an available GPU, please run the following command to install the CPU version
+
+  ```bash linenums="1"
+  python3 -m pip install paddlepaddle -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+  ```
+
+For more software version requirements, please refer to the instructions in the [Installation Document](https://www.paddlepaddle.org.cn/en/install/quick).
 
 ### 1.2 Install PaddleOCR Whl Package
 
 ```bash linenums="1"
-# Install paddleocr, version 2.6 is recommended
-pip3 install "paddleocr>=2.6.0.3"
+python3 -m pip install paddleocr
 
 # Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
-pip3 install paddleclas>=2.4.3
+python3 -m pip install paddleclas
 ```
 
 ## 2. Quick Use
@@ -41,6 +46,8 @@ pip3 install paddleclas>=2.4.3
 #### 2.1.1 image orientation + layout analysis + table recognition
 
 ```bash linenums="1"
+# Temporarily disable the new IR feature
+export FLAGS_enable_pir_api=0
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --image_orientation=true
 ```
 
@@ -64,9 +71,9 @@ paddleocr --image_dir=ppstructure/docs/table/table.jpg --type=structure --layout
 
 #### 2.1.5 Key Information Extraction
 
-Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [inference document](./infer_deploy/python_infer.en.md).
+Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Key Information Extraction](../ppocr/model_train/kie.en.md).
 
-#### 2.1.6 layout recovery(PDF to Word)
+#### 2.1.6 layout recovery
 
 Two layout recovery methods are provided, For detailed usage tutorials, please refer to: [Layout Recovery](./model_train/recovery_to_doc.en.md).
 

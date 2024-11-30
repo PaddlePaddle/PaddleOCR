@@ -10,16 +10,22 @@ comments: true
 >
 > 如果您没有基础的Python运行环境，请参考[运行环境准备](../ppocr/environment.md)。
 
-- 您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+- CUDA11.8 的 PaddlePaddle
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+  ```
+
+-  CUDA12.3 的 PaddlePaddle
+
+  ```bash linenums="1"
+  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+  python3 -m pip install paddlepaddle -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
@@ -27,11 +33,10 @@ comments: true
 ### 1.2 安装PaddleOCR whl包
 
 ```bash linenums="1"
-# 安装 paddleocr，推荐使用2.6版本
-pip3 install "paddleocr>=2.6.0.3"
+python3 -m pip install paddleocr
 
 # 安装 图像方向分类依赖包paddleclas（如不需要图像方向分类功能，可跳过）
-pip3 install paddleclas>=2.4.3
+python3 -m pip install paddleclas
 ```
 
 ## 2. 便捷使用
@@ -41,6 +46,8 @@ pip3 install paddleclas>=2.4.3
 #### 2.1.1 图像方向分类+版面分析+表格识别
 
 ```bash linenums="1"
+# 暂时关闭新 IR 功能
+export FLAGS_enable_pir_api=0
 paddleocr --image_dir=ppstructure/docs/table/1.png --type=structure --image_orientation=true
 ```
 

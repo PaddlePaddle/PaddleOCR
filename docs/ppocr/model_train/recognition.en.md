@@ -5,13 +5,89 @@ typora-copy-images-to: images
 
 # Text Recognition
 
+This article provides a comprehensive guide for the PaddleOCR text recognition task, covering the entire workflow including data preparation, model training, fine-tuning, evaluation, and prediction, with detailed explanations for each phase.
+
 ## 1. Data Preparation
 
-### 1.1 DataSet Preparation
+### 1.1. Prepare the Dataset
 
-To prepare datasets, refer to [ocr_datasets](../../datasets/datasets.en.md) .
+PaddleOCR supports two data formats:
 
-PaddleOCR provides label files for training the icdar2015 dataset, which can be downloaded in the following ways:
+- `lmdb`: Used for training with datasets stored in LMDB format (LMDBDataSet);
+- `General Data`: Used for training with datasets stored in text files (SimpleDataSet);
+
+The default storage path for training data is `PaddleOCR/train_data`. If you already have a dataset on your disk, simply create a symbolic link to the dataset directory:
+
+```bash
+# Linux and macOS
+ln -sf <path/to/dataset> <path/to/paddle_ocr>/train_data/dataset
+# Windows
+mklink /d <path/to/paddle_ocr>/train_data/dataset <path/to/dataset>
+```
+
+### 1.2. Custom Dataset
+
+Here, we will use a general dataset as an example to explain how to prepare the dataset:
+
+- Training Dataset
+
+It is recommended to place the training images in the same folder and record the image paths and labels in a txt file (`rec_gt_train.txt`). The content of the txt file should be as follows:
+
+**Note:** In the txt file, please use `\t` to separate the image path and the label. Using any other separator will cause errors during training.
+
+```text
+" Image Filename                   Image Label "
+
+train_data/rec/train/word_001.jpg   Simple and reliable
+train_data/rec/train/word_002.jpg   Making the complex world simpler with technology
+...
+```
+
+The final structure of the training dataset should look like this:
+
+```text
+|-train_data
+  |-rec
+    |- rec_gt_train.txt
+    |- train
+        |- word_001.png
+        |- word_002.jpg
+        |- word_003.jpg
+        | ...
+```
+
+In addition to the single-image-per-line format described above, PaddleOCR also supports training on data augmented offline. To avoid sampling the same sample multiple times in the same batch, we can list image paths with the same label on one line. During training, PaddleOCR will randomly select one image from the list. The corresponding format of the label file is as follows:
+
+```text
+["11.jpg", "12.jpg"]   Simple and reliable
+["21.jpg", "22.jpg", "23.jpg"]   Making the complex world simpler with technology
+3.jpg   ocr
+```
+
+In the above example, both "11.jpg" and "12.jpg" have the same label `Simple and reliable`. During training, one of these images will be randomly chosen for training.
+
+- Validation Dataset
+
+Similarly to the training dataset, the validation dataset should also provide a folder containing all the images (test) and a `rec_gt_test.txt` file. The structure of the validation dataset is as follows:
+
+```text
+|-train_data
+  |-rec
+    |- rec_gt_test.txt
+    |- test
+        |- word_001.jpg
+        |- word_002.jpg
+        |- word_003.jpg
+        | ...
+```
+
+### 1.3. Data Download
+
+- ICDAR2015
+
+If you don't have a dataset locally, you can download the [ICDAR2015](http://rrc.cvc.uab.es/?ch=4&com=downloads) dataset from the official website for quick testing. You can also refer to [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) to download the LMDB formatted dataset needed for benchmarking.
+
+If you're using the public ICDAR2015 dataset, PaddleOCR provides a label file for training the ICDAR2015 dataset. You can download it as follows:
 
 ```bash linenums="1"
 # Training set label
@@ -32,14 +108,14 @@ The data format is as follows, (a) is the original picture, (b) is the Ground Tr
 
 ![img](./images/icdar_rec.png)
 
-- Multilingual dataset
+- Multilingual Datasets
 
 The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
 
 - [Baidu Netdisk](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) ,Extraction code:frgi.
 - [Google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
-### 1.2 Dictionary
+### 1.4. Dictionary
 
 Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.
 
@@ -56,36 +132,28 @@ n
 
 In `word_dict.txt`, there is a single word in each line, which maps characters and numeric indexes together, e.g "and" will be mapped to [2 5 1]
 
-PaddleOCR has built-in dictionaries, which can be used on demand.
+PaddleOCR includes several built-in dictionaries that can be used as needed:
 
-`ppocr/utils/ppocr_keys_v1.txt` is a Chinese dictionary with 6623 characters.
+- `ppocr/utils/ppocr_keys_v1.txt`: A Chinese dictionary containing 6623 characters.
+- `ppocr/utils/ic15_dict.txt`: An English dictionary containing 36 characters.
+- `ppocr/utils/dict/french_dict.txt`: A French dictionary containing 118 characters.
+- `ppocr/utils/dict/japan_dict.txt`: A Japanese dictionary containing 4399 characters.
+- `ppocr/utils/dict/korean_dict.txt`: A Korean dictionary containing 3636 characters.
+- `ppocr/utils/dict/german_dict.txt`: A German dictionary containing 131 characters.
+- `ppocr/utils/en_dict.txt`: An English dictionary containing 96 characters.
 
-`ppocr/utils/ic15_dict.txt` is an English dictionary with 36 characters
+Currently, the multilingual models are still in the demo stage, and we are continuously improving the models and adding new languages. **We highly welcome you to provide dictionaries and fonts for other languages**. If you are willing, you can submit your dictionary files to the [dict](../../ppocr/utils/dict) directory, and we will credit you in the repo.
+To customize the dict file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml`.
 
-`ppocr/utils/dict/french_dict.txt` is a French dictionary with 118 characters
-
-`ppocr/utils/dict/japan_dict.txt` is a Japanese dictionary with 4399 characters
-
-`ppocr/utils/dict/korean_dict.txt` is a Korean dictionary with 3636 characters
-
-`ppocr/utils/dict/german_dict.txt` is a German dictionary with 131 characters
-
-`ppocr/utils/en_dict.txt` is a English dictionary with 96 characters
-
-The current multi-language model is still in the demo stage and will continue to optimize the model and add languages. **You are very welcome to provide us with dictionaries and fonts in other languages**,
-If you like, you can submit the dictionary file to [dict](../../ppocr/utils/dict) and we will thank you in the Repo.
-
-To customize the dict file, please modify the `character_dict_path` field in `configs/rec/rec_icdar15_train.yml` .
-
-- Custom dictionary
+- Custom Dictionary
 
 If you need to customize dic file, please add character_dict_path field in configs/rec/rec_icdar15_train.yml to point to your dictionary path. And set character_type to ch.
 
-### 1.4 Add Space Category
+### 1.5. Add Space Category
 
-If you want to support the recognition of the `space` category, please set the `use_space_char` field in the yml file to `True`.
+To support recognition of the "space" category, set the `use_space_char` field in the YAML file to `True`.
 
-### 1.5 Data Augmentation
+### 1.6. Data Augmentation
 
 PaddleOCR provides a variety of data augmentation methods. All the augmentation methods are enabled by default.
 
@@ -93,11 +161,11 @@ The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, rand
 
 Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: [rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
 
-## 2.Training
+## 2. Training
 
-PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. In this section, the CRNN recognition model will be used as an example:
+PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. This section will take the PP-OCRv3 English recognition model as an example:
 
-### 2.1 Start Training
+### 2.1. Start Training
 
 First download the pretrain model, you can download the trained model to finetune on the icdar2015 data:
 
@@ -247,7 +315,7 @@ class MyBackbone(nn.Layer):
         return y
 ```
 
-3. Import the added module in the [ppocr/modeling/backbones/\__init\__.py](../../ppocr/modeling/backbones/__init__.py) file.
+3. Import the added module in the [ppocr/modeling/backbones/\__init\__.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py) file.
 
 After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:
 
@@ -259,9 +327,9 @@ After adding the four-part modules of the network, you only need to configure th
 
 **NOTE**: More details about replace Backbone and other mudule can be found in [doc](../../algorithm/add_new_algorithm.en.md).
 
-### 2.4 Mixed Precision Training
+### 2.4. Mixed Precision Training
 
-If you want to speed up your training further, you can use [Auto Mixed Precision Training](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/01_paddle2.0_introduction/basic_concept/amp_cn.html), taking a single machine and a single gpu as an example, the commands are as follows:
+If you want to speed up your training further, you can use [Auto Mixed Precision Training](https://www.paddlepaddle.org.cn/documentation/docs/en/guides/performance_improving/amp_en.html), taking a single machine and a single gpu as an example, the commands are as follows:
 
 ```bash linenums="1"
 python3 tools/train.py -c configs/rec/rec_icdar15_train.yml \
@@ -269,7 +337,7 @@ python3 tools/train.py -c configs/rec/rec_icdar15_train.yml \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
 ```
 
-### 2.5 Distributed Training
+### 2.5. Distributed Training
 
 During multi-machine multi-gpu training, use the `--ips` parameter to set the used machine IP address, and the `--gpus` parameter to set the used GPU ID:
 
@@ -278,13 +346,16 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
      -o Global.pretrained_model=./pretrain_models/rec_mv3_none_bilstm_ctc_v2.0_train
 ```
 
-**Note:** (1) When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. (2) Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`. (3) For more details about the distributed training speedup ratio, please refer to [Distributed Training Tutorial](../blog/distributed_training.en.md).
+**Note:**
+1. When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other.
+2. Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is `ifconfig`. 
+3. For more details about the distributed training speedup ratio, please refer to [Distributed Training Tutorial](../blog/distributed_training.en.md).
 
-### 2.6 Training with Knowledge Distillation
+### 2.6. Training with Knowledge Distillation
 
 Knowledge distillation is supported in PaddleOCR for text recognition training process. For more details, please refer to [doc](../model_compress/knowledge_distillation.en.md).
 
-### 2.7 Multi-language Training
+### 2.7. Multi-Language Model Training
 
 Currently, the multi-language algorithms supported by PaddleOCR are:
 
@@ -358,7 +429,7 @@ In actual use, it is recommended to load the official pre-trained model and fine
 
 ## 3. Evaluation and Test
 
-### 3.1 Evaluation
+### 3.1. Evaluation
 
 The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` file.
 
@@ -426,17 +497,19 @@ infer_img: doc/imgs_words/ch/word_1.jpg
         result: ('韩国小馆', 0.997218)
 ```
 
-## 4. Inference
+### 4. Model Export and Prediction
 
-The inference model (the model saved by `paddle.jit.save`) is generally a solidified model saved after the model training is completed, and is mostly used to give prediction in deployment.
+**Inference Model** (saved using `paddle.jit.save`)
 
-The model saved during the training process is the checkpoints model, which saves the parameters of the model and is mostly used to resume training.
+The inference model is a "frozen" version of the model, where both the model structure and model parameters are saved in a file. It is typically used for prediction and deployment scenarios.  
+In contrast, the **checkpoint model** only saves the model's parameters and is mostly used for training resumption, etc. Compared to the checkpoint model, the inference model also includes the model structure information, which makes it more efficient for deployment, inference acceleration, and flexible integration with systems.
 
-Compared with the checkpoints model, the inference model will additionally save the structural information of the model. Therefore, it is easier to deploy because the model structure and model parameters are already solidified in the inference model file, and is suitable for integration with actual systems.
-
-The recognition model is converted to the inference model in the same way as the detection, as follows:
+The process of converting a recognition model to an inference model is similar to the detection model conversion, as shown below:
 
 ```bash linenums="1"
+# Enable old IR mode
+export FLAGS_enable_pir_api=0
+
 # -c Set the training algorithm yml configuration file
 # -o Set optional parameters
 # Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
@@ -456,16 +529,31 @@ inference/en_PP-OCRv3_rec/
     └── inference.pdmodel           # The program file of recognition model
 ```
 
-- Text recognition model Inference using custom characters dictionary
+**Note**: If you need to store the model in the new IR mode (i.e., `.json` format), use the following command to switch to the new IR mode:
 
-  If the text dictionary is modified during training, when using the inference model to predict, you need to specify the dictionary path used by `--rec_char_dict_path`
+```bash
+export FLAGS_enable_pir_api=1
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+```
 
-  ```bash linenums="1"
-  python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your inference model" --rec_image_shape="3, 32, 100" --rec_char_dict_path="your text dict path"
-  ```
+Once successful, you will have two files in the directory:
 
-## 5. FAQ
+```text
+inference/en_PP-OCRv3_rec/
+    ├── inference.pdiparams         # Model parameter file for the inference model
+    └── inference.json              # Program file for the inference model
+```
 
-Q1: After the training model is transferred to the inference model, the prediction effect is inconsistent?
+### Custom Model Inference
 
-**A**: There are many such problems, and the problems are mostly caused by inconsistent preprocessing and postprocessing parameters when the trained model predicts and the preprocessing and postprocessing parameters when the inference model predicts. You can compare whether there are differences in preprocessing, postprocessing, and prediction in the configuration files used for training.
+If you modified the text dictionary during training, you must specify the path to the custom dictionary when using the inference model for prediction. For more information about configuring and explaining inference hyperparameters, refer to the [Inference Hyperparameters Explanation Tutorial](../blog/inference_args.md).
+
+```bash linenums="1"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./your_inference_model" --rec_image_shape="3, 48, 320" --rec_char_dict_path="your_text_dict_path"
+```
+
+### 5. FAQ
+
+**Q1:** Why is the prediction result inconsistent after converting a trained model to an inference model?
+
+**A**: This is a common issue. It typically arises due to differences in the preprocessing and postprocessing parameters used during training and inference. To troubleshoot, check whether the preprocessing, postprocessing, and prediction settings in the configuration file used for training match those used during inference.
