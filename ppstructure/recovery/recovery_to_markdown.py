@@ -147,7 +147,7 @@ def convert_info_markdown(res, save_folder, img_name):
     markdown_string = []
 
     for i, region in enumerate(res):
-        if len(region["res"]) == 0:
+        if not region["res"] and region["type"].lower() != "figure":
             continue
         img_idx = region["img_idx"]
 
