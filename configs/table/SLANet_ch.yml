@@ -21,6 +21,7 @@ Global:
   infer_mode: False
   use_sync_bn: True
   save_res_path: output/infer
+  d2s_train_image_shape: [3, 488, 488]
 
 Optimizer:
   name: Adam
