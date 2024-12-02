@@ -355,7 +355,8 @@ class Transformer(nn.Layer):
         """
         mask = paddle.zeros([sz, sz], dtype="float32")
         mask_inf = paddle.triu(
-            paddle.full(shape=[sz, sz], dtype="float32", fill_value="-inf"), diagonal=1
+            paddle.full(shape=[sz, sz], dtype="float32", fill_value=float("-inf")),
+            diagonal=1,
         )
         mask = mask + mask_inf
         return mask.unsqueeze([0, 1])
