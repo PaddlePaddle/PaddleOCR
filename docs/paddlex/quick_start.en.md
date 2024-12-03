@@ -24,7 +24,7 @@ python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.
 * **Installing PaddleX**
 
 ```bash
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0b1-py3-none-any.whl
+pip install paddlex==3.0.0b2
 ```
 
 > ❗For more installation methods, refer to the [PaddleX Installation Guide](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/installation/installation_en.md).
