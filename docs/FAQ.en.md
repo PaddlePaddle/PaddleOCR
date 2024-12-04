@@ -2,7 +2,6 @@
 comments: true
 hide:
   - navigation
-  - toc
 ---
 
 1. **Prediction error: got an unexpected keyword argument 'gradient_clip'**

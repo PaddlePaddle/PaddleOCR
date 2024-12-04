@@ -2,7 +2,6 @@
 comments: true
 hide:
   - navigation
-  - toc
 ---
 
 > 恭喜你发现宝藏！
