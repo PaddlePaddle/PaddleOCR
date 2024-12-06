@@ -6,6 +6,10 @@ comments: true
 
 # 场景应用
 
+!!! Warning
+
+    以下场景应用的模型和文档许久未曾更新，如果想尝试，建议用`paddlepaddle==2.6.0` (来自[Discussion #14126](https://github.com/PaddlePaddle/PaddleOCR/discussions/14126))和[PaddleOCR release/2.6.1](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6.1)分支。同时，该部分模型均为Demo，大概率不能直接应用到生产环境。如果想进一步使用，请自行微调，或者移步[PaddleX](https://github.com/PaddlePaddle/PaddleX)选择仍在支持的模型。
+
 PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR垂类应用，在PP-OCR、PP-Structure的通用能力基础之上，以notebook的形式展示利用场景数据微调、模型优化方法、数据增广等内容，为开发者快速落地OCR应用提供示范与启发。
 
 ## 教程文档
@@ -44,8 +48,8 @@ PaddleOCR场景应用覆盖通用，制造、金融、交通行业的主要OCR�
 | 类别              | 亮点                           | 模型下载       | 教程                                | 示例图                                                       |
 | ----------------- | ------------------------------ | -------------- | ----------------------------------- | ------------------------------------------------------------ |
 | 车牌识别          | 多角度图像、轻量模型、端侧部署 | [模型下载](#_7) | [中文](./轻量级车牌识别.md)/English | <img src="./images/76b6a0939c2c4cf49039b6563c4b28e241e11285d7464e799e81c58c0f7707a7.png"  width = "200" height = "100" /> |
-| 驾驶证/行驶证识别 | 尽请期待                       |                |                                     |                                                              |
-| 快递单识别        | 尽请期待                       |                |                                     |                                                              |
+| 驾驶证/行驶证识别 | -                       |                |                                     |                                                              |
+| 快递单识别        | -                       |                |                                     |                                                              |
 
 ## 模型下载
 
