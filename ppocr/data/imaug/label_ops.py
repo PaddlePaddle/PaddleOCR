@@ -17,6 +17,8 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os
+from enum import Enum
 import copy
 import numpy as np
 import string
@@ -1876,3 +1878,316 @@ class LatexOCRLabelEncode(object):
             np.array(topk["attention_mask"]).astype(np.int64),
             max_length,
         )
+
+
+class ExplicitEnum(str, Enum):
+    """
+    Enum with more explicit error message for missing values.
+    """
+
+    @classmethod
+    def _missing_(cls, value):
+        raise ValueError(
+            f"{value} is not a valid {cls.__name__}, please select one of {list(cls._value2member_map_.keys())}"
+        )
+
+
+class TruncationStrategy(ExplicitEnum):
+    """
+    Possible values for the `truncation` argument in [`PreTrainedTokenizerBase.__call__`]. Useful for tab-completion in
+    an IDE.
+    """
+
+    ONLY_FIRST = "only_first"
+    ONLY_SECOND = "only_second"
+    LONGEST_FIRST = "longest_first"
+    DO_NOT_TRUNCATE = "do_not_truncate"
+
+
+class PaddingStrategy(ExplicitEnum):
+    """
+    Possible values for the `padding` argument in [`PreTrainedTokenizerBase.__call__`]. Useful for tab-completion in an
+    IDE.
+    """
+
+    LONGEST = "longest"
+    MAX_LENGTH = "max_length"
+    DO_NOT_PAD = "do_not_pad"
+
+
+class UniMERNetLabelEncode(object):
+
+    SPECIAL_TOKENS_ATTRIBUTES = [
+        "bos_token",
+        "eos_token",
+        "unk_token",
+        "sep_token",
+        "pad_token",
+        "cls_token",
+        "mask_token",
+        "additional_special_tokens",
+    ]
+
+    def __init__(
+        self,
+        rec_char_dict_path,
+        max_seq_len,
+        **kwargs,
+    ):
+        from tokenizers import Tokenizer as TokenizerFast
+        from tokenizers import AddedToken
+
+        self._unk_token = "<unk>"
+        self._bos_token = "<s>"
+        self._eos_token = "</s>"
+        self._pad_token = "<pad>"
+        self._sep_token = None
+        self._cls_token = None
+        self._mask_token = None
+        self._additional_special_tokens = []
+        self.model_input_names = ["input_ids", "token_type_ids", "attention_mask"]
+        self.max_seq_len = max_seq_len
+        self.pad_token_id = 1
+        self.bos_token_id = 0
+        self.eos_token_id = 2
+        self.padding_side = "right"
+        self.pad_token = "<pad>"
+        self.pad_token_type_id = 0
+        self.pad_to_multiple_of = None
+        fast_tokenizer_file = os.path.join(rec_char_dict_path, "tokenizer.json")
+        tokenizer_config_file = os.path.join(
+            rec_char_dict_path, "tokenizer_config.json"
+        )
+        self.tokenizer = TokenizerFast.from_file(fast_tokenizer_file)
+        added_tokens_decoder = {}
+        added_tokens_map = {}
+
+        if tokenizer_config_file is not None:
+            with open(
+                tokenizer_config_file, encoding="utf-8"
+            ) as tokenizer_config_handle:
+                init_kwargs = json.load(tokenizer_config_handle)
+                if "added_tokens_decoder" in init_kwargs:
+                    for idx, token in init_kwargs["added_tokens_decoder"].items():
+                        if isinstance(token, dict):
+                            token = AddedToken(**token)
+                        if isinstance(token, AddedToken):
+                            added_tokens_decoder[int(idx)] = token
+                            added_tokens_map[str(token)] = token
+                        else:
+                            raise ValueError(
+                                f"Found a {token.__class__} in the saved `added_tokens_decoder`, should be a dictionary or an AddedToken instance"
+                            )
+                init_kwargs["added_tokens_decoder"] = added_tokens_decoder
+                added_tokens_decoder = init_kwargs.pop("added_tokens_decoder", {})
+                tokens_to_add = [
+                    token
+                    for index, token in sorted(
+                        added_tokens_decoder.items(), key=lambda x: x[0]
+                    )
+                    if token not in added_tokens_decoder
+                ]
+                added_tokens_encoder = self.added_tokens_encoder(added_tokens_decoder)
+                encoder = list(added_tokens_encoder.keys()) + [
+                    str(token) for token in tokens_to_add
+                ]
+                tokens_to_add += [
+                    token
+                    for token in self.all_special_tokens_extended
+                    if token not in encoder and token not in tokens_to_add
+                ]
+                if len(tokens_to_add) > 0:
+                    is_last_special = None
+                    tokens = []
+                    special_tokens = self.all_special_tokens
+                    for token in tokens_to_add:
+                        is_special = (
+                            (token.special or str(token) in special_tokens)
+                            if isinstance(token, AddedToken)
+                            else str(token) in special_tokens
+                        )
+                        if is_last_special is None or is_last_special == is_special:
+                            tokens.append(token)
+                        else:
+                            self._add_tokens(tokens, special_tokens=is_last_special)
+                            tokens = [token]
+                        is_last_special = is_special
+                    if tokens:
+                        self._add_tokens(tokens, special_tokens=is_last_special)
+
+    def _add_tokens(self, new_tokens, special_tokens=False) -> int:
+        if special_tokens:
+            return self.tokenizer.add_special_tokens(new_tokens)
+
+        return self.tokenizer.add_tokens(new_tokens)
+
+    def added_tokens_encoder(self, added_tokens_decoder):
+        return {
+            k.content: v
+            for v, k in sorted(added_tokens_decoder.items(), key=lambda item: item[0])
+        }
+
+    @property
+    def all_special_tokens(self):
+        all_toks = [str(s) for s in self.all_special_tokens_extended]
+        return all_toks
+
+    @property
+    def all_special_tokens_extended(self):
+        all_tokens = []
+        seen = set()
+        for value in self.special_tokens_map_extended.values():
+            if isinstance(value, (list, tuple)):
+                tokens_to_add = [token for token in value if str(token) not in seen]
+            else:
+                tokens_to_add = [value] if str(value) not in seen else []
+            seen.update(map(str, tokens_to_add))
+            all_tokens.extend(tokens_to_add)
+        return all_tokens
+
+    @property
+    def special_tokens_map_extended(self):
+        set_attr = {}
+        for attr in self.SPECIAL_TOKENS_ATTRIBUTES:
+            attr_value = getattr(self, "_" + attr)
+            if attr_value:
+                set_attr[attr] = attr_value
+        return set_attr
+
+    def set_truncation_and_padding(
+        self,
+        padding_strategy,
+        truncation_strategy,
+        max_length,
+        stride,
+        pad_to_multiple_of,
+    ):
+        _truncation = self.tokenizer.truncation
+        _padding = self.tokenizer.padding
+        # Set truncation and padding on the backend tokenizer
+        if truncation_strategy == TruncationStrategy.DO_NOT_TRUNCATE:
+            if _truncation is not None:
+                self._tokenizer.no_truncation()
+        else:
+            target = {
+                "max_length": max_length,
+                "stride": stride,
+                "strategy": truncation_strategy.value,
+                "direction": "right",
+            }
+
+            if _truncation is None:
+                current = None
+            else:
+                current = {k: _truncation.get(k, None) for k in target}
+
+            if current != target:
+                self.tokenizer.enable_truncation(**target)
+        if padding_strategy == PaddingStrategy.DO_NOT_PAD:
+            if _padding is not None:
+                self.tokenizer.no_padding()
+        else:
+            length = (
+                max_length if padding_strategy == PaddingStrategy.MAX_LENGTH else None
+            )
+            target = {
+                "length": length,
+                "direction": self.padding_side,
+                "pad_id": self.pad_token_id,
+                "pad_token": self.pad_token,
+                "pad_type_id": self.pad_token_type_id,
+                "pad_to_multiple_of": pad_to_multiple_of,
+            }
+            if _padding != target:
+                self.tokenizer.enable_padding(**target)
+
+    def _convert_encoding(
+        self,
+        encoding,
+        return_token_type_ids=None,
+        return_attention_mask=None,
+        return_overflowing_tokens=False,
+        return_special_tokens_mask=False,
+        return_offsets_mapping=False,
+        return_length=False,
+        verbose=True,
+    ):
+
+        if return_token_type_ids is None:
+            return_token_type_ids = "token_type_ids" in self.model_input_names
+        if return_attention_mask is None:
+            return_attention_mask = "attention_mask" in self.model_input_names
+
+        if return_overflowing_tokens and encoding.overflowing is not None:
+            encodings = [encoding] + encoding.overflowing
+        else:
+            encodings = [encoding]
+
+        encoding_dict = defaultdict(list)
+        for e in encodings:
+            encoding_dict["input_ids"].append(e.ids)
+            if return_token_type_ids:
+                encoding_dict["token_type_ids"].append(e.type_ids)
+            if return_attention_mask:
+                encoding_dict["attention_mask"].append(e.attention_mask)
+            if return_special_tokens_mask:
+                encoding_dict["special_tokens_mask"].append(e.special_tokens_mask)
+            if return_offsets_mapping:
+                encoding_dict["offset_mapping"].append(e.offsets)
+            if return_length:
+                encoding_dict["length"].append(len(e.ids))
+
+        return encoding_dict, encodings
+
+    def encode(
+        self,
+        text,
+        text_pair=None,
+        return_token_type_ids=False,
+        add_special_tokens=True,
+        is_split_into_words=False,
+    ):
+        batched_input = text
+        self.set_truncation_and_padding(
+            padding_strategy=PaddingStrategy.LONGEST,
+            truncation_strategy=TruncationStrategy.LONGEST_FIRST,
+            max_length=self.max_seq_len,
+            stride=0,
+            pad_to_multiple_of=None,
+        )
+        encodings = self.tokenizer.encode_batch(
+            batched_input,
+            add_special_tokens=add_special_tokens,
+            is_pretokenized=is_split_into_words,
+        )
+
+        tokens_and_encodings = [
+            self._convert_encoding(
+                encoding=encoding,
+                return_token_type_ids=False,
+                return_attention_mask=None,
+                return_overflowing_tokens=False,
+                return_special_tokens_mask=False,
+                return_offsets_mapping=False,
+                return_length=False,
+                verbose=True,
+            )
+            for encoding in encodings
+        ]
+        sanitized_tokens = {}
+        for key in tokens_and_encodings[0][0].keys():
+            stack = [e for item, _ in tokens_and_encodings for e in item[key]]
+            sanitized_tokens[key] = stack
+        return sanitized_tokens
+
+    def __call__(self, data):
+        eqs = data["label"]
+        topk = self.encode([eqs])
+        for k, p in zip(topk, [[self.bos_token_id, self.eos_token_id], [1, 1]]):
+            process_seq = [x for x in topk[k]]
+            max_length = 0
+            for seq in process_seq:
+                max_length = max(max_length, len(seq))
+        data["label"] = np.array(topk["input_ids"]).astype(np.int64)[0]
+        data["attention_mask"] = np.array(topk["attention_mask"]).astype(np.int64)[0]
+        return data

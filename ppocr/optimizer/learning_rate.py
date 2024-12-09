@@ -113,6 +113,55 @@ class Cosine(object):
         return learning_rate
 
 
+class LinearWarmupCosine(object):
+    """
+    LinearWarmupCosine learning rate decay
+    Args:
+        learning_rate(float): initial learning rate
+        step_each_epoch(int): steps each epoch
+        epochs(int): total training epochs
+        start_lr (float): Initial learning rate of warm up.
+        min_lr (float): Minimum learning rate in CosineAnnealingDecay.
+        last_epoch (int, optional):  The index of last epoch. Can be set to restart training. Default: -1, means initial learning rate.
+    """
+
+    def __init__(
+        self,
+        learning_rate,
+        step_each_epoch,
+        epochs,
+        warmup_steps=5000,
+        start_lr=1e-5,
+        min_lr=1e-8,
+        last_epoch=-1,
+        **kwargs,
+    ):
+        super(LinearWarmupCosine, self).__init__()
+        self.learning_rate = float(learning_rate)
+        self.T_max = step_each_epoch * epochs
+        self.last_epoch = last_epoch
+        self.warmup_steps = warmup_steps
+        self.start_lr = float(start_lr)
+        self.min_lr = float(min_lr)
+
+    def __call__(self):
+        learning_rate = lr.CosineAnnealingDecay(
+            learning_rate=self.learning_rate,
+            T_max=self.T_max,
+            eta_min=self.min_lr,
+            last_epoch=self.last_epoch,
+        )
+        if self.warmup_steps > 0:
+            learning_rate = lr.LinearWarmup(
+                learning_rate=learning_rate,
+                warmup_steps=self.warmup_steps,
+                start_lr=self.start_lr,
+                end_lr=self.learning_rate,
+                last_epoch=self.last_epoch,
+            )
+        return learning_rate
+
+
 class Step(object):
     """
     Piecewise learning rate decay

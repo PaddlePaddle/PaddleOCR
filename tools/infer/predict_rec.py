@@ -26,6 +26,7 @@ import numpy as np
 import math
 import time
 import traceback
+from PIL import Image, ImageOps
 import paddle
 
 import tools.infer.utility as utility
@@ -136,6 +137,11 @@ class TextRecognizer(object):
         elif self.rec_algorithm == "LaTeXOCR":
             postprocess_params = {
                 "name": "LaTeXOCRDecode",
+                "rec_char_dict_path": args.rec_char_dict_path,
+            }
+        elif self.rec_algorithm in ["UniMERNet"]:
+            postprocess_params = {
+                "name": "UniMERNetDecode",
                 "rec_char_dict_path": args.rec_char_dict_path,
             }
         elif self.rec_algorithm == "ParseQ":
@@ -539,6 +545,96 @@ class TextRecognizer(object):
         img = img.astype("float32")
         return img
 
+    def crop_margin(self, img):
+        data = np.array(img.convert("L"))
+        data = data.astype(np.uint8)
+        max_val = data.max()
+        min_val = data.min()
+        if max_val == min_val:
+            return img
+        data = (data - min_val) / (max_val - min_val) * 255
+        gray = 255 * (data < 200).astype(np.uint8)
+        coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
+        a, b, w, h = cv2.boundingRect(coords)  # Find minimum spanning bounding box
+        return img.crop((a, b, w + a, h + b))
+
+    def get_dimensions(self, img):
+        if hasattr(img, "getbands"):
+            channels = len(img.getbands())
+        else:
+            channels = img.channels
+        width, height = img.size
+        return [channels, height, width]
+
+    def _compute_resized_output_size(self, image_size, size, max_size=None):
+        if len(size) == 1:  # specified size only for the smallest edge
+            h, w = image_size
+            short, long = (w, h) if w <= h else (h, w)
+            requested_new_short = size if isinstance(size, int) else size[0]
+
+            new_short, new_long = requested_new_short, int(
+                requested_new_short * long / short
+            )
+
+            if max_size is not None:
+                if max_size <= requested_new_short:
+                    raise ValueError(
+                        f"max_size = {max_size} must be strictly greater than the requested "
+                        f"size for the smaller edge size = {size}"
+                    )
+                if new_long > max_size:
+                    new_short, new_long = int(max_size * new_short / new_long), max_size
+
+            new_w, new_h = (new_short, new_long) if w <= h else (new_long, new_short)
+        else:  # specified both h and w
+            new_w, new_h = size[1], size[0]
+        return [new_h, new_w]
+
+    def resize_unimernet(self, img, size):
+        _, image_height, image_width = self.get_dimensions(img)
+        if isinstance(size, int):
+            size = [size]
+        max_size = None
+        output_size = self._compute_resized_output_size(
+            (image_height, image_width), size, max_size
+        )
+        img = img.resize(tuple(output_size[::-1]), resample=2)
+        return img
+
+    def norm_img_unimernet(self, img, input_size):
+        # CAN only predict gray scale image
+        shape = (1, 1, 3)
+        mean = [0.7931, 0.7931, 0.7931]
+        std = [0.1738, 0.1738, 0.1738]
+        scale = float(1 / 255.0)
+
+        mean = np.array(mean).reshape(shape).astype("float32")
+        std = np.array(std).reshape(shape).astype("float32")
+
+        im_h, im_w = img.shape[:2]
+        img = Image.fromarray(np.uint8(img))
+        img = self.crop_margin(img.convert("RGB"))
+        img = self.resize_unimernet(img, min(input_size))
+        img.thumbnail((input_size[1], input_size[0]))
+        delta_width = input_size[1] - img.width
+        delta_height = input_size[0] - img.height
+
+        pad_width = delta_width // 2
+        pad_height = delta_height // 2
+        padding = (
+            pad_width,
+            pad_height,
+            delta_width - pad_width,
+            delta_height - pad_height,
+        )
+
+        img = np.array(ImageOps.expand(img, padding))
+        img = (img.astype("float32") * scale - mean) / std
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = img[:, :, np.newaxis].transpose(2, 0, 1)
+        img = img.astype("float32")
+        return img
+
     def __call__(self, img_list):
         img_num = len(img_list)
         # Calculate the aspect ratio of all text bars
@@ -643,6 +739,12 @@ class TextRecognizer(object):
                     word_label_list.append(word_label)
                 elif self.rec_algorithm == "LaTeXOCR":
                     norm_img = self.norm_img_latexocr(img_list[indices[ino]])
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm in ["UniMERNet"]:
+                    norm_img = self.norm_img_unimernet(
+                        img_list[indices[ino]], input_size=[192, 672]
+                    )
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 else:
@@ -759,7 +861,7 @@ class TextRecognizer(object):
                     if self.benchmark:
                         self.autolog.times.stamp()
                     preds = outputs
-            elif self.rec_algorithm == "LaTeXOCR":
+            elif self.rec_algorithm in ["LaTeXOCR", "UniMERNet"]:
                 inputs = [norm_img_batch]
                 if self.use_onnx:
                     input_dict = {}
@@ -808,7 +910,10 @@ class TextRecognizer(object):
                     wh_ratio_list=wh_ratio_list,
                     max_wh_ratio=max_wh_ratio,
                 )
-            elif self.postprocess_params["name"] == "LaTeXOCRDecode":
+            elif self.postprocess_params["name"] in [
+                "LaTeXOCRDecode",
+                "UniMERNetDecode",
+            ]:
                 preds = [p.reshape([-1]) for p in preds]
                 rec_result = self.postprocess_op(preds)
             else:
