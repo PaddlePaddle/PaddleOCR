@@ -59,6 +59,8 @@ def dump_infer_config(config, path, logger):
             common_dynamic_shapes = {
                 "x": [[1, 3, 224, 224], [1, 3, 448, 448], [8, 3, 1280, 1280]]
             }
+        elif arch_config["algorithm"] == "UniMERNet":
+            common_dynamic_shapes = {"x": [[1, 3, 192, 672]]}
         else:
             common_dynamic_shapes = None
 
@@ -87,6 +89,22 @@ def dump_infer_config(config, path, logger):
             with open(tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
                 character_dict = json.load(tokenizer_config_handle)
                 postprocess["character_dict"] = character_dict
+    elif config["Architecture"].get("algorithm") in ["UniMERNet"]:
+        tokenizer_file = config["Global"].get("rec_char_dict_path")
+        print(tokenizer_file)
+        fast_tokenizer_file = os.path.join(tokenizer_file, "tokenizer.json")
+        tokenizer_config_file = os.path.join(tokenizer_file, "tokenizer_config.json")
+        postprocess["character_dict"] = {}
+        if fast_tokenizer_file is not None:
+            with open(fast_tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["fast_tokenizer_file"] = character_dict
+        if tokenizer_config_file is not None:
+            with open(
+                tokenizer_config_file, encoding="utf-8"
+            ) as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["tokenizer_config_file"] = character_dict
     else:
         if config["Global"].get("character_dict_path") is not None:
             with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
@@ -204,6 +222,11 @@ def export_single_model(
     elif arch_config["algorithm"] == "LaTeXOCR":
         other_shape = [
             paddle.static.InputSpec(shape=[None, 1, None, None], dtype="float32"),
+        ]
+        model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "UniMERNet":
+        other_shape = [
+            paddle.static.InputSpec(shape=[None, 1, 192, 672], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
@@ -327,6 +350,9 @@ def export(config, base_model=None, save_path=None):
     # for latexocr algorithm
     if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
         config["Architecture"]["Backbone"]["is_predict"] = True
+        config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
+    if config["Architecture"].get("algorithm") in ["UniMERNet"]:
         config["Architecture"]["Backbone"]["is_export"] = True
         config["Architecture"]["Head"]["is_export"] = True
     if base_model is not None:

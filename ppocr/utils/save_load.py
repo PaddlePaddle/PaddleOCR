@@ -102,9 +102,10 @@ def load_model(config, model, optimizer=None, model_type="det"):
         new_state_dict = {}
         for key, value in state_dict.items():
             if key not in params:
-                logger.warning(
-                    "{} not in loaded params {} !".format(key, params.keys())
-                )
+                print(key)
+                # logger.warning(
+                #     "{} not in loaded params {} !".format(key, params.keys())
+                # )
                 continue
             pre_value = params[key]
             if pre_value.dtype == paddle.float16:
