@@ -67,4 +67,4 @@ def test_unimernet_head(encoder_feat):
     head.eval()
     with paddle.no_grad():
         result = head(encoder_feat)
-        assert result.shape == [1, 5]
+        assert result.shape == [1, 6]
