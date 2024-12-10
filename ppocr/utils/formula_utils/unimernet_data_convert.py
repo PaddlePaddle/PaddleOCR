@@ -16,7 +16,6 @@ import os
 import cv2
 import glob
 import argparse
-import imagesize
 from os.path import join
 from tqdm import tqdm
 

@@ -216,7 +216,7 @@ class Frost(A.ImageOnlyTransform):
 
         file_dir = os.path.dirname(__file__)
         filename = [
-            os.path.join(file_dir, "frost_img", "frost1.png"),
+            os.path.join(file_dir, "frost_img", "frost1.jpg"),
             os.path.join(file_dir, "frost_img", "frost2.png"),
             os.path.join(file_dir, "frost_img", "frost3.png"),
             os.path.join(file_dir, "frost_img", "frost4.jpg"),

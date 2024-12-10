@@ -257,6 +257,23 @@ class MBartConfig(object):
 
 @dataclass
 class AttentionMaskConverter:
+    """
+    A utility class for converting attention masks used in transformer models.
+
+    This class handles the conversion of attention masks based on whether the
+    attention mechanism is causal (i.e., preventing information flow from future
+    tokens to past tokens) and whether a sliding window approach is used.
+
+    Attributes:
+        is_causal (bool): Indicates if the attention mechanism is causal.
+        sliding_window (Optional[int]): Specifies the size of the sliding window
+                                        for local attention, if applicable.
+
+    Args:
+        is_causal (bool): Determines if the attention mask should enforce causality.
+        sliding_window (Optional[int], optional): The size of the sliding window
+                                                  for local attention. Default is None.
+    """
 
     is_causal: bool
     sliding_window: int
@@ -851,7 +868,21 @@ class MBartForCausalLM(MBartPreTrainedModel):
 
 
 class myLayerNorm(nn.LayerNorm):
-    # NOTE num_channel and num_groups order flipped for easier layer swaps / binding of fixed args
+    """
+    Custom implementation of Layer Normalization, with additional options.
+
+    This class extends the standard LayerNorm to include optional features,
+    such as drop block regularization, which might be used for improving
+    model generalization.
+
+    Args:
+        num_channels (int): The number of features or channels in the input.
+        eps (float, optional): A small value added to the denominator for numerical stability. Default is 1e-5.
+        affine (bool, optional): If True, this module has learnable affine parameters (gamma and beta). Default is True.
+        drop_block (optional): Additional regularization technique that might be applied. Default is None.
+
+    """
+
     def __init__(
         self,
         num_channels,
@@ -1339,6 +1370,28 @@ def multi_head_attention_forward(
 
 
 class MyMultiheadAttention(nn.Layer):
+    """
+    Custom implementation of a multi-head attention layer.
+
+    Attributes:
+        __constants__ (list): List of constant attributes.
+        bias_k (Optional[paddle.Tensor]): Optional tensor for key bias.
+        bias_v (Optional[paddle.Tensor]): Optional tensor for value bias.
+
+    Args:
+        embed_dim (int): Total dimension of the model. This is the size of the input feature vectors.
+        num_heads (int): Number of parallel attention heads. The input dimension must be divisible by the number of heads.
+        dropout (float, optional): Dropout probability on the attention weights. Default is 0.0.
+        bias (bool, optional): If True, adds a learnable bias to the output. Default is True.
+        add_bias_kv (bool, optional): If True, adds bias to the key and value sequences. Default is False.
+        add_zero_attn (bool, optional): If True, adds a zero attention head. Default is False.
+        kdim (int, optional): Total number of features for keys. If None, defaults to embed_dim.
+        vdim (int, optional): Total number of features for values. If None, defaults to embed_dim.
+        batch_first (bool, optional): If True, the input and output tensors are provided as (batch, seq, feature). Default is False.
+        device (optional): The device on which the layer's parameters should be initialized. Default is None.
+        dtype (optional): The data type for the parameters. Default is None.
+        is_export (bool, optional): If True, the layer is set up for export, potentially changing behavior for compatibility. Default is False.
+    """
 
     __constants__ = ["batch_first"]
     bias_k: Optional[paddle.Tensor]
@@ -1459,8 +1512,14 @@ class MyMultiheadAttention(nn.Layer):
 
 
 class LogitsProcessorList(list):
-    def __call__(self, input_ids, scores, **kwargs):
+    """
+    A list of logits processors that can be applied sequentially.
 
+    Methods:
+        __call__(input_ids, scores, **kwargs): Apply all processors to the given inputs.
+    """
+
+    def __call__(self, input_ids, scores, **kwargs):
         for processor in self:
             function_args = inspect.signature(processor.__call__).parameters
             if len(function_args) > 2:
@@ -1476,6 +1535,17 @@ class LogitsProcessorList(list):
 
 
 class ForcedEOSTokenLogitsProcessor(object):
+    """
+    A processor that forces the generation of an end-of-sequence (EOS) token
+    at a specified position in the sequence.
+
+    This is typically used in language generation tasks to ensure that the
+    generated sequence ends properly when it reaches a certain length.
+
+    Args:
+        max_length (int): The maximum length of the sequence. Forces EOS when this length is reached.
+        eos_token_id (Union[int, List[int]]): The ID(s) of the EOS token(s) to be forced in the sequence.
+    """
 
     def __init__(self, max_length: int, eos_token_id: Union[int, List[int]]):
         self.max_length = max_length
@@ -1524,6 +1594,18 @@ class CausalLMOutputWithCrossAttentionsAndCounting(ModelOutput):
 
 
 class CustomMBartDecoder(MBartDecoder):
+    """
+    A custom MBartDecoder that includes additional processing layers.
+
+    This class extends the MBartDecoder by adding a customizable neural network
+    component called `counting_context_weight`, which applies a series of linear
+    transformations followed by ReLU activations. This can be used to modify or
+    enhance the decoder's behavior for specific tasks.
+
+    Args:
+        config: The configuration object containing model parameters.
+    """
+
     def __init__(self, config):
         super().__init__(config)
         hidden_size = config.d_model
@@ -1757,6 +1839,16 @@ class CustomMBartDecoder(MBartDecoder):
 
 
 class SelfAttentionBlock(nn.Layer):
+    """
+    A self-attention block that implements multi-head self-attention
+    followed by a feed-forward network, typically used in transformer architectures.
+
+    Args:
+        embed_size (int): The size of the embedding vector.
+        num_heads (int): The number of attention heads.
+        is_export (bool): Flag indicating whether to configure the layer for export.
+    """
+
     def __init__(self, embed_size, num_heads, is_export):
         super(SelfAttentionBlock, self).__init__()
         self.self_attention = MyMultiheadAttention(
@@ -1771,6 +1863,18 @@ class SelfAttentionBlock(nn.Layer):
 
 
 class SeqCountingDecoder(nn.Layer):
+    """
+    A custom sequence counting decoder that incorporates multi-head attention layers
+    and feed-forward networks to process sequences, potentially for latex code counting .
+
+    Args:
+        in_features (int): The number of input features.
+        out_features (int): The number of output features.
+        num_heads (int): The number of attention heads. Defaults to 8.
+        num_layers (int): The number of attention layers. Defaults to 4.
+        is_export (bool): Flag indicating whether to configure the layer for export.
+    """
+
     def __init__(
         self, in_features, out_features, num_heads=8, num_layers=4, is_export=False
     ):
@@ -1802,9 +1906,20 @@ class SeqCountingDecoder(nn.Layer):
 
 
 class CustomMBartForCausalLM(MBartForCausalLM):
+    """
+    Custom MBart model for causal language modeling with a custom decoder.
+
+    This class extends the MBartForCausalLM by replacing its decoder with a
+    custom decoder, allowing for additional flexibility and features in the
+    decoding process.
+
+    Args:
+        config: The configuration object containing model parameters.
+        length_aware (bool): A flag to enable or configure length-aware mechanisms.
+    """
+
     def __init__(self, config, length_aware=True):
         super().__init__(config)
-        # Modify the decoder within MBartDecoderWrapper
         self.model.decoder = CustomMBartDecoder(config)
         self.counting_decoder = SeqCountingDecoder(
             config.d_model, config.vocab_size, is_export=config.is_export
@@ -1878,12 +1993,18 @@ class UniMERNetHead(nn.Layer):
     """Implementation of UniMERNetHead decoder.
 
     Args:
-      encoder_outputs: The encoded features with shape[N, 1, H//16, W//16]
-      tgt_seq: LaTeX-OCR labels with shape [N, L] , L is the max sequence length
-      mask: The first N-1 LaTeX-OCR attention mask with shape [N, L-1]  , L is the max sequence length
-
-    Returns:
-      The predicted LaTeX sequences with shape [N, L-1, C], C is the number of LaTeX classes
+         max_new_tokens (int): Maximum number of new tokens to generate.
+         decoder_start_token_id (int): ID of the token that starts the decoding.
+         temperature (float): Sampling temperature for generation.
+         do_sample (bool): Whether to use sampling; if False, uses greedy decoding.
+         top_p (float): Top-p (nucleus) sampling parameter.
+         in_channels (int): Number of input channels/features.
+         encoder_hidden_size (int): Hidden size of the encoder.
+         decoder_hidden_size (int): Hidden size of the decoder.
+         decoder_ffn_dim (int): Dimension of the decoder's feed-forward network.
+         decoder_layers (int): Number of layers in the decoder.
+         is_export (bool): Flag indicating if the model is being prepared for export.
+         length_aware (bool): Flag to enable length-aware mechanisms.
     """
 
     def __init__(
@@ -2235,6 +2356,19 @@ class UniMERNetHead(nn.Layer):
         self,
         model_kwargs,
     ):
+        """
+        Generate sequences using the UniMERNetHead for inference tasks.
+
+        Args:
+            model_kwargs (dict): A dictionary of model configurations and inputs, which typically include:
+                - encoder_outputs: Outputs from the encoder.
+                - use_cache: Boolean flag to indicate if caching should be used.
+                - output_attentions: Boolean flag for outputting attention scores.
+                - output_hidden_states: Boolean flag for outputting hidden states.
+
+        Returns:
+            A tensor containing the generated sequences.
+        """
         batch_size = model_kwargs["encoder_outputs"]["last_hidden_state"].shape[0]
         generation_config = {
             "decoder_start_token_id": 0,
@@ -2383,6 +2517,27 @@ class UniMERNetHead(nn.Layer):
         return_dict=None,
         **kwargs,
     ):
+        """
+        Training for the UniMERNetHead.
+
+        Args:
+            encoder_outputs: Outputs from the encoder, used as input to the decoder.
+            decoder_input_ids: Input IDs for the decoder.
+            decoder_attention_mask: Attention mask for the decoder inputs.
+            past_key_values: Cached key/values for faster decoding.
+            decoder_inputs_embeds: Optional embeddings for the decoder inputs.
+            labels: Target labels for calculating loss.
+            use_cache: Whether to use cache during decoding.
+            output_attentions: Whether to return attention scores.
+            output_hidden_states: Whether to return hidden states.
+            return_dict: Whether to return a dictionary of outputs.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            logits: The raw, unnormalized predictions from the model.
+            count_pred: Optional prediction related to sequence length or other counts.
+            masked_labels: The labels used during training, possibly masked.
+        """
         labels = decoder_input_ids * 1
         labels = labels.masked_fill_(labels == self.pad_token_id, -100)
         input_decoder_input_ids = decoder_input_ids[:, :-1]
@@ -2410,6 +2565,17 @@ class UniMERNetHead(nn.Layer):
         return logits, count_pred, labels
 
     def forward(self, inputs, targets=None):
+        """
+        Forward pass for the UniMERNetHead, handling both training and inference.
+
+        Args:
+            inputs: The input data, which can vary based on training or inference.
+            targets: The target labels, used only during training.
+
+        Returns:
+            During inference: Returns predicted latex code.
+            During training: Returns logits, predicted counts, and masked labels.
+        """
         if not self.training:
             encoder_outputs = inputs
             model_kwargs = {
