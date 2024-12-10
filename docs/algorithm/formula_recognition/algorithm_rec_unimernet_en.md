@@ -134,41 +134,4 @@ python3 tools/infer_rec.py -c configs/rec/rec_unimernet.yml \
    Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
 ```
 
-## 4. Inference and Deployment
-
-### 4.1 Python Inference
-First, the model saved during the UniMERNet general mathematical expression recognition training process is converted into an inference model. you can use the following command to convert:
-
-```
-python3 tools/export_model.py -c configs/rec/rec_unimernet.yml \
- -o Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams \
-  Global.save_inference_dir=./inference/rec_unimernet_infer/ 
-
-
-# The default output max length of the model is 1536.
-```
-
-For UniMERNet general mathematical expression recognition model inference, the following commands can be executed:
-
-```
- python3 tools/infer/predict_rec.py \
-  --image_dir='./docs/datasets/images/pme_demo/0000099.png' \
-  --rec_algorithm="UniMERNet" --rec_batch_num=1 \
-  --rec_model_dir="./inference/rec_unimernet_infer/" \
-  --rec_char_dict_path="./ppocr/utils/dict/unimernet_tokenizer"
-
-```
-
-### 4.2 C++ Inference
-
-Not supported
-
-### 4.3 Serving
-
-Not supported
-
-### 4.4 More
-
-Not supported
-
-## 5. FAQ
+## 4. FAQ

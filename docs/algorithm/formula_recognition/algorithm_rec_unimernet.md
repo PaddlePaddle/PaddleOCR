@@ -110,7 +110,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/t
   -o Global.pretrained_model=./pretrain_models/texify.pdparams
 ```
 
-### 3.3 评估
+### 3.4 评估
 
 可下载已训练完成的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)，使用如下命令进行评估：
 
@@ -139,7 +139,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/t
 
 ```
 
-### 3.4 预测
+### 3.5 预测
 
 使用如下命令进行单张图片预测：
 ```shell
@@ -150,71 +150,6 @@ python3 tools/infer_rec.py -c configs/rec/rec_unimernet.yml \
 # 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/datasets/pme_demo/'。
 ```
 
-## 4. 推理部署
-
-### 4.1 Python推理
-首先将训练得到best模型，转换成inference model。这里以训练完成的模型为例（[模型下载地址](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)），可以使用如下命令进行转换：
-
-```shell
-export FLAGS_enable_pir_api=0
-# 注意将pretrained_model的路径设置为本地路径。
-python3 tools/export_model.py -c configs/rec/rec_unimernet.yml \
- -o Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams \
-  Global.save_inference_dir=./inference/rec_unimernet_infer/ 
-# 目前的静态图模型支持的最大输出长度为 1536
-```
-**注意：**
-- 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请检查配置文件中的`rec_char_dict_path`是否为所需要的字典文件。
-- [转换后模型下载地址](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_infer.tar)
-
-转换成功后，在目录下有三个文件：
-```
-/inference/rec_unimernet_train/
-    ├── inference.pdiparams         # 识别inference模型的参数文件
-    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
-    ├── inference.pdmodel           # 识别inference模型的program文件 
-    └── inference.yml               # 识别inference模型的yml配置文件 
-```
-
-执行如下命令进行模型推理：
-
-```shell
- python3 tools/infer/predict_rec.py \
-  --image_dir='./docs/datasets/images/pme_demo/0000099.png' \
-  --rec_algorithm="UniMERNet" --rec_batch_num=1 \
-  --rec_model_dir="./inference/rec_unimernet_infer/" \
-  --rec_char_dict_path="./ppocr/utils/dict/unimernet_tokenizer"
-# 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/datasets/pme_demo/'。
-```
-&nbsp;
-
-![测试图片样例](../../datasets/images/pme_demo/0000099.png)
-
-执行命令后，上面图像的预测结果（识别的公式）会打印到屏幕上，示例如下：
-```shell
- Predicts of ./docs/datasets/images/pme_demo/0000099.png:\begin{array}{r}{\frac{\mathrm d}{\mathrm d t}\left(\begin{array}{l}{x_{1}(t)}\\ {x_{2}(t)}\end{array}\right)=\left(\begin{array}{l l}{\alpha}&{1}\\ {-1}&{\alpha}\end{array}\right)\left(\begin{array}{l}{x_{1}(t)}\\ {x_{2}(t)}\end{array}\right)+\gamma\left(\exp(-\beta\|x(t)-p\|_{2}^{2})-\exp(-\beta\|p\|_{2}^{2})\right)\left(\begin{array}{l}{1}\\ {1}\end{array}\right)}\end{array}
-```
-
-
-**注意**：
-
-- 需要注意预测图像为**白底黑字**，即公式部分为黑色，背景为白色的图片。
-- 在推理时需要设置参数`rec_char_dict_path`指定字典，如果您修改了字典，请修改该参数为您的字典文件。
-- 如果您修改了预处理方法，需修改`tools/infer/predict_rec.py`中 UniMERNet 的预处理为您的预处理方法。
-
-
-### 4.2 C++推理部署
-
-由于C++预处理后处理还未支持 UniMERNet，所以暂未支持
-
-### 4.3 Serving服务化部署
-
-暂不支持
-
-### 4.4 更多推理部署
-
-暂不支持
-
-## 5. FAQ
+## 4. FAQ
 
 1. UniMERNet 数据集来自于[UniMERNet源repo](https://github.com/opendatalab/UniMERNet) 。
