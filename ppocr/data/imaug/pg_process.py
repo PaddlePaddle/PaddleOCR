@@ -242,9 +242,9 @@ class PGProcessTrain(object):
         xy_text = np.array(list(zip(xs, ys)), dtype='float32')
 
         left_center_pt = (
-            (min_area_quad[0] - min_area_quad[1]) / 2.0).reshape(1, 2)
+            (min_area_quad[0] + min_area_quad[3]) / 2.0).reshape(1, 2)
         right_center_pt = (
-            (min_area_quad[1] - min_area_quad[2]) / 2.0).reshape(1, 2)
+            (min_area_quad[1] + min_area_quad[2]) / 2.0).reshape(1, 2)
         proj_unit_vec = (right_center_pt - left_center_pt) / (
             np.linalg.norm(right_center_pt - left_center_pt) + 1e-6)
         proj_unit_vec_tile = np.tile(proj_unit_vec,
