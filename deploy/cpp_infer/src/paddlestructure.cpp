@@ -22,14 +22,14 @@ namespace PaddleOCR {
 PaddleStructure::PaddleStructure() {
   if (FLAGS_layout) {
     this->layout_model_.reset(new StructureLayoutRecognizer(
-        FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
+        FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_use_mlu,FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_layout_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_layout_score_threshold,
         FLAGS_layout_nms_threshold));
   }
   if (FLAGS_table) {
     this->table_model_.reset(new StructureTableRecognizer(
-        FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
+        FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_use_mlu,FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
         FLAGS_table_max_len, FLAGS_merge_no_span_structure));
