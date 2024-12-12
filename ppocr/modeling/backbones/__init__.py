@@ -63,6 +63,7 @@ def build_backbone(config, model_type):
         from .rec_densenet import DenseNet
         from .rec_resnetv2 import ResNetV2
         from .rec_hybridvit import HybridTransformer
+        from .rec_donut_swin import DonutSwinModel
         from .rec_shallow_cnn import ShallowCNN
         from .rec_lcnetv3 import PPLCNetV3
         from .rec_hgnet import PPHGNet_small
@@ -96,6 +97,7 @@ def build_backbone(config, model_type):
             "SVTRv2",
             "ResNetV2",
             "HybridTransformer",
+            "DonutSwinModel",
             "Vary_VIT_B",
         ]
     elif model_type == "e2e":

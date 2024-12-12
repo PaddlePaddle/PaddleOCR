@@ -133,6 +133,7 @@ class SimpleDataSet(Dataset):
                 img = f.read()
                 data["image"] = img
             data["ext_data"] = self.get_ext_data()
+            data["filename"] = data["img_path"]
             outs = transform(data, self.ops)
         except:
             self.logger.error(

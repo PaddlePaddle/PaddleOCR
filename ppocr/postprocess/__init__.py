@@ -17,6 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os
 import copy
 
 __all__ = ["build_post_process"]
@@ -43,6 +44,7 @@ from .rec_postprocess import (
     ParseQLabelDecode,
     CPPDLabelDecode,
     LaTeXOCRDecode,
+    UniMERNetDecode,
 )
 from .cls_postprocess import ClsPostProcess
 from .pg_postprocess import PGPostProcess
@@ -98,6 +100,7 @@ def build_post_process(config, global_config=None):
         "ParseQLabelDecode",
         "CPPDLabelDecode",
         "LaTeXOCRDecode",
+        "UniMERNetDecode",
     ]
 
     if config["name"] == "PSEPostProcess":
