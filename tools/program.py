@@ -849,6 +849,7 @@ def preprocess(is_train=False):
         "ParseQ",
         "CPPD",
         "LaTeXOCR",
+        "SLANeXt",
     ]
 
     if use_xpu:
