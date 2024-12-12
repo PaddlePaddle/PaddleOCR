@@ -333,7 +333,7 @@ def train(
                         preds = model(batch)
                     elif algorithm in ["CAN"]:
                         preds = model(batch[:3])
-                    elif algorithm in ["LaTeXOCR"]:
+                    elif algorithm in ["LaTeXOCR", "UniMERNet"]:
                         preds = model(batch)
                     else:
                         preds = model(images)
@@ -350,7 +350,7 @@ def train(
                     preds = model(batch)
                 elif algorithm in ["CAN"]:
                     preds = model(batch[:3])
-                elif algorithm in ["LaTeXOCR"]:
+                elif algorithm in ["LaTeXOCR", "UniMERNet"]:
                     preds = model(batch)
                 else:
                     preds = model(images)
@@ -376,6 +376,10 @@ def train(
                 elif algorithm in ["LaTeXOCR"]:
                     model_type = "latexocr"
                     post_result = post_process_class(preds, batch[1], mode="train")
+                    eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
+                elif algorithm in ["UniMERNet"]:
+                    model_type = "unimernet"
+                    post_result = post_process_class(preds[0], batch[1], mode="train")
                     eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
                 else:
                     if config["Loss"]["name"] in [
@@ -673,7 +677,7 @@ def eval(
                     preds = model(batch)
                 elif model_type in ["can"]:
                     preds = model(batch[:3])
-                elif model_type in ["latexocr"]:
+                elif model_type in ["latexocr", "unimernet"]:
                     preds = model(batch)
                 elif model_type in ["sr"]:
                     preds = model(batch)
@@ -701,7 +705,7 @@ def eval(
                 eval_class(preds, batch_numpy)
             elif model_type in ["can"]:
                 eval_class(preds[0], batch_numpy[2:], epoch_reset=(idx == 0))
-            elif model_type in ["latexocr"]:
+            elif model_type in ["latexocr", "unimernet"]:
                 post_result = post_process_class(preds, batch[1], "eval")
                 eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
             else:
@@ -849,6 +853,7 @@ def preprocess(is_train=False):
         "ParseQ",
         "CPPD",
         "LaTeXOCR",
+        "UniMERNet",
     ]
 
     if use_xpu:

@@ -117,7 +117,7 @@ python3 tools/infer/predict_rec.py --image_dir='./docs/datasets/images/pme_demo/
 
 ![测试图片样例](../../datasets/images/pme_demo/0000295.png)
 
-执行命令后，上面图像的预测结果（识别的文本）会打印到屏幕上，示例如下：
+执行命令后，上面图像的预测结果（识别的公式）会打印到屏幕上，示例如下：
 ```shell
 Predicts of ./doc/datasets/pme_demo/0000295.png:\zeta_{0}(\nu)=-{\frac{\nu\varrho^{-2\nu}}{\pi}}\int_{\mu}^{\infty}d\omega\int_{C_{+}}d z{\frac{2z^{2}}{(z^{2}+\omega^{2})^{\nu+1}}}{\tilde{\Psi}}(\omega;z)e^{i\epsilon z}~~~,
 ```
