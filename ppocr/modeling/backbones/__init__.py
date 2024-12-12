@@ -127,7 +127,7 @@ def build_backbone(config, model_type):
         from .table_mobilenet_v3 import MobileNetV3
         from .rec_vary_vit import Vary_VIT_B
 
-        support_dict = ["ResNet", "MobileNetV3","Vary_VIT_B"]
+        support_dict = ["ResNet", "MobileNetV3", "Vary_VIT_B"]
     else:
         raise NotImplementedError
 

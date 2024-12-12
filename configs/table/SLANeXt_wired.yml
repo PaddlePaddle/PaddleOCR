@@ -54,7 +54,7 @@ Architecture:
 Loss:
   name: SLALoss
   structure_weight: 1.0
-  # SLANeXt默认不进行单元格检测任务的训练, 若需要训练可自行设置loc_weight
+  # SLANeXt does not train the cell location task by default, set the loc_weight if needed.
   loc_weight: 0.0
   loc_loss: smooth_l1
 

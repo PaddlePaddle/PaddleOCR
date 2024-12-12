@@ -1,23 +1,23 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
-# All rights reserved.
-
-# This source code is licensed under the license found in the
-# LICENSE file in the root directory of this source tree.
+# copyright (c) 2024 PaddlePaddle Authors. All Rights Reserve.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
 from typing import Optional, Tuple, Type
-
 from functools import partial
-
-import paddle
-import paddle.nn as nn
-
-from typing import Type
-
-import numpy as np 
-
+import numpy as np
 import math
 
 from paddle.nn.initializer import (
@@ -37,10 +37,10 @@ xavier_uniform_ = XavierUniform()
 
 class MLPBlock(nn.Layer):
     def __init__(
-            self,
-            embedding_dim: int,
-            mlp_dim: int,
-            act: Type[nn.Layer] = nn.GELU,
+        self,
+        embedding_dim: int,
+        mlp_dim: int,
+        act: Type[nn.Layer] = nn.GELU,
     ) -> None:
         super().__init__()
         self.lin1 = nn.Linear(embedding_dim, mlp_dim)
@@ -73,23 +73,23 @@ class LayerNorm2d(nn.Layer):
 # This class and its supporting functions below lightly adapted from the ViTDet backbone available at: https://github.com/facebookresearch/detectron2/blob/main/detectron2/modeling/backbone/vit.py # noqa
 class ImageEncoderViT(nn.Layer):
     def __init__(
-            self,
-            img_size: int = 1024,
-            patch_size: int = 16,
-            in_chans: int = 3,
-            embed_dim: int = 768,
-            depth: int = 12,
-            num_heads: int = 12,
-            mlp_ratio: float = 4.0,
-            out_chans: int = 256,
-            qkv_bias: bool = True,
-            norm_layer: Type[nn.Layer] = nn.LayerNorm,
-            act_layer: Type[nn.Layer] = nn.GELU,
-            use_abs_pos: bool = True,
-            use_rel_pos: bool = False,
-            rel_pos_zero_init: bool = True,
-            window_size: int = 0,
-            global_attn_indexes: Tuple[int, ...] = (),
+        self,
+        img_size: int = 1024,
+        patch_size: int = 16,
+        in_chans: int = 3,
+        embed_dim: int = 768,
+        depth: int = 12,
+        num_heads: int = 12,
+        mlp_ratio: float = 4.0,
+        out_chans: int = 256,
+        qkv_bias: bool = True,
+        norm_layer: Type[nn.Layer] = nn.LayerNorm,
+        act_layer: Type[nn.Layer] = nn.GELU,
+        use_abs_pos: bool = True,
+        use_rel_pos: bool = False,
+        rel_pos_zero_init: bool = True,
+        window_size: int = 0,
+        global_attn_indexes: Tuple[int, ...] = (),
     ) -> None:
         """
         Args:
@@ -124,7 +124,7 @@ class ImageEncoderViT(nn.Layer):
             # Initialize absolute positional embedding with pretrain image size.
             self.pos_embed = paddle.create_parameter(
                 shape=(1, img_size // patch_size, img_size // patch_size, embed_dim),
-                dtype='float32',
+                dtype="float32",
             )
             zeros_(self.pos_embed)
 
@@ -162,8 +162,12 @@ class ImageEncoderViT(nn.Layer):
             LayerNorm2d(out_chans),
         )
 
-        self.net_2 = nn.Conv2D(256, 512, kernel_size=3, stride=2, padding=1, bias_attr=False)
-        self.net_3 = nn.Conv2D(512, 1024, kernel_size=3, stride=2, padding=1, bias_attr=False)
+        self.net_2 = nn.Conv2D(
+            256, 512, kernel_size=3, stride=2, padding=1, bias_attr=False
+        )
+        self.net_3 = nn.Conv2D(
+            512, 1024, kernel_size=3, stride=2, padding=1, bias_attr=False
+        )
 
     def forward(self, x):
         x = self.patch_embed(x)
@@ -180,17 +184,17 @@ class Block(nn.Layer):
     """Transformer blocks with support of window attention and residual propagation blocks"""
 
     def __init__(
-            self,
-            dim: int,
-            num_heads: int,
-            mlp_ratio: float = 4.0,
-            qkv_bias: bool = True,
-            norm_layer: Type[nn.Layer] = nn.LayerNorm,
-            act_layer: Type[nn.Layer] = nn.GELU,
-            use_rel_pos: bool = False,
-            rel_pos_zero_init: bool = True,
-            window_size: int = 0,
-            input_size: Optional[Tuple[int, int]] = None,
+        self,
+        dim: int,
+        num_heads: int,
+        mlp_ratio: float = 4.0,
+        qkv_bias: bool = True,
+        norm_layer: Type[nn.Layer] = nn.LayerNorm,
+        act_layer: Type[nn.Layer] = nn.GELU,
+        use_rel_pos: bool = False,
+        rel_pos_zero_init: bool = True,
+        window_size: int = 0,
+        input_size: Optional[Tuple[int, int]] = None,
     ) -> None:
         """
         Args:
@@ -219,13 +223,15 @@ class Block(nn.Layer):
         )
 
         self.norm2 = norm_layer(dim)
-        self.mlp = MLPBlock(embedding_dim=dim, mlp_dim=int(dim * mlp_ratio), act=act_layer)
+        self.mlp = MLPBlock(
+            embedding_dim=dim, mlp_dim=int(dim * mlp_ratio), act=act_layer
+        )
 
         self.window_size = window_size
 
     def forward(self, x):
         shortcut = x
-        
+
         x = self.norm1(x)
         # Window partition
         if self.window_size > 0:
@@ -245,13 +251,13 @@ class Attention(nn.Layer):
     """Multi-head Attention block with relative position embeddings."""
 
     def __init__(
-            self,
-            dim: int,
-            num_heads: int = 8,
-            qkv_bias: bool = True,
-            use_rel_pos: bool = False,
-            rel_pos_zero_init: bool = True,
-            input_size: Optional[Tuple[int, int]] = None,
+        self,
+        dim: int,
+        num_heads: int = 8,
+        qkv_bias: bool = True,
+        use_rel_pos: bool = False,
+        rel_pos_zero_init: bool = True,
+        input_size: Optional[Tuple[int, int]] = None,
     ) -> None:
         """
         Args:
@@ -266,7 +272,7 @@ class Attention(nn.Layer):
         super().__init__()
         self.num_heads = num_heads
         head_dim = dim // num_heads
-        self.scale = head_dim ** -0.5
+        self.scale = head_dim**-0.5
 
         self.qkv = nn.Linear(dim, dim * 3, bias_attr=qkv_bias)
         self.proj = nn.Linear(dim, dim)
@@ -274,31 +280,46 @@ class Attention(nn.Layer):
         self.use_rel_pos = use_rel_pos
         if self.use_rel_pos:
             assert (
-                    input_size is not None
+                input_size is not None
             ), "Input size must be provided if using relative positional encoding."
             # initialize relative positional embeddings
-            self.rel_pos_h = paddle.create_parameter([2 * input_size[0] - 1, head_dim], dtype="float32")
+            self.rel_pos_h = paddle.create_parameter(
+                [2 * input_size[0] - 1, head_dim], dtype="float32"
+            )
             zeros_(self.rel_pos_h)
-            self.rel_pos_w  = paddle.create_parameter([2 * input_size[1] - 1, head_dim], dtype="float32")
+            self.rel_pos_w = paddle.create_parameter(
+                [2 * input_size[1] - 1, head_dim], dtype="float32"
+            )
             zeros_(self.rel_pos_w)
 
     def forward(self, x):
 
         B, H, W, _ = x.shape
-        qkv = self.qkv(x).reshape([B, H * W, 3, self.num_heads, -1]).transpose([2, 0, 3, 1, 4])
+        qkv = (
+            self.qkv(x)
+            .reshape([B, H * W, 3, self.num_heads, -1])
+            .transpose([2, 0, 3, 1, 4])
+        )
         q, k, v = qkv.reshape([3, B * self.num_heads, H * W, -1]).unbind(0)
         attn = (q * self.scale) @ k.transpose([0, 2, 1])
 
         if self.use_rel_pos:
-            attn = add_decomposed_rel_pos(attn, q, self.rel_pos_h, self.rel_pos_w, (H, W), (H, W))
+            attn = add_decomposed_rel_pos(
+                attn, q, self.rel_pos_h, self.rel_pos_w, (H, W), (H, W)
+            )
         attn = F.softmax(attn, axis=-1)
-        x = (attn @ v).reshape([B, self.num_heads, H, W, -1]).transpose([0, 2, 3, 1, 4]).reshape([B, H, W, -1])
+        x = (
+            (attn @ v)
+            .reshape([B, self.num_heads, H, W, -1])
+            .transpose([0, 2, 3, 1, 4])
+            .reshape([B, H, W, -1])
+        )
         x = self.proj(x)
 
         return x
 
 
-def window_partition(x, window_size: int) :
+def window_partition(x, window_size: int):
     """
     Partition into non-overlapping windows with padding if needed.
     Args:
@@ -317,13 +338,15 @@ def window_partition(x, window_size: int) :
         x = F.pad(x, (0, 0, 0, pad_w, 0, pad_h, 0, 0))
     Hp, Wp = H + pad_h, W + pad_w
 
-    x = x.reshape([B, Hp // window_size, window_size, Wp // window_size, window_size, C])
+    x = x.reshape(
+        [B, Hp // window_size, window_size, Wp // window_size, window_size, C]
+    )
     windows = x.transpose([0, 1, 3, 2, 4, 5]).reshape([-1, window_size, window_size, C])
     return windows, (Hp, Wp)
 
 
 def window_unpartition(
-        windows, window_size: int, pad_hw: Tuple[int, int], hw: Tuple[int, int]
+    windows, window_size: int, pad_hw: Tuple[int, int], hw: Tuple[int, int]
 ):
     """
     Window unpartition into original sequences and removing padding.
@@ -339,7 +362,9 @@ def window_unpartition(
     Hp, Wp = pad_hw
     H, W = hw
     B = windows.shape[0] // (Hp * Wp // window_size // window_size)
-    x = windows.reshape([B, Hp // window_size, Wp // window_size, window_size, window_size, -1])
+    x = windows.reshape(
+        [B, Hp // window_size, Wp // window_size, window_size, window_size, -1]
+    )
     x = x.transpose([0, 1, 3, 2, 4, 5]).contiguous().reshape([B, Hp, Wp, -1])
 
     if Hp > H or Wp > W:
@@ -381,12 +406,12 @@ def get_rel_pos(q_size: int, k_size: int, rel_pos):
 
 
 def add_decomposed_rel_pos(
-        attn,
-        q,
-        rel_pos_h,
-        rel_pos_w,
-        q_size: Tuple[int, int],
-        k_size: Tuple[int, int],
+    attn,
+    q,
+    rel_pos_h,
+    rel_pos_w,
+    q_size: Tuple[int, int],
+    k_size: Tuple[int, int],
 ):
     """
     Calculate decomposed Relative Positional Embeddings from :paper:`mvitv2`.
@@ -413,7 +438,9 @@ def add_decomposed_rel_pos(
     rel_w = paddle.einsum("bhwc,wkc->bhwk", r_q, Rw)
 
     attn = (
-            attn.reshape([B, q_h, q_w, k_h, k_w]) + rel_h[:, :, :, :, None] + rel_w[:, :, :, None, :]
+        attn.reshape([B, q_h, q_w, k_h, k_w])
+        + rel_h[:, :, :, :, None]
+        + rel_w[:, :, :, None, :]
     ).reshape([B, q_h * q_w, k_h * k_w])
 
     return attn
@@ -425,12 +452,12 @@ class PatchEmbed(nn.Layer):
     """
 
     def __init__(
-            self,
-            kernel_size: Tuple[int, int] = (16, 16),
-            stride: Tuple[int, int] = (16, 16),
-            padding: Tuple[int, int] = (0, 0),
-            in_chans: int = 3,
-            embed_dim: int = 768,
+        self,
+        kernel_size: Tuple[int, int] = (16, 16),
+        stride: Tuple[int, int] = (16, 16),
+        padding: Tuple[int, int] = (0, 0),
+        in_chans: int = 3,
+        embed_dim: int = 768,
     ) -> None:
         """
         Args:
@@ -443,7 +470,13 @@ class PatchEmbed(nn.Layer):
         super().__init__()
 
         self.proj = nn.Conv2D(
-            in_chans, embed_dim, kernel_size=kernel_size, stride=stride, padding=padding, weight_attr =True, bias_attr=True
+            in_chans,
+            embed_dim,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=padding,
+            weight_attr=True,
+            bias_attr=True,
         )
 
     def forward(self, x):
@@ -454,11 +487,11 @@ class PatchEmbed(nn.Layer):
 
 
 def _build_vary(
-        encoder_embed_dim,
-        encoder_depth,
-        encoder_num_heads,
-        encoder_global_attn_indexes,
-        image_size,
+    encoder_embed_dim,
+    encoder_depth,
+    encoder_num_heads,
+    encoder_global_attn_indexes,
+    image_size,
 ):
     prompt_embed_dim = 256
     vit_patch_size = 16
@@ -479,30 +512,34 @@ def _build_vary(
     )
     return image_encoder
 
+
 class Vary_VIT_B(nn.Layer):
-    def __init__(self,  
-        in_channels = 3,
+    def __init__(
+        self,
+        in_channels=3,
         image_size=768,
         encoder_embed_dim=768,
         encoder_depth=12,
         encoder_num_heads=12,
         encoder_global_attn_indexes=[2, 5, 8, 11],
-        ):
-        super(Vary_VIT_B, self).__init__()
+    ):
+        super().__init__()
 
         self.vision_tower_high = _build_vary(
-                        encoder_embed_dim=768,
-                        encoder_depth=12,
-                        encoder_num_heads=12,
-                        encoder_global_attn_indexes=[2, 5, 8, 11],
-                        image_size=image_size,
-                    )
+            encoder_embed_dim=768,
+            encoder_depth=12,
+            encoder_num_heads=12,
+            encoder_global_attn_indexes=[2, 5, 8, 11],
+            image_size=image_size,
+        )
+
         self.out_channels = 1024
+
     def forward(self, input_data):
-        pixel_values = input_data        
+        pixel_values = input_data
         num_channels = pixel_values.shape[1]
         if num_channels == 1:
-            pixel_values =  paddle.repeat_interleave(pixel_values, repeats=3, axis=1)
+            pixel_values = paddle.repeat_interleave(pixel_values, repeats=3, axis=1)
         cnn_feature = self.vision_tower_high(pixel_values)
         cnn_feature = cnn_feature.flatten(2).transpose([0, 2, 1])
         return cnn_feature

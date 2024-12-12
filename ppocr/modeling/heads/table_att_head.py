@@ -271,11 +271,9 @@ class SLAHead(nn.Layer):
 
         if isinstance(in_channels, int):
             self.is_next = True
-        else:
-            self.is_next = False     
-        if self.is_next == True:
             in_channels = 512
         else:
+            self.is_next = False
             in_channels = in_channels[-1]
         self.hidden_size = hidden_size
         self.max_text_length = max_text_length
@@ -345,8 +343,8 @@ class SLAHead(nn.Layer):
         )
 
     def forward(self, inputs, targets=None):
-        if self.is_next==True:
-            fea = inputs 
+        if self.is_next == True:
+            fea = inputs
             batch_size = fea.shape[0]
         else:
             fea = inputs[-1]
