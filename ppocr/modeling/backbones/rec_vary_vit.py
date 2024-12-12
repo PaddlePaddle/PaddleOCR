@@ -17,7 +17,7 @@ import paddle.nn as nn
 from typing import Type
 
 import numpy as np 
-# from GOT.model.vision_encoder.vitg_qwen import Resampler
+
 import math
 
 from paddle.nn.initializer import (
@@ -33,34 +33,6 @@ ones_ = Constant(value=1.0)
 kaiming_normal_ = KaimingUniform(nonlinearity="relu")
 trunc_normal_ = TruncatedNormal(std=0.02)
 xavier_uniform_ = XavierUniform()
-
-class Projector(nn.Layer):
-    def __init__(
-            self,
-            width: 256,
-            n_queries: int = 256,
-            output_dim: int = 4096,
-            **kwargs
-    ):
-        super().__init__()
-
-        norm_layer = partial(nn.LayerNorm, epsilon=1e-6)
-        self.attn_pool = Resampler(
-            grid_size=int(math.sqrt(n_queries)),
-            embed_dim=output_dim,
-            num_heads=output_dim // 128,
-            kv_dim=width,
-            norm_layer=norm_layer,
-        )
-        self.ln_post = norm_layer(output_dim)
-        self.proj = nn.Parameter((output_dim ** -0.5) * paddle.randn(output_dim, output_dim))
-
-    def forward(self, x):
-        x = self.attn_pool(x)
-        x = self.ln_post(x)
-        x = x @ self.proj
-
-        return x
 
 
 class MLPBlock(nn.Layer):
