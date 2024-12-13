@@ -854,6 +854,7 @@ def preprocess(is_train=False):
         "CPPD",
         "LaTeXOCR",
         "UniMERNet",
+        "SLANeXt",
     ]
 
     if use_xpu:

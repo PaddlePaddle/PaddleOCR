@@ -22,7 +22,7 @@ from paddle.nn import functional as F
 
 
 class TableAttentionLoss(nn.Layer):
-    def __init__(self, structure_weight, loc_weight, **kwargs):
+    def __init__(self, structure_weight=1.0, loc_weight=0.0, **kwargs):
         super(TableAttentionLoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(weight=None, reduction="none")
         self.structure_weight = structure_weight
@@ -58,7 +58,7 @@ class TableAttentionLoss(nn.Layer):
 
 
 class SLALoss(nn.Layer):
-    def __init__(self, structure_weight, loc_weight, loc_loss="mse", **kwargs):
+    def __init__(self, structure_weight=1.0, loc_weight=0.0, loc_loss="mse", **kwargs):
         super(SLALoss, self).__init__()
         self.loss_func = nn.CrossEntropyLoss(weight=None, reduction="mean")
         self.structure_weight = structure_weight

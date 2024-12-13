@@ -27,6 +27,7 @@ def build_backbone(config, model_type):
         from .rec_vit import ViT
         from .det_pp_lcnet_v2 import PPLCNetV2_base
         from .rec_repvit import RepSVTR_det
+        from .rec_vary_vit import Vary_VIT_B
 
         support_dict = [
             "MobileNetV3",
@@ -38,6 +39,7 @@ def build_backbone(config, model_type):
             "PPHGNet_small",
             "PPLCNetV2_base",
             "RepSVTR_det",
+            "Vary_VIT_B",
         ]
         if model_type == "table":
             from .table_master_resnet import TableResNetExtra
@@ -68,6 +70,7 @@ def build_backbone(config, model_type):
         from .rec_vit_parseq import ViTParseQ
         from .rec_repvit import RepSVTR
         from .rec_svtrv2 import SVTRv2
+        from .rec_vary_vit import Vary_VIT_B
 
         support_dict = [
             "MobileNetV1Enhance",
@@ -95,6 +98,7 @@ def build_backbone(config, model_type):
             "ResNetV2",
             "HybridTransformer",
             "DonutSwinModel",
+            "Vary_VIT_B",
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet
@@ -121,8 +125,9 @@ def build_backbone(config, model_type):
     elif model_type == "table":
         from .table_resnet_vd import ResNet
         from .table_mobilenet_v3 import MobileNetV3
+        from .rec_vary_vit import Vary_VIT_B
 
-        support_dict = ["ResNet", "MobileNetV3"]
+        support_dict = ["ResNet", "MobileNetV3", "Vary_VIT_B"]
     else:
         raise NotImplementedError
 

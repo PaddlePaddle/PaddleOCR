@@ -268,7 +268,13 @@ class SLAHead(nn.Layer):
         @param max_text_length: max text pred
         """
         super().__init__()
-        in_channels = in_channels[-1]
+
+        if isinstance(in_channels, int):
+            self.is_next = True
+            in_channels = 512
+        else:
+            self.is_next = False
+            in_channels = in_channels[-1]
         self.hidden_size = hidden_size
         self.max_text_length = max_text_length
         self.emb = self._char_to_onehot
@@ -337,13 +343,17 @@ class SLAHead(nn.Layer):
         )
 
     def forward(self, inputs, targets=None):
-        fea = inputs[-1]
-        batch_size = fea.shape[0]
-        if self.use_attn:
-            fea = fea + self.cross_atten(fea)
-        # reshape
-        fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], -1])
-        fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
+        if self.is_next == True:
+            fea = inputs
+            batch_size = fea.shape[0]
+        else:
+            fea = inputs[-1]
+            batch_size = fea.shape[0]
+            if self.use_attn:
+                fea = fea + self.cross_atten(fea)
+            # reshape
+            fea = paddle.reshape(fea, [fea.shape[0], fea.shape[1], -1])
+            fea = fea.transpose([0, 2, 1])  # (NTC)(batch, width, channels)
 
         hidden = paddle.zeros((batch_size, self.hidden_size))
         structure_preds = paddle.zeros(
