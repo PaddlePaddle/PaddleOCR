@@ -25,13 +25,14 @@ namespace PaddleOCR {
 class StructureLayoutRecognizer {
 public:
   explicit StructureLayoutRecognizer(
-      const std::string &model_dir, const bool &use_gpu, const int &gpu_id,
+      const std::string &model_dir, const bool &use_gpu, const bool &use_mlu, const int &gpu_id,
       const int &gpu_mem, const int &cpu_math_library_num_threads,
       const bool &use_mkldnn, const std::string &label_path,
       const bool &use_tensorrt, const std::string &precision,
       const double &layout_score_threshold,
       const double &layout_nms_threshold) {
     this->use_gpu_ = use_gpu;
+    this->use_mlu_ = use_mlu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
     this->cpu_math_library_num_threads_ = cpu_math_library_num_threads;
@@ -54,6 +55,7 @@ private:
   std::shared_ptr<paddle_infer::Predictor> predictor_;
 
   bool use_gpu_ = false;
+  bool use_mlu_ = false;
   int gpu_id_ = 0;
   int gpu_mem_ = 4000;
   int cpu_math_library_num_threads_ = 4;

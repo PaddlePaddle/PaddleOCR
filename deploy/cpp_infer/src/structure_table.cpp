@@ -139,6 +139,8 @@ void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
         config.EnableTunedTensorRtDynamicShape("./trt_table_shape.txt", true);
       }
     }
+  } else if (this->use_gpu_) {
+    config.EnableCustomDevice("mlu", this->gpu_id_);
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {
