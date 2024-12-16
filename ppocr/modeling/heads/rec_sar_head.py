@@ -249,7 +249,7 @@ class ParallelSARDecoder(BaseDecoder):
             # cal mask of attention weight
             for i in range(valid_ratios.shape[0]):
                 valid_width = paddle.minimum(
-                    w, paddle.ceil(valid_ratios[i] * w).astype("int64")
+                    w.astype("int64"), paddle.ceil(valid_ratios[i] * w).astype("int64")
                 )
                 if valid_width < w:
                     attn_weight[i, :, :, valid_width:, :] = float("-inf")
