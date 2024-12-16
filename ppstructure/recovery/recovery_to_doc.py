@@ -97,18 +97,38 @@ def sorted_layout_boxes(res, w):
         res[0]["layout"] = "single"
         return res
 
+    # Sort boxes by y coordinate (top to bottom), then x coordinate (left to right)
     sorted_boxes = sorted(res, key=lambda x: (x["bbox"][1], x["bbox"][0]))
     _boxes = list(sorted_boxes)
 
     new_res = []
-    res_left = []
-    res_right = []
+    res_left = []  # Buffer for left column boxes
+    res_right = []  # Buffer for right column boxes
     i = 0
 
     while True:
         if i >= num_boxes:
             break
+
+        # Calculate width ratio of text box relative to page width
+        # Used to determine if box spans across columns (indicating single column)
+        box_width = _boxes[i]["bbox"][2] - _boxes[i]["bbox"][0]
+        width_ratio = box_width / w
+
+        # If box width > 60% of page width, treat as single column
+        if width_ratio > 0.6:
+            new_res += res_left
+            new_res += res_right
+            _boxes[i]["layout"] = "single"
+            new_res.append(_boxes[i])
+            res_left = []
+            res_right = []
+            i += 1
+            continue
+
+        # Handle the last box
         if i == num_boxes - 1:
+            # Check if last box spans columns and is below previous box
             if (
                 _boxes[i]["bbox"][1] > _boxes[i - 1]["bbox"][3]
                 and _boxes[i]["bbox"][0] < w / 2
@@ -119,12 +139,13 @@ def sorted_layout_boxes(res, w):
                 _boxes[i]["layout"] = "single"
                 new_res.append(_boxes[i])
             else:
-                if _boxes[i]["bbox"][2] > w / 2:
+                # Classify as left or right column based on position
+                if _boxes[i]["bbox"][2] > w * 0.6:
                     _boxes[i]["layout"] = "double"
                     res_right.append(_boxes[i])
                     new_res += res_left
                     new_res += res_right
-                elif _boxes[i]["bbox"][0] < w / 2:
+                elif _boxes[i]["bbox"][0] < w * 0.4:
                     _boxes[i]["layout"] = "double"
                     res_left.append(_boxes[i])
                     new_res += res_left
@@ -132,14 +153,18 @@ def sorted_layout_boxes(res, w):
             res_left = []
             res_right = []
             break
-        elif _boxes[i]["bbox"][0] < w / 4 and _boxes[i]["bbox"][2] < 3 * w / 4:
+
+        # Left column criteria: starts before 30% of page width, ends before 55%
+        elif _boxes[i]["bbox"][0] < w * 0.3 and _boxes[i]["bbox"][2] < w * 0.55:
             _boxes[i]["layout"] = "double"
             res_left.append(_boxes[i])
             i += 1
-        elif _boxes[i]["bbox"][0] > w / 4 and _boxes[i]["bbox"][2] > w / 2:
+        # Right column criteria: starts after 45% of page width, ends after 70%
+        elif _boxes[i]["bbox"][0] > w * 0.45 and _boxes[i]["bbox"][2] > w * 0.7:
             _boxes[i]["layout"] = "double"
             res_right.append(_boxes[i])
             i += 1
+        # If neither left nor right column criteria met, treat as single column
         else:
             new_res += res_left
             new_res += res_right
@@ -148,6 +173,8 @@ def sorted_layout_boxes(res, w):
             res_left = []
             res_right = []
             i += 1
+
+    # Append any remaining boxes from left/right columns
     if res_left:
         new_res += res_left
     if res_right:
