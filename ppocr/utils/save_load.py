@@ -278,13 +278,14 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
     else:
         train_results = {}
         train_results["model_name"] = config["Global"]["pdx_model_name"]
-        label_dict_path = os.path.abspath(
-            config["Global"].get("character_dict_path", "")
-        )
+        label_dict_path = config["Global"].get("character_dict_path", "")
         if label_dict_path != "":
-            if not os.path.exists(label_dict_path):
+            label_dict_path = os.path.abspath(label_dict_path)
+            if (
+                not os.path.exists(label_dict_path)
+                or "SLANet" in train_results["model_name"]
+            ):
                 label_dict_path = ""
-            label_dict_path = label_dict_path
         train_results["label_dict"] = label_dict_path
         train_results["train_log"] = "train.log"
         train_results["visualdl_log"] = ""
