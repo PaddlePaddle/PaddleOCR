@@ -206,16 +206,30 @@ class TextDetector(object):
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
-    def filter_tag_det_res_only_clip(self, dt_boxes, image_shape):
+       def filter_tag_det_res_only_clip(self, dt_boxes, image_shape):
         img_height, img_width = image_shape[0:2]
         dt_boxes_new = []
+        
+        # Handle empty input
+        if len(dt_boxes) == 0:
+            return np.array(dt_boxes_new)
+            
         for box in dt_boxes:
-            if type(box) is list:
-                box = np.array(box)
-            box = self.clip_det_res(box, img_height, img_width)
-            dt_boxes_new.append(box)
-        dt_boxes = np.array(dt_boxes_new)
-        return dt_boxes
+            try:
+                if type(box) is list:
+                    box = np.array(box)
+                if box.size == 0:  # Skip empty boxes
+                    continue
+                box = self.order_points_clockwise(box)
+                box = self.clip_det_res(box, img_height, img_width)
+                rect_width = int(np.linalg.norm(box[0] - box[1]))
+                rect_height = int(np.linalg.norm(box[0] - box[3]))
+                if rect_width <= 3 or rect_height <= 3:
+                    continue
+                dt_boxes_new.append(box)
+            except (IndexError, ValueError, AttributeError) as e:
+                logger.warning(f"Error processing box: {e}")
+                continue
 
     def __call__(self, img):
         ori_im = img.copy()
