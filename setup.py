@@ -21,7 +21,7 @@ import subprocess
 p = subprocess.Popen("grep ^VERSION ./paddleocr.py | cut -d\\' -f 2", stdout=subprocess.PIPE,
         stderr=subprocess.PIPE, shell=True)
 raw_VERSION, _ = p.communicate()
-VERSION = raw_VERSION.decode().strip()
+VERSION = "2.7.5"
 
 def load_requirements(file_list=None):
     if file_list is None:
