@@ -15,7 +15,7 @@ Global:
   infer_img: doc/datasets/pme_demo/0000013.png
   infer_mode: False
   use_space_char: False
-  rec_char_dict_path:  ./ppocr/utils/dict/mixtex
+  rec_char_dict_path:  ./PaddleOCR/ppocr/utils/dict/mixtex
   save_res_path: ./output/rec/predicts_mixtex.txt
   d2s_train_image_shape: [3, 400, 500]
 
@@ -84,7 +84,7 @@ Loss:
 
 PostProcess:
   name: MixTexDecode
-  rec_char_dict_path: ./ppocr/utils/dict/mixtex
+  rec_char_dict_path: ./PaddleOCR/ppocr/utils/dict/mixtex
 
 Metric:
   name: MixTexMetric
