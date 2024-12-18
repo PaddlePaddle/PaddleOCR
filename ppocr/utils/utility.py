@@ -14,7 +14,6 @@
 
 import logging
 import os
-import imghdr
 import cv2
 import random
 import numpy as np
@@ -57,7 +56,7 @@ def _check_image_file(path):
     return any([path.lower().endswith(e) for e in img_end])
 
 
-def get_image_file_list(img_file):
+def get_image_file_list(img_file, infer_list=None):
     imgs_lists = []
     if img_file is None or not os.path.exists(img_file):
         raise Exception("not found any img file in {}".format(img_file))
@@ -69,6 +68,7 @@ def get_image_file_list(img_file):
             file_path = os.path.join(img_file, single_file)
             if os.path.isfile(file_path) and _check_image_file(file_path):
                 imgs_lists.append(file_path)
+
     if len(imgs_lists) == 0:
         raise Exception("not found any img file in {}".format(img_file))
     imgs_lists = sorted(imgs_lists)
@@ -107,7 +107,8 @@ def check_and_read(img_path):
         imgvalue = frame[:, :, ::-1]
         return imgvalue, True, False
     elif os.path.basename(img_path)[-3:].lower() == 'pdf':
-        import fitz
+        from paddle.utils import try_import
+        fitz = try_import("fitz")
         from PIL import Image
         imgs = []
         with fitz.open(img_path) as pdf:

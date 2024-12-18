@@ -73,7 +73,8 @@ class TextRecognizer(object):
             postprocess_params = {
                 'name': 'VLLabelDecode',
                 "character_dict_path": args.rec_char_dict_path,
-                "use_space_char": args.use_space_char
+                "use_space_char": args.use_space_char,
+                "max_text_length": args.max_text_length
             }
         elif self.rec_algorithm == 'ViTSTR':
             postprocess_params = {
@@ -113,6 +114,13 @@ class TextRecognizer(object):
                 "use_space_char": args.use_space_char,
                 "rm_symbol": True
             }
+        elif self.rec_algorithm in ["CPPD", "CPPDPadding"]:
+            postprocess_params = {
+                'name': 'CPPDLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char,
+                "rm_symbol": True
+            }
         elif self.rec_algorithm == "PREN":
             postprocess_params = {'name': 'PRENLabelDecode'}
         elif self.rec_algorithm == "CAN":
@@ -122,7 +130,14 @@ class TextRecognizer(object):
                 "character_dict_path": args.rec_char_dict_path,
                 "use_space_char": args.use_space_char
             }
+        elif self.rec_algorithm == "ParseQ":
+            postprocess_params = {
+                'name': 'ParseQLabelDecode',
+                "character_dict_path": args.rec_char_dict_path,
+                "use_space_char": args.use_space_char
+            }
         self.postprocess_op = build_post_process(postprocess_params)
+        self.postprocess_params = postprocess_params
         self.predictor, self.input_tensor, self.output_tensors, self.config = \
             utility.create_predictor(args, 'rec', logger)
         self.benchmark = args.benchmark
@@ -146,6 +161,7 @@ class TextRecognizer(object):
                 ],
                 warmup=0,
                 logger=logger)
+        self.return_word_box = args.return_word_box
 
     def resize_norm_img(self, img, max_wh_ratio):
         imgC, imgH, imgW = self.rec_image_shape
@@ -156,7 +172,7 @@ class TextRecognizer(object):
             if self.rec_algorithm == 'ViTSTR':
                 img = image_pil.resize([imgW, imgH], Image.BICUBIC)
             else:
-                img = image_pil.resize([imgW, imgH], Image.LANCZOS)
+                img = image_pil.resize([imgW, imgH], Image.Resampling.LANCZOS)
             img = np.array(img)
             norm_img = np.expand_dims(img, -1)
             norm_img = norm_img.transpose((2, 0, 1))
@@ -348,6 +364,38 @@ class TextRecognizer(object):
         resized_image /= 0.5
         return resized_image
 
+    def resize_norm_img_cppd_padding(self,
+                                     img,
+                                     image_shape,
+                                     padding=True,
+                                     interpolation=cv2.INTER_LINEAR):
+        imgC, imgH, imgW = image_shape
+        h = img.shape[0]
+        w = img.shape[1]
+        if not padding:
+            resized_image = cv2.resize(
+                img, (imgW, imgH), interpolation=interpolation)
+            resized_w = imgW
+        else:
+            ratio = w / float(h)
+            if math.ceil(imgH * ratio) > imgW:
+                resized_w = imgW
+            else:
+                resized_w = int(math.ceil(imgH * ratio))
+            resized_image = cv2.resize(img, (resized_w, imgH))
+        resized_image = resized_image.astype('float32')
+        if image_shape[0] == 1:
+            resized_image = resized_image / 255
+            resized_image = resized_image[np.newaxis, :]
+        else:
+            resized_image = resized_image.transpose((2, 0, 1)) / 255
+        resized_image -= 0.5
+        resized_image /= 0.5
+        padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+        padding_im[:, :, 0:resized_w] = resized_image
+
+        return padding_im
+
     def resize_norm_img_abinet(self, img, image_shape):
 
         imgC, imgH, imgW = image_shape
@@ -415,11 +463,12 @@ class TextRecognizer(object):
                 valid_ratios = []
             imgC, imgH, imgW = self.rec_image_shape[:3]
             max_wh_ratio = imgW / imgH
-            # max_wh_ratio = 0
+            wh_ratio_list = []
             for ino in range(beg_img_no, end_img_no):
                 h, w = img_list[indices[ino]].shape[0:2]
                 wh_ratio = w * 1.0 / h
                 max_wh_ratio = max(max_wh_ratio, wh_ratio)
+                wh_ratio_list.append(wh_ratio)
             for ino in range(beg_img_no, end_img_no):
                 if self.rec_algorithm == "SAR":
                     norm_img, _, _, valid_ratio = self.resize_norm_img_sar(
@@ -436,9 +485,14 @@ class TextRecognizer(object):
                     gsrm_slf_attn_bias1_list.append(norm_img[3])
                     gsrm_slf_attn_bias2_list.append(norm_img[4])
                     norm_img_batch.append(norm_img[0])
-                elif self.rec_algorithm in ["SVTR", "SATRN"]:
+                elif self.rec_algorithm in ["SVTR", "SATRN", "ParseQ", "CPPD"]:
                     norm_img = self.resize_norm_img_svtr(img_list[indices[ino]],
                                                          self.rec_image_shape)
+                    norm_img = norm_img[np.newaxis, :]
+                    norm_img_batch.append(norm_img)
+                elif self.rec_algorithm in ["CPPDPadding"]:
+                    norm_img = self.resize_norm_img_cppd_padding(
+                        img_list[indices[ino]], self.rec_image_shape)
                     norm_img = norm_img[np.newaxis, :]
                     norm_img_batch.append(norm_img)
                 elif self.rec_algorithm in ["VisionLAN", "PREN"]:
@@ -625,7 +679,14 @@ class TextRecognizer(object):
                     else:
                         preds = outputs[0]
                     self.predictor.try_shrink_memory()
-            rec_result = self.postprocess_op(preds)
+            if self.postprocess_params['name'] == 'CTCLabelDecode':
+                rec_result = self.postprocess_op(
+                    preds,
+                    return_word_box=self.return_word_box,
+                    wh_ratio_list=wh_ratio_list,
+                    max_wh_ratio=max_wh_ratio)
+            else:
+                rec_result = self.postprocess_op(preds)
             for rno in range(len(rec_result)):
                 rec_res[indices[beg_img_no + rno]] = rec_result[rno]
             if self.benchmark:

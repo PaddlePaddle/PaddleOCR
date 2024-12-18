@@ -45,12 +45,13 @@ tools = _import_file(
 ppocr = importlib.import_module('ppocr', 'paddleocr')
 ppstructure = importlib.import_module('ppstructure', 'paddleocr')
 from ppocr.utils.logging import get_logger
-from tools.infer import predict_system
+
+logger = get_logger()
 from ppocr.utils.utility import check_and_read, get_image_file_list, alpha_to_color, binarize_img
 from ppocr.utils.network import maybe_download, download_with_progressbar, is_link, confirm_model_dir_url
 from tools.infer.utility import draw_ocr, str2bool, check_gpu
 from ppstructure.utility import init_args, draw_structure_result
-from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel
+from ppstructure.predict_system import StructureSystem, save_structure_res, to_excel, TextSystem
 
 logger = get_logger()
 __all__ = [
@@ -59,7 +60,7 @@ __all__ = [
 ]
 
 SUPPORT_DET_MODEL = ['DB']
-VERSION = '2.7.0.3'
+VERSION = '2.7.5'
 SUPPORT_REC_MODEL = ['CRNN', 'SVTR_LCNet']
 BASE_DIR = os.path.expanduser("~/.paddleocr/")
 
@@ -408,6 +409,7 @@ def parse_args(mMain=True):
     parser.add_argument("--det", type=str2bool, default=True)
     parser.add_argument("--rec", type=str2bool, default=True)
     parser.add_argument("--type", type=str, default='ocr')
+    parser.add_argument("--savefile", type=str2bool, default=False)
     parser.add_argument(
         "--ocr_version",
         type=str,
@@ -515,7 +517,19 @@ def img_decode(content: bytes):
     return cv2.imdecode(np_arr, cv2.IMREAD_UNCHANGED)
 
 
-def check_img(img):
+def check_img(img, alpha_color=(255, 255, 255)):
+    """
+    Check the image data. If it is another type of image file, try to decode it into a numpy array.
+    The inference network requires three-channel images, So the following channel conversions are done
+        single channel image: Gray to RGB R←Y,G←Y,B←Y
+        four channel image: alpha_to_color
+    args:
+        img: image data
+            file format: jpg, png and other image formats that opencv can decode, as well as gif and pdf formats
+            storage type: binary image, net image file, local image file
+        alpha_color: Background color in images in RGBA format
+        return: numpy.array (h, w, 3)
+    """
     if isinstance(img, bytes):
         img = img_decode(img)
     if isinstance(img, str):
@@ -549,13 +563,16 @@ def check_img(img):
         if img is None:
             logger.error("error in loading image:{}".format(image_file))
             return None
+    # single channel image array.shape:h,w
     if isinstance(img, np.ndarray) and len(img.shape) == 2:
         img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-
+    # four channel image array.shape:h,w,c
+    if isinstance(img, np.ndarray) and len(img.shape) == 3 and img.shape[2] == 4:
+        img = alpha_to_color(img, alpha_color)
     return img
 
 
-class PaddleOCR(predict_system.TextSystem):
+class PaddleOCR(TextSystem):
     def __init__(self, **kwargs):
         """
         paddleocr package
@@ -616,17 +633,11 @@ class PaddleOCR(predict_system.TextSystem):
         super().__init__(params)
         self.page_num = params.page_num
 
-    def ocr(self,
-            img,
-            det=True,
-            rec=True,
-            cls=True,
-            bin=False,
-            inv=False,
-            alpha_color=(255, 255, 255)):
+    def ocr(self, img, det=True, rec=True, cls=True, bin=False, inv=False, alpha_color=(255, 255, 255)):
         """
         OCR with PaddleOCR
-        args：
+        
+        args:
             img: img for OCR, support ndarray, img_path and list or ndarray
             det: use text detection or not. If False, only rec will be exec. Default is True
             rec: use text recognition or not. If False, only det will be exec. Default is True
@@ -644,12 +655,13 @@ class PaddleOCR(predict_system.TextSystem):
                 'Since the angle classifier is not initialized, it will not be used during the forward process'
             )
 
-        img = check_img(img)
+        img = check_img(img, alpha_color)
         # for infer pdf file
         if isinstance(img, list):
             if self.page_num > len(img) or self.page_num == 0:
-                self.page_num = len(img)
-            imgs = img[:self.page_num]
+                imgs = img
+            else:
+                imgs = img[:self.page_num]
         else:
             imgs = [img]
 
@@ -761,8 +773,8 @@ class PPStructure(StructureSystem):
         logger.debug(params)
         super().__init__(params)
 
-    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0):
-        img = check_img(img)
+    def __call__(self, img, return_ocr_result_in_table=False, img_idx=0, alpha_color=(255, 255, 255)):
+        img = check_img(img, alpha_color)
         res, _ = super().__call__(
             img, return_ocr_result_in_table, img_idx=img_idx)
         return res
@@ -799,10 +811,25 @@ def main():
                                 inv=args.invert,
                                 alpha_color=args.alphacolor)
             if result is not None:
+                lines = []
                 for idx in range(len(result)):
                     res = result[idx]
                     for line in res:
                         logger.info(line)
+                        val = '['
+                        for box in line[0]:
+                            val += str(box[0]) + ',' + str(box[1]) + ','
+
+                        val = val[:-1]
+                        val += '],' + line[1][0] + ',' + str(line[1][1]) + '\n'
+                        lines.append(val)
+                if args.savefile:
+                    if os.path.exists(args.output) is False:
+                        os.mkdir(args.output)
+                    outfile = args.output + '/' + img_name + '.txt'
+                    with open(outfile,'w',encoding='utf-8') as f:
+                        f.writelines(lines)
+                     
         elif args.type == 'structure':
             img, flag_gif, flag_pdf = check_and_read(img_path)
             if not flag_gif and not flag_pdf:

@@ -83,6 +83,8 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [SPIN](./algorithm_rec_spin_en.md)
 - [x]  [RobustScanner](./algorithm_rec_robustscanner_en.md)
 - [x]  [RFL](./algorithm_rec_rfl_en.md)
+- [x]  [ParseQ](./algorithm_rec_parseq.md)
+- [x]  [CPPD](./algorithm_rec_cppd_en.md)
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
@@ -107,6 +109,9 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |SPIN|ResNet32| 90.00% | rec_r32_gaspin_bilstm_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
 |RobustScanner|ResNet31| 87.77% | rec_r31_robustscanner | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r31_robustscanner.tar)|
 |RFL|ResNetRFL| 88.63% | rec_resnet_rfl_att | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_resnet_rfl_att_train.tar) |
+|ParseQ|VIT| 91.24% | rec_vit_parseq_synth | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz) |
+|CPPD|SVTR-Base| 93.8% | rec_svtrnet_cppd_base_en | [trained model](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_en_train.tar) |
+
 
 <a name="13"></a>
 
