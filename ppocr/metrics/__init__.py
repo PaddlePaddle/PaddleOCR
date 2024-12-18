@@ -22,7 +22,7 @@ import copy
 __all__ = ["build_metric"]
 
 from .det_metric import DetMetric, DetFCEMetric
-from .rec_metric import RecMetric, CNTMetric, CANMetric, LaTeXOCRMetric
+from .rec_metric import RecMetric, CNTMetric, CANMetric, LaTeXOCRMetric, MixTexMetric
 from .cls_metric import ClsMetric
 from .e2e_metric import E2EMetric
 from .distillation_metric import DistillationMetric
@@ -51,6 +51,7 @@ def build_metric(config):
         "CNTMetric",
         "CANMetric",
         "LaTeXOCRMetric",
+        "MixTexMetric",
     ]
 
     config = copy.deepcopy(config)

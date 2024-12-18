@@ -1,0 +1,129 @@
+Global:
+  use_gpu: True
+  epoch_num: 5
+  log_smooth_window: 20     # for logging metrics during training procedure
+  print_batch_step: 10
+  save_model_dir: ./output/MixTex
+  save_epoch_step: 5
+  max_seq_len: 256
+  eval_batch_step: [0, 5]
+  cal_metric_during_train: true
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: false
+  infer_img: doc/datasets/pme_demo/0000013.png
+  infer_mode: False
+  use_space_char: False
+  rec_char_dict_path:  ./ppocr/utils/dict/mixtex
+  save_res_path: ./output/rec/predicts_mixtex.txt
+  d2s_train_image_shape: [3, 400, 500]
+
+
+Optimizer:
+  name: AdamW
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Piecewise
+    decay_epochs : [3]
+    values : [0.0005, 0.00005]
+    warmup_epoch: 5
+  regularizer:
+    name: L2
+    factor: 3.0e-05
+
+Architecture:
+  model_type: rec
+  algorithm: MixTex
+  in_channels: 3
+  Transform:
+  Backbone:
+    name: SwinTransformer_tiny_patch4_window7_224
+    img_size: 224
+    patch_size: 4
+    num_classes: 25678           # class num of vob
+    input_channel: 1
+    is_predict: False
+    is_export: False
+  Head:
+    name: RobertHead
+    pad_value: -100
+    is_export: False
+    decoder_args:
+      vocab_size: 25681
+      cross_attend: True
+      rel_pos_bias: False
+      use_scalenorm: False
+      attention_probs_dropout_prob: 0.1
+      bos_token_id: 0
+      chunk_size_feed_forward: 0
+      diversity_penalty: 0.0
+      do_sample: False
+      eos_token_id: 2
+      hidden_act: gelu
+      hidden_dropout_prob: 0.1
+      hidden_size: 768
+      max_length: 20
+      max_position_embeddings: 3000
+      min_length: 0
+      num_attention_heads: 12
+      num_hidden_layers: 4
+      pad_token_id: 1
+      temperature: 1.0
+      tie_word_embeddings: True
+      top_k: 50
+      top_p: 1.0
+      intermediate_size: 3072
+      type_vocab_size: 1
+      initializer_range: 0.02
+
+
+Loss:
+  name: LaTeXOCRLoss
+
+PostProcess:
+  name: MixTexDecode
+  rec_char_dict_path: ./ppocr/utils/dict/mixtex
+
+Metric:
+  name: MixTexMetric
+  main_indicator: exp_rate
+  cal_blue_score: True
+
+Train:
+  dataset:
+    name: MixTexDataSet
+    data_dir: ./data/Pseudo-Latext-ZhEn
+    batch_size_per_pair: 24
+    transforms:
+    - RecResizeImg:
+        image_shape: [3, 400, 500]
+    - RescaleImage:
+        scale: 0.00392156862745098
+    - KeepKeys:
+        keep_keys: ['image']
+  loader:
+    shuffle: True
+    batch_size_per_card: 1
+    drop_last: False
+    num_workers: 0
+
+Eval:
+  dataset:
+    name: MixTexDataSet
+    data_dir: ./data/Pseudo-Latext-ZhEn
+    data:
+    batch_size_per_pair: 24
+    transforms:
+    - RecResizeImg:
+        image_shape: [3, 400, 500]
+    - RescaleImage:
+        scale: 0.00392156862745098
+    - KeepKeys:
+        keep_keys: ['image']
+  loader:
+    shuffle: True
+    batch_size_per_card: 1
+    drop_last: False
+    num_workers: 0

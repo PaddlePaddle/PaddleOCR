@@ -39,6 +39,7 @@ from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
 from ppocr.data.multi_scale_sampler import MultiScaleSampler
 from ppocr.data.latexocr_dataset import LaTeXOCRDataSet
+from ppocr.data.mixtex_dataset import MixTexDataSet
 
 # for PaddleX dataset_type
 TextDetDataset = SimpleDataSet
@@ -97,6 +98,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
         "PubTabTableRecDataset",
         "KieDataset",
         "LaTeXOCRDataSet",
+        "MixTexDataSet",
     ]
     module_name = config[mode]["dataset"]["name"]
     assert module_name in support_dict, Exception(
