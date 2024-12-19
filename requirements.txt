@@ -14,3 +14,4 @@ requests
 albumentations==1.4.10
 # to be compatible with albumentations
 albucore==0.0.13
+packaging
