@@ -1482,3 +1482,36 @@ class UniMERNetDecode(object):
             return text
         label = self.token2str(np.array(label))
         return text, label
+
+
+class MixTexDecode(object):
+    """Convert between latex-symbol and symbol-index"""
+
+    def __init__(self, rec_char_dict_path, **kwargs):
+        super(MixTexDecode, self).__init__()
+        from paddlenlp.transformers.roberta.tokenizer import RobertaTokenizer
+
+        self.tokenizer = RobertaTokenizer.from_pretrained(
+            pretrained_model_name_or_path=rec_char_dict_path
+        )
+
+    def decode(self, tokens):
+        if len(tokens.shape) == 1:
+            tokens = tokens[None, :]
+        dec = [self.tokenizer.decode(tok) for tok in tokens]
+        dec_str_list = [
+            detok.replace("\\[", "\\begin{align*}").replace("\\]", "\\end{align*}")
+            for detok in dec
+        ]
+        return dec_str_list
+
+    def __call__(self, preds, label=None, mode="eval", *args, **kwargs):
+        if mode == "train":
+            preds_idx = np.array(preds.argmax(axis=2))
+            text = self.decode(preds_idx)
+        else:
+            text = self.decode(np.array(preds))
+        if label is None:
+            return text
+        label = self.decode(np.array(label))
+        return text, label

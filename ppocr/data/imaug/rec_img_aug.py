@@ -578,6 +578,19 @@ class RobustScannerRecResizeImg(object):
         return data
 
 
+class RescaleImage(object):
+    def __init__(self, scale, dtype=np.float32, **kwargs):
+        self.scale = scale
+        self.dtype = np.float32
+
+    def __call__(self, data):
+        img = data["image"]
+        rescaled_image = img * self.scale
+        rescaled_image = rescaled_image.astype(self.dtype)
+        data = {"image": rescaled_image}
+        return data
+
+
 def resize_norm_img_sar(img, image_shape, width_downsample_ratio=0.25):
     imgC, imgH, imgW_min, imgW_max = image_shape
     h = img.shape[0]

@@ -42,6 +42,7 @@ from .rec_img_aug import (
     RFLRecResizeImg,
     SVTRRecAug,
     ParseQRecAug,
+    RescaleImage,
 )
 from .ssl_img_aug import SSLRotateResize
 from .randaugment import RandAugment

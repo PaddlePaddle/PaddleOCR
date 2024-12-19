@@ -47,6 +47,7 @@ from .rec_parseq_loss import ParseQLoss
 from .rec_cppd_loss import CPPDLoss
 from .rec_latexocr_loss import LaTeXOCRLoss
 from .rec_unimernet_loss import UniMERNetLoss
+from .rec_mixtex_loss import MixTex
 
 # cls loss
 from .cls_loss import ClsLoss

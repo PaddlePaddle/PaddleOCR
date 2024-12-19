@@ -16,6 +16,14 @@ __all__ = ["build_head"]
 
 
 def build_head(config):
+    """_summary_
+
+    Args:
+        config (dict): config["Architecture"]["Models"][key]["Head"]
+
+    Returns:
+        _type_: _description_
+    """
     # det head
     from .det_db_head import DBHead, PFHeadLocal
     from .det_east_head import EASTHead
@@ -45,6 +53,7 @@ def build_head(config):
     from .rec_parseq_head import ParseQHead
     from .rec_cppd_head import CPPDHead
     from .rec_unimernet_head import UniMERNetHead
+    from .rec_roberta_head import RobertHead
 
     # cls head
     from .cls_head import ClsHead
@@ -89,6 +98,7 @@ def build_head(config):
         "ParseQHead",
         "CPPDHead",
         "UniMERNetHead",
+        "RobertHead",
     ]
 
     if config["name"] == "DRRGHead":
@@ -103,4 +113,5 @@ def build_head(config):
         "head only support {}".format(support_dict)
     )
     module_class = eval(module_name)(**config)
+
     return module_class
