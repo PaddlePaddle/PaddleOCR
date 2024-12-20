@@ -55,7 +55,7 @@ Architecture:
     parallel_step: 3
 
 Loss:
-  name: PPFormulaNet_S
+  name: PPFormulaNet_S_Loss
   parallel_step: 3
 
 PostProcess:

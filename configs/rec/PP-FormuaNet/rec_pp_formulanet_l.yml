@@ -58,7 +58,7 @@ Architecture:
     parallel_step: 0
 
 Loss:
-  name: PPFormulaNet_L
+  name: PPFormulaNet_L_Loss
 
 PostProcess:
   name:  UniMERNetDecode

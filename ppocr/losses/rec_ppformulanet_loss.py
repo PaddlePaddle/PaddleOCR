@@ -15,13 +15,13 @@ import paddle
 import paddle.nn as nn
 
 
-class PPFormulaNet_S(nn.Layer):
+class PPFormulaNet_S_Loss(nn.Layer):
     """
     PP=FormulaNet-S adopt CrossEntropyLoss for network training.
     """
 
     def __init__(self, vocab_size=50000, parallel_step=1):
-        super(PPFormulaNet_S, self).__init__()
+        super(PPFormulaNet_S_Loss, self).__init__()
         self.ignore_index = -100
         self.vocab_size = vocab_size
         self.parallel_step = int(parallel_step)
@@ -44,13 +44,13 @@ class PPFormulaNet_S(nn.Layer):
         }
 
 
-class PPFormulaNet_L(nn.Layer):
+class PPFormulaNet_L_Loss(nn.Layer):
     """
     PPFormulaNet_L adopt CrossEntropyLoss for network training.
     """
 
     def __init__(self, vocab_size=50000):
-        super(PPFormulaNet_L, self).__init__()
+        super(PPFormulaNet_L_Loss, self).__init__()
         self.ignore_index = -100
         self.vocab_size = vocab_size
         self.pad_token_id = 1
