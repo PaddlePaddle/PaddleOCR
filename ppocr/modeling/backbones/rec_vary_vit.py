@@ -27,6 +27,7 @@ from paddle.nn.initializer import (
     TruncatedNormal,
     XavierUniform,
 )
+from ppocr.modeling.backbones.rec_donut_swin import DonutSwinModelOutput
 
 zeros_ = Constant(value=0.0)
 ones_ = Constant(value=1.0)
@@ -90,6 +91,7 @@ class ImageEncoderViT(nn.Layer):
         rel_pos_zero_init: bool = True,
         window_size: int = 0,
         global_attn_indexes: Tuple[int, ...] = (),
+        is_formula: bool = False,
     ) -> None:
         """
         Args:
@@ -168,6 +170,7 @@ class ImageEncoderViT(nn.Layer):
         self.net_3 = nn.Conv2D(
             512, 1024, kernel_size=3, stride=2, padding=1, bias_attr=False
         )
+        self.is_formula = is_formula
 
     def forward(self, x):
         x = self.patch_embed(x)
@@ -177,6 +180,8 @@ class ImageEncoderViT(nn.Layer):
             x = blk(x)
         x = self.neck(x.transpose([0, 3, 1, 2]))
         x = self.net_2(x)
+        if self.is_formula:
+            x = self.net_3(x)
         return x
 
 
@@ -492,6 +497,7 @@ def _build_vary(
     encoder_num_heads,
     encoder_global_attn_indexes,
     image_size,
+    is_formula=False,
 ):
     prompt_embed_dim = 256
     vit_patch_size = 16
@@ -509,6 +515,7 @@ def _build_vary(
         global_attn_indexes=encoder_global_attn_indexes,
         window_size=14,
         out_chans=prompt_embed_dim,
+        is_formula=is_formula,
     )
     return image_encoder
 
@@ -543,3 +550,67 @@ class Vary_VIT_B(nn.Layer):
         cnn_feature = self.vision_tower_high(pixel_values)
         cnn_feature = cnn_feature.flatten(2).transpose([0, 2, 1])
         return cnn_feature
+
+
+class Vary_VIT_B_Formula(nn.Layer):
+    def __init__(
+        self,
+        in_channels=3,
+        image_size=768,
+        encoder_embed_dim=768,
+        encoder_depth=12,
+        encoder_num_heads=12,
+        encoder_global_attn_indexes=[2, 5, 8, 11],
+    ):
+        """
+        Vary_VIT_B_Formula
+        Args:
+            in_channels (int): Number of input channels. Default is 3 (for RGB images).
+            image_size (int): Size of the input image. Default is 768.
+            encoder_embed_dim (int): Dimension of the encoder's embedding. Default is 768.
+            encoder_depth (int): Number of layers (depth) in the encoder. Default is 12.
+            encoder_num_heads (int): Number of attention heads in the encoder. Default is 12.
+            encoder_global_attn_indexes (list): List of indices specifying which encoder layers use global attention. Default is [2, 5, 8, 11].
+        Returns:
+            model: nn.Layer. Specific `Vary_VIT_B_Formula` model with defined architecture.
+        """
+        super(Vary_VIT_B_Formula, self).__init__()
+
+        self.vision_tower_high = _build_vary(
+            encoder_embed_dim=encoder_embed_dim,
+            encoder_depth=encoder_depth,
+            encoder_num_heads=encoder_num_heads,
+            encoder_global_attn_indexes=[2, 5, 8, 11],
+            image_size=image_size,
+            is_formula=True,
+        )
+        self.mm_projector_vary = nn.Linear(1024, 1024)
+        self.out_channels = 1024
+
+    def forward(self, input_data):
+        if self.training:
+            pixel_values, label, attention_mask = input_data
+        else:
+            if isinstance(input_data, list):
+                pixel_values = input_data[0]
+            else:
+                pixel_values = input_data
+        num_channels = pixel_values.shape[1]
+        if num_channels == 1:
+            pixel_values = paddle.repeat_interleave(pixel_values, repeats=3, axis=1)
+
+        cnn_feature = self.vision_tower_high(pixel_values)
+        cnn_feature = cnn_feature.flatten(2).transpose([0, 2, 1])
+
+        cnn_feature = self.mm_projector_vary(cnn_feature)
+        donut_swin_output = DonutSwinModelOutput(
+            last_hidden_state=cnn_feature,
+            pooler_output=None,
+            hidden_states=None,
+            attentions=None,
+            reshaped_hidden_states=None,
+        )
+        if self.training:
+            return donut_swin_output, label, attention_mask
+        else:
+            return donut_swin_output

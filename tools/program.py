@@ -333,7 +333,12 @@ def train(
                         preds = model(batch)
                     elif algorithm in ["CAN"]:
                         preds = model(batch[:3])
-                    elif algorithm in ["LaTeXOCR", "UniMERNet"]:
+                    elif algorithm in [
+                        "LaTeXOCR",
+                        "UniMERNet",
+                        "PP-FormulaNet-S",
+                        "PP-FormulaNet-L",
+                    ]:
                         preds = model(batch)
                     else:
                         preds = model(images)
@@ -350,7 +355,12 @@ def train(
                     preds = model(batch)
                 elif algorithm in ["CAN"]:
                     preds = model(batch[:3])
-                elif algorithm in ["LaTeXOCR", "UniMERNet"]:
+                elif algorithm in [
+                    "LaTeXOCR",
+                    "UniMERNet",
+                    "PP-FormulaNet-S",
+                    "PP-FormulaNet-L",
+                ]:
                     preds = model(batch)
                 else:
                     preds = model(images)
@@ -379,6 +389,10 @@ def train(
                     eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
                 elif algorithm in ["UniMERNet"]:
                     model_type = "unimernet"
+                    post_result = post_process_class(preds[0], batch[1], mode="train")
+                    eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
+                elif algorithm in ["PP-FormulaNet-S", "PP-FormulaNet-L"]:
+                    model_type = "pp_formulanet"
                     post_result = post_process_class(preds[0], batch[1], mode="train")
                     eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
                 else:
@@ -677,7 +691,7 @@ def eval(
                     preds = model(batch)
                 elif model_type in ["can"]:
                     preds = model(batch[:3])
-                elif model_type in ["latexocr", "unimernet"]:
+                elif model_type in ["latexocr", "unimernet", "pp_formulanet"]:
                     preds = model(batch)
                 elif model_type in ["sr"]:
                     preds = model(batch)
@@ -705,7 +719,7 @@ def eval(
                 eval_class(preds, batch_numpy)
             elif model_type in ["can"]:
                 eval_class(preds[0], batch_numpy[2:], epoch_reset=(idx == 0))
-            elif model_type in ["latexocr", "unimernet"]:
+            elif model_type in ["latexocr", "unimernet", "pp_formulanet"]:
                 post_result = post_process_class(preds, batch[1], "eval")
                 eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
             else:
@@ -855,6 +869,8 @@ def preprocess(is_train=False):
         "LaTeXOCR",
         "UniMERNet",
         "SLANeXt",
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-L",
     ]
 
     if use_xpu:
