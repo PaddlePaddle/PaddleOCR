@@ -20,7 +20,6 @@
 
 此外，需要安装额外的依赖：
 ```shell
-apt-get install sudo
 sudo apt-get update
 sudo apt-get install libmagickwand-dev
 pip install -r docs/algorithm/formula_recognition/requirements.txt

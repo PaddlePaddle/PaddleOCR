@@ -372,6 +372,8 @@ nav:
     - 公式识别算法:
       - CAN: algorithm/formula_recognition/algorithm_rec_can.md
       - LaTeX-OCR: algorithm/formula_recognition/algorithm_rec_latex_ocr.md
+      - UniMERNet: algorithm/formula_recognition/algorithm_rec_unimernet.md
+      - PP-FormulaNet: algorithm/formula_recognition/algorithm_rec_ppformulanet.md
     - 端到端OCR算法:
       - PGNet: algorithm/end_to_end/algorithm_e2e_pgnet.md
     - 表格识别算法:
