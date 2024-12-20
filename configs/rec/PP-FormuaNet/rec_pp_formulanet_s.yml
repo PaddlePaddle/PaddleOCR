@@ -15,7 +15,9 @@ Global:
   infer_img: doc/datasets/pme_demo/0000013.png
   infer_mode: False
   use_space_char: False
-  rec_char_dict_path:  ppocr/utils/dict/unimernet_tokenizer
+  rec_char_dict_path: &rec_char_dict_path  ppocr/utils/dict/unimernet_tokenizer
+  max_new_tokens: &max_new_tokens 1024
+  input_size: &input_size [384, 384]
   save_res_path: ./output/rec/predicts_unimernet_latexocr.txt
   allow_resize_largeImg: False
   start_ema: True
@@ -40,7 +42,7 @@ Architecture:
 
   Head:
     name: PPFormulaNet_Head
-    max_new_tokens: 1024
+    max_new_tokens:  *max_new_tokens
     decoder_start_token_id: 0
     decoder_ffn_dim: 1536
     decoder_hidden_size: 384
@@ -60,7 +62,7 @@ Loss:
 
 PostProcess:
   name:  UniMERNetDecode
-  rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
+  rec_char_dict_path: *rec_char_dict_path
 
 Metric:
   name: LaTeXOCRMetric
@@ -74,12 +76,12 @@ Train:
     label_file_list: ["./ocr_rec_latexocr_dataset_example/train.txt"]
     transforms:
       - UniMERNetImgDecode:
-          input_size: [384, 384]
+          input_size: *input_size
       - UniMERNetTrainTransform: 
       - LatexImageFormat:
       - UniMERNetLabelEncode:
-          rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
-          max_seq_len: 1024
+          rec_char_dict_path: *rec_char_dict_path
+          max_seq_len: *max_new_tokens
       - KeepKeys:
           keep_keys: ['image', 'label', 'attention_mask']
 
@@ -97,12 +99,12 @@ Eval:
     label_file_list: ["./ocr_rec_latexocr_dataset_example/val.txt"]
     transforms:
       - UniMERNetImgDecode:
-          input_size: [384, 384]
+          input_size:  *input_size
       - UniMERNetTestTransform:
       - LatexImageFormat:
       - UniMERNetLabelEncode:
-          max_seq_len: 1024
-          rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
+          max_seq_len: *max_new_tokens
+          rec_char_dict_path: *rec_char_dict_path
       - KeepKeys:
           keep_keys: ['image', 'label', 'attention_mask', 'filename']
   loader:

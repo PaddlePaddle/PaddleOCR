@@ -15,7 +15,9 @@ Global:
   infer_img: doc/datasets/pme_demo/0000013.png
   infer_mode: False
   use_space_char: False
-  rec_char_dict_path:  ppocr/utils/dict/unimernet_tokenizer
+  rec_char_dict_path: &rec_char_dict_path ppocr/utils/dict/unimernet_tokenizer
+  input_size: &input_size [192, 672]
+  max_seq_len: &max_seq_len 1024
   save_res_path: ./output/rec/predicts_unimernet_plus_config_latexocr.txt
   allow_resize_largeImg: False
 
@@ -59,7 +61,7 @@ Loss:
 
 PostProcess:
   name:  UniMERNetDecode
-  rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
+  rec_char_dict_path: *rec_char_dict_path
 
 Metric:
   name: LaTeXOCRMetric
@@ -73,12 +75,12 @@ Train:
     label_file_list: ["./train_data/UniMERNet/train_unimernet_1M.txt"]
     transforms:
       - UniMERNetImgDecode:
-          input_size: [192, 672]
+          input_size: *input_size
       - UniMERNetTrainTransform: 
       - UniMERNetImageFormat:
       - UniMERNetLabelEncode:
-          rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
-          max_seq_len: 1024
+          rec_char_dict_path: *rec_char_dict_path
+          max_seq_len: *max_seq_len
       - KeepKeys:
           keep_keys: ['image', 'label', 'attention_mask']
   loader:
@@ -95,12 +97,12 @@ Eval:
     label_file_list: ["./train_data/UniMERNet/test_unimernet_cpe.txt"]
     transforms:
       - UniMERNetImgDecode:
-          input_size: [192, 672]
+          input_size: *input_size
       - UniMERNetTestTransform:
       - UniMERNetImageFormat:
       - UniMERNetLabelEncode:
-          max_seq_len: 1024
-          rec_char_dict_path: ppocr/utils/dict/unimernet_tokenizer
+          max_seq_len: *max_seq_len
+          rec_char_dict_path: *rec_char_dict_path
       - KeepKeys:
           keep_keys: ['image', 'label', 'attention_mask']
   loader:

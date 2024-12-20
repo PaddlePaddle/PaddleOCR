@@ -26,6 +26,7 @@ class PPFormulaNet_S_Loss(nn.Layer):
         self.vocab_size = vocab_size
         self.parallel_step = int(parallel_step)
         self.pad_token_id = 1
+        # ignore padding characters during training
         self.cross = nn.CrossEntropyLoss(
             reduction="mean", ignore_index=self.ignore_index
         )
@@ -54,7 +55,7 @@ class PPFormulaNet_L_Loss(nn.Layer):
         self.ignore_index = -100
         self.vocab_size = vocab_size
         self.pad_token_id = 1
-        # 训练时是否忽略 padding？
+        # ignore padding characters during training
         self.cross = nn.CrossEntropyLoss(
             reduction="mean", ignore_index=self.ignore_index
         )
