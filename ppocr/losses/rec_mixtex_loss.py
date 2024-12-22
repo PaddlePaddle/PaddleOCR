@@ -30,14 +30,15 @@ class MixTexLoss(nn.Layer):
 
     def __init__(self):
         super(MixTexLoss, self).__init__()
-        self.ignore_index = -100
+        self.ignore_index = 1
         self.cross = nn.CrossEntropyLoss(
             reduction="mean", ignore_index=self.ignore_index
         )
 
     def forward(self, preds, batch):
         word_probs = preds
-        labels = batch[1][:, 1:]
+        labels = batch[1]
+        labels = paddle.to_tensor(labels, dtype=paddle.int32)
         word_loss = self.cross(
             paddle.reshape(word_probs, [-1, word_probs.shape[-1]]),
             paddle.reshape(labels, [-1]),

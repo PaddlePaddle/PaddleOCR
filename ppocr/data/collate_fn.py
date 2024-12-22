@@ -133,6 +133,20 @@ class LaTeXOCRCollator(object):
         return images, labels, attention_mask
 
 
+class MixTexCollator(object):
+    """
+    batch: [
+        image [batch_size, channel, maxHinbatch, maxWinbatch]
+        label [batch_size, maxLabelLen]
+        ...
+    ]
+    """
+
+    def __call__(self, batch):
+        images, labels = batch[0]
+        return images, labels
+
+
 class UniMERNetCollator(object):
     """
     batch: [

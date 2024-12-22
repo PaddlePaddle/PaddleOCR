@@ -1,21 +1,21 @@
 Global:
-  use_gpu: True
-  epoch_num: 5
+  use_gpu: False
+  epoch_num: 2
   log_smooth_window: 20     # for logging metrics during training procedure
   print_batch_step: 10
   save_model_dir: ./output/MixTex
   save_epoch_step: 5
-  max_seq_len: 256
+  max_seq_len: 768
   eval_batch_step: [0, 5]
   cal_metric_during_train: true
   pretrained_model:
   checkpoints:
-  save_inference_dir:
+  save_inference_dir: 
   use_visualdl: false
   infer_img: doc/datasets/pme_demo/0000013.png
   infer_mode: False
   use_space_char: False
-  rec_char_dict_path:  ./PaddleOCR/ppocr/utils/dict/mixtex
+  rec_char_dict_path:  ./ppocr/utils/dict/mixtex
   save_res_path: ./output/rec/predicts_mixtex.txt
   d2s_train_image_shape: [3, 400, 500]
 
@@ -28,7 +28,7 @@ Optimizer:
     name: Piecewise
     decay_epochs : [3]
     values : [0.0005, 0.00005]
-    warmup_epoch: 5
+    warmup_epoch: 1
   regularizer:
     name: L2
     factor: 3.0e-05
@@ -43,12 +43,12 @@ Architecture:
     img_size: 224
     patch_size: 4
     num_classes: 25678           # class num of vob
-    input_channel: 1
+    input_channel: 
     is_predict: False
     is_export: False
   Head:
     name: RobertHead
-    pad_value: -100
+    pad_value: 1
     is_export: False
     decoder_args:
       vocab_size: 25681
@@ -64,14 +64,13 @@ Architecture:
       hidden_act: gelu
       hidden_dropout_prob: 0.1
       hidden_size: 768
-      max_length: 20
-      max_position_embeddings: 3000
-      min_length: 0
+      max_position_embeddings: 770
+      # max_position_embeddings: 1000
       num_attention_heads: 12
       num_hidden_layers: 4
       pad_token_id: 1
       temperature: 1.0
-      tie_word_embeddings: True
+      # tie_word_embeddings: True
       top_k: 50
       top_p: 1.0
       intermediate_size: 3072
@@ -80,11 +79,11 @@ Architecture:
 
 
 Loss:
-  name: LaTeXOCRLoss
+  name: MixTexLoss
 
 PostProcess:
   name: MixTexDecode
-  rec_char_dict_path: ./PaddleOCR/ppocr/utils/dict/mixtex
+  rec_char_dict_path: ./ppocr/utils/dict/mixtex
 
 Metric:
   name: MixTexMetric
@@ -94,7 +93,7 @@ Metric:
 Train:
   dataset:
     name: MixTexDataSet
-    data_dir: ./data/Pseudo-Latext-ZhEn
+    data_dir: D:/study/dl/MixTex/data/Pseudo-Latext-ZhEn
     batch_size_per_pair: 24
     transforms:
     - RecResizeImg:
@@ -105,14 +104,15 @@ Train:
         keep_keys: ['image']
   loader:
     shuffle: True
-    batch_size_per_card: 1
+    batch_size_per_card: 10
     drop_last: False
     num_workers: 0
+    collate_fn: MixTexCollator
 
 Eval:
   dataset:
     name: MixTexDataSet
-    data_dir: ./data/Pseudo-Latext-ZhEn
+    data_dir: D:/study/dl/MixTex/data/Pseudo-Latext-ZhEn
     data:
     batch_size_per_pair: 24
     transforms:
@@ -124,6 +124,6 @@ Eval:
         keep_keys: ['image']
   loader:
     shuffle: True
-    batch_size_per_card: 1
+    batch_size_per_card: 10
     drop_last: False
     num_workers: 0

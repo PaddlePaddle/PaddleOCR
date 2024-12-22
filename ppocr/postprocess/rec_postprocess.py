@@ -1499,6 +1499,13 @@ class MixTexDecode(object):
         if len(tokens.shape) == 1:
             tokens = tokens[None, :]
         dec = [self.tokenizer.decode(tok) for tok in tokens]
+        # dec = []
+        # for tok in tokens:
+        #     try:
+        #         dec.append(self.tokenizer.decode(tok))
+        #     except Exception as e:
+        #         print(f'tok: {tok}')
+        #         raise e
         dec_str_list = [
             detok.replace("\\[", "\\begin{align*}").replace("\\]", "\\end{align*}")
             for detok in dec
@@ -1506,11 +1513,12 @@ class MixTexDecode(object):
         return dec_str_list
 
     def __call__(self, preds, label=None, mode="eval", *args, **kwargs):
+        preds_idx = np.array(preds.argmax(axis=2))
         if mode == "train":
-            preds_idx = np.array(preds.argmax(axis=2))
             text = self.decode(preds_idx)
         else:
-            text = self.decode(np.array(preds))
+            text = self.decode(preds_idx)
+
         if label is None:
             return text
         label = self.decode(np.array(label))

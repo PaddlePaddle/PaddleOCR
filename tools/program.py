@@ -246,6 +246,7 @@ def train(
     train_stats = TrainingStats(log_smooth_window, ["lr"])
     model_average = False
     model.train()
+    print(model)
 
     use_srn = config["Architecture"]["algorithm"] == "SRN"
     extra_input_models = [
@@ -357,6 +358,7 @@ def train(
                 loss = loss_class(preds, batch)
                 avg_loss = loss["loss"]
                 avg_loss.backward()
+
                 optimizer.step()
 
             optimizer.clear_grad()
@@ -375,6 +377,10 @@ def train(
                     eval_class(preds[0], batch[2:], epoch_reset=(idx == 0))
                 elif algorithm in ["LaTeXOCR"]:
                     model_type = "latexocr"
+                    post_result = post_process_class(preds, batch[1], mode="train")
+                    eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
+                elif algorithm in ["MixTex"]:
+                    model_type = "mixtex"
                     post_result = post_process_class(preds, batch[1], mode="train")
                     eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
                 elif algorithm in ["UniMERNet"]:
@@ -705,7 +711,7 @@ def eval(
                 eval_class(preds, batch_numpy)
             elif model_type in ["can"]:
                 eval_class(preds[0], batch_numpy[2:], epoch_reset=(idx == 0))
-            elif model_type in ["latexocr", "unimernet"]:
+            elif model_type in ["latexocr", "unimernet", "mixtex"]:
                 post_result = post_process_class(preds, batch[1], "eval")
                 eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
             else:
@@ -853,6 +859,7 @@ def preprocess(is_train=False):
         "ParseQ",
         "CPPD",
         "LaTeXOCR",
+        "MixTex",
         "UniMERNet",
         "SLANeXt",
     ]
@@ -867,6 +874,7 @@ def preprocess(is_train=False):
         device = "gcu:{0}".format(os.getenv("FLAGS_selected_gcus", 0))
     else:
         device = "gpu:{}".format(dist.ParallelEnv().dev_id) if use_gpu else "cpu"
+
     check_device(use_gpu, use_xpu, use_npu, use_mlu, use_gcu)
 
     device = paddle.set_device(device)

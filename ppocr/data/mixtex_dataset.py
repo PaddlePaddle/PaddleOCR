@@ -15,6 +15,7 @@
 import numpy as np
 from datasets import load_dataset
 
+import paddle
 from paddle.io import Dataset
 from .imaug.label_ops import MixTexLabelEncode
 from .imaug import transform, create_operators
@@ -58,10 +59,19 @@ class MixTexDataSet(Dataset):
             truncation=True,
         ).input_ids
         labels = [
-            label if label != self.tokenizer.tokenizer.pad_token_id else -100
+            label if label != self.tokenizer.tokenizer.pad_token_id else 1
             for label in target
         ]
-        # labels = [label if label != self.tokenizer.pad_token_id else -100 for label in target]
+        labels = np.array(labels)
+
+        pixel_values = np.array(pixel_values).reshape(
+            (
+                len(pixel_values),
+                pixel_values[0].shape[0],
+                pixel_values[0].shape[1],
+                pixel_values[0].shape[2],
+            )
+        )
         return (pixel_values, labels)
 
     def __len__(self):

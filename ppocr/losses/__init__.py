@@ -47,7 +47,7 @@ from .rec_parseq_loss import ParseQLoss
 from .rec_cppd_loss import CPPDLoss
 from .rec_latexocr_loss import LaTeXOCRLoss
 from .rec_unimernet_loss import UniMERNetLoss
-from .rec_mixtex_loss import MixTex
+from .rec_mixtex_loss import MixTexLoss
 
 # cls loss
 from .cls_loss import ClsLoss
@@ -111,6 +111,7 @@ def build_loss(config):
         "ParseQLoss",
         "CPPDLoss",
         "LaTeXOCRLoss",
+        "MixTexLoss",
         "UniMERNetLoss",
     ]
     config = copy.deepcopy(config)

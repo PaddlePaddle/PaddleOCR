@@ -334,6 +334,7 @@ class MixTexMetric(object):
             if prediction == labels:
                 line_right += 1
             distance = compute_edit_distance(prediction, labels)
+
             lev_dist.append(Levenshtein.normalized_distance(prediction, labels))
             if distance <= 1:
                 e1 += 1

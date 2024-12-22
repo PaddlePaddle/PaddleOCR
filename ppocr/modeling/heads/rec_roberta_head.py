@@ -48,7 +48,7 @@ class RobertHead(RobertaForMaskedLM):
         type_vocab_size = config["decoder_args"].pop("type_vocab_size")
         initializer_range = config["decoder_args"].pop("initializer_range")
         pad_token_id = config["decoder_args"].pop("pad_token_id")
-        layer_norm_eps = config["decoder_args"].pop("layer_norm_eps", None)
+        layer_norm_eps = config["decoder_args"].pop("layer_norm_eps", 1e-5)
         cls_token_id = config["decoder_args"].pop("cls_token_id", None)
         robert_config = RobertaConfig(
             vocab_size=vocab_size,
@@ -156,22 +156,9 @@ class RobertHead(RobertaForMaskedLM):
             return_dict if return_dict is not None else self.config.use_return_dict
         )
         input_ids = input_ids.astype(paddle.int64)
-        try:
-            outputs = self.roberta(
-                input_ids,
-                # token_type_ids=token_type_ids,
-                # position_ids=position_ids,
-                # attention_mask=attention_mask,
-                # inputs_embeds=inputs_embeds,
-                # output_attentions=output_attentions,
-                # output_hidden_states=output_hidden_states,
-                # return_dict=return_dict,
-            )
-        except Exception as e:
-            print(
-                f"token_type_ids: {token_type_ids}, position_ids: {position_ids}, attention_mask: {attention_mask}, inputs_embeds: {inputs_embeds}, output_attentions: {output_attentions}, output_hidden_states: {output_hidden_states}, return_dict: {return_dict}"
-            )
-            raise e
+        outputs = self.roberta(
+            input_ids,
+        )
 
         sequence_output = outputs[0]
         prediction_scores = self.lm_head(sequence_output)

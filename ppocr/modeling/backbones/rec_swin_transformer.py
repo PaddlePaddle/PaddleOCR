@@ -1464,9 +1464,17 @@ class PatchEmbed(nn.Layer):
         if len(x) == 1:
             x = x[0]
         else:
-            x = np.array(x)
+            try:
+                x = np.array(x)
+            except Exception as e:
+                print(f"len(x): {len(x)}, x: {x}")
+                raise e
             x = x.reshape((x.shape[0], x.shape[2], x.shape[3], x.shape[4]))
             x = paddle.to_tensor(x, dtype=np.int16)
+
+        if len(x.shape) == 3:
+            x = x.reshape((1, x.shape[0], x.shape[1], x.shape[2]))
+
         B, C, H, W = x.shape
 
         x, _ = pading_for_not_divisible(x, H, W, self.patch_size, "BCHW")
@@ -1543,6 +1551,7 @@ class SwinTransformer(nn.Layer):
         super(SwinTransformer, self).__init__()
 
         self.num_classes = num_classes = class_num
+        print(f"self.num_classes: {self.num_classes}")
         self.num_layers = len(depths)
         self.embed_dim = embed_dim
         self.ape = ape
@@ -1611,11 +1620,11 @@ class SwinTransformer(nn.Layer):
         self.norm = norm_layer(self.num_features)
         self.avgpool = nn.AdaptiveAvgPool1D(1)
 
-        self.head = (
-            Linear(self.num_features, num_classes)
-            if self.num_classes > 0
-            else nn.Identity()
-        )
+        # self.head = (
+        #     Linear(self.num_features, num_classes)
+        #     if self.num_classes > 0
+        #     else nn.Identity()
+        # )
 
         self.apply(self._init_weights)
 
@@ -1644,7 +1653,7 @@ class SwinTransformer(nn.Layer):
 
     def forward(self, x):
         x = self.forward_features(x)
-        x = self.head(x)
+        # x = self.head(x)
         return x
 
     def flops(self):
@@ -1702,6 +1711,7 @@ def SwinTransformer_tiny_patch4_window7_224(
         num_heads=[3, 6, 12, 24],
         window_size=7,
         drop_path_rate=0.2,  # if imagenet22k or imagenet22kto1k, set drop_path_rate=0.1
+        class_num=kwargs["num_classes"],
         **kwargs,
     )
 
