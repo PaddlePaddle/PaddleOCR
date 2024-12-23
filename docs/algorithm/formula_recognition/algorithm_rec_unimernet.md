@@ -20,7 +20,6 @@
 
 此外，需要安装额外的依赖：
 ```shell
-apt-get install sudo
 sudo apt-get update
 sudo apt-get install libmagickwand-dev
 pip install -r docs/algorithm/formula_recognition/requirements.txt
@@ -107,7 +106,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/tr
 ```
 python3  -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/train.py -c configs/rec/rec_unimernet.yml \
   -o Global.eval_batch_step=[0,{length_of_dataset//batch_size//4}] \
-  -o Global.pretrained_model=./pretrain_models/texify.pdparams
+   Global.pretrained_model=./pretrain_models/texify.pdparams
 ```
 
 ### 3.4 评估

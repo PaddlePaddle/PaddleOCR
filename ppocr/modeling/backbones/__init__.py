@@ -70,7 +70,8 @@ def build_backbone(config, model_type):
         from .rec_vit_parseq import ViTParseQ
         from .rec_repvit import RepSVTR
         from .rec_svtrv2 import SVTRv2
-        from .rec_vary_vit import Vary_VIT_B
+        from .rec_vary_vit import Vary_VIT_B, Vary_VIT_B_Formula
+        from .rec_pphgnetv2 import PPHGNetV2_B4
 
         support_dict = [
             "MobileNetV1Enhance",
@@ -99,6 +100,8 @@ def build_backbone(config, model_type):
             "HybridTransformer",
             "DonutSwinModel",
             "Vary_VIT_B",
+            "PPHGNetV2_B4",
+            "Vary_VIT_B_Formula",
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet

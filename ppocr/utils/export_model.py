@@ -1,4 +1,4 @@
-# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2024 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,6 +63,12 @@ def dump_infer_config(config, path, logger):
             common_dynamic_shapes = {
                 "x": [[1, 3, 224, 224], [1, 3, 448, 448], [8, 3, 1280, 1280]]
             }
+        elif arch_config["algorithm"] == "UniMERNet":
+            common_dynamic_shapes = {"x": [[1, 3, 192, 672]]}
+        elif arch_config["algorithm"] == "PP-FormulaNet-L":
+            common_dynamic_shapes = {"x": [[1, 3, 768, 768]]}
+        elif arch_config["algorithm"] == "PP-FormulaNet-S":
+            common_dynamic_shapes = {"x": [[1, 3, 384, 384]]}
         else:
             common_dynamic_shapes = None
 
@@ -91,6 +97,25 @@ def dump_infer_config(config, path, logger):
             with open(tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
                 character_dict = json.load(tokenizer_config_handle)
                 postprocess["character_dict"] = character_dict
+    elif config["Architecture"].get("algorithm") in [
+        "UniMERNet",
+        "PP-FormulaNet-L",
+        "PP-FormulaNet-S",
+    ]:
+        tokenizer_file = config["Global"].get("rec_char_dict_path")
+        fast_tokenizer_file = os.path.join(tokenizer_file, "tokenizer.json")
+        tokenizer_config_file = os.path.join(tokenizer_file, "tokenizer_config.json")
+        postprocess["character_dict"] = {}
+        if fast_tokenizer_file is not None:
+            with open(fast_tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["fast_tokenizer_file"] = character_dict
+        if tokenizer_config_file is not None:
+            with open(
+                tokenizer_config_file, encoding="utf-8"
+            ) as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["tokenizer_config_file"] = character_dict
     else:
         if config["Global"].get("character_dict_path") is not None:
             with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
@@ -208,6 +233,31 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             paddle.static.InputSpec(shape=[None, 1, None, None], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "UniMERNet":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 192, 672], dtype="float32")
+            ],
+            full_graph=True,
+        )
+    elif arch_config["algorithm"] == "PP-FormulaNet-L":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 768, 768], dtype="float32")
+            ],
+            full_graph=True,
+        )
+    elif arch_config["algorithm"] == "PP-FormulaNet-S":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 384, 384], dtype="float32")
+            ],
+            full_graph=True,
+        )
+
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [
             paddle.static.InputSpec(shape=[None, 512], dtype="int64"),  # input_ids
@@ -367,6 +417,14 @@ def export(config, base_model=None, save_path=None):
     if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
         config["Architecture"]["Backbone"]["is_predict"] = True
         config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
+    if config["Architecture"].get("algorithm") in ["UniMERNet"]:
+        config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
+    if config["Architecture"].get("algorithm") in [
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-L",
+    ]:
         config["Architecture"]["Head"]["is_export"] = True
     if base_model is not None:
         model = base_model

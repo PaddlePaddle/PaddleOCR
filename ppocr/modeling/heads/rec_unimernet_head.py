@@ -217,6 +217,8 @@ class MBartConfig(object):
         forced_eos_token_id=2,
         _attn_implementation="eager",
         hidden_size=1024,
+        use_parallel=False,
+        parallel_step=2,
         is_export=False,
         **kwargs,
     ):
@@ -251,6 +253,8 @@ class MBartConfig(object):
         self.is_encoder_decoder = is_encoder_decoder
         self.forced_eos_token_id = forced_eos_token_id
         self._attn_implementation = _attn_implementation
+        self.use_parallel = use_parallel
+        self.parallel_step = parallel_step
         self.is_export = is_export
         super().__init__()
 
@@ -310,6 +314,22 @@ class AttentionMaskConverter:
             [bsz, 1, tgt_len, tgt_len + past_key_values_length]
         )
 
+    def to_4d_export(
+        self,
+        attention_mask_2d,
+        query_length,
+        dtype,
+        key_value_length,
+        is_export=False,
+    ):
+        input_shape = (attention_mask_2d.shape[0], query_length)
+        expanded_attn_mask = self._expand_mask(
+            attention_mask_2d, dtype, tgt_len=input_shape[-1]
+        )
+        expanded_4d_mask = expanded_attn_mask
+
+        return expanded_4d_mask
+
     def to_4d(
         self,
         attention_mask_2d,
@@ -321,7 +341,6 @@ class AttentionMaskConverter:
 
         input_shape = (attention_mask_2d.shape[0], query_length)
         causal_4d_mask = None
-
         if (input_shape[-1] > 1 or self.sliding_window is not None) and self.is_causal:
             if key_value_length is None:
                 raise ValueError(
@@ -373,6 +392,33 @@ class AttentionMaskConverter:
 
 def _prepare_4d_attention_mask(mask, dtype, tgt_len=None):
     return AttentionMaskConverter._expand_mask(mask=mask, dtype=dtype, tgt_len=tgt_len)
+
+
+def _prepare_4d_causal_attention_mask_export(
+    attention_mask,
+    input_shape,
+    inputs_embeds,
+    past_key_values_length,
+    sliding_window=None,
+    is_export=False,
+):
+
+    attn_mask_converter = AttentionMaskConverter(
+        is_causal=True, sliding_window=sliding_window
+    )
+    key_value_length = input_shape[-1] + past_key_values_length
+
+    shape = attention_mask.shape
+    len_shape = len(shape)
+
+    attention_mask = attn_mask_converter.to_4d_export(
+        attention_mask,
+        input_shape[-1],
+        key_value_length=key_value_length,
+        dtype=inputs_embeds.dtype,
+        is_export=is_export,
+    )
+    return attention_mask
 
 
 def _prepare_4d_causal_attention_mask(
@@ -1681,7 +1727,7 @@ class CustomMBartDecoder(MBartDecoder):
             )
         else:
             if self.is_export:
-                attention_mask = _prepare_4d_causal_attention_mask(
+                attention_mask = _prepare_4d_causal_attention_mask_export(
                     attention_mask,
                     input_shape,
                     inputs_embeds,
@@ -1721,6 +1767,7 @@ class CustomMBartDecoder(MBartDecoder):
         hidden_states = nn.functional.dropout(
             hidden_states, p=self.dropout, training=self.training
         )
+
         if self.gradient_checkpointing and self.training:
             if use_cache:
                 print(
@@ -1828,7 +1875,6 @@ class CustomMBartDecoder(MBartDecoder):
                     ]
                     if v is not None
                 )
-
         return BaseModelOutputWithPastAndCrossAttentions(
             last_hidden_state=hidden_states,
             past_key_values=next_cache,
@@ -2237,6 +2283,21 @@ class UniMERNetHead(nn.Layer):
         }
         return input_dict
 
+    def prepare_inputs_for_generation_export(
+        self,
+        past_key_values=None,
+        attention_mask=None,
+        use_cache=None,
+        encoder_outputs=None,
+        **kwargs,
+    ):
+
+        input_dict = {
+            "decoder_attention_mask": None,
+            "use_cache": use_cache,
+        }
+        return input_dict
+
     def _extract_past_from_model_output(
         self, outputs: ModelOutput, standardize_cache_format: bool = False
     ):
@@ -2434,9 +2495,10 @@ class UniMERNetHead(nn.Layer):
     @paddle.no_grad()
     def generate_export(
         self,
+        encoder_outputs,
         model_kwargs,
     ):
-        batch_size = model_kwargs["encoder_outputs"]["last_hidden_state"].shape[0]
+        batch_size = encoder_outputs["last_hidden_state"].shape[0]
         generation_config = {
             "decoder_start_token_id": 0,
             "bos_token_id": 0,
@@ -2447,26 +2509,33 @@ class UniMERNetHead(nn.Layer):
             decoder_start_token_id=generation_config["decoder_start_token_id"],
             bos_token_id=generation_config["bos_token_id"],
         )
+        input_ids = input_ids.reshape([-1, 1])
+        decoder_input_ids = input_ids
         model_kwargs["key use_cache"] = True
         batch_size, cur_len = input_ids.shape
 
         if "inputs_embeds" in model_kwargs:
             cur_len = model_kwargs["inputs_embeds"].shape[1]
-        model_kwargs["cache_position"] = paddle.arange(cur_len)
+        cache_position = paddle.arange(cur_len)
         pad_token_id = self.pad_token_id
         eos_token_id = [self.eos_token_id]
         eos_token = self.eos_token_id
         unfinished_sequences = paddle.ones([batch_size], dtype=paddle.int64)
         i_idx = paddle.full([], 0)
-
+        past_key_values = []
+        for i in range(8):
+            init_arr = paddle.zeros([batch_size, 16, 0, 64])
+            paddle.jit.api.set_dynamic_shape(init_arr, [-1, -1, -1, -1])
+            cache = (init_arr, init_arr, init_arr, init_arr)
+            past_key_values.append(cache)
+        idx = 0
         while i_idx < paddle.to_tensor(self.max_seq_len):
 
-            model_inputs = self.prepare_inputs_for_generation(input_ids, **model_kwargs)
-            decoder_input_ids = model_inputs["decoder_input_ids"]
+            model_inputs = self.prepare_inputs_for_generation_export(
+                past_key_values=past_key_values, **model_kwargs
+            )
             decoder_attention_mask = model_inputs["decoder_attention_mask"]
-            encoder_outputs = model_inputs["encoder_outputs"]
-            past_key_values = model_inputs["past_key_values"]
-
+            decoder_attention_mask = paddle.ones(input_ids.shape)
             paddle.jit.api.set_dynamic_shape(decoder_input_ids, [-1, -1])
             paddle.jit.api.set_dynamic_shape(decoder_attention_mask, [-1, -1])
 
@@ -2489,6 +2558,10 @@ class UniMERNetHead(nn.Layer):
                     1 - unfinished_sequences
                 )
             input_ids = paddle.concat([input_ids, next_tokens.unsqueeze(1)], axis=-1)
+            past_length = past_key_values[0][0].shape[2]
+            decoder_input_ids = next_tokens.unsqueeze(1)
+            past_key_values = outputs.past_key_values
+            cache_position = cache_position[-1:] + 1
             unfinished_sequences = unfinished_sequences & ~self.stopping_criteria(
                 input_ids
             ).cast(paddle.int64)
@@ -2500,6 +2573,7 @@ class UniMERNetHead(nn.Layer):
                 ).all()
             ):
                 break
+
             i_idx += 1
         return input_ids
 
@@ -2578,15 +2652,20 @@ class UniMERNetHead(nn.Layer):
         """
         if not self.training:
             encoder_outputs = inputs
-            model_kwargs = {
-                "output_attentions": False,
-                "output_hidden_states": False,
-                "use_cache": True,
-                "encoder_outputs": encoder_outputs,
-            }
             if self.is_export:
-                word_pred = self.generate_export(model_kwargs)
+                model_kwargs = {
+                    "output_attentions": False,
+                    "output_hidden_states": False,
+                    "use_cache": True,
+                }
+                word_pred = self.generate_export(encoder_outputs, model_kwargs)
             else:
+                model_kwargs = {
+                    "output_attentions": False,
+                    "output_hidden_states": False,
+                    "use_cache": True,
+                    "encoder_outputs": encoder_outputs,
+                }
                 word_pred = self.generate(model_kwargs)
 
             return word_pred

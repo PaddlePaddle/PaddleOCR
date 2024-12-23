@@ -1,12 +1,12 @@
 Global:
   use_gpu: True
-  epoch_num: 40
+  epoch_num: 10
   log_smooth_window: 10
   print_batch_step: 10
-  save_model_dir: ./output/rec/unimernet/
-  save_epoch_step: 5
-  # evaluation is run every 37880 iterations after the 0th iteration
-  eval_batch_step: [0, 37880]
+  save_model_dir: ./output/rec/pp_formulanet_l/
+  save_epoch_step: 2
+  # evaluation is run every  417  iterations (1 epoch)(batch_size = 24)   # max_seq_len: 1024
+  eval_batch_step: [0,  417 ]
   cal_metric_during_train: True
   pretrained_model:
   checkpoints:
@@ -16,10 +16,11 @@ Global:
   infer_mode: False
   use_space_char: False
   rec_char_dict_path: &rec_char_dict_path ppocr/utils/dict/unimernet_tokenizer
-  input_size: &input_size [192, 672]
-  max_seq_len: &max_seq_len 1024
-  save_res_path: ./output/rec/predicts_unimernet_plus_config_latexocr.txt
+  max_new_tokens: &max_new_tokens 1024
+  input_size: &input_size [768, 768]
+  save_res_path: ./output/rec/predicts_unimernet_latexocr.txt
   allow_resize_largeImg: False
+  start_ema: True
 
 Optimizer:
   name: AdamW
@@ -28,40 +29,42 @@ Optimizer:
   weight_decay: 0.05
   lr:
     name: LinearWarmupCosine
-    learning_rate: 1e-4
-    start_lr: 1e-5
-    min_lr: 1e-8
-    warmup_steps: 5000
+    learning_rate: 0.0001
 
 Architecture:
   model_type: rec
-  algorithm: UniMERNet
+  algorithm: PP-FormulaNet-L
   in_channels: 3
   Transform:
   Backbone:
-    name: DonutSwinModel
-    hidden_size : 1024
-    num_layers: 4
-    num_heads: [4, 8, 16, 32]
-    add_pooling_layer: True
-    use_mask_token: False
+    name: Vary_VIT_B_Formula
+    image_size: 768 
+    encoder_embed_dim: 768
+    encoder_depth: 12
+    encoder_num_heads: 12
+    encoder_global_attn_indexes: [2, 5, 8, 11]
   Head:
-    name: UniMERNetHead
-    max_new_tokens: 1536
+    name: PPFormulaNet_Head
+    max_new_tokens: *max_new_tokens
     decoder_start_token_id: 0
+    decoder_ffn_dim: 2048
+    decoder_hidden_size: 512
+    decoder_layers: 8
     temperature: 0.2
     do_sample: False
     top_p: 0.95 
     encoder_hidden_size: 1024
     is_export: False
-    length_aware: True 
+    length_aware: False 
+    use_parallel: False
+    parallel_step: 0
 
 Loss:
-  name: UniMERNetLoss
+  name: PPFormulaNet_L_Loss
 
 PostProcess:
   name:  UniMERNetDecode
-  rec_char_dict_path: *rec_char_dict_path
+  rec_char_dict_path:  *rec_char_dict_path
 
 Metric:
   name: LaTeXOCRMetric
@@ -71,43 +74,44 @@ Metric:
 Train:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/UniMERNet/
-    label_file_list: ["./train_data/UniMERNet/train_unimernet_1M.txt"]
+    data_dir: ./ocr_rec_latexocr_dataset_example
+    label_file_list: ["./ocr_rec_latexocr_dataset_example/train.txt"]
     transforms:
       - UniMERNetImgDecode:
           input_size: *input_size
       - UniMERNetTrainTransform: 
-      - UniMERNetImageFormat:
+      - LatexImageFormat:
       - UniMERNetLabelEncode:
           rec_char_dict_path: *rec_char_dict_path
-          max_seq_len: *max_seq_len
+          max_seq_len:  *max_new_tokens
       - KeepKeys:
           keep_keys: ['image', 'label', 'attention_mask']
+
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 7
+    batch_size_per_card: 6
     num_workers: 0
     collate_fn: UniMERNetCollator
 
 Eval:
   dataset:
     name: SimpleDataSet
-    data_dir: ./train_data/UniMERNet/UniMER-Test/cpe
-    label_file_list: ["./train_data/UniMERNet/test_unimernet_cpe.txt"]
+    data_dir: ./ocr_rec_latexocr_dataset_example
+    label_file_list: ["./ocr_rec_latexocr_dataset_example/val.txt"]
     transforms:
       - UniMERNetImgDecode:
           input_size: *input_size
       - UniMERNetTestTransform:
-      - UniMERNetImageFormat:
+      - LatexImageFormat:
       - UniMERNetLabelEncode:
-          max_seq_len: *max_seq_len
+          max_seq_len:  *max_new_tokens
           rec_char_dict_path: *rec_char_dict_path
       - KeepKeys:
-          keep_keys: ['image', 'label', 'attention_mask']
+          keep_keys: ['image', 'label', 'attention_mask', 'filename']
   loader:
     shuffle: False
     drop_last: False
-    batch_size_per_card: 30
+    batch_size_per_card: 10
     num_workers: 0
     collate_fn: UniMERNetCollator
