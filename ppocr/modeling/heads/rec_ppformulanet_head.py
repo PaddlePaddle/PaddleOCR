@@ -424,6 +424,7 @@ class CustomMBartDecoder(MBartDecoder):
         output_hidden_states=None,
         return_dict=None,
     ):
+        self.is_export = False if self.training else True
 
         output_attentions = (
             output_attentions
@@ -1370,6 +1371,7 @@ class PPFormulaNet_Head(UniMERNetHead):
 
     # forward for export
     def forward(self, inputs, targets=None):
+        self.is_export = False if self.training else True
         if not self.training:
             encoder_outputs = inputs
             model_kwargs = {
