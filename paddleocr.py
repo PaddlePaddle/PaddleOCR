@@ -340,11 +340,11 @@ MODEL_URLS = {
         "PP-StructureV2": {
             "table": {
                 "en": {
-                    "url": "https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar",
+                    "url": "https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/en_ppstructure_mobile_v2.0_SLANet_infer.tar",
                     "dict_path": "ppocr/utils/dict/table_structure_dict.txt",
                 },
                 "ch": {
-                    "url": "https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar",
+                    "url": "https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/ch_ppstructure_mobile_v2.0_SLANet_infer.tar",
                     "dict_path": "ppocr/utils/dict/table_structure_dict_ch.txt",
                 },
             },
