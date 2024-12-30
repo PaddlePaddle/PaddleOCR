@@ -21,7 +21,7 @@ https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && ta
 ## Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
 ## Download the ultra-lightweight English table inch model and unzip it
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/en_ppstructure_mobile_v2.0_SLANet_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/en_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
 ## Download the layout model of publaynet dataset and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_infer.tar
@@ -65,7 +65,7 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar 
 ## Download the recognition model of the ultra-lightweight Chinese PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
 ## Download the ultra-lightweight Chinese table inch model and unzip it
-wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/ch_ppstructure_mobile_v2.0_SLANet_infer.tar
+wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 ## Download the layout model of CDLA dataset and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_fgd_layout_cdla_infer.tar
