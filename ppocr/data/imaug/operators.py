@@ -50,8 +50,7 @@ class DecodeImage(object):
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         elif self.img_mode == "RGB":
             assert img.shape[2] == 3, "invalid shape of image[%s]" % (img.shape)
-            img = img[:, :, ::-1]
-
+     
         if self.channel_first:
             img = img.transpose((2, 0, 1))
 
