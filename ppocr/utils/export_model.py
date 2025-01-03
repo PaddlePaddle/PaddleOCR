@@ -331,6 +331,12 @@ def export_single_model(
     model = dynamic_to_static(model, arch_config, logger, input_shape)
 
     if quanter is None:
+        try:
+            import encryption  # Attempt to import the encryption module for AIStudio's encryption model
+        except (
+            ModuleNotFoundError
+        ):  # Encryption is not needed if the module cannot be imported
+            print("Skipping import of the encryption module")
         if config["Global"].get("export_with_pir", False):
             paddle_version = version.parse(paddle.__version__)
             assert (
@@ -347,6 +353,18 @@ def export_single_model(
         quanter.save_quantized_model(model, save_path)
     logger.info("inference model is saved to {}".format(save_path))
     return
+
+
+def convert_bn(model):
+    for n, m in model.named_children():
+        if isinstance(m, nn.SyncBatchNorm):
+            bn = nn.BatchNorm2D(
+                m._num_features, m._momentum, m._epsilon, m._weight_attr, m._bias_attr
+            )
+            bn.set_dict(m.state_dict())
+            setattr(model, n, bn)
+        else:
+            convert_bn(m)
 
 
 def export(config, base_model=None, save_path=None):
@@ -424,6 +442,7 @@ def export(config, base_model=None, save_path=None):
     else:
         model = build_model(config["Architecture"])
         load_model(config, model, model_type=config["Architecture"]["model_type"])
+    convert_bn(model)
     model.eval()
 
     if not save_path:

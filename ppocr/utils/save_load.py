@@ -26,6 +26,14 @@ import paddle
 from ppocr.utils.logging import get_logger
 from ppocr.utils.network import maybe_download_params
 
+try:
+    import encryption  # Attempt to import the encryption module for AIStudio's encryption model
+
+    encrypted = encryption.is_encryption_needed()
+except ImportError:
+    get_logger().warning("Skipping import of the encryption module.")
+    encrypted = False  # Encryption is not needed if the module cannot be imported
+
 __all__ = ["load_model"]
 
 
@@ -278,13 +286,11 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
     else:
         train_results = {}
         train_results["model_name"] = config["Global"]["pdx_model_name"]
-        label_dict_path = os.path.abspath(
-            config["Global"].get("character_dict_path", "")
-        )
+        label_dict_path = config["Global"].get("character_dict_path", "")
         if label_dict_path != "":
+            label_dict_path = os.path.abspath(label_dict_path)
             if not os.path.exists(label_dict_path):
                 label_dict_path = ""
-            label_dict_path = label_dict_path
         train_results["label_dict"] = label_dict_path
         train_results["train_log"] = "train.log"
         train_results["visualdl_log"] = ""
@@ -305,9 +311,20 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
             raise ValueError("No metric score found.")
         train_results["models"]["best"]["score"] = metric_score
         for tag in save_model_tag:
-            train_results["models"]["best"][tag] = os.path.join(
-                prefix, f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states"
-            )
+            if tag == "pdparams" and encrypted:
+                train_results["models"]["best"][tag] = os.path.join(
+                    prefix,
+                    (
+                        f"{prefix}.encrypted.{tag}"
+                        if tag != "pdstates"
+                        else f"{prefix}.states"
+                    ),
+                )
+            else:
+                train_results["models"]["best"][tag] = os.path.join(
+                    prefix,
+                    f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
+                )
         for tag in save_inference_tag:
             train_results["models"]["best"][tag] = os.path.join(
                 prefix,
@@ -329,9 +346,20 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
             metric_score = 0
         train_results["models"][f"last_{1}"]["score"] = metric_score
         for tag in save_model_tag:
-            train_results["models"][f"last_{1}"][tag] = os.path.join(
-                prefix, f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states"
-            )
+            if tag == "pdparams" and encrypted:
+                train_results["models"][f"last_{1}"][tag] = os.path.join(
+                    prefix,
+                    (
+                        f"{prefix}.encrypted.{tag}"
+                        if tag != "pdstates"
+                        else f"{prefix}.states"
+                    ),
+                )
+            else:
+                train_results["models"][f"last_{1}"][tag] = os.path.join(
+                    prefix,
+                    f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
+                )
         for tag in save_inference_tag:
             train_results["models"][f"last_{1}"][tag] = os.path.join(
                 prefix,
