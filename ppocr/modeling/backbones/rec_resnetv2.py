@@ -88,14 +88,14 @@ class StdConv2dSame(nn.Conv2D):
         self.export = is_export
         self.eps = eps
 
-        running_mean = paddle.zeros([self._out_channels], dtype="float32")
-        running_variance = paddle.ones([self._out_channels], dtype="float32")
+        self.running_mean = paddle.zeros([self._out_channels], dtype="float32")
+        self.running_variance = paddle.ones([self._out_channels], dtype="float32")
         orin_shape = self.weight.shape
         
         new_weight = F.batch_norm(
             self.weight.reshape([1, self._out_channels, -1]),
-            running_mean,
-            running_variance,
+            self.running_mean,
+            self.running_variance,
             momentum=0.0,
             epsilon=self.eps,
             use_global_stats=False,
@@ -116,8 +116,8 @@ class StdConv2dSame(nn.Conv2D):
             weight = paddle.reshape(
                 F.batch_norm(
                     self.weight.reshape([1, self._out_channels, -1]),
-                    running_mean,
-                    running_variance,
+                    self.running_mean,
+                    self.running_variance,
                     training=True,
                     momentum=0.0,
                     epsilon=self.eps,
