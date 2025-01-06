@@ -5479,7 +5479,7 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
 <span class="normal"><a href="#__codelineno-13-19">19</a></span>
 <span class="normal"><a href="#__codelineno-13-20">20</a></span>
 <span class="normal"><a href="#__codelineno-13-21">21</a></span>
-<span class="normal"><a href="#__codelineno-13-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-13-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="c1"># Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="c1"># 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`</span>
@@ -5492,7 +5492,7 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
 </span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a>
 </span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
@@ -5553,7 +5553,7 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
 <span class="normal"><a href="#__codelineno-15-41">41</a></span>
 <span class="normal"><a href="#__codelineno-15-42">42</a></span>
 <span class="normal"><a href="#__codelineno-15-43">43</a></span>
-<span class="normal"><a href="#__codelineno-15-44">44</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-15-44">44</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="c1"># Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="c1"># 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`</span>
@@ -5570,10 +5570,10 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
 </span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
 </span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18"></a><span class="kn">import</span> <span class="nn">fitz</span>
-</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20"></a><span class="kn">import</span> <span class="nn">cv2</span>
-</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18"></a><span class="kn">import</span><span class="w"> </span><span class="nn">fitz</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22"></a><span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23"></a><span class="k">with</span> <span class="n">fitz</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
 </span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24"></a>    <span class="k">for</span> <span class="n">pg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">PAGE_NUM</span><span class="p">):</span>
@@ -5629,8 +5629,8 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
 <span class="normal"><a href="#__codelineno-16-25">25</a></span>
 <span class="normal"><a href="#__codelineno-16-26">26</a></span>
 <span class="normal"><a href="#__codelineno-16-27">27</a></span>
-<span class="normal"><a href="#__codelineno-16-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="normal"><a href="#__codelineno-16-28">28</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="c1"># 初始化OCR引擎</span>
 </span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">)</span>
@@ -5684,7 +5684,7 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
     <span class="md-icon" title="आखिरी अपडेट">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     
@@ -5694,7 +5694,7 @@ paddleocr默认使用PP-OCRv4模型(<code>--ocr_version PP-OCRv4</code>)，如�
     <span class="md-icon" title="बनाया था">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     

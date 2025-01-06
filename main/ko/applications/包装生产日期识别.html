@@ -5708,13 +5708,13 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-9-72">72</a></span>
 <span class="normal"><a href="#__codelineno-9-73">73</a></span>
 <span class="normal"><a href="#__codelineno-9-74">74</a></span>
-<span class="normal"><a href="#__codelineno-9-75">75</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">random</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="kn">import</span> <span class="nn">os</span>
+<span class="normal"><a href="#__codelineno-9-75">75</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">choice</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="n">cropus_num</span> <span class="o">=</span> <span class="mi">2000</span> <span class="c1">#设置语料数量</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="k">def</span> <span class="nf">get_cropus</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_cropus</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>    <span class="c1"># 随机生成年份</span>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>    <span class="n">year</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a>    <span class="c1"># 随机生成月份</span>
@@ -5875,7 +5875,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-18-12">12</a></span>
 <span class="normal"><a href="#__codelineno-18-13">13</a></span>
 <span class="normal"><a href="#__codelineno-18-14">14</a></span>
-<span class="normal"><a href="#__codelineno-18-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="kn">import</span> <span class="nn">random</span>
+<span class="normal"><a href="#__codelineno-18-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 </span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="n">abspath</span> <span class="o">=</span> <span class="s1">&#39;/home/aistudio/text_renderer/output/default/&#39;</span>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4"></a>
@@ -6052,8 +6052,8 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-28-36">36</a></span>
 <span class="normal"><a href="#__codelineno-28-37">37</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="c1"># 获取有效预测</span>
 </span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2"></a>
-</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="kn">import</span> <span class="nn">json</span>
-</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="kn">import</span> <span class="nn">re</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 </span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5"></a>
 </span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6"></a><span class="n">zh_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;[</span><span class="se">\u4e00</span><span class="s1">-</span><span class="se">\u9fa5</span><span class="s1">]+&#39;</span><span class="p">)</span>  <span class="c1">#正则表达式，筛选字符是否包含中文</span>
 </span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7"></a>
@@ -6158,9 +6158,9 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-29-67">67</a></span>
 <span class="normal"><a href="#__codelineno-29-68">68</a></span>
 <span class="normal"><a href="#__codelineno-29-69">69</a></span>
-<span class="normal"><a href="#__codelineno-29-70">70</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="kn">import</span> <span class="nn">cv2</span>
-</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2"></a><span class="kn">import</span> <span class="nn">json</span>
-</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="normal"><a href="#__codelineno-29-70">70</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4"></a>
 </span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5"></a><span class="n">PATH</span> <span class="o">=</span> <span class="s1">&#39;/home/aistudio/PaddleOCR/inference_results/&#39;</span>  <span class="c1">#数据原始路径</span>
 </span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6"></a><span class="n">SAVE_PATH</span> <span class="o">=</span> <span class="s1">&#39;/home/aistudio/mining_images/&#39;</span>             <span class="c1">#裁剪后数据保存路径</span>
@@ -6173,7 +6173,7 @@ You're not viewing the latest version.
 </span><span id="__span-29-13"><a id="__codelineno-29-13" name="__codelineno-29-13"></a><span class="n">f_label</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">label_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
 </span><span id="__span-29-14"><a id="__codelineno-29-14" name="__codelineno-29-14"></a>
 </span><span id="__span-29-15"><a id="__codelineno-29-15" name="__codelineno-29-15"></a>
-</span><span id="__span-29-16"><a id="__codelineno-29-16" name="__codelineno-29-16"></a><span class="k">def</span> <span class="nf">get_rotate_crop_image</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+</span><span id="__span-29-16"><a id="__codelineno-29-16" name="__codelineno-29-16"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_rotate_crop_image</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
 </span><span id="__span-29-17"><a id="__codelineno-29-17" name="__codelineno-29-17"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="__span-29-18"><a id="__codelineno-29-18" name="__codelineno-29-18"></a><span class="sd">    根据检测结果points，从输入图像img中裁剪出相应的区域</span>
 </span><span id="__span-29-19"><a id="__codelineno-29-19" name="__codelineno-29-19"></a><span class="sd">    &quot;&quot;&quot;</span>
@@ -6201,7 +6201,7 @@ You're not viewing the latest version.
 </span><span id="__span-29-41"><a id="__codelineno-29-41" name="__codelineno-29-41"></a>        <span class="n">dst_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">dst_img</span><span class="p">)</span>
 </span><span id="__span-29-42"><a id="__codelineno-29-42" name="__codelineno-29-42"></a>    <span class="k">return</span> <span class="n">dst_img</span>
 </span><span id="__span-29-43"><a id="__codelineno-29-43" name="__codelineno-29-43"></a>
-</span><span id="__span-29-44"><a id="__codelineno-29-44" name="__codelineno-29-44"></a><span class="k">def</span> <span class="nf">crop_and_get_filelist</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>
+</span><span id="__span-29-44"><a id="__codelineno-29-44" name="__codelineno-29-44"></a><span class="k">def</span><span class="w"> </span><span class="nf">crop_and_get_filelist</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>
 </span><span id="__span-29-45"><a id="__codelineno-29-45" name="__codelineno-29-45"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fin</span><span class="p">:</span>
 </span><span id="__span-29-46"><a id="__codelineno-29-46" name="__codelineno-29-46"></a>        <span class="n">lines</span> <span class="o">=</span> <span class="n">fin</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 </span><span id="__span-29-47"><a id="__codelineno-29-47" name="__codelineno-29-47"></a>
@@ -6321,7 +6321,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="마지막 업데이트">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     
@@ -6331,7 +6331,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="작성일">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     

@@ -5387,7 +5387,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-2-19">19</a></span>
 <span class="normal"><a href="#__codelineno-2-20">20</a></span>
 <span class="normal"><a href="#__codelineno-2-21">21</a></span>
-<span class="normal"><a href="#__codelineno-2-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-2-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="c1"># Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="c1"># 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。</span>
@@ -5400,7 +5400,7 @@ You're not viewing the latest version.
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
@@ -5446,7 +5446,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-4-17">17</a></span>
 <span class="normal"><a href="#__codelineno-4-18">18</a></span>
 <span class="normal"><a href="#__codelineno-4-19">19</a></span>
-<span class="normal"><a href="#__codelineno-4-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span>  <span class="c1"># need to run only once to download and load model into memory</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs/11.jpg&#39;</span>
@@ -5457,7 +5457,7 @@ You're not viewing the latest version.
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a>
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
@@ -5492,7 +5492,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-6-6">6</a></span>
 <span class="normal"><a href="#__codelineno-6-7">7</a></span>
 <span class="normal"><a href="#__codelineno-6-8">8</a></span>
-<span class="normal"><a href="#__codelineno-6-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span>
+<span class="normal"><a href="#__codelineno-6-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># need to run only once to download and load model into memory</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words/ch/word_1.jpg&#39;</span>
@@ -5524,7 +5524,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-8-14">14</a></span>
 <span class="normal"><a href="#__codelineno-8-15">15</a></span>
 <span class="normal"><a href="#__codelineno-8-16">16</a></span>
-<span class="normal"><a href="#__codelineno-8-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span>  <span class="c1"># need to run only once to download and load model into memory</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs/11.jpg&#39;</span>
@@ -5535,7 +5535,7 @@ You're not viewing the latest version.
 </span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a>
 </span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">draw_ocr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">txts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_path</span><span class="o">=</span><span class="s1">&#39;/path/to/PaddleOCR/doc/fonts/simfang.ttf&#39;</span><span class="p">)</span>
@@ -5567,7 +5567,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-10-6">6</a></span>
 <span class="normal"><a href="#__codelineno-10-7">7</a></span>
 <span class="normal"><a href="#__codelineno-10-8">8</a></span>
-<span class="normal"><a href="#__codelineno-10-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span>
+<span class="normal"><a href="#__codelineno-10-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span>  <span class="c1"># need to run only once to download and load model into memory</span>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words/ch/word_1.jpg&#39;</span>
@@ -5591,7 +5591,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-12-6">6</a></span>
 <span class="normal"><a href="#__codelineno-12-7">7</a></span>
 <span class="normal"><a href="#__codelineno-12-8">8</a></span>
-<span class="normal"><a href="#__codelineno-12-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span>
+<span class="normal"><a href="#__codelineno-12-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># need to run only once to download and load model into memory</span>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words/ch/word_1.jpg&#39;</span>
@@ -5692,7 +5692,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-28-20">20</a></span>
 <span class="normal"><a href="#__codelineno-28-21">21</a></span>
 <span class="normal"><a href="#__codelineno-28-22">22</a></span>
-<span class="normal"><a href="#__codelineno-28-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-28-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2"></a>
 </span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a><span class="c1"># 模型路径下必须含有model和params文件</span>
 </span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">det_model_dir</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{your_det_model_dir}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rec_model_dir</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{your_rec_model_dir}</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -5706,7 +5706,7 @@ You're not viewing the latest version.
 </span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13"></a>
 </span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-28-16"><a id="__codelineno-28-16" name="__codelineno-28-16"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-28-17"><a id="__codelineno-28-17" name="__codelineno-28-17"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-28-18"><a id="__codelineno-28-18" name="__codelineno-28-18"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
@@ -5746,7 +5746,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-30-20">20</a></span>
 <span class="normal"><a href="#__codelineno-30-21">21</a></span>
 <span class="normal"><a href="#__codelineno-30-22">22</a></span>
-<span class="normal"><a href="#__codelineno-30-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span><span class="p">,</span> <span class="n">download_with_progressbar</span>
+<span class="normal"><a href="#__codelineno-30-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span><span class="p">,</span> <span class="n">download_with_progressbar</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2"></a>
 </span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3"></a><span class="c1"># Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换</span>
 </span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4"></a><span class="c1"># 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。</span>
@@ -5759,7 +5759,7 @@ You're not viewing the latest version.
 </span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12"></a>
 </span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16"></a><span class="n">download_with_progressbar</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="s1">&#39;tmp.jpg&#39;</span><span class="p">)</span>
 </span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;tmp.jpg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
@@ -5801,8 +5801,8 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-32-22">22</a></span>
 <span class="normal"><a href="#__codelineno-32-23">23</a></span>
 <span class="normal"><a href="#__codelineno-32-24">24</a></span>
-<span class="normal"><a href="#__codelineno-32-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="kn">import</span> <span class="nn">cv2</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-32-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3"></a>
 </span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4"></a><span class="c1"># Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换</span>
 </span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5"></a><span class="c1"># 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。</span>
@@ -5817,7 +5817,7 @@ You're not viewing the latest version.
 </span><span id="__span-32-14"><a id="__codelineno-32-14" name="__codelineno-32-14"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-32-15"><a id="__codelineno-32-15" name="__codelineno-32-15"></a>
 </span><span id="__span-32-16"><a id="__codelineno-32-16" name="__codelineno-32-16"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-32-17"><a id="__codelineno-32-17" name="__codelineno-32-17"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-32-17"><a id="__codelineno-32-17" name="__codelineno-32-17"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 </span><span id="__span-32-18"><a id="__codelineno-32-18" name="__codelineno-32-18"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </span><span id="__span-32-19"><a id="__codelineno-32-19" name="__codelineno-32-19"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
 </span><span id="__span-32-20"><a id="__codelineno-32-20" name="__codelineno-32-20"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
@@ -5875,7 +5875,7 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-34-36">36</a></span>
 <span class="normal"><a href="#__codelineno-34-37">37</a></span>
 <span class="normal"><a href="#__codelineno-34-38">38</a></span>
-<span class="normal"><a href="#__codelineno-34-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="kn">from</span> <span class="nn">paddleocr</span> <span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
+<span class="normal"><a href="#__codelineno-34-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
 </span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2"></a>
 </span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3"></a><span class="c1"># Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换</span>
 </span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4"></a><span class="c1"># 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`</span>
@@ -5888,10 +5888,10 @@ You're not viewing the latest version.
 </span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 </span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12"></a>
 </span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13"></a><span class="c1"># 显示结果</span>
-</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14"></a><span class="kn">import</span> <span class="nn">fitz</span>
-</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15"></a><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16"></a><span class="kn">import</span> <span class="nn">cv2</span>
-</span><span id="__span-34-17"><a id="__codelineno-34-17" name="__codelineno-34-17"></a><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14"></a><span class="kn">import</span><span class="w"> </span><span class="nn">fitz</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+</span><span id="__span-34-16"><a id="__codelineno-34-16" name="__codelineno-34-16"></a><span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+</span><span id="__span-34-17"><a id="__codelineno-34-17" name="__codelineno-34-17"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </span><span id="__span-34-18"><a id="__codelineno-34-18" name="__codelineno-34-18"></a><span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
 </span><span id="__span-34-19"><a id="__codelineno-34-19" name="__codelineno-34-19"></a><span class="k">with</span> <span class="n">fitz</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">pdf</span><span class="p">:</span>
 </span><span id="__span-34-20"><a id="__codelineno-34-20" name="__codelineno-34-20"></a>    <span class="k">for</span> <span class="n">pg</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">pageCount</span><span class="p">):</span>
@@ -6129,7 +6129,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="마지막 업데이트">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     
@@ -6139,7 +6139,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="작성일">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月3日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年1月6日</span>
   </span>
 
     
