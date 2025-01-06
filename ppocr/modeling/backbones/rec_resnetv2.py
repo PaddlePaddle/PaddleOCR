@@ -88,8 +88,8 @@ class StdConv2dSame(nn.Conv2D):
         self.export = is_export
         self.eps = eps
 
-        running_mean = paddle.empty([self._out_channels], dtype="float32")
-        running_variance = paddle.empty([self._out_channels], dtype="float32")
+        running_mean = paddle.zeros([self._out_channels], dtype="float32")
+        running_variance = paddle.ones([self._out_channels], dtype="float32")
         orin_shape = self.weight.shape
         
         new_weight = F.batch_norm(
