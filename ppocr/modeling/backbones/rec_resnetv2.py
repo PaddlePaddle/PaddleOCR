@@ -91,7 +91,6 @@ class StdConv2dSame(nn.Conv2D):
         self.running_mean = paddle.zeros([self._out_channels], dtype="float32")
         self.running_variance = paddle.ones([self._out_channels], dtype="float32")
         orin_shape = self.weight.shape
-        
         new_weight = F.batch_norm(
             self.weight.reshape([1, self._out_channels, -1]),
             self.running_mean,
