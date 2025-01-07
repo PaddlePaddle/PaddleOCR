@@ -241,6 +241,14 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
             full_graph=True,
         )
+    elif arch_config["algorithm"] == "SLANeXt":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 512, 512], dtype="float32")
+            ],
+            full_graph=True,
+        )
     elif arch_config["algorithm"] == "PP-FormulaNet-L":
         model = paddle.jit.to_static(
             model,
