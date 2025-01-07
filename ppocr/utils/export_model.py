@@ -1,4 +1,4 @@
-# Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2024 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,11 +16,13 @@ import os
 import yaml
 import json
 import copy
+import shutil
 import paddle
 import paddle.nn as nn
 from paddle.jit import to_static
 
 from collections import OrderedDict
+from packaging import version
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
@@ -39,13 +41,15 @@ def setup_orderdict():
 def dump_infer_config(config, path, logger):
     setup_orderdict()
     infer_cfg = OrderedDict()
+    if not os.path.exists(os.path.dirname(path)):
+        os.makedirs(os.path.dirname(path))
     if config["Global"].get("pdx_model_name", None):
         infer_cfg["Global"] = {"model_name": config["Global"]["pdx_model_name"]}
     if config["Global"].get("uniform_output_enabled", None):
         arch_config = config["Architecture"]
         if arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
             common_dynamic_shapes = {
-                "x": [[1, 3, 48, 320], [1, 3, 48, 320], [8, 3, 48, 320]]
+                "x": [[1, 3, 24, 160], [1, 3, 48, 320], [8, 3, 96, 640]]
             }
         elif arch_config["model_type"] == "det":
             common_dynamic_shapes = {
@@ -53,12 +57,18 @@ def dump_infer_config(config, path, logger):
             }
         elif arch_config["algorithm"] == "SLANet":
             common_dynamic_shapes = {
-                "x": [[1, 3, 32, 32], [1, 3, 64, 448], [8, 3, 192, 672]]
+                "x": [[1, 3, 32, 32], [1, 3, 64, 448], [8, 3, 488, 488]]
             }
         elif arch_config["algorithm"] == "LaTeXOCR":
             common_dynamic_shapes = {
                 "x": [[1, 3, 224, 224], [1, 3, 448, 448], [8, 3, 1280, 1280]]
             }
+        elif arch_config["algorithm"] == "UniMERNet":
+            common_dynamic_shapes = {"x": [[1, 3, 192, 672]]}
+        elif arch_config["algorithm"] == "PP-FormulaNet-L":
+            common_dynamic_shapes = {"x": [[1, 3, 768, 768]]}
+        elif arch_config["algorithm"] == "PP-FormulaNet-S":
+            common_dynamic_shapes = {"x": [[1, 3, 384, 384]]}
         else:
             common_dynamic_shapes = None
 
@@ -87,6 +97,25 @@ def dump_infer_config(config, path, logger):
             with open(tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
                 character_dict = json.load(tokenizer_config_handle)
                 postprocess["character_dict"] = character_dict
+    elif config["Architecture"].get("algorithm") in [
+        "UniMERNet",
+        "PP-FormulaNet-L",
+        "PP-FormulaNet-S",
+    ]:
+        tokenizer_file = config["Global"].get("rec_char_dict_path")
+        fast_tokenizer_file = os.path.join(tokenizer_file, "tokenizer.json")
+        tokenizer_config_file = os.path.join(tokenizer_file, "tokenizer_config.json")
+        postprocess["character_dict"] = {}
+        if fast_tokenizer_file is not None:
+            with open(fast_tokenizer_file, encoding="utf-8") as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["fast_tokenizer_file"] = character_dict
+        if tokenizer_config_file is not None:
+            with open(
+                tokenizer_config_file, encoding="utf-8"
+            ) as tokenizer_config_handle:
+                character_dict = json.load(tokenizer_config_handle)
+                postprocess["character_dict"]["tokenizer_config_file"] = character_dict
     else:
         if config["Global"].get("character_dict_path") is not None:
             with open(config["Global"]["character_dict_path"], encoding="utf-8") as f:
@@ -101,9 +130,7 @@ def dump_infer_config(config, path, logger):
     logger.info("Export inference config file to {}".format(os.path.join(path)))
 
 
-def export_single_model(
-    model, arch_config, save_path, logger, input_shape=None, quanter=None
-):
+def dynamic_to_static(model, arch_config, logger, input_shape=None):
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
@@ -206,6 +233,31 @@ def export_single_model(
             paddle.static.InputSpec(shape=[None, 1, None, None], dtype="float32"),
         ]
         model = to_static(model, input_spec=other_shape)
+    elif arch_config["algorithm"] == "UniMERNet":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 192, 672], dtype="float32")
+            ],
+            full_graph=True,
+        )
+    elif arch_config["algorithm"] == "PP-FormulaNet-L":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 768, 768], dtype="float32")
+            ],
+            full_graph=True,
+        )
+    elif arch_config["algorithm"] == "PP-FormulaNet-S":
+        model = paddle.jit.to_static(
+            model,
+            input_spec=[
+                paddle.static.InputSpec(shape=[-1, 1, 384, 384], dtype="float32")
+            ],
+            full_graph=True,
+        )
+
     elif arch_config["algorithm"] in ["LayoutLM", "LayoutLMv2", "LayoutXLM"]:
         input_spec = [
             paddle.static.InputSpec(shape=[None, 512], dtype="int64"),  # input_ids
@@ -262,13 +314,57 @@ def export_single_model(
         for layer in model.sublayers():
             if hasattr(layer, "rep") and not getattr(layer, "is_repped"):
                 layer.rep()
+    return model
+
+
+def export_single_model(
+    model,
+    arch_config,
+    save_path,
+    logger,
+    yaml_path,
+    config,
+    input_shape=None,
+    quanter=None,
+):
+
+    model = dynamic_to_static(model, arch_config, logger, input_shape)
 
     if quanter is None:
-        paddle.jit.save(model, save_path)
+        try:
+            import encryption  # Attempt to import the encryption module for AIStudio's encryption model
+        except (
+            ModuleNotFoundError
+        ):  # Encryption is not needed if the module cannot be imported
+            print("Skipping import of the encryption module")
+        if config["Global"].get("export_with_pir", False):
+            paddle_version = version.parse(paddle.__version__)
+            assert (
+                paddle_version >= version.parse("3.0.0b2")
+                or paddle_version == version.parse("0.0.0")
+            ) and os.environ.get("FLAGS_enable_pir_api", None) not in ["0", "False"]
+            paddle.jit.save(model, save_path)
+        else:
+            model.forward.rollback()
+            with paddle.pir_utils.OldIrGuard():
+                model = dynamic_to_static(model, arch_config, logger, input_shape)
+                paddle.jit.save(model, save_path)
     else:
         quanter.save_quantized_model(model, save_path)
     logger.info("inference model is saved to {}".format(save_path))
     return
+
+
+def convert_bn(model):
+    for n, m in model.named_children():
+        if isinstance(m, nn.SyncBatchNorm):
+            bn = nn.BatchNorm2D(
+                m._num_features, m._momentum, m._epsilon, m._weight_attr, m._bias_attr
+            )
+            bn.set_dict(m.state_dict())
+            setattr(model, n, bn)
+        else:
+            convert_bn(m)
 
 
 def export(config, base_model=None, save_path=None):
@@ -329,6 +425,14 @@ def export(config, base_model=None, save_path=None):
         config["Architecture"]["Backbone"]["is_predict"] = True
         config["Architecture"]["Backbone"]["is_export"] = True
         config["Architecture"]["Head"]["is_export"] = True
+    if config["Architecture"].get("algorithm") in ["UniMERNet"]:
+        config["Architecture"]["Backbone"]["is_export"] = True
+        config["Architecture"]["Head"]["is_export"] = True
+    if config["Architecture"].get("algorithm") in [
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-L",
+    ]:
+        config["Architecture"]["Head"]["is_export"] = True
     if base_model is not None:
         model = base_model
         if isinstance(model, paddle.DataParallel):
@@ -338,6 +442,7 @@ def export(config, base_model=None, save_path=None):
     else:
         model = build_model(config["Architecture"])
         load_model(config, model, model_type=config["Architecture"]["model_type"])
+    convert_bn(model)
     model.eval()
 
     if not save_path:
@@ -362,7 +467,7 @@ def export(config, base_model=None, save_path=None):
         input_shape = rec_rs[0]["ABINetRecResizeImg"]["image_shape"] if rec_rs else None
     else:
         input_shape = None
-
+    dump_infer_config(config, yaml_path, logger)
     if arch_config["algorithm"] in [
         "Distillation",
     ]:  # distillation model
@@ -370,11 +475,21 @@ def export(config, base_model=None, save_path=None):
         for idx, name in enumerate(model.model_name_list):
             sub_model_save_path = os.path.join(save_path, name, "inference")
             export_single_model(
-                model.model_list[idx], archs[idx], sub_model_save_path, logger
+                model.model_list[idx],
+                archs[idx],
+                sub_model_save_path,
+                logger,
+                yaml_path,
+                config,
             )
     else:
         save_path = os.path.join(save_path, "inference")
         export_single_model(
-            model, arch_config, save_path, logger, input_shape=input_shape
+            model,
+            arch_config,
+            save_path,
+            logger,
+            yaml_path,
+            config,
+            input_shape=input_shape,
         )
-    dump_infer_config(config, yaml_path, logger)

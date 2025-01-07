@@ -111,6 +111,12 @@ def main():
         elif config["Architecture"]["algorithm"] == "UniMERNet":
             model_type = "unimernet"
             config["Metric"]["cal_blue_score"] = True
+        elif config["Architecture"]["algorithm"] in [
+            "PP-FormulaNet-S",
+            "PP-FormulaNet-L",
+        ]:
+            model_type = "pp_formulanet"
+            config["Metric"]["cal_blue_score"] = True
         else:
             model_type = config["Architecture"]["model_type"]
     else:

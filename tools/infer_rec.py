@@ -134,7 +134,11 @@ def main():
             logger.info("infer_img: {}".format(file))
             with open(file, "rb") as f:
                 img = f.read()
-                if config["Architecture"]["algorithm"] in ["UniMERNet"]:
+                if config["Architecture"]["algorithm"] in [
+                    "UniMERNet",
+                    "PP-FormulaNet-S",
+                    "PP-FormulaNet-L",
+                ]:
                     data = {"image": img, "filename": file}
                 else:
                     data = {"image": img}
@@ -192,7 +196,12 @@ def main():
             elif isinstance(post_result, list) and isinstance(post_result[0], int):
                 # for RFLearning CNT branch
                 info = str(post_result[0])
-            elif config["Architecture"]["algorithm"] in ["LaTeXOCR", "UniMERNet"]:
+            elif config["Architecture"]["algorithm"] in [
+                "LaTeXOCR",
+                "UniMERNet",
+                "PP-FormulaNet-S",
+                "PP-FormulaNet-L",
+            ]:
                 info = str(post_result[0])
             else:
                 if len(post_result[0]) >= 2:

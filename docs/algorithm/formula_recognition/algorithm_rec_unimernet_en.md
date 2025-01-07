@@ -21,7 +21,6 @@ Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to co
 
 Furthermore, additional dependencies need to be installed:
 ```shell
-apt-get install sudo
 sudo apt-get update
 sudo apt-get install libmagickwand-dev
 pip install -r docs/algorithm/formula_recognition/requirements.txt
