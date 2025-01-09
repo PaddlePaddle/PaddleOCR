@@ -59,6 +59,10 @@ def dump_infer_config(config, path, logger):
             common_dynamic_shapes = {
                 "x": [[1, 3, 32, 32], [1, 3, 64, 448], [8, 3, 488, 488]]
             }
+        elif arch_config["algorithm"] == "SLANeXt":
+            common_dynamic_shapes = {
+                "x": [[1, 3, 512, 512], [1, 3, 512, 512], [8, 3, 512, 512]]
+            }
         elif arch_config["algorithm"] == "LaTeXOCR":
             common_dynamic_shapes = {
                 "x": [[1, 3, 224, 224], [1, 3, 448, 448], [8, 3, 1280, 1280]]
@@ -251,7 +255,7 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
         model = paddle.jit.to_static(
             model,
             input_spec=[
-                paddle.static.InputSpec(shape=[-1, 1, 512, 512], dtype="float32")
+                paddle.static.InputSpec(shape=[-1, 3, 512, 512], dtype="float32")
             ],
             full_graph=True,
         )
