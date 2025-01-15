@@ -17,7 +17,7 @@ from difflib import SequenceMatcher
 
 import numpy as np
 import string
-from .bleu import compute_blue_score, compute_edit_distance
+from .bleu import compute_bleu_score, compute_edit_distance
 
 
 class RecMetric(object):
@@ -181,12 +181,12 @@ class CANMetric(object):
 
 
 class LaTeXOCRMetric(object):
-    def __init__(self, main_indicator="exp_rate", cal_blue_score=False, **kwargs):
+    def __init__(self, main_indicator="exp_rate", cal_bleu_score=False, **kwargs):
         self.main_indicator = main_indicator
-        self.cal_blue_score = cal_blue_score
+        self.cal_bleu_score = cal_bleu_score
         self.edit_right = []
         self.exp_right = []
-        self.blue_right = []
+        self.bleu_right = []
         self.e1_right = []
         self.e2_right = []
         self.e3_right = []
@@ -194,8 +194,8 @@ class LaTeXOCRMetric(object):
         self.exp_total_num = 0
         self.edit_dist = 0
         self.exp_rate = 0
-        if self.cal_blue_score:
-            self.blue_score = 0
+        if self.cal_bleu_score:
+            self.bleu_score = 0
         self.e1 = 0
         self.e2 = 0
         self.e3 = 0
@@ -227,16 +227,16 @@ class LaTeXOCRMetric(object):
 
         self.edit_dist = sum(lev_dist)  # float
         self.exp_rate = line_right  # float
-        if self.cal_blue_score:
-            self.blue_score = compute_blue_score(word_pred, word_label)
+        if self.cal_bleu_score:
+            self.bleu_score = compute_bleu_score(word_pred, word_label)
         self.e1 = e1
         self.e2 = e2
         self.e3 = e3
         exp_length = len(word_label)
         self.edit_right.append(self.edit_dist)
         self.exp_right.append(self.exp_rate)
-        if self.cal_blue_score:
-            self.blue_right.append(self.blue_score * batch_size)
+        if self.cal_bleu_score:
+            self.bleu_right.append(self.bleu_score * batch_size)
         self.e1_right.append(self.e1)
         self.e2_right.append(self.e2)
         self.e3_right.append(self.e3)
@@ -247,21 +247,21 @@ class LaTeXOCRMetric(object):
         """
         return {
             'edit distance': 0,
-            "blue_score": 0,
+            "bleu_score": 0,
             "exp_rate": 0,
         }
         """
         cur_edit_distance = sum(self.edit_right) / self.exp_total_num
         cur_exp_rate = sum(self.exp_right) / self.exp_total_num
-        if self.cal_blue_score:
-            cur_blue_score = sum(self.blue_right) / self.editdistance_total_length
+        if self.cal_bleu_score:
+            cur_bleu_score = sum(self.bleu_right) / self.editdistance_total_length
         cur_exp_1 = sum(self.e1_right) / self.exp_total_num
         cur_exp_2 = sum(self.e2_right) / self.exp_total_num
         cur_exp_3 = sum(self.e3_right) / self.exp_total_num
         self.reset()
-        if self.cal_blue_score:
+        if self.cal_bleu_score:
             return {
-                "blue_score": cur_blue_score,
+                "bleu_score": cur_bleu_score,
                 "edit distance": cur_edit_distance,
                 "exp_rate": cur_exp_rate,
                 "exp_rate<=1 ": cur_exp_1,
@@ -281,8 +281,8 @@ class LaTeXOCRMetric(object):
     def reset(self):
         self.edit_dist = 0
         self.exp_rate = 0
-        if self.cal_blue_score:
-            self.blue_score = 0
+        if self.cal_bleu_score:
+            self.bleu_score = 0
         self.e1 = 0
         self.e2 = 0
         self.e3 = 0
@@ -290,8 +290,8 @@ class LaTeXOCRMetric(object):
     def epoch_reset(self):
         self.edit_right = []
         self.exp_right = []
-        if self.cal_blue_score:
-            self.blue_right = []
+        if self.cal_bleu_score:
+            self.bleu_right = []
         self.e1_right = []
         self.e2_right = []
         self.e3_right = []
