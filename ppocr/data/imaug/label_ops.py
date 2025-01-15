@@ -106,6 +106,9 @@ class BaseRecLabelEncode(object):
         self.max_text_len = max_text_length
         self.beg_str = "sos"
         self.end_str = "eos"
+
+        # !!!
+        character_type = "en"
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
@@ -117,6 +120,7 @@ class BaseRecLabelEncode(object):
             self.character_str = ""
             assert character_dict_path is not None, "character_dict_path should not be None when character_type is {}".format(
                 character_type)
+
             with open(character_dict_path, "rb") as fin:
                 lines = fin.readlines()
                 for line in lines:

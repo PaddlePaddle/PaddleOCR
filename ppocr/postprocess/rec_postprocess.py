@@ -36,6 +36,8 @@ class BaseRecLabelDecode(object):
         self.beg_str = "sos"
         self.end_str = "eos"
 
+        # !!!
+        character_type = "en"
         if character_type == "en":
             self.character_str = "0123456789abcdefghijklmnopqrstuvwxyz"
             dict_character = list(self.character_str)
