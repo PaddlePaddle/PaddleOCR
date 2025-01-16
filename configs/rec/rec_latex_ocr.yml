@@ -65,7 +65,7 @@ PostProcess:
 Metric:
   name: LaTeXOCRMetric
   main_indicator:  exp_rate
-  cal_blue_score: False
+  cal_bleu_score: False
 
 Train:
   dataset:

@@ -193,7 +193,7 @@ class Tokenizer13a(BaseTokenizer):
         return self._post_tokenizer(f" {line} ")
 
 
-def compute_blue_score(
+def compute_bleu_score(
     predictions, references, tokenizer=Tokenizer13a(), max_order=4, smooth=False
 ):
     # if only one reference is provided make sure we still use list of lists

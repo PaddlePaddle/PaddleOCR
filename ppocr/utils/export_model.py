@@ -99,7 +99,16 @@ def dump_infer_config(config, path, logger):
     infer_cfg["PreProcess"] = {"transform_ops": config["Eval"]["dataset"]["transforms"]}
     postprocess = OrderedDict()
     for k, v in config["PostProcess"].items():
-        postprocess[k] = v
+        if config["Architecture"].get("algorithm") in [
+            "LaTeXOCR",
+            "UniMERNet",
+            "PP-FormulaNet-L",
+            "PP-FormulaNet-S",
+        ]:
+            if k != "rec_char_dict_path":
+                postprocess[k] = v
+        else:
+            postprocess[k] = v
 
     if config["Architecture"].get("algorithm") in ["LaTeXOCR"]:
         tokenizer_file = config["Global"].get("rec_char_dict_path")

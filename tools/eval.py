@@ -107,16 +107,16 @@ def main():
             model_type = "can"
         elif config["Architecture"]["algorithm"] == "LaTeXOCR":
             model_type = "latexocr"
-            config["Metric"]["cal_blue_score"] = True
+            config["Metric"]["cal_bleu_score"] = True
         elif config["Architecture"]["algorithm"] == "UniMERNet":
             model_type = "unimernet"
-            config["Metric"]["cal_blue_score"] = True
+            config["Metric"]["cal_bleu_score"] = True
         elif config["Architecture"]["algorithm"] in [
             "PP-FormulaNet-S",
             "PP-FormulaNet-L",
         ]:
             model_type = "pp_formulanet"
-            config["Metric"]["cal_blue_score"] = True
+            config["Metric"]["cal_bleu_score"] = True
         else:
             model_type = config["Architecture"]["model_type"]
     else:
