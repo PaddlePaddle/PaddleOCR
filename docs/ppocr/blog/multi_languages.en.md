@@ -187,17 +187,17 @@ If necessary, you can read related documents:
 |English|en| |Hindi|hi|
 |French|fr| |Uyghur|ug|
 |German|german| |Persian|fa|
-|Japan|japan| |Urdu|ur|
+|Japanese|japan| |Urdu|ur|
 |Korean|korean| | Serbian(latin) |rs_latin|
 |Chinese Traditional |chinese_cht| |Occitan |oc|
 | Italian |it| |Marathi|mr|
 |Spanish |es| |Nepali|ne|
 | Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|
-|Russia|ru||Bulgarian |bg|
+|Russian|ru||Bulgarian |bg|
 |Ukranian|uk| |Estonian |et|
 |Belarusian|be| |Irish |ga|
 |Telugu |te| |Croatian |hr|
-|Saudi Arabia|sa| |Hungarian |hu|
+|Sanskrit|sa| |Hungarian |hu|
 |Tamil |ta| |Indonesian|id|
 |Afrikaans |af| |Icelandic|is|
 |Azerbaijani  |az||Kurdish|ku|
