@@ -233,17 +233,17 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 | 语种 | 描述 | 缩写 | | 语种 | 描述 | 缩写 |
 | --- | --- | --- | ---|--- | --- | --- |
-|中文|chinese and english|ch| |保加利亚文|Bulgarian |bg|
-|英文|english|en| |乌克兰文|Ukranian|uk|
-|法文|french|fr| |白俄罗斯文|Belarusian|be|
-|德文|german|german| |泰卢固文|Telugu |te|
-|日文|japan|japan| | 阿巴扎文 |Abaza | abq |
-|韩文|korean|korean| |泰米尔文|Tamil |ta|
-|中文繁体|chinese traditional |chinese_cht| |南非荷兰文 |Afrikaans |af|
+|中文|Chinese & English|ch| |保加利亚文|Bulgarian |bg|
+|英文|English|en| |乌克兰文|Ukranian|uk|
+|法文|French|fr| |白俄罗斯文|Belarusian|be|
+|德文|German|german| |泰卢固文|Telugu |te|
+|日文|Japanese|japan| | 阿巴扎文 |Abaza | abq |
+|韩文|Korean|korean| |泰米尔文|Tamil |ta|
+|中文繁体|Chinese Traditional |chinese_cht| |南非荷兰文 |Afrikaans |af|
 |意大利文| Italian |it| |阿塞拜疆文 |Azerbaijani    |az|
 |西班牙文|Spanish |es| |波斯尼亚文|Bosnian|bs|
 |葡萄牙文| Portuguese|pt| |捷克文|Czech|cs|
-|俄罗斯文|Russia|ru| |威尔士文 |Welsh |cy|
+|俄罗斯文|Russian|ru| |威尔士文 |Welsh |cy|
 |阿拉伯文|Arabic|ar| |丹麦文 |Danish|da|
 |印地文|Hindi|hi| |爱沙尼亚文 |Estonian |et|
 |维吾尔|Uyghur|ug| |爱尔兰文 |Irish |ga|
@@ -267,7 +267,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 | 瑞典文|Swedish |sv| | 那格浦尔文|Nagpur |sck|
 | 西瓦希里文|Swahili |sw| | 尼瓦尔文|Newari |new|
 | 塔加洛文|Tagalog |tl| | 保加利亚文 |Goan Konkani|gom|
-| 土耳其文|Turkish |tr| | 沙特阿拉伯文|Saudi Arabia|sa|
+| 土耳其文|Turkish |tr| | 梵文|Sanskrit|sa|
 | 乌兹别克文|Uzbek |uz| | 阿瓦尔文|Avar |ava|
 | 越南文|Vietnamese |vi| | 阿瓦尔文|Avar |ava|
 | 蒙古文|Mongolian |mn| | 阿迪赫文|Adyghe |ady|
