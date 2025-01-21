@@ -217,7 +217,10 @@ def main(config, device, logger, vdl_writer, seed):
     )
 
     if config["Global"]["distributed"]:
-        model = paddle.DataParallel(model)
+        find_unused_parameters = config["Global"].get("find_unused_parameters", False)
+        model = paddle.DataParallel(
+            model, find_unused_parameters=find_unused_parameters
+        )
     # start train
     program.train(
         config,
