@@ -19,6 +19,7 @@ Global:
   rec_char_dict_path:  ppocr/utils/dict/latex_ocr_tokenizer.json
   save_res_path: ./output/rec/predicts_latexocr.txt
   d2s_train_image_shape: [1,256,256]
+  find_unused_parameters: True
 
 Optimizer:
   name: AdamW
