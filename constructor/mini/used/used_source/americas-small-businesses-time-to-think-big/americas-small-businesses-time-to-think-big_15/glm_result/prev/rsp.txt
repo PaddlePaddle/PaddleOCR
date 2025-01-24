@@ -1,0 +1,7 @@
+这是一张图表，展示了不同国家的微型、小型和中型企业（MSME）与大型企业之间的生产力差距。图表的标题是“US micro-, small, and medium-size enterprises are only half as productive as large firms—a wider gap than in other advanced economies.”（美国微型、小型和中型企业仅是大型企业生产力的一半——与其他发达经济体相比，这一差距更大。）
+
+图表分为两部分，左边是“MSME productivity ratio”（MSME生产力比率），右边是“MSME productivity gap”（MSME生产力差距）。图表中列出了多个国家，包括葡萄牙、波兰、以色列、西班牙、澳大利亚、意大利、德国、日本、美国、英国，以及发达经济体的平均水平。
+
+每个国家的MSME生产力比率用蓝色条形图表示，而MSME生产力差距用灰色条形图表示。图表中还包括了每个国家的具体数值，例如葡萄牙的MSME生产力比率为66，生产力差距为34；美国的MSME生产力比率为47，生产力差距为53。
+
+图表底部有一些注释，解释了数据的来源和定义。图表由McKinsey & Company制作，标题为“America's small businesses: Time to think big”（美国的小企业：是时候思考大了）。

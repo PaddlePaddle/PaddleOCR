@@ -1,0 +1,11 @@
+```json
+{
+  "background": "这是一张显示了2022年、2023年和2024年不同层次的供应链透明度变化的图表。",
+  
+  "context": "图表的内容为不同年份在‘Beyond tier one’（超出第一层）、‘Tier one’（第一层）和‘No transparency at any tier’（任何层次无透明度）三个层次的供应链透明度百分比变化。",
+  
+  "legend": "图例内容分别表示‘Beyond tier one’（超出第一层）、‘Tier one’（第一层）和‘No transparency at any tier’（任何层次无透明度）三个层次的供应链透明度。",
+  
+  "type": "图表类型为柱状图。"
+}
+```

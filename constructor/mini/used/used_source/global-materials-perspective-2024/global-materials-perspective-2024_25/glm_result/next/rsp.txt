@@ -1,0 +1,13 @@
+这是一张包含文字和图案的图像，背景为深蓝色，上面有浅蓝色线条构成的图案。图像左上角有“McKinsey & Company”的标志，字体为白色。下面是一段版权声明，内容如下：
+
+“© Copyright 2024 McKinsey & Company. This report contains confidential and proprietary information of McKinsey & Company and is intended solely for your internal use. Do not reproduce, disclose, or distribute the information contained herein without McKinsey & Company's express prior written consent.”
+
+接着是另一段声明：
+
+“Nothing herein is intended to serve as investment advice, or a recommendation of any particular transaction or investment, the merits of purchasing or selling securities, or an invitation or inducement to engage in investment activity.”
+
+最后一段声明：
+
+“This material is based on information that we believe to be reliable and adequately comprehensive, but we do not represent that such information is in all respects accurate or complete. McKinsey & Company does not accept any liability for any losses resulting from use of the contents of this report.”
+
+这些声明表明该报告包含机密和专有信息，仅供内部使用，不得未经许可复制、披露或分发。同时，声明内容不构成投资建议或推荐，也不对使用报告内容造成的损失负责。

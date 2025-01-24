@@ -1,0 +1,19 @@
+这是一张致谢页面的图片，内容如下：
+
+标题为“Acknowledgments”（致谢），字体较大且加粗。
+
+正文部分感谢了多位同事对报告的贡献，包括Amit Garg、Andres Vasconez、Anubhav Das、Anuj Gupta等，共列出多位同事的名字。
+
+接下来是关于报告开发和制作的团队信息，包括：
+
+- Matt Cooke，通讯和营销总监
+- Monica Rungatscher，公共关系负责人
+- Chris Depin，通讯协调员
+- Kate McCarthy，运营和出版负责人
+- Astrid Regojo，活动和合作伙伴负责人
+
+每个名字后面都附有电子邮件地址，格式为“名字.姓氏@mckinsey.com”。
+
+页面底部提到，这份全球银行业年度回顾基于McKinsey Panorama的数据和见解，并欢迎对此研究的评论，可以通过电子邮件fs_external_relations@mckinsey.com发送。
+
+页面右下角标注了“Global Banking Annual Review 2024: Attaining escape velocity”和页码25。

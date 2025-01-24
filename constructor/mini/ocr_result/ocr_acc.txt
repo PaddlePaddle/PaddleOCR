@@ -1,0 +1,2 @@
+文件 /home/ubuntu/moe/PaddleOCR_m/constructor/mini/count_result/count.txt 的总行数是: 45
+图表含图率是: 0.8823529411764706

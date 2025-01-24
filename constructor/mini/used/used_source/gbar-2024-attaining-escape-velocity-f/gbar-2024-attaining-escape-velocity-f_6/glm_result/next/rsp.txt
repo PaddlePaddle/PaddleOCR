@@ -1,0 +1,13 @@
+这张图片来自麦肯锡公司（McKinsey & Company）的《2024年全球银行业年度回顾》报告，图中展示了2003年至2023年期间，全球银行的有形权益回报率（ROTE）与有形权益成本（COTE）的变化趋势。图片中的折线图显示了ROTE和COTE的变化情况，并标注了几个重要的经济事件，如全球金融危机和利率上升。
+
+图表的标题是“While higher interest rates have supported recent economic profitability across banking, this trend could reverse if interest rates fall.”（尽管较高的利率支持了近期银行业的经济盈利能力，但如果利率下降，这一趋势可能会逆转。）
+
+图表的纵轴表示ROTE和COTE的百分比，范围从0%到20%。横轴表示年份，从2003年到2023年。图表中，ROTE和COTE的线分别用不同的颜色表示，其中ROTE用深色表示，COTE用浅色表示。
+
+图表中标注了几个重要的经济事件，包括：
+- 全球金融危机（Global financial crisis）：发生在2007年至2009年期间，ROTE和COTE在此期间都出现了显著的下降。
+- 利率上升（Interest rate hike）：发生在2021年至2023年期间，ROTE和COTE在此期间都出现了上升。
+
+图表还显示了平均COTE为10.5%，以及经济盈利和经济亏损的界限。
+
+图表下方注明了数据来源为S&P Global和McKinsey Panorama。

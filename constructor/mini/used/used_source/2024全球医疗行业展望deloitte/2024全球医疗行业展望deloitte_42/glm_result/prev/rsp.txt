@@ -1,0 +1,17 @@
+这张图片来自于一份名为《2024年全球医疗行业展望》的文件，右上角有“领航变革”的字样。图片内容为该文件的某页的参考文献部分，具体内容如下：
+
+24. Conor Stewart, “Total amount of global healthcare data generated in 2013 and a projection for 2020,” Statista, https://www.statista.com/statistics/103970/global-healthcare-data-volume/
+
+25. “Healthcare Interoperability Solutions Market by Type, Markets and Markets, https://www.marketsandmarkets.com/Market-Reports/healthcare-interoperability-solution-market-1705847.html?utm_source=PRnewswire&utm_medium=referral&utm_campaign=paiddpr
+
+26. IRENA, Deloitte, https://www2.deloitte.com/cz/en/pages/technology/solution/irena.html
+
+27. Nicole Witowski, “Retailers in healthcare: A catalyst for provider evolution,” Deloitte Insights, May 9, 2023, https://www2.deloitte.com/us/en/insights/articles/2023/retailers-in-healthcare-A-catalyst-for-provider-evolution.pdf
+
+28. Ibid.
+
+29. Debbie So, “From digital triage to digital humans: how generative AI will transform the patient experience,” Deloitte Thoughts from the Center Blog, August 9, 2023, https://www2.deloitte.com/uk/en/health/2023/08/from-digital-triage-to-digital-humans-how-generative-ai-will-transform-the-patient-experience.html
+
+30. Ibid.
+
+31. Hayden Field, “OpenAI is pursuing a new way to fight AI hallucinations,” CNBC, May 31, 2023, https://www.cnbc.com/2023/05/31/openai-is-pursuing-a-new-way-to-fight-ai-hallucinations.html#:~:text=AI%20hallucinations%20are%20a%20problem%20for%20ChatGPT%20and%20other%20large%20language%20models%20(LLMs)%20that%20can%20lead%20to%20incorrect%20or%20biased%20information%20being%20produced%20by%20the%20model%20when%20prompted%20with%20a%20question%20or%20statement%20that%20is%20not%20in%20the%20training%20data%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20ambiguous%20or%20vague%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20model%20or%20when%20the%20model%20is%20prompted%20with%20a%20question%20that%20is%20outside%20of%20the%20scope%20of%20the%20

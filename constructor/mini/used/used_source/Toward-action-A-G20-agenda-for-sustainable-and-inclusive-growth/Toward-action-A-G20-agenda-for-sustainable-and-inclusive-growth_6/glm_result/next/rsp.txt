@@ -1,0 +1,20 @@
+图片展示了G20国家在可持续、包容性增长方面的进展情况。图表分为三个主要部分：通过生产率增长、通过赋权实现包容性、通过净零排放实现可持续性。每个部分又细分为多个指标，具体描述如下：
+
+1. **通过生产率增长（Growth through productivity）**：
+   - **人均GDP（GDP per capita, 2022, $ thousand (2015))**：显示每个国家的人均GDP，以2015年美元计算。
+   - **人均GDP增长率（Change in GDP per capita, CAGR, 2019–22, %）**：显示2019年至2022年期间人均GDP的复合年增长率。
+
+2. **通过赋权实现包容性（Inclusion through empowerment）**：
+   - **赋权变化（Change in empowerment, 2019–22, %）**：显示赋权的变化百分比。
+   - **低于贫困线的人口比例（Share of population below empowerment line, 2022, %）**：显示2022年低于赋权线的人口比例。
+   - **最贫困20%人口的总消费份额（Bottom 20% share of total consumption, 2022, %）**：显示最贫困20%人口在总消费中的份额。
+
+3. **通过净零排放实现可持续性（Sustainability through net zero）**：
+   - **总赋权成本（Total cost of empowerment per capita, 2022, %）**：显示2022年人均赋权的总成本。
+   - **食品成本（Food cost as a share of GDP per capita, 2022, %）**：显示2022年食品成本占人均GDP的比例。
+   - **温室气体排放（Greenhouse gas emissions per capita, 2022, metric tons of CO₂e）**：显示2022年人均温室气体排放量。
+   - **人均温室气体排放变化（Change in greenhouse gas emissions per capita, 2020–22, %）**：显示2020年至2022年期间人均温室气体排放的变化百分比。
+   - **清洁电力（Clean power capacity per capita, 2022, kW）**：显示2022年人均清洁电力容量。
+   - **清洁电力容量变化（Change in clean power capacity per capita, 2020–22, %）**：显示2020年至2022年期间人均清洁电力容量的变化百分比。
+
+图表还根据收入水平将国家分为中低收入和较高收入组，并提供了每个国家在各个指标上的具体数据。

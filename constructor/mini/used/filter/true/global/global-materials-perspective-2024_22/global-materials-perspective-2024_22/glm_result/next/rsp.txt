@@ -1,0 +1,25 @@
+这张图片展示了与金属和采矿行业相关的排放数据，特别是电力相关的排放。图片的标题是“Electricity-related emissions are the largest contributor of emissions for most materials in the metals and mining industry”，强调了电力是大多数材料排放的主要来源。
+
+图片分为三个主要部分：
+
+1. **Primary emission intensity, 2023, ton of CO₂ per ton of material (total)**：
+   - 图表显示了不同材料每吨材料产生的二氧化碳排放量（以吨为单位）。
+   - 钢铁（Steel）的排放量最高，接近50吨CO₂/吨材料。
+   - 铜和铝的排放量较低，约为15吨CO₂/吨材料。
+   - 锂和镍的排放量也较低，但具体数值未标明。
+
+2. **Primary emission intensity, 2023, share of CO₂ by category**：
+   - 图表展示了不同材料中CO₂排放的来源，分为电力（Electricity—Scope 2）、工艺排放（Process emissions—Scope 1）和燃料（Fuel—Scope 1）。
+   - 钢铁的电力排放占比最高，其次是工艺排放和燃料。
+   - 铜和铝的电力排放也占较大比例，但工艺排放和燃料排放的比例相对较低。
+   - 锂和镍的电力排放比例相对较小。
+
+3. **Refining vs mining share, %**：
+   - 图表展示了不同材料中精炼（Refining）和采矿（Mining）的占比。
+   - 钢铁的精炼占比最高，其次是采矿。
+   - 铜和铝的采矿占比相对较高，精炼占比较低。
+   - 锂和镍的采矿和精炼占比相对均衡。
+
+图片右侧的文字解释了电力是排放的主要贡献者，并指出可再生能源可以显著减少排放。同时，还提到了一些材料的生产过程中产生的CO₂排放无法通过绿色电力或替代燃料来减少，需要采用绿色替代生产技术或碳捕获技术。
+
+图片底部注明了数据来源，包括国际能源署（IEA）、国际铝业协会（International Aluminium Institute）、国际铜业协会（International Copper Association）等。

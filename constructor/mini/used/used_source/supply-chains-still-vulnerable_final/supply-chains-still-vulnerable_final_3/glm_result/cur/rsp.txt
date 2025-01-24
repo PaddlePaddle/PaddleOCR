@@ -1,0 +1,13 @@
+这张图片展示了一份关于供应链风险管理的研究报告。图片中包含一个图表，标题为“Inventory buffers are no longer the preferred way to mitigate supply chain risks.”（库存缓冲不再是缓解供应链风险的首选方式）。图表展示了过去一年和未来三年内，不同库存管理方法的受访者比例。
+
+图表分为五个部分：
+1. **Increase inventory with risk buffers**（增加带有风险缓冲的库存）
+2. **Keep inventory levels constant**（保持库存水平不变）
+3. **Revert to lower inventory with no risk buffer**（恢复到没有风险缓冲的较低库存）
+4. **Decrease inventory below pre-COVID-19 targets**（将库存降低到低于疫情前的目标）
+
+图表显示，随着时间的推移，增加带有风险缓冲的库存的受访者比例逐渐增加，而其他选项的比例则有所下降或保持不变。
+
+图表下方有一段文字，提到供应链弹性革命的进展正在放缓，并指出供应链数字化投资在2020年和2023年之间经历了快速增长后开始趋于平稳。
+
+图片的来源是麦肯锡公司（McKinsey & Company），并引用了麦肯锡全球供应链领导调查的数据。

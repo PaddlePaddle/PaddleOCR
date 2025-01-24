@@ -1,0 +1,23 @@
+这张图片展示了一份关于护士对人工智能（AI）潜在影响的看法的图表，标题为“护士对人工智能潜力的看法”。图表展示了不同年龄段的护士对与AI一起工作的感受，包括希望、满意、不安和担忧等情绪。图表分为几个年龄段，分别是：
+
+1. 总体（Total）
+2. 30岁以下（Under 30）
+3. 30-39岁（30-39）
+4. 40-49岁（40-49）
+5. 50-59岁（50-59）
+6. 60-69岁（60-69）
+7. 70岁及以上（≥70）
+
+每个年龄段都有不同的情绪比例，例如：
+
+- 希望质量会提高（Hopeful that quality will improve）
+- 满意于我的满意度会增加（Hopeful that my satisfaction will increase）
+- 对AI对患者护理的影响感到不安（Uncomfortable about what AI could mean for patient care）
+- 对AI对自己角色的影响感到不安（Uncomfortable with what my role will be）
+- 担心工作负担增加（Fearful of increased workload）
+- 担心自己的工作（Fearful for my job）
+- 没有这些情绪（None of these）
+
+图表还提到，42%的护士对AI改善患者护理质量持乐观态度，而23%的护士对AI的前景感到不安。此外，图表还指出，30岁以下的护士中有37%对AI改善质量持乐观态度，而70岁及以上的护士中只有43%持相同看法。
+
+图表的来源是美国护士基金会护士调查，时间为2024年3月。

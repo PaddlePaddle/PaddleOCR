@@ -1,0 +1,9 @@
+这张图片来自于一篇关于移动健康（MHealth）和用户体验（UHealth）的研究文章。图片中包含一个条形图，标题为“Figure 3. Coping experience-based feedback response distribution”，展示了不同应对经验下的反馈响应分布。
+
+条形图分为三部分，分别表示“Hard to cope”（难以应对）、“Slightly hard to cope”（稍微难以应对）和“Not hard to cope”（不难应对）。每个部分又细分为“Favorable experience”（正面体验）和“Less favorable experience”（不太正面体验）。
+
+- “Hard to cope”部分中，148个用户报告了正面体验，61个用户报告了不太正面体验。
+- “Slightly hard to cope”部分中，28个用户报告了正面体验，18个用户报告了不太正面体验。
+- “Not hard to cope”部分中，15个用户报告了正面体验，12个用户报告了不太正面体验。
+
+文章还提到，用户对应用提供的正念和身体活动技巧的体验是主要的主题。大多数用户认为这些技巧帮助他们感觉更好，但也有少数用户表示这些技巧没有帮助或他们没有使用这些技巧。

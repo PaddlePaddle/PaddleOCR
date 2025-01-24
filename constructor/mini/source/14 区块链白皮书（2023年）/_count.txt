@@ -1,0 +1,5 @@
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/14 区块链白皮书（2023年）/14 区块链白皮书（2023年）_24/14 区块链白皮书（2023年）_24/[115, 449, 491, 661]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/14 区块链白皮书（2023年）/14 区块链白皮书（2023年）_23/14 区块链白皮书（2023年）_23/[117, 445, 501, 659]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/14 区块链白皮书（2023年）/14 区块链白皮书（2023年）_12/14 区块链白皮书（2023年）_12/[84, 260, 515, 467]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/14 区块链白皮书（2023年）/14 区块链白皮书（2023年）_12/14 区块链白皮书（2023年）_12/[80, 503, 512, 699]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/14 区块链白皮书（2023年）/14 区块链白皮书（2023年）_6/14 区块链白皮书（2023年）_6/[95, 517, 505, 729]_0.jpg'

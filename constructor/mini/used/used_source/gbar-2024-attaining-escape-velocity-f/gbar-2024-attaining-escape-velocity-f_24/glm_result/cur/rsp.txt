@@ -1,0 +1,62 @@
+这是一张包含联系信息的图片，标题为“Contacts”。图片分为两个部分：作者和区域领导联系。
+
+### 作者部分
+- **Ashet Mehta**
+  - 资深合伙人，纽约
+  - 电子邮件: asheet_mehta@mckinsey.com
+
+- **Karim Thomas**
+  - 合伙人，硅谷
+  - 电子邮件: karim_thomas@mckinsey.com
+
+- **Klaus Dallérup**
+  - 资深合伙人，哥本哈根
+  - 电子邮件: klaus_dallerup@mckinsey.com
+
+- **Luca Pancaldi**
+  - 资深合伙人，米兰
+  - 电子邮件: luca_pancaldi@mckinsey.com
+
+- **Miklos Dietz**
+  - 资深合伙人，温哥华
+  - 电子邮件: miklos_dietz@mckinsey.com
+
+- **Pradip Patiath**
+  - 资深合伙人，迈阿密
+  - 电子邮件: pradip_patiath@mckinsey.com
+
+- **Valeria Laszlo**
+  - Panorama资深资产负责人，布达佩斯
+  - 电子邮件: valeria_laszlo@mckinsey.com
+
+- **Vik Sohoni**
+  - 资深合伙人，芝加哥
+  - 电子邮件: vik_sohoni@mckinsey.com
+
+### 区域领导联系部分
+- **亚洲**
+  - **Renny Thomas**
+    - 资深合伙人，孟买
+    - 电子邮件: renny_thomas@mckinsey.com
+
+- **欧洲**
+  - **Stephanie Hauser**
+    - 资深合伙人，伦敦
+    - 电子邮件: stephanie_hauser@mckinsey.com
+
+- **拉丁美洲**
+  - **Felipe Villarreal**
+    - 资深合伙人，巴拿马
+    - 电子邮件: felipe_villarreal@mckinsey.com
+
+- **中东和非洲**
+  - **Luis Cunha**
+    - 资深合伙人，卡萨布兰卡
+    - 电子邮件: luis_cunha@mckinsey.com
+
+- **北美**
+  - **Ishaan Seth**
+    - 资深合伙人，纽约
+    - 电子邮件: ishaan_seth@mckinsey.com
+
+图片底部有“Global Banking Annual Review 2024: Attaining escape velocity”字样，表明这是来自麦肯锡全球银行业年度报告2024的内容。

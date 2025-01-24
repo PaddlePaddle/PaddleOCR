@@ -1,0 +1,21 @@
+这是一张包含中文和英文的图片，图片内容是2024年全球医疗行业展望的尾注部分，具体内容为：  
+人工智能助力医疗行业变革  
+1. Nikhil Sahni,George Stein, Rodney Zemmel, and David M. Cutler, “The Potential Impact of Artificial Intelligence on Healthcare Spending,” National Bureau of Economic Research, January 2023, https://www.nber.org/papers/w30857  
+2. Conor Stewart, “Total amount of global healthcare data generated in 2013 and a projection for 2030,” Statista, https://www.statista.com/statistics/1037970/global-healthcare-data-volume/  
+3. “Healthcare Interoperability Solutions Market by Type,” Markets and Markets, https://www.marketsandmarkets.com/Market-Reports/healthcare-interoperability-solution-market-1705847.html?utm_source=Prnewswire&utm_medium=referral&utm_campaign=PaidPR  
+4. “The state of healthcare AI in 5 charts,” CB Insights, August 1, 2023, https://www.cbinsights.com/research/healthcare-artificial-intelligence-ai-market/  
+5. Ibid.  
+6. Dhruv Suyamprakar, “2024 prediction: Tech to change primary care,” Physicians Practice, November 3, 2023, https://www.physicianspractice.com/view/2024-prediction-tech-to-change-primary-care  
+7. “The state of healthcare AI in 5 charts,” CB Insights, August 1, 2023, https://www.cbinsights.com/research/healthcare-artificial-intelligence-ai-market/  
+8. Patrick Frank, “Overcoming healthcare’s reluctance to technological change,” MedCityNews, May 3, 2022, https://medcitynews.com/2022/05/overcoming-healthcares-reluctance-to-technological-change/  
+9. “State of Digital Health Q2 2023 Report,” CB Insights, July 26, 2023, https://www.cbinsights.com/research/digital-health-trends-q2-2023/  
+10. Seth Joseph, “Under Financial Pressure, How Are Health Systems Prioritizing Digital Health Investments?” Forbes, January 11, 2023, https://www.forbes.com/sites/sethjoseph/2023/01/11/under-financial-pressure-how-are-health-systems-prioritizing-digital-health-investments/?sh=5220843230  
+11. Patrick Frank, “Overcoming healthcare’s reluctance to technological change,” MedCityNews, May 3, 2022, https://medcitynews.com/2022/05/overcoming-healthcares-reluctance-to-technological-change/  
+12. Nikhil Sahni, George Stein, Rodney Zemmel, and David M. Cutler, “The Potential Impact of Artificial Intelligence on Healthcare Spending,” National Bureau of Economic Research, January 2023, https://www.nber.org/papers/w30857  
+13. Nitin Mittal, Costi Perricos, Lynne Sterrett, and Deborshi Dutt, “The Generative AI Dossier,” Deloitte, https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consulting/us-ai-institute-gen-ai-use-cases.pdf  
+14. Ibid.  
+15. Brian Dory and Jay Bhatt, “Generative AI holds enormous promise for health care,” Deloitte Health Forward Blog, June 27, 2023, https://www2.deloitte.com/us/en/blogs/health-care-blog/2023/generative-ai-holds-enormous-promise-for-health-care.html  
+16. Nitin Mittal, Costi Perricos, Lynne Sterrett, and Deborshi Dutt, “The Generative AI Dossier,” Deloitte, https://www2.deloitte.com/content/dam/Deloitte/us/Documents/consulting/us-ai-institute-gen-ai-use-cases.pdf  
+17. Petri Lehto and Sara Malkamäki, “The Finnish health sector growth and competitive vision 2030,” Sitra, June 8, 2023, https://www.sitra.fi/en/publications/the-finnish-health-sector-growth-and-competitive-vision-2030/#peace  
+18. Thamidu Hughe and Axel Torn, “Finland’s Path to The Digital Decade 2030: Sustainable Growth and Digitalization Plans,” Dappera University of Technology, December 22, 2022, https://www.researchgate.net/publication/368686596_Finland’s_Path_to_The_Digital_Decade_2030_Sustainable_Growth_and_Digitalization_plans  
+19. Patrick Frank, “Overcoming healthcare’s reluctance to

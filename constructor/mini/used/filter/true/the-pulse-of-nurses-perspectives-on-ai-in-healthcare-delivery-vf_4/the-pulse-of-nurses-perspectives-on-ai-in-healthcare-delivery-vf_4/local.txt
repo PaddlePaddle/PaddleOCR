@@ -1,0 +1,9 @@
+```json
+{
+  "context": "这张图表的大致讲述了护士对使用人工智能（AI）的主要担忧。图表标题为‘Understanding concerns to encourage buy-in’，展示了护士对AI使用的三大担忧：信任准确性、缺乏人际互动和缺乏使用AI的知识。具体数据如下：61%的护士将信任准确性列为首要担忧，49%的护士将缺乏人际互动列为首要担忧，36%的护士将缺乏使用AI的知识列为首要担忧。其他担忧包括增加患者安全风险、数据隐私、信息过载等。数据来源为American Nurses Foundation Nurses Survey, March 2024，并附有McKinsey & Company的标志。",
+
+  "prev": "前一页的内容描述了护士对人工智能（AI）潜在影响的看法的调查结果。标题为‘Sentiments about AI's potential’，副标题指出42%的护士对AI改善质量的潜力表示乐观，但23%的护士对AI对患者护理的潜在影响感到不安。中间部分是一个柱状图，展示了不同年龄段的护士对与AI一起工作的感受。左侧文字提到通过展示AI支持的干预措施质量、考虑AI工具与人际互动的结合以及加强AI教育可以缓解不安。底部有文章标题‘The pulse of nurses' perspectives on AI in healthcare delivery’和页码4。",
+
+  "next": "后一页的内容描述了护士参与人工智能（AI）开发的重要性。标题为‘Getting nurses involved in AI development’，讨论了AI开发者与医疗保健管理者如何与护士合作开发解决临床护理问题的工具。图表（Exhibit 4）展示了美国护士认为管理AI使用担忧的最佳方法，包括护士参与工具设计（73%）、AI在质量和患者安全方面的有效证据（69%）、明确指南和法规（69%）等。数据来源于2024年3月的美国护士基金会护士调查，底部有麦肯锡公司的标志，并注明这是关于护士对AI在医疗保健交付中看法的摘要。"
+}
+```

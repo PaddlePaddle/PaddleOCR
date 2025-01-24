@@ -1,0 +1,10 @@
+这张图片展示了一份文档的目录页。左侧是一幅蓝天白云背景下的鸟群飞翔的图片，鸟群排列成不规则的队形，显得非常生动。右侧是目录内容，标题为“Contents”，字体较大且加粗。目录列出了几个章节及其对应的页码：
+
+1. Executive summary（执行摘要） - 第2页
+2. The industry（行业） - 第3页
+3. Attaining escape velocity（达到逃逸速度） - 第12页
+4. The winners（赢家） - 第13页
+5. How to win (execution)（如何获胜（执行）） - 第18页
+6. ‘Management quotient’ as a differentiator（“管理商数”作为区分因素） - 第21页
+
+整体设计简洁明了，左侧的鸟群图片为页面增添了生动的视觉效果。

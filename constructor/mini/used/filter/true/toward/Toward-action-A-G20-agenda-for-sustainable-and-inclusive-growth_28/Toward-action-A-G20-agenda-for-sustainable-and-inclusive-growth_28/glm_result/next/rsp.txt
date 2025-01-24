@@ -1,0 +1,30 @@
+这张图片展示了关于全球温室气体排放和应对气候变化目标的图表和文字说明。以下是图像中的主要内容和细节：
+
+1. **标题**：图片的标题是“Driving sustainability through net zero”，强调通过净零排放推动可持续发展。
+
+2. **文字说明**：
+   - 描述了尽管全球在应对气候变化方面取得了一些进展，但世界尚未达到《巴黎协定》的目标，即限制全球变暖在2°C以内，最好是1.5°C。
+   - 提到即使各国和公司承诺减少排放并采取行动，但实现净零排放情景以限制变暖在1.5°C仍需要比当前轨迹更快的减排路径，尤其是在未来十年。
+   - 强调需要平衡可持续性与经济增长。
+
+3. **图表**：
+   - **图表标题**：Global emissions remain above a 1.5°C pathway even in a modeled scenario that assumes all economies deliver on current country commitments.
+   - **图表内容**：
+     - 显示了全球每年预计的温室气体排放量（以每年十亿公吨的CO2当量表示）。
+     - 图中有三条曲线，分别代表“Current Trajectory”（当前轨迹）、“Further Acceleration”（进一步加速）和“Achieved Commitments”（实现承诺）。
+     - 横轴表示年份，从1990年到2050年。
+     - 纵轴表示排放量，从0到60十亿公吨。
+     - 图表显示，即使在所有经济体都实现当前国家承诺的假设情景下，全球排放量仍高于1.5°C的路径。
+
+4. **平均全球变暖估计**：
+   - 图表右侧有一个条形图，显示了不同情景下的平均全球变暖估计（与1850年相比的摄氏度增加）。
+   - 包括“Current Trajectory”（1.9°C）、“Further Acceleration”（1.5°C）和“Achieved Commitments”（1.1°C）。
+
+5. **情景描述和假设**：
+   - **Current Trajectory**：当前可再生能源成本下降的轨迹继续，但目前的政策不足以实现净零排放。
+   - **Further Acceleration**：通过经济特定承诺进一步加速转型，尽管金融和技术限制仍然存在。
+   - **Achieved Commitments**：通过领先经济体的净零承诺实现，后续经济体随后进行转型。
+
+6. **来源**：图表和文字说明的来源包括IEA World Energy Balances、IEA Global Energy Review 2022、Global Energy Perspective 2023等。
+
+这张图片提供了关于全球温室气体排放和应对气候变化目标的详细信息和预测，强调了实现净零排放和应对气候变化的紧迫性和挑战。

@@ -1,0 +1,5 @@
+这张图片展示了一份关于供应链韧性的报告，标题为“Companies are implementing fewer measures to improve supply chain resilience, and recent growth in digital spend is slowing.”（公司正在实施更少的措施来提高供应链韧性，最近在数字支出方面的增长正在放缓）。图片中包含一个折线图，显示了不同年份（2020年至2024年）中受访者对供应链数字化技术的投资情况，包括供应链数字化、双重采购、库存缓冲、APS系统和区域化等。折线图还标明了每年增长的比例，如+7%和+2%。
+
+图表下方有一段文字，提到三分之二的受访公司正在投资APS系统，但只有10%的公司完成了部署，并且有15%的公司表示他们的实施没有达到业务目标。此外，还有一部分公司对APS系统的价值感到不确定。
+
+图片底部有麦肯锡公司（McKinsey & Company）的标识，以及“Supply chains: Still vulnerable”（供应链：仍然脆弱）的标题。

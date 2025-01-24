@@ -1,0 +1,1 @@
+这是一篇关于健康和心理健康研究的文章页面，标题为“JMIR MHEALTH AND UHEALTH”。文章讨论了用户在使用应用程序时的参与度和保留度，以及如何通过对话消息来标记用户的反对意见。此外，还提到了一种名为PHQ-9的筛查工具，并给出了不同组别的平均得分和标准差。文章还提到了一个名为“Context/Descriptive Analysis”的部分，描述了高用户组在特定时间段内的活跃使用情况。最后，文章还提到了一些统计学方法，如Mann-Whitney U test和Wilcoxon signed-rank test。

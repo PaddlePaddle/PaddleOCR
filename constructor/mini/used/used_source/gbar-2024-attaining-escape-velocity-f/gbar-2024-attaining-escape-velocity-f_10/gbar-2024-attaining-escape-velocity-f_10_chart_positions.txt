@@ -1,0 +1,1 @@
+Page: 10, Bounding Box: [125, 713, 498, 731], Text: [{'text': '* The Daly Spar6,*40%6 of companiesin Russell 2000 have negative earmings,* blog entryby Torsten Slek, November f7, 2023.', 'confidence': 0.9261048436164856, 'text_region': [[126.0, 722.0], [500.0, 722.0], [500.0, 735.0], [126.0, 735.0]]}]

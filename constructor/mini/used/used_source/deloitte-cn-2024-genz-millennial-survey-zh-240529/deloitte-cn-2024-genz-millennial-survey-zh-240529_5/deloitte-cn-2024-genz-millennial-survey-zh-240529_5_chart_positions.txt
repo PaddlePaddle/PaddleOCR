@@ -1,0 +1,1 @@
+Page: 5, Bounding Box: [0, 355, 780, 611], Text: []

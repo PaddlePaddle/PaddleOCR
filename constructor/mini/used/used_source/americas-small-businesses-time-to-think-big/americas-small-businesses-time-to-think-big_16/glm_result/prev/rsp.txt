@@ -1,0 +1,23 @@
+这张图片展示了美国微型、小型和中型企业（MSMEs）在不同行业和规模类别中相对于大型企业的生产力水平。图片中的图表显示了每个行业的生产力，以每位工人的增加值（千美元，按购买力平价计算）来衡量。
+
+图表中列出的行业包括：
+
+1. 住宿和餐饮
+2. 行政服务
+3. 其他服务
+4. 运输
+5. 批发贸易
+6. 专业服务
+7. 建筑
+8. 制造业
+9. 信息和通信技术（ICT）
+10. 公用事业
+11. 采矿
+
+每个行业都有四个条形图，分别代表微型企业、小型企业、中型企业和大型企业的生产力水平。条形图的颜色和长度表示不同规模企业的生产力差异。
+
+图表的标题是“US micro-, small, and medium-size enterprise productivity levels vary across sectors and size categories relative to large firms.”（美国微型、小型和中型企业生产力水平在不同行业和规模类别中相对于大型企业有所不同。）
+
+图表下方有注释，说明微型、小型和中型企业（MSMEs）是指员工人数少于500人的企业。分析排除了某些行业，如农业、渔业、林业、采矿、公共管理和国防等，因为这些行业的数据不一致。数据来源包括“Nominal statistics, US Census Bureau, Updated and expanded small business statistics, Survey of Current Business, US Bureau of Economic Analysis, McKinsey Global Institute analysis”。
+
+图片底部有麦肯锡公司（McKinsey & Company）的标志和“America’s small businesses: Time to think big”的标题。

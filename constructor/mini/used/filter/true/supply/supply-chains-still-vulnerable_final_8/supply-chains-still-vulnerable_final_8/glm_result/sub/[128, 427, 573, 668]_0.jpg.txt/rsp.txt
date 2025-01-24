@@ -1,0 +1,67 @@
+这张图片来自麦肯锡公司（McKinsey & Company），标题为“Interest is rising in AI-based supply chain tools, especially for demand planning.”（对基于AI的供应链工具的兴趣正在上升，特别是在需求规划方面）。图片中包含一个图表，展示了不同供应链领域对高级数字和AI工具的兴趣百分比。
+
+图表分为三个主要部分：
+
+1. **Planning and scheduling（规划和调度）**：
+   - 需求规划（Demand planning）：74%
+   - 库存优化（Inventory optimization）：57%
+   - 生产与物料规划（Production and material planning）：49%
+   - S&OP/BP（销售与运营计划/业务计划）：48%
+   - 配送规划（Distribution planning）：36%
+
+2. **Risk and transparency（风险和透明度）**：
+   - 端到端供应链可见性（End-to-end supply chain visibility）：55%
+   - 风险评估和模拟（Risk assessment and simulation）：52%
+   - 早期预警系统（Early-warning system）：33%
+   - 运输管理（Transport management）：33%
+   - 网络建模（Network modeling）：26%
+
+3. **Network and logistics（网络和物流）**：
+   - 仓库管理（Warehouse management）：36%
+   - 网络建模（Network modeling）：35%
+   - 运输管理（Transport management）：26%
+
+图表下方有注释，说明调查的来源和日期。整体来看，这张图片展示了供应链领域对AI工具的兴趣，特别是在需求规划方面的应用。
+
+结合前一页的内容，这张图片展示了一份关于供应链领导者在人才发展策略上的调查结果。图片中包含以下内容：
+
+1. **标题和副标题**：
+   - 标题是“Supply chains: Still vulnerable”，表明供应链仍然脆弱。
+   - 副标题是“Exhibit 5 Supply chain leaders are pivoting back toward in-house training programs”，说明供应链领导者正在转向内部培训计划。
+
+2. **文字内容**：
+   - 文字部分讨论了供应链的未来挑战，并建议公司应继续努力构建韧性，并采取新行动来解决系统、流程和能力中的盲点。
+   - 提到数据质量问题，并指出尽管没有完美的数据，但许多数字化项目仍能取得成功。
+   - 讨论了公司在过去三年中如何应对数字人才获取的挑战，并提到公司领导正在重新评估内部培训和人才发展计划。
+
+3. **图表**：
+   - 图表展示了过去几年中供应链领导者采取的人才发展行动的百分比。
+   - 图表中的数据包括“Hired new talent”（招聘新人才）、“Reskilled today's labor force”（重新培训现有劳动力）、“Redeployed today's labor force”（重新部署现有劳动力）和“Hired external talent temporarily”（临时雇佣外部人才）。
+   - 数据显示，从2020年到2024年，招聘新人才和重新培训现有劳动力的比例有所增加，而重新部署现有劳动力和临时雇佣外部人才的比例有所下降。
+
+4. **来源**：
+   - 数据来源是McKinsey & Company，具体来源是McKinsey Global Supply Chain Leader Survey，调查时间为2024年4月28日至6月10日。
+
+总体而言，这张图片传达了供应链领导者正在调整其人才发展策略，更多地依赖内部培训和重新培训现有员工，以应对供应链中的挑战和脆弱性。
+
+结合后一页的内容，这张图片来自于麦肯锡全球供应链领导调查，讨论了供应链的脆弱性和风险管理。图片中包含以下内容：
+
+1. **标题和副标题**：标题为“供应链仍然脆弱”，副标题为“麦肯锡全球供应链领导调查显示，尽管公司已经采取措施加强供应链，但仍然存在重大脆弱性。”
+
+2. **文本内容**：文本提到公司在加强供应链方面取得了一些进展，但仍然存在许多脆弱性。这些脆弱性包括供应链弹性建设的放缓、供应链可见性不足、合规挑战以及人才短缺。为了应对这些风险，公司需要优先考虑数字化、人才发展和主动的风险管理。
+
+3. **问题列表**：图片中列出了几个问题，用于评估组织是否足够关注供应链弹性：
+   - 你是否有计划建立或获取供应链所需的数字人才？
+   - 你是否了解你的二级和三级供应商的风险状况？
+   - 你是否有一个有效的早期预警系统来监测内部和外部的供应链风险？
+   - 你的供应链规划是否使用人工智能来定量评估风险场景？
+   - 你的供应链中断恢复时间是否少于一周？
+   - 你的董事会是否充分理解供应链风险？
+   - 你的董事会是否愿意为供应链风险的缓解进行预算？
+
+4. **作者信息**：图片底部列出了三位作者的名字及其所在办公室：
+   - Knut Alicke 是麦肯锡斯图加特办公室的合伙人。
+   - Tracy Foster 是麦肯锡卡罗来纳办公室的合伙人。
+   - Vera Trautwein 是麦肯锡苏黎世办公室的高级专家。
+
+5.

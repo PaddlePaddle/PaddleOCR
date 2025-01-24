@@ -1,0 +1,14 @@
+这张图片展示了麦肯锡公司关于供应链韧性的调查结果。图片中有一个折线图，显示了公司在过去几年中实施供应链韧性措施的百分比变化。图表的标题是“Companies are implementing fewer measures to improve supply chain resilience, and recent growth in digital spend is slowing.”（公司正在实施更少的措施来提高供应链韧性，而最近在数字支出方面的增长正在放缓）。
+
+图表的纵轴表示受访者的百分比，横轴表示年份，从2020年到2024年。图中有四条线，分别代表不同的供应链韧性措施：
+
+1. **供应链数字化投资**（Investments in supply chain digitalization）
+2. **双重采购**（Dual sourcing）
+3. **库存缓冲**（Inventory buffers）
+4. **区域化**（Regionalization）
+
+图表显示，从2020年到2024年，这些措施的实施比例有所变化，其中供应链数字化投资和双重采购的实施比例有所增加，而库存缓冲和区域化的实施比例有所下降。
+
+图表下方有一段文字，解释了调查结果。文字提到，尽管三分之二的公司正在投资APS系统，但只有10%的公司完成了部署，15%的公司表示他们的实施没有达到业务目标。此外，有三分之一的公司承认他们没有为APS系统制定业务案例。
+
+图片底部有麦肯锡公司的标志和“Supply chains: Still vulnerable”的标题。

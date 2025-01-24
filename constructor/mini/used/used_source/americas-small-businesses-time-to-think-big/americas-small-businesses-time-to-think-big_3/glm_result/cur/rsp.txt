@@ -1,0 +1,14 @@
+这是一张目录页的图片，标题为“Contents”。目录列出了多个章节和部分，以及相应的页码。具体内容如下：
+
+1. **At a glance** - 第3页
+2. **Introduction** - 第5页
+3. **1. Small businesses are the bedrock of the US economy** - 第7页
+4. **2. US small businesses struggle with productivity** - 第11页
+5. **3. Small business economic impact and productivity varies by region** - 第16页
+6. **4. More productive small businesses will boost US competitiveness** - 第24页
+7. **5. A path to higher productivity: Networks and interactions** - 第30页
+8. **6. What stakeholders can do to drive MSME productivity** - 第35页
+9. **Acknowledgments** - 第37页
+10. **Endnotes** - 第38页
+
+在图片的底部，有一行小字：“America's small businesses: Time to think big”。

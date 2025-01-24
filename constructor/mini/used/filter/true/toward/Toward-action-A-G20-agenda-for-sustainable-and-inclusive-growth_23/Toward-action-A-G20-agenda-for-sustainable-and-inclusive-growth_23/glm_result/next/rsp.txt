@@ -1,0 +1,22 @@
+这张图片展示了关于不平等和可负担性对富裕经济体中赋权结果的影响。图片中包含一个条形图，显示了不同收入水平的经济体中，收入增长、不平等和可负担性对人们达到经济赋权的影响程度。
+
+条形图分为三个部分：
+1. **低收入经济体（人均GDP低于$5,000）**：
+   - GDP per capita alone: 79
+   - Inequality and affordability: 6
+   - Other: 15
+   - Average share of income band's population above empowerment line: 23%
+
+2. **中等收入经济体（人均GDP在$5,000至$20,000之间）**：
+   - GDP per capita alone: 43
+   - Inequality and affordability: 47
+   - Other: 10
+   - Average share of income band's population above empowerment line: 49%
+
+3. **高收入经济体（人均GDP超过$20,000）**：
+   - GDP per capita alone: 14
+   - Inequality and affordability: 82
+   - Other: 4
+   - Average share of income band's population above empowerment line: 78%
+
+图片底部有注释，解释了数据的来源和计算方法。总体而言，图片强调了不平等和可负担性在富裕经济体中对赋权结果的影响更为显著。
