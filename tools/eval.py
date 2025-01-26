@@ -131,7 +131,6 @@ def main():
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
             "FLAGS_cudnn_batchnorm_spatial_persistent": 1,
-            "FLAGS_max_inplace_grad_add": 8,
         }
         paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["Global"].get("scale_loss", 1.0)

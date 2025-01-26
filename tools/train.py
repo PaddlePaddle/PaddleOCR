@@ -182,7 +182,6 @@ def main(config, device, logger, vdl_writer, seed):
             pass
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {
-            "FLAGS_max_inplace_grad_add": 8,
         }
         if paddle.is_compiled_with_cuda():
             AMP_RELATED_FLAGS_SETTING.update(
