@@ -66,7 +66,6 @@ def amp_scaler(config):
     if "AMP" in config and config["AMP"]["use_amp"] is True:
         AMP_RELATED_FLAGS_SETTING = {
             "FLAGS_cudnn_batchnorm_spatial_persistent": 1,
-            "FLAGS_max_inplace_grad_add": 8,
         }
         paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
         scale_loss = config["AMP"].get("scale_loss", 1.0)
