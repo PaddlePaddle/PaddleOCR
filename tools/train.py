@@ -181,8 +181,7 @@ def main(config, device, logger, vdl_writer, seed):
         except:
             pass
     if use_amp:
-        AMP_RELATED_FLAGS_SETTING = {
-        }
+        AMP_RELATED_FLAGS_SETTING = {}
         if paddle.is_compiled_with_cuda():
             AMP_RELATED_FLAGS_SETTING.update(
                 {
