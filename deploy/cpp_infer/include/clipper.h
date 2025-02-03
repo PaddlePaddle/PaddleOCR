@@ -86,9 +86,16 @@ struct IntPoint {
 #ifdef use_xyz
   cInt Z;
   IntPoint(cInt x = 0, cInt y = 0, cInt z = 0) : X(x), Y(y), Z(z){};
+  IntPoint(IntPoint const &ip) : X(ip.X), Y(ip.Y), Z(ip.Z) {}
 #else
   IntPoint(cInt x = 0, cInt y = 0) : X(x), Y(y){};
+  IntPoint(IntPoint const &ip) : X(ip.X), Y(ip.Y) {}
 #endif
+
+  inline void reset(cInt x = 0, cInt y = 0) noexcept {
+    X = x;
+    Y = y;
+  }
 
   friend inline bool operator==(const IntPoint &a, const IntPoint &b) {
     return a.X == b.X && a.Y == b.Y;
@@ -102,12 +109,12 @@ struct IntPoint {
 typedef std::vector<IntPoint> Path;
 typedef std::vector<Path> Paths;
 
-inline Path &operator<<(Path &poly, const IntPoint &p) {
-  poly.push_back(p);
+inline Path &operator<<(Path &poly, IntPoint &&p) {
+  poly.emplace_back(std::forward<IntPoint>(p));
   return poly;
 }
-inline Paths &operator<<(Paths &polys, const Path &p) {
-  polys.push_back(p);
+inline Paths &operator<<(Paths &polys, Path &&p) {
+  polys.emplace_back(std::forward<Path>(p));
   return polys;
 }
 
@@ -118,8 +125,12 @@ std::ostream &operator<<(std::ostream &s, const Paths &p);
 struct DoublePoint {
   double X;
   double Y;
-  DoublePoint(double x = 0, double y = 0) : X(x), Y(y) {}
-  DoublePoint(IntPoint ip) : X((double)ip.X), Y((double)ip.Y) {}
+  DoublePoint(double x = 0, double y = 0) noexcept : X(x), Y(y) {}
+  DoublePoint(IntPoint const &ip) noexcept : X((double)ip.X), Y((double)ip.Y) {}
+  inline void reset(double x = 0, double y = 0) noexcept {
+    X = x;
+    Y = y;
+  }
 };
 //------------------------------------------------------------------------------
 

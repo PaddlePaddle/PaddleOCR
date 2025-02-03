@@ -28,12 +28,14 @@
 namespace PaddleOCR {
 
 std::vector<std::string> Utility::ReadDict(const std::string &path) {
-  std::ifstream in(path);
-  std::string line;
   std::vector<std::string> m_vec;
+  std::ifstream in(path);
   if (in) {
-    while (getline(in, line)) {
-      m_vec.push_back(line);
+    for (;;) {
+      std::string line;
+      if (!getline(in, line))
+        break;
+      m_vec.emplace_back(std::move(line));
     }
   } else {
     std::cout << "no such label file: " << path << ", exit the program..."
@@ -48,9 +50,9 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
                               const std::string &save_path) {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
-  for (int n = 0; n < ocr_result.size(); n++) {
+  for (int n = 0; n < ocr_result.size(); ++n) {
     cv::Point rook_points[4];
-    for (int m = 0; m < ocr_result[n].box.size(); m++) {
+    for (int m = 0; m < ocr_result[n].box.size(); ++m) {
       rook_points[m] =
           cv::Point(int(ocr_result[n].box[m][0]), int(ocr_result[n].box[m][1]));
     }
@@ -71,7 +73,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   img_vis = crop_image(img_vis, structure_result.box);
-  for (int n = 0; n < structure_result.cell_box.size(); n++) {
+  for (int n = 0; n < structure_result.cell_box.size(); ++n) {
     if (structure_result.cell_box[n].size() == 8) {
       cv::Point rook_points[4];
       for (int m = 0; m < structure_result.cell_box[n].size(); m += 2) {
@@ -83,11 +85,11 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
       int npt[] = {4};
       cv::polylines(img_vis, ppt, npt, 1, 1, CV_RGB(0, 255, 0), 2, 8, 0);
     } else if (structure_result.cell_box[n].size() == 4) {
-      cv::Point rook_points[2];
-      rook_points[0] = cv::Point(int(structure_result.cell_box[n][0]),
-                                 int(structure_result.cell_box[n][1]));
-      rook_points[1] = cv::Point(int(structure_result.cell_box[n][2]),
-                                 int(structure_result.cell_box[n][3]));
+      cv::Point rook_points[2] = {
+          cv::Point(int(structure_result.cell_box[n][0]),
+                    int(structure_result.cell_box[n][1])),
+          cv::Point(int(structure_result.cell_box[n][2]),
+                    int(structure_result.cell_box[n][3]))};
       cv::rectangle(img_vis, rook_points[0], rook_points[1], CV_RGB(0, 255, 0),
                     2, 8, 0);
     }
@@ -108,7 +110,7 @@ void Utility::GetAllFiles(const char *dir_name,
   stat(dir_name, &s);
   if (!S_ISDIR(s.st_mode)) {
     std::cout << "dir_name is not a valid directory !" << std::endl;
-    all_inputs.push_back(dir_name);
+    all_inputs.emplace_back(dir_name);
     return;
   } else {
     struct dirent *filename; // return value for readdir()
@@ -124,14 +126,14 @@ void Utility::GetAllFiles(const char *dir_name,
           strcmp(filename->d_name, "..") == 0)
         continue;
       // img_dir + std::string("/") + all_inputs[0];
-      all_inputs.push_back(dir_name + std::string("/") +
-                           std::string(filename->d_name));
+      all_inputs.emplace_back(dir_name + std::string("/") +
+                              std::string(filename->d_name));
     }
   }
 }
 
 cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
-                                    std::vector<std::vector<int>> box) {
+                                    const std::vector<std::vector<int>> &box) {
   cv::Mat image;
   srcimage.copyTo(image);
   std::vector<std::vector<int>> points = box;
@@ -146,7 +148,7 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
   cv::Mat img_crop;
   image(cv::Rect(left, top, right - left, bottom - top)).copyTo(img_crop);
 
-  for (int i = 0; i < points.size(); i++) {
+  for (int i = 0; i < points.size(); ++i) {
     points[i][0] -= left;
     points[i][1] -= top;
   }
@@ -176,7 +178,7 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
                       cv::BORDER_REPLICATE);
 
   if (float(dst_img.rows) >= float(dst_img.cols) * 1.5) {
-    cv::Mat srcCopy = cv::Mat(dst_img.rows, dst_img.cols, dst_img.depth());
+    cv::Mat srcCopy(dst_img.rows, dst_img.cols, dst_img.depth());
     cv::transpose(dst_img, srcCopy);
     cv::flip(srcCopy, srcCopy, 0);
     return srcCopy;
@@ -186,9 +188,8 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
 }
 
 std::vector<int> Utility::argsort(const std::vector<float> &array) {
-  const int array_len(array.size());
-  std::vector<int> array_index(array_len, 0);
-  for (int i = 0; i < array_len; ++i)
+  std::vector<int> array_index(array.size(), 0);
+  for (int i = 0; i < array.size(); ++i)
     array_index[i] = i;
 
   std::sort(
@@ -244,18 +245,20 @@ bool Utility::PathExists(const std::string &path) {
 }
 
 void Utility::CreateDir(const std::string &path) {
-#ifdef _WIN32
+#ifdef _MSC_VER
   _mkdir(path.c_str());
+#elif defined __MINGW32__
+  mkdir(path.c_str());
 #else
   mkdir(path.c_str(), 0777);
 #endif // !_WIN32
 }
 
 void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
-  for (int i = 0; i < ocr_result.size(); i++) {
+  for (int i = 0; i < ocr_result.size(); ++i) {
     std::cout << i << "\t";
     // det
-    std::vector<std::vector<int>> boxes = ocr_result[i].box;
+    const std::vector<std::vector<int>> &boxes = ocr_result[i].box;
     if (boxes.size() > 0) {
       std::cout << "det boxes: [";
       for (int n = 0; n < boxes.size(); n++) {
@@ -282,13 +285,12 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
 }
 
 cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) {
-  cv::Mat crop_im;
+  cv::Mat crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   int crop_x1 = std::max(0, box[0]);
   int crop_y1 = std::max(0, box[1]);
   int crop_x2 = std::min(img.cols - 1, box[2] - 1);
   int crop_y2 = std::min(img.rows - 1, box[3] - 1);
 
-  crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   cv::Mat crop_im_window =
       crop_im(cv::Range(crop_y1 - box[1], crop_y2 + 1 - box[1]),
               cv::Range(crop_x1 - box[0], crop_x2 + 1 - box[0]));
@@ -307,7 +309,7 @@ cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<float> &box) {
 void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
   std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
   if (ocr_result.size() > 0) {
-    for (int i = 0; i < ocr_result.size() - 1; i++) {
+    for (int i = 0; i < ocr_result.size() - 1; ++i) {
       for (int j = i; j >= 0; j--) {
         if (abs(ocr_result[j + 1].box[0][1] - ocr_result[j].box[0][1]) < 10 &&
             (ocr_result[j + 1].box[0][0] < ocr_result[j].box[0][0])) {
@@ -318,7 +320,8 @@ void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
   }
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) {
+std::vector<int>
+Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) {
   int x_collect[4] = {box[0][0], box[1][0], box[2][0], box[3][0]};
   int y_collect[4] = {box[0][1], box[1][1], box[2][1], box[3][1]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
@@ -333,7 +336,7 @@ std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<std::vector<int>> &box) {
   return box1;
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(std::vector<int> &box) {
+std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) {
   int x_collect[4] = {box[0], box[2], box[4], box[6]};
   int y_collect[4] = {box[1], box[3], box[5], box[7]};
   int left = int(*std::min_element(x_collect, x_collect + 4));

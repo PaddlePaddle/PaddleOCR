@@ -97,8 +97,8 @@ void ocr(std::vector<cv::String> &cv_all_img_names) {
                 << cv_all_img_names[i] << std::endl;
       continue;
     }
-    img_list.push_back(img);
-    img_names.push_back(cv_all_img_names[i]);
+    img_list.emplace_back(std::move(img));
+    img_names.emplace_back(cv_all_img_names[i]);
   }
 
   std::vector<std::vector<OCRPredictResult>> ocr_results =
@@ -126,7 +126,7 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
     engine.reset_timer();
   }
 
-  for (int i = 0; i < cv_all_img_names.size(); i++) {
+  for (int i = 0; i < cv_all_img_names.size(); ++i) {
     std::cout << "predict img: " << cv_all_img_names[i] << std::endl;
     cv::Mat img = cv::imread(cv_all_img_names[i], cv::IMREAD_COLOR);
     if (!img.data) {

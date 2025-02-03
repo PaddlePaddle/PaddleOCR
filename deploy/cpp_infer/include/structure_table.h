@@ -48,7 +48,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<cv::Mat> img_list,
+  void Run(const std::vector<cv::Mat> &img_list,
            std::vector<std::vector<std::string>> &rec_html_tags,
            std::vector<float> &rec_scores,
            std::vector<std::vector<std::vector<int>>> &rec_boxes,

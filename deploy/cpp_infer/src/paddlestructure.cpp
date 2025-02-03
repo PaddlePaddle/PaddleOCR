@@ -37,7 +37,8 @@ PaddleStructure::PaddleStructure() {
 }
 
 std::vector<StructurePredictResult>
-PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
+PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
+                           bool ocr) {
   cv::Mat img;
   srcimg.copyTo(img);
 
@@ -48,19 +49,20 @@ PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
   } else {
     StructurePredictResult res;
     res.type = "table";
-    res.box = std::vector<float>(4, 0.0);
+    res.box.resize(4, 0.0);
     res.box[2] = img.cols;
     res.box[3] = img.rows;
-    structure_results.push_back(res);
+    structure_results.emplace_back(std::move(res));
   }
   cv::Mat roi_img;
-  for (int i = 0; i < structure_results.size(); i++) {
+  for (int i = 0; i < structure_results.size(); ++i) {
     // crop image
-    roi_img = Utility::crop_image(img, structure_results[i].box);
+    roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
     if (structure_results[i].type == "table" && table) {
       this->table(roi_img, structure_results[i]);
     } else if (ocr) {
-      structure_results[i].text_res = this->ocr(roi_img, true, true, false);
+      structure_results[i].text_res =
+          std::move(this->ocr(roi_img, true, true, false));
     }
   }
 
@@ -68,7 +70,7 @@ PaddleStructure::structure(cv::Mat srcimg, bool layout, bool table, bool ocr) {
 }
 
 void PaddleStructure::layout(
-    cv::Mat img, std::vector<StructurePredictResult> &structure_result) {
+    const cv::Mat &img, std::vector<StructurePredictResult> &structure_result) {
   std::vector<double> layout_times;
   this->layout_model_->Run(img, structure_result, layout_times);
 
@@ -77,15 +79,14 @@ void PaddleStructure::layout(
   this->time_info_layout[2] += layout_times[2];
 }
 
-void PaddleStructure::table(cv::Mat img,
+void PaddleStructure::table(const cv::Mat &img,
                             StructurePredictResult &structure_result) {
   // predict structure
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
   std::vector<std::vector<std::vector<int>>> structure_boxes;
   std::vector<double> structure_times;
-  std::vector<cv::Mat> img_list;
-  img_list.push_back(img);
+  std::vector<cv::Mat> img_list(1, img);
 
   this->table_model_->Run(img_list, structure_html_tags, structure_scores,
                           structure_boxes, structure_times);
@@ -98,45 +99,44 @@ void PaddleStructure::table(cv::Mat img,
   std::string html;
   int expand_pixel = 3;
 
-  for (int i = 0; i < img_list.size(); i++) {
+  for (int i = 0; i < img_list.size(); ++i) {
     // det
     this->det(img_list[i], ocr_result);
     // crop image
     std::vector<cv::Mat> rec_img_list;
     std::vector<int> ocr_box;
     for (int j = 0; j < ocr_result.size(); j++) {
-      ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[j].box);
+      ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[j].box));
       ocr_box[0] = std::max(0, ocr_box[0] - expand_pixel);
       ocr_box[1] = std::max(0, ocr_box[1] - expand_pixel),
       ocr_box[2] = std::min(img_list[i].cols, ocr_box[2] + expand_pixel);
       ocr_box[3] = std::min(img_list[i].rows, ocr_box[3] + expand_pixel);
 
       cv::Mat crop_img = Utility::crop_image(img_list[i], ocr_box);
-      rec_img_list.push_back(crop_img);
+      rec_img_list.emplace_back(std::move(crop_img));
     }
     // rec
     this->rec(rec_img_list, ocr_result);
     // rebuild table
-    html = this->rebuild_table(structure_html_tags[i], structure_boxes[i],
-                               ocr_result);
-    structure_result.html = html;
-    structure_result.cell_box = structure_boxes[i];
+    structure_result.html = std::move(this->rebuild_table(
+        structure_html_tags[i], structure_boxes[i], ocr_result));
+    structure_result.cell_box = std::move(structure_boxes[i]);
     structure_result.html_score = structure_scores[i];
   }
 }
 
-std::string
-PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
-                               std::vector<std::vector<int>> structure_boxes,
-                               std::vector<OCRPredictResult> &ocr_result) {
+std::string PaddleStructure::rebuild_table(
+    const std::vector<std::string> &structure_html_tags,
+    const std::vector<std::vector<int>> &structure_boxes,
+    std::vector<OCRPredictResult> &ocr_result) {
   // match text in same cell
   std::vector<std::vector<std::string>> matched(structure_boxes.size(),
                                                 std::vector<std::string>());
 
   std::vector<int> ocr_box;
   std::vector<int> structure_box;
-  for (int i = 0; i < ocr_result.size(); i++) {
-    ocr_box = Utility::xyxyxyxy2xyxy(ocr_result[i].box);
+  for (int i = 0; i < ocr_result.size(); ++i) {
+    ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[i].box));
     ocr_box[0] -= 1;
     ocr_box[1] -= 1;
     ocr_box[2] += 1;
@@ -145,7 +145,7 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
                                              std::vector<float>(3, 100000.0));
     for (int j = 0; j < structure_boxes.size(); j++) {
       if (structure_boxes[i].size() == 8) {
-        structure_box = Utility::xyxyxyxy2xyxy(structure_boxes[j]);
+        structure_box = std::move(Utility::xyxyxyxy2xyxy(structure_boxes[j]));
       } else {
         structure_box = structure_boxes[j];
       }
@@ -156,13 +156,13 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
     // find min dis idx
     std::sort(dis_list.begin(), dis_list.end(),
               PaddleStructure::comparison_dis);
-    matched[dis_list[0][2]].push_back(ocr_result[i].text);
+    matched[dis_list[0][2]].emplace_back(ocr_result[i].text);
   }
 
   // get pred html
   std::string html_str = "";
   int td_tag_idx = 0;
-  for (int i = 0; i < structure_html_tags.size(); i++) {
+  for (int i = 0; i < structure_html_tags.size(); ++i) {
     if (structure_html_tags[i].find("</td>") != std::string::npos) {
       if (structure_html_tags[i].find("<td></td>") != std::string::npos) {
         html_str += "<td>";
@@ -216,7 +216,8 @@ PaddleStructure::rebuild_table(std::vector<std::string> structure_html_tags,
   return html_str;
 }
 
-float PaddleStructure::dis(std::vector<int> &box1, std::vector<int> &box2) {
+float PaddleStructure::dis(const std::vector<int> &box1,
+                           const std::vector<int> &box2) {
   int x1_1 = box1[0];
   int y1_1 = box1[1];
   int x2_1 = box1[2];
