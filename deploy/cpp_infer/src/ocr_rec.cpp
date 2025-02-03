@@ -152,6 +152,8 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) {
         config.EnableTunedTensorRtDynamicShape("./trt_rec_shape.txt", true);
       }
     }
+  } else if (this->use_mlu_) {
+    config.EnableCustomDevice("mlu", this->gpu_id_);
   } else {
     config.DisableGpu();
     if (this->use_mkldnn_) {
