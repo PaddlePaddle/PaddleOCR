@@ -47,7 +47,7 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(cv::Mat img, std::vector<StructurePredictResult> &result,
+  void Run(const cv::Mat &img, std::vector<StructurePredictResult> &result,
            std::vector<double> &times);
 
 private:

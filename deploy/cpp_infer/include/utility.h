@@ -71,7 +71,7 @@ public:
                           std::vector<std::string> &all_inputs);
 
   static cv::Mat GetRotateCropImage(const cv::Mat &srcimage,
-                                    std::vector<std::vector<int>> box);
+                                    const std::vector<std::vector<int>> &box);
 
   static std::vector<int> argsort(const std::vector<float> &array);
 
@@ -88,8 +88,9 @@ public:
 
   static void sorted_boxes(std::vector<OCRPredictResult> &ocr_result);
 
-  static std::vector<int> xyxyxyxy2xyxy(std::vector<std::vector<int>> &box);
-  static std::vector<int> xyxyxyxy2xyxy(std::vector<int> &box);
+  static std::vector<int>
+  xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box);
+  static std::vector<int> xyxyxyxy2xyxy(const std::vector<int> &box);
 
   static float fast_exp(float x);
   static std::vector<float>

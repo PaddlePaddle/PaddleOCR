@@ -25,26 +25,26 @@ namespace PaddleOCR {
 
 class Normalize {
 public:
-  virtual void Run(cv::Mat *im, const std::vector<float> &mean,
+  virtual void Run(cv::Mat &im, const std::vector<float> &mean,
                    const std::vector<float> &scale, const bool is_scale = true);
 };
 
 // RGB -> CHW
 class Permute {
 public:
-  virtual void Run(const cv::Mat *im, float *data);
+  virtual void Run(const cv::Mat &im, float *data);
 };
 
 class PermuteBatch {
 public:
-  virtual void Run(const std::vector<cv::Mat> imgs, float *data);
+  virtual void Run(const std::vector<cv::Mat> &imgs, float *data);
 };
 
 class ResizeImgType0 {
 public:
   virtual void Run(const cv::Mat &img, cv::Mat &resize_img,
-                   std::string limit_type, int limit_side_len, float &ratio_h,
-                   float &ratio_w, bool use_tensorrt);
+                   const std::string &limit_type, int limit_side_len,
+                   float &ratio_h, float &ratio_w, bool use_tensorrt);
 };
 
 class CrnnResizeImg {

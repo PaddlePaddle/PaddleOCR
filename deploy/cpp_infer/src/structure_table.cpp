@@ -17,7 +17,7 @@
 namespace PaddleOCR {
 
 void StructureTableRecognizer::Run(
-    std::vector<cv::Mat> img_list,
+    const std::vector<cv::Mat> &img_list,
     std::vector<std::vector<std::string>> &structure_html_tags,
     std::vector<float> &structure_scores,
     std::vector<std::vector<std::vector<int>>> &structure_boxes,
@@ -45,12 +45,12 @@ void StructureTableRecognizer::Run(
       cv::Mat resize_img;
       cv::Mat pad_img;
       this->resize_op_.Run(srcimg, resize_img, this->table_max_len_);
-      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       this->pad_op_.Run(resize_img, pad_img, this->table_max_len_);
-      norm_img_batch.push_back(pad_img);
-      width_list.push_back(srcimg.cols);
-      height_list.push_back(srcimg.rows);
+      norm_img_batch.emplace_back(std::move(pad_img));
+      width_list.emplace_back(srcimg.cols);
+      height_list.emplace_back(srcimg.rows);
     }
 
     std::vector<float> input(
@@ -96,24 +96,24 @@ void StructureTableRecognizer::Run(
                               width_list, height_list);
     for (int m = 0; m < predict_shape0[0]; m++) {
 
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<table>");
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<body>");
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<html>");
-      structure_html_tag_batch[m].push_back("</table>");
-      structure_html_tag_batch[m].push_back("</body>");
-      structure_html_tag_batch[m].push_back("</html>");
-      structure_html_tags.push_back(structure_html_tag_batch[m]);
-      structure_scores.push_back(structure_score_batch[m]);
-      structure_boxes.push_back(structure_boxes_batch[m]);
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<table>");
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<body>");
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<html>");
+      structure_html_tag_batch[m].emplace_back("</table>");
+      structure_html_tag_batch[m].emplace_back("</body>");
+      structure_html_tag_batch[m].emplace_back("</html>");
+      structure_html_tags.emplace_back(std::move(structure_html_tag_batch[m]));
+      structure_scores.emplace_back(structure_score_batch[m]);
+      structure_boxes.emplace_back(std::move(structure_boxes_batch[m]));
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
-    times.push_back(double(preprocess_diff.count() * 1000));
-    times.push_back(double(inference_diff.count() * 1000));
-    times.push_back(double(postprocess_diff.count() * 1000));
+    times.emplace_back(preprocess_diff.count() * 1000);
+    times.emplace_back(inference_diff.count() * 1000);
+    times.emplace_back(postprocess_diff.count() * 1000);
   }
 }
 

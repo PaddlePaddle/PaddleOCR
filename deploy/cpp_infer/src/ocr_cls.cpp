@@ -16,7 +16,7 @@
 
 namespace PaddleOCR {
 
-void Classifier::Run(std::vector<cv::Mat> img_list,
+void Classifier::Run(const std::vector<cv::Mat> &img_list,
                      std::vector<int> &cls_labels,
                      std::vector<float> &cls_scores,
                      std::vector<double> &times) {
@@ -43,14 +43,14 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
       this->resize_op_.Run(srcimg, resize_img, this->use_tensorrt_,
                            cls_image_shape);
 
-      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       if (resize_img.cols < cls_image_shape[2]) {
         cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
                            cls_image_shape[2] - resize_img.cols,
                            cv::BORDER_CONSTANT, cv::Scalar(0, 0, 0));
       }
-      norm_img_batch.push_back(resize_img);
+      norm_img_batch.emplace_back(std::move(resize_img));
     }
     std::vector<float> input(batch_num * cls_image_shape[0] *
                                  cls_image_shape[1] * cls_image_shape[2],
@@ -96,9 +96,9 @@ void Classifier::Run(std::vector<cv::Mat> img_list,
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
   }
-  times.push_back(double(preprocess_diff.count() * 1000));
-  times.push_back(double(inference_diff.count() * 1000));
-  times.push_back(double(postprocess_diff.count() * 1000));
+  times.emplace_back(preprocess_diff.count() * 1000);
+  times.emplace_back(inference_diff.count() * 1000);
+  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 void Classifier::LoadModel(const std::string &model_dir) {

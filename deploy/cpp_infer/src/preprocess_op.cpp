@@ -16,16 +16,16 @@
 
 namespace PaddleOCR {
 
-void Permute::Run(const cv::Mat *im, float *data) {
-  int rh = im->rows;
-  int rw = im->cols;
-  int rc = im->channels();
+void Permute::Run(const cv::Mat &im, float *data) {
+  int rh = im.rows;
+  int rw = im.cols;
+  int rc = im.channels();
   for (int i = 0; i < rc; ++i) {
-    cv::extractChannel(*im, cv::Mat(rh, rw, CV_32FC1, data + i * rh * rw), i);
+    cv::extractChannel(im, cv::Mat(rh, rw, CV_32FC1, data + i * rh * rw), i);
   }
 }
 
-void PermuteBatch::Run(const std::vector<cv::Mat> imgs, float *data) {
+void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) {
   for (int j = 0; j < imgs.size(); j++) {
     int rh = imgs[j].rows;
     int rw = imgs[j].cols;
@@ -37,24 +37,24 @@ void PermuteBatch::Run(const std::vector<cv::Mat> imgs, float *data) {
   }
 }
 
-void Normalize::Run(cv::Mat *im, const std::vector<float> &mean,
+void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
                     const std::vector<float> &scale, const bool is_scale) {
   double e = 1.0;
   if (is_scale) {
     e /= 255.0;
   }
-  (*im).convertTo(*im, CV_32FC3, e);
+  im.convertTo(im, CV_32FC3, e);
   std::vector<cv::Mat> bgr_channels(3);
-  cv::split(*im, bgr_channels);
-  for (auto i = 0; i < bgr_channels.size(); i++) {
+  cv::split(im, bgr_channels);
+  for (auto i = 0; i < bgr_channels.size(); ++i) {
     bgr_channels[i].convertTo(bgr_channels[i], CV_32FC1, 1.0 * scale[i],
                               (0.0 - mean[i]) * scale[i]);
   }
-  cv::merge(bgr_channels, *im);
+  cv::merge(bgr_channels, im);
 }
 
 void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
-                         std::string limit_type, int limit_side_len,
+                         const std::string &limit_type, int limit_side_len,
                          float &ratio_h, float &ratio_w, bool use_tensorrt) {
   int w = img.cols;
   int h = img.rows;

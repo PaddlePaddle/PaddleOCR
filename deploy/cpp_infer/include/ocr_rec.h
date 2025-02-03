@@ -46,9 +46,9 @@ public:
     this->rec_image_shape_ = rec_image_shape;
 
     this->label_list_ = Utility::ReadDict(label_path);
-    this->label_list_.insert(this->label_list_.begin(),
-                             "#"); // blank char for ctc
-    this->label_list_.push_back(" ");
+    this->label_list_.emplace(this->label_list_.begin(),
+                              "#"); // blank char for ctc
+    this->label_list_.emplace_back(" ");
 
     LoadModel(model_dir);
   }
@@ -56,7 +56,8 @@ public:
   // Load Paddle inference model
   void LoadModel(const std::string &model_dir);
 
-  void Run(std::vector<cv::Mat> img_list, std::vector<std::string> &rec_texts,
+  void Run(const std::vector<cv::Mat> &img_list,
+           std::vector<std::string> &rec_texts,
            std::vector<float> &rec_text_scores, std::vector<double> &times);
 
 private:

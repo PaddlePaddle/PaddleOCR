@@ -16,7 +16,7 @@
 
 namespace PaddleOCR {
 
-void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
+void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                          std::vector<std::string> &rec_texts,
                          std::vector<float> &rec_text_scores,
                          std::vector<double> &times) {
@@ -29,10 +29,10 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
 
   int img_num = img_list.size();
   std::vector<float> width_list;
-  for (int i = 0; i < img_num; i++) {
-    width_list.push_back(float(img_list[i].cols) / img_list[i].rows);
+  for (int i = 0; i < img_num; ++i) {
+    width_list.emplace_back(float(img_list[i].cols) / img_list[i].rows);
   }
-  std::vector<int> indices = Utility::argsort(width_list);
+  std::vector<int> indices = std::move(Utility::argsort(width_list));
 
   for (int beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->rec_batch_num_) {
@@ -57,10 +57,10 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       cv::Mat resize_img;
       this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
                            this->use_tensorrt_, this->rec_image_shape_);
-      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
-      norm_img_batch.push_back(resize_img);
       batch_width = std::max(resize_img.cols, batch_width);
+      norm_img_batch.emplace_back(std::move(resize_img));
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
@@ -118,15 +118,15 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       if (std::isnan(score)) {
         continue;
       }
-      rec_texts[indices[beg_img_no + m]] = str_res;
+      rec_texts[indices[beg_img_no + m]] = std::move(str_res);
       rec_text_scores[indices[beg_img_no + m]] = score;
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
   }
-  times.push_back(double(preprocess_diff.count() * 1000));
-  times.push_back(double(inference_diff.count() * 1000));
-  times.push_back(double(postprocess_diff.count() * 1000));
+  times.emplace_back(preprocess_diff.count() * 1000);
+  times.emplace_back(inference_diff.count() * 1000);
+  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) {
