@@ -22,16 +22,16 @@ namespace PaddleOCR {
 
 class PaddleStructure : public PPOCR {
 public:
-  explicit PaddleStructure();
+  explicit PaddleStructure() noexcept;
   ~PaddleStructure() = default;
 
   std::vector<StructurePredictResult> structure(const cv::Mat &img,
                                                 bool layout = false,
                                                 bool table = true,
-                                                bool ocr = false);
+                                                bool ocr = false) noexcept;
 
-  void reset_timer();
-  void benchmark_log(int img_num);
+  void reset_timer() noexcept;
+  void benchmark_log(int img_num) noexcept;
 
 private:
   std::vector<double> time_info_table = {0, 0, 0};
@@ -41,18 +41,20 @@ private:
   std::unique_ptr<StructureLayoutRecognizer> layout_model_;
 
   void layout(const cv::Mat &img,
-              std::vector<StructurePredictResult> &structure_result);
+              std::vector<StructurePredictResult> &structure_result) noexcept;
 
-  void table(const cv::Mat &img, StructurePredictResult &structure_result);
+  void table(const cv::Mat &img,
+             StructurePredictResult &structure_result) noexcept;
 
   std::string rebuild_table(const std::vector<std::string> &rec_html_tags,
                             const std::vector<std::vector<int>> &rec_boxes,
-                            std::vector<OCRPredictResult> &ocr_result);
+                            std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  float dis(const std::vector<int> &box1, const std::vector<int> &box2);
+  float dis(const std::vector<int> &box1,
+            const std::vector<int> &box2) noexcept;
 
   static bool comparison_dis(const std::vector<float> &dis1,
-                             const std::vector<float> &dis2) {
+                             const std::vector<float> &dis2) noexcept {
     if (dis1[1] < dis2[1]) {
       return true;
     } else if (dis1[1] == dis2[1]) {

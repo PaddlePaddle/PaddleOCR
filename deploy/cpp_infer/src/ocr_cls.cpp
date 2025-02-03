@@ -19,7 +19,7 @@ namespace PaddleOCR {
 void Classifier::Run(const std::vector<cv::Mat> &img_list,
                      std::vector<int> &cls_labels,
                      std::vector<float> &cls_scores,
-                     std::vector<double> &times) {
+                     std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::duration<float>::zero();
   std::chrono::duration<float> inference_diff =
@@ -101,7 +101,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
   times.emplace_back(postprocess_diff.count() * 1000);
 }
 
-void Classifier::LoadModel(const std::string &model_dir) {
+void Classifier::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");

@@ -19,7 +19,7 @@
 
 namespace PaddleOCR {
 
-PaddleStructure::PaddleStructure() {
+PaddleStructure::PaddleStructure() noexcept {
   if (FLAGS_layout) {
     this->layout_model_.reset(new StructureLayoutRecognizer(
         FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
@@ -38,7 +38,7 @@ PaddleStructure::PaddleStructure() {
 
 std::vector<StructurePredictResult>
 PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
-                           bool ocr) {
+                           bool ocr) noexcept {
   cv::Mat img;
   srcimg.copyTo(img);
 
@@ -70,7 +70,8 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
 }
 
 void PaddleStructure::layout(
-    const cv::Mat &img, std::vector<StructurePredictResult> &structure_result) {
+    const cv::Mat &img,
+    std::vector<StructurePredictResult> &structure_result) noexcept {
   std::vector<double> layout_times;
   this->layout_model_->Run(img, structure_result, layout_times);
 
@@ -80,7 +81,7 @@ void PaddleStructure::layout(
 }
 
 void PaddleStructure::table(const cv::Mat &img,
-                            StructurePredictResult &structure_result) {
+                            StructurePredictResult &structure_result) noexcept {
   // predict structure
   std::vector<std::vector<std::string>> structure_html_tags;
   std::vector<float> structure_scores(1, 0);
@@ -96,7 +97,6 @@ void PaddleStructure::table(const cv::Mat &img,
   this->time_info_table[2] += structure_times[2];
 
   std::vector<OCRPredictResult> ocr_result;
-  std::string html;
   int expand_pixel = 3;
 
   for (int i = 0; i < img_list.size(); ++i) {
@@ -128,7 +128,7 @@ void PaddleStructure::table(const cv::Mat &img,
 std::string PaddleStructure::rebuild_table(
     const std::vector<std::string> &structure_html_tags,
     const std::vector<std::vector<int>> &structure_boxes,
-    std::vector<OCRPredictResult> &ocr_result) {
+    std::vector<OCRPredictResult> &ocr_result) noexcept {
   // match text in same cell
   std::vector<std::vector<std::string>> matched(structure_boxes.size(),
                                                 std::vector<std::string>());
@@ -217,7 +217,7 @@ std::string PaddleStructure::rebuild_table(
 }
 
 float PaddleStructure::dis(const std::vector<int> &box1,
-                           const std::vector<int> &box2) {
+                           const std::vector<int> &box2) noexcept {
   int x1_1 = box1[0];
   int y1_1 = box1[1];
   int x2_1 = box1[2];
@@ -235,7 +235,7 @@ float PaddleStructure::dis(const std::vector<int> &box1,
   return dis + std::min(dis_2, dis_3);
 }
 
-void PaddleStructure::reset_timer() {
+void PaddleStructure::reset_timer() noexcept {
   this->time_info_det = {0, 0, 0};
   this->time_info_rec = {0, 0, 0};
   this->time_info_cls = {0, 0, 0};
@@ -243,7 +243,7 @@ void PaddleStructure::reset_timer() {
   this->time_info_layout = {0, 0, 0};
 }
 
-void PaddleStructure::benchmark_log(int img_num) {
+void PaddleStructure::benchmark_log(int img_num) noexcept {
   if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
       0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,

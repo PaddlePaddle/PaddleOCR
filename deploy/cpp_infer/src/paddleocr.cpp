@@ -19,7 +19,7 @@
 
 namespace PaddleOCR {
 
-PPOCR::PPOCR() {
+PPOCR::PPOCR() noexcept {
   if (FLAGS_det) {
     this->detector_.reset(new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
@@ -45,7 +45,8 @@ PPOCR::PPOCR() {
 }
 
 std::vector<std::vector<OCRPredictResult>>
-PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec, bool cls) {
+PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
+           bool cls) noexcept {
   std::vector<std::vector<OCRPredictResult>> ocr_results;
 
   if (!det) {
@@ -77,7 +78,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec, bool cls) {
 }
 
 std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
-                                         bool cls) {
+                                         bool cls) noexcept {
 
   std::vector<OCRPredictResult> ocr_result;
   // det
@@ -106,7 +107,7 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
 }
 
 void PPOCR::det(const cv::Mat &img,
-                std::vector<OCRPredictResult> &ocr_results) {
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::vector<std::vector<int>>> boxes;
   std::vector<double> det_times;
 
@@ -125,7 +126,7 @@ void PPOCR::det(const cv::Mat &img,
 }
 
 void PPOCR::rec(const std::vector<cv::Mat> &img_list,
-                std::vector<OCRPredictResult> &ocr_results) {
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<std::string> rec_texts(img_list.size(), std::string());
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
@@ -141,7 +142,7 @@ void PPOCR::rec(const std::vector<cv::Mat> &img_list,
 }
 
 void PPOCR::cls(const std::vector<cv::Mat> &img_list,
-                std::vector<OCRPredictResult> &ocr_results) {
+                std::vector<OCRPredictResult> &ocr_results) noexcept {
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
   std::vector<double> cls_times;
@@ -156,13 +157,13 @@ void PPOCR::cls(const std::vector<cv::Mat> &img_list,
   this->time_info_cls[2] += cls_times[2];
 }
 
-void PPOCR::reset_timer() {
+void PPOCR::reset_timer() noexcept {
   this->time_info_det = {0, 0, 0};
   this->time_info_rec = {0, 0, 0};
   this->time_info_cls = {0, 0, 0};
 }
 
-void PPOCR::benchmark_log(int img_num) {
+void PPOCR::benchmark_log(int img_num) noexcept {
   if (this->time_info_det[0] + this->time_info_det[1] + this->time_info_det[2] >
       0) {
     AutoLogger autolog_det("ocr_det", FLAGS_use_gpu, FLAGS_use_tensorrt,

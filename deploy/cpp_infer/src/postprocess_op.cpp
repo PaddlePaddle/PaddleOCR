@@ -17,7 +17,8 @@
 namespace PaddleOCR {
 
 void DBPostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
-                                     float unclip_ratio, float &distance) {
+                                     float unclip_ratio,
+                                     float &distance) noexcept {
   int pts_num = 4;
   float area = 0.0f;
   float dist = 0.0f;
@@ -36,7 +37,7 @@ void DBPostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
 
 cv::RotatedRect
 DBPostProcessor::UnClip(const std::vector<std::vector<float>> &box,
-                        const float &unclip_ratio) {
+                        const float &unclip_ratio) noexcept {
   float distance = 1.0;
 
   GetContourArea(box, unclip_ratio, distance);
@@ -50,7 +51,9 @@ DBPostProcessor::UnClip(const std::vector<std::vector<float>> &box,
   offset.AddPath(p, ClipperLib::jtRound, ClipperLib::etClosedPolygon);
 
   ClipperLib::Paths soln;
-  offset.Execute(soln, distance);
+  if (!offset.Execute(soln, distance))
+    return cv::RotatedRect();
+
   std::vector<cv::Point2f> points;
 
   for (int j = 0; j < soln.size(); j++) {
@@ -67,7 +70,7 @@ DBPostProcessor::UnClip(const std::vector<std::vector<float>> &box,
   return res;
 }
 
-float **DBPostProcessor::Mat2Vec(const cv::Mat &mat) {
+float **DBPostProcessor::Mat2Vec(const cv::Mat &mat) noexcept {
   auto **array = new float *[mat.rows];
   for (int i = 0; i < mat.rows; ++i)
     array[i] = new float[mat.cols];
@@ -81,7 +84,7 @@ float **DBPostProcessor::Mat2Vec(const cv::Mat &mat) {
 }
 
 std::vector<std::vector<int>> DBPostProcessor::OrderPointsClockwise(
-    const std::vector<std::vector<int>> &pts) {
+    const std::vector<std::vector<int>> &pts) noexcept {
   std::vector<std::vector<int>> box = pts;
   std::sort(box.begin(), box.end(), XsortInt);
 
@@ -100,7 +103,7 @@ std::vector<std::vector<int>> DBPostProcessor::OrderPointsClockwise(
 }
 
 std::vector<std::vector<float>>
-DBPostProcessor::Mat2Vector(const cv::Mat &mat) {
+DBPostProcessor::Mat2Vector(const cv::Mat &mat) noexcept {
   std::vector<std::vector<float>> img_vec;
 
   for (int i = 0; i < mat.rows; ++i) {
@@ -114,21 +117,22 @@ DBPostProcessor::Mat2Vector(const cv::Mat &mat) {
 }
 
 bool DBPostProcessor::XsortFp32(const std::vector<float> &a,
-                                const std::vector<float> &b) {
+                                const std::vector<float> &b) noexcept {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
 bool DBPostProcessor::XsortInt(const std::vector<int> &a,
-                               const std::vector<int> &b) {
+                               const std::vector<int> &b) noexcept {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
 std::vector<std::vector<float>>
-DBPostProcessor::GetMiniBoxes(const cv::RotatedRect &box, float &ssid) {
+DBPostProcessor::GetMiniBoxes(const cv::RotatedRect &box,
+                              float &ssid) noexcept {
   ssid = std::max(box.size.width, box.size.height);
 
   cv::Mat points;
@@ -163,7 +167,7 @@ DBPostProcessor::GetMiniBoxes(const cv::RotatedRect &box, float &ssid) {
 }
 
 float DBPostProcessor::PolygonScoreAcc(const std::vector<cv::Point> &contour,
-                                       const cv::Mat &pred) {
+                                       const cv::Mat &pred) noexcept {
   int width = pred.cols;
   int height = pred.rows;
   std::vector<float> box_x;
@@ -209,7 +213,8 @@ float DBPostProcessor::PolygonScoreAcc(const std::vector<cv::Point> &contour,
 }
 
 float DBPostProcessor::BoxScoreFast(
-    const std::vector<std::vector<float>> &box_array, const cv::Mat &pred) {
+    const std::vector<std::vector<float>> &box_array,
+    const cv::Mat &pred) noexcept {
   const auto &array = box_array;
   int width = pred.cols;
   int height = pred.rows;
@@ -248,7 +253,8 @@ float DBPostProcessor::BoxScoreFast(
 
 std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
     const cv::Mat &pred, const cv::Mat &bitmap, const float &box_thresh,
-    const float &det_db_unclip_ratio, const std::string &det_db_score_mode) {
+    const float &det_db_unclip_ratio,
+    const std::string &det_db_score_mode) noexcept {
   const int min_size = 3;
   const int max_candidates = 1000;
 
@@ -325,7 +331,7 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
 
 void DBPostProcessor::FilterTagDetRes(
     std::vector<std::vector<std::vector<int>>> &boxes, float ratio_h,
-    float ratio_w, const cv::Mat &srcimg) {
+    float ratio_w, const cv::Mat &srcimg) noexcept {
   int oriimg_h = srcimg.rows;
   int oriimg_w = srcimg.cols;
 
@@ -355,7 +361,7 @@ void DBPostProcessor::FilterTagDetRes(
 }
 
 void TablePostProcessor::init(const std::string &label_path,
-                              bool merge_no_span_structure) {
+                              bool merge_no_span_structure) noexcept {
   this->label_list_ = Utility::ReadDict(label_path);
   if (merge_no_span_structure) {
     this->label_list_.emplace_back("<td></td>");
@@ -380,7 +386,8 @@ void TablePostProcessor::Run(
     const std::vector<int> &structure_probs_shape,
     std::vector<std::vector<std::string>> &rec_html_tag_batch,
     std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
-    const std::vector<int> &width_list, const std::vector<int> &height_list) {
+    const std::vector<int> &width_list,
+    const std::vector<int> &height_list) noexcept {
   for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; batch_idx++) {
     // image tags and boxs
     std::vector<std::string> rec_html_tags;
@@ -446,7 +453,7 @@ void TablePostProcessor::Run(
 void PicodetPostProcessor::init(const std::string &label_path,
                                 const double score_threshold,
                                 const double nms_threshold,
-                                const std::vector<int> &fpn_stride) {
+                                const std::vector<int> &fpn_stride) noexcept {
   this->label_list_ = Utility::ReadDict(label_path);
   this->score_threshold_ = score_threshold;
   this->nms_threshold_ = nms_threshold;
@@ -458,7 +465,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
                                const std::vector<std::vector<float>> &outs,
                                const std::vector<int> &ori_shape,
                                const std::vector<int> &resize_shape,
-                               int reg_max) {
+                               int reg_max) noexcept {
   int in_h = resize_shape[0];
   int in_w = resize_shape[1];
   float scale_factor_h = resize_shape[0] / float(ori_shape[0]);
@@ -515,7 +522,7 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
 
 StructurePredictResult PicodetPostProcessor::disPred2Bbox(
     const std::vector<float> &bbox_pred, int label, float score, int x, int y,
-    int stride, const std::vector<int> &im_shape, int reg_max) {
+    int stride, const std::vector<int> &im_shape, int reg_max) noexcept {
   float ct_x = (x + 0.5) * stride;
   float ct_y = (y + 0.5) * stride;
   std::vector<float> dis_pred;
@@ -547,9 +554,9 @@ StructurePredictResult PicodetPostProcessor::disPred2Bbox(
 }
 
 void PicodetPostProcessor::nms(std::vector<StructurePredictResult> &input_boxes,
-                               float nms_threshold) {
+                               float nms_threshold) noexcept {
   std::sort(input_boxes.begin(), input_boxes.end(),
-            [](StructurePredictResult a, StructurePredictResult b) {
+            [](StructurePredictResult a, StructurePredictResult b) noexcept {
               return a.confidence > b.confidence;
             });
   std::vector<int> picked(input_boxes.size(), 1);

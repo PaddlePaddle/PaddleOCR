@@ -16,7 +16,7 @@
 
 namespace PaddleOCR {
 
-void Permute::Run(const cv::Mat &im, float *data) {
+void Permute::Run(const cv::Mat &im, float *data) noexcept {
   int rh = im.rows;
   int rw = im.cols;
   int rc = im.channels();
@@ -25,7 +25,7 @@ void Permute::Run(const cv::Mat &im, float *data) {
   }
 }
 
-void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) {
+void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) noexcept {
   for (int j = 0; j < imgs.size(); j++) {
     int rh = imgs[j].rows;
     int rw = imgs[j].cols;
@@ -38,7 +38,8 @@ void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) {
 }
 
 void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
-                    const std::vector<float> &scale, const bool is_scale) {
+                    const std::vector<float> &scale,
+                    const bool is_scale) noexcept {
   double e = 1.0;
   if (is_scale) {
     e /= 255.0;
@@ -55,7 +56,8 @@ void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
 
 void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
                          const std::string &limit_type, int limit_side_len,
-                         float &ratio_h, float &ratio_w, bool use_tensorrt) {
+                         float &ratio_h, float &ratio_w,
+                         bool use_tensorrt) noexcept {
   int w = img.cols;
   int h = img.rows;
   float ratio = 1.f;
@@ -92,7 +94,7 @@ void ResizeImgType0::Run(const cv::Mat &img, cv::Mat &resize_img,
 
 void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
                         bool use_tensorrt,
-                        const std::vector<int> &rec_image_shape) {
+                        const std::vector<int> &rec_image_shape) noexcept {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];
@@ -117,7 +119,7 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
 
 void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
                        bool use_tensorrt,
-                       const std::vector<int> &rec_image_shape) {
+                       const std::vector<int> &rec_image_shape) noexcept {
   int imgC, imgH, imgW;
   imgC = rec_image_shape[0];
   imgH = rec_image_shape[1];
@@ -135,7 +137,7 @@ void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
 }
 
 void TableResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
-                         const int max_len) {
+                         const int max_len) noexcept {
   int w = img.cols;
   int h = img.rows;
 
@@ -149,7 +151,7 @@ void TableResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
 }
 
 void TablePadImg::Run(const cv::Mat &img, cv::Mat &resize_img,
-                      const int max_len) {
+                      const int max_len) noexcept {
   int w = img.cols;
   int h = img.rows;
   cv::copyMakeBorder(img, resize_img, 0, max_len - h, 0, max_len - w,
@@ -157,7 +159,7 @@ void TablePadImg::Run(const cv::Mat &img, cv::Mat &resize_img,
 }
 
 void Resize::Run(const cv::Mat &img, cv::Mat &resize_img, const int h,
-                 const int w) {
+                 const int w) noexcept {
   cv::resize(img, resize_img, cv::Size(w, h));
 }
 

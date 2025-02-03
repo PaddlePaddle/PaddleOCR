@@ -21,7 +21,7 @@ void StructureTableRecognizer::Run(
     std::vector<std::vector<std::string>> &structure_html_tags,
     std::vector<float> &structure_scores,
     std::vector<std::vector<std::vector<int>>> &structure_boxes,
-    std::vector<double> &times) {
+    std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
   std::chrono::duration<float> inference_diff =
@@ -117,7 +117,8 @@ void StructureTableRecognizer::Run(
   }
 }
 
-void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
+void StructureTableRecognizer::LoadModel(
+    const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");

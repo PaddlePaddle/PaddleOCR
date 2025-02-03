@@ -31,7 +31,7 @@ public:
                           const bool &use_tensorrt,
                           const std::string &precision,
                           const int &rec_batch_num, const int &rec_img_h,
-                          const int &rec_img_w) {
+                          const int &rec_img_w) noexcept {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -54,11 +54,12 @@ public:
   }
 
   // Load Paddle inference model
-  void LoadModel(const std::string &model_dir);
+  void LoadModel(const std::string &model_dir) noexcept;
 
   void Run(const std::vector<cv::Mat> &img_list,
            std::vector<std::string> &rec_texts,
-           std::vector<float> &rec_text_scores, std::vector<double> &times);
+           std::vector<float> &rec_text_scores,
+           std::vector<double> &times) noexcept;
 
 private:
   std::shared_ptr<paddle_infer::Predictor> predictor_;
