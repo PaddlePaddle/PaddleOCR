@@ -19,15 +19,16 @@
 
 #include <vector>
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 #include <direct.h>
 #else
 #include <sys/stat.h>
+#include <unistd.h>
 #endif
 
 namespace PaddleOCR {
 
-std::vector<std::string> Utility::ReadDict(const std::string &path) {
+std::vector<std::string> Utility::ReadDict(const std::string &path) noexcept {
   std::vector<std::string> m_vec;
   std::ifstream in(path);
   if (in) {
@@ -47,7 +48,7 @@ std::vector<std::string> Utility::ReadDict(const std::string &path) {
 
 void Utility::VisualizeBboxes(const cv::Mat &srcimg,
                               const std::vector<OCRPredictResult> &ocr_result,
-                              const std::string &save_path) {
+                              const std::string &save_path) noexcept {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   for (int n = 0; n < ocr_result.size(); ++n) {
@@ -69,7 +70,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
 
 void Utility::VisualizeBboxes(const cv::Mat &srcimg,
                               const StructurePredictResult &structure_result,
-                              const std::string &save_path) {
+                              const std::string &save_path) noexcept {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   img_vis = crop_image(img_vis, structure_result.box);
@@ -101,7 +102,7 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
 
 // list all files under a directory
 void Utility::GetAllFiles(const char *dir_name,
-                          std::vector<std::string> &all_inputs) {
+                          std::vector<std::string> &all_inputs) noexcept {
   if (NULL == dir_name) {
     std::cout << " dir_name is null ! " << std::endl;
     return;
@@ -132,8 +133,9 @@ void Utility::GetAllFiles(const char *dir_name,
   }
 }
 
-cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
-                                    const std::vector<std::vector<int>> &box) {
+cv::Mat
+Utility::GetRotateCropImage(const cv::Mat &srcimage,
+                            const std::vector<std::vector<int>> &box) noexcept {
   cv::Mat image;
   srcimage.copyTo(image);
   std::vector<std::vector<int>> points = box;
@@ -187,7 +189,7 @@ cv::Mat Utility::GetRotateCropImage(const cv::Mat &srcimage,
   }
 }
 
-std::vector<int> Utility::argsort(const std::vector<float> &array) {
+std::vector<int> Utility::argsort(const std::vector<float> &array) noexcept {
   std::vector<int> array_index(array.size(), 0);
   for (int i = 0; i < array.size(); ++i)
     array_index[i] = i;
@@ -199,7 +201,7 @@ std::vector<int> Utility::argsort(const std::vector<float> &array) {
   return array_index;
 }
 
-std::string Utility::basename(const std::string &filename) {
+std::string Utility::basename(const std::string &filename) noexcept {
   if (filename.empty()) {
     return "";
   }
@@ -234,7 +236,7 @@ std::string Utility::basename(const std::string &filename) {
   return filename.substr(index + 1, len - index);
 }
 
-bool Utility::PathExists(const std::string &path) {
+bool Utility::PathExists(const std::string &path) noexcept {
 #ifdef _WIN32
   struct _stat buffer;
   return (_stat(path.c_str(), &buffer) == 0);
@@ -244,7 +246,7 @@ bool Utility::PathExists(const std::string &path) {
 #endif // !_WIN32
 }
 
-void Utility::CreateDir(const std::string &path) {
+void Utility::CreateDir(const std::string &path) noexcept {
 #ifdef _MSC_VER
   _mkdir(path.c_str());
 #elif defined __MINGW32__
@@ -254,7 +256,8 @@ void Utility::CreateDir(const std::string &path) {
 #endif // !_WIN32
 }
 
-void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
+void Utility::print_result(
+    const std::vector<OCRPredictResult> &ocr_result) noexcept {
   for (int i = 0; i < ocr_result.size(); ++i) {
     std::cout << i << "\t";
     // det
@@ -284,7 +287,8 @@ void Utility::print_result(const std::vector<OCRPredictResult> &ocr_result) {
   }
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) {
+cv::Mat Utility::crop_image(cv::Mat &img,
+                            const std::vector<int> &box) noexcept {
   cv::Mat crop_im = cv::Mat::zeros(box[3] - box[1], box[2] - box[0], 16);
   int crop_x1 = std::max(0, box[0]);
   int crop_y1 = std::max(0, box[1]);
@@ -300,13 +304,14 @@ cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<int> &box) {
   return crop_im;
 }
 
-cv::Mat Utility::crop_image(cv::Mat &img, const std::vector<float> &box) {
+cv::Mat Utility::crop_image(cv::Mat &img,
+                            const std::vector<float> &box) noexcept {
   std::vector<int> box_int = {(int)box[0], (int)box[1], (int)box[2],
                               (int)box[3]};
   return crop_image(img, box_int);
 }
 
-void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
+void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
   std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
   if (ocr_result.size() > 0) {
     for (int i = 0; i < ocr_result.size() - 1; ++i) {
@@ -321,7 +326,7 @@ void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) {
 }
 
 std::vector<int>
-Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) {
+Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
   int x_collect[4] = {box[0][0], box[1][0], box[2][0], box[3][0]};
   int y_collect[4] = {box[0][1], box[1][1], box[2][1], box[3][1]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
@@ -336,7 +341,7 @@ Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) {
   return box1;
 }
 
-std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) {
+std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
   int x_collect[4] = {box[0], box[2], box[4], box[6]};
   int y_collect[4] = {box[1], box[3], box[5], box[7]};
   int left = int(*std::min_element(x_collect, x_collect + 4));
@@ -351,7 +356,7 @@ std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) {
   return box1;
 }
 
-float Utility::fast_exp(float x) {
+float Utility::fast_exp(float x) noexcept {
   union {
     uint32_t i;
     float f;
@@ -361,7 +366,7 @@ float Utility::fast_exp(float x) {
 }
 
 std::vector<float>
-Utility::activation_function_softmax(std::vector<float> &src) {
+Utility::activation_function_softmax(std::vector<float> &src) noexcept {
   int length = src.size();
   std::vector<float> dst;
   dst.resize(length);
@@ -379,7 +384,7 @@ Utility::activation_function_softmax(std::vector<float> &src) {
   return dst;
 }
 
-float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) {
+float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) noexcept {
   int area1 = std::max(0, box1[2] - box1[0]) * std::max(0, box1[3] - box1[1]);
   int area2 = std::max(0, box2[2] - box2[0]) * std::max(0, box2[3] - box2[1]);
 
@@ -401,7 +406,8 @@ float Utility::iou(std::vector<int> &box1, std::vector<int> &box2) {
   }
 }
 
-float Utility::iou(std::vector<float> &box1, std::vector<float> &box2) {
+float Utility::iou(std::vector<float> &box1,
+                   std::vector<float> &box2) noexcept {
   float area1 = std::max((float)0.0, box1[2] - box1[0]) *
                 std::max((float)0.0, box1[3] - box1[1]);
   float area2 = std::max((float)0.0, box2[2] - box2[0]) *

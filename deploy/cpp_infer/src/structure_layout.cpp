@@ -18,7 +18,7 @@ namespace PaddleOCR {
 
 void StructureLayoutRecognizer::Run(const cv::Mat &img,
                                     std::vector<StructurePredictResult> &result,
-                                    std::vector<double> &times) {
+                                    std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
   std::chrono::duration<float> inference_diff =
@@ -93,7 +93,8 @@ void StructureLayoutRecognizer::Run(const cv::Mat &img,
   times.emplace_back(postprocess_diff.count() * 1000);
 }
 
-void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
+void StructureLayoutRecognizer::LoadModel(
+    const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   if (Utility::PathExists(model_dir + "/inference.pdmodel") &&
       Utility::PathExists(model_dir + "/inference.pdiparams")) {

@@ -16,7 +16,7 @@
 
 namespace PaddleOCR {
 
-void DBDetector::LoadModel(const std::string &model_dir) {
+void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   //   AnalysisConfig config;
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
@@ -65,7 +65,7 @@ void DBDetector::LoadModel(const std::string &model_dir) {
 
 void DBDetector::Run(const cv::Mat &img,
                      std::vector<std::vector<std::vector<int>>> &boxes,
-                     std::vector<double> &times) {
+                     std::vector<double> &times) noexcept {
   float ratio_h{};
   float ratio_w{};
 
