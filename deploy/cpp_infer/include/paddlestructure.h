@@ -15,15 +15,13 @@
 #pragma once
 
 #include <include/paddleocr.h>
-#include <include/structure_layout.h>
-#include <include/structure_table.h>
 
 namespace PaddleOCR {
 
 class PaddleStructure : public PPOCR {
 public:
   explicit PaddleStructure() noexcept;
-  ~PaddleStructure() = default;
+  ~PaddleStructure();
 
   std::vector<StructurePredictResult> structure(const cv::Mat &img,
                                                 bool layout = false,
@@ -34,11 +32,11 @@ public:
   void benchmark_log(int img_num) noexcept;
 
 private:
+  struct STRUCTURE_PRIVATE;
+  STRUCTURE_PRIVATE *pri_;
+
   std::vector<double> time_info_table = {0, 0, 0};
   std::vector<double> time_info_layout = {0, 0, 0};
-
-  std::unique_ptr<StructureTableRecognizer> table_model_;
-  std::unique_ptr<StructureLayoutRecognizer> layout_model_;
 
   void layout(const cv::Mat &img,
               std::vector<StructurePredictResult> &structure_result) noexcept;

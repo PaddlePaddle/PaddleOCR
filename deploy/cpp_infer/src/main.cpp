@@ -11,15 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
-#include <iostream>
-#include <vector>
+
+#include <opencv2/imgcodecs.hpp>
 
 #include <include/args.h>
-#include <include/paddleocr.h>
 #include <include/paddlestructure.h>
+
+#include <iostream>
+#include <vector>
 
 using namespace PaddleOCR;
 

@@ -14,27 +14,36 @@
 
 #include <include/args.h>
 #include <include/paddlestructure.h>
+#include <include/structure_layout.h>
+#include <include/structure_table.h>
 
-#include "auto_log/autolog.h"
+#include <auto_log/autolog.h>
 
 namespace PaddleOCR {
 
-PaddleStructure::PaddleStructure() noexcept {
+struct PaddleStructure::STRUCTURE_PRIVATE {
+  std::unique_ptr<StructureTableRecognizer> table_model_;
+  std::unique_ptr<StructureLayoutRecognizer> layout_model_;
+};
+
+PaddleStructure::PaddleStructure() noexcept : pri_(new STRUCTURE_PRIVATE) {
   if (FLAGS_layout) {
-    this->layout_model_.reset(new StructureLayoutRecognizer(
+    this->pri_->layout_model_.reset(new StructureLayoutRecognizer(
         FLAGS_layout_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_layout_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_layout_score_threshold,
         FLAGS_layout_nms_threshold));
   }
   if (FLAGS_table) {
-    this->table_model_.reset(new StructureTableRecognizer(
+    this->pri_->table_model_.reset(new StructureTableRecognizer(
         FLAGS_table_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_table_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_table_batch_num,
         FLAGS_table_max_len, FLAGS_merge_no_span_structure));
   }
 }
+
+PaddleStructure::~PaddleStructure() { delete this->pri_; }
 
 std::vector<StructurePredictResult>
 PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
@@ -73,7 +82,7 @@ void PaddleStructure::layout(
     const cv::Mat &img,
     std::vector<StructurePredictResult> &structure_result) noexcept {
   std::vector<double> layout_times;
-  this->layout_model_->Run(img, structure_result, layout_times);
+  this->pri_->layout_model_->Run(img, structure_result, layout_times);
 
   this->time_info_layout[0] += layout_times[0];
   this->time_info_layout[1] += layout_times[1];
@@ -89,8 +98,8 @@ void PaddleStructure::table(const cv::Mat &img,
   std::vector<double> structure_times;
   std::vector<cv::Mat> img_list(1, img);
 
-  this->table_model_->Run(img_list, structure_html_tags, structure_scores,
-                          structure_boxes, structure_times);
+  this->pri_->table_model_->Run(img_list, structure_html_tags, structure_scores,
+                                structure_boxes, structure_times);
 
   this->time_info_table[0] += structure_times[0];
   this->time_info_table[1] += structure_times[1];

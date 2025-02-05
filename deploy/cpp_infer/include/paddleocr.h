@@ -14,16 +14,14 @@
 
 #pragma once
 
-#include <include/ocr_cls.h>
-#include <include/ocr_det.h>
-#include <include/ocr_rec.h>
+#include <include/utility.h>
 
 namespace PaddleOCR {
 
 class PPOCR {
 public:
   explicit PPOCR() noexcept;
-  virtual ~PPOCR() {}
+  virtual ~PPOCR();
 
   std::vector<std::vector<OCRPredictResult>>
   ocr(const std::vector<cv::Mat> &img_list, bool det = true, bool rec = true,
@@ -47,9 +45,8 @@ protected:
            std::vector<OCRPredictResult> &ocr_results) noexcept;
 
 private:
-  std::unique_ptr<DBDetector> detector_;
-  std::unique_ptr<Classifier> classifier_;
-  std::unique_ptr<CRNNRecognizer> recognizer_;
+  struct PPOCR_PRIVATE;
+  PPOCR_PRIVATE *pri_;
 };
 
 } // namespace PaddleOCR

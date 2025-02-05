@@ -13,6 +13,10 @@
 // limitations under the License.
 
 #include <include/structure_table.h>
+#include <paddle_inference_api.h>
+
+#include <chrono>
+#include <numeric>
 
 namespace PaddleOCR {
 
