@@ -13,15 +13,24 @@
 // limitations under the License.
 
 #include <include/args.h>
+#include <include/ocr_cls.h>
+#include <include/ocr_det.h>
+#include <include/ocr_rec.h>
 #include <include/paddleocr.h>
 
-#include "auto_log/autolog.h"
+#include <auto_log/autolog.h>
 
 namespace PaddleOCR {
 
-PPOCR::PPOCR() noexcept {
+struct PPOCR::PPOCR_PRIVATE {
+  std::unique_ptr<DBDetector> detector_;
+  std::unique_ptr<Classifier> classifier_;
+  std::unique_ptr<CRNNRecognizer> recognizer_;
+};
+
+PPOCR::PPOCR() noexcept : pri_(new PPOCR_PRIVATE) {
   if (FLAGS_det) {
-    this->detector_.reset(new DBDetector(
+    this->pri_->detector_.reset(new DBDetector(
         FLAGS_det_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_limit_type,
         FLAGS_limit_side_len, FLAGS_det_db_thresh, FLAGS_det_db_box_thresh,
@@ -30,19 +39,21 @@ PPOCR::PPOCR() noexcept {
   }
 
   if (FLAGS_cls && FLAGS_use_angle_cls) {
-    this->classifier_.reset(new Classifier(
+    this->pri_->classifier_.reset(new Classifier(
         FLAGS_cls_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_cls_thresh,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_cls_batch_num));
   }
   if (FLAGS_rec) {
-    this->recognizer_.reset(new CRNNRecognizer(
+    this->pri_->recognizer_.reset(new CRNNRecognizer(
         FLAGS_rec_model_dir, FLAGS_use_gpu, FLAGS_gpu_id, FLAGS_gpu_mem,
         FLAGS_cpu_threads, FLAGS_enable_mkldnn, FLAGS_rec_char_dict_path,
         FLAGS_use_tensorrt, FLAGS_precision, FLAGS_rec_batch_num,
         FLAGS_rec_img_h, FLAGS_rec_img_w));
   }
 }
+
+PPOCR::~PPOCR() { delete this->pri_; }
 
 std::vector<std::vector<OCRPredictResult>>
 PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
@@ -52,11 +63,11 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
   if (!det) {
     std::vector<OCRPredictResult> ocr_result;
     ocr_result.resize(img_list.size());
-    if (cls && this->classifier_) {
+    if (cls && this->pri_->classifier_) {
       this->cls(img_list, ocr_result);
       for (int i = 0; i < img_list.size(); ++i) {
         if (ocr_result[i].cls_label % 2 == 1 &&
-            ocr_result[i].cls_score > this->classifier_->cls_thresh) {
+            ocr_result[i].cls_score > this->pri_->classifier_->cls_thresh) {
           cv::rotate(img_list[i], img_list[i], 1);
         }
       }
@@ -90,11 +101,11 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
     img_list.emplace_back(std::move(crop_img));
   }
   // cls
-  if (cls && this->classifier_) {
+  if (cls && this->pri_->classifier_) {
     this->cls(img_list, ocr_result);
     for (int i = 0; i < img_list.size(); ++i) {
       if (ocr_result[i].cls_label % 2 == 1 &&
-          ocr_result[i].cls_score > this->classifier_->cls_thresh) {
+          ocr_result[i].cls_score > this->pri_->classifier_->cls_thresh) {
         cv::rotate(img_list[i], img_list[i], 1);
       }
     }
@@ -111,7 +122,7 @@ void PPOCR::det(const cv::Mat &img,
   std::vector<std::vector<std::vector<int>>> boxes;
   std::vector<double> det_times;
 
-  this->detector_->Run(img, boxes, det_times);
+  this->pri_->detector_->Run(img, boxes, det_times);
 
   for (int i = 0; i < boxes.size(); ++i) {
     OCRPredictResult res;
@@ -130,7 +141,7 @@ void PPOCR::rec(const std::vector<cv::Mat> &img_list,
   std::vector<std::string> rec_texts(img_list.size(), std::string());
   std::vector<float> rec_text_scores(img_list.size(), 0);
   std::vector<double> rec_times;
-  this->recognizer_->Run(img_list, rec_texts, rec_text_scores, rec_times);
+  this->pri_->recognizer_->Run(img_list, rec_texts, rec_text_scores, rec_times);
   // output rec results
   for (int i = 0; i < rec_texts.size(); ++i) {
     ocr_results[i].text = std::move(rec_texts[i]);
@@ -146,7 +157,7 @@ void PPOCR::cls(const std::vector<cv::Mat> &img_list,
   std::vector<int> cls_labels(img_list.size(), 0);
   std::vector<float> cls_scores(img_list.size(), 0);
   std::vector<double> cls_times;
-  this->classifier_->Run(img_list, cls_labels, cls_scores, cls_times);
+  this->pri_->classifier_->Run(img_list, cls_labels, cls_scores, cls_times);
   // output cls results
   for (int i = 0; i < cls_labels.size(); ++i) {
     ocr_results[i].cls_label = cls_labels[i];

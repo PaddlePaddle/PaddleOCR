@@ -14,21 +14,7 @@
 
 #pragma once
 
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <ostream>
-#include <stdlib.h>
-#include <vector>
-
-#include <algorithm>
-#include <cstring>
-#include <fstream>
-#include <numeric>
-
-#include "opencv2/core.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include "opencv2/imgproc.hpp"
+#include <opencv2/imgproc.hpp>
 
 namespace PaddleOCR {
 

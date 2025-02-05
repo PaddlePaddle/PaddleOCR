@@ -47,14 +47,9 @@
 // use_deprecated: Enables temporary support for the obsolete functions
 //#define use_deprecated
 
-#include <cstdlib>
-#include <cstring>
-#include <functional>
 #include <list>
-#include <ostream>
 #include <queue>
-#include <set>
-#include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace ClipperLib {

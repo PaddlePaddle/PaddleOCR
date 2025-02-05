@@ -14,11 +14,13 @@
 
 #pragma once
 
-#include "paddle_api.h"
-#include "paddle_inference_api.h"
-
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
+#include <memory>
+
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 

@@ -33,16 +33,13 @@
  * used has retained a Delphi flavour. *
  *                                                                              *
  *******************************************************************************/
+
+#include <include/clipper.h>
+
 #include <algorithm>
 #include <cmath>
-#include <cstdlib>
 #include <cstring>
-#include <functional>
 #include <ostream>
-#include <stdexcept>
-#include <vector>
-
-#include "include/clipper.h"
 
 namespace ClipperLib {
 

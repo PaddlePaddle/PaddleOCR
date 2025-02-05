@@ -14,9 +14,10 @@
 
 #include <dirent.h>
 #include <include/utility.h>
-#include <iostream>
-#include <ostream>
+#include <opencv2/imgcodecs.hpp>
 
+#include <fstream>
+#include <iostream>
 #include <vector>
 
 #ifdef _MSC_VER
