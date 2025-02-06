@@ -53,7 +53,7 @@ Architecture:
     encoder_hidden_size: 2048
     is_export: False
     length_aware: True 
-    use_parallel: True,
+    use_parallel: True
     parallel_step: 3
 
 Loss:
@@ -67,7 +67,7 @@ PostProcess:
 Metric:
   name: LaTeXOCRMetric
   main_indicator:  exp_rate
-  cal_bleu_score: False
+  cal_bleu_score: True
 
 Train:
   dataset:
