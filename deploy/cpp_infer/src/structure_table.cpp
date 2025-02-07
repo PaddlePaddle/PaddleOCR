@@ -33,17 +33,17 @@ void StructureTableRecognizer::Run(
   std::chrono::duration<float> postprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
 
-  int img_num = img_list.size();
-  for (int beg_img_no = 0; beg_img_no < img_num;
+  size_t img_num = img_list.size();
+  for (size_t beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->table_batch_num_) {
     // preprocess
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
+    size_t end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     std::vector<cv::Mat> norm_img_batch;
     std::vector<int> width_list;
     std::vector<int> height_list;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       cv::Mat srcimg;
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
@@ -98,7 +98,7 @@ void StructureTableRecognizer::Run(
                               predict_shape0, predict_shape1,
                               structure_html_tag_batch, structure_boxes_batch,
                               width_list, height_list);
-    for (int m = 0; m < predict_shape0[0]; m++) {
+    for (int m = 0; m < predict_shape0[0]; ++m) {
 
       structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
                                           "<table>");

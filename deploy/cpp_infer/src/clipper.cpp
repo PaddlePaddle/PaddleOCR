@@ -2812,7 +2812,7 @@ bool Clipper::FixupIntersectionOrder() noexcept {
     if (!EdgesAdjacent(*m_IntersectList[i])) {
       size_t j = i + 1;
       while (j < cnt && !EdgesAdjacent(*m_IntersectList[j]))
-        j++;
+        ++j;
       if (j == cnt)
         return false;
       std::swap(m_IntersectList[i], m_IntersectList[j]);
@@ -3078,7 +3078,7 @@ void Clipper::BuildResult2(PolyTree &polytree) noexcept {
     pn->Index = 0;
     pn->Contour.reserve(cnt);
     OutPt *op = outRec->Pts->Prev;
-    for (int j = 0; j < cnt; j++) {
+    for (int j = 0; j < cnt; ++j) {
       pn->Contour.emplace_back(op->Pt);
       op = op->Prev;
     }
@@ -3643,7 +3643,7 @@ void ClipperOffset::AddPath(const Path &path, JoinType joinType,
   int j = 0, k = 0;
   for (int i = 1; i <= highI; ++i)
     if (newNode->Contour[j] != path[i]) {
-      j++;
+      ++j;
       newNode->Contour.emplace_back(path[i]);
       if (path[i].Y > newNode->Contour[k].Y ||
           (path[i].Y == newNode->Contour[k].Y &&
@@ -3826,7 +3826,7 @@ void ClipperOffset::DoOffset(double delta) noexcept {
     if (len == 1) {
       if (node.m_jointype == jtRound) {
         double X = 1.0, Y = 0.0;
-        for (cInt j = 1; j <= steps; j++) {
+        for (cInt j = 1; j <= steps; ++j) {
           m_destPoly.emplace_back(Round(m_srcPoly[0].X + X * delta),
                                   Round(m_srcPoly[0].Y + Y * delta));
           double X2 = X;

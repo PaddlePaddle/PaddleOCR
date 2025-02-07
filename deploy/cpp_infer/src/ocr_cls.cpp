@@ -40,7 +40,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
     int batch_num = end_img_no - beg_img_no;
     // preprocess
     std::vector<cv::Mat> norm_img_batch;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (int ino = beg_img_no; ino < end_img_no; ++ino) {
       cv::Mat srcimg;
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
@@ -87,7 +87,7 @@ void Classifier::Run(const std::vector<cv::Mat> &img_list,
 
     // postprocess
     auto postprocess_start = std::chrono::steady_clock::now();
-    for (int batch_idx = 0; batch_idx < predict_shape[0]; batch_idx++) {
+    for (int batch_idx = 0; batch_idx < predict_shape[0]; ++batch_idx) {
       int label = int(
           Utility::argmax(&predict_batch[batch_idx * predict_shape[1]],
                           &predict_batch[(batch_idx + 1) * predict_shape[1]]));

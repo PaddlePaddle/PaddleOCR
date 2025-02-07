@@ -65,7 +65,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
     ocr_result.resize(img_list.size());
     if (cls && this->pri_->classifier_) {
       this->cls(img_list, ocr_result);
-      for (int i = 0; i < img_list.size(); ++i) {
+      for (size_t i = 0; i < img_list.size(); ++i) {
         if (ocr_result[i].cls_label % 2 == 1 &&
             ocr_result[i].cls_score > this->pri_->classifier_->cls_thresh) {
           cv::rotate(img_list[i], img_list[i], 1);
@@ -79,7 +79,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
       ocr_results.emplace_back(1, std::move(ocr_result[i]));
     }
   } else {
-    for (int i = 0; i < img_list.size(); ++i) {
+    for (size_t i = 0; i < img_list.size(); ++i) {
       std::vector<OCRPredictResult> ocr_result =
           this->ocr(img_list[i], true, rec, cls);
       ocr_results.emplace_back(std::move(ocr_result));
@@ -96,14 +96,14 @@ std::vector<OCRPredictResult> PPOCR::ocr(const cv::Mat &img, bool det, bool rec,
   this->det(img, ocr_result);
   // crop image
   std::vector<cv::Mat> img_list;
-  for (int j = 0; j < ocr_result.size(); j++) {
+  for (size_t j = 0; j < ocr_result.size(); ++j) {
     cv::Mat crop_img = Utility::GetRotateCropImage(img, ocr_result[j].box);
     img_list.emplace_back(std::move(crop_img));
   }
   // cls
   if (cls && this->pri_->classifier_) {
     this->cls(img_list, ocr_result);
-    for (int i = 0; i < img_list.size(); ++i) {
+    for (size_t i = 0; i < img_list.size(); ++i) {
       if (ocr_result[i].cls_label % 2 == 1 &&
           ocr_result[i].cls_score > this->pri_->classifier_->cls_thresh) {
         cv::rotate(img_list[i], img_list[i], 1);
@@ -124,7 +124,7 @@ void PPOCR::det(const cv::Mat &img,
 
   this->pri_->detector_->Run(img, boxes, det_times);
 
-  for (int i = 0; i < boxes.size(); ++i) {
+  for (size_t i = 0; i < boxes.size(); ++i) {
     OCRPredictResult res;
     res.box = std::move(boxes[i]);
     ocr_results.emplace_back(std::move(res));
@@ -143,7 +143,7 @@ void PPOCR::rec(const std::vector<cv::Mat> &img_list,
   std::vector<double> rec_times;
   this->pri_->recognizer_->Run(img_list, rec_texts, rec_text_scores, rec_times);
   // output rec results
-  for (int i = 0; i < rec_texts.size(); ++i) {
+  for (size_t i = 0; i < rec_texts.size(); ++i) {
     ocr_results[i].text = std::move(rec_texts[i]);
     ocr_results[i].score = rec_text_scores[i];
   }
@@ -159,7 +159,7 @@ void PPOCR::cls(const std::vector<cv::Mat> &img_list,
   std::vector<double> cls_times;
   this->pri_->classifier_->Run(img_list, cls_labels, cls_scores, cls_times);
   // output cls results
-  for (int i = 0; i < cls_labels.size(); ++i) {
+  for (size_t i = 0; i < cls_labels.size(); ++i) {
     ocr_results[i].cls_label = cls_labels[i];
     ocr_results[i].cls_score = cls_scores[i];
   }

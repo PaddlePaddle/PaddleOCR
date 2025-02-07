@@ -52,9 +52,9 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
                               const std::string &save_path) noexcept {
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
-  for (int n = 0; n < ocr_result.size(); ++n) {
+  for (size_t n = 0; n < ocr_result.size(); ++n) {
     cv::Point rook_points[4];
-    for (int m = 0; m < ocr_result[n].box.size(); ++m) {
+    for (size_t m = 0; m < ocr_result[n].box.size(); ++m) {
       rook_points[m] =
           cv::Point(int(ocr_result[n].box[m][0]), int(ocr_result[n].box[m][1]));
     }
@@ -75,10 +75,10 @@ void Utility::VisualizeBboxes(const cv::Mat &srcimg,
   cv::Mat img_vis;
   srcimg.copyTo(img_vis);
   img_vis = crop_image(img_vis, structure_result.box);
-  for (int n = 0; n < structure_result.cell_box.size(); ++n) {
+  for (size_t n = 0; n < structure_result.cell_box.size(); ++n) {
     if (structure_result.cell_box[n].size() == 8) {
       cv::Point rook_points[4];
-      for (int m = 0; m < structure_result.cell_box[n].size(); m += 2) {
+      for (size_t m = 0; m < structure_result.cell_box[n].size(); m += 2) {
         rook_points[m / 2] =
             cv::Point(int(structure_result.cell_box[n][m]),
                       int(structure_result.cell_box[n][m + 1]));
@@ -151,7 +151,7 @@ Utility::GetRotateCropImage(const cv::Mat &srcimage,
   cv::Mat img_crop;
   image(cv::Rect(left, top, right - left, bottom - top)).copyTo(img_crop);
 
-  for (int i = 0; i < points.size(); ++i) {
+  for (size_t i = 0; i < points.size(); ++i) {
     points[i][0] -= left;
     points[i][1] -= top;
   }
@@ -259,13 +259,13 @@ void Utility::CreateDir(const std::string &path) noexcept {
 
 void Utility::print_result(
     const std::vector<OCRPredictResult> &ocr_result) noexcept {
-  for (int i = 0; i < ocr_result.size(); ++i) {
+  for (size_t i = 0; i < ocr_result.size(); ++i) {
     std::cout << i << "\t";
     // det
     const std::vector<std::vector<int>> &boxes = ocr_result[i].box;
     if (boxes.size() > 0) {
       std::cout << "det boxes: [";
-      for (int n = 0; n < boxes.size(); n++) {
+      for (size_t n = 0; n < boxes.size(); ++n) {
         std::cout << '[' << boxes[n][0] << ',' << boxes[n][1] << "]";
         if (n != boxes.size() - 1) {
           std::cout << ',';
@@ -314,9 +314,9 @@ cv::Mat Utility::crop_image(cv::Mat &img,
 
 void Utility::sorted_boxes(std::vector<OCRPredictResult> &ocr_result) noexcept {
   std::sort(ocr_result.begin(), ocr_result.end(), Utility::comparison_box);
-  if (ocr_result.size() > 0) {
-    for (int i = 0; i < ocr_result.size() - 1; ++i) {
-      for (int j = i; j >= 0; j--) {
+  if (ocr_result.size() > 1) {
+    for (size_t i = 0; i < ocr_result.size() - 1; ++i) {
+      for (size_t j = i; j != size_t(-1); --j) {
         if (abs(ocr_result[j + 1].box[0][1] - ocr_result[j].box[0][1]) < 10 &&
             (ocr_result[j + 1].box[0][0] < ocr_result[j].box[0][0])) {
           std::swap(ocr_result[i], ocr_result[i + 1]);
@@ -368,18 +368,18 @@ float Utility::fast_exp(float x) noexcept {
 
 std::vector<float>
 Utility::activation_function_softmax(std::vector<float> &src) noexcept {
-  int length = src.size();
+  size_t length = src.size();
   std::vector<float> dst;
   dst.resize(length);
-  const float alpha = float(*std::max_element(&src[0], &src[0 + length]));
+  const float alpha = float(*std::max_element(&src[0], &src[length]));
   float denominator{0};
 
-  for (int i = 0; i < length; ++i) {
+  for (size_t i = 0; i < length; ++i) {
     dst[i] = fast_exp(src[i] - alpha);
     denominator += dst[i];
   }
 
-  for (int i = 0; i < length; ++i) {
+  for (size_t i = 0; i < length; ++i) {
     dst[i] /= denominator;
   }
   return dst;
