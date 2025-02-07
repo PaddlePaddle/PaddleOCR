@@ -75,7 +75,7 @@ PPOCR::ocr(const std::vector<cv::Mat> &img_list, bool det, bool rec,
     if (rec) {
       this->rec(img_list, ocr_result);
     }
-    for (int i = 0; i < ocr_result.size(); ++i) {
+    for (size_t i = 0; i < ocr_result.size(); ++i) {
       ocr_results.emplace_back(1, std::move(ocr_result[i]));
     }
   } else {
@@ -130,7 +130,7 @@ void PPOCR::det(const cv::Mat &img,
     ocr_results.emplace_back(std::move(res));
   }
   // sort boex from top to bottom, from left to right
-  Utility::sorted_boxes(ocr_results);
+  Utility::sort_boxes(ocr_results);
   this->time_info_det[0] += det_times[0];
   this->time_info_det[1] += det_times[1];
   this->time_info_det[2] += det_times[2];

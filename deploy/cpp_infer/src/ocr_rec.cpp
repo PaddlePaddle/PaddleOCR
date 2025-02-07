@@ -37,7 +37,7 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
   for (size_t i = 0; i < img_num; ++i) {
     width_list.emplace_back(float(img_list[i].cols) / img_list[i].rows);
   }
-  std::vector<int> indices = std::move(Utility::argsort(width_list));
+  std::vector<size_t> indices = std::move(Utility::argsort(width_list));
 
   for (size_t beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->rec_batch_num_) {
