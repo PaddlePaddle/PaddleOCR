@@ -59,7 +59,14 @@ jobs:
     - name: Install Dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        choco install cmake protoc wget unzip opencv -y
+        choco install cmake protoc wget unzip -y
+        choco install opencv --version=4.8.1 -y
+        echo "OpenCV_DIR=C:/tools/opencv/build" >> $GITHUB_ENV
+        # Add OpenCV DLL path to system PATH
+        echo "C:/tools/opencv/build/x64/vc16/bin" >> $GITHUB_PATH
+        # Verify OpenCV installation
+        dir "C:/tools/opencv/build"
+        dir "C:/tools/opencv/build/x64/vc16/bin"
 
     - name: Cache Paddle Inference
       id: cache-paddle
@@ -86,12 +93,13 @@ jobs:
         cd deploy/cpp_infer
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           cmake -G "Visual Studio 17 2022" -A x64 -B build \
-                -DPADDLE_LIB="paddle_inference" \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DOpenCV_DIR="C:/tools/opencv/build" \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF
         else
           cmake -B build \
-                -DPADDLE_LIB=paddle_inference \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF \
                 -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
