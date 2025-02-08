@@ -1,3 +1,5 @@
+[English](windows_vs2022_build.md) | 简体中文
+
 - [Visual Studio 2019 Community CMake 编译指南](#visual-studio-2019-community-cmake-编译指南)
   - [1. 环境准备](#1-环境准备)
     - [1.1 安装必须环境](#11-安装必须环境)

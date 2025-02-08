@@ -1,6 +1,4 @@
----
-comments: true
----
+English | [简体中文](windows_vs2019_build.md)
 
 # Visual Studio 2022 Community CMake Compilation Guide
 
@@ -53,13 +51,13 @@ git checkout develop
 
 Once CMake is installed, open the `cmake-gui` application. Specify the source code directory in the first input box and the build output directory in the second input box.
 
-![step1](./images/cmake_step1.png)
+![step1](imgs/cmake_step1.png)
 
 ### Step 2: Run CMake Configuration
 
 Click the `Configure` button at the bottom of the interface. The first time you run it, a prompt will appear asking for the Visual Studio configuration. Select your `Visual Studio` version and set the target platform to `x64`. Click `Finish` to start the configuration process.
 
-![step2](./images/cmake_step2.jpg)
+![step2](imgs/cmake_step2.png)
 
 The first run will result in errors, which is expected. You now need to configure OpenCV and the prediction library.
 
@@ -79,7 +77,7 @@ The first run will result in errors, which is expected. You now need to configur
 
 Example configuration:
 
-![step3](./images/cmake_step3.jpg)
+![step3](imgs/cmake_step3.png)
 
 Once configured, click `Configure` again.
 
@@ -91,10 +89,10 @@ Once configured, click `Configure` again.
 ### Step 3: Generate Visual Studio Project
 
 Click `Generate` to create the `.sln` file for the Visual Studio project.
-![step4](./images/cmake_step4.jpg)
+![step4](imgs/cmake_step4.png)
 
 Click `Open Project` to launch the project in Visual Studio. The interface should look like this:
-![step5](./images/vs_step1.jpg)
+![step5](imgs/vs_step1.png)
 
 Before building the solution, perform the following steps:
 
@@ -121,7 +119,7 @@ The compiled executable is located in the `build/Release/` directory. Open `cmd`
 cd /d D:\projects\cpp\PaddleOCR\deploy\cpp_infer
 ```
 
-Run the prediction using `ppocr.exe`. For more usage details, refer to the to the [Instructions](./cpp_infer.en.md) section of running the demo.
+Run the prediction using `ppocr.exe`. For more usage details, refer to the [documentation](../readme_ch.md).
 
 ```shell
 # Switch terminal encoding to UTF-8
@@ -137,7 +135,7 @@ $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Obj
 <br>
 
 ## Sample result:
-![result](./images/result.jpg)
+![result](imgs/result.jpg)
 
 ## FAQ
 
