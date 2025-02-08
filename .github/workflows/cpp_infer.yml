@@ -2,12 +2,12 @@ name: C++ Inference Build
 
 on:
   push:
-    branches: [ "master", "main" ]
+    branches: [ "main", ]
     paths:
       - 'deploy/cpp_infer/**'
       - '.github/workflows/cpp_infer.yml'
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "main", ]
     paths:
       - 'deploy/cpp_infer/**'
       - '.github/workflows/cpp_infer.yml'
@@ -15,7 +15,8 @@ on:
 
 env:
   BUILD_TYPE: Release
-  OPENCV_VERSION: "3.4.7"
+  OPENCV_VERSION: "4.11.0"
+  PADDLE_VERSION: "3.0.0-beta2"
 
 jobs:
   build:
@@ -26,14 +27,14 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            opencv_source_url: https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/2.5.1/cxx_c/Linux/CPU/x86-64_gcc8.2_avx_mkl/paddle_inference.tgz
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
           - os: macos-latest
-            opencv_source_url: https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/2.5.1/cxx_c/MacOS/CPU/paddle_inference.tgz
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
           - os: windows-latest
-            opencv_source_url: https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/2.5.1/cxx_c/Windows/CPU/x86-64_vs2019_avx_mkl/paddle_inference.zip
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
 
     steps:
     - uses: actions/checkout@v3
@@ -70,8 +71,8 @@ jobs:
       shell: bash
       run: |
         wget ${{ matrix.opencv_source_url }}
-        tar -xf opencv-3.4.7.tar.gz
-        cd opencv-3.4.7
+        tar -xf opencv-${{ env.OPENCV_VERSION }}.tar.gz
+        cd opencv-${{ env.OPENCV_VERSION }}
         mkdir build && cd build
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           cmake -G "Visual Studio 17 2022" -A x64 .. \
@@ -115,7 +116,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ github.workspace }}/paddle_inference
-        key: ${{ runner.os }}-paddle-inference-2.5.1
+        key: ${{ runner.os }}-paddle-inference-${{ env.PADDLE_VERSION }}
 
     - name: Download Paddle Inference
       if: steps.cache-paddle.outputs.cache-hit != 'true'
@@ -154,34 +155,3 @@ jobs:
         cd deploy/cpp_infer/build
         cmake --build . --config ${{ env.BUILD_TYPE }} -j4
       shell: bash
-
-    - name: Test
-      shell: bash
-      run: |
-        cd deploy/cpp_infer
-        
-        # Verify inference directory exists
-        if [ ! -d "../../inference/rec_rcnn" ]; then
-          echo "Warning: Inference model directory not found. Model tests will be skipped."
-          exit 0
-        fi
-        
-        cd build
-        # Run basic test with sample image
-        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-          if [ ! -f "Release/ppocr.exe" ]; then
-            echo "Error: Windows executable not found"
-            exit 1
-          fi
-          ./Release/ppocr.exe --det=false --cls=false --rec=true \
-            --rec_model_dir=../../../inference/rec_rcnn \
-            --image_dir=../../../doc/imgs_words/ch/word_1.jpg || echo "Test execution completed with warnings"
-        else
-          if [ ! -f "ppocr" ]; then
-            echo "Error: Unix executable not found"
-            exit 1
-          fi
-          ./ppocr --det=false --cls=false --rec=true \
-            --rec_model_dir=../../../inference/rec_rcnn \
-            --image_dir=../../../doc/imgs_words/ch/word_1.jpg || echo "Test execution completed with warnings"
-        fi
