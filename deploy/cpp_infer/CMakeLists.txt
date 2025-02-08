@@ -7,7 +7,6 @@ option(WITH_STATIC_LIB "Compile demo with static/shared library, default use sta
 option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)
 
 SET(PADDLE_LIB "" CACHE PATH "Location of libraries")
-SET(OPENCV_DIR "" CACHE PATH "Location of libraries")
 SET(CUDA_LIB "" CACHE PATH "Location of libraries")
 SET(CUDNN_LIB "" CACHE PATH "Location of libraries")
 SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
