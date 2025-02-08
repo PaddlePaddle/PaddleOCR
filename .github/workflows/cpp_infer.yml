@@ -27,14 +27,14 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
           - os: macos-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
           - os: windows-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ env.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ env.PADDLE_VERSION }}/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
+            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
 
     steps:
     - uses: actions/checkout@v3
