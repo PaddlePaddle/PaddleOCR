@@ -13,6 +13,7 @@ SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
 
 set(DEMO_NAME "ppocr")
 
+find_package(OpenCV REQUIRED)
 
 macro(safe_set_static_flag)
     foreach(flag_var
@@ -35,10 +36,8 @@ endif()
 if (WIN32)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
-  find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()
-  find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/share/OpenCV NO_DEFAULT_PATH)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
 endif ()
