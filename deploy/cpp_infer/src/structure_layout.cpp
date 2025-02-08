@@ -13,12 +13,17 @@
 // limitations under the License.
 
 #include <include/structure_layout.h>
+#include <paddle_inference_api.h>
+
+#include <chrono>
+#include <iostream>
+#include <numeric>
 
 namespace PaddleOCR {
 
-void StructureLayoutRecognizer::Run(cv::Mat img,
+void StructureLayoutRecognizer::Run(const cv::Mat &img,
                                     std::vector<StructurePredictResult> &result,
-                                    std::vector<double> &times) {
+                                    std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
   std::chrono::duration<float> inference_diff =
@@ -33,11 +38,11 @@ void StructureLayoutRecognizer::Run(cv::Mat img,
   img.copyTo(srcimg);
   cv::Mat resize_img;
   this->resize_op_.Run(srcimg, resize_img, 800, 608);
-  this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+  this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                           this->is_scale_);
 
   std::vector<float> input(1 * 3 * resize_img.rows * resize_img.cols, 0.0f);
-  this->permute_op_.Run(&resize_img, input.data());
+  this->permute_op_.Run(resize_img, input.data());
   auto preprocess_end = std::chrono::steady_clock::now();
   preprocess_diff += preprocess_end - preprocess_start;
 
@@ -54,17 +59,17 @@ void StructureLayoutRecognizer::Run(cv::Mat img,
   std::vector<std::vector<float>> out_tensor_list;
   std::vector<std::vector<int>> output_shape_list;
   auto output_names = this->predictor_->GetOutputNames();
-  for (int j = 0; j < output_names.size(); j++) {
+  for (size_t j = 0; j < output_names.size(); ++j) {
     auto output_tensor = this->predictor_->GetOutputHandle(output_names[j]);
     std::vector<int> output_shape = output_tensor->shape();
     int out_num = std::accumulate(output_shape.begin(), output_shape.end(), 1,
                                   std::multiplies<int>());
-    output_shape_list.push_back(output_shape);
+    output_shape_list.emplace_back(std::move(output_shape));
 
     std::vector<float> out_data;
     out_data.resize(out_num);
     output_tensor->CopyToCpu(out_data.data());
-    out_tensor_list.push_back(out_data);
+    out_tensor_list.emplace_back(std::move(out_data));
   }
   auto inference_end = std::chrono::steady_clock::now();
   inference_diff += inference_end - inference_start;
@@ -74,8 +79,8 @@ void StructureLayoutRecognizer::Run(cv::Mat img,
 
   std::vector<int> bbox_num;
   int reg_max = 0;
-  for (int i = 0; i < out_tensor_list.size(); i++) {
-    if (i == this->post_processor_.fpn_stride_.size()) {
+  for (size_t i = 0; i < out_tensor_list.size(); ++i) {
+    if (i == this->post_processor_.fpn_stride_size()) {
       reg_max = output_shape_list[i][2] / 4;
       break;
     }
@@ -84,16 +89,17 @@ void StructureLayoutRecognizer::Run(cv::Mat img,
   std::vector<int> resize_shape = {resize_img.rows, resize_img.cols};
   this->post_processor_.Run(result, out_tensor_list, ori_shape, resize_shape,
                             reg_max);
-  bbox_num.push_back(result.size());
+  bbox_num.emplace_back(result.size());
 
   auto postprocess_end = std::chrono::steady_clock::now();
   postprocess_diff += postprocess_end - postprocess_start;
-  times.push_back(double(preprocess_diff.count() * 1000));
-  times.push_back(double(inference_diff.count() * 1000));
-  times.push_back(double(postprocess_diff.count() * 1000));
+  times.emplace_back(preprocess_diff.count() * 1000);
+  times.emplace_back(inference_diff.count() * 1000);
+  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
-void StructureLayoutRecognizer::LoadModel(const std::string &model_dir) {
+void StructureLayoutRecognizer::LoadModel(
+    const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   if (Utility::PathExists(model_dir + "/inference.pdmodel") &&
       Utility::PathExists(model_dir + "/inference.pdiparams")) {

@@ -15,44 +15,44 @@
 #pragma once
 
 #include <include/paddleocr.h>
-#include <include/structure_layout.h>
-#include <include/structure_table.h>
 
 namespace PaddleOCR {
 
 class PaddleStructure : public PPOCR {
 public:
-  explicit PaddleStructure();
-  ~PaddleStructure() = default;
+  explicit PaddleStructure() noexcept;
+  ~PaddleStructure();
 
-  std::vector<StructurePredictResult> structure(cv::Mat img,
+  std::vector<StructurePredictResult> structure(const cv::Mat &img,
                                                 bool layout = false,
                                                 bool table = true,
-                                                bool ocr = false);
+                                                bool ocr = false) noexcept;
 
-  void reset_timer();
-  void benchmark_log(int img_num);
+  void reset_timer() noexcept;
+  void benchmark_log(int img_num) noexcept;
 
 private:
+  struct STRUCTURE_PRIVATE;
+  STRUCTURE_PRIVATE *pri_;
+
   std::vector<double> time_info_table = {0, 0, 0};
   std::vector<double> time_info_layout = {0, 0, 0};
 
-  std::unique_ptr<StructureTableRecognizer> table_model_;
-  std::unique_ptr<StructureLayoutRecognizer> layout_model_;
+  void layout(const cv::Mat &img,
+              std::vector<StructurePredictResult> &structure_result) noexcept;
 
-  void layout(cv::Mat img,
-              std::vector<StructurePredictResult> &structure_result);
+  void table(const cv::Mat &img,
+             StructurePredictResult &structure_result) noexcept;
 
-  void table(cv::Mat img, StructurePredictResult &structure_result);
+  std::string rebuild_table(const std::vector<std::string> &rec_html_tags,
+                            const std::vector<std::vector<int>> &rec_boxes,
+                            std::vector<OCRPredictResult> &ocr_result) noexcept;
 
-  std::string rebuild_table(std::vector<std::string> rec_html_tags,
-                            std::vector<std::vector<int>> rec_boxes,
-                            std::vector<OCRPredictResult> &ocr_result);
-
-  float dis(std::vector<int> &box1, std::vector<int> &box2);
+  float dis(const std::vector<int> &box1,
+            const std::vector<int> &box2) noexcept;
 
   static bool comparison_dis(const std::vector<float> &dis1,
-                             const std::vector<float> &dis2) {
+                             const std::vector<float> &dis2) noexcept {
     if (dis1[1] < dis2[1]) {
       return true;
     } else if (dis1[1] == dis2[1]) {

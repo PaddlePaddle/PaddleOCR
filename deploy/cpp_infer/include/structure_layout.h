@@ -14,11 +14,13 @@
 
 #pragma once
 
-#include "paddle_api.h"
-#include "paddle_inference_api.h"
-
 #include <include/postprocess_op.h>
 #include <include/preprocess_op.h>
+#include <memory>
+
+namespace paddle_infer {
+class Predictor;
+}
 
 namespace PaddleOCR {
 
@@ -30,7 +32,7 @@ public:
       const bool &use_mkldnn, const std::string &label_path,
       const bool &use_tensorrt, const std::string &precision,
       const double &layout_score_threshold,
-      const double &layout_nms_threshold) {
+      const double &layout_nms_threshold) noexcept {
     this->use_gpu_ = use_gpu;
     this->gpu_id_ = gpu_id;
     this->gpu_mem_ = gpu_mem;
@@ -45,10 +47,10 @@ public:
   }
 
   // Load Paddle inference model
-  void LoadModel(const std::string &model_dir);
+  void LoadModel(const std::string &model_dir) noexcept;
 
-  void Run(cv::Mat img, std::vector<StructurePredictResult> &result,
-           std::vector<double> &times);
+  void Run(const cv::Mat &img, std::vector<StructurePredictResult> &result,
+           std::vector<double> &times) noexcept;
 
 private:
   std::shared_ptr<paddle_infer::Predictor> predictor_;

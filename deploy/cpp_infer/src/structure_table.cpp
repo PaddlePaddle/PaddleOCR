@@ -13,15 +13,19 @@
 // limitations under the License.
 
 #include <include/structure_table.h>
+#include <paddle_inference_api.h>
+
+#include <chrono>
+#include <numeric>
 
 namespace PaddleOCR {
 
 void StructureTableRecognizer::Run(
-    std::vector<cv::Mat> img_list,
+    const std::vector<cv::Mat> &img_list,
     std::vector<std::vector<std::string>> &structure_html_tags,
     std::vector<float> &structure_scores,
     std::vector<std::vector<std::vector<int>>> &structure_boxes,
-    std::vector<double> &times) {
+    std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
   std::chrono::duration<float> inference_diff =
@@ -29,28 +33,28 @@ void StructureTableRecognizer::Run(
   std::chrono::duration<float> postprocess_diff =
       std::chrono::steady_clock::now() - std::chrono::steady_clock::now();
 
-  int img_num = img_list.size();
-  for (int beg_img_no = 0; beg_img_no < img_num;
+  size_t img_num = img_list.size();
+  for (size_t beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->table_batch_num_) {
     // preprocess
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
+    size_t end_img_no = std::min(img_num, beg_img_no + this->table_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     std::vector<cv::Mat> norm_img_batch;
     std::vector<int> width_list;
     std::vector<int> height_list;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       cv::Mat srcimg;
       img_list[ino].copyTo(srcimg);
       cv::Mat resize_img;
       cv::Mat pad_img;
       this->resize_op_.Run(srcimg, resize_img, this->table_max_len_);
-      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
       this->pad_op_.Run(resize_img, pad_img, this->table_max_len_);
-      norm_img_batch.push_back(pad_img);
-      width_list.push_back(srcimg.cols);
-      height_list.push_back(srcimg.rows);
+      norm_img_batch.emplace_back(std::move(pad_img));
+      width_list.emplace_back(srcimg.cols);
+      height_list.emplace_back(srcimg.rows);
     }
 
     std::vector<float> input(
@@ -94,30 +98,31 @@ void StructureTableRecognizer::Run(
                               predict_shape0, predict_shape1,
                               structure_html_tag_batch, structure_boxes_batch,
                               width_list, height_list);
-    for (int m = 0; m < predict_shape0[0]; m++) {
+    for (int m = 0; m < predict_shape0[0]; ++m) {
 
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<table>");
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<body>");
-      structure_html_tag_batch[m].insert(structure_html_tag_batch[m].begin(),
-                                         "<html>");
-      structure_html_tag_batch[m].push_back("</table>");
-      structure_html_tag_batch[m].push_back("</body>");
-      structure_html_tag_batch[m].push_back("</html>");
-      structure_html_tags.push_back(structure_html_tag_batch[m]);
-      structure_scores.push_back(structure_score_batch[m]);
-      structure_boxes.push_back(structure_boxes_batch[m]);
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<table>");
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<body>");
+      structure_html_tag_batch[m].emplace(structure_html_tag_batch[m].begin(),
+                                          "<html>");
+      structure_html_tag_batch[m].emplace_back("</table>");
+      structure_html_tag_batch[m].emplace_back("</body>");
+      structure_html_tag_batch[m].emplace_back("</html>");
+      structure_html_tags.emplace_back(std::move(structure_html_tag_batch[m]));
+      structure_scores.emplace_back(structure_score_batch[m]);
+      structure_boxes.emplace_back(std::move(structure_boxes_batch[m]));
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
-    times.push_back(double(preprocess_diff.count() * 1000));
-    times.push_back(double(inference_diff.count() * 1000));
-    times.push_back(double(postprocess_diff.count() * 1000));
+    times.emplace_back(preprocess_diff.count() * 1000);
+    times.emplace_back(inference_diff.count() * 1000);
+    times.emplace_back(postprocess_diff.count() * 1000);
   }
 }
 
-void StructureTableRecognizer::LoadModel(const std::string &model_dir) {
+void StructureTableRecognizer::LoadModel(
+    const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");

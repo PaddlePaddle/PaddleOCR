@@ -13,13 +13,18 @@
 // limitations under the License.
 
 #include <include/ocr_rec.h>
+#include <paddle_inference_api.h>
+
+#include <chrono>
+#include <iostream>
+#include <numeric>
 
 namespace PaddleOCR {
 
-void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
+void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
                          std::vector<std::string> &rec_texts,
                          std::vector<float> &rec_text_scores,
-                         std::vector<double> &times) {
+                         std::vector<double> &times) noexcept {
   std::chrono::duration<float> preprocess_diff =
       std::chrono::duration<float>::zero();
   std::chrono::duration<float> inference_diff =
@@ -27,22 +32,22 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
   std::chrono::duration<float> postprocess_diff =
       std::chrono::duration<float>::zero();
 
-  int img_num = img_list.size();
+  size_t img_num = img_list.size();
   std::vector<float> width_list;
-  for (int i = 0; i < img_num; i++) {
-    width_list.push_back(float(img_list[i].cols) / img_list[i].rows);
+  for (size_t i = 0; i < img_num; ++i) {
+    width_list.emplace_back(float(img_list[i].cols) / img_list[i].rows);
   }
-  std::vector<int> indices = Utility::argsort(width_list);
+  std::vector<size_t> indices = std::move(Utility::argsort(width_list));
 
-  for (int beg_img_no = 0; beg_img_no < img_num;
+  for (size_t beg_img_no = 0; beg_img_no < img_num;
        beg_img_no += this->rec_batch_num_) {
     auto preprocess_start = std::chrono::steady_clock::now();
-    int end_img_no = std::min(img_num, beg_img_no + this->rec_batch_num_);
+    size_t end_img_no = std::min(img_num, beg_img_no + this->rec_batch_num_);
     int batch_num = end_img_no - beg_img_no;
     int imgH = this->rec_image_shape_[1];
     int imgW = this->rec_image_shape_[2];
     float max_wh_ratio = imgW * 1.0 / imgH;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       int h = img_list[indices[ino]].rows;
       int w = img_list[indices[ino]].cols;
       float wh_ratio = w * 1.0 / h;
@@ -51,16 +56,16 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
 
     int batch_width = imgW;
     std::vector<cv::Mat> norm_img_batch;
-    for (int ino = beg_img_no; ino < end_img_no; ino++) {
+    for (size_t ino = beg_img_no; ino < end_img_no; ++ino) {
       cv::Mat srcimg;
       img_list[indices[ino]].copyTo(srcimg);
       cv::Mat resize_img;
       this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
                            this->use_tensorrt_, this->rec_image_shape_);
-      this->normalize_op_.Run(&resize_img, this->mean_, this->scale_,
+      this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
                               this->is_scale_);
-      norm_img_batch.push_back(resize_img);
       batch_width = std::max(resize_img.cols, batch_width);
+      norm_img_batch.emplace_back(std::move(resize_img));
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
@@ -80,8 +85,8 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     auto output_t = this->predictor_->GetOutputHandle(output_names[0]);
     auto predict_shape = output_t->shape();
 
-    int out_num = std::accumulate(predict_shape.begin(), predict_shape.end(), 1,
-                                  std::multiplies<int>());
+    size_t out_num = std::accumulate(predict_shape.begin(), predict_shape.end(),
+                                     1, std::multiplies<int>());
     predict_batch.resize(out_num);
     // predict_batch is the result of Last FC with softmax
     output_t->CopyToCpu(predict_batch.data());
@@ -89,7 +94,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
     inference_diff += inference_end - inference_start;
     // ctc decode
     auto postprocess_start = std::chrono::steady_clock::now();
-    for (int m = 0; m < predict_shape[0]; m++) {
+    for (int m = 0; m < predict_shape[0]; ++m) {
       std::string str_res;
       int argmax_idx;
       int last_index = 0;
@@ -97,7 +102,7 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       int count = 0;
       float max_value = 0.0f;
 
-      for (int n = 0; n < predict_shape[1]; n++) {
+      for (int n = 0; n < predict_shape[1]; ++n) {
         // get idx
         argmax_idx = int(Utility::argmax(
             &predict_batch[(m * predict_shape[1] + n) * predict_shape[2]],
@@ -118,18 +123,18 @@ void CRNNRecognizer::Run(std::vector<cv::Mat> img_list,
       if (std::isnan(score)) {
         continue;
       }
-      rec_texts[indices[beg_img_no + m]] = str_res;
+      rec_texts[indices[beg_img_no + m]] = std::move(str_res);
       rec_text_scores[indices[beg_img_no + m]] = score;
     }
     auto postprocess_end = std::chrono::steady_clock::now();
     postprocess_diff += postprocess_end - postprocess_start;
   }
-  times.push_back(double(preprocess_diff.count() * 1000));
-  times.push_back(double(inference_diff.count() * 1000));
-  times.push_back(double(postprocess_diff.count() * 1000));
+  times.emplace_back(preprocess_diff.count() * 1000);
+  times.emplace_back(inference_diff.count() * 1000);
+  times.emplace_back(postprocess_diff.count() * 1000);
 }
 
-void CRNNRecognizer::LoadModel(const std::string &model_dir) {
+void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   config.SetModel(model_dir + "/inference.pdmodel",
                   model_dir + "/inference.pdiparams");

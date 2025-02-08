@@ -12,16 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <include/clipper.h>
 #include <include/postprocess_op.h>
 
 namespace PaddleOCR {
 
 void DBPostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
-                                     float unclip_ratio, float &distance) {
+                                     float unclip_ratio,
+                                     float &distance) noexcept {
   int pts_num = 4;
   float area = 0.0f;
   float dist = 0.0f;
-  for (int i = 0; i < pts_num; i++) {
+  for (int i = 0; i < pts_num; ++i) {
     area += box[i][0] * box[(i + 1) % pts_num][1] -
             box[i][1] * box[(i + 1) % pts_num][0];
     dist += sqrtf((box[i][0] - box[(i + 1) % pts_num][0]) *
@@ -34,26 +36,29 @@ void DBPostProcessor::GetContourArea(const std::vector<std::vector<float>> &box,
   distance = area * unclip_ratio / dist;
 }
 
-cv::RotatedRect DBPostProcessor::UnClip(std::vector<std::vector<float>> box,
-                                        const float &unclip_ratio) {
+cv::RotatedRect
+DBPostProcessor::UnClip(const std::vector<std::vector<float>> &box,
+                        const float &unclip_ratio) noexcept {
   float distance = 1.0;
 
   GetContourArea(box, unclip_ratio, distance);
 
   ClipperLib::ClipperOffset offset;
   ClipperLib::Path p;
-  p << ClipperLib::IntPoint(int(box[0][0]), int(box[0][1]))
-    << ClipperLib::IntPoint(int(box[1][0]), int(box[1][1]))
-    << ClipperLib::IntPoint(int(box[2][0]), int(box[2][1]))
-    << ClipperLib::IntPoint(int(box[3][0]), int(box[3][1]));
+  p.emplace_back(int(box[0][0]), int(box[0][1]));
+  p.emplace_back(int(box[1][0]), int(box[1][1]));
+  p.emplace_back(int(box[2][0]), int(box[2][1]));
+  p.emplace_back(int(box[3][0]), int(box[3][1]));
   offset.AddPath(p, ClipperLib::jtRound, ClipperLib::etClosedPolygon);
 
   ClipperLib::Paths soln;
-  offset.Execute(soln, distance);
+  if (!offset.Execute(soln, distance))
+    return cv::RotatedRect();
+
   std::vector<cv::Point2f> points;
 
-  for (int j = 0; j < soln.size(); j++) {
-    for (int i = 0; i < soln[soln.size() - 1].size(); i++) {
+  for (size_t j = 0; j < soln.size(); ++j) {
+    for (size_t i = 0; i < soln[soln.size() - 1].size(); ++i) {
       points.emplace_back(soln[j][i].X, soln[j][i].Y);
     }
   }
@@ -66,7 +71,7 @@ cv::RotatedRect DBPostProcessor::UnClip(std::vector<std::vector<float>> box,
   return res;
 }
 
-float **DBPostProcessor::Mat2Vec(cv::Mat mat) {
+float **DBPostProcessor::Mat2Vec(const cv::Mat &mat) noexcept {
   auto **array = new float *[mat.rows];
   for (int i = 0; i < mat.rows; ++i)
     array[i] = new float[mat.cols];
@@ -79,8 +84,8 @@ float **DBPostProcessor::Mat2Vec(cv::Mat mat) {
   return array;
 }
 
-std::vector<std::vector<int>>
-DBPostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
+std::vector<std::vector<int>> DBPostProcessor::OrderPointsClockwise(
+    const std::vector<std::vector<int>> &pts) noexcept {
   std::vector<std::vector<int>> box = pts;
   std::sort(box.begin(), box.end(), XsortInt);
 
@@ -98,34 +103,37 @@ DBPostProcessor::OrderPointsClockwise(std::vector<std::vector<int>> pts) {
   return rect;
 }
 
-std::vector<std::vector<float>> DBPostProcessor::Mat2Vector(cv::Mat mat) {
+std::vector<std::vector<float>>
+DBPostProcessor::Mat2Vector(const cv::Mat &mat) noexcept {
   std::vector<std::vector<float>> img_vec;
-  std::vector<float> tmp;
 
   for (int i = 0; i < mat.rows; ++i) {
-    tmp.clear();
+    std::vector<float> tmp;
     for (int j = 0; j < mat.cols; ++j) {
-      tmp.push_back(mat.at<float>(i, j));
+      tmp.emplace_back(mat.at<float>(i, j));
     }
-    img_vec.push_back(tmp);
+    img_vec.emplace_back(std::move(tmp));
   }
   return img_vec;
 }
 
-bool DBPostProcessor::XsortFp32(std::vector<float> a, std::vector<float> b) {
+bool DBPostProcessor::XsortFp32(const std::vector<float> &a,
+                                const std::vector<float> &b) noexcept {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
-bool DBPostProcessor::XsortInt(std::vector<int> a, std::vector<int> b) {
+bool DBPostProcessor::XsortInt(const std::vector<int> &a,
+                               const std::vector<int> &b) noexcept {
   if (a[0] != b[0])
     return a[0] < b[0];
   return false;
 }
 
 std::vector<std::vector<float>>
-DBPostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
+DBPostProcessor::GetMiniBoxes(const cv::RotatedRect &box,
+                              float &ssid) noexcept {
   ssid = std::max(box.size.width, box.size.height);
 
   cv::Mat points;
@@ -159,15 +167,15 @@ DBPostProcessor::GetMiniBoxes(cv::RotatedRect box, float &ssid) {
   return array;
 }
 
-float DBPostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
-                                       cv::Mat pred) {
+float DBPostProcessor::PolygonScoreAcc(const std::vector<cv::Point> &contour,
+                                       const cv::Mat &pred) noexcept {
   int width = pred.cols;
   int height = pred.rows;
   std::vector<float> box_x;
   std::vector<float> box_y;
-  for (int i = 0; i < contour.size(); ++i) {
-    box_x.push_back(contour[i].x);
-    box_y.push_back(contour[i].y);
+  for (size_t i = 0; i < contour.size(); ++i) {
+    box_x.emplace_back(contour[i].x);
+    box_y.emplace_back(contour[i].y);
   }
 
   int xmin =
@@ -188,7 +196,7 @@ float DBPostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
 
   cv::Point *rook_point = new cv::Point[contour.size()];
 
-  for (int i = 0; i < contour.size(); ++i) {
+  for (size_t i = 0; i < contour.size(); ++i) {
     rook_point[i] = cv::Point(int(box_x[i]) - xmin, int(box_y[i]) - ymin);
   }
   const cv::Point *ppt[1] = {rook_point};
@@ -205,9 +213,10 @@ float DBPostProcessor::PolygonScoreAcc(std::vector<cv::Point> contour,
   return score;
 }
 
-float DBPostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
-                                    cv::Mat pred) {
-  auto array = box_array;
+float DBPostProcessor::BoxScoreFast(
+    const std::vector<std::vector<float>> &box_array,
+    const cv::Mat &pred) noexcept {
+  const auto &array = box_array;
   int width = pred.cols;
   int height = pred.rows;
 
@@ -244,8 +253,9 @@ float DBPostProcessor::BoxScoreFast(std::vector<std::vector<float>> box_array,
 }
 
 std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
-    const cv::Mat pred, const cv::Mat bitmap, const float &box_thresh,
-    const float &det_db_unclip_ratio, const std::string &det_db_score_mode) {
+    const cv::Mat &pred, const cv::Mat &bitmap, const float &box_thresh,
+    const float &det_db_unclip_ratio,
+    const std::string &det_db_score_mode) noexcept {
   const int min_size = 3;
   const int max_candidates = 1000;
 
@@ -263,7 +273,7 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
 
   std::vector<std::vector<std::vector<int>>> boxes;
 
-  for (int _i = 0; _i < num_contours; _i++) {
+  for (int _i = 0; _i < num_contours; ++_i) {
     if (contours[_i].size() <= 2) {
       continue;
     }
@@ -305,31 +315,31 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::BoxesFromBitmap(
     int dest_height = pred.rows;
     std::vector<std::vector<int>> intcliparray;
 
-    for (int num_pt = 0; num_pt < 4; num_pt++) {
+    for (int num_pt = 0; num_pt < 4; ++num_pt) {
       std::vector<int> a{int(clampf(roundf(cliparray[num_pt][0] / float(width) *
                                            float(dest_width)),
                                     0, float(dest_width))),
                          int(clampf(roundf(cliparray[num_pt][1] /
                                            float(height) * float(dest_height)),
                                     0, float(dest_height)))};
-      intcliparray.push_back(a);
+      intcliparray.emplace_back(std::move(a));
     }
-    boxes.push_back(intcliparray);
+    boxes.emplace_back(std::move(intcliparray));
 
   } // end for
   return boxes;
 }
 
-std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
-    std::vector<std::vector<std::vector<int>>> boxes, float ratio_h,
-    float ratio_w, cv::Mat srcimg) {
+void DBPostProcessor::FilterTagDetRes(
+    std::vector<std::vector<std::vector<int>>> &boxes, float ratio_h,
+    float ratio_w, const cv::Mat &srcimg) noexcept {
   int oriimg_h = srcimg.rows;
   int oriimg_w = srcimg.cols;
 
   std::vector<std::vector<std::vector<int>>> root_points;
-  for (int n = 0; n < boxes.size(); n++) {
+  for (size_t n = 0; n < boxes.size(); ++n) {
     boxes[n] = OrderPointsClockwise(boxes[n]);
-    for (int m = 0; m < boxes[0].size(); m++) {
+    for (size_t m = 0; m < boxes[0].size(); ++m) {
       boxes[n][m][0] /= ratio_w;
       boxes[n][m][1] /= ratio_h;
 
@@ -338,7 +348,7 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
     }
   }
 
-  for (int n = 0; n < boxes.size(); n++) {
+  for (size_t n = 0; n < boxes.size(); ++n) {
     int rect_width, rect_height;
     rect_width = int(sqrt(pow(boxes[n][0][0] - boxes[n][1][0], 2) +
                           pow(boxes[n][0][1] - boxes[n][1][1], 2)));
@@ -346,16 +356,16 @@ std::vector<std::vector<std::vector<int>>> DBPostProcessor::FilterTagDetRes(
                            pow(boxes[n][0][1] - boxes[n][3][1], 2)));
     if (rect_width <= 4 || rect_height <= 4)
       continue;
-    root_points.push_back(boxes[n]);
+    root_points.emplace_back(boxes[n]);
   }
-  return root_points;
+  boxes = std::move(root_points);
 }
 
-void TablePostProcessor::init(std::string label_path,
-                              bool merge_no_span_structure) {
+void TablePostProcessor::init(const std::string &label_path,
+                              bool merge_no_span_structure) noexcept {
   this->label_list_ = Utility::ReadDict(label_path);
   if (merge_no_span_structure) {
-    this->label_list_.push_back("<td></td>");
+    this->label_list_.emplace_back("<td></td>");
     std::vector<std::string>::iterator it;
     for (it = this->label_list_.begin(); it != this->label_list_.end();) {
       if (*it == "<td>") {
@@ -366,18 +376,20 @@ void TablePostProcessor::init(std::string label_path,
     }
   }
   // add_special_char
-  this->label_list_.insert(this->label_list_.begin(), this->beg);
-  this->label_list_.push_back(this->end);
+  this->label_list_.emplace(this->label_list_.begin(), this->beg);
+  this->label_list_.emplace_back(this->end);
 }
 
 void TablePostProcessor::Run(
-    std::vector<float> &loc_preds, std::vector<float> &structure_probs,
-    std::vector<float> &rec_scores, std::vector<int> &loc_preds_shape,
-    std::vector<int> &structure_probs_shape,
+    const std::vector<float> &loc_preds,
+    const std::vector<float> &structure_probs, std::vector<float> &rec_scores,
+    const std::vector<int> &loc_preds_shape,
+    const std::vector<int> &structure_probs_shape,
     std::vector<std::vector<std::string>> &rec_html_tag_batch,
     std::vector<std::vector<std::vector<int>>> &rec_boxes_batch,
-    std::vector<int> &width_list, std::vector<int> &height_list) {
-  for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; batch_idx++) {
+    const std::vector<int> &width_list,
+    const std::vector<int> &height_list) noexcept {
+  for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; ++batch_idx) {
     // image tags and boxs
     std::vector<std::string> rec_html_tags;
     std::vector<std::vector<int>> rec_boxes;
@@ -388,7 +400,7 @@ void TablePostProcessor::Run(
     int char_idx = 0;
 
     // step
-    for (int step_idx = 0; step_idx < structure_probs_shape[1]; step_idx++) {
+    for (int step_idx = 0; step_idx < structure_probs_shape[1]; ++step_idx) {
       std::string html_tag;
       std::vector<int> rec_box;
       // html tag
@@ -410,11 +422,11 @@ void TablePostProcessor::Run(
       }
       count += 1;
       score += char_score;
-      rec_html_tags.push_back(html_tag);
+      rec_html_tags.emplace_back(html_tag);
 
       // box
       if (html_tag == "<td>" || html_tag == "<td" || html_tag == "<td></td>") {
-        for (int point_idx = 0; point_idx < loc_preds_shape[2]; point_idx++) {
+        for (int point_idx = 0; point_idx < loc_preds_shape[2]; ++point_idx) {
           step_start_idx = (batch_idx * structure_probs_shape[1] + step_idx) *
                                loc_preds_shape[2] +
                            point_idx;
@@ -424,25 +436,25 @@ void TablePostProcessor::Run(
           } else {
             point = int(point * height_list[batch_idx]);
           }
-          rec_box.push_back(point);
+          rec_box.emplace_back(point);
         }
-        rec_boxes.push_back(rec_box);
+        rec_boxes.emplace_back(std::move(rec_box));
       }
     }
     score /= count;
     if (std::isnan(score) || rec_boxes.size() == 0) {
       score = -1;
     }
-    rec_scores.push_back(score);
-    rec_boxes_batch.push_back(rec_boxes);
-    rec_html_tag_batch.push_back(rec_html_tags);
+    rec_scores.emplace_back(score);
+    rec_boxes_batch.emplace_back(std::move(rec_boxes));
+    rec_html_tag_batch.emplace_back(std::move(rec_html_tags));
   }
 }
 
-void PicodetPostProcessor::init(std::string label_path,
+void PicodetPostProcessor::init(const std::string &label_path,
                                 const double score_threshold,
                                 const double nms_threshold,
-                                const std::vector<int> &fpn_stride) {
+                                const std::vector<int> &fpn_stride) noexcept {
   this->label_list_ = Utility::ReadDict(label_path);
   this->score_threshold_ = score_threshold;
   this->nms_threshold_ = nms_threshold;
@@ -451,9 +463,10 @@ void PicodetPostProcessor::init(std::string label_path,
 }
 
 void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
-                               std::vector<std::vector<float>> outs,
-                               std::vector<int> ori_shape,
-                               std::vector<int> resize_shape, int reg_max) {
+                               const std::vector<std::vector<float>> &outs,
+                               const std::vector<int> &ori_shape,
+                               const std::vector<int> &resize_shape,
+                               int reg_max) noexcept {
   int in_h = resize_shape[0];
   int in_w = resize_shape[1];
   float scale_factor_h = resize_shape[0] / float(ori_shape[0]);
@@ -461,16 +474,18 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
 
   std::vector<std::vector<StructurePredictResult>> bbox_results;
   bbox_results.resize(this->num_class_);
-  for (int i = 0; i < this->fpn_stride_.size(); ++i) {
-    int feature_h = std::ceil((float)in_h / this->fpn_stride_[i]);
-    int feature_w = std::ceil((float)in_w / this->fpn_stride_[i]);
-    for (int idx = 0; idx < feature_h * feature_w; idx++) {
+  for (size_t i = 0; i < this->fpn_stride_.size(); ++i) {
+    const int feature_h = std::ceil((float)in_h / this->fpn_stride_[i]);
+    const int feature_w = std::ceil((float)in_w / this->fpn_stride_[i]);
+    const size_t hxw = feature_h * feature_w;
+    for (size_t idx = 0; idx < hxw; ++idx) {
       // score and label
       float score = 0;
       int cur_label = 0;
-      for (int label = 0; label < this->num_class_; label++) {
-        if (outs[i][idx * this->num_class_ + label] > score) {
-          score = outs[i][idx * this->num_class_ + label];
+      for (size_t label = 0; label < this->label_list_.size(); ++label) {
+        float osc = outs[i][idx * this->label_list_.size() + label];
+        if (osc > score) {
+          score = osc;
           cur_label = label;
         }
       }
@@ -478,50 +493,50 @@ void PicodetPostProcessor::Run(std::vector<StructurePredictResult> &results,
       if (score > this->score_threshold_) {
         int row = idx / feature_w;
         int col = idx % feature_w;
-        std::vector<float> bbox_pred(
-            outs[i + this->fpn_stride_.size()].begin() + idx * 4 * reg_max,
-            outs[i + this->fpn_stride_.size()].begin() +
-                (idx + 1) * 4 * reg_max);
-        bbox_results[cur_label].push_back(
+        std::vector<float>::const_iterator itemp =
+            outs[i + this->fpn_stride_.size()].begin() + idx * 4 * reg_max;
+        std::vector<float> bbox_pred(itemp, itemp + 4 * reg_max);
+        bbox_results[cur_label].emplace_back(std::move(
             this->disPred2Bbox(bbox_pred, cur_label, score, col, row,
-                               this->fpn_stride_[i], resize_shape, reg_max));
+                               this->fpn_stride_[i], resize_shape, reg_max)));
       }
     }
   }
-  for (int i = 0; i < bbox_results.size(); i++) {
+#if 0
+  for (size_t i = 0; i < bbox_results.size(); ++i) {
     bool flag = bbox_results[i].size() <= 0;
   }
-  for (int i = 0; i < bbox_results.size(); i++) {
-    bool flag = bbox_results[i].size() <= 0;
+#endif
+  for (size_t i = 0; i < bbox_results.size(); ++i) {
+    // bool flag = bbox_results[i].size() <= 0;
     if (bbox_results[i].size() <= 0) {
       continue;
     }
     this->nms(bbox_results[i], this->nms_threshold_);
-    for (auto box : bbox_results[i]) {
+    for (auto &box : bbox_results[i]) {
       box.box[0] = box.box[0] / scale_factor_w;
       box.box[2] = box.box[2] / scale_factor_w;
       box.box[1] = box.box[1] / scale_factor_h;
       box.box[3] = box.box[3] / scale_factor_h;
-      results.push_back(box);
+      results.emplace_back(std::move(box));
     }
   }
 }
 
-StructurePredictResult
-PicodetPostProcessor::disPred2Bbox(std::vector<float> bbox_pred, int label,
-                                   float score, int x, int y, int stride,
-                                   std::vector<int> im_shape, int reg_max) {
+StructurePredictResult PicodetPostProcessor::disPred2Bbox(
+    const std::vector<float> &bbox_pred, int label, float score, int x, int y,
+    int stride, const std::vector<int> &im_shape, int reg_max) noexcept {
   float ct_x = (x + 0.5) * stride;
   float ct_y = (y + 0.5) * stride;
   std::vector<float> dis_pred;
   dis_pred.resize(4);
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; ++i) {
     float dis = 0;
-    std::vector<float> bbox_pred_i(bbox_pred.begin() + i * reg_max,
-                                   bbox_pred.begin() + (i + 1) * reg_max);
-    std::vector<float> dis_after_sm =
-        Utility::activation_function_softmax(bbox_pred_i);
-    for (int j = 0; j < reg_max; j++) {
+    std::vector<float>::const_iterator itemp = bbox_pred.begin() + i * reg_max;
+    std::vector<float> bbox_pred_i(itemp, itemp + reg_max);
+    std::vector<float> dis_after_sm(
+        std::move(Utility::activation_function_softmax(bbox_pred_i)));
+    for (int j = 0; j < reg_max; ++j) {
       dis += j * dis_after_sm[j];
     }
     dis *= stride;
@@ -542,18 +557,18 @@ PicodetPostProcessor::disPred2Bbox(std::vector<float> bbox_pred, int label,
 }
 
 void PicodetPostProcessor::nms(std::vector<StructurePredictResult> &input_boxes,
-                               float nms_threshold) {
+                               float nms_threshold) noexcept {
   std::sort(input_boxes.begin(), input_boxes.end(),
-            [](StructurePredictResult a, StructurePredictResult b) {
+            [](StructurePredictResult a, StructurePredictResult b) noexcept {
               return a.confidence > b.confidence;
             });
   std::vector<int> picked(input_boxes.size(), 1);
 
-  for (int i = 0; i < input_boxes.size(); ++i) {
+  for (size_t i = 0; i < input_boxes.size(); ++i) {
     if (picked[i] == 0) {
       continue;
     }
-    for (int j = i + 1; j < input_boxes.size(); ++j) {
+    for (size_t j = i + 1; j < input_boxes.size(); ++j) {
       if (picked[j] == 0) {
         continue;
       }
@@ -564,12 +579,12 @@ void PicodetPostProcessor::nms(std::vector<StructurePredictResult> &input_boxes,
     }
   }
   std::vector<StructurePredictResult> input_boxes_nms;
-  for (int i = 0; i < input_boxes.size(); ++i) {
+  for (size_t i = 0; i < input_boxes.size(); ++i) {
     if (picked[i] == 1) {
-      input_boxes_nms.push_back(input_boxes[i]);
+      input_boxes_nms.emplace_back(input_boxes[i]);
     }
   }
-  input_boxes = input_boxes_nms;
+  input_boxes = std::move(input_boxes_nms);
 }
 
 } // namespace PaddleOCR
