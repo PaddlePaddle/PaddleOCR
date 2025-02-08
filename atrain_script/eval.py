@@ -51,5 +51,21 @@ def eval_meter():
   print("running: ", cmd)
   os.system(cmd)
 
+
+def main():
+  import argparse
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--name", type=str, default="date", choices=["date", "meter"])
+  parser.add_argument("--version", type=str, default="v3", choices=["v3", "v4"])
+
+  args = parser.parse_args()
+  if args.name == "date":
+    eval_date()
+  elif args.name == "meter":
+    eval_meter()
+  else:
+    print("Invalid name")
+    exit(1)
+
 if __name__ == "__main__":
-  eval_date()
+  main()
