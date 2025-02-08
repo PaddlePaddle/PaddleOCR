@@ -15,8 +15,6 @@ on:
 
 env:
   BUILD_TYPE: Release
-  OPENCV_VERSION: "4.11.0"
-  PADDLE_VERSION: "3.0.0-beta2"
 
 jobs:
   build:
