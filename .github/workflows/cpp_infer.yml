@@ -95,8 +95,16 @@ jobs:
           cmake -G "Visual Studio 17 2022" -A x64 -B build \
                 -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
                 -DOpenCV_DIR="C:/tools/opencv/build" \
+                -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDLL" \
                 -DWITH_MKL=ON \
-                -DWITH_GPU=OFF
+                -DWITH_GPU=OFF \
+                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          cmake -B build \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DWITH_MKL=OFF \
+                -DWITH_GPU=OFF \
+                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
         else
           cmake -B build \
                 -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
