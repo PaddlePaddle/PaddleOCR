@@ -137,7 +137,7 @@ void structure(std::vector<cv::String> &cv_all_img_names) {
     std::vector<StructurePredictResult> structure_results = engine.structure(
         img, FLAGS_layout, FLAGS_table, FLAGS_det && FLAGS_rec);
 
-    for (int j = 0; j < structure_results.size(); j++) {
+    for (size_t j = 0; j < structure_results.size(); ++j) {
       std::cout << j << "\ttype: " << structure_results[j].type
                 << ", region: [";
       std::cout << structure_results[j].box[0] << ","

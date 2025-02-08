@@ -64,7 +64,7 @@ PaddleStructure::structure(const cv::Mat &srcimg, bool layout, bool table,
     structure_results.emplace_back(std::move(res));
   }
   cv::Mat roi_img;
-  for (int i = 0; i < structure_results.size(); ++i) {
+  for (size_t i = 0; i < structure_results.size(); ++i) {
     // crop image
     roi_img = std::move(Utility::crop_image(img, structure_results[i].box));
     if (structure_results[i].type == "table" && table) {
@@ -108,13 +108,13 @@ void PaddleStructure::table(const cv::Mat &img,
   std::vector<OCRPredictResult> ocr_result;
   int expand_pixel = 3;
 
-  for (int i = 0; i < img_list.size(); ++i) {
+  for (size_t i = 0; i < img_list.size(); ++i) {
     // det
     this->det(img_list[i], ocr_result);
     // crop image
     std::vector<cv::Mat> rec_img_list;
     std::vector<int> ocr_box;
-    for (int j = 0; j < ocr_result.size(); j++) {
+    for (size_t j = 0; j < ocr_result.size(); ++j) {
       ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[j].box));
       ocr_box[0] = std::max(0, ocr_box[0] - expand_pixel);
       ocr_box[1] = std::max(0, ocr_box[1] - expand_pixel),
@@ -144,7 +144,7 @@ std::string PaddleStructure::rebuild_table(
 
   std::vector<int> ocr_box;
   std::vector<int> structure_box;
-  for (int i = 0; i < ocr_result.size(); ++i) {
+  for (size_t i = 0; i < ocr_result.size(); ++i) {
     ocr_box = std::move(Utility::xyxyxyxy2xyxy(ocr_result[i].box));
     ocr_box[0] -= 1;
     ocr_box[1] -= 1;
@@ -152,8 +152,8 @@ std::string PaddleStructure::rebuild_table(
     ocr_box[3] += 1;
     std::vector<std::vector<float>> dis_list(structure_boxes.size(),
                                              std::vector<float>(3, 100000.0));
-    for (int j = 0; j < structure_boxes.size(); j++) {
-      if (structure_boxes[i].size() == 8) {
+    for (size_t j = 0; j < structure_boxes.size(); ++j) {
+      if (structure_boxes[j].size() == 8) {
         structure_box = std::move(Utility::xyxyxyxy2xyxy(structure_boxes[j]));
       } else {
         structure_box = structure_boxes[j];
@@ -171,7 +171,7 @@ std::string PaddleStructure::rebuild_table(
   // get pred html
   std::string html_str = "";
   int td_tag_idx = 0;
-  for (int i = 0; i < structure_html_tags.size(); ++i) {
+  for (size_t i = 0; i < structure_html_tags.size(); ++i) {
     if (structure_html_tags[i].find("</td>") != std::string::npos) {
       if (structure_html_tags[i].find("<td></td>") != std::string::npos) {
         html_str += "<td>";
@@ -183,7 +183,7 @@ std::string PaddleStructure::rebuild_table(
           b_with = true;
           html_str += "<b>";
         }
-        for (int j = 0; j < matched[td_tag_idx].size(); j++) {
+        for (size_t j = 0; j < matched[td_tag_idx].size(); ++j) {
           std::string content = matched[td_tag_idx][j];
           if (matched[td_tag_idx].size() > 1) {
             // remove blank, <b> and </b>

@@ -26,7 +26,7 @@ void Permute::Run(const cv::Mat &im, float *data) noexcept {
 }
 
 void PermuteBatch::Run(const std::vector<cv::Mat> &imgs, float *data) noexcept {
-  for (int j = 0; j < imgs.size(); j++) {
+  for (size_t j = 0; j < imgs.size(); ++j) {
     int rh = imgs[j].rows;
     int rw = imgs[j].cols;
     int rc = imgs[j].channels();
@@ -47,7 +47,7 @@ void Normalize::Run(cv::Mat &im, const std::vector<float> &mean,
   im.convertTo(im, CV_32FC3, e);
   std::vector<cv::Mat> bgr_channels(3);
   cv::split(im, bgr_channels);
-  for (auto i = 0; i < bgr_channels.size(); ++i) {
+  for (size_t i = 0; i < bgr_channels.size(); ++i) {
     bgr_channels[i].convertTo(bgr_channels[i], CV_32FC1, 1.0 * scale[i],
                               (0.0 - mean[i]) * scale[i]);
   }
