@@ -18,6 +18,7 @@ def prehook(hooks: list):
 
   return wrapper
 
+
 def join_cmdlist(cmd_list: list):
   return " ".join(cmd_list)
 
@@ -30,30 +31,52 @@ def eval_date():
   data_dir = "./data"
   label_file_list = ["./data/val.list"]
 
-  cmd = join_cmdlist([
-    f"python {eval_file} -c {config_file}",
-    f"-o Global.checkpoints={ckpt_file}",
-    f"Eval.dataset.data_dir={data_dir}",
-    f"Eval.dataset.label_file_list={label_file_list}",
-  ])
+  cmd = join_cmdlist(
+    [
+      f"python {eval_file} -c {config_file}",
+      f"-o Global.checkpoints={ckpt_file}",
+      f"Eval.dataset.data_dir={data_dir}",
+      f"Eval.dataset.label_file_list={label_file_list}",
+    ]
+  )
   print("running: ", cmd)
   os.system(cmd)
 
 
 def eval_meter():
-  cmd = join_cmdlist([
-    "python tools/eval.py",
-    "-c configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml",
-    "-o Global.checkpoints=ckpt/ch_PP-OCRv3_rec_train/best_accuracy",
-    "Eval.dataset.data_dir=./train_data",
-    "Eval.dataset.label_file_list=[./train_data/rec/val.list]",
-  ])
+  cmd = join_cmdlist(
+    [
+      "python tools/eval.py",
+      "-c configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml",
+      "-o Global.checkpoints=ckpt/ch_PP-OCRv3_rec_train/best_accuracy",
+      "Eval.dataset.data_dir=./train_data",
+      "Eval.dataset.label_file_list=[./train_data/rec/val.list]",
+    ]
+  )
   print("running: ", cmd)
   os.system(cmd)
 
 
+def eval_meter_v2(is_valid: bool = False):
+  if is_valid:
+    VALID_NAME = "valid.list"
+  else:
+    VALID_NAME = "test.list"
+
+  cmd_list = [
+    "python tools/eval.py",
+    "-c configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml",
+    "-o Global.checkpoints=./output/rec_ppocr_v3_distillation_meter/best_model/model",
+    "Eval.dataset.data_dir=./train_data",
+    f"Eval.dataset.label_file_list=[./train_data/rec/{VALID_NAME}]",
+  ]
+  print("running: ", join_cmdlist(cmd_list))
+  os.system(join_cmdlist(cmd_list))
+
+
 def main():
   import argparse
+
   parser = argparse.ArgumentParser()
   parser.add_argument("--name", type=str, default="date", choices=["date", "meter"])
   parser.add_argument("--version", type=str, default="v3", choices=["v3", "v4"])
@@ -66,6 +89,7 @@ def main():
   else:
     print("Invalid name")
     exit(1)
+
 
 if __name__ == "__main__":
   main()
