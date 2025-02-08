@@ -73,11 +73,10 @@ jobs:
       run: |
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           curl -L ${{ matrix.paddle_url }} -o paddle_inference.zip
-          unzip paddle_inference.zip -d ${{ github.workspace }}/paddle_inference
+          unzip paddle_inference.zip
         else
           wget ${{ matrix.paddle_url }} -O paddle_inference.tgz
-          mkdir -p ${{ github.workspace }}/paddle_inference
-          tar -xf paddle_inference.tgz -C ${{ github.workspace }}/paddle_inference
+          tar -xf paddle_inference.tgz
         fi
       shell: bash
 
@@ -87,12 +86,12 @@ jobs:
         cd deploy/cpp_infer
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           cmake -G "Visual Studio 17 2022" -A x64 -B build \
-                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DPADDLE_LIB="paddle_inference" \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF
         else
           cmake -B build \
-                -DPADDLE_LIB=${{ github.workspace }}/paddle_inference \
+                -DPADDLE_LIB=paddle_inference \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF \
                 -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
