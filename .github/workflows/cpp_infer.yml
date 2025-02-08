@@ -50,7 +50,7 @@ jobs:
     - name: Install Dependencies (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        brew install cmake protobuf@3.21 gflags glog opencv@4
+        brew install cmake protobuf gflags glog opencv
 
     - name: Setup Visual Studio Environment (Windows)
       if: matrix.os == 'windows-latest'
@@ -59,10 +59,7 @@ jobs:
     - name: Install Dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        choco install cmake --version=3.26.4 -y
-        choco install protoc --version=3.21.12 -y
-        choco install wget unzip -y
-        choco install opencv --version=4.8.1 -y
+        choco install cmake protoc wget unzip opencv -y
 
     - name: Cache Paddle Inference
       id: cache-paddle
