@@ -25,14 +25,11 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
           - os: macos-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
           - os: windows-latest
-            opencv_source_url: https://github.com/opencv/opencv/archive/refs/tags/${{ vars.OPENCV_VERSION }}.tar.gz
-            paddle_url: https://paddle-inference-lib.bj.bcebos.com/${{ vars.PADDLE_VERSION }}/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
 
     steps:
     - uses: actions/checkout@v3
@@ -41,12 +38,19 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake libgoogle-glog-dev libgflags-dev libprotobuf-dev protobuf-compiler
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          libgoogle-glog-dev \
+          libgflags-dev \
+          libprotobuf-dev \
+          protobuf-compiler \
+          libopencv-dev
 
     - name: Install Dependencies (macOS)
       if: matrix.os == 'macos-latest'
       run: |
-        brew install cmake protobuf gflags glog
+        brew install cmake protobuf@3.21 gflags glog opencv@4
 
     - name: Setup Visual Studio Environment (Windows)
       if: matrix.os == 'windows-latest'
@@ -55,66 +59,17 @@ jobs:
     - name: Install Dependencies (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        choco install cmake protoc wget unzip
-
-    - name: Cache OpenCV
-      id: cache-opencv
-      uses: actions/cache@v3
-      with:
-        path: ${{ github.workspace }}/opencv-install
-        key: ${{ runner.os }}-opencv-${{ env.OPENCV_VERSION }}
-
-    - name: Build OpenCV
-      if: steps.cache-opencv.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        wget ${{ matrix.opencv_source_url }}
-        tar -xf opencv-${{ env.OPENCV_VERSION }}.tar.gz
-        cd opencv-${{ env.OPENCV_VERSION }}
-        mkdir build && cd build
-        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-          cmake -G "Visual Studio 17 2022" -A x64 .. \
-                -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/opencv-install \
-                -DBUILD_SHARED_LIBS=OFF \
-                -DWITH_IPP=OFF \
-                -DBUILD_IPP_IW=OFF \
-                -DWITH_LAPACK=OFF \
-                -DWITH_EIGEN=OFF \
-                -DWITH_ZLIB=ON \
-                -DBUILD_ZLIB=ON \
-                -DWITH_JPEG=ON \
-                -DBUILD_JPEG=ON \
-                -DWITH_PNG=ON \
-                -DBUILD_PNG=ON \
-                -DWITH_TIFF=ON \
-                -DBUILD_TIFF=ON
-        else
-          cmake .. -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/opencv-install \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DBUILD_SHARED_LIBS=OFF \
-                -DWITH_IPP=OFF \
-                -DBUILD_IPP_IW=OFF \
-                -DWITH_LAPACK=OFF \
-                -DWITH_EIGEN=OFF \
-                -DCMAKE_INSTALL_LIBDIR=lib64 \
-                -DWITH_ZLIB=ON \
-                -DBUILD_ZLIB=ON \
-                -DWITH_JPEG=ON \
-                -DBUILD_JPEG=ON \
-                -DWITH_PNG=ON \
-                -DBUILD_PNG=ON \
-                -DWITH_TIFF=ON \
-                -DBUILD_TIFF=ON
-        fi
-        cmake --build . --config Release -j4
-        cmake --install .
+        choco install cmake --version=3.26.4 -y
+        choco install protoc --version=3.21.12 -y
+        choco install wget unzip -y
+        choco install opencv --version=4.8.1 -y
 
     - name: Cache Paddle Inference
       id: cache-paddle
       uses: actions/cache@v3
       with:
         path: ${{ github.workspace }}/paddle_inference
-        key: ${{ runner.os }}-paddle-inference-${{ env.PADDLE_VERSION }}
+        key: ${{ runner.os }}-paddle-inference-3.0.0-beta2
 
     - name: Download Paddle Inference
       if: steps.cache-paddle.outputs.cache-hit != 'true'
@@ -136,13 +91,11 @@ jobs:
         if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
           cmake -G "Visual Studio 17 2022" -A x64 -B build \
                 -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
-                -DOPENCV_DIR="${{ github.workspace }}/opencv-install" \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF
         else
           cmake -B build \
                 -DPADDLE_LIB=${{ github.workspace }}/paddle_inference \
-                -DOPENCV_DIR=${{ github.workspace }}/opencv-install \
                 -DWITH_MKL=ON \
                 -DWITH_GPU=OFF \
                 -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
