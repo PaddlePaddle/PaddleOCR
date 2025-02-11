@@ -13,7 +13,7 @@ hide:
 === "CPU端安装"
 
     ```bash linenums="1"
-    pip install paddlepaddle
+    python -m pip install paddlepaddle==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
     ```
 
 === "GPU端安装"
@@ -22,7 +22,7 @@ hide:
 
 
     ```bash linenums="1"
-     python -m pip install paddlepaddle-gpu==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+    python -m pip install paddlepaddle-gpu==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
     ```
 
 #### 2. 安装`paddleocr`
