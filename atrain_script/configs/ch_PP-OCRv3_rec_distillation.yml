@@ -21,7 +21,10 @@ Global:
   distributed: true
   save_res_path: ./output/rec/predicts_ppocrv3_distillation_meter.txt
   d2s_train_image_shape: [3, 48, -1]
+  use_wandb: True
 
+wandb:  
+  project: ProjectMeter  # (optional) this is the wandb project name
 
 Optimizer:
   name: Adam
