@@ -161,17 +161,16 @@ Utility::GetRotateCropImage(const cv::Mat &srcimage,
   int img_crop_height = int(sqrt(pow(points[0][0] - points[3][0], 2) +
                                  pow(points[0][1] - points[3][1], 2)));
 
-  cv::Point2f pts_std[4];
-  pts_std[0] = cv::Point2f(0., 0.);
-  pts_std[1] = cv::Point2f(img_crop_width, 0.);
-  pts_std[2] = cv::Point2f(img_crop_width, img_crop_height);
-  pts_std[3] = cv::Point2f(0.f, img_crop_height);
+  const cv::Point2f pts_std[4] = {
+      {0., 0.},
+      {(float)img_crop_width, 0.},
+      {(float)img_crop_width, (float)img_crop_height},
+      {0.f, (float)img_crop_height}};
 
-  cv::Point2f pointsf[4];
-  pointsf[0] = cv::Point2f(points[0][0], points[0][1]);
-  pointsf[1] = cv::Point2f(points[1][0], points[1][1]);
-  pointsf[2] = cv::Point2f(points[2][0], points[2][1]);
-  pointsf[3] = cv::Point2f(points[3][0], points[3][1]);
+  const cv::Point2f pointsf[4] = {{(float)points[0][0], (float)points[0][1]},
+                                  {(float)points[1][0], (float)points[1][1]},
+                                  {(float)points[2][0], (float)points[2][1]},
+                                  {(float)points[3][0], (float)points[3][1]}};
 
   cv::Mat M = cv::getPerspectiveTransform(pointsf, pts_std);
 
@@ -196,7 +195,7 @@ std::vector<size_t> Utility::argsort(const std::vector<float> &array) noexcept {
     array_index[i] = i;
 
   std::sort(array_index.begin(), array_index.end(),
-            [&array](size_t pos1, size_t pos2) {
+            [&array](size_t pos1, size_t pos2) noexcept {
               return (array[pos1] < array[pos2]);
             });
 
@@ -217,7 +216,7 @@ std::string Utility::basename(const std::string &filename) noexcept {
 
   if (index + 1 >= len) {
 
-    len--;
+    --len;
     index = filename.substr(0, len).find_last_of("/\\");
 
     if (len == 0) {
@@ -335,12 +334,7 @@ Utility::xyxyxyxy2xyxy(const std::vector<std::vector<int>> &box) noexcept {
   int right = int(*std::max_element(x_collect, x_collect + 4));
   int top = int(*std::min_element(y_collect, y_collect + 4));
   int bottom = int(*std::max_element(y_collect, y_collect + 4));
-  std::vector<int> box1(4, 0);
-  box1[0] = left;
-  box1[1] = top;
-  box1[2] = right;
-  box1[3] = bottom;
-  return box1;
+  return {left, top, right, bottom};
 }
 
 std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
@@ -350,12 +344,7 @@ std::vector<int> Utility::xyxyxyxy2xyxy(const std::vector<int> &box) noexcept {
   int right = int(*std::max_element(x_collect, x_collect + 4));
   int top = int(*std::min_element(y_collect, y_collect + 4));
   int bottom = int(*std::max_element(y_collect, y_collect + 4));
-  std::vector<int> box1(4, 0);
-  box1[0] = left;
-  box1[1] = top;
-  box1[2] = right;
-  box1[3] = bottom;
-  return box1;
+  return {left, top, right, bottom};
 }
 
 float Utility::fast_exp(float x) noexcept {
