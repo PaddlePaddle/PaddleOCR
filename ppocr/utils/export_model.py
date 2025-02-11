@@ -49,7 +49,7 @@ def dump_infer_config(config, path, logger):
         arch_config = config["Architecture"]
         if arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
             common_dynamic_shapes = {
-                "x": [[1, 3, 24, 160], [1, 3, 48, 320], [8, 3, 96, 640]]
+                "x": [[1, 3, 48, 160], [1, 3, 48, 320], [8, 3, 48, 640]]
             }
         elif arch_config["model_type"] == "det":
             common_dynamic_shapes = {
