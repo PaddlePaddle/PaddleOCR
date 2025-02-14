@@ -24,9 +24,8 @@ from tqdm import tqdm
 
 from ppocr.utils.logging import get_logger
 
-MODELS_DIR = (
-    os.environ.get("PADDLE_OCR_BASE_DIR", os.path.expanduser("~/.paddleocr/"))
-    + "/models/"
+MODELS_DIR = os.path.join(
+    os.environ.get("PADDLE_OCR_BASE_DIR", os.path.expanduser("~/.paddleocr/")), "models"
 )
 DOWNLOAD_RETRY_LIMIT = 3
 
