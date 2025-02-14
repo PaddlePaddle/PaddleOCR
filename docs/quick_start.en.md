@@ -24,6 +24,10 @@ hide:
     python -m pip install paddlepaddle-gpu==3.0.0rc1 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
     ```
 
+You can customize the storage location for OCR models by setting the environment variable `PADDLE_OCR_BASE_DIR`. If this variable is not set, the models will be downloaded to the following default locations:
+- On Linux/macOS: `${HOME}/.paddleocr`
+- On Windows: `C:\Users\{username}\.paddleocr`
+
 ### Use by code
 
 === "Detection + Classification + Recognition"
