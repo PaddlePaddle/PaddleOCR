@@ -31,6 +31,11 @@ hide:
 pip install paddleocr
 ```
 
+NOTE: 可以通过设置环境变量 `PADDLE_OCR_BASE_DIR` 来自定义 OCR 模型的存储位置。如果未设置此变量，模型将下载到以下默认位置：
+
+- 在Linux/macOS上路径为：`${HOME}/.paddleocr`
+- 在Windows上路径为：`C:\Users\{username}\.paddleocr`
+
 ### Python脚本使用
 
 === "文本检测+方向分类+文本识别"
@@ -213,7 +218,7 @@ paddleocr -h
     ......
     ```
 
-    还支持pdf文件，您可以使用`page_num`参数推断前几页，默认值为0，这意味着识别全部页面
+    还支持 PDF 文件，可以通过设置 `page_num` 参数来推理前几页，默认值为 0，这意味着处理全部页面。
 
     ```bash linenums="1"
     paddleocr --image_dir ./xxx.pdf --use_angle_cls true --use_gpu false --page_num 2
