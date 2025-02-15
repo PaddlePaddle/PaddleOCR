@@ -1,0 +1,14 @@
+# FROM python:3.10-slim
+# 先用一个大的，如果跑通，再用小的。
+FROM registry.baidubce.com/paddlepaddle/paddle:2.4.2
+
+
+# RUN python3 -m pip install paddlepaddle==2.4.2 -i https://pypi.tuna.tsinghua.edu.cn/simple && \
+#     python3 -m pip install jupyterlab -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+RUN pip install notebook -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+WORKDIR /home/PaddleOCR
+
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+
