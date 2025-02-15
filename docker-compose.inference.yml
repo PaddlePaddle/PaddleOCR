@@ -1,0 +1,21 @@
+services:
+  ppocr:
+    build:
+      context: .
+      dockerfile: Dockerfile.inference
+    ipc: host
+    ports:
+      - 8888:8888
+    shm_size: '32gb'
+    volumes:
+      - .:/opt/PaddleOCR
+      # - /data/xiu-hao/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
+      - ~/work/Dataset/MeterPaddle/train_data:/opt/PaddleOCR/train_data
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
