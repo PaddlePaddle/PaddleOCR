@@ -46,7 +46,7 @@ For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/
 - Support Chinese, English, and digit recognition, vertical text recognition, and long text recognition
 - Support multi-lingual recognition: about 80 languages like Korean, Japanese, German, French, etc
 
-## 3. benchmark
+## 3. Benchmark
 
 For the performance comparison between PP-OCR series models, please check the [benchmark](./infer_deploy/benchmark.en.md) documentation.
 
@@ -78,7 +78,7 @@ For the performance comparison between PP-OCR series models, please check the [b
 
 ### 5.2 Model training / compression / deployment
 
-For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](../../README.md#Tutorials)。
+For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](../../README.md#Tutorials).
 
 ## 6. Model zoo
 
