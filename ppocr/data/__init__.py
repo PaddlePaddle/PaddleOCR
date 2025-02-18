@@ -37,8 +37,9 @@ from ppocr.data.simple_dataset import SimpleDataSet, MultiScaleDataSet
 from ppocr.data.lmdb_dataset import LMDBDataSet, LMDBDataSetSR, LMDBDataSetTableMaster
 from ppocr.data.pgnet_dataset import PGDataSet
 from ppocr.data.pubtab_dataset import PubTabDataSet
-from ppocr.data.multi_scale_sampler import MultiScaleSampler
+from ppocr.data.multi_scale_sampler import MultiScaleSampler, RatioSampler
 from ppocr.data.latexocr_dataset import LaTeXOCRDataSet
+from ppocr.data.ratio_dataset import RatioDataSet
 
 # for PaddleX dataset_type
 TextDetDataset = SimpleDataSet
@@ -97,6 +98,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
         "PubTabTableRecDataset",
         "KieDataset",
         "LaTeXOCRDataSet",
+        "RatioDataSet",
     ]
     module_name = config[mode]["dataset"]["name"]
     assert module_name in support_dict, Exception(
@@ -115,19 +117,18 @@ def build_dataloader(config, mode, device, logger, seed=None):
     else:
         use_shared_memory = True
 
-    if mode == "Train":
+    if "sampler" in config[mode]:
+        config_sampler = config[mode]["sampler"]
+        sampler_name = config_sampler.pop("name")
+        batch_sampler = eval(sampler_name)(dataset, **config_sampler)
+    elif mode == "Train":
         # Distribute data to multiple cards
-        if "sampler" in config[mode]:
-            config_sampler = config[mode]["sampler"]
-            sampler_name = config_sampler.pop("name")
-            batch_sampler = eval(sampler_name)(dataset, **config_sampler)
-        else:
-            batch_sampler = DistributedBatchSampler(
-                dataset=dataset,
-                batch_size=batch_size,
-                shuffle=shuffle,
-                drop_last=drop_last,
-            )
+        batch_sampler = DistributedBatchSampler(
+            dataset=dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            drop_last=drop_last,
+        )
     else:
         # Distribute data to single card
         batch_sampler = BatchSampler(

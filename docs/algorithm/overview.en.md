@@ -78,6 +78,7 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [CPPD](./text_recognition/algorithm_rec_cppd.en.md)
 - [x]  [SATRN](./text_recognition/algorithm_rec_satrn.en.md)
 
+
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
 
 |Model|Backbone|Avg Accuracy|Module combination|Download link|
@@ -104,6 +105,7 @@ Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation r
 |ParseQ|VIT| 91.24% | rec_vit_parseq_synth | [trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz) |
 |CPPD|SVTR-Base| 93.8% | rec_svtrnet_cppd_base_en | [trained model](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_en_train.tar) |
 |SATRN|ShallowCNN| 88.05% | rec_satrn | [trained model](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a) |
+|IGTR|SVTR-Base| 94.78% | rec_svtr_igtr | [trained model](https://paddleocr.bj.bcebos.com/igtr/rec_svtr_igtr_train.tar) |
 
 ### 1.3 Text Super-Resolution Algorithms
 

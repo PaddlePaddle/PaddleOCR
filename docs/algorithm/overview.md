@@ -105,6 +105,7 @@ PaddleOCR将**持续新增**支持OCR领域前沿算法与模型，**欢迎广�
 |ParseQ|VIT| 91.24% | rec_vit_parseq_synth | [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.1/parseq/rec_vit_parseq_synth.tgz) |
 |CPPD|SVTR-Base| 93.8% | rec_svtrnet_cppd_base_en | [训练模型](https://paddleocr.bj.bcebos.com/CCPD/rec_svtr_cppd_base_en_train.tar) |
 |SATRN|ShallowCNN| 88.05% | rec_satrn | [训练模型](https://pan.baidu.com/s/10J-Bsd881bimKaclKszlaQ?pwd=lk8a) |
+|IGTR|SVTR-Base| 94.78% | rec_svtr_igtr | [训练模型](https://paddleocr.bj.bcebos.com/igtr/rec_svtr_igtr_train.tar) |
 
 ### 1.3 文本超分辨率算法
 

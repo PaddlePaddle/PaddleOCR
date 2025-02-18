@@ -86,7 +86,7 @@ CPPD在场景文本识别公开数据集上的精度(%)和模型文件如下：
 python3 tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
 
 # 多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
 ```
 
 ### 3.2 评估
