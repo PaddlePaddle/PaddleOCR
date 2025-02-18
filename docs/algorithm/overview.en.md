@@ -77,6 +77,7 @@ Supported text recognition algorithms (Click the link to get the tutorial):
 - [x]  [ParseQ](./text_recognition/algorithm_rec_parseq.md)
 - [x]  [CPPD](./text_recognition/algorithm_rec_cppd.en.md)
 - [x]  [SATRN](./text_recognition/algorithm_rec_satrn.en.md)
+- [x]  [IGTR](./text_recognition/algorithm_rec_igtr.en.md)
 
 
 Refer to [DTRB](https://arxiv.org/abs/1904.01906), the training and evaluation result of these above text recognition (using MJSynth and SynthText for training, evaluate on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE) is as follow:
