@@ -11,7 +11,7 @@ comments: true
 
 Key information extraction (KIE) refers to extracting key information from text or images. As the downstream task of OCR, KIE of document image has many practical application scenarios, such as form recognition, ticket information extraction, ID card information extraction, etc. However, it is time-consuming and laborious to extract  key information from these document images by manpower. It's challengable but also valuable to combine multi-modal features (visual, layout, text, etc) together and complete KIE tasks.
 
-For the document images in a specific scene, the position and layout of the key information are relatively fixed. Therefore, in the early stage of the research, there are many methods based on template matching to extract the key information. This method is still widely used in many simple scenarios at present. However, it takes long time to adjut the template for different scenarios.
+For the document images in a specific scene, the position and layout of the key information are relatively fixed. Therefore, in the early stage of the research, there are many methods based on template matching to extract the key information. This method is still widely used in many simple scenarios at present. However, it takes long time to adjust the template for different scenarios.
 
 The KIE in the document image generally contains 2 subtasks, which is as shown follows.
 
@@ -47,7 +47,7 @@ In the non end-to-end KIE method, KIE needs at least **2 steps**. Firstly, the O
 
 ##### (1) Data
 
-Most of the models provided in PaddleOCR are general models. In the process of text detection, the detection of adjacent text lines is generally based on the distance of the position. As shown in the figure above, when using PP-OCRv3 general English detection model for text detection, it is easy to detect the two fields representing different propoerties as one. Therefore, it is suggested to finetune a detection model according to your scenario firstly during the KIE task.
+Most of the models provided in PaddleOCR are general models. In the process of text detection, the detection of adjacent text lines is generally based on the distance of the position. As shown in the figure above, when using PP-OCRv3 general English detection model for text detection, it is easy to detect the two fields representing different properties as one. Therefore, it is suggested to finetune a detection model according to your scenario firstly during the KIE task.
 
 During data annotation, the different key information needs to be separated. Otherwise, it will increase the difficulty of subsequent KIE tasks.
 
