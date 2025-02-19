@@ -252,7 +252,7 @@ class DBPostProcess(object):
             else:
                 raise ValueError("box_type can only be one of ['quad', 'poly']")
 
-            boxes_batch.append({"points": boxes})
+            boxes_batch.append({"points": boxes, "scores": scores})
         return boxes_batch
 
 
