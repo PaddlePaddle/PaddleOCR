@@ -19,7 +19,7 @@ Global:
   use_space_char: true
   distributed: true
   save_res_path: ./output/rec/predicts_ppocrv3.txt
-
+  d2s_train_image_shape: [3,48,320]
 
 Optimizer:
   name: Adam
