@@ -17,6 +17,7 @@ Global:
   infer_img: doc/imgs_en/img_10.jpg
   save_res_path: ./checkpoints/det_db/predicts_db.txt
   distributed: true
+  d2s_train_image_shape: [3, -1, -1]
 
 Architecture:
   model_type: det
