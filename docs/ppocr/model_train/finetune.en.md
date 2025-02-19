@@ -4,7 +4,7 @@ comments: true
 
 # Fine-tune
 
-## 1. background and meaning
+## 1. Background and meaning
 
 The PP-OCR series models provided by PaddleOCR have excellent performance in general scenarios and can solve detection and recognition problems in most cases. In vertical scenarios, if you want to obtain better model, you can further improve the accuracy of the PP-OCR series detection and recognition models through fine-tune.
 
@@ -18,7 +18,7 @@ The core points of this article are as follows:
 4. In the text detection task, increasing the prediction shape of the image can further improve the detection effect of the smaller text area
 5. When fine-tuning the model, it is necessary to properly adjust the hyperparameters (learning rate, batch size are the most important) to obtain a better fine-tuning effect.
 
-For more details, please refer to Chapter 2 and Chapter 3。
+For more details, please refer to Chapter 2 and Chapter 3.
 
 ## 2. Text detection model fine-tuning
 
@@ -38,7 +38,7 @@ Note: When using the above pre-trained model, you need to use the `student.pdpar
 
 ### 2.3 Training hyperparameter
 
-When fine-tuning the model, the most important hyperparameter is the pre-training model path `pretrained_model`, `learning_rate`与`batch_size`，some hyperparameters are as follows:
+When fine-tuning the model, the most important hyperparameter is the pre-training model path `pretrained_model`, `learning_rate` and `batch_size`，some hyperparameters are as follows:
 
 ```yaml linenums="1"
 Global:
@@ -80,7 +80,7 @@ When exporting and inferring the trained model, you can further adjust the predi
 |  use_dilation | bool | False | Whether to expand the segmentation results to obtain better detection results |
 |  det_db_score_mode | str | "fast" | DB's detection result score calculation method supports `fast` and `slow`. `fast` calculates the average score based on all pixels in the polygon’s circumscribed rectangle border, and `slow` calculates the average score based on all pixels in the original polygon. The calculation speed is relatively slower, but more accurate. |
 
-For more information on inference methods, please refer to[Paddle Inference doc](../infer_deploy/python_infer.en.md)。
+For more information on inference methods, please refer to [Paddle Inference doc](../infer_deploy/python_infer.en.md).
 
 ## 3. Text recognition model fine-tuning
 
@@ -101,7 +101,7 @@ For more information on inference methods, please refer to[Paddle Inference doc]
 
 It is recommended to choose the PP-OCRv3 model (configuration file: [ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，pre-trained model: [ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
 
-For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md)。
+For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md).
 
 The PP-OCRv3 model uses the GTC strategy. The SAR branch has a large number of parameters. When the training data is a simple scene, the model is easy to overfit, resulting in poor fine-tuning effect. It is recommended to remove the GTC strategy. The configuration file of the model structure is modified as follows:
 
@@ -220,7 +220,7 @@ Train:
     ratio_list: [1.0, 0.1]
 ```
 
-### 3.4 training optimization
+### 3.4 Training optimization
 
 The training process does not happen overnight. After completing a stage of training evaluation, it is recommended to collect and analyze the badcase of the current model in the real scene, adjust the proportion of training data in a targeted manner, or further add synthetic data. Through multiple iterations of training, the model effect is continuously optimized.
 

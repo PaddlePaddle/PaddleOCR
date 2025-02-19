@@ -43,5 +43,5 @@ Here are the common datasets key information extraction, which are being updated
 **Note：** Boxes with category `Ignore` or `Others` are not visualized here.
 
 - **Download address**：
-    - Offical dataset: [link](https://download.openmmlab.com/mmocr/data/wildreceipt.tar)
+    - Official dataset: [link](https://download.openmmlab.com/mmocr/data/wildreceipt.tar)
     - Dataset converted for PaddleOCR training process: [link](https://paddleocr.bj.bcebos.com/ppstructure/dataset/wildreceipt.tar)

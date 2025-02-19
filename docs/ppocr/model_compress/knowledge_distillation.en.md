@@ -301,7 +301,7 @@ PostProcess:
   multi_head: True                       # whether it is multi-head or not, if true, CTC branch is used to calculate the loss
 ```
 
-Taking the above configuration as an example, the CTC decoding output of the two sub-networks `Student` and `Teahcer` will be calculated at the same time.
+Taking the above configuration as an example, the CTC decoding output of the two sub-networks `Student` and `Teacher` will be calculated at the same time.
 Among them, `key` is the name of the subnet, and `value` is the list of subnets.
 
 For more specific implementation of `DistillationCTCLabelDecode`, please refer to: [rec_postprocess.py](../../ppocr/postprocess/rec_postprocess.py#L128)
@@ -316,8 +316,8 @@ Metric:
   base_metric_name: RecMetric      # The base class of indicator calculation. For the output of the model, the indicator will be calculated based on this class
   main_indicator: acc              # The name of the indicator
   key: "Student"                   # Select the main_indicator of this subnet as the criterion for saving the best model
-  ignore_space: False              # whether to ignore space during evaulation
-```
+  ignore_space: False              # whether to ignore space during evaluation
+``
 
 Taking the above configuration as an example, the accuracy metric of the `Student` subnet will be used as the judgment metric for saving the best model.
 At the same time, the accuracy metric of all subnets will be printed out in the log.

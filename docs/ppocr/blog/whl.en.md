@@ -7,7 +7,7 @@ comments: true
 
 ## 1 Get started quickly
 
-### 1.1 install package
+### 1.1 Install package
 
 install by pypi
 
