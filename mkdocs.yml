@@ -273,7 +273,7 @@ nav:
     - 多硬件安装飞桨:
       - 多硬件安装飞桨: model/hardware/install_other_devices.md
       - 支持硬件列表: model/hardware/supported_models.md
-  - 推理部署：
+  - 推理部署:
     - 概述: infer_deploy/index.md
     - 基于Python预测引擎推理: infer_deploy/python_infer.md
     - 基于C++预测引擎推理: infer_deploy/cpp_infer.md
