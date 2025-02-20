@@ -1,6 +1,8 @@
 ---
 typora-copy-images-to: images
 comments: true
+hide:
+  - toc
 ---
 
 # Paddle.js 网页前端部署

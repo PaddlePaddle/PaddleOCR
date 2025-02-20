@@ -1,6 +1,8 @@
 ---
 comments: true
 typora-copy-images-to: images
+hide:
+  - toc
 ---
 
 # PP-OCR Deployment
