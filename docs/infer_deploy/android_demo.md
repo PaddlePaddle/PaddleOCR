@@ -1,6 +1,8 @@
 ---
 typora-copy-images-to: images
 comments: true
+hide:
+  - toc
 ---
 
 # Android Demo
@@ -90,7 +92,6 @@ PaddleOCR demo共提供了6种运行模式，如下图
 设置界面如下
 
 ![img](./images/68747470733a2f2f7061.jpeg)
-
 
 在设置界面可以进行如下几项设定：
 

@@ -1,6 +1,8 @@
 ---
 typora-copy-images-to: images
 comments: true
+hide:
+  - toc
 ---
 
 # PP-OCR 模型推理部署

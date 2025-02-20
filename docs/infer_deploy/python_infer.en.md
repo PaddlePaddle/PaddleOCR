@@ -1,6 +1,8 @@
 ---
 typora-copy-images-to: images
 comments: true
+hide:
+  - toc
 ---
 
 # Python Inference for PP-OCR Model Zoo
