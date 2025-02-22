@@ -24,7 +24,7 @@ cd PaddleOCR && python3 -m pip install -e .
 
 ### Paddle2ONNX
 
-Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 9~18, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_en.md).
+Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 9~18, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX.git).
 
 - Install Paddle2ONNX
 
@@ -42,7 +42,7 @@ Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX fo
 
 ### Download Paddle Models
 
-There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../model_list.en.md); or refer to the [Model Export Instructions](https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference) to convert trained weights into inference models.
+There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../ppocr/model_list.en.md); or refer to the [Model Export Instructions](./python_infer.en.md#inference) to convert trained weights into inference models.
 
 Using the PP-OCR series English detection, recognition, and classification models as examples:
 
@@ -154,7 +154,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
---image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg \
+--image_dir=./docs/infer_deploy/images/img_12.jpg \
 --rec_char_dict_path=ppocr/utils/en_dict.txt
 ```
 
@@ -167,7 +167,7 @@ Taking the English OCR model as an example, you can perform prediction using Pad
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_model_dir=./inference/en_PP-OCRv3_rec_infer \
     --det_model_dir=./inference/en_PP-OCRv3_det_infer \
-    --image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg\
+    --image_dir=./docs/infer_deploy/images/img_12.jpg\
     --rec_char_dict_path=ppocr/utils/en_dict.txt
     ```
 
@@ -178,7 +178,7 @@ Taking the English OCR model as an example, you can perform prediction using Pad
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_model_dir=./inference/en_PP-OCRv4_rec_infer \
     --det_model_dir=./inference/en_PP-OCRv3_det_infer \
-    --image_dir=./docs/ppocr/infer_deploy/images/img_12.jpg \
+    --image_dir=./docs/infer_deploy/images/img_12.jpg \
     --rec_char_dict_path=ppocr/utils/en_dict.txt
     ```
 

@@ -24,8 +24,8 @@ cd PaddleOCR && python3 -m pip install -e .
 
 ### Paddle2ONNX
 
-Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 9~18，部分Paddle算子支持更低的ONNX Opset转换。
-更多细节可参考 [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_zh.md)
+Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 7~19，部分Paddle算子支持更低的ONNX Opset转换。
+更多细节可参考 [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX.git)
 
 - 安装 Paddle2ONNX
 
@@ -43,7 +43,7 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 
 ### Paddle 模型下载
 
-有两种方式获取Paddle静态图模型：在 [model_list](../model_list.md) 中下载PaddleOCR提供的预测模型；参考[模型导出说明](https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference)把训练好的权重转为推理模型。
+有两种方式获取Paddle静态图模型：在 [model_list](../ppocr/model_list.md) 中下载PaddleOCR提供的预测模型；参考[模型导出说明](./python_infer.md#inference)把训练好的权重转为推理模型。
 
 以 PP-OCR 系列中文检测、识别、分类模型为例：
 
@@ -157,7 +157,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
---image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
+--image_dir=./docs/infer_deploy/images/lite_demo.png
 ```
 
 以中文OCR模型为例，使用 Paddle Inference 预测可执行如下命令：
@@ -169,7 +169,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
     --det_model_dir=./inference/ch_PP-OCRv3_det_infer \
-    --image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
+    --image_dir=./docs/infer_deploy/images/lite_demo.png
     ```
 
 === "PP-OCRv4"
@@ -179,7 +179,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
     --rec_model_dir=./inference/ch_PP-OCRv4_rec_infer \
     --det_model_dir=./inference/ch_PP-OCRv4_det_infer \
-    --image_dir=./docs/ppocr/infer_deploy/images/lite_demo.png
+    --image_dir=./docs/infer_deploy/images/lite_demo.png
     ```
 
 执行命令后在终端会打印出预测的识别信息，并在 `./inference_results/` 下保存可视化结果。
