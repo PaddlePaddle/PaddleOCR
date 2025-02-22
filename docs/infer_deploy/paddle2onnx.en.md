@@ -24,7 +24,7 @@ cd PaddleOCR && python3 -m pip install -e .
 
 ### Paddle2ONNX
 
-Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 9~18, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX.git).
+Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX format. Operators currently stably support exporting ONNX Opset versions 7~19, and some Paddle operators support conversion to lower ONNX Opsets. For more details, please refer to [Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX.git).
 
 - Install Paddle2ONNX
 
