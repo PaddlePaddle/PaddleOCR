@@ -1362,14 +1362,38 @@ You're not viewing the latest version.
           <li class="md-nav__item">
   <a href="#paddle" class="md-nav__link">
     <span class="md-ellipsis">
-      Paddle 模型下载
+      获取 Paddle 静态图模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="获取 Paddle 静态图模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      下载准备好的静态图模型
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      将动态图导出为静态图模型 (可选)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       模型转换
     </span>
@@ -5331,14 +5355,38 @@ You're not viewing the latest version.
           <li class="md-nav__item">
   <a href="#paddle" class="md-nav__link">
     <span class="md-ellipsis">
-      Paddle 模型下载
+      获取 Paddle 静态图模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="获取 Paddle 静态图模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      下载准备好的静态图模型
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      将动态图导出为静态图模型 (可选)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       模型转换
     </span>
@@ -5395,18 +5443,18 @@ You're not viewing the latest version.
 
 
 <h1 id="paddle2onnx">Paddle2ONNX模型转化与预测<a class="headerlink" href="#paddle2onnx" title="Permanent link">&para;</a></h1>
-<p>本章节介绍 PaddleOCR 模型如何转化为 ONNX 模型，并基于 ONNXRuntime 引擎预测。</p>
+<p>本章节介绍 PaddleOCR 模型如何转化为 ONNX 模型，并基于 ONNXRuntime 引擎预测。同时我们准备了一个<a href="https://aistudio.baidu.com/projectdetail/8808858">在线 AI Studio 项目</a>，可以方便用户进行测试。</p>
 <h2 id="1">1. 环境准备<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>需要准备 PaddleOCR、Paddle2ONNX 模型转化环境，和 ONNXRuntime 预测环境</p>
+<p>需要准备 PaddleOCR、Paddle2ONNX 模型转化环境，和 ONNXRuntime 预测环境。</p>
 <h3 id="paddleocr">PaddleOCR<a class="headerlink" href="#paddleocr" title="Permanent link">&para;</a></h3>
-<p>克隆PaddleOCR的仓库，使用 main 分支，并进行安装，由于 PaddleOCR 仓库比较大，git clone 速度比较慢，所以本教程已下载</p>
+<p>克隆PaddleOCR的仓库，使用 main 分支，并进行安装，由于 PaddleOCR 仓库比较大，git clone 速度比较慢，所以本教程已下载。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w">  </span>-b<span class="w"> </span>main<span class="w"> </span>https://github.com/PaddlePaddle/PaddleOCR.git
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>PaddleOCR<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
 </span></code></pre></div></td></tr></table></div>
 <h3 id="paddle2onnx_1">Paddle2ONNX<a class="headerlink" href="#paddle2onnx_1" title="Permanent link">&para;</a></h3>
-<p>Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 9~18，部分Paddle算子支持更低的ONNX Opset转换。
-更多细节可参考 <a href="https://github.com/PaddlePaddle/Paddle2ONNX/blob/develop/README_zh.md">Paddle2ONNX</a></p>
+<p>Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算子目前稳定支持导出 ONNX Opset 7~19，部分Paddle算子支持更低的ONNX Opset转换。
+更多细节可参考 <a href="https://github.com/PaddlePaddle/Paddle2ONNX.git">Paddle2ONNX</a></p>
 <ul>
 <li>安装 Paddle2ONNX</li>
 </ul>
@@ -5418,8 +5466,9 @@ You're not viewing the latest version.
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>onnxruntime
 </span></code></pre></div></td></tr></table></div>
 <h2 id="2">2. 模型转换<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<h3 id="paddle">Paddle 模型下载<a class="headerlink" href="#paddle" title="Permanent link">&para;</a></h3>
-<p>有两种方式获取Paddle静态图模型：在 <a href="../model_list.md">model_list</a> 中下载PaddleOCR提供的预测模型；参考<a href="https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/infer_deploy/python_infer.html#inference">模型导出说明</a>把训练好的权重转为推理模型。</p>
+<h3 id="paddle">获取 Paddle 静态图模型<a class="headerlink" href="#paddle" title="Permanent link">&para;</a></h3>
+<p>有两种方式获取Paddle静态图模型：在 <a href="../ppocr/model_list.html">model_list</a> 中下载PaddleOCR提供的预测模型；参考<a href="python_infer.html#inference">模型导出说明</a>把训练好的权重转为推理模型。</p>
+<h4 id="_1">下载准备好的静态图模型<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
 <p>以 PP-OCR 系列中文检测、识别、分类模型为例：</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">PP-OCRv3</label><label for="__tabbed_1_2">PP-OCRv4</label></div>
 <div class="tabbed-content">
@@ -5461,53 +5510,25 @@ You're not viewing the latest version.
 </div>
 </div>
 </div>
-<h3 id="_1">模型转换<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
-<p>使用 Paddle2ONNX 将Paddle静态图模型转换为ONNX模型格式：</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">PP-OCRv3</label><label for="__tabbed_2_2">PP-OCRv4</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-5-10">10</a></span>
-<span class="normal"><a href="#__codelineno-5-11">11</a></span>
-<span class="normal"><a href="#__codelineno-5-12">12</a></span>
-<span class="normal"><a href="#__codelineno-5-13">13</a></span>
-<span class="normal"><a href="#__codelineno-5-14">14</a></span>
-<span class="normal"><a href="#__codelineno-5-15">15</a></span>
-<span class="normal"><a href="#__codelineno-5-16">16</a></span>
-<span class="normal"><a href="#__codelineno-5-17">17</a></span>
-<span class="normal"><a href="#__codelineno-5-18">18</a></span>
-<span class="normal"><a href="#__codelineno-5-19">19</a></span>
-<span class="normal"><a href="#__codelineno-5-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a>--enable_onnx_checker<span class="w"> </span>True
+<h4 id="_2">将动态图导出为静态图模型 (可选)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>下载动态图模型：</p>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span>
+<span class="normal"><a href="#__codelineno-5-6">6</a></span>
+<span class="normal"><a href="#__codelineno-5-7">7</a></span>
+<span class="normal"><a href="#__codelineno-5-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>wget<span class="w"> </span>-nc<span class="w"> </span>-P<span class="w"> </span>pretrained<span class="w"> </span>https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_train.tar
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nb">cd</span><span class="w"> </span>pretrained<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>ch_PP-OCRv4_det_train.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a>wget<span class="w"> </span>-nc<span class="w"> </span>-P<span class="w"> </span>pretrained<span class="w"> </span>https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_train.tar
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="nb">cd</span><span class="w"> </span>pretrained<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>ch_PP-OCRv4_rec_train.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>wget<span class="w"> </span>-nc<span class="w"> </span>-P<span class="w"> </span>pretrained<span class="w"> </span>https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="nb">cd</span><span class="w"> </span>pretrained<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tar<span class="w"> </span>xf<span class="w"> </span>ch_ppocr_mobile_v2.0_cls_train.tar<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>..
 </span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
+<p>转换为静态图模型：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
@@ -5518,35 +5539,104 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
 <span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
 <span class="normal"><a href="#__codelineno-6-10">10</a></span>
-<span class="normal"><a href="#__codelineno-6-11">11</a></span>
-<span class="normal"><a href="#__codelineno-6-12">12</a></span>
-<span class="normal"><a href="#__codelineno-6-13">13</a></span>
-<span class="normal"><a href="#__codelineno-6-14">14</a></span>
-<span class="normal"><a href="#__codelineno-6-15">15</a></span>
-<span class="normal"><a href="#__codelineno-6-16">16</a></span>
-<span class="normal"><a href="#__codelineno-6-17">17</a></span>
-<span class="normal"><a href="#__codelineno-6-18">18</a></span>
-<span class="normal"><a href="#__codelineno-6-19">19</a></span>
-<span class="normal"><a href="#__codelineno-6-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv4_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a>--enable_onnx_checker<span class="w"> </span>True
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20"></a>--enable_onnx_checker<span class="w"> </span>True
+<span class="normal"><a href="#__codelineno-6-11">11</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrained/ch_PP-OCRv4_det_train/best_accuracy<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a>Global.save_inference_dir<span class="o">=</span>./inference/ch_PP-OCRv4_det_infer/
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrained/ch_PP-OCRv4_rec_train/student<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a>Global.save_inference_dir<span class="o">=</span>./inference/ch_PP-OCRv4_rec_infer/
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/cls/cls_mv3.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrained/ch_ppocr_mobile_v2.0_cls_train/best_accuracy<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a>Global.save_inference_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer/
+</span></code></pre></div></td></tr></table></div>
+<h3 id="_3">模型转换<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>使用 Paddle2ONNX 将Paddle静态图模型转换为ONNX模型格式：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">PP-OCRv3</label><label for="__tabbed_2_2">PP-OCRv4</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span>
+<span class="normal"><a href="#__codelineno-7-12">12</a></span>
+<span class="normal"><a href="#__codelineno-7-13">13</a></span>
+<span class="normal"><a href="#__codelineno-7-14">14</a></span>
+<span class="normal"><a href="#__codelineno-7-15">15</a></span>
+<span class="normal"><a href="#__codelineno-7-16">16</a></span>
+<span class="normal"><a href="#__codelineno-7-17">17</a></span>
+<span class="normal"><a href="#__codelineno-7-18">18</a></span>
+<span class="normal"><a href="#__codelineno-7-19">19</a></span>
+<span class="normal"><a href="#__codelineno-7-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a>--enable_onnx_checker<span class="w"> </span>True
+</span></code></pre></div></td></tr></table></div>
+</div>
+<div class="tabbed-block">
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span>
+<span class="normal"><a href="#__codelineno-8-16">16</a></span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span>
+<span class="normal"><a href="#__codelineno-8-18">18</a></span>
+<span class="normal"><a href="#__codelineno-8-19">19</a></span>
+<span class="normal"><a href="#__codelineno-8-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv4_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a>--save_file<span class="w"> </span>./inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a>--save_file<span class="w"> </span>./inference/rec_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a>--enable_onnx_checker<span class="w"> </span>True
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a>paddle2onnx<span class="w"> </span>--model_dir<span class="w"> </span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16"></a>--model_filename<span class="w"> </span>inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17"></a>--params_filename<span class="w"> </span>inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18"></a>--save_file<span class="w"> </span>./inference/cls_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19"></a>--opset_version<span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20"></a>--enable_onnx_checker<span class="w"> </span>True
 </span></code></pre></div></td></tr></table></div>
 </div>
 </div>
@@ -5562,54 +5652,54 @@ You're not viewing the latest version.
 <p>注意：<a href="https://github.com/PaddlePaddle/Paddle2ONNX/releases/tag/v1.2.3">Paddle2ONNX 版本 v1.2.3</a>后已默认支持动态shape，即 <code>float32[p2o.DynamicDimension.0,3,p2o.DynamicDimension.1,p2o.DynamicDimension.2]</code>，选项 <code>--input_shape_dict</code> 已废弃。如果有shape调整需求可使用如下命令进行Paddle模型输入shape调整。</p>
 </li>
 </ul>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
-<span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle2onnx.optimize<span class="w"> </span>--input_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span>--output_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="w">  </span>--input_shape_dict<span class="w"> </span><span class="s2">&quot;{&#39;x&#39;: [-1,3,-1,-1]}&quot;</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle2onnx.optimize<span class="w"> </span>--input_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">  </span>--output_model<span class="w"> </span>inference/det_onnx/model.onnx<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">  </span>--input_shape_dict<span class="w"> </span><span class="s2">&quot;{&#39;x&#39;: [-1,3,-1,-1]}&quot;</span>
 </span></code></pre></div></td></tr></table></div>
 <p>如你对导出的 ONNX 模型有优化的需求，推荐使用 <a href="https://github.com/inisis/OnnxSlim">onnxslim</a> 对模型进行优化:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
-<span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a>pip<span class="w"> </span>install<span class="w"> </span>onnxslim
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>onnxslim<span class="w"> </span>model.onnx<span class="w"> </span>slim.onnx
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span>onnxslim
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>onnxslim<span class="w"> </span>model.onnx<span class="w"> </span>slim.onnx
 </span></code></pre></div></td></tr></table></div>
 <h2 id="3">3. 推理预测<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <p>以中文OCR模型为例，使用 ONNXRuntime 预测可执行如下命令：</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span>
-<span class="normal"><a href="#__codelineno-9-3">3</a></span>
-<span class="normal"><a href="#__codelineno-9-4">4</a></span>
-<span class="normal"><a href="#__codelineno-9-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span>--use_onnx<span class="o">=</span>True<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>--det_model_dir<span class="o">=</span>./inference/det_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>--rec_model_dir<span class="o">=</span>./inference/rec_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>--cls_model_dir<span class="o">=</span>./inference/cls_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/lite_demo.png
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span>--use_onnx<span class="o">=</span>True<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>--det_model_dir<span class="o">=</span>./inference/det_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a>--rec_model_dir<span class="o">=</span>./inference/rec_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>--cls_model_dir<span class="o">=</span>./inference/cls_onnx/model.onnx<span class="w">  </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a>--image_dir<span class="o">=</span>./docs/infer_deploy/images/lite_demo.png
 </span></code></pre></div></td></tr></table></div>
 <p>以中文OCR模型为例，使用 Paddle Inference 预测可执行如下命令：</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">PP-OCRv3</label><label for="__tabbed_3_2">PP-OCRv4</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
-<span class="normal"><a href="#__codelineno-10-2">2</a></span>
-<span class="normal"><a href="#__codelineno-10-3">3</a></span>
-<span class="normal"><a href="#__codelineno-10-4">4</a></span>
-<span class="normal"><a href="#__codelineno-10-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>--rec_model_dir<span class="o">=</span>./inference/ch_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>--det_model_dir<span class="o">=</span>./inference/ch_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/lite_demo.png
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span>
+<span class="normal"><a href="#__codelineno-12-4">4</a></span>
+<span class="normal"><a href="#__codelineno-12-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a>--rec_model_dir<span class="o">=</span>./inference/ch_PP-OCRv3_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a>--det_model_dir<span class="o">=</span>./inference/ch_PP-OCRv3_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a>--image_dir<span class="o">=</span>./docs/infer_deploy/images/lite_demo.png
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
-<span class="normal"><a href="#__codelineno-11-2">2</a></span>
-<span class="normal"><a href="#__codelineno-11-3">3</a></span>
-<span class="normal"><a href="#__codelineno-11-4">4</a></span>
-<span class="normal"><a href="#__codelineno-11-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a>--rec_model_dir<span class="o">=</span>./inference/ch_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a>--det_model_dir<span class="o">=</span>./inference/ch_PP-OCRv4_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a>--image_dir<span class="o">=</span>./docs/ppocr/infer_deploy/images/lite_demo.png
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
+<span class="normal"><a href="#__codelineno-13-2">2</a></span>
+<span class="normal"><a href="#__codelineno-13-3">3</a></span>
+<span class="normal"><a href="#__codelineno-13-4">4</a></span>
+<span class="normal"><a href="#__codelineno-13-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>python3<span class="w"> </span>tools/infer/predict_system.py<span class="w"> </span>--use_gpu<span class="o">=</span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>--cls_model_dir<span class="o">=</span>./inference/ch_ppocr_mobile_v2.0_cls_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a>--rec_model_dir<span class="o">=</span>./inference/ch_PP-OCRv4_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a>--det_model_dir<span class="o">=</span>./inference/ch_PP-OCRv4_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a>--image_dir<span class="o">=</span>./docs/infer_deploy/images/lite_demo.png
 </span></code></pre></div></td></tr></table></div>
 </div>
 </div>
@@ -5620,166 +5710,166 @@ You're not viewing the latest version.
 <p>Paddle Inference 执行效果：</p>
 <p><img alt="" src="images/lite_demo_paddle.png" /></p>
 <p>使用 ONNXRuntime 预测，终端输出：</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-12-10">10</a></span>
-<span class="normal"><a href="#__codelineno-12-11">11</a></span>
-<span class="normal"><a href="#__codelineno-12-12">12</a></span>
-<span class="normal"><a href="#__codelineno-12-13">13</a></span>
-<span class="normal"><a href="#__codelineno-12-14">14</a></span>
-<span class="normal"><a href="#__codelineno-12-15">15</a></span>
-<span class="normal"><a href="#__codelineno-12-16">16</a></span>
-<span class="normal"><a href="#__codelineno-12-17">17</a></span>
-<span class="normal"><a href="#__codelineno-12-18">18</a></span>
-<span class="normal"><a href="#__codelineno-12-19">19</a></span>
-<span class="normal"><a href="#__codelineno-12-20">20</a></span>
-<span class="normal"><a href="#__codelineno-12-21">21</a></span>
-<span class="normal"><a href="#__codelineno-12-22">22</a></span>
-<span class="normal"><a href="#__codelineno-12-23">23</a></span>
-<span class="normal"><a href="#__codelineno-12-24">24</a></span>
-<span class="normal"><a href="#__codelineno-12-25">25</a></span>
-<span class="normal"><a href="#__codelineno-12-26">26</a></span>
-<span class="normal"><a href="#__codelineno-12-27">27</a></span>
-<span class="normal"><a href="#__codelineno-12-28">28</a></span>
-<span class="normal"><a href="#__codelineno-12-29">29</a></span>
-<span class="normal"><a href="#__codelineno-12-30">30</a></span>
-<span class="normal"><a href="#__codelineno-12-31">31</a></span>
-<span class="normal"><a href="#__codelineno-12-32">32</a></span>
-<span class="normal"><a href="#__codelineno-12-33">33</a></span>
-<span class="normal"><a href="#__codelineno-12-34">34</a></span>
-<span class="normal"><a href="#__codelineno-12-35">35</a></span>
-<span class="normal"><a href="#__codelineno-12-36">36</a></span>
-<span class="normal"><a href="#__codelineno-12-37">37</a></span>
-<span class="normal"><a href="#__codelineno-12-38">38</a></span>
-<span class="normal"><a href="#__codelineno-12-39">39</a></span>
-<span class="normal"><a href="#__codelineno-12-40">40</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.043187856674194336
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.592170000076294
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>./deploy/lite/imgs/lite_demo.png:<span class="w"> </span><span class="m">0</span>.642s
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The,<span class="w"> </span><span class="m">0</span>.984
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>visualized,<span class="w"> </span><span class="m">0</span>.882
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>etect18片,<span class="w"> </span><span class="m">0</span>.720
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span>./vis.jpg,<span class="w"> </span><span class="m">0</span>.947
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>纯臻营养护发素0.993604,<span class="w"> </span><span class="m">0</span>.996
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>产品信息/参数,<span class="w"> </span><span class="m">0</span>.922
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.992728,<span class="w"> </span><span class="m">0</span>.914
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（45元／每公斤，100公斤起订）,<span class="w"> </span><span class="m">0</span>.926
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.97417,<span class="w"> </span><span class="m">0</span>.977
-</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>每瓶22元，1000瓶起订）0.993976,<span class="w"> </span><span class="m">0</span>.962
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品牌】：代加工方式/0EMODM,<span class="w"> </span><span class="m">0</span>.945
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.985133,<span class="w"> </span><span class="m">0</span>.980
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品名】：纯臻营养护发素,<span class="w"> </span><span class="m">0</span>.921
-</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995007,<span class="w"> </span><span class="m">0</span>.883
-</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【产品编号】：YM-X-30110.96899,<span class="w"> </span><span class="m">0</span>.955
-</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【净含量】：220ml,<span class="w"> </span><span class="m">0</span>.943
-</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>Q.996577,<span class="w"> </span><span class="m">0</span>.932
-</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【适用人群】：适合所有肤质,<span class="w"> </span><span class="m">0</span>.913
-</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995842,<span class="w"> </span><span class="m">0</span>.969
-</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要成分】：鲸蜡硬脂醇、燕麦B-葡聚,<span class="w"> </span><span class="m">0</span>.883
-</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.961928,<span class="w"> </span><span class="m">0</span>.964
-</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="m">0</span>.812
-</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>糖、椰油酰胺丙基甜菜碱、泛醒,<span class="w"> </span><span class="m">0</span>.866
-</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.925898,<span class="w"> </span><span class="m">0</span>.943
-</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（成品包材）,<span class="w"> </span><span class="m">0</span>.974
-</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.972573,<span class="w"> </span><span class="m">0</span>.961
-</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要功能】：可紧致头发磷层，从而达到,<span class="w"> </span><span class="m">0</span>.936
-</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.994448,<span class="w"> </span><span class="m">0</span>.952
-</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">13</span>,<span class="w"> </span><span class="m">0</span>.998
-</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>即时持久改善头发光泽的效果，给干燥的头,<span class="w"> </span><span class="m">0</span>.994
-</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.990198,<span class="w"> </span><span class="m">0</span>.975
-</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="m">0</span>.977
-</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>发足够的滋养,<span class="w"> </span><span class="m">0</span>.991
-</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.997668,<span class="w"> </span><span class="m">0</span>.918
-</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>花费了0.457335秒,<span class="w"> </span><span class="m">0</span>.901
-</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/lite_demo.png
-</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">0</span>.7003889083862305
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span>
+<span class="normal"><a href="#__codelineno-14-11">11</a></span>
+<span class="normal"><a href="#__codelineno-14-12">12</a></span>
+<span class="normal"><a href="#__codelineno-14-13">13</a></span>
+<span class="normal"><a href="#__codelineno-14-14">14</a></span>
+<span class="normal"><a href="#__codelineno-14-15">15</a></span>
+<span class="normal"><a href="#__codelineno-14-16">16</a></span>
+<span class="normal"><a href="#__codelineno-14-17">17</a></span>
+<span class="normal"><a href="#__codelineno-14-18">18</a></span>
+<span class="normal"><a href="#__codelineno-14-19">19</a></span>
+<span class="normal"><a href="#__codelineno-14-20">20</a></span>
+<span class="normal"><a href="#__codelineno-14-21">21</a></span>
+<span class="normal"><a href="#__codelineno-14-22">22</a></span>
+<span class="normal"><a href="#__codelineno-14-23">23</a></span>
+<span class="normal"><a href="#__codelineno-14-24">24</a></span>
+<span class="normal"><a href="#__codelineno-14-25">25</a></span>
+<span class="normal"><a href="#__codelineno-14-26">26</a></span>
+<span class="normal"><a href="#__codelineno-14-27">27</a></span>
+<span class="normal"><a href="#__codelineno-14-28">28</a></span>
+<span class="normal"><a href="#__codelineno-14-29">29</a></span>
+<span class="normal"><a href="#__codelineno-14-30">30</a></span>
+<span class="normal"><a href="#__codelineno-14-31">31</a></span>
+<span class="normal"><a href="#__codelineno-14-32">32</a></span>
+<span class="normal"><a href="#__codelineno-14-33">33</a></span>
+<span class="normal"><a href="#__codelineno-14-34">34</a></span>
+<span class="normal"><a href="#__codelineno-14-35">35</a></span>
+<span class="normal"><a href="#__codelineno-14-36">36</a></span>
+<span class="normal"><a href="#__codelineno-14-37">37</a></span>
+<span class="normal"><a href="#__codelineno-14-38">38</a></span>
+<span class="normal"><a href="#__codelineno-14-39">39</a></span>
+<span class="normal"><a href="#__codelineno-14-40">40</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.043187856674194336
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.592170000076294
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>./deploy/lite/imgs/lite_demo.png:<span class="w"> </span><span class="m">0</span>.642s
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The,<span class="w"> </span><span class="m">0</span>.984
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>visualized,<span class="w"> </span><span class="m">0</span>.882
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>etect18片,<span class="w"> </span><span class="m">0</span>.720
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span>./vis.jpg,<span class="w"> </span><span class="m">0</span>.947
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>纯臻营养护发素0.993604,<span class="w"> </span><span class="m">0</span>.996
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>产品信息/参数,<span class="w"> </span><span class="m">0</span>.922
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.992728,<span class="w"> </span><span class="m">0</span>.914
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（45元／每公斤，100公斤起订）,<span class="w"> </span><span class="m">0</span>.926
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.97417,<span class="w"> </span><span class="m">0</span>.977
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>每瓶22元，1000瓶起订）0.993976,<span class="w"> </span><span class="m">0</span>.962
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品牌】：代加工方式/0EMODM,<span class="w"> </span><span class="m">0</span>.945
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.985133,<span class="w"> </span><span class="m">0</span>.980
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品名】：纯臻营养护发素,<span class="w"> </span><span class="m">0</span>.921
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995007,<span class="w"> </span><span class="m">0</span>.883
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【产品编号】：YM-X-30110.96899,<span class="w"> </span><span class="m">0</span>.955
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【净含量】：220ml,<span class="w"> </span><span class="m">0</span>.943
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>Q.996577,<span class="w"> </span><span class="m">0</span>.932
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【适用人群】：适合所有肤质,<span class="w"> </span><span class="m">0</span>.913
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995842,<span class="w"> </span><span class="m">0</span>.969
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要成分】：鲸蜡硬脂醇、燕麦B-葡聚,<span class="w"> </span><span class="m">0</span>.883
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.961928,<span class="w"> </span><span class="m">0</span>.964
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="m">0</span>.812
+</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>糖、椰油酰胺丙基甜菜碱、泛醒,<span class="w"> </span><span class="m">0</span>.866
+</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.925898,<span class="w"> </span><span class="m">0</span>.943
+</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（成品包材）,<span class="w"> </span><span class="m">0</span>.974
+</span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.972573,<span class="w"> </span><span class="m">0</span>.961
+</span><span id="__span-14-30"><a id="__codelineno-14-30" name="__codelineno-14-30"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要功能】：可紧致头发磷层，从而达到,<span class="w"> </span><span class="m">0</span>.936
+</span><span id="__span-14-31"><a id="__codelineno-14-31" name="__codelineno-14-31"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.994448,<span class="w"> </span><span class="m">0</span>.952
+</span><span id="__span-14-32"><a id="__codelineno-14-32" name="__codelineno-14-32"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">13</span>,<span class="w"> </span><span class="m">0</span>.998
+</span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>即时持久改善头发光泽的效果，给干燥的头,<span class="w"> </span><span class="m">0</span>.994
+</span><span id="__span-14-34"><a id="__codelineno-14-34" name="__codelineno-14-34"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.990198,<span class="w"> </span><span class="m">0</span>.975
+</span><span id="__span-14-35"><a id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="m">0</span>.977
+</span><span id="__span-14-36"><a id="__codelineno-14-36" name="__codelineno-14-36"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>发足够的滋养,<span class="w"> </span><span class="m">0</span>.991
+</span><span id="__span-14-37"><a id="__codelineno-14-37" name="__codelineno-14-37"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.997668,<span class="w"> </span><span class="m">0</span>.918
+</span><span id="__span-14-38"><a id="__codelineno-14-38" name="__codelineno-14-38"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>花费了0.457335秒,<span class="w"> </span><span class="m">0</span>.901
+</span><span id="__span-14-39"><a id="__codelineno-14-39" name="__codelineno-14-39"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/lite_demo.png
+</span><span id="__span-14-40"><a id="__codelineno-14-40" name="__codelineno-14-40"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:48:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">0</span>.7003889083862305
 </span></code></pre></div></td></tr></table></div>
 <p>使用 Paddle Inference 预测，终端输出：</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-13-10">10</a></span>
-<span class="normal"><a href="#__codelineno-13-11">11</a></span>
-<span class="normal"><a href="#__codelineno-13-12">12</a></span>
-<span class="normal"><a href="#__codelineno-13-13">13</a></span>
-<span class="normal"><a href="#__codelineno-13-14">14</a></span>
-<span class="normal"><a href="#__codelineno-13-15">15</a></span>
-<span class="normal"><a href="#__codelineno-13-16">16</a></span>
-<span class="normal"><a href="#__codelineno-13-17">17</a></span>
-<span class="normal"><a href="#__codelineno-13-18">18</a></span>
-<span class="normal"><a href="#__codelineno-13-19">19</a></span>
-<span class="normal"><a href="#__codelineno-13-20">20</a></span>
-<span class="normal"><a href="#__codelineno-13-21">21</a></span>
-<span class="normal"><a href="#__codelineno-13-22">22</a></span>
-<span class="normal"><a href="#__codelineno-13-23">23</a></span>
-<span class="normal"><a href="#__codelineno-13-24">24</a></span>
-<span class="normal"><a href="#__codelineno-13-25">25</a></span>
-<span class="normal"><a href="#__codelineno-13-26">26</a></span>
-<span class="normal"><a href="#__codelineno-13-27">27</a></span>
-<span class="normal"><a href="#__codelineno-13-28">28</a></span>
-<span class="normal"><a href="#__codelineno-13-29">29</a></span>
-<span class="normal"><a href="#__codelineno-13-30">30</a></span>
-<span class="normal"><a href="#__codelineno-13-31">31</a></span>
-<span class="normal"><a href="#__codelineno-13-32">32</a></span>
-<span class="normal"><a href="#__codelineno-13-33">33</a></span>
-<span class="normal"><a href="#__codelineno-13-34">34</a></span>
-<span class="normal"><a href="#__codelineno-13-35">35</a></span>
-<span class="normal"><a href="#__codelineno-13-36">36</a></span>
-<span class="normal"><a href="#__codelineno-13-37">37</a></span>
-<span class="normal"><a href="#__codelineno-13-38">38</a></span>
-<span class="normal"><a href="#__codelineno-13-39">39</a></span>
-<span class="normal"><a href="#__codelineno-13-40">40</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:25<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.11791276931762695
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6206860542297363
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>./deploy/lite/imgs/lite_demo.png:<span class="w"> </span><span class="m">2</span>.746s
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The,<span class="w"> </span><span class="m">0</span>.984
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>visualized,<span class="w"> </span><span class="m">0</span>.882
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>etect18片,<span class="w"> </span><span class="m">0</span>.720
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span>./vis.jpg,<span class="w"> </span><span class="m">0</span>.947
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>纯臻营养护发素0.993604,<span class="w"> </span><span class="m">0</span>.996
-</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>产品信息/参数,<span class="w"> </span><span class="m">0</span>.922
-</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.992728,<span class="w"> </span><span class="m">0</span>.914
-</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（45元／每公斤，100公斤起订）,<span class="w"> </span><span class="m">0</span>.926
-</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.97417,<span class="w"> </span><span class="m">0</span>.977
-</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>每瓶22元，1000瓶起订）0.993976,<span class="w"> </span><span class="m">0</span>.962
-</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品牌】：代加工方式/0EMODM,<span class="w"> </span><span class="m">0</span>.945
-</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.985133,<span class="w"> </span><span class="m">0</span>.980
-</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品名】：纯臻营养护发素,<span class="w"> </span><span class="m">0</span>.921
-</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995007,<span class="w"> </span><span class="m">0</span>.883
-</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【产品编号】：YM-X-30110.96899,<span class="w"> </span><span class="m">0</span>.955
-</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【净含量】：220ml,<span class="w"> </span><span class="m">0</span>.943
-</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>Q.996577,<span class="w"> </span><span class="m">0</span>.932
-</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【适用人群】：适合所有肤质,<span class="w"> </span><span class="m">0</span>.913
-</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995842,<span class="w"> </span><span class="m">0</span>.969
-</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要成分】：鲸蜡硬脂醇、燕麦B-葡聚,<span class="w"> </span><span class="m">0</span>.883
-</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.961928,<span class="w"> </span><span class="m">0</span>.964
-</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="m">0</span>.812
-</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>糖、椰油酰胺丙基甜菜碱、泛醒,<span class="w"> </span><span class="m">0</span>.866
-</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.925898,<span class="w"> </span><span class="m">0</span>.943
-</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（成品包材）,<span class="w"> </span><span class="m">0</span>.974
-</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.972573,<span class="w"> </span><span class="m">0</span>.961
-</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要功能】：可紧致头发磷层，从而达到,<span class="w"> </span><span class="m">0</span>.936
-</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.994448,<span class="w"> </span><span class="m">0</span>.952
-</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">13</span>,<span class="w"> </span><span class="m">0</span>.998
-</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>即时持久改善头发光泽的效果，给干燥的头,<span class="w"> </span><span class="m">0</span>.994
-</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.990198,<span class="w"> </span><span class="m">0</span>.975
-</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="m">0</span>.977
-</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>发足够的滋养,<span class="w"> </span><span class="m">0</span>.991
-</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.997668,<span class="w"> </span><span class="m">0</span>.918
-</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>花费了0.457335秒,<span class="w"> </span><span class="m">0</span>.901
-</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/lite_demo.png
-</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">2</span>.8338775634765625
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-15-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-15-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-15-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-15-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-15-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-15-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-15-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-15-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-15-10">10</a></span>
+<span class="normal"><a href="#__codelineno-15-11">11</a></span>
+<span class="normal"><a href="#__codelineno-15-12">12</a></span>
+<span class="normal"><a href="#__codelineno-15-13">13</a></span>
+<span class="normal"><a href="#__codelineno-15-14">14</a></span>
+<span class="normal"><a href="#__codelineno-15-15">15</a></span>
+<span class="normal"><a href="#__codelineno-15-16">16</a></span>
+<span class="normal"><a href="#__codelineno-15-17">17</a></span>
+<span class="normal"><a href="#__codelineno-15-18">18</a></span>
+<span class="normal"><a href="#__codelineno-15-19">19</a></span>
+<span class="normal"><a href="#__codelineno-15-20">20</a></span>
+<span class="normal"><a href="#__codelineno-15-21">21</a></span>
+<span class="normal"><a href="#__codelineno-15-22">22</a></span>
+<span class="normal"><a href="#__codelineno-15-23">23</a></span>
+<span class="normal"><a href="#__codelineno-15-24">24</a></span>
+<span class="normal"><a href="#__codelineno-15-25">25</a></span>
+<span class="normal"><a href="#__codelineno-15-26">26</a></span>
+<span class="normal"><a href="#__codelineno-15-27">27</a></span>
+<span class="normal"><a href="#__codelineno-15-28">28</a></span>
+<span class="normal"><a href="#__codelineno-15-29">29</a></span>
+<span class="normal"><a href="#__codelineno-15-30">30</a></span>
+<span class="normal"><a href="#__codelineno-15-31">31</a></span>
+<span class="normal"><a href="#__codelineno-15-32">32</a></span>
+<span class="normal"><a href="#__codelineno-15-33">33</a></span>
+<span class="normal"><a href="#__codelineno-15-34">34</a></span>
+<span class="normal"><a href="#__codelineno-15-35">35</a></span>
+<span class="normal"><a href="#__codelineno-15-36">36</a></span>
+<span class="normal"><a href="#__codelineno-15-37">37</a></span>
+<span class="normal"><a href="#__codelineno-15-38">38</a></span>
+<span class="normal"><a href="#__codelineno-15-39">39</a></span>
+<span class="normal"><a href="#__codelineno-15-40">40</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:25<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>dt_boxes<span class="w"> </span>num<span class="w"> </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">0</span>.11791276931762695
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>rec_res<span class="w"> </span>num<span class="w">  </span>:<span class="w"> </span><span class="m">38</span>,<span class="w"> </span>elapse<span class="w"> </span>:<span class="w"> </span><span class="m">2</span>.6206860542297363
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span><span class="w">  </span>Predict<span class="w"> </span><span class="nb">time</span><span class="w"> </span>of<span class="w"> </span>./deploy/lite/imgs/lite_demo.png:<span class="w"> </span><span class="m">2</span>.746s
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The,<span class="w"> </span><span class="m">0</span>.984
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>visualized,<span class="w"> </span><span class="m">0</span>.882
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>etect18片,<span class="w"> </span><span class="m">0</span>.720
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span>./vis.jpg,<span class="w"> </span><span class="m">0</span>.947
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>纯臻营养护发素0.993604,<span class="w"> </span><span class="m">0</span>.996
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>产品信息/参数,<span class="w"> </span><span class="m">0</span>.922
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.992728,<span class="w"> </span><span class="m">0</span>.914
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（45元／每公斤，100公斤起订）,<span class="w"> </span><span class="m">0</span>.926
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.97417,<span class="w"> </span><span class="m">0</span>.977
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>每瓶22元，1000瓶起订）0.993976,<span class="w"> </span><span class="m">0</span>.962
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品牌】：代加工方式/0EMODM,<span class="w"> </span><span class="m">0</span>.945
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.985133,<span class="w"> </span><span class="m">0</span>.980
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【品名】：纯臻营养护发素,<span class="w"> </span><span class="m">0</span>.921
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995007,<span class="w"> </span><span class="m">0</span>.883
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【产品编号】：YM-X-30110.96899,<span class="w"> </span><span class="m">0</span>.955
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【净含量】：220ml,<span class="w"> </span><span class="m">0</span>.943
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>Q.996577,<span class="w"> </span><span class="m">0</span>.932
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【适用人群】：适合所有肤质,<span class="w"> </span><span class="m">0</span>.913
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.995842,<span class="w"> </span><span class="m">0</span>.969
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要成分】：鲸蜡硬脂醇、燕麦B-葡聚,<span class="w"> </span><span class="m">0</span>.883
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.961928,<span class="w"> </span><span class="m">0</span>.964
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="m">0</span>.812
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>糖、椰油酰胺丙基甜菜碱、泛醒,<span class="w"> </span><span class="m">0</span>.866
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.925898,<span class="w"> </span><span class="m">0</span>.943
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>（成品包材）,<span class="w"> </span><span class="m">0</span>.974
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.972573,<span class="w"> </span><span class="m">0</span>.961
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>【主要功能】：可紧致头发磷层，从而达到,<span class="w"> </span><span class="m">0</span>.936
+</span><span id="__span-15-31"><a id="__codelineno-15-31" name="__codelineno-15-31"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.994448,<span class="w"> </span><span class="m">0</span>.952
+</span><span id="__span-15-32"><a id="__codelineno-15-32" name="__codelineno-15-32"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">13</span>,<span class="w"> </span><span class="m">0</span>.998
+</span><span id="__span-15-33"><a id="__codelineno-15-33" name="__codelineno-15-33"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>即时持久改善头发光泽的效果，给干燥的头,<span class="w"> </span><span class="m">0</span>.994
+</span><span id="__span-15-34"><a id="__codelineno-15-34" name="__codelineno-15-34"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.990198,<span class="w"> </span><span class="m">0</span>.975
+</span><span id="__span-15-35"><a id="__codelineno-15-35" name="__codelineno-15-35"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">14</span>,<span class="w"> </span><span class="m">0</span>.977
+</span><span id="__span-15-36"><a id="__codelineno-15-36" name="__codelineno-15-36"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>发足够的滋养,<span class="w"> </span><span class="m">0</span>.991
+</span><span id="__span-15-37"><a id="__codelineno-15-37" name="__codelineno-15-37"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span><span class="m">0</span>.997668,<span class="w"> </span><span class="m">0</span>.918
+</span><span id="__span-15-38"><a id="__codelineno-15-38" name="__codelineno-15-38"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>花费了0.457335秒,<span class="w"> </span><span class="m">0</span>.901
+</span><span id="__span-15-39"><a id="__codelineno-15-39" name="__codelineno-15-39"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>DEBUG:<span class="w"> </span>The<span class="w"> </span>visualized<span class="w"> </span>image<span class="w"> </span>saved<span class="w"> </span><span class="k">in</span><span class="w"> </span>./inference_results/lite_demo.png
+</span><span id="__span-15-40"><a id="__codelineno-15-40" name="__codelineno-15-40"></a><span class="o">[</span><span class="m">2022</span>/02/22<span class="w"> </span><span class="m">17</span>:47:27<span class="o">]</span><span class="w"> </span>root<span class="w"> </span>INFO:<span class="w"> </span>The<span class="w"> </span>predict<span class="w"> </span>total<span class="w"> </span><span class="nb">time</span><span class="w"> </span>is<span class="w"> </span><span class="m">2</span>.8338775634765625
 </span></code></pre></div></td></tr></table></div>
 
 
@@ -5803,7 +5893,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年2月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年2月22日</span>
   </span>
 
     
@@ -5813,7 +5903,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年2月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">2025年2月22日</span>
   </span>
 
     
