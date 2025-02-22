@@ -7,7 +7,7 @@ hide:
 
 # Paddle2ONNX Model Conversion and Prediction
 
-This chapter introduces how to convert PaddleOCR models to ONNX models and perform predictions based on the ONNXRuntime engine.
+This chapter introduces how to convert PaddleOCR models to ONNX models and perform predictions based on the ONNXRuntime engine. We also prepared an [online AI Studio project](https://aistudio.baidu.com/projectdetail/8808858) for your convenience.
 
 ## 1. Environment Setup
 
@@ -40,11 +40,13 @@ Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX fo
 
 ## 2. Model Conversion
 
-### Download Paddle Models
+### Get Paddle Static Graph Models
 
 There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../ppocr/model_list.en.md); or refer to the [Model Export Instructions](./python_infer.en.md#inference) to convert trained weights into inference models.
 
 Using the PP-OCR series English detection, recognition, and classification models as examples:
+
+#### Download Provided Inference Models
 
 === "PP-OCRv3"
 
@@ -71,6 +73,37 @@ Using the PP-OCR series English detection, recognition, and classification model
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
     cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
     ```
+
+#### Convert Dynamic Graph to Static Graph (Optional)
+
+Download dynamic graph models:
+
+```bash linenums="1"
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_train.tar
+cd pretrained && tar xf ch_PP-OCRv4_det_train.tar && cd ..
+
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_train.tar
+cd pretrained && tar xf ch_PP-OCRv4_rec_train.tar && cd ..
+
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar
+cd pretrained && tar xf ch_ppocr_mobile_v2.0_cls_train.tar && cd ..
+```
+
+Convert to static graph models:
+
+```bash linenums="1"
+python3 tools/export_model.py -c configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml \
+-o Global.pretrained_model=./pretrained/ch_PP-OCRv4_det_train/best_accuracy \
+Global.save_inference_dir=./inference/ch_PP-OCRv4_det_infer/
+
+python3 tools/export_model.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml \
+-o Global.pretrained_model=./pretrained/ch_PP-OCRv4_rec_train/student \
+Global.save_inference_dir=./inference/ch_PP-OCRv4_rec_infer/
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml \
+-o Global.pretrained_model=./pretrained/ch_ppocr_mobile_v2.0_cls_train/best_accuracy \
+Global.save_inference_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer/
+```
 
 ### Model Conversion
 

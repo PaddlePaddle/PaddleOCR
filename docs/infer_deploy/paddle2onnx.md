@@ -7,15 +7,15 @@ hide:
 
 # Paddle2ONNX模型转化与预测
 
-本章节介绍 PaddleOCR 模型如何转化为 ONNX 模型，并基于 ONNXRuntime 引擎预测。
+本章节介绍 PaddleOCR 模型如何转化为 ONNX 模型，并基于 ONNXRuntime 引擎预测。同时我们准备了一个[在线 AI Studio 项目](https://aistudio.baidu.com/projectdetail/8808858)，可以方便用户进行测试。
 
 ## 1. 环境准备
 
-需要准备 PaddleOCR、Paddle2ONNX 模型转化环境，和 ONNXRuntime 预测环境
+需要准备 PaddleOCR、Paddle2ONNX 模型转化环境，和 ONNXRuntime 预测环境。
 
 ### PaddleOCR
 
-克隆PaddleOCR的仓库，使用 main 分支，并进行安装，由于 PaddleOCR 仓库比较大，git clone 速度比较慢，所以本教程已下载
+克隆PaddleOCR的仓库，使用 main 分支，并进行安装，由于 PaddleOCR 仓库比较大，git clone 速度比较慢，所以本教程已下载。
 
 ```bash linenums="1"
 git clone  -b main https://github.com/PaddlePaddle/PaddleOCR.git
@@ -41,9 +41,11 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 
 ## 2. 模型转换
 
-### Paddle 模型下载
+### 获取 Paddle 静态图模型
 
 有两种方式获取Paddle静态图模型：在 [model_list](../ppocr/model_list.md) 中下载PaddleOCR提供的预测模型；参考[模型导出说明](./python_infer.md#inference)把训练好的权重转为推理模型。
+
+#### 下载准备好的静态图模型
 
 以 PP-OCR 系列中文检测、识别、分类模型为例：
 
@@ -72,6 +74,37 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
     cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
     ```
+
+#### 将动态图导出为静态图模型 (可选)
+
+下载动态图模型：
+
+```bash linenums="1"
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_train.tar
+cd pretrained && tar xf ch_PP-OCRv4_det_train.tar && cd ..
+
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_train.tar
+cd pretrained && tar xf ch_PP-OCRv4_rec_train.tar && cd ..
+
+wget -nc -P pretrained https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar
+cd pretrained && tar xf ch_ppocr_mobile_v2.0_cls_train.tar && cd ..
+```
+
+转换为静态图模型：
+
+```bash linenums="1"
+python3 tools/export_model.py -c configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml \
+-o Global.pretrained_model=./pretrained/ch_PP-OCRv4_det_train/best_accuracy \
+Global.save_inference_dir=./inference/ch_PP-OCRv4_det_infer/
+
+python3 tools/export_model.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml \
+-o Global.pretrained_model=./pretrained/ch_PP-OCRv4_rec_train/student \
+Global.save_inference_dir=./inference/ch_PP-OCRv4_rec_infer/
+
+python3 tools/export_model.py -c configs/cls/cls_mv3.yml \
+-o Global.pretrained_model=./pretrained/ch_ppocr_mobile_v2.0_cls_train/best_accuracy \
+Global.save_inference_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer/
+```
 
 ### 模型转换
 
