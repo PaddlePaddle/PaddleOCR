@@ -65,19 +65,19 @@ def dump_infer_config(config, path, logger):
             }
         elif arch_config["algorithm"] == "LaTeXOCR":
             common_dynamic_shapes = {
-                "x": [[1, 3, 224, 224], [1, 3, 448, 448], [8, 3, 1280, 1280]]
+                "x": [[1, 1, 32, 32], [1, 1, 64, 448], [8, 1, 192, 672]]
             }
         elif arch_config["algorithm"] == "UniMERNet":
             common_dynamic_shapes = {
-                "x": [[1, 3, 192, 672], [1, 3, 192, 672], [8, 3, 192, 672]]
+                "x": [[1, 1, 192, 672], [1, 1, 192, 672], [8, 1, 192, 672]]
             }
         elif arch_config["algorithm"] == "PP-FormulaNet-L":
             common_dynamic_shapes = {
-                "x": [[1, 3, 768, 768], [1, 3, 768, 768], [8, 3, 768, 768]]
+                "x": [[1, 1, 768, 768], [1, 1, 768, 768], [8, 1, 768, 768]]
             }
         elif arch_config["algorithm"] == "PP-FormulaNet-S":
             common_dynamic_shapes = {
-                "x": [[1, 3, 384, 384], [1, 3, 384, 384], [8, 3, 384, 384]]
+                "x": [[1, 1, 384, 384], [1, 1, 384, 384], [8, 1, 384, 384]]
             }
         else:
             common_dynamic_shapes = None
