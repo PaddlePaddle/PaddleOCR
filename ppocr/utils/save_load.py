@@ -192,6 +192,10 @@ def load_pretrained_params(model, path):
                     )
                 )
 
+    for k1 in state_dict.keys():
+        if k1 not in params.keys():
+            logger.warning("The model params {} not in pretrained file".format(k1))
+
     model.set_state_dict(new_state_dict)
     if is_float16:
         logger.info(
