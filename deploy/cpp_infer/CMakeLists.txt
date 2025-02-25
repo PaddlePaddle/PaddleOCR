@@ -7,13 +7,13 @@ option(WITH_STATIC_LIB "Compile demo with static/shared library, default use sta
 option(WITH_TENSORRT "Compile demo with TensorRT."   OFF)
 
 SET(PADDLE_LIB "" CACHE PATH "Location of libraries")
-SET(OPENCV_DIR "" CACHE PATH "Location of libraries")
 SET(CUDA_LIB "" CACHE PATH "Location of libraries")
 SET(CUDNN_LIB "" CACHE PATH "Location of libraries")
 SET(TENSORRT_DIR "" CACHE PATH "Compile demo with TensorRT")
 
 set(DEMO_NAME "ppocr")
 
+find_package(OpenCV REQUIRED)
 
 macro(safe_set_static_flag)
     foreach(flag_var
@@ -33,18 +33,11 @@ if(NOT DEFINED PADDLE_LIB)
   message(FATAL_ERROR "please set PADDLE_LIB with -DPADDLE_LIB=/path/paddle/lib")
 endif()
 
-if(NOT DEFINED OPENCV_DIR)
-    message(FATAL_ERROR "please set OPENCV_DIR with -DOPENCV_DIR=/path/opencv")
-endif()
-
-
 if (WIN32)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
-  find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/build/ NO_DEFAULT_PATH)
 
 else ()
-  find_package(OpenCV REQUIRED PATHS ${OPENCV_DIR}/share/OpenCV NO_DEFAULT_PATH)
   include_directories("${PADDLE_LIB}/paddle/include")
   link_directories("${PADDLE_LIB}/paddle/lib")
 endif ()
