@@ -74,7 +74,7 @@ void check_params() {
   }
   if (FLAGS_precision != "fp32" && FLAGS_precision != "fp16" &&
       FLAGS_precision != "int8") {
-    std::cout << "precison should be 'fp32'(default), 'fp16' or 'int8'. "
+    std::cout << "precision should be 'fp32'(default), 'fp16' or 'int8'. "
               << std::endl;
     exit(1);
   }

@@ -85,7 +85,7 @@ class EASTPostProcess(object):
         if boxes.shape[0] == 0:
             return []
         # Here we filter some low score boxes by the average score map,
-        #   this is different from the orginal paper.
+        #   this is different from the original paper.
         for i, box in enumerate(boxes):
             mask = np.zeros_like(score_map, dtype=np.uint8)
             cv2.fillPoly(mask, box[:8].reshape((-1, 4, 2)).astype(np.int32) // 4, 1)

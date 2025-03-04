@@ -63,7 +63,7 @@ def init_args():
     parser.add_argument("--det_limit_type", type=str, default="max")
     parser.add_argument("--det_box_type", type=str, default="quad")
 
-    # DB parmas
+    # DB params
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
     parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
@@ -71,22 +71,22 @@ def init_args():
     parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
 
-    # EAST parmas
+    # EAST params
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
-    # SAST parmas
+    # SAST params
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
 
-    # PSE parmas
+    # PSE params
     parser.add_argument("--det_pse_thresh", type=float, default=0)
     parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
     parser.add_argument("--det_pse_min_area", type=float, default=16)
     parser.add_argument("--det_pse_scale", type=int, default=1)
 
-    # FCE parmas
+    # FCE params
     parser.add_argument("--scales", type=list, default=[8, 16, 32])
     parser.add_argument("--alpha", type=float, default=1.0)
     parser.add_argument("--beta", type=float, default=1.0)
@@ -112,7 +112,7 @@ def init_args():
     parser.add_argument("--e2e_limit_side_len", type=float, default=768)
     parser.add_argument("--e2e_limit_type", type=str, default="max")
 
-    # PGNet parmas
+    # PGNet params
     parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
     parser.add_argument(
         "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt"
@@ -133,7 +133,7 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
-    # SR parmas
+    # SR params
     parser.add_argument("--sr_model_dir", type=str)
     parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
     parser.add_argument("--sr_batch_num", type=int, default=1)

@@ -67,7 +67,7 @@ class LayoutPredictor(hub.Module):
         self.layout_predictor = _LayoutPredictor(cfg)
 
     def merge_configs(self):
-        # deafult cfg
+        # default cfg
         backup_argv = copy.deepcopy(sys.argv)
         sys.argv = sys.argv[:1]
         cfg = parse_args()
