@@ -69,7 +69,7 @@ class TableSystem(hub.Module):
         self.table_sys = _TableSystem(cfg)
 
     def merge_configs(self):
-        # deafult cfg
+        # default cfg
         backup_argv = copy.deepcopy(sys.argv)
         sys.argv = sys.argv[:1]
         cfg = parse_args()

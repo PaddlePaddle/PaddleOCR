@@ -13,7 +13,7 @@ Paper:
 
 The accuracy (%) and model files of SVTR on the public dataset of scene text recognition are as follows:
 
-* Chinese dataset from [Chinese Benckmark](https://arxiv.org/abs/2112.15093) , and the Chinese training evaluation strategy of SVTR follows the paper.
+* Chinese dataset from [Chinese Benchmark](https://arxiv.org/abs/2112.15093) , and the Chinese training evaluation strategy of SVTR follows the paper.
 
 |   Model    |IC13<br/>857 |  SVT  |IIIT5k<br/>3000 |IC15<br/>1811| SVTP  |CUTE80 | Avg_6 |IC15<br/>2077 |IC13<br/>1015 |IC03<br/>867|IC03<br/>860|Avg_10 | Chinese<br/>scene_test|                                                                                            Download link                                                                                            |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|:-----:|:-----:|:---------------------------------------------:|:-----:|:------:|

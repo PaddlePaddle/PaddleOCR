@@ -13,7 +13,7 @@ Run OCR demo in browser refer to [tutorial](https://github.com/PaddlePaddle/Fast
 
 
 ## Mini Program Demo
-The Mini Program demo running tutorial eference
+The Mini Program demo running tutorial reference
 Run OCR demo in wechat miniprogram refer to [tutorial](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/mini_program).
 
 |demo|directory|

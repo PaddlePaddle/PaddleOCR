@@ -25,7 +25,7 @@ def print_help():
 def load_zip_file_keys(file, fileNameRegExp=""):
     """
     Returns an array with the entries of the ZIP file that match with the regular expression.
-    The key's are the names or the file or the capturing group definied in the fileNameRegExp
+    The key's are the names or the file or the capturing group defined in the fileNameRegExp
     """
     try:
         archive = zipfile.ZipFile(file, mode="r", allowZip64=True)
@@ -54,7 +54,7 @@ def load_zip_file_keys(file, fileNameRegExp=""):
 def load_zip_file(file, fileNameRegExp="", allEntries=False):
     """
     Returns an array with the contents (filtered by fileNameRegExp) of a ZIP file.
-    The key's are the names or the file or the capturing group definied in the fileNameRegExp
+    The key's are the names or the file or the capturing group defined in the fileNameRegExp
     allEntries validates that all entries in the ZIP file pass the fileNameRegExp
     """
     try:
@@ -86,7 +86,7 @@ def load_zip_file(file, fileNameRegExp="", allEntries=False):
 def load_folder_file(file, fileNameRegExp="", allEntries=False):
     """
     Returns an array with the contents (filtered by fileNameRegExp) of a ZIP file.
-    The key's are the names or the file or the capturing group definied in the fileNameRegExp
+    The key's are the names or the file or the capturing group defined in the fileNameRegExp
     allEntries validates that all entries in the ZIP file pass the fileNameRegExp
     """
     pairs = []
@@ -164,8 +164,8 @@ def validate_tl_line(
 ):
     """
     Validate the format of the line. If the line is not valid an exception will be raised.
-    If maxWidth and maxHeight are specified, all points must be inside the imgage bounds.
-    Posible values are:
+    If maxWidth and maxHeight are specified, all points must be inside the image bounds.
+    Possible values are:
     LTRB=True: xmin,ymin,xmax,ymax[,confidence][,transcription]
     LTRB=False: x1,y1,x2,y2,x3,y3,x4,y4[,confidence][,transcription]
     """
@@ -182,8 +182,8 @@ def get_tl_line_values(
 ):
     """
     Validate the format of the line. If the line is not valid an exception will be raised.
-    If maxWidth and maxHeight are specified, all points must be inside the imgage bounds.
-    Posible values are:
+    If maxWidth and maxHeight are specified, all points must be inside the image bounds.
+    Possible values are:
     LTRB=True: xmin,ymin,xmax,ymax[,confidence][,transcription]
     LTRB=False: x1,y1,x2,y2,x3,y3,x4,y4[,confidence][,transcription]
     Returns values from a textline. Points , [Confidences], [Transcriptions]
@@ -409,11 +409,11 @@ def main_evaluation(
     per_sample=True,
 ):
     """
-    This process validates a method, evaluates it and if it succed generates a ZIP file with a JSON entry for each sample.
+    This process validates a method, evaluates it and if it succeed generates a ZIP file with a JSON entry for each sample.
     Params:
-    p: Dictionary of parmeters with the GT/submission locations. If None is passed, the parameters send by the system are used.
+    p: Dictionary of parameters with the GT/submission locations. If None is passed, the parameters send by the system are used.
     default_evaluation_params_fn: points to a function that returns a dictionary with the default parameters used for the evaluation
-    validate_data_fn: points to a method that validates the corrct format of the submission
+    validate_data_fn: points to a method that validates the correct format of the submission
     evaluate_method_fn: points to a function that evaluated the submission and return a Dictionary with the results
     """
     evalParams = default_evaluation_params_fn()
@@ -476,7 +476,7 @@ def main_validation(default_evaluation_params_fn, validate_data_fn):
     This process validates a method
     Params:
     default_evaluation_params_fn: points to a function that returns a dictionary with the default parameters used for the evaluation
-    validate_data_fn: points to a method that validates the corrct format of the submission
+    validate_data_fn: points to a method that validates the correct format of the submission
     """
     try:
         p = dict([s[1:].split("=") for s in sys.argv[1:]])

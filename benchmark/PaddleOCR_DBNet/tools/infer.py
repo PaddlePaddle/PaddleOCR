@@ -96,7 +96,7 @@ class InferenceEngine(object):
         initialize the inference engine
         Args:
             model_file_path: inference model path (*.pdmodel)
-            model_file_path: inference parmaeter path (*.pdiparams)
+            model_file_path: inference parameter path (*.pdiparams)
         Return:
             predictor: Predictor created using Paddle Inference.
             config: Configuration of the predictor.
@@ -112,7 +112,7 @@ class InferenceEngine(object):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size,  # skip the minmum trt subgraph
+                    min_subgraph_size=args.min_subgraph_size,  # skip the minimum trt subgraph
                     use_calib_mode=False,
                 )
 
