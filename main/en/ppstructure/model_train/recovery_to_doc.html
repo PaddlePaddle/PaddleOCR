@@ -5527,7 +5527,7 @@ editable Word file consistent with the original image layout.</p>
 </span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>pip3<span class="w"> </span>install<span class="w"> </span>pdf2docx-0.0.0-py3-none-any.whl
 </span></code></pre></div></td></tr></table></div>
 <h2 id="3-quick-start-using-standard-pdf-parse">3. Quick Start using standard PDF parse<a class="headerlink" href="#3-quick-start-using-standard-pdf-parse" title="Permanent link">&para;</a></h2>
-<p><code>use_pdf2docx_api</code> use PDF parse for layout recovery, The whl package is also provided  for quick use, follow the above code, for more infomation please refer to <a href="../quick_start.html">quickstart</a> for details.</p>
+<p><code>use_pdf2docx_api</code> use PDF parse for layout recovery, The whl package is also provided  for quick use, follow the above code, for more information please refer to <a href="../quick_start.html">quickstart</a> for details.</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="c1"># install paddleocr</span>
@@ -5557,7 +5557,7 @@ editable Word file consistent with the original image layout.</p>
 <li>Save the image directly</li>
 </ul>
 <p>We can restore the test picture through the layout information, OCR detection and recognition structure, table information, and saved pictures.</p>
-<p>The whl package is also provided for quick use, follow the above code, for more infomation please refer to <a href="../quick_start.html">quickstart</a> for details.</p>
+<p>The whl package is also provided for quick use, follow the above code, for more information please refer to <a href="../quick_start.html">quickstart</a> for details.</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="o">=</span>ppstructure/docs/table/1.png<span class="w"> </span>--type<span class="o">=</span>structure<span class="w"> </span>--recovery<span class="o">=</span><span class="nb">true</span><span class="w"> </span>--lang<span class="o">=</span><span class="s1">&#39;en&#39;</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="41-download-models">4.1 Download models<a class="headerlink" href="#41-download-models" title="Permanent link">&para;</a></h3>
@@ -5626,8 +5626,8 @@ editable Word file consistent with the original image layout.</p>
 <li>det_model_dir：OCR detection model path</li>
 <li>rec_model_dir：OCR recognition model path</li>
 <li>rec_char_dict_path：OCR recognition dict path. If the Chinese model is used, change to "../ppocr/utils/ppocr_keys_v1.txt". And if you trained the model on your own dataset, change to the trained dictionary</li>
-<li>table_model_dir：tabel recognition model path</li>
-<li>table_char_dict_path：tabel recognition dict path. If the Chinese model is used, no need to change</li>
+<li>table_model_dir：table recognition model path</li>
+<li>table_char_dict_path：table recognition dict path. If the Chinese model is used, no need to change</li>
 <li>layout_model_dir：layout analysis model path</li>
 <li>layout_dict_path：layout analysis dict path. If the Chinese model is used, change to "../ppocr/utils/dict/layout_dict/layout_cdla_dict.txt"</li>
 <li>recovery：whether to enable layout of recovery, default False</li>
