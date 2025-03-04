@@ -990,7 +990,7 @@ class PPFormulaNet_Head(UniMERNetHead):
         if isinstance(decoder_start_token_id, list):
             if len(decoder_start_token_id) != batch_size:
                 raise ValueError(
-                    f"`decoder_start_token_id` expcted to have length {batch_size} but got {len(decoder_start_token_id)}"
+                    f"`decoder_start_token_id` expected to have length {batch_size} but got {len(decoder_start_token_id)}"
                 )
             decoder_input_ids_start = paddle.to_tensor(
                 decoder_start_token_id,

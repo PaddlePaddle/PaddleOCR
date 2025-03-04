@@ -10,7 +10,7 @@
 
 #define PADDLE_WITH_CUDA
 #define CHECK_INPUT_SAME(x1, x2)                                               \
-  PD_CHECK(x1.place() == x2.place(), "input must be smae pacle.")
+  PD_CHECK(x1.place() == x2.place(), "input must be same place.")
 #define CHECK_INPUT_CPU(x) PD_CHECK(x.is_cpu(), #x " must be a CPU Tensor.")
 
 template <typename T> struct PreCalc {

@@ -24,7 +24,7 @@ def create_metric(
         mode(str): mode, train/valid
 
     Returns:
-        fetchs(dict): dict of measures
+        fetches(dict): dict of measures
     """
     # if architecture["name"] == "GoogLeNet":
     #     assert len(out) == 3, "GoogLeNet should have 3 outputs"
@@ -35,10 +35,10 @@ def create_metric(
     #         out = out[1]
     softmax_out = F.softmax(out)
 
-    fetchs = OrderedDict()
-    # set top1 to fetchs
+    fetches = OrderedDict()
+    # set top1 to fetches
     top1 = paddle.metric.accuracy(softmax_out, label=label, k=1)
-    # set topk to fetchs
+    # set topk to fetches
     k = min(topk, classes_num)
     topk = paddle.metric.accuracy(softmax_out, label=label, k=k)
 
@@ -53,8 +53,8 @@ def create_metric(
             / paddle.distributed.get_world_size()
         )
 
-    fetchs["top1"] = top1
+    fetches["top1"] = top1
     topk_name = "top{}".format(k)
-    fetchs[topk_name] = topk
+    fetches[topk_name] = topk
 
-    return fetchs
+    return fetches

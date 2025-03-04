@@ -228,7 +228,7 @@ class MbConvBlock(nn.Layer):
             x = F.sigmoid(x_squeezed) * x
         x = self._bn2(self._project_conv(x))
 
-        # skip conntection and drop connect
+        # skip connection and drop connect
         if self.id_skip and self._block_args.stride == 1 and self.inp == self.final_oup:
             if drop_connect_rate:
                 x = self._drop_connect(x, p=drop_connect_rate, training=self.training)

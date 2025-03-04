@@ -78,10 +78,10 @@ class BCNLanguage(nn.Layer):
         embed = self.token_encoder(embed)  # (B, N, C)
         padding_mask = _get_mask(lengths, self.max_length)
         zeros = paddle.zeros_like(embed)  # (B, N, C)
-        qeury = self.pos_encoder(zeros)
+        query = self.pos_encoder(zeros)
         for decoder_layer in self.decoder:
-            qeury = decoder_layer(qeury, embed, cross_mask=padding_mask)
-        output = qeury  # (B, N, C)
+            query = decoder_layer(query, embed, cross_mask=padding_mask)
+        output = query  # (B, N, C)
 
         logits = self.cls(output)  # (B, N, C)
 
@@ -246,7 +246,7 @@ class ABINetHead(nn.Layer):
                 lengths = align_lengths
                 lengths = paddle.clip(
                     lengths, 2, self.max_length
-                )  # TODO:move to langauge model
+                )  # TODO:move to language model
                 l_feature, l_logits = self.language(tokens, lengths)
 
                 # alignment

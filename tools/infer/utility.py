@@ -282,7 +282,7 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size,  # skip the minmum trt subgraph
+                    min_subgraph_size=args.min_subgraph_size,  # skip the minimum trt subgraph
                     use_calib_mode=False,
                 )
 

@@ -183,7 +183,7 @@ class GSRM(nn.Layer):
         # ===== GSRM Semantic reasoning block =====
         """
         This module is achieved through bi-transformers,
-        ngram_feature1 is the froward one, ngram_fetaure2 is the backward one
+        ngram_feature1 is the forward one, ngram_fetaure2 is the backward one
         """
         pad_idx = self.char_num
 

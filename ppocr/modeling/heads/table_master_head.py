@@ -154,7 +154,7 @@ class TableMasterHead(nn.Layer):
 
 class DecoderLayer(nn.Layer):
     """
-    Decoder is made of self attention, srouce attention and feed forward.
+    Decoder is made of self attention, source attention and feed forward.
     """
 
     def __init__(self, headers, d_model, dropout, d_ff):

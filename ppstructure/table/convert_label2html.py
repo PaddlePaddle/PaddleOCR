@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-conver table label to html
+convert table label to html
 """
 
 import json
@@ -84,7 +84,7 @@ def convert(origin_gt_path, save_path):
     for img_name, gt in tqdm(data_dict.items()):
         html = gen_html(gt)
         save_pred_txt(img_name, html, save_path)
-    print("conver finish")
+    print("convert finish")
 
 
 def parse_args():

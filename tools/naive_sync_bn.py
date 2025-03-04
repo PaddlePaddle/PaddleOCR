@@ -71,7 +71,7 @@ class NaiveSyncBatchNorm(nn.BatchNorm2D):
             mean, meansqr = paddle.split(vec, [C, C])
             momentum = (
                 1 - self._momentum
-            )  # NOTE: paddle has reverse momentum defination
+            )  # NOTE: paddle has reverse momentum definition
         else:
             if B == 0:
                 vec = paddle.zeros([2 * C + 1], dtype=mean.dtype)
