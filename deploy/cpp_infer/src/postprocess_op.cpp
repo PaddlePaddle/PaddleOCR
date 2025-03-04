@@ -390,7 +390,7 @@ void TablePostProcessor::Run(
     const std::vector<int> &width_list,
     const std::vector<int> &height_list) noexcept {
   for (int batch_idx = 0; batch_idx < structure_probs_shape[0]; ++batch_idx) {
-    // image tags and boxs
+    // image tags and boxes
     std::vector<std::string> rec_html_tags;
     std::vector<std::vector<int>> rec_boxes;
 

@@ -128,7 +128,7 @@ class GA_SPIN_Transformer(nn.Layer):
             default_type (int): the K chromatic space,
                                 set it to 3/5/6 depend on the complexity of transformation intensities
             loc_lr (float): learning rate of location network
-            stn (bool): whther to use stn.
+            stn (bool): whether to use stn.
 
         """
         super(GA_SPIN_Transformer, self).__init__()

@@ -93,7 +93,7 @@ The final dataset shall have the following file structure.
 
 ### 1.3. Download data
 
-If you do not have local dataset, you can donwload the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py) for tranform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
+If you do not have local dataset, you can download the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py) for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
 
 For more information about public KIE datasets, please refer to [KIE dataset tutorial](../../datasets/kie_datasets.en.md).
 
@@ -191,7 +191,7 @@ Architecture:
     name: LayoutXLMForSer
     pretrained: True
     mode: vi
-    # Assuming that n categroies are included in the dictionary file (other is included), the the num_classes is set as 2n-1
+    # Assuming that n categories are included in the dictionary file (other is included), the the num_classes is set as 2n-1
     num_classes: &num_classes 7
 
 PostProcess:
@@ -239,7 +239,7 @@ python3 tools/train.py -c configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml
 
 **Note:**
 
-- Priority of `Architecture.Backbone.checkpoints` is higher than`Architecture.Backbone.pretrained`. You need to set `Architecture.Backbone.checkpoints` for model finetuning, resume and evalution. If you want to train with the NLP pretrained model, you need to set `Architecture.Backbone.pretrained` as `True` and set `Architecture.Backbone.checkpoints` as null (`null`).
+- Priority of `Architecture.Backbone.checkpoints` is higher than`Architecture.Backbone.pretrained`. You need to set `Architecture.Backbone.checkpoints` for model finetuning, resume and evaluation. If you want to train with the NLP pretrained model, you need to set `Architecture.Backbone.pretrained` as `True` and set `Architecture.Backbone.checkpoints` as null (`null`).
 - PaddleNLP pretrained models are used here for LayoutXLM series models, the model loading and saving logic is same as those in PaddleNLP. Therefore we do not need to set `Global.pretrained_model` or `Global.checkpoints` here.
 - If you use knowledge distillation to train the LayoutXLM series models, resuming training is not supported now.
 
@@ -280,7 +280,7 @@ Running on a DCU device requires setting the environment variable `export HIP_VI
 
 ### 3.1. Evaluation
 
-The trained model will be saved in `Global.save_model_dir`. When evaluation, you need to set `Architecture.Backbone.checkpoints` as your model directroy. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml` file.
+The trained model will be saved in `Global.save_model_dir`. When evaluation, you need to set `Architecture.Backbone.checkpoints` as your model directory. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml` file.
 
 ```bash linenums="1"
 # GPU evaluation, Global.checkpoints is the weight to be tested

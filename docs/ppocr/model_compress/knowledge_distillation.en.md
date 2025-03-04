@@ -316,7 +316,7 @@ Metric:
   base_metric_name: RecMetric      # The base class of indicator calculation. For the output of the model, the indicator will be calculated based on this class
   main_indicator: acc              # The name of the indicator
   key: "Student"                   # Select the main_indicator of this subnet as the criterion for saving the best model
-  ignore_space: False              # whether to ignore space during evaulation
+  ignore_space: False              # whether to ignore space during evaluation
 ```
 
 Taking the above configuration as an example, the accuracy metric of the `Student` subnet will be used as the judgment metric for saving the best model.

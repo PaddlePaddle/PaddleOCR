@@ -1,6 +1,6 @@
 """
 Locality aware nms.
-This code is refered from: https://github.com/songdejia/EAST/blob/master/locality_aware_nms.py
+This code is referred from: https://github.com/songdejia/EAST/blob/master/locality_aware_nms.py
 """
 
 import numpy as np
@@ -71,7 +71,7 @@ def standard_nms(S, thres):
 
 def standard_nms_inds(S, thres):
     """
-    Standard nms, retun inds.
+    Standard nms, return inds.
     """
     order = np.argsort(S[:, 8])[::-1]
     keep = []
@@ -158,8 +158,8 @@ def soft_nms(boxes_in, Nt_thres=0.3, threshold=0.8, sigma=0.5, method=2):
                     else:
                         weight = 1
                 boxes[pos, 8] = weight * boxes[pos, 8]
-                # if box score falls below thresold, discard the box by
-                # swaping last box update N
+                # if box score falls below threshold, discard the box by
+                # swapping last box update N
                 if boxes[pos, 8] < threshold:
                     boxes[pos, :] = boxes[N - 1, :]
                     inds[pos] = inds[N - 1]

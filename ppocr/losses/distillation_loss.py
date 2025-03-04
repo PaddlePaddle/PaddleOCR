@@ -1016,7 +1016,7 @@ class CTCDKDLoss(nn.Layer):
         targets = targets.astype("int32")
         res = F.one_hot(targets, num_classes=11465)
         mask = paddle.clip(paddle.sum(res, axis=1), 0, 1)
-        mask[:, 0] = 0  # ingore ctc blank label
+        mask[:, 0] = 0  # ignore ctc blank label
         return mask
 
     def forward(self, logits_student, logits_teacher, targets, mask=None):
@@ -1128,7 +1128,7 @@ class KLCTCLogits(nn.Layer):
             tea_out *= blank_mask
             return self.forward_meanlog(stu_out, tea_out)
         elif self.mode == "ctcdkd":
-            # ingore ctc blank logits
+            # ignore ctc blank logits
             blank_mask = paddle.ones_like(stu_out)
             blank_mask.stop_gradient = True
             blank_mask[:, :, 0] = -1

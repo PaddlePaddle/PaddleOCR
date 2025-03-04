@@ -130,7 +130,7 @@ After adding the four-part modules of the network, you only need to configure th
     args1: args1
 ```
 
-**NOTE**: More details about replace Backbone and other mudule can be found in [doc](../../algorithm/add_new_algorithm.en.md).
+**NOTE**: More details about replace Backbone and other module can be found in [doc](../../algorithm/add_new_algorithm.en.md).
 
 ### 2.4 Mixed Precision Training
 

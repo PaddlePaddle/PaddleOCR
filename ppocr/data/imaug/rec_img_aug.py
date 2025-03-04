@@ -413,7 +413,7 @@ class SARRecResizeImg(object):
 class PRENResizeImg(object):
     def __init__(self, image_shape, **kwargs):
         """
-        Accroding to original paper's realization, it's a hard resize method here.
+        According to original paper's realization, it's a hard resize method here.
         So maybe you should optimize it to fit for your task better.
         """
         self.dst_h, self.dst_w = image_shape

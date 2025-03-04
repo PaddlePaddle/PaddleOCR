@@ -83,7 +83,7 @@ def _download(url, save_path):
                 "{}!".format(url, req.status_code)
             )
 
-        # For protecting download interupted, download to
+        # For protecting download interrupted, download to
         # tmp_file firstly, move tmp_file to save_path
         # after download finished
         tmp_file = save_path + ".tmp"

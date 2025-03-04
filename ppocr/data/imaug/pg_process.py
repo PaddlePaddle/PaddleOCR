@@ -763,7 +763,7 @@ class PGProcessTrain(object):
 
     def prepare_text_label(self, label_str, Lexicon_Table):
         """
-        Prepare text lablel by given Lexicon_Table.
+        Prepare text label by given Lexicon_Table.
         """
         if len(Lexicon_Table) == 36:
             return label_str.lower()
