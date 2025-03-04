@@ -5,7 +5,7 @@ comments: true
 
 ## Layout Analysis Dataset
 
-Here are the common datasets of layout anlysis, which are being updated continuously. Welcome to contribute datasets.
+Here are the common datasets of layout analysis, which are being updated continuously. Welcome to contribute datasets.
 
 Most of the layout analysis datasets are object detection datasets. In addition to open source datasets, you can also label or synthesize datasets using tools such as [labelme](https://github.com/wkentaro/labelme) and so on.
 
@@ -33,7 +33,7 @@ Most of the layout analysis datasets are object detection datasets. In addition 
 - **Download address**: <https://github.com/buptlihang/CDLA>
 - **Note**: When you train detection model on CDLA dataset using [PaddleDetection](https://github.com/PaddlePaddle/PaddleDetection/tree/develop), you need to remove the label `__ignore__` and `_background_`.
 
-### 3、TableBank dataet
+### 3、TableBank dataset
 
 - **Data source**: <https://doc-analysis.github.io/tablebank-page/index.html>
 - **Data introduction**: TableBank dataset contains 2 types of document: Latex (187199 training images, 7265 validation images and 5719 testing images) and Word (73383 training images 2735 validation images and 2281 testing images). Some images and their annotations as shown below.

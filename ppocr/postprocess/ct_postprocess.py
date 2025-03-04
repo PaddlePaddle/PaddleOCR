@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refered from:
+This code is referred from:
 https://github.com/shengtao96/CentripetalText/blob/main/test.py
 """
 

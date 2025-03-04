@@ -1573,7 +1573,7 @@ bool Clipper::ExecuteInternal() noexcept {
 
 void Clipper::SetWindingCount(TEdge &edge) noexcept {
   TEdge *e = edge.PrevInAEL;
-  // find the edge of the same polytype that immediately preceeds 'edge' in AEL
+  // find the edge of the same polytype that immediately precedes 'edge' in AEL
   while (e && ((e->PolyTyp != edge.PolyTyp) || (e->WindDelta == 0)))
     e = e->PrevInAEL;
   if (!e) {

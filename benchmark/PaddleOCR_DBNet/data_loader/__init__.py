@@ -67,9 +67,9 @@ def get_dataloader(module_config, distributed=False):
     config = copy.deepcopy(module_config)
     dataset_args = config["dataset"]["args"]
     if "transforms" in dataset_args:
-        img_transfroms = get_transforms(dataset_args.pop("transforms"))
+        img_transforms = get_transforms(dataset_args.pop("transforms"))
     else:
-        img_transfroms = None
+        img_transforms = None
     # 创建数据集
     dataset_name = config["dataset"]["type"]
     data_path = dataset_args.pop("data_path")
@@ -91,7 +91,7 @@ def get_dataloader(module_config, distributed=False):
     _dataset = get_dataset(
         data_path=data_path,
         module_name=dataset_name,
-        transform=img_transfroms,
+        transform=img_transforms,
         dataset_args=dataset_args,
     )
     sampler = None

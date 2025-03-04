@@ -60,7 +60,7 @@ cd PaddleOCR/ppstructure
 
 ## download model
 cd inference
-## Download the detection model of the ultra-lightweight Chinesse PP-OCRv3 model and unzip it
+## Download the detection model of the ultra-lightweight Chinese PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
 ## Download the recognition model of the ultra-lightweight Chinese PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar

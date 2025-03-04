@@ -180,7 +180,7 @@ def set_seed(seed=1024):
 def check_install(module_name, install_name):
     spec = importlib.util.find_spec(module_name)
     if spec is None:
-        print(f"Warnning! The {module_name} module is NOT installed")
+        print(f"Warning! The {module_name} module is NOT installed")
         print(
             f"Try install {module_name} module automatically. You can also try to install manually by pip install {install_name}."
         )

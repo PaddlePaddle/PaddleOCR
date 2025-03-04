@@ -206,7 +206,7 @@ class MultiScaleDataSet(SimpleDataSet):
         return data
 
     def __getitem__(self, properties):
-        # properites is a tuple, contains (width, height, index)
+        # properties is a tuple, contains (width, height, index)
         img_height = properties[1]
         idx = properties[2]
         if self.ds_width and properties[3] is not None:

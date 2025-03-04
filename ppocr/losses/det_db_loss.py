@@ -30,7 +30,7 @@ class DBLoss(nn.Layer):
     """
     Differentiable Binarization (DB) Loss Function
     args:
-        param (dict): the super paramter for DB Loss
+        param (dict): the super parameter for DB Loss
     """
 
     def __init__(

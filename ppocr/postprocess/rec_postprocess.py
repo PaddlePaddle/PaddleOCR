@@ -80,8 +80,8 @@ class BaseRecLabelDecode(object):
             word_list: list of the grouped words
             word_col_list: list of decoding positions corresponding to each character in the grouped word
             state_list: list of marker to identify the type of grouping words, including two types of grouping words:
-                        - 'cn': continous chinese characters (e.g., 你好啊)
-                        - 'en&num': continous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
+                        - 'cn': continuous chinese characters (e.g., 你好啊)
+                        - 'en&num': continuous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
                         The remaining characters in text are treated as separators between groups (e.g., space, '(', ')', etc.).
         """
         state = None
@@ -105,7 +105,7 @@ class BaseRecLabelDecode(object):
                 and state == "en&num"
                 and c_i + 1 < len(text)
                 and bool(re.search("[0-9]", text[c_i + 1]))
-            ):  # grouping floting number
+            ):  # grouping floating number
                 c_state = "en&num"
             if (
                 char == "-" and state == "en&num"

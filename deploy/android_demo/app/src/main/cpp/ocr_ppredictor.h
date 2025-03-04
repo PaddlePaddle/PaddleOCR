@@ -110,7 +110,7 @@ private:
   ClsPredictResult infer_cls(const cv::Mat &origin, float thresh = 0.9);
 
   /**
-   * Postprocess or sencod model to extract text
+   * Postprocess or second model to extract text
    * @param res
    * @return
    */

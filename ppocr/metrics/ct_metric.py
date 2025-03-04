@@ -34,7 +34,7 @@ class CTMetric(object):
 
     def __call__(self, preds, batch, **kwargs):
         # NOTE: only support bs=1 now, as the label length of different sample is Unequal
-        assert len(preds) == 1, "CentripetalText test now only suuport batch_size=1."
+        assert len(preds) == 1, "CentripetalText test now only support batch_size=1."
         label = batch[2]
         text = batch[3]
         pred = preds[0]["points"]
