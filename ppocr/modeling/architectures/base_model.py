@@ -36,7 +36,7 @@ class BaseModel(nn.Layer):
         model_type = config["model_type"]
         # build transform,
         # for rec, transform can be TPS,None
-        # for det and cls, transform shoule to be None,
+        # for det and cls, transform should to be None,
         # if you make model differently, you can use transform in det and cls
         if "Transform" not in config or config["Transform"] is None:
             self.use_transform = False

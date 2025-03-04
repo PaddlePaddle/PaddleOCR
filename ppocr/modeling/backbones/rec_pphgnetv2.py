@@ -521,7 +521,7 @@ class TheseusLayer(nn.Layer):
                 return_patterns = [stages_pattern[i] for i in return_stages]
 
             if return_patterns:
-                # call update_res function after the __init__ of the object has completed execution, that is, the contructing of layer or model has been completed.
+                # call update_res function after the __init__ of the object has completed execution, that is, the constructing of layer or model has been completed.
                 def update_res_hook(layer, input):
                     self.update_res(return_patterns)
 
@@ -680,7 +680,7 @@ class TheseusLayer(nn.Layer):
 
         res = self.upgrade_sublayer(layer_name, stop_grad)
         if len(res) == 0:
-            msg = "Failed to stop the gradient befor the layer named '{layer_name}'"
+            msg = "Failed to stop the gradient before the layer named '{layer_name}'"
             return False
         return True
 
@@ -734,12 +734,12 @@ def save_sub_res_hook(layer, input, output):
 def set_identity(
     parent_layer: nn.Layer, layer_name: str, layer_index_list: str = None
 ) -> bool:
-    """set the layer specified by layer_name and layer_index_list to Indentity.
+    """set the layer specified by layer_name and layer_index_list to Identity.
 
     Args:
         parent_layer (nn.Layer): The parent layer of target layer specified by layer_name and layer_index_list.
-        layer_name (str): The name of target layer to be set to Indentity.
-        layer_index_list (str, optional): The index of target layer to be set to Indentity in parent_layer. Defaults to None.
+        layer_name (str): The name of target layer to be set to Identity.
+        layer_index_list (str, optional): The index of target layer to be set to Identity in parent_layer. Defaults to None.
 
     Returns:
         bool: True if successfully, False otherwise.
@@ -775,7 +775,7 @@ def parse_pattern_str(
     """parse the string type pattern.
 
     Args:
-        pattern (str): The pattern to discribe layer.
+        pattern (str): The pattern to describe layer.
         parent_layer (nn.Layer): The root layer relative to the pattern.
 
     Returns:
@@ -806,7 +806,7 @@ def parse_pattern_str(
         target_layer = getattr(parent_layer, target_layer_name, None)
 
         if target_layer is None:
-            msg = f"Not found layer named('{target_layer_name}') specifed in pattern('{pattern}')."
+            msg = f"Not found layer named('{target_layer_name}') specified in pattern('{pattern}')."
             return None
 
         if target_layer_index_list:
@@ -814,7 +814,7 @@ def parse_pattern_str(
                 if int(target_layer_index) < 0 or int(target_layer_index) >= len(
                     target_layer
                 ):
-                    msg = f"Not found layer by index('{target_layer_index}') specifed in pattern('{pattern}'). The index should < {len(target_layer)} and > 0."
+                    msg = f"Not found layer by index('{target_layer_index}') specified in pattern('{pattern}'). The index should < {len(target_layer)} and > 0."
                     return None
                 target_layer = target_layer[target_layer_index]
 

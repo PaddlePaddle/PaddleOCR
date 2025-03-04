@@ -216,7 +216,7 @@ class AttentionRecognitionHead(nn.Layer):
             )
             state = paddle.index_select(state, index=predecessors.squeeze(), axis=1)
 
-            # Update sequence socres and erase scores for <eos> symbol so that they aren't expanded
+            # Update sequence scores and erase scores for <eos> symbol so that they aren't expanded
             stored_scores.append(sequence_scores.clone())
             y_prev = paddle.reshape(y_prev, shape=[-1, 1])
             eos_prev = paddle.full_like(y_prev, fill_value=eos)

@@ -1026,14 +1026,14 @@ class CTCDKDLoss(nn.Layer):
         pred_student = F.softmax(logits_student / self.temperature, axis=-1)
         pred_teacher = F.softmax(logits_teacher / self.temperature, axis=-1)
 
-        # differents with dkd
+        # differences with dkd
         pred_student = paddle.mean(pred_student, axis=1)
         pred_teacher = paddle.mean(pred_teacher, axis=1)
 
         pred_student = self._cat_mask(pred_student, gt_mask, other_mask)
         pred_teacher = self._cat_mask(pred_teacher, gt_mask, other_mask)
 
-        # differents with dkd
+        # differences with dkd
         tckd_loss = self.kl_loss(pred_student, pred_teacher)
 
         gt_mask_ex = paddle.expand_as(gt_mask.unsqueeze(axis=1), logits_teacher)
@@ -1043,11 +1043,11 @@ class CTCDKDLoss(nn.Layer):
         pred_student_part2 = F.softmax(
             logits_student / self.temperature - 1000.0 * gt_mask_ex, axis=-1
         )
-        # differents with dkd
+        # differences with dkd
         pred_teacher_part2 = paddle.mean(pred_teacher_part2, axis=1)
         pred_student_part2 = paddle.mean(pred_student_part2, axis=1)
 
-        # differents with dkd
+        # differences with dkd
         nckd_loss = self.kl_loss(pred_student_part2, pred_teacher_part2)
         loss = self.alpha * tckd_loss + self.beta * nckd_loss
         return loss

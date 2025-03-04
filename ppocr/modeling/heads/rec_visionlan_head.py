@@ -218,7 +218,7 @@ class Transformer_Encoder(nn.Layer):
         self.layer_norm = nn.LayerNorm(d_model, epsilon=1e-6)
 
     def forward(self, enc_output, src_mask, return_attns=False):
-        enc_output = self.dropout(self.position_enc(enc_output))  # position embeding
+        enc_output = self.dropout(self.position_enc(enc_output))  # position embedding
         for enc_layer in self.layer_stack:
             enc_output = enc_layer(enc_output, slf_attn_mask=src_mask)
         enc_output = self.layer_norm(enc_output)
