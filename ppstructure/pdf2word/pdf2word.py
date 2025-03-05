@@ -508,7 +508,7 @@ class APP_Image2Doc(QWidget):
         self.pb.setRange(0, max)
 
     def handleEndsignalSignal(self):
-        # enble buttons
+        # enable buttons
         self.openFileButton.setEnabled(True)
         self.startCNButton.setEnabled(True)
         self.startENButton.setEnabled(True)
