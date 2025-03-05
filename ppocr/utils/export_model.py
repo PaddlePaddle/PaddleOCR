@@ -56,16 +56,21 @@ def dump_infer_config(config, path, logger):
                 "x": [[1, 3, 160, 160], [1, 3, 640, 640], [1, 3, 1280, 1280]]
             }
         elif arch_config["algorithm"] == "SLANet":
-            common_dynamic_shapes = {
-                "x": [[1, 3, 32, 32], [1, 3, 64, 448], [8, 3, 488, 488]]
-            }
+            if config["Global"].get("pdx_model_name", None) == "SLANet_plus":
+                common_dynamic_shapes = {
+                    "x": [[1, 3, 32, 32], [1, 3, 64, 448], [1, 3, 488, 488]]
+                }
+            else:
+                common_dynamic_shapes = {
+                    "x": [[1, 3, 32, 32], [1, 3, 64, 448], [8, 3, 488, 488]]
+                }
         elif arch_config["algorithm"] == "SLANeXt":
             common_dynamic_shapes = {
-                "x": [[1, 3, 512, 512], [1, 3, 512, 512], [8, 3, 512, 512]]
+                "x": [[1, 3, 512, 512], [1, 3, 512, 512], [1, 3, 512, 512]]
             }
         elif arch_config["algorithm"] == "LaTeXOCR":
             common_dynamic_shapes = {
-                "x": [[1, 1, 32, 32], [1, 1, 64, 448], [8, 1, 192, 672]]
+                "x": [[1, 1, 32, 32], [1, 1, 64, 448], [1, 1, 192, 672]]
             }
         elif arch_config["algorithm"] == "UniMERNet":
             common_dynamic_shapes = {
