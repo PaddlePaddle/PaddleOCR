@@ -166,7 +166,7 @@ class Encoder(nn.Layer):
                     ),
                 )
             )
-        self.processer = PrePostProcessLayer(
+        self.processor = PrePostProcessLayer(
             preprocess_cmd, d_model, prepostprocess_dropout
         )
 
@@ -174,7 +174,7 @@ class Encoder(nn.Layer):
         for encoder_layer in self.encoder_layers:
             enc_output = encoder_layer(enc_input, attn_bias)
             enc_input = enc_output
-        enc_output = self.processer(enc_output)
+        enc_output = self.processor(enc_output)
         return enc_output
 
 
