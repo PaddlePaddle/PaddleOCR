@@ -169,7 +169,7 @@ class EASTProcessTrain(object):
         used for generate the score map
         :param poly: the text poly
         :param r: r in the paper
-        :return: the shrinked poly
+        :return: the shrunk poly
         """
         # shrink ratio
         R = 0.3

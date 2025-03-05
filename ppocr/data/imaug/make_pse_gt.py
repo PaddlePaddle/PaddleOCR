@@ -88,17 +88,17 @@ class MakePseGt(object):
             subject = [tuple(l) for l in poly]
             pco = pyclipper.PyclipperOffset()
             pco.AddPath(subject, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
-            shrinked = np.array(pco.Execute(-distance))
+            shrunk = np.array(pco.Execute(-distance))
 
-            if len(shrinked) == 0 or shrinked.size == 0:
+            if len(shrunk) == 0 or shrunk.size == 0:
                 if ignore_tags is not None:
                     ignore_tags[i] = True
                 continue
             try:
-                shrinked = np.array(shrinked[0]).reshape(-1, 2)
+                shrunk = np.array(shrunk[0]).reshape(-1, 2)
             except:
                 if ignore_tags is not None:
                     ignore_tags[i] = True
                 continue
-            cv2.fillPoly(text_kernel, [shrinked.astype(np.int32)], i + 1)
+            cv2.fillPoly(text_kernel, [shrunk.astype(np.int32)], i + 1)
         return text_kernel, ignore_tags
