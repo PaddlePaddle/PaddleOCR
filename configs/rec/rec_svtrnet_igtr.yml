@@ -1,0 +1,149 @@
+Global:
+  use_gpu: True
+  epoch_num: 20
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/svtr_igtr_base/
+  save_epoch_step: 1
+  # evaluation is run every 2000 iterations after the 0th iteration
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_type: en
+  character_dict_path: &character_dict_path
+  max_text_length: &max_text_length 25
+  infer_mode: False
+  use_space_char: &use_space_char False
+  save_res_path: ./output/rec/predicts_svtr_igtr_base.txt
+
+
+Optimizer:
+  name: AdamW
+  beta1: 0.9
+  beta2: 0.99
+  epsilon: 1.e-8
+  weight_decay: 0.05
+  no_weight_decay_name: norm pos_embed char_node_embed pos_node_embed char_pos_embed vis_pos_embed
+  one_dim_param_no_weight_decay: True
+  lr:
+    name: Cosine
+    learning_rate: 0.0005 # 4gpus 256bs
+    warmup_epoch: 2
+
+Architecture:
+  model_type: rec
+  algorithm: IGTR
+  Transform:
+  Backbone:
+    name: SVTRNet2DPos
+    img_size: [32, -1]
+    out_char_num: 25
+    out_channels: 256
+    patch_merging: 'Conv'
+    embed_dim: [128, 256, 384]
+    depth: [6, 6, 6]
+    num_heads: [4, 8, 12]
+    mixer: ['ConvB','ConvB','ConvB','ConvB','ConvB','ConvB', 'ConvB','ConvB', 'Global','Global','Global','Global','Global','Global','Global','Global','Global','Global']
+    local_mixer: [[5, 5], [5, 5], [5, 5]]
+    last_stage: False
+    prenorm: True
+    use_first_sub: False
+  Head:
+    name: IGTRHead
+    dim: 384
+    num_layer: 1
+    ar: False
+    refine_iter: 0
+    next_pred: False
+    pos2d: True
+    ds: True
+
+Loss:
+  name: IGTRLoss
+
+PostProcess:
+  name: IGTRLabelDecode
+  character_dict_path: *character_dict_path
+  use_space_char: *use_space_char
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: RatioDataSet
+    ds_width: True
+    padding: False
+    max_ratio: 4
+    data_dir_list: ['./train_data/data_lmdb_release/training/data_name1',
+    './train_data/data_lmdb_release/training/data_name2']
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - IGTRLabelEncode: # Class handling label
+          k: 8
+          prompt_error: False
+          character_dict_path: *character_dict_path
+          use_space_char: *use_space_char
+          max_text_length: *max_text_length
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'prompt_pos_idx_list',
+          'prompt_char_idx_list', 'ques_pos_idx_list', 'ques1_answer_list',
+          'ques2_char_idx_list', 'ques2_answer_list', 'ques3_answer', 'ques4_char_num_list',
+          'ques_len_list', 'ques2_len_list', 'prompt_len_list', 'length'] # dataloader will return list in this order
+  sampler:
+    name: RatioSampler
+    scales: [[128, 32]] # w, h
+    # divide_factor: to ensure the width and height dimensions can be devided by downsampling multiple
+    first_bs: 256
+    fix_bs: false
+    divided_factor: [4, 16] # w, h
+    is_training: False
+  loader:
+    shuffle: True
+    batch_size_per_card: 256
+    drop_last: True
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: RatioDataSet
+    ds_width: True
+    padding: False
+    max_ratio: 4
+    data_dir_list: ['./train_data/data_lmdb_release/evaluation/CUTE80',
+    './train_data/data_lmdb_release/evaluation/IC13_857',
+    './train_data/data_lmdb_release/evaluation/IC15_1811',
+    './train_data/data_lmdb_release/evaluation/IIIT5k',
+    './train_data/data_lmdb_release/evaluation/SVT',
+    './train_data/data_lmdb_release/evaluation/SVTP']
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - ARLabelEncode: # Class handling label
+          character_dict_path: *character_dict_path
+          use_space_char: *use_space_char
+          max_text_length: *max_text_length
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  sampler:
+    name: RatioSampler
+    scales: [[128, 32]] # w, h
+    # divide_factor: to ensure the width and height dimensions can be devided by downsampling multiple
+    first_bs: 256
+    fix_bs: false
+    divided_factor: [4, 16] # w, h
+    is_training: False
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 256
+    num_workers: 4
