@@ -110,6 +110,10 @@ MODEL_URLS = {
                     "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar",
                     "dict_path": "./ppocr/utils/ppocr_keys_v1.txt",
                 },
+                "ch_doc": {
+                    "url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv4_server_rec_doc_infer.tar",
+                    "dict_path": "./ppocr/utils/dict/ppocrv4_doc_dict.txt",
+                },
                 "en": {
                     "url": "https://paddleocr.bj.bcebos.com/PP-OCRv4/english/en_PP-OCRv4_rec_infer.tar",
                     "dict_path": "./ppocr/utils/en_dict.txt",
@@ -512,7 +516,7 @@ def parse_lang(lang):
     ), "param lang must in {}, but got {}".format(
         MODEL_URLS["OCR"][DEFAULT_OCR_MODEL_VERSION]["rec"].keys(), lang
     )
-    if lang == "ch":
+    if lang in ["ch", "ch_doc"]:
         det_lang = "ch"
     elif lang == "structure":
         det_lang = "structure"
