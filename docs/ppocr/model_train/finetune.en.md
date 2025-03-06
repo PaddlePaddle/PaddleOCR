@@ -4,7 +4,7 @@ comments: true
 
 # Fine-tune
 
-## 1. background and meaning
+## 1. Background and meaning
 
 The PP-OCR series models provided by PaddleOCR have excellent performance in general scenarios and can solve detection and recognition problems in most cases. In vertical scenarios, if you want to obtain better model, you can further improve the accuracy of the PP-OCR series detection and recognition models through fine-tune.
 
@@ -101,7 +101,7 @@ For more information on inference methods, please refer to[Paddle Inference doc]
 
 It is recommended to choose the PP-OCRv3 model (configuration file: [ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，pre-trained model: [ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
 
-For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md)。
+For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md).
 
 The PP-OCRv3 model uses the GTC strategy. The SAR branch has a large number of parameters. When the training data is a simple scene, the model is easy to overfit, resulting in poor fine-tuning effect. It is recommended to remove the GTC strategy. The configuration file of the model structure is modified as follows:
 
@@ -220,7 +220,7 @@ Train:
     ratio_list: [1.0, 0.1]
 ```
 
-### 3.4 training optimization
+### 3.4 Training optimization
 
 The training process does not happen overnight. After completing a stage of training evaluation, it is recommended to collect and analyze the badcase of the current model in the real scene, adjust the proportion of training data in a targeted manner, or further add synthetic data. Through multiple iterations of training, the model effect is continuously optimized.
 
