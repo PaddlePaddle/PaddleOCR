@@ -301,7 +301,7 @@ PostProcess:
   multi_head: True                       # whether it is multi-head or not, if true, CTC branch is used to calculate the loss
 ```
 
-Taking the above configuration as an example, the CTC decoding output of the two sub-networks `Student` and `Teahcer` will be calculated at the same time.
+Taking the above configuration as an example, the CTC decoding output of the two sub-networks `Student` and `Teacher` will be calculated at the same time.
 Among them, `key` is the name of the subnet, and `value` is the list of subnets.
 
 For more specific implementation of `DistillationCTCLabelDecode`, please refer to: [rec_postprocess.py](../../ppocr/postprocess/rec_postprocess.py#L128)
