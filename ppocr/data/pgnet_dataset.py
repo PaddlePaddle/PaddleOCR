@@ -41,7 +41,7 @@ class PGDataSet(Dataset):
         self.data_dir = dataset_config["data_dir"]
         self.do_shuffle = loader_config["shuffle"]
 
-        logger.info("Initialize indexs of datasets:%s" % label_file_list)
+        logger.info("Initialize indexes of datasets:%s" % label_file_list)
         self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if mode.lower() == "train":

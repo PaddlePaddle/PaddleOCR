@@ -43,11 +43,11 @@ class CopyPaste(object):
         ext_texts = ext_data["texts"]
         ext_ignores = ext_data["ignore_tags"]
 
-        indexs = [i for i in range(len(ext_ignores)) if not ext_ignores[i]]
+        indexes = [i for i in range(len(ext_ignores)) if not ext_ignores[i]]
         select_num = max(1, min(int(self.objects_paste_ratio * len(ext_polys)), 30))
 
-        random.shuffle(indexs)
-        select_idxs = indexs[:select_num]
+        random.shuffle(indexes)
+        select_idxs = indexes[:select_num]
         select_polys = ext_polys[select_idxs]
         select_ignores = ext_ignores[select_idxs]
 

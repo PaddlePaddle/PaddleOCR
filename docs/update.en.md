@@ -53,13 +53,13 @@ hide:
 
 #### 2020.7.15, Add mobile App demo , support both iOS and  Android  ( based on easyedge and Paddle Lite)
 
-#### 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addtion, the benchmarks of the ultra-lightweight Chinese OCR model are provided
+#### 2020.7.15, Improve the  deployment ability, add the C + +  inference , serving deployment. In addition, the benchmarks of the ultra-lightweight Chinese OCR model are provided
 
 #### 2020.7.15, Add several related datasets, data annotation and synthesis tools
 
 #### 2020.7.9 Add a new model to support recognize the  character "space"
 
-#### 2020.7.9 Add the data augument and learning rate decay strategies during training
+#### 2020.7.9 Add the data argument and learning rate decay strategies during training
 
 #### 2020.6.8 Add [datasets](dataset/datasets_en.md) and keep updating
 

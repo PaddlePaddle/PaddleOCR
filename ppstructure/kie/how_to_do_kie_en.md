@@ -60,7 +60,7 @@ In the non end-to-end KIE method, KIE needs at least **2 steps**. Firstly, the O
 
 **(1) Data**
 
-Most of the models provided in PaddleOCR are general models. In the process of text detection, the detection of adjacent text lines is generally based on the distance of the position. As shown in the figure above, when using PP-OCRv3 general English detection model for text detection, it is easy to detect the two fields representing different propoerties as one. Therefore, it is suggested to finetune a detection model according to your scenario firstly during the KIE task.
+Most of the models provided in PaddleOCR are general models. In the process of text detection, the detection of adjacent text lines is generally based on the distance of the position. As shown in the figure above, when using PP-OCRv3 general English detection model for text detection, it is easy to detect the two fields representing different properties as one. Therefore, it is suggested to finetune a detection model according to your scenario firstly during the KIE task.
 
 
 During data annotation, the different key information needs to be separated. Otherwise, it will increase the difficulty of subsequent KIE tasks.

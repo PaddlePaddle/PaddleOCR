@@ -143,13 +143,13 @@ void PolyTree::Clear() noexcept {
   for (PolyNodes::size_type i = 0; i < AllNodes.size(); ++i)
     delete AllNodes[i];
   AllNodes.resize(0);
-  Childs.resize(0);
+  Children.resize(0);
 }
 //------------------------------------------------------------------------------
 
 PolyNode *PolyTree::GetFirst() const noexcept {
-  if (!Childs.empty())
-    return Childs[0];
+  if (!Children.empty())
+    return Children[0];
   else
     return 0;
 }
@@ -158,7 +158,7 @@ PolyNode *PolyTree::GetFirst() const noexcept {
 int PolyTree::Total() const noexcept {
   int result = (int)AllNodes.size();
   // with negative offsets, ignore the hidden outer polygon ...
-  if (result > 0 && Childs[0] != AllNodes[0])
+  if (result > 0 && Children[0] != AllNodes[0])
     result--;
   return result;
 }
@@ -170,20 +170,20 @@ int PolyTree::Total() const noexcept {
 PolyNode::PolyNode() noexcept : Parent(0), Index(0), m_IsOpen(false) {}
 //------------------------------------------------------------------------------
 
-int PolyNode::ChildCount() const noexcept { return (int)Childs.size(); }
+int PolyNode::ChildCount() const noexcept { return (int)Children.size(); }
 //------------------------------------------------------------------------------
 
 void PolyNode::AddChild(PolyNode &child) noexcept {
-  unsigned cnt = (unsigned)Childs.size();
-  Childs.emplace_back(&child);
+  unsigned cnt = (unsigned)Children.size();
+  Children.emplace_back(&child);
   child.Parent = this;
   child.Index = cnt;
 }
 //------------------------------------------------------------------------------
 
 PolyNode *PolyNode::GetNext() const noexcept {
-  if (!Childs.empty())
-    return Childs[0];
+  if (!Children.empty())
+    return Children[0];
   else
     return GetNextSiblingUp();
 }
@@ -192,10 +192,10 @@ PolyNode *PolyNode::GetNext() const noexcept {
 PolyNode *PolyNode::GetNextSiblingUp() const noexcept {
   if (!Parent) // protects against PolyTree.GetNextSiblingUp()
     return 0;
-  else if (Index == Parent->Childs.size() - 1)
+  else if (Index == Parent->Children.size() - 1)
     return Parent->GetNextSiblingUp();
   else
-    return Parent->Childs[Index + 1];
+    return Parent->Children[Index + 1];
 }
 //------------------------------------------------------------------------------
 
@@ -3085,7 +3085,7 @@ void Clipper::BuildResult2(PolyTree &polytree) noexcept {
   }
 
   // fixup PolyNode links etc ...
-  polytree.Childs.reserve(m_PolyOuts.size());
+  polytree.Children.reserve(m_PolyOuts.size());
   for (PolyOutList::size_type i = 0; i < m_PolyOuts.size(); ++i) {
     OutRec *outRec = m_PolyOuts[i];
     if (!outRec->PolyNd)
@@ -3619,8 +3619,8 @@ ClipperOffset::~ClipperOffset() { Clear(); }
 
 void ClipperOffset::Clear() noexcept {
   for (int i = 0; i < m_polyNodes.ChildCount(); ++i)
-    delete m_polyNodes.Childs[i];
-  m_polyNodes.Childs.clear();
+    delete m_polyNodes.Children[i];
+  m_polyNodes.Children.clear();
   m_lowest.X = -1;
 }
 //------------------------------------------------------------------------------
@@ -3662,7 +3662,8 @@ void ClipperOffset::AddPath(const Path &path, JoinType joinType,
   if (m_lowest.X < 0)
     m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
   else {
-    IntPoint ip = m_polyNodes.Childs[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
+    IntPoint ip =
+        m_polyNodes.Children[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
     if (newNode->Contour[k].Y > ip.Y ||
         (newNode->Contour[k].Y == ip.Y && newNode->Contour[k].X < ip.X))
       m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
@@ -3681,16 +3682,16 @@ void ClipperOffset::FixOrientations() noexcept {
   // fixup orientations of all closed paths if the orientation of the
   // closed path with the lowermost vertex is wrong ...
   if (m_lowest.X >= 0 &&
-      !Orientation(m_polyNodes.Childs[(int)m_lowest.X]->Contour)) {
+      !Orientation(m_polyNodes.Children[(int)m_lowest.X]->Contour)) {
     for (int i = 0; i < m_polyNodes.ChildCount(); ++i) {
-      PolyNode &node = *m_polyNodes.Childs[i];
+      PolyNode &node = *m_polyNodes.Children[i];
       if (node.m_endtype == etClosedPolygon ||
           (node.m_endtype == etClosedLine && Orientation(node.Contour)))
         ReversePath(node.Contour);
     }
   } else {
     for (int i = 0; i < m_polyNodes.ChildCount(); ++i) {
-      PolyNode &node = *m_polyNodes.Childs[i];
+      PolyNode &node = *m_polyNodes.Children[i];
       if (node.m_endtype == etClosedLine && !Orientation(node.Contour))
         ReversePath(node.Contour);
     }
@@ -3755,13 +3756,14 @@ bool ClipperOffset::Execute(PolyTree &solution, double delta) noexcept {
       clpr.ReverseSolution(true);
       clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
       // remove the outer PolyNode rectangle ...
-      if (solution.ChildCount() == 1 && solution.Childs[0]->ChildCount() > 0) {
-        PolyNode *outerNode = solution.Childs[0];
-        solution.Childs.reserve(outerNode->ChildCount());
-        solution.Childs[0] = outerNode->Childs[0];
-        solution.Childs[0]->Parent = outerNode->Parent;
+      if (solution.ChildCount() == 1 &&
+          solution.Children[0]->ChildCount() > 0) {
+        PolyNode *outerNode = solution.Children[0];
+        solution.Children.reserve(outerNode->ChildCount());
+        solution.Children[0] = outerNode->Children[0];
+        solution.Children[0]->Parent = outerNode->Parent;
         for (int i = 1; i < outerNode->ChildCount(); ++i)
-          solution.AddChild(*outerNode->Childs[i]);
+          solution.AddChild(*outerNode->Children[i]);
       } else
         solution.Clear();
     }
@@ -3782,7 +3784,7 @@ void ClipperOffset::DoOffset(double delta) noexcept {
   if (NEAR_ZERO(delta)) {
     m_destPolys.reserve(m_polyNodes.ChildCount());
     for (int i = 0; i < m_polyNodes.ChildCount(); ++i) {
-      PolyNode &node = *m_polyNodes.Childs[i];
+      PolyNode &node = *m_polyNodes.Children[i];
       if (node.m_endtype == etClosedPolygon)
         m_destPolys.emplace_back(node.Contour);
     }
@@ -3814,7 +3816,7 @@ void ClipperOffset::DoOffset(double delta) noexcept {
 
   m_destPolys.reserve(m_polyNodes.ChildCount() * 2);
   for (int i = 0; i < m_polyNodes.ChildCount(); ++i) {
-    PolyNode &node = *m_polyNodes.Childs[i];
+    PolyNode &node = *m_polyNodes.Children[i];
     m_srcPoly = node.Contour;
 
     int len = (int)m_srcPoly.size();
@@ -4343,7 +4345,7 @@ void AddPolyNodeToPaths(const PolyNode &polynode, NodeType nodetype,
   if (!polynode.Contour.empty() && match)
     paths.emplace_back(polynode.Contour);
   for (int i = 0; i < polynode.ChildCount(); ++i)
-    AddPolyNodeToPaths(*polynode.Childs[i], nodetype, paths);
+    AddPolyNodeToPaths(*polynode.Children[i], nodetype, paths);
 }
 //------------------------------------------------------------------------------
 
@@ -4366,8 +4368,8 @@ void OpenPathsFromPolyTree(PolyTree &polytree, Paths &paths) noexcept {
   paths.reserve(polytree.Total());
   // Open paths are top level only, so ...
   for (int i = 0; i < polytree.ChildCount(); ++i)
-    if (polytree.Childs[i]->IsOpen())
-      paths.emplace_back(polytree.Childs[i]->Contour);
+    if (polytree.Children[i]->IsOpen())
+      paths.emplace_back(polytree.Children[i]->Contour);
 }
 //------------------------------------------------------------------------------
 
