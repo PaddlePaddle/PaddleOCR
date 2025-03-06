@@ -3656,7 +3656,8 @@ void ClipperOffset::AddPath(const Path &path, JoinType joinType,
   if (m_lowest.X < 0)
     m_lowest = IntPoint(m_polyNodes.ChildCount() - 1, k);
   else {
-    IntPoint ip = m_polyNodes.Children[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
+    IntPoint ip =
+        m_polyNodes.Children[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
     if (newNode->Contour[k].Y > ip.Y ||
         (newNode->Contour[k].Y == ip.Y && newNode->Contour[k].X < ip.X))
       m_lowest = IntPoint(m_polyNodes.ChildCount() - 1, k);

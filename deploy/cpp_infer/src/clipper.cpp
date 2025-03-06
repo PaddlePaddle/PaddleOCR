@@ -3662,7 +3662,8 @@ void ClipperOffset::AddPath(const Path &path, JoinType joinType,
   if (m_lowest.X < 0)
     m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
   else {
-    IntPoint ip = m_polyNodes.Children[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
+    IntPoint ip =
+        m_polyNodes.Children[(int)m_lowest.X]->Contour[(int)m_lowest.Y];
     if (newNode->Contour[k].Y > ip.Y ||
         (newNode->Contour[k].Y == ip.Y && newNode->Contour[k].X < ip.X))
       m_lowest.reset(m_polyNodes.ChildCount() - 1, k);
@@ -3755,7 +3756,8 @@ bool ClipperOffset::Execute(PolyTree &solution, double delta) noexcept {
       clpr.ReverseSolution(true);
       clpr.Execute(ctUnion, solution, pftNegative, pftNegative);
       // remove the outer PolyNode rectangle ...
-      if (solution.ChildCount() == 1 && solution.Children[0]->ChildCount() > 0) {
+      if (solution.ChildCount() == 1 &&
+          solution.Children[0]->ChildCount() > 0) {
         PolyNode *outerNode = solution.Children[0];
         solution.Children.reserve(outerNode->ChildCount());
         solution.Children[0] = outerNode->Children[0];
