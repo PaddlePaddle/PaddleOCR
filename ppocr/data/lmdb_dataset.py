@@ -36,7 +36,7 @@ class LMDBDataSet(Dataset):
         self.do_shuffle = loader_config["shuffle"]
 
         self.lmdb_sets = self.load_hierarchical_lmdb_dataset(data_dir)
-        logger.info("Initialize indexs of datasets:%s" % data_dir)
+        logger.info("Initialize indexes of datasets:%s" % data_dir)
         self.data_idx_order_list = self.dataset_traversal()
         if self.do_shuffle:
             np.random.shuffle(self.data_idx_order_list)

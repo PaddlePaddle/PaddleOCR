@@ -45,7 +45,7 @@ class PubTabDataSet(Dataset):
 
         self.seed = seed
         self.mode = mode.lower()
-        logger.info("Initialize indexs of datasets:%s" % label_file_list)
+        logger.info("Initialize indexes of datasets:%s" % label_file_list)
         self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
         # self.check(config['Global']['max_text_length'])
 
