@@ -875,18 +875,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#python-script-usage" class="md-nav__link">
+  <a href="#cli-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      📝 Python Script Usage
+      💻 CLI Usage
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-line-usage" class="md-nav__link">
+  <a href="#python-script-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Command Line Usage
+      📝 Python Script Usage
     </span>
   </a>
   
@@ -5243,18 +5243,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#python-script-usage" class="md-nav__link">
+  <a href="#cli-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      📝 Python Script Usage
+      💻 CLI Usage
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-line-usage" class="md-nav__link">
+  <a href="#python-script-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 Command Line Usage
+      📝 Python Script Usage
     </span>
   </a>
   
@@ -5292,116 +5292,67 @@ You're not viewing the latest version.
   
 
 
-<h1 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h1>
+<h1 id="quick-start">⏭️ Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h1>
+<h2 id="installation">🛠️ Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p><strong>Note:</strong>
-* The All-in-One development tool <a href="https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1">PaddleX</a>, based on the advanced technology of PaddleOCR, supports <strong>all-in-one</strong> development capabilities in the OCR field. Through all-in-one development, simple and efficient model use, combination, and customization can be achieved.
-* PaddleX is committed to achieving pipeline-level model training, inference, and deployment. A model pipeline refers to a series of predefined development processes for specific AI tasks, including combinations of single models (single-function modules) that can independently complete a type of task. This document provides quick inference usage of the <strong>OCR-related pipelines</strong>. For quick usage of single-function modules and more features, please refer to the relevant sections in <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html">All-in-One Development of PaddleOCR</a>.</p>
-</blockquote>
-<h3 id="installation">🛠️ Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>❗Before installing PaddleX, please ensure you have a basic <strong>Python environment</strong> (Note: Currently supports Python 3.8 to Python 3.10, with more Python versions being adapted).</p>
+<p>❗Before installing PaddleX, please ensure you have a basic <strong>Python runtime environment</strong> (Note: Currently supports running under Python 3.8 to Python 3.10, with more Python versions under adaptation). The PaddlePaddle version required by PaddleX</p>
 </blockquote>
 <ul>
 <li><strong>Installing PaddlePaddle</strong></li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># cpu</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># CPU</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 11.8 的机器环境</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># gpu，requires GPU driver version ≥450.80.02 (Linux) or ≥452.39 (Windows)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 12.3 的机器环境</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># gpu，requires GPU driver version ≥545.23.06 (Linux) or ≥545.84 (Windows)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
 </span></code></pre></div>
 <blockquote>
-<p>❗For more PaddlePaddle versions, please refer to the <a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation./docs/zh/install/pip/linux-pip.html">PaddlePaddle official website</a>. 
-* <strong>Installing PaddleX</strong></p>
+<p>❗No need to focus on the CUDA version on the physical machine, only the GPU driver version needs attention. For more information on PaddlePaddle Wheel versions, please refer to the <a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation./docs/en/install/pip/linux-pip.html">PaddlePaddle Official Website</a>.</p>
 </blockquote>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlex</span><span class="o">==</span><span class="m">3</span>.0.0b2
-</span></code></pre></div>
-<blockquote>
-<p>❗For more installation methods, refer to the <a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/installation/installation_en.md">PaddleX Installation Guide</a>.</p>
-</blockquote>
-<h3 id="python-script-usage">📝 Python Script Usage<a class="headerlink" href="#python-script-usage" title="Permanent link">&para;</a></h3>
-<p>A few lines of code can complete the quick inference of the pipeline, the unified Python script format is as follows:</p>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="p">[</span><span class="n">Pipeline</span> <span class="n">Name</span><span class="p">])</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">Input</span> <span class="n">Image</span> <span class="n">Name</span><span class="p">])</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-The following steps are executed:</p>
 <ul>
-<li><code>create_pipeline()</code> instantiates the pipeline object</li>
-<li>Passes the image and calls the <code>predict</code> method of the pipeline object for inference prediction</li>
-<li>Processes the prediction results</li>
+<li><strong>Installing PaddleX</strong></li>
 </ul>
-<p>For other pipelines in Python scripts, just adjust the <code>pipeline</code> parameter of the <code>create_pipeline()</code> method to the corresponding name of the pipeline. Below is a list of each pipeline's corresponding parameter name and detailed usage explanation:</p>
-<p><b>👉 More Python Script Usages for Pipelines</b></p>
-<table>
-<thead>
-<tr>
-<th>Pipeline Name</th>
-<th>Corresponding Parameter</th>
-<th>Detailed Explanation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-ChatOCRv3-doc</td>
-<td><code>PP-ChatOCRv3-doc</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">Python Script Usage for PP-ChatOCRv3-doc Pipeline</a></td>
-</tr>
-<tr>
-<td>OCR</td>
-<td><code>OCR</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/OCR.html">Python Script Usage for General OCR Pipeline</a></td>
-</tr>
-<tr>
-<td>Table Recognition</td>
-<td><code>table_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html">Python Script Usage for Table Recognition Pipeline</a></td>
-</tr>
-<tr>
-<td>Layout Parsing</td>
-<td><code>layout_parsing</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">Python Script Usage for Layout Parsing Pipeline</a></td>
-</tr>
-<tr>
-<td>Formula Recognition</td>
-<td><code>formula_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html">Python Script Usage for Formula Recognition Pipeline</a></td>
-</tr>
-<tr>
-<td>Seal Recognition</td>
-<td><code>seal_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html">Python Script Usage for Formula Recognition Pipeline</a></td>
-</tr>
-</tbody>
-</table>
-<h3 id="command-line-usage">💻 Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permanent link">&para;</a></h3>
-<p>You can quickly experience the pipeline effect with a single command. The unified command line format is:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span><span class="o">[</span>pipeline_name<span class="o">]</span><span class="w"> </span>--input<span class="w"> </span><span class="o">[</span>input_image<span class="o">]</span><span class="w"> </span>--device<span class="w"> </span><span class="o">[</span>device<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0rc0-py3-none-any.whl
 </span></code></pre></div>
-<p>You only need to specify three parameters:
-* <code>pipeline</code>: the name of the pipeline
-* <code>input</code>: the local path or URL of the input file (e.g., image) to be processed
-* <code>device</code>: the GPU index to use (e.g., <code>gpu:0</code> means using the first GPU), or you can choose to use the CPU (<code>cpu</code>)</p>
-<p>For example, for the General OCR pipeline:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>gpu:0
-</span></code></pre></div></p>
-<p>The result of the operation is as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[[[</span><span class="m">5</span>,<span class="w"> </span><span class="m">12</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">88</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">88</span>,<span class="w"> </span><span class="m">29</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">5</span>,<span class="w"> </span><span class="m">31</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">208</span>,<span class="w"> </span><span class="m">14</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">249</span>,<span class="w"> </span><span class="m">14</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">249</span>,<span class="w"> </span><span class="m">22</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">208</span>,<span class="w"> </span><span class="m">22</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">695</span>,<span class="w"> </span><span class="m">15</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">824</span>,<span class="w"> </span><span class="m">15</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">824</span>,<span class="w"> </span><span class="m">60</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">695</span>,<span class="w"> </span><span class="m">60</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">158</span>,<span class="w"> </span><span class="m">27</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">355</span>,<span class="w"> </span><span class="m">23</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">356</span>,<span class="w"> </span><span class="m">70</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">159</span>,<span class="w"> </span><span class="m">73</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">421</span>,<span class="w"> </span><span class="m">25</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">659</span>,<span class="w"> </span><span class="m">19</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">660</span>,<span class="w"> </span><span class="m">59</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">422</span>,<span class="w"> </span><span class="m">64</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">337</span>,<span class="w"> </span><span class="m">104</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">460</span>,<span class="w"> </span><span class="m">102</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">460</span>,<span class="w"> </span><span class="m">127</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">337</span>,<span class="w"> </span><span class="m">129</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">486</span>,<span class="w"> </span><span class="m">103</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">650</span>,<span class="w"> </span><span class="m">100</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">650</span>,<span class="w"> </span><span class="m">125</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">486</span>,<span class="w"> </span><span class="m">128</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">675</span>,<span class="w"> </span><span class="m">98</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">835</span>,<span class="w"> </span><span class="m">94</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">835</span>,<span class="w"> </span><span class="m">119</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">675</span>,<span class="w"> </span><span class="m">124</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">64</span>,<span class="w"> </span><span class="m">114</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">192</span>,<span class="w"> </span><span class="m">110</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">192</span>,<span class="w"> </span><span class="m">131</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">64</span>,<span class="w"> </span><span class="m">134</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">210</span>,<span class="w"> </span><span class="m">108</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">318</span>,<span class="w"> </span><span class="m">106</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">318</span>,<span class="w"> </span><span class="m">128</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">210</span>,<span class="w"> </span><span class="m">130</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">82</span>,<span class="w"> </span><span class="m">140</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">214</span>,<span class="w"> </span><span class="m">138</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">214</span>,<span class="w"> </span><span class="m">163</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">165</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">226</span>,<span class="w"> </span><span class="m">136</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">328</span>,<span class="w"> </span><span class="m">136</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">328</span>,<span class="w"> </span><span class="m">161</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">226</span>,<span class="w"> </span><span class="m">161</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">404</span>,<span class="w"> </span><span class="m">134</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">432</span>,<span class="w"> </span><span class="m">134</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">432</span>,<span class="w"> </span><span class="m">161</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">404</span>,<span class="w"> </span><span class="m">161</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">509</span>,<span class="w"> </span><span class="m">131</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">570</span>,<span class="w"> </span><span class="m">131</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">570</span>,<span class="w"> </span><span class="m">158</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">509</span>,<span class="w"> </span><span class="m">158</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">730</span>,<span class="w"> </span><span class="m">138</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">771</span>,<span class="w"> </span><span class="m">138</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">771</span>,<span class="w"> </span><span class="m">154</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">730</span>,<span class="w"> </span><span class="m">154</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">806</span>,<span class="w"> </span><span class="m">136</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">817</span>,<span class="w"> </span><span class="m">136</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">817</span>,<span class="w"> </span><span class="m">146</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">806</span>,<span class="w"> </span><span class="m">146</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">342</span>,<span class="w"> </span><span class="m">175</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">470</span>,<span class="w"> </span><span class="m">173</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">470</span>,<span class="w"> </span><span class="m">197</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">342</span>,<span class="w"> </span><span class="m">199</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">486</span>,<span class="w"> </span><span class="m">173</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">616</span>,<span class="w"> </span><span class="m">171</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">616</span>,<span class="w"> </span><span class="m">196</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">486</span>,<span class="w"> </span><span class="m">198</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">677</span>,<span class="w"> </span><span class="m">169</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">813</span>,<span class="w"> </span><span class="m">166</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">813</span>,<span class="w"> </span><span class="m">191</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">677</span>,<span class="w"> </span><span class="m">194</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">65</span>,<span class="w"> </span><span class="m">181</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">170</span>,<span class="w"> </span><span class="m">177</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">171</span>,<span class="w"> </span><span class="m">202</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">66</span>,<span class="w"> </span><span class="m">205</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">96</span>,<span class="w"> </span><span class="m">208</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">171</span>,<span class="w"> </span><span class="m">205</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">172</span>,<span class="w"> </span><span class="m">230</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">97</span>,<span class="w"> </span><span class="m">232</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">336</span>,<span class="w"> </span><span class="m">220</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">476</span>,<span class="w"> </span><span class="m">215</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">476</span>,<span class="w"> </span><span class="m">237</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">336</span>,<span class="w"> </span><span class="m">242</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">507</span>,<span class="w"> </span><span class="m">217</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">554</span>,<span class="w"> </span><span class="m">217</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">554</span>,<span class="w"> </span><span class="m">236</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">507</span>,<span class="w"> </span><span class="m">236</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">87</span>,<span class="w"> </span><span class="m">229</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">204</span>,<span class="w"> </span><span class="m">227</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">204</span>,<span class="w"> </span><span class="m">251</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">87</span>,<span class="w"> </span><span class="m">254</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">344</span>,<span class="w"> </span><span class="m">240</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">483</span>,<span class="w"> </span><span class="m">236</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">483</span>,<span class="w"> </span><span class="m">258</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">344</span>,<span class="w"> </span><span class="m">262</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">66</span>,<span class="w"> </span><span class="m">252</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">174</span>,<span class="w"> </span><span class="m">249</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">174</span>,<span class="w"> </span><span class="m">271</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">66</span>,<span class="w"> </span><span class="m">273</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">75</span>,<span class="w"> </span><span class="m">279</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">264</span>,<span class="w"> </span><span class="m">272</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">265</span>,<span class="w"> </span><span class="m">297</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">76</span>,<span class="w"> </span><span class="m">303</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">459</span>,<span class="w"> </span><span class="m">297</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">581</span>,<span class="w"> </span><span class="m">295</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">581</span>,<span class="w"> </span><span class="m">320</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">459</span>,<span class="w"> </span><span class="m">322</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">101</span>,<span class="w"> </span><span class="m">314</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">210</span>,<span class="w"> </span><span class="m">311</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">210</span>,<span class="w"> </span><span class="m">337</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">101</span>,<span class="w"> </span><span class="m">339</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">68</span>,<span class="w"> </span><span class="m">344</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">165</span>,<span class="w"> </span><span class="m">340</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">166</span>,<span class="w"> </span><span class="m">365</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">69</span>,<span class="w"> </span><span class="m">368</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">345</span>,<span class="w"> </span><span class="m">350</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">662</span>,<span class="w"> </span><span class="m">346</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">662</span>,<span class="w"> </span><span class="m">368</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">345</span>,<span class="w"> </span><span class="m">371</span><span class="o">]]</span>,<span class="w"> </span><span class="o">[[</span><span class="m">100</span>,<span class="w"> </span><span class="m">459</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">832</span>,<span class="w"> </span><span class="m">444</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">832</span>,<span class="w"> </span><span class="m">465</span><span class="o">]</span>,<span class="w"> </span><span class="o">[</span><span class="m">100</span>,<span class="w"> </span><span class="m">480</span><span class="o">]]]</span>,<span class="w"> </span><span class="s1">&#39;dt_scores&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.8183103704439653,<span class="w"> </span><span class="m">0</span>.7609575621092027,<span class="w"> </span><span class="m">0</span>.8662357274035412,<span class="w"> </span><span class="m">0</span>.8619508290334809,<span class="w"> </span><span class="m">0</span>.8495855993183273,<span class="w"> </span><span class="m">0</span>.8676840017933314,<span class="w"> </span><span class="m">0</span>.8807986687956436,<span class="w"> </span><span class="m">0</span>.822308525056085,<span class="w"> </span><span class="m">0</span>.8686617037621976,<span class="w"> </span><span class="m">0</span>.8279022169854463,<span class="w"> </span><span class="m">0</span>.952332847006758,<span class="w"> </span><span class="m">0</span>.8742692553015098,<span class="w"> </span><span class="m">0</span>.8477013022907575,<span class="w"> </span><span class="m">0</span>.8528771493227294,<span class="w"> </span><span class="m">0</span>.7622965906848765,<span class="w"> </span><span class="m">0</span>.8492388224448705,<span class="w"> </span><span class="m">0</span>.8344203789965632,<span class="w"> </span><span class="m">0</span>.8078477124353284,<span class="w"> </span><span class="m">0</span>.6300434587457232,<span class="w"> </span><span class="m">0</span>.8359967356998494,<span class="w"> </span><span class="m">0</span>.7618617265751318,<span class="w"> </span><span class="m">0</span>.9481573079350023,<span class="w"> </span><span class="m">0</span>.8712182945408912,<span class="w"> </span><span class="m">0</span>.837416955846334,<span class="w"> </span><span class="m">0</span>.8292475059403851,<span class="w"> </span><span class="m">0</span>.7860382856406026,<span class="w"> </span><span class="m">0</span>.7350527486717117,<span class="w"> </span><span class="m">0</span>.8701022267947695,<span class="w"> </span><span class="m">0</span>.87172526903969,<span class="w"> </span><span class="m">0</span>.8779847108088126,<span class="w"> </span><span class="m">0</span>.7020437651809734,<span class="w"> </span><span class="m">0</span>.6611684983372949<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_text&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;www.997&#39;</span>,<span class="w"> </span><span class="s1">&#39;151&#39;</span>,<span class="w"> </span><span class="s1">&#39;PASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机牌&#39;</span>,<span class="w"> </span><span class="s1">&#39;BOARDING&#39;</span>,<span class="w"> </span><span class="s1">&#39;舱位 CLASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;序号SERIALNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;座位号SEATNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;航班 FLIGHT&#39;</span>,<span class="w"> </span><span class="s1">&#39;日期DATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;MU 2379&#39;</span>,<span class="w"> </span><span class="s1">&#39;03DEC&#39;</span>,<span class="w"> </span><span class="s1">&#39;W&#39;</span>,<span class="w"> </span><span class="s1">&#39;035&#39;</span>,<span class="w"> </span><span class="s1">&#39;F&#39;</span>,<span class="w"> </span><span class="s1">&#39;1&#39;</span>,<span class="w"> </span><span class="s1">&#39;始发地FROM&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口 GATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机时间BDT&#39;</span>,<span class="w"> </span><span class="s1">&#39;目的地TO&#39;</span>,<span class="w"> </span><span class="s1">&#39;福州&#39;</span>,<span class="w"> </span><span class="s1">&#39;TAIYUAN&#39;</span>,<span class="w"> </span><span class="s1">&#39;G11&#39;</span>,<span class="w"> </span><span class="s1">&#39;FUZHOU&#39;</span>,<span class="w"> </span><span class="s1">&#39;身份识别IDNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;姓名NAME&#39;</span>,<span class="w"> </span><span class="s1">&#39;ZHANGQIWEI&#39;</span>,<span class="w"> </span><span class="s1">&#39;票号TKTNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;张祺伟&#39;</span>,<span class="w"> </span><span class="s1">&#39;票价FARE&#39;</span>,<span class="w"> </span><span class="s1">&#39;ETKT7813699238489/1&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口于起飞前10分钟关闭GATESCLOSE1OMINUTESBEFOREDEPARTURETIME&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_score&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.9617719054222107,<span class="w"> </span><span class="m">0</span>.4199012815952301,<span class="w"> </span><span class="m">0</span>.9652514457702637,<span class="w"> </span><span class="m">0</span>.9978302121162415,<span class="w"> </span><span class="m">0</span>.9853208661079407,<span class="w"> </span><span class="m">0</span>.9445787072181702,<span class="w"> </span><span class="m">0</span>.9714463949203491,<span class="w"> </span><span class="m">0</span>.9841841459274292,<span class="w"> </span><span class="m">0</span>.9564052224159241,<span class="w"> </span><span class="m">0</span>.9959094524383545,<span class="w"> </span><span class="m">0</span>.9386572241783142,<span class="w"> </span><span class="m">0</span>.9825271368026733,<span class="w"> </span><span class="m">0</span>.9356589317321777,<span class="w"> </span><span class="m">0</span>.9985442161560059,<span class="w"> </span><span class="m">0</span>.3965512812137604,<span class="w"> </span><span class="m">0</span>.15236201882362366,<span class="w"> </span><span class="m">0</span>.9976775050163269,<span class="w"> </span><span class="m">0</span>.9547433257102966,<span class="w"> </span><span class="m">0</span>.9974752068519592,<span class="w"> </span><span class="m">0</span>.9646636843681335,<span class="w"> </span><span class="m">0</span>.9907559156417847,<span class="w"> </span><span class="m">0</span>.9895358681678772,<span class="w"> </span><span class="m">0</span>.9374122023582458,<span class="w"> </span><span class="m">0</span>.9909093379974365,<span class="w"> </span><span class="m">0</span>.9796401262283325,<span class="w"> </span><span class="m">0</span>.9899340271949768,<span class="w"> </span><span class="m">0</span>.992210865020752,<span class="w"> </span><span class="m">0</span>.9478569626808167,<span class="w"> </span><span class="m">0</span>.9982215762138367,<span class="w"> </span><span class="m">0</span>.9924325942993164,<span class="w"> </span><span class="m">0</span>.9941263794898987,<span class="w"> </span><span class="m">0</span>.96443772315979<span class="o">]}</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>......
+<blockquote>
+<p>❗For more installation methods, refer to the <a href="https://paddlepaddle.github.io/PaddleX/latest/en/installation/installation.html">PaddleX Installation Guide</a>.</p>
+</blockquote>
+<h2 id="cli-usage">💻 CLI Usage<a class="headerlink" href="#cli-usage" title="Permanent link">&para;</a></h2>
+<p>One command can quickly experience the pipeline effect, the unified CLI format is:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span><span class="o">[</span>Pipeline<span class="w"> </span>Name<span class="o">]</span><span class="w"> </span>--input<span class="w"> </span><span class="o">[</span>Input<span class="w"> </span>Image<span class="o">]</span><span class="w"> </span>--device<span class="w"> </span><span class="o">[</span>Running<span class="w"> </span>Device<span class="o">]</span>
+</span></code></pre></div>
+<p>Each Pipeline in PaddleX corresponds to specific parameters, which you can view in the respective Pipeline documentation for detailed explanations. Each Pipeline requires specifying three necessary parameters:
+* <code>pipeline</code>: The name of the Pipeline or the configuration file of the Pipeline
+* <code>input</code>: The local path, directory, or URL of the input file (e.g., an image) to be processed
+* <code>device</code>: The hardware device and its index to use (e.g., <code>gpu:0</code> indicates using the 0th GPU), or you can choose to use NPU (<code>npu:0</code>), XPU (<code>xpu:0</code>), CPU (<code>cpu</code>), etc.</p>
+<p>For example, using the  OCR pipeline:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">        </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span>--use_textline_orientation<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span>--save_path<span class="w"> </span>./output<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span>--device<span class="w"> </span>gpu:0
+</span></code></pre></div>
+<br />
+<summary><b>👉 Click to view the running result</b></summary>
+</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span><span class="m">0</span><span class="o">}</span>,<span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">33</span><span class="o">]</span>,
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">       </span><span class="o">[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">33</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">960</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;max&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">2</span>.0<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span><span class="o">[</span>-1,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;www.99*&#39;</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.8980069160461426,<span class="w">  </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">33</span><span class="o">]</span>,
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">       </span><span class="o">[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">33</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="w">  </span><span class="m">3</span>,<span class="w">  </span><span class="m">10</span>,<span class="w">  </span><span class="m">82</span>,<span class="w">  </span><span class="m">33</span><span class="o">]</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
 </span></code></pre></div>
 <p>The visualization result is as follows:</p>
 <p><img alt="alt text" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/boardingpass.png" /></p>
-<p>For command line usage of other pipelines, simply adjust the <code>pipeline</code> parameter to the name of the respective pipeline. Below are the commands corresponding to each pipeline:</p>
-<p><b>👉 More Command Line Usages for Pipelines</b></p>
+<p>To use the command line for other pipelines, simply adjust the <code>pipeline</code> parameter to the name of the corresponding pipeline and modify the parameters accordingly. Below are the commands for each pipeline:</p>
+<summary><b>👉 More CLI usage for pipelines</b></summary>
+
 <table>
 <thead>
 <tr>
@@ -5411,20 +5362,116 @@ The following steps are executed:</p>
 </thead>
 <tbody>
 <tr>
-<td>Table Recognition</td>
-<td><code>paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0</code></td>
+<td>OCR</td>
+<td><code>paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
-<td>Layout Parsing</td>
-<td><code>paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --device gpu:0</code></td>
+<td>Document Image Preprocessor</td>
+<td><code>paddlex --pipeline doc_preprocessor --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg --use_doc_orientation_classify True --use_doc_unwarping True --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>Table Recognition</td>
+<td><code>paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>Table Recognition v2</td>
+<td><code>paddlex --pipeline table_recognition_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
 <td>Formula Recognition</td>
-<td><code>paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --device gpu:0</code></td>
+<td><code>paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --use_layout_detection True --use_doc_orientation_classify False --use_doc_unwarping False --layout_threshold 0.5 --layout_nms True --layout_unclip_ratio  1.0 --layout_merge_bboxes_mode large --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
 <td>Seal Recognition</td>
-<td><code>paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --device gpu:0</code></td>
+<td><code>paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --use_doc_orientation_classify False --use_doc_unwarping False --device gpu:0 --save_path ./output</code></td>
+</tr>
+<tr>
+<td>Layout Parsing</td>
+<td><code>paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>Layout Parsing v2</td>
+<td><code>paddlex --pipeline layout_parsing_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_parsing_v2_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="python-script-usage">📝 Python Script Usage<a class="headerlink" href="#python-script-usage" title="Permanent link">&para;</a></h2>
+<p>A few lines of code can complete the quick inference of the pipeline, the unified Python script format is as follows:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="p">[</span><span class="n">Pipeline</span> <span class="n">Name</span><span class="p">])</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">Input</span> <span class="n">Image</span> <span class="n">Name</span><span class="p">])</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+The following steps are executed:</p>
+<ul>
+<li><code>create_pipeline()</code> instantiates the pipeline object</li>
+<li>Passes the image and calls the <code>predict()</code> method of the pipeline object for inference prediction</li>
+<li>Processes the prediction results</li>
+</ul>
+<p>To use the Python script for other pipelines, simply adjust the <code>pipeline</code> parameter in the <code>create_pipeline()</code> method to the name of the corresponding pipeline and modify the parameters accordingly. Below are the parameter names and detailed usage explanations for each pipeline:</p>
+<p>👉 More Python script usage for pipelines</p>
+<table>
+<thead>
+<tr>
+<th>pipeline Name</th>
+<th>Corresponding Parameter</th>
+<th>Detailed Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OCR</td>
+<td><code>OCR</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python-script-integration">Instructions for Using the General OCR Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Document Image Preprocessing</td>
+<td><code>doc_preprocessor</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python-script-integration">Instructions for Using the Document Image Preprocessing Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Table Recognition</td>
+<td><code>table_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python-script-integration">Instructions for Using the General Table Recognition Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Table Recognition v2</td>
+<td><code>table_recognition_v2</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-python-script-integration">Instructions for Using the General Table Recognition v2 Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Formula Recognition</td>
+<td><code>formula_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#22-python-script-integration">Instructions for Using the Formula Recognition Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Seal Recognition</td>
+<td><code>seal_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#22-python-script-integration">Instructions for Using the Seal Text Recognition Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Layout Parsing</td>
+<td><code>layout_parsing</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-python-script-integration">Instructions for Using the General Layout Parsing Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>Layout Parsing v2</td>
+<td><code>layout_parsing_v2</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html#22-python-script-integration">Instructions for Using the General Layout Parsing v2 Pipeline Python Script</a></td>
+</tr>
+<tr>
+<td>PP-ChatOCRv3-doc</td>
+<td><code>PP-ChatOCRv3-doc</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html">PP-ChatOCRv3-doc Pipeline Python Script Usage Instructions</a></td>
+</tr>
+<tr>
+<td>PP-ChatOCRv4-doc</td>
+<td><code>PP-ChatOCRv4-doc</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html">PP-ChatOCRv4-doc Pipeline Python Script Usage Instructions</a></td>
 </tr>
 </tbody>
 </table>
@@ -5450,7 +5497,7 @@ The following steps are executed:</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:06:09">March 6, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:22:16">March 6, 2025</span>
   </span>
 
     
@@ -5460,7 +5507,7 @@ The following steps are executed:</p>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:06:09">March 6, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:22:16">March 6, 2025</span>
   </span>
 
     

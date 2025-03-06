@@ -5307,10 +5307,10 @@ You're not viewing the latest version.
   <h1>概述</h1>
 
 <h2 id="1">1. 低代码全流程开发简介<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>飞桨低代码开发工具<a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。这将显著<strong>减少模型开发的时间消耗</strong>，<strong>降低其开发难度</strong>，大大加快模型在行业中的应用和推广速度。特色如下：</p>
+<p>飞桨低代码开发工具 <a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于 PaddleOCR 的先进技术，支持了 OCR 领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。这将显著<strong>减少模型开发的时间消耗</strong>，<strong>降低其开发难度</strong>，大大加快模型在行业中的应用和推广速度。特色如下：</p>
 <ul>
 <li>
-<p>🎨 <strong>模型丰富一键调用</strong>：将文本图像智能分析、通用OCR、通用版面解析、通用表格识别、公式识别、印章文本识别涉及的<strong>17个模型</strong>整合为6条模型产线，通过极简的<strong>Python API一键调用</strong>，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计<strong>200+模型</strong>，形成20+单功能模块，方便开发者进行<strong>模型组合</strong>使用。</p>
+<p>🎨 <strong>模型丰富一键调用</strong>：将文本图像智能分析、通用 OCR、通用版面解析、通用表格识别、公式识别、印章文本识别涉及的<strong>48个模型</strong>整合为 10 条模型产线，通过极简的<strong>Python API一键调用</strong>，快速体验模型效果。此外，同一套API，也支持图像分类、目标检测、图像分割、时序预测等共计<strong>200+模型</strong>，形成30+单功能模块，方便开发者进行<strong>模型组合</strong>使用。</p>
 </li>
 <li>
 <p>🚀 <strong>提高效率降低门槛</strong>：提供基于<strong>统一命令</strong>和<strong>图形界面</strong>两种方式，实现模型简洁高效的使用、组合与定制。支持<strong>高性能推理、服务化部署和端侧部署</strong>等多种部署方式。此外，对于各种主流硬件如<strong>英伟达GPU、昆仑芯、昇腾、寒武纪和海光</strong>等，进行模型开发时，都可以<strong>无缝切换</strong>。</p>
@@ -5320,21 +5320,31 @@ You're not viewing the latest version.
 <p><strong>说明</strong>：PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。</p>
 </blockquote>
 <h2 id="2-ocr">2. OCR相关能力支持<a class="headerlink" href="#2-ocr" title="Permanent link">&para;</a></h2>
-<p>PaddleX中OCR相关的6条产线均支持本地<strong>快速推理</strong>，部分产线支持<strong>在线体验</strong>，您可以快速体验各个产线的预训练模型效果，如果您对产线的预训练模型效果满意，可以直接对产线进行<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/high_performance_inference.html">高性能推理</a>/<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/service_deploy.html">服务化部署</a>/<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/edge_deploy.html">端侧部署</a>，如果不满意，您也可以使用产线的<strong>二次开发</strong>能力，提升效果。完整的产线开发流程请参考<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html">PaddleX产线使用概览</a>或各产线使用教程。</p>
+<p>PaddleX 中 OCR 相关的 10 条产线均支持本地<strong>快速推理</strong>，部分产线支持<strong>在线体验</strong>，您可以快速体验各个产线的预训练模型效果，如果您对产线的预训练模型效果满意，可以直接对产线进行<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/high_performance_inference.html">高性能推理</a>/<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/service_deploy.html">服务化部署</a>/<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/edge_deploy.html">端侧部署</a>，如果不满意，您也可以使用产线的<strong>二次开发</strong>能力，提升效果。完整的产线开发流程请参考<a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html">PaddleX产线使用概览</a>或各产线使用教程。</p>
 <p>此外，PaddleX为开发者提供了基于<a href="https://aistudio.baidu.com/pipeline/mine">云端图形化开发界面</a>的全流程开发工具, 详细请参考<a href="https://aistudio.baidu.com/practical/introduce/546656605663301">教程《零门槛开发产业级AI模型》</a></p>
 <table >
     <tr>
-        <td></td>
-        <td>在线体验</td>
-        <td>快速推理</td>
-        <td>高性能推理</td>
-        <td>服务化部署</td>
-        <td>端侧部署</td>
-        <td>二次开发</td>
-        <td><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
+        <th>模型产线</th>
+        <th>在线体验</th>
+        <th>快速推理</th>
+        <th>高性能推理</th>
+        <th>服务化部署</th>
+        <th>端侧部署</th>
+        <th>二次开发</th>
+        <th><a href = "https://aistudio.baidu.com/pipeline/mine">星河零代码产线</a></td>
     </tr>
     <tr>
-        <td>通用OCR</td>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html">文档图像预处理</a></td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>🚧</td>
+    </tr>
+    <tr>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html">通用OCR</a></td>
         <td><a href = "https://aistudio.baidu.com/community/app/91660/webUI?source=appMineRecent">链接</a></td>
         <td>✅</td>
         <td>✅</td>
@@ -5344,17 +5354,7 @@ You're not viewing the latest version.
         <td>✅</td>
     </tr>
     <tr>
-        <td>文档场景信息抽取</td>
-        <td><a href = "https://aistudio.baidu.com/community/app/182491/webUI?source=appCenter">链接</a></td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>✅</td>
-        <td>🚧</td>
-        <td>✅</td>
-        <td>✅</td>
-    </tr>
-    <tr>
-        <td>表格识别</td>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html">通用表格识别</a></td>
         <td><a href = "https://aistudio.baidu.com/community/app/91661?source=appMineRecent">链接</a></td>
         <td>✅</td>
         <td>✅</td>
@@ -5364,27 +5364,68 @@ You're not viewing the latest version.
         <td>✅</td>
     </tr>
     <tr>
-        <td>通用版面解析</td>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html">通用表格识别v2</a></td>
         <td>🚧</td>
         <td>✅</td>
         <td>🚧</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>🚧</td>
+    </tr>
+   </tr>
+        <tr>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html">公式识别</a></td>
+        <td><a href = "https://aistudio.baidu.com/community/app/387976/webUI?source=appCenter">链接</a></td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>✅</td>
+    </tr>
+    <tr>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html">印章文本识别</a></td>
+        <td><a href = "https://aistudio.baidu.com/community/app/387977/webUI?source=appCenter">链接</a></td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>✅</td>
+    </tr>
+    <tr>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">通用版面解析</a></td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>✅</td>
         <td>✅</td>
         <td>🚧</td>
         <td>✅</td>
         <td>🚧</td>
     </tr>
     <tr>
-        <td>公式识别</td>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html">通用版面解析v2</a></td>
         <td>🚧</td>
         <td>✅</td>
         <td>🚧</td>
         <td>✅</td>
         <td>🚧</td>
-        <td>✅</td>
+        <td>🚧</td>
         <td>🚧</td>
     </tr>
     <tr>
-        <td>印章文本识别</td>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">文档场景信息抽取v3</a></td>
+        <td><a href = "https://aistudio.baidu.com/community/app/182491/webUI?source=appCenter">链接</a></td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>✅</td>
+        <td>🚧</td>
+        <td>✅</td>
+        <td>✅</td>
+    </tr>
+    <tr>
+        <td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">文档场景信息抽取v4</a></td>
         <td>🚧</td>
         <td>✅</td>
         <td>✅</td>
@@ -5393,30 +5434,29 @@ You're not viewing the latest version.
         <td>✅</td>
         <td>🚧</td>
     </tr>
-
 </table>
 
 <blockquote>
-<p>❗注：以上功能均基于GPU/CPU实现。PaddleX还可在昆仑、昇腾、寒武纪和海光等主流硬件上进行快速推理和二次开发。下表详细列出了模型产线的支持情况，具体支持的模型列表请参阅 <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_npu.html">模型列表(NPU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_xpu.html">模型列表(XPU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_mlu.html">模型列表(MLU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_dcu.html">模型列表DCU</a>。同时我们也在适配更多的模型，并在主流硬件上推动高性能和服务化部署的实施。</p>
+<p>❗注：以上功能均基于GPU/CPU实现。PaddleX还可在昆仑芯、昇腾、寒武纪和海光等主流硬件上进行快速推理和二次开发。下表详细列出了模型产线的支持情况，具体支持的模型列表请参阅 <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_npu.html">模型列表(NPU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_xpu.html">模型列表(XPU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_mlu.html">模型列表(MLU)</a> // <a href="https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_dcu.html">模型列表DCU</a>。同时我们也在适配更多的模型，并在主流硬件上推动高性能和服务化部署的实施。</p>
 </blockquote>
 <p><strong>🚀 国产化硬件能力支持</strong></p>
 <table>
   <tr>
-    <th>产线名称</th>
+    <th>模型产线</th>
     <th>昇腾 910B</th>
-    <th>昆仑 R200/R300</th>
+    <th>昆仑芯 R200/R300</th>
     <th>寒武纪 MLU370X8</th>
-    <th>海光 Z100</th>
+    <th>海光 Z100/K100AI</th>
   </tr>
   <tr>
     <td>通用OCR</td>
     <td>✅</td>
     <td>✅</td>
     <td>✅</td>
-    <td>🚧</td>
+    <td>✅</td>
   </tr>
   <tr>
-    <td>表格识别</td>
+    <td>通用表格识别</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
@@ -5426,23 +5466,30 @@ You're not viewing the latest version.
 
 <h2 id="3-ocr">3. OCR相关模型产线列表和教程<a class="headerlink" href="#3-ocr" title="Permanent link">&para;</a></h2>
 <ul>
+<li><strong>文档图像预处理产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html">使用教程</a></li>
 <li><strong>通用OCR产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html">使用教程</a></li>
 <li><strong>通用表格识别产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html">使用教程</a></li>
-<li><strong>文档场景信息抽取v3产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">使用教程</a></li>
-<li><strong>通用版面解析</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">使用教程</a></li>
+<li><strong>通用表格识别v2产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html">使用教程</a></li>
+<li><strong>通用版面解析产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">使用教程</a></li>
+<li><strong>通用版面解析v2产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html">使用教程</a></li>
 <li><strong>公式识别</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html">使用教程</a></li>
 <li><strong>印章文本识别</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html">使用教程</a></li>
+<li><strong>文档场景信息抽取v3产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html">使用教程</a></li>
+<li><strong>文档场景信息抽取v4产线</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html">使用教程</a></li>
 </ul>
 <h2 id="4-ocr">4. OCR相关单功能模块列表和教程<a class="headerlink" href="#4-ocr" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>文本检测模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html">使用教程</a></li>
 <li><strong>印章文本检测模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/seal_text_detection.html">使用教程</a></li>
+<li><strong>文本行方向分类模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html">使用教程</a></li>
 <li><strong>文本识别模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">使用教程</a></li>
 <li><strong>公式识别模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/formula_recognition.html">使用教程</a></li>
 <li><strong>表格结构识别模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html">使用教程</a></li>
 <li><strong>文本图像矫正模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_image_unwarping.html">使用教程</a></li>
 <li><strong>版面区域检测模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html">使用教程</a></li>
 <li><strong>文档图像方向分类模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">使用教程</a></li>
+<li><strong>表格单元格检测模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html">使用教程</a></li>
+<li><strong>表格分类模块</strong>: <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html">使用教程</a></li>
 </ul>
 
 
@@ -5466,7 +5513,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Последнее обновление">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:06:09">2025年3月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:22:16">2025年3月6日</span>
   </span>
 
     
@@ -5476,7 +5523,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Дата создания">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:06:09">2025年3月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:22:16">2025年3月6日</span>
   </span>
 
     

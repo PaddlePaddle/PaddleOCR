@@ -875,18 +875,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#python" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      📝 Python 脚本使用
+      💻 命令行使用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#python" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 命令行使用
+      📝 Python 脚本使用
     </span>
   </a>
   
@@ -5243,18 +5243,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#python" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      📝 Python 脚本使用
+      💻 命令行使用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#python" class="md-nav__link">
     <span class="md-ellipsis">
-      💻 命令行使用
+      📝 Python 脚本使用
     </span>
   </a>
   
@@ -5306,124 +5306,62 @@ You're not viewing the latest version.
 </blockquote>
 <h3 id="_2">🛠️ 安装<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>❗安装PaddleX前请先确保您有基础的<strong>Python运行环境</strong>。</p>
+<p>❗在安装 PaddleX 之前，请确保您已具备基本的 <strong>Python 运行环境</strong>（注：目前支持 Python 3.8 至 Python 3.12）。PaddleX 3.0-rc0 版本依赖的 PaddlePaddle 版本为 3.0.0rc0。</p>
 </blockquote>
 <ul>
-<li><strong>安装PaddlePaddle</strong></li>
-</ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># cpu</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
+<li>
+<p><strong>安装 PaddlePaddle</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># CPU 版本</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 11.8 的机器环境</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># GPU 版本，需显卡驱动程序版本 ≥450.80.02（Linux）或 ≥452.39（Windows）</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># gpu，该命令仅适用于 CUDA 版本为 12.3 的机器环境</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0b2<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
-</span></code></pre></div>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># GPU 版本，需显卡驱动程序版本 ≥545.23.06（Linux）或 ≥545.84（Windows）</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
+</span></code></pre></div></p>
 <blockquote>
-<p>❗ 更多飞桨 Wheel 版本请参考<a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/pip/linux-pip.html">飞桨官网</a>。
-* <strong>安装PaddleX</strong></p>
+<p>❗无需关注物理机上的 CUDA 版本，只需关注显卡驱动程序版本。更多飞桨 Wheel 版本信息，请参考<a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation./docs/zh/install/pip/linux-pip.html">飞桨官网</a>。</p>
 </blockquote>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlex</span><span class="o">==</span><span class="m">3</span>.0.0b2
-</span></code></pre></div>
-<blockquote>
-<p>❗ 更多安装方式参考<a href="https://paddlepaddle.github.io/PaddleX/latest/installation/installation.html">PaddleX安装教程</a></p>
-</blockquote>
-<h3 id="python">📝 Python 脚本使用<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
-<p>三行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="p">[</span><span class="n">产线名称</span><span class="p">])</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">输入图片名称</span><span class="p">])</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
-</span></code></pre></div>
-执行了如下几个步骤：</p>
-<ul>
-<li><code>create_pipeline()</code> 实例化产线对象</li>
-<li>传入图片并调用产线对象的 <code>predict</code> 方法进行推理预测</li>
-<li>对预测结果进行处理</li>
+</li>
+<li>
+<p><strong>安装PaddleX</strong></p>
+</li>
 </ul>
-<p>其他产线的 Python 脚本使用，只需将 <code>create_pipeline()</code> 方法的 <code>pipeline</code> 参数调整为相应产线的名称。下面列出了每个产线对应的参数名称及详细的使用解释：</p>
-<p><b>👉 更多产线的Python脚本使用</b></p>
-<table>
-<thead>
-<tr>
-<th>产线名称</th>
-<th>对应参数</th>
-<th>详细说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>文档场景信息抽取v3</td>
-<td><code>PP-ChatOCRv3-doc</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction.html">文档场景信息抽取v3产线Python脚本使用说明</a></td>
-</tr>
-<tr>
-<td>通用OCR</td>
-<td><code>OCR</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html">通用OCR产线Python脚本使用说明</a></td>
-</tr>
-<tr>
-<td>通用表格识别</td>
-<td><code>table_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html">通用表格识别产线Python脚本使用说明</a></td>
-</tr>
-<tr>
-<td>通用版面解析</td>
-<td><code>layout_parsing</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html">通用版面解析产线Python脚本使用说明</a></td>
-</tr>
-<tr>
-<td>公式识别</td>
-<td><code>formula_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html">公式识别产线Python脚本使用说明</a></td>
-</tr>
-<tr>
-<td>印章文本识别</td>
-<td><code>seal_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html">印章文本识别产线Python脚本使用说明</a></td>
-</tr>
-</tbody>
-</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0rc0-py3-none-any.whl
+</span></code></pre></div>
+<blockquote>
+<p>❗ 更多安装方式参考 <a href="https://paddlepaddle.github.io/PaddleX/latest/installation/installation.html">PaddleX 安装教程</a></p>
+</blockquote>
 <h3 id="_3">💻 命令行使用<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
 <p>一行命令即可快速体验产线效果，统一的命令行格式为：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span><span class="o">[</span>产线名称<span class="o">]</span><span class="w"> </span>--input<span class="w"> </span><span class="o">[</span>输入图片<span class="o">]</span><span class="w"> </span>--device<span class="w"> </span><span class="o">[</span>运行设备<span class="o">]</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span><span class="o">[</span>产线名称<span class="o">]</span><span class="w"> </span>--input<span class="w"> </span><span class="o">[</span>输入图片<span class="o">]</span><span class="w"> </span>--device<span class="w"> </span><span class="o">[</span>运行设备<span class="o">]</span>
 </span></code></pre></div>
-<p>只需指定三个参数：
-* <code>pipeline</code>：产线名称
-* <code>input</code>：待处理的输入文件（如图片）的本地路径或 URL
-* <code>device</code>: 使用的 GPU 序号（例如<code>gpu:0</code>表示使用第 0 块 GPU），也可选择使用 CPU（<code>cpu</code>）</p>
+<p>PaddleX的每一条产线对应特定的参数，您可以在各自的产线文档中查看具体的参数说明。每条产线需指定必要的三个参数：
+* <code>pipeline</code>：产线名称或产线配置文件
+* <code>input</code>：待处理的输入文件（如图片）的本地路径、目录或 URL
+* <code>device</code>：使用的硬件设备及序号（例如<code>gpu:0</code>表示使用第 0 块 GPU），也可选择使用 NPU(<code>npu:0</code>)、 XPU(<code>xpu:0</code>)、CPU(<code>cpu</code>)等。</p>
 <p>以通用 OCR 产线为例：
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>gpu:0
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>paddlex<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">        </span>--input<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span>--use_textline_orientation<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span>--save_path<span class="w"> </span>./output<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span>--device<span class="w"> </span>gpu:0
 </span></code></pre></div></p>
-<p>运行结果如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">{</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_ocr_002.png&#39;</span>,
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="m">161</span>,<span class="w">  </span><span class="m">27</span><span class="o">]</span>,
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">       </span><span class="o">[</span><span class="m">353</span>,<span class="w">  </span><span class="m">22</span><span class="o">]</span>,
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">       </span><span class="o">[</span><span class="m">354</span>,<span class="w">  </span><span class="m">69</span><span class="o">]</span>,
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">       </span><span class="o">[</span><span class="m">162</span>,<span class="w">  </span><span class="m">74</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">426</span>,<span class="w">  </span><span class="m">26</span><span class="o">]</span>,
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">       </span><span class="o">[</span><span class="m">657</span>,<span class="w">  </span><span class="m">21</span><span class="o">]</span>,
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">       </span><span class="o">[</span><span class="m">657</span>,<span class="w">  </span><span class="m">58</span><span class="o">]</span>,
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">       </span><span class="o">[</span><span class="m">426</span>,<span class="w">  </span><span class="m">62</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">702</span>,<span class="w">  </span><span class="m">18</span><span class="o">]</span>,
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">       </span><span class="o">[</span><span class="m">822</span>,<span class="w">  </span><span class="m">13</span><span class="o">]</span>,
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">       </span><span class="o">[</span><span class="m">824</span>,<span class="w">  </span><span class="m">57</span><span class="o">]</span>,
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">       </span><span class="o">[</span><span class="m">704</span>,<span class="w">  </span><span class="m">62</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">341</span>,<span class="w"> </span><span class="m">106</span><span class="o">]</span>,
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">       </span><span class="o">[</span><span class="m">405</span>,<span class="w"> </span><span class="m">106</span><span class="o">]</span>,
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">       </span><span class="o">[</span><span class="m">405</span>,<span class="w"> </span><span class="m">128</span><span class="o">]</span>,
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">       </span><span class="o">[</span><span class="m">341</span>,<span class="w"> </span><span class="m">128</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">       </span>...<span class="o">]</span>,
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="s1">&#39;dt_scores&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.758478200014338,<span class="w"> </span><span class="m">0</span>.7021546472698513,<span class="w"> </span><span class="m">0</span>.8536622648391111,<span class="w"> </span><span class="m">0</span>.8619181462164781,<span class="w"> </span><span class="m">0</span>.8321051217096188,<span class="w"> </span><span class="m">0</span>.8868756173427551,<span class="w"> </span><span class="m">0</span>.7982964727675609,<span class="w"> </span><span class="m">0</span>.8289939036796322,<span class="w"> </span><span class="m">0</span>.8289428877522524,<span class="w"> </span><span class="m">0</span>.8587063317632897,<span class="w"> </span><span class="m">0</span>.7786755892491615,<span class="w"> </span><span class="m">0</span>.8502032769081344,<span class="w"> </span><span class="m">0</span>.8703346500042997,<span class="w"> </span><span class="m">0</span>.834490931790065,<span class="w"> </span><span class="m">0</span>.908291103353393,<span class="w"> </span><span class="m">0</span>.7614978661708064,<span class="w"> </span><span class="m">0</span>.8325774055997542,<span class="w"> </span><span class="m">0</span>.7843421347676149,<span class="w"> </span><span class="m">0</span>.8680889482955594,<span class="w"> </span><span class="m">0</span>.8788859304537682,<span class="w"> </span><span class="m">0</span>.8963341277518075,<span class="w"> </span><span class="m">0</span>.9364654810069546,<span class="w"> </span><span class="m">0</span>.8092413027028257,<span class="w"> </span><span class="m">0</span>.8503743089091863,<span class="w"> </span><span class="m">0</span>.7920740420391101,<span class="w"> </span><span class="m">0</span>.7592224394793805,<span class="w"> </span><span class="m">0</span>.7920547400069311,<span class="w"> </span><span class="m">0</span>.6641757962457888,<span class="w"> </span><span class="m">0</span>.8650289477605955,<span class="w"> </span><span class="m">0</span>.8079483304467047,<span class="w"> </span><span class="m">0</span>.8532207681055275,<span class="w"> </span><span class="m">0</span>.8913377034754717<span class="o">]</span>,
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="s1">&#39;rec_text&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;登机牌&#39;</span>,<span class="w"> </span><span class="s1">&#39;BOARDING&#39;</span>,<span class="w"> </span><span class="s1">&#39;PASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;舱位&#39;</span>,<span class="w"> </span><span class="s1">&#39;CLASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;序号 SERIALNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;座位号&#39;</span>,<span class="w"> </span><span class="s1">&#39;日期 DATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;SEAT NO&#39;</span>,<span class="w"> </span><span class="s1">&#39;航班 FLIGHW&#39;</span>,<span class="w"> </span><span class="s1">&#39;035&#39;</span>,<span class="w"> </span><span class="s1">&#39;MU2379&#39;</span>,<span class="w"> </span><span class="s1">&#39;始发地&#39;</span>,<span class="w"> </span><span class="s1">&#39;FROM&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口&#39;</span>,<span class="w"> </span><span class="s1">&#39;GATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机时间BDT&#39;</span>,<span class="w"> </span><span class="s1">&#39;目的地TO&#39;</span>,<span class="w"> </span><span class="s1">&#39;福州&#39;</span>,<span class="w"> </span><span class="s1">&#39;TAIYUAN&#39;</span>,<span class="w"> </span><span class="s1">&#39;G11&#39;</span>,<span class="w"> </span><span class="s1">&#39;FUZHOU&#39;</span>,<span class="w"> </span><span class="s1">&#39;身份识别IDNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;姓名NAME&#39;</span>,<span class="w"> </span><span class="s1">&#39;ZHANGQIWEI&#39;</span>,<span class="w"> </span>票号TKTNO<span class="s1">&#39;, &#39;</span>张祺伟<span class="s1">&#39;, &#39;</span>票价FARE<span class="s1">&#39;, &#39;</span>ETKT7813699238489/1<span class="s1">&#39;, &#39;</span>登机口于起飞前10分钟关闭GATESCLOSE10MINUTESBEFOREDEPARTURETIME<span class="s1">&#39;],</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="s1">&#39;</span>rec_score<span class="err">&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.9985831379890442,<span class="w"> </span><span class="m">0</span>.999696917533874512,<span class="w"> </span><span class="m">0</span>.9985735416412354,<span class="w"> </span><span class="m">0</span>.9842517971992493,<span class="w"> </span><span class="m">0</span>.9383274912834167,<span class="w"> </span><span class="m">0</span>.9943678975105286,<span class="w"> </span><span class="m">0</span>.9419361352920532,<span class="w"> </span><span class="m">0</span>.9221674799919128,<span class="w"> </span><span class="m">0</span>.9555020928382874,<span class="w"> </span><span class="m">0</span>.9870321154594421,<span class="w"> </span><span class="m">0</span>.9664073586463928,<span class="w"> </span><span class="m">0</span>.9988052248954773,<span class="w"> </span><span class="m">0</span>.9979352355003357,<span class="w"> </span><span class="m">0</span>.9985110759735107,<span class="w"> </span><span class="m">0</span>.9943482875823975,<span class="w"> </span><span class="m">0</span>.9991195797920227,<span class="w"> </span><span class="m">0</span>.9936401844024658,<span class="w"> </span><span class="m">0</span>.9974591135978699,<span class="w"> </span><span class="m">0</span>.9743705987930298,<span class="w"> </span><span class="m">0</span>.9980487823486328,<span class="w"> </span><span class="m">0</span>.9874696135520935,<span class="w"> </span><span class="m">0</span>.9900962710380554,<span class="w"> </span><span class="m">0</span>.9952947497367859,<span class="w"> </span><span class="m">0</span>.9950481653213501,<span class="w"> </span><span class="m">0</span>.989926815032959,<span class="w"> </span><span class="m">0</span>.9915552139282227,<span class="w"> </span><span class="m">0</span>.9938777685165405,<span class="w"> </span><span class="m">0</span>.997239887714386,<span class="w"> </span><span class="m">0</span>.9963340759277344,<span class="w"> </span><span class="m">0</span>.9936134815216064,<span class="w"> </span><span class="m">0</span>.97223961353302<span class="o">]}</span>
+<p><b>👉 点击查看运行结果 </b>&lt;</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span><span class="m">0</span><span class="o">}</span>,<span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">33</span><span class="o">]</span>,
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">       </span><span class="o">[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">33</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">960</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;max&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">2</span>.0<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span><span class="o">[</span>-1,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;www.99*&#39;</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.8980069160461426,<span class="w">  </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">10</span><span class="o">]</span>,
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">       </span><span class="o">[</span><span class="m">82</span>,<span class="w"> </span><span class="m">33</span><span class="o">]</span>,
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">       </span><span class="o">[</span><span class="w"> </span><span class="m">3</span>,<span class="w"> </span><span class="m">33</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="w">  </span><span class="m">3</span>,<span class="w">  </span><span class="m">10</span>,<span class="w">  </span><span class="m">82</span>,<span class="w">  </span><span class="m">33</span><span class="o">]</span>,<span class="w"> </span>...<span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
 </span></code></pre></div>
 <p>可视化结果如下：</p>
 <p><img alt="alt text" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/boardingpass.png" /></p>
-<p>其他产线的命令行使用，只需将 <code>pipeline</code> 参数调整为相应产线的名称。下面列出了每个产线对应的命令：</p>
+<p>其他产线的命令行使用，只需将 <code>pipeline</code> 参数调整为相应产线的名称，参数调整为对应的产线的参数即可。下面列出了每个产线对应的命令：</p>
 <p><b>👉 更多产线的命令行使用</b></p>
 <table>
 <thead>
@@ -5434,20 +5372,116 @@ You're not viewing the latest version.
 </thead>
 <tbody>
 <tr>
-<td>通用表格识别</td>
-<td><code>paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device gpu:0</code></td>
+<td>文档图像预处理</td>
+<td><code>paddlex --pipeline doc_preprocessor --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg --use_doc_orientation_classify True --use_doc_unwarping True --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
-<td>通用版面解析</td>
-<td><code>paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --device gpu:0</code></td>
+<td>通用OCR</td>
+<td><code>paddlex --pipeline OCR --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>通用表格识别</td>
+<td><code>paddlex --pipeline table_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>通用表格识别v2</td>
+<td><code>paddlex --pipeline table_recognition_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
 <td>公式识别</td>
-<td><code>paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --device gpu:0</code></td>
+<td><code>paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --use_layout_detection True --use_doc_orientation_classify False --use_doc_unwarping False --layout_threshold 0.5 --layout_nms True --layout_unclip_ratio  1.0 --layout_merge_bboxes_mode large --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
 <td>印章文本识别</td>
-<td><code>paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --device gpu:0</code></td>
+<td><code>paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --use_doc_orientation_classify False --use_doc_unwarping False --device gpu:0 --save_path ./output</code></td>
+</tr>
+<tr>
+<td>通用版面解析</td>
+<td><code>paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+</tr>
+<tr>
+<td>通用版面解析v2</td>
+<td><code>paddlex --pipeline layout_parsing_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_parsing_v2_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="python">📝 Python 脚本使用<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<p>几行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：</p>
+<p><div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="p">[</span><span class="n">产线名称</span><span class="p">])</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="n">输入图片名称</span><span class="p">])</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+执行了如下几个步骤：</p>
+<ul>
+<li><code>create_pipeline()</code> 实例化产线对象</li>
+<li>传入图片并调用产线对象的 <code>predict()</code> 方法进行推理预测</li>
+<li>对预测结果进行处理</li>
+</ul>
+<p>其他产线的 Python 脚本使用，只需将 <code>create_pipeline()</code> 方法的 <code>pipeline</code> 参数调整为相应产线的名称，参数调整为对应的产线的参数即可。下面列出了每个产线对应的参数名称及详细的使用解释：
+<b>👉 更多产线的Python脚本使用</b></p>
+<table>
+<thead>
+<tr>
+<th>产线名称</th>
+<th>对应参数</th>
+<th>详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通用OCR</td>
+<td><code>OCR</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python脚本方式集成">通用OCR产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>文档图像预处理</td>
+<td><code>doc_preprocessor</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python脚本方式集成">文档图像预处理产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>通用表格识别</td>
+<td><code>table_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python脚本方式集成">通用表格识别产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>通用表格识别v2</td>
+<td><code>table_recognition_v2</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-python脚本方式集成">通用表格识别v2产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>公式识别</td>
+<td><code>formula_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#22-python脚本方式集成">公式识别产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>印章文本识别</td>
+<td><code>seal_recognition</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#22-python脚本方式集成">印章文本识别产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>通用版面解析</td>
+<td><code>layout_parsing</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-python脚本方式集成">通用版面解析产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>通用版面解析v2</td>
+<td><code>layout_parsing_v2</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html#22-python脚本方式集成">通用版面解析v2产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>文档场景信息抽取v3</td>
+<td><code>PP-ChatOCRv3-doc</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html#22-本地体验">文档场景信息抽取v3产线Python脚本使用说明</a></td>
+</tr>
+<tr>
+<td>文档场景信息抽取v4</td>
+<td><code>PP-ChatOCRv4-doc</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html#22-本地体验">文档场景信息抽取v4产线Python脚本使用说明</a></td>
 </tr>
 </tbody>
 </table>
@@ -5473,7 +5507,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="마지막 업데이트">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:06:09">2025年3月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:22:16">2025年3月6日</span>
   </span>
 
     
@@ -5483,7 +5517,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="작성일">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:06:09">2025年3月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年3月6日 13:22:16">2025年3月6日</span>
   </span>
 
     

@@ -781,6 +781,24 @@ You're not viewing the latest version.
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#202436-release-of-a-new-self-developed-major-model-solution-in-the-ocr-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥🔥2024.3.6: Release of a New Self-Developed Major Model Solution in the OCR Field
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20241018-release-paddleocr-v29-including" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥 2024.10.18 release PaddleOCR v2.9, including:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#202259-release-paddleocr-v25-including" class="md-nav__link">
     <span class="md-ellipsis">
       2022.5.9 release PaddleOCR v2.5, including
@@ -5497,6 +5515,24 @@ You're not viewing the latest version.
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#202436-release-of-a-new-self-developed-major-model-solution-in-the-ocr-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥🔥2024.3.6: Release of a New Self-Developed Major Model Solution in the OCR Field
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#20241018-release-paddleocr-v29-including" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥 2024.10.18 release PaddleOCR v2.9, including:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#202259-release-paddleocr-v25-including" class="md-nav__link">
     <span class="md-ellipsis">
       2022.5.9 release PaddleOCR v2.5, including
@@ -5808,8 +5844,32 @@ You're not viewing the latest version.
   <h1>Recently Update</h1>
 
 <h3 id="recently-update">Recently Update<a class="headerlink" href="#recently-update" title="Permanent link">&para;</a></h3>
+<h4 id="202436-release-of-a-new-self-developed-major-model-solution-in-the-ocr-field"><strong>🔥🔥2024.3.6: Release of a New Self-Developed Major Model Solution in the OCR Field</strong><a class="headerlink" href="#202436-release-of-a-new-self-developed-major-model-solution-in-the-ocr-field" title="Permanent link">&para;</a></h4>
 <ul>
-<li><strong>🔥 2024.10.18 release PaddleOCR v2.9, including</strong>:</li>
+<li>
+<p><strong>12 new self-developed single models:</strong></p>
+<ul>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html">Layout Detection</a></strong> series with 3 models: PP-DocLayout-L, PP-DocLayout-M, PP-DocLayout-S, supporting prediction of 23 common layout categories. High-quality layout detection for various document types such as papers, reports, exams, books, magazines, contracts, newspapers in both English and Chinese. <strong>mAP@0.5 reaches up to 90.4%, lightweight models can process over 100 pages of document images per second end-to-end.</strong></li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/formula_recognition.html">Formula Recognition</a></strong> series with 2 models: PP-FormulaNet-L, PP-FormulaNet-S, supporting 50,000 common LaTeX vocabulary, capable of recognizing complex printed and handwritten formulas. <strong>PP-FormulaNet-L has 6 percentage points higher accuracy than models of the same level, and PP-FormulaNet-S is 16 times faster than models with similar accuracy.</strong></li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_structure_recognition.html">Table Structure Recognition</a></strong> series with 2 models: SLANeXt_wired, SLANeXt_wireless. A newly developed table structure recognition model, supporting structured prediction for both wired and wireless tables. Compared to SLANet_plus, SLANeXt shows significant improvement in table structure, <strong>with 6 percentage points higher accuracy on internal high-difficulty table recognition evaluation sets.</strong></li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html">Table Classification</a></strong> series with 1 model: PP-LCNet_x1_0_table_cls, an ultra-lightweight classification model for both wired and wireless tables.</li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_cells_detection.html">Table Cell Detection</a></strong> series with 2 models: RT-DETR-L_wired_table_cell_det, RT-DETR-L_wireless_table_cell_det, supporting cell detection in both wired and wireless tables. These can be combined with SLANeXt_wired, SLANeXt_wireless, text detection, and text recognition modules for end-to-end table prediction. (See the newly added Table Recognition v2 pipeline)</li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/text_recognition.html">Text Recognition</a></strong> series with 1 model: PP-OCRv4_server_rec_doc, <strong>supports over 15,000 characters, with a broader text recognition range, additionally improving the recognition accuracy of certain texts. The accuracy is more than 3 percentage points higher than PP-OCRv4_server_rec on internal datasets.</strong></li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">Text Line Orientation Classification</a></strong> series with 1 model: PP-LCNet_x0_25_textline_ori, <strong>an ultra-lightweight text line orientation classification model with only 0.3M storage.</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>4 high-value multi-model combination solutions:</strong></p>
+<ul>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html">Document Image Preprocessing Pipeline</a></strong>: Achieve correction of distortion and orientation in document images through the combination of ultra-lightweight models.</li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html">Layout Parsing v2 Pipeline</a></strong>: Combines multiple self-developed different types of OCR models to optimize complex layout reading order, achieving end-to-end conversion of various complex PDF files to Markdown and JSON files. The conversion effect is better than other open-source solutions in multiple document scenarios. It can provide high-quality data production capabilities for large model training and application.</li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html">Table Recognition v2 Pipeline</a></strong>: <strong>Provides better table recognition capabilities.</strong> By combining table classification module, table cell detection module, table structure recognition module, text detection module, text recognition module, etc., it achieves prediction of various styles of tables. Users can customize and finetune any module to improve the effect of vertical tables.</li>
+<li><strong><a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html">PP-ChatOCRv4-doc Pipeline</a></strong>: Based on PP-ChatOCRv3-doc, <strong>integrating multi-modal large models, optimizing Prompt and multi-model combination post-processing logic. It effectively addresses common complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal recognition, achieving 15 percentage points higher accuracy than PP-ChatOCRv3-doc. The large model upgrades local deployment capabilities, providing a standard OpenAI interface, supporting calls to locally deployed large models like DeepSeek-R1.</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="20241018-release-paddleocr-v29-including"><strong>🔥 2024.10.18 release PaddleOCR v2.9, including</strong>:<a class="headerlink" href="#20241018-release-paddleocr-v29-including" title="Permanent link">&para;</a></h4>
+<ul>
 <li>
 <p>PaddleX, an All-in-One development tool based on PaddleOCR's advanced technology, supports low-code full-process development capabilities in the OCR field:</p>
 <ul>
@@ -5882,7 +5942,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:06:09">March 6, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:22:16">March 6, 2025</span>
   </span>
 
     
@@ -5892,7 +5952,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:06:09">March 6, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="March 6, 2025 13:22:16">March 6, 2025</span>
   </span>
 
     
