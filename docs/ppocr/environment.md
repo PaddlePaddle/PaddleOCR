@@ -10,7 +10,7 @@ Windows和Mac用户推荐使用Anaconda搭建Python环境，Linux用户建议使
 推荐环境：
 
 - PaddlePaddle >= 2.1.2
-- Python 3.7
+- Python 3
 - CUDA10.1 / CUDA10.2
 - CUDNN 7.6
 

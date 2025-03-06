@@ -8,7 +8,7 @@ comments: true
 PaddleOCR 工作环境
 
 - PaddlePaddle 2.0.0
-- python3.7
+- python3
 - glibc 2.23
 - cuDNN 7.6+ (GPU)
 

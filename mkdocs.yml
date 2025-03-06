@@ -205,6 +205,7 @@ plugins:
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   - git-revision-date-localized:
+      fallback_to_build_date: false
       enable_creation_date: true
 
 markdown_extensions:

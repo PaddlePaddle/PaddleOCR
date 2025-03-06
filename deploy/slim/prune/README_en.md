@@ -57,7 +57,7 @@ example：
 Enter the PaddleOCR root directory，perform sensitivity analysis on the model with the following command：
 
 ```bash
-python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model"  Global.save_model_dir=./output/prune_model/
+python3 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model"  Global.save_model_dir=./output/prune_model/
 ```
 
 

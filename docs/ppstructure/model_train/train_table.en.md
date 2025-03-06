@@ -68,7 +68,7 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar 
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/ch_ppstructure_mobile_v2.0_SLANet_infer.tar && tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 cd ..
 # run
-python3.7 table/predict_table.py \
+python3 table/predict_table.py \
     --det_model_dir=inference/ch_PP-OCRv3_det_infer \
     --rec_model_dir=inference/ch_PP-OCRv3_rec_infer  \
     --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
