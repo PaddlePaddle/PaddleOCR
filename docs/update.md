@@ -7,7 +7,7 @@ hide:
 
 ### 更新
 
-#### **🔥🔥2025.3.6 新增OCR领域自研重磅模型方案**
+#### **🔥🔥2025.3.7 PaddleOCR 2.10 版本，主要包含如下内容**：
 
   - **重磅新增 OCR 领域 12 个自研单模型：**
     - **[版面区域检测](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html)** 系列 3 个模型：PP-DocLayout-L、PP-DocLayout-M、PP-DocLayout-S，支持预测 23 个常见版面类别，中英论文、研报、试卷、书籍、杂志、合同、报纸等丰富类型的文档实现高质量版面检测，**mAP@0.5 最高达 90.4%，轻量模型端到端每秒处理超百页文档图像。**
