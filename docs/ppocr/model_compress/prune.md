@@ -54,7 +54,7 @@ sen.pickle(Dict){
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
 
 ```bash linenums="1"
-python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model" Global.save_model_dir=./output/prune_model/
+python3 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model" Global.save_model_dir=./output/prune_model/
 ```
 
 ### 4.导出模型、预测部署

@@ -55,7 +55,7 @@ python3 tools/export_model.py -c configs/table/table_master.yml -o Global.pretra
 
 ```bash linenums="1"
 cd ppstructure/
-python3.7 table/predict_structure.py --table_model_dir=../output/table_master/table_structure_tablemaster_infer/ --table_algorithm=TableMaster --table_char_dict_path=../ppocr/utils/dict/table_master_structure_dict.txt --table_max_len=480 --image_dir=docs/table/table.jpg
+python3 table/predict_structure.py --table_model_dir=../output/table_master/table_structure_tablemaster_infer/ --table_algorithm=TableMaster --table_char_dict_path=../ppocr/utils/dict/table_master_structure_dict.txt --table_max_len=480 --image_dir=docs/table/table.jpg
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='docs/table'。
 ```
 

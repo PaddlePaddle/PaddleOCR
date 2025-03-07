@@ -58,7 +58,7 @@ The function would return a dict after loading the sensitivity file. The keys of
 Enter the PaddleOCR root directory，perform sensitivity analysis on the model with the following command：
 
 ```bash linenums="1"
-python3.7 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model"  Global.save_model_dir=./output/prune_model/
+python3 deploy/slim/prune/sensitivity_anal.py -c configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml -o Global.pretrained_model="your trained model"  Global.save_model_dir=./output/prune_model/
 ```
 
 ### 5. Export inference model and deploy it

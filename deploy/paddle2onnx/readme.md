@@ -97,7 +97,7 @@ After execution, the ONNX model will be saved in `./inference/det_onnx/`, `./inf
 Take the English OCR model as an example, use **ONNXRuntime** to predict and execute the following commands:
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
+python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 --det_model_dir=./inference/det_onnx/model.onnx  \
 --rec_model_dir=./inference/rec_onnx/model.onnx  \
 --cls_model_dir=./inference/cls_onnx/model.onnx  \
@@ -108,7 +108,7 @@ python3.7 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 Taking the English OCR model as an example, use **Paddle Inference** to predict and execute the following commands:
 
 ```
-python3.7 tools/infer/predict_system.py --use_gpu=False \
+python3 tools/infer/predict_system.py --use_gpu=False \
 --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
 --rec_model_dir=./inference/en_PP-OCRv3_rec_infer \
 --det_model_dir=./inference/en_PP-OCRv3_det_infer \
