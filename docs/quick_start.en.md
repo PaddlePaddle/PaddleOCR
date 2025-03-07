@@ -295,6 +295,6 @@ For more detailed documentation, please go to: [PaddleOCR Quick Start](./ppocr/q
 
 ### Other resources
 
-- [One-Click Call for 17 Core PaddleOCR Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html)
+- [One-Click Call for 48 Core PaddleOCR Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html)
 - One line of code quick use: [Text Detection and Recognition (Chinese/English/Multilingual)](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppocr/overview.html)
 - One line of code quick use: [Document Analysis](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppstructure/overview.html)
