@@ -7,7 +7,7 @@ hide:
 
 ### Recently Update
 
-#### **🔥🔥2024.3.6: Release of a New Self-Developed Major Model Solution in the OCR Field**
+#### **🔥🔥2025.3.6: Release of a New Self-Developed Major Model Solution in the OCR Field**
 
   - **12 new self-developed single models:**
     - **[Layout Detection](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)** series with 3 models: PP-DocLayout-L, PP-DocLayout-M, PP-DocLayout-S, supporting prediction of 23 common layout categories. High-quality layout detection for various document types such as papers, reports, exams, books, magazines, contracts, newspapers in both English and Chinese. **mAP@0.5 reaches up to 90.4%, lightweight models can process over 100 pages of document images per second end-to-end.**
