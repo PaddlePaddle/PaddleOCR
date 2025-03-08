@@ -1,0 +1,120 @@
+name: C++ Inference Build
+
+on:
+  push:
+    branches: [ "main", ]
+    paths:
+      - 'deploy/cpp_infer/**'
+      - '.github/workflows/cpp_infer.yml'
+  pull_request:
+    branches: [ "main", ]
+    paths:
+      - 'deploy/cpp_infer/**'
+      - '.github/workflows/cpp_infer.yml'
+  workflow_dispatch:
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/Linux/CPU/gcc8.2_avx_mkl/paddle_inference.tgz
+          - os: macos-latest
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/MacOS/m1_clang_noavx_accelerate_blas/paddle_inference.tgz
+          - os: windows-latest
+            paddle_url: https://paddle-inference-lib.bj.bcebos.com/3.0.0-beta2/cxx_c/Windows/CPU/x86-64_avx-mkl-vs2019/paddle_inference.zip
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Dependencies (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          libgoogle-glog-dev \
+          libgflags-dev \
+          libprotobuf-dev \
+          protobuf-compiler \
+          libopencv-dev
+
+    - name: Install Dependencies (macOS)
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install cmake protobuf gflags glog opencv
+
+    - name: Setup Visual Studio Environment (Windows)
+      if: matrix.os == 'windows-latest'
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Install Dependencies (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        choco install cmake protoc wget unzip -y
+        choco install opencv --version=4.8.1 -y
+        echo "OpenCV_DIR=C:/tools/opencv/build" >> $GITHUB_ENV
+        # Add OpenCV DLL path to system PATH
+        echo "C:/tools/opencv/build/x64/vc16/bin" >> $GITHUB_PATH
+        # Verify OpenCV installation
+        dir "C:/tools/opencv/build"
+        dir "C:/tools/opencv/build/x64/vc16/bin"
+
+    - name: Cache Paddle Inference
+      id: cache-paddle
+      uses: actions/cache@v3
+      with:
+        path: ${{ github.workspace }}/paddle_inference
+        key: ${{ runner.os }}-paddle-inference-3.0.0-beta2
+
+    - name: Download Paddle Inference
+      if: steps.cache-paddle.outputs.cache-hit != 'true'
+      run: |
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          curl -L ${{ matrix.paddle_url }} -o paddle_inference.zip
+          unzip paddle_inference.zip
+        else
+          wget ${{ matrix.paddle_url }} -O paddle_inference.tgz
+          tar -xf paddle_inference.tgz
+        fi
+      shell: bash
+
+    - name: Configure CMake
+      shell: bash
+      run: |
+        cd deploy/cpp_infer
+        if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+          cmake -G "Visual Studio 17 2022" -A x64 -B build \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DOpenCV_DIR="C:/tools/opencv/build" \
+                -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreadedDLL" \
+                -DWITH_MKL=ON \
+                -DWITH_GPU=OFF \
+                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          cmake -B build \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DWITH_MKL=OFF \
+                -DWITH_GPU=OFF \
+                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        else
+          cmake -B build \
+                -DPADDLE_LIB="${{ github.workspace }}/paddle_inference" \
+                -DWITH_MKL=ON \
+                -DWITH_GPU=OFF \
+                -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        fi
+
+    - name: Build
+      run: |
+        cd deploy/cpp_infer/build
+        cmake --build . --config ${{ env.BUILD_TYPE }} -j4
+      shell: bash
