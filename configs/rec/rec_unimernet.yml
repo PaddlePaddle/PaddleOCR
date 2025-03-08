@@ -18,8 +18,9 @@ Global:
   rec_char_dict_path: &rec_char_dict_path ppocr/utils/dict/unimernet_tokenizer
   input_size: &input_size [192, 672]
   max_seq_len: &max_seq_len 1024
-  save_res_path: ./output/rec/predicts_unimernet_plus_config_latexocr.txt
+  save_res_path: ./output/rec/predicts_unimernet.txt
   allow_resize_largeImg: False
+  d2s_train_image_shape: [1,192,672]
 
 Optimizer:
   name: AdamW

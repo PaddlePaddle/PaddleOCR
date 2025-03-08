@@ -50,6 +50,9 @@ def apply_to_static(model, config, logger):
         "SVTR",
         "SVTR_HGNet",
         "LaTeXOCR",
+        "UniMERNet",
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-L",
     ]
     if config["Architecture"]["algorithm"] in ["Distillation"]:
         algo = list(config["Architecture"]["Models"].values())[0]["algorithm"]
@@ -123,6 +126,16 @@ def apply_to_static(model, config, logger):
         specs = [
             [
                 InputSpec(shape=[None, 1, None, None], dtype="float32"),
+                InputSpec(shape=[None, None], dtype="float32"),
+                InputSpec(shape=[None, None], dtype="float32"),
+            ]
+        ]
+    elif algo in ["UniMERNet", "PP-FormulaNet-S", "PP-FormulaNet-L"]:
+        specs = [
+            [
+                InputSpec(
+                    [None] + config["Global"]["d2s_train_image_shape"], dtype="float32"
+                ),
                 InputSpec(shape=[None, None], dtype="float32"),
                 InputSpec(shape=[None, None], dtype="float32"),
             ]
