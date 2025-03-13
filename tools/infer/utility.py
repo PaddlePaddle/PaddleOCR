@@ -325,10 +325,6 @@ def create_predictor(args, mode, logger):
             if paddle.framework.use_pir_api():
                 config.enable_new_ir(True)
                 config.enable_new_executor(True)
-                kPirGcuPasses = gcu_passes.inference_passes(
-                    use_pir=True, name="PaddleOCR"
-                )
-                config.enable_custom_passes(kPirGcuPasses, True)
             else:
                 pass_builder = config.pass_builder()
                 gcu_passes.append_passes_for_legacy_ir(pass_builder, "PaddleOCR")
