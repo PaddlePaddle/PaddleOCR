@@ -221,3 +221,5 @@ If necessary, you can read related documents:
 |Vietnamese |vi| |Nagpur |sck|
 |Mongolian |mn| |Newari |new|
 |Abaza |abq| |Goan Konkani|gom|
+|Chechen |che| |Pali |pi|
+|Haryanvi |bgc| |Latin |la|
