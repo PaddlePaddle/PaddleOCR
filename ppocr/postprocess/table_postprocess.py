@@ -129,11 +129,8 @@ class TableLabelDecode(AttnLabelDecode):
 
     def _bbox_decode(self, bbox, shape):
         h, w, ratio_h, ratio_w, pad_h, pad_w = shape
-        h, w = pad_h, pad_w
         bbox[0::2] *= w
         bbox[1::2] *= h
-        bbox[0::2] /= ratio_w
-        bbox[1::2] /= ratio_h
         return bbox
 
 
@@ -188,4 +185,15 @@ class TableMasterLabelDecode(TableLabelDecode):
         x, y, w, h = bbox
         x1, y1, x2, y2 = x - w // 2, y - h // 2, x + w // 2, y + h // 2
         bbox = np.array([x1, y1, x2, y2])
+        return bbox
+
+
+class SLANetPlusLabelDecode(TableLabelDecode):
+    def _bbox_decode(self, bbox, shape):
+        h, w, ratio_h, ratio_w, pad_h, pad_w = shape
+        h, w = pad_h, pad_w
+        bbox[0::2] *= w
+        bbox[1::2] *= h
+        bbox[0::2] /= ratio_w
+        bbox[1::2] /= ratio_h
         return bbox
