@@ -36,6 +36,7 @@ paddlex --pipeline [Pipeline Name] --input [Input Image] --device [Running Devic
 ```
 
 Each Pipeline in PaddleX corresponds to specific parameters, which you can view in the respective Pipeline documentation for detailed explanations. Each Pipeline requires specifying three necessary parameters:
+
 * `pipeline`: The name of the Pipeline or the configuration file of the Pipeline
 * `input`: The local path, directory, or URL of the input file (e.g., an image) to be processed
 * `device`: The hardware device and its index to use (e.g., `gpu:0` indicates using the 0th GPU), or you can choose to use NPU (`npu:0`), XPU (`xpu:0`), CPU (`cpu`), etc.
