@@ -32,7 +32,7 @@ The main features of PP-StructureV2 are as follows:
 - Support layout analysis of documents in the form of images/pdfs, which can be divided into areas such as **text, titles, tables, figures, formulas, etc.**;
 - Support common Chinese and English **table detection** tasks;
 - Support structured table recognition, and output the final result to **Excel file**;
-- Support multimodal-based Key Information Extraction (KIE) tasks - **Semantic Entity Recognition** (SER) and **Relation Extraction (RE);
+- Support multimodal-based Key Information Extraction (KIE) tasks - **Semantic Entity Recognition** (SER) and **Relation Extraction** (RE);
 - Support **layout recovery**, that is, restore the document in word or pdf format with the same layout as the original image;
 - Support customized training and multiple inference deployment methods such as python whl package quick start;
 - Connect with the semi-automatic data labeling tool PPOCRLabel, which supports the labeling of layout analysis, table recognition, and SER.
@@ -49,7 +49,7 @@ The figure shows the pipeline of layout analysis + table recognition. The image 
 
 ### 3.1.1 Layout recognition returns the coordinates of a single word
 
-The following figure shows the result of layout analysis on single word， please refer to the [doc](./blog/return_word_pos.en.md).
+The following figure shows the result of layout analysis on single word，please refer to the [doc](./blog/return_word_pos.en.md).
 
 ![show_0_mdf_v2](./images/799450d4-d2c5-4b61-b490-e160dc0f515c.jpeg)
 
