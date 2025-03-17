@@ -93,7 +93,7 @@ The final dataset shall have the following file structure.
 
 ### 1.3. Download data
 
-If you do not have local dataset, you can donwload the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py) for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
+If you do not have local dataset, you can download the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py) for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
 
 For more information about public KIE datasets, please refer to [KIE dataset tutorial](../../datasets/kie_datasets.en.md).
 
@@ -280,7 +280,7 @@ Running on a DCU device requires setting the environment variable `export HIP_VI
 
 ### 3.1. Evaluation
 
-The trained model will be saved in `Global.save_model_dir`. When evaluation, you need to set `Architecture.Backbone.checkpoints` as your model directroy. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml` file.
+The trained model will be saved in `Global.save_model_dir`. When evaluation, you need to set `Architecture.Backbone.checkpoints` as your model directory. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml` file.
 
 ```bash linenums="1"
 # GPU evaluation, Global.checkpoints is the weight to be tested

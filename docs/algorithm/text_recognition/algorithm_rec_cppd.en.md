@@ -40,7 +40,7 @@ The accuracy (%) and model files of CPPD on the public dataset of scene text rec
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|
 | CPPD Base 32*128  | 87.5  | 70.7 |   78.2   | 82.9  | 85.5 | 85.4 | 84.3 | 82.08 | Same as the table above. |
 
-* Chinese dataset from [Chinese Benckmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition).
+* Chinese dataset from [Chinese Benchmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition).
 
 |    Model      | Scene | Web | Document | Handwriting | Avg |      Download       |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|

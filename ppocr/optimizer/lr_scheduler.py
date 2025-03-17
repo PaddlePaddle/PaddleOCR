@@ -49,7 +49,7 @@ class OneCycleDecay(LRScheduler):
     """
     One Cycle learning rate decay
     A learning rate which can be referred in https://arxiv.org/abs/1708.07120
-    Code refered in https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html#OneCycleLR
+    Code referred in https://pytorch.org/docs/stable/_modules/torch/optim/lr_scheduler.html#OneCycleLR
     """
 
     def __init__(

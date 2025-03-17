@@ -22,7 +22,7 @@ struct OCR_Config {
 };
 
 /**
- * PolyGone Result
+ * Polygons Result
  */
 struct OCRPredictResult {
   std::vector<int> word_index;
@@ -39,8 +39,8 @@ struct ClsPredictResult {
 };
 /**
  * OCR there are 2 models
- * 1. First model（det），select polygones to show where are the texts
- * 2. crop from the origin images, use these polygones to infer
+ * 1. First model（det），select polygons to show where are the texts
+ * 2. crop from the origin images, use these polygons to infer
  */
 class OCR_PPredictor : public PPredictor_Interface {
 public:
@@ -77,7 +77,7 @@ public:
 
 private:
   /**
-   * calcul Polygone from the result image of first model
+   * calculate polygons from the result image of first model
    * @param pred
    * @param output_height
    * @param output_width
@@ -110,7 +110,7 @@ private:
   ClsPredictResult infer_cls(const cv::Mat &origin, float thresh = 0.9);
 
   /**
-   * Postprocess or sencod model to extract text
+   * Postprocess or second model to extract text
    * @param res
    * @return
    */

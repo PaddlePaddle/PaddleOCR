@@ -1,13 +1,15 @@
 ---
 typora-copy-images-to: images
 comments: true
+hide:
+  - toc
 ---
 
 # Android Demo
 
 ## 1. 简介
 
-此为PaddleOCR的Android Demo，目前支持文本检测，文本方向分类器和文本识别模型的使用。使用 [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10) 进行开发。
+此为PaddleOCR的[Android Demo](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/android_demo)，目前支持文本检测，文本方向分类器和文本识别模型的使用。使用 [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10) 进行开发。
 
 ## 2. 近期更新
 
@@ -90,7 +92,6 @@ PaddleOCR demo共提供了6种运行模式，如下图
 设置界面如下
 
 ![img](./images/68747470733a2f2f7061.jpeg)
-
 
 在设置界面可以进行如下几项设定：
 

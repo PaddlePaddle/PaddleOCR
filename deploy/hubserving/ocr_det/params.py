@@ -30,14 +30,14 @@ def read_params():
     cfg.det_limit_side_len = 960
     cfg.det_limit_type = "max"
 
-    # DB parmas
+    # DB params
     cfg.det_db_thresh = 0.3
     cfg.det_db_box_thresh = 0.6
     cfg.det_db_unclip_ratio = 1.5
     cfg.use_dilation = False
     cfg.det_db_score_mode = "fast"
 
-    # #EAST parmas
+    # #EAST params
     # cfg.det_east_score_thresh = 0.8
     # cfg.det_east_cover_thresh = 0.1
     # cfg.det_east_nms_thresh = 0.2

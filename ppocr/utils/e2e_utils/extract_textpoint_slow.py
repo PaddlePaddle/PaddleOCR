@@ -386,7 +386,7 @@ def generate_pivot_list_curved(
                 pos_list_sorted, _ = sort_with_direction(pos_list, f_direction)
             all_pos_yxs.append(pos_list_sorted)
 
-    # use decoder to filter backgroud points.
+    # use decoder to filter background points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
         all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True
@@ -464,7 +464,7 @@ def generate_pivot_list_horizontal(
             pos_list_sorted, _ = sort_with_direction(pos_list_final, f_direction)
             all_pos_yxs.append(pos_list_sorted)
 
-    # use decoder to filter backgroud points.
+    # use decoder to filter background points.
     p_char_maps = p_char_maps.transpose([1, 2, 0])
     decode_res = ctc_decoder_for_image(
         all_pos_yxs, logits_map=p_char_maps, keep_blank_in_idxs=True

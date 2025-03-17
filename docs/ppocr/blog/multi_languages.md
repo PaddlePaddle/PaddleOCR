@@ -271,3 +271,5 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 | 乌兹别克文|Uzbek |uz| | 阿瓦尔文|Avar |ava|
 | 越南文|Vietnamese |vi| | 阿瓦尔文|Avar |ava|
 | 蒙古文|Mongolian |mn| | 阿迪赫文|Adyghe |ady|
+| 车臣文 |Chechen |che| | 巴利文 |Pali |pi|
+| 哈里亚纳语 |Haryanvi |bgc| | 拉丁文 |Latin |la|

@@ -12,7 +12,7 @@ At the same time, it will briefly introduce the structure of the training data a
 
 The PaddleOCR uses configuration files to control network training and evaluation parameters. In the configuration file, you can set the model, optimizer, loss function, and pre- and post-processing parameters of the model. PaddleOCR reads these parameters from the configuration file, and then builds a complete training process to train the model. Fine-tuning can also be completed by modifying the parameters in the configuration file, which is simple and convenient.
 
-For the complete configuration file description, please refer to [Configuration File](../blog/config.en.md)
+For the complete configuration file description, please refer to [Configuration File](../blog/config.en.md).
 
 ## 2. Basic Concepts
 
@@ -21,7 +21,7 @@ During the model training process, some hyper-parameters can be manually specifi
 ### 2.1 Learning Rate
 
 The learning rate is one of the most important hyper-parameters for training neural networks. It represents the step length of the gradient moving towards the optimal solution of the loss function in each iteration.
-A variety of learning rate update strategies are provided by PaddleOCR, which can be specified in configuration files. For example,
+A variety of learning rate update strategies are provided by PaddleOCR, which can be specified in configuration files. For example:
 
 ```yaml linenums="1"
 Optimizer:
@@ -59,7 +59,7 @@ Optimizer:
 
 (2) Recognition stage: Character recognition accuracy, that is, the ratio of correctly recognized text lines to the number of marked text lines. Only the entire line of text recognition pairs can be regarded as correct recognition.
 
-(3) End-to-end statistics: End-to-end recall rate: accurately detect and correctly identify the proportion of text lines in all labeled text lines; End-to-end accuracy rate: accurately detect and correctly identify the number of text lines in the detected text lines The standard for accurate detection is that the IOU of the detection box and the labeled box is greater than a certain threshold, and the text in the correctly identified detection box is the same as the labeled text.
+(3) End-to-end statistics: End-to-end recall rate: accurately detect and correctly identify the proportion of text lines in all labeled text lines; End-to-end accuracy rate: accurately detect and correctly identify the number of text lines in the detected text lines. The standard for accurate detection is that the IOU of the detection box and the labeled box is greater than a certain threshold, and the text in the correctly identified detection box is the same as the labeled text.
 
 ## 3. Data and Vertical Scenes
 

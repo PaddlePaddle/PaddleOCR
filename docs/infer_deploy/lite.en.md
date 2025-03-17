@@ -1,5 +1,7 @@
 ---
 comments: true
+hide:
+  - toc
 ---
 
 # Mobile deployment based on Paddle-Lite

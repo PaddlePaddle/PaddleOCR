@@ -38,7 +38,7 @@
 // improve performance but coordinate values are limited to the range +/- 46340
 //#define use_int32
 
-// use_xyz: adds a Z member to IntPoint. Adds a minor cost to perfomance.
+// use_xyz: adds a Z member to IntPoint. Adds a minor cost to performance.
 //#define use_xyz
 
 // use_lines: Enables line clipping. Adds a very minor cost to performance.
@@ -156,7 +156,7 @@ public:
   PolyNode() noexcept;
   virtual ~PolyNode() {}
   Path Contour;
-  PolyNodes Childs;
+  PolyNodes Children;
   PolyNode *Parent;
   PolyNode *GetNext() const noexcept;
   bool IsHole() const noexcept;
@@ -165,7 +165,7 @@ public:
 
 private:
   // PolyNode& operator =(PolyNode& other);
-  unsigned Index; // node index in Parent.Childs
+  unsigned Index; // node index in Parent.Children
   bool m_IsOpen;
   JoinType m_jointype;
   EndType m_endtype;

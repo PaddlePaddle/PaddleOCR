@@ -386,7 +386,7 @@ class ParseQHead(nn.Layer):
                 )
                 logits = self.head(tgt_out)
 
-        # transfer to probility
+        # transfer to probability
         logits = F.softmax(logits, axis=-1)
 
         final_output = {"predict": logits}

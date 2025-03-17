@@ -56,9 +56,9 @@ dependencies = [
     "fonttools>=4.24.0",
     "fire>=0.3.0",
     "requests",
-    "albumentations==1.4.10",
+    "albumentations",
     # to be compatible with albumentations
-    "albucore==0.0.13"
+    "albucore"
 ]
 
 [project.urls]

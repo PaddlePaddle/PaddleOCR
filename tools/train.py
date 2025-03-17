@@ -140,7 +140,9 @@ def main(config, device, logger, vdl_writer, seed):
 
     use_sync_bn = config["Global"].get("use_sync_bn", False)
     if use_sync_bn:
-        if config["Global"].get("use_npu", False):
+        if config["Global"].get("use_npu", False) or config["Global"].get(
+            "use_xpu", False
+        ):
             naive_sync_bn.convert_syncbn(model)
         else:
             model = paddle.nn.SyncBatchNorm.convert_sync_batchnorm(model)

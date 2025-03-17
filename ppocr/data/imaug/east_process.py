@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-This code is refered from:
+This code is referred from:
 https://github.com/songdejia/EAST/blob/master/data_utils.py
 """
 import math
@@ -169,7 +169,7 @@ class EASTProcessTrain(object):
         used for generate the score map
         :param poly: the text poly
         :param r: r in the paper
-        :return: the shrinked poly
+        :return: the shrunk poly
         """
         # shrink ratio
         R = 0.3
@@ -241,7 +241,7 @@ class EASTProcessTrain(object):
         score_map = np.zeros((h, w), dtype=np.uint8)
         # (x1, y1, ..., x4, y4, short_edge_norm)
         geo_map = np.zeros((h, w, 9), dtype=np.float32)
-        # mask used during traning, to ignore some hard areas
+        # mask used during training, to ignore some hard areas
         training_mask = np.ones((h, w), dtype=np.uint8)
         for poly_idx, poly_tag in enumerate(zip(polys, tags)):
             poly = poly_tag[0]

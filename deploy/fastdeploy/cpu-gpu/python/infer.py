@@ -217,7 +217,7 @@ ppocr_v3.rec_batch_size = args.rec_bs
 # Read the input image
 im = cv2.imread(args.image)
 
-# Predict and reutrn the results
+# Predict and return the results
 result = ppocr_v3.predict(im)
 
 print(result)

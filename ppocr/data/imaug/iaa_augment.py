@@ -24,14 +24,16 @@ import numpy as np
 import albumentations as A
 from albumentations.core.transforms_interface import DualTransform
 from albumentations.augmentations.geometric import functional as fgeometric
+from packaging import version
+
+ALBU_VERSION = version.parse(A.__version__)
+IS_ALBU_NEW_VERSION = ALBU_VERSION >= version.parse("1.4.15")
 
 
 # Custom resize transformation mimicking Imgaug's behavior with scaling
 class ImgaugLikeResize(DualTransform):
-    def __init__(
-        self, scale_range=(0.5, 3.0), interpolation=1, always_apply=False, p=1.0
-    ):
-        super(ImgaugLikeResize, self).__init__(always_apply, p)
+    def __init__(self, scale_range=(0.5, 3.0), interpolation=1, p=1.0):
+        super(ImgaugLikeResize, self).__init__(p)
         self.scale_range = scale_range
         self.interpolation = interpolation
 
@@ -41,11 +43,10 @@ class ImgaugLikeResize(DualTransform):
         new_height = int(height * scale)
         new_width = int(width * scale)
 
-        # For compatibility with Albumentations 1.4.15 and later
-        # return fgeometric.resize(
-        #     img, (new_height, new_width), interpolation=self.interpolation
-        # )
-
+        if IS_ALBU_NEW_VERSION:
+            return fgeometric.resize(
+                img, (new_height, new_width), interpolation=self.interpolation
+            )
         return fgeometric.resize(
             img, new_height, new_width, interpolation=self.interpolation
         )

@@ -15,10 +15,10 @@
 #include <gflags/gflags.h>
 
 // common args
-DEFINE_bool(use_gpu, false, "Infering with GPU or CPU.");
+DEFINE_bool(use_gpu, false, "Inferring with GPU or CPU.");
 DEFINE_bool(use_tensorrt, false, "Whether use tensorrt.");
 DEFINE_int32(gpu_id, 0, "Device id of GPU to execute.");
-DEFINE_int32(gpu_mem, 4000, "GPU id when infering with GPU.");
+DEFINE_int32(gpu_mem, 4000, "GPU id when inferring with GPU.");
 DEFINE_int32(cpu_threads, 10, "Num of threads with CPU.");
 DEFINE_bool(enable_mkldnn, false, "Whether use mkldnn with CPU.");
 DEFINE_string(precision, "fp32", "Precision be one of fp32/fp16/int8");
@@ -59,7 +59,7 @@ DEFINE_string(layout_dict_path,
 DEFINE_double(layout_score_threshold, 0.5, "Threshold of score.");
 DEFINE_double(layout_nms_threshold, 0.5, "Threshold of nms.");
 // structure model related
-DEFINE_string(table_model_dir, "", "Path of table struture inference model.");
+DEFINE_string(table_model_dir, "", "Path of table structure inference model.");
 DEFINE_int32(table_max_len, 488, "max len size of input image.");
 DEFINE_int32(table_batch_num, 1, "table_batch_num.");
 DEFINE_bool(merge_no_span_structure, true,

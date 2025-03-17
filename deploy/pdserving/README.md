@@ -33,7 +33,7 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
   - [Environmental preparation](#environmental-preparation)
   - [Model conversion](#model-conversion)
   - [Paddle Serving pipeline deployment](#paddle-serving-pipeline-deployment)
-  - [Paddle Serving C++ deployment](#C++)
+  - [C++ Serving](#c-serving)
   - [WINDOWS Users](#windows-users)
   - [FAQ](#faq)
 
@@ -247,7 +247,7 @@ The C++ service deployment is the same as python in the environment setup and da
 
 ## WINDOWS Users
 
-Windows does not support Pipeline Serving, if we want to lauch paddle serving on Windows, we should use Web Service, for more infomation please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/Windows_Tutorial_EN.md)
+Windows does not support Pipeline Serving, if we want to launch paddle serving on Windows, we should use Web Service, for more information please refer to [Paddle Serving for Windows Users](https://github.com/PaddlePaddle/Serving/blob/develop/doc/Windows_Tutorial_EN.md)
 
 
 **WINDOWS user can only use version 0.5.0 CPU Mode**

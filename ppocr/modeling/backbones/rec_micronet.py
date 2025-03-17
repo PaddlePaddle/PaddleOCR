@@ -289,9 +289,9 @@ class DYShiftMax(nn.Layer):
         index = paddle.reshape(index, [1, self.g, self.gc, 1, 1])
         indexgs = paddle.split(index, [1, self.g - 1], axis=1)
         indexgs = paddle.concat((indexgs[1], indexgs[0]), axis=1)
-        indexs = paddle.split(indexgs, [1, self.gc - 1], axis=2)
-        indexs = paddle.concat((indexs[1], indexs[0]), axis=2)
-        self.index = paddle.reshape(indexs, [inp])
+        indexes = paddle.split(indexgs, [1, self.gc - 1], axis=2)
+        indexes = paddle.concat((indexes[1], indexes[0]), axis=2)
+        self.index = paddle.reshape(indexes, [inp])
         self.expansion = expansion
 
     def forward(self, x):

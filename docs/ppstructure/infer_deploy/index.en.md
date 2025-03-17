@@ -10,7 +10,7 @@ Paddle provides a variety of deployment schemes to meet the deployment requireme
 
 ![img](./images/deployment-20240704135743247.png)
 
-PP-OCR has supported muti deployment schemes. Click the link to get the specific tutorial.
+PP-OCR has supported multi deployment schemes. Click the link to get the specific tutorial.
 
 - [Python Inference](./python_infer.en.md)
 - [C++ Inference](./cpp_infer.en.md)

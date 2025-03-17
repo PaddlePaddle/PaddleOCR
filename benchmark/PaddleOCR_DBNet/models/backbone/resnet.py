@@ -265,7 +265,7 @@ def resnet18(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         print("load from imagenet")
         load_models(model, "resnet18")
     return model
@@ -280,7 +280,7 @@ def deformable_resnet18(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         print("load from imagenet")
         model.load_state_dict(model_zoo.load_url(model_urls["resnet18"]), strict=False)
     return model
@@ -295,7 +295,7 @@ def resnet34(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         model.load_state_dict(model_zoo.load_url(model_urls["resnet34"]), strict=False)
     return model
 
@@ -309,7 +309,7 @@ def resnet50(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         load_models(model, "resnet50")
     return model
 
@@ -323,7 +323,7 @@ def deformable_resnet50(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         model.load_state_dict(model_zoo.load_url(model_urls["resnet50"]), strict=False)
     return model
 
@@ -337,7 +337,7 @@ def resnet101(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         model.load_state_dict(model_zoo.load_url(model_urls["resnet101"]), strict=False)
     return model
 
@@ -351,7 +351,7 @@ def resnet152(pretrained=True, **kwargs):
     if pretrained:
         assert (
             kwargs.get("in_channels", 3) == 3
-        ), "in_channels must be 3 whem pretrained is True"
+        ), "in_channels must be 3 when pretrained is True"
         model.load_state_dict(model_zoo.load_url(model_urls["resnet152"]), strict=False)
     return model
 

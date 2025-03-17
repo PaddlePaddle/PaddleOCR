@@ -115,7 +115,7 @@ class TPSSpatialTransformer(nn.Layer):
         # compute inverse matrix
         inverse_kernel = paddle.inverse(forward_kernel)
 
-        # create target cordinate matrix
+        # create target coordinate matrix
         HW = self.target_height * self.target_width
         target_coordinate = list(
             itertools.product(range(self.target_height), range(self.target_width))

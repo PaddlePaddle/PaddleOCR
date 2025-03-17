@@ -428,7 +428,7 @@ class LKPAN(nn.Layer):
 
 class ASFBlock(nn.Layer):
     """
-    This code is refered from:
+    This code is referred from:
         https://github.com/MhLiao/DB/blob/master/decoders/feature_attention.py
     """
 

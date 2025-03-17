@@ -1,5 +1,7 @@
 ---
 comments: true
+hide:
+  - toc
 ---
 
 # Visual Studio 2022 Community CMake Compilation Guide

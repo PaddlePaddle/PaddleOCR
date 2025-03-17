@@ -2,8 +2,9 @@ English | [简体中文](README_ch.md)
 
 # PP-OCR Deployment
 
-- [Paddle Deployment Introduction](#1)
-- [PP-OCR Deployment](#2)
+- [PP-OCR Deployment](#pp-ocr-deployment)
+  - [Paddle Deployment Introduction](#paddle-deployment-introduction)
+  - [PP-OCR Deployment](#pp-ocr-deployment-1)
 
 <a name="1"></a>
 ## Paddle Deployment Introduction
@@ -18,7 +19,7 @@ Paddle provides a variety of deployment schemes to meet the deployment requireme
 <a name="2"></a>
 ## PP-OCR Deployment
 
-PP-OCR has supported muti deployment schemes. Click the link to get the specific tutorial.
+PP-OCR has supported multi deployment schemes. Click the link to get the specific tutorial.
 
 - [Python Inference](../doc/doc_en/inference_ppocr_en.md)
 - [C++ Inference](./cpp_infer/readme.md)

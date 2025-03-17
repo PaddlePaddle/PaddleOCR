@@ -1,5 +1,7 @@
 ---
 comments: true
+hide:
+  - toc
 ---
 
 ## OCR Pipeline WebService

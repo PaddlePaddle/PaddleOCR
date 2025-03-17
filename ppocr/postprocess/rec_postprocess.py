@@ -80,8 +80,8 @@ class BaseRecLabelDecode(object):
             word_list: list of the grouped words
             word_col_list: list of decoding positions corresponding to each character in the grouped word
             state_list: list of marker to identify the type of grouping words, including two types of grouping words:
-                        - 'cn': continous chinese characters (e.g., 你好啊)
-                        - 'en&num': continous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
+                        - 'cn': continuous chinese characters (e.g., 你好啊)
+                        - 'en&num': continuous english characters (e.g., hello), number (e.g., 123, 1.123), or mixed of them connected by '-' (e.g., VGG-16)
                         The remaining characters in text are treated as separators between groups (e.g., space, '(', ')', etc.).
         """
         state = None
@@ -105,7 +105,7 @@ class BaseRecLabelDecode(object):
                 and state == "en&num"
                 and c_i + 1 < len(text)
                 and bool(re.search("[0-9]", text[c_i + 1]))
-            ):  # grouping floting number
+            ):  # grouping floating number
                 c_state = "en&num"
             if (
                 char == "-" and state == "en&num"
@@ -337,7 +337,7 @@ class AttnLabelDecode(BaseRecLabelDecode):
         elif beg_or_end == "end":
             idx = np.array(self.dict[self.end_str])
         else:
-            assert False, "unsupport type %s in get_beg_end_flag_idx" % beg_or_end
+            assert False, "unsupported type %s in get_beg_end_flag_idx" % beg_or_end
         return idx
 
 
@@ -424,7 +424,7 @@ class RFLLabelDecode(BaseRecLabelDecode):
         elif beg_or_end == "end":
             idx = np.array(self.dict[self.end_str])
         else:
-            assert False, "unsupport type %s in get_beg_end_flag_idx" % beg_or_end
+            assert False, "unsupported type %s in get_beg_end_flag_idx" % beg_or_end
         return idx
 
 
@@ -451,7 +451,7 @@ class SEEDLabelDecode(BaseRecLabelDecode):
         elif beg_or_end == "eos":
             idx = np.array(self.dict[self.end_str])
         else:
-            assert False, "unsupport type %s in get_beg_end_flag_idx" % beg_or_end
+            assert False, "unsupported type %s in get_beg_end_flag_idx" % beg_or_end
         return idx
 
     def decode(self, text_index, text_prob=None, is_remove_duplicate=False):
@@ -579,7 +579,7 @@ class SRNLabelDecode(BaseRecLabelDecode):
         elif beg_or_end == "end":
             idx = np.array(self.dict[self.end_str])
         else:
-            assert False, "unsupport type %s in get_beg_end_flag_idx" % beg_or_end
+            assert False, "unsupported type %s in get_beg_end_flag_idx" % beg_or_end
         return idx
 
 

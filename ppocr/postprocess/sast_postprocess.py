@@ -61,7 +61,7 @@ class SASTPostProcess(object):
         """
         Transfer vertical point_pairs into poly point in clockwise.
         """
-        # constract poly
+        # construct poly
         point_num = len(point_pair_list) * 2
         point_list = [0] * point_num
         for idx, point_pair in enumerate(point_pair_list):

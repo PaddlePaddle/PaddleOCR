@@ -786,7 +786,10 @@ class TransformerDecoder(nn.Layer):
             x, mask=mask, mems=mems, return_hiddens=True, seq_len=seq_len, **kwargs
         )
         x = self.norm(x)
-        mem, x = x[:, :num_mem], x[:, num_mem:]
+        if paddle.device.get_device().startswith("npu"):
+            x = x[:, num_mem:]
+        else:
+            mem, x = x[:, :num_mem], x[:, num_mem:]
         out = self.to_logits(x) if not return_embeddings else x
         if return_mems:
             hiddens = intermediates.hiddens

@@ -52,7 +52,7 @@ CPPD在场景文本识别公开数据集上的精度(%)和模型文件如下：
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|:-----:|:-------:|:-------:|
 | CPPD Base 32*128  | 87.5  | 70.7 |   78.2   | 82.9  | 85.5 | 85.4 | 84.3 | 82.08 | 同上表 |
 
-* 中文训练集和测试集来自于[Chinese Benckmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition)。
+* 中文训练集和测试集来自于[Chinese Benchmark](https://github.com/FudanVI/benchmarking-chinese-text-recognition)。
 
 |    模型      | Scene | Web | Document | Handwriting | Avg |      下载链接       |
 |:----------:|:------:|:-----:|:---------:|:------:|:-----:|:-----:|

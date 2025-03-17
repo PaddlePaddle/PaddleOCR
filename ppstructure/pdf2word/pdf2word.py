@@ -464,12 +464,12 @@ class APP_Image2Doc(QWidget):
             # Must set image path list and language before start
             self.output_dir = os.path.join(
                 os.path.dirname(self.imagePaths[0]), "output"
-            )  # output_dir shold be same as imagepath
+            )  # output_dir should be same as imagepath
             self._thread.setOutputDir(self.output_dir)
             self._thread.setImagePath(self.imagePaths)
             self._thread.setLang(lang)
             self._thread.setPDFParser(pdfParser)
-            # disenble buttons
+            # disable buttons
             self.openFileButton.setEnabled(False)
             self.startCNButton.setEnabled(False)
             self.startENButton.setEnabled(False)
@@ -508,7 +508,7 @@ class APP_Image2Doc(QWidget):
         self.pb.setRange(0, max)
 
     def handleEndsignalSignal(self):
-        # enble buttons
+        # enable buttons
         self.openFileButton.setEnabled(True)
         self.startCNButton.setEnabled(True)
         self.startENButton.setEnabled(True)

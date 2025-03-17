@@ -317,7 +317,7 @@ Metric:
   main_indicator: acc              # The name of the indicator
   key: "Student"                   # Select the main_indicator of this subnet as the criterion for saving the best model
   ignore_space: False              # whether to ignore space during evaluation
-``
+```
 
 Taking the above configuration as an example, the accuracy metric of the `Student` subnet will be used as the judgment metric for saving the best model.
 At the same time, the accuracy metric of all subnets will be printed out in the log.

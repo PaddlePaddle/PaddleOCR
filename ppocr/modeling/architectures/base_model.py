@@ -34,10 +34,10 @@ class BaseModel(nn.Layer):
         super(BaseModel, self).__init__()
         in_channels = config.get("in_channels", 3)
         model_type = config["model_type"]
-        # build transfrom,
-        # for rec, transfrom can be TPS,None
-        # for det and cls, transfrom shoule to be None,
-        # if you make model differently, you can use transfrom in det and cls
+        # build transform,
+        # for rec, transform can be TPS,None
+        # for det and cls, transform should to be None,
+        # if you make model differently, you can use transform in det and cls
         if "Transform" not in config or config["Transform"] is None:
             self.use_transform = False
         else:

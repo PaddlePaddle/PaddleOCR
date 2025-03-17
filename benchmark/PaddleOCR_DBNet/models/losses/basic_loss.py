@@ -58,7 +58,7 @@ class DiceLoss(nn.Layer):
     """
     Loss function from https://arxiv.org/abs/1707.03237,
     where iou computation is introduced heatmap manner to measure the
-    diversity bwtween tow heatmaps.
+    diversity between tow heatmaps.
     """
 
     def __init__(self, eps=1e-6):

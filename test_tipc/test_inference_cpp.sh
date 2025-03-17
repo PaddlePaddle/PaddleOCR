@@ -66,7 +66,7 @@ function func_cpp_inference(){
                     for batch_size in ${cpp_batch_size_list[*]}; do
                         precision="fp32"
                         if [ ${use_mkldnn} = "False" ] && [ ${_flag_quant} = "True" ]; then
-                            precison="int8"
+                            precision="int8"
                         fi
                         _save_log_path="${_log_path}/cpp_infer_cpu_usemkldnn_${use_mkldnn}_threads_${threads}_precision_${precision}_batchsize_${batch_size}.log"
                         set_infer_data=$(func_set_params "${cpp_image_dir_key}" "${_img_dir}")

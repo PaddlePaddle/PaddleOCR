@@ -48,13 +48,13 @@ class AsterHead(nn.Layer):
             in_channels, out_channels, sDim, attDim, max_len_labels
         )
         self.time_step = time_step
-        self.embeder = Embedding(self.time_step, in_channels)
+        self.embedder = Embedding(self.time_step, in_channels)
         self.beam_width = beam_width
         self.eos = self.num_classes - 3
 
     def forward(self, x, targets=None, embed=None):
         return_dict = {}
-        embedding_vectors = self.embeder(x)
+        embedding_vectors = self.embedder(x)
 
         if self.training:
             rec_targets, rec_lengths, _ = targets
@@ -216,7 +216,7 @@ class AttentionRecognitionHead(nn.Layer):
             )
             state = paddle.index_select(state, index=predecessors.squeeze(), axis=1)
 
-            # Update sequence socres and erase scores for <eos> symbol so that they aren't expanded
+            # Update sequence scores and erase scores for <eos> symbol so that they aren't expanded
             stored_scores.append(sequence_scores.clone())
             y_prev = paddle.reshape(y_prev, shape=[-1, 1])
             eos_prev = paddle.full_like(y_prev, fill_value=eos)

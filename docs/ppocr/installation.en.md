@@ -8,8 +8,8 @@ After testing, PaddleOCR can run on glibc 2.23. You can also test other glibc ve
 
 PaddleOCR working environment:
 
-- PaddlePaddle 2.0.0
-- Python 3.7
+- PaddlePaddle > 2.0.0
+- Python 3
 - glibc 2.23
 
 It is recommended to use the docker provided by us to run PaddleOCR. Please refer to the docker tutorial [link](https://www.runoob.com/docker/docker-tutorial.html/).

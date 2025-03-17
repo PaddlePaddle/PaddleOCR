@@ -63,7 +63,7 @@ def init_args():
     parser.add_argument("--det_limit_type", type=str, default="max")
     parser.add_argument("--det_box_type", type=str, default="quad")
 
-    # DB parmas
+    # DB params
     parser.add_argument("--det_db_thresh", type=float, default=0.3)
     parser.add_argument("--det_db_box_thresh", type=float, default=0.6)
     parser.add_argument("--det_db_unclip_ratio", type=float, default=1.5)
@@ -71,22 +71,22 @@ def init_args():
     parser.add_argument("--use_dilation", type=str2bool, default=False)
     parser.add_argument("--det_db_score_mode", type=str, default="fast")
 
-    # EAST parmas
+    # EAST params
     parser.add_argument("--det_east_score_thresh", type=float, default=0.8)
     parser.add_argument("--det_east_cover_thresh", type=float, default=0.1)
     parser.add_argument("--det_east_nms_thresh", type=float, default=0.2)
 
-    # SAST parmas
+    # SAST params
     parser.add_argument("--det_sast_score_thresh", type=float, default=0.5)
     parser.add_argument("--det_sast_nms_thresh", type=float, default=0.2)
 
-    # PSE parmas
+    # PSE params
     parser.add_argument("--det_pse_thresh", type=float, default=0)
     parser.add_argument("--det_pse_box_thresh", type=float, default=0.85)
     parser.add_argument("--det_pse_min_area", type=float, default=16)
     parser.add_argument("--det_pse_scale", type=int, default=1)
 
-    # FCE parmas
+    # FCE params
     parser.add_argument("--scales", type=list, default=[8, 16, 32])
     parser.add_argument("--alpha", type=float, default=1.0)
     parser.add_argument("--beta", type=float, default=1.0)
@@ -112,7 +112,7 @@ def init_args():
     parser.add_argument("--e2e_limit_side_len", type=float, default=768)
     parser.add_argument("--e2e_limit_type", type=str, default="max")
 
-    # PGNet parmas
+    # PGNet params
     parser.add_argument("--e2e_pgnet_score_thresh", type=float, default=0.5)
     parser.add_argument(
         "--e2e_char_dict_path", type=str, default="./ppocr/utils/ic15_dict.txt"
@@ -133,7 +133,7 @@ def init_args():
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
 
-    # SR parmas
+    # SR params
     parser.add_argument("--sr_model_dir", type=str)
     parser.add_argument("--sr_image_shape", type=str, default="3, 32, 128")
     parser.add_argument("--sr_batch_num", type=int, default=1)
@@ -282,7 +282,7 @@ def create_predictor(args, mode, logger):
                     workspace_size=1 << 30,
                     precision_mode=precision,
                     max_batch_size=args.max_batch_size,
-                    min_subgraph_size=args.min_subgraph_size,  # skip the minmum trt subgraph
+                    min_subgraph_size=args.min_subgraph_size,  # skip the minimum trt subgraph
                     use_calib_mode=False,
                 )
 
@@ -325,10 +325,6 @@ def create_predictor(args, mode, logger):
             if paddle.framework.use_pir_api():
                 config.enable_new_ir(True)
                 config.enable_new_executor(True)
-                kPirGcuPasses = gcu_passes.inference_passes(
-                    use_pir=True, name="PaddleOCR"
-                )
-                config.enable_custom_passes(kPirGcuPasses, True)
             else:
                 pass_builder = config.pass_builder()
                 gcu_passes.append_passes_for_legacy_ir(pass_builder, "PaddleOCR")
@@ -621,7 +617,7 @@ def text_visual(
         ), "The number of txts and corresponding scores must match"
 
     def create_blank_img():
-        blank_img = np.ones(shape=[img_h, img_w], dtype=np.int8) * 255
+        blank_img = np.ones(shape=[img_h, img_w], dtype=np.uint8) * 255
         blank_img[:, img_w - 1 :] = 0
         blank_img = Image.fromarray(blank_img).convert("RGB")
         draw_txt = ImageDraw.Draw(blank_img)
