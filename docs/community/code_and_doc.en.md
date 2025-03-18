@@ -102,7 +102,7 @@ The Python code of PaddleOCR follows [PEP8 Specification]( https://www.python.or
   > paddleocr --image_dir ./imgs/11.jpg --use_angle_cls true
   > ```
 
-- Variable Rrferences: If code variables or command parameters are referenced in line, they need to be represented in line code, for example, above `--use_angle_cls true` with one space in front and one space in back
+- Variable References: If code variables or command parameters are referenced in line, they need to be represented in line code, for example, above `--use_angle_cls true` with one space in front and one space in back
 
 - Uniform naming: e.g. PP-OCRv2, PP-OCR mobile, `paddleocr` whl package, PPOCRLabel, Paddle Lite, etc.
 

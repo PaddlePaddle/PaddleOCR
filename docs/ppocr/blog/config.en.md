@@ -142,7 +142,7 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 ## 3. Multilingual Config File Generation
 
 PaddleOCR currently supports recognition for 80 languages (besides Chinese). A multi-language configuration file template is
-provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+provided under the path `configs/rec/multi_languages`: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml).
 
 There are two ways to create the required configuration file:
 
@@ -237,7 +237,7 @@ Currently, the multi-language algorithms supported by PaddleOCR are:
 | rec_cyrillic_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | cyrillic   |
 | rec_devanagari_lite_train.yml |  CRNN |   Mobilenet_v3 small 0.5 |  None   |  BiLSTM |  ctc  | devanagari  |
 
-For more supported languages, please refer to : [Multi-language model](./multi_languages.en.md)
+For more supported languages, please refer to: [Multi-language model](./multi_languages.en.md)
 
 The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.
 

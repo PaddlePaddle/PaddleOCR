@@ -13,7 +13,7 @@ hide:
 
 Run OCR demo in browser refer to [tutorial](https://github.com/PaddlePaddle/FastDeploy/blob/cd0ee79c91d4ed1103abdc65ff12ccadd23d0827/examples/application/js/WebDemo.md).
 
-|demo|web demo dicrctory|visualization|
+|demo|web demo directory|visualization|
 |-|-|-|
 |PP-OCRv3|[TextDetection、TextRecognition](https://github.com/PaddlePaddle/FastDeploy/tree/develop/examples/application/js/web_demo/src/pages/cv/ocr/)|![](./images/196874354-1b5eecb0-f273-403c-aa6c-4463bf6d78db.png)|
 
