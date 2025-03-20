@@ -13,5 +13,5 @@ pyyaml
 requests
 albumentations
 # to be compatible with albumentations
-albucore==0.0.16
+albucore
 packaging
