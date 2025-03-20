@@ -732,6 +732,9 @@ class PaddleOCR(predict_system.TextSystem):
             - For PDF files, if the input is a list of images and the page_num is specified, only the first page_num images will be processed.
             - The preprocess_image function is used to preprocess the input image by applying alpha color replacement, inversion, and binarization if specified.
         """
+        assert (
+            det or rec or cls
+        ), "det and rec and cls can not be False at the same time"
         assert isinstance(img, (np.ndarray, list, str, bytes))
         if isinstance(img, list) and det == True:
             logger.error("When input a list of images, det must be false")
@@ -781,7 +784,7 @@ class PaddleOCR(predict_system.TextSystem):
                 tmp_res = [box.tolist() for box in dt_boxes]
                 ocr_res.append(tmp_res)
             return ocr_res
-        else:
+        elif rec or cls:
             ocr_res = []
             cls_res = []
             for img in imgs:
@@ -792,11 +795,15 @@ class PaddleOCR(predict_system.TextSystem):
                     img, cls_res_tmp, elapse = self.text_classifier(img)
                     if not rec:
                         cls_res.append(cls_res_tmp)
+                        continue
                 rec_res, elapse = self.text_recognizer(img)
                 ocr_res.append(rec_res)
             if not rec:
                 return cls_res
             return ocr_res
+        else:
+            logger.error("det and rec and cls can not be False at the same time")
+            exit(0)
 
 
 class PPStructure(StructureSystem):
