@@ -64,7 +64,7 @@ When you tap **Run Model**, the demo executes the corresponding model(s) in your
   
 <img src="./images/run_det_cls_rec.jpg" width="400">
 
-The status display area shows the current model status (e.g., `run model successed`), indicating that the model ran successfully. The recognition results are formatted as follows:
+The status display area shows the current model status (e.g., `run model succeeded`), indicating that the model ran successfully. The recognition results are formatted as follows:
 
 ```text
 Serial Number: Det: (x1,y1)(x2,y2)(x3,y3)(x4,y4) Rec: Recognized Text, Confidence Score Cls: Classification Label, Classification Score

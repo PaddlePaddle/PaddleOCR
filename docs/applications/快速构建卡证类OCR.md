@@ -314,7 +314,7 @@ class MakeShrinkMap(object):
                 padding = pyclipper.PyclipperOffset()
                 padding.AddPath(subject, pyclipper.JT_ROUND,
                                 pyclipper.ET_CLOSEDPOLYGON)
-                shrinked = []
+                shrunk = []
 
                 # Increase the shrink ratio every time we get multiple polygon returned back
                 possible_ratios = np.arange(self.shrink_ratio, 1,
@@ -323,19 +323,19 @@ class MakeShrinkMap(object):
                 for ratio in possible_ratios:
                     distance = polygon_shape.area * (
                         1 - np.power(ratio, 2)) / polygon_shape.length
-                    shrinked = padding.Execute(-distance)
-                    if len(shrinked) == 1:
+                    shrunk = padding.Execute(-distance)
+                    if len(shrunk) == 1:
                         break
 
-                if shrinked == []:
+                if shrunk == []:
                     cv2.fillPoly(mask,
                                  polygon.astype(np.int32)[np.newaxis, :, :], 0)
                     ignore_tags[i] = True
                     continue
 
-                for each_shirnk in shrinked:
-                    shirnk = np.array(each_shirnk).reshape(-1, 2)
-                    cv2.fillPoly(gt, [shirnk.astype(np.int32)], 1)
+                for each_shrink in shrunk:
+                    shrink = np.array(each_shrink).reshape(-1, 2)
+                    cv2.fillPoly(gt, [shrink.astype(np.int32)], 1)
                     if self.num_classes > 1:  # 绘制分类的mask
                         cv2.fillPoly(gt_class, polygon.astype(np.int32)[np.newaxis, :, :], classes[i])
 

@@ -63,7 +63,7 @@ app主页中有四个按钮，一个下拉列表和一个菜单按钮，他们�
 
 <img src="./images/run_det_cls_rec.jpg" width="400">
 
-模型运行完成后，模型和运行状态显示区`STATUS`字段显示了当前模型的运行状态，这里显示为`run model successed`表明模型运行成功。
+模型运行完成后，模型和运行状态显示区`STATUS`字段显示了当前模型的运行状态，这里显示为`run model succeeded`表明模型运行成功。
 
 模型的运行结果显示在运行结果显示区，显示格式为
 
