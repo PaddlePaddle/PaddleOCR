@@ -303,7 +303,7 @@ class Config(object):
     def print_cfg(self, print_func=print):
         """
         Recursively visualize a dict and
-        indenting acrrording by the relationship of keys.
+        indenting according by the relationship of keys.
         """
         print_func("----------- Config -----------")
         print_dict(self.cfg, print_func)
