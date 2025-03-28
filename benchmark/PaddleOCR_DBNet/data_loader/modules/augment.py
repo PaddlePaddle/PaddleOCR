@@ -33,7 +33,7 @@ class RandomScale:
     def __init__(self, scales, random_rate):
         """
         :param scales: 尺度
-        :param ramdon_rate: 随机系数
+        :param random_rate: 随机系数
         :return:
         """
         self.random_rate = random_rate
@@ -64,7 +64,7 @@ class RandomRotateImgBox:
     def __init__(self, degrees, random_rate, same_size=False):
         """
         :param degrees: 角度，可以是一个数值或者list
-        :param ramdon_rate: 随机系数
+        :param random_rate: 随机系数
         :param same_size: 是否保持和原图一样大
         :return:
         """
@@ -145,7 +145,7 @@ class RandomResize:
     def __init__(self, size, random_rate, keep_ratio=False):
         """
         :param input_size: resize尺寸,数字或者list的形式，如果为list形式，就是[w,h]
-        :param ramdon_rate: 随机系数
+        :param random_rate: 随机系数
         :param keep_ratio: 是否保持长宽比
         :return:
         """
@@ -280,7 +280,7 @@ class HorizontalFlip:
         return data
 
 
-class VerticallFlip:
+class VerticalFlip:
     def __init__(self, random_rate):
         """
 

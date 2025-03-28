@@ -69,7 +69,7 @@ class PaddleModel:
 
     def predict(self, img_path: str, is_output_polygon=False, short_size: int = 1024):
         """
-        对传入的图像进行预测，支持图像地址,opecv 读取图片，偏慢
+        对传入的图像进行预测，支持图像地址,opencv 读取图片，偏慢
         :param img_path: 图像地址
         :param is_numpy:
         :return:

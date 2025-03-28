@@ -187,7 +187,7 @@ class DetectionICDAR2013Evaluator(object):
             precision = 0 if len(detRects) > 0 else 1
 
         if len(detRects) > 0:
-            # Calculate recall and precision matrixs
+            # Calculate recall and precision matrixes
             outputShape = [len(gtRects), len(detRects)]
             recallMat = np.empty(outputShape)
             precisionMat = np.empty(outputShape)
