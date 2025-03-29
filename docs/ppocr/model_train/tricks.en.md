@@ -2,9 +2,9 @@
 comments: true
 ---
 
-Here we have sorted out some Chinese OCR training and prediction tricks, which are being updated continuously. You are welcome to contribute more OCR tricks ~
+Here we have sorted out some Chinese OCR training and prediction tricks, which are being updated continuously. You are welcome to contribute more OCR tricks!
 
-#### 1、Replace Backbone Network
+#### 1. Replace Backbone Network
 
 - **Problem Description**
 
@@ -17,7 +17,7 @@ Here we have sorted out some Chinese OCR training and prediction tricks, which a
 
     - In order to replace the backbone network of text recognition, we need to pay attention to the descending position of network width and height stride. Since the ratio between width and height is large in chinese text recognition, the frequency of height decrease is less and the frequency of width decrease is more. You can refer the [modifies of MobileNetV3](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/modeling/backbones/rec_mobilenet_v3.py) in PaddleOCR.
 
-#### 2、Long Chinese Text Recognition
+#### 2. Long Chinese Text Recognition
 
 - **Problem Description**
   The maximum resolution of Chinese recognition model during training is [3,32,320], if the text image to be recognized is too long, as shown in the figure below, how to adapt?
@@ -50,7 +50,7 @@ Here we have sorted out some Chinese OCR training and prediction tricks, which a
       return padding_im
   ```
 
-#### 3、Space Recognition
+#### 3. Space Recognition
 
 - **Problem Description**
 

@@ -34,10 +34,10 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      checkpoints         |    set model parameter path            |       None        |   Used to load parameters after interruption to continue training|
 |      use_visualdl  |    Set whether to enable visualdl for visual log display |          False        |    [Tutorial](https://www.paddlepaddle.org.cn/paddle/visualdl) |
 |      use_wandb     |    Set whether to enable W&B for visual log display      | False | [Documentation](https://docs.wandb.ai/)
-|      infer_img            |    Set inference image path or folder path     |       ./infer_img | \||
+|      infer_img            |    Set inference image path or folder path     |       ./infer_img | \ |
 |      character_dict_path |    Set dictionary path            |  ./ppocr/utils/ppocr_keys_v1.txt  | If the character_dict_path is None, model can only recognize number and lower letters |
 |      max_text_length     |    Set the maximum length of text        |       25          |                \                 |
-|      use_space_char     |    Set whether to recognize spaces             |        True      |          \|               |
+|      use_space_char     |    Set whether to recognize spaces             |        True      |          \               |
 |      label_list          |    Set the angle supported by the direction classifier       |    ['0','180']    |     Only valid in angle classifier model |
 |      save_res_path          |    Set the save address of the test model results       |    ./output/det_db/predicts_db.txt    |     Only valid in the text detection model |
 
@@ -50,10 +50,10 @@ Take rec_chinese_lite_train_v2.0.yml as an example
 |      beta2           |    Set the exponential decay rate for the 2nd moment estimates  |     0.999         |               \             |
 |      clip_norm           |    The maximum norm value  |    -         |               \             |
 |      **lr**                |         Set the learning rate decay method       |   -    |       \  |
-|        name    |      Learning rate decay class name   |         Cosine       | Currently supports`Linear`,`Cosine`,`Step`,`Piecewise`, see[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
+|        name    |      Learning rate decay class name   |         Cosine       | Currently supports`Linear`,`Cosine`,`Step`,`Piecewise`, see [ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
 |        learning_rate      |    Set the base learning rate        |       0.001      |  \        |
 |      **regularizer**      |  Set network regularization method        |       -      | \        |
-|        name      |    Regularizer class name      |       L2     |  Currently support`L1`,`L2`, see[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
+|        name      |    Regularizer class name      |       L2     |  Currently support`L1`,`L2`, see [ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
 |        factor      |    Regularizer coefficient       |       0.00001     |  \        |
 
 ### Architecture ([ppocr/modeling](../../ppocr/modeling))
@@ -73,12 +73,12 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |        name      |    backbone class name       |       ResNet     | Currently support`MobileNetV3`,`ResNet`        |
 |        layers      |    resnet layers       |       34     |  Currently support18,34,50,101,152,200       |
 |        model_name      |    MobileNetV3 network size       |       small     |  Currently support`small`,`large`       |
-|      **Neck**      |  Set network neck        |       -      | see[ppocr/modeling/necks](../../ppocr/modeling/necks)        |
+|      **Neck**      |  Set network neck        |       -      | see [ppocr/modeling/necks](../../ppocr/modeling/necks)        |
 |        name      |    neck class name       |       SequenceEncoder     | Currently support`SequenceEncoder`,`DBFPN`        |
 |        encoder_type      |    SequenceEncoder encoder type       |       rnn     |  Currently support`reshape`,`fc`,`rnn`       |
 |        hidden_size      |   rnn number of internal units       |       48     |  \      |
 |        out_channels      |   Number of DBFPN output channels       |       256     |  \      |
-|      **Head**      |  Set the network head        |       -      | see[ppocr/modeling/heads](../../ppocr/modeling/heads)        |
+|      **Head**      |  Set the network head        |       -      | see [ppocr/modeling/heads](../../ppocr/modeling/heads)        |
 |        name      |    head class name       |       CTCHead     | Currently support`CTCHead`,`DBHead`,`ClsHead`        |
 |        fc_decay      |    CTCHead regularization coefficient       |       0.0004     |  \      |
 |        k      |   DBHead binarization coefficient       |       50     |  \      |
@@ -121,7 +121,7 @@ In PaddleOCR, the network is divided into four stages: Transform, Backbone, Neck
 |      data_dir        |        Image folder path        |  ./train_data |  \  |
 |      label_file_list        |        Groundtruth file path         |  ["./train_data/train_list.txt"] | This parameter is not required when dataset is LMDBDataSet   |
 |      ratio_list        |        Ratio of data set         |  [1.0] | If there are two train_lists in label_file_list and ratio_list is [0.4,0.6], 40% will be sampled from train_list1, and 60% will be sampled from train_list2 to combine the entire dataset   |
-|      transforms        |        List of methods to transform images and labels         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   see[ppocr/data/imaug](../../ppocr/data/imaug)  |
+|      transforms        |        List of methods to transform images and labels         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   see [ppocr/data/imaug](../../ppocr/data/imaug)  |
 |      **loader**        |        dataloader related         |  - |   |
 |      shuffle        |        Does each epoch disrupt the order of the data set         |  True | \  |
 |      batch_size_per_card        |        Single card batch size during training         |  256 | \  |

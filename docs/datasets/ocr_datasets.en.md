@@ -5,7 +5,7 @@ comments: true
 
 # OCR datasets
 
-Here is a list of public datasets commonly used in OCR, which are being continuously updated. Welcome to contribute datasets~
+Here is a list of public datasets commonly used in OCR, which are being continuously updated. Welcome to contribute datasets!
 
 ## 1. Text detection
 
