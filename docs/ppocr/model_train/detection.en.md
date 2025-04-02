@@ -10,7 +10,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
 
 ### 1.1 Data Preparation
 
-To prepare datasets, refer to [ocr_datasets](../../datasets/ocr_datasets.en.md) .
+To prepare datasets, refer to [ocr_datasets](../../datasets/ocr_datasets.en.md).
 
 ### 1.2 Download Pre-trained Model
 
