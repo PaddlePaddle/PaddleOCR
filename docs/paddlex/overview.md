@@ -1,3 +1,8 @@
+---
+comments: true
+hide:
+  - toc
+---
 
 ## 1. 低代码全流程开发简介
 
@@ -131,7 +136,6 @@ PaddleX 中 OCR 相关的 10 条产线均支持本地**快速推理**，部分�
 
 > ❗注：以上功能均基于GPU/CPU实现。PaddleX还可在昆仑芯、昇腾、寒武纪和海光等主流硬件上进行快速推理和二次开发。下表详细列出了模型产线的支持情况，具体支持的模型列表请参阅 [模型列表(NPU)](https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_npu.html) // [模型列表(XPU)](https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_xpu.html) // [模型列表(MLU)](https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_mlu.html) // [模型列表DCU](https://paddlepaddle.github.io/PaddleX/latest/support_list/model_list_dcu.html)。同时我们也在适配更多的模型，并在主流硬件上推动高性能和服务化部署的实施。
 
-
 **🚀 国产化硬件能力支持**
 
 <table>
@@ -158,31 +162,29 @@ PaddleX 中 OCR 相关的 10 条产线均支持本地**快速推理**，部分�
   </tr>
 </table>
 
-
 ## 3. OCR相关模型产线列表和教程
 
-- **文档图像预处理产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html)
-- **通用OCR产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html)
-- **通用表格识别产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html)
-- **通用表格识别v2产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html)
-- **通用版面解析产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html)
-- **通用版面解析v2产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html)
-- **公式识别**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html)
-- **印章文本识别**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html)
-- **文档场景信息抽取v3产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html)
-- **文档场景信息抽取v4产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html)
-
+* **文档图像预处理产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html)
+* **通用OCR产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html)
+* **通用表格识别产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html)
+* **通用表格识别v2产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html)
+* **通用版面解析产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html)
+* **通用版面解析v2产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html)
+* **公式识别**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html)
+* **印章文本识别**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html)
+* **文档场景信息抽取v3产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html)
+* **文档场景信息抽取v4产线**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html)
 
 ## 4. OCR相关单功能模块列表和教程
 
-- **文本检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html)
-- **印章文本检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/seal_text_detection.html)
-- **文本行方向分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html)
-- **文本识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html)
-- **公式识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/formula_recognition.html)
-- **表格结构识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html)
-- **文本图像矫正模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_image_unwarping.html)
-- **版面区域检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html)
-- **文档图像方向分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html)
-- **表格单元格检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html)
-- **表格分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html)
+* **文本检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html)
+* **印章文本检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/seal_text_detection.html)
+* **文本行方向分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html)
+* **文本识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html)
+* **公式识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/formula_recognition.html)
+* **表格结构识别模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html)
+* **文本图像矫正模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_image_unwarping.html)
+* **版面区域检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html)
+* **文档图像方向分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html)
+* **表格单元格检测模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html)
+* **表格分类模块**: [使用教程](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html)
