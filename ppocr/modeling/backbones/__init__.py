@@ -72,6 +72,7 @@ def build_backbone(config, model_type):
         from .rec_svtrv2 import SVTRv2
         from .rec_vary_vit import Vary_VIT_B, Vary_VIT_B_Formula
         from .rec_pphgnetv2 import PPHGNetV2_B4
+        from .rec_svtrnet2dpos import SVTRNet2DPos
 
         support_dict = [
             "MobileNetV1Enhance",
@@ -102,6 +103,7 @@ def build_backbone(config, model_type):
             "Vary_VIT_B",
             "PPHGNetV2_B4",
             "Vary_VIT_B_Formula",
+            "SVTRNet2DPos",
         ]
     elif model_type == "e2e":
         from .e2e_resnet_vd_pg import ResNet

@@ -495,7 +495,7 @@ class ParseQHead(nn.Layer):
         if self.training:
             label = targets[0]  # label
             label_len = targets[1]
-            max_step = paddle.max(label_len).cpu().numpy()[0] + 2
+            max_step = paddle.max(label_len).cpu().item() + 2
             crop_label = label[:, :max_step]
             final_out = self.forward_train(feat, crop_label)
         else:
