@@ -102,8 +102,8 @@ import com.baidu.paddle.fastdeploy.vision.ocr.DBDetector;
 import com.baidu.paddle.fastdeploy.vision.ocr.Recognizer;
 
 // 模型路径
-String detModelFile = "ch_PP-OCRv3_det_infer/inference.pdmodel";
-String detParamsFile = "ch_PP-OCRv3_det_infer/inference.pdiparams";
+String detModelFile = "PP-OCRv3_mobile_det_infer/inference.pdmodel";
+String detParamsFile = "PP-OCRv3_mobile_det_infer/inference.pdiparams";
 String clsModelFile = "ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel";
 String clsParamsFile = "ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams";
 String recModelFile = "ch_PP-OCRv3_rec_infer/inference.pdmodel";
@@ -153,8 +153,8 @@ import com.baidu.paddle.fastdeploy.vision.ocr.Recognizer;
 // 新建空模型
 PPOCRv3 model = new PPOCRv3();
 // 模型路径
-String detModelFile = "ch_PP-OCRv3_det_infer/inference.pdmodel";
-String detParamsFile = "ch_PP-OCRv3_det_infer/inference.pdiparams";
+String detModelFile = "PP-OCRv3_mobile_det_infer/inference.pdmodel";
+String detParamsFile = "PP-OCRv3_mobile_det_infer/inference.pdiparams";
 String clsModelFile = "ch_ppocr_mobile_v2.0_cls_infer/inference.pdmodel";
 String clsParamsFile = "ch_ppocr_mobile_v2.0_cls_infer/inference.pdiparams";
 String recModelFile = "ch_PP-OCRv3_rec_infer/inference.pdmodel";

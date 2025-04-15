@@ -79,8 +79,7 @@ Using the PP-OCR series English detection, recognition, and classification model
 Download dynamic graph models:
 
 ```bash linenums="1"
-wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_train.tar
-cd pretrained && tar xf ch_PP-OCRv4_det_train.tar && cd ..
+wget -nc -P pretrained https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams
 
 wget -nc -P pretrained https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_train.tar
 cd pretrained && tar xf ch_PP-OCRv4_rec_train.tar && cd ..
@@ -92,9 +91,9 @@ cd pretrained && tar xf ch_ppocr_mobile_v2.0_cls_train.tar && cd ..
 Convert to static graph models:
 
 ```bash linenums="1"
-python3 tools/export_model.py -c configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml \
--o Global.pretrained_model=./pretrained/ch_PP-OCRv4_det_train/best_accuracy \
-Global.save_inference_dir=./inference/ch_PP-OCRv4_det_infer/
+python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml \
+-o Global.pretrained_model=./pretrained/PP-OCRv4_mobile_det_pretrained \
+Global.save_inference_dir=./inference/PP-OCRv4_mobile_det_infer/
 
 python3 tools/export_model.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml \
 -o Global.pretrained_model=./pretrained/ch_PP-OCRv4_rec_train/student \

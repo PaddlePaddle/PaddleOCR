@@ -60,7 +60,7 @@ pip3 install paddlehub==2.1.0 --upgrade
 Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:
 | Model | Path |
 | ------- | - |
-| text detection model | ./inference/ch_PP-OCRv3_det_infer/ |
+| text detection model | ./inference/PP-OCRv3_mobile_det_infer/ |
 | text recognition model | ./inference/ch_PP-OCRv3_rec_infer/ |
 | text angle classifier | ./inference/ch_ppocr_mobile_v2.0_cls_infer/ |
 | layout parse model | ./inference/picodet_lcnet_x1_0_fgd_layout_infer/ |

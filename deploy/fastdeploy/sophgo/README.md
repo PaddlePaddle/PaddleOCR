@@ -11,7 +11,7 @@ PaddleOCR支持通过FastDeploy在SOPHGO上部署相关模型.
 
 | PaddleOCR版本 | 文本框检测 | 方向分类模型 | 文字识别 |字典文件| 说明 |
 |:----|:----|:----|:----|:----|:--------|
-| ch_PP-OCRv3[推荐] |[ch_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_PP-OCRv3_rec](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv3系列原始超轻量模型，支持中英文、多语种文本检测 |
+| ch_PP-OCRv3[推荐] |[ch_PP-OCRv3_det](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_PP-OCRv3_rec](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv3系列原始超轻量模型，支持中英文、多语种文本检测 |
 | en_PP-OCRv3[推荐] |[en_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [en_PP-OCRv3_rec](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar) | [en_dict.txt](https://bj.bcebos.com/paddlehub/fastdeploy/en_dict.txt) | OCRv3系列原始超轻量模型，支持英文与数字识别，除检测模型和识别模型的训练数据与中文模型不同以外，无其他区别 |
 | ch_PP-OCRv2 |[ch_PP-OCRv2_det](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_PP-OCRv2_rec](https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2系列原始超轻量模型，支持中英文、多语种文本检测 |
 | ch_PP-OCRv2_mobile |[ch_ppocr_mobile_v2.0_det](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_det_infer.tar) | [ch_ppocr_mobile_v2.0_cls](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) | [ch_ppocr_mobile_v2.0_rec](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar) | [ppocr_keys_v1.txt](https://bj.bcebos.com/paddlehub/fastdeploy/ppocr_keys_v1.txt) | OCRv2系列原始超轻量模型，支持中英文、多语种文本检测,比PPOCRv2更加轻量 |
@@ -21,28 +21,28 @@ PaddleOCR支持通过FastDeploy在SOPHGO上部署相关模型.
 
 PP-OCRv3包括文本检测模型（ch_PP-OCRv3_det）、方向分类模型（ch_ppocr_mobile_v2.0_cls）、文字识别模型（ch_PP-OCRv3_rec）
 SOPHGO-TPU部署模型前需要将以上Paddle模型转换成bmodel模型，我们以ch_PP-OCRv3_det模型为例，具体步骤如下:
-- 下载Paddle模型[ch_PP-OCRv3_det](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar)
+- 下载Paddle模型[ch_PP-OCRv3_det](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar)
 - Pddle模型转换为ONNX模型，请参考[Paddle2ONNX](https://github.com/PaddlePaddle/Paddle2ONNX)
 - ONNX模型转换bmodel模型的过程，请参考[TPU-MLIR](https://github.com/sophgo/tpu-mlir)
 下面我们提供一个example, 供用户参考，完成模型的转换.
 
 ### 3.1 下载ch_PP-OCRv3_det模型,并转换为ONNX模型
 ```shell
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar xvf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar xvf PP-OCRv3_mobile_det_infer.tar
 
 # 修改ch_PP-OCRv3_det模型的输入shape，由动态输入变成固定输入
-python paddle_infer_shape.py --model_dir ch_PP-OCRv3_det_infer \
+python paddle_infer_shape.py --model_dir PP-OCRv3_mobile_det_infer \
                              --model_filename inference.pdmodel \
                              --params_filename inference.pdiparams \
-                             --save_dir ch_PP-OCRv3_det_infer_fix \
+                             --save_dir PP-OCRv3_mobile_det_infer_fix \
                              --input_shape_dict="{'x':[1,3,960,608]}"
 
 # 请用户自行安装最新发布版本的paddle2onnx, 转换模型到ONNX格式的模型
-paddle2onnx --model_dir ch_PP-OCRv3_det_infer_fix \
+paddle2onnx --model_dir PP-OCRv3_mobile_det_infer_fix \
             --model_filename inference.pdmodel \
             --params_filename inference.pdiparams \
-            --save_file ch_PP-OCRv3_det_infer_fix.onnx \
+            --save_file PP-OCRv3_mobile_det_infer_fix.onnx \
             --enable_dev_version True
 ```
 
@@ -64,17 +64,17 @@ source ./envsetup.sh
 ``` shell
 mkdir ch_PP-OCRv3_det && cd ch_PP-OCRv3_det
 
-#在该文件中放入测试图片，同时将上一步转换的ch_PP-OCRv3_det_infer_fix.onnx放入该文件夹中
+#在该文件中放入测试图片，同时将上一步转换的PP-OCRv3_mobile_det_infer_fix.onnx放入该文件夹中
 cp -rf ${REGRESSION_PATH}/dataset/COCO2017 .
 cp -rf ${REGRESSION_PATH}/image .
-#放入onnx模型文件ch_PP-OCRv3_det_infer_fix.onnx
+#放入onnx模型文件PP-OCRv3_mobile_det_infer_fix.onnx
 
 mkdir workspace && cd workspace
 
 #将ONNX模型转换为mlir模型，其中参数--output_names可以通过NETRON查看
 model_transform.py \
     --model_name ch_PP-OCRv3_det \
-    --model_def ../ch_PP-OCRv3_det_infer_fix.onnx \
+    --model_def ../PP-OCRv3_mobile_det_infer_fix.onnx \
     --input_shapes [[1,3,960,608]] \
     --mean 0.0,0.0,0.0 \
     --scale 0.0039216,0.0039216,0.0039216 \

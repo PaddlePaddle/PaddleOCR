@@ -1,7 +1,7 @@
 ===========================ch_PP-OCRv2===========================
 model_name:ch_PP-OCRv3
 python:python3.7
-infer_model:./inference/ch_PP-OCRv3_det_infer/
+infer_model:./inference/PP-OCRv3_mobile_det_infer/
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_system.py --rec_image_shape="3,48,320"

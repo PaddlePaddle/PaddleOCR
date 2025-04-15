@@ -31,23 +31,23 @@
 ### PPOCRV4_det
 | 模型 | 策略 | Metric(hmean) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| 中文PPOCRV4-det_mobile | Baseline | 72.71 | 5.7 | 92.0 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_infer.tar) |
-| 中文PPOCRV4-det_mobile | 量化+蒸馏 | 71.10 | 2.3 | 94.1 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_mobile_qat_3090.zip) |
-| 中文PPOCRV4-det_server | Baseline | 79.82 | 32.6 | 844.7 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_server_infer.tar) |
-| 中文PPOCRV4-det_server | 量化+蒸馏 | 79.27 | 12.3 | 635.0 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_3090.zip) |
+| PP-OCRv4_mobile_det | Baseline | 72.71 | 5.7 | 92.0 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_infer.tar) |
+| PP-OCRv4_mobile_det | 量化+蒸馏 | 71.10 | 2.3 | 94.1 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_mobile_qat_3090.zip) |
+| PP-OCRv4_server_det | Baseline | 79.82 | 32.6 | 844.7 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_server_infer.tar) |
+| PP-OCRv4_server_det | 量化+蒸馏 | 79.27 | 12.3 | 635.0 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_3090.zip) |
 > - GPU测试环境：RTX 3090, cuda11.7+tensorrt8.4.2.4+paddle2.5
 > - CPU测试环境：Intel(R) Xeon(R) Gold 6226R，使用12线程测试
-> - PPOCRV4-det_server在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
+> - PP-OCRv4_server_det在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
 
 | 模型 | 策略 | Metric(hmean) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-| 中文PPOCRV4-det_mobile | Baseline | 72.71 | 4.7 | 198.4 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_infer.tar) |
-| 中文PPOCRV4-det_mobile | 量化+蒸馏 | 71.38 | 3.3 | 205.2 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_v100.zip) |
-| 中文PPOCRV4-det_server | Baseline | 79.77 | 50.0 | 2159.4 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_server_infer.tar) |
-| 中文PPOCRV4-det_server | 量化+蒸馏 | 79.81 | 42.4 | 1834.8 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_v100.zip) |
+| PP-OCRv4_mobile_det | Baseline | 72.71 | 4.7 | 198.4 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_infer.tar) |
+| PP-OCRv4_mobile_det | 量化+蒸馏 | 71.38 | 3.3 | 205.2 | [Config](./configs/ppocrv4/ppocrv4_det_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_v100.zip) |
+| PP-OCRv4_server_det | Baseline | 79.77 | 50.0 | 2159.4 | - | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/ch_PP-OCRv4_det_server_infer.tar) |
+| PP-OCRv4_server_det | 量化+蒸馏 | 79.81 | 42.4 | 1834.8 | [Config](./configs/ppocrv4/ppocrv4_rec_server_qat_dist.yaml) | [Model](https://paddle-ocr-models.bj.bcebos.com/ppocrv4_qat/det/det_server_qat_v100.zip) |
 > - GPU测试环境：Tesla V100, cuda11.7+tensorrt8.4.2.4+paddle2.5.2
 > - CPU测试环境：Intel(R) Xeon(R) Gold 6271C，使用12线程测试
-> - PPOCRV4-det_server在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
+> - PP-OCRv4_server_det在不完整的数据集上测试，数据处理流程参考[ppocrv4_det_server数据集预处理](#321-ppocrv4_det_server数据集预处理)，仅为了展示自动压缩效果，指标并不具有参考性，模型真实表现请参考[PPOCRV4介绍](../../../doc/doc_ch/PP-OCRv4_introduction.md)
 
 ### PPOCRV4_rec
 | 模型 | 策略 | Metric(accuracy) | GPU 耗时(ms) | ARM CPU 耗时(ms) | 配置文件 | Inference模型 |

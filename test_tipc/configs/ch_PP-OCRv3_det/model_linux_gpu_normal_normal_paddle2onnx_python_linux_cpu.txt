@@ -2,7 +2,7 @@
 model_name:ch_PP-OCRv3_det
 python:python3.7
 2onnx: paddle2onnx
---det_model_dir:./inference/ch_PP-OCRv3_det_infer/
+--det_model_dir:./inference/PP-OCRv3_mobile_det_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
 --det_save_file:./inference/det_v3_onnx/model.onnx

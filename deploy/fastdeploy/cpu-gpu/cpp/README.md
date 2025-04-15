@@ -35,8 +35,8 @@ cmake .. -DFASTDEPLOY_INSTALL_DIR=${PWD}/fastdeploy-linux-x64-x.x.x
 make -j
 
 # 下载PP-OCRv3文字检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar -xvf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar -xvf PP-OCRv3_mobile_det_infer.tar
 # 下载文字方向分类器模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
@@ -50,27 +50,27 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 
 # 运行部署示例
 # 在CPU上使用Paddle Inference推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
 # 在CPU上使用OenVINO推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
 # 在CPU上使用ONNX Runtime推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 2
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 2
 # 在CPU上使用Paddle Lite推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 3
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 3
 # 在GPU上使用Paddle Inference推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 4
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 4
 # 在GPU上使用Paddle TensorRT推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 5
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 5
 # 在GPU上使用ONNX Runtime推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 6
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 6
 # 在GPU上使用Nvidia TensorRT推理
-./infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 7
+./infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v2.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 7
 
 # 同时, FastDeploy提供文字检测,文字分类,文字识别三个模型的单独推理,
 # 有需要的用户, 请准备合适的图片, 同时根据自己的需求, 参考infer.cc来配置自定义硬件与推理后端.
 
 # 在CPU上,单独使用文字检测模型部署
-./infer_det ./ch_PP-OCRv3_det_infer ./12.jpg 0
+./infer_det ./PP-OCRv3_mobile_det_infer ./12.jpg 0
 
 # 在CPU上,单独使用文字方向分类模型部署
 ./infer_cls ./ch_ppocr_mobile_v2.0_cls_infer ./12.jpg 0
