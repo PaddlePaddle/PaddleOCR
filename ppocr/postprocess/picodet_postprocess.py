@@ -292,6 +292,7 @@ class PicoDetPostProcess(object):
                         key=lambda x: x[1]["score"],
                         reverse=True,
                     )[0][0]
-                duplicate_idx.extend([x for x in overlaps if x != keep])
+                if keep != i:
+                    duplicate_idx.append(i)
         results = [x for i, x in enumerate(results) if i not in duplicate_idx]
         return results
