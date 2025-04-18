@@ -136,7 +136,14 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
-  config.SetModel(model_dir + "/inference.pdmodel",
+  std::string model_file_path = model_dir + "/inference.json";
+  FILE* file = std::fopen(model_file_path.c_str(), "r");
+  if (file) {
+    std::fclose(file);
+  } else {
+    model_file_path = model_dir + "/inference.pdmodel";
+  }
+  config.SetModel(model_file_path,
                   model_dir + "/inference.pdiparams");
   std::cout << "In PP-OCRv3, default rec_img_h is 48,"
             << "if you use other model, you should set the param rec_img_h=32"
@@ -186,3 +193,5 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
 }
 
 } // namespace PaddleOCR
+
+// ./build/ppocr --rec_model_dir=../../ch_ppocr_mobile_v2.0_rec_infer  --image_dir=../../general_ocr_rec_001.png     --use_angle_cls=false     --det=false     --rec=true     --cls=false --rec_img_h=32
