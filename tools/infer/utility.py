@@ -496,8 +496,10 @@ def _pd_dtype_to_np_dtype(pd_dtype):
 
 def load_config(file_path):
     _, ext = os.path.splitext(file_path)
-    assert ext in [".yml", ".yaml"], "only support yaml files for now"
-    config = yaml.load(open(file_path, "rb"), Loader=yaml.Loader)
+    if ext not in [".yml", ".yaml"]:
+        raise ValueError(f"only support yaml files for now, got {file_path}")
+    with open(file_path, "rb") as file:
+        config = yaml.load(file, Loader=yaml.SafeLoader)
     return config
 
 

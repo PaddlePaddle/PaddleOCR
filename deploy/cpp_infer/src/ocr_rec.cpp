@@ -193,5 +193,3 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
 }
 
 } // namespace PaddleOCR
-
-// ./build/ppocr --rec_model_dir=../../ch_ppocr_mobile_v2.0_rec_infer  --image_dir=../../general_ocr_rec_001.png     --use_angle_cls=false     --det=false     --rec=true     --cls=false --rec_img_h=32
