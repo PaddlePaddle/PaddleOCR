@@ -39,7 +39,6 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "numpy>=1.24.4",
     "paddlex[ocr,ie,multimodal]==3.0.0",
     "PyYAML>=6",
     "typing-extensions>=4.12",
