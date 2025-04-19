@@ -21,5 +21,5 @@ class CLISubcommandExecutor(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def execute_with_args(cls, args):
+    def execute_with_args(self, args):
         raise NotImplementedError
