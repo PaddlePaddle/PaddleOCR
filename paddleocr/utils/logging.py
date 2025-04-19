@@ -14,7 +14,7 @@
 
 import logging
 
-from .._env import DISABLE_AUTO_LOGGING_CONIFG
+from .._env import DISABLE_AUTO_LOGGING_CONFIG
 
 LOGGER_NAME = "paddleocr"
 
@@ -22,7 +22,7 @@ logger = logging.getLogger(LOGGER_NAME)
 
 
 def _set_up_logger():
-    if DISABLE_AUTO_LOGGING_CONIFG:
+    if DISABLE_AUTO_LOGGING_CONFIG:
         return
 
     # Basically compatible with PaddleOCR 2.x, except for logging to stderr
