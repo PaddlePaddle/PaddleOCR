@@ -15,8 +15,8 @@
 
 ```bash
 # 下载PP-OCRv3文字检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar -xvf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar -xvf PP-OCRv3_mobile_det_infer.tar
 # 下载文字方向分类器模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
@@ -25,10 +25,10 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
 tar -xvf ch_PP-OCRv3_rec_infer.tar
 
 # 请用户自行安装最新发布版本的paddle2onnx, 转换模型到ONNX格式的模型
-paddle2onnx --model_dir ch_PP-OCRv3_det_infer \
+paddle2onnx --model_dir PP-OCRv3_mobile_det_infer \
             --model_filename inference.pdmodel \
             --params_filename inference.pdiparams \
-            --save_file ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx \
+            --save_file PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer.onnx \
             --enable_dev_version True
 paddle2onnx --model_dir ch_ppocr_mobile_v2.0_cls_infer \
             --model_filename inference.pdmodel \
@@ -42,8 +42,8 @@ paddle2onnx --model_dir ch_PP-OCRv3_rec_infer \
             --enable_dev_version True
 
 # 固定模型的输入shape
-python -m paddle2onnx.optimize --input_model ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx \
-                               --output_model ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx \
+python -m paddle2onnx.optimize --input_model PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer.onnx \
+                               --output_model PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer.onnx \
                                --input_shape_dict "{'x':[1,3,960,960]}"
 python -m paddle2onnx.optimize --input_model ch_ppocr_mobile_v2.0_cls_infer/ch_ppocr_mobile_v2.0_cls_infer.onnx \
                                --output_model ch_ppocr_mobile_v2.0_cls_infer/ch_ppocr_mobile_v2.0_cls_infer.onnx \
@@ -84,7 +84,7 @@ cd PaddleOCR/deploy/fastdeploy/rockchip/python
 
 # CPU推理
 python3 infer.py \
-                --det_model ./ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx \
+                --det_model ./PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer.onnx \
                 --cls_model ./ch_ppocr_mobile_v2.0_cls_infer/ch_ppocr_mobile_v2.0_cls_infer.onnx \
                 --rec_model ./ch_PP-OCRv3_rec_infer/ch_PP-OCRv3_rec_infer.onnx \
                 --rec_label_file ./ppocr_keys_v1.txt \
@@ -93,7 +93,7 @@ python3 infer.py \
 
 # NPU推理
 python3 infer.py \
-                --det_model ./ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer_rk3588_unquantized.rknn \
+                --det_model ./PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer_rk3588_unquantized.rknn \
                 --cls_model ./ch_ppocr_mobile_v2.0_cls_infer/ch_ppocr_mobile_v20_cls_infer_rk3588_unquantized.rknn \
                 --rec_model ./ch_PP-OCRv3_rec_infer/ch_PP-OCRv3_rec_infer_rk3588_unquantized.rknn \
                 --rec_label_file ppocr_keys_v1.txt \

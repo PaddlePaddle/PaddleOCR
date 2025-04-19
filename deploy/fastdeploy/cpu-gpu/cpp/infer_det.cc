@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
   if (argc < 4) {
     std::cout << "Usage: infer_demo path/to/det_model path/to/image "
                  "run_option, "
-                 "e.g ./infer_demo ./ch_PP-OCRv3_det_infer ./12.jpg 0"
+                 "e.g ./infer_demo ./PP-OCRv3_mobile_det_infer ./12.jpg 0"
               << std::endl;
     std::cout << "The data type of run_option is int, 0: run with cpu; 1: run "
                  "with gpu;."

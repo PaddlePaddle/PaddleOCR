@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
     printf("Usage: infer_demo path/to/det_model path/to/cls_model "
            "path/to/rec_model path/to/rec_label_file path/to/image "
            "run_option, "
-           "e.g ./infer_demo ./ch_PP-OCRv3_det_infer "
+           "e.g ./infer_demo ./PP-OCRv3_mobile_det_infer "
            "./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer "
            "./ppocr_keys_v1.txt ./12.jpg 0\n");
     printf(

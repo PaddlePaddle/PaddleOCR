@@ -41,10 +41,10 @@ git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/serving/fastdeploy_serving
 
 # 下载模型,图片和字典文件
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar xvf ch_PP-OCRv3_det_infer.tar && mv ch_PP-OCRv3_det_infer 1
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar xvf PP-OCRv3_mobile_det_infer.tar && mv PP-OCRv3_mobile_det_infer 1
 mv 1/inference.pdiparams 1/model.pdiparams && mv 1/inference.pdmodel 1/model.pdmodel
-mv 1 models/det_runtime/ && rm -rf ch_PP-OCRv3_det_infer.tar
+mv 1 models/det_runtime/ && rm -rf PP-OCRv3_mobile_det_infer.tar
 
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar xvf ch_ppocr_mobile_v2.0_cls_infer.tar && mv ch_ppocr_mobile_v2.0_cls_infer 1

@@ -8,8 +8,8 @@ std:
     - 58.395
     - 57.12
     - 57.375
-model_path: ./ch_PP-OCRv3_det_infer/ch_PP-OCRv3_det_infer.onnx
+model_path: ./PP-OCRv3_mobile_det_infer/PP-OCRv3_mobile_det_infer.onnx
 outputs_nodes:
 do_quantization: False
 dataset:
-output_folder: "./ch_PP-OCRv3_det_infer"
+output_folder: "./PP-OCRv3_mobile_det_infer"

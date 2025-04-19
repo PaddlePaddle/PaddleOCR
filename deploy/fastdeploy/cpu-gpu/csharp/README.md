@@ -19,7 +19,7 @@ PaddleOCR支持利用FastDeploy在NVIDIA GPU、X86 CPU、飞腾CPU、ARM CPU、I
 下载完成后将该程序添加到环境变量**PATH**中
 
 ### 4.2. 下载模型文件和测试图片
-> https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar # (下载后解压缩)
+> https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar # (下载后解压缩)
 > https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 > https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
 > https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/doc/imgs/12.jpg
@@ -68,9 +68,9 @@ fastdeploy_init.bat install %cd% D:\PaddleOCR\deploy\fastdeploy\cpu-gpu\csharp\b
 ```shell
 cd Release
 # CPU推理
-infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
+infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 0
 # GPU推理
-infer_demo ./ch_PP-OCRv3_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
+infer_demo ./PP-OCRv3_mobile_det_infer ./ch_ppocr_mobile_v3.0_cls_infer ./ch_PP-OCRv3_rec_infer ./ppocr_keys_v1.txt ./12.jpg 1
 ```
 
 ## 5. PP-OCRv3 C# API接口简介

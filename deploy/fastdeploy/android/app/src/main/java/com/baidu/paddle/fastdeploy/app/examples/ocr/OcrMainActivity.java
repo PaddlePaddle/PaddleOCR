@@ -423,7 +423,7 @@ public class OcrMainActivity extends Activity implements View.OnClickListener, C
     public void checkAndUpdateSettings() {
         if (OcrSettingsActivity.checkAndUpdateSettings(this)) {
             String realModelDir = getCacheDir() + "/" + OcrSettingsActivity.modelDir;
-            String detModelName = "ch_PP-OCRv3_det_infer";
+            String detModelName = "PP-OCRv3_mobile_det_infer";
             // String detModelName = "ch_ppocr_mobile_v2.0_det_infer";
             String clsModelName = "ch_ppocr_mobile_v2.0_cls_infer";
             // String recModelName = "ch_ppocr_mobile_v2.0_rec_infer";

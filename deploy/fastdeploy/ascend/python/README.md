@@ -22,8 +22,8 @@ git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/ascend/python
 
 # 下载PP-OCRv3文字检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar -xvf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar -xvf PP-OCRv3_mobile_det_infer.tar
 # 下载文字方向分类器模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
@@ -35,7 +35,7 @@ tar -xvf ch_PP-OCRv3_rec_infer.tar
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/doc/imgs/12.jpg
 wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_keys_v1.txt
 
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg
 # NOTE:若用户需要连续地预测图片, 输入图片尺寸需要准备为统一尺寸, 例如 N 张, 尺寸为 A * B 的图片.
 ```
 

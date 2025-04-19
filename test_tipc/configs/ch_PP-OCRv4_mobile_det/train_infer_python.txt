@@ -1,5 +1,5 @@
 ===========================train_params===========================
-model_name:ch_PP-OCRv4_mobile_det
+model_name:PP-OCRv4_mobile_det
 python:python
 gpu_list:0|0,1
 Global.use_gpu:True|True
@@ -7,13 +7,13 @@ Global.auto_cast:fp32
 Global.epoch_num:lite_train_lite_infer=1|whole_train_whole_infer=50
 Global.save_model_dir:./output/
 Train.loader.batch_size_per_card:lite_train_lite_infer=2|whole_train_whole_infer=4
-Global.pretrained_model:pretrain_models/ch_PP-OCRv4_det_trained.pdparams
+Global.pretrained_model:pretrain_models/PP-OCRv4_mobile_det_pretrained.pdparams
 train_model_name:latest
 train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml -o Global.print_batch_step=1 Train.loader.shuffle=false Global.eval_batch_step=[4000,400]
+norm_train:tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml -o Global.print_batch_step=1 Train.loader.shuffle=false Global.eval_batch_step=[4000,400]
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,14 +27,14 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.checkpoints:
-norm_export:tools/export_model.py -c configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml -o 
+norm_export:tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml -o 
 quant_export:null
 fpgm_export: 
 distill_export:null
 export1:null
 export2:null
 inference_dir:Student
-infer_model:./inference/ch_PP-OCRv3_det_infer/
+infer_model:./inference/PP-OCRv3_mobile_det_infer/
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_det.py

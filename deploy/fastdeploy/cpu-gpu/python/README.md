@@ -28,8 +28,8 @@ git checkout dygraph
 cd PaddleOCR/deploy/fastdeploy/cpu-gpu/python
 
 # 下载PP-OCRv3文字检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar -xvf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+tar -xvf PP-OCRv3_mobile_det_infer.tar
 # 下载文字方向分类器模型
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
 tar -xvf ch_ppocr_mobile_v2.0_cls_infer.tar
@@ -43,27 +43,27 @@ wget https://gitee.com/paddlepaddle/PaddleOCR/raw/release/2.6/ppocr/utils/ppocr_
 
 # 运行部署示例
 # 在CPU上使用Paddle Inference推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend paddle
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend paddle
 # 在CPU上使用OenVINO推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend openvino
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend openvino
 # 在CPU上使用ONNX Runtime推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend ort
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend ort
 # 在CPU上使用Paddle Lite推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend pplite
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device cpu --backend pplite
 # 在GPU上使用Paddle Inference推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend paddle
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend paddle
 # 在GPU上使用Paddle TensorRT推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend pptrt
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend pptrt
 # 在GPU上使用ONNX Runtime推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend ort
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend ort
 # 在GPU上使用Nvidia TensorRT推理
-python infer.py --det_model ch_PP-OCRv3_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend trt
+python infer.py --det_model PP-OCRv3_mobile_det_infer --cls_model ch_ppocr_mobile_v2.0_cls_infer --rec_model ch_PP-OCRv3_rec_infer --rec_label_file ppocr_keys_v1.txt --image 12.jpg --device gpu --backend trt
 
 # 同时, FastDeploy提供文字检测,文字分类,文字识别三个模型的单独推理,
 # 有需要的用户, 请准备合适的图片, 同时根据自己的需求, 参考infer.py来配置自定义硬件与推理后端.
 
 # 在CPU上,单独使用文字检测模型部署
-python infer_det.py --det_model ch_PP-OCRv3_det_infer  --image 12.jpg --device cpu
+python infer_det.py --det_model PP-OCRv3_mobile_det_infer  --image 12.jpg --device cpu
 
 # 在CPU上,单独使用文字方向分类模型部署
 python infer_cls.py --cls_model ch_ppocr_mobile_v2.0_cls_infer --image 12.jpg --device cpu

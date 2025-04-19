@@ -61,7 +61,7 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 安装服务模块前，需要准备推理模型并放到正确路径。默认使用的是PP-OCRv3模型，默认模型路径为：
 | 模型 | 路径 |
 | ------- | - |
-| 检测模型 | `./inference/ch_PP-OCRv3_det_infer/` |
+| 检测模型 | `./inference/PP-OCRv3_mobile_det_infer/` |
 | 识别模型 | `./inference/ch_PP-OCRv3_rec_infer/` |
 | 方向分类器 | `./inference/ch_ppocr_mobile_v2.0_cls_infer/` |
 | 版面分析模型 | `./inference/picodet_lcnet_x1_0_fgd_layout_infer/` |

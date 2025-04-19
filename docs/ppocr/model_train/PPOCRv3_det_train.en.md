@@ -26,7 +26,7 @@ For the preparation of the operating environment, refer to [document](./installa
 
 ### 2.2 Train the teacher model
 
-The configuration file for teacher model training is [ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml). The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to [Document](./knowledge_distillation.md).
+The configuration file for teacher model training is [PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml). The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to [Document](./knowledge_distillation.md).
 
 Download ImageNet pre-trained model:
 
@@ -39,12 +39,12 @@ wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet50_v
 
 ```bash linenums="1"
 # Single card training
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
 -o Architecture.Models.Student.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
 Architecture.Models.Student2.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
 Global.save_model_dir=./output/
 # If you want to use multi-GPU distributed training, please use the following command:
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
 -o Architecture.Models.Student.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
 Architecture.Models.Student2.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
 Global.save_model_dir=./output/
@@ -66,7 +66,7 @@ Among them, best_accuracy is the model parameter with the highest accuracy saved
 The model evaluation command is as follows:
 
 ```bash linenums="1"
-python3 tools/eval.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml -o Global.checkpoints=./output/best_accuracy
+python3 tools/eval.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml -o Global.checkpoints=./output/best_accuracy
 ```
 
 The trained teacher model has a larger structure and higher accuracy, which is used to improve the accuracy of the student model.
@@ -92,7 +92,7 @@ The extracted model parameters can be used for further fine-tuning or distillati
 
 ### 2.3 Training the student model
 
-The configuration file for training the student model is [ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)
+The configuration file for training the student model is [PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
 The teacher model trained in the previous section is used as supervision, and the CML method is used to train a lightweight student model.
 
 Download the ImageNet pre-trained model of the student model:
@@ -106,13 +106,13 @@ wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV
 
 ```bash linenums="1"
 # Single card training
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
 -o Architecture.Models.Student.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
 Architecture.Models.Student2.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
 Architecture.Models.Teacher.pretrained=./pretrain_models/dml_teacher \
 Global.save_model_dir=./output/
 # If you want to use multi-GPU distributed training, please use the following command:
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
 -o Architecture.Models.Student.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
 Architecture.Models.Student2.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
 Architecture.Models.Teacher.pretrained=./pretrain_models/dml_teacher \
@@ -123,7 +123,7 @@ The model saved during the training process is in the output directory.
 The model evaluation command is as follows:
 
 ```bash linenums="1"
-python3 tools/eval.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
+python3 tools/eval.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
 ```
 
 best_accuracy contains the parameters of three models, corresponding to Student, Student2, and Teacher in the configuration file. The method to extract Student parameters is as follows:
@@ -171,11 +171,11 @@ Start training:
 
 ```bash linenums="1"
 # Single card training
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
 -o Global.pretrained_model=./ch_PP-OCRv3_det_distill_train/best_accuracy \
 Global.save_model_dir=./output/
 # If you want to use multi-GPU distributed training, please use the following command:
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
 -o Global.pretrained_model=./ch_PP-OCRv3_det_distill_train/best_accuracy \
 Global.save_model_dir=./output/
 ```
@@ -205,17 +205,17 @@ print(s_params.keys())
 paddle.save(s_params, "./student.pdparams")
 ```
 
-Train using the configuration file [ch_PP-OCRv3_det_student.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml).
+Train using the configuration file [PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml).
 
 **Start training**
 
 ```bash linenums="1"
 # Single card training
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml \
 -o Global.pretrained_model=./student \
 Global.save_model_dir=./output/
 # If you want to use multi-GPU distributed training, please use the following command:
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml \
 -o Global.pretrained_model=./student \
 Global.save_model_dir=./output/
 ```
@@ -242,12 +242,12 @@ paddle.save(s_params, "./teacher.pdparams")
 
 ```bash linenums="1"
 # Single card training
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
 -o Architecture.Models.Student.pretrained=./teacher \
 Architecture.Models.Student2.pretrained=./teacher \
 Global.save_model_dir=./output/
 # If you want to use multi-GPU distributed training, please use the following command:
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
 -o Architecture.Models.Student.pretrained=./teacher \
 Architecture.Models.Student2.pretrained=./teacher \
 Global.save_model_dir=./output/

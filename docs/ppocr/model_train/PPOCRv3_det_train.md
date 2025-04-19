@@ -25,7 +25,7 @@ PP-OCRv3检测训练包括两个步骤：
 
 ### 2.2 训练教师模型
 
-教师模型训练的配置文件是[ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](./knowledge_distillation.md)。
+教师模型训练的配置文件是[PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](./knowledge_distillation.md)。
 
 下载ImageNet预训练模型：
 
@@ -38,12 +38,12 @@ wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/ResNet50_v
 
 ```bash linenums="1"
 # 单卡训练
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
     -o Architecture.Models.Student.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
        Architecture.Models.Student2.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
        Global.save_model_dir=./output/
 # 如果要使用多GPU分布式训练，请使用如下命令：
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
     -o Architecture.Models.Student.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
        Architecture.Models.Student2.pretrained=./pretrain_models/ResNet50_vd_ssld_pretrained \
        Global.save_model_dir=./output/
@@ -65,7 +65,7 @@ latest.pdopt     # 默认保存的最新模型的优化器相关参数
 模型评估命令如下：
 
 ```bash linenums="1"
-python3 tools/eval.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml -o Global.checkpoints=./output/best_accuracy
+python3 tools/eval.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml -o Global.checkpoints=./output/best_accuracy
 ```
 
 训练的教师模型结构更大，精度更高，用于提升学生模型的精度。
@@ -91,7 +91,7 @@ paddle.save(s_params, "./pretrain_models/dml_teacher.pdparams")
 
 ### 2.3 训练学生模型
 
-训练学生模型的配置文件是[ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml)
+训练学生模型的配置文件是[PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
 上一节训练得到的教师模型作为监督，采用CML方式训练得到轻量的学生模型。
 
 下载学生模型的ImageNet预训练模型：
@@ -105,13 +105,13 @@ wget -P ./pretrain_models/ https://paddleocr.bj.bcebos.com/pretrained/MobileNetV
 
 ```bash linenums="1"
 # 单卡训练
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
     -o Architecture.Models.Student.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
        Architecture.Models.Student2.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
        Architecture.Models.Teacher.pretrained=./pretrain_models/dml_teacher \
        Global.save_model_dir=./output/
 # 如果要使用多GPU分布式训练，请使用如下命令：
-python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
     -o Architecture.Models.Student.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
        Architecture.Models.Student2.pretrained=./pretrain_models/MobileNetV3_large_x0_5_pretrained \
        Architecture.Models.Teacher.pretrained=./pretrain_models/dml_teacher \
@@ -122,7 +122,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs
 模型评估命令如下：
 
 ```bash linenums="1"
-python3 tools/eval.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
+python3 tools/eval.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
 ```
 
 best_accuracy包含三个模型的参数，分别对应配置文件中的Student，Student2，Teacher。提取Student参数的方法如下：
@@ -168,11 +168,11 @@ ch_PP-OCRv3_det_distill_train/best_accuracy.pdparams包含CML配置文件中Stud
 
 ```bash linenums="1"
 # 单卡训练
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
     -o Global.pretrained_model=./ch_PP-OCRv3_det_distill_train/best_accuracy \
        Global.save_model_dir=./output/
 # 如果要使用多GPU分布式训练，请使用如下命令：
-python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml \
+python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml \
     -o Global.pretrained_model=./ch_PP-OCRv3_det_distill_train/best_accuracy  \
        Global.save_model_dir=./output/
 ```
@@ -202,17 +202,17 @@ print(s_params.keys())
 paddle.save(s_params, "./student.pdparams")
 ```
 
-使用配置文件[ch_PP-OCRv3_det_student.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml)训练。
+使用配置文件[PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)训练。
 
 **启动训练**
 
 ```bash linenums="1"
 # 单卡训练
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml \
     -o Global.pretrained_model=./student \
        Global.save_model_dir=./output/
 # 如果要使用多GPU分布式训练，请使用如下命令：
-python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml \
+python3  -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml \
     -o Global.pretrained_model=./student \
        Global.save_model_dir=./output/
 ```
@@ -239,12 +239,12 @@ paddle.save(s_params, "./teacher.pdparams")
 
 ```bash linenums="1"
 # 单卡训练
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
     -o Architecture.Models.Student.pretrained=./teacher \
        Architecture.Models.Student2.pretrained=./teacher \
        Global.save_model_dir=./output/
 # 如果要使用多GPU分布式训练，请使用如下命令：
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml \
     -o Architecture.Models.Student.pretrained=./teacher \
        Architecture.Models.Student2.pretrained=./teacher \
        Global.save_model_dir=./output/
