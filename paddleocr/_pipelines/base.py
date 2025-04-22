@@ -187,7 +187,7 @@ class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
             "--enable_mkldnn",
             type=str2bool,
             default=_DEFAULT_ENABLE_MKLDNN,
-            help="Enalbe oneDNN acceleration for inference.",
+            help="Enalbe oneDNN (formerly known as MKL-DNN) acceleration for inference.",
         )
         subparser.add_argument(
             "--cpu_threads",
