@@ -53,7 +53,7 @@ def dump_infer_config(config, path, logger):
             }
         elif arch_config["model_type"] == "det":
             common_dynamic_shapes = {
-                "x": [[1, 3, 160, 160], [1, 3, 640, 640], [1, 3, 1280, 1280]]
+                "x": [[1, 3, 32, 32], [1, 3, 736, 736], [1, 3, 4000, 4000]]
             }
         elif arch_config["algorithm"] == "SLANet":
             if config["Global"].get("pdx_model_name", None) == "SLANet_plus":
