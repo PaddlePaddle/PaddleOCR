@@ -137,15 +137,26 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
   bool json_model = false;
-  std::string model_file_path = model_dir + "/inference.json";
-  FILE *file = std::fopen(model_file_path.c_str(), "r");
-  if (file) {
-    std::fclose(file);
-    json_model = true;
-  } else {
-    model_file_path = model_dir + "/inference.pdmodel";
+  std::string model_file_path, param_file_path;
+  std::vector<std::pair<std::string, std::string>> model_variants = {
+      {"/inference.json", "/inference.pdiparams"},
+      {"/model.json", "/model.pdiparams"},
+      {"/inference.pdmodel", "/inference.pdiparams"},
+      {"/model.pdmodel", "/model.pdiparams"}};
+  for (const auto &variant : model_variants) {
+    if (Utility::PathExists(model_dir + variant.first)) {
+      model_file_path = model_dir + variant.first;
+      param_file_path = model_dir + variant.second;
+      json_model = (variant.first.find(".json") != std::string::npos);
+      break;
+    }
   }
-  config.SetModel(model_file_path, model_dir + "/inference.pdiparams");
+  if (model_file_path.empty()) {
+    std::cerr << "[ERROR] No valid model file found in " << model_dir
+              << std::endl;
+    exit(1);
+  }
+  config.SetModel(model_file_path, param_file_path);
   std::cout << "In PP-OCRv3, default rec_img_h is 48,"
             << "if you use other model, you should set the param rec_img_h=32"
             << std::endl;
