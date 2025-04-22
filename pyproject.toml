@@ -53,8 +53,10 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 [project.scripts]
 paddleocr = "paddleocr.__main__:console_entry"
 
-[tool.setuptools]
-packages = ["paddleocr"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["paddleocr", "paddleocr.*"]
+namespaces = false
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
