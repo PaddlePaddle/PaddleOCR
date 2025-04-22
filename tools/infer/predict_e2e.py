@@ -40,7 +40,9 @@ class TextE2E(object):
             model_config = utility.load_config(f"{args.e2e_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
             if model_name:
-                raise ValueError(f"{model_name} is not supported")
+                raise ValueError(
+                    f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
+                )
 
         self.args = args
         self.e2e_algorithm = args.e2e_algorithm

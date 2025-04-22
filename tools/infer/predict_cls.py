@@ -41,7 +41,9 @@ class TextClassifier(object):
             model_config = utility.load_config(f"{args.cls_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
             if model_name:
-                raise ValueError(f"{model_name} is not supported")
+                raise ValueError(
+                    f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
+                )
 
         self.cls_image_shape = [int(v) for v in args.cls_image_shape.split(",")]
         self.cls_batch_num = args.cls_batch_num

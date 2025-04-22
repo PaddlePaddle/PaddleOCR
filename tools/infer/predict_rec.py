@@ -42,14 +42,18 @@ class TextRecognizer(object):
             model_config = utility.load_config(f"{args.rec_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
             if model_name:
-                raise ValueError(f"{model_name} is not supported")
+                raise ValueError(
+                    f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
+                )
 
             if args.rec_char_dict_path == "./ppocr/utils/ppocr_keys_v1.txt":
-                rec_char_list = model_config.get("PostProcess", {}).get('character_dict', [])
+                rec_char_list = model_config.get("PostProcess", {}).get(
+                    "character_dict", []
+                )
                 if rec_char_list:
                     new_rec_char_dict_path = f"{args.rec_model_dir}/ppocr_keys.txt"
                     with open(new_rec_char_dict_path, "w", encoding="utf-8") as f:
-                        f.writelines([char + '\n' for char in rec_char_list])
+                        f.writelines([char + "\n" for char in rec_char_list])
                     args.rec_char_dict_path = new_rec_char_dict_path
 
         if logger is None:

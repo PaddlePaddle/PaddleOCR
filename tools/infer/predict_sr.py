@@ -42,7 +42,9 @@ class TextSR(object):
             model_config = utility.load_config(f"{args.sr_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
             if model_name:
-                raise ValueError(f"{model_name} is not supported")
+                raise ValueError(
+                    f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
+                )
 
         self.sr_image_shape = [int(v) for v in args.sr_image_shape.split(",")]
         self.sr_batch_num = args.sr_batch_num
