@@ -284,24 +284,39 @@ def create_predictor(args, mode, logger):
                     trt_dynamic_shape_input_data = {}
                     if os.path.exists(f"{model_dir}/inference.yml"):
                         model_config = load_config(f"{model_dir}/inference.yml")
-                        trt_dynamic_shapes = model_config.get("Hpi", {}).get("backend_configs", {}).get("paddle_infer", {}).get("trt_dynamic_shapes", {})
-                        trt_dynamic_shape_input_data = model_config.get("Hpi", {}).get("backend_configs", {}).get("paddle_infer", {}).get("trt_dynamic_shapes_input_data", {})
+                        trt_dynamic_shapes = (
+                            model_config.get("Hpi", {})
+                            .get("backend_configs", {})
+                            .get("paddle_infer", {})
+                            .get("trt_dynamic_shapes", {})
+                        )
+                        trt_dynamic_shape_input_data = (
+                            model_config.get("Hpi", {})
+                            .get("backend_configs", {})
+                            .get("paddle_infer", {})
+                            .get("trt_dynamic_shapes_input_data", {})
+                        )
 
                     if not trt_dynamic_shapes:
-                        raise RuntimeError("Configuration Error: 'trt_dynamic_shapes' must be defined in 'inference.yml' for Paddle Inference TensorRT.")
-                    
+                        raise RuntimeError(
+                            "Configuration Error: 'trt_dynamic_shapes' must be defined in 'inference.yml' for Paddle Inference TensorRT."
+                        )
+
                     trt_save_path = f"{model_dir}/.cache/trt/{file_name}"
-                    _convert_trt(
-                        {},
-                        model_file_path,
-                        params_file_path,
-                        trt_save_path,
-                        args.gpu_id,
-                        trt_dynamic_shapes,
-                        trt_dynamic_shape_input_data,
-                    )
-                    model_file_path = trt_save_path + ".json"
-                    params_file_path = trt_save_path + ".pdiparams"
+                    trt_model_file_path = trt_save_path + ".json"
+                    trt_params_file_path = trt_save_path + ".pdiparams"
+                    if not os.path.exists(trt_model_file_path) or not os.path.exists(
+                        trt_params_file_path
+                    ):
+                        _convert_trt(
+                            {},
+                            model_file_path,
+                            params_file_path,
+                            trt_save_path,
+                            args.gpu_id,
+                            trt_dynamic_shapes,
+                            trt_dynamic_shape_input_data,
+                        )
                     config = inference.Config(model_file_path, params_file_path)
                     config.exp_disable_mixed_precision_ops({"feed", "fetch"})
                     config.enable_use_gpu(args.gpu_mem, args.gpu_id)
@@ -315,7 +330,9 @@ def create_predictor(args, mode, logger):
                     )
 
                     # collect shape
-                    trt_shape_f = os.path.join(model_dir, f"{mode}_trt_dynamic_shape.txt")
+                    trt_shape_f = os.path.join(
+                        model_dir, f"{mode}_trt_dynamic_shape.txt"
+                    )
 
                     if not os.path.exists(trt_shape_f):
                         config.collect_shape_range_info(trt_shape_f)
@@ -473,7 +490,7 @@ def _convert_trt(
     trt_config = TensorRTConfig(inputs=trt_inputs)
     _set_trt_config()
     trt_config.save_model_dir = trt_save_path
-    pp_model_path = pp_model_file.split('.')[0]
+    pp_model_path = pp_model_file.split(".")[0]
     convert(pp_model_path, trt_config)
 
 
@@ -492,7 +509,7 @@ def _pd_dtype_to_np_dtype(pd_dtype):
         return np.int8
     else:
         raise TypeError(f"Unsupported data type: {pd_dtype}")
-    
+
 
 def load_config(file_path):
     _, ext = os.path.splitext(file_path)

@@ -136,15 +136,16 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
 
 void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
   paddle_infer::Config config;
+  bool json_model = false;
   std::string model_file_path = model_dir + "/inference.json";
-  FILE* file = std::fopen(model_file_path.c_str(), "r");
+  FILE *file = std::fopen(model_file_path.c_str(), "r");
   if (file) {
     std::fclose(file);
+    json_model = true;
   } else {
     model_file_path = model_dir + "/inference.pdmodel";
   }
-  config.SetModel(model_file_path,
-                  model_dir + "/inference.pdiparams");
+  config.SetModel(model_file_path, model_dir + "/inference.pdiparams");
   std::cout << "In PP-OCRv3, default rec_img_h is 48,"
             << "if you use other model, you should set the param rec_img_h=32"
             << std::endl;
@@ -174,6 +175,10 @@ void CRNNRecognizer::LoadModel(const std::string &model_dir) noexcept {
       config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    if (json_model) {
+      config.EnableNewIR();
+      config.EnableNewExecutor();
+    }
   }
 
   // get pass_builder object

@@ -14,12 +14,12 @@
 
 #pragma once
 
+#include <fstream>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
-#include <fstream>
 #include <iostream>
-#include <yaml-cpp/yaml.h>
 #include <memory>
+#include <yaml-cpp/yaml.h>
 
 namespace paddle_infer {
 class Predictor;
@@ -52,35 +52,38 @@ public:
 
     std::string new_label_path = label_path;
     std::string yaml_file_path = model_dir + "/inference.yml";
-    std::ifstream yaml_file(label_path);
+    std::ifstream yaml_file(yaml_file_path);
     if (yaml_file.is_open()) {
-        std::string model_name;
-        std::vector<std::string> rec_char_list;
-        try {
-            YAML::Node config = YAML::LoadFile(yaml_file_path);
-            if (config["Global"] && config["Global"]["model_name"]) {
-                model_name = config["Global"]["model_name"].as<std::string>();
-            }
-            if (!model_name.empty()){
-                std::cerr << "Error: " << model_name << " is not supported" << std::endl;
-                std::exit(EXIT_FAILURE);
-            }
-            if (config["PostProcess"] && config["PostProcess"]["character_dict"]) {
-                rec_char_list = config["PostProcess"]["character_dict"].as<std::vector<std::string>>();
-            }
-        } catch (const YAML::Exception& e) {
-            std::cerr << "Failed to load YAML file: " << e.what() << std::endl;
+      std::string model_name;
+      std::vector<std::string> rec_char_list;
+      try {
+        YAML::Node config = YAML::LoadFile(yaml_file_path);
+        if (config["Global"] && config["Global"]["model_name"]) {
+          model_name = config["Global"]["model_name"].as<std::string>();
         }
-        if (label_path == "../../ppocr/utils/ppocr_keys_v1.txt" && !rec_char_list.empty()) {
-            std::string new_rec_char_dict_path = model_dir + "/ppocr_keys.txt";
-            std::ofstream new_file(new_rec_char_dict_path);
-            if (new_file.is_open()) {
-                for (const auto& character : rec_char_list) {
-                    new_file << character << '\n';
-                }
-                new_label_path = new_rec_char_dict_path;
-            }
+        if (!model_name.empty()) {
+          std::cerr << "Error: " << model_name << " is not supported"
+                    << std::endl;
+          std::exit(EXIT_FAILURE);
         }
+        if (config["PostProcess"] && config["PostProcess"]["character_dict"]) {
+          rec_char_list = config["PostProcess"]["character_dict"]
+                              .as<std::vector<std::string>>();
+        }
+      } catch (const YAML::Exception &e) {
+        std::cerr << "Failed to load YAML file: " << e.what() << std::endl;
+      }
+      if (label_path == "../../ppocr/utils/ppocr_keys_v1.txt" &&
+          !rec_char_list.empty()) {
+        std::string new_rec_char_dict_path = model_dir + "/ppocr_keys.txt";
+        std::ofstream new_file(new_rec_char_dict_path);
+        if (new_file.is_open()) {
+          for (const auto &character : rec_char_list) {
+            new_file << character << '\n';
+          }
+          new_label_path = new_rec_char_dict_path;
+        }
+      }
     }
 
     this->label_list_ = Utility::ReadDict(new_label_path);
