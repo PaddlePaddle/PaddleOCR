@@ -13,8 +13,9 @@
 # limitations under the License.
 
 
-def create_config_from_structure(structure, *, unset=None):
-    config = {}
+def create_config_from_structure(structure, *, unset=None, config=None):
+    if config is None:
+        config = {}
     for k, v in structure.items():
         if v is unset:
             continue
@@ -25,5 +26,5 @@ def create_config_from_structure(structure, *, unset=None):
             sk = k[:idx]
             if sk not in config:
                 config[sk] = {}
-            config[sk].update(create_config_from_structure({k[idx + 1 :]: v}))
+            create_config_from_structure({k[idx + 1 :]: v}, config=config[sk])
     return config
