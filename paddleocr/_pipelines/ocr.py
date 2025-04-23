@@ -189,7 +189,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
     def get_cli_subcommand_executor(cls):
         return PaddleOCRCLISubcommandExecutor()
 
-    def _get_extended_paddlex_config_overrides(self):
+    def _get_paddlex_config_overrides(self):
         STRUCTURE = {
             "DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"

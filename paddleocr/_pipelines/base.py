@@ -92,29 +92,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     def get_cli_subcommand_executor(cls):
         raise NotImplementedError
 
-    def _get_basic_paddlex_config_overrides(self):
-        overrides = {}
-        overrides["device"] = self._device
-        if self._enable_hpi:
-            overrides["use_hpip"] = True
-            if self._auto_paddle2onnx:
-                overrides["hpi_config"] = {
-                    "auto_paddle2onnx": True,
-                }
-        pp_option = PaddlePredictorOption(None)
-        assert not (self._use_pptrt and self._enable_mkldnn)
-        if self._use_pptrt:
-            if self._pptrt_precision == "fp32":
-                pp_option.run_mode = "trt_fp32"
-            else:
-                assert self._pptrt_precision == "fp16", self._pptrt_precision
-                pp_option.run_mode = "trt_fp16"
-        elif self._enable_mkldnn:
-            pp_option.run_mode = "mkldnn"
-        pp_option.cpu_threads = self._cpu_threads
-        return overrides
-
-    def _get_extended_paddlex_config_overrides(self):
+    def _get_paddlex_config_overrides(self):
         return {}
 
     def _get_merged_paddlex_config(self):
@@ -125,15 +103,32 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
         else:
             config = self._paddlex_config
 
-        overrides = self._get_basic_paddlex_config_overrides()
-        extended_overrides = self._get_extended_paddlex_config_overrides()
-        if extended_overrides:
-            overrides = _merge_dicts(overrides, extended_overrides)
+        overrides = self._get_paddlex_config_overrides()
 
         return _merge_dicts(config, overrides)
 
     def _create_paddlex_pipeline(self):
-        return create_pipeline(config=self._merged_paddlex_config)
+        kwargs = {"config": self._merged_paddlex_config, "device": self._device}
+        if self._enable_hpi:
+            kwargs["use_hpip"] = True
+            if self._auto_paddle2onnx:
+                kwargs["hpi_config"] = {
+                    "auto_paddle2onnx": True,
+                }
+        else:
+            pp_option = PaddlePredictorOption(None)
+            assert not (self._use_pptrt and self._enable_mkldnn)
+            if self._use_pptrt:
+                if self._pptrt_precision == "fp32":
+                    pp_option.run_mode = "trt_fp32"
+                else:
+                    assert self._pptrt_precision == "fp16", self._pptrt_precision
+                    pp_option.run_mode = "trt_fp16"
+            elif self._enable_mkldnn:
+                pp_option.run_mode = "mkldnn"
+            pp_option.cpu_threads = self._cpu_threads
+
+        return create_pipeline(**kwargs)
 
 
 class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
