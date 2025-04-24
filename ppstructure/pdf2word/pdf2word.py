@@ -71,7 +71,7 @@ DICT_EN = {
 
 URLs_CN = {
     # 下载超中文轻量级PP-OCRv3模型的检测模型并解压
-    "cn_PP-OCRv3_det_infer": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar",
+    "cn_PP-OCRv3_det_infer": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar",
     # 下载中文轻量级PP-OCRv3模型的识别模型并解压
     "cn_PP-OCRv3_rec_infer": "https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar",
     # 下载超轻量级英文表格英文模型并解压

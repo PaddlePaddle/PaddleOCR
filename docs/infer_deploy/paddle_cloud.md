@@ -144,7 +144,7 @@ Eval:
 # 下载预训练模型到/home/PaddleOCR/pre_train文件夹下
 $ mkdir /home/PaddleOCR/pre_train
 
-$ wget -P /home/PaddleOCR/pre_train https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparamshttps://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
+$ wget -P /home/PaddleOCR/pre_train https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
 
 ```
 

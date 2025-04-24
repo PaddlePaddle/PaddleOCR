@@ -125,9 +125,7 @@ plugins:
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
             服务化部署: Sever Deployment
-            Jetson部署: Jetson Deployment
             端侧部署: Device-side Deployment
-            网页前端部署: Paddle.js Web Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
             云上飞桨部署工具: Paddle Cloud
             Benchmark: Benchmark
@@ -281,9 +279,7 @@ nav:
     - Visual Studio 2019 Community CMake 编译指南: infer_deploy/windows_vs2019_build.md
     - 服务化部署: infer_deploy/paddle_server.md
     - Android部署: infer_deploy/android_demo.md
-    - Jetson部署: infer_deploy/Jetson_infer.md
     - 端侧部署: infer_deploy/lite.md
-    - 网页前端部署: infer_deploy/paddle_js.md
     - Paddle2ONNX模型转化与预测: infer_deploy/paddle2onnx.md
     - 云上飞桨部署工具: infer_deploy/paddle_cloud.md
     - Benchmark: infer_deploy/benchmark.md

@@ -11,7 +11,7 @@ Global:
   - 100
   cal_metric_during_train: false
   checkpoints:
-  pretrained_model: https://paddleocr.bj.bcebos.com/pretrained/ch_PP-OCRv4_det_curve_trained.pdparams
+  pretrained_model: https://paddleocr.bj.bcebos.com/pretrained/PPHGNet_small_ocr_det.pdparams
   save_inference_dir: null
   use_visualdl: false
   distributed: true

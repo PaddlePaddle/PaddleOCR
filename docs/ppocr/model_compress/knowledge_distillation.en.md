@@ -590,7 +590,7 @@ In addition, since the distillation pre-training model provided by PaddleOCR con
 
 ```sh
 # Download the parameters of the distillation training model
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparamshttps://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
 ```
 
 ```python linenums="1"

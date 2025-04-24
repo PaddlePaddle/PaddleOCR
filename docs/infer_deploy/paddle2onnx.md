@@ -52,7 +52,7 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 === "PP-OCRv3"
 
     ```bash linenums="1"
-    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
     cd ./inference && tar xf PP-OCRv3_mobile_det_infer.tar && cd ..
 
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
@@ -65,7 +65,7 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
 === "PP-OCRv4"
 
     ```bash linenums="1"
-    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv4_mobile_det_infer.tar
+    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar
     cd ./inference && tar xf PP-OCRv4_mobile_det_infer.tar && cd ..
 
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar

@@ -15,7 +15,7 @@ The default configuration is based on the inference setting of the DB text detec
 
 ```bash linenums="1"
 # download DB text detection inference model
-wget  https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+wget  https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
 tar xf PP-OCRv3_mobile_det_infer.tar
 # run inference
 python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/"

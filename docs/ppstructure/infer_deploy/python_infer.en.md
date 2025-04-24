@@ -16,7 +16,7 @@ mkdir inference && cd inference
 # Download the PP-StructureV2 layout analysis model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar xf picodet_lcnet_x1_0_layout_infer.tar
 # Download the PP-OCRv3 text detection model and unzip it
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar && tar xf PP-OCRv3_mobile_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar && tar xf PP-OCRv3_mobile_det_infer.tar
 # Download the PP-OCRv3 text recognition model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
 # Download the PP-StructureV2 form recognition model and unzip it

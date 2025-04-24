@@ -41,7 +41,7 @@ python3 -m pip install onnxruntime
 以 PP-OCRv3 中文检测、识别、分类模型为例：
 
 ```
-wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar
+wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
 cd ./inference && tar xf PP-OCRv3_mobile_det_infer.tar && cd ..
 
 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar

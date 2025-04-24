@@ -67,7 +67,7 @@ Firstly, download the [inference model](../model_list.en.md) of PPOCR
 
 ```bash linenums="1"
 # Download and unzip the OCR text detection model
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv3_mobile_det_infer.tar -O PP-OCRv3_mobile_det_infer.tar && tar -xf PP-OCRv3_mobile_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar -O PP-OCRv3_mobile_det_infer.tar && tar -xf PP-OCRv3_mobile_det_infer.tar
 # Download and unzip the OCR text recognition model
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar -O ch_PP-OCRv3_rec_infer.tar &&  tar -xf ch_PP-OCRv3_rec_infer.tar
 ```
