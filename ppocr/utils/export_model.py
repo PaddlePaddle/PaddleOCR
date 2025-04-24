@@ -28,6 +28,7 @@ from ppocr.modeling.architectures import build_model
 from ppocr.postprocess import build_post_process
 from ppocr.utils.save_load import load_model
 from ppocr.utils.logging import get_logger
+from ppocr.utils.model_name_map import MODELS_DICT
 
 
 def represent_dictionary_order(self, dict_data):
@@ -38,14 +39,24 @@ def setup_orderdict():
     yaml.add_representer(OrderedDict, represent_dictionary_order)
 
 
-def dump_infer_config(config, path, logger):
+def dump_infer_config(config, path, logger, config_path=None):
     setup_orderdict()
     infer_cfg = OrderedDict()
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
+    config_name, _ = os.path.splitext(os.path.basename(config_path))
+    for key, value in MODELS_DICT.items():
+        if config_name in value:
+            infer_cfg["Global"] = {"model_name": key}
+            break
+    else:
+        logger.warning(
+            "The model name could not be determined based on the configuration file name. "
+            "Please modify the configuration file name."
+        )
     if config["Global"].get("pdx_model_name", None):
         infer_cfg["Global"] = {"model_name": config["Global"]["pdx_model_name"]}
-    if config["Global"].get("uniform_output_enabled", None):
+    if config["Global"].get("uniform_output_enabled", True):
         arch_config = config["Architecture"]
         if arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
             common_dynamic_shapes = {
@@ -370,7 +381,7 @@ def export_single_model(
         ):  # Encryption is not needed if the module cannot be imported
             print("Skipping import of the encryption module")
         paddle_version = version.parse(paddle.__version__)
-        if config["Global"].get("export_with_pir", False):
+        if config["Global"].get("export_with_pir", True):
             assert (
                 paddle_version >= version.parse("3.0.0b2")
                 or paddle_version == version.parse("0.0.0")
@@ -404,7 +415,7 @@ def convert_bn(model):
             convert_bn(m)
 
 
-def export(config, base_model=None, save_path=None):
+def export(config, base_model=None, save_path=None, config_path=None):
     if paddle.distributed.get_rank() != 0:
         return
     logger = get_logger()
@@ -504,7 +515,7 @@ def export(config, base_model=None, save_path=None):
         input_shape = rec_rs[0]["ABINetRecResizeImg"]["image_shape"] if rec_rs else None
     else:
         input_shape = None
-    dump_infer_config(config, yaml_path, logger)
+    dump_infer_config(config, yaml_path, logger, config_path=config_path)
     if arch_config["algorithm"] in [
         "Distillation",
     ]:  # distillation model

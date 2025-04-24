@@ -30,7 +30,7 @@ def main():
     config = load_config(FLAGS.config)
     config = merge_config(config, FLAGS.opt)
     # export model
-    export(config)
+    export(config, config_path=FLAGS.config)
 
 
 if __name__ == "__main__":
