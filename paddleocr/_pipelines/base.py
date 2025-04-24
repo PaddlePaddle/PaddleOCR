@@ -12,27 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: Should we use a third-party CLI library to auto-generate command-line
-# arguments from the pipeline class, to reduce boilerplate and improve
-# maintainability?
-
 import abc
 
 import yaml
 from paddlex import create_pipeline
-from paddlex.inference import PaddlePredictorOption, load_pipeline_config
+from paddlex.inference import load_pipeline_config
 
 from .._abstract import CLISubcommandExecutor
-from ..utils.cli import str2bool
+from .._common_args import (
+    add_common_cli_args,
+    parse_common_args,
+    prepare_common_init_args,
+)
 
-_DEFAULT_ENABLE_HPI = False
-_DEFAULT_AUTO_PADDLE2ONNX = True
-_DEFAULT_USE_TENSORRT = False
-_DEFAULT_MIN_SUBGRAPH_SIZE = 3
-_DEFAULT_PRECISION = "fp32"
-_DEFAULT_ENABLE_MKLDNN = False
-_DEFAULT_CPU_THREADS = 8
-_SUPPORTED_PRECISION_LIST = ["fp32", "fp16"]
+_DEFAULT_ENABLE_HPI = None
 
 
 def _merge_dicts(d1, d2):
@@ -50,33 +43,15 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
         self,
         *,
         paddlex_config=None,
-        device=None,
-        enable_hpi=_DEFAULT_ENABLE_HPI,
-        auto_paddle2onnx=_DEFAULT_AUTO_PADDLE2ONNX,
-        use_tensorrt=_DEFAULT_USE_TENSORRT,
-        min_subgraph_size=_DEFAULT_MIN_SUBGRAPH_SIZE,
-        precision=_DEFAULT_PRECISION,
-        enable_mkldnn=_DEFAULT_ENABLE_MKLDNN,
-        cpu_threads=_DEFAULT_CPU_THREADS,
+        **common_args,
     ):
         super().__init__()
         self._paddlex_config = paddlex_config
-        self._device = device
-        self._enable_hpi = enable_hpi
-        self._auto_paddle2onnx = auto_paddle2onnx
-        self._use_pptrt = use_tensorrt
-        self._pptrt_min_subgraph_size = min_subgraph_size
-        if precision not in _SUPPORTED_PRECISION_LIST:
-            raise ValueError(
-                f"Invalid precision: {precision}. Supported values are: {_SUPPORTED_PRECISION_LIST}."
-            )
-        self._pptrt_precision = precision
-        if self._use_pptrt and enable_mkldnn:
-            raise ValueError("oneDNN should not be enabled when TensorRT is used.")
-        self._enable_mkldnn = enable_mkldnn
-        self._cpu_threads = cpu_threads
+        self._common_args = parse_common_args(
+            common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
+        )
         self._merged_paddlex_config = self._get_merged_paddlex_config()
-        self._paddlex_pipeline = self._create_paddlex_pipeline()
+        self.paddlex_pipeline = self._create_paddlex_pipeline()
 
     @property
     @abc.abstractmethod
@@ -108,27 +83,8 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
         return _merge_dicts(config, overrides)
 
     def _create_paddlex_pipeline(self):
-        kwargs = {"config": self._merged_paddlex_config, "device": self._device}
-        if self._enable_hpi:
-            kwargs["use_hpip"] = True
-            if self._auto_paddle2onnx:
-                kwargs["hpi_config"] = {
-                    "auto_paddle2onnx": True,
-                }
-        else:
-            pp_option = PaddlePredictorOption(None)
-            assert not (self._use_pptrt and self._enable_mkldnn)
-            if self._use_pptrt:
-                if self._pptrt_precision == "fp32":
-                    pp_option.run_mode = "trt_fp32"
-                else:
-                    assert self._pptrt_precision == "fp16", self._pptrt_precision
-                    pp_option.run_mode = "trt_fp16"
-            elif self._enable_mkldnn:
-                pp_option.run_mode = "mkldnn"
-            pp_option.cpu_threads = self._cpu_threads
-
-        return create_pipeline(**kwargs)
+        kwargs = prepare_common_init_args(None, self._common_args)
+        return create_pipeline(config=self._merged_paddlex_config, **kwargs)
 
 
 class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
@@ -144,52 +100,7 @@ class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
             type=str,
             help="Path to PaddleX pipeline configuration file.",
         )
-        subparser.add_argument(
-            "--device", type=str, help="Device to use for inference."
-        )
-        subparser.add_argument(
-            "--enable_hpi",
-            type=str2bool,
-            default=_DEFAULT_ENABLE_HPI,
-            help="Enable the high performance inference.",
-        )
-        subparser.add_argument(
-            "--auto_paddle2onnx",
-            type=str2bool,
-            default=_DEFAULT_AUTO_PADDLE2ONNX,
-            help="Whether to allow automatic Paddle-to-ONNX model conversion before performing inference.",
-        )
-        subparser.add_argument(
-            "--use_tensorrt",
-            type=str2bool,
-            default=_DEFAULT_AUTO_PADDLE2ONNX,
-            help="Whether to use the Paddle Inference TensorRT subgraph engine.",
-        )
-        subparser.add_argument(
-            "--min_subgraph_size",
-            type=int,
-            default=_DEFAULT_MIN_SUBGRAPH_SIZE,
-            help="Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.",
-        )
-        subparser.add_argument(
-            "--precision",
-            type=str,
-            default=_DEFAULT_PRECISION,
-            choices=_SUPPORTED_PRECISION_LIST,
-            help="Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.",
-        )
-        subparser.add_argument(
-            "--enable_mkldnn",
-            type=str2bool,
-            default=_DEFAULT_ENABLE_MKLDNN,
-            help="Enalbe oneDNN (formerly known as MKL-DNN) acceleration for inference.",
-        )
-        subparser.add_argument(
-            "--cpu_threads",
-            type=int,
-            default=_DEFAULT_CPU_THREADS,
-            help="Number of threads to use for inference on CPUs.",
-        )
+        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
         self._update_subparser(subparser)
         return subparser
 

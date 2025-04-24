@@ -18,21 +18,23 @@ from ._image_classification import (
 )
 
 
-class TableClassification(ImageClassification):
+class TextLineOrientationClassification(ImageClassification):
     @property
     def default_model_name(self):
-        return "PP-LCNet_x1_0_table_cls"
+        return "PP-LCNet_x0_25_textline_ori"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
-        return TableClassificationSubcommandExecutor()
+        return TextLineOrientationClassificationSubcommandExecutor()
 
 
-class TableClassificationSubcommandExecutor(ImageClassificationSubcommandExecutor):
+class TextLineOrientationClassificationSubcommandExecutor(
+    ImageClassificationSubcommandExecutor
+):
     @property
     def subparser_name(self):
-        return "table_classification"
+        return "text_line_orientation_classification"
 
     @property
     def wrapper_cls(self):
-        return TableClassification
+        return TextLineOrientationClassification

@@ -11,3 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from ._image_classification import (
+    ImageClassification,
+    ImageClassificationSubcommandExecutor,
+)
+
+
+class DocImgOrientationClassification(ImageClassification):
+    @property
+    def default_model_name(self):
+        return "PP-LCNet_x1_0_doc_ori"
+
+    @classmethod
+    def get_cli_subcommand_executor(cls):
+        return DocImgOrientationClassificationSubcommandExecutor()
+
+
+class DocImgOrientationClassificationSubcommandExecutor(
+    ImageClassificationSubcommandExecutor
+):
+    @property
+    def subparser_name(self):
+        return "doc_img_orientation_classification"
+
+    @property
+    def wrapper_cls(self):
+        return DocImgOrientationClassification

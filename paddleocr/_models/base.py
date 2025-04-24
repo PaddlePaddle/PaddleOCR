@@ -14,8 +14,79 @@
 
 import abc
 
+from paddlex import create_predictor
+
+from .._abstract import CLISubcommandExecutor
+from .._common_args import (
+    add_common_cli_args,
+    parse_common_args,
+    prepare_common_init_args,
+)
+
+_DEFAULT_ENABLE_HPI = False
+
 
 class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
+    def __init__(
+        self,
+        *,
+        model_name=None,
+        model_dir=None,
+        **common_args,
+    ):
+        super().__init__()
+        self._model_name = (
+            model_name if model_name is not None else self.default_model_name
+        )
+        self._model_dir = model_dir
+        self._common_args = parse_common_args(
+            common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
+        )
+        self.paddlex_predictor = self._create_paddlex_predictor()
+
+    @property
     @abc.abstractmethod
-    def predict(self, input, *args, **kwargs):
+    def default_model_name(self):
+        raise NotImplementedError
+
+    def predict(self, *args, **kwargs):
+        result = []
+        for res in self.paddlex_predictor.predict(*args, **kwargs):
+            result.append(res)
+        return result
+
+    @classmethod
+    @abc.abstractmethod
+    def get_cli_subcommand_executor(cls):
+        raise NotImplementedError
+
+    def _get_extra_paddlex_predictor_init_args(self):
+        return {}
+
+    def _create_paddlex_predictor(self):
+        kwargs = prepare_common_init_args(self._model_name, self._common_args)
+        kwargs = {**self._get_extra_paddlex_predictor_init_args(), **kwargs}
+        return create_predictor(
+            model_name=self._model_name, model_dir=self._model_dir, **kwargs
+        )
+
+
+class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
+    @property
+    @abc.abstractmethod
+    def subparser_name(self):
+        raise NotImplementedError
+
+    def add_subparser(self, subparsers):
+        subparser = subparsers.add_parser(name=self.subparser_name)
+        subparser.add_argument("--model_name", type=str, help="Name of the model.")
+        subparser.add_argument(
+            "--model_dir", type=str, help="Directory where the model is stored."
+        )
+        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
+        self._update_subparser(subparser)
+        return subparser
+
+    @abc.abstractmethod
+    def _update_subparser(self, subparser):
         raise NotImplementedError

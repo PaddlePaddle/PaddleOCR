@@ -12,10 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import inspect
+# TODO: Should we use a third-party CLI library to auto-generate command-line
+# arguments from the pipeline class, to reduce boilerplate and improve
+# maintainability?
+
 import sys
 
-from ..utils.cli import get_subcommand_args, str2bool
+from ..utils.cli import (
+    add_simple_inference_args,
+    get_subcommand_args,
+    perform_simple_inference,
+    str2bool,
+)
 from ..utils.deprecation import (
     DeprecatedOptionAction,
     deprecated,
@@ -67,27 +75,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_det_thresh=None,
         text_det_box_thresh=None,
         text_det_unclip_ratio=None,
+        text_det_input_shape=None,
         text_rec_score_thresh=None,
+        text_rec_input_shape=None,
         lang=None,
         ocr_version=None,
         **kwargs,
     ):
-        base_params = {}
-        for name in list(kwargs.keys()):
-            base_init_sig = inspect.signature(super().__init__)
-            if name in base_init_sig.parameters:
-                if name == "self":
-                    continue
-                base_params[name] = kwargs.pop(name)
-
-        invalid_args = kwargs.keys() - _DEPRECATED_PARAM_NAME_MAPPING.keys()
-        if invalid_args:
-            raise TypeError(f"Invalid arguments: {invalid_args}")
-
-        if text_det_limit_type is not None and text_det_limit_type not in [
-            "min",
-            "max",
-        ]:
+        if (
+            text_det_limit_type is not None
+            and text_det_limit_type not in _SUPPORTED_TEXT_DET_LIMIT_TYPES
+        ):
             raise ValueError(
                 f"Invalid `text_det_limit_type`: {text_det_limit_type}. Supported values are: {_SUPPORTED_TEXT_DET_LIMIT_TYPES}."
             )
@@ -130,18 +128,25 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "text_det_thresh": text_det_thresh,
             "text_det_box_thresh": text_det_box_thresh,
             "text_det_unclip_ratio": text_det_unclip_ratio,
+            "text_det_input_shape": text_det_input_shape,
             "text_rec_score_thresh": text_rec_score_thresh,
+            "text_rec_input_shape": text_rec_input_shape,
         }
-
+        base_params = {}
         for name, val in kwargs.items():
-            new_name = _DEPRECATED_PARAM_NAME_MAPPING[name]
-            warn_deprecated_param(name, new_name)
-            assert (
-                new_name in params
-            ), f"{repr(new_name)} is not a valid parameter name."
-            if params[new_name] is not None:
-                raise ValueError(f"`{name}` and `{new_name}` are mutually exclusive.")
-            params[new_name] = val
+            if name in _DEPRECATED_PARAM_NAME_MAPPING:
+                new_name = _DEPRECATED_PARAM_NAME_MAPPING[name]
+                warn_deprecated_param(name, new_name)
+                assert (
+                    new_name in params
+                ), f"{repr(new_name)} is not a valid parameter name."
+                if params[new_name] is not None:
+                    raise ValueError(
+                        f"`{name}` and `{new_name}` are mutually exclusive."
+                    )
+                params[new_name] = val
+            else:
+                base_params[name] = val
 
         self._params = params
 
@@ -166,7 +171,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_rec_score_thresh=None,
     ):
         result = []
-        for res in self._paddlex_pipeline(
+        for res in self.paddlex_pipeline.predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
@@ -243,8 +248,14 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "SubModules.TextDetection.unclip_ratio": self._params[
                 "text_det_unclip_ratio"
             ],
+            "SubModules.TextDetection.input_shape": self._params[
+                "text_det_input_shape"
+            ],
             "SubModules.TextRecognition.score_thresh": self._params[
                 "text_rec_score_thresh"
+            ],
+            "SubModules.TextRecognition.input_shape": self._params[
+                "text_rec_input_shape"
             ],
         }
         return create_config_from_structure(STRUCTURE)
@@ -379,15 +390,7 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         return "ocr"
 
     def _update_subparser(self, subparser):
-        subparser.add_argument(
-            "-i", "--input", type=str, required=True, help="Path to the input file."
-        )
-        subparser.add_argument(
-            "--save_path",
-            type=str,
-            default="output",
-            help="Path to the output directory.",
-        )
+        add_simple_inference_args(subparser)
 
         subparser.add_argument(
             "--doc_orientation_classify_model_name",
@@ -491,9 +494,21 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Text detection expansion coefficient, which expands the text region using this method. The larger the value, the larger the expansion area.",
         )
         subparser.add_argument(
+            "--text_det_input_shape",
+            nargs="+",
+            type=int,
+            help="Input shape of the text detection model.",
+        )
+        subparser.add_argument(
             "--text_rec_score_thresh",
             type=float,
             help="Text recognition threshold. Text results with scores greater than this threshold are retained.",
+        )
+        subparser.add_argument(
+            "--text_rec_input_shape",
+            nargs="+",
+            type=int,
+            help="Input shape of the text recognition model.",
         )
         subparser.add_argument(
             "--lang", type=str, help="Language in the input image for OCR processing."
@@ -541,14 +556,5 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
                 sys.exit(2)
             if val is None:
                 params.pop(name)
-        input_ = params.pop("input")
-        save_path = params.pop("save_path")
 
-        paddleocr = PaddleOCR(**params)
-
-        result = paddleocr.predict(input_)
-
-        for res in result:
-            res.print()
-            if save_path:
-                res.save_all(save_path)
+        perform_simple_inference(PaddleOCR, params)

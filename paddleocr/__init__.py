@@ -12,7 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ._models import (
+    DocImgOrientationClassification,
+    TableClassification,
+    TextDetection,
+    TextLineOrientationClassification,
+    TextRecognition,
+)
 from ._pipelines import PaddleOCR
 from ._version import version as __version__
 
-__all__ = ["__version__", "PaddleOCR"]
+__all__ = [
+    "DocImgOrientationClassification",
+    "TableClassification",
+    "TextDetection",
+    "TextLineOrientationClassification",
+    "TextRecognition",
+    "PaddleOCR",
+    "__version__",
+]

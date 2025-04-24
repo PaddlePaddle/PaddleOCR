@@ -12,27 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ._image_classification import (
-    ImageClassification,
-    ImageClassificationSubcommandExecutor,
-)
-
-
-class TableClassification(ImageClassification):
-    @property
-    def default_model_name(self):
-        return "PP-LCNet_x1_0_table_cls"
-
-    @classmethod
-    def get_cli_subcommand_executor(cls):
-        return TableClassificationSubcommandExecutor()
-
-
-class TableClassificationSubcommandExecutor(ImageClassificationSubcommandExecutor):
-    @property
-    def subparser_name(self):
-        return "table_classification"
-
-    @property
-    def wrapper_cls(self):
-        return TableClassification
+DEFAULT_DEVICE = None
+DEFAULT_AUTO_PADDLE2ONNX = True
+DEFAULT_USE_TENSORRT = False
+DEFAULT_MIN_SUBGRAPH_SIZE = 3
+DEFAULT_PRECISION = "fp32"
+DEFAULT_ENABLE_MKLDNN = True
+DEFAULT_CPU_THREADS = 10
+SUPPORTED_PRECISION_LIST = ["fp32", "fp16"]

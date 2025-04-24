@@ -15,6 +15,13 @@
 import argparse
 import warnings
 
+from ._models import (
+    DocImgOrientationClassification,
+    TableClassification,
+    TextDetection,
+    TextLineOrientationClassification,
+    TextRecognition,
+)
 from ._pipelines import PaddleOCR
 from ._version import version
 from .utils.deprecation import CLIDeprecationWarning
@@ -29,11 +36,25 @@ def _register_pipelines(subparsers):
         subparser.set_defaults(executor=subcommand_executor.execute_with_args)
 
 
+def _register_models(subparsers):
+    for cls in [
+        DocImgOrientationClassification,
+        TableClassification,
+        TextDetection,
+        TextLineOrientationClassification,
+        TextRecognition,
+    ]:
+        subcommand_executor = cls.get_cli_subcommand_executor()
+        subparser = subcommand_executor.add_subparser(subparsers)
+        subparser.set_defaults(executor=subcommand_executor.execute_with_args)
+
+
 def _parse_args():
     parser = argparse.ArgumentParser(prog="paddleocr")
     parser.add_argument("--version", action="version", version=f"%(prog)s {version}")
     subparsers = parser.add_subparsers(dest="subcommand")
     _register_pipelines(subparsers)
+    _register_models(subparsers)
     return parser.parse_args()
 
 

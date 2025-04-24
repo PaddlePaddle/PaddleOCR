@@ -22,3 +22,29 @@ def get_subcommand_args(args):
     args.pop("subcommand")
     args.pop("executor")
     return args
+
+
+def add_simple_inference_args(subparser):
+    subparser.add_argument(
+        "-i", "--input", type=str, required=True, help="Path to the input file."
+    )
+    subparser.add_argument(
+        "--save_path",
+        type=str,
+        default="output",
+        help="Path to the output directory.",
+    )
+
+
+def perform_simple_inference(wrapper_cls, params):
+    input_ = params.pop("input")
+    save_path = params.pop("save_path")
+
+    wrapper = wrapper_cls(**params)
+
+    result = wrapper.predict(input_)
+
+    for res in result:
+        res.print()
+        if save_path:
+            res.save_all(save_path)
