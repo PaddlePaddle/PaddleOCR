@@ -47,7 +47,6 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
     "cls_batch_num": "text_line_orientation_batch_size",
 }
 
-_SUPPORTED_TEXT_DET_LIMIT_TYPES = ["min", "max"]
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
 
 
@@ -82,14 +81,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
         ocr_version=None,
         **kwargs,
     ):
-        if (
-            text_det_limit_type is not None
-            and text_det_limit_type not in _SUPPORTED_TEXT_DET_LIMIT_TYPES
-        ):
-            raise ValueError(
-                f"Invalid `text_det_limit_type`: {text_det_limit_type}. Supported values are: {_SUPPORTED_TEXT_DET_LIMIT_TYPES}."
-            )
-
         if ocr_version is not None and ocr_version not in _SUPPORTED_OCR_VERSIONS:
             raise ValueError(
                 f"Invalid OCR version: {ocr_version}. Supported values are {_SUPPORTED_OCR_VERSIONS}."
@@ -475,7 +466,6 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--text_det_limit_type",
             type=str,
-            choices=_SUPPORTED_TEXT_DET_LIMIT_TYPES,
             help="This determines how the side length limit is applied to the input image before feeding it into the text deteciton model.",
         )
         subparser.add_argument(
@@ -495,8 +485,9 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         )
         subparser.add_argument(
             "--text_det_input_shape",
-            nargs="+",
+            nargs=3,
             type=int,
+            metavar=("C", "H", "W"),
             help="Input shape of the text detection model.",
         )
         subparser.add_argument(
@@ -506,8 +497,9 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         )
         subparser.add_argument(
             "--text_rec_input_shape",
-            nargs="+",
+            nargs=3,
             type=int,
+            metavar=("C", "H", "W"),
             help="Input shape of the text recognition model.",
         )
         subparser.add_argument(

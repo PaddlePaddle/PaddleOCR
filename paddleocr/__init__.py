@@ -19,7 +19,7 @@ from ._models import (
     TextLineOrientationClassification,
     TextRecognition,
 )
-from ._pipelines import PaddleOCR
+from ._pipelines import PaddleOCR, PPChatOCRv4Doc
 from ._version import version as __version__
 
 __all__ = [
@@ -29,5 +29,6 @@ __all__ = [
     "TextLineOrientationClassification",
     "TextRecognition",
     "PaddleOCR",
+    "PPChatOCRv4Doc",
     "__version__",
 ]

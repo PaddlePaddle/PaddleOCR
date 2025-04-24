@@ -51,6 +51,13 @@ class TextRecognitionSubcommandExecutor(PredictorCLISubcommandExecutor):
 
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
+        subparser.add_argument(
+            "--input_shape",
+            nargs=3,
+            type=int,
+            metavar=("C", "H", "W"),
+            help="Input shape of the model.",
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)

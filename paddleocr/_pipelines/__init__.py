@@ -13,7 +13,9 @@
 # limitations under the License.
 
 from .ocr import PaddleOCR
+from .pp_chatocrv4_doc import PPChatOCRv4Doc
 
 __all__ = [
     "PaddleOCR",
+    "PPChatOCRv4Doc",
 ]

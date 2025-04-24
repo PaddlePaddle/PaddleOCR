@@ -16,7 +16,6 @@ from paddlex.inference import PaddlePredictorOption
 from paddlex.utils.device import get_default_device, parse_device
 
 from ._constants import (
-    DEFAULT_AUTO_PADDLE2ONNX,
     DEFAULT_CPU_THREADS,
     DEFAULT_DEVICE,
     DEFAULT_ENABLE_MKLDNN,
@@ -32,7 +31,6 @@ def parse_common_args(kwargs, *, default_enable_hpi):
     default_vals = {
         "device": DEFAULT_DEVICE,
         "enable_hpi": default_enable_hpi,
-        "auto_paddle2onnx": DEFAULT_AUTO_PADDLE2ONNX,
         "use_tensorrt": DEFAULT_USE_TENSORRT,
         "min_subgraph_size": DEFAULT_MIN_SUBGRAPH_SIZE,
         "precision": DEFAULT_PRECISION,
@@ -67,24 +65,19 @@ def prepare_common_init_args(model_name, common_args):
     init_kwargs = {"device": device}
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
 
-    if common_args["enable_hpi"] in (True, None):
-        init_kwargs["hpi_config"] = {
-            "auto_paddle2onnx": common_args["auto_paddle2onnx"],
-        }
-    else:
-        pp_option = PaddlePredictorOption(model_name)
-        if device_type == "gpu" and common_args["use_pptrt"]:
-            if common_args["pptrt_precision"] == "fp32":
-                pp_option.run_mode = "trt_fp32"
-            else:
-                assert common_args["pptrt_precision"] == "fp16", common_args[
-                    "pptrt_precision"
-                ]
-                pp_option.run_mode = "trt_fp16"
-        elif device_type == "cpu" and common_args["enable_mkldnn"]:
-            pp_option.run_mode = "mkldnn"
-        pp_option.cpu_threads = common_args["cpu_threads"]
-        init_kwargs["pp_option"] = pp_option
+    pp_option = PaddlePredictorOption(model_name)
+    if device_type == "gpu" and common_args["use_pptrt"]:
+        if common_args["pptrt_precision"] == "fp32":
+            pp_option.run_mode = "trt_fp32"
+        else:
+            assert common_args["pptrt_precision"] == "fp16", common_args[
+                "pptrt_precision"
+            ]
+            pp_option.run_mode = "trt_fp16"
+    elif device_type == "cpu" and common_args["enable_mkldnn"]:
+        pp_option.run_mode = "mkldnn"
+    pp_option.cpu_threads = common_args["cpu_threads"]
+    init_kwargs["pp_option"] = pp_option
 
     return init_kwargs
 
@@ -101,12 +94,6 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         type=str2bool,
         default=default_enable_hpi,
         help="Enable the high performance inference.",
-    )
-    parser.add_argument(
-        "--auto_paddle2onnx",
-        type=str2bool,
-        default=DEFAULT_AUTO_PADDLE2ONNX,
-        help="Whether to allow automatic Paddle-to-ONNX model conversion before performing inference.",
     )
     parser.add_argument(
         "--use_tensorrt",

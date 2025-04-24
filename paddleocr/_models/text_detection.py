@@ -19,8 +19,6 @@ from ..utils.cli import (
 )
 from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
 
-_SUPPORTED_LIMIT_TYPES = ["min", "max"]
-
 
 class TextDetection(PaddleXPredictorWrapper):
     def __init__(
@@ -34,10 +32,6 @@ class TextDetection(PaddleXPredictorWrapper):
         input_shape=None,
         **kwargs,
     ):
-        if limit_type is not None and limit_type not in _SUPPORTED_LIMIT_TYPES:
-            raise ValueError(
-                f"Invalid `limit_type`: {limit_type}. Supported values are: {_SUPPORTED_LIMIT_TYPES}."
-            )
         self._extra_init_args = {
             "limit_side_len": limit_side_len,
             "limit_type": limit_type,
@@ -76,7 +70,6 @@ class TextDetectionSubcommandExecutor(PredictorCLISubcommandExecutor):
         subparser.add_argument(
             "--limit_type",
             type=str,
-            choices=_SUPPORTED_LIMIT_TYPES,
             help="This determines how the side length limit is applied to the input image before feeding it into the model.",
         )
         subparser.add_argument(
@@ -96,8 +89,9 @@ class TextDetectionSubcommandExecutor(PredictorCLISubcommandExecutor):
         )
         subparser.add_argument(
             "--input_shape",
-            nargs="+",
+            nargs=3,
             type=int,
+            metavar=("C", "H", "W"),
             help="Input shape of the model.",
         )
 

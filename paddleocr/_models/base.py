@@ -66,6 +66,7 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
     def _create_paddlex_predictor(self):
         kwargs = prepare_common_init_args(self._model_name, self._common_args)
         kwargs = {**self._get_extra_paddlex_predictor_init_args(), **kwargs}
+        # Should we check model names?
         return create_predictor(
             model_name=self._model_name, model_dir=self._model_dir, **kwargs
         )
