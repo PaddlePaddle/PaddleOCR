@@ -386,6 +386,12 @@ def create_predictor(args, mode, logger):
                 else:
                     # default cpu threads as 10
                     config.set_cpu_math_library_num_threads(10)
+
+            if hasattr(config, "enable_new_ir"):
+                config.enable_new_ir()
+            if hasattr(config, "enable_new_executor"):
+                config.enable_new_executor()
+
         # enable memory optim
         config.enable_memory_optim()
         config.disable_glog_info()
