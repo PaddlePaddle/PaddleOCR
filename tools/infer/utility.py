@@ -381,11 +381,14 @@ def create_predictor(args, mode, logger):
                 config.enable_mkldnn()
                 if args.precision == "fp16":
                     config.enable_mkldnn_bfloat16()
-                if hasattr(args, "cpu_threads"):
-                    config.set_cpu_math_library_num_threads(args.cpu_threads)
-                else:
-                    # default cpu threads as 10
-                    config.set_cpu_math_library_num_threads(10)
+            else:
+                config.disable_mkldnn()
+
+            if hasattr(args, "cpu_threads"):
+                config.set_cpu_math_library_num_threads(args.cpu_threads)
+            else:
+                # default cpu threads as 10
+                config.set_cpu_math_library_num_threads(10)
 
             if hasattr(config, "enable_new_ir"):
                 config.enable_new_ir()
