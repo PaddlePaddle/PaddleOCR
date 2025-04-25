@@ -14,6 +14,7 @@
 
 from ._models import (
     DocImgOrientationClassification,
+    SealTextDetection,
     TableClassification,
     TextDetection,
     TextLineOrientationClassification,
@@ -24,6 +25,7 @@ from ._version import version as __version__
 
 __all__ = [
     "DocImgOrientationClassification",
+    "SealTextDetection",
     "TableClassification",
     "TextDetection",
     "TextLineOrientationClassification",
