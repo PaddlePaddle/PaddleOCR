@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ast import literal_eval
-
 from ..utils.cli import (
     get_subcommand_args,
     str2bool,
@@ -248,19 +246,19 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.TableStructureRecognition.model_dir": self._params[
                 "table_structure_recognition_model_dir"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_name": self._params[
                 "seal_text_detection_model_name"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_dir": self._params[
                 "seal_text_detection_model_dir"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_name": self._params[
                 "seal_text_recognition_model_name"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_dir": self._params[
                 "seal_text_recognition_model_dir"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.batch_size": self._params[
                 "seal_text_recognition_batch_size"
             ],
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_orientation_classify": self._params[
@@ -308,22 +306,22 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
                 "text_rec_score_thresh"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.limit_side_len": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_side_len": self._params[
                 "text_det_limit_side_len"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.limit_type": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_type": self._params[
                 "seal_det_limit_type"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.thresh": self._params[
                 "seal_det_thresh"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.box_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.box_thresh": self._params[
                 "seal_det_box_thresh"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextDetection.unclip_ratio": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.unclip_ratio": self._params[
                 "seal_det_unclip_ratio"
             ],
-            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubModules.TextRecognition.score_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.score_thresh": self._params[
                 "seal_rec_score_thresh"
             ],
             "SubModules.LLM_Retriever": self._params["retriever_config"],
@@ -483,6 +481,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str2bool,
             help="Whether to use table recognition.",
         )
+        # TODO: Support dict and list types
         subparser.add_argument(
             "--layout_threshold",
             type=float,
@@ -500,7 +499,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         )
         subparser.add_argument(
             "--layout_merge_bboxes_mode",
-            type=literal_eval,
+            type=str,
             help="Overlapping box filtering method.",
         )
         subparser.add_argument(

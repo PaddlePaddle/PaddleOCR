@@ -14,21 +14,19 @@ def check_simple_inference_result(result, *, expected_length=1):
 def check_wrapper_simple_inference_param_forwarding(
     monkeypatch,
     wrapper,
-    wrapper_method_name,
-    wrapped_attr_name,
-    wrapped_method_name,
-    args,
+    wrapped_obj_attr_name,
+    input,
     params,
 ):
-    def _dummy_infer(*args, **params):
+    def _dummy_predict(input, **params):
         yield params
 
     monkeypatch.setattr(
-        getattr(wrapper, wrapped_attr_name), wrapped_method_name, _dummy_infer
+        getattr(wrapper, wrapped_obj_attr_name), "predict", _dummy_predict
     )
 
-    result = getattr(wrapper, wrapper_method_name)(
-        *args,
+    result = getattr(wrapper, "predict")(
+        input,
         **params,
     )
 
