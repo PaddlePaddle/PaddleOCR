@@ -129,7 +129,7 @@ def init_args():
     parser.add_argument("--cls_batch_num", type=int, default=6)
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
-    parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
+    parser.add_argument("--enable_mkldnn", type=str2bool, default=True)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
