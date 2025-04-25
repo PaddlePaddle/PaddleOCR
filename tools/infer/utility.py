@@ -129,7 +129,7 @@ def init_args():
     parser.add_argument("--cls_batch_num", type=int, default=6)
     parser.add_argument("--cls_thresh", type=float, default=0.9)
 
-    parser.add_argument("--enable_mkldnn", type=str2bool, default=True)
+    parser.add_argument("--enable_mkldnn", type=str2bool, default=None)
     parser.add_argument("--cpu_threads", type=int, default=10)
     parser.add_argument("--use_pdserving", type=str2bool, default=False)
     parser.add_argument("--warmup", type=str2bool, default=False)
@@ -375,14 +375,16 @@ def create_predictor(args, mode, logger):
                 gcu_passes.append_passes_for_legacy_ir(pass_builder, "PaddleOCR")
         else:
             config.disable_gpu()
-            if args.enable_mkldnn:
-                # cache 10 different shapes for mkldnn to avoid memory leak
-                config.set_mkldnn_cache_capacity(10)
-                config.enable_mkldnn()
-                if args.precision == "fp16":
-                    config.enable_mkldnn_bfloat16()
-            else:
-                config.disable_mkldnn()
+            if args.enable_mkldnn is not None:
+                if args.enable_mkldnn:
+                    # cache 10 different shapes for mkldnn to avoid memory leak
+                    config.set_mkldnn_cache_capacity(10)
+                    config.enable_mkldnn()
+                    if args.precision == "fp16":
+                        config.enable_mkldnn_bfloat16()
+                else:
+                    if hasattr(config, "disable_mkldnn"):
+                        config.disable_mkldnn()
 
             if hasattr(args, "cpu_threads"):
                 config.set_cpu_math_library_num_threads(args.cpu_threads)
