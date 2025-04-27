@@ -13,21 +13,29 @@
 # limitations under the License.
 
 from .doc_img_orientation_classification import DocImgOrientationClassification
+from .doc_vlm import DocVLM
+from .formula_recognition import FormulaRecognition
 from .layout_detection import LayoutDetection
 from .seal_text_detection import SealTextDetection
 from .table_cells_detection import TableCellsDetection
 from .table_classification import TableClassification
+from .table_structure_recognition import TableStructureRecognition
 from .text_detection import TextDetection
+from .text_image_unwarping import TextImageUnwarping
 from .text_line_orientation_classification import TextLineOrientationClassification
 from .text_recognition import TextRecognition
 
 __all__ = [
     "DocImgOrientationClassification",
+    "DocVLM",
+    "FormulaRecognition",
     "LayoutDetection",
     "SealTextDetection",
     "TableCellsDetection",
     "TableClassification",
+    "TableStructureRecognition",
     "TextDetection",
+    "TextImageUnwarping",
     "TextLineOrientationClassification",
     "TextRecognition",
 ]
