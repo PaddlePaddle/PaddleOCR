@@ -13,7 +13,7 @@ train_infer_img_dir:./train_data/icdar2015/text_localization/ch4_test_images/
 null:null
 ##
 trainer:norm_train
-norm_train:tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.print_batch_step=1 Train.loader.shuffle=false Global.eval_batch_step=[4000,400]
+norm_train:tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.print_batch_step=1 Train.loader.shuffle=false Global.eval_batch_step=[4000,400]
 pact_train:null
 fpgm_train:null
 distill_train:null
@@ -27,14 +27,14 @@ null:null
 ===========================infer_params===========================
 Global.save_inference_dir:./output/
 Global.checkpoints:
-norm_export:tools/export_model.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o 
+norm_export:tools/export_model.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o 
 quant_export:null
 fpgm_export: 
 distill_export:null
 export1:null
 export2:null
 inference_dir:Student
-infer_model:./inference/ch_PP-OCRv3_det_infer/
+infer_model:./inference/PP-OCRv3_mobile_det_infer/
 infer_export:null
 infer_quant:False
 inference:tools/infer/predict_det.py

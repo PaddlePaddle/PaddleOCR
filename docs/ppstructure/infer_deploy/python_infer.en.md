@@ -16,7 +16,7 @@ mkdir inference && cd inference
 # Download the PP-StructureV2 layout analysis model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/layout/picodet_lcnet_x1_0_layout_infer.tar && tar xf picodet_lcnet_x1_0_layout_infer.tar
 # Download the PP-OCRv3 text detection model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar && tar xf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar && tar xf PP-OCRv3_mobile_det_infer.tar
 # Download the PP-OCRv3 text recognition model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
 # Download the PP-StructureV2 form recognition model and unzip it
@@ -27,7 +27,7 @@ cd ..
 ### 1.1 layout analysis + table recognition
 
 ```bash linenums="1"
-python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+python3 predict_system.py --det_model_dir=inference/PP-OCRv3_mobile_det_infer \
                           --rec_model_dir=inference/ch_PP-OCRv3_rec_infer \
                           --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
                           --layout_model_dir=inference/picodet_lcnet_x1_0_layout_infer \
@@ -55,7 +55,7 @@ After the operation is completed, each image will have a directory with the same
 ### 1.3 table recognition
 
 ```bash linenums="1"
-python3 predict_system.py --det_model_dir=inference/ch_PP-OCRv3_det_infer \
+python3 predict_system.py --det_model_dir=inference/PP-OCRv3_mobile_det_infer \
                           --rec_model_dir=inference/ch_PP-OCRv3_rec_infer \
                           --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
                           --image_dir=./docs/table/table.jpg \

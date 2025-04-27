@@ -3,8 +3,8 @@ model_name:ch_PP-OCRv3_det_KL
 python:python3.7
 Global.pretrained_model:null
 Global.save_inference_dir:null
-infer_model:./inference/ch_PP-OCRv3_det_infer/
-infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o
+infer_model:./inference/PP-OCRv3_mobile_det_infer/
+infer_export:deploy/slim/quantization/quant_kl.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o
 infer_quant:True
 inference:tools/infer/predict_det.py
 --use_gpu:False|True

@@ -75,7 +75,7 @@ pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 
 ```bash linenums="1"
 # 下载并解压 OCR 文本检测模型
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar -O ch_PP-OCRv3_det_infer.tar && tar -xf ch_PP-OCRv3_det_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar -O PP-OCRv3_mobile_det_infer.tar && tar -xf PP-OCRv3_mobile_det_infer.tar
 # 下载并解压 OCR 文本识别模型
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar -O ch_PP-OCRv3_rec_infer.tar &&  tar -xf ch_PP-OCRv3_rec_infer.tar
 ```
@@ -84,7 +84,7 @@ wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar 
 
 ```bash linenums="1"
 # 转换检测模型
-python3 -m paddle_serving_client.convert --dirname ./ch_PP-OCRv3_det_infer/ \
+python3 -m paddle_serving_client.convert --dirname ./PP-OCRv3_mobile_det_infer/ \
                                          --model_filename inference.pdmodel          \
                                          --params_filename inference.pdiparams       \
                                          --serving_server ./ppocr_det_v3_serving/ \

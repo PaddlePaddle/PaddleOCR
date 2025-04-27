@@ -15,10 +15,10 @@ The default configuration is based on the inference setting of the DB text detec
 
 ```bash linenums="1"
 # download DB text detection inference model
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-tar xf ch_PP-OCRv3_det_infer.tar
+wget  https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
+tar xf PP-OCRv3_mobile_det_infer.tar
 # run inference
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/"
 ```
 
 The visual text detection results are saved to the ./inference_results folder by default, and the name of the result file is prefixed with 'det_res'. Examples of results are as follows:
@@ -36,13 +36,13 @@ Set as `limit_type='min', det_limit_side_len=960`, it means that the shortest si
 If the resolution of the input picture is relatively large and you want to use a larger resolution prediction, you can set det_limit_side_len to the desired value, such as 1216:
 
 ```bash linenums="1"
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --det_limit_type=max --det_limit_side_len=1216
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --det_limit_type=max --det_limit_side_len=1216
 ```
 
 If you want to use the CPU for prediction, execute the command as follows
 
 ```bash linenums="1"
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/"  --use_gpu=False
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/"  --use_gpu=False
 ```
 
 ## Text Recognition Model Inference
@@ -134,13 +134,13 @@ When performing prediction, you need to specify the path of a single image or a 
 
 ```bash linenums="1"
 # use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true
 # not use use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false
 # use multi-process
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
 # use PDF files, you can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
-python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./ch_PP-OCRv3_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true --page_num=2
+python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true --page_num=2
 ```
 
 After executing the command, the recognition result image is as follows:
@@ -158,10 +158,10 @@ You need to do the following 2 steps for inference using TRT.
 * (1) Collect the dynamic shape information of the model about a specific dataset and store it in a file.
 * (2) Load the dynamic shape information file for TRT inference.
 
-Taking the text detection model as an example. Firstly, you can use the following command to generate a dynamic shape file, which will eventually be named as `det_trt_dynamic_shape.txt` and stored in the `ch_PP-OCRv3_det_infer` folder.
+Taking the text detection model as an example. Firstly, you can use the following command to generate a dynamic shape file, which will eventually be named as `det_trt_dynamic_shape.txt` and stored in the `PP-OCRv3_mobile_det_infer` folder.
 
 ```bash linenums="1"
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --use_tensorrt=True
 ```
 
 The above command is only used to collect dynamic shape information, and TRT is not used during inference.
@@ -169,7 +169,7 @@ The above command is only used to collect dynamic shape information, and TRT is 
 Then, you can use the following command to perform TRT inference.
 
 ```bash linenums="1"
-python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./ch_PP-OCRv3_det_infer/" --use_tensorrt=True
+python3 tools/infer/predict_det.py --image_dir="./doc/imgs/1.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --use_tensorrt=True
 ```
 
 **Note:**

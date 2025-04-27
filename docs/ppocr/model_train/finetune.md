@@ -30,7 +30,7 @@ PaddleOCR提供的PP-OCR系列模型在通用场景中性能优异，能够解�
 
 ### 2.2 模型选择
 
-建议选择PP-OCRv3模型（配置文件：[ch_PP-OCRv3_det_student.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_student.yml)，预训练模型：[ch_PP-OCRv3_det_distill_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)，预训练模型：[ch_PP-OCRv3_det_distill_train.tar](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
 更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](../model_list.md)。
 

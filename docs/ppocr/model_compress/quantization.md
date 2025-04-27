@@ -55,7 +55,7 @@ python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_
 在得到量化训练保存的模型后，我们可以将其导出为inference_model，用于预测部署：
 
 ```bash linenums="1"
-python deploy/slim/quantization/export_model.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
+python deploy/slim/quantization/export_model.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.checkpoints=output/quant_model/best_accuracy Global.save_inference_dir=./output/quant_inference_model
 ```
 
 ### 5. 量化模型部署

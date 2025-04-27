@@ -360,8 +360,8 @@ After the extraction is complete, use [ch_PP-OCRv3_rec.yml](https://github.com/P
 
 The configuration file of the detection model distillation is in the ```PaddleOCR/configs/det/ch_PP-OCRv3/``` directory, which contains three distillation configuration files:
 
-- ```ch_PP-OCRv3_det_cml.yml```, Use one large model to distill two small models, and the two small models learn from each other
-- ```ch_PP-OCRv3_det_dml.yml```, Method of mutual distillation of two student models
+- ```PP-OCRv3_det_cml.yml```, Use one large model to distill two small models, and the two small models learn from each other
+- ```PP-OCRv3_det_dml.yml```, Method of mutual distillation of two student models
 
 #### 2.2.1 Model Structure
 
@@ -410,9 +410,9 @@ Architecture:
 ```
 
 If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. [ch_PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_dml.yml)
+Refer to the configuration file for details. [PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)
 
-The following describes the configuration file parameters [ch_PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml):
+The following describes the configuration file parameters [PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml):
 
 ```yaml linenums="1"
 Architecture:
@@ -503,7 +503,7 @@ The key contains `backbone_out`, `neck_out`, `head_out`, and `value` is the tens
 
 #### 2.2.2 Loss Function
 
-The distillation loss function configuration(`ch_PP-OCRv3_det_cml.yml`) is shown below.
+The distillation loss function configuration(`PP-OCRv3_det_cml.yml`) is shown below.
 
 ```yaml linenums="1"
 Loss:
@@ -579,8 +579,8 @@ Model Structure
 There are three ways to fine-tune the detection distillation task:
 
 - `ch_PP-OCRv3_det_distill.yml`, The teacher model is set to the model provided by PaddleOCR or the large model you have trained.
-- `ch_PP-OCRv3_det_cml.yml`, Use cml distillation. Similarly, the Teacher model is set to the model provided by PaddleOCR or the large model you have trained.
-- `ch_PP-OCRv3_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.7% on the data set used by PaddleOCR.
+- `PP-OCRv3_det_cml.yml`, Use cml distillation. Similarly, the Teacher model is set to the model provided by PaddleOCR or the large model you have trained.
+- `PP-OCRv3_det_dml.yml`, Distillation using DML. The method of mutual distillation of the two Student models has an accuracy improvement of about 1.7% on the data set used by PaddleOCR.
 
 In fine-tune, you need to set the pre-trained model to be loaded in the `pretrained` parameter of the network structure.
 
@@ -590,7 +590,7 @@ In addition, since the distillation pre-training model provided by PaddleOCR con
 
 ```sh
 # Download the parameters of the distillation training model
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
 ```
 
 ```python linenums="1"

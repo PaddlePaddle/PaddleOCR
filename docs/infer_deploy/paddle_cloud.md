@@ -90,7 +90,7 @@ $ tar xf /mnt/hiertext1.tar -C /mnt && mv /mnt/hiertext1 /mnt/hiertext
 
 ### 1.4 修改配置文件
 
-PP-OCRv3模型配置文件位于`/home/PaddleOCR/configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml`，需要修改的配置如下：
+PP-OCRv3模型配置文件位于`/home/PaddleOCR/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml`，需要修改的配置如下：
 
 - 修改训练数据配置：
 
@@ -144,23 +144,22 @@ Eval:
 # 下载预训练模型到/home/PaddleOCR/pre_train文件夹下
 $ mkdir /home/PaddleOCR/pre_train
 
-$ wget -P /home/PaddleOCR/pre_train https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
+$ wget -P /home/PaddleOCR/pre_train https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams
 
-$ tar xf /home/PaddleOCR/pre_train/ch_PP-OCRv3_det_distill_train.tar -C /home/PaddleOCR/pre_train/
 ```
 
 启动训练，训练模型默认保存在`output`目录下，加载PP-OCRv3检测预训练模型。
 
 ```bash linenums="1"
 # 这里以 GPU 训练为例，使用 CPU 进行训练的话，需要指定参数 Global.use_gpu=false
-python3 tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.save_model_dir=./output/ Global.pretrained_model=./pre_train/ch_PP-OCRv3_det_distill_train/best_accuracy
+python3 tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.save_model_dir=./output/ Global.pretrained_model=./pre_train/ch_PP-OCRv3_det_distill_train/best_accuracy
 ```
 
 如果要使用多GPU分布式训练，请使用如下命令：
 
 ```bash linenums="1"
 # 启动训练，训练模型默认保存在output目录下，--gpus '0,1,2,3'表示使用0，1，2，3号GPU训练
-python3 -m paddle.distributed.launch --log_dir=./debug/ --gpus '0,1,2,3' tools/train.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.save_model_dir=./output/ Global.pretrained_model=./pre_train/ch_PP-OCRv3_det_distill_train/best_accuracy
+python3 -m paddle.distributed.launch --log_dir=./debug/ --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.save_model_dir=./output/ Global.pretrained_model=./pre_train/ch_PP-OCRv3_det_distill_train/best_accuracy
 ```
 
 ### 1.6 模型评估
@@ -182,7 +181,7 @@ latest.pdopt     # 默认保存的最新模型的优化器相关参数
 # 进行模型评估
 cd /home/PaddleOCR/
 
-python3 tools/eval.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
+python3 tools/eval.py -c configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml -o Global.checkpoints=./output/best_accuracy
 ```
 
 ## 2. PP-OCRv3云端部署
