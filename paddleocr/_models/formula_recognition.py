@@ -31,7 +31,7 @@ class FormulaRecognition(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "LaTeX_OCR_rec"
+        return "PP-FormulaNet-S"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
