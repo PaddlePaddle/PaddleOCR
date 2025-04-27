@@ -339,10 +339,10 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     def _update_subparser(self, subparser):
         subparser.add_argument(
             "-i",
-            "--input_file",
+            "--input",
             type=str,
             required=True,
-            help="Path to the input file.",
+            help="Input path or URL.",
         )
         subparser.add_argument(
             "-k",
@@ -578,7 +578,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
-        input_file = params.pop("input_file")
+        input = params.pop("input")
         keys = params.pop("keys")
         save_path = params.pop("save_path")
         invoke_mllm = params.pop("invoke_mllm")
@@ -612,7 +612,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
 
         chatocr = PPChatOCRv4Doc(**params)
 
-        result_visual = chatocr.visual_predict(input_file)
+        result_visual = chatocr.visual_predict(input)
 
         visual_info_list = []
         for res in result_visual:
@@ -623,7 +623,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         vector_info = chatocr.build_vector(visual_info_list)
 
         if invoke_mllm:
-            result_mllm = chatocr.mllm_pred(input_file, keys)
+            result_mllm = chatocr.mllm_pred(input, keys)
             mllm_predict_info = result_mllm["mllm_res"]
         else:
             mllm_predict_info = None
