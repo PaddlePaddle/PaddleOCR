@@ -111,7 +111,7 @@ MODEL_URLS = {
                     "dict_path": "./ppocr/utils/ppocr_keys_v1.txt",
                 },
                 "ch_doc": {
-                    "url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc/PP-OCRv4_server_rec_doc_infer.tar",
+                    "url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0rc0/PP-OCRv4_server_rec_doc_infer.tar",
                     "dict_path": "./ppocr/utils/dict/ppocrv4_doc_dict.txt",
                 },
                 "en": {
