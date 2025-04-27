@@ -17,7 +17,9 @@ import warnings
 
 from ._models import (
     DocImgOrientationClassification,
+    LayoutDetection,
     SealTextDetection,
+    TableCellsDetection,
     TableClassification,
     TextDetection,
     TextLineOrientationClassification,
@@ -41,7 +43,9 @@ def _register_pipelines(subparsers):
 def _register_models(subparsers):
     for cls in [
         DocImgOrientationClassification,
+        LayoutDetection,
         SealTextDetection,
+        TableCellsDetection,
         TableClassification,
         TextDetection,
         TextLineOrientationClassification,

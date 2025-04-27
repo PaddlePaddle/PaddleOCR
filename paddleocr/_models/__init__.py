@@ -13,7 +13,9 @@
 # limitations under the License.
 
 from .doc_img_orientation_classification import DocImgOrientationClassification
+from .layout_detection import LayoutDetection
 from .seal_text_detection import SealTextDetection
+from .table_cells_detection import TableCellsDetection
 from .table_classification import TableClassification
 from .text_detection import TextDetection
 from .text_line_orientation_classification import TextLineOrientationClassification
@@ -21,7 +23,9 @@ from .text_recognition import TextRecognition
 
 __all__ = [
     "DocImgOrientationClassification",
+    "LayoutDetection",
     "SealTextDetection",
+    "TableCellsDetection",
     "TableClassification",
     "TextDetection",
     "TextLineOrientationClassification",

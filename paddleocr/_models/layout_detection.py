@@ -11,3 +11,28 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+from ._object_detection import (
+    ObjectDetection,
+    ObjectDetectionSubcommandExecutor,
+)
+
+
+class LayoutDetection(ObjectDetection):
+    @property
+    def default_model_name(self):
+        return "PP-DocLayout-L"
+
+    @classmethod
+    def get_cli_subcommand_executor(cls):
+        return LayoutDetectionSubcommandExecutor()
+
+
+class LayoutDetectionSubcommandExecutor(ObjectDetectionSubcommandExecutor):
+    @property
+    def subparser_name(self):
+        return "layout_detection"
+
+    @property
+    def wrapper_cls(self):
+        return LayoutDetection
