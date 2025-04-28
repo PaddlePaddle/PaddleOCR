@@ -5623,7 +5623,7 @@ You're not viewing the latest version.
 <tr>
 <td>UniMERNet</td>
 <td>Donut Swin</td>
-<td><a href="../../../configs/rec/rec_unimernet.yml">rec_unimernet.yml</a></td>
+<td><a href="../../../configs/rec/UniMERNet.yaml">UniMERNet.yaml</a></td>
 <td style="text-align: center;">0.9187</td>
 <td style="text-align: center;">0.9252</td>
 <td style="text-align: center;">0.8658</td>
@@ -5635,7 +5635,7 @@ You're not viewing the latest version.
 <tr>
 <td>PP-FormulaNet-S</td>
 <td>PPHGNetV2_B4</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml">rec_pp_formulanet_s.yml</a></td>
+<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml">PP-FormulaNet-S.yaml</a></td>
 <td style="text-align: center;">0.8694</td>
 <td style="text-align: center;">0.8071</td>
 <td style="text-align: center;">0.9294</td>
@@ -5647,7 +5647,7 @@ You're not viewing the latest version.
 <tr>
 <td>PP-FormulaNet-L</td>
 <td>Vary_VIT_B</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/rec_pp_formulanet_l.yml">rec_pp_formulanet_l.yml</a></td>
+<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml">PP-FormulaNet-L.yaml</a></td>
 <td style="text-align: center;">0.9055</td>
 <td style="text-align: center;">0.9206</td>
 <td style="text-align: center;">0.9392</td>
@@ -5678,20 +5678,20 @@ You're not viewing the latest version.
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>rec_ppformulanet_s_train.tar
 </span></code></pre></div>
 <h3 id="33">3.3 模型训练<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
-<p>请参考<a href="../../ppocr/model_train/recognition.html">文本识别训练教程</a>。PaddleOCR对代码进行了模块化，训练 <code>PP-FormulaNet-S</code> 识别模型时需要<strong>更换配置文件</strong>为 <code>PP-FormulaNet-S</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml">配置文件</a>。</p>
+<p>请参考<a href="../../ppocr/model_train/recognition.html">文本识别训练教程</a>。PaddleOCR对代码进行了模块化，训练 <code>PP-FormulaNet-S</code> 识别模型时需要<strong>更换配置文件</strong>为 <code>PP-FormulaNet-S</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml">配置文件</a>。</p>
 <h4 id="_1">启动训练<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
 <p>具体地，在完成数据准备后，便可以启动训练，训练命令如下：
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">#单卡训练 (默认训练方式)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1">#多卡训练，通过--gpus参数指定卡号</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>--ips<span class="o">=</span><span class="m">127</span>.0.0.1<span class="w">   </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>--ips<span class="o">=</span><span class="m">127</span>.0.0.1<span class="w">   </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
 </span></code></pre></div></p>
 <p><strong>注意：</strong></p>
 <ul>
 <li>默认每训练 1个epoch（179 次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python3  -m paddle.distributed.launch --gpus &#39;0,1,2,3&#39; --ips=127.0.0.1   tools/train.py -c configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml \
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python3  -m paddle.distributed.launch --gpus &#39;0,1,2,3&#39; --ips=127.0.0.1   tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  -o Global.eval_batch_step=[0,{length_of_dataset//batch_size//4}] \
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>   Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 </span></code></pre></div></li>
@@ -5700,13 +5700,13 @@ You're not viewing the latest version.
 <p>可下载已训练完成的<a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar">模型文件</a>，使用如下命令进行评估：</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w"> </span><span class="c1"># demo 测试集评估</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w"> </span>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w"> </span>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
 </span></code></pre></div>
 <h3 id="35">3.5 预测<a class="headerlink" href="#35" title="Permanent link">&para;</a></h3>
 <p>使用如下命令进行单张图片预测：
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 注意将pretrained_model的路径设置为本地路径。</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>-o<span class="w">  </span>Global.infer_img<span class="o">=</span><span class="s1">&#39;./docs/datasets/images/pme_demo/0000099.png&#39;</span><span class="se">\</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">   </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img=&#39;./doc/datasets/pme_demo/&#39;。</span>
@@ -5734,7 +5734,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最終更新日">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年4月27日 14:04:03">2025年4月27日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年4月28日 06:36:27">2025年4月28日</span>
   </span>
 
     
@@ -5744,7 +5744,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="作成日">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年4月27日 14:04:03">2025年4月27日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年4月28日 06:36:27">2025年4月28日</span>
   </span>
 
     
