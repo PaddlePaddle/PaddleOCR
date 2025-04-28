@@ -15,9 +15,11 @@
 from .ocr import PaddleOCR
 from .pp_chatocrv4_doc import PPChatOCRv4Doc
 from .seal_recognition import SealRecognition
+from .doc_preprocessor import DocPreprocessor
 
 __all__ = [
     "PaddleOCR",
     "PPChatOCRv4Doc",
     "SealRecognition",
+    "DocPreprocessor"
 ]

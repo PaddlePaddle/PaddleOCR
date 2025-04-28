@@ -129,16 +129,16 @@ class SealRecognition(PaddleXPipelineWrapper):
         
     def _get_paddlex_config_overrides(self):
         STRUCTURE = {
-            "DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
+            "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
             ],
-            "DocPreprocessor.SubModules.DocOrientationClassify.model_dir": self._params[
+            "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_dir": self._params[
                 "doc_orientation_classify_model_dir"
             ],
-            "DocPreprocessor.SubModules.DocUnwarping.model_name": self._params[
+            "SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_name": self._params[
                 "doc_unwarping_model_name"
             ],
-            "DocPreprocessor.SubModules.DocUnwarping.model_dir": self._params[
+            "SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_dir": self._params[
                 "doc_unwarping_model_dir"
             ],
             "SubModules.LayoutDetection.model_name": self._params[
