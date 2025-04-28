@@ -9,7 +9,7 @@ Global:
   - 0
   - 331
   cal_metric_during_train: true
-  pretrained_model: null
+  pretrained_model: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams"
   checkpoints: null
   save_inference_dir: ./output/SLANeXt_wired/infer
   use_visualdl: false

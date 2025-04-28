@@ -8,7 +8,7 @@ Global:
   # evaluation is run every 331 iterations after the 0th iteration
   eval_batch_step: [0, 331]
   cal_metric_during_train: True
-  pretrained_model: 
+  pretrained_model: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams"
   checkpoints: 
   save_inference_dir: ./output/SLANet_ch/infer
   use_visualdl: False
