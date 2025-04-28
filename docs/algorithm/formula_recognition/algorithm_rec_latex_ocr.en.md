@@ -10,7 +10,7 @@ Using LaTeX-OCR printed mathematical expression recognition datasets for trainin
 
 | Model       | Backbone |config| BLEU score  | normed edit distance  |  ExpRate  |Download link|
 |-----------|----------| ---- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 ## 2. Environment
 Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](../../ppocr/blog/clone.en.md) to clone the project code.
@@ -50,10 +50,10 @@ Specifically, after the data preparation is completed, the training can be start
 
 ```
 #Single GPU training (Default training method)
-python3 tools/train.py -c configs/rec/rec_latex_ocr.yml
+python3 tools/train.py -c configs/rec/LaTeX_OCR_rec.yaml
 
 #Multi GPU training, specify the gpu number through the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_latex_ocr.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/LaTeX_OCR_rec.yaml
 ```
 
 Evaluation:
@@ -61,16 +61,16 @@ Evaluation:
 ```
 # GPU evaluation
 # Validation set evaluation
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/eval.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # Test set evaluation
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data_dir=./train_data/LaTeXOCR/test Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
+python3 tools/eval.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data_dir=./train_data/LaTeXOCR/test Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
 Prediction:
 
 ```
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/infer_rec.py -c configs/rec/LaTeX_OCR_rec.yaml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 ```
 
 ## 4. Inference and Deployment
@@ -79,7 +79,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_im
 First, the model saved during the LaTeX-OCR printed mathematical expression recognition training process is converted into an inference model. you can use the following command to convert:
 
 ```
-python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
+python3 tools/export_model.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
 
 # The default output max length of the model is 512.
 ```
