@@ -66,16 +66,27 @@ def prepare_common_init_args(model_name, common_args):
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
 
     pp_option = PaddlePredictorOption(model_name)
-    if device_type == "gpu" and common_args["use_pptrt"]:
-        if common_args["pptrt_precision"] == "fp32":
-            pp_option.run_mode = "trt_fp32"
-        else:
-            assert common_args["pptrt_precision"] == "fp16", common_args[
-                "pptrt_precision"
-            ]
-            pp_option.run_mode = "trt_fp16"
-    elif device_type == "cpu" and common_args["enable_mkldnn"]:
-        pp_option.run_mode = "mkldnn"
+    if device_type == "gpu":
+        if common_args["use_pptrt"]:
+            if common_args["pptrt_precision"] == "fp32":
+                pp_option.run_mode = "trt_fp32"
+            else:
+                assert common_args["pptrt_precision"] == "fp16", common_args[
+                    "pptrt_precision"
+                ]
+                pp_option.run_mode = "trt_fp16"
+    elif device_type == "cpu":
+        enable_mkldnn = common_args["enable_mkldnn"]
+        if enable_mkldnn is None:
+            # HACK
+            from paddle.inference import Config
+
+            if hasattr(Config, "set_mkldnn_cache_capacity"):
+                enable_mkldnn = True
+            else:
+                enable_mkldnn = False
+        if enable_mkldnn:
+            pp_option.run_mode = "mkldnn"
     pp_option.cpu_threads = common_args["cpu_threads"]
     init_kwargs["pp_option"] = pp_option
 
@@ -118,7 +129,7 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enalbe oneDNN (formerly known as MKL-DNN) acceleration for inference.",
+        help="Enalbe oneDNN (formerly known as MKL-DNN) acceleration for inference. By default, oneDNN will be used when available.",
     )
     parser.add_argument(
         "--cpu_threads",

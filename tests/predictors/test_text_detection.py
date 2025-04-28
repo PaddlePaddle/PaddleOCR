@@ -49,9 +49,7 @@ def test_predict_params(
     check_wrapper_simple_inference_param_forwarding(
         monkeypatch,
         text_detection_predictor,
-        "predict",
         "paddlex_predictor",
-        "predict",
-        ("dummy_path",),
+        "dummy_path",
         params,
     )

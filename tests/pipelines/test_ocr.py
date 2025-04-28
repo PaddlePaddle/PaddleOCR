@@ -41,6 +41,7 @@ def test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:
         assert isinstance(text, str)
 
 
+# TODO: Also check passing `None`
 @pytest.mark.parametrize(
     "params",
     [
@@ -62,10 +63,8 @@ def test_predict_params(
     check_wrapper_simple_inference_param_forwarding(
         monkeypatch,
         ocr_engine,
-        "predict",
         "paddlex_pipeline",
-        "predict",
-        ("dummy_path",),
+        "dummy_path",
         params,
     )
 
