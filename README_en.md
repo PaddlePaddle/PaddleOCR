@@ -17,6 +17,8 @@ English | [简体中文](README.md)
 
 PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools that help users train better models and apply them into practice.
 
+**⚠️ Note: The `main` branch is undergoing major refactoring. For stable access to documentation and code, please switch to a stable branch (e.g., `release/2.10`).**  
+
 <div align="center">
     <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/demo.gif" width="800">
 </div>
