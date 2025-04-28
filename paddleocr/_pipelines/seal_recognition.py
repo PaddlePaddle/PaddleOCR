@@ -47,7 +47,7 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_det_thresh=None,
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
-        seal_rec_score_thresh=None, # 以上全是推理相关参数
+        seal_rec_score_thresh=None,
         **kwargs,
     ):
         

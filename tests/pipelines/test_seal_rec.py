@@ -22,7 +22,7 @@ def ocr_engine() -> SealRecognition:
 )
 def test_predict(ocr_engine: SealRecognition, image_path: str) -> None:
     """
-    Test PaddleOCR's SealRecognition functionality.
+    Test PaddleOCR's seal recognition functionality.
 
     Args:
         ocr_engine: An instance of `SealRecognition`.
@@ -65,9 +65,7 @@ def test_predict_params(
     check_wrapper_simple_inference_param_forwarding(
         monkeypatch,
         ocr_engine,
-        "predict",
         "paddlex_pipeline",
-        "predict",
-        ("dummy_path",),
+        "dummy_path",
         params,
     )
