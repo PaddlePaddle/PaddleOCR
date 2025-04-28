@@ -82,7 +82,7 @@ def prepare_common_init_args(model_name, common_args):
         if enable_mkldnn is None:
             # HACK
             if model_name in MKLDNN_BLOCKLIST:
-                logger.warning(f"MKLDNN is disabled for {model_name}.")
+                logger.warning(f"oneDNN will be disabled for {model_name}.")
                 enable_mkldnn = False
             else:
                 from paddle.inference import Config
