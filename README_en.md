@@ -87,7 +87,7 @@ PaddleX provides a one-stop full-process high-efficiency development platform fo
 
 ## 📚 E-book: *Dive Into OCR*
 
-- [Dive Into OCR](./doc/doc_en/ocr_book_en.md)
+- [Dive Into OCR](https://paddlepaddle.github.io/PaddleOCR/latest/en/ppocr/blog/ocr_book.html)
 
 ## 🎖 Contributors
 
