@@ -10,7 +10,7 @@
 
 | 模型        | 骨干网络       |配置文件 | BLEU score  | normed edit distance  |  ExpRate  |下载链接|
 |-----------|------------| ----- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[rec_latex_ocr.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 ## 2. 环境配置
 请先参考[《运行环境准备》](../../ppocr/environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](../../ppocr/blog/clone.md)克隆项目代码。
@@ -42,7 +42,7 @@ python ppocr/utils/formula_utils/math_txt2pkl.py --image_dir=train_data/LaTeXOCR
 
 ### 3.2 模型训练
 
-请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/rec_latex_ocr.yml)。
+请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)。
 
 #### 启动训练
 
@@ -50,16 +50,16 @@ python ppocr/utils/formula_utils/math_txt2pkl.py --image_dir=train_data/LaTeXOCR
 具体地，在完成数据准备后，便可以启动训练，训练命令如下：
 ```shell
 #单卡训练 (默认训练方式)
-python3 tools/train.py -c configs/rec/rec_latex_ocr.yml
+python3 tools/train.py -c configs/rec/LaTeX_OCR_rec.yaml
 #多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_latex_ocr.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/LaTeX_OCR_rec.yaml
 ```
 
 **注意：**
 
 - 默认每训练22个epoch（60000次iteration）进行1次评估，若您更改训练的batch_size，或更换数据集，请在训练时作出如下修改
 ```
-python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_step=[0,{length_of_dataset//batch_size*22}]
+python3 tools/train.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.eval_batch_step=[0,{length_of_dataset//batch_size*22}]
 ```
 
 ### 3.3 评估
@@ -69,9 +69,9 @@ python3 tools/train.py -c configs/rec/rec_latex_ocr.yml -o Global.eval_batch_ste
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
 # 验证集评估
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/eval.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # 测试集评估
-python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data_dir=./train_data/LaTeXOCR/test Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
+python3 tools/eval.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Eval.dataset.data_dir=./train_data/LaTeXOCR/test Eval.dataset.data=./train_data/LaTeXOCR/latexocr_test.pkl
 ```
 
 ### 3.4 预测
@@ -79,7 +79,7 @@ python3 tools/eval.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_mode
 使用如下命令进行单张图片预测：
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
+python3 tools/infer_rec.py -c configs/rec/LaTeX_OCR_rec.yaml  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000013.png' Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams
 # 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/datasets/pme_demo/'。
 ```
 
@@ -90,7 +90,7 @@ python3 tools/infer_rec.py -c configs/rec/rec_latex_ocr.yml  -o  Global.infer_im
 
 ```shell
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/export_model.py -c configs/rec/rec_latex_ocr.yml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
+python3 tools/export_model.py -c configs/rec/LaTeX_OCR_rec.yaml -o Global.pretrained_model=./rec_latex_ocr_train/best_accuracy.pdparams Global.save_inference_dir=./inference/rec_latex_ocr_infer/ 
 
 # 目前的静态图模型支持的最大输出长度为512
 ```

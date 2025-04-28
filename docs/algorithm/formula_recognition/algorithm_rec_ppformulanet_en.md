@@ -7,9 +7,9 @@ PP-FormulaNet is a formula recognition model independently developed by Baidu Pa
 
 | Model           | Backbone       | config                                                  |SPE-<br/>BLEU↑ | CPE-<br/>BLEU↑  | Easy-<br/>BLEU↑ | Middle-<br/>BLEU↑ | Hard-<br/>BLEU↑| Avg-<br/>BLEU↑  | Download link |
 |-----------|--------|---------------------------------------------------|:--------------:|:-----------------:|:----------:|:----------------:|:---------:|:-----------------:|:--------------:|
-| UniMERNet | Donut Swin | [rec_unimernet.yml](../../../configs/rec/rec_unimernet.yml) |     0.9187  |    0.9252       | 0.8658  |    0.8228   | 0.7740 |     0.8613        |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
-| PP-FormulaNet-S | PPHGNetV2_B4 | [rec_pp_formulanet_s.yml](../../../configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml) |    0.8694   |    0.8071       | 0.9294  |    0.9112    | 0.8391 |    0.8712       |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
-| PP-FormulaNet-L | Vary_VIT_B | [rec_pp_formulanet_l.yml](../../../configs/rec/PP-FormuaNet/rec_pp_formulanet_l.yml) |     0.9055   |     0.9206       | 0.9392  |     0.9273    | 0.9141 |     0.9213         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     0.9187  |    0.9252       | 0.8658  |    0.8228   | 0.7740 |     0.8613        |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |    0.8694   |    0.8071       | 0.9294  |    0.9112    | 0.8391 |    0.8712       |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
+| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |     0.9055   |     0.9206       | 0.9392  |     0.9273    | 0.9141 |     0.9213         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
 
 Among them, SPE and CPE refer to the simple and complex formula datasets of UniMERNet, respectively. Easy, Middle, and Hard are simple (LaTeX code length 0-64), medium (LaTeX code length 64-256), and complex formula datasets (LaTeX code length 256+) built internally by PaddleX.
 
@@ -51,10 +51,10 @@ Specifically, after the data preparation is completed, the training can be start
 
 ```shell
 #Single GPU training 
-python3 tools/train.py -c configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml \
+python3 tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
    -o Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 #Multi GPU training, specify the gpu number through the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/train.py -c configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
         -o Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 ```
 
@@ -62,7 +62,7 @@ Evaluation:
 
 ```shell
 # GPU evaluation
- python3 tools/eval.py -c configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml -o \
+ python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 ```
 
@@ -70,7 +70,7 @@ Prediction:
 
 ```shell
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/PP-FormuaNet/rec_pp_formulanet_s.yml \
+python3 tools/infer_rec.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
   -o  Global.infer_img='./docs/datasets/images/pme_demo/0000099.png'\
    Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 ```

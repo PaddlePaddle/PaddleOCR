@@ -10,7 +10,7 @@ Using UniMERNet general mathematical expression recognition datasets for trainin
 
 | Model           | Backbone       | config                                                  | SPE-<br/>BLEU↑ | SPE-<br/>EditDis↓ | CPE-<br/>BLEU↑  |CPE-<br/>EditDis↓ | SCE-<br/>BLEU↑ | SCE-<br/>EditDis↓ | HWE-<br/>BLEU↑ | HWE-<br/>EditDis↓ | Download link |
 |-----------|--------|---------------------------------------------------|:--------------:|:-----------------:|:----------:|:----------------:|:---------:|:-----------------:|:--------------:|:-----------------:|---|
-| UniMERNet | Donut Swin | [rec_unimernet.yml](../../../configs/rec/rec_unimernet.yml) |     0.9187     |      0.0584       |  0.9252    |      0.0596      | 0.6068 |     0.2297        |   0.9157|     0.0546           |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     0.9187     |      0.0584       |  0.9252    |      0.0596      | 0.6068 |     0.2297        |   0.9157|     0.0546           |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
 
 SPE represents simple formulas, CPE represents complex formulas, SCE represents scanned captured formulas, and HWE represents handwritten formulas. Example images of each type of formula are shown below:
 
@@ -90,10 +90,10 @@ Specifically, after the data preparation is completed, the training can be start
 
 ```shell
 #Single GPU training 
-python3 tools/train.py -c configs/rec/rec_unimernet.yml \
+python3 tools/train.py -c configs/rec/UniMERNet.yaml \
    -o Global.pretrained_model=./pretrain_models/texify.pdparams
 #Multi GPU training, specify the gpu number through the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/train.py -c configs/rec/rec_unimernet.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' --ips=127.0.0.1   tools/train.py -c configs/rec/UniMERNet.yaml \
         -o Global.pretrained_model=./pretrain_models/texify.pdparams
 ```
 
@@ -102,22 +102,22 @@ Evaluation:
 ```shell
 # GPU evaluation
  # SPE test set evaluation
- python3 tools/eval.py -c configs/rec/rec_unimernet.yml -o \
+ python3 tools/eval.py -c configs/rec/UniMERNet.yaml -o \
   Eval.dataset.data_dir=./train_data/UniMERNet/UniMER-Test/spe \
   Eval.dataset.label_file_list=["./train_data/UniMERNet/test_unimernet_spe.txt"] \
  Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
  # CPE test set evaluation
- python3 tools/eval.py -c configs/rec/rec_unimernet.yml -o \
+ python3 tools/eval.py -c configs/rec/UniMERNet.yaml -o \
   Eval.dataset.data_dir=./train_data/UniMERNet/UniMER-Test/cpe \
   Eval.dataset.label_file_list=["./train_data/UniMERNet/test_unimernet_cpe.txt"] \
  Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
  # SCE test set evaluation
-  python3 tools/eval.py -c configs/rec/rec_unimernet.yml -o \
+  python3 tools/eval.py -c configs/rec/UniMERNet.yaml -o \
   Eval.dataset.data_dir=./train_data/UniMERNet/UniMER-Test/sce \
   Eval.dataset.label_file_list=["./train_data/UniMERNet/test_unimernet_sce.txt"] \
  Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
  # HWE test set evaluation
- python3 tools/eval.py -c configs/rec/rec_unimernet.yml -o \
+ python3 tools/eval.py -c configs/rec/UniMERNet.yaml -o \
   Eval.dataset.data_dir=./train_data/UniMERNet/UniMER-Test/hwe \
   Eval.dataset.label_file_list=["./train_data/UniMERNet/test_unimernet_hwe.txt"] \
  Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
@@ -128,7 +128,7 @@ Prediction:
 
 ```shell
 # The configuration file used for prediction must match the training
-python3 tools/infer_rec.py -c configs/rec/rec_unimernet.yml \
+python3 tools/infer_rec.py -c configs/rec/UniMERNet.yaml \
   -o  Global.infer_img='./docs/datasets/images/pme_demo/0000099.png'\
    Global.pretrained_model=./rec_unimernet_train/best_accuracy.pdparams
 ```
