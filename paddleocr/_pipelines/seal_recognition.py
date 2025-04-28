@@ -21,6 +21,7 @@ from ..utils.cli import (
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
+
 class SealRecognition(PaddleXPipelineWrapper):
     def __init__(
         self,
@@ -50,7 +51,7 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
-        
+
         self._params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
             "doc_orientation_classify_model_dir": doc_orientation_classify_model_dir,
@@ -78,11 +79,11 @@ class SealRecognition(PaddleXPipelineWrapper):
             "seal_rec_score_thresh": seal_rec_score_thresh,
         }
         super().__init__(**kwargs)
-        
+
     @property
     def _paddlex_pipeline_name(self):
         return "seal_recognition"
-    
+
     def predict(
         self,
         input,
@@ -122,11 +123,11 @@ class SealRecognition(PaddleXPipelineWrapper):
         ):
             result.append(res)
         return result
-    
+
     @classmethod
     def get_cli_subcommand_executor(cls):
         return SealRecognitionCLISubcommandExecutor()
-        
+
     def _get_paddlex_config_overrides(self):
         STRUCTURE = {
             "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
@@ -147,12 +148,8 @@ class SealRecognition(PaddleXPipelineWrapper):
             "SubModules.LayoutDetection.model_dir": self._params[
                 "layout_detection_model_dir"
             ],
-            "SubModules.LayoutDetection.threshold": self._params[
-                "layout_threshold"
-            ],
-            "SubModules.LayoutDetection.layout_nms": self._params[
-                "layout_nms"
-            ],
+            "SubModules.LayoutDetection.threshold": self._params["layout_threshold"],
+            "SubModules.LayoutDetection.layout_nms": self._params["layout_nms"],
             "SubModules.LayoutDetection.layout_unclip_ratio": self._params[
                 "layout_unclip_ratio"
             ],
@@ -201,16 +198,16 @@ class SealRecognition(PaddleXPipelineWrapper):
             "use_layout_detection": self._params["use_layout_detection"],
         }
         return create_config_from_structure(STRUCTURE)
-    
-    
+
+
 class SealRecognitionCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
         return "seal_recognition"
-    
+
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
-        
+
         subparser.add_argument(
             "--doc_orientation_classify_model_name",
             type=str,
@@ -331,7 +328,7 @@ class SealRecognitionCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=float,
             help="Text recognition threshold. Text results with scores greater than this threshold are retained.",
         )
-        
+
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
 

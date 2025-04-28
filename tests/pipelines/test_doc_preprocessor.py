@@ -32,9 +32,9 @@ def test_predict(ocr_engine: DocPreprocessor, image_path: str) -> None:
 
     check_simple_inference_result(result)
     res = result[0]
-    assert res['angle'] in {0, 90, 180, 270, -1}
-    assert res['rot_img'] is not None
-    assert res['output_img'] is not None
+    assert res["angle"] in {0, 90, 180, 270, -1}
+    assert res["rot_img"] is not None
+    assert res["output_img"] is not None
 
 
 @pytest.mark.parametrize(

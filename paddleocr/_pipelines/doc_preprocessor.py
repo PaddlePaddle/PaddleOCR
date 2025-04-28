@@ -21,6 +21,7 @@ from ..utils.cli import (
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
+
 class DocPreprocessor(PaddleXPipelineWrapper):
     def __init__(
         self,
@@ -32,21 +33,21 @@ class DocPreprocessor(PaddleXPipelineWrapper):
         use_doc_unwarping=None,
         **kwargs,
     ):
-        
+
         self._params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
             "doc_orientation_classify_model_dir": doc_orientation_classify_model_dir,
             "doc_unwarping_model_name": doc_unwarping_model_name,
             "doc_unwarping_model_dir": doc_unwarping_model_dir,
             "use_doc_orientation_classify": use_doc_orientation_classify,
-            "use_doc_unwarping": use_doc_unwarping
+            "use_doc_unwarping": use_doc_unwarping,
         }
         super().__init__(**kwargs)
-        
+
     @property
     def _paddlex_pipeline_name(self):
         return "doc_preprocessor"
-    
+
     def predict(
         self,
         input,
@@ -62,11 +63,11 @@ class DocPreprocessor(PaddleXPipelineWrapper):
         ):
             result.append(res)
         return result
-    
+
     @classmethod
     def get_cli_subcommand_executor(cls):
         return DocPreprocessorCLISubcommandExecutor()
-        
+
     def _get_paddlex_config_overrides(self):
         STRUCTURE = {
             "SubModules.DocOrientationClassify.model_name": self._params[
@@ -84,21 +85,19 @@ class DocPreprocessor(PaddleXPipelineWrapper):
             "use_doc_orientation_classify": self._params[
                 "use_doc_orientation_classify"
             ],
-            "use_doc_unwarping": self._params[
-                "use_doc_unwarping"
-            ]
+            "use_doc_unwarping": self._params["use_doc_unwarping"],
         }
         return create_config_from_structure(STRUCTURE)
-    
-    
+
+
 class DocPreprocessorCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
         return "doc_preprocessor"
-    
+
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
-        
+
         subparser.add_argument(
             "--doc_orientation_classify_model_name",
             type=str,
@@ -129,7 +128,7 @@ class DocPreprocessorCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str2bool,
             help="Whether to use the text image unwarping model.",
         )
-        
+
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
 

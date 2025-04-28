@@ -31,7 +31,7 @@ def test_predict(ocr_engine: SealRecognition, image_path: str) -> None:
     result = ocr_engine.predict(str(image_path))
 
     check_simple_inference_result(result)
-    res = result[0]['seal_res_list'][0]
+    res = result[0]["seal_res_list"][0]
     assert len(res["dt_polys"]) > 0
     assert isinstance(res["rec_texts"], list)
     assert len(res["rec_texts"]) > 0
@@ -44,7 +44,7 @@ def test_predict(ocr_engine: SealRecognition, image_path: str) -> None:
     [
         {"use_doc_orientation_classify": False, "use_doc_unwarping": False},
         {"use_layout_detection": False},
-        {"layout_det_res":None},
+        {"layout_det_res": None},
         {"layout_threshold": 0.5},
         {"layout_nms": False},
         {"layout_unclip_ratio": 1.0},
@@ -54,7 +54,7 @@ def test_predict(ocr_engine: SealRecognition, image_path: str) -> None:
         {"seal_det_thresh": 0.5},
         {"seal_det_box_thresh": 0.6},
         {"seal_det_unclip_ratio": 0.5},
-        {"seal_rec_score_thresh": 0.05}
+        {"seal_rec_score_thresh": 0.05},
     ],
 )
 def test_predict_params(
