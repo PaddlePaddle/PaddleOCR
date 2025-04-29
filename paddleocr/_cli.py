@@ -22,13 +22,25 @@ from ._models import (
     TextLineOrientationClassification,
     TextRecognition,
 )
-from ._pipelines import PaddleOCR, PPChatOCRv4Doc, SealRecognition, DocPreprocessor
+from ._pipelines import (
+    PaddleOCR,
+    PPChatOCRv4Doc,
+    SealRecognition,
+    DocPreprocessor,
+    DocUnderstanding,
+)
 from ._version import version
 from .utils.deprecation import CLIDeprecationWarning
 
 
 def _register_pipelines(subparsers):
-    for cls in [PaddleOCR, PPChatOCRv4Doc, SealRecognition, DocPreprocessor]:
+    for cls in [
+        PaddleOCR,
+        PPChatOCRv4Doc,
+        SealRecognition,
+        DocPreprocessor,
+        DocUnderstanding,
+    ]:
         subcommand_executor = cls.get_cli_subcommand_executor()
         subparser = subcommand_executor.add_subparser(subparsers)
         subparser.set_defaults(executor=subcommand_executor.execute_with_args)
