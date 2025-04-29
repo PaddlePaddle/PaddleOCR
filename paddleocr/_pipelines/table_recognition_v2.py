@@ -107,6 +107,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
             use_table_cells_ocr_results=use_table_cells_ocr_results,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+            **kwargs,
         ):
             result.append(res)
         return result

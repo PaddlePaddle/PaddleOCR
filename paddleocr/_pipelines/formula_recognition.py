@@ -83,6 +83,7 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
             layout_nms=layout_nms,
             layout_unclip_ratio=layout_unclip_ratio,
             layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+            **kwargs,
         ):
             result.append(res)
         return result
