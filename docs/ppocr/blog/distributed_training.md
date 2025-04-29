@@ -62,6 +62,6 @@ python3 -m paddle.distributed.launch \
 
 | 模型   | 配置  | 数据集   | 单机8卡耗时/精度 | 4机8卡耗时/精度 | 加速比 |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.0%  | **3.5** |
+| SVTR | [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.0%  | **3.5** |
 
 **注意**: 在训练的GPU卡数过多时，精度会稍微有所损失（1%左右），此时可以尝试通过添加warmup或者适当增加迭代轮数来弥补精度损失。

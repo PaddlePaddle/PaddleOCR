@@ -55,8 +55,8 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
     wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
     cd ./inference && tar xf PP-OCRv3_mobile_det_infer.tar && cd ..
 
-    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
-    cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && cd ..
+    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar
+    cd ./inference && tar xf PP-OCRv3_mobile_rec_infer.tar && cd ..
 
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
     cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
@@ -68,8 +68,8 @@ Paddle2ONNX 支持将 PaddlePaddle 模型格式转化到 ONNX 模型格式，算
     wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar
     cd ./inference && tar xf PP-OCRv4_mobile_det_infer.tar && cd ..
 
-    wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar
-    cd ./inference && tar xf ch_PP-OCRv4_rec_infer.tar && cd ..
+    wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar
+    cd ./inference && tar xf PP-OCRv4_mobile_rec_infer.tar && cd ..
 
     wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar
     cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
@@ -96,9 +96,9 @@ python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml \
 -o Global.pretrained_model=./pretrained/PP-OCRv4_mobile_det_pretrained \
 Global.save_inference_dir=./inference/PP-OCRv4_mobile_det_infer/
 
-python3 tools/export_model.py -c configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml \
+python3 tools/export_model.py -c configs/rec/PP-OCRv4/PP-OCRv4_mobile_rec.yml \
 -o Global.pretrained_model=./pretrained/ch_PP-OCRv4_rec_train/student \
-Global.save_inference_dir=./inference/ch_PP-OCRv4_rec_infer/
+Global.save_inference_dir=./inference/PP-OCRv4_mobile_rec_infer/
 
 python3 tools/export_model.py -c configs/cls/cls_mv3.yml \
 -o Global.pretrained_model=./pretrained/ch_ppocr_mobile_v2.0_cls_train/best_accuracy \
@@ -119,7 +119,7 @@ Global.save_inference_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer/
     --opset_version 11 \
     --enable_onnx_checker True
 
-    paddle2onnx --model_dir ./inference/ch_PP-OCRv3_rec_infer \
+    paddle2onnx --model_dir ./inference/PP-OCRv3_mobile_rec_infer \
     --model_filename inference.pdmodel \
     --params_filename inference.pdiparams \
     --save_file ./inference/rec_onnx/model.onnx \
@@ -144,7 +144,7 @@ Global.save_inference_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer/
     --opset_version 11 \
     --enable_onnx_checker True
 
-    paddle2onnx --model_dir ./inference/ch_PP-OCRv4_rec_infer \
+    paddle2onnx --model_dir ./inference/PP-OCRv4_mobile_rec_infer \
     --model_filename inference.pdmodel \
     --params_filename inference.pdiparams \
     --save_file ./inference/rec_onnx/model.onnx \
@@ -199,7 +199,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
     ```bash linenums="1"
     python3 tools/infer/predict_system.py --use_gpu=False \
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
+    --rec_model_dir=./inference/PP-OCRv3_mobile_rec_infer \
     --det_model_dir=./inference/PP-OCRv3_mobile_det_infer \
     --image_dir=./docs/infer_deploy/images/lite_demo.png
     ```
@@ -209,7 +209,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
     ```bash linenums="1"
     python3 tools/infer/predict_system.py --use_gpu=False \
     --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
-    --rec_model_dir=./inference/ch_PP-OCRv4_rec_infer \
+    --rec_model_dir=./inference/PP-OCRv4_mobile_rec_infer \
     --det_model_dir=./inference/PP-OCRv4_mobile_det_infer \
     --image_dir=./docs/infer_deploy/images/lite_demo.png
     ```

@@ -132,7 +132,7 @@ mkdir inference && cd inference
 # 下载英文超轻量PP-OCRv3检测模型并解压
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
 # 下载英文超轻量PP-OCRv3识别模型并解压
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar && tar xf en_PP-OCRv3_mobile_rec_infer.tar
 # 下载英文表格识别模型并解压
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/en_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
@@ -154,7 +154,7 @@ cd ..
 python3 predict_system.py \
     --image_dir=./docs/table/1.png \
     --det_model_dir=inference/en_PP-OCRv3_det_infer \
-    --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
+    --rec_model_dir=inference/en_PP-OCRv3_mobile_rec_infer \
     --rec_char_dict_path=../ppocr/utils/en_dict.txt \
     --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \

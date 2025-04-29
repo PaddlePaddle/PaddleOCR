@@ -13,8 +13,8 @@ comments: true
 |模型|配置文件|端到端|下载链接|
 | --- | --- | --- | --- |
 |PP-OCRv4| |A榜 62.77% <br> B榜 62.51%| [Model List](../../ppocr/model_list.md) |
-|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/rec_svtrv2_ch.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/rec_svtrv2_ch.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
-|RepSVTR(Mobile)|[识别](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/rec_repsvtr_ch.yml) <br> [识别蒸馏](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/rec_svtrv2_ch_distillation.yml) <br> [检测](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
+|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/ch_SVTRv2_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_SVTRv2_rec.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
+|RepSVTR(Mobile)|[识别](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_RepSVTR_rec.yml) <br> [识别蒸馏](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_SVTRv2_rec_distillation.yml) <br> [检测](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
 
 🚀 快速使用：参考PP-OCR推理[说明文档](https://github.com/PaddlePaddle/PaddleOCR/blob/main/doc/doc_ch/inference_ppocr.md)，将检测和识别模型替换为上表中对应的RepSVTR或SVTRv2推理模型即可使用。
 
@@ -30,22 +30,22 @@ comments: true
 
 ```bash linenums="1"
 #单卡训练（训练周期长，不建议）
-python3 tools/train.py -c configs/rec/SVTRv2/rec_repsvtr_gtc.yml
+python3 tools/train.py -c configs/rec/SVTRv2/ch_RepSVTR_rec_gtc.yml
 
 # 多卡训练，通过--gpus参数指定卡号
 # Rec 学生模型
-python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/rec_repsvtr_gtc.yml
+python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/ch_RepSVTR_rec_gtc.yml
 # Rec 教师模型
-python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/rec_svtrv2_gtc.yml
+python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/ch_SVTRv2_rec_gtc.yml
 # Rec 蒸馏训练
-python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/rec_svtrv2_gtc_distill.yml
+python -m paddle.distributed.launch --gpus '0,1,2,3,4,5,6,7'  tools/train.py -c configs/rec/SVTRv2/ch_SVTRv2_rec_gtc_distill.yml
 ```
 
 ### 3.2 评估
 
 ```bash linenums="1"
 # 注意将pretrained_model的路径设置为本地路径。
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/SVTRv2/rec_repsvtr_gtc.yml -o Global.pretrained_model=output/rec_repsvtr_gtc/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/SVTRv2/ch_RepSVTR_rec_gtc.yml -o Global.pretrained_model=output/ch_RepSVTR_rec_gtc/best_accuracy
 ```
 
 ### 3.3 预测
@@ -54,7 +54,7 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/SVT
 
 ```bash linenums="1"
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/infer_rec.py -c tools/eval.py -c configs/rec/SVTRv2/rec_repsvtr_gtc.yml -o Global.pretrained_model=output/rec_repsvtr_gtc/best_accuracy Global.infer_img='./doc/imgs_words_en/word_10.png'
+python3 tools/infer_rec.py -c tools/eval.py -c configs/rec/SVTRv2/ch_RepSVTR_rec_gtc.yml -o Global.pretrained_model=output/ch_RepSVTR_rec_gtc/best_accuracy Global.infer_img='./doc/imgs_words_en/word_10.png'
 # 预测文件夹下所有图像时，可修改infer_img为文件夹，如 Global.infer_img='./doc/imgs_words_en/'。
 ```
 
@@ -66,7 +66,7 @@ python3 tools/infer_rec.py -c tools/eval.py -c configs/rec/SVTRv2/rec_repsvtr_gt
 
 ```bash linenums="1"
 # 注意将pretrained_model的路径设置为本地路径。
-python3 tools/export_model.py -c configs/rec/SVTRv2/rec_repsvtr_gtc.yml -o Global.pretrained_model=output/rec_repsvtr_gtc/best_accuracy Global.save_inference_dir=./inference/rec_repsvtr_infer
+python3 tools/export_model.py -c configs/rec/SVTRv2/ch_RepSVTR_rec_gtc.yml -o Global.pretrained_model=output/ch_RepSVTR_rec_gtc/best_accuracy Global.save_inference_dir=./inference/rec_repsvtr_infer
 ```
 
 **注意：** 如果您是在自己的数据集上训练的模型，并且调整了字典文件，请注意修改配置文件中的`character_dict_path`是否为所正确的字典文件。

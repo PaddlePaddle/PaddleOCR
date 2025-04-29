@@ -99,7 +99,7 @@ For more information on inference methods, please refer to[Paddle Inference doc]
 
 ### 3.2 Model
 
-It is recommended to choose the PP-OCRv3 model (configuration file: [ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，pre-trained model: [ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
+It is recommended to choose the PP-OCRv3 model (configuration file: [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，pre-trained model: [PP-OCRv3_mobile_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
 
 For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md).
 
