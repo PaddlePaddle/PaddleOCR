@@ -27,10 +27,13 @@ from ._models import (
     TextRecognition,
 )
 from ._pipelines import (
+    DocPreprocessor,
+    DocUnderstanding,
     FormulaRecognitionPipeline,
     PaddleOCR,
     PPChatOCRv4Doc,
     PPStructureV3,
+    SealRecognition,
     TableRecognitionPipelineV2,
 )
 from ._version import version as __version__
@@ -48,10 +51,13 @@ __all__ = [
     "TextImageUnwarping",
     "TextLineOrientationClassification",
     "TextRecognition",
+    "DocPreprocessor",
+    "DocUnderstanding",
     "FormulaRecognitionPipeline",
     "PaddleOCR",
     "PPChatOCRv4Doc",
     "PPStructureV3",
+    "SealRecognition",
     "TableRecognitionPipelineV2",
     "__version__",
 ]
