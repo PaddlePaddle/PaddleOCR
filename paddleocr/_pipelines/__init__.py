@@ -12,10 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .formula_recognition import FormulaRecognitionPipeline
 from .ocr import PaddleOCR
 from .pp_chatocrv4_doc import PPChatOCRv4Doc
+from .pp_structurev3 import PPStructureV3
+from .table_recognition_v2 import TableRecognitionPipelineV2
 
 __all__ = [
+    "FormulaRecognitionPipeline",
     "PaddleOCR",
     "PPChatOCRv4Doc",
+    "PPStructureV3",
+    "TableRecognitionPipelineV2",
 ]

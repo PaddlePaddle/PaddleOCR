@@ -29,15 +29,24 @@ from ._models import (
     TextLineOrientationClassification,
     TextRecognition,
 )
-from ._pipelines import PaddleOCR, PPChatOCRv4Doc
+from ._pipelines import (
+    FormulaRecognitionPipeline,
+    PaddleOCR,
+    PPChatOCRv4Doc,
+    PPStructureV3,
+    TableRecognitionPipelineV2,
+)
 from ._version import version
 from .utils.deprecation import CLIDeprecationWarning
 
 
 def _register_pipelines(subparsers):
     for cls in [
+        FormulaRecognitionPipeline,
         PaddleOCR,
         PPChatOCRv4Doc,
+        PPStructureV3,
+        TableRecognitionPipelineV2,
     ]:
         subcommand_executor = cls.get_cli_subcommand_executor()
         subparser = subcommand_executor.add_subparser(subparsers)
