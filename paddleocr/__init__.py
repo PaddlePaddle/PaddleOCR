@@ -14,8 +14,15 @@
 
 from ._models import (
     DocImgOrientationClassification,
+    DocVLM,
+    FormulaRecognition,
+    LayoutDetection,
+    SealTextDetection,
+    TableCellsDetection,
     TableClassification,
+    TableStructureRecognition,
     TextDetection,
+    TextImageUnwarping,
     TextLineOrientationClassification,
     TextRecognition,
 )
@@ -30,8 +37,15 @@ from ._version import version as __version__
 
 __all__ = [
     "DocImgOrientationClassification",
+    "DocVLM",
+    "FormulaRecognition",
+    "SealTextDetection",
+    "LayoutDetection",
+    "TableCellsDetection",
     "TableClassification",
+    "TableStructureRecognition",
     "TextDetection",
+    "TextImageUnwarping",
     "TextLineOrientationClassification",
     "TextRecognition",
     "PaddleOCR",

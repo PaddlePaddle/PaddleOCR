@@ -24,7 +24,9 @@ from ._constants import (
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
 )
+from ._mkldnn_blocklist import MKLDNN_BLOCKLIST
 from .utils.cli import str2bool
+from .utils.logging import logger
 
 
 def parse_common_args(kwargs, *, default_enable_hpi):
@@ -79,12 +81,16 @@ def prepare_common_init_args(model_name, common_args):
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn is None:
             # HACK
-            from paddle.inference import Config
-
-            if hasattr(Config, "set_mkldnn_cache_capacity"):
-                enable_mkldnn = True
-            else:
+            if model_name in MKLDNN_BLOCKLIST:
+                logger.warning(f"oneDNN will be disabled for {model_name}.")
                 enable_mkldnn = False
+            else:
+                from paddle.inference import Config
+
+                if hasattr(Config, "set_mkldnn_cache_capacity"):
+                    enable_mkldnn = True
+                else:
+                    enable_mkldnn = False
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
     pp_option.cpu_threads = common_args["cpu_threads"]
