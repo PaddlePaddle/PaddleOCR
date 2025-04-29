@@ -3,14 +3,14 @@ Global:
   epoch_num: 400
   log_smooth_window: 20
   print_batch_step: 20
-  save_model_dir: ./output/SLANet_ch
+  save_model_dir: ./output/SLANet_plus
   save_epoch_step: 400
   # evaluation is run every 331 iterations after the 0th iteration
   eval_batch_step: [0, 331]
   cal_metric_during_train: True
-  pretrained_model: 
+  pretrained_model: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams"
   checkpoints: 
-  save_inference_dir: ./output/SLANet_ch/infer
+  save_inference_dir: ./output/SLANet_plus/infer
   use_visualdl: False
   infer_img: ppstructure/docs/table/table.jpg
   # for data or label process
