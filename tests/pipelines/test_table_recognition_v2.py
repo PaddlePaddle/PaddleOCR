@@ -16,7 +16,7 @@ def table_recognition_v2_pipeline():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "table_recognition_v2.jpg",
+        TEST_DATA_DIR / "table_recognition" / "table_recognition_v2.jpg",
     ],
 )
 def test_visual_predict(table_recognition_v2_pipeline, image_path):

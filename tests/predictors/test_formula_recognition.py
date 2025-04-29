@@ -16,7 +16,7 @@ def formula_recognition_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "general_formula_rec_001.png",
+        TEST_DATA_DIR / "formula_recognition" / "general_formula_rec_001.png",
     ],
 )
 def test_predict(formula_recognition_predictor, image_path):

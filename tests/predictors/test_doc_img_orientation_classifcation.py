@@ -13,7 +13,7 @@ def doc_img_orientation_classification_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "img_rot180_demo.jpg",
+        TEST_DATA_DIR / "doc_img_orientation_classifcation" / "img_rot180_demo.jpg",
     ],
 )
 def test_predict(doc_img_orientation_classification_predictor, image_path):

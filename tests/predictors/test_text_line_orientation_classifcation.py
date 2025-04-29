@@ -13,7 +13,9 @@ def text_line_orientation_classification_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "img_textline180_demo.jpg",
+        TEST_DATA_DIR
+        / "text_line_orientation_classifcation"
+        / "img_textline180_demo.jpg",
     ],
 )
 def test_predict(text_line_orientation_classification_predictor, image_path):

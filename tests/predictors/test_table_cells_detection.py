@@ -17,7 +17,7 @@ def table_cells_detection_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "table_recognition.jpg",
+        TEST_DATA_DIR / "table_recognition" / "table_recognition.jpg",
     ],
 )
 def test_predict(table_cells_detection_predictor, image_path):

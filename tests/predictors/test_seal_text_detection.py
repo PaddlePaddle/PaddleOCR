@@ -16,7 +16,7 @@ def seal_text_detection_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "seal_text_det.png",
+        TEST_DATA_DIR / "seal_text_detection" / "seal_text_det.png",
     ],
 )
 def test_predict(seal_text_detection_predictor, image_path):

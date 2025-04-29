@@ -17,7 +17,7 @@ def layout_detection_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "layout.jpg",
+        TEST_DATA_DIR / "layout_detection" / "layout.jpg",
     ],
 )
 def test_predict(layout_detection_predictor, image_path):
