@@ -17,11 +17,11 @@ def ocr_engine() -> DocUnderstanding:
     "input",
     [
         {
-            "image": str(TEST_DATA_DIR / "doc_understanding" / "medal_table.png"),
+            "image": str(TEST_DATA_DIR / "medal_table.png"),
             "query": "识别这份表格的内容",
         },
         {
-            "image": str(TEST_DATA_DIR / "table_recognition.jpg"),
+            "image": str(TEST_DATA_DIR / "table.jpg"),
             "query": "识别这份表格的内容",
         },
     ],

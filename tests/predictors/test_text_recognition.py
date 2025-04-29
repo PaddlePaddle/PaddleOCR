@@ -12,7 +12,7 @@ def text_recognition_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "ocr" / "general_ocr_001.png",
+        TEST_DATA_DIR / "textline.png",
     ],
 )
 def test_predict(text_recognition_predictor, image_path):

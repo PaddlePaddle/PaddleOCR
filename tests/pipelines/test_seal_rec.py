@@ -16,8 +16,7 @@ def ocr_engine() -> SealRecognition:
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "seal_rec" / "seal_text_det.png",
-        TEST_DATA_DIR / "seal_rec" / "seal_test2.png",
+        TEST_DATA_DIR / "seal.png",
     ],
 )
 def test_predict(ocr_engine: SealRecognition, image_path: str) -> None:

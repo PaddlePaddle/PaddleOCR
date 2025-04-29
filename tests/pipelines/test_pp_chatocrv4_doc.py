@@ -12,8 +12,7 @@ def pp_chatocrv4_doc_pipeline():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "ppstructure" / "1.png",
-        TEST_DATA_DIR / "ppstructure" / "layout.jpg",
+        TEST_DATA_DIR / "doc_with_formula.png",
     ],
 )
 def test_visual_predict(pp_chatocrv4_doc_pipeline, image_path):

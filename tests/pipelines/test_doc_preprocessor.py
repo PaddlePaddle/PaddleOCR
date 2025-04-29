@@ -16,8 +16,7 @@ def ocr_engine() -> DocPreprocessor:
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "doc_preprocessor" / "doc_test_rotated.jpg",
-        TEST_DATA_DIR / "img_rot180_demo.jpg",
+        TEST_DATA_DIR / "book_rot180.jpg",
     ],
 )
 def test_predict(ocr_engine: DocPreprocessor, image_path: str) -> None:

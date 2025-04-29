@@ -17,9 +17,7 @@ def ocr_engine() -> PaddleOCR:
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "ocr" / "254.jpg",
-        TEST_DATA_DIR / "ocr" / "img_10.jpg",
-        TEST_DATA_DIR / "ocr" / "general_ocr_001.png",
+        TEST_DATA_DIR / "table.jpg",
     ],
 )
 def test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:
