@@ -70,7 +70,7 @@ Specifically, after the data preparation is completed, the training can be start
 python3 tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
 
 # Multi GPU training, specify the gpu number through the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/rec/rec_svtrnet_cppd_base_en.yml
 ```
 
 ### Evaluation
