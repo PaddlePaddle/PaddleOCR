@@ -30,11 +30,14 @@ from ._models import (
     TextRecognition,
 )
 from ._pipelines import (
-    PaddleOCR,
-    PPChatOCRv4Doc,
-    SealRecognition,
     DocPreprocessor,
     DocUnderstanding,
+    FormulaRecognitionPipeline,
+    PaddleOCR,
+    PPChatOCRv4Doc,
+    PPStructureV3,
+    SealRecognition,
+    TableRecognitionPipelineV2,
 )
 from ._version import version
 from .utils.deprecation import CLIDeprecationWarning
@@ -42,11 +45,14 @@ from .utils.deprecation import CLIDeprecationWarning
 
 def _register_pipelines(subparsers):
     for cls in [
-        PaddleOCR,
-        PPChatOCRv4Doc,
-        SealRecognition,
         DocPreprocessor,
         DocUnderstanding,
+        FormulaRecognitionPipeline,
+        PaddleOCR,
+        PPChatOCRv4Doc,
+        PPStructureV3,
+        SealRecognition,
+        TableRecognitionPipelineV2,
     ]:
         subcommand_executor = cls.get_cli_subcommand_executor()
         subparser = subcommand_executor.add_subparser(subparsers)

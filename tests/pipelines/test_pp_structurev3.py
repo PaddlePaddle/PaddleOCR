@@ -1,12 +1,16 @@
 import pytest
 
-from paddleocr import PPChatOCRv4Doc
-from ..testing_utils import TEST_DATA_DIR
+from paddleocr import PPStructureV3
+from ..testing_utils import (
+    TEST_DATA_DIR,
+    check_simple_inference_result,
+    check_wrapper_simple_inference_param_forwarding,
+)
 
 
 @pytest.fixture(scope="module")
-def pp_chatocrv4_doc_pipeline():
-    return PPChatOCRv4Doc()
+def pp_structurev3_pipeline():
+    return PPStructureV3()
 
 
 @pytest.mark.parametrize(
@@ -15,17 +19,16 @@ def pp_chatocrv4_doc_pipeline():
         TEST_DATA_DIR / "doc_with_formula.png",
     ],
 )
-def test_visual_predict(pp_chatocrv4_doc_pipeline, image_path):
-    result = pp_chatocrv4_doc_pipeline.visual_predict(str(image_path))
+def test_visual_predict(pp_structurev3_pipeline, image_path):
+    result = pp_structurev3_pipeline.predict(str(image_path))
 
-    assert result is not None
-    assert isinstance(result, list)
-    assert len(result) == 1
+    check_simple_inference_result(result)
     res = result[0]
-    assert isinstance(res, dict)
-    assert res.keys() == {"visual_info", "layout_parsing_result"}
-    assert isinstance(res["visual_info"], dict)
-    assert isinstance(res["layout_parsing_result"], dict)
+    overall_ocr_res = res["overall_ocr_res"]
+    assert len(overall_ocr_res["dt_polys"]) > 0
+    assert len(overall_ocr_res["rec_texts"]) > 0
+    assert len(overall_ocr_res["rec_polys"]) > 0
+    assert len(overall_ocr_res["rec_boxes"]) > 0
 
 
 @pytest.mark.parametrize(
@@ -35,6 +38,7 @@ def test_visual_predict(pp_chatocrv4_doc_pipeline, image_path):
         {"use_doc_unwarping": False},
         {"use_general_ocr": False},
         {"use_table_recognition": False},
+        {"use_formula_recognition": False},
         {"layout_threshold": 0.88},
         {"layout_threshold": [0.45, 0.4]},
         {"layout_threshold": {0: 0.45, 2: 0.48, 7: 0.4}},
@@ -53,29 +57,16 @@ def test_visual_predict(pp_chatocrv4_doc_pipeline, image_path):
 )
 def test_predict_params(
     monkeypatch,
-    pp_chatocrv4_doc_pipeline,
+    pp_structurev3_pipeline,
     params,
 ):
-    def _dummy_visual_predict(input, **params):
-        yield {"visual_info": {}, "layout_parsing_result": params}
-
-    monkeypatch.setattr(
-        pp_chatocrv4_doc_pipeline.paddlex_pipeline,
-        "visual_predict",
-        _dummy_visual_predict,
+    check_wrapper_simple_inference_param_forwarding(
+        monkeypatch,
+        pp_structurev3_pipeline,
+        "paddlex_pipeline",
+        "dummy_path",
+        params,
     )
-
-    result = pp_chatocrv4_doc_pipeline.visual_predict(
-        input,
-        **params,
-    )
-
-    assert isinstance(result, list)
-    assert len(result) == 1
-    res = result[0]
-    res = res["layout_parsing_result"]
-    for k, v in params.items():
-        assert res[k] == v
 
 
 # TODO: Test constructor and other methods

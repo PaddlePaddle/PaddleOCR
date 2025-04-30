@@ -16,7 +16,7 @@ def text_image_unwarping_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "doc_test.jpg",
+        TEST_DATA_DIR / "book.jpg",
     ],
 )
 def test_predict(text_image_unwarping_predictor, image_path):

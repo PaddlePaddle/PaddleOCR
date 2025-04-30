@@ -16,7 +16,7 @@ def doc_vlm_predictor():
 @pytest.mark.parametrize(
     "image_path",
     [
-        TEST_DATA_DIR / "medal_table_resized.png",
+        TEST_DATA_DIR / "medal_table.png",
     ],
 )
 def test_predict(doc_vlm_predictor, image_path):

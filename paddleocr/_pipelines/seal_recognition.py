@@ -102,6 +102,7 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
+        **kwargs,
     ):
         result = []
         for res in self.paddlex_pipeline.predict(
@@ -120,6 +121,7 @@ class SealRecognition(PaddleXPipelineWrapper):
             seal_det_box_thresh=seal_det_box_thresh,
             seal_det_unclip_ratio=seal_det_unclip_ratio,
             seal_rec_score_thresh=seal_rec_score_thresh,
+            **kwargs,
         ):
             result.append(res)
         return result
