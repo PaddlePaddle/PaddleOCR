@@ -62,7 +62,7 @@ def prepare_common_init_args(model_name, common_args):
     device = common_args["device"]
     if device is None:
         device = get_default_device()
-    device_type, device_ids = parse_device(device)
+    device_type, _ = parse_device(device)
 
     init_kwargs = {"device": device}
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
@@ -135,7 +135,7 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enalbe oneDNN (formerly known as MKL-DNN) acceleration for inference. By default, oneDNN will be used when available.",
+        help="Enable oneDNN (formerly known as MKL-DNN) acceleration for inference. By default, oneDNN will be used when available.",
     )
     parser.add_argument(
         "--cpu_threads",
