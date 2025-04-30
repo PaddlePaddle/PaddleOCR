@@ -43,9 +43,11 @@ def dump_infer_config(config, path, logger):
     infer_cfg = OrderedDict()
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
-    if config["Global"].get("pdx_model_name", None):
-        infer_cfg["Global"] = {"model_name": config["Global"]["pdx_model_name"]}
-    if config["Global"].get("uniform_output_enabled", None):
+    model_name = None
+    if config["Global"].get("model_name", None):
+        model_name = config["Global"]["model_name"]
+        infer_cfg["Global"] = {"model_name": model_name}
+    if config["Global"].get("uniform_output_enabled", True):
         arch_config = config["Architecture"]
         if arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
             common_dynamic_shapes = {
@@ -56,7 +58,7 @@ def dump_infer_config(config, path, logger):
                 "x": [[1, 3, 32, 32], [1, 3, 736, 736], [1, 3, 4000, 4000]]
             }
         elif arch_config["algorithm"] == "SLANet":
-            if config["Global"].get("pdx_model_name", None) == "SLANet_plus":
+            if model_name == "SLANet_plus":
                 common_dynamic_shapes = {
                     "x": [[1, 3, 32, 32], [1, 3, 64, 448], [1, 3, 488, 488]]
                 }
@@ -370,7 +372,7 @@ def export_single_model(
         ):  # Encryption is not needed if the module cannot be imported
             print("Skipping import of the encryption module")
         paddle_version = version.parse(paddle.__version__)
-        if config["Global"].get("export_with_pir", False):
+        if config["Global"].get("export_with_pir", True):
             assert (
                 paddle_version >= version.parse("3.0.0b2")
                 or paddle_version == version.parse("0.0.0")

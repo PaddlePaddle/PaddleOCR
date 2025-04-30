@@ -1,4 +1,5 @@
 Global:
+  model_name: PP-OCRv4_server_rec_doc # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: 200

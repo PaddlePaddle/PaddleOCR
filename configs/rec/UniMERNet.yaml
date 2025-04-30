@@ -1,4 +1,5 @@
 Global:
+  model_name: UniMERNet # To use static model for inference.
   use_gpu: True
   epoch_num: 40
   log_smooth_window: 10

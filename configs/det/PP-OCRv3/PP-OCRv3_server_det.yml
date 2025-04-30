@@ -1,10 +1,11 @@
 Global:
+  model_name: PP-OCRv3_server_det # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: 500
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/ch_PP-OCR_v3_det/
+  save_model_dir: ./output/PP-OCRv3_server_det/
   save_epoch_step: 100
   eval_batch_step:
   - 0

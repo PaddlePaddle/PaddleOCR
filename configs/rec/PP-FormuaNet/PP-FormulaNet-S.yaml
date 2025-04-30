@@ -1,4 +1,5 @@
 Global:
+  model_name: PP-FormulaNet-S # To use static model for inference.
   use_gpu: True
   epoch_num: 20
   log_smooth_window: 10

@@ -1,4 +1,5 @@
 Global:
+  model_name: chinese_cht_PP-OCRv3_mobile_rec  # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: 500

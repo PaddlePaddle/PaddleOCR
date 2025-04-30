@@ -1,4 +1,5 @@
 Global:
+  model_name: LaTeX_OCR_rec # To use static model for inference.
   use_gpu: True
   epoch_num: 500
   log_smooth_window: 20
