@@ -135,7 +135,7 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enable oneDNN (formerly known as MKL-DNN) acceleration for inference. By default, oneDNN will be used when available.",
+        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models that have known oneDNN issues.",
     )
     parser.add_argument(
         "--cpu_threads",
