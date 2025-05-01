@@ -265,7 +265,7 @@ class TableRecognitionPipelineV2CLISubcommandExecutor(PipelineCLISubcommandExecu
             help="Name of the wired table cells detection model.",
         )
         subparser.add_argument(
-            "--wired_table_structure_recognition_model_dir",
+            "--wired_table_cells_detection_model_dir",
             type=str,
             help="Path to the wired table cells detection model directory.",
         )
@@ -275,7 +275,7 @@ class TableRecognitionPipelineV2CLISubcommandExecutor(PipelineCLISubcommandExecu
             help="Name of the wireless table cells detection model.",
         )
         subparser.add_argument(
-            "--wireless_table_structure_recognition_model_dir",
+            "--wireless_table_cells_detection_model_dir",
             type=str,
             help="Path to the wireless table cells detection model directory.",
         )
