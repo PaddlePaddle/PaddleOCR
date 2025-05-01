@@ -37,7 +37,7 @@ jobs:
           ~/.cache/pip
           ~/.local/lib/python3.10/site-packages
           ~/.paddleocr/
-        key: ${{ runner.os }}-dependencies-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-dependencies-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-dependencies-
 
