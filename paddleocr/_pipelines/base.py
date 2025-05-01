@@ -54,7 +54,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
             and self._paddlex_pipeline_name in PIPELINE_MKLDNN_BLOCKLIST
         ):
             logger.warning(
-                f"oneDNN will be disabled for {self._paddlex_pipeline_name} pipeline."
+                f"oneDNN will be disabled for the {repr(self._paddlex_pipeline_name)} pipeline."
             )
             common_args["enable_mkldnn"] = False
         self._common_args = parse_common_args(
