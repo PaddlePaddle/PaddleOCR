@@ -24,9 +24,7 @@ from ._constants import (
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
 )
-from ._mkldnn_blocklist import MKLDNN_BLOCKLIST
 from .utils.cli import str2bool
-from .utils.logging import logger
 
 
 def parse_common_args(kwargs, *, default_enable_hpi):
@@ -80,17 +78,12 @@ def prepare_common_init_args(model_name, common_args):
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn is None:
-            # HACK
-            if model_name in MKLDNN_BLOCKLIST:
-                logger.warning(f"oneDNN will be disabled for {model_name}.")
-                enable_mkldnn = False
-            else:
-                from paddle.inference import Config
+            from paddle.inference import Config
 
-                if hasattr(Config, "set_mkldnn_cache_capacity"):
-                    enable_mkldnn = True
-                else:
-                    enable_mkldnn = False
+            if hasattr(Config, "set_mkldnn_cache_capacity"):
+                enable_mkldnn = True
+            else:
+                enable_mkldnn = False
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
     pp_option.cpu_threads = common_args["cpu_threads"]
@@ -135,7 +128,7 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models that have known oneDNN issues.",
+        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models and pipelines that have known oneDNN issues.",
     )
     parser.add_argument(
         "--cpu_threads",
