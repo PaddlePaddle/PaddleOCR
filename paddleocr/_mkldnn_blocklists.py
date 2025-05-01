@@ -15,6 +15,7 @@
 PIPELINE_MKLDNN_BLOCKLIST = [
     "formula_recognition",
     "table_recognition_v2",
+    "PP-StructureV3",
 ]
 
 MODEL_MKLDNN_BLOCKLIST = [
