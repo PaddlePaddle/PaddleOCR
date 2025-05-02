@@ -32,6 +32,7 @@ def test_predict(doc_vlm_predictor, image_path):
     }
 
 
+@pytest.mark.resource_intensive
 @pytest.mark.parametrize(
     "params",
     [
