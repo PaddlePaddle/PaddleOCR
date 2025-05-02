@@ -60,3 +60,9 @@ namespaces = false
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
+
+[tool.pytest.ini_options]
+markers = [
+    "resource_intensive: mark a test as resource intensive"
+]
+addopts = "-m 'not resource_intensive'"
