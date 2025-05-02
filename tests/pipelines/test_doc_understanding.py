@@ -13,6 +13,7 @@ def ocr_engine() -> DocUnderstanding:
     return DocUnderstanding()
 
 
+@pytest.mark.resource_intensive
 @pytest.mark.parametrize(
     "input",
     [

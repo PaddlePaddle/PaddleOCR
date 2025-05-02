@@ -13,6 +13,7 @@ def doc_vlm_predictor():
     return DocVLM()
 
 
+@pytest.mark.resource_intensive
 @pytest.mark.parametrize(
     "image_path",
     [
