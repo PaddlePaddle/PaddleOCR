@@ -37,7 +37,7 @@ jobs:
           ~/.cache/pip
           ~/.local/lib/python3.10/site-packages
           ~/.paddleocr/
-        key: ${{ runner.os }}-dependencies-${{ hashFiles('**/requirements.txt') }}
+        key: ${{ runner.os }}-dependencies-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-dependencies-
 
@@ -46,7 +46,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pip install paddlepaddle==3.0.0b1 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+        python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
         pip install -e .
     - name: Test with pytest
       run: |
