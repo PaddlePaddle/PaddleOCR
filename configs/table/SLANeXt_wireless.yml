@@ -1,4 +1,5 @@
 Global:
+  model_name: SLANeXt_wireless # To use static model for inference.
   use_gpu: true
   epoch_num: 400
   log_smooth_window: 20

@@ -1,4 +1,5 @@
 Global:
+  model_name: SLANet # To use static model for inference.
   use_gpu: true
   epoch_num: 100
   log_smooth_window: 20
