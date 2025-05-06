@@ -6203,7 +6203,7 @@ At the same time, the accuracy metric of all subnets will be printed out in the 
 <h4 id="215-fine-tuning-distillation-model">2.1.5 Fine-tuning Distillation Model<a class="headerlink" href="#215-fine-tuning-distillation-model" title="Permanent link">&para;</a></h4>
 <p>There are two ways to fine-tune the recognition distillation task.</p>
 <ol>
-<li>Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml">ch_PP-OCRv2_rec_distillation.yml</a> to perform fine-tuning training of the model.</li>
+<li>Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a> to perform fine-tuning training of the model.</li>
 <li>
 <p>Do not use knowledge distillation in fine-tuning: In this case, you need to first extract the student model parameters from the pre-training model. The specific steps are as follows.</p>
 </li>
@@ -6240,7 +6240,7 @@ At the same time, the accuracy metric of all subnets will be printed out in the 
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="c1"># Save weight parameters</span>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="n">paddle</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">s_params</span><span class="p">,</span> <span class="s2">&quot;ch_PP-OCRv3_rec_train/student.pdparams&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<p>After the extraction is complete, use <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml">ch_PP-OCRv3_rec.yml</a> to modify the path of the pre-trained model (the path of the exported <code>student.pdparams</code> model) and your own data path to fine-tune the model.</p>
+<p>After the extraction is complete, use <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml">PP-OCRv3_mobile_rec.yml</a> to modify the path of the pre-trained model (the path of the exported <code>student.pdparams</code> model) and your own data path to fine-tune the model.</p>
 <h3 id="22-detection-model-configuration-file-analysis">2.2 Detection Model Configuration File Analysis<a class="headerlink" href="#22-detection-model-configuration-file-analysis" title="Permanent link">&para;</a></h3>
 <p>The configuration file of the detection model distillation is in the <code>PaddleOCR/configs/det/ch_PP-OCRv3/</code> directory, which contains three distillation configuration files:</p>
 <ul>
@@ -6620,7 +6620,7 @@ Model Structure</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 4, 2025 07:59:02">May 4, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 6, 2025 14:15:01">May 6, 2025</span>
   </span>
 
     
@@ -6630,7 +6630,7 @@ Model Structure</p>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 4, 2025 07:59:02">May 4, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 6, 2025 14:15:01">May 6, 2025</span>
   </span>
 
     

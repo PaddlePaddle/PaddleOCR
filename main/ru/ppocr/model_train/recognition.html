@@ -5970,7 +5970,7 @@ You're not viewing the latest version.
 <ul>
 <li>自定义字典</li>
 </ul>
-<p>如需自定义dic文件，请在 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml</code> 中添加 <code>character_dict_path</code> 字段, 指向您的字典路径。</p>
+<p>如需自定义dic文件，请在 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml</code> 中添加 <code>character_dict_path</code> 字段, 指向您的字典路径。</p>
 <h3 id="15">1.5. 添加空格类别<a class="headerlink" href="#15" title="Permanent link">&para;</a></h3>
 <p>如果希望支持识别"空格"类别, 请将yml文件中的 <code>use_space_char</code> 字段设置为 <code>True</code>。</p>
 <h3 id="16">1.6. 数据增强<a class="headerlink" href="#16" title="Permanent link">&para;</a></h3>
@@ -6007,10 +6007,10 @@ You're not viewing the latest version.
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="c1"># 训练icdar15英文数据 训练日志会自动保存为 &quot;{save_model_dir}&quot; 下的train.log</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="c1">#单卡训练（训练周期长，不建议）</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="c1"># 多卡训练，通过--gpus参数指定卡号</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 </span></code></pre></div></td></tr></table></div>
 <p>正常启动训练后，会看到以下log输出：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
@@ -6072,11 +6072,11 @@ You're not viewing the latest version.
 </tr>
 </tbody>
 </table>
-<p>PaddleOCR支持训练和评估交替进行, 可以在 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml</code> 中修改 <code>eval_batch_step</code> 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 <code>output/en_PP-OCRv3_rec/best_accuracy</code> 。</p>
+<p>PaddleOCR支持训练和评估交替进行, 可以在 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml</code> 中修改 <code>eval_batch_step</code> 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 <code>output/en_PP-OCRv3_mobile_rec/best_accuracy</code> 。</p>
 <p>如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。</p>
 <p><strong>提示：</strong> 可通过 -c 参数选择 <code>configs/rec/</code> 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考<a href="../../algorithm/overview.html">前沿算法列表</a>：</p>
-<p>训练中文数据，推荐使用<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml">ch_PP-OCRv3_rec_distillation.yml</a>，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：</p>
-<p>以 <code>ch_PP-OCRv3_rec_distillation.yml</code> 为例：</p>
+<p>训练中文数据，推荐使用<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：</p>
+<p>以 <code>PP-OCRv3_mobile_rec_distillation.yml</code> 为例：</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
@@ -6194,7 +6194,7 @@ You're not viewing the latest version.
 <p><strong>注意，预测/评估时的配置文件请务必与训练一致。</strong></p>
 <h3 id="22">2.2. 断点训练<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
 <p>如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">=</span>./your/trained/model
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">=</span>./your/trained/model
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意</strong>：<code>Global.checkpoints</code>的优先级高于<code>Global.pretrained_model</code>的优先级，即同时指定两个参数时，优先加载<code>Global.checkpoints</code>指定的模型，如果<code>Global.checkpoints</code>指定的模型路径有误，会加载<code>Global.pretrained_model</code>指定的模型。</p>
 <h3 id="23-backbone">2.3. 更换Backbone 训练<a class="headerlink" href="#23-backbone" title="Permanent link">&para;</a></h3>
@@ -6259,14 +6259,14 @@ You're not viewing the latest version.
 <p>如果您想进一步加快训练速度，可以使用<a href="https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/performance_improving/amp_cn.html">自动混合精度训练</a>， 以单机单卡为例，命令如下：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
 <span class="normal"><a href="#__codelineno-16-2">2</a></span>
-<span class="normal"><a href="#__codelineno-16-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span><span class="se">\</span>
+<span class="normal"><a href="#__codelineno-16-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="w">     </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3"></a><span class="w">     </span>Global.use_amp<span class="o">=</span>True<span class="w"> </span>Global.scale_loss<span class="o">=</span><span class="m">1024</span>.0<span class="w"> </span>Global.use_dynamic_loss_scaling<span class="o">=</span>True
 </span></code></pre></div></td></tr></table></div>
 <h3 id="25">2.5. 分布式训练<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
 <p>多机多卡训练时，通过 <code>--ips</code> 参数设置使用的机器IP地址，通过 <code>--gpus</code> 参数设置使用的GPU ID：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
-<span class="normal"><a href="#__codelineno-17-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--ips<span class="o">=</span><span class="s2">&quot;xx.xx.xx.xx,xx.xx.xx.xx&quot;</span><span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span><span class="se">\</span>
+<span class="normal"><a href="#__codelineno-17-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--ips<span class="o">=</span><span class="s2">&quot;xx.xx.xx.xx,xx.xx.xx.xx&quot;</span><span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="w">     </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意:</strong> （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为<code>ifconfig</code>；（3）更多关于分布式训练的性能优势等信息，请参考：<a href="../blog/distributed_training.html">分布式训练教程</a>。</p>
@@ -6462,10 +6462,10 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 <p>实际使用过程中，建议加载官方提供的预训练模型，在自己的数据集中进行微调，关于识别模型的微调方法，请参考：<a href="finetune.html">模型微调教程</a>。</p>
 <h2 id="3">3. 模型评估与预测<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <h3 id="31">3.1. 指标评估<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
-<p>训练中模型参数默认保存在<code>Global.save_model_dir</code>目录下。在评估指标时，需要设置<code>Global.checkpoints</code>指向保存的参数文件。评估数据集可以通过 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml</code>  修改Eval中的 <code>label_file_path</code> 设置。</p>
+<p>训练中模型参数默认保存在<code>Global.save_model_dir</code>目录下。在评估指标时，需要设置<code>Global.checkpoints</code>指向保存的参数文件。评估数据集可以通过 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml</code>  修改Eval中的 <code>label_file_path</code> 设置。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span>
 <span class="normal"><a href="#__codelineno-19-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a><span class="c1"># GPU 评估， Global.checkpoints 为待测权重</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy
 </span></code></pre></div></td></tr></table></div>
 <h3 id="32">3.2. 测试识别效果<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
 <p>使用 PaddleOCR 训练好的模型，可以通过以下脚本进行快速预测。</p>
@@ -6498,7 +6498,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 <p>其中 best_accuracy.<em>是评估集上的最优模型；iter_epoch_x.</em> 是以 <code>save_epoch_step</code> 为间隔保存下来的模型；latest.* 是最后一个epoch的模型。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span>
 <span class="normal"><a href="#__codelineno-21-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a><span class="c1"># 预测英文结果</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy<span class="w">  </span>Global.infer_img<span class="o">=</span>doc/imgs_words/en/word_1.png
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy<span class="w">  </span>Global.infer_img<span class="o">=</span>doc/imgs_words/en/word_1.png
 </span></code></pre></div></td></tr></table></div>
 <p>预测图片：</p>
 <p><img alt="img" src="../../../ppocr/model_train/images/word_1-20240704092705543.png" /></p>
@@ -6542,14 +6542,14 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 </span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6"></a><span class="c1"># Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。</span>
 </span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7"></a><span class="c1"># Global.save_inference_dir参数设置转换的模型将保存的地址。</span>
 </span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8"></a>
-</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_mobile_rec/
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意：</strong>如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的<code>character_dict_path</code>为自定义字典文件。</p>
 <p>转换成功后，在目录下有三个文件：</p>
 <div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span>
 <span class="normal"><a href="#__codelineno-26-2">2</a></span>
 <span class="normal"><a href="#__codelineno-26-3">3</a></span>
-<span class="normal"><a href="#__codelineno-26-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a>inference/en_PP-OCRv3_rec/
+<span class="normal"><a href="#__codelineno-26-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a>inference/en_PP-OCRv3_mobile_rec/
 </span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2"></a>    ├── inference.pdiparams         # 识别inference模型的参数文件
 </span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3"></a>    ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
 </span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4"></a>    └── inference.pdmodel           # 识别inference模型的program文件
@@ -6557,12 +6557,12 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 <p><strong>注意：</strong> 如果需要以新 IR 模式（<code>FLAGS_enable_pir_api=1</code>）存储 <code>.json</code> 文件，请执行以下命令切换到新 IR 模式：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span>
 <span class="normal"><a href="#__codelineno-27-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_enable_pir_api</span><span class="o">=</span><span class="m">1</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_mobile_rec/
 </span></code></pre></div></td></tr></table></div>
 <p>转换成功后，在目录下有三个文件：</p>
 <div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span>
 <span class="normal"><a href="#__codelineno-28-2">2</a></span>
-<span class="normal"><a href="#__codelineno-28-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a>inference/en_PP-OCRv3_rec/
+<span class="normal"><a href="#__codelineno-28-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a>inference/en_PP-OCRv3_mobile_rec/
 </span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2"></a>    ├── inference.pdiparams         # 识别inference模型的参数文件
 </span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3"></a>    └── inference.json              # 识别inference模型的program文件
 </span></code></pre></div></td></tr></table></div>
@@ -6597,7 +6597,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="Последнее обновление">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月4日 07:59:02">2025年5月4日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月6日 14:15:01">2025年5月6日</span>
   </span>
 
     
@@ -6607,7 +6607,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="Дата создания">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月4日 07:59:02">2025年5月4日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月6日 14:15:01">2025年5月6日</span>
   </span>
 
     

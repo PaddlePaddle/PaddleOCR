@@ -6000,10 +6000,10 @@ To customize the dict file, please modify the <code>character_dict_path</code> f
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="c1"># Training icdar15 English data and The training log will be automatically saved as train.log under &quot;{save_model_dir}&quot;</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="c1">#specify the single card training(Long training time, not recommended)</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="c1">#specify the card number through --gpus</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy
 </span></code></pre></div></td></tr></table></div>
 <p>PaddleOCR supports alternating training and evaluation. You can modify <code>eval_batch_step</code> in <code>configs/rec/rec_icdar15_train.yml</code> to set the evaluation frequency. By default, it is evaluated every 500 iter and the best acc model is saved under <code>output/rec_CRNN/best_accuracy</code> during the evaluation process.</p>
 <p>If the evaluation set is large, the test will be time-consuming. It is recommended to reduce the number of evaluations, or evaluate after training.</p>
@@ -6011,8 +6011,8 @@ To customize the dict file, please modify the <code>character_dict_path</code> f
 <li>Tip: You can use the <code>-c</code> parameter to select multiple model configurations under the <code>configs/rec/</code> path for training. The recognition algorithms supported at <a href="../../algorithm/overview.html">rec_algorithm</a>:</li>
 </ul>
 <p>For training Chinese data, it is recommended to use
-<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml">ch_PP-OCRv3_rec_distillation.yml</a>. If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:</p>
-<p>Take <code>ch_PP-OCRv3_rec_distillation.yml</code> as an example:</p>
+<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>. If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:</p>
+<p>Take <code>PP-OCRv3_mobile_rec_distillation.yml</code> as an example:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
@@ -6405,10 +6405,10 @@ Running on a DCU device requires setting the environment variable <code>export H
 <p>In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the recognition model, please refer to: <a href="finetune.html">Model Fine-tuning Tutorial</a>.</p>
 <h2 id="3-evaluation-and-test">3. Evaluation and Test<a class="headerlink" href="#3-evaluation-and-test" title="Permanent link">&para;</a></h2>
 <h3 id="31-evaluation">3.1. Evaluation<a class="headerlink" href="#31-evaluation" title="Permanent link">&para;</a></h3>
-<p>The model parameters during training are saved in the <code>Global.save_model_dir</code> directory by default. When evaluating indicators, you need to set <code>Global.checkpoints</code> to point to the saved parameter file. The evaluation dataset can be set by modifying the <code>Eval.dataset.label_file_list</code> field in the <code>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml</code> file.</p>
+<p>The model parameters during training are saved in the <code>Global.save_model_dir</code> directory by default. When evaluating indicators, you need to set <code>Global.checkpoints</code> to point to the saved parameter file. The evaluation dataset can be set by modifying the <code>Eval.dataset.label_file_list</code> field in the <code>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml</code> file.</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
 <span class="normal"><a href="#__codelineno-18-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="c1"># GPU evaluation, Global.checkpoints is the weight to be tested</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.checkpoints<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy
 </span></code></pre></div></td></tr></table></div>
 <h3 id="32-test">3.2 Test<a class="headerlink" href="#32-test" title="Permanent link">&para;</a></h3>
 <p>Using the model trained by paddleocr, you can quickly get prediction through the following script.</p>
@@ -6441,7 +6441,7 @@ Running on a DCU device requires setting the environment variable <code>export H
 <p>Among them, best_accuracy.<em>is the best model on the evaluation set; iter_epoch_x.</em> is the model saved at intervals of <code>save_epoch_step</code>; latest.* is the model of the last epoch.</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span>
 <span class="normal"><a href="#__codelineno-20-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="c1"># Predict English results</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy<span class="w">  </span>Global.infer_img<span class="o">=</span>doc/imgs_words/en/word_1.png
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a>python3<span class="w"> </span>tools/infer_rec.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">={</span>path/to/weights<span class="o">}</span>/best_accuracy<span class="w">  </span>Global.infer_img<span class="o">=</span>doc/imgs_words/en/word_1.png
 </span></code></pre></div></td></tr></table></div>
 <p>Input image:</p>
 <p><img alt="img" src="../../../ppocr/model_train/images/word_1-20240704092705543.png" /></p>
@@ -6483,24 +6483,24 @@ In contrast, the <strong>checkpoint model</strong> only saves the model's parame
 </span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6"></a><span class="c1"># Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.</span>
 </span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7"></a><span class="c1"># Global.save_inference_dir Set the address where the converted model will be saved.</span>
 </span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8"></a>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>en_PP-OCRv3_rec_train/best_accuracy<span class="w">  </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_mobile_rec/
 </span></code></pre></div></td></tr></table></div>
 <p>If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the <code>character_dict_path</code> in the configuration file to your dictionary file path.</p>
 <p>After the conversion is successful, there are three files in the model save directory:</p>
 <div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span>
 <span class="normal"><a href="#__codelineno-25-2">2</a></span>
 <span class="normal"><a href="#__codelineno-25-3">3</a></span>
-<span class="normal"><a href="#__codelineno-25-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a>inference/en_PP-OCRv3_rec/
+<span class="normal"><a href="#__codelineno-25-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a>inference/en_PP-OCRv3_mobile_rec/
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2"></a>    ├── inference.pdiparams         # The parameter file of recognition inference model
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3"></a>    ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
 </span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4"></a>    └── inference.pdmodel           # The program file of recognition model
 </span></code></pre></div></td></tr></table></div>
 <p><strong>Note</strong>: If you need to store the model in the new IR mode (i.e., <code>.json</code> format), use the following command to switch to the new IR mode:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_enable_pir_api</span><span class="o">=</span><span class="m">1</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w"> </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_rec/
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml<span class="w"> </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy<span class="w"> </span>Global.save_inference_dir<span class="o">=</span>./inference/en_PP-OCRv3_mobile_rec/
 </span></code></pre></div>
 <p>Once successful, you will have two files in the directory:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>inference/en_PP-OCRv3_rec/
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>inference/en_PP-OCRv3_mobile_rec/
 </span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    ├── inference.pdiparams         # Model parameter file for the inference model
 </span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    └── inference.json              # Program file for the inference model
 </span></code></pre></div>
@@ -6533,7 +6533,7 @@ In contrast, the <strong>checkpoint model</strong> only saves the model's parame
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 4, 2025 07:59:02">May 4, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 6, 2025 14:15:01">May 6, 2025</span>
   </span>
 
     
@@ -6543,7 +6543,7 @@ In contrast, the <strong>checkpoint model</strong> only saves the model's parame
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 4, 2025 07:59:02">May 4, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 6, 2025 14:15:01">May 6, 2025</span>
   </span>
 
     
