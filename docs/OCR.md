@@ -532,8 +532,145 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
 
-<details><summary>以下是命令行参数详细说明：</summary></details>
+<details><summary>以下是命令行参数详细说明：</summary>
 
+<table>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>类型</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>doc_orientation_classify_model_name</code></td>
+      <td><code>str</code></td>
+      <td>文档图像方向分类模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>doc_orientation_classify_model_dir</code></td>
+      <td><code>str</code></td>
+      <td>文档图像方向分类模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>doc_unwarping_model_name</code></td>
+      <td><code>str</code></td>
+      <td>文本矫正模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>doc_unwarping_model_dir</code></td>
+      <td><code>str</code></td>
+      <td>图像去扭曲模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_detection_model_name</code></td>
+      <td><code>str</code></td>
+      <td>文本检测模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_detection_model_dir</code></td>
+      <td><code>str</code></td>
+      <td>文本检测模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_model_name</code></td>
+      <td><code>str</code></td>
+      <td>文本行方向分类模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_model_dir</code></td>
+      <td><code>str</code></td>
+      <td>文本行方向分类模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_batch_size</code></td>
+      <td><code>int</code></td>
+      <td>文本行方向分类模型的批处理大小。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_model_name</code></td>
+      <td><code>str</code></td>
+      <td>文本识别模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_model_dir</code></td>
+      <td><code>str</code></td>
+      <td>文本识别模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_batch_size</code></td>
+      <td><code>int</code></td>
+      <td>文本识别模型的批处理大小。</td>
+    </tr>
+    <tr>
+      <td><code>use_doc_orientation_classify</code></td>
+      <td><code>str2bool</code></td>
+      <td>是否使用文档图像方向分类模型。</td>
+    </tr>
+    <tr>
+      <td><code>use_doc_unwarping</code></td>
+      <td><code>str2bool</code></td>
+      <td>是否使用文本矫正模型。</td>
+    </tr>
+    <tr>
+      <td><code>use_textline_orientation</code></td>
+      <td><code>str2bool</code></td>
+      <td>是否使用文本行方向分类模型。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_limit_side_len</code></td>
+      <td><code>int</code></td>
+      <td>设置文本检测模型输入图像的边长限制。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_limit_type</code></td>
+      <td><code>str</code></td>
+      <td>确定在输入到文本检测模型之前如何应用边长限制。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_thresh</code></td>
+      <td><code>float</code></td>
+      <td>文本检测模型的像素检测阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_box_thresh</code></td>
+      <td><code>float</code></td>
+      <td>文本检测模型的检测框阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_unclip_ratio</code></td>
+      <td><code>float</code></td>
+      <td>文本检测的扩展系数。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_input_shape</code></td>
+      <td><code>int (C, H, W)</code></td>
+      <td>文本检测模型的输入形状。</td>
+    </tr>
+    <tr>
+      <td><code>text_rec_score_thresh</code></td>
+      <td><code>float</code></td>
+      <td>文本识别阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_rec_input_shape</code></td>
+      <td><code>int (C, H, W)</code></td>
+      <td>文本识别模型的输入形状。</td>
+    </tr>
+    <tr>
+      <td><code>lang</code></td>
+      <td><code>str</code></td>
+      <td>OCR 处理的输入图像语言。</td>
+    </tr>
+    <tr>
+      <td><code>ocr_version</code></td>
+      <td><code>str</code></td>
+      <td>使用的PP-OCR版本。</td>
+    </tr>
+  </tbody>
+</table>
+</details>
 
 ### 2.2 Python脚本方式集成
 
@@ -559,48 +696,166 @@ for res in result:
 <details><summary>（1）通过 <code>PaddleOCR()</code> 实例化 OCR 产线对象，具体参数说明如下：</summary>
 
 <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pipeline</code></td>
-<td>产线名称或是产线配置文件路径。如为产线名称，则必须为 PaddleX 所支持的产线。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>config</code></td>
-<td>产线具体的配置信息（如果和<code>pipeline</code>同时设置，优先级高于<code>pipeline</code>，且要求产线名和<code>pipeline</code>一致）。</td>
-<td><code>dict[str, Any]</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>产线推理设备。支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>str</code></td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件。如果为 <code>None</code>，则使用配置文件中的配置。</td>
-<td><code>bool</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>类型</th>
+      <th>默认值</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>doc_orientation_classify_model_name</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文档图像方向分类模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>doc_orientation_classify_model_dir</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文档图像方向分类模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>doc_unwarping_model_name</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本矫正模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>doc_unwarping_model_dir</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>图像去扭曲模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_detection_model_name</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本检测模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_detection_model_dir</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本检测模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_model_name</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本行方向分类模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_model_dir</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本行方向分类模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_line_orientation_batch_size</code></td>
+      <td><code>int</code></td>
+      <td><code>None</code></td>
+      <td>文本行方向分类模型的批处理大小。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_model_name</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本识别模型的名称。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_model_dir</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>文本识别模型目录的路径。</td>
+    </tr>
+    <tr>
+      <td><code>text_recognition_batch_size</code></td>
+      <td><code>int</code></td>
+      <td><code>None</code></td>
+      <td>文本识别模型的批处理大小。</td>
+    </tr>
+    <tr>
+      <td><code>use_doc_orientation_classify</code></td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+      <td>是否使用文档图像方向分类模型。</td>
+    </tr>
+    <tr>
+      <td><code>use_doc_unwarping</code></td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+      <td>是否使用文本矫正模型。</td>
+    </tr>
+    <tr>
+      <td><code>use_textline_orientation</code></td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+      <td>是否使用文本行方向分类模型。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_limit_side_len</code></td>
+      <td><code>int</code></td>
+      <td><code>None</code></td>
+      <td>设置文本检测模型输入图像的边长限制。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_limit_type</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>确定在输入到文本检测模型之前如何应用边长限制。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_thresh</code></td>
+      <td><code>float</code></td>
+      <td><code>None</code></td>
+      <td>文本检测模型的像素检测阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_box_thresh</code></td>
+      <td><code>float</code></td>
+      <td><code>None</code></td>
+      <td>文本检测模型的检测框阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_unclip_ratio</code></td>
+      <td><code>float</code></td>
+      <td><code>None</code></td>
+      <td>文本检测的扩展系数。</td>
+    </tr>
+    <tr>
+      <td><code>text_det_input_shape</code></td>
+      <td><code>tuple</code> (C, H, W)</td>
+      <td><code>None</code></td>
+      <td>文本检测模型的输入形状。</td>
+    </tr>
+    <tr>
+      <td><code>text_rec_score_thresh</code></td>
+      <td><code>float</code></td>
+      <td><code>None</code></td>
+      <td>文本识别阈值。</td>
+    </tr>
+    <tr>
+      <td><code>text_rec_input_shape</code></td>
+      <td><code>tuple</code></td>
+      <td><code>None</code></td>
+      <td>文本识别模型的输入形状。(C, H, W)</td>
+    </tr>
+    <tr>
+      <td><code>lang</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>OCR 处理的输入图像语言。</td>
+    </tr>
+    <tr>
+      <td><code>ocr_version</code></td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+      <td>使用的PP-OCR版本。</td>
+    </tr>
+  </tbody>
 </table>
 </details>
 
@@ -1105,11 +1360,14 @@ for res in result:
 </tbody>
 </table>
 </details>
+
 <details><summary>多语言调用服务示例</summary>
+
 <details>
 <summary>Python</summary>
 
-<pre><code class="language-python">import base64
+<pre><code class="language-python">
+import base64
 import requests
 
 API_URL = "http://localhost:8080/ocr"
