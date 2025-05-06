@@ -58,7 +58,7 @@ Before installing the service module, you need to prepare the inference model an
 | Model | Path |
 | ------- | - |
 | text detection model | ./inference/PP-OCRv3_mobile_det_infer/ |
-| text recognition model | ./inference/ch_PP-OCRv3_rec_infer/ |
+| text recognition model | ./inference/PP-OCRv3_mobile_rec_infer/ |
 | text angle classifier | ./inference/ch_ppocr_mobile_v2.0_cls_infer/ |
 | layout parse model | ./inference/picodet_lcnet_x1_0_fgd_layout_infer/ |
 | tanle recognition | ./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/ |

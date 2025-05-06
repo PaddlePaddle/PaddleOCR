@@ -328,7 +328,7 @@ For more specific implementation of `DistillationMetric`, please refer to: [dist
 
 There are two ways to fine-tune the recognition distillation task.
 
-1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [ch_PP-OCRv2_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) to perform fine-tuning training of the model.
+1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml) to perform fine-tuning training of the model.
 2. Do not use knowledge distillation in fine-tuning: In this case, you need to first extract the student model parameters from the pre-training model. The specific steps are as follows.
 
 - First download the pre-trained model and unzip it.
@@ -354,7 +354,7 @@ print(s_params.keys())
 paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 ```
 
-After the extraction is complete, use [ch_PP-OCRv3_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
+After the extraction is complete, use [PP-OCRv3_mobile_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
 
 ### 2.2 Detection Model Configuration File Analysis
 

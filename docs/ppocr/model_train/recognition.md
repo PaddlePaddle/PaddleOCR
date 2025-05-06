@@ -153,7 +153,7 @@ PaddleOCR内置了一部分字典，可以按需使用。
 
 - 自定义字典
 
-如需自定义dic文件，请在 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
+如需自定义dic文件，请在 `configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml` 中添加 `character_dict_path` 字段, 指向您的字典路径。
 
 ### 1.5. 添加空格类别
 
@@ -195,10 +195,10 @@ tar -xf en_PP-OCRv3_rec_train.tar && rm -rf en_PP-OCRv3_rec_train.tar
 # 训练icdar15英文数据 训练日志会自动保存为 "{save_model_dir}" 下的train.log
 
 #单卡训练（训练周期长，不建议）
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 
 # 多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
 正常启动训练后，会看到以下log输出：
@@ -225,15 +225,15 @@ log 中自动打印如下信息：
 |  samples  | 当前 batch 内的样本数 |
 |  ips  | 每秒处理图片的数量 |
 
-PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/en_PP-OCRv3_rec/best_accuracy` 。
+PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml` 中修改 `eval_batch_step` 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 `output/en_PP-OCRv3_mobile_rec/best_accuracy` 。
 
 如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。
 
 **提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考[前沿算法列表](../../algorithm/overview.md)：
 
-训练中文数据，推荐使用[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+训练中文数据，推荐使用[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
-以 `ch_PP-OCRv3_rec_distillation.yml` 为例：
+以 `PP-OCRv3_mobile_rec_distillation.yml` 为例：
 
 ```yaml linenums="1"
 Global:
@@ -302,7 +302,7 @@ Eval:
 如果训练程序中断，如果希望加载训练中断的模型从而恢复训练，可以通过指定Global.checkpoints指定要加载的模型路径：
 
 ```bash linenums="1"
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints=./your/trained/model
+python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.checkpoints=./your/trained/model
 ```
 
 **注意**：`Global.checkpoints`的优先级高于`Global.pretrained_model`的优先级，即同时指定两个参数时，优先加载`Global.checkpoints`指定的模型，如果`Global.checkpoints`指定的模型路径有误，会加载`Global.pretrained_model`指定的模型。
@@ -359,7 +359,7 @@ args1: args1
 如果您想进一步加快训练速度，可以使用[自动混合精度训练](https://www.paddlepaddle.org.cn/documentation/docs/zh/guides/performance_improving/amp_cn.html)， 以单机单卡为例，命令如下：
 
 ```bash linenums="1"
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
+python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml \
      -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy \
      Global.use_amp=True Global.scale_loss=1024.0 Global.use_dynamic_loss_scaling=True
 ```
@@ -369,7 +369,7 @@ python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
 多机多卡训练时，通过 `--ips` 参数设置使用的机器IP地址，通过 `--gpus` 参数设置使用的GPU ID：
 
 ```bash linenums="1"
-python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml \
+python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1,2,3' tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml \
      -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy
 ```
 
@@ -457,11 +457,11 @@ DCU设备上运行需要设置环境变量 `export HIP_VISIBLE_DEVICES=0,1,2,3`�
 
 ### 3.1. 指标评估
 
-训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。评估数据集可以通过 `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml`  修改Eval中的 `label_file_path` 设置。
+训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。评估数据集可以通过 `configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml`  修改Eval中的 `label_file_path` 设置。
 
 ```bash linenums="1"
 # GPU 评估， Global.checkpoints 为待测权重
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ### 3.2. 测试识别效果
@@ -491,7 +491,7 @@ output/rec/
 
 ```bash linenums="1"
 # 预测英文结果
-python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
+python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 预测图片：
@@ -542,7 +542,7 @@ export FLAGS_enable_pir_api=0
 # Global.pretrained_model 参数设置待转换的训练模型地址，不用添加文件后缀 .pdmodel，.pdopt或.pdparams。
 # Global.save_inference_dir参数设置转换的模型将保存的地址。
 
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_mobile_rec/
 ```
 
 **注意：**如果您是在自己的数据集上训练的模型，并且调整了中文字符的字典文件，请注意修改配置文件中的`character_dict_path`为自定义字典文件。
@@ -550,7 +550,7 @@ python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Glo
 转换成功后，在目录下有三个文件：
 
 ```text linenums="1"
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv3_mobile_rec/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     ├── inference.pdiparams.info    # 识别inference模型的参数信息，可忽略
     └── inference.pdmodel           # 识别inference模型的program文件
@@ -560,13 +560,13 @@ inference/en_PP-OCRv3_rec/
 
 ```bash linenums="1"
 export FLAGS_enable_pir_api=1
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_mobile_rec/
 ```
 
 转换成功后，在目录下有三个文件：
 
 ```text linenums="1"
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv3_mobile_rec/
     ├── inference.pdiparams         # 识别inference模型的参数文件
     └── inference.json              # 识别inference模型的program文件
 ```

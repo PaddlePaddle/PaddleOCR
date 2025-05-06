@@ -62,4 +62,4 @@ We conducted model training on 4x8 V100 GPUs. Accuracy, training time, and multi
 
 | Model    | Configuration | Configuration   | 8 GPU training time / Accuracy | 4x8 GPU training time / Accuracy | Acceleration ratio  |
 |:------:|:-----:|:--------:|:--------:|:--------:|:-----:|
-| SVTR | [ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.00%  | **3.5** |
+| SVTR | [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml) |  PP-OCRv3_rec data | 10d/-   | 2.84d/74.00%  | **3.5** |

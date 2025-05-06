@@ -7,7 +7,7 @@ trans_model:-m paddle_serving_client.convert
 --params_filename:inference.pdiparams
 --det_serving_server:./deploy/pdserving/ppocr_det_v3_kl_serving/
 --det_serving_client:./deploy/pdserving/ppocr_det_v3_kl_client/
---rec_dirname:./inference/ch_PP-OCRv3_rec_klquant_infer/
+--rec_dirname:./inference/PP-OCRv3_mobile_rec_klquant_infer/
 --rec_serving_server:./deploy/pdserving/ppocr_rec_v3_kl_serving/
 --rec_serving_client:./deploy/pdserving/ppocr_rec_v3_kl_client/
 serving_dir:./deploy/pdserving

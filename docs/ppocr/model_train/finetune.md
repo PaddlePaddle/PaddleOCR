@@ -99,7 +99,7 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 
 ### 3.2 模型选择
 
-建议选择PP-OCRv3模型（配置文件：[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml)，预训练模型：[ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，预训练模型：[ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
 更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](../model_list.md)。
 

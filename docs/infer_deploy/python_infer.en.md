@@ -55,10 +55,10 @@ For lightweight Chinese recognition model inference, you can execute the followi
 
 ```bash linenums="1"
 # download CRNN text recognition inference model
-wget  https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
-tar xf ch_PP-OCRv3_rec_infer.tar
+wget  https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar
+tar xf PP-OCRv3_mobile_rec_infer.tar
 # run inference
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_10.png" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_image_shape=3,48,320
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_10.png" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --rec_image_shape=3,48,320
 ```
 
 ![img](./images/word_10.png)
@@ -75,9 +75,9 @@ For English recognition model inference, you can execute the following commands,
 
 ```bash linenums="1"
 # download en model：
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar
-tar xf en_PP-OCRv3_rec_infer.tar
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar
+tar xf en_PP-OCRv3_mobile_rec_infer.tar
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./en_PP-OCRv3_mobile_rec_infer/" --rec_char_dict_path="ppocr/utils/en_dict.txt"
 ```
 
 ![img](./images/word_1.png)
@@ -134,13 +134,13 @@ When performing prediction, you need to specify the path of a single image or a 
 
 ```bash linenums="1"
 # use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --use_angle_cls=true
 # not use use direction classifier
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --use_angle_cls=false
 # use multi-process
-python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
+python3 tools/infer/predict_system.py --image_dir="./doc/imgs/00018069.jpg" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --use_angle_cls=false --use_mp=True --total_process_num=6
 # use PDF files, you can infer the first few pages by using the `page_num` parameter, the default is 0, which means infer all pages
-python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --use_angle_cls=true --page_num=2
+python3 tools/infer/predict_system.py --image_dir="./xxx.pdf" --det_model_dir="./PP-OCRv3_mobile_det_infer/" --cls_model_dir="./cls/" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --use_angle_cls=true --page_num=2
 ```
 
 After executing the command, the recognition result image is as follows:
