@@ -306,7 +306,7 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
             train_results = json.load(fp)
     else:
         train_results = {}
-        train_results["model_name"] = config["Global"]["pdx_model_name"]
+        train_results["model_name"] = config["Global"]["model_name"]
         label_dict_path = config["Global"].get("character_dict_path", "")
         if label_dict_path != "":
             label_dict_path = os.path.abspath(label_dict_path)
