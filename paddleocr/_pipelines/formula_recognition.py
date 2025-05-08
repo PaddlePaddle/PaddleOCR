@@ -152,7 +152,7 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
 class FormulaRecognitionPipelineCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
-        return "formula_recognition"
+        return "formula_recognition_pipeline"
 
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
