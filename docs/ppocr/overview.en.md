@@ -74,7 +74,7 @@ For the performance comparison between PP-OCR series models, please check the [b
 
 - You can also quickly experience the ultra-lightweight OCR : [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 - Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
-- One line of code quick use: [Quick Start](./quickstart_en.md)
+- One line of code quick use: [Quick Start](./quick_start.en.md)
 
 ### 5.2 Model training / compression / deployment
 
