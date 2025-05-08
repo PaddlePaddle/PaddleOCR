@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .text_detection import (
-    TextDetection,
-    TextDetectionSubcommandExecutor,
+from ..utils.cli import (
+    add_simple_inference_args,
+    get_subcommand_args,
+    perform_simple_inference,
 )
+from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
+from ._text_detection import TextDetectionMixin, TextDetectionSubcommandExecutorMixin
 
 
-class SealTextDetection(TextDetection):
+class SealTextDetection(TextDetectionMixin, PaddleXPredictorWrapper):
     @property
     def default_model_name(self):
         return "PP-OCRv4_mobile_seal_det"
@@ -28,11 +31,17 @@ class SealTextDetection(TextDetection):
         return SealTextDetectionSubcommandExecutor()
 
 
-class SealTextDetectionSubcommandExecutor(TextDetectionSubcommandExecutor):
+class SealTextDetectionSubcommandExecutor(
+    TextDetectionSubcommandExecutorMixin, PredictorCLISubcommandExecutor
+):
     @property
     def subparser_name(self):
         return "seal_text_detection"
 
-    @property
-    def wrapper_cls(self):
-        return SealTextDetection
+    def _update_subparser(self, subparser):
+        add_simple_inference_args(subparser)
+        self._add_text_detection_args(subparser)
+
+    def execute_with_args(self, args):
+        params = get_subcommand_args(args)
+        perform_simple_inference(SealTextDetection, params)
