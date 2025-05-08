@@ -1,3 +1,6 @@
+---
+comments: true
+---
 
 # 通用OCR产线使用教程
 

@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # 通用版面解析v3产线使用教程
 
 ## 1. 通用版面解析v3(PP-StructureV3)产线介绍
