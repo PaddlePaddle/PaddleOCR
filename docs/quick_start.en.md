@@ -29,6 +29,12 @@ NOTE: You can customize the storage location for OCR models by setting the envir
 - On Linux/macOS: `${HOME}/.paddleocr`
 - On Windows: `C:\Users\{username}\.paddleocr`
 
+#### 2. Install PaddleOCR
+
+    ```bash linenums="1"
+    python -m pip install paddleocr
+    ```
+
 ### Use by code
 
 === "Detection + Classification + Recognition"
