@@ -23,9 +23,27 @@ namespace PaddleOCR {
 void DBDetector::LoadModel(const std::string &model_dir) noexcept {
   //   AnalysisConfig config;
   paddle_infer::Config config;
-  config.SetModel(model_dir + "/inference.pdmodel",
-                  model_dir + "/inference.pdiparams");
-
+  bool json_model = false;
+  std::string model_file_path, param_file_path;
+  std::vector<std::pair<std::string, std::string>> model_variants = {
+      {"/inference.json", "/inference.pdiparams"},
+      {"/model.json", "/model.pdiparams"},
+      {"/inference.pdmodel", "/inference.pdiparams"},
+      {"/model.pdmodel", "/model.pdiparams"}};
+  for (const auto &variant : model_variants) {
+    if (Utility::PathExists(model_dir + variant.first)) {
+      model_file_path = model_dir + variant.first;
+      param_file_path = model_dir + variant.second;
+      json_model = (variant.first.find(".json") != std::string::npos);
+      break;
+    }
+  }
+  if (model_file_path.empty()) {
+    std::cerr << "[ERROR] No valid model file found in " << model_dir
+              << std::endl;
+    exit(1);
+  }
+  config.SetModel(model_file_path, param_file_path);
   if (this->use_gpu_) {
     config.EnableUseGpu(this->gpu_mem_, this->gpu_id_);
     if (this->use_tensorrt_) {
@@ -53,6 +71,10 @@ void DBDetector::LoadModel(const std::string &model_dir) noexcept {
       config.DisableMKLDNN();
     }
     config.SetCpuMathLibraryNumThreads(this->cpu_math_library_num_threads_);
+    if (json_model) {
+      config.EnableNewIR();
+      config.EnableNewExecutor();
+    }
   }
   // use zero_copy_run as default
   config.SwitchUseFeedFetchOps(false);

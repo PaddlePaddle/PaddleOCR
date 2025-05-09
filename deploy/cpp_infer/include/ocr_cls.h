@@ -14,9 +14,12 @@
 
 #pragma once
 
+#include <fstream>
 #include <include/preprocess_op.h>
 #include <include/utility.h>
+#include <iostream>
 #include <memory>
+#include <yaml-cpp/yaml.h>
 
 namespace paddle_infer {
 class Predictor;
@@ -42,6 +45,25 @@ public:
     this->use_tensorrt_ = use_tensorrt;
     this->precision_ = precision;
     this->cls_batch_num_ = cls_batch_num;
+
+    std::string yaml_file_path = model_dir + "/inference.yml";
+    std::ifstream yaml_file(yaml_file_path);
+    if (yaml_file.is_open()) {
+      std::string model_name;
+      try {
+        YAML::Node config = YAML::LoadFile(yaml_file_path);
+        if (config["Global"] && config["Global"]["model_name"]) {
+          model_name = config["Global"]["model_name"].as<std::string>();
+        }
+        if (!model_name.empty()) {
+          std::cerr << "Error: " << model_name << " is currently not supported."
+                    << std::endl;
+          std::exit(EXIT_FAILURE);
+        }
+      } catch (const YAML::Exception &e) {
+        std::cerr << "Failed to load YAML file: " << e.what() << std::endl;
+      }
+    }
 
     LoadModel(model_dir);
   }
