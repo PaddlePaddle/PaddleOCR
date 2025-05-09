@@ -18,7 +18,7 @@ from paddlex import create_predictor
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
-    add_common_cli_args,
+    add_common_cli_opts,
     parse_common_args,
     prepare_common_init_args,
 )
@@ -94,8 +94,12 @@ class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
         subparser.add_argument(
             "--model_dir", type=str, help="Directory where the model is stored."
         )
-        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
         self._update_subparser(subparser)
+        add_common_cli_opts(
+            subparser,
+            default_enable_hpi=_DEFAULT_ENABLE_HPI,
+            allow_multiple_devices=False,
+        )
         return subparser
 
     @abc.abstractmethod
