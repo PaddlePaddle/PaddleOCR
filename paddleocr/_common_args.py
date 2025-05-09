@@ -94,9 +94,9 @@ def prepare_common_init_args(model_name, common_args):
 
 def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
     if allow_multiple_devices:
-        help_ = "Device(s) to use for inference, e.g., cpu, gpu, npu, gpu:0, gpu:0,1. If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported."
+        help_ = "Device(s) to use for inference, e.g., `cpu`, `gpu`, `npu`, `gpu:0`, `gpu:0,1`. If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported. By default, GPU 0 will be used if available; otherwise, the CPU will be used."
     else:
-        help_ = "Device to use for inference, e.g., cpu, gpu, npu, gpu:0."
+        help_ = "Device to use for inference, e.g., `cpu`, `gpu`, `npu`, `gpu:0`. By default, GPU 0 will be used if available; otherwise, the CPU will be used."
     parser.add_argument(
         "--device",
         type=str,
