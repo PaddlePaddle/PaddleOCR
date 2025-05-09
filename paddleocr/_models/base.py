@@ -90,11 +90,11 @@ class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
 
     def add_subparser(self, subparsers):
         subparser = subparsers.add_parser(name=self.subparser_name)
+        self._update_subparser(subparser)
         subparser.add_argument("--model_name", type=str, help="Name of the model.")
         subparser.add_argument(
             "--model_dir", type=str, help="Directory where the model is stored."
         )
-        self._update_subparser(subparser)
         add_common_cli_opts(
             subparser,
             default_enable_hpi=_DEFAULT_ENABLE_HPI,
