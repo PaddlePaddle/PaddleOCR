@@ -39,7 +39,7 @@ Architecture:
   in_channels: 3
   Transform:
   Backbone:
-    name: PPHGNetV2_B4
+    name: PPHGNetV2_B4_Formula
     class_num: 1024
 
   Head:
