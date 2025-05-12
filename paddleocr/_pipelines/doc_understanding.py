@@ -17,7 +17,6 @@ from .._utils.cli import (
     get_subcommand_args,
     perform_simple_inference,
 )
-from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 from paddlex.utils.pipeline_arguments import custom_type
@@ -43,13 +42,15 @@ class DocUnderstanding(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "doc_understanding"
 
+    def predict_gen(self, input, **kwargs):
+        return self.paddlex_pipeline.predict(input, **kwargs)
+
     def predict(
         self,
         input,
         **kwargs,
     ):
-        result = result_gen_to_list(self.paddlex_pipeline.predict(input, **kwargs))
-        return result
+        return list(self.predict_gen(input, **kwargs))
 
     @classmethod
     def get_cli_subcommand_executor(cls):

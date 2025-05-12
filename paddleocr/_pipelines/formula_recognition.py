@@ -18,7 +18,6 @@ from .._utils.cli import (
     perform_simple_inference,
     str2bool,
 )
-from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -58,6 +57,33 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "formula_recognition"
 
+    def predict_gen(
+        self,
+        input,
+        *,
+        use_layout_detection=None,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        layout_det_res=None,
+        layout_threshold=None,
+        layout_nms=None,
+        layout_unclip_ratio=None,
+        layout_merge_bboxes_mode=None,
+        **kwargs,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_layout_detection=use_layout_detection,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+            layout_det_res=layout_det_res,
+            layout_threshold=layout_threshold,
+            layout_nms=layout_nms,
+            layout_unclip_ratio=layout_unclip_ratio,
+            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+            **kwargs,
+        )
+
     def predict(
         self,
         input,
@@ -72,8 +98,8 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
         layout_merge_bboxes_mode=None,
         **kwargs,
     ):
-        result = result_gen_to_list(
-            self.paddlex_pipeline.predict(
+        return list(
+            self.predict_gen(
                 input,
                 use_layout_detection=use_layout_detection,
                 use_doc_orientation_classify=use_doc_orientation_classify,
@@ -86,7 +112,6 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
                 **kwargs,
             )
         )
-        return result
 
     @classmethod
     def get_cli_subcommand_executor(cls):

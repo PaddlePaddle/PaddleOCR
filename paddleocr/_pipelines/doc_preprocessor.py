@@ -18,7 +18,6 @@ from .._utils.cli import (
     perform_simple_inference,
     str2bool,
 )
-from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -49,6 +48,19 @@ class DocPreprocessor(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "doc_preprocessor"
 
+    def predict_gen(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+        )
+
     def predict(
         self,
         input,
@@ -56,14 +68,13 @@ class DocPreprocessor(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
     ):
-        result = result_gen_to_list(
-            self.paddlex_pipeline.predict(
+        return list(
+            self.predict_gen(
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
             )
         )
-        return result
 
     @classmethod
     def get_cli_subcommand_executor(cls):
