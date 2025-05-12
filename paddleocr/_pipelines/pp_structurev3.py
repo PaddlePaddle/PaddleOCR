@@ -79,6 +79,9 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
+        pretty_markdown=None,
         **kwargs,
     ):
         params = locals().copy()
@@ -102,6 +105,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -121,6 +126,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_table_cells_ocr_results=None,
         use_e2e_wired_table_rec_model=None,
         use_e2e_wireless_table_rec_model=None,
+        pretty_markdown=None,
         **kwargs,
     ):
         result = []
@@ -133,6 +139,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             use_formula_recognition=use_formula_recognition,
+            use_chart_recognition=use_chart_recognition,
+            use_region_detection=use_region_detection,
             layout_threshold=layout_threshold,
             layout_nms=layout_nms,
             layout_unclip_ratio=layout_unclip_ratio,
@@ -152,6 +160,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_table_cells_ocr_results=use_table_cells_ocr_results,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+            pretty_markdown=pretty_markdown,
             **kwargs,
         ):
             result.append(res)
@@ -597,6 +606,21 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_formula_recognition",
             type=str2bool,
             help="Whether to use formula recognition.",
+        )
+        subparser.add_argument(
+            "--use_chart_recognition",
+            type=str2bool,
+            help="Whether to use chart recognition.",
+        )
+        subparser.add_argument(
+            "--use_region_detection",
+            type=str2bool,
+            help="Whether to use region detection.",
+        )
+        subparser.add_argument(
+            "--pretty_markdown",
+            type=str2bool,
+            help="Whether to prettify the Markdown output.",
         )
 
     def execute_with_args(self, args):

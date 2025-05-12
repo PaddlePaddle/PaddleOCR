@@ -36,6 +36,7 @@ from ._pipelines import (
     SealRecognition,
     TableRecognitionPipelineV2,
 )
+from ._utils.logging import logger
 from ._version import version as __version__
 
 __all__ = [
@@ -59,5 +60,6 @@ __all__ = [
     "PPStructureV3",
     "SealRecognition",
     "TableRecognitionPipelineV2",
+    "logger",
     "__version__",
 ]
