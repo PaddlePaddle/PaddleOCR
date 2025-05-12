@@ -273,11 +273,15 @@ class HtmlToDocx(HTMLParser):
                     cell_col += 1
                     docx_cell = table.cell(cell_row, cell_col)
 
-                cell_to_merge = table.cell(
-                    cell_row + rowspan - 1, cell_col + colspan - 1
-                )
-                if docx_cell != cell_to_merge:
-                    docx_cell.merge(cell_to_merge)
+                target_row = cell_row + rowspan - 1
+                target_col = cell_col + colspan - 1
+                if target_row < num_rows and target_col < num_cols:
+                    cell_to_merge = table.cell(target_row, target_col)
+                    if docx_cell != cell_to_merge:
+                        docx_cell.merge(cell_to_merge)
+                else:
+                    # Handle out-of-bounds merge, maybe log or skip
+                    continue
 
                 child_parser = HtmlToDocx()
                 child_parser.copy_settings_from(self)

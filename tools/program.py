@@ -264,6 +264,7 @@ def train(
         "SVTR_HGNet",
         "ParseQ",
         "CPPD",
+        "IGTR",
     ]
     extra_input = False
     if config["Architecture"]["algorithm"] == "Distillation":
@@ -871,6 +872,7 @@ def preprocess(is_train=False):
         "SLANeXt",
         "PP-FormulaNet-S",
         "PP-FormulaNet-L",
+        "IGTR",
     ]
 
     if use_xpu:
