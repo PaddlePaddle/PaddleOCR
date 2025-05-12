@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
     str2bool,
 )
+from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -104,26 +105,26 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_layout_detection=use_layout_detection,
-            layout_det_res=layout_det_res,
-            layout_threshold=layout_threshold,
-            layout_nms=layout_nms,
-            layout_unclip_ratio=layout_unclip_ratio,
-            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
-            seal_det_limit_side_len=seal_det_limit_side_len,
-            seal_det_limit_type=seal_det_limit_type,
-            seal_det_thresh=seal_det_thresh,
-            seal_det_box_thresh=seal_det_box_thresh,
-            seal_det_unclip_ratio=seal_det_unclip_ratio,
-            seal_rec_score_thresh=seal_rec_score_thresh,
-            **kwargs,
-        ):
-            result.append(res)
+        result = result_gen_to_list(
+            self.paddlex_pipeline.predict(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_layout_detection=use_layout_detection,
+                layout_det_res=layout_det_res,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                **kwargs,
+            )
+        )
         return result
 
     @classmethod

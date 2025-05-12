@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
     str2bool,
 )
+from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -123,38 +124,38 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_e2e_wireless_table_rec_model=None,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_textline_orientation=use_textline_orientation,
-            use_general_ocr=use_general_ocr,
-            use_seal_recognition=use_seal_recognition,
-            use_table_recognition=use_table_recognition,
-            use_formula_recognition=use_formula_recognition,
-            layout_threshold=layout_threshold,
-            layout_nms=layout_nms,
-            layout_unclip_ratio=layout_unclip_ratio,
-            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
-            text_det_limit_side_len=text_det_limit_side_len,
-            text_det_limit_type=text_det_limit_type,
-            text_det_thresh=text_det_thresh,
-            text_det_box_thresh=text_det_box_thresh,
-            text_det_unclip_ratio=text_det_unclip_ratio,
-            text_rec_score_thresh=text_rec_score_thresh,
-            seal_det_limit_side_len=seal_det_limit_side_len,
-            seal_det_limit_type=seal_det_limit_type,
-            seal_det_thresh=seal_det_thresh,
-            seal_det_box_thresh=seal_det_box_thresh,
-            seal_det_unclip_ratio=seal_det_unclip_ratio,
-            seal_rec_score_thresh=seal_rec_score_thresh,
-            use_table_cells_ocr_results=use_table_cells_ocr_results,
-            use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
-            use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
-            **kwargs,
-        ):
-            result.append(res)
+        result = result_gen_to_list(
+            self.paddlex_pipeline.predict(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
+                use_general_ocr=use_general_ocr,
+                use_seal_recognition=use_seal_recognition,
+                use_table_recognition=use_table_recognition,
+                use_formula_recognition=use_formula_recognition,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                use_table_cells_ocr_results=use_table_cells_ocr_results,
+                use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+                use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+                **kwargs,
+            )
+        )
         return result
 
     @classmethod

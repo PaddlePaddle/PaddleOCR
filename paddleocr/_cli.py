@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import argparse
+import logging
 import warnings
 
 from ._models import (
@@ -40,7 +41,8 @@ from ._pipelines import (
     TableRecognitionPipelineV2,
 )
 from ._version import version
-from .utils.deprecation import CLIDeprecationWarning
+from ._utils.deprecation import CLIDeprecationWarning
+from ._utils.logging import logger
 
 
 def _register_pipelines(subparsers):
@@ -93,6 +95,7 @@ def _execute(args):
 
 
 def main():
+    logger.setLevel(logging.INFO)
     warnings.filterwarnings("default", category=CLIDeprecationWarning)
     args = _parse_args()
     _execute(args)

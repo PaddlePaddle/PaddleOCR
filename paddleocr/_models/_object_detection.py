@@ -14,7 +14,7 @@
 
 import abc
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,

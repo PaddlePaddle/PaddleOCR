@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
-    str2bool,
 )
+from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 from paddlex.utils.pipeline_arguments import custom_type
@@ -48,9 +48,7 @@ class DocUnderstanding(PaddleXPipelineWrapper):
         input,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(input, **kwargs):
-            result.append(res)
+        result = result_gen_to_list(self.paddlex_pipeline.predict(input, **kwargs))
         return result
 
     @classmethod

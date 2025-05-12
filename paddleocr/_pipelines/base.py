@@ -26,7 +26,7 @@ from .._common_args import (
     prepare_common_init_args,
 )
 from .._mkldnn_blocklists import PIPELINE_MKLDNN_BLOCKLIST
-from ..utils.logging import logger
+from .._utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = None
 

@@ -18,18 +18,19 @@
 
 import sys
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
     str2bool,
 )
-from ..utils.deprecation import (
+from .._utils.deprecation import (
     DeprecatedOptionAction,
     deprecated,
     warn_deprecated_param,
 )
-from ..utils.logging import logger
+from .._utils.logging import logger
+from .._utils.misc import result_gen_to_list
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -161,20 +162,20 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_textline_orientation=use_textline_orientation,
-            text_det_limit_side_len=text_det_limit_side_len,
-            text_det_limit_type=text_det_limit_type,
-            text_det_thresh=text_det_thresh,
-            text_det_box_thresh=text_det_box_thresh,
-            text_det_unclip_ratio=text_det_unclip_ratio,
-            text_rec_score_thresh=text_rec_score_thresh,
-        ):
-            result.append(res)
+        result = result_gen_to_list(
+            self.paddlex_pipeline.predict(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+            )
+        )
         return result
 
     @deprecated("Please use `predict` instead.")
