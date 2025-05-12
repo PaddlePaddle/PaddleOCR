@@ -1,6 +1,11 @@
 # 高性能推理
 
-在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。PaddleOCR 提供高性能推理能力，通过自动配置和多后端推理功能，让用户无需关注复杂的配置和底层细节，一键提升模型的推理速度。
+在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。PaddleOCR 提供高性能推理能力，让用户无需关注复杂的配置和底层细节，一键提升模型的推理速度。具体而言，PaddleOCR 的高性能推理功能能够：
+
+- 结合先验知识自动选择合适的推理后端（Paddle Inference、OpenVINO、ONNX Runtime、TensorRT等），并配置加速策略（如增大推理线程数、设置 FP16 精度推理）；
+- 根据需要自动将飞桨静态图模型转换为 ONNX 格式，以使用更优的推理后端实现加速。
+
+本文档主要介绍高性能推理功能的安装与使用方法。
 
 ## 1. 前置条件
 
@@ -78,8 +83,9 @@ pipeline = PaddleOCR(enable_hpi=True)
 result = pipeline.predict(...)
 ```
 
-## 3. 特别说明
+## 3. 说明
 
 1. 对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。
 2. 目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。
-3. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/3.0-rc1/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。
+3. 在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 [获取 ONNX 模型](./obtaining_onnx_models.md)。
+4. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。
