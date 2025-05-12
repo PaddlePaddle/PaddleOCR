@@ -78,11 +78,15 @@ def dump_infer_config(config, path, logger):
             common_dynamic_shapes = {
                 "x": [[1, 1, 192, 672], [1, 1, 192, 672], [8, 1, 192, 672]]
             }
-        elif arch_config["algorithm"] == "PP-FormulaNet-L":
+        elif arch_config["algorithm"] in ["PP-FormulaNet-L", "PP-FormulaNet-L_plus"]:
             common_dynamic_shapes = {
                 "x": [[1, 1, 768, 768], [1, 1, 768, 768], [8, 1, 768, 768]]
             }
-        elif arch_config["algorithm"] == "PP-FormulaNet-S":
+        elif arch_config["algorithm"] in [
+            "PP-FormulaNet-S",
+            "PP-FormulaNet-S_plus",
+            "PP-FormulaNet-M_plus",
+        ]:
             common_dynamic_shapes = {
                 "x": [[1, 1, 384, 384], [1, 1, 384, 384], [8, 1, 384, 384]]
             }
@@ -111,6 +115,9 @@ def dump_infer_config(config, path, logger):
             "UniMERNet",
             "PP-FormulaNet-L",
             "PP-FormulaNet-S",
+            "PP-FormulaNet-L_plus",
+            "PP-FormulaNet-M_plus",
+            "PP-FormulaNet-S_plus",
         ]:
             if k != "rec_char_dict_path":
                 postprocess[k] = v
@@ -127,6 +134,9 @@ def dump_infer_config(config, path, logger):
         "UniMERNet",
         "PP-FormulaNet-L",
         "PP-FormulaNet-S",
+        "PP-FormulaNet-L_plus",
+        "PP-FormulaNet-M_plus",
+        "PP-FormulaNet-S_plus",
     ]:
         tokenizer_file = config["Global"].get("rec_char_dict_path")
         fast_tokenizer_file = os.path.join(tokenizer_file, "tokenizer.json")
@@ -275,7 +285,7 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
             full_graph=True,
         )
-    elif arch_config["algorithm"] == "PP-FormulaNet-L":
+    elif arch_config["algorithm"] in ["PP-FormulaNet-L", "PP-FormulaNet-L_plus"]:
         model = paddle.jit.to_static(
             model,
             input_spec=[
@@ -283,7 +293,11 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
             full_graph=True,
         )
-    elif arch_config["algorithm"] == "PP-FormulaNet-S":
+    elif arch_config["algorithm"] in [
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-S_plus",
+        "PP-FormulaNet-M_plus",
+    ]:
         model = paddle.jit.to_static(
             model,
             input_spec=[
@@ -470,6 +484,9 @@ def export(config, base_model=None, save_path=None):
     if config["Architecture"].get("algorithm") in [
         "PP-FormulaNet-S",
         "PP-FormulaNet-L",
+        "PP-FormulaNet-S_plus",
+        "PP-FormulaNet-M_plus",
+        "PP-FormulaNet-L_plus",
     ]:
         config["Architecture"]["Head"]["is_export"] = True
     if base_model is not None:

@@ -566,9 +566,18 @@ class GoTImgDecode:
 
 
 class UniMERNetImgDecode:
-    def __init__(self, input_size, random_padding=False, **kwargs):
+    def __init__(
+        self,
+        input_size,
+        random_padding=False,
+        random_resize=False,
+        random_crop=False,
+        **kwargs,
+    ):
         self.input_size = input_size
-        self.random_padding = random_padding
+        self.is_random_padding = random_padding
+        self.is_random_resize = random_resize
+        self.is_random_crop = random_crop
 
     def crop_margin(self, img):
         data = np.array(img.convert("L"))
@@ -626,11 +635,44 @@ class UniMERNetImgDecode:
         img = img.resize(tuple(output_size[::-1]), resample=2)
         return img
 
+    def random_resize(self, img):
+        scale = np.random.uniform(0.5, 1)
+        img = img.resize([int(scale * s) for s in img.size])
+        return img
+
+    def random_crop(self, img, crop_ratio):
+        width, height = img.width, img.height
+        max_crop_pixel = min(width, height) * crop_ratio
+        crop_left = np.random.uniform(0, max_crop_pixel)
+        crop_right = np.random.uniform(0, max_crop_pixel)
+        crop_top = np.random.uniform(0, max_crop_pixel)
+        crop_bottom = np.random.uniform(0, max_crop_pixel)
+        # 计算裁剪后的边界
+        left = crop_left
+        top = crop_top
+        right = width - crop_right
+        bottom = height - crop_bottom
+        # 裁剪图像
+        img = img.crop((left, top, right, bottom))
+
+        return img
+
     def __call__(self, data):
         filename = data["filename"]
         img = Image.open(filename)
         try:
+            if self.is_random_resize:
+                img = self.random_resize(img)
             img = self.crop_margin(img.convert("RGB"))
+            if "label" in data and self.is_random_crop:
+                label = data["label"]
+                equation_length = len(label)
+                if equation_length < 256:
+                    img = self.random_crop(img, crop_ratio=0.1)
+                elif 256 < equation_length <= 512:
+                    img = self.random_crop(img, crop_ratio=0.05)
+                else:
+                    img = self.random_crop(img, crop_ratio=0.03)
         except OSError:
             return
         if img.height == 0 or img.width == 0:
@@ -639,7 +681,7 @@ class UniMERNetImgDecode:
         img.thumbnail((self.input_size[1], self.input_size[0]))
         delta_width = self.input_size[1] - img.width
         delta_height = self.input_size[0] - img.height
-        if self.random_padding:
+        if self.is_random_padding:
             pad_width = np.random.randint(low=0, high=delta_width + 1)
             pad_height = np.random.randint(low=0, high=delta_height + 1)
         else:
