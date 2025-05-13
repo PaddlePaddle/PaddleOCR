@@ -118,9 +118,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
-        use_table_cells_ocr_results=None,
-        use_e2e_wired_table_rec_model=None,
-        use_e2e_wireless_table_rec_model=None,
+        use_ocr_results_with_table_cells=False,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=False,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
         **kwargs,
     ):
         return self.paddlex_pipeline.predict(
@@ -148,9 +151,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
             seal_det_box_thresh=seal_det_box_thresh,
             seal_det_unclip_ratio=seal_det_unclip_ratio,
             seal_rec_score_thresh=seal_rec_score_thresh,
-            use_table_cells_ocr_results=use_table_cells_ocr_results,
+            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+            use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+            use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+            use_table_orientation_classify=use_table_orientation_classify,
             **kwargs,
         )
 
@@ -180,9 +186,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
-        use_table_cells_ocr_results=None,
-        use_e2e_wired_table_rec_model=None,
-        use_e2e_wireless_table_rec_model=None,
+        use_ocr_results_with_table_cells=False,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=False,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
         **kwargs,
     ):
         return list(
@@ -211,9 +220,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 seal_det_box_thresh=seal_det_box_thresh,
                 seal_det_unclip_ratio=seal_det_unclip_ratio,
                 seal_rec_score_thresh=seal_rec_score_thresh,
-                use_table_cells_ocr_results=use_table_cells_ocr_results,
+                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
                 use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
                 use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+                use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+                use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+                use_table_orientation_classify=use_table_orientation_classify,
                 **kwargs,
             )
         )
