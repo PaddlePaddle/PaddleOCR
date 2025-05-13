@@ -1597,7 +1597,7 @@ def PPHGNetV2_B6(pretrained=False, use_ssld=False, **kwargs):
 
 class PPHGNetV2_B4_Formula(nn.Layer):
     """
-    PPHGNetV2_B4
+    PPHGNetV2_B4_Formula
     Args:
         in_channels (int): Number of input channels. Default is 3 (for RGB images).
         class_num (int): Number of classes for classification. Default is 1000.
@@ -1651,3 +1651,61 @@ class PPHGNetV2_B4_Formula(nn.Layer):
             return pphgnet_b4_output, label, attention_mask
         else:
             return pphgnet_b4_output
+
+
+class PPHGNetV2_B6_Formula(nn.Layer):
+    """
+    PPHGNetV2_B6_Formula
+    Args:
+        in_channels (int): Number of input channels. Default is 3 (for RGB images).
+        class_num (int): Number of classes for classification. Default is 1000.
+    Returns:
+        model: nn.Layer. Specific `PPHGNetV2_B6` model with defined architecture.
+    """
+
+    def __init__(self, in_channels=3, class_num=1000):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = 2048
+        stage_config = {
+            # in_channels, mid_channels, out_channels, num_blocks, is_downsample, light_block, kernel_size, layer_num
+            "stage1": [96, 96, 192, 2, False, False, 3, 6, 2],
+            "stage2": [192, 192, 512, 3, True, False, 3, 6, 2],
+            "stage3": [512, 384, 1024, 6, True, True, 5, 6, 2],
+            "stage4": [1024, 768, 2048, 3, True, True, 5, 6, 2],
+        }
+
+        self.pphgnet_b6 = PPHGNetV2(
+            stem_channels=[3, 48, 96],
+            class_num=class_num,
+            stage_config=stage_config,
+            use_lab=False,
+        )
+
+    def forward(self, input_data):
+        if self.training:
+            pixel_values, label, attention_mask = input_data
+        else:
+            if isinstance(input_data, list):
+                pixel_values = input_data[0]
+            else:
+                pixel_values = input_data
+        num_channels = pixel_values.shape[1]
+        if num_channels == 1:
+            pixel_values = paddle.repeat_interleave(pixel_values, repeats=3, axis=1)
+        pphgnet_b6_output = self.pphgnet_b6(pixel_values)
+        b, c, h, w = pphgnet_b6_output.shape
+        pphgnet_b6_output = pphgnet_b6_output.reshape([b, c, h * w]).transpose(
+            [0, 2, 1]
+        )
+        pphgnet_b6_output = DonutSwinModelOutput(
+            last_hidden_state=pphgnet_b6_output,
+            pooler_output=None,
+            hidden_states=None,
+            attentions=False,
+            reshaped_hidden_states=None,
+        )
+        if self.training:
+            return pphgnet_b6_output, label, attention_mask
+        else:
+            return pphgnet_b6_output
