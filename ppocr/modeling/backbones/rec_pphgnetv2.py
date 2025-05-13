@@ -1381,9 +1381,11 @@ class PPHGNetV2(TheseusLayer):
             self.dropout = nn.Dropout(p=dropout_prob, mode="downscale_in_infer")
 
         self.flatten = nn.Flatten(start_axis=1, stop_axis=-1)
-        self.fc = nn.Linear(
-            self.class_expand if self.use_last_conv else out_channels, self.class_num
-        )
+        if not self.det:
+            self.fc = nn.Linear(
+                self.class_expand if self.use_last_conv else out_channels,
+                self.class_num,
+            )
 
         self._init_weights()
 
