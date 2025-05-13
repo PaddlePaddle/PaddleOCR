@@ -338,9 +338,9 @@ def train(
                         "UniMERNet",
                         "PP-FormulaNet-S",
                         "PP-FormulaNet-L",
-                        "PP-FormulaNet-S_plus",
-                        "PP-FormulaNet-M_plus",
-                        "PP-FormulaNet-L_plus",
+                        "PP-FormulaNet_plus-S",
+                        "PP-FormulaNet_plus-M",
+                        "PP-FormulaNet_plus-L",
                     ]:
                         preds = model(batch)
                     else:
@@ -363,9 +363,9 @@ def train(
                     "UniMERNet",
                     "PP-FormulaNet-S",
                     "PP-FormulaNet-L",
-                    "PP-FormulaNet-S_plus",
-                    "PP-FormulaNet-M_plus",
-                    "PP-FormulaNet-L_plus",
+                    "PP-FormulaNet_plus-S",
+                    "PP-FormulaNet_plus-M",
+                    "PP-FormulaNet_plus-L",
                 ]:
                     preds = model(batch)
                 else:
@@ -400,9 +400,9 @@ def train(
                 elif algorithm in [
                     "PP-FormulaNet-S",
                     "PP-FormulaNet-L",
-                    "PP-FormulaNet-S_plus",
-                    "PP-FormulaNet-M_plus",
-                    "PP-FormulaNet-L_plus",
+                    "PP-FormulaNet_plus-S",
+                    "PP-FormulaNet_plus-M",
+                    "PP-FormulaNet_plus-L",
                 ]:
                     model_type = "pp_formulanet"
                     post_result = post_process_class(preds[0], batch[1], mode="train")
@@ -883,9 +883,9 @@ def preprocess(is_train=False):
         "SLANeXt",
         "PP-FormulaNet-S",
         "PP-FormulaNet-L",
-        "PP-FormulaNet-S_plus",
-        "PP-FormulaNet-M_plus",
-        "PP-FormulaNet-L_plus",
+        "PP-FormulaNet_plus-S",
+        "PP-FormulaNet_plus-M",
+        "PP-FormulaNet_plus-L",
     ]
 
     if use_xpu:

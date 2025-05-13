@@ -138,9 +138,9 @@ def main():
                     "UniMERNet",
                     "PP-FormulaNet-S",
                     "PP-FormulaNet-L",
-                    "PP-FormulaNet-S_plus",
-                    "PP-FormulaNet-M_plus",
-                    "PP-FormulaNet-L_plus",
+                    "PP-FormulaNet_plus-S",
+                    "PP-FormulaNet_plus-M",
+                    "PP-FormulaNet_plus-L",
                 ]:
                     data = {"image": img, "filename": file}
                 else:
@@ -204,9 +204,9 @@ def main():
                 "UniMERNet",
                 "PP-FormulaNet-S",
                 "PP-FormulaNet-L",
-                "PP-FormulaNet-S_plus",
-                "PP-FormulaNet-M_plus",
-                "PP-FormulaNet-L_plus",
+                "PP-FormulaNet_plus-S",
+                "PP-FormulaNet_plus-M",
+                "PP-FormulaNet_plus-L",
             ]:
                 info = str(post_result[0])
             else:
