@@ -9,9 +9,9 @@
 
 ## 1. 前置条件
 
-## 1.1 安装高性能推理依赖库
+## 1.1 安装高性能推理依赖
 
-通过 PaddleOCR CLI 安装高性能推理所需依赖库：
+通过 PaddleOCR CLI 安装高性能推理所需依赖：
 
 ```bash
 paddleocr install_hpi_deps {设备类型}
@@ -22,9 +22,9 @@ paddleocr install_hpi_deps {设备类型}
 - `cpu`：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。
 - `gpu`：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。
 
-同一环境中只应该存在一种设备类型的依赖库。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。
+同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。
 
-**推荐使用飞桨官方 Docker 镜像安装高性能推理依赖库。** 各设备类型对应的镜像如下：
+**推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：
 
 - `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
 - `gpu`：
