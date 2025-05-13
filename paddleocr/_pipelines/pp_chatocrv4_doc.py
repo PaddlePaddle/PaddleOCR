@@ -43,7 +43,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         seal_text_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -84,7 +83,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -109,7 +107,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
-            use_general_ocr=use_general_ocr,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             layout_threshold=layout_threshold,
@@ -137,7 +134,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -163,7 +159,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
-                use_general_ocr=use_general_ocr,
                 use_seal_recognition=use_seal_recognition,
                 use_table_recognition=use_table_recognition,
                 layout_threshold=layout_threshold,
@@ -320,9 +315,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             ],
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
-            ],
-            "SubPipelines.LayoutParser.use_general_ocr": self._params[
-                "use_general_ocr"
             ],
             "SubPipelines.LayoutParser.use_seal_recognition": self._params[
                 "use_seal_recognition"
@@ -519,11 +511,6 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_doc_unwarping",
             type=str2bool,
             help="Whether to use the text image unwarping model.",
-        )
-        subparser.add_argument(
-            "--use_general_ocr",
-            type=str2bool,
-            help="Whether to use general OCR.",
         )
         subparser.add_argument(
             "--use_seal_recognition",

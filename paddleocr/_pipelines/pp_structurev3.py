@@ -75,7 +75,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
         formula_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
@@ -100,7 +99,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_textline_orientation=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
@@ -124,7 +122,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         use_ocr_results_with_table_cells=False,
         use_e2e_wired_table_rec_model=False,
-        use_e2e_wireless_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
@@ -135,7 +133,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
             use_textline_orientation=use_textline_orientation,
-            use_general_ocr=use_general_ocr,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             use_formula_recognition=use_formula_recognition,
@@ -172,7 +169,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_textline_orientation=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
@@ -196,7 +192,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         use_ocr_results_with_table_cells=False,
         use_e2e_wired_table_rec_model=False,
-        use_e2e_wireless_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
@@ -208,7 +204,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
                 use_textline_orientation=use_textline_orientation,
-                use_general_ocr=use_general_ocr,
                 use_seal_recognition=use_seal_recognition,
                 use_table_recognition=use_table_recognition,
                 use_formula_recognition=use_formula_recognition,
@@ -252,7 +247,6 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
-            "use_general_ocr": self._params["use_general_ocr"],
             "use_seal_recognition": self._params["use_seal_recognition"],
             "use_table_recognition": self._params["use_table_recognition"],
             "use_formula_recognition": self._params["use_formula_recognition"],
@@ -660,11 +654,6 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_doc_unwarping",
             type=str2bool,
             help="Whether to use the text image unwarping model.",
-        )
-        subparser.add_argument(
-            "--use_general_ocr",
-            type=str2bool,
-            help="Whether to use general OCR.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
