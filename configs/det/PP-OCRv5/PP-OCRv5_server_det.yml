@@ -12,7 +12,7 @@ Global:
   - 1500
   cal_metric_during_train: false
   checkpoints:
-  pretrained_model: null
+  pretrained_model: https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PPHGNetV2_B4_ocr_det.pdparams
   save_inference_dir: null
   use_visualdl: false
   infer_img: doc/imgs_en/img_10.jpg
