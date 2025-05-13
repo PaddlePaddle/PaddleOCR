@@ -78,7 +78,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "PP-ChatOCRv4-doc"
 
-    def visual_predict_gen(
+    def visual_predict_iter(
         self,
         input,
         *,
@@ -159,7 +159,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         **kwargs,
     ):
         return list(
-            self.visual_predict_gen(
+            self.visual_predict_iter(
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,

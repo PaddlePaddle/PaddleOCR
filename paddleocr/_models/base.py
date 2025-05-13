@@ -59,11 +59,11 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
     def default_model_name(self):
         raise NotImplementedError
 
-    def predict_gen(self, *args, **kwargs):
+    def predict_iter(self, *args, **kwargs):
         return self.paddlex_predictor.predict(*args, **kwargs)
 
     def predict(self, *args, **kwargs):
-        result = list(self.predict_gen(*args, **kwargs))
+        result = list(self.predict_iter(*args, **kwargs))
         return result
 
     @classmethod

@@ -147,7 +147,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "OCR"
 
-    def predict_gen(
+    def predict_iter(
         self,
         input,
         *,
@@ -189,7 +189,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_rec_score_thresh=None,
     ):
         return list(
-            self.predict_gen(
+            self.predict_iter(
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,

@@ -42,7 +42,7 @@ class DocUnderstanding(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "doc_understanding"
 
-    def predict_gen(self, input, **kwargs):
+    def predict_iter(self, input, **kwargs):
         return self.paddlex_pipeline.predict(input, **kwargs)
 
     def predict(
@@ -50,7 +50,7 @@ class DocUnderstanding(PaddleXPipelineWrapper):
         input,
         **kwargs,
     ):
-        return list(self.predict_gen(input, **kwargs))
+        return list(self.predict_iter(input, **kwargs))
 
     @classmethod
     def get_cli_subcommand_executor(cls):

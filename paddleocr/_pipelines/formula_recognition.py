@@ -57,7 +57,7 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "formula_recognition"
 
-    def predict_gen(
+    def predict_iter(
         self,
         input,
         *,
@@ -99,7 +99,7 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
         **kwargs,
     ):
         return list(
-            self.predict_gen(
+            self.predict_iter(
                 input,
                 use_layout_detection=use_layout_detection,
                 use_doc_orientation_classify=use_doc_orientation_classify,

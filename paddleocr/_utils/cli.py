@@ -46,7 +46,7 @@ def perform_simple_inference(wrapper_cls, params):
 
     wrapper = wrapper_cls(**params)
 
-    result = wrapper.predict_gen(input_)
+    result = wrapper.predict_iter(input_)
 
     t1 = time.time()
     for i, res in enumerate(result):

@@ -69,7 +69,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "table_recognition_v2"
 
-    def predict_gen(
+    def predict_iter(
         self,
         input,
         use_doc_orientation_classify=None,
@@ -130,7 +130,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
         **kwargs,
     ):
         return list(
-            self.predict_gen(
+            self.predict_iter(
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
