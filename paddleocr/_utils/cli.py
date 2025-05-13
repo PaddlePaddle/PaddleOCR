@@ -28,9 +28,15 @@ def get_subcommand_args(args):
     return args
 
 
-def add_simple_inference_args(subparser):
+def add_simple_inference_args(subparser, *, input_help=None):
+    if input_help is None:
+        input_help = "Input path or URL."
     subparser.add_argument(
-        "-i", "--input", type=str, required=True, help="Input path or URL."
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help=input_help,
     )
     subparser.add_argument(
         "--save_path",

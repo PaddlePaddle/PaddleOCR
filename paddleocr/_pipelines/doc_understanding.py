@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from paddlex.utils.pipeline_arguments import custom_type
+
 from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
@@ -19,7 +21,6 @@ from .._utils.cli import (
 )
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
-from paddlex.utils.pipeline_arguments import custom_type
 
 
 class DocUnderstanding(PaddleXPipelineWrapper):
@@ -72,7 +73,6 @@ class DocUnderstanding(PaddleXPipelineWrapper):
 
 
 class DocUnderstandingCLISubcommandExecutor(PipelineCLISubcommandExecutor):
-
     input_validator = staticmethod(custom_type(dict))
 
     @property
@@ -80,7 +80,10 @@ class DocUnderstandingCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         return "doc_understanding"
 
     def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+        add_simple_inference_args(
+            subparser,
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+        )
 
         subparser.add_argument(
             "--doc_understanding_model_name",
