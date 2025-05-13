@@ -79,6 +79,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
         **kwargs,
     ):
         params = locals().copy()
@@ -102,6 +104,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -135,6 +139,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             use_formula_recognition=use_formula_recognition,
+            use_chart_recognition=use_chart_recognition,
+            use_region_detection=use_region_detection,
             layout_threshold=layout_threshold,
             layout_nms=layout_nms,
             layout_unclip_ratio=layout_unclip_ratio,
@@ -170,6 +176,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -204,6 +212,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 use_seal_recognition=use_seal_recognition,
                 use_table_recognition=use_table_recognition,
                 use_formula_recognition=use_formula_recognition,
+                use_chart_recognition=use_chart_recognition,
+                use_region_detection=use_region_detection,
                 layout_threshold=layout_threshold,
                 layout_nms=layout_nms,
                 layout_unclip_ratio=layout_unclip_ratio,
@@ -670,6 +680,16 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_formula_recognition",
             type=str2bool,
             help="Whether to use formula recognition.",
+        )
+        subparser.add_argument(
+            "--use_chart_recognition",
+            type=str2bool,
+            help="Whether to use chart recognition.",
+        )
+        subparser.add_argument(
+            "--use_region_detection",
+            type=str2bool,
+            help="Whether to use region detection.",
         )
 
     def execute_with_args(self, args):
