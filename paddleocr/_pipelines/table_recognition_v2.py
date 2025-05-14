@@ -84,12 +84,12 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
         text_det_box_thresh=None,
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
-        use_ocr_results_with_table_cells=False,
         use_e2e_wired_table_rec_model=False,
         use_e2e_wireless_table_rec_model=False,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
         **kwargs,
     ):
         return self.paddlex_pipeline.predict(
@@ -106,12 +106,12 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
             text_det_box_thresh=text_det_box_thresh,
             text_det_unclip_ratio=text_det_unclip_ratio,
             text_rec_score_thresh=text_rec_score_thresh,
-            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
             use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
             use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
             use_table_orientation_classify=use_table_orientation_classify,
+            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
             **kwargs,
         )
 
@@ -130,12 +130,12 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
         text_det_box_thresh=None,
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
-        use_ocr_results_with_table_cells=False,
         use_e2e_wired_table_rec_model=False,
         use_e2e_wireless_table_rec_model=False,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
         **kwargs,
     ):
         return list(
@@ -153,12 +153,12 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
                 text_det_box_thresh=text_det_box_thresh,
                 text_det_unclip_ratio=text_det_unclip_ratio,
                 text_rec_score_thresh=text_rec_score_thresh,
-                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
                 use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
                 use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
                 use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
                 use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
                 use_table_orientation_classify=use_table_orientation_classify,
+                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
                 **kwargs,
             )
         )

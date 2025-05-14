@@ -31,6 +31,11 @@ class PPStructureV3(PaddleXPipelineWrapper):
         layout_nms=None,
         layout_unclip_ratio=None,
         layout_merge_bboxes_mode=None,
+        chart_recognition_model_name=None,
+        chart_recognition_model_dir=None,
+        chart_recognition_batch_size=None,
+        region_detection_model_name=None,
+        region_detection_model_dir=None,
         doc_orientation_classify_model_name=None,
         doc_orientation_classify_model_dir=None,
         doc_unwarping_model_name=None,
@@ -120,12 +125,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
-        use_ocr_results_with_table_cells=False,
-        use_e2e_wired_table_rec_model=False,
-        use_e2e_wireless_table_rec_model=True,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
         **kwargs,
     ):
         return self.paddlex_pipeline.predict(
@@ -154,12 +159,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
             seal_det_box_thresh=seal_det_box_thresh,
             seal_det_unclip_ratio=seal_det_unclip_ratio,
             seal_rec_score_thresh=seal_rec_score_thresh,
-            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
-            use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
-            use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
             use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
             use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
             use_table_orientation_classify=use_table_orientation_classify,
+            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
+            use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+            use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
             **kwargs,
         )
 
@@ -190,12 +195,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
-        use_ocr_results_with_table_cells=False,
-        use_e2e_wired_table_rec_model=False,
-        use_e2e_wireless_table_rec_model=True,
         use_wired_table_cells_trans_to_html=False,
         use_wireless_table_cells_trans_to_html=False,
         use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
         **kwargs,
     ):
         return list(
@@ -225,12 +230,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 seal_det_box_thresh=seal_det_box_thresh,
                 seal_det_unclip_ratio=seal_det_unclip_ratio,
                 seal_rec_score_thresh=seal_rec_score_thresh,
-                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
-                use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
-                use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
                 use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
                 use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
                 use_table_orientation_classify=use_table_orientation_classify,
+                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
+                use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+                use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
                 **kwargs,
             )
         )
@@ -263,6 +268,21 @@ class PPStructureV3(PaddleXPipelineWrapper):
             ],
             "SubModules.LayoutDetection.layout_merge_bboxes_mode": self._params[
                 "layout_merge_bboxes_mode"
+            ],
+            "SubModules.ChartRecognition.model_name": self._params[
+                "chart_recognition_model_name"
+            ],
+            "SubModules.ChartRecognition.model_dir": self._params[
+                "chart_recognition_model_dir"
+            ],
+            "SubModules.ChartRecognition.batch_size": self._params[
+                "chart_recognition_batch_size"
+            ],
+            "SubModules.RegionDetection.model_name": self._params[
+                "region_detection_model_name"
+            ],
+            "SubModules.RegionDetection.model_dir": self._params[
+                "region_detection_model_dir"
             ],
             "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
@@ -428,6 +448,33 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--layout_merge_bboxes_mode",
             type=str,
             help="Overlapping box filtering method.",
+        )
+
+        subparser.add_argument(
+            "--chart_recognition_model_name",
+            type=str,
+            help="Name of the chart recognition model.",
+        )
+        subparser.add_argument(
+            "--chart_recognition_model_dir",
+            type=str,
+            help="Path to the chart recognition model directory.",
+        )
+        subparser.add_argument(
+            "--chart_recognition_batch_size",
+            type=int,
+            help="Batch size for the chart recognition model.",
+        )
+
+        subparser.add_argument(
+            "--region_detection_model_name",
+            type=str,
+            help="Name of the region detection model.",
+        )
+        subparser.add_argument(
+            "--region_detection_model_dir",
+            type=str,
+            help="Path to the region detection model directory.",
         )
 
         subparser.add_argument(
