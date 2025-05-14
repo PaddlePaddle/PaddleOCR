@@ -298,7 +298,7 @@ comments: true
 
 ## 2. 快速开始
 
-在本地使用通用版面解析v3产线前，请确保您已经按照[安装教程](../quick_start.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用通用版面解析v3产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -385,7 +385,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -403,7 +403,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|list</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -648,7 +648,7 @@ for res in output:
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -666,7 +666,7 @@ for res in output:
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|list</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -829,7 +829,7 @@ for res in output:
 <tr>
 <td><code>layout_threshold</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float/dict/None</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -841,7 +841,7 @@ for res in output:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float/list</code></td>
+<td><code>float|list</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>

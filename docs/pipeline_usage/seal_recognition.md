@@ -571,7 +571,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用印章文本识别产线前，请确保您已经按照[安装教程](../quick_start.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用印章文本识别产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -693,7 +693,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
     <li><b>dict</b>：key是int类别id， value是大于 <code>0</code> 的任意浮点数
     <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.5</code></li></li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1005,7 +1005,7 @@ for res in output:
     <li><b>dict</b>：key是int类别id， value是大于 <code>0</code> 的任意浮点数
     <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.5</code></li></li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
