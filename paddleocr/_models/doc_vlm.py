@@ -18,6 +18,7 @@ from ..utils.cli import (
     perform_simple_inference,
 )
 from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
+from paddlex.utils.pipeline_arguments import custom_type
 
 
 class DocVLM(PaddleXPredictorWrapper):
@@ -42,6 +43,8 @@ class DocVLM(PaddleXPredictorWrapper):
 
 
 class DocVLMSubcommandExecutor(PredictorCLISubcommandExecutor):
+    input_validator = staticmethod(custom_type(dict))
+
     @property
     def subparser_name(self):
         return "doc_vlm"
@@ -51,4 +54,5 @@ class DocVLMSubcommandExecutor(PredictorCLISubcommandExecutor):
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
+        params["input"] = self.input_validator(params["input"])
         perform_simple_inference(DocVLM, params)
