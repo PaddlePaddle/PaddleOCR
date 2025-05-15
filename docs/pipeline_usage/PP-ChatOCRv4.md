@@ -1581,9 +1581,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </table>
 </details>
 
-<details><summary>（2）调用 PP-ChatOCRv4 产线对象的 <code>visual_predict()</code> 方法获取视觉预测结果。 该方法将返回一个 generator。</summary>
-
-以下是 `visual_predict()` 方法的参数及其说明：
+<details><summary>（2）调用 PP-ChatOCRv4 产线对象的 <code>visual_predict()</code> 方法获取视觉预测结果，该方法会返回一个结果列表。另外，产线还提供了 <code>visual_predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>visual_predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>visual_predict()</code> 方法的参数及其说明：</summary>
 
 <table>
 <thead>
