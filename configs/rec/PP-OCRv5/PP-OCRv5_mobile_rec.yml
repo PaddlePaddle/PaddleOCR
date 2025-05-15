@@ -1,16 +1,15 @@
 Global:
-  model_name: PP-OCRv5_server_rec # To use static model for inference.
+  model_name: PP-OCRv5_mobile_rec # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: 75
   log_smooth_window: 20
   print_batch_step: 10
-  save_model_dir: ./output/PP-OCRv5_server_rec
-  save_epoch_step: 1
+  save_model_dir: ./output/PP-OCRv5_mobile_rec
+  save_epoch_step: 10
   eval_batch_step: [0, 2000]
   cal_metric_during_train: true
-  calc_epoch_interval: 1
-  pretrained_model: 
+  pretrained_model:
   checkpoints:
   save_inference_dir:
   use_visualdl: false
@@ -31,7 +30,7 @@ Optimizer:
   lr:
     name: Cosine
     learning_rate: 0.0005
-    warmup_epoch: 1
+    warmup_epoch: 5
   regularizer:
     name: L2
     factor: 3.0e-05
@@ -39,11 +38,11 @@ Optimizer:
 
 Architecture:
   model_type: rec
-  algorithm: SVTR_HGNet
+  algorithm: SVTR_LCNet
   Transform:
   Backbone:
-    name: PPHGNetV2_B4
-    text_rec: True
+    name: PPLCNetV3
+    scale: 0.95
   Head:
     name: MultiHead
     head_list:
@@ -86,6 +85,11 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
+    - RecConAug:
+        prob: 0.5
+        ext_data_num: 2
+        image_shape: [48, 320, 3]
+        max_text_length: *max_text_length
     - RecAug:
     - MultiLabelEncode:
         gtc_encode: NRTRLabelEncode
@@ -107,7 +111,7 @@ Train:
     shuffle: true
     batch_size_per_card: *bs
     drop_last: true
-    num_workers: 16
+    num_workers: 8
 Eval:
   dataset:
     name: SimpleDataSet
