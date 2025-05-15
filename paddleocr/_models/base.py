@@ -23,7 +23,7 @@ from .._common_args import (
     prepare_common_init_args,
 )
 from .._mkldnn_blocklists import MODEL_MKLDNN_BLOCKLIST
-from ..utils.logging import logger
+from .._utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = False
 
@@ -59,10 +59,11 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
     def default_model_name(self):
         raise NotImplementedError
 
+    def predict_iter(self, *args, **kwargs):
+        return self.paddlex_predictor.predict(*args, **kwargs)
+
     def predict(self, *args, **kwargs):
-        result = []
-        for res in self.paddlex_predictor.predict(*args, **kwargs):
-            result.append(res)
+        result = list(self.predict_iter(*args, **kwargs))
         return result
 
     @classmethod

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -48,6 +48,19 @@ class DocPreprocessor(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "doc_preprocessor"
 
+    def predict_iter(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+        )
+
     def predict(
         self,
         input,
@@ -55,14 +68,13 @@ class DocPreprocessor(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-        ):
-            result.append(res)
-        return result
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+            )
+        )
 
     @classmethod
     def get_cli_subcommand_executor(cls):

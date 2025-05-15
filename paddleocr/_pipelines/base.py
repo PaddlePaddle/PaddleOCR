@@ -17,6 +17,7 @@ import abc
 import yaml
 from paddlex import create_pipeline
 from paddlex.inference import load_pipeline_config
+from paddlex.utils.config import AttrDict
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
@@ -25,7 +26,7 @@ from .._common_args import (
     prepare_common_init_args,
 )
 from .._mkldnn_blocklists import PIPELINE_MKLDNN_BLOCKLIST
-from ..utils.logging import logger
+from .._utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = None
 
@@ -37,6 +38,14 @@ def _merge_dicts(d1, d2):
             res[k] = _merge_dicts(res[k], v)
         else:
             res[k] = v
+    return res
+
+
+def _to_plain_dict(d):
+    res = d.copy()
+    for k, v in d.items():
+        if isinstance(v, AttrDict):
+            res[k] = _to_plain_dict(v)
     return res
 
 
@@ -70,7 +79,8 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
     def export_paddlex_config_to_yaml(self, yaml_path):
         with open(yaml_path, "w", encoding="utf-8") as f:
-            yaml.safe_dump(self._merged_paddlex_config, f)
+            config = _to_plain_dict(self._merged_paddlex_config)
+            yaml.safe_dump(config, f)
 
     @classmethod
     @abc.abstractmethod
@@ -83,7 +93,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     def _get_merged_paddlex_config(self):
         if self._paddlex_config is None:
             config = load_pipeline_config(self._paddlex_pipeline_name)
-        elif isinstance(self._config, str):
+        elif isinstance(self._paddlex_config, str):
             config = load_pipeline_config(self._paddlex_config)
         else:
             config = self._paddlex_config

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     get_subcommand_args,
     str2bool,
 )
@@ -43,7 +43,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         seal_text_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -78,13 +77,12 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "PP-ChatOCRv4-doc"
 
-    def visual_predict(
+    def visual_predict_iter(
         self,
         input,
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -105,12 +103,10 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.visual_predict(
+        return self.paddlex_pipeline.visual_predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
-            use_general_ocr=use_general_ocr,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             layout_threshold=layout_threshold,
@@ -130,9 +126,60 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             seal_det_unclip_ratio=seal_det_unclip_ratio,
             seal_rec_score_thresh=seal_rec_score_thresh,
             **kwargs,
-        ):
-            result.append(res)
-        return result
+        )
+
+    def visual_predict(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_seal_recognition=None,
+        use_table_recognition=None,
+        layout_threshold=None,
+        layout_nms=None,
+        layout_unclip_ratio=None,
+        layout_merge_bboxes_mode=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_det_thresh=None,
+        text_det_box_thresh=None,
+        text_det_unclip_ratio=None,
+        text_rec_score_thresh=None,
+        seal_det_limit_side_len=None,
+        seal_det_limit_type=None,
+        seal_det_thresh=None,
+        seal_det_box_thresh=None,
+        seal_det_unclip_ratio=None,
+        seal_rec_score_thresh=None,
+        **kwargs,
+    ):
+        return list(
+            self.visual_predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_seal_recognition=use_seal_recognition,
+                use_table_recognition=use_table_recognition,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                **kwargs,
+            )
+        )
 
     def build_vector(
         self,
@@ -268,9 +315,6 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             ],
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
-            ],
-            "SubPipelines.LayoutParser.use_general_ocr": self._params[
-                "use_general_ocr"
             ],
             "SubPipelines.LayoutParser.use_seal_recognition": self._params[
                 "use_seal_recognition"
@@ -467,11 +511,6 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_doc_unwarping",
             type=str2bool,
             help="Whether to use the text image unwarping model.",
-        )
-        subparser.add_argument(
-            "--use_general_ocr",
-            type=str2bool,
-            help="Whether to use general OCR.",
         )
         subparser.add_argument(
             "--use_seal_recognition",

@@ -24,7 +24,7 @@ from ._constants import (
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
 )
-from .utils.cli import str2bool
+from ._utils.cli import str2bool
 
 
 def parse_common_args(kwargs, *, default_enable_hpi):

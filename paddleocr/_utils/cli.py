@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
+from .logging import logger
+
 
 def str2bool(v, /):
     return v.lower() in ("true", "yes", "t", "y", "1")
@@ -24,9 +28,15 @@ def get_subcommand_args(args):
     return args
 
 
-def add_simple_inference_args(subparser):
+def add_simple_inference_args(subparser, *, input_help=None):
+    if input_help is None:
+        input_help = "Input path or URL."
     subparser.add_argument(
-        "-i", "--input", type=str, required=True, help="Input path or URL."
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help=input_help,
     )
     subparser.add_argument(
         "--save_path",
@@ -42,9 +52,12 @@ def perform_simple_inference(wrapper_cls, params):
 
     wrapper = wrapper_cls(**params)
 
-    result = wrapper.predict(input_)
+    result = wrapper.predict_iter(input_)
 
-    for res in result:
+    t1 = time.time()
+    for i, res in enumerate(result):
+        logger.info(f"Processed item {i} in {(time.time()-t1) * 1000} ms")
+        t1 = time.time()
         res.print()
         if save_path:
             res.save_all(save_path)

@@ -33,7 +33,6 @@ def test_visual_predict(pp_chatocrv4_doc_pipeline, image_path):
     [
         {"use_doc_orientation_classify": False},
         {"use_doc_unwarping": False},
-        {"use_general_ocr": False},
         {"use_table_recognition": False},
         {"layout_threshold": 0.88},
         {"layout_threshold": [0.45, 0.4]},

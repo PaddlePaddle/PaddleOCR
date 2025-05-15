@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -84,6 +84,45 @@ class SealRecognition(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "seal_recognition"
 
+    def predict_iter(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_layout_detection=None,
+        layout_det_res=None,
+        layout_threshold=None,
+        layout_nms=None,
+        layout_unclip_ratio=None,
+        layout_merge_bboxes_mode=None,
+        seal_det_limit_side_len=None,
+        seal_det_limit_type=None,
+        seal_det_thresh=None,
+        seal_det_box_thresh=None,
+        seal_det_unclip_ratio=None,
+        seal_rec_score_thresh=None,
+        **kwargs,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+            use_layout_detection=use_layout_detection,
+            layout_det_res=layout_det_res,
+            layout_threshold=layout_threshold,
+            layout_nms=layout_nms,
+            layout_unclip_ratio=layout_unclip_ratio,
+            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+            seal_det_limit_side_len=seal_det_limit_side_len,
+            seal_det_limit_type=seal_det_limit_type,
+            seal_det_thresh=seal_det_thresh,
+            seal_det_box_thresh=seal_det_box_thresh,
+            seal_det_unclip_ratio=seal_det_unclip_ratio,
+            seal_rec_score_thresh=seal_rec_score_thresh,
+            **kwargs,
+        )
+
     def predict(
         self,
         input,
@@ -104,27 +143,26 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_layout_detection=use_layout_detection,
-            layout_det_res=layout_det_res,
-            layout_threshold=layout_threshold,
-            layout_nms=layout_nms,
-            layout_unclip_ratio=layout_unclip_ratio,
-            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
-            seal_det_limit_side_len=seal_det_limit_side_len,
-            seal_det_limit_type=seal_det_limit_type,
-            seal_det_thresh=seal_det_thresh,
-            seal_det_box_thresh=seal_det_box_thresh,
-            seal_det_unclip_ratio=seal_det_unclip_ratio,
-            seal_rec_score_thresh=seal_rec_score_thresh,
-            **kwargs,
-        ):
-            result.append(res)
-        return result
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_layout_detection=use_layout_detection,
+                layout_det_res=layout_det_res,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                **kwargs,
+            )
+        )
 
     @classmethod
     def get_cli_subcommand_executor(cls):
