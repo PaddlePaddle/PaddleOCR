@@ -101,13 +101,13 @@ class PPStructureV3(PaddleXPipelineWrapper):
     def predict_iter(
         self,
         input,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
         use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
-        use_chart_recognition=None,
+        use_chart_recognition=False,
         use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
@@ -171,13 +171,13 @@ class PPStructureV3(PaddleXPipelineWrapper):
     def predict(
         self,
         input,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
         use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
-        use_chart_recognition=None,
+        use_chart_recognition=False,
         use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
@@ -695,11 +695,13 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
+            default=False,
             help="Whether to use the document image orientation classification model.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
+            default=False,
             help="Whether to use the text image unwarping model.",
         )
         subparser.add_argument(
@@ -720,6 +722,7 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_chart_recognition",
             type=str2bool,
+            default=False,
             help="Whether to use chart recognition.",
         )
         subparser.add_argument(
