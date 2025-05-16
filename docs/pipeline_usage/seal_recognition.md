@@ -865,9 +865,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 </details>
 <br />
 
-运行结果会被打印到终端上，结果参数说明可以参考[2.2 Python脚本方式](#22-python脚本方式)中的结果解释。
-
-默认配置的 seal_recognition 产线的运行结果如下：
+运行结果会被打印到终端上，默认配置的 seal_recognition 产线的运行结果如下：
 
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/seal_text_det.png', 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 16, 'label': 'seal', 'score': 0.9700419902801514, 'coordinate': [0.7737427, 2.4994812, 639.28375, 640]}]}, 'seal_res_list': [{'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': [array([[433,  32],
