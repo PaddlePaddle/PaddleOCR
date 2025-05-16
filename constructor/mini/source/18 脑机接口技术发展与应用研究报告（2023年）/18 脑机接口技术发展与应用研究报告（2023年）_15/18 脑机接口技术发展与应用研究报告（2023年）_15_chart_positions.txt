@@ -1,0 +1,2 @@
+Page: 15, Bounding Box: [150, 321, 454, 560], Text: []
+Page: 15, Bounding Box: [174, 562, 504, 598], Text: [{'text': '来源：National Library of Medicine', 'confidence': 0.9812414646148682, 'text_region': [[351.0, 562.0], [506.0, 562.0], [506.0, 576.0], [351.0, 576.0]]}, {'text': '图7常规ECoG和μECoG阵列比较', 'confidence': 0.9922110438346863, 'text_region': [[204.0, 585.0], [391.0, 585.0], [391.0, 599.0], [204.0, 599.0]]}]

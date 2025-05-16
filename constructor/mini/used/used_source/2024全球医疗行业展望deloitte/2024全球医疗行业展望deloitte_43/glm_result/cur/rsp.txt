@@ -1,0 +1,14 @@
+这张图片显示了一份名为“2024年全球医疗行业展望”的文档的一部分。文档的标题是中文，内容包含了多个条目，每个条目都引用了不同的新闻文章和研究报告，涉及医疗行业的各个方面。以下是部分条目的内容：
+
+1. **28.** Mark Melchiorre, "Virginia Health System Creates Hospital-At-Home Program," Remote Monitoring News, January 24, 2023, https://mhealthintelligence.com/news/virginia-health-system-creates-hospital-at-home-program.
+2. **29.** "The Value in Hospital Care at Home," Guidehouse, January 13, 2023, https://guidehouse.com/insights/healthcare/2022/blogs/acute-hospital-care.
+3. **30.** Cora Lydon, "Medway virtual ward strategy enables drug administration at home," Digital Health, May 18, 2023, https://www.digitalhealth.net/2023/05/medway-virtual-ward-strategy-enables-drug-administration-at-home/.
+4. **31.** Jake Siegel, "Inside Taiwan's AI hospital of the future," Microsoft, February 8, 2023, https://www.microsoft.com/en-us/ai/hospital-of-the-future/inside-taiwans-ai-hospital-of-the-future/.
+5. **32.** "Innovative medical device developed in Israel uses AI to diagnose cardiac problems," All Israel News, July 17, 2023, https://allisrael.com/innovative-medical-device-developed-in-israel-uses-ai-to-diagnose-cardiac-problems.
+6. **33.** "Nations where 3.3 billion live spend more on debt than health, schools," Al Jazeera, July 13, 2023, https://www.aljazeera.com/news/2023/7/13/nations-where-3-3-bn-live-spend-more-on-debt-than-health-schools.
+7. **34.** Andrew Gregory, "Only 14% of promised Covid vaccine doses reach poorest nations," The Guardian, October 21, 2021, https://www.theguardian.com/society/2021/oct/21/only-14-of-promised-covid-vaccine-doses-reach-poorest-nations.
+8. **35.** "How Rwanda is using Artificial Intelligence to improve healthcare," African Development Bank Group, October 6, 2022, https://www.afdb.org/en/success-stories/how-rwanda-using-artificial-intelligence-improve-healthcare-55309.
+9. **36.** "State of Patient Access," Experian Health, https://www.experian.com/blogs/healthcare/white-papers-insights/state-of-patient-access-survey-2.
+10. **37.** Andy Davies, Neal Batra, Asif Dhar, and Jay Bhatt, "US health care can't afford health inequities," Deloitte Insights, June 22, 2023, https://www2.deloitte.com/us/en/insights/industry/health-care/economic-cost-of-health-disparities.html.
+
+文档的右下角标有页码“44”，表明这是文档的第44页。此外，文档的右上角有“2024年全球医疗行业展望 | 领航变革”的标题。

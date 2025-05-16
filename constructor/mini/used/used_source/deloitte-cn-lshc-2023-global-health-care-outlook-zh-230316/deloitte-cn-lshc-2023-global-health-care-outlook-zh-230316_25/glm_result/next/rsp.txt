@@ -1,0 +1,20 @@
+这是一张包含2023年全球医疗行业展望报告的图片，图片中列出了多个与虚拟医疗服务相关的参考资料。图片的右上角标注了“2023年全球医疗行业展望”的字样，左上角有“尾注”二字。图片中的文字内容如下：
+
+1. Asif Dhar, "2022 Outlook for Health Care and Life Sciences," Deloitte Health Forward Blog, January 27, 2022, https://www2.deloitte.com/us/en/blog/health-care-blog/2022/outlook-for-health-care-and-life-sciences.html
+2. Neal Batra, David Betts, and Steve Davis, "Forces of change," Deloitte Insights, April 30, 2019, https://www2.deloitte.com/us/en/insights/industry/health-care/forces-of-change-health-care.html
+3. Pooja Singh, "2022 CIO Agenda: A Healthcare Provider's Perspective," Gartner, https://emerging.gartner.com/cloud/gw/globalassets/en/information-technology/documents/2022-cio-agenda-cuts-2022-cio-agenda-ebook-healthcare.pdf
+4. Bill Fera, Ken Abrams, Urvashi Shah, and Hemantkumar Vania, "Tapping virtual health's full potential," Deloitte Insights, September 8, 2022, https://www2.deloitte.com/us/en/insights/industry/health-care/virtual-health-survey.html
+5. "Telemedicine vs. Virtual Care: Defining the Difference," Teladoc Health, https://outcomes.teladoc.com/finding-the-right-term-for-modern-digital-healthcare/
+6. "New $110 Million Round of Funding," Medically Home Group, January 10, 2022, https://www.medicallyhome.com/news-10-million-round-of-funding/
+7. "Healthcare Land's 'Best Buy' shells out $400M for Current Health as it ramps up health strategy," Fierce Healthcare, November 29, 2021, https://www.fiercehealthcare.com/digital-health/best-buy-shelled-out-400m-for-current-health-as-it-ramps-up-health-strategy
+8. "Deloitte Global's 2023 Global Health Care Outlook is an independent publication and has not been authorized, sponsored, or otherwise approved by Apple Inc."
+9. "Zimmer Biomet and Apple Collaborate to Launch Major Clinical Study Detailing Patient Experience and Improving Joint Replacement Journey," Zimmer Biomet, October 15, 2018, https://investor.zimmerbiomet.com/news-events/news/2018/10-15-2018
+10. "Does digital health work?" Wellframe, https://www.wellframe.com/industry-insights/does-digital-health-work/
+11. Catherine Sturman, "Philips launches a tele-intensive care eICU programme in Japan," Healthcare, May 17, 2020, https://telehealth-digital.com/digital-healthcare/philips-launches-tele-intensive-care-eicu-programme-japan
+12. "Deloitte and Haryana Government launch innovative initiative to expand the hospital ward in Haryana," Deloitte press release, May 24, 2021, https://www2.deloitte.com/us/en/pages/about-deloitte/press-releases/deloitte-and-haryana-government-launch-innovative-initiative-to-expand-the-hospital-ward-in-haryana.html
+13. Victoria Bailey, "Virtual Care Visits Improve Patient Satisfaction, Engagement Levels," The Health Intelligence, July 12, 2021, https://www.mhealthintelligence.com/news/virtual-care-visits-improve-patient-satisfaction-engagement-levels
+14. "Hospital at Home — A model with a future," Deloitte, https://www2.deloitte.com/us/en/pages/public-sector/articles/hospital-at-home.html
+15. "Remote Patient Monitoring Devices Market Size, Share & COVID-19 Impact Analysis," Fortune Business Insights, February 8, 2022, https://www.fortunebusinessinsights.com/remote-patient-monitoring-devices-market-106328
+16. Jeff Loucks, Duncan Stewart, Ariane Bucaille, and Gillian Crous, "Wearable technology in health care: Getting better all the time," Deloitte Insights, December 1, 2021, https://www2.deloitte.com/us/en/insights/industry/technology-media-and-telecom/predictions/2022/wearable-technology-healthcare.html
+17. Kenny Walter, "Mental Health at the Forefront During COVID-19 Pandemic," HCP Live, April 25, 2020, https://www.hcplive.com/view/mental-health-covid-19-pandemic
+18. Brooke Auxier, Ariane Bucaille, and Kevin West
