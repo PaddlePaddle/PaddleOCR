@@ -1383,6 +1383,12 @@ for res in output:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_ocr_model</code></td>
+<td>是否在推理时使用<code>ocr</code>模型。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>与实例化时的参数相同。</td>
 <td><code>int</code></td>
