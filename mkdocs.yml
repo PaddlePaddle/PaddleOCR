@@ -274,6 +274,7 @@ nav:
       - 支持硬件列表: model/hardware/supported_models.md
   - 历史遗留功能:
     - 概述: legacy/index.md
+    - 模型列表: legacy/model_list.md
     - 基于Python预测引擎推理: legacy/python_infer.md
     - 基于C++预测引擎推理: legacy/cpp_infer.md
     - Visual Studio 2019 Community CMake 编译指南: legacy/windows_vs2019_build.md
