@@ -128,7 +128,7 @@ mkdir inference && cd inference
 # Download the detection model of the ultra-lightweight English PP-OCRv3 model and unzip it
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
 # Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar && tar xf en_PP-OCRv3_mobile_rec_infer.tar
 # Download the ultra-lightweight English table inch model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/en_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
@@ -147,7 +147,7 @@ If input is Chinese document，download Chinese models:
 python3 predict_system.py \
     --image_dir=./docs/table/1.png \
     --det_model_dir=inference/en_PP-OCRv3_det_infer \
-    --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
+    --rec_model_dir=inference/en_PP-OCRv3_mobile_rec_infer \
     --rec_char_dict_path=../ppocr/utils/en_dict.txt \
     --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \

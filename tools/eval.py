@@ -114,6 +114,9 @@ def main():
         elif config["Architecture"]["algorithm"] in [
             "PP-FormulaNet-S",
             "PP-FormulaNet-L",
+            "PP-FormulaNet_plus-S",
+            "PP-FormulaNet_plus-M",
+            "PP-FormulaNet_plus-L",
         ]:
             model_type = "pp_formulanet"
             config["Metric"]["cal_bleu_score"] = True

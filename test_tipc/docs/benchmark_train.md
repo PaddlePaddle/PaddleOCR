@@ -73,4 +73,4 @@ train_log/
 | PP-Structure-table     |[config](../configs/en_table_structure/train_infer_python.txt) | 14.151 | 14.077 /    14.23 / 14.25 |0.012140351 | 16.285 | 16.595 /  16.878 /    16.531 | 0.020559308 | 20,000| 5,000|
 | det_r50_dcn_fce_ctw_v2.0   |[config](../configs/det_r50_dcn_fce_ctw_v2.0/train_infer_python.txt) | 14.057 | 14.029 /  14.02 / 14.014 |0.001069214 | 18.298 |18.411 /  18.376 /    18.331| 0.004345228 | 10,000| 2,000|
 | ch_PP-OCRv3_det    |[config](../configs/ch_PP-OCRv3_det/train_infer_python.txt) | 8.622 | 8.431 / 8.423 / 8.479|0.006604552 | 14.203 |14.346  14.468  14.23| 0.016450097 | 10,000| 2,000|
-| ch_PP-OCRv3_rec    |[config](../configs/ch_PP-OCRv3_rec/train_infer_python.txt) | 90.239 | 90.077 /   91.513 /    91.325|0.01569176 | | |  | 160,000| 40,000|
+| PP-OCRv3_mobile_rec    |[config](../configs/PP-OCRv3_mobile_rec/train_infer_python.txt) | 90.239 | 90.077 /   91.513 /    91.325|0.01569176 | | |  | 160,000| 40,000|

@@ -19,7 +19,7 @@ mkdir inference && cd inference
 ## Download the detection model of the ultra-lightweight English PP-OCRv3 model and unzip it
 https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar && tar xf en_PP-OCRv3_det_infer.tar
 ## Download the recognition model of the ultra-lightweight English PP-OCRv3 model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_infer.tar && tar xf en_PP-OCRv3_rec_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar && tar xf en_PP-OCRv3_mobile_rec_infer.tar
 ## Download the ultra-lightweight English table inch model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/en_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf en_ppstructure_mobile_v2.0_SLANet_infer.tar
@@ -35,7 +35,7 @@ cd ..
 python predict_system.py \
     --image_dir=./docs/ppstructure/images/table_1.png \
     --det_model_dir=inference/en_PP-OCRv3_det_infer \
-    --rec_model_dir=inference/en_PP-OCRv3_rec_infer \
+    --rec_model_dir=inference/en_PP-OCRv3_mobile_rec_infer \
     --rec_char_dict_path=../ppocr/utils/en_dict.txt \
     --table_model_dir=inference/en_ppstructure_mobile_v2.0_SLANet_infer \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict.txt \
@@ -63,7 +63,7 @@ cd inference
 ## Download the detection model of the ultra-lightweight Chinese PP-OCRv3 model and unzip it
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar && tar xf PP-OCRv3_mobile_det_infer.tar
 ## Download the recognition model of the ultra-lightweight Chinese PP-OCRv3 model and unzip it
-wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar && tar xf ch_PP-OCRv3_rec_infer.tar
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar && tar xf PP-OCRv3_mobile_rec_infer.tar
 ## Download the ultra-lightweight Chinese table inch model and unzip it
 wget https://paddleocr.bj.bcebos.com/ppstructure/models/slanet/paddle3.0b2/ch_ppstructure_mobile_v2.0_SLANet_infer.tar
 tar xf ch_ppstructure_mobile_v2.0_SLANet_infer.tar
@@ -83,7 +83,7 @@ cd ..
 python predict_system.py \
     --image_dir=./docs/table/2.png \
     --det_model_dir=inference/PP-OCRv3_mobile_det_infer \
-    --rec_model_dir=inference/ch_PP-OCRv3_rec_infer \
+    --rec_model_dir=inference/PP-OCRv3_mobile_rec_infer \
     --rec_char_dict_path=../ppocr/utils/ppocr_keys_v1.txt \
     --table_model_dir=inference/ch_ppstructure_mobile_v2.0_SLANet_infer \
     --table_char_dict_path=../ppocr/utils/dict/table_structure_dict_ch.txt \

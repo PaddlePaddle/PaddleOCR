@@ -185,10 +185,10 @@ Start training:
 # Training icdar15 English data and The training log will be automatically saved as train.log under "{save_model_dir}"
 
 #specify the single card training(Long training time, not recommended)
-python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
+python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
 
 #specify the card number through --gpus
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy
 ```
 
 PaddleOCR supports alternating training and evaluation. You can modify `eval_batch_step` in `configs/rec/rec_icdar15_train.yml` to set the evaluation frequency. By default, it is evaluated every 500 iter and the best acc model is saved under `output/rec_CRNN/best_accuracy` during the evaluation process.
@@ -198,9 +198,9 @@ If the evaluation set is large, the test will be time-consuming. It is recommend
 - Tip: You can use the `-c` parameter to select multiple model configurations under the `configs/rec/` path for training. The recognition algorithms supported at [rec_algorithm](../../algorithm/overview.en.md):
 
 For training Chinese data, it is recommended to use
-[ch_PP-OCRv3_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/ch_PP-OCRv3_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
+[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml). If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:
 
-Take `ch_PP-OCRv3_rec_distillation.yml` as an example:
+Take `PP-OCRv3_mobile_rec_distillation.yml` as an example:
 
 ```yaml linenums="1"
 Global:
@@ -431,11 +431,11 @@ In actual use, it is recommended to load the official pre-trained model and fine
 
 ### 3.1. Evaluation
 
-The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml` file.
+The model parameters during training are saved in the `Global.save_model_dir` directory by default. When evaluating indicators, you need to set `Global.checkpoints` to point to the saved parameter file. The evaluation dataset can be set by modifying the `Eval.dataset.label_file_list` field in the `configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml` file.
 
 ```bash linenums="1"
 # GPU evaluation, Global.checkpoints is the weight to be tested
-python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.checkpoints={path/to/weights}/best_accuracy
 ```
 
 ### 3.2 Test
@@ -465,7 +465,7 @@ Among them, best_accuracy._is the best model on the evaluation set; iter_epoch_x
 
 ```bash linenums="1"
 # Predict English results
-python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
+python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.infer_img=doc/imgs_words/en/word_1.png
 ```
 
 Input image:
@@ -515,7 +515,7 @@ export FLAGS_enable_pir_api=0
 # Global.pretrained_model parameter Set the training model address to be converted without adding the file suffix .pdmodel, .pdopt or .pdparams.
 # Global.save_inference_dir Set the address where the converted model will be saved.
 
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=en_PP-OCRv3_rec_train/best_accuracy  Global.save_inference_dir=./inference/en_PP-OCRv3_mobile_rec/
 ```
 
 If you have a model trained on your own dataset with a different dictionary file, please make sure that you modify the `character_dict_path` in the configuration file to your dictionary file path.
@@ -523,7 +523,7 @@ If you have a model trained on your own dataset with a different dictionary file
 After the conversion is successful, there are three files in the model save directory:
 
 ```text linenums="1"
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv3_mobile_rec/
     ├── inference.pdiparams         # The parameter file of recognition inference model
     ├── inference.pdiparams.info    # The parameter information of recognition inference model, which can be ignored
     └── inference.pdmodel           # The program file of recognition model
@@ -533,13 +533,13 @@ inference/en_PP-OCRv3_rec/
 
 ```bash
 export FLAGS_enable_pir_api=1
-python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy Global.save_inference_dir=./inference/en_PP-OCRv3_rec/
+python3 tools/export_model.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Global.pretrained_model=./pretrain_models/en_PP-OCRv3_rec_train/best_accuracy Global.save_inference_dir=./inference/en_PP-OCRv3_mobile_rec/
 ```
 
 Once successful, you will have two files in the directory:
 
 ```text
-inference/en_PP-OCRv3_rec/
+inference/en_PP-OCRv3_mobile_rec/
     ├── inference.pdiparams         # Model parameter file for the inference model
     └── inference.json              # Program file for the inference model
 ```

@@ -1061,7 +1061,13 @@ class StemBlock(TheseusLayer):
     """
 
     def __init__(
-        self, in_channels, mid_channels, out_channels, use_lab=False, lr_mult=1.0
+        self,
+        in_channels,
+        mid_channels,
+        out_channels,
+        use_lab=False,
+        lr_mult=1.0,
+        text_rec=False,
     ):
         super().__init__()
         self.stem1 = ConvBNAct(
@@ -1094,7 +1100,7 @@ class StemBlock(TheseusLayer):
             in_channels=mid_channels * 2,
             out_channels=mid_channels,
             kernel_size=3,
-            stride=2,
+            stride=1 if text_rec else 2,
             use_lab=use_lab,
             lr_mult=lr_mult,
         )
@@ -1230,6 +1236,7 @@ class HGV2_Stage(TheseusLayer):
         light_block=True,
         kernel_size=3,
         use_lab=False,
+        stride=2,
         lr_mult=1.0,
     ):
 
@@ -1240,7 +1247,7 @@ class HGV2_Stage(TheseusLayer):
                 in_channels=in_channels,
                 out_channels=in_channels,
                 kernel_size=3,
-                stride=2,
+                stride=stride,
                 groups=in_channels,
                 use_act=False,
                 use_lab=use_lab,
@@ -1298,13 +1305,20 @@ class PPHGNetV2(TheseusLayer):
         dropout_prob=0.0,
         class_num=1000,
         lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0],
+        det=False,
+        text_rec=False,
+        out_indices=None,
         **kwargs,
     ):
         super().__init__()
+        self.det = det
+        self.text_rec = text_rec
         self.use_lab = use_lab
         self.use_last_conv = use_last_conv
         self.class_expand = class_expand
         self.class_num = class_num
+        self.out_indices = out_indices if out_indices is not None else [0, 1, 2, 3]
+        self.out_channels = []
 
         # stem
         self.stem = StemBlock(
@@ -1313,6 +1327,7 @@ class PPHGNetV2(TheseusLayer):
             out_channels=stem_channels[2],
             use_lab=use_lab,
             lr_mult=lr_mult_list[0],
+            text_rec=text_rec,
         )
 
         # stages
@@ -1327,6 +1342,7 @@ class PPHGNetV2(TheseusLayer):
                 light_block,
                 kernel_size,
                 layer_num,
+                stride,
             ) = stage_config[k]
             self.stages.append(
                 HGV2_Stage(
@@ -1339,9 +1355,14 @@ class PPHGNetV2(TheseusLayer):
                     light_block,
                     kernel_size,
                     use_lab,
+                    stride,
                     lr_mult=lr_mult_list[i + 1],
                 )
             )
+            if i in self.out_indices:
+                self.out_channels.append(out_channels)
+        if not self.det:
+            self.out_channels = stage_config["stage4"][2]
 
         self.avg_pool = AdaptiveAvgPool2D(1)
 
@@ -1360,9 +1381,11 @@ class PPHGNetV2(TheseusLayer):
             self.dropout = nn.Dropout(p=dropout_prob, mode="downscale_in_infer")
 
         self.flatten = nn.Flatten(start_axis=1, stop_axis=-1)
-        self.fc = nn.Linear(
-            self.class_expand if self.use_last_conv else out_channels, self.class_num
-        )
+        if not self.det:
+            self.fc = nn.Linear(
+                self.class_expand if self.use_last_conv else out_channels,
+                self.class_num,
+            )
 
         self._init_weights()
 
@@ -1378,8 +1401,19 @@ class PPHGNetV2(TheseusLayer):
 
     def forward(self, x):
         x = self.stem(x)
-        for stage in self.stages:
+        out = []
+        for i, stage in enumerate(self.stages):
             x = stage(x)
+            if self.det and i in self.out_indices:
+                out.append(x)
+        if self.det:
+            return out
+
+        if self.text_rec:
+            if self.training:
+                x = F.adaptive_avg_pool2d(x, [1, 40])
+            else:
+                x = F.avg_pool2d(x, [3, 2])
         return x
 
 
@@ -1479,6 +1513,42 @@ def PPHGNetV2_B3(pretrained=False, use_ssld=False, **kwargs):
     return model
 
 
+def PPHGNetV2_B4(pretrained=False, use_ssld=False, det=False, text_rec=False, **kwargs):
+    """
+    PPHGNetV2_B4
+    Args:
+        pretrained (bool/str): If `True` load pretrained parameters, `False` otherwise.
+                    If str, means the path of the pretrained model.
+        use_ssld (bool) Whether using ssld pretrained model when pretrained is True.
+    Returns:
+        model: nn.Layer. Specific `PPHGNetV2_B4` model depends on args.
+    """
+    stage_config_rec = {
+        # in_channels, mid_channels, out_channels, num_blocks, is_downsample, light_block, kernel_size, layer_num, stride
+        "stage1": [48, 48, 128, 1, True, False, 3, 6, [2, 1]],
+        "stage2": [128, 96, 512, 1, True, False, 3, 6, [1, 2]],
+        "stage3": [512, 192, 1024, 3, True, True, 5, 6, [2, 1]],
+        "stage4": [1024, 384, 2048, 1, True, True, 5, 6, [2, 1]],
+    }
+
+    stage_config_det = {
+        # in_channels, mid_channels, out_channels, num_blocks, is_downsample, light_block, kernel_size, layer_num
+        "stage1": [48, 48, 128, 1, False, False, 3, 6, 2],
+        "stage2": [128, 96, 512, 1, True, False, 3, 6, 2],
+        "stage3": [512, 192, 1024, 3, True, True, 5, 6, 2],
+        "stage4": [1024, 384, 2048, 1, True, True, 5, 6, 2],
+    }
+    model = PPHGNetV2(
+        stem_channels=[3, 32, 48],
+        stage_config=stage_config_det if det else stage_config_rec,
+        use_lab=False,
+        det=det,
+        text_rec=text_rec,
+        **kwargs,
+    )
+    return model
+
+
 def PPHGNetV2_B5(pretrained=False, use_ssld=False, **kwargs):
     """
     PPHGNetV2_B5
@@ -1527,9 +1597,9 @@ def PPHGNetV2_B6(pretrained=False, use_ssld=False, **kwargs):
     return model
 
 
-class PPHGNetV2_B4(nn.Layer):
+class PPHGNetV2_B4_Formula(nn.Layer):
     """
-    PPHGNetV2_B4
+    PPHGNetV2_B4_Formula
     Args:
         in_channels (int): Number of input channels. Default is 3 (for RGB images).
         class_num (int): Number of classes for classification. Default is 1000.
@@ -1543,10 +1613,10 @@ class PPHGNetV2_B4(nn.Layer):
         self.out_channels = 2048
         stage_config = {
             # in_channels, mid_channels, out_channels, num_blocks, is_downsample, light_block, kernel_size, layer_num
-            "stage1": [48, 48, 128, 1, False, False, 3, 6],
-            "stage2": [128, 96, 512, 1, True, False, 3, 6],
-            "stage3": [512, 192, 1024, 3, True, True, 5, 6],
-            "stage4": [1024, 384, 2048, 1, True, True, 5, 6],
+            "stage1": [48, 48, 128, 1, False, False, 3, 6, 2],
+            "stage2": [128, 96, 512, 1, True, False, 3, 6, 2],
+            "stage3": [512, 192, 1024, 3, True, True, 5, 6, 2],
+            "stage4": [1024, 384, 2048, 1, True, True, 5, 6, 2],
         }
 
         self.pphgnet_b4 = PPHGNetV2(
@@ -1583,3 +1653,61 @@ class PPHGNetV2_B4(nn.Layer):
             return pphgnet_b4_output, label, attention_mask
         else:
             return pphgnet_b4_output
+
+
+class PPHGNetV2_B6_Formula(nn.Layer):
+    """
+    PPHGNetV2_B6_Formula
+    Args:
+        in_channels (int): Number of input channels. Default is 3 (for RGB images).
+        class_num (int): Number of classes for classification. Default is 1000.
+    Returns:
+        model: nn.Layer. Specific `PPHGNetV2_B6` model with defined architecture.
+    """
+
+    def __init__(self, in_channels=3, class_num=1000):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = 2048
+        stage_config = {
+            # in_channels, mid_channels, out_channels, num_blocks, is_downsample, light_block, kernel_size, layer_num
+            "stage1": [96, 96, 192, 2, False, False, 3, 6, 2],
+            "stage2": [192, 192, 512, 3, True, False, 3, 6, 2],
+            "stage3": [512, 384, 1024, 6, True, True, 5, 6, 2],
+            "stage4": [1024, 768, 2048, 3, True, True, 5, 6, 2],
+        }
+
+        self.pphgnet_b6 = PPHGNetV2(
+            stem_channels=[3, 48, 96],
+            class_num=class_num,
+            stage_config=stage_config,
+            use_lab=False,
+        )
+
+    def forward(self, input_data):
+        if self.training:
+            pixel_values, label, attention_mask = input_data
+        else:
+            if isinstance(input_data, list):
+                pixel_values = input_data[0]
+            else:
+                pixel_values = input_data
+        num_channels = pixel_values.shape[1]
+        if num_channels == 1:
+            pixel_values = paddle.repeat_interleave(pixel_values, repeats=3, axis=1)
+        pphgnet_b6_output = self.pphgnet_b6(pixel_values)
+        b, c, h, w = pphgnet_b6_output.shape
+        pphgnet_b6_output = pphgnet_b6_output.reshape([b, c, h * w]).transpose(
+            [0, 2, 1]
+        )
+        pphgnet_b6_output = DonutSwinModelOutput(
+            last_hidden_state=pphgnet_b6_output,
+            pooler_output=None,
+            hidden_states=None,
+            attentions=False,
+            reshaped_hidden_states=None,
+        )
+        if self.training:
+            return pphgnet_b6_output, label, attention_mask
+        else:
+            return pphgnet_b6_output

@@ -43,9 +43,11 @@ def dump_infer_config(config, path, logger):
     infer_cfg = OrderedDict()
     if not os.path.exists(os.path.dirname(path)):
         os.makedirs(os.path.dirname(path))
-    if config["Global"].get("pdx_model_name", None):
-        infer_cfg["Global"] = {"model_name": config["Global"]["pdx_model_name"]}
-    if config["Global"].get("uniform_output_enabled", None):
+    model_name = None
+    if config["Global"].get("model_name", None):
+        model_name = config["Global"]["model_name"]
+        infer_cfg["Global"] = {"model_name": model_name}
+    if config["Global"].get("uniform_output_enabled", True):
         arch_config = config["Architecture"]
         if arch_config["algorithm"] in ["SVTR_LCNet", "SVTR_HGNet"]:
             common_dynamic_shapes = {
@@ -56,7 +58,7 @@ def dump_infer_config(config, path, logger):
                 "x": [[1, 3, 32, 32], [1, 3, 736, 736], [1, 3, 4000, 4000]]
             }
         elif arch_config["algorithm"] == "SLANet":
-            if config["Global"].get("pdx_model_name", None) == "SLANet_plus":
+            if model_name == "SLANet_plus":
                 common_dynamic_shapes = {
                     "x": [[1, 3, 32, 32], [1, 3, 64, 448], [1, 3, 488, 488]]
                 }
@@ -76,11 +78,15 @@ def dump_infer_config(config, path, logger):
             common_dynamic_shapes = {
                 "x": [[1, 1, 192, 672], [1, 1, 192, 672], [8, 1, 192, 672]]
             }
-        elif arch_config["algorithm"] == "PP-FormulaNet-L":
+        elif arch_config["algorithm"] in ["PP-FormulaNet-L", "PP-FormulaNet_plus-L"]:
             common_dynamic_shapes = {
                 "x": [[1, 1, 768, 768], [1, 1, 768, 768], [8, 1, 768, 768]]
             }
-        elif arch_config["algorithm"] == "PP-FormulaNet-S":
+        elif arch_config["algorithm"] in [
+            "PP-FormulaNet-S",
+            "PP-FormulaNet_plus-S",
+            "PP-FormulaNet_plus-M",
+        ]:
             common_dynamic_shapes = {
                 "x": [[1, 1, 384, 384], [1, 1, 384, 384], [8, 1, 384, 384]]
             }
@@ -109,6 +115,9 @@ def dump_infer_config(config, path, logger):
             "UniMERNet",
             "PP-FormulaNet-L",
             "PP-FormulaNet-S",
+            "PP-FormulaNet_plus-L",
+            "PP-FormulaNet_plus-M",
+            "PP-FormulaNet_plus-S",
         ]:
             if k != "rec_char_dict_path":
                 postprocess[k] = v
@@ -125,6 +134,9 @@ def dump_infer_config(config, path, logger):
         "UniMERNet",
         "PP-FormulaNet-L",
         "PP-FormulaNet-S",
+        "PP-FormulaNet_plus-L",
+        "PP-FormulaNet_plus-M",
+        "PP-FormulaNet_plus-S",
     ]:
         tokenizer_file = config["Global"].get("rec_char_dict_path")
         fast_tokenizer_file = os.path.join(tokenizer_file, "tokenizer.json")
@@ -273,7 +285,7 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
             full_graph=True,
         )
-    elif arch_config["algorithm"] == "PP-FormulaNet-L":
+    elif arch_config["algorithm"] in ["PP-FormulaNet-L", "PP-FormulaNet_plus-L"]:
         model = paddle.jit.to_static(
             model,
             input_spec=[
@@ -281,7 +293,11 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
             full_graph=True,
         )
-    elif arch_config["algorithm"] == "PP-FormulaNet-S":
+    elif arch_config["algorithm"] in [
+        "PP-FormulaNet-S",
+        "PP-FormulaNet_plus-S",
+        "PP-FormulaNet_plus-M",
+    ]:
         model = paddle.jit.to_static(
             model,
             input_spec=[
@@ -370,7 +386,7 @@ def export_single_model(
         ):  # Encryption is not needed if the module cannot be imported
             print("Skipping import of the encryption module")
         paddle_version = version.parse(paddle.__version__)
-        if config["Global"].get("export_with_pir", False):
+        if config["Global"].get("export_with_pir", True):
             assert (
                 paddle_version >= version.parse("3.0.0b2")
                 or paddle_version == version.parse("0.0.0")
@@ -468,6 +484,9 @@ def export(config, base_model=None, save_path=None):
     if config["Architecture"].get("algorithm") in [
         "PP-FormulaNet-S",
         "PP-FormulaNet-L",
+        "PP-FormulaNet_plus-S",
+        "PP-FormulaNet_plus-M",
+        "PP-FormulaNet_plus-L",
     ]:
         config["Architecture"]["Head"]["is_export"] = True
     if base_model is not None:

@@ -11,6 +11,9 @@
 | UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     0.9187  |    0.9252       | 0.8658  |    0.8228   | 0.7740 |     0.8613        |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
 | PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |    0.8694   |    0.8071       | 0.9294  |    0.9112    | 0.8391 |    0.8712       |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
 | PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |     0.9055   |     0.9206       | 0.9392  |     0.9273    | 0.9141 |     0.9213         |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| PP-FormulaNet_plus-S | PPHGNetV2_B4 | [PP-FormulaNet_plus-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml) |     -   |     -       | -  |     -    | - |     -         |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar )|
+| PP-FormulaNet_plus-M | PPHGNetV2_B6 | [PP-FormulaNet_plus-M.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml) |     -   |     -       | -  |     -    | - |     -         |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar )|
+| PP-FormulaNet_plus-L | Vary_VIT_B | [PP-FormulaNet_plus-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml) |     -   |     -       | -  |     -    | - |     -         |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar )|
 
 其中，SPE、CPE为UniMERNet的简单公式数据集和复杂公式数据集；Easy、Middle、Hard为PaddleX内部自建的简单公式数据集（LaTeX 代码长度 0-64）、中等公式数据集（LaTeX 代码长度  64-256）和复杂公式数据集（LaTeX 代码长度  256+）。
 

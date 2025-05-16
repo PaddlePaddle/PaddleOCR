@@ -1,4 +1,5 @@
 Global:
+  model_name: PP-FormulaNet-S # To use static model for inference.
   use_gpu: True
   epoch_num: 20
   log_smooth_window: 10
@@ -38,7 +39,7 @@ Architecture:
   in_channels: 3
   Transform:
   Backbone:
-    name: PPHGNetV2_B4
+    name: PPHGNetV2_B4_Formula
     class_num: 1024
 
   Head:

@@ -1,10 +1,11 @@
 Global:
+  model_name: PP-OCRv4_mobile_det # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: &epoch_num 500
   log_smooth_window: 20
   print_batch_step: 100
-  save_model_dir: ./output/ch_PP-OCRv4
+  save_model_dir: ./output/PP-OCRv4_mobile_det
   save_epoch_step: 10
   eval_batch_step:
   - 0

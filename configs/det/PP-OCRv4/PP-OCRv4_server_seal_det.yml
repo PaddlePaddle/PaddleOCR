@@ -1,4 +1,5 @@
 Global:
+  model_name: PP-OCRv4_server_seal_det # To use static model for inference.
   debug: false
   use_gpu: true
   epoch_num: 100
