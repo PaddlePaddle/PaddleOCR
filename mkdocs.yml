@@ -272,17 +272,18 @@ nav:
     - 多硬件安装飞桨:
       - 多硬件安装飞桨: model/hardware/install_other_devices.md
       - 支持硬件列表: model/hardware/supported_models.md
-  - 推理部署:
-    - 概述: infer_deploy/index.md
-    - 基于Python预测引擎推理: infer_deploy/python_infer.md
-    - 基于C++预测引擎推理: infer_deploy/cpp_infer.md
-    - Visual Studio 2019 Community CMake 编译指南: infer_deploy/windows_vs2019_build.md
-    - 服务化部署: infer_deploy/paddle_server.md
-    - Android部署: infer_deploy/android_demo.md
-    - 端侧部署: infer_deploy/lite.md
-    - Paddle2ONNX模型转化与预测: infer_deploy/paddle2onnx.md
-    - 云上飞桨部署工具: infer_deploy/paddle_cloud.md
-    - Benchmark: infer_deploy/benchmark.md
+  - 历史遗留功能:
+    - 概述: legacy/index.md
+    - 模型列表: legacy/model_list.md
+    - 基于Python预测引擎推理: legacy/python_infer.md
+    - 基于C++预测引擎推理: legacy/cpp_infer.md
+    - Visual Studio 2019 Community CMake 编译指南: legacy/windows_vs2019_build.md
+    - 服务化部署: legacy/paddle_server.md
+    - Android部署: legacy/android_demo.md
+    - 端侧部署: legacy/lite.md
+    - Paddle2ONNX模型转化与预测: legacy/paddle2onnx.md
+    - 云上飞桨部署工具: legacy/paddle_cloud.md
+    - Benchmark: legacy/benchmark.md
   - PP-OCR 文本检测识别:
     - 概述: ppocr/overview.md
     - 快速开始: ppocr/quick_start.md
@@ -326,10 +327,10 @@ nav:
       - 版面恢复: ppstructure/model_train/recovery_to_doc.md
       - 关键信息提取: ppstructure/model_train/train_kie.md
     - 推理部署:
-      - 概述: ppstructure/infer_deploy/index.md
-      - 基于Python预测引擎推理: ppstructure/infer_deploy/python_infer.md
-      - 基于C++预测引擎推理: ppstructure/infer_deploy/cpp_infer.md
-      - 服务化部署: ppstructure/infer_deploy/paddle_server.md
+      - 概述: ppstructure/legacy/index.md
+      - 基于Python预测引擎推理: ppstructure/legacy/python_infer.md
+      - 基于C++预测引擎推理: ppstructure/legacy/cpp_infer.md
+      - 服务化部署: ppstructure/legacy/paddle_server.md
     - 博客:
       - 返回识别位置: ppstructure/blog/return_word_pos.md
       - 怎样完成基于图像数据的信息抽取任务: ppstructure/blog/how_to_do_kie.md
