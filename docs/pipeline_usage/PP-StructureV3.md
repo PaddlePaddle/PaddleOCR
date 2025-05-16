@@ -1124,9 +1124,7 @@ paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --device gpu
 </details>
 <br />
 
-运行结果会被打印到终端上，结果参数说明可以参考[2.2 Python脚本方式](#22-python脚本方式)中的结果解释。
-
-默认配置的 PP-StructureV3 产线的运行结果如下：
+运行结果会被打印到终端上，默认配置的 PP-StructureV3 产线的运行结果如下：
 
 <details><summary> 👉点击展开</summary>
 <pre>
@@ -1289,6 +1287,36 @@ for item in markdown_images:
 <td><code>None</code></td>
 </tr>
 <tr>
+<tr>
+<td><code>chart_recognition_model_name</code></td>
+<td>图表解析的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chart_recognition_model_dir</code></td>
+<td>图表解析模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chart_recognition_batch_size</code></td>
+<td>图表解析模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>region_detection_model_name</code></td>
+<td>文档图像版面子模块检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>region_detection_model_dir</code></td>
+<td>文档图像版面子模块检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
 <td><code>str</code></td>
@@ -1625,6 +1653,18 @@ for item in markdown_images:
 <tr>
 <td><code>use_formula_recognition</code></td>
 <td>是否加载公式识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>是否加载图表解析模型。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>是否加载文档图像版面子模块检测模型。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>

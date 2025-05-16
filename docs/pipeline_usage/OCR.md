@@ -785,9 +785,7 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 </details>
 <br />
 
-运行结果会被打印到终端上，结果参数说明可以参考[2.2 Python脚本方式](#22-python脚本方式)中的结果解释。
-
-默认配置的OCR产线的运行结果如下：
+运行结果会被打印到终端上，默认配置的OCR产线的运行结果如下：
 
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 

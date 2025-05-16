@@ -262,9 +262,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 </details>
 <br />
 
-运行结果会被打印到终端上，结果参数说明可以参考[2.2 Python脚本方式](#22-python脚本方式)中的结果解释。
-
-默认配置的 doc_preprocessor 产线的运行结果如下：
+运行结果会被打印到终端上，默认配置的 doc_preprocessor 产线的运行结果如下：
 
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}

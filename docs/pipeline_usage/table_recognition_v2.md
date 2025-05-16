@@ -1015,9 +1015,7 @@ paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device
 </details>
 <br />
 
-运行结果会被打印到终端上，结果参数说明可以参考[2.2 Python脚本方式](#22-python脚本方式)中的结果解释。
-
-默认配置的 table_recognition_v2 产线的运行结果如下：
+运行结果会被打印到终端上，默认配置的 table_recognition_v2 产线的运行结果如下：
 
 ```
 {'res': {'input_path': '/root/.paddlex/predict_input/table_recognition_v2.jpg', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True, 'use_ocr_model': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 18, 'label': 'chart', 'score': 0.6778535842895508, 'coordinate': [0, 0, 1281.0206, 585.5999]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[  4, 301],
@@ -1385,6 +1383,12 @@ for res in output:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_ocr_model</code></td>
+<td>是否在推理时使用<code>ocr</code>模型。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>与实例化时的参数相同。</td>
 <td><code>int</code></td>
@@ -1421,22 +1425,40 @@ for res in output:
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_table_cells_ocr_results</code></td>
-<td>是否启用单元格OCR模式，不启用时采用全局OCR结果填充至HTML表格，启用时逐个单元格做OCR并填充至HTML表格（会增加耗时）。二者在不同场景下性能不同，请根据实际情况选择。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
 <td><code>use_e2e_wired_table_rec_model</code></td>
-<td>是否启用有线表格端到端预测模式，不启用时采用表格单元格检测模型预测结果填充至HTML表格，启用时采用端到端表格结构识别模型的单元格预测结果填充至HTML表格。二者在不同场景下性能不同，请根据实际情况选择。</td>
+<td>是否在推理时使用有线表端到端表格识别模式。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_e2e_wireless_table_rec_model</code></td>
-<td>是否启用无线表格端到端预测模式，不启用时采用表格单元格检测模型预测结果填充至HTML表格，启用时采用端到端表格结构识别模型的单元格预测结果填充至HTML表格。二者在不同场景下性能不同，请根据实际情况选择。</td>
+<td>是否在推理时使用无线表端到端表格识别模式。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wired_table_cells_trans_to_html</code></td>
+<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wireless_table_cells_trans_to_html</code></td>
+<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_table_orientation_classify</code></td>
+<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_results_with_table_cells</code></td>
+<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
 </tr>
 </table>
 
