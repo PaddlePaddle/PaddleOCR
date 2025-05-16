@@ -1432,13 +1432,13 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_wired_table_cells_trans_to_html</code></td>
-<td>是否在推理时使用有线表单元格检测模式。</td>
+<td>是否在推理时使用有线表单元格检测结果直转HTML模式。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_wireless_table_cells_trans_to_html</code></td>
-<td>是否在推理时使用无线表单元格检测模式。</td>
+<td>是否在推理时使用无线表单元格检测结果直转HTML模式。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
