@@ -40,7 +40,15 @@ import tools.program as program
 
 def main():
     global_config = config["Global"]
-
+    if config["Architecture"].get("algorithm") in [
+        "UniMERNet",
+        "PP-FormulaNet-S",
+        "PP-FormulaNet-L",
+        "PP-FormulaNet_plus-S",
+        "PP-FormulaNet_plus-M",
+        "PP-FormulaNet_plus-L",
+    ]:
+        config["PostProcess"]["is_infer"] = True
     # build post process
     post_process_class = build_post_process(config["PostProcess"], global_config)
 

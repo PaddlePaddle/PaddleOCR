@@ -3,18 +3,24 @@
 ## 1. Introduction
 
 
-PP-FormulaNet is a formula recognition model independently developed by Baidu PaddlePaddle. It is trained on a self-built dataset of 5 million samples within PaddleX, achieving the following accuracy on the corresponding test set:
+`PP-FormulaNet` is an advanced formula recognition model developed by Baidu’s PaddlePaddle Vision Team, supporting the recognition of 50,000 common LaTeX source terms. The PP-FormulaNet-S version uses PP-HGNetV2-B4 as its backbone network, leveraging techniques like parallel masking and model distillation to significantly enhance inference speed while maintaining high recognition accuracy, making it suitable for scenarios involving simple printed formulas and cross-line simple printed formulas. On the other hand, the PP-FormulaNet-L version is based on Vary_VIT_B and has undergone extensive training on a large-scale formula dataset, showing significant improvement in recognizing complex formulas, and is applicable to simple printed, complex printed, and handwritten formulas.
 
-| Model           | Backbone       | config                                                  |SPE-<br/>BLEU↑ | CPE-<br/>BLEU↑  | Easy-<br/>BLEU↑ | Middle-<br/>BLEU↑ | Hard-<br/>BLEU↑| Avg-<br/>BLEU↑  | Download link |
-|-----------|--------|---------------------------------------------------|:--------------:|:-----------------:|:----------:|:----------------:|:---------:|:-----------------:|:--------------:|
-| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     0.9187  |    0.9252       | 0.8658  |    0.8228   | 0.7740 |     0.8613        |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
-| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |    0.8694   |    0.8071       | 0.9294  |    0.9112    | 0.8391 |    0.8712       |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
-| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |     0.9055   |     0.9206       | 0.9392  |     0.9273    | 0.9141 |     0.9213         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
-| PP-FormulaNet_plus-S | PPHGNetV2_B4 | [PP-FormulaNet_plus-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml) |     -   |     -       | -  |     -    | - |     -         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar )|
-| PP-FormulaNet_plus-M | PPHGNetV2_B6 | [PP-FormulaNet_plus-M.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml) |     -   |     -       | -  |     -    | - |     -         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar )|
-| PP-FormulaNet_plus-L | Vary_VIT_B | [PP-FormulaNet_plus-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml) |     -   |     -       | -  |     -    | - |     -         |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar )|
+To further enhance performance, the Baidu PaddlePaddle team developed an enhanced version called `PP-FormulaNet_plus` based on PP-FormulaNet. This version utilizes a rich dataset sourced from Chinese theses, professional books, textbooks, exam papers, and mathematical journals, greatly improving recognition capability. Among them, PP-FormulaNet_plus-M and PP-FormulaNet_plus-L add support for Chinese formulas and increase the maximum predicted token count from 1024 to 2560, significantly enhancing the recognition performance of complex formulas. Meanwhile, PP-FormulaNet_plus-S focuses on enhancing English formula recognition, making the PP-FormulaNet_plus series models perform more exceptionally in handling complex and diverse formula recognition tasks.
 
-Among them, SPE and CPE refer to the simple and complex formula datasets of UniMERNet, respectively. Easy, Middle, and Hard are simple (LaTeX code length 0-64), medium (LaTeX code length 64-256), and complex formula datasets (LaTeX code length 256+) built internally by PaddleX.
+The accuracy of the above models on the corresponding test sets is as follows:
+
+| Model           | Backbone       | config                  | En-<br/>BLEU↑ |Zh-<br/>BLEU(%)↑ |OmniDocBench-<br/>BLEU(%)↑  | GPU Inference Time (ms)| Download link |
+|-----------|--------|----------------------------------------|:----------------:|:---------:|:-----------------:|:--------------:|:--------------:|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     85.91  |   43.50       | 67.75 | 2266.96 | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00   |   45.71   | 59.57| 202.25 |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
+| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36   |    45.78       | 64.81  | 1976.52  |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| PP-FormulaNet_plus-S | PPHGNetV2_B4 | [PP-FormulaNet_plus-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml) |     88.71   |     53.32       | 70.54  |     	191.69  |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar )|
+| PP-FormulaNet_plus-M | PPHGNetV2_B6 | [PP-FormulaNet_plus-M.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml) |     91.45   |     89.76       | 	72.07  |     	1301.56    |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar )|
+| PP-FormulaNet_plus-L | Vary_VIT_B | [PP-FormulaNet_plus-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml) |     92.22   |     90.64       | 	72.45  |     1745.25    |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar )|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   74.55   |       39.96        | 47.59| 	1244.61   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+
+
+En-BLEU, Zh-BLEU (%), and OmniDocBench-BLEU (%) represent the BLEU scores for English formulas, Chinese formulas, and the OmniDocBench, respectively. The evaluation dataset for English formulas includes simple and complex formulas from UniMERNet, as well as simple, intermediate, and complex formulas from PaddleX’s internally developed dataset. The evaluation dataset for Chinese formulas comes from PaddleX’s internally developed Chinese formula dataset. The OmniDocBench evaluation set consists of inter-line formula images from  [OmniDocBench](https://github.com/opendatalab/OmniDocBench).
 
 
 ## 2. Environment
@@ -74,7 +80,7 @@ Prediction:
 ```shell
 # The configuration file used for prediction must match the training
 python3 tools/infer_rec.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
-  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000099.png'\
+  -o  Global.infer_img='./docs/datasets/images/pme_demo/0000295.png'\
    Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
 ```
 
