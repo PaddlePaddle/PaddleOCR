@@ -21,7 +21,7 @@ from paddlex.utils.config import AttrDict
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
-    add_common_cli_args,
+    add_common_cli_opts,
     parse_common_args,
     prepare_common_init_args,
 )
@@ -115,13 +115,17 @@ class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
 
     def add_subparser(self, subparsers):
         subparser = subparsers.add_parser(name=self.subparser_name)
+        self._update_subparser(subparser)
+        add_common_cli_opts(
+            subparser,
+            default_enable_hpi=_DEFAULT_ENABLE_HPI,
+            allow_multiple_devices=True,
+        )
         subparser.add_argument(
             "--paddlex_config",
             type=str,
             help="Path to PaddleX pipeline configuration file.",
         )
-        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
-        self._update_subparser(subparser)
         return subparser
 
     @abc.abstractmethod
