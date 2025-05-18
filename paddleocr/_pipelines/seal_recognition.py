@@ -287,7 +287,7 @@ class SealRecognitionCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         )
         subparser.add_argument(
             "--layout_nms",
-            type=float,
+            type=str2bool,
             help="Non-Maximum Suppression threshold for layout detection.",
         )
         subparser.add_argument(
