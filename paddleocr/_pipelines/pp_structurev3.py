@@ -317,7 +317,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
 class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
-        return "PP-StructureV3"
+        return "pp_structurev3"
 
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
