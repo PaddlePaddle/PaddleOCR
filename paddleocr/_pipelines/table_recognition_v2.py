@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -69,6 +69,52 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "table_recognition_v2"
 
+    def predict_iter(
+        self,
+        input,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_layout_detection=None,
+        use_ocr_model=None,
+        overall_ocr_res=None,
+        layout_det_res=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_det_thresh=None,
+        text_det_box_thresh=None,
+        text_det_unclip_ratio=None,
+        text_rec_score_thresh=None,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=False,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
+        **kwargs,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+            use_layout_detection=use_layout_detection,
+            use_ocr_model=use_ocr_model,
+            overall_ocr_res=overall_ocr_res,
+            layout_det_res=layout_det_res,
+            text_det_limit_side_len=text_det_limit_side_len,
+            text_det_limit_type=text_det_limit_type,
+            text_det_thresh=text_det_thresh,
+            text_det_box_thresh=text_det_box_thresh,
+            text_det_unclip_ratio=text_det_unclip_ratio,
+            text_rec_score_thresh=text_rec_score_thresh,
+            use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+            use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+            use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+            use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+            use_table_orientation_classify=use_table_orientation_classify,
+            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
+            **kwargs,
+        )
+
     def predict(
         self,
         input,
@@ -84,33 +130,38 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
         text_det_box_thresh=None,
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
-        use_table_cells_ocr_results=None,
-        use_e2e_wired_table_rec_model=None,
-        use_e2e_wireless_table_rec_model=None,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=False,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_layout_detection=use_layout_detection,
-            use_ocr_model=use_ocr_model,
-            overall_ocr_res=overall_ocr_res,
-            layout_det_res=layout_det_res,
-            text_det_limit_side_len=text_det_limit_side_len,
-            text_det_limit_type=text_det_limit_type,
-            text_det_thresh=text_det_thresh,
-            text_det_box_thresh=text_det_box_thresh,
-            text_det_unclip_ratio=text_det_unclip_ratio,
-            text_rec_score_thresh=text_rec_score_thresh,
-            use_table_cells_ocr_results=use_table_cells_ocr_results,
-            use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
-            use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
-            **kwargs,
-        ):
-            result.append(res)
-        return result
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_layout_detection=use_layout_detection,
+                use_ocr_model=use_ocr_model,
+                overall_ocr_res=overall_ocr_res,
+                layout_det_res=layout_det_res,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+                use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+                use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+                use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+                use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+                use_table_orientation_classify=use_table_orientation_classify,
+                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
+                **kwargs,
+            )
+        )
 
     @classmethod
     def get_cli_subcommand_executor(cls):

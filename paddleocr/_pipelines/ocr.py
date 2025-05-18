@@ -18,18 +18,18 @@
 
 import sys
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
     str2bool,
 )
-from ..utils.deprecation import (
+from .._utils.deprecation import (
     DeprecatedOptionAction,
     deprecated,
     warn_deprecated_param,
 )
-from ..utils.logging import logger
+from .._utils.logging import logger
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -147,6 +147,33 @@ class PaddleOCR(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "OCR"
 
+    def predict_iter(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_textline_orientation=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_det_thresh=None,
+        text_det_box_thresh=None,
+        text_det_unclip_ratio=None,
+        text_rec_score_thresh=None,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+            use_textline_orientation=use_textline_orientation,
+            text_det_limit_side_len=text_det_limit_side_len,
+            text_det_limit_type=text_det_limit_type,
+            text_det_thresh=text_det_thresh,
+            text_det_box_thresh=text_det_box_thresh,
+            text_det_unclip_ratio=text_det_unclip_ratio,
+            text_rec_score_thresh=text_rec_score_thresh,
+        )
+
     def predict(
         self,
         input,
@@ -161,21 +188,20 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_textline_orientation=use_textline_orientation,
-            text_det_limit_side_len=text_det_limit_side_len,
-            text_det_limit_type=text_det_limit_type,
-            text_det_thresh=text_det_thresh,
-            text_det_box_thresh=text_det_box_thresh,
-            text_det_unclip_ratio=text_det_unclip_ratio,
-            text_rec_score_thresh=text_rec_score_thresh,
-        ):
-            result.append(res)
-        return result
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+            )
+        )
 
     @deprecated("Please use `predict` instead.")
     def ocr(self, img, **kwargs):

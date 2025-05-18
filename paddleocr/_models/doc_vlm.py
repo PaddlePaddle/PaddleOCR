@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from paddlex.utils.pipeline_arguments import custom_type
+
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -50,7 +52,10 @@ class DocVLMSubcommandExecutor(PredictorCLISubcommandExecutor):
         return "doc_vlm"
 
     def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+        add_simple_inference_args(
+            subparser,
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
