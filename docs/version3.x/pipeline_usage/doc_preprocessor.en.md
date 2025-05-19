@@ -118,7 +118,7 @@ In this pipeline, you can select the models to use based on the benchmark data p
 
 ## 2. Quick Start
 
-Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](../ppocr/installation.md). After installation, you can experience it via the command line or integrate it into Python locally.
+Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md.en). After installation, you can experience it via the command line or integrate it into Python locally.
 
 ### 2.1 Command Line Experience
 
