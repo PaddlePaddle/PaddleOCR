@@ -71,6 +71,33 @@ comments: true
 
 <details>
 <summary><b>版面区域检测模块（可选）：</b></summary>
+
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+* <b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
 <tr>
@@ -110,11 +137,11 @@ comments: true
 </tbody>
 </table>
 
->❗ 以上列出的是版面区域检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>6个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
+>❗ 以上列出的是版面区域检测模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>7个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
 
-* <b>17类版面区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
+* <b>版面区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
 <table>
 <thead>
 <tr>
@@ -155,7 +182,7 @@ comments: true
 </table>
 
 
-* <b>23类版面区域检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
+* <b>版面区域检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
 <tr>
@@ -194,6 +221,32 @@ comments: true
 </tr>
 </tbody>
 </table>
+
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
 </details>
 </details>
 
@@ -202,38 +255,71 @@ comments: true
 <table>
 <tr>
 <th>模型</th><th>模型下载链接</th>
-<th>Avg-BLEU(%)</th>
+<th>En-BLEU(%)</th>
+<th>Zh-BLEU(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>模型存储大小 (M)</th>
 <th>介绍</th>
 </tr>
 <td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
-<td>86.13</td>
+<td>85.91</td>
+<td>43.50</td>
 <td>2266.96/-</td>
 <td>-/-</td>
-<td>1.4 G</td>
+<td>1.53 G</td>
 <td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
 <tr>
 <td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
-<td>87.12</td>
+<td>87.00</td>
+<td>45.71</td>
 <td>202.25/-</td>
 <td>-/-</td>
-<td>167.9 M</td>
+<td>224 M</td>
 <td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
 
 </tr>
 <td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
-<td>92.13</td>
+<td>90.36</td>
+<td>45.78</td>
 <td>1976.52/-</td>
 <td>-/-</td>
-<td>535.2 M</td>
+<td>695 M</td>
+<tr>
+<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
+<td>88.71</td>
+<td>53.32</td>
+<td>191.69/-</td>
+<td>-/-</td>
+<td>248 M</td>
+<td rowspan="3">PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 的基础上开发的增强版公式识别模型。与原版相比，PP-FormulaNet_plus 在训练中使用了更为丰富的公式数据集，包括中文学位论文、专业书籍、教材试卷以及数学期刊等多种来源。这一扩展显著提升了模型的识别能力。
+
+其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 模型新增了对中文公式的支持，并将公式的最大预测 token 数从 1024 扩大至 2560，大幅提升了对复杂公式的识别性能。同时，PP-FormulaNet_plus-S 模型则专注于增强英文公式的识别能力。通过这些改进，PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。 </td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
+<td>91.45</td>
+<td>89.76</td>
+<td>1301.56/-</td>
+<td>-/-</td>
+<td>592 M</td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>92.22</td>
+<td>90.64</td>
+<td>1745.25/-</td>
+<td>-/-</td>
+<td>698 M</td>
+</tr>
+
 <tr>
 <td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
-<td>71.63</td>
+<td>74.55</td>
+<td>39.96</td>
+<td>1244.61/-</td>
 <td>-/-</td>
-<td>-/-</td>
-<td>89.7 M</td>
+<td>99 M</td>
 <td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
 </tr>
 </table>
@@ -298,7 +384,7 @@ comments: true
 
 ## 2. 快速开始
 
-在本地使用通用版面解析v3产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用公式识别产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -381,7 +467,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
@@ -553,7 +639,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 
 ```bash
 sudo apt-get update
-sudo apt-get install texlive texlive-latex-base texlive-latex-extra -y
+sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texlive-latex-extra -y
 ```
 
 <b>备注</b>： 由于公式识别可视化过程中需要对每张公式图片进行渲染，因此耗时较长，请您耐心等待。
@@ -642,7 +728,7 @@ for res in output:
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
@@ -1220,4 +1306,37 @@ for i, res in enumerate(result["formulaRecResults"]):
 
 如果公式识别产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升公式识别产线的在您的场景中的识别效果。
 
-......
+由于公式识别产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
+
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公式存在漏检</td>
+<td>版面区域检测模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>公式内容不准</td>
+<td>公式识别模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
