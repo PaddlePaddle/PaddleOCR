@@ -124,15 +124,15 @@ for res in output:
 The output will be:
 
 ```bash
-{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 75, 553],
+{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 75, 549],
         ...,
-        [ 77, 585]],
+        [ 77, 586]],
 
        ...,
 
-       [[ 37, 409],
+       [[ 37, 408],
         ...,
-        [ 39, 453]]], dtype=int16), 'dt_scores': [0.8574396614433001, 0.8343834504056786, 0.8720446452934176, 0.8090656290206919]}}
+        [ 39, 453]]], dtype=int16), 'dt_scores': [0.832930755107492, 0.8186143846140158, 0.8591595100376676, 0.8718863959111733]}}
 ```
 
 Output parameter meanings:

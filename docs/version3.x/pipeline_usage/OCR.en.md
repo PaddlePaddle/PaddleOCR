@@ -521,17 +521,16 @@ Before using the general OCR pipeline locally, ensure you have installed the whe
 Run a single command to quickly test the OCR pipeline:  
 
 ```bash  
-# Default: Uses PP-OCRv5 Chinese model  
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png  
+# Default: Uses PP-OCRv5 model  
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False \
+    --use_textline_orientation False \
+    --save_path ./output \
+    --device gpu:0 
 
-# Specify PP-OCR version via --ocr_version  
-paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4  
-
-# Use GPU for inference via --device  
-paddleocr ocr -i ./general_ocr_002.png --device gpu  
-
-# Disable text line orientation classification via --use_textline_orientation  
-paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False  
+# Use PP-OCRv4 model by --ocr_version PP-OCRv4
+paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 ```  
 
 <details><summary><b>More command-line parameters available. Click to expand for details.</b></summary>  
@@ -819,28 +818,28 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 </details>  
 <br />  
 
-Results are printed to the terminal. The default OCR pipeline output is structured as:  
+Results are printed to the terminal:  
 
 ```bash
-{'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'dt_polys': array([[[134,   6],
+{'res': {'input_path': './general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  3,  10],
         ...,
-        [134,  66]],
+        [  4,  30]],
 
        ...,
 
-       [[331, 472],
+       [[ 99, 456],
         ...,
-        [331, 494]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([0, ..., 0]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['登机牌', '', 'BOARDING', 'PASS', '航班', 'FLIGHT', '日期', 'DATE', '舱位', 'CLASS', '序号', 'SERIAL NO.', '座位号', 'SEAT NO', 'MU', '2379', '03DEG', 'M', '035', '12F', '目的地', 'TO', '始发地', 'FROM', '登机口', 'GATE', '登机时间', 'BDT', '福州', 'FUZHOU', 'TAIYUAN', 'G11', '姓名', 'NAME', '身份识别IDNO', 'ZHANGQIWEI', '张祺件', '票号TKTNO', '票价FARE', 'ETKT', '7813699238489/1', '登机口于起飞前10分钟关闭', 'GATES CLOSE 10 MINUTES BEFORE DEPARTURE TIME'], 'rec_scores': array([0.99727374, ..., 0.9353174 ]), 'rec_polys': array([[[134,   6],
+        [ 99, 479]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997700', '', 'Cm', '登机牌', 'BOARDING', 'PASS', 'CLASS', '序号SERIAL NO.', '座位号', 'SEAT NO.', '航班FLIGHT', '日期DATE', '舱位', '', 'W', '035', '12F', 'MU2379', '03DEc', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKT NO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.67634439, ..., 0.97416091]), 'rec_polys': array([[[  3,  10],
         ...,
-        [134,  66]],
+        [  4,  30]],
 
        ...,
 
-       [[331, 472],
+       [[ 99, 456],
         ...,
-        [331, 494]]], dtype=int16), 'rec_boxes': array([[134, ...,  66],
+        [ 99, 479]]], dtype=int16), 'rec_boxes': array([[  3, ...,  30],
        ...,
-       [331, ..., 507]], dtype=int16)}}
+       [ 99, ..., 479]], dtype=int16)}}
 ```
 
 If `save_path` is specified, the visualization results will be saved under `save_path`. The visualization output is shown below:
@@ -854,11 +853,14 @@ The command-line method is for quick testing. For project integration, you can a
 ```python  
 from paddleocr import PaddleOCR  
 
-ocr = PaddleOCR()  
-# ocr = PaddleOCR(lang="en")  # Use English model via `lang`  
-# ocr = PaddleOCR(ocr_version="PP-OCRv4")  # Use PP-OCRv4 via `ocr_version`  
-# ocr = PaddleOCR(device="gpu")  # Use GPU for inference  
-# ocr = PaddleOCR(use_textline_orientation=False)  # Disable text line orientation  
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False, # Disables document orientation classification model via this parameter
+    use_doc_unwarping=False, # Disables text image rectification model via this parameter
+    use_textline_orientation=False, # Disables text line orientation classification model via this parameter
+)
+# ocr = PaddleOCR(lang="en") # Uses English model by specifying language parameter
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # Uses other PP-OCR versions via version parameter
+# ocr = PaddleOCR(device="gpu") # Enables GPU acceleration for model inference via device parameter
 result = ocr.predict("./general_ocr_002.png")  
 for res in result:  
     res.print()  
