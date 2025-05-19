@@ -552,4 +552,69 @@ for res in output:
 
 ## 四、二次开发
 
-......
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_rec` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考[文本识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](xxx)安装了 PaddleOCR 所需要的依赖。
+
+
+## 4.1 数据集、预训练模型准备
+
+### 4.1.1 准备数据集
+
+```shell
+# 下载示例数据集
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar
+tar -xf ocr_rec_dataset_examples.tar
+```
+
+### 4.1.2 下载预训练模型
+
+```shell
+# 下载 PP-OCRv5_server_rec 预训练模型
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams 
+```
+
+### 4.2 模型训练
+
+PaddleOCR 对代码进行了模块化，训练 `PP-OCRv5_server_rec` 识别模型时需要使用 `PP-OCRv5_server_rec` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml)。
+
+
+训练命令如下：
+
+```bash
+#单卡训练 (默认训练方式)
+python3 tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+   -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
+#多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+        -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
+```
+
+
+### 4.4 模型评估
+
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdprams`，使用如下命令进行评估：
+
+```bash
+# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+ # demo 测试集评估
+ python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
+ Global.pretrained_model=output/xxx/xxx.pdprams
+ ```
+
+### 4.5 模型导出
+
+```bash
+ python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
+ Global.pretrained_model=output/xxx/xxx.pdprams \
+ save_inference_dir="./PP-OCRv5_server_rec_infer/"
+ ```
+
+ 导出模型后，静态图模型会存放于当前目录的`./PP-OCRv5_server_rec_infer/`中，在该目录下，您将看到如下文件：
+ ```
+ ./PP-OCRv5_server_rec_infer/
+ ├── inference.json
+ ├── inference.pdiparams
+ ├── inference.yml
+ ```
+至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。
+
+## 五、FAQ
