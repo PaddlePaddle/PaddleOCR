@@ -413,7 +413,7 @@ paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(model_name="PP-OCRv4_mobile_rec")
+model = TextRecognition(model_name="PP-OCRv5_server_rec")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -423,7 +423,7 @@ for res in output:
 
 运行后，得到的结果为：
 ```bash
-{'res': {'input_path': 'general_ocr_rec_001.png', 'page_index': None, 'rec_text': '绿洲仕格维花园公寓', 'rec_score': 0.9875142574310303}}
+{'res': {'input_path': 'general_ocr_rec_001.png', 'page_index': None, 'rec_text': '绿洲仕格维花园公寓', 'rec_score': 0.9823867082595825}}
 ```
 
 运行结果参数含义如下：
@@ -439,7 +439,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv4_mobile_rec`为例），具体说明如下：
+* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -610,7 +610,7 @@ for res in output:
 
 ## 四、二次开发
 
-如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_rec` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考[文本识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](xxx)安装了 PaddleOCR 所需要的依赖。
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_rec` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考[文本识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
 ## 4.1 数据集、预训练模型准备
@@ -649,21 +649,21 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ### 4.4 模型评估
 
-您可以评估已经训练好的权重，如，`output/xxx/xxx.pdprams`，使用如下命令进行评估：
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，使用如下命令进行评估：
 
 ```bash
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
  # demo 测试集评估
  python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdprams
+ Global.pretrained_model=output/xxx/xxx.pdparams
  ```
 
 ### 4.5 模型导出
 
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdprams \
- save_inference_dir="./PP-OCRv5_server_rec_infer/"
+ Global.pretrained_model=output/xxx/xxx.pdparams \
+ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
  ```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-OCRv5_server_rec_infer/`中，在该目录下，您将看到如下文件：
