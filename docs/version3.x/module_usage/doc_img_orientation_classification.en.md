@@ -78,7 +78,7 @@ The Document Image Orientation Classification Module is primarily designed to di
 
 ## 3. Quick Start
 
-> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../ppocr/installation.md).
+> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md).
 
 You can quickly experience it with one command:
 
