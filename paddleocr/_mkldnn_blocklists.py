@@ -25,4 +25,7 @@ MODEL_MKLDNN_BLOCKLIST = [
     "PP-FormulaNet-L",
     "PP-FormulaNet-S",
     "UniMERNet",
+    "PP-FormulaNet_plus-L",
+    "PP-FormulaNet_plus-M",
+    "PP-FormulaNet_plus-S",
 ]
