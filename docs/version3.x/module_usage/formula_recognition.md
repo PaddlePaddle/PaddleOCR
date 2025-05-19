@@ -150,7 +150,7 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-{\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z{\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}}\\ \\ {vec\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
+{'res': {'input_path': '/root/.paddlex/predict_input/general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}\\breve{\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
 ```
 
 运行结果参数含义如下：
@@ -161,7 +161,7 @@ for res in output:
 
 可视化图片如下，左侧是待预测的公式图像，右边是预测的结果渲染后的公式图像：
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res.png">
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res_paddleocr3.png">
 
 <b> 注：如果您需要对公式识别模块进行可视化，需要运行如下命令来对LaTeX渲染环境进行安装。目前公式识别模块可视化只支持Ubuntu环境，其他环境暂不支持。对于复杂公式，LaTeX 结果可能包含部分高级的表示，Markdown等环境中未必可以成功显示：</b>
 ```bash
@@ -412,7 +412,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
- save_inference_dir="./PP-FormulaNet_plus-M_infer/"
+ Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
  ```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-FormulaNet_plus-M_infer/`中，在该目录下，您将看到如下文件：

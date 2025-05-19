@@ -31,7 +31,7 @@ class FormulaRecognition(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-FormulaNet-S"
+        return "PP-FormulaNet_plus-M"
 
     @classmethod
     def get_cli_subcommand_executor(cls):

@@ -140,7 +140,7 @@ for res in output:
 ```
 After running, the output is:
 ```bash
-{'res': {'input_path': 'general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-{\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z{\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}}\\ \\ {vec\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
+{'res': {'input_path': '/root/.paddlex/predict_input/general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}\\breve{\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
 ```
 Explanation of the result parameters:
 
@@ -148,7 +148,8 @@ Explanation of the result parameters:
 - `page_index`： If the input is a PDF file, this represents the page number; otherwise, it is None
 - `rec_formula`：Indicates the predicted LaTeX source code of the formula image
 The visualization image is as follows. The left side is the input formula image, and the right side is the rendered formula from the prediction:
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res.png">
+
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res_paddleocr3.png">
 
 <b>Note: If you need to visualize the formula recognition module, you must install the LaTeX rendering environment by running the following command. Currently, visualization is only supported on Ubuntu. Other environments are not supported for now. For complex formulas, the LaTeX result may contain advanced representations that may not render successfully in Markdown or similar environments:</b>
 ```bash
@@ -399,7 +400,7 @@ Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
- save_inference_dir="./PP-FormulaNet_plus-M_infer/"
+ Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
  ```
 
 After exporting, the static graph model will be saved in `./PP-FormulaNet_plus-M_infer/`, and you will see the following files:
