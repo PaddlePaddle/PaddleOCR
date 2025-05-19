@@ -5411,6 +5411,15 @@ You're not viewing the latest version.
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、FAQ
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5447,6 +5456,62 @@ You're not viewing the latest version.
 <h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>版面区域检测任务的核心是对输入的文档图像进行内容解析和区域划分。通过识别图像中的不同元素（如文字、图表、图像、公式、段落、摘要、参考文献等），将其归类为预定义的类别，并确定这些区域在文档中的位置。</p>
 <h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<ul>
+<li><b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+<p><b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</b></p>
+<ul>
+<li><b>文档图像版面子模块检测，包含1个 版面区域 类别，能检测多栏的报纸、杂志的每个子文章的文本区域：</b></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocBlockLayout</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBlockLayout_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams">训练模型</a></td>
+<td>95.9</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>123.92 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的文档图像版面子模块检测模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+<p><b>注：以上精度指标的评估集是自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</b></p>
 <ul>
 <li><b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b></li>
 </ul>
@@ -5489,8 +5554,9 @@ You're not viewing the latest version.
 </tbody>
 </table>
 
+<p><b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、报纸、研报和试卷等 500 张文档类型图片。</b></p>
 <blockquote>
-<p>❗ 以上列出的是版面检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>11个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：</p>
+<p>❗ 以上列出的是版面检测模块重点支持的<b>5个核心模型</b>，该模块总共支持<b>13个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：</p>
 </blockquote>
 <details><summary> 👉模型列表详情</summary>
 
@@ -5626,8 +5692,9 @@ You're not viewing the latest version.
           <ul>
               <li><strong>测试数据集：</strong>
                  <ul>
-                    <li>版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
-                    <li>表格版面检测模型：PaddleOCR 自建的版面表格区域检测数据集，包含中英文 7835 张带有表格的论文文档类型图片。</li>
+                    <li>20类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</li>
+                    <li>1类版面子区域检测模型： PaddleOCR 自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</li>                 
+                    <li>23类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
                     <li>3类版面检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 1154 张文档类型图片。</li>
                     <li>5类英文文档区域检测模型： <a href="https://developer.ibm.com/exchanges/data/all/publaynet" target="_blank">PubLayNet</a> 的评估数据集，包含英文文档的 11245 张图片。</li>
                     <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
@@ -5681,7 +5748,7 @@ You're not viewing the latest version.
 <p>您也可以将版面区域检测模块中的模型推理集成到您的项目中。运行以下代码前，请您下载<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例图片</a>到本地。</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayoutDetection</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">LayoutDetection</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocLayout-L&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">LayoutDetection</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocLayout_plus-L&quot;</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;layout.jpg&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layout_nms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
@@ -5689,7 +5756,7 @@ You're not viewing the latest version.
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>运行后，得到的结果为：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;layout.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9866452813148499,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">74</span>.30952,<span class="w"> </span><span class="m">105</span>.71375,<span class="w"> </span><span class="m">321</span>.98676,<span class="w"> </span><span class="m">299</span>.11072<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9859839081764221,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.65901,<span class="w"> </span><span class="m">349</span>.91003,<span class="w"> </span><span class="m">358</span>.33832,<span class="w"> </span><span class="m">611</span>.3427<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9850624799728394,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.945335,<span class="w"> </span><span class="m">647</span>.378,<span class="w"> </span><span class="m">358</span>.32523,<span class="w"> </span><span class="m">849</span>.23413<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9850127696990967,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">438</span>.06952,<span class="w"> </span><span class="m">105</span>.37871,<span class="w"> </span><span class="m">662</span>.88666,<span class="w"> </span><span class="m">313</span>.88693<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9847850799560547,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.97076,<span class="w"> </span><span class="m">497</span>.04156,<span class="w"> </span><span class="m">710</span>.9561,<span class="w"> </span><span class="m">697</span>.6779<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9805672764778137,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.79672,<span class="w"> </span><span class="m">345</span>.93826,<span class="w"> </span><span class="m">710</span>.07385,<span class="w"> </span><span class="m">459</span>.14514<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9799845814704895,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.07553,<span class="w"> </span><span class="m">735</span>.38086,<span class="w"> </span><span class="m">710</span>.6084,<span class="w"> </span><span class="m">850</span>.1987<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">9</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9376267194747925,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.27453,<span class="w"> </span><span class="m">19</span>.852173,<span class="w"> </span><span class="m">358</span>.92462,<span class="w"> </span><span class="m">77</span>.81253<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8755457997322083,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.6317,<span class="w"> </span><span class="m">476</span>.607,<span class="w"> </span><span class="m">699</span>.7845,<span class="w"> </span><span class="m">490</span>.11603<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8617177605628967,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">387</span>.27615,<span class="w"> </span><span class="m">715</span>.9574,<span class="w"> </span><span class="m">524</span>.3855,<span class="w"> </span><span class="m">729</span>.2082<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8607730865478516,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.451878,<span class="w"> </span><span class="m">627</span>.4962,<span class="w"> </span><span class="m">185</span>.63542,<span class="w"> </span><span class="m">640</span>.4025<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8575080633163452,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.334385,<span class="w"> </span><span class="m">330</span>.80493,<span class="w"> </span><span class="m">141</span>.46948,<span class="w"> </span><span class="m">344</span>.40747<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">9</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.7959735989570618,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.93796,<span class="w"> </span><span class="m">19</span>.755125,<span class="w"> </span><span class="m">711</span>.5128,<span class="w"> </span><span class="m">75</span>.00555<span class="o">]}]}}</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;layout.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9870226979255676,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.101906,<span class="w"> </span><span class="m">349</span>.85275,<span class="w"> </span><span class="m">358</span>.59213,<span class="w"> </span><span class="m">611</span>.0772<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9866003394126892,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.500324,<span class="w"> </span><span class="m">647</span>.1585,<span class="w"> </span><span class="m">358</span>.29367,<span class="w"> </span><span class="m">848</span>.66797<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9846674203872681,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.71445,<span class="w"> </span><span class="m">497</span>.40973,<span class="w"> </span><span class="m">711</span>.2261,<span class="w"> </span><span class="m">697</span>.84265<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.984126091003418,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">73</span>.76879,<span class="w"> </span><span class="m">105</span>.94899,<span class="w"> </span><span class="m">321</span>.95303,<span class="w"> </span><span class="m">298</span>.84888<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9834211468696594,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">436</span>.95642,<span class="w"> </span><span class="m">105</span>.81531,<span class="w"> </span><span class="m">662</span>.7168,<span class="w"> </span><span class="m">313</span>.48462<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9832247495651245,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.62787,<span class="w"> </span><span class="m">346</span>.2288,<span class="w"> </span><span class="m">710</span>.10095,<span class="w"> </span><span class="m">458</span>.77127<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9816061854362488,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.7802,<span class="w"> </span><span class="m">735</span>.1931,<span class="w"> </span><span class="m">710</span>.56134,<span class="w"> </span><span class="m">849</span>.9764<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;figure_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9577341079711914,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.421448,<span class="w"> </span><span class="m">20</span>.055151,<span class="w"> </span><span class="m">358</span>.71283,<span class="w"> </span><span class="m">76</span>.53663<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;figure_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9505634307861328,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.72278,<span class="w"> </span><span class="m">20</span>.053688,<span class="w"> </span><span class="m">711</span>.29333,<span class="w"> </span><span class="m">74</span>.92744<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9001723527908325,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.46344,<span class="w"> </span><span class="m">477</span>.03488,<span class="w"> </span><span class="m">699</span>.4023,<span class="w"> </span><span class="m">490</span>.07474<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8845751285552979,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.413048,<span class="w"> </span><span class="m">627</span>.73596,<span class="w"> </span><span class="m">185</span>.58383,<span class="w"> </span><span class="m">640</span>.52264<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8837394118309021,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">387</span>.17603,<span class="w"> </span><span class="m">716</span>.3423,<span class="w"> </span><span class="m">524</span>.7841,<span class="w"> </span><span class="m">729</span>.258<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8508939743041992,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.50064,<span class="w"> </span><span class="m">331</span>.18445,<span class="w"> </span><span class="m">141</span>.6444,<span class="w"> </span><span class="m">344</span>.81097<span class="o">]}]}}</span>
 </span></code></pre></div>
 <p>参数含义如下：
 - <code>input_path</code>：输入的待预测图像的路径
@@ -5703,7 +5770,7 @@ You're not viewing the latest version.
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res.jpg"/></p>
 <p>相关方法、参数等说明如下：</p>
 <ul>
-<li><code>LayoutDetection</code>实例化目标检测模型（此处以<code>PP-DocLayout-L</code>为例），具体说明如下：</li>
+<li><code>LayoutDetection</code>实例化目标检测模型（此处以<code>PP-DocLayout_plus-L</code>为例），具体说明如下：</li>
 </ul>
 <table>
 <thead>
@@ -5995,7 +6062,8 @@ You're not viewing the latest version.
 </table>
 
 <h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>......</p>
+<p>由于 PaddleOCR 并不直接提供版面区域检测模块的训练，因此，如果需要训练版面区域测模型，可以参考 <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">PaddleX 版面区域检测模块二次开发</a>部分进行训练。训练后的模型可以无缝集成到 PaddleOCR 的 API 中进行推理。</p>
+<h2 id="faq">五、FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
 
 
 
@@ -6018,7 +6086,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Последнее обновление">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:42:31">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:54:51">2025年5月19日</span>
   </span>
 
     
@@ -6028,7 +6096,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Дата создания">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:42:31">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:54:51">2025年5月19日</span>
   </span>
 
     

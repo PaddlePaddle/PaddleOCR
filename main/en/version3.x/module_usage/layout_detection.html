@@ -22,7 +22,7 @@
     
     
       
-        <title>版面区域检测模块使用教程 - PaddleOCR Documentation</title>
+        <title>Layout Detection Module Tutorial - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#layout-detection-module-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              版面区域检测模块使用教程
+              Layout Detection Module Tutorial
             
           </span>
         </div>
@@ -5376,36 +5376,36 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#i-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      一、概述
+      I. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#ii-supported-model-list" class="md-nav__link">
     <span class="md-ellipsis">
-      二、支持模型列表
+      II. Supported Model List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#iii-quick-integration" class="md-nav__link">
     <span class="md-ellipsis">
-      三、快速开始
+      III. Quick Integration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#iv-custom-development" class="md-nav__link">
     <span class="md-ellipsis">
-      四、二次开发
+      IV. Custom Development
     </span>
   </a>
   
@@ -5427,7 +5427,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/layout_detection.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/layout_detection.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5436,566 +5436,623 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/layout_detection.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/layout_detection.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">版面区域检测模块使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>版面区域检测任务的核心是对输入的文档图像进行内容解析和区域划分。通过识别图像中的不同元素（如文字、图表、图像、公式、段落、摘要、参考文献等），将其归类为预定义的类别，并确定这些区域在文档中的位置。</p>
-<h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h1 id="layout-detection-module-tutorial">Layout Detection Module Tutorial<a class="headerlink" href="#layout-detection-module-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="i-overview">I. Overview<a class="headerlink" href="#i-overview" title="Permanent link">&para;</a></h2>
+<p>The core task of structure analysis is to parse and segment the content of input document images. By identifying different elements in the image (such as text, charts, images, etc.), they are classified into predefined categories (e.g., pure text area, title area, table area, image area, list area, etc.), and the position and size of these regions in the document are determined.</p>
+<h2 id="ii-supported-model-list">II. Supported Model List<a class="headerlink" href="#ii-supported-model-list" title="Permanent link">&para;</a></h2>
 <ul>
-<li><b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b></li>
+<li><b>The layout detection model includes 20 common categories: document title, paragraph title, text, page number, abstract, table, references, footnotes, header, footer, algorithm, formula, formula number, image, table, seal, figure_table title, chart, and sidebar text and lists of references</b></li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
-<td>90.4</td>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">Training Model</a></td>
+<td>83.2</td>
 <td>34.6244 / 10.3945</td>
 <td>510.57 / - </td>
-<td>123.76 M</td>
-<td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
+<td>126.01 M</td>
+<td>A higher-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
 </tr>
 <tr>
-<td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
+</tbody>
+</table>
+
+<ul>
+<li><b>The layout detection model includes 1 category: Block:</b></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocBlockLayout</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBlockLayout_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams">Training Model</a></td>
+<td>95.9</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>123.92 M</td>
+<td>A layout block localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+<ul>
+<li><b>The layout detection model includes 23 common categories: document title, paragraph title, text, page number, abstract, table of contents, references, footnotes, header, footer, algorithm, formula, formula number, image, figure caption, table, table caption, seal, figure title, figure, header image, footer image, and sidebar text</b></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">Training Model</a></td>
+<td>90.4</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / -</td>
+<td>123.76 M</td>
+<td>A high-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using RT-DETR-L.</td>
+</tr>
+<tr>
+<td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Training Model</a></td>
 <td>75.2</td>
 <td>13.3259 / 4.8685</td>
 <td>44.0680 / 44.0680</td>
 <td>22.578</td>
-<td>基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型</td>
+<td>A layout area localization model with balanced precision and efficiency, trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Training Model</a></td>
 <td>70.9</td>
 <td>8.3008 / 2.3794</td>
 <td>10.0623 / 9.9296</td>
 <td>4.834</td>
-<td>基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
+<td>A high-efficiency layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-S.</td>
 </tr>
 </tbody>
 </table>
 
 <blockquote>
-<p>❗ 以上列出的是版面检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>11个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：</p>
+<p>❗ The above list includes the <b>4 core models</b> that are key supported by the text recognition module. The module actually supports a total of <b>12 full models</b>, including several predefined models with different categories. The complete model list is as follows:</p>
 </blockquote>
-<details><summary> 👉模型列表详情</summary>
+<details><summary> 👉 Details of Model List</summary>
 
-* <b>表格版面检测模型</b>
+* <b>Table Layout Detection Model</b>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet_layout_1x_table</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet_layout_1x_table</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams">Training Model</a></td>
 <td>97.5</td>
 <td>8.02 / 3.09</td>
 <td>23.70 / 20.41</td>
 <td>7.4 M</td>
-<td>基于PicoDet-1x在自建数据集训练的高效率版面区域定位模型，可定位表格这1类区域</td>
+<td>A high-efficiency layout area localization model trained on a self-built dataset using PicoDet-1x, capable of detecting table regions.</td>
 </tr>
 </tbody></table>
 
-* <b>3类版面检测模型，包含表格、图像、印章</b>
+* <b>3-Class Layout Detection Model, including Table, Image, and Stamp</b>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet-S_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-S_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>88.2</td>
 <td>8.99 / 2.22</td>
 <td>16.11 / 8.73</td>
 <td>4.8</td>
-<td>基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
+<td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
 </tr>
 <tr>
-<td>PicoDet-L_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-L_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>89.0</td>
 <td>13.05 / 4.50</td>
 <td>41.30 / 41.30</td>
 <td>22.6</td>
-<td>基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型</td>
+<td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>RT-DETR-H_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">训练模型</a></td>
+<td>RT-DETR-H_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>95.8</td>
 <td>114.93 / 27.71</td>
 <td>947.56 / 947.56</td>
 <td>470.1</td>
-<td>基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型</td>
+<td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
 </tbody></table>
 
-* <b>5类英文文档区域检测模型，包含文字、标题、表格、图片以及列表</b>
+* <b>5-Class English Document Area Detection Model, including Text, Title, Table, Image, and List</b>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet_layout_1x</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet_layout_1x</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_pretrained.pdparams">Training Model</a></td>
 <td>97.8</td>
 <td>9.03 / 3.10</td>
 <td>25.82 / 20.70</td>
 <td>7.4</td>
-<td>基于PicoDet-1x在PubLayNet数据集训练的高效率英文文档版面区域定位模型</td>
+<td>A high-efficiency English document layout area localization model trained on the PubLayNet dataset using PicoDet-1x.</td>
 </tr>
 </tbody></table>
 
-* <b>17类区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
+* <b>17-Class Area Detection Model, including 17 common layout categories: Paragraph Title, Image, Text, Number, Abstract, Content, Figure Caption, Formula, Table, Table Caption, References, Document Title, Footnote, Header, Algorithm, Footer, and Stamp</b>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet-S_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-S_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>87.4</td>
 <td>9.11 / 2.12</td>
 <td>15.42 / 9.12</td>
 <td>4.8</td>
-<td>基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
+<td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
 </tr>
 <tr>
-<td>PicoDet-L_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-L_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>89.0</td>
 <td>13.50 / 4.69</td>
 <td>43.32 / 43.32</td>
 <td>22.6</td>
-<td>基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型</td>
+<td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>RT-DETR-H_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>RT-DETR-H_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>98.3</td>
 <td>115.29 / 104.09</td>
 <td>995.27 / 995.27</td>
 <td>470.2</td>
-<td>基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型</td>
+<td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
 </tbody>
 </table>
 
- <strong>测试环境说明:</strong>
+<strong>Test Environment Description:</strong>
 
   <ul>
-      <li><b>性能测试环境</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>测试数据集：</strong>
+             <li><strong>Test Dataset：</strong>
                  <ul>
-                    <li>版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
-                    <li>表格版面检测模型：PaddleOCR 自建的版面表格区域检测数据集，包含中英文 7835 张带有表格的论文文档类型图片。</li>
-                    <li>3类版面检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 1154 张文档类型图片。</li>
-                    <li>5类英文文档区域检测模型： <a href="https://developer.ibm.com/exchanges/data/all/publaynet" target="_blank">PubLayNet</a> 的评估数据集，包含英文文档的 11245 张图片。</li>
-                    <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
+                   <li>20 types of layout detection models: PaddleOCR's self built layout area detection dataset, including Chinese and English papers, magazines, newspapers, research papers PPT、 1300 images of document types such as test papers and textbooks. </li>
+                   <li>Type 1 version face region detection model: PaddleOCR's self built version face region detection dataset, including Chinese and English papers, magazines, newspapers, research reports PPT、 1000 document type images such as test papers and textbooks. </li>      
+                   <li>23 categories Layout Detection Model: A self-built layout area detection dataset by PaddleOCR, containing 500 common document type images such as Chinese and English papers, magazines, contracts, books, exam papers, and research reports.</li>
+                   <li>Table Layout Detection Model: A self-built table area detection dataset by PaddleOCR, including 7,835 Chinese and English paper document type images with tables.</li>
+                   <li> 3-Class Layout Detection Model: A self-built layout area detection dataset by PaddleOCR, comprising 1,154 common document type images such as Chinese and English papers, magazines, and research reports.</li>
+                   <li>5-Class English Document Area Detection Model: The evaluation dataset of <a href="https://developer.ibm.com/exchanges/data/all/publaynet">PubLayNet</a>, containing 11,245 images of English documents.</li>
+                   <li>17-Class Area Detection Model: A self-built layout area detection dataset by PaddleOCR, including 892 common document type images such as Chinese and English papers, magazines, and research reports.</li>
                  </ul>
-              </li>
-              <li><strong>硬件配置：</strong>
+             </li>
+              <li><strong>Hardware Configuration：</strong>
                   <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
       </li>
-      <li><b>推理模式说明</b></li>
+      <li><b>Inference Mode Description</b></li>
   </ul>
 
 <table border="1">
     <thead>
         <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
+            <th>Mode</th>
+            <th>GPU Configuration </th>
+            <th>CPU Configuration </th>
+            <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
+            <td>Normal Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+            <td>High-Performance Mode</td>
+            <td>Optimal combination of pre-selected precision types and acceleration strategies</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Pre-selected optimal backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
+
 </details>
 
-<h2 id="_4">三、快速开始<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="iii-quick-integration">III. Quick Integration  <a id="quick"> </a><a class="headerlink" href="#iii-quick-integration" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 <a href="../ppocr/installation.md">安装教程</a>。</p>
+<p>❗ Before quick integration, please install the PaddleOCR wheel package. For detailed instructions, refer to <a href="../ppocr/installation.en.md">PaddleOCR Local Installation Tutorial</a>。</p>
 </blockquote>
-<p>使用一行命令即可快速体验：</p>
+<p>Quickly experience with just one command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>layout_detection<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg
 </span></code></pre></div>
-<p>您也可以将版面区域检测模块中的模型推理集成到您的项目中。运行以下代码前，请您下载<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例图片</a>到本地。</p>
+<p>You can also integrate the model inference from the layout area detection module into your project. Before running the following code, please download <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">Example Image</a> Go to the local area.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">LayoutDetection</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">LayoutDetection</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocLayout-L&quot;</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">LayoutDetection</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocLayout_plus-L&quot;</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;layout.jpg&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">layout_nms</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>运行后，得到的结果为：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;layout.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9866452813148499,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">74</span>.30952,<span class="w"> </span><span class="m">105</span>.71375,<span class="w"> </span><span class="m">321</span>.98676,<span class="w"> </span><span class="m">299</span>.11072<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9859839081764221,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.65901,<span class="w"> </span><span class="m">349</span>.91003,<span class="w"> </span><span class="m">358</span>.33832,<span class="w"> </span><span class="m">611</span>.3427<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9850624799728394,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.945335,<span class="w"> </span><span class="m">647</span>.378,<span class="w"> </span><span class="m">358</span>.32523,<span class="w"> </span><span class="m">849</span>.23413<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9850127696990967,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">438</span>.06952,<span class="w"> </span><span class="m">105</span>.37871,<span class="w"> </span><span class="m">662</span>.88666,<span class="w"> </span><span class="m">313</span>.88693<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9847850799560547,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.97076,<span class="w"> </span><span class="m">497</span>.04156,<span class="w"> </span><span class="m">710</span>.9561,<span class="w"> </span><span class="m">697</span>.6779<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9805672764778137,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.79672,<span class="w"> </span><span class="m">345</span>.93826,<span class="w"> </span><span class="m">710</span>.07385,<span class="w"> </span><span class="m">459</span>.14514<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9799845814704895,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.07553,<span class="w"> </span><span class="m">735</span>.38086,<span class="w"> </span><span class="m">710</span>.6084,<span class="w"> </span><span class="m">850</span>.1987<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">9</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9376267194747925,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.27453,<span class="w"> </span><span class="m">19</span>.852173,<span class="w"> </span><span class="m">358</span>.92462,<span class="w"> </span><span class="m">77</span>.81253<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8755457997322083,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.6317,<span class="w"> </span><span class="m">476</span>.607,<span class="w"> </span><span class="m">699</span>.7845,<span class="w"> </span><span class="m">490</span>.11603<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8617177605628967,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">387</span>.27615,<span class="w"> </span><span class="m">715</span>.9574,<span class="w"> </span><span class="m">524</span>.3855,<span class="w"> </span><span class="m">729</span>.2082<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8607730865478516,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.451878,<span class="w"> </span><span class="m">627</span>.4962,<span class="w"> </span><span class="m">185</span>.63542,<span class="w"> </span><span class="m">640</span>.4025<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8575080633163452,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.334385,<span class="w"> </span><span class="m">330</span>.80493,<span class="w"> </span><span class="m">141</span>.46948,<span class="w"> </span><span class="m">344</span>.40747<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">9</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.7959735989570618,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.93796,<span class="w"> </span><span class="m">19</span>.755125,<span class="w"> </span><span class="m">711</span>.5128,<span class="w"> </span><span class="m">75</span>.00555<span class="o">]}]}}</span>
+<p>After running, the result obtained is:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;layout.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9870226979255676,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.101906,<span class="w"> </span><span class="m">349</span>.85275,<span class="w"> </span><span class="m">358</span>.59213,<span class="w"> </span><span class="m">611</span>.0772<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9866003394126892,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.500324,<span class="w"> </span><span class="m">647</span>.1585,<span class="w"> </span><span class="m">358</span>.29367,<span class="w"> </span><span class="m">848</span>.66797<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9846674203872681,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.71445,<span class="w"> </span><span class="m">497</span>.40973,<span class="w"> </span><span class="m">711</span>.2261,<span class="w"> </span><span class="m">697</span>.84265<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.984126091003418,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">73</span>.76879,<span class="w"> </span><span class="m">105</span>.94899,<span class="w"> </span><span class="m">321</span>.95303,<span class="w"> </span><span class="m">298</span>.84888<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">8</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;table&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9834211468696594,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">436</span>.95642,<span class="w"> </span><span class="m">105</span>.81531,<span class="w"> </span><span class="m">662</span>.7168,<span class="w"> </span><span class="m">313</span>.48462<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9832247495651245,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.62787,<span class="w"> </span><span class="m">346</span>.2288,<span class="w"> </span><span class="m">710</span>.10095,<span class="w"> </span><span class="m">458</span>.77127<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9816061854362488,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.7802,<span class="w"> </span><span class="m">735</span>.1931,<span class="w"> </span><span class="m">710</span>.56134,<span class="w"> </span><span class="m">849</span>.9764<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;figure_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9577341079711914,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">34</span>.421448,<span class="w"> </span><span class="m">20</span>.055151,<span class="w"> </span><span class="m">358</span>.71283,<span class="w"> </span><span class="m">76</span>.53663<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;figure_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9505634307861328,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">385</span>.72278,<span class="w"> </span><span class="m">20</span>.053688,<span class="w"> </span><span class="m">711</span>.29333,<span class="w"> </span><span class="m">74</span>.92744<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9001723527908325,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">386</span>.46344,<span class="w"> </span><span class="m">477</span>.03488,<span class="w"> </span><span class="m">699</span>.4023,<span class="w"> </span><span class="m">490</span>.07474<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8845751285552979,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.413048,<span class="w"> </span><span class="m">627</span>.73596,<span class="w"> </span><span class="m">185</span>.58383,<span class="w"> </span><span class="m">640</span>.52264<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8837394118309021,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">387</span>.17603,<span class="w"> </span><span class="m">716</span>.3423,<span class="w"> </span><span class="m">524</span>.7841,<span class="w"> </span><span class="m">729</span>.258<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.8508939743041992,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">35</span>.50064,<span class="w"> </span><span class="m">331</span>.18445,<span class="w"> </span><span class="m">141</span>.6444,<span class="w"> </span><span class="m">344</span>.81097<span class="o">]}]}}</span>
 </span></code></pre></div>
-<p>参数含义如下：
-- <code>input_path</code>：输入的待预测图像的路径
-- <code>page_index</code>：如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code>
-- <code>boxes</code>：预测的目标框信息，一个字典列表。每个字典代表一个检出的目标，包含以下信息：
-  - <code>cls_id</code>：类别ID，一个整数
-  - <code>label</code>：类别标签，一个字符串
-  - <code>score</code>：目标框置信度，一个浮点数
-  - <code>coordinate</code>：目标框坐标，一个浮点数列表，格式为<code>[xmin, ymin, xmax, ymax]</code></p>
-<p>可视化图片如下：</p>
+<p>The meanings of the parameters are as follows:
+- <code>input_path</code>: The path to the input image for prediction.
+- <code>page_index</code>: If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is <code>None</code>.
+- <code>boxes</code>: Information about the predicted bounding boxes, a list of dictionaries. Each dictionary represents a detected object and contains the following information:
+  - <code>cls_id</code>: Class ID, an integer.
+  - <code>label</code>: Class label, a string.
+  - <code>score</code>: Confidence score of the bounding box, a float.
+  - <code>coordinate</code>: Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code>.</p>
+<p>The visualized image is as follows:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res.jpg"/></p>
-<p>相关方法、参数等说明如下：</p>
+<p>Relevant methods, parameters, and explanations are as follows:</p>
 <ul>
-<li><code>LayoutDetection</code>实例化目标检测模型（此处以<code>PP-DocLayout-L</code>为例），具体说明如下：</li>
+<li><code>LayoutDetection</code> instantiates a target detection model (here, <code>PP-DocLayout_plus-L</code> is used as an example). The detailed explanation is as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>Name of the model</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td>None</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
+<td>Path to store the model</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td>None</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>The device used for model inference</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Size of the input image; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>int/list/None</code></td>
 <td>
 <ul>
-<li><b>int</b>, 如 640 , 表示将输入图像resize到640x640大小</li>
-<li><b>列表</b>, 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>int</b>, e.g., 640, means resizing the input image to 640x640</li>
+<li><b>List</b>, e.g., [640, 512], means resizing the input image to a width of 640 and a height of 512</li>
+<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Threshold for filtering low-confidence prediction results; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
+<li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
+<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
-<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
+<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Scaling factor for the side length of the detection box; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
+<li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
+<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
+<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Merging mode for the detection boxes output by the model; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
-<li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>large</b>, when set to large, only the largest external box will be retained for overlapping detection boxes, and the internal overlapping boxes will be deleted</li>
+<li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
+<li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
+<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
+<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
-</tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td>Whether to enable the high-performance inference plugin</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
+<td>High-performance inference configuration</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
 <ul>
 <li>
-<p>其中，<code>model_name</code> 必须指定，指定 <code>model_name</code> 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 <code>model_dir</code> 时，使用用户自定义的模型。</p>
+<p>Note that <code>model_name</code> must be specified. After specifying <code>model_name</code>, the default PaddleX built-in model parameters will be used. If <code>model_dir</code> is specified, the user-defined model will be used.</p>
 </li>
 <li>
-<p>调用目标检测模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code>、<code>batch_size</code>和<code>threshold</code>，具体说明如下：</p>
+<p>The <code>predict()</code> method of the target detection model is called for inference prediction. The parameters of the <code>predict()</code> method are <code>input</code>, <code>batch_size</code>, and <code>threshold</code>, which are explained as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
+<td>Data for prediction, supporting multiple input types</td>
 <td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
 <td>
 <ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
+<li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
+<li><b>URL link</b>, such as the network URL of an image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例</a></li>
+<li><b>Local Directory</b>, the directory should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
+<li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>Batch size</td>
 <td><code>int</code></td>
-<td>大于0的任意整数</td>
+<td>Any integer greater than 0</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值</td>
+<td>Threshold for filtering low-confidence prediction results</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>threshold</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
+<li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
+<li><b>None</b>, not specified, will use the <code>threshold</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
 </ul>
 </td>
+</tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
-<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_nms</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
+<li><b>None</b>, not specified, will use the <code>layout_nms</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Scaling factor for the side length of the detection box; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_unclip_ratio</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
+<li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
+<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
+<li><b>None</b>, not specified, will use the <code>layout_unclip_ratio</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>Merging mode for the detection boxes output by the model; if not specified, the default PaddleX official model configuration will be used</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
-<li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_merge_bboxes_mode</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>large</b>, when set to large, only the largest external box will be retained for overlapping detection boxes, and the internal overlapping boxes will be deleted</li>
+<li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
+<li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
+<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
+<li><b>None</b>, not specified, will use the <code>layout_merge_bboxes_mode</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
 </ul>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
-</tr></tr></table>
+</tr></table>
 
 <ul>
-<li>对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</li>
+<li>Process the prediction results, with each sample's prediction result being the corresponding Result object, and supporting operations such as printing, saving as an image, and saving as a 'json' file:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Method Description</th>
+<th>Parameters</th>
+<th>Parameter type</th>
+<th>Parameter Description</th>
+<th>Default value</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="3"><code>print()</code></td>
-<td rowspan="3">打印结果到终端</td>
+<td rowspan="3">Print the result to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Do you want to use <code>JSON</code> indentation formatting for the output content</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to enhance the readability of the <code>JSON</code> data output, only valid when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether to escape non ASCII characters to Unicode characters. When set to <code>True</code>, all non ASCII </code>characters will be escaped; <code>False</code> preserves the original characters and is only valid when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan="3"><code>save_to_json()</code></td>
-<td rowspan="3">将结果保存为json格式的文件</td>
+<td rowspan="3">Save the result as a JSON format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The saved file path, when it is a directory, the name of the saved file is consistent with the name of the input file type</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to enhance the readability of the <code>JSON</code> data output, only valid when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether to escape non ASCII characters to Unicode characters. When set to <code>True</code>, all non <code>ASCII</code> characters will be escaped; <code>False</code> preserves the original characters and is only valid when<code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>Save the results as an image format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The saved file path, when it is a directory, the name of the saved file is consistent with the name of the input file type</td>
+<td>None</td>
 </tr>
 </table>
 
 <ul>
-<li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</li>
+<li>Additionally, it also supports obtaining the visualized image with results and the prediction results via attributes, as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="1"><code>json</code></td>
-<td rowspan="1">获取预测的<code>json</code>格式的结果</td>
+<td rowspan="1">Get the prediction result in <code>json</code> format</td>
 </tr>
 <tr>
 <td rowspan="1"><code>img</code></td>
-<td rowspan="1">获取格式为<code>dict</code>的可视化图像</td>
+<td rowspan="1">Get the visualized image in <code>dict</code> format</td>
 </tr>
 </table>
 
-<h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>......</p>
+<h2 id="iv-custom-development">IV. Custom Development<a class="headerlink" href="#iv-custom-development" title="Permanent link">&para;</a></h2>
+<p>Since PaddleOCR does not directly provide training for the layout detection module, if you need to train the layout area detection model, you can refer to <a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">PaddleX Layout Detection Module Secondary Development</a>Partially conduct training. The trained model can be seamlessly integrated into PaddleOCR's API for inference.</p>
 
 
 
@@ -6018,7 +6075,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:42:31">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 14:54:51">May 19, 2025</span>
   </span>
 
     
@@ -6028,7 +6085,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:42:31">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 14:54:51">May 19, 2025</span>
   </span>
 
     
