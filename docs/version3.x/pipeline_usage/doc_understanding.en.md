@@ -405,9 +405,9 @@ If you need to apply the pipeline directly to your Python project, you can refer
 
 In addition, PaddleOCR also provides two other deployment methods, detailed descriptions are as follows:
 
-🚀 High-Performance Inference: In real production environments, many applications have strict standards for the performance indicators of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize the performance of model inference and pre-and post-processing, achieving significant acceleration of the end-to-end process. For detailed high-performance inference processes, refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In real production environments, many applications have strict standards for the performance indicators of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize the performance of model inference and pre-and post-processing, achieving significant acceleration of the end-to-end process. For detailed high-performance inference processes, refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
-☁️ Service Deployment: Service deployment is a common form of deployment in real production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service deployment processes, refer to the [Service Deployment Guide](../deployment/serving.md).
+☁️ Service Deployment: Service deployment is a common form of deployment in real production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service deployment processes, refer to [Serving](../deployment/serving.md).
 
 Below is the API reference for basic service deployment and examples of service invocation in multiple languages:
 

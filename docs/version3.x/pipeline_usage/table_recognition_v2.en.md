@@ -1730,9 +1730,9 @@ If you need to apply the model directly in your Python project, you can refer to
 
 Additionally, PaddleOCR provides two other deployment methods, which are described in detail below:
 
-🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
-☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../deployment/serving.md).
+☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to [Serving](../deployment/serving.md).
 
 Below is the API reference for basic service-oriented deployment and examples of multilingual service calls:
 
