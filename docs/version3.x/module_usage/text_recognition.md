@@ -641,6 +641,7 @@ PaddleOCR 对代码进行了模块化，训练 `PP-OCRv5_server_rec` 识别模�
 #单卡训练 (默认训练方式)
 python3 tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
+
 #多卡训练，通过--gpus参数指定卡号
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams

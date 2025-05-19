@@ -24,6 +24,31 @@ comments: true
 <details>
 <summary> <b>版面区域检测模块（可选）：</b></summary>
 
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
 * <b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
@@ -65,7 +90,7 @@ comments: true
 </table>
 
 
->❗ 以上列出的是版面检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>11个全量模型</b>，包含多个预定义了不同类别的模型，其中包含印章类别的模型有9个，除上述3个核心模型外，其余模型列表如下：
+>❗ 以上列出的是版面检测模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>13个全量模型</b>，包含多个预定义了不同类别的模型，其中包含印章类别的模型有9个，除上述3个核心模型外，其余模型列表如下：
 
 
 <details><summary> 👉模型列表详情</summary>
@@ -947,9 +972,9 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 from paddleocr import SealRecognition
 
 pipeline = SealRecognition()
-# ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
-# ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
-# ocr = TableRecognitionPipelineV2(device="gpu") # 通过 device 指定模型推理时使用 GPU
+# ocr = SealRecognition(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
+# ocr = SealRecognition(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+# ocr = SealRecognition(device="gpu") # 通过 device 指定模型推理时使用 GPU
 output = pipeline.predict("./seal_text_det.png")
 for res in output:
     res.print() ## 打印预测的结构化输出
@@ -1751,4 +1776,41 @@ for i, res in enumerate(result["sealRecResults"]):
 ## 4. 二次开发
 如果印章文本识别产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升印章文本识别产线的在您的场景中的识别效果。
 
-......
+由于印章文本识别产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>印章位置检测不准或未检出</td>
+<td>版面检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html">链接</a></td>
+</tr>
+<tr>
+<td>印章文本存在漏检</td>
+<td>印章文本检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/seal_text_detection.html">链接</a></td>
+</tr>
+<tr>
+<td>文本内容不准</td>
+<td>文本识别模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
