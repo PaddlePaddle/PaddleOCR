@@ -22,7 +22,7 @@
     
     
       
-        <title>高性能推理 - PaddleOCR Documentation</title>
+        <title>High-Performance Inference - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#high-performance-inference" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              高性能推理
+              High-Performance Inference
             
           </span>
         </div>
@@ -5376,45 +5376,51 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
+  <a href="#1-prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 前置条件
+      1. Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-install-high-performance-inference-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Install High-Performance Inference Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-detailed-gpu-environment-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Detailed GPU Environment Instructions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-executing-high-performance-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Executing High-Performance Inference
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
+  <a href="#3-notes" class="md-nav__link">
     <span class="md-ellipsis">
-      1.1 安装高性能推理依赖
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#12-gpu" class="md-nav__link">
-    <span class="md-ellipsis">
-      1.2 GPU 环境详细说明
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. 执行高性能推理
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. 说明
+      3. Notes
     </span>
   </a>
   
@@ -5436,7 +5442,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/deployment/high_performance_inference.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/deployment/high_performance_inference.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5445,80 +5451,88 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/deployment/high_performance_inference.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/deployment/high_performance_inference.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">高性能推理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<p>在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。PaddleOCR 提供高性能推理能力，让用户无需关注复杂的配置和底层细节，一键提升模型的推理速度。具体而言，PaddleOCR 的高性能推理功能能够：</p>
+<h1 id="high-performance-inference">High-Performance Inference<a class="headerlink" href="#high-performance-inference" title="Permanent link">&para;</a></h1>
+<p>In real-world production environments, many applications have stringent performance requirements for deployment strategies, particularly regarding response speed, to ensure efficient system operation and a smooth user experience. PaddleOCR provides high-performance inference capabilities, allowing users to enhance model inference speed with a single click without worrying about complex configurations or underlying details. Specifically, PaddleOCR's high-performance inference functionality can:</p>
 <ul>
-<li>结合先验知识自动选择合适的推理后端（Paddle Inference、OpenVINO、ONNX Runtime、TensorRT等），并配置加速策略（如增大推理线程数、设置 FP16 精度推理）；</li>
-<li>根据需要自动将飞桨静态图模型转换为 ONNX 格式，以使用更优的推理后端实现加速。</li>
+<li>Automatically select an appropriate inference backend (e.g., Paddle Inference, OpenVINO, ONNX Runtime, TensorRT) based on prior knowledge and configure acceleration strategies (e.g., increasing the number of inference threads, setting FP16 precision inference);</li>
+<li>Automatically convert PaddlePaddle static graph models to ONNX format as needed to leverage better inference backends for acceleration.</li>
 </ul>
-<p>本文档主要介绍高性能推理功能的安装与使用方法。</p>
-<h2 id="1">1. 前置条件<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<h2 id="11">1.1 安装高性能推理依赖<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
-<p>通过 PaddleOCR CLI 安装高性能推理所需依赖：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>install_hpi_deps<span class="w"> </span><span class="o">{</span>设备类型<span class="o">}</span>
+<p>This document primarily introduces the installation and usage methods for high-performance inference.</p>
+<h2 id="1-prerequisites">1. Prerequisites<a class="headerlink" href="#1-prerequisites" title="Permanent link">&para;</a></h2>
+<h3 id="11-install-high-performance-inference-dependencies">1.1 Install High-Performance Inference Dependencies<a class="headerlink" href="#11-install-high-performance-inference-dependencies" title="Permanent link">&para;</a></h3>
+<p>Install the dependencies required for high-performance inference using the PaddleOCR CLI:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>install_hpi_deps<span class="w"> </span><span class="o">{</span>device_type<span class="o">}</span>
 </span></code></pre></div>
-<p>支持的设备类型包括：</p>
+<p>The supported device types are:</p>
 <ul>
-<li><code>cpu</code>：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。</li>
-<li><code>gpu</code>：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。</li>
+<li><code>cpu</code>: For CPU-only inference. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12.</li>
+<li><code>gpu</code>: For inference using either CPU or NVIDIA GPU. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12. Refer to the next subsection for detailed instructions.</li>
 </ul>
-<p>同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 <a href="https://learn.microsoft.com/zh-cn/windows/wsl/install">WSL</a> 环境中安装。</p>
-<p><strong>推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。</strong> 各设备类型对应的镜像如下：</p>
+<p>Only one type of device dependency should exist in the same environment. For Windows systems, it is currently recommended to install within a Docker container or <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a> environment.</p>
+<p><strong>It is recommended to use the official PaddlePaddle Docker image to install high-performance inference dependencies.</strong> The corresponding images for each device type are as follows:</p>
 <ul>
-<li><code>cpu</code>：<code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0</code></li>
-<li><code>gpu</code>：<ul>
-<li>CUDA 11.8：<code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6</code></li>
+<li><code>cpu</code>: <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0</code></li>
+<li><code>gpu</code>:<ul>
+<li>CUDA 11.8: <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6</code></li>
 </ul>
 </li>
 </ul>
-<h2 id="12-gpu">1.2 GPU 环境详细说明<a class="headerlink" href="#12-gpu" title="Permanent link">&para;</a></h2>
-<p>首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 11.8 和 cuDNN 8.9 的安装说明文档：</p>
+<h3 id="12-detailed-gpu-environment-instructions">1.2 Detailed GPU Environment Instructions<a class="headerlink" href="#12-detailed-gpu-environment-instructions" title="Permanent link">&para;</a></h3>
+<p>First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR only supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9. Below are the installation instructions for CUDA 11.8 and cuDNN 8.9:</p>
 <ul>
-<li><a href="https://developer.nvidia.com/cuda-11-8-0-download-archive">安装 CUDA 11.8</a></li>
-<li><a href="https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html">安装 cuDNN 8.9</a></li>
+<li><a href="https://developer.nvidia.com/cuda-11-8-0-download-archive">Install CUDA 11.8</a></li>
+<li><a href="https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html">Install cuDNN 8.9</a></li>
 </ul>
-<p>如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。</p>
-<p>如果通过 pip 安装飞桨，通常 CUDA、cuDNN 的相关 Python 包将被自动安装。在这种情况下，<strong>仍需要通过安装非 Python 专用的 CUDA 与 cuDNN</strong>。同时，建议安装的 CUDA 和 cuDNN 版本与环境中存在的 Python 包版本保持一致，以避免不同版本的库共存导致的潜在问题。可以通过如下方式可以查看 CUDA 和 cuDNN 相关 Python 包的版本：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># CUDA 相关 Python 包版本</span>
+<p>If using the official PaddlePaddle image, the CUDA and cuDNN versions in the image already meet the requirements, and no additional installation is needed.</p>
+<p>If installing PaddlePaddle via pip, the relevant Python packages for CUDA and cuDNN will typically be installed automatically. In this case, <strong>you still need to install the non-Python-specific CUDA and cuDNN versions.</strong> It is also recommended to install CUDA and cuDNN versions that match the Python package versions in your environment to avoid potential issues caused by coexisting library versions. You can check the versions of the CUDA and cuDNN-related Python packages with the following commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># CUDA-related Python package versions</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>pip<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>nvidia-cuda
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># cuDNN 相关 Python 包版本</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># cuDNN-related Python package versions</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>pip<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>nvidia-cudnn
 </span></code></pre></div>
-<p>其次，需确保环境中安装有符合要求的 TensorRT。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：</p>
+<p>Secondly, ensure that the environment has the required TensorRT version installed. Currently, PaddleOCR only supports TensorRT 8.6.1.6. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>/usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
 </span></code></pre></div>
-<p>对于其他环境，请参考 <a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html">TensorRT 文档</a> 安装 TensorRT。示例如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 下载 TensorRT tar 文件</span>
+<p>For other environments, refer to the <a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html">TensorRT documentation</a> to install TensorRT. Here is an example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Download the TensorRT tar file</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>wget<span class="w"> </span>https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/secure/8.6.1/tars/TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># 解压 TensorRT tar 文件</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Extract the TensorRT tar file</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>tar<span class="w"> </span>xvf<span class="w"> </span>TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># 安装 TensorRT wheel 包</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Install the TensorRT wheel package</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>TensorRT-8.6.1.6/python/tensorrt-8.6.1-cp310-none-linux_x86_64.whl
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># 添加 TensorRT 的 `lib` 目录的绝对路径到 LD_LIBRARY_PATH 中</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Add the absolute path of the TensorRT `lib` directory to LD_LIBRARY_PATH</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="nb">export</span><span class="w"> </span><span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$LD_LIBRARY_PATH</span><span class="s2">:TensorRT-8.6.1.6/lib&quot;</span>
 </span></code></pre></div>
-<h2 id="2">2. 执行高性能推理<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>对于 PaddleOCR CLI，指定 <code>--enable_hpi</code> 为 <code>True</code> 即可执行高性能推理。例如：</p>
+<h2 id="2-executing-high-performance-inference">2. Executing High-Performance Inference<a class="headerlink" href="#2-executing-high-performance-inference" title="Permanent link">&para;</a></h2>
+<p>For the PaddleOCR CLI, specify <code>--enable_hpi</code> as <code>True</code> to execute high-performance inference. For example:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>--enable_hpi<span class="w"> </span>True<span class="w"> </span>...
 </span></code></pre></div>
-<p>对于 PaddleOCR Python API，在初始化产线对象或者模块对象时，设置 <code>enable_hpi</code> 为 <code>True</code> 即可在调用推理方法时执行高性能推理。例如：</p>
+<p>For the PaddleOCR Python API, set <code>enable_hpi</code> to <code>True</code> when initializing the pipeline or module object to enable high-performance inference when calling the inference method. For example:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">enable_hpi</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </span></code></pre></div>
-<h2 id="3">3. 说明<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h2 id="3-notes">3. Notes<a class="headerlink" href="#3-notes" title="Permanent link">&para;</a></h2>
 <ol>
-<li>对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。</li>
-<li>目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。</li>
-<li>在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 <a href="obtaining_onnx_models.html">获取 ONNX 模型</a>。</li>
-<li>PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 <a href="../paddleocr_and_paddlex.html#3-使用-paddlex-产线配置文件">使用 PaddleX 产线配置文件</a> 和 <a href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22">PaddleX 高性能推理指南</a> 了解如何调整高性能推理配置。</li>
+<li>
+<p>For some models, the first execution of high-performance inference may take longer to complete the construction of the inference engine. Relevant information about the inference engine will be cached in the model directory after the first construction, and subsequent initializations can reuse the cached content to improve speed.</p>
+</li>
+<li>
+<p>Currently, due to reasons such as not using static graph format models or the presence of unsupported operators, some models may not achieve inference acceleration.</p>
+</li>
+<li>
+<p>During high-performance inference, PaddleOCR automatically handles the conversion of model formats and selects the optimal inference backend whenever possible. Additionally, PaddleOCR supports users specifying ONNX models. For information on converting PaddlePaddle static graph models to ONNX format, refer to <a href="obtaining_onnx_models.html">Obtaining ONNX Models</a>.</p>
+</li>
+<li>
+<p>The high-performance inference capabilities of PaddleOCR rely on PaddleX and its high-performance inference plugins. By passing in a custom PaddleX production line configuration file, you can configure the inference backend and other related settings. Please refer to <a href="../paddleocr_and_paddlex.html#3-Using-PaddleX-Pipeline-Configuration-Files">Using PaddleX Production Line Configuration Files</a> and the <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/high_performance_inference.html#22">PaddleX High-Performance Inference Guide</a> to learn how to adjust the high-performance inference configurations.</p>
+</li>
 </ol>
 
 
@@ -5542,7 +5556,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 15:02:27">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:18:11">May 19, 2025</span>
   </span>
 
     
@@ -5552,7 +5566,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 15:02:27">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:18:11">May 19, 2025</span>
   </span>
 
     

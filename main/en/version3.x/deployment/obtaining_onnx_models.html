@@ -22,7 +22,7 @@
     
     
       
-        <title>获取 ONNX 模型 - PaddleOCR Documentation</title>
+        <title>Obtaining ONNX Models - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#onnx" class="md-skip">
+        <a href="#obtaining-onnx-models" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              获取 ONNX 模型
+              Obtaining ONNX Models
             
           </span>
         </div>
@@ -5383,7 +5383,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/deployment/obtaining_onnx_models.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/deployment/obtaining_onnx_models.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5392,49 +5392,49 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/deployment/obtaining_onnx_models.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/deployment/obtaining_onnx_models.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="onnx">获取 ONNX 模型<a class="headerlink" href="#onnx" title="Permanent link">&para;</a></h1>
-<p>PaddleOCR 提供了丰富的预训练模型，这些模型均采用飞桨的静态图格式进行存储。若需在部署阶段使用 ONNX 格式的模型，可借助 PaddleX 提供的 Paddle2ONNX 插件进行转换。关于 PaddleX 及其与 PaddleOCR 之间的关系，请参考 <a href="../paddleocr_and_paddlex.html#1-paddleocr-与-paddlex-的区别与联系">PaddleOCR 与 PaddleX 的区别与联系</a>。</p>
-<p>首先，执行如下命令，通过 PaddleX CLI 安装 PaddleX 的 Paddle2ONNX 插件：</p>
+<h1 id="obtaining-onnx-models">Obtaining ONNX Models<a class="headerlink" href="#obtaining-onnx-models" title="Permanent link">&para;</a></h1>
+<p>PaddleOCR provides a rich collection of pre-trained models, all stored in PaddlePaddle's static graph format. To use these models in ONNX format during deployment, you can convert them using the Paddle2ONNX plugin provided by PaddleX. For more information about PaddleX and its relationship with PaddleOCR, refer to <a href="../paddleocr_and_paddlex.html#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX">Differences and Connections Between PaddleOCR and PaddleX</a>.</p>
+<p>First, install the Paddle2ONNX plugin for PaddleX using the following command via the PaddleX CLI:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>paddle2onnx
 </span></code></pre></div>
-<p>然后，执行如下命令完成模型转换：</p>
+<p>Then, execute the following command to complete the model conversion:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>paddlex<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--paddle2onnx<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># 使用paddle2onnx功能</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span>--paddle_model_dir<span class="w"> </span>/your/paddle_model/dir<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># 指定 Paddle 模型所在的目录</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span>--onnx_model_dir<span class="w"> </span>/your/onnx_model/output/dir<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># 指定转换后 ONNX 模型的输出目录</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span>--opset_version<span class="w"> </span><span class="m">7</span><span class="w">  </span><span class="c1"># 指定要使用的 ONNX opset 版本</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span>--paddle2onnx<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># Use the paddle2onnx feature</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span>--paddle_model_dir<span class="w"> </span>/your/paddle_model/dir<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># Specify the directory containing the Paddle model</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span>--onnx_model_dir<span class="w"> </span>/your/onnx_model/output/dir<span class="w"> </span><span class="se">\ </span><span class="w"> </span><span class="c1"># Specify the output directory for the converted ONNX model</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span>--opset_version<span class="w"> </span><span class="m">7</span><span class="w">  </span><span class="c1"># Specify the ONNX opset version to use</span>
 </span></code></pre></div>
-<p>参数说明如下：</p>
+<p>The parameters are described as follows:</p>
 <table>
     <thead>
         <tr>
-            <th>参数</th>
-            <th>类型</th>
-            <th>描述</th>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>paddle_model_dir</td>
             <td>str</td>
-            <td>包含 Paddle 模型的目录。</td>
+            <td>The directory containing the Paddle model.</td>
         </tr>
         <tr>
             <td>onnx_model_dir</td>
             <td>str</td>
-            <td>ONNX 模型的输出目录，可以与 Paddle 模型目录相同。默认为 <code>onnx</code>。</td>
+            <td>The output directory for the ONNX model. It can be the same as the Paddle model directory. Defaults to <code>onnx</code>.</td>
         </tr>
         <tr>
             <td>opset_version</td>
             <td>int</td>
-            <td>使用的 ONNX opset 版本。当使用低版本 opset 无法完成转换时，将自动选择更高版本的 opset 进行转换。默认为 <code>7</code>。</td>
+            <td>The ONNX opset version to use. If conversion fails with a lower opset version, a higher version will be automatically selected for conversion. Defaults to <code>7</code>.</td>
         </tr>
     </tbody>
 </table>
@@ -5460,7 +5460,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 15:02:27">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:18:11">May 19, 2025</span>
   </span>
 
     
@@ -5470,7 +5470,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 15:02:27">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:18:11">May 19, 2025</span>
   </span>
 
     
