@@ -6,7 +6,7 @@ comments: true
 
 ## 一、概述
 
-印章文本检测模块通常会输出文本区域的多点边界框（Bounding Boxes），这些边界框将作为输入传递给弯曲矫正和文本识别模块进行后续处理，识别出印章的文字内容。印章文本的识别是文档处理的一部分，在很多场景都有用途，例如合同比对，出入库审核以及发票报销审核等场景。印章文本检测模块是OCR（光学字符识别）中的子任务，负责在图像中定位和标记出包含印章文本的区域。该模块的性能直接影响到整个印章文本OCR系统的准确性和效率。
+印章文本检测模块通常会输出文本区域的多点边界框（Bounding Boxes），这些边界框将作为输入传递给弯曲矫正和文本检测模块进行后续处理，识别出印章的文字内容。印章文本的识别是文档处理的一部分，在很多场景都有用途，例如合同比对，出入库审核以及发票报销审核等场景。印章文本检测模块是OCR（光学字符识别）中的子任务，负责在图像中定位和标记出包含印章文本的区域。该模块的性能直接影响到整个印章文本OCR系统的准确性和效率。
 
 ## 二、支持模型列表
 
@@ -448,4 +448,70 @@ for res in output:
 
 ## 四、二次开发
 
-......
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv4_server_seal_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[印章文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以印章文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](xxx)安装了 PaddleOCR 所需要的依赖。
+
+
+## 4.1 数据集、预训练模型准备
+
+### 4.1.1 准备数据集
+
+```shell
+# 下载示例数据集
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar -P ./dataset
+tar -xf ./dataset/ocr_curve_det_dataset_examples.tar -C ./dataset/
+```
+
+### 4.1.2 下载预训练模型
+
+```shell
+# 下载 PP-OCRv4_server_seal_det 预训练模型
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams
+```
+
+### 4.2 模型训练
+
+PaddleOCR 对代码进行了模块化，训练 `PP-OCRv4_server_seal_det` 模型时需要使用 `PP-OCRv4_server_seal_det` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml)。
+
+
+训练命令如下：
+
+```bash
+#单卡训练 (默认训练方式)
+python3 tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml \
+   -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams
+   
+#多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml \
+        -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams
+```
+
+
+### 4.4 模型评估
+
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdprams`，使用如下命令进行评估：
+
+```bash
+# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+ # demo 测试集评估
+ python3 tools/eval.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
+ Global.pretrained_model=output/xxx/xxx.pdprams
+ ```
+
+### 4.5 模型导出
+
+```bash
+ python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
+ Global.pretrained_model=output/xxx/xxx.pdprams \
+ save_inference_dir="./PP-OCRv4_server_seal_det_infer/"
+ ```
+
+ 导出模型后，静态图模型会存放于当前目录的`./PP-OCRv4_server_seal_det_infer/`中，在该目录下，您将看到如下文件：
+ ```
+ ./PP-OCRv4_server_seal_det_infer/
+ ├── inference.json
+ ├── inference.pdiparams
+ ├── inference.yml
+ ```
+至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。
+
+## 五、FAQ

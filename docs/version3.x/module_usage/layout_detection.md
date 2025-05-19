@@ -10,6 +10,60 @@ comments: true
 
 ## 二、支持模型列表
 
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+<b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</b>
+
+* <b>文档图像版面子模块检测，包含1个 版面区域 类别，能检测多栏的报纸、杂志的每个子文章的文本区域：</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocBlockLayout</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBlockLayout_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams">训练模型</a></td>
+<td>95.9</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>123.92 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的文档图像版面子模块检测模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+<b>注：以上精度指标的评估集是自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</b>
+
 * <b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
@@ -50,8 +104,9 @@ comments: true
 </tbody>
 </table>
 
+<b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、报纸、研报和试卷等 500 张文档类型图片。</b>
 
-> ❗ 以上列出的是版面检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>11个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
+> ❗ 以上列出的是版面检测模块重点支持的<b>5个核心模型</b>，该模块总共支持<b>13个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
 
@@ -187,8 +242,9 @@ comments: true
           <ul>
               <li><strong>测试数据集：</strong>
                  <ul>
-                    <li>版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
-                    <li>表格版面检测模型：PaddleOCR 自建的版面表格区域检测数据集，包含中英文 7835 张带有表格的论文文档类型图片。</li>
+                    <li>20类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</li>
+                    <li>1类版面子区域检测模型： PaddleOCR 自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</li>                 
+                    <li>23类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
                     <li>3类版面检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 1154 张文档类型图片。</li>
                     <li>5类英文文档区域检测模型： <a href="https://developer.ibm.com/exchanges/data/all/publaynet" target="_blank">PubLayNet</a> 的评估数据集，包含英文文档的 11245 张图片。</li>
                     <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
@@ -247,7 +303,7 @@ paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 ```python
 from paddleocr import LayoutDetection
 
-model = LayoutDetection(model_name="PP-DocLayout-L")
+model = LayoutDetection(model_name="PP-DocLayout_plus-L")
 output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
 for res in output:
     res.print()
@@ -258,7 +314,7 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'layout.jpg', 'page_index': None, 'boxes': [{'cls_id': 8, 'label': 'table', 'score': 0.9866452813148499, 'coordinate': [74.30952, 105.71375, 321.98676, 299.11072]}, {'cls_id': 2, 'label': 'text', 'score': 0.9859839081764221, 'coordinate': [34.65901, 349.91003, 358.33832, 611.3427]}, {'cls_id': 2, 'label': 'text', 'score': 0.9850624799728394, 'coordinate': [34.945335, 647.378, 358.32523, 849.23413]}, {'cls_id': 8, 'label': 'table', 'score': 0.9850127696990967, 'coordinate': [438.06952, 105.37871, 662.88666, 313.88693]}, {'cls_id': 2, 'label': 'text', 'score': 0.9847850799560547, 'coordinate': [385.97076, 497.04156, 710.9561, 697.6779]}, {'cls_id': 2, 'label': 'text', 'score': 0.9805672764778137, 'coordinate': [385.79672, 345.93826, 710.07385, 459.14514]}, {'cls_id': 2, 'label': 'text', 'score': 0.9799845814704895, 'coordinate': [386.07553, 735.38086, 710.6084, 850.1987]}, {'cls_id': 9, 'label': 'table_title', 'score': 0.9376267194747925, 'coordinate': [35.27453, 19.852173, 358.92462, 77.81253]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8755457997322083, 'coordinate': [386.6317, 476.607, 699.7845, 490.11603]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8617177605628967, 'coordinate': [387.27615, 715.9574, 524.3855, 729.2082]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8607730865478516, 'coordinate': [35.451878, 627.4962, 185.63542, 640.4025]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8575080633163452, 'coordinate': [35.334385, 330.80493, 141.46948, 344.40747]}, {'cls_id': 9, 'label': 'table_title', 'score': 0.7959735989570618, 'coordinate': [385.93796, 19.755125, 711.5128, 75.00555]}]}}
+{'res': {'input_path': 'layout.jpg', 'page_index': None, 'boxes': [{'cls_id': 2, 'label': 'text', 'score': 0.9870226979255676, 'coordinate': [34.101906, 349.85275, 358.59213, 611.0772]}, {'cls_id': 2, 'label': 'text', 'score': 0.9866003394126892, 'coordinate': [34.500324, 647.1585, 358.29367, 848.66797]}, {'cls_id': 2, 'label': 'text', 'score': 0.9846674203872681, 'coordinate': [385.71445, 497.40973, 711.2261, 697.84265]}, {'cls_id': 8, 'label': 'table', 'score': 0.984126091003418, 'coordinate': [73.76879, 105.94899, 321.95303, 298.84888]}, {'cls_id': 8, 'label': 'table', 'score': 0.9834211468696594, 'coordinate': [436.95642, 105.81531, 662.7168, 313.48462]}, {'cls_id': 2, 'label': 'text', 'score': 0.9832247495651245, 'coordinate': [385.62787, 346.2288, 710.10095, 458.77127]}, {'cls_id': 2, 'label': 'text', 'score': 0.9816061854362488, 'coordinate': [385.7802, 735.1931, 710.56134, 849.9764]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.9577341079711914, 'coordinate': [34.421448, 20.055151, 358.71283, 76.53663]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.9505634307861328, 'coordinate': [385.72278, 20.053688, 711.29333, 74.92744]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9001723527908325, 'coordinate': [386.46344, 477.03488, 699.4023, 490.07474]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8845751285552979, 'coordinate': [35.413048, 627.73596, 185.58383, 640.52264]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8837394118309021, 'coordinate': [387.17603, 716.3423, 524.7841, 729.258]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8508939743041992, 'coordinate': [35.50064, 331.18445, 141.6444, 344.81097]}]}}
 ```
 
 参数含义如下：
@@ -277,7 +333,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* `LayoutDetection`实例化目标检测模型（此处以`PP-DocLayout-L`为例），具体说明如下：
+* `LayoutDetection`实例化目标检测模型（此处以`PP-DocLayout_plus-L`为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -564,4 +620,6 @@ for res in output:
 
 ## 四、二次开发
 
-......
+由于 PaddleOCR 并不直接提供版面区域检测模块的训练，因此，如果需要训练版面区域测模型，可以参考 [PaddleX 版面区域检测模块二次开发](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5)部分进行训练。训练后的模型可以无缝集成到 PaddleOCR 的 API 中进行推理。
+
+## 五、FAQ

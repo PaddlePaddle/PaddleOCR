@@ -15,18 +15,30 @@ comments: true
 <tr>
 <th>模型</th><th>模型下载链接</th>
 <th>模型存储大小（GB）</th>
+<th>模型总分</th>
 <th>介绍</th>
 </tr>
 <tr>
 <td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">推理模型</a></td>
 <td>4.2</td>
+<td>765</td>
 <td rowspan="2">PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。在内部业务中文场景类的指标上，PP-DocBee也高于目前的热门开源和闭源模型。</td>
 </tr>
 <tr>
 <td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">推理模型</a></td>
 <td>15.8</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PP-DocBee2-3B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar">推理模型</a></td>
+<td>7.6</td>
+<td>852</td>
+<td>PP-DocBee2 是飞桨团队自研的一款专注于文档理解的多模态大模型，在PP-DocBee的基础上进一步优化了基础模型，并引入了新的数据优化方案，提高了数据质量，使用自研数据合成策略生成的少量的47万数据便使得PP-DocBee2在中文文档理解任务上表现更佳。在内部业务中文场景类的指标上，PP-DocBee2相较于PP-DocBee提升了约11.4%，同时也高于目前的同规模热门开源和闭源模型。</td>
 </tr>
 </table>
+
+<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height, width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
+
 
 
 ## 三、快速开始
@@ -36,16 +48,16 @@ comments: true
 使用一行命令即可快速体验：
 
 ```bash
-paddleocr doc_vlm -i "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容'}"
+paddleocr doc_vlm -i "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容, 以markdown格式输出'}"
 ```
 
 您也可以将开放文档类视觉语言模型模块中的模型推理集成到您的项目中。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png)到本地。
 
 ```python
 from paddleocr import DocVLM
-model = DocVLM(model_name="PP-DocBee-2B")
+model = DocVLM(model_name="PP-DocBee2-3B")
 results = model.predict(
-    input={"image": "medal_table.png", "query": "识别这份表格的内容"},
+    input={"image": "medal_table.png", "query": "识别这份表格的内容, 以markdown格式输出"},
     batch_size=1
 )
 for res in results:
@@ -56,7 +68,7 @@ for res in results:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'image': 'medal_table.png', 'query': '识别这份表格的内容', 'result': '| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n'}}
+{'res': {'image': 'medal_table.png', 'query': '识别这份表格的内容, 以markdown格式输出', 'result': '| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n'}}
 ```
 运行结果参数含义如下：
 - `image`: 表示输入待预测图像的路径
@@ -155,7 +167,8 @@ for res in results:
 <td>待预测数据</td>
 <td><code>dict</code></td>
 <td>
-<code>Dict</code>, 需要根据具体的模型确定，如PP-DocBee系列的输入为{'image': image_path, 'query': query_text}
+<code>Dict</code>, 由于多模态模型对输入有不同的要求，需要根据具体的模型确定，具体而言:
+<li>PP-DocBee系列的输入形式为<code>{'image': image_path, 'query': query_text}</code></li>
 </td>
 <td>无</td>
 </tr>
@@ -163,7 +176,7 @@ for res in results:
 <td><code>batch_size</code></td>
 <td>批大小</td>
 <td><code>int</code></td>
-<td>整数(目前仅支持为1)</td>
+<td>整数</td>
 <td>1</td>
 </tr>
 </table>
@@ -241,3 +254,5 @@ for res in results:
 ## 四、二次开发
 
 当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。
+
+## 五、FAQ

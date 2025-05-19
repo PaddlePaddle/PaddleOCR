@@ -2,49 +2,75 @@
 comments: true
 ---
 
-# 安装
+## 快速安装
 
-# 1. 安装飞桨框架
+经测试PaddleOCR可在glibc 2.23上运行，您也可以测试其他glibc版本或安装glic 2.23
+PaddleOCR 工作环境
 
-请参考 [飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html) 安装 `3.0` 及以上版本的飞桨框架。**推荐使用飞桨官方 Docker 镜像。**
+- PaddlePaddle 2.0.0
+- python3
+- glibc 2.23
+- cuDNN 7.6+ (GPU)
 
-# 2. 安装 PaddleOCR
+建议使用我们提供的docker运行PaddleOCR，有关docker、nvidia-docker使用请参考[链接](https://www.runoob.com/docker/docker-tutorial.html/)。
 
-如果只希望使用 PaddleOCR 的推理功能，请参考 [安装推理包](#21-安装推理包)；如果希望进行模型训练、导出等，请参考 [安装训练依赖](#22-安装训练依赖)。在同一环境中安装推理包和训练依赖是允许的，无需进行环境隔离。
+*如您希望使用 mac 或 windows直接运行预测代码，可以从第2步开始执行。*
 
-## 2.1 安装推理包
+### 1. （建议）准备docker环境
 
-从 PyPI 安装最新版本 PaddleOCR 推理包：
+第一次使用这个镜像，会自动下载该镜像，请耐心等待
 
-```bash
-python -m pip install paddleocr
+```bash linenums="1"
+# 切换到工作目录下
+cd /home/Projects
+# 首次运行需创建一个docker容器，再次运行时不需要运行当前命令
+# 创建一个名字为ppocr的docker容器，并将当前目录映射到容器的/paddle目录下
+
+如果您希望在CPU环境下使用docker，使用docker而不是nvidia-docker创建docker
+sudo docker run --name ppocr -v $PWD:/paddle --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
+
+如果使用CUDA10，请运行以下命令创建容器，设置docker容器共享内存shm-size为64G，建议设置32G以上
+sudo nvidia-docker run --name ppocr -v $PWD:/paddle --shm-size=64G --network=host -it paddlepaddle/paddle:latest-dev-cuda10.1-cudnn7-gcc82 /bin/bash
+
+您也可以访问[DockerHub](https://hub.docker.com/r/paddlepaddle/paddle/tags/)获取与您机器适配的镜像。
+
+# ctrl+P+Q可退出docker 容器，重新进入docker 容器使用如下命令
+sudo docker container exec -it ppocr /bin/bash
 ```
 
-或者从源码安装（默认为开发分支）：
+### 2. 安装PaddlePaddle 2.0
 
-```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+```bash linenums="1"
+pip3 install --upgrade pip
+
+# 如果您的机器安装的是CUDA9或CUDA10，请运行以下命令安装
+python3 -m pip install paddlepaddle-gpu==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+# 如果您的机器是CPU，请运行以下命令安装
+python3 -m pip install paddlepaddle==2.0.0 -i https://mirror.baidu.com/pypi/simple
+
+# 更多的版本需求，请参照[安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 ```
 
-## 2.2 安装训练依赖
+### 3. 克隆PaddleOCR repo代码
 
-要进行模型训练、导出等，需要首先将仓库克隆到本地：
-
-```bash
-# 推荐方式
+```bash linenums="1"
+#【推荐】
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
-# （可选）切换到指定分支
-git checkout release/3.0
+# 如果因为网络问题无法pull成功，也可选择使用码云上的托管：
 
-# 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：
 git clone https://gitee.com/paddlepaddle/PaddleOCR
 
-# 注：码云托管代码可能无法实时同步本 GitHub 项目更新，存在3~5天延时，请优先使用推荐方式。
+# 注：码云托管代码可能无法实时同步本github项目更新，存在3~5天延时，请优先使用推荐方式。
 ```
 
-执行如下命令安装依赖：
+### 4. 安装第三方库
 
-```bash
-python -m pip install -r requirements.txt
+```bash linenums="1"
+cd PaddleOCR
+pip3 install -r requirements.txt
 ```
+
+注意，windows环境下，建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装，
+直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。
