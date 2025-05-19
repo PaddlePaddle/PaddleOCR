@@ -22,7 +22,7 @@
     
     
       
-        <title>公式识别模块使用教程 - PaddleOCR Documentation</title>
+        <title>Formula Recognition Module User Guide - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#formula-recognition-module-user-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              公式识别模块使用教程
+              Formula Recognition Module User Guide
             
           </span>
         </div>
@@ -5376,91 +5376,100 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#i-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      一、概述
+      I. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#ii-supported-model-list" class="md-nav__link">
     <span class="md-ellipsis">
-      二、支持模型列表
+      II. Supported Model List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#iii-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      三、快速开始
+      III. Quick Start
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#iv-custom-development" class="md-nav__link">
     <span class="md-ellipsis">
-      四、二次开发
+      IV. Custom Development
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#41" class="md-nav__link">
+  <a href="#41-environment-setup" class="md-nav__link">
     <span class="md-ellipsis">
-      4.1 环境配置
+      4.1 Environment Setup
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#42" class="md-nav__link">
+  <a href="#42-dataset-and-pretrained-model-preparation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2 数据集、预训练模型准备
+      4.2 Dataset and Pretrained Model Preparation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4.2 数据集、预训练模型准备">
+    <nav class="md-nav" aria-label="4.2 Dataset and Pretrained Model Preparation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#421" class="md-nav__link">
+  <a href="#421-prepare-the-dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2.1 准备数据集
+      4.2.1 Prepare the Dataset
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#422" class="md-nav__link">
+  <a href="#422-download-the-pretrained-model" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2.2 下载预训练模型
+      4.2.2 Download the Pretrained Model
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#43" class="md-nav__link">
+  <a href="#43-model-training" class="md-nav__link">
     <span class="md-ellipsis">
-      4.3 模型训练
+      4.3 Model Training
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#44" class="md-nav__link">
+  <a href="#44-model-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.4 模型评估
+      4.4 Model Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-model-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 Model Export
     </span>
   </a>
   
@@ -5468,6 +5477,15 @@ You're not viewing the latest version.
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      V. FAQ
+    </span>
+  </a>
   
 </li>
       
@@ -5487,7 +5505,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/formula_recognition.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/formula_recognition.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5496,390 +5514,405 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/formula_recognition.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/formula_recognition.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">公式识别模块使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>公式识别模块是OCR（光学字符识别）系统中的关键组成部分，负责将图像中的数学公式转换为可编辑的文本或计算机可识别的格式。该模块的性能直接影响到整个OCR系统的准确性和效率。公式识别模块通常会输出数学公式的 LaTeX 或 MathML 代码，这些代码将作为输入传递给文本理解模块进行后续处理。</p>
-<h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h1 id="formula-recognition-module-user-guide">Formula Recognition Module User Guide<a class="headerlink" href="#formula-recognition-module-user-guide" title="Permanent link">&para;</a></h1>
+<h2 id="i-overview">I. Overview<a class="headerlink" href="#i-overview" title="Permanent link">&para;</a></h2>
+<p>The formula recognition module is a key component of an OCR (Optical Character Recognition) system, responsible for converting mathematical formulas in images into editable text or computer-readable formats. The performance of this module directly affects the accuracy and efficiency of the entire OCR system. The formula recognition module typically outputs LaTeX or MathML code of the mathematical formulas, which will be passed as input to the text understanding module for further processing.</p>
+<h2 id="ii-supported-model-list">II. Supported Model List<a class="headerlink" href="#ii-supported-model-list" title="Permanent link">&para;</a></h2>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>Avg-BLEU(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小 (M)</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>En-BLEU(%)</th>
+<th>Zh-BLEU(%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
-<td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
+<td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">Training Model</a></td>
 <td>85.91</td>
+<td>43.50</td>
 <td>2266.96/-</td>
 <td>-/-</td>
-<td>1.4 G</td>
-<td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
+<td>1.53 G</td>
+<td>UniMERNet is a formula recognition model developed by Shanghai AI Lab. It uses Donut Swin as the encoder and MBartDecoder as the decoder. The model is trained on a dataset of one million samples, including simple formulas, complex formulas, scanned formulas, and handwritten formulas, significantly improving the recognition accuracy of real-world formulas.</td>
 <tr>
-<td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">Training Model</a></td>
 <td>87.00</td>
+<td>45.71</td>
 <td>202.25/-</td>
 <td>-/-</td>
-<td>223.6 M</td>
-<td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
-
+<td>224 M</td>
+<td rowspan="2">PP-FormulaNet is an advanced formula recognition model developed by the Baidu PaddlePaddle Vision Team. The PP-FormulaNet-S version uses PP-HGNetV2-B4 as its backbone network. Through parallel masking and model distillation techniques, it significantly improves inference speed while maintaining high recognition accuracy, making it suitable for applications requiring fast inference. The PP-FormulaNet-L version, on the other hand, uses Vary_VIT_B as its backbone network and is trained on a large-scale formula dataset, showing significant improvements in recognizing complex formulas compared to PP-FormulaNet-S.</td>
 </tr>
-<td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">Training Model</a></td>
 <td>90.36</td>
+<td>45.78</td>
 <td>1976.52/-</td>
 <td>-/-</td>
-<td>694.6 M</td>
+<td>695 M</td>
 <tr>
-</tr>
-<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
-<td>92.22</td>
-<td>-/-</td>
-<td>-/-</td>
-<td>697.6 M</td>
-<td rowspan="3">PP-FormulaNet_plus 是在 PP-FormulaNet 的基础上开发的增强版 。该版本使用了来自中文学位论文、专业书籍、教材试卷和数学期刊的丰富数据集，大幅提升了识别能力。其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 新增了对中文公式的支持，并将最大预测 token 数从 1024 扩大至 2560，显著提升了复杂公式的识别性能；而 PP-FormulaNet_plus-S 则专注于增强英文公式识别能力。PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。
- </td>
-<tr>
-</tr>
-<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
-<td>91.45</td>
-<td>-/-</td>
-<td>-/-</td>
-<td>591.71 M</td>
-<tr>
-</tr>
-<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">Training Model</a></td>
 <td>88.71</td>
+<td>53.32</td>
+<td>191.69/-</td>
 <td>-/-</td>
-<td>-/-</td>
-<td>247.6 M</td>
+<td>248 M</td>
+<td rowspan="3">PP-FormulaNet_plus is an enhanced version of the formula recognition model developed by the Baidu PaddlePaddle Vision Team, building upon the original PP-FormulaNet. Compared to the original version, PP-FormulaNet_plus utilizes a more diverse formula dataset during training, including sources such as Chinese dissertations, professional books, textbooks, exam papers, and mathematics journals. This expansion significantly improves the model’s recognition capabilities. Among the models, PP-FormulaNet_plus-M and PP-FormulaNet_plus-L have added support for Chinese formulas and increased the maximum number of predicted tokens for formulas from 1,024 to 2,560, greatly enhancing the recognition performance for complex formulas. Meanwhile, the PP-FormulaNet_plus-S model focuses on improving the recognition of English formulas. With these improvements, the PP-FormulaNet_plus series models perform exceptionally well in handling complex and diverse formula recognition tasks. </td>
+</tr>
 <tr>
-<td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
-<td>71.63</td>
+<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">Training Model</a></td>
+<td>91.45</td>
+<td>89.76</td>
+<td>1301.56/-</td>
 <td>-/-</td>
+<td>592 M</td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">Training Model</a></td>
+<td>92.22</td>
+<td>90.64</td>
+<td>1745.25/-</td>
 <td>-/-</td>
-<td>89.7 M</td>
-<td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
+<td>698 M</td>
+</tr>
+<tr>
+<td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
+<td>74.55</td>
+<td>39.96</td>
+<td>1244.61/-</td>
+<td>-/-</td>
+<td>99 M</td>
+<td>LaTeX-OCR is a formula recognition algorithm based on an autoregressive large model. It uses Hybrid ViT as the backbone network and a transformer as the decoder, significantly improving the accuracy of formula recognition.</td>
 </tr>
 </table>
-<p><strong>测试环境说明:</strong></p>
-<ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>PaddleX 内部自建公式识别测试集</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
-
+<p><strong>Test Environment Description:</strong>
+    <ul>
+        <li><b>Performance Test Environment</b>
+            <ul>
+                <li><strong>Test Dataset:</strong> PaddleX internal custom formula recognition test set</li>
+                <li><strong>Hardware Configuration:</strong>
+                    <ul>
+                        <li>GPU: NVIDIA Tesla T4</li>
+                        <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                        <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><b>Inference Mode Description</b></li>
+    </ul></p>
 <table border="1">
     <thead>
         <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
+            <th>Mode</th>
+            <th>GPU Configuration</th>
+            <th>CPU Configuration</th>
+            <th>Acceleration Technique Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
+            <td>Standard Mode</td>
+            <td>FP32 precision / No TRT acceleration</td>
+            <td>FP32 precision / 8 threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+            <td>High-Performance Mode</td>
+            <td>Optimal combination of predefined precision type and acceleration strategy</td>
+            <td>FP32 precision / 8 threads</td>
+            <td>Optimal predefined backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
 
-<h2 id="_4">三、快速开始<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="iii-quick-start">III. Quick Start<a class="headerlink" href="#iii-quick-start" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 <a href="../ppocr/installation.md">安装教程</a>。</p>
+<p>❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the <a href="../ppocr/installation.md">Installation Guide</a>.</p>
 </blockquote>
-<p>使用一行命令即可快速体验：</p>
+<p>You can quickly try it out with a single command:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>formula_recognition<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png
 </span></code></pre></div>
-<p>您也可以将公式识别的模块中的模型推理集成到您的项目中。运行以下代码前，请您下载<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png">示例图片</a>到本地。</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">FormulaRecognition</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">FormulaRecognition</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-FormulaNet-S&quot;</span><span class="p">)</span>
+You can also integrate the model inference from the formula recognition module into your own project.Before running the code below, please download the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png">example image</a> locally.</p>
+<p><div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">FormulaRecognition</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">FormulaRecognition</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-FormulaNet_plus-M&quot;</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;general_formula_rec_001.png&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>运行后，得到的结果为：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_formula_rec_001.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;rec_formula&#39;</span>:<span class="w"> </span><span class="s1">&#39;\\zeta_{0}(\\nu)=-{\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z{\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}}\\ \\ {vec\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,&#39;</span><span class="o">}}</span>
+After running, the output is:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_formula_rec_001.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;rec_formula&#39;</span>:<span class="w"> </span><span class="s1">&#39;\\zeta_{0}(\\nu)=-\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}\\breve{\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,&#39;</span><span class="o">}}</span>
 </span></code></pre></div>
-<p>运行结果参数含义如下：
-- <code>input_path</code>：表示输入待预测公式图像的路径
-- <code>page_index</code>：如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code>
-- <code>rec_formula</code>：表示公式图像的预测LaTeX源码</p>
-<p>可视化图片如下，左侧是待预测的公式图像，右边是预测的结果渲染后的公式图像：</p>
-<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res.png"></p>
-<p><b> 注：如果您需要对公式识别模块进行可视化，需要运行如下命令来对LaTeX渲染环境进行安装。目前公式识别模块可视化只支持Ubuntu环境，其他环境暂不支持。对于复杂公式，LaTeX 结果可能包含部分高级的表示，Markdown等环境中未必可以成功显示：</b>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>texlive<span class="w"> </span>texlive-latex-base<span class="w"> </span>texlive-latex-extra<span class="w"> </span>-y
-</span></code></pre></div></p>
-<p>相关方法、参数等说明如下：</p>
+Explanation of the result parameters:</p>
 <ul>
-<li><code>FormulaRecognition</code>实例化公式识别模型（此处以<code>PP-FormulaNet-S</code>为例），具体说明如下：</li>
+<li><code>input_path</code>： Indicates the path to the input formula image to be predicted</li>
+<li><code>page_index</code>： If the input is a PDF file, this represents the page number; otherwise, it is None</li>
+<li><code>rec_formula</code>：Indicates the predicted LaTeX source code of the formula image
+The visualization image is as follows. The left side is the input formula image, and the right side is the rendered formula from the prediction:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res_paddleocr3.png"></p>
+<p><b>Note: If you need to visualize the formula recognition module, you must install the LaTeX rendering environment by running the following command. Currently, visualization is only supported on Ubuntu. Other environments are not supported for now. For complex formulas, the LaTeX result may contain advanced representations that may not render successfully in Markdown or similar environments:</b>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>texlive<span class="w"> </span>texlive-latex-base<span class="w"> </span>texlive-xetex<span class="w"> </span>latex-cjk-all<span class="w"> </span>texlive-latex-extra<span class="w"> </span>-y
+</span></code></pre></div></p>
+<p>Related methods and parameter descriptions are as follows:</p>
+<ul>
+<li><code>FormulaRecognition</code> instantiates the formula recognition model (here using <code>PP-FormulaNet_plus-M</code> as an example), with detailed description as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>Model name</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的模型名称</td>
-<td>无</td>
+<td>All model names supported by PaddleX</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td>None</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>Device used for model inference</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+<td>Supports specifying a specific GPU card such as \"gpu:0\", other hardware card such as \"npu:0\", and CPU such as \"cpu\".</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td>Whether to enable high-performance inference plugin</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
+<td>High-performance inference configuration</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
 <ul>
 <li>
-<p>其中，<code>model_name</code> 必须指定，指定 <code>model_name</code> 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 <code>model_dir</code> 时，使用用户自定义的模型。</p>
+<p>Among these, <code>model_name</code> must be specified. When <code>model_name</code> is provided, the built-in model parameters from PaddleX are used by default. If <code>model_dir</code> is also specified, it will use the user-defined model instead.</p>
 </li>
 <li>
-<p>调用公式识别模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code> 和 <code>batch_size</code>，具体说明如下：</p>
+<p>Call the <code>predict()</code> method of the formula recognition model to perform inference, which returns a result list.<br />
+Additionally, this module provides the <code>predict_iter()</code> method. Both accept the same parameters and return the same result format.<br />
+The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and retrieve results step-by-step, suitable for large datasets or memory-efficient scenarios.<br />
+You can choose either method based on your actual needs. The <code>predict()</code> method takes parameters <code>input</code> and <code>batch_size</code>, described as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
+<td>Input data to be predicted; supports multiple input types</td>
 <td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
 <td>
 <ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
+  <li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
+  <li><b>URL link</b>, such as a URL to an image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png">Example</a></li>
+  <li><b>Local directory</b>, which should contain files to be predicted, such as <code>/root/data/</code></li>
+  <li><b>List</b>, whose elements must be of the types above, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>Batch size</td>
 <td><code>int</code></td>
-<td>任意整数</td>
+<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
 
 <ul>
-<li>对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</li>
+<li>The prediction results can be processed. Each result corresponds to a <code>Result</code> object, which supports printing, saving as an image, and saving as a <code>json</code> file:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Details</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "3"><code>print()</code></td>
-<td rowspan = "3">打印结果到终端</td>
+<td rowspan = "3">Print the result to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format the output using <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the <code>JSON</code> output; only effective when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether non-<code>ASCII</code> characters are escaped to <code>Unicode</code>. If set to <code>True</code>, all non-ASCII characters are escaped; if <code>False</code>, original characters are kept. Only effective when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan = "3"><code>save_to_json()</code></td>
-<td rowspan = "3">将结果保存为json格式的文件</td>
+<td rowspan = "3">Save the result as a json-formatted file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>Path to save the file. If it is a directory, the saved file name will match the input file type</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the <code>JSON</code> output; only effective when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether non-<code>ASCII</code> characters are escaped to <code>Unicode</code>. If set to <code>True</code>, all non-ASCII characters are escaped; if <code>False</code>, original characters are kept. Only effective when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>Save the result as an image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>Path to save the file. If it is a directory, the saved file name will match the input file type</td>
+<td>None</td>
 </tr>
 </table>
 
 <ul>
-<li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</li>
+<li>In addition, you can also access the visualized image and prediction result via attributes, as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "1"><code>json</code></td>
-<td rowspan = "1">获取预测的<code>json</code>格式的结果</td>
+<td rowspan = "1">Get the prediction result in <code>json</code> format</td>
 </tr>
 <tr>
 <td rowspan = "1"><code>img</code></td>
-<td rowspan = "1">获取格式为<code>dict</code>的可视化图像</td>
+<td rowspan = "1">Get the visualized image in <code>dict</code> format</td>
 </tr>
-
 </table>
 
-<h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 <code>PP-FormulaNet-S</code> 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar">公式识别 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照<a href="xxx">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
-<h2 id="41">4.1 环境配置<a class="headerlink" href="#41" title="Permanent link">&para;</a></h2>
-<p>训练公式识别模型需要安装额外的Python依赖和linux依赖，执行如下命令安装：
+<h2 id="iv-custom-development">IV. Custom Development<a class="headerlink" href="#iv-custom-development" title="Permanent link">&para;</a></h2>
+<p>If the models above do not perform well in your scenario, you can try the following steps for custom development.<br />
+Here we take training <code>PP-FormulaNet_plus-M</code> as an example. For other models, just replace the corresponding config file.  First, you need to prepare a formula recognition dataset. You can follow the format of the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar">formula recognition demo data</a>.  Once the data is ready, follow the steps below to train and export the model. After export, the model can be quickly integrated into the API described above.  This example uses the demo dataset. Before training the model, please ensure you have installed all PaddleOCR dependencies as described in the <a href="xxx">installation documentation</a>.</p>
+<h2 id="41-environment-setup">4.1 Environment Setup<a class="headerlink" href="#41-environment-setup" title="Permanent link">&para;</a></h2>
+<p>To train the formula recognition model, you need to install additional Python and Linux dependencies. Run the following commands:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libmagickwand-dev
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">tokenizers</span><span class="o">==</span><span class="m">0</span>.19.1<span class="w"> </span>imagesize<span class="w"> </span>ftfy<span class="w"> </span>Wand
-</span></code></pre></div></p>
-<h2 id="42">4.2 数据集、预训练模型准备<a class="headerlink" href="#42" title="Permanent link">&para;</a></h2>
-<h3 id="421">4.2.1 准备数据集<a class="headerlink" href="#421" title="Permanent link">&para;</a></h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># 下载示例数据集</span>
+</span></code></pre></div>
+<h2 id="42-dataset-and-pretrained-model-preparation">4.2 Dataset and Pretrained Model Preparation<a class="headerlink" href="#42-dataset-and-pretrained-model-preparation" title="Permanent link">&para;</a></h2>
+<h3 id="421-prepare-the-dataset">4.2.1 Prepare the Dataset<a class="headerlink" href="#421-prepare-the-dataset" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Download the demo dataset</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>ocr_rec_latexocr_dataset_example.tar
 </span></code></pre></div>
-<h3 id="422">4.2.2 下载预训练模型<a class="headerlink" href="#422" title="Permanent link">&para;</a></h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 下载 PP-FormulaNet-S 预训练模型</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>wget<span class="w"> </span>https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar<span class="w"> </span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>rec_ppformulanet_s_train.tar
+<h3 id="422-download-the-pretrained-model">4.2.2 Download the Pretrained Model<a class="headerlink" href="#422-download-the-pretrained-model" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Download the PP-FormulaNet_plus-M pre-trained model</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>wget<span class="w"> </span>https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar<span class="w"> </span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>rec_ppformulanet_plus_m_train.tar
 </span></code></pre></div>
-<h3 id="43">4.3 模型训练<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR对代码进行了模块化，训练 <code>PP-FormulaNet-S</code> 识别模型时需要使用 <code>PP-FormulaNet-S</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml">配置文件</a>。</p>
-<p>训练命令如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">#单卡训练 (默认训练方式)</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">#多卡训练，通过--gpus参数指定卡号</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">        </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
+<h3 id="43-model-training">4.3 Model Training<a class="headerlink" href="#43-model-training" title="Permanent link">&para;</a></h3>
+<p>PaddleOCR is modularized. To train the <code>PP-FormulaNet_plus-M</code>  model, you need to use its <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml">config file</a>.</p>
+<p>Training commands are as follows:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Single GPU training (default)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Multi-GPU training, specify GPU IDs with --gpus</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 </span></code></pre></div>
-<p><strong>注意：</strong></p>
+<strong>Note:</strong></p>
 <ul>
-<li>默认每训练 1个 epoch 进行 1 次评估，若您更改训练的 batch_size，或更换数据集，请在训练时作出如下修改
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python3<span class="w">  </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml<span class="w"> </span><span class="se">\</span>
+<li>By default, evaluation is performed every 1 epoch.If you change the batch size or dataset, modify the following accordingly:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>-o<span class="w"> </span>Global.eval_batch_step<span class="o">=[</span><span class="m">0</span>,<span class="o">{</span>length_of_dataset//batch_size//4<span class="o">}]</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">   </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_s_train/best_accuracy.pdparams
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">   </span>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 </span></code></pre></div></li>
 </ul>
-<h3 id="44">4.4 模型评估<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
-<p>您可以评估已经训练好的权重，如，<code>output/xxx/xxx.pdprams</code>，也可以使用已经下载的<a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar">模型文件</a>，使用如下命令进行评估：</p>
-<p>```bash</p>
-<h1 id="pretrained_modelpathtoweightsmodel_name">注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。<a class="headerlink" href="#pretrained_modelpathtoweightsmodel_name" title="Permanent link">&para;</a></h1>
-<p># demo 测试集评估
- python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
- ```</p>
-<h3 id="45">4.5 模型导出<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
+<h3 id="44-model-evaluation">4.4 Model Evaluation<a class="headerlink" href="#44-model-evaluation" title="Permanent link">&para;</a></h3>
+<p>You can evaluate trained weights, e.g., output/xxx/xxx.pdprams, or use the downloaded <a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar">model</a> with the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Make sure pretrained_model is set to the local path.</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># For custom-trained models, modify the path and file name as {path/to/weights}/{model_name}</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Demo test set evaluation</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Global.pretrained_model<span class="o">=</span>./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
+</span></code></pre></div>
+<h3 id="45-model-export">4.5 Model Export<a class="headerlink" href="#45-model-export" title="Permanent link">&para;</a></h3>
 <p><code>bash
- python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams \
- save_inference_dir="./PP-FormulaNet-S_infer/"</code></p>
-<p>导出模型后，静态图模型会存放于当前目录的<code>./PP-FormulaNet-S_infer/</code>中，在该目录下，您将看到如下文件：
- <code>./PP-FormulaNet-S_infer/
+ python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
+ Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
+ Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"</code></p>
+<p>After exporting, the static graph model will be saved in <code>./PP-FormulaNet_plus-M_infer/</code>, and you will see the following files:
+ <code>./PP-FormulaNet_plus-M_infer/
  ├── inference.json
  ├── inference.pdiparams
  ├── inference.yml</code>
-至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。</p>
-<h2 id="faq">五、FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
-<p><strong>Q1:PaddleOCR 更推荐哪个公式识别模型？</strong></p>
-<p>A1: 更推荐使用 PP-FormulaNet 系列模型，如果是英文场景居多且不考虑推理耗时，则可以使用 PP-FormulaNet-L 或者 PP-FormulaNet_plus-L 模型，如果中文场景居多，则可以使用 PP-FormulaNet_plus-L 或者 PP-FormulaNet_plus-M，如果推理设备算力有限且是英文场景，则可以使用 PP-FormulaNet-S。</p>
-<p><strong>Q2: 为什么推理报错？</strong></p>
-<p>A2: 公式识别模型的推理强依赖于 Paddle 框架 3.0 正式版，请确保版本一致。</p>
-<p><strong>Q3: 为什么预测后没有可视化图像？</strong></p>
-<p>A3: 可能是因为没有安装LaTeX导致，您需要参考第三节安装LaTeX渲染工具。</p>
+At this point, the secondary development is complete. This static graph model can be directly integrated into the PaddleOCR API.</p>
+<h2 id="v-faq">V. FAQ<a class="headerlink" href="#v-faq" title="Permanent link">&para;</a></h2>
+<p><strong>Q1:Which formula recognition model does PaddleOCR recommend?</strong></p>
+<p>A1: It is recommended to use the PP-FormulaNet series.
+If your scenario is mainly in English and inference speed is not a concern, use PP-FormulaNet-L or PP-FormulaNet_plus-L.
+For mainly Chinese use cases, use PP-FormulaNet_plus-L or PP-FormulaNet_plus-M.
+If your device has limited computing power and you are working with English formulas, use PP-FormulaNet-S.</p>
+<p><strong>Q2: Why does the inference report an error?</strong>
+A2: The formula recognition model depends heavily on Paddle 3.0 official release.
+Please ensure the correct version is installed.</p>
+<p><strong>Q3: Why is there no visualization image after prediction?</strong>
+A3: This may be due to LaTeX not being installed.You need to refer to Section III and install the LaTeX rendering tools.</p>
 
 
 
@@ -5902,7 +5935,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 17:28:07">May 19, 2025</span>
   </span>
 
     
@@ -5912,7 +5945,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 17:28:07">May 19, 2025</span>
   </span>
 
     

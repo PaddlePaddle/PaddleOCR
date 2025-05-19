@@ -5446,7 +5446,6 @@ You're not viewing the latest version.
 <h1 id="pp-formulanet">PP-FormulaNet<a class="headerlink" href="#pp-formulanet" title="Permanent link">&para;</a></h1>
 <h2 id="1-introduction">1. Introduction<a class="headerlink" href="#1-introduction" title="Permanent link">&para;</a></h2>
 <p><code>PP-FormulaNet</code> is an advanced formula recognition model developed by Baidu’s PaddlePaddle Vision Team, supporting the recognition of 50,000 common LaTeX source terms. The PP-FormulaNet-S version uses PP-HGNetV2-B4 as its backbone network, leveraging techniques like parallel masking and model distillation to significantly enhance inference speed while maintaining high recognition accuracy, making it suitable for scenarios involving simple printed formulas and cross-line simple printed formulas. On the other hand, the PP-FormulaNet-L version is based on Vary_VIT_B and has undergone extensive training on a large-scale formula dataset, showing significant improvement in recognizing complex formulas, and is applicable to simple printed, complex printed, and handwritten formulas.</p>
-<p>To further enhance performance, the Baidu PaddlePaddle team developed an enhanced version called <code>PP-FormulaNet_plus</code> based on PP-FormulaNet. This version utilizes a rich dataset sourced from Chinese theses, professional books, textbooks, exam papers, and mathematical journals, greatly improving recognition capability. Among them, PP-FormulaNet_plus-M and PP-FormulaNet_plus-L add support for Chinese formulas and increase the maximum predicted token count from 1024 to 2560, significantly enhancing the recognition performance of complex formulas. Meanwhile, PP-FormulaNet_plus-S focuses on enhancing English formula recognition, making the PP-FormulaNet_plus series models perform more exceptionally in handling complex and diverse formula recognition tasks.</p>
 <p>The accuracy of the above models on the corresponding test sets is as follows:</p>
 <table>
 <thead>
@@ -5454,9 +5453,7 @@ You're not viewing the latest version.
 <th>Model</th>
 <th>Backbone</th>
 <th>config</th>
-<th style="text-align: center;">En-<br/>BLEU↑</th>
-<th style="text-align: center;">Zh-<br/>BLEU(%)↑</th>
-<th style="text-align: center;">OmniDocBench-<br/>BLEU(%)↑</th>
+<th style="text-align: center;">En-BLEU↑</th>
 <th style="text-align: center;">GPU Inference Time (ms)</th>
 <th style="text-align: center;">Download link</th>
 </tr>
@@ -5467,8 +5464,6 @@ You're not viewing the latest version.
 <td>Donut Swin</td>
 <td><a href="../../../configs/rec/UniMERNet.yaml">UniMERNet.yaml</a></td>
 <td style="text-align: center;">85.91</td>
-<td style="text-align: center;">43.50</td>
-<td style="text-align: center;">67.75</td>
 <td style="text-align: center;">2266.96</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar">trained model</a></td>
 </tr>
@@ -5477,8 +5472,6 @@ You're not viewing the latest version.
 <td>PPHGNetV2_B4</td>
 <td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml">PP-FormulaNet-S.yaml</a></td>
 <td style="text-align: center;">87.00</td>
-<td style="text-align: center;">45.71</td>
-<td style="text-align: center;">59.57</td>
 <td style="text-align: center;">202.25</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar">trained model</a></td>
 </tr>
@@ -5487,54 +5480,20 @@ You're not viewing the latest version.
 <td>Vary_VIT_B</td>
 <td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml">PP-FormulaNet-L.yaml</a></td>
 <td style="text-align: center;">90.36</td>
-<td style="text-align: center;">45.78</td>
-<td style="text-align: center;">64.81</td>
 <td style="text-align: center;">1976.52</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar">trained model</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-S</td>
-<td>PPHGNetV2_B4</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml">PP-FormulaNet_plus-S.yaml</a></td>
-<td style="text-align: center;">88.71</td>
-<td style="text-align: center;">53.32</td>
-<td style="text-align: center;">70.54</td>
-<td style="text-align: center;">191.69</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar">trained model</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-M</td>
-<td>PPHGNetV2_B6</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml">PP-FormulaNet_plus-M.yaml</a></td>
-<td style="text-align: center;">91.45</td>
-<td style="text-align: center;">89.76</td>
-<td style="text-align: center;">72.07</td>
-<td style="text-align: center;">1301.56</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar">trained model</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-L</td>
-<td>Vary_VIT_B</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml">PP-FormulaNet_plus-L.yaml</a></td>
-<td style="text-align: center;">92.22</td>
-<td style="text-align: center;">90.64</td>
-<td style="text-align: center;">72.45</td>
-<td style="text-align: center;">1745.25</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>LaTeX-OCR</td>
 <td>Hybrid ViT</td>
 <td><a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml">LaTeX_OCR_rec.yaml</a></td>
 <td style="text-align: center;">74.55</td>
-<td style="text-align: center;">39.96</td>
-<td style="text-align: center;">47.59</td>
 <td style="text-align: center;">1244.61</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar">trained model</a></td>
 </tr>
 </tbody>
 </table>
-<p>En-BLEU, Zh-BLEU (%), and OmniDocBench-BLEU (%) represent the BLEU scores for English formulas, Chinese formulas, and the OmniDocBench, respectively. The evaluation dataset for English formulas includes simple and complex formulas from UniMERNet, as well as simple, intermediate, and complex formulas from PaddleX’s internally developed dataset. The evaluation dataset for Chinese formulas comes from PaddleX’s internally developed Chinese formula dataset. The OmniDocBench evaluation set consists of inter-line formula images from  <a href="https://github.com/opendatalab/OmniDocBench">OmniDocBench</a>.</p>
+<p>The English formula evaluation set here contains both simple and complex formulas from UniMERNet, as well as simple, medium, and complex formulas independently created by PaddleX.</p>
 <h2 id="2-environment">2. Environment<a class="headerlink" href="#2-environment" title="Permanent link">&para;</a></h2>
 <p>Please refer to <a href="../../ppocr/environment.en.md">"Environment Preparation"</a> to configure the PaddleOCR environment, and refer to <a href="../../ppocr/blog/clone.en.md">"Project Clone"</a> to clone the project code.</p>
 <p>Furthermore, additional dependencies need to be installed:
@@ -5597,7 +5556,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="आखिरी अपडेट">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
   </span>
 
     
@@ -5607,7 +5566,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="बनाया था">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
   </span>
 
     

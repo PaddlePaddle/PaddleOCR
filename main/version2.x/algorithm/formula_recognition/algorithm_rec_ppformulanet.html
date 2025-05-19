@@ -5512,7 +5512,6 @@ You're not viewing the latest version.
 <h1 id="-pp-formulanet">印刷数学公式识别算法-PP-FormulaNet<a class="headerlink" href="#-pp-formulanet" title="Permanent link">&para;</a></h1>
 <h2 id="1">1. 算法简介<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <p><code>PP-FormulaNet</code> 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持识别 5 万个常见 LaTeX 源码词汇。其中，PP-FormulaNet-S 版本采用 PP-HGNetV2-B4 作为骨干网络，通过并行掩码和模型蒸馏等技术大幅提升推理速度并保持高识别精度，适用于简单印刷公式和跨行简单印刷公式等场景；而 PP-FormulaNet-L 版本基于 Vary_VIT_B 并经过大规模公式数据集的深入训练，在复杂公式识别方面表现显著提升，适用于简单印刷、复杂印刷和手写公式。</p>
-<p>为了进一步提升性能，百度飞桨团队在 PP-FormulaNet 的基础上开发了增强版 <code>PP-FormulaNet_plus</code>。该版本使用了来自中文学位论文、专业书籍、教材试卷和数学期刊的丰富数据集，大幅提升了识别能力。其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 新增了对中文公式的支持，并将最大预测 token 数从 1024 扩大至 2560，显著提升了复杂公式的识别性能；而 PP-FormulaNet_plus-S 则专注于增强英文公式识别能力，使得 PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。</p>
 <p>上述模型在对应测试集上的精度如下：</p>
 <table>
 <thead>
@@ -5520,9 +5519,7 @@ You're not viewing the latest version.
 <th>模型</th>
 <th>骨干网络</th>
 <th>配置文件</th>
-<th style="text-align: center;">En-<br/>BLEU↑</th>
-<th style="text-align: center;">Zh-<br/>BLEU(%)↑</th>
-<th style="text-align: center;">OmniDocBench-<br/>BLEU(%)↑</th>
+<th style="text-align: center;">En-BLEU↑</th>
 <th style="text-align: center;">GPU推理耗时（ms）</th>
 <th style="text-align: center;">下载链接</th>
 </tr>
@@ -5533,8 +5530,6 @@ You're not viewing the latest version.
 <td>Donut Swin</td>
 <td><a href="../../../configs/rec/UniMERNet.yaml">UniMERNet.yaml</a></td>
 <td style="text-align: center;">85.91</td>
-<td style="text-align: center;">43.50</td>
-<td style="text-align: center;">67.75</td>
 <td style="text-align: center;">2266.96</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar">训练模型</a></td>
 </tr>
@@ -5543,8 +5538,6 @@ You're not viewing the latest version.
 <td>PPHGNetV2_B4</td>
 <td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml">PP-FormulaNet-S.yaml</a></td>
 <td style="text-align: center;">87.00</td>
-<td style="text-align: center;">45.71</td>
-<td style="text-align: center;">59.57</td>
 <td style="text-align: center;">202.25</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar">训练模型</a></td>
 </tr>
@@ -5553,54 +5546,20 @@ You're not viewing the latest version.
 <td>Vary_VIT_B</td>
 <td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml">PP-FormulaNet-L.yaml</a></td>
 <td style="text-align: center;">90.36</td>
-<td style="text-align: center;">45.78</td>
-<td style="text-align: center;">64.81</td>
 <td style="text-align: center;">1976.52</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar">训练模型</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-S</td>
-<td>PPHGNetV2_B4</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml">PP-FormulaNet_plus-S.yaml</a></td>
-<td style="text-align: center;">88.71</td>
-<td style="text-align: center;">53.32</td>
-<td style="text-align: center;">70.54</td>
-<td style="text-align: center;">191.69</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar">训练模型</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-M</td>
-<td>PPHGNetV2_B6</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml">PP-FormulaNet_plus-M.yaml</a></td>
-<td style="text-align: center;">91.45</td>
-<td style="text-align: center;">89.76</td>
-<td style="text-align: center;">72.07</td>
-<td style="text-align: center;">1301.56</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar">训练模型</a></td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-L</td>
-<td>Vary_VIT_B</td>
-<td><a href="../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml">PP-FormulaNet_plus-L.yaml</a></td>
-<td style="text-align: center;">92.22</td>
-<td style="text-align: center;">90.64</td>
-<td style="text-align: center;">72.45</td>
-<td style="text-align: center;">1745.25</td>
-<td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar">训练模型</a></td>
 </tr>
 <tr>
 <td>LaTeX-OCR</td>
 <td>Hybrid ViT</td>
 <td><a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml">LaTeX_OCR_rec.yaml</a></td>
 <td style="text-align: center;">74.55</td>
-<td style="text-align: center;">39.96</td>
-<td style="text-align: center;">47.59</td>
 <td style="text-align: center;">1244.61</td>
 <td style="text-align: center;"><a href="https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar">训练模型</a></td>
 </tr>
 </tbody>
 </table>
-<p>其中，En-BLEU、Zh-BLEU（%）和OmniDocBench-BLEU（%）分别表示英文公式、中文公式以及OmniDocBench的BLEU分数。这里，英文公式的评估数据集包含UniMERNet的简单和复杂公式，以及PaddleX内部自建的简单、中等和复杂公式。中文公式的评估数据集则来自PaddleX自建的中文公式数据集。而 OmniDocBench 评估集由 <a href="https://github.com/opendatalab/OmniDocBench">OmniDocBench</a> 中的行间公式图片组成。</p>
+<p>这里，英文公式评估集包含UniMERNet的简单和复杂公式，以及PaddleX内部自建的简单、中等和复杂公式。</p>
 <h2 id="2">2. 环境配置<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p>请先参考<a href="../../ppocr/environment.html">《运行环境准备》</a>配置PaddleOCR运行环境，参考<a href="../../ppocr/blog/clone.html">《项目克隆》</a>克隆项目代码。</p>
 <p>此外，需要安装额外的依赖：
@@ -5676,7 +5635,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
   </span>
 
     
@@ -5686,7 +5645,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:27:51">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
   </span>
 
     
