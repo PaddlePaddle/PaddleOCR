@@ -2728,7 +2728,7 @@ pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
 SubModules:
   LayoutDetection:
     module_name: layout_detection
-    model_name: PP-DocLayout-L
+    model_name: PP-DocLayout_plus-L
     model_dir: null # 替换为微调后的版面区域检测模型权重路径
 ......
 SubPipelines:
