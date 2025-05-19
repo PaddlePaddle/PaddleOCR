@@ -611,7 +611,9 @@ for res in output:
 
 ## 四、二次开发
 
-如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_rec` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考[文本识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md)安装了 PaddleOCR 所需要的依赖。
+
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_rec` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考[文本识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
+
 
 
 ## 4.1 数据集、预训练模型准备

@@ -39,6 +39,23 @@ comments: true
 <th>介绍</th>
 </tr>
 <tr>
+<td>SLANet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">训练模型</a></td>
+<td>59.52</td>
+<td>103.08 / 103.08</td>
+<td>197.99 / 197.99</td>
+<td>6.9 M</td>
+<td rowspan="1">SLANet 是百度飞桨视觉团队自研的表格结构识别模型。该模型通过采用 CPU 友好型轻量级骨干网络 PP-LCNet、高低层特征融合模块 CSP-PAN、结构与位置信息对齐的特征解码模块 SLA Head，大幅提升了表格结构识别的精度和推理速度。</td>
+</tr>
+<tr>
+<td>SLANet_plus</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">训练模型</a></td>
+<td>63.69</td>
+<td>140.29 / 140.29</td>
+<td>195.39 / 195.39</td>
+<td>6.9 M</td>
+<td rowspan="1">SLANet_plus 是百度飞桨视觉团队自研的表格结构识别模型 SLANet 的增强版。相较于 SLANet，SLANet_plus 对无线表、复杂表格的识别能力得到了大幅提升，并降低了模型对表格定位准确性的敏感度，即使表格定位出现偏移，也能够较准确地进行识别。
+</td>
+</tr>
+<tr>
 <td>SLANeXt_wired</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams">训练模型</a></td>
 <td rowspan="2">69.65</td>
@@ -113,12 +130,44 @@ comments: true
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>模型存储大小（M）</th>
 <th>介绍</th>
+<tr>
+<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>83.8</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>101</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>79.0</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.7</td>
+<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>83.8</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>101</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>79.0</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.7</td>
+<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
-<td>82.69</td>
+<td>69.2</td>
 <td>83.34 / 80.91</td>
 <td>442.58 / 442.58</td>
 <td>109</td>
@@ -126,7 +175,7 @@ comments: true
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>77.79</td>
+<td>63.8</td>
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
@@ -137,7 +186,7 @@ comments: true
 </details>
 
 <details>
-<summary> <b>文本识别模块模型：</b></summary>
+<summary><b>文本识别模块：</b></summary>
 <table>
 <tr>
 <th>模型</th><th>模型下载链接</th>
@@ -148,28 +197,46 @@ comments: true
 <th>介绍</th>
 </tr>
 <tr>
+<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>86.38</td>
+<td> - </td>
+<td> - </td>
+<td>205 M</td>
+<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.29</td>
+<td> - </td>
+<td> - </td>
+<td>136 M</td>
+<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
-<td>81.53</td>
+<td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>74.7 M</td>
+<td>91 M</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
-<td>78.74</td>
+<td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>10.6 M</td>
+<td>11 M</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
-<td>80.61 </td>
+<td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>71.2 M</td>
+<td>87 M</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
@@ -178,14 +245,54 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>6.8 M</td>
+<td>7.3 M</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
 
-> ❗ 以上列出的是文本识别模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>18个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
+> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
+
+* <b>PP-OCRv5 多场景模型</b>
+
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>中文识别 Avg Accuracy(%)</th>
+<th>英文识别 Avg Accuracy(%)</th>
+<th>繁体中文识别 Avg Accuracy(%)</th>
+<th>日文识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>86.38</td>
+<td>64.70</td>
+<td>93.29</td>
+<td>60.35</td>
+<td> - </td>
+<td> - </td>
+<td>205 M</td>
+<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.29</td>
+<td>66.00</td>
+<td>83.55</td>
+<td>54.65</td>
+<td> - </td>
+<td> - </td>
+<td>136 M</td>
+<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+</table>
 
 * <b>中文识别模型</b>
 <table>
@@ -200,38 +307,39 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
-<td>81.53</td>
+<td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>74.7 M</td>
+<td>91 M</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
-<td>78.74</td>
+<td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>10.6 M</td>
+<td>11 M</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
-<td>80.61 </td>
+<td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>71.2 M</td>
+<td>87 M</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
 <td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
-<td>72.96</td>
+<td>75.43</td>
 <td>5.87 / 1.19</td>
 <td>9.07 / 4.28</td>
-<td>9.2 M</td>
+<td>11 M</td>
 <td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 </table>
+
 <table>
 <tr>
 <th>模型</th><th>模型下载链接</th>
@@ -422,6 +530,15 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </thead>
 <tbody>
 <tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+<tr>
 <td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
 <td>90.4</td>
 <td>34.6244 / 10.3945</td>
@@ -448,7 +565,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tbody>
 </table>
 
-> ❗ 以上列出的是版面检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>11个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
+> ❗ 以上列出的是版面检测模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>12个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
 <details><summary> 👉模型列表详情</summary>
 * <b>表格版面检测模型</b>
 <table>
@@ -1924,4 +2041,56 @@ for i, res in enumerate(result["tableRecResults"]):
 
 如果通用表格识别v2产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升通用表格识别v2产线的在您的场景中的识别效果。
 
-......
+由于通用表格识别v2产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>表格分类错误</td>
+<td>表格分类模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>表格单元格定位错误</td>
+<td>表格单元格检测模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>表格结构识别错误</td>
+<td>表格结构识别模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>未能成功检测到表格所在区域</td>
+<td>版面区域检测模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>文本存在漏检</td>
+<td>文本检测模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>文本内容都不准</td>
+<td>文本识别模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转/表格旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>

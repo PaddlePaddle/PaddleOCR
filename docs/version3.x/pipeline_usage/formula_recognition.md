@@ -71,6 +71,33 @@ comments: true
 
 <details>
 <summary><b>版面区域检测模块（可选）：</b></summary>
+
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+* <b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
 <tr>
@@ -110,11 +137,11 @@ comments: true
 </tbody>
 </table>
 
->❗ 以上列出的是版面区域检测模块重点支持的<b>3个核心模型</b>，该模块总共支持<b>6个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
+>❗ 以上列出的是版面区域检测模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>7个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
 
-* <b>17类版面区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
+* <b>版面区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
 <table>
 <thead>
 <tr>
@@ -155,7 +182,7 @@ comments: true
 </table>
 
 
-* <b>23类版面区域检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
+* <b>版面区域检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
 <table>
 <thead>
 <tr>
@@ -194,6 +221,32 @@ comments: true
 </tr>
 </tbody>
 </table>
+
+* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>34.6244 / 10.3945</td>
+<td>510.57 / - </td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
 </details>
 </details>
 
@@ -202,38 +255,71 @@ comments: true
 <table>
 <tr>
 <th>模型</th><th>模型下载链接</th>
-<th>Avg-BLEU(%)</th>
+<th>En-BLEU(%)</th>
+<th>Zh-BLEU(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>模型存储大小 (M)</th>
 <th>介绍</th>
 </tr>
 <td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
-<td>86.13</td>
+<td>85.91</td>
+<td>43.50</td>
 <td>2266.96/-</td>
 <td>-/-</td>
-<td>1.4 G</td>
+<td>1.53 G</td>
 <td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
 <tr>
 <td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
-<td>87.12</td>
+<td>87.00</td>
+<td>45.71</td>
 <td>202.25/-</td>
 <td>-/-</td>
-<td>167.9 M</td>
+<td>224 M</td>
 <td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
 
 </tr>
 <td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
-<td>92.13</td>
+<td>90.36</td>
+<td>45.78</td>
 <td>1976.52/-</td>
 <td>-/-</td>
-<td>535.2 M</td>
+<td>695 M</td>
+<tr>
+<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
+<td>88.71</td>
+<td>53.32</td>
+<td>191.69/-</td>
+<td>-/-</td>
+<td>248 M</td>
+<td rowspan="3">PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 的基础上开发的增强版公式识别模型。与原版相比，PP-FormulaNet_plus 在训练中使用了更为丰富的公式数据集，包括中文学位论文、专业书籍、教材试卷以及数学期刊等多种来源。这一扩展显著提升了模型的识别能力。
+
+其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 模型新增了对中文公式的支持，并将公式的最大预测 token 数从 1024 扩大至 2560，大幅提升了对复杂公式的识别性能。同时，PP-FormulaNet_plus-S 模型则专注于增强英文公式的识别能力。通过这些改进，PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。 </td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
+<td>91.45</td>
+<td>89.76</td>
+<td>1301.56/-</td>
+<td>-/-</td>
+<td>592 M</td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>92.22</td>
+<td>90.64</td>
+<td>1745.25/-</td>
+<td>-/-</td>
+<td>698 M</td>
+</tr>
+
 <tr>
 <td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
-<td>71.63</td>
+<td>74.55</td>
+<td>39.96</td>
+<td>1244.61/-</td>
 <td>-/-</td>
-<td>-/-</td>
-<td>89.7 M</td>
+<td>99 M</td>
 <td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
 </tr>
 </table>
@@ -298,7 +384,7 @@ comments: true
 
 ## 2. 快速开始
 
-在本地使用通用版面解析v3产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用公式识别产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -381,7 +467,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
@@ -540,20 +626,20 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 运行结果会被打印到终端上，默认配置的 formula_recognition 产线的运行结果如下：
 
 ```bash
-{'res': {'input_path': '/root/.paddlex/predict_input/general_formula_recognition_001.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 2, 'label': 'text', 'score': 0.985754132270813, 'coordinate': [89.7193, 1086.395, 658.7713, 1553.3423]}, {'cls_id': 2, 'label': 'text', 'score': 0.9843020439147949, 'coordinate': [92.333496, 128.53197, 665.28827, 396.77502]}, {'cls_id': 2, 'label': 'text', 'score': 0.9766702651977539, 'coordinate': [698.1615, 590.9516, 1293.0541, 747.957]}, {'cls_id': 2, 'label': 'text', 'score': 0.9720445275306702, 'coordinate': [697.04236, 752.37866, 1289.7733, 883.6316]}, {'cls_id': 2, 'label': 'text', 'score': 0.969851016998291, 'coordinate': [92.62311, 799.51917, 660.5987, 901.7046]}, {'cls_id': 2, 'label': 'text', 'score': 0.968906819820404, 'coordinate': [703.46436, 81.138016, 1304.8857, 187.78355]}, {'cls_id': 2, 'label': 'text', 'score': 0.9686803221702576, 'coordinate': [691.15967, 1513.7944, 1283.3694, 1639.1626]}, {'cls_id': 2, 'label': 'text', 'score': 0.9676252007484436, 'coordinate': [700.59705, 287.55557, 1299.9479, 391.25064]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9654340147972107, 'coordinate': [727.97864, 441.2702, 1221.3971, 570.22736]}, {'cls_id': 2, 'label': 'text', 'score': 0.962298572063446, 'coordinate': [696.6504, 958.38, 1288.2308, 1033.8015]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9593353867530823, 'coordinate': [155.30962, 924.0272, 598.61615, 1036.6716]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9584437012672424, 'coordinate': [811.00867, 1058.013, 1176.5062, 1118.1985]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9583907127380371, 'coordinate': [776.84436, 208.44116, 1224.5082, 267.0984]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9574459195137024, 'coordinate': [756.9298, 1211.8248, 1190.2643, 1267.3693]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9567654728889465, 'coordinate': [723.22705, 1332.768, 1254.1936, 1469.2213]}, {'cls_id': 2, 'label': 'text', 'score': 0.9535155296325684, 'coordinate': [87.32236, 1557.9272, 656.71436, 1632.439]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9531306028366089, 'coordinate': [116.53526, 714.33014, 613.72314, 773.89496]}, {'cls_id': 2, 'label': 'text', 'score': 0.9499222040176392, 'coordinate': [95.88785, 479.01178, 663.25146, 536.5941]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9488246440887451, 'coordinate': [165.14, 558.2904, 597.4905, 613.77295]}, {'cls_id': 2, 'label': 'text', 'score': 0.9445527791976929, 'coordinate': [96.62344, 639.164, 662.406, 693.54376]}, {'cls_id': 2, 'label': 'text', 'score': 0.9438745975494385, 'coordinate': [695.2748, 1138.9849, 1286.6161, 1188.8252]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9253508448600769, 'coordinate': [195.446, 425.10272, 567.61505, 452.4903]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9198653101921082, 'coordinate': [853.006, 908.8241, 1132.3086, 933.7346]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9072502255439758, 'coordinate': [165.8695, 129.74162, 512.8529, 156.56209]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.9058157205581665, 'coordinate': [1246.4065, 1078.4541, 1287.0457, 1104.9424]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.9032580256462097, 'coordinate': [1247.0944, 1229.402, 1287.0751, 1255.4117]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.9020437598228455, 'coordinate': [1247.0134, 908.5498, 1288.0088, 934.7777]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.9014809131622314, 'coordinate': [1252.9968, 492.4516, 1294.864, 518.0589]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9007395505905151, 'coordinate': [95.99875, 236.36539, 296.8511, 266.53656]}, {'cls_id': 2, 'label': 'text', 'score': 0.899124801158905, 'coordinate': [725.15186, 395.68433, 1263.7633, 423.32642]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8968735337257385, 'coordinate': [1241.6221, 1473.1089, 1283.1995, 1498.9155]}, {'cls_id': 2, 'label': 'text', 'score': 0.891890823841095, 'coordinate': [696.93774, 1286.4127, 1083.1498, 1310.9156]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8909994959831238, 'coordinate': [1270.2683, 219.9446, 1300.0896, 246.45982]}, {'cls_id': 2, 'label': 'text', 'score': 0.8866966366767883, 'coordinate': [94.425, 1058.3392, 441.26416, 1082.0751]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8848764300346375, 'coordinate': [94.911865, 1319.9253, 263.36142, 1345.916]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8829801678657532, 'coordinate': [634.6257, 427.7292, 661.91315, 453.2417]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8760316967964172, 'coordinate': [630.8843, 939.32605, 658.2267, 965.29675]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8740068078041077, 'coordinate': [634.3623, 576.0576, 660.5403, 601.4944]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8715350031852722, 'coordinate': [633.26575, 730.2727, 660.3563, 755.6184]}, {'cls_id': 19, 'label': 'formula_number', 'score': 0.8699929714202881, 'coordinate': [630.99963, 1001.1361, 657.9286, 1025.9573]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8555153012275696, 'coordinate': [1089.9109, 1598.5446, 1277.5623, 1622.1991]}, {'cls_id': 7, 'label': 'formula', 'score': 0.833438515663147, 'coordinate': [694.6742, 1611.7349, 861.1708, 1635.6787]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7923287749290466, 'coordinate': [365.27258, 268.35327, 515.08936, 296.99475]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7592059969902039, 'coordinate': [917.18024, 1618.9021, 1009.52045, 1640.4705]}, {'cls_id': 3, 'label': 'number', 'score': 0.7468197345733643, 'coordinate': [1297.7268, 5.963439, 1310.3665, 26.294968]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7404024004936218, 'coordinate': [538.54333, 479.8123, 662.3668, 508.62253]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7284969091415405, 'coordinate': [99.5916, 508.4211, 253.29228, 535.67163]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7198922634124756, 'coordinate': [1116.627, 1572.7815, 1191.6616, 1594.5166]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7081565260887146, 'coordinate': [244.82803, 162.53033, 313.66757, 187.39536]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5778979659080505, 'coordinate': [255.87213, 323.67505, 326.8396, 349.7248]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5756691098213196, 'coordinate': [695.4659, 1561.6521, 900.0931, 1585.8818]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5596396923065186, 'coordinate': [175.38367, 350.68616, 242.63516, 376.44427]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5586691498756409, 'coordinate': [787.9116, 349.50732, 812.71045, 370.09338]}, {'cls_id': 7, 'label': 'formula', 'score': 0.546517550945282, 'coordinate': [1262.5737, 314.87128, 1296.2644, 338.0655]}, {'cls_id': 7, 'label': 'formula', 'score': 0.541178822517395, 'coordinate': [774.1763, 595.4717, 801.0121, 618.29297]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5409464836120605, 'coordinate': [848.8351, 619.38025, 959.8961, 646.0126]}]}, 'formula_res_list': [{'rec_formula': '\\small\\begin{aligned}{\\psi_{0}(M)-\\psi(M,z)=}&{{}\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}}\\frac{\\lambda^{2}c^{2}}{t_{\\operatorname{E}}^{2}\\operatorname{ln}(10)}\\times}\\\\ {}&{{}\\int_{0}^{z}d z^{\\prime}\\frac{d t}{d z^{\\prime}}\\left.\\frac{\\partial\\phi}{\\partial L}\\right|_{L=\\lambda M c^{2}/t_{\\operatorname{E}}},}\\\\ \\end{aligned}', 'formula_region_id': 1, 'dt_polys': ([727.97864, 441.2702, 1221.3971, 570.22736],)}, {'rec_formula': '\\begin{aligned}{\\rho_{\\mathrm{BH}}}&{{}=\\int d M\\psi(M)M}\\\\ {}&{{}=\\frac{1-\\epsilon_{r}}{\\epsilon_{r}c^{2}}\\int_{0}^{\\infty}d z\\frac{d t}{d z}\\int d\\log_{10}L\\phi(L,z)L,}\\\\ \\end{aligned}', 'formula_region_id': 2, 'dt_polys': ([155.30962, 924.0272, 598.61615, 1036.6716],)}, {'rec_formula': '{\\frac{d n}{d\\sigma}}d\\sigma=\\psi_{*}\\left({\\frac{\\sigma}{\\sigma_{*}}}\\right)^{\\alpha}{\\frac{e^{-(\\sigma/\\sigma_{*})^{\\beta}}}{\\Gamma(\\alpha/\\beta)}}\\beta{\\frac{d\\sigma}{\\sigma}}.', 'formula_region_id': 3, 'dt_polys': ([811.00867, 1058.013, 1176.5062, 1118.1985],)}, {'rec_formula': '\\phi(L)\\equiv\\frac{d n}{d\\log_{10}L}=\\frac{\\phi_{*}}{(L/L_{*})^{\\gamma_{1}}+(L/L_{*})^{\\gamma_{2}}}.', 'formula_region_id': 4, 'dt_polys': ([776.84436, 208.44116, 1224.5082, 267.0984],)}, {'rec_formula': '\\psi_{0}(M)=\\int d\\sigma\\frac{p(\\log_{10}M|\\log_{10}\\sigma)}{M\\log(10)}\\frac{d n}{d\\sigma}(\\sigma),', 'formula_region_id': 5, 'dt_polys': ([756.9298, 1211.8248, 1190.2643, 1267.3693],)}, {'rec_formula': '\\small\\begin{aligned}{p(\\operatorname{log}_{10}}&{{}M|\\operatorname{log}_{10}\\sigma)=\\frac{1}{\\sqrt{2\\pi}\\epsilon_{0}}}\\\\ {}&{{}\\times\\operatorname{exp}\\left[-\\frac{1}{2}\\left(\\frac{\\operatorname{log}_{10}M-a_{\\bullet}-b_{\\bullet}\\operatorname{log}_{10}\\sigma}{\\epsilon_{0}}\\right)^{2}\\right].}\\\\ \\end{aligned}', 'formula_region_id': 6, 'dt_polys': ([723.22705, 1332.768, 1254.1936, 1469.2213],)}, {'rec_formula': '\\frac{\\partial\\psi}{\\partial t}(M,t)+\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}}\\frac{\\lambda^{2}c^{2}}{t_{\\mathrm{E}}^{2}\\ln(10)}\\left.\\frac{\\partial\\phi}{\\partial L}\\right|_{L=\\lambda M c^{2}/t_{\\mathrm{v}}}=0,', 'formula_region_id': 7, 'dt_polys': ([116.53526, 714.33014, 613.72314, 773.89496],)}, {'rec_formula': '\\langle\\dot{M}(M,t)\\rangle\\psi(M,t)=\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}c^{2}\\operatorname{ln}(10)}\\phi(L,t)\\frac{d L}{d M}.', 'formula_region_id': 8, 'dt_polys': ([165.14, 558.2904, 597.4905, 613.77295],)}, {'rec_formula': '\\small\\begin{aligned}{\\phi(L,t)d\\operatorname{log}_{10}L=\\delta(M,t)\\psi(M,t)d M.}\\\\ \\end{aligned}', 'formula_region_id': 9, 'dt_polys': ([195.446, 425.10272, 567.61505, 452.4903],)}, {'rec_formula': '\\log_{10}M=a_{\\bullet}+b_{\\bullet}\\log_{10}X.', 'formula_region_id': 10, 'dt_polys': ([853.006, 908.8241, 1132.3086, 933.7346],)}, {'rec_formula': 't_{E}\\,=\\,\\sigma_{T}c/4\\pi G m_{v}\\,=\\,4.5\\times10^{8}\\mathrm{yr}', 'formula_region_id': 11, 'dt_polys': ([165.8695, 129.74162, 512.8529, 156.56209],)}, {'rec_formula': '\\dot{M}\\:=\\:(1\\:-\\:\\epsilon_{r})\\dot{M}_{\\mathrm{acc}}', 'formula_region_id': 12, 'dt_polys': ([95.99875, 236.36539, 296.8511, 266.53656],)}, {'rec_formula': 'M_{*}=L_{*}t_{E}/\\breve{\\lambda}c^{2}', 'formula_region_id': 13, 'dt_polys': ([94.911865, 1319.9253, 263.36142, 1345.916],)}, {'rec_formula': 'a_{\\bullet}\\,=\\,8.32\\pm0.05', 'formula_region_id': 14, 'dt_polys': ([1089.9109, 1598.5446, 1277.5623, 1622.1991],)}, {'rec_formula': 'b_{\\bullet}=5.64\\,\\dot{\\pm\\,0.32}', 'formula_region_id': 15, 'dt_polys': ([694.6742, 1611.7349, 861.1708, 1635.6787],)}, {'rec_formula': '\\phi(L,t)d\\operatorname{log}_{10}L', 'formula_region_id': 16, 'dt_polys': ([365.27258, 268.35327, 515.08936, 296.99475],)}, {'rec_formula': '\\epsilon_{0}=0.38', 'formula_region_id': 17, 'dt_polys': ([917.18024, 1618.9021, 1009.52045, 1640.4705],)}, {'rec_formula': '\\langle\\dot{M}(M,t)\\rangle=', 'formula_region_id': 18, 'dt_polys': ([538.54333, 479.8123, 662.3668, 508.62253],)}, {'rec_formula': '\\delta(M,t)\\dot{M}(M,t)', 'formula_region_id': 19, 'dt_polys': ([99.5916, 508.4211, 253.29228, 535.67163],)}, {'rec_formula': 'M\\mathrm{~-~}\\sigma', 'formula_region_id': 20, 'dt_polys': ([1116.627, 1572.7815, 1191.6616, 1594.5166],)}, {'rec_formula': '\\epsilon_{r}\\dot{M}_{\\mathrm{acc}}', 'formula_region_id': 21, 'dt_polys': ([244.82803, 162.53033, 313.66757, 187.39536],)}, {'rec_formula': '\\delta(M,t)', 'formula_region_id': 22, 'dt_polys': ([255.87213, 323.67505, 326.8396, 349.7248],)}, {'rec_formula': 'X\\:=\\:\\sigma/200\\mathrm{km}\\:\\:\\mathrm{s}^{-1}', 'formula_region_id': 23, 'dt_polys': ([695.4659, 1561.6521, 900.0931, 1585.8818],)}, {'rec_formula': '\\phi(L,t)', 'formula_region_id': 24, 'dt_polys': ([175.38367, 350.68616, 242.63516, 376.44427],)}, {'rec_formula': '\\gamma_{2}', 'formula_region_id': 25, 'dt_polys': ([787.9116, 349.50732, 812.71045, 370.09338],)}, {'rec_formula': 'L_{*}.', 'formula_region_id': 26, 'dt_polys': ([1262.5737, 314.87128, 1296.2644, 338.0655],)}, {'rec_formula': '\\psi_{0}', 'formula_region_id': 27, 'dt_polys': ([774.1763, 595.4717, 801.0121, 618.29297],)}, {'rec_formula': 'z,\\ \\psi(M,z)', 'formula_region_id': 28, 'dt_polys': ([848.8351, 619.38025, 959.8961, 646.0126],)}]}}
+{'res': {'input_path': './general_formula_recognition_001.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 2, 'label': 'text', 'score': 0.9855189323425293, 'coordinate': [90.56131, 1086.7773, 658.8992, 1553.2681]}, {'cls_id': 2, 'label': 'text', 'score': 0.9814704060554504, 'coordinate': [93.04651, 127.988556, 664.8587, 396.60892]}, {'cls_id': 2, 'label': 'text', 'score': 0.9767388105392456, 'coordinate': [698.4391, 591.0454, 1293.3676, 748.28345]}, {'cls_id': 2, 'label': 'text', 'score': 0.9712911248207092, 'coordinate': [701.4946, 286.61566, 1299.0099, 391.87457]}, {'cls_id': 2, 'label': 'text', 'score': 0.9709068536758423, 'coordinate': [697.0126, 751.93604, 1290.2236, 883.64453]}, {'cls_id': 2, 'label': 'text', 'score': 0.9689271450042725, 'coordinate': [704.01196, 79.645935, 1304.7493, 187.96674]}, {'cls_id': 2, 'label': 'text', 'score': 0.9683637619018555, 'coordinate': [93.063385, 799.3567, 660.6935, 902.0344]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9660536646842957, 'coordinate': [728.5045, 440.9215, 1224.0634, 570.8518]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9616329669952393, 'coordinate': [722.9789, 1333.5085, 1257.1136, 1468.0432]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9610316753387451, 'coordinate': [756.4525, 1211.323, 1188.0428, 1268.2336]}, {'cls_id': 7, 'label': 'formula', 'score': 0.960993230342865, 'coordinate': [777.51355, 207.87927, 1222.8966, 267.33014]}, {'cls_id': 2, 'label': 'text', 'score': 0.9594196677207947, 'coordinate': [697.5154, 957.6764, 1288.6238, 1033.5211]}, {'cls_id': 2, 'label': 'text', 'score': 0.9593432545661926, 'coordinate': [691.333, 1511.8015, 1282.0968, 1642.5906]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9589930176734924, 'coordinate': [153.89856, 924.2046, 601.0946, 1036.9038]}, {'cls_id': 2, 'label': 'text', 'score': 0.9582098722457886, 'coordinate': [87.02347, 1557.2971, 655.9584, 1632.6912]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9579620957374573, 'coordinate': [810.86975, 1057.0771, 1175.101, 1117.6631]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9557801485061646, 'coordinate': [165.26271, 557.8495, 598.1803, 614.35]}, {'cls_id': 7, 'label': 'formula', 'score': 0.953873872756958, 'coordinate': [116.48187, 713.88416, 614.2181, 774.02576]}, {'cls_id': 2, 'label': 'text', 'score': 0.9521227478981018, 'coordinate': [96.6882, 478.32745, 662.573, 536.5877]}, {'cls_id': 2, 'label': 'text', 'score': 0.944242000579834, 'coordinate': [96.12866, 639.1591, 661.7959, 692.4849]}, {'cls_id': 2, 'label': 'text', 'score': 0.9403323531150818, 'coordinate': [695.9436, 1138.6748, 1286.7242, 1188.0049]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9249663949012756, 'coordinate': [852.90137, 908.64386, 1131.1882, 933.81793]}, {'cls_id': 7, 'label': 'formula', 'score': 0.9249223470687866, 'coordinate': [195.28397, 424.81024, 567.697, 451.1291]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.9173304438591003, 'coordinate': [1246.2393, 1079.0535, 1286.3281, 1104.3323]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.9169507026672363, 'coordinate': [1246.9003, 908.6482, 1288.2013, 934.61426]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.915979266166687, 'coordinate': [1247.0374, 1229.1572, 1287.094, 1254.9805]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.9085646867752075, 'coordinate': [1252.864, 492.1079, 1294.6238, 518.47095]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.9017605781555176, 'coordinate': [1242.1719, 1473.6951, 1283.02, 1498.6316]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8999755382537842, 'coordinate': [1269.8164, 220.34933, 1299.8589, 247.01102]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8965252041816711, 'coordinate': [96.00711, 235.49493, 295.43823, 265.60016]}, {'cls_id': 2, 'label': 'text', 'score': 0.8954343199729919, 'coordinate': [696.85693, 1286.2236, 1083.3921, 1310.8643]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8952110409736633, 'coordinate': [166.60979, 129.20242, 511.65692, 156.29672]}, {'cls_id': 2, 'label': 'text', 'score': 0.893648624420166, 'coordinate': [725.64575, 396.18964, 1263.0391, 422.76813]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8922948837280273, 'coordinate': [634.14124, 427.77087, 661.1686, 454.10022]}, {'cls_id': 2, 'label': 'text', 'score': 0.8892256617546082, 'coordinate': [94.483246, 1058.7595, 441.92313, 1082.4875]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8878197073936462, 'coordinate': [630.4175, 939.3015, 657.7135, 965.36426]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8831961154937744, 'coordinate': [630.5835, 1000.95715, 657.4309, 1026.2128]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8767948150634766, 'coordinate': [634.1024, 575.3833, 660.59094, 601.1677]}, {'cls_id': 7, 'label': 'formula', 'score': 0.873543918132782, 'coordinate': [95.29655, 1320.3627, 264.93008, 1345.8473]}, {'cls_id': 17, 'label': 'formula_number', 'score': 0.8702306151390076, 'coordinate': [633.82825, 730.31525, 659.83215, 755.5485]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8387619853019714, 'coordinate': [365.19897, 268.29675, 515.7938, 296.07013]}, {'cls_id': 7, 'label': 'formula', 'score': 0.8314349055290222, 'coordinate': [1090.509, 1599.1382, 1276.6736, 1622.156]}, {'cls_id': 7, 'label': 'formula', 'score': 0.817135751247406, 'coordinate': [246.175, 161.22958, 314.3764, 186.40591]}, {'cls_id': 3, 'label': 'number', 'score': 0.8042846322059631, 'coordinate': [1297.4036, 7.1497707, 1310.5969, 27.737753]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7970448136329651, 'coordinate': [538.45593, 478.09354, 661.8812, 508.50778]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7644855976104736, 'coordinate': [916.51746, 1618.5188, 1009.62537, 1640.8206]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7423419952392578, 'coordinate': [694.8439, 1612.2507, 861.05334, 1635.9768]}, {'cls_id': 7, 'label': 'formula', 'score': 0.7072376608848572, 'coordinate': [99.72007, 508.21167, 254.91953, 535.74744]}, {'cls_id': 7, 'label': 'formula', 'score': 0.6976271867752075, 'coordinate': [696.8011, 1561.4375, 899.79584, 1586.7349]}, {'cls_id': 7, 'label': 'formula', 'score': 0.6707713007926941, 'coordinate': [1117.0862, 1571.9763, 1191.502, 1594.742]}, {'cls_id': 7, 'label': 'formula', 'score': 0.6338322162628174, 'coordinate': [577.33484, 1274.4131, 602.5636, 1296.7021]}, {'cls_id': 7, 'label': 'formula', 'score': 0.6199935674667358, 'coordinate': [175.28284, 349.82376, 241.24683, 376.6708]}, {'cls_id': 7, 'label': 'formula', 'score': 0.612853467464447, 'coordinate': [773.06287, 595.202, 800.43884, 617.3812]}, {'cls_id': 7, 'label': 'formula', 'score': 0.6107096672058105, 'coordinate': [706.6776, 316.87082, 736.69714, 339.9352]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5520269870758057, 'coordinate': [1263.9711, 314.65167, 1292.7728, 337.3896]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5346108675003052, 'coordinate': [1219.2955, 316.599, 1243.9181, 339.71802]}, {'cls_id': 7, 'label': 'formula', 'score': 0.5195119380950928, 'coordinate': [254.65729, 323.6553, 326.57758, 349.53494]}, {'cls_id': 7, 'label': 'formula', 'score': 0.501812219619751, 'coordinate': [255.8518, 1350.6472, 301.74304, 1375.5286]}]}, 'formula_res_list': [{'rec_formula': '\\begin{aligned}{\\psi_{0}(M)-\\psi_{}(M,z)=}&{{}\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}}\\frac{\\lambda^{2}c^{2}}{t_{\\operatorname{E}}^{2}\\operatorname{l n}(10)}\\times}\\\\ {}&{{}\\int_{0}^{z}d z^{\\prime}\\frac{d t}{d z^{\\prime}}\\left.\\frac{\\partial\\phi}{\\partial L}\\right|_{L=\\lambda M c^{2}/t_{\\operatorname{E}}},}\\\\ \\end{aligned}', 'formula_region_id': 1, 'dt_polys': ([728.5045, 440.9215, 1224.0634, 570.8518],)}, {'rec_formula': '\\begin{aligned}{p(\\operatorname{l o g}_{10}}&{{}M|\\operatorname{l o g}_{10}\\sigma)=\\frac{1}{\\sqrt{2\\pi}\\epsilon_{0}}}\\\\ {}&{{}\\times\\operatorname{e x p}\\left[-\\frac{1}{2}\\left(\\frac{\\operatorname{l o g}_{10}M-a_{\\bullet}-b_{\\bullet}\\operatorname{l o g}_{10}\\sigma}{\\epsilon_{0}}\\right)^{2}\\right].}\\\\ \\end{aligned}', 'formula_region_id': 2, 'dt_polys': ([722.9789, 1333.5085, 1257.1136, 1468.0432],)}, {'rec_formula': '\\psi_{0}(M)=\\int d\\sigma\\frac{p(\\operatorname{l o g}_{10}M|\\operatorname{l o g}_{10}\\sigma)}{M\\operatorname{l o g}(10)}\\frac{d n}{d\\sigma}(\\sigma),', 'formula_region_id': 3, 'dt_polys': ([756.4525, 1211.323, 1188.0428, 1268.2336],)}, {'rec_formula': '\\phi(L)\\equiv\\frac{d n}{d\\operatorname{l o g}_{10}L}=\\frac{\\phi_{*}}{(L/L_{*})^{\\gamma_{1}}+(L/L_{*})^{\\gamma_{2}}}.', 'formula_region_id': 4, 'dt_polys': ([777.51355, 207.87927, 1222.8966, 267.33014],)}, {'rec_formula': '\\begin{aligned}{\\rho_{\\operatorname{B H}}}&{{}=\\int d M\\psi(M)M}\\\\ {}&{{}=\\frac{1-\\epsilon_{r}}{\\epsilon_{r}c^{2}}\\int_{0}^{\\infty}d z\\frac{d t}{d z}\\int d\\operatorname{l o g}_{10}L\\phi(L,z)L,}\\\\ \\end{aligned}', 'formula_region_id': 5, 'dt_polys': ([153.89856, 924.2046, 601.0946, 1036.9038],)}, {'rec_formula': '\\frac{d n}{d\\sigma}d\\sigma=\\psi_{*}\\left(\\frac{\\sigma}{\\sigma_{*}}\\right)^{\\alpha}\\frac{e^{-(\\sigma/\\sigma_{*})^{\\beta}}}{\\Gamma(\\alpha/\\beta)}\\beta\\frac{d\\sigma}{\\sigma}.', 'formula_region_id': 6, 'dt_polys': ([810.86975, 1057.0771, 1175.101, 1117.6631],)}, {'rec_formula': '\\langle\\dot{M}(M,t)\\rangle\\psi(M,t)=\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}c^{2}\\operatorname{l n}(10)}\\phi(L,t)\\frac{d L}{d M}.', 'formula_region_id': 7, 'dt_polys': ([165.26271, 557.8495, 598.1803, 614.35],)}, {'rec_formula': '\\frac{\\partial\\psi}{\\partial t}(M,t)+\\frac{(1-\\epsilon_{r})}{\\epsilon_{r}}\\frac{\\lambda^{2}c^{2}}{t_{\\operatorname{E}}^{2}\\operatorname{l n}(10)}\\left.\\frac{\\partial\\phi}{\\partial L}\\right|_{L=\\lambda M c^{2}/t_{\\operatorname{E}}}=0,', 'formula_region_id': 8, 'dt_polys': ([116.48187, 713.88416, 614.2181, 774.02576],)}, {'rec_formula': '\\operatorname{l o g}_{10}M=a_{\\bullet}+b_{\\bullet}\\operatorname{l o g}_{10}X.', 'formula_region_id': 9, 'dt_polys': ([852.90137, 908.64386, 1131.1882, 933.81793],)}, {'rec_formula': '\\phi(L,t)d\\operatorname{l o g}_{10}L=\\delta(M,t)\\psi(M,t)d M.', 'formula_region_id': 10, 'dt_polys': ([195.28397, 424.81024, 567.697, 451.1291],)}, {'rec_formula': '\\dot{M}\\:=\\:(1\\:-\\:\\epsilon_{r})\\dot{M}_{\\mathrm{a c c}}^{\\mathrm{~\\tiny~\\cdot~}}', 'formula_region_id': 11, 'dt_polys': ([96.00711, 235.49493, 295.43823, 265.60016],)}, {'rec_formula': 't_{E}=\\sigma_{T}c/4\\pi G m_{p}=4.5\\times10^{8}\\mathrm{y r}', 'formula_region_id': 12, 'dt_polys': ([166.60979, 129.20242, 511.65692, 156.29672],)}, {'rec_formula': 'M_{*}=L_{*}t_{E}/\\tilde{\\lambda}c^{2}', 'formula_region_id': 13, 'dt_polys': ([95.29655, 1320.3627, 264.93008, 1345.8473],)}, {'rec_formula': '\\phi(L,t)d\\operatorname{l o g}_{10}L', 'formula_region_id': 14, 'dt_polys': ([365.19897, 268.29675, 515.7938, 296.07013],)}, {'rec_formula': 'a_{\\bullet}=8.32\\pm0.05', 'formula_region_id': 15, 'dt_polys': ([1090.509, 1599.1382, 1276.6736, 1622.156],)}, {'rec_formula': '\\epsilon_{r}\\dot{M}_{\\mathrm{a c c}}', 'formula_region_id': 16, 'dt_polys': ([246.175, 161.22958, 314.3764, 186.40591],)}, {'rec_formula': '\\langle\\dot{M}(M,t)\\rangle=', 'formula_region_id': 17, 'dt_polys': ([538.45593, 478.09354, 661.8812, 508.50778],)}, {'rec_formula': '\\epsilon_{0}=0.38', 'formula_region_id': 18, 'dt_polys': ([916.51746, 1618.5188, 1009.62537, 1640.8206],)}, {'rec_formula': 'b_{\\bullet}=5.64\\dot{\\pm}\\dot{0.32}', 'formula_region_id': 19, 'dt_polys': ([694.8439, 1612.2507, 861.05334, 1635.9768],)}, {'rec_formula': '\\delta(M,t)\\dot{M}(M,t)', 'formula_region_id': 20, 'dt_polys': ([99.72007, 508.21167, 254.91953, 535.74744],)}, {'rec_formula': 'X=\\sigma/200\\mathrm{k m}\\mathrm{~s^{-1}~}', 'formula_region_id': 21, 'dt_polys': ([696.8011, 1561.4375, 899.79584, 1586.7349],)}, {'rec_formula': 'M-\\sigma', 'formula_region_id': 22, 'dt_polys': ([1117.0862, 1571.9763, 1191.502, 1594.742],)}, {'rec_formula': 'L_{*}', 'formula_region_id': 23, 'dt_polys': ([577.33484, 1274.4131, 602.5636, 1296.7021],)}, {'rec_formula': '\\phi(L,t)', 'formula_region_id': 24, 'dt_polys': ([175.28284, 349.82376, 241.24683, 376.6708],)}, {'rec_formula': '\\psi_{0}', 'formula_region_id': 25, 'dt_polys': ([773.06287, 595.202, 800.43884, 617.3812],)}, {'rec_formula': '\\mathrm{A^{\\prime\\prime}}', 'formula_region_id': 26, 'dt_polys': ([706.6776, 316.87082, 736.69714, 339.9352],)}, {'rec_formula': 'L_{*}', 'formula_region_id': 27, 'dt_polys': ([1263.9711, 314.65167, 1292.7728, 337.3896],)}, {'rec_formula': '\\phi_{*}', 'formula_region_id': 28, 'dt_polys': ([1219.2955, 316.599, 1243.9181, 339.71802],)}, {'rec_formula': '\\delta(M,t)', 'formula_region_id': 29, 'dt_polys': ([254.65729, 323.6553, 326.57758, 349.53494],)}, {'rec_formula': '\\phi(L)', 'formula_region_id': 30, 'dt_polys': ([255.8518, 1350.6472, 301.74304, 1375.5286],)}]}}
 ```
 
 运行结果参数说明可以参考[2.2 Python脚本方式集成](#22-python脚本方式集成)中的结果解释。
 
 可视化结果保存在`save_path`下，其中公式识别的可视化结果如下：
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/formula_recognition/04.png" style="width: 70%"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/formula_recognition/04_paddleocr3.png" style="width: 70%"/>
 
 <b> 如果您需要对公式识别产线进行可视化，需要运行如下命令来对LaTeX渲染环境进行安装。目前公式识别产线可视化只支持Ubuntu环境，其他环境暂不支持。对于复杂公式，LaTeX 结果可能包含部分高级的表示，Markdown等环境中未必可以成功显示：</b>
 
 ```bash
 sudo apt-get update
-sudo apt-get install texlive texlive-latex-base texlive-latex-extra -y
+sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texlive-latex-extra -y
 ```
 
 <b>备注</b>： 由于公式识别可视化过程中需要对每张公式图片进行渲染，因此耗时较长，请您耐心等待。
@@ -572,6 +658,7 @@ pipeline = FormulaRecognitionPipeline()
 output = pipeline.predict("./general_formula_recognition_001.png")
 for res in output:
     res.print() ## 打印预测的结构化输出
+    res.save_to_img(save_path="output") ## 保存当前图像的公式可视化结果
     res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
 ```
 
@@ -642,7 +729,7 @@ for res in output:
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
 <li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
 </ul>
 </td>
@@ -1220,4 +1307,37 @@ for i, res in enumerate(result["formulaRecResults"]):
 
 如果公式识别产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升公式识别产线的在您的场景中的识别效果。
 
-......
+由于公式识别产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
+
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>公式存在漏检</td>
+<td>版面区域检测模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>公式内容不准</td>
+<td>公式识别模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
