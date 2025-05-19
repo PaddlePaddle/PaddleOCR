@@ -22,7 +22,7 @@
     
     
       
-        <title>文档类视觉语言模型模块使用教程 - PaddleOCR Documentation</title>
+        <title>Tutorial on Using Document Visual Language Model Module - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#tutorial-on-using-document-visual-language-model-module" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文档类视觉语言模型模块使用教程
+              Tutorial on Using Document Visual Language Model Module
             
           </span>
         </div>
@@ -5376,36 +5376,45 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#i-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      一、概述
+      I. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#ii-supported-model-list" class="md-nav__link">
     <span class="md-ellipsis">
-      二、支持模型列表
+      II. Supported Model List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#iii-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      三、快速开始
+      III. Quick Start
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#iv-secondary-development" class="md-nav__link">
     <span class="md-ellipsis">
-      四、二次开发
+      IV. Secondary Development
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      V. FAQ
     </span>
   </a>
   
@@ -5427,7 +5436,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/doc_vlm.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/doc_vlm.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5436,60 +5445,70 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/doc_vlm.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/doc_vlm.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">文档类视觉语言模型模块使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>文档类视觉语言模型是当前一种前沿的多模态处理技术，旨在解决传统文档处理方法的局限性。传统方法往往局限于处理特定格式或预定义类别的文档信息，而文档类视觉语言模型能够融合视觉与语言信息，理解并处理多样化的文档内容。通过结合计算机视觉与自然语言处理技术，模型可以识别文档中的图像、文本及其相互关系，甚至能理解复杂版面结构中的语义信息。这使得文档处理更加智能化、灵活化，具备更强的泛化能力，在自动化办公、信息提取等领域展现出广阔的应用前景。</p>
-<h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h1 id="tutorial-on-using-document-visual-language-model-module">Tutorial on Using Document Visual Language Model Module<a class="headerlink" href="#tutorial-on-using-document-visual-language-model-module" title="Permanent link">&para;</a></h1>
+<h2 id="i-overview">I. Overview<a class="headerlink" href="#i-overview" title="Permanent link">&para;</a></h2>
+<p>Document visual language models are a cutting-edge multimodal processing technology aimed at addressing the limitations of traditional document processing methods. Traditional methods are often limited to processing document information in specific formats or predefined categories, whereas document visual language models can integrate visual and linguistic information to understand and handle diverse document content. By combining computer vision and natural language processing technologies, these models can recognize images, text, and their relationships within documents, and even understand semantic information within complex layout structures. This makes document processing more intelligent and flexible, with stronger generalization capabilities, showing broad application prospects in automated office work, information extraction, and other fields.</p>
+<h2 id="ii-supported-model-list">II. Supported Model List<a class="headerlink" href="#ii-supported-model-list" title="Permanent link">&para;</a></h2>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>模型存储大小（GB）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Model Storage Size (GB)</th>
+<th>Total Score</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">推理模型</a></td>
+<td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">Inference Model</a></td>
 <td>4.2</td>
-<td rowspan="2">PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。在内部业务中文场景类的指标上，PP-DocBee也高于目前的热门开源和闭源模型。</td>
+<td>765</td>
+<td rowspan="2">PP-DocBee is a self-developed multimodal large model by the PaddlePaddle team, focusing on document understanding, and it performs excellently in Chinese document understanding tasks. The model is fine-tuned and optimized using nearly 5 million multimodal datasets for document understanding, including general VQA, OCR, charts, text-rich documents, mathematics and complex reasoning, synthetic data, and pure text data, with different training data ratios set. On several authoritative English document understanding evaluation lists in academia, PP-DocBee has basically achieved SOTA for models of the same parameter scale. In terms of internal business Chinese scenario indicators, PP-DocBee also outperforms the current popular open-source and closed-source models.</td>
 </tr>
 <tr>
-<td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">推理模型</a></td>
+<td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">Inference Model</a></td>
 <td>15.8</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PP-DocBee2-3B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar">Inference Model</a></td>
+<td>7.6</td>
+<td>852</td>
+<td>PP-DocBee2 is a self-developed multimodal large model by the PaddlePaddle team, further optimizing the base model on the foundation of PP-DocBee and introducing a new data optimization scheme to improve data quality. Using a small amount of 470,000 data generated by a self-developed data synthesis strategy, PP-DocBee2 performs better in Chinese document understanding tasks. In terms of internal business Chinese scenario indicators, PP-DocBee2 improves by about 11.4% compared to PP-DocBee, and also outperforms the current popular open-source and closed-source models of the same scale.</td>
 </tr>
 </table>
 
-<h2 id="_4">三、快速开始<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><b>Note: The total scores of the above models are test results from an internal evaluation set, where all images have a resolution (height, width) of (1680, 1204), with a total of 1196 data entries, covering scenarios such as financial reports, laws and regulations, scientific and technical papers, manuals, humanities papers, contracts, research reports, etc. There are no plans for public release at the moment.</b></p>
+<h2 id="iii-quick-start">III. Quick Start<a class="headerlink" href="#iii-quick-start" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 <a href="../ppocr/installation.md">安装教程</a>。</p>
+<p>❗ Before starting quickly, please install the PaddleOCR wheel package. For details, please refer to the <a href="../ppocr/installation.md">Installation Guide</a>.</p>
 </blockquote>
-<p>使用一行命令即可快速体验：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>doc_vlm<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;{&#39;image&#39;: &#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;, &#39;query&#39;: &#39;识别这份表格的内容&#39;}&quot;</span>
+<p>You can quickly experience it with one line of command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>doc_vlm<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;{&#39;image&#39;: &#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;, &#39;query&#39;: &#39;识别这份表格的内容, 以markdown格式输出&#39;}&quot;</span>
 </span></code></pre></div>
-<p>您也可以将开放文档类视觉语言模型模块中的模型推理集成到您的项目中。运行以下代码前，请您下载<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png">示例图片</a>到本地。</p>
+<p>You can also integrate the model inference from the open document visual language model module into your project. Before running the following code, please download the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png">sample image</a> locally.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocVLM</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">DocVLM</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocBee-2B&quot;</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">DocVLM</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-DocBee2-3B&quot;</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="nb">input</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;medal_table.png&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;识别这份表格的内容&quot;</span><span class="p">},</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="nb">input</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;medal_table.png&quot;</span><span class="p">,</span> <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;识别这份表格的内容, 以markdown格式输出&quot;</span><span class="p">},</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>运行后，得到的结果为：</p>
-<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;image&#39;</span>:<span class="w"> </span><span class="s1">&#39;medal_table.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;query&#39;</span>:<span class="w"> </span><span class="s1">&#39;识别这份表格的内容&#39;</span>,<span class="w"> </span><span class="s1">&#39;result&#39;</span>:<span class="w"> </span><span class="s1">&#39;| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n&#39;</span><span class="o">}}</span>
+<p>After running, the result is:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;image&#39;</span>:<span class="w"> </span><span class="s1">&#39;medal_table.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;query&#39;</span>:<span class="w"> </span><span class="s1">&#39;识别这份表格的内容, 以markdown格式输出&#39;</span>,<span class="w"> </span><span class="s1">&#39;result&#39;</span>:<span class="w"> </span><span class="s1">&#39;| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n&#39;</span><span class="o">}}</span>
 </span></code></pre></div>
-运行结果参数含义如下：
-- <code>image</code>: 表示输入待预测图像的路径
-- <code>query</code>: 表述输入待预测的文本信息
-- <code>result</code>: 模型预测的结果信息</p>
-<p>预测结果打印可视化如下：</p>
+<p>The meaning of the result parameters is as follows:
+- <code>image</code>: Indicates the path of the input image to be predicted
+- <code>query</code>: Represents the input text information to be predicted
+- <code>result</code>: Information of the model's prediction result</p>
+<p>The visualization of the prediction result is as follows:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">|</span><span class="w"> </span>名次<span class="w"> </span><span class="p">|</span><span class="w"> </span>国家/地区<span class="w"> </span><span class="p">|</span><span class="w"> </span>金牌<span class="w"> </span><span class="p">|</span><span class="w"> </span>银牌<span class="w"> </span><span class="p">|</span><span class="w"> </span>铜牌<span class="w"> </span><span class="p">|</span><span class="w"> </span>奖牌总数<span class="w"> </span><span class="p">|</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span><span class="w"> </span>---<span class="w"> </span><span class="p">|</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="p">|</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>中国（CHN）<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">48</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">22</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="p">|</span>
@@ -5508,167 +5527,169 @@ You're not viewing the latest version.
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="p">|</span><span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>西班牙（ESP）<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">19</span><span class="w"> </span><span class="p">|</span>
 </span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="p">|</span><span class="w"> </span><span class="m">15</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>牙买加（JAM）<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="m">11</span><span class="w"> </span><span class="p">|</span>
 </span></code></pre></div>
-<p>相关方法、参数等说明如下：</p>
+<p>Explanations of related methods, parameters, etc., are as follows:</p>
 <ul>
-<li><code>DocVLM</code>实例化文档类视觉语言模型（此处以<code>PP-DocBee-2B</code>为例），具体说明如下：</li>
+<li><code>DocVLM</code> instantiates the document visual language model (taking <code>PP-DocBee-2B</code> as an example), with specific explanations as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>Model Name</td>
 <td><code>str</code></td>
-<td>无</td>
-<td><code>无</code></td>
+<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
+<td>Model Storage Path</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td>None</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>Model Inference Device</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+<td>Supports specifying specific GPU card number, such as "gpu:0", other hardware specific card numbers, such as "npu:0", CPU such as "cpu".</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件。目前暂不支持。</td>
+<td>Whether to enable high-performance inference plugin. Currently not supported.</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置。目前暂不支持。</td>
+<td>High-performance inference configuration. Currently not supported.</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
 <ul>
 <li>
-<p>其中，<code>model_name</code> 必须指定，指定 <code>model_name</code> 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 <code>model_dir</code> 时，使用用户自定义的模型。</p>
+<p>Among them, <code>model_name</code> must be specified. After specifying <code>model_name</code>, the default PaddleX built-in model parameters will be used. On this basis, when specifying <code>model_dir</code>, user-defined models will be used.</p>
 </li>
 <li>
-<p>调用文档类视觉语言模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code> 、 <code>batch_size</code>，具体说明如下：</p>
+<p>Call the <code>predict()</code> method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the <code>predict_iter()</code> method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that <code>predict_iter()</code> returns a <code>generator</code>, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The <code>predict()</code> method parameters include <code>input</code>, <code>batch_size</code>, with specific explanations as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据</td>
+<td>Data to be predicted</td>
 <td><code>dict</code></td>
 <td>
-<code>Dict</code>, 需要根据具体的模型确定，如PP-DocBee系列的输入为{'image': image_path, 'query': query_text}
+<code>Dict</code>, as multimodal models have different input requirements, it needs to be determined based on the specific model. Specifically:
+<li>PP-DocBee series input format is <code>{'image': image_path, 'query': query_text}</code></li>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>Batch Size</td>
 <td><code>int</code></td>
-<td>整数(目前仅支持为1)</td>
+<td>Integer</td>
 <td>1</td>
 </tr>
 </table>
 
 <ul>
-<li>对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为<code>json</code>文件的操作:</li>
+<li>Process the prediction results. The prediction result for each sample is the corresponding Result object, and it supports operations such as printing and saving as <code>json</code> file:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "3"><code>print()</code></td>
-<td rowspan = "3">打印结果到终端</td>
+<td rowspan = "3">Print results to terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, effective only when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether non-<code>ASCII</code> characters are escaped to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, effective only when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan = "3"><code>save_to_json()</code></td>
-<td rowspan = "3">将结果保存为json格式的文件</td>
+<td rowspan = "3">Save the result as a json format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>Path of the file to be saved. When it is a directory, the naming of the saved file is consistent with the input file type.</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, effective only when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether non-<code>ASCII</code> characters are escaped to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, effective only when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 </table>
 
 <ul>
-<li>此外，也支持通过属性获取预测结果，具体如下：</li>
+<li>Additionally, it also supports obtaining prediction results through attributes, as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "1"><code>json</code></td>
-<td rowspan = "1">获取预测的<code>json</code>格式的结果</td>
+<td rowspan = "1">Get the prediction result in <code>json</code> format</td>
 </tr>
 </table>
 
-<h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。</p>
+<h2 id="iv-secondary-development">IV. Secondary Development<a class="headerlink" href="#iv-secondary-development" title="Permanent link">&para;</a></h2>
+<p>The current module does not support fine-tuning training temporarily, only inference integration is supported. The fine-tuning training of this module is planned to be supported in the future.</p>
+<h2 id="v-faq">V. FAQ<a class="headerlink" href="#v-faq" title="Permanent link">&para;</a></h2>
 
 
 
@@ -5691,7 +5712,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:55:59">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:02:27">May 19, 2025</span>
   </span>
 
     
@@ -5701,7 +5722,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:55:59">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:02:27">May 19, 2025</span>
   </span>
 
     

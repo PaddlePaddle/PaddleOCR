@@ -22,7 +22,7 @@
     
     
       
-        <title>文档理解产线使用教程 - PaddleOCR Documentation</title>
+        <title>Document Understanding Pipeline Usage Tutorial - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#document-understanding-pipeline-usage-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文档理解产线使用教程
+              Document Understanding Pipeline Usage Tutorial
             
           </span>
         </div>
@@ -5376,37 +5376,37 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
+  <a href="#1-introduction-to-the-document-understanding-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 文档理解产线介绍
+      1. Introduction to the Document Understanding Pipeline
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#2-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      2. 快速开始
+      2. Quick Start
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. 快速开始">
+    <nav class="md-nav" aria-label="2. Quick Start">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
+  <a href="#21-command-line-experience" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 命令行方式体验
+      2.1 Command Line Experience
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-python" class="md-nav__link">
+  <a href="#22-python-script-integration" class="md-nav__link">
     <span class="md-ellipsis">
-      2.2 Python脚本方式集成
+      2.2 Python Script Integration
     </span>
   </a>
   
@@ -5418,18 +5418,18 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
+  <a href="#3-development-integrationdeployment" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 开发集成/部署
+      3. Development Integration/Deployment
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
+  <a href="#4-secondary-development" class="md-nav__link">
     <span class="md-ellipsis">
-      4. 二次开发
+      4. Secondary Development
     </span>
   </a>
   
@@ -5451,7 +5451,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/doc_understanding.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/doc_understanding.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5460,87 +5460,96 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/doc_understanding.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/doc_understanding.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">文档理解产线使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="1">1. 文档理解产线介绍<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>文档理解产线是基于视觉-语言模型（VLM）打造的先进文档处理技术，旨在突破传统文档处理的局限。传统方法依赖固定模板或预定义规则解析文档，而该产线借助VLM的多模态能力，仅需输入文档图片和用户问题，即可通过融合视觉与语言信息，精准回答用户提问。这种技术无需针对特定文档格式预训练，能够灵活应对多样化文档内容，显著提升文档处理的泛化性与实用性，在智能问答、信息提取等场景中具有广阔应用前景。本产线目前暂不支持对VLM模型的二次开发，后续计划支持。</p>
+<h1 id="document-understanding-pipeline-usage-tutorial">Document Understanding Pipeline Usage Tutorial<a class="headerlink" href="#document-understanding-pipeline-usage-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduction-to-the-document-understanding-pipeline">1. Introduction to the Document Understanding Pipeline<a class="headerlink" href="#1-introduction-to-the-document-understanding-pipeline" title="Permanent link">&para;</a></h2>
+<p>The Document Understanding Pipeline is an advanced document processing technology based on Visual-Language Models (VLM), designed to overcome the limitations of traditional document processing. Traditional methods rely on fixed templates or predefined rules to parse documents, whereas this pipeline leverages the multimodal capabilities of VLM to accurately answer user queries by inputting document images and user questions, integrating visual and language information. This technology does not require pre-training for specific document formats, allowing it to flexibly handle diverse document content, significantly enhancing the generalization and practicality of document processing. It has broad application prospects in intelligent Q&amp;A, information extraction, and other scenarios. Currently, the pipeline does not support secondary development of VLM models, but plans to support it in the future.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/doc_understanding/doc_understanding.png"></p>
-<p><b>通用文档图像预处理产线中包含以下1个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
+<p><b>The general document image preprocessing pipeline includes the following module. Each module can be trained and inferred independently and contains multiple models. For more details, click the corresponding module to view the documentation.</b></p>
 <ul>
-<li><a href="../module_usage/doc_vlm.html">文档类视觉语言模型模块</a></li>
+<li><a href="../module_usage/doc_vlm.html">Document-like Vision Language Model Module</a></li>
 </ul>
-<p>在本产线中，您可以根据下方的基准测试数据选择使用的模型。</p>
+<p>In this pipeline, you can choose the model to use based on the benchmark data below.</p>
 <details>
-<summary> <b>文档类视觉语言模型模块：</b></summary>
+<summary> <b>Document-like Vision Language Model Module:</b></summary>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>模型存储大小（GB）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Model Storage Size (GB)</th>
+<th>Total Score</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">推理模型</a></td>
+<td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">Inference Model</a></td>
 <td>4.2</td>
-<td rowspan="2">PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。在内部业务中文场景类的指标上，PP-DocBee也高于目前的热门开源和闭源模型。</td>
+<td>765</td>
+<td rowspan="2">PP-DocBee is a multimodal large model independently developed by the PaddlePaddle team, focusing on document understanding, with excellent performance in Chinese document understanding tasks. The model is fine-tuned and optimized using nearly 5 million multimodal datasets related to document understanding, including general VQA, OCR, chart, text-rich documents, math and complex reasoning, synthetic data, pure text data, etc., with different training data ratios set. In several authoritative English document understanding evaluation lists in academia, PP-DocBee has generally achieved SOTA for models of the same parameter scale. In internal business Chinese scenarios, PP-DocBee also outperforms current popular open and closed-source models.</td>
 </tr>
 <tr>
-<td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">推理模型</a></td>
+<td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">Inference Model</a></td>
 <td>15.8</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PP-DocBee2-3B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar">Inference Model</a></td>
+<td>7.6</td>
+<td>852</td>
+<td>PP-DocBee2 is a multimodal large model independently developed by the PaddlePaddle team, focusing on document understanding. It further optimizes the basic model based on PP-DocBee and introduces new data optimization schemes to improve data quality. With only 470,000 data generated using self-developed data synthesis strategy, PP-DocBee2 performs better in Chinese document understanding tasks. In internal business Chinese scenarios, PP-DocBee2 improves by about 11.4% compared to PP-DocBee and also outperforms current popular open and closed-source models of the same scale.</td>
 </tr>
 </table>
+
+<b>Note: The above total scores are the model test results of the internal evaluation set. All images in the internal evaluation set have a resolution (height, width) of (1680,1204), with a total of 1196 data, including scenarios such as financial reports, laws and regulations, science and engineering papers, manuals, humanities papers, contracts, and research reports, with no plans to make it public for now.</b>
 </details>
 
 <p><br />
-<b>如果您更注重模型的精度，请选择精度较高的模型；如果您更在意模型的推理速度，请选择推理速度较快的模型；如果您关注模型的存储大小，请选择存储体积较小的模型。</b></p>
-<h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>在本地使用文档理解产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。</p>
-<h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
-<p>一行命令即可快速体验 doc_understanding 产线效果：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>doc_understanding<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;{&#39;image&#39;: &#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;, &#39;query&#39;: &#39;识别这份表格的内容&#39;}&quot;</span>
+<b>If you focus more on model accuracy, choose a model with higher accuracy; if you care more about inference speed, choose a model with faster inference speed; if you are concerned about storage size, choose a model with a smaller storage volume.</b></p>
+<h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
+<p>Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the <a href="../ppocr/installation.md">installation tutorial</a>. After installation, you can experience it locally using the command line or Python integration.</p>
+<h3 id="21-command-line-experience">2.1 Command Line Experience<a class="headerlink" href="#21-command-line-experience" title="Permanent link">&para;</a></h3>
+<p>Experience the doc_understanding pipeline with just one command line:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>doc_understanding<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;{&#39;image&#39;: &#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;, &#39;query&#39;: &#39;识别这份表格的内容, 以markdown格式输出&#39;}&quot;</span>
 </span></code></pre></div>
-<details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
+<details><summary><b>The command line supports more parameter settings, click to expand for a detailed explanation of the command line parameters</b></summary>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the document understanding model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the document understanding model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的批处理大小。如果设置为 <code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
+<td>The batch size of the document understanding model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td>Data to be predicted, supports dictionary type input, required.
 <ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -5548,21 +5557,21 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
+<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>The device used for inference. Supports specifying a specific card number.
 <ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>None</b>: If set to <code>None</code>, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5570,38 +5579,37 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
+<td>Whether to use TensorRT for inference acceleration.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
+<td>The minimum subgraph size used to optimize model subgraph calculations.</td>
 <td><code>int</code></td>
 <td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td>Calculation precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
@@ -5609,65 +5617,65 @@ You're not viewing the latest version.
 </table>
 </details>
 <p><br /></p>
-<p>运行结果会被打印到终端上，默认配置的 doc_understanding 产线的运行结果如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;image&#39;</span>:<span class="w"> </span><span class="s1">&#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;query&#39;</span>:<span class="w"> </span><span class="s1">&#39;识别这份表格的内容&#39;</span>,<span class="w"> </span><span class="s1">&#39;result&#39;</span>:<span class="w"> </span><span class="s1">&#39;| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n&#39;</span><span class="o">}}</span>
+<p>The results will be printed to the terminal, and the default configuration of the doc_understanding pipeline will produce the following output:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;image&#39;</span>:<span class="w"> </span><span class="s1">&#39;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;query&#39;</span>:<span class="w"> </span><span class="s1">&#39;识别这份表格的内容, 以markdown格式输出&#39;</span>,<span class="w"> </span><span class="s1">&#39;result&#39;</span>:<span class="w"> </span><span class="s1">&#39;| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n&#39;</span><span class="o">}}</span>
 </span></code></pre></div>
-<h3 id="22-python">2.2 Python脚本方式集成<a class="headerlink" href="#22-python" title="Permanent link">&para;</a></h3>
-<p>命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：</p>
+<h3 id="22-python-script-integration">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration" title="Permanent link">&para;</a></h3>
+<p>The command line method is for quickly experiencing the effect. Generally, in projects, code integration is often required. You can complete quick inference of the pipeline with just a few lines of code. The inference code is as follows:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocUnderstanding</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">DocUnderstanding</span><span class="p">()</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">{</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="s2">&quot;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png&quot;</span><span class="p">,</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;识别这份表格的内容&quot;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="s2">&quot;识别这份表格的内容, 以markdown格式输出&quot;</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="p">}</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## 打印预测的结构化输出</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## Print the structured output of the prediction</span>
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>在上述 Python 脚本中，执行了如下几个步骤：</p>
-<p>（1）通过 <code>DocUnderstanding()</code> 实例化 文档理解产线 产线对象，具体参数说明如下：</p>
+<p>In the above Python script, the following steps are performed:</p>
+<p>(1) Instantiate a Document Understanding Pipeline object through <code>DocUnderstanding()</code>. The specific parameter descriptions are as follows:</p>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the document understanding model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the document understanding model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的批处理大小。如果设置为 <code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
+<td>The batch size of the document understanding model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>The device used for inference. Supports specifying a specific card number.
 <ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>None</b>: If set to <code>None</code>, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5675,61 +5683,60 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
+<td>Whether to use TensorRT for inference acceleration.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
+<td>The minimum subgraph size used to optimize model subgraph calculations.</td>
 <td><code>int</code></td>
 <td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td>Calculation precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 </tbody>
 </table>
 
-<p>（2）调用 文档理解产线 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。</p>
-<p>另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。</p>
-<p>以下是 <code>predict()</code> 方法的参数及其说明：</p>
+<p>(2) Call the <code>predict()</code> method of the Document Understanding Pipeline object for inference prediction, which will return a result list.</p>
+<p>Additionally, the pipeline also provides a <code>predict_iter()</code> method. Both methods are consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code> that can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either method according to your actual needs.</p>
+<p>Below are the parameters and their descriptions for the <code>predict()</code> method:</p>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，目前仅支持字典类型的输入
+<td>Data to be predicted, currently only supports dictionary type input
 <ul>
-  <li><b>Python Dict</b>：如PP-DocBee的输入形式为: <code>{"image":/path/to/image, "query": user question}</code> ,分别表示输入的图像和对应的用户问题</li>
+  <li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
 </ul>
 </td>
 <td><code>Python Dict</code></td>
@@ -5737,501 +5744,501 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
+<td>Same as the parameter during instantiation.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </table>
 
-<p>（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为<code>json</code>文件的操作:</p>
+<p>(3) Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports printing and saving as a <code>json</code> file:</p>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Parameter Description</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "3"><code>print()</code></td>
-<td rowspan = "3">打印结果到终端</td>
+<td rowspan = "3">Print the result to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data, making it more readable, effective only when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether to escape non-<code>ASCII</code> characters into <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan = "3"><code>save_to_json()</code></td>
-<td rowspan = "3">将结果保存为json格式的文件</td>
+<td rowspan = "3">Save the result as a JSON format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The path to save the file. When specified as a directory, the saved file is named consistent with the input file type.</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data, making it more readable, effective only when <code>format_json</code> is <code>True</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether to escape non-<code>ASCII</code> characters into <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code></td>
 <td><code>False</code></td>
 </tr>
 </table>
 
 <ul>
 <li>
-<p>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：</p>
+<p>Calling the <code>print()</code> method will print the result to the terminal. The content printed to the terminal is explained as follows:</p>
 <ul>
 <li>
-<p><code>image</code>: <code>(str)</code> 图像的输入路径</p>
+<p><code>image</code>: <code>(str)</code> Input path of the image</p>
 </li>
 <li>
-<p><code>query</code>: <code>(str)</code> 针对输入图像的问题</p>
+<p><code>query</code>: <code>(str)</code> Question regarding the input image</p>
 </li>
 <li>
-<p><code>result</code>: <code>(str)</code> 模型的输出结果</p>
+<p><code>result</code>: <code>(str)</code> Output result of the model</p>
 </li>
 </ul>
 </li>
 <li>
-<p>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>，如果指定为文件，则直接保存到该文件中。</p>
+<p>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If specified as a directory, the path saved will be <code>save_path/{your_img_basename}_res.json</code>, and if specified as a file, it will be saved directly to that file.</p>
 </li>
 <li>
-<p>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</p>
+<p>Additionally, the result can be obtained through attributes that provide the visualized images with results and the prediction results, as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan = "1"><code>json</code></td>
-<td rowspan = "1">获取预测的 <code>json</code> 格式的结果</td>
+<td rowspan = "1">Get the prediction result in <code>json</code> format</td>
 </tr>
 <tr>
 <td rowspan = "2"><code>img</code></td>
-<td rowspan = "2">获取格式为 <code>dict</code> 的可视化图像</td>
+<td rowspan = "2">Get the visualized image in <code>dict</code> format</td>
 </tr>
 </table>
 
 <ul>
-<li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
+<li>The prediction result obtained through the <code>json</code> attribute is data of the dict type, consistent with the content saved by calling the <code>save_to_json()</code> method.</li>
 </ul>
-<h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。</p>
-<p>若您需要将产线直接应用在您的Python项目中，可以参考 <a href="#22-python脚本方式集成">2.2 Python脚本方式</a>中的示例代码。</p>
-<p>此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：</p>
-<p>🚀 高性能推理：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleOCR 提供高性能推理功能，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能推理流程请参考<a href="../deployment/high_performance_inference.html">高性能推理指南</a>。</p>
-<p>☁️ 服务化部署：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。详细的产线服务化部署流程请参考<a href="../deployment/serving.html">服务化部署指南</a>。</p>
-<p>以下是基础服务化部署的API参考与多语言服务调用示例：</p>
-<details><summary>API参考</summary>
+<h2 id="3-development-integrationdeployment">3. Development Integration/Deployment<a class="headerlink" href="#3-development-integrationdeployment" title="Permanent link">&para;</a></h2>
+<p>If the pipeline meets your requirements for pipeline inference speed and accuracy, you can proceed with development integration/deployment directly.</p>
+<p>If you need to apply the pipeline directly to your Python project, you can refer to the example code in <a href="#22-python-script-integration">2.2 Python Script Integration</a>.</p>
+<p>In addition, PaddleOCR also provides two other deployment methods, detailed descriptions are as follows:</p>
+<p>🚀 High-Performance Inference: In real production environments, many applications have strict standards for the performance indicators of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize the performance of model inference and pre-and post-processing, achieving significant acceleration of the end-to-end process. For detailed high-performance inference processes, refer to the <a href="../deployment/high_performance_inference.html">High-Performance Inference Guide</a>.</p>
+<p>☁️ Service Deployment: Service deployment is a common form of deployment in real production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service deployment processes, refer to the <a href="../deployment/serving.html">Service Deployment Guide</a>.</p>
+<p>Below is the API reference for basic service deployment and examples of service invocation in multiple languages:</p>
+<details><summary>API Reference</summary>
 
-<p>对于服务提供的主要操作：</p>
+<p>For the main operations provided by the service:</p>
 <ul>
-<li>HTTP请求方法为POST。</li>
-<li>请求体和响应体均为JSON数据（JSON对象）。</li>
-<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>
+<li>The HTTP request method is POST.</li>
+<li>Both the request body and response body are JSON data (JSON object).</li>
+<li>When the request is processed successfully, the response status code is <code>200</code>, and the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。固定为<code>0</code>。</td>
+<td>Error code. Fixed as <code>0</code>.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。固定为<code>"Success"</code>。</td>
+<td>Error description. Fixed as <code>"Success"</code>.</td>
 </tr>
 <tr>
 <td><code>result</code></td>
 <td><code>object</code></td>
-<td>操作结果。</td>
+<td>Operation result.</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>当请求处理未成功时，响应体的属性如下：</li>
+<li>When the request is not processed successfully, the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。与响应状态码相同。</td>
+<td>Error code. Same as the response status code.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。</td>
+<td>Error description.</td>
 </tr>
 </tbody>
 </table>
-<p>服务提供的主要操作如下：</p>
+<p>The main operations provided by the service are as follows:</p>
 <ul>
 <li><b><code>infer</code></b></li>
 </ul>
-<p>对输入消息进行推理生成响应。</p>
+<p>Perform inference on the input message to generate a response.</p>
 <p><code>POST /document-understanding</code></p>
-<p>说明 以上接口别名/chat/completion，openai兼容的接口</p>
+<p>Note: The above interface is also known as /chat/completion, compatible with OpenAI interfaces.</p>
 
 <ul>
-<li>请求体的属性如下：</li>
+<li>The attributes of the request body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
-<th>默认值</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Required</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>model</code></td>
 <td><code>string</code></td>
-<td>要使用的模型名称</td>
-<td>是</td>
+<td>The name of the model to use</td>
+<td>Yes</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>messages</code></td>
 <td><code>array</code></td>
-<td>对话消息列表</td>
-<td>是</td>
+<td>List of dialogue messages</td>
+<td>Yes</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>max_tokens</code></td>
 <td><code>integer</code></td>
-<td>生成的最大token数</td>
-<td>否</td>
+<td>Maximum number of tokens to generate</td>
+<td>No</td>
 <td>1024</td>
 </tr>
 <tr>
 <td><code>temperature</code></td>
 <td><code>float</code></td>
-<td>采样温度</td>
-<td>否</td>
+<td>Sampling temperature</td>
+<td>No</td>
 <td>0.1</td>
 </tr>
 <tr>
 <td><code>top_p</code></td>
 <td><code>float</code></td>
-<td>核心采样概率</td>
-<td>否</td>
+<td>Core sampling probability</td>
+<td>No</td>
 <td>0.95</td>
 </tr>
 <tr>
 <td><code>stream</code></td>
 <td><code>boolean</code></td>
-<td>是否流式输出</td>
-<td>否</td>
+<td>Whether to output in streaming mode</td>
+<td>No</td>
 <td>false</td>
 </tr>
 <tr>
 <td><code>max_image_tokens</code></td>
 <td><code>int</code></td>
-<td>图像的最大输入token数</td>
-<td>否</td>
+<td>Maximum number of input tokens for images</td>
+<td>No</td>
 <td>None</td>
 </tr>
 </tbody>
 </table>
 
-<p><code>messages</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<p>Each element in <code>messages</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Required</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>role</code></td>
 <td><code>string</code></td>
-<td>消息角色（user/assistant/system）</td>
-<td>是</td>
+<td>Message role (user/assistant/system)</td>
+<td>Yes</td>
 </tr>
 <tr>
 <td><code>content</code></td>
-<td><code>string</code>或<code>array</code></td>
-<td>消息内容（文本或图文混合）</td>
-<td>是</td>
+<td><code>string</code> or <code>array</code></td>
+<td>Message content (text or mixed media)</td>
+<td>Yes</td>
 </tr>
 </tbody>
 </table>
 
-<p>当<code>content</code>为数组时，每个元素为一个<code>object</code>，具有如下属性：</p>
+<p>When <code>content</code> is an array, each element is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
-<th>默认值</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Required</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>type</code></td>
 <td><code>string</code></td>
-<td>内容类型（text/image_url）</td>
-<td>是</td>
+<td>Content type (text/image_url)</td>
+<td>Yes</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>text</code></td>
 <td><code>string</code></td>
-<td>文本内容（当type为text时）</td>
-<td>条件必填</td>
+<td>Text content (when type is text)</td>
+<td>Conditionally required</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>image_url</code></td>
-<td><code>string</code>或<code>object</code></td>
-<td>图片URL或对象（当type为image_url时）</td>
-<td>条件必填</td>
+<td><code>string</code> or <code>object</code></td>
+<td>Image URL or object (when type is image_url)</td>
+<td>Conditionally required</td>
 <td>-</td>
 </tr>
 </tbody>
 </table>
 
-<p>当<code>image_url</code>为对象时，具有如下属性：</p>
+<p>When <code>image_url</code> is an object, it has the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
-<th>默认值</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Required</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>url</code></td>
 <td><code>string</code></td>
-<td>图片URL</td>
-<td>是</td>
+<td>Image URL</td>
+<td>Yes</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>detail</code></td>
 <td><code>string</code></td>
-<td>图片细节处理方式（low/high/auto）</td>
-<td>否</td>
+<td>Image detail processing method (low/high/auto)</td>
+<td>No</td>
 <td>auto</td>
 </tr>
 </tbody>
 </table>
 
-<p>请求处理成功时，响应体的<code>result</code>具有如下属性：</p>
+<p>When the request is processed successfully, the <code>result</code> in the response body has the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>id</code></td>
 <td><code>string</code></td>
-<td>请求ID</td>
+<td>Request ID</td>
 </tr>
 <tr>
 <td><code>object</code></td>
 <td><code>string</code></td>
-<td>对象类型（chat.completion）</td>
+<td>Object type (chat.completion)</td>
 </tr>
 <tr>
 <td><code>created</code></td>
 <td><code>integer</code></td>
-<td>创建时间戳</td>
+<td>Creation timestamp</td>
 </tr>
 <tr>
 <td><code>choices</code></td>
 <td><code>array</code></td>
-<td>生成结果选项</td>
+<td>Generated result options</td>
 </tr>
 <tr>
 <td><code>usage</code></td>
 <td><code>object</code></td>
-<td>token使用情况</td>
+<td>Token usage</td>
 </tr>
 </tbody>
 </table>
 
-<p><code>choices</code>中的每个元素为一个<code>Choice</code>对象，具有如下属性：</p>
+<p>Each element in <code>choices</code> is a <code>Choice</code> object with the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>可选值</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Optional Values</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>finish_reason</code></td>
 <td><code>string</code></td>
-<td>模型停止生成token的原因</td>
-<td><code>stop</code>（自然停止）<br><code>length</code>（达到最大token数）<br><code>tool_calls</code>（调用了工具）<br><code>content_filter</code>（内容过滤）<br><code>function_call</code>（调用了函数，已弃用）</td>
+<td>Reason for the model to stop generating tokens</td>
+<td><code>stop</code> (natural stop)<br><code>length</code> (reached max token count)<br><code>tool_calls</code> (called a tool)<br><code>content_filter</code> (content filtering)<br><code>function_call</code> (called a function, deprecated)</td>
 </tr>
 <tr>
 <td><code>index</code></td>
 <td><code>integer</code></td>
-<td>选项在列表中的索引</td>
+<td>Index of the option in the list</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>logprobs</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>选项的log概率信息</td>
+<td>Log probability information of the option</td>
 <td>-</td>
 </tr>
 <tr>
 <td><code>message</code></td>
 <td><code>ChatCompletionMessage</code></td>
-<td>模型生成的聊天消息</td>
+<td>Chat message generated by the model</td>
 <td>-</td>
 </tr>
 </tbody>
 </table>
 
-<p><code>message</code>对象具有如下属性：</p>
+<p>The <code>message</code> object has the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>备注</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+<th>Remarks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>content</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>消息内容</td>
-<td>可能为空</td>
+<td>Message content</td>
+<td>May be empty</td>
 </tr>
 <tr>
 <td><code>refusal</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>模型生成的拒绝消息</td>
-<td>当内容被拒绝时提供</td>
+<td>Refusal message generated by the model</td>
+<td>Provided when content is refused</td>
 </tr>
 <tr>
 <td><code>role</code></td>
 <td><code>string</code></td>
-<td>消息作者角色</td>
-<td>固定为<code>"assistant"</code></td>
+<td>Role of the message author</td>
+<td>Fixed as <code>"assistant"</code></td>
 </tr>
 <tr>
 <td><code>audio</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>音频输出数据</td>
-<td>当请求音频输出时提供<br><a href="https://platform.openai.com/docs/guides/audio">了解更多</a></td>
+<td>Audio output data</td>
+<td>Provided when audio output is requested<br><a href="https://platform.openai.com/docs/guides/audio">Learn more</a></td>
 </tr>
 <tr>
 <td><code>function_call</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>应调用的函数名称和参数</td>
-<td>已弃用，推荐使用<code>tool_calls</code></td>
+<td>Name and parameters of the function to be called</td>
+<td>Deprecated, recommended to use <code>tool_calls</code></td>
 </tr>
 <tr>
 <td><code>tool_calls</code></td>
 <td><code>array</code> | <code>null</code></td>
-<td>模型生成的工具调用</td>
-<td>如函数调用等</td>
+<td>Tool calls generated by the model</td>
+<td>Such as function calls</td>
 </tr>
 </tbody>
 </table>
 
-<p><code>usage</code>对象具有如下属性：</p>
+<p>The <code>usage</code> object has the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>prompt_tokens</code></td>
 <td><code>integer</code></td>
-<td>提示token数</td>
+<td>Number of prompt tokens</td>
 </tr>
 <tr>
 <td><code>completion_tokens</code></td>
 <td><code>integer</code></td>
-<td>生成token数</td>
+<td>Number of generated tokens</td>
 </tr>
 <tr>
 <td><code>total_tokens</code></td>
 <td><code>integer</code></td>
-<td>总token数</td>
+<td>Total number of tokens</td>
 </tr>
 </tbody>
 </table>
-<p><code>result</code>示例如下：</p>
+<p>An example of a <code>result</code> is as follows:</p>
 <pre><code class="language-json">{
     "id": "ed960013-eb19-43fa-b826-3c1b59657e35",
     "choices": [
@@ -6250,37 +6257,37 @@ You're not viewing the latest version.
 }
 </code></pre></details>
 
-<details><summary>多语言调用服务示例</summary>
+<details><summary>Multi-language Service Invocation Examples</summary>
 
 <details>
 <summary>Python</summary>
-openai接口调用示例
+OpenAI interface invocation example
 
 <pre><code class="language-python">import base64
 from openai import OpenAI
 
 API_BASE_URL = "http://0.0.0.0:8080"
 
-# 初始化OpenAI客户端
+# Initialize OpenAI client
 client = OpenAI(
     api_key='xxxxxxxxx',
     base_url=f'{API_BASE_URL}'
 )
 
-#图片转base64函数
+# Function to convert image to base64
 def encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
-#输入图片路径
+# Input image path
 image_path = "medal_table.png"
 
-#原图片转base64
+# Convert original image to base64
 base64_image = encode_image(image_path)
 
-#提交信息至PP-DocBee模型
+# Submit information to PP-DocBee model
 response = client.chat.completions.create(
-    model="pp-docbee",#选择模型
+    model="pp-docbee",# Choose Model
     messages=[
         {
             "role": "system",
@@ -6306,8 +6313,8 @@ print('Reply:', content)
 </code></pre></details>
 </details>
 <p><br/></p>
-<h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>当前产线暂时不支持微调训练，仅支持推理集成。关于该产线的微调训练，计划在未来支持。</p>
+<h2 id="4-secondary-development">4. Secondary Development<a class="headerlink" href="#4-secondary-development" title="Permanent link">&para;</a></h2>
+<p>The current pipeline does not support fine-tuning training and only supports inference integration. Concerning fine-tuning training for this pipeline, there are plans to support it in the future.</p>
 
 
 
@@ -6330,7 +6337,7 @@ print('Reply:', content)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:55:59">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:02:27">May 19, 2025</span>
   </span>
 
     
@@ -6340,7 +6347,7 @@ print('Reply:', content)
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 14:55:59">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 15:02:27">May 19, 2025</span>
   </span>
 
     
