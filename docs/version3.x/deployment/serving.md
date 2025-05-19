@@ -42,7 +42,7 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-如需调整配置（如模型路径、batch size、部署设备等），可指定 `--pipeline` 为自定义配置文件。请参考 [PaddleOCR 与 PaddleX](../advanced/paddleocr_and_paddlex.md) 了解 PaddleOCR 产线与 PaddleX 产线注册名的对应关系，以及 PaddleX 产线配置文件的获取与修改方式。
+如需调整配置（如模型路径、batch size、部署设备等），可指定 `--pipeline` 为自定义配置文件。请参考 [PaddleOCR 与 PaddleX](../paddleocr_and_paddlex.md) 了解 PaddleOCR 产线与 PaddleX 产线注册名的对应关系，以及 PaddleX 产线配置文件的获取与修改方式。
 
 与服务化部署相关的命令行选项如下：
 
@@ -84,7 +84,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 
 ### 1.3 调用服务
 
-PaddleX 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供了服务的 API 参考与多语言调用示例。在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中可以找到各产线的使用教程。
+PaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供了服务的 API 参考与多语言调用示例。
 
 ## 2. 高稳定性服务化部署
 

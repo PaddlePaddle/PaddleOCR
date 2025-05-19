@@ -736,19 +736,19 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 一行命令即可快速体验 PP-StructureV3 产线效果：
 
 ```bash
-paddleocr PP-StructureV3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
-paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --use_doc_orientation_classify True
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_classify True
 
 # 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块
-paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
 
 # 通过 --use_textline_orientation 指定是否使用文本行方向分类模型
-paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
 
 # 通过 --device 指定模型推理时使用 GPU
-paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --device gpu
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
