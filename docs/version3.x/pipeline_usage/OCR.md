@@ -522,16 +522,15 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ```bash
 # 默认使用 PP-OCRv5 模型
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False \
+    --use_textline_orientation False \
+    --save_path ./output \
+    --device gpu:0 
 
 # 通过 --ocr_version 指定 PP-OCR 其他版本
 paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
-
-# 通过 --device 指定模型推理时使用 GPU
-paddleocr ocr -i ./general_ocr_002.png --device gpu
-
-# 通过 --use_textline_orientation 指定是否使用文本行方向分类模型
-paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -816,28 +815,28 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 </details>
 <br />
 
-运行结果会被打印到终端上，默认配置的OCR产线的运行结果如下：
+运行结果会被打印到终端上：
 
 ```bash
-{'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'dt_polys': array([[[134,   6],
+{'res': {'input_path': './general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  3,  10],
         ...,
-        [134,  66]],
+        [  4,  30]],
 
        ...,
 
-       [[331, 472],
+       [[ 99, 456],
         ...,
-        [331, 494]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([0, ..., 0]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['登机牌', '', 'BOARDING', 'PASS', '航班', 'FLIGHT', '日期', 'DATE', '舱位', 'CLASS', '序号', 'SERIAL NO.', '座位号', 'SEAT NO', 'MU', '2379', '03DEG', 'M', '035', '12F', '目的地', 'TO', '始发地', 'FROM', '登机口', 'GATE', '登机时间', 'BDT', '福州', 'FUZHOU', 'TAIYUAN', 'G11', '姓名', 'NAME', '身份识别IDNO', 'ZHANGQIWEI', '张祺件', '票号TKTNO', '票价FARE', 'ETKT', '7813699238489/1', '登机口于起飞前10分钟关闭', 'GATES CLOSE 10 MINUTES BEFORE DEPARTURE TIME'], 'rec_scores': array([0.99727374, ..., 0.9353174 ]), 'rec_polys': array([[[134,   6],
+        [ 99, 479]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997700', '', 'Cm', '登机牌', 'BOARDING', 'PASS', 'CLASS', '序号SERIAL NO.', '座位号', 'SEAT NO.', '航班FLIGHT', '日期DATE', '舱位', '', 'W', '035', '12F', 'MU2379', '03DEc', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKT NO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.67634439, ..., 0.97416091]), 'rec_polys': array([[[  3,  10],
         ...,
-        [134,  66]],
+        [  4,  30]],
 
        ...,
 
-       [[331, 472],
+       [[ 99, 456],
         ...,
-        [331, 494]]], dtype=int16), 'rec_boxes': array([[134, ...,  66],
+        [ 99, 479]]], dtype=int16), 'rec_boxes': array([[  3, ...,  30],
        ...,
-       [331, ..., 507]], dtype=int16)}}
+       [ 99, ..., 479]], dtype=int16)}}
 ```
 
 若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：
@@ -851,11 +850,14 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 ```python
 from paddleocr import PaddleOCR
 
-ocr = PaddleOCR()
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型
+    use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型
+    use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型
+)
 # ocr = PaddleOCR(lang="en") # 通过 lang 参数来使用英文模型
 # ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
 # ocr = PaddleOCR(device="gpu") # 通过 device 参数使得在模型推理时使用 GPU
-# ocr = PaddleOCR(use_textline_orientation=False) # 通过 device 参数指定不使用文本行方向分类模型
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()
@@ -1606,7 +1608,6 @@ for i, res in enumerate(result["ocrResults"]):
 ## 4. 二次开发
 
 通用 OCR 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
-
 
 <table>
 <thead>
