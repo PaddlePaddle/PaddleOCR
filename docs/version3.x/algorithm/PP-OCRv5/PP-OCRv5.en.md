@@ -2,9 +2,9 @@
 
 **PP-OCRv5** is the new generation text recognition solution of PP-OCR, focusing on multi-scenario and multi-text type recognition. In terms of text types, PP-OCRv5 supports 5 major mainstream text types: Simplified Chinese, Chinese Pinyin, Traditional Chinese, English, and Japanese. For scenarios, PP-OCRv5 has upgraded recognition capabilities for challenging scenarios such as complex Chinese and English handwriting, vertical text, and uncommon characters. On internal complex evaluation sets across multiple scenarios, PP-OCRv5 achieved a 13 percentage point end-to-end improvement over PP-OCRv4.
 
-<center>
+<div align="center">
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-OCRv5/algorithm_ppocrv5.png" width="600"/>
-</center>
+</div>
 
 # Key Metrics
 
@@ -100,9 +100,9 @@ Compared to PP-OCRv4, PP-OCRv5 shows significant improvement in all detection sc
 
 ### 2. Text Recognition Metrics
 
-<center>
+<div align="center">
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-OCRv5/ocrv5_rec_acc.png" width="600"/>
-</center>
+</div>
 
 <table>
   <thead>
