@@ -85,8 +85,24 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </thead>
 <tbody>
 <tr>
+<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>83.8</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>101</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>79.0</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.7</td>
+<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
-<td>82.56</td>
+<td>69.2</td>
 <td>83.34 / 80.91</td>
 <td>442.58 / 442.58</td>
 <td>109</td>
@@ -94,27 +110,11 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>77.35</td>
+<td>63.8</td>
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
 <td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>78.68</td>
-<td>8.44 / 2.91</td>
-<td>27.87 / 27.87</td>
-<td>2.1</td>
-<td>PP-OCRv3 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_server_det_pretrained.pdparams">训练模型</a></td>
-<td>80.11</td>
-<td>65.41 / 13.67</td>
-<td>305.07 / 305.07</td>
-<td>102.1</td>
-<td>PP-OCRv3 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
 </tr>
 </tbody>
 </table>
@@ -514,21 +514,18 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用通用OCR产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用通用OCR产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式
 
 一行命令即可快速体验OCR产线效果：
 
 ```bash
-# 默认使用 PP-OCRv4 的中文语言模型
+# 默认使用 PP-OCRv5 模型
 paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
 
-# 通过 --lang 指定语言模型
-paddleocr ocr -i ./general_ocr_002.png --lang en
-
 # 通过 --ocr_version 指定 PP-OCR 其他版本
-paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv3
+paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 
 # 通过 --device 指定模型推理时使用 GPU
 paddleocr ocr -i ./general_ocr_002.png --device gpu
@@ -822,27 +819,25 @@ paddleocr ocr -i ./general_ocr_002.png --use_textline_orientation False
 运行结果会被打印到终端上，默认配置的OCR产线的运行结果如下：
 
 ```bash
-{'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 
-'dt_polys': array([[[143,   6],
+{'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'dt_polys': array([[[134,   6],
         ...,
-        [143,  71]],
+        [134,  66]],
+
        ...,
-       [[325, 361],
+
+       [[331, 472],
         ...,
-        [325, 386]]], dtype=int16), 
-'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.6, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([0, ..., 0]), 'text_rec_score_thresh': 0.0, 
-'rec_texts': ['登机牌', 'BOARDING', 'PASS', '航班FLIGHT', '日期', 'DATE', '舱位', 'CLASS', '序号', 'SERIALNO.', '座位号', 'SEAT NO.', '一', 'MU 2379', '03DEC', 'M', '0', '目的地TO', '始发地', 'FROM', '登机口', 'GATE', '登机时间', 'BDT', '福州', 'FUZHOU', 'TAIYUAN', 'G11', '姓名NAME', '身份识别IDNO', 'ZHANGQIWEI', '张祺伟', '票号TKTNO', '票价FARE', 'ETKT7813699238489/1'], 
-'rec_scores': array([0.99898976, ..., 0.99082142]), 
-'rec_polys': array([[[143,   6],
+        [331, 494]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([0, ..., 0]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['登机牌', '', 'BOARDING', 'PASS', '航班', 'FLIGHT', '日期', 'DATE', '舱位', 'CLASS', '序号', 'SERIAL NO.', '座位号', 'SEAT NO', 'MU', '2379', '03DEG', 'M', '035', '12F', '目的地', 'TO', '始发地', 'FROM', '登机口', 'GATE', '登机时间', 'BDT', '福州', 'FUZHOU', 'TAIYUAN', 'G11', '姓名', 'NAME', '身份识别IDNO', 'ZHANGQIWEI', '张祺件', '票号TKTNO', '票价FARE', 'ETKT', '7813699238489/1', '登机口于起飞前10分钟关闭', 'GATES CLOSE 10 MINUTES BEFORE DEPARTURE TIME'], 'rec_scores': array([0.99727374, ..., 0.9353174 ]), 'rec_polys': array([[[134,   6],
         ...,
-        [143,  71]],
+        [134,  66]],
+
        ...,
-       [[325, 361],
+
+       [[331, 472],
         ...,
-        [325, 386]]], dtype=int16), 
-'rec_boxes': array([[143, ...,  71],
+        [331, 494]]], dtype=int16), 'rec_boxes': array([[134, ...,  66],
        ...,
-       [325, ..., 392]], dtype=int16)}}
+       [331, ..., 507]], dtype=int16)}}
 ```
 
 若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：
@@ -858,7 +853,7 @@ from paddleocr import PaddleOCR
 
 ocr = PaddleOCR()
 # ocr = PaddleOCR(lang="en") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv3") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
 # ocr = PaddleOCR(device="gpu") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(use_textline_orientation=False) # 通过 device 参数指定不使用文本行方向分类模型
 result = ocr.predict("./general_ocr_002.png")
@@ -1610,6 +1605,42 @@ for i, res in enumerate(result["ocrResults"]):
 
 ## 4. 二次开发
 
-如果通用 OCR 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用您自己拥有的特定领域或应用场景的数据对现有模型进行进一步的微调，以提升通用 OCR 产线的在您的场景中的识别效果。
+通用 OCR 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
 
-...
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+<tr>
+<td>文本行旋转矫正不准</td>
+<td>文本行方向分类模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html">链接</a></td>
+</tr>
+<tr>
+<td>文本漏检</td>
+<td>文本检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html">链接</a></td>
+</tr>
+<tr>
+<td>文本内容不准</td>
+<td>文本识别模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">链接</a></td>
+</tr>
+</tbody>
+</table>
