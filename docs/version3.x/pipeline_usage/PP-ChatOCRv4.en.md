@@ -476,7 +476,7 @@ retriever_config = {
 
 mllm_chat_bot_config = {
     "module_name": "chat_bot",
-    "model_name": "PP-DocBee",
+    "model_name": "PP-DocBee2",
     "base_url": "http://172.0.0.1:8080/v1/chat/completions",  # your local mllm service url
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
@@ -1995,4 +1995,126 @@ print(result_chat["chatResult"])
 📱 **Edge Deployment**: Edge deployment is a method where computing and data processing functions are placed on the user's device itself. The device can directly process data without relying on remote servers. PaddleX supports deploying models on edge devices such as Android. For detailed instructions on edge deployment, please refer to the [PaddleX Edge Deployment Guide](../../../pipeline_deploy/edge_deploy.md).
 You can choose an appropriate deployment method for your pipeline based on your needs and proceed with subsequent AI application integration.
 
+
 ## 4. Custom Development
+If the default model weights provided by the PP-ChatOCRv4 pipeline do not meet your requirements in terms of accuracy or speed, you can try to fine-tune the existing model using your own domain-specific or application-specific data to improve the recognition performance of the PP-ChatOCRv4 pipeline in your scenario.
+
+
+### 4.1 Model Fine-Tuning
+Since the PP-ChatOCRv4 pipeline includes several modules, the unsatisfactory performance of the pipeline may originate from any one of these modules. You can analyze the cases with poor extraction results, identify which module is problematic through visualizing the images, and refer to the corresponding fine-tuning tutorial links in the table below to fine-tune the model.
+
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Fine-tuning Module</th>
+<th>Fine-tuning Reference Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inaccurate layout region detection, such as missed detection of seals, tables, etc.</td>
+<td>Layout Region Detection Module</td>
+<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate table structure recognition</td>
+<td>Table Structure Recognition Module</td>
+<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Missed detection of seal text</td>
+<td>Seal Text Detection Module</td>
+<td><a href="../module_usage/seal_text_detection.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Missed detection of text</td>
+<td>Text Detection Module</td>
+<td><a href="../module_usage/text_detection.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate text content</td>
+<td>Text Recognition Module</td>
+<td><a href="../module_usage/text_recognition.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate correction of vertical or rotated text lines</td>
+<td>Text Line Orientation Classification Module</td>
+<td><a href="../module_usage/text_line_orientation_classification.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate correction of whole-image rotation</td>
+<td>Document Image Orientation Classification Module</td>
+<td><a href="../module_usage/doc_img_orientation_classification.en.md#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate correction of image distortion</td>
+<td>Text Image Correction Module</td>
+<td>Fine-tuning not supported</td>
+</tr>
+</tbody>
+</table>
+
+### 4.2 Model Application
+After you complete fine-tuning with your private dataset, you will obtain a local model weight file.
+
+If you need to use the fine-tuned model weights, simply modify the production configuration file by replacing the local directory of the fine-tuned model weights to the corresponding position in the production configuration file:
+
+1. Exporting Pipeline Configuration Files
+
+You can call the `export_paddlex_config_to_yaml` method of the pipeline object to export the current pipeline configuration to a YAML file. Here is an example:
+
+```Python
+from paddleocr import PPChatOCRv4
+
+pipeline = PPChatOCRv4()
+pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4.yaml")
+```
+
+2. Editing Pipeline Configuration Files
+
+Replace the local directory of the fine-tuned model weights to the corresponding position in the pipeline configuration file. For example:
+
+```yaml
+......
+SubModules:
+    TextDetection:
+    module_name: text_detection
+    model_name: PP-OCRv5_server_det
+    model_dir: null # Replace with the fine-tuned text detection model weights directory
+    limit_side_len: 960
+    limit_type: max
+    thresh: 0.3
+    box_thresh: 0.6
+    unclip_ratio: 1.5
+
+    TextRecognition:
+    module_name: text_recognition
+    model_name: PP-OCRv5_server_rec
+    model_dir: null # Replace with the fine-tuned text recognition model weights directory
+        batch_size: 1
+    batch_size: 1
+            score_thresh: 0
+......
+```
+
+The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
+
+
+3. Loading Pipeline Configuration Files in CLI
+
+By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the configuration for inference. Here is an example:
+
+```bash
+paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4.yaml ...
+```
+
+4. Loading Pipeline Configuration Files in Python API
+
+When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the configuration for inference. Here is an example:
+
+```python
+from paddleocr import PPChatOCRv4
+
+pipeline = PPChatOCRv4(paddlex_config="PP-ChatOCRv4.yaml")
+```
