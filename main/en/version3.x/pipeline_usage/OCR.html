@@ -22,7 +22,7 @@
     
     
       
-        <title>通用OCR产线使用教程 - PaddleOCR Documentation</title>
+        <title>General OCR Pipeline Usage Guide - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ocr" class="md-skip">
+        <a href="#general-ocr-pipeline-usage-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              通用OCR产线使用教程
+              General OCR Pipeline Usage Guide
             
           </span>
         </div>
@@ -5376,37 +5376,28 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-ocr" class="md-nav__link">
+  <a href="#1-ocr-pipeline-introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      1. OCR产线介绍
+      1. OCR Pipeline Introduction
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#2-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      2. 快速开始
+      2. Quick Start
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. 快速开始">
+    <nav class="md-nav" aria-label="2. Quick Start">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
+  <a href="#21-command-line" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 命令行方式
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-python" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2 Python脚本方式集成
+      2.1 Command Line
     </span>
   </a>
   
@@ -5418,18 +5409,27 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
+  <a href="#22-python-script-integration" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 开发集成/部署
+      2.2 Python Script Integration
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
+  <a href="#3-development-integrationdeployment" class="md-nav__link">
     <span class="md-ellipsis">
-      4. 二次开发
+      3. Development Integration/Deployment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-custom-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Custom Development
     </span>
   </a>
   
@@ -5451,7 +5451,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/OCR.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/OCR.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5460,508 +5460,508 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/OCR.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/OCR.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="ocr">通用OCR产线使用教程<a class="headerlink" href="#ocr" title="Permanent link">&para;</a></h1>
-<h2 id="1-ocr">1. OCR产线介绍<a class="headerlink" href="#1-ocr" title="Permanent link">&para;</a></h2>
-<p>OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。</p>
-<p>通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线集成了业界知名的 PP-OCRv3 和 PP-OCRv4 的端到端 OCR 串联系统，支持超过 80 种语言的识别，并在此基础上，增加了对图像的方向矫正和扭曲矫正功能。基于本产线，可实现 CPU 上毫秒级的文本内容精准预测，使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<h1 id="general-ocr-pipeline-usage-guide">General OCR Pipeline Usage Guide<a class="headerlink" href="#general-ocr-pipeline-usage-guide" title="Permanent link">&para;</a></h1>
+<h2 id="1-ocr-pipeline-introduction">1. OCR Pipeline Introduction<a class="headerlink" href="#1-ocr-pipeline-introduction" title="Permanent link">&para;</a></h2>
+<p>OCR (Optical Character Recognition) is a technology that converts text in images into editable text. It is widely used in document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.</p>
+<p>The General OCR Pipeline is designed to solve text recognition tasks by extracting text information from images and outputting it in text format. This pipeline integrates the industry-renowned PP-OCRv3 and PP-OCRv4 end-to-end OCR systems, supporting recognition for over 80 languages. Additionally, it includes functionalities for image orientation correction and distortion correction. Based on this pipeline, millisecond-level accurate text prediction can be achieved on CPUs, covering various scenarios such as general, manufacturing, finance, and transportation. The pipeline also offers flexible service-oriented deployment options, supporting calls in multiple programming languages across various hardware platforms. Furthermore, it provides secondary development capabilities, allowing you to fine-tune models on your own datasets, with trained models seamlessly integrable.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/></p>
-<p><b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
+<p><b>The General OCR Pipeline consists of the following 5 modules. Each module can be independently trained and inferred, and includes multiple models. For detailed information, click the corresponding module to view its documentation.</b></p>
 <ul>
-<li><a href="../module_usage/doc_img_orientation_classification.html">文档图像方向分类模块</a> （可选）</li>
-<li><a href="../module_usage/text_image_unwarping.html">文本图像矫正模块</a> （可选）</li>
-<li><a href="../module_usage/text_line_orientation_classification.html">文本行方向分类模块</a> （可选）</li>
-<li><a href="../module_usage/text_detection.html">文本检测模块</a></li>
-<li><a href="../module_usage/text_recognition.html">文本识别模块</a></li>
+<li><a href="../module_usage/doc_img_orientation_classification.html">Document Image Orientation Classification Module</a> (Optional)</li>
+<li><a href="../module_usage/text_image_unwarping.html">Text Image Unwarping Module</a> (Optional)</li>
+<li><a href="../module_usage/text_line_orientation_classification.html">Text Line Orientation Classification Module</a> (Optional)</li>
+<li><a href="../module_usage/text_detection.html">Text Detection Module</a></li>
+<li><a href="../module_usage/text_recognition.html">Text Recognition Module</a></li>
 </ul>
-<p>在本产线中，您可以根据下方的基准测试数据选择使用的模型。</p>
+<p>In this pipeline, you can select models based on the benchmark test data provided below.</p>
 <details>
-<summary><b>文档图像方向分类模块（可选）：</b></summary>
+<summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>Top-1 Acc（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Acc (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Training Model</a></td>
 <td>99.06</td>
 <td>2.31 / 0.43</td>
 <td>3.37 / 1.27</td>
 <td>7</td>
-<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
+<td>Document image classification model based on PP-LCNet_x1_0, with four categories: 0°, 90°, 180°, and 270°.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
 <details>
-<summary><b>文本图像矫正模块（可选）：</b></summary>
+<summary><b>Text Image Unwar'p Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>CER </th>
-<th>模型存储大小（M)</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>CER</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
+<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">Training Model</a></td>
 <td>0.179</td>
-<td>30.3 M</td>
-<td>高精度文本图像矫正模型</td>
+<td>30.3</td>
+<td>High-precision Text Image Unwarping model.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
 <details>
-<summary><b>文本检测模块：</b></summary>
+<summary><b>Text Detection Module:</b></summary>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>检测Hmean（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Detection Hmean (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
-<td>82.56</td>
+<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
+<td>83.8</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>101</td>
+<td>Server-side text detection model for PP-OCRv5, offering higher accuracy, suitable for deployment on high-performance servers.</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>79.0</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.7</td>
+<td>Mobile-side text detection model for PP-OCRv5, offering higher efficiency, suitable for deployment on edge devices.</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
+<td>69.2</td>
 <td>83.34 / 80.91</td>
 <td>442.58 / 442.58</td>
 <td>109</td>
-<td>PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+<td>Server-side text detection model for PP-OCRv4, offering higher accuracy, suitable for deployment on high-performance servers.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>77.35</td>
+<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>63.8</td>
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
-<td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>78.68</td>
-<td>8.44 / 2.91</td>
-<td>27.87 / 27.87</td>
-<td>2.1</td>
-<td>PP-OCRv3 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_server_det_pretrained.pdparams">训练模型</a></td>
-<td>80.11</td>
-<td>65.41 / 13.67</td>
-<td>305.07 / 305.07</td>
-<td>102.1</td>
-<td>PP-OCRv3 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+<td>Mobile-side text detection model for PP-OCRv4, offering higher efficiency, suitable for deployment on edge devices.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
 <details>
-<summary><b>文本识别模块：</b></summary>
+<summary><b>Text Recognition Module:</b></summary>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>86.38</td>
 <td> - </td>
 <td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>205</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model designed to efficiently and accurately support Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex scenarios like handwriting, vertical text, pinyin, and rare characters. It balances recognition performance with inference speed and robustness, providing reliable support for document understanding across diverse scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>81.29</td>
 <td> - </td>
 <td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>128</td>
+<td>PP-OCRv5_mobile_rec is a next-generation lightweight text recognition model optimized for efficiency and accuracy across Simplified Chinese, Traditional Chinese, English, and Japanese, including complex scenarios like handwriting and vertical text. It delivers robust performance while maintaining fast inference speeds.</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Training Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>91 M</td>
-<td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
+<td>181</td>
+<td>PP-OCRv4_server_rec_doc is trained on a hybrid dataset of Chinese document data and PP-OCR training data, enhancing recognition for Traditional Chinese, Japanese, and special characters. It supports 15,000+ characters and improves both document-specific and general text recognition.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>11 M</td>
-<td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>88</td>
+<td>PP-OCRv4's lightweight recognition model, optimized for fast inference on edge devices and various hardware platforms.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>87 M</td>
-<td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
+<td>151</td>
+<td>PP-OCRv4's server-side model, delivering high accuracy for deployment on various servers.</td>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>7.3 M</td>
-<td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>66</td>
+<td>An ultra-lightweight English recognition model based on PP-OCRv4, supporting English and numeric characters.</td>
 </tr>
 </table>
 
-> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
 
-<details><summary> 👉模型列表详情</summary>
+> ❗ The above table highlights <b>6 core models</b> from the text recognition module, which includes <b>10 full models</b> in total, covering multiple multilingual recognition models. For the complete list:
 
-* <b>PP-OCRv5 多场景模型</b>
+<details><summary> 👉 Full Model Details</summary>
+
+* <b>PP-OCRv5 Multi-Scene Models</b>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>中文识别 Avg Accuracy(%)</th>
-<th>英文识别 Avg Accuracy(%)</th>
-<th>繁体中文识别 Avg Accuracy(%)</th>
-<th>日文识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Chinese Accuracy(%)</th>
+<th>English Accuracy(%)</th>
+<th>Traditional Chinese Accuracy(%)</th>
+<th>Japanese Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>86.38</td>
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
 <td> - </td>
 <td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>205</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model supporting Simplified Chinese, Traditional Chinese, English, and Japanese, including complex scenarios like handwriting and vertical text.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>81.29</td>
 <td>66.00</td>
 <td>83.55</td>
 <td>54.65</td>
 <td> - </td>
 <td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>128</td>
+<td>PP-OCRv5_mobile_rec is a lightweight version optimized for efficiency and accuracy across multiple languages and scenarios.</td>
 </tr>
 </table>
 
-* <b>中文识别模型</b>
+* <b>Chinese Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Training Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>91 M</td>
-<td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
+<td>181</td>
+<td>Enhanced for document text recognition, supporting 15,000+ characters including Traditional Chinese and Japanese.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>11 M</td>
-<td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>88</td>
+<td>Lightweight model optimized for edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>87 M</td>
-<td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
+<td>151</td>
+<td>High-accuracy server-side model.</td>
 </tr>
 <tr>
 <td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>75.43</td>
 <td>5.87 / 1.19</td>
 <td>9.07 / 4.28</td>
-<td>11 M</td>
-<td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>138</td>
+<td>Lightweight PP-OCRv3 model for edge devices.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">Training Model</a></td>
 <td>68.81</td>
 <td>8.08 / 2.74</td>
 <td>50.17 / 42.50</td>
-<td>73.9 M</td>
+<td>126</td>
 <td rowspan="1">
-SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
+SVTRv2, developed by FVL's OpenOCR team, won first prize in the PaddleOCR Algorithm Challenge, improving end-to-end recognition accuracy by 6% over PP-OCRv4.
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">Training Model</a></td>
 <td>65.07</td>
 <td>5.93 / 1.62</td>
 <td>20.73 / 7.32</td>
-<td>22.1 M</td>
-<td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
+<td>70</td>
+<td rowspan="1">RepSVTR, a mobile-optimized version of SVTRv2, won first prize in the PaddleOCR Challenge, improving accuracy by 2.5% over PP-OCRv4 with comparable speed.</td>
 </tr>
 </table>
 
-* <b>英文识别模型</b>
+* <b>English Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Links</th>
+<th>Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Standard / High-Performance]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td> 70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>6.8 M</td>
-<td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>66</td>
+<td>Ultra-lightweight English recognition model supporting English and numeric characters.</td>
 </tr>
 <tr>
 <td>en_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>70.69</td>
 <td>5.44 / 0.75</td>
 <td>8.65 / 5.57</td>
-<td>7.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>85</td>
+<td>PP-OCRv3-based English recognition model.</td>
 </tr>
 </table>
 
-
-* <b>多语言识别模型</b>
+* <b>Multilingual Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Download Link</th>
+<th>Recognition Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>Model Size (M)</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>60.21</td>
 <td>5.40 / 0.97</td>
 <td>9.11 / 4.05</td>
-<td>8.6 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
+<td>114 M</td>
+<td>Ultra-lightweight Korean recognition model based on PP-OCRv3, supporting Korean and numeric characters</td>
 </tr>
 <tr>
 <td>japan_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-japan_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>45.69</td>
 <td>5.70 / 1.02</td>
 <td>8.48 / 4.07</td>
-<td>8.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量日文识别模型，支持日文、数字识别</td>
+<td>120 M </td>
+<td>Ultra-lightweight Japanese recognition model based on PP-OCRv3, supporting Japanese and numeric characters</td>
 </tr>
 <tr>
 <td>chinese_cht_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-chinese_cht_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>82.06</td>
 <td>5.90 / 1.28</td>
 <td>9.28 / 4.34</td>
-<td>9.7 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量繁体中文识别模型，支持繁体中文、数字识别</td>
+<td>152 M </td>
+<td>Ultra-lightweight Traditional Chinese recognition model based on PP-OCRv3, supporting Traditional Chinese and numeric characters</td>
 </tr>
 <tr>
 <td>te_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-te_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>95.88</td>
 <td>5.42 / 0.82</td>
 <td>8.10 / 6.91</td>
-<td>7.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量泰卢固文识别模型，支持泰卢固文、数字识别</td>
+<td>85 M </td>
+<td>Ultra-lightweight Telugu recognition model based on PP-OCRv3, supporting Telugu and numeric characters</td>
 </tr>
 <tr>
 <td>ka_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-ka_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>96.96</td>
 <td>5.25 / 0.79</td>
 <td>9.09 / 3.86</td>
-<td>8.0 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量卡纳达文识别模型，支持卡纳达文、数字识别</td>
+<td>85 M </td>
+<td>Ultra-lightweight Kannada recognition model based on PP-OCRv3, supporting Kannada and numeric characters</td>
 </tr>
 <tr>
 <td>ta_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-ta_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>76.83</td>
 <td>5.23 / 0.75</td>
 <td>10.13 / 4.30</td>
-<td>8.0 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量泰米尔文识别模型，支持泰米尔文、数字识别</td>
+<td>85 M </td>
+<td>Ultra-lightweight Tamil recognition model based on PP-OCRv3, supporting Tamil and numeric characters</td>
 </tr>
 <tr>
 <td>latin_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>76.93</td>
 <td>5.20 / 0.79</td>
 <td>8.83 / 7.15</td>
-<td>7.8 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
+<td>85 M</td>
+<td>Ultra-lightweight Latin recognition model based on PP-OCRv3, supporting Latin and numeric characters</td>
 </tr>
 <tr>
 <td>arabic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>73.55</td>
 <td>5.35 / 0.79</td>
 <td>8.80 / 4.56</td>
-<td>7.8 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
+<td>85 M</td>
+<td>Ultra-lightweight Arabic script recognition model based on PP-OCRv3, supporting Arabic script and numeric characters</td>
 </tr>
 <tr>
 <td>cyrillic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>94.28</td>
 <td>5.23 / 0.76</td>
 <td>8.89 / 3.88</td>
-<td>7.9 M  </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量斯拉夫字母识别模型，支持斯拉夫字母、数字识别</td>
+<td>85 M  </td>
+<td>Ultra-lightweight Cyrillic script recognition model based on PP-OCRv3, supporting Cyrillic script and numeric characters</td>
 </tr>
 <tr>
 <td>devanagari_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>96.44</td>
 <td>5.22 / 0.79</td>
 <td>8.56 / 4.06</td>
-<td>7.9 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
+<td>85 M</td>
+<td>Ultra-lightweight Devanagari script recognition model based on PP-OCRv3, supporting Devanagari script and numeric characters</td>
 </tr>
 </table>
 </details>
 </details>
 
 <details>
-<summary><strong>测试环境说明:</strong></summary>
+<summary><strong>Test Environment Details:</strong></summary>
 
   <ul>
-      <li><b>性能测试环境</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-            <li><strong>测试数据集：
+            <li><strong>Test Datasets:
              </strong>
                 <ul>
-                  <li>文档图像方向分类模型：PaddleX 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
-                  <li>文本图像矫正模型：<a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a>。</li>
-                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>
-                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>
-                  <li>ch_SVTRv2_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>
-                  <li>ch_RepSVTR_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>
-                  <li>英文识别模型：PaddleX 自建的英文数据集。</li>
-                  <li>多语言识别模型：PaddleX 自建的多语种数据集。</li>
-                  <li>文本行方向分类模型：PaddleX 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+                  <li>Document Image Orientation Classification Model: PaddleX in-house dataset covering ID cards and documents, with 1,000 images.</li>
+                  <li>Text Image Correction Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a>.</li>
+                  <li>Text Detection Model: PaddleOCR in-house Chinese dataset covering street views, web images, documents, and handwriting, with 500 images for detection.</li>
+                  <li>Chinese Recognition Model: PaddleOCR in-house Chinese dataset covering street views, web images, documents, and handwriting, with 11,000 images for recognition.</li>
+                  <li>ch_SVTRv2_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Challenge - Task 1: OCR End-to-End Recognition</a> A-set evaluation data.</li>
+                  <li>ch_RepSVTR_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Challenge - Task 1: OCR End-to-End Recognition</a> B-set evaluation data.</li>
+                  <li>English Recognition Model: PaddleX in-house English dataset.</li>
+                  <li>Multilingual Recognition Model: PaddleX in-house multilingual dataset.</li>
+                  <li>Text Line Orientation Classification Model: PaddleX in-house dataset covering ID cards and documents, with 1,000 images.</li>
                 </ul>
              </li>
-              <li><strong>硬件配置：</strong>
+              <li><strong>Hardware Configuration:</strong>
                   <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
       </li>
-      <li><b>推理模式说明</b></li>
+      <li><b>Inference Mode Description</b></li>
   </ul>
 
 <table border="1">
     <thead>
         <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
+            <th>Mode</th>
+            <th>GPU Configuration</th>
+            <th>CPU Configuration</th>
+            <th>Acceleration Techniques</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
+            <td>Standard Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+            <td>High-Performance Mode</td>
+            <td>Optimal combination of precision types and acceleration strategies</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Optimal backend selection (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
@@ -5969,1049 +5969,1054 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </details>
 
 <p><br />
-<b>如果您更注重模型的精度，请选择精度较高的模型；如果您更在意模型的推理速度，请选择推理速度较快的模型；如果您关注模型的存储大小，请选择存储体积较小的模型。</b></p>
-<h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>在本地使用通用OCR产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。</p>
-<h3 id="21">2.1 命令行方式<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
-<p>一行命令即可快速体验OCR产线效果：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 默认使用 PP-OCRv4 的中文语言模型</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
+<b>If you prioritize model accuracy, choose models with higher accuracy; if inference speed is critical, select faster models; if model size matters, opt for smaller models.</b></p>
+<h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
+<p>Before using the general OCR pipeline locally, ensure you have installed the wheel package by following the <a href="../installation.en.md">Installation Guide</a>. Once installed, you can experience OCR via the command line or Python integration.  </p>
+<h3 id="21-command-line">2.1 Command Line<a class="headerlink" href="#21-command-line" title="Permanent link">&para;</a></h3>
+<p>Run a single command to quickly test the OCR pipeline:  </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Default: Uses PP-OCRv5 Chinese model  </span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w">  </span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 通过 --lang 指定语言模型</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--lang<span class="w"> </span>en
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Specify PP-OCR version via --ocr_version  </span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--ocr_version<span class="w"> </span>PP-OCRv4<span class="w">  </span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># 通过 --ocr_version 指定 PP-OCR 其他版本</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--ocr_version<span class="w"> </span>PP-OCRv3
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Use GPU for inference via --device  </span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>gpu<span class="w">  </span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 通过 --device 指定模型推理时使用 GPU</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>gpu
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># 通过 --use_textline_orientation 指定是否使用文本行方向分类模型</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--use_textline_orientation<span class="w"> </span>False
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Disable text line orientation classification via --use_textline_orientation  </span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--use_textline_orientation<span class="w"> </span>False<span class="w">  </span>
 </span></code></pre></div>
-<details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_batch_size</code></td>
-<td>文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>是否使用文档方向分类功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>是否使用文本图像矫正功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_textline_orientation</code></td>
-<td>是否使用文本行方向功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>文本检测的最大边长度限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>；</li>
-</ul>
-</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_input_shape</code></td>
-<td>文本检测的输入形状。</td>
-<td><code>tuple</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_rec_input_shape</code></td>
-<td>文本识别的输入形状。</td>
-<td><code>tuple</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>ch</code>；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>ocr_version</code></td>
-<td>OCR 版本。
-<ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>PP-OCRv5</code>系列模型；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
-<ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-</tbody>
-</table>
+<details><summary><b>More command-line parameters available. Click to expand for details.</b></summary>  
+<table>  
+<thead>  
+<tr>  
+<th>Parameter</th>  
+<th>Description</th>  
+<th>Type</th>  
+<th>Default</th>  
+</tr>  
+</thead>  
+<tbody>  
+<tr>  
+<td><code>doc_orientation_classify_model_name</code></td>  
+<td>Name of the document orientation classification model. If <code>None</code>, the default pipeline model is used.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_orientation_classify_model_dir</code></td>  
+<td>Directory path of the document orientation classification model. If <code>None</code>, the official model is downloaded.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_unwarping_model_name</code></td>  
+<td>Name of the text image correction model. If <code>None</code>, the default pipeline model is used.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_unwarping_model_dir</code></td>  
+<td>Directory path of the text image correction model. If <code>None</code>, the official model is downloaded.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_detection_model_name</code></td>  
+<td>Name of the text detection model. If <code>None</code>, the default pipeline model is used.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_detection_model_dir</code></td>  
+<td>Directory path of the text detection model. If <code>None</code>, the official model is downloaded.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_model_name</code></td>  
+<td>Name of the text line orientation model. If <code>None</code>, the default pipeline model is used.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_model_dir</code></td>  
+<td>Directory path of the text line orientation model. If <code>None</code>, the official model is downloaded.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_batch_size</code></td>  
+<td>Batch size for the text line orientation model. If <code>None</code>, defaults to <code>1</code>.</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_model_name</code></td>  
+<td>Name of the text recognition model. If <code>None</code>, the default pipeline model is used.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_model_dir</code></td>  
+<td>Directory path of the text recognition model. If <code>None</code>, the official model is downloaded.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_batch_size</code></td>  
+<td>Batch size for the text recognition model. If <code>None</code>, defaults to <code>1</code>.</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_orientation_classify</code></td>  
+<td>Whether to enable document orientation classification. If <code>None</code>, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_unwarping</code></td>  
+<td>Whether to enable text image correction. If <code>None</code>, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_textline_orientation</code></td>  
+<td>Whether to enable text line orientation classification. If <code>None</code>, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_limit_side_len</code></td>  
+<td>Maximum side length limit for text detection.  
+<ul>  
+<li><b>int</b>: Any integer > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>960</code>).</li>  
+</ul>  
+</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_limit_type</code></td>  
+<td>Side length limit type for text detection.  
+<ul>  
+<li><b>str</b>: Supports <code>min</code> (ensures shortest side ≥ <code>det_limit_side_len</code>) or <code>max</code> (ensures longest side ≤ <code>limit_side_len</code>);</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>max</code>).</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_thresh</code></td>  
+<td>Pixel threshold for text detection. Pixels with scores > this threshold are considered text.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>0.3</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_box_thresh</code></td>  
+<td>Box threshold for text detection. Detected regions with average scores > this threshold are retained.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>0.6</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_unclip_ratio</code></td>  
+<td>Expansion ratio for text detection. Larger values expand text regions more.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>2.0</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_input_shape</code></td>  
+<td>Input shape for text detection.</td>  
+<td><code>tuple</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_rec_score_thresh</code></td>  
+<td>Score threshold for text recognition. Results with scores > this threshold are retained.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization value (<code>0.0</code>, no threshold).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_rec_input_shape</code></td>  
+<td>Input shape for text recognition.</td>  
+<td><code>tuple</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>lang</code></td>  
+<td>Specifies the OCR model language.  
+<ul>  
+<li><b>ch</b>: Chinese;</li>  
+<li><b>en</b>: English;</li>  
+<li><b>korean</b>: Korean;</li>  
+<li><b>japan</b>: Japanese;</li>  
+<li><b>chinese_cht</b>: Traditional Chinese;</li>  
+<li><b>te</b>: Telugu;</li>  
+<li><b>ka</b>: Kannada;</li>  
+<li><b>ta</b>: Tamil;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to <code>ch</code>.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>ocr_version</code></td>  
+<td>OCR model version.  
+<ul>  
+<li><b>PP-OCRv5</b>: Uses PP-OCRv5 models;</li>  
+<li><b>PP-OCRv4</b>: Uses PP-OCRv4 models;</li>  
+<li><b>PP-OCRv3</b>: Uses PP-OCRv3 models;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to PP-OCRv5 models.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>input</code></td>  
+<td>Input data (required). Supports:  
+<ul>  
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
+<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
+<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
+</ul>  
+</td>  
+<td><code>Python Var|str|list</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>save_path</code></td>  
+<td>Path to save inference results. If <code>None</code>, results are not saved locally.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>device</code></td>  
+<td>Device for inference. Supports:  
+<ul>  
+<li><b>CPU</b>: <code>cpu</code>;</li>  
+<li><b>GPU</b>: <code>gpu:0</code> (first GPU);</li>  
+<li><b>NPU</b>: <code>npu:0</code>;</li>  
+<li><b>XPU</b>: <code>xpu:0</code>;</li>  
+<li><b>MLU</b>: <code>mlu:0</code>;</li>  
+<li><b>DCU</b>: <code>dcu:0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to GPU 0 (if available) or CPU.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>enable_hpi</code></td>  
+<td>Whether to enable high-performance inference.</td>  
+<td><code>bool</code></td>  
+<td><code>False</code></td>  
+</tr>  
+<tr>  
+<td><code>use_tensorrt</code></td>  
+<td>Whether to use TensorRT for acceleration.</td>  
+<td><code>bool</code></td>  
+<td><code>False</code></td>  
+</tr>  
+<tr>  
+<td><code>min_subgraph_size</code></td>  
+<td>Minimum subgraph size for model optimization.</td>  
+<td><code>int</code></td>  
+<td><code>3</code></td>  
+</tr>  
+<tr>  
+<td><code>precision</code></td>  
+<td>Computation precision (e.g., <code>fp32</code>, <code>fp16</code>).</td>  
+<td><code>str</code></td>  
+<td><code>fp32</code></td>  
+</tr>  
+<tr>  
+<td><code>enable_mkldnn</code></td>  
+<td>Whether to enable MKL-DNN acceleration. If <code>None</code>, enabled by default.</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>cpu_threads</code></td>  
+<td>Number of CPU threads for inference.</td>  
+<td><code>int</code></td>  
+<td><code>8</code></td>  
+</tr>  
+</tbody>  
+</table>  
 </details>
-<p><br /></p>
-<p>运行结果会被打印到终端上，默认配置的OCR产线的运行结果如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span><span class="m">0</span><span class="o">}</span>,<span class="w"> </span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="m">143</span>,<span class="w">   </span><span class="m">6</span><span class="o">]</span>,
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span>...,
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">        </span><span class="o">[</span><span class="m">143</span>,<span class="w">  </span><span class="m">71</span><span class="o">]]</span>,
+<p><br />  </p>
+<p>Results are printed to the terminal. The default OCR pipeline output is structured as:  </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span><span class="m">0</span><span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="m">134</span>,<span class="w">   </span><span class="m">6</span><span class="o">]</span>,
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">        </span>...,
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="o">[</span><span class="m">134</span>,<span class="w">  </span><span class="m">66</span><span class="o">]]</span>,
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">       </span>...,
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">       </span><span class="o">[[</span><span class="m">325</span>,<span class="w"> </span><span class="m">361</span><span class="o">]</span>,
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span>...,
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="o">[</span><span class="m">325</span>,<span class="w"> </span><span class="m">386</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">960</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;max&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">2</span>.0<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span><span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;登机牌&#39;</span>,<span class="w"> </span><span class="s1">&#39;BOARDING&#39;</span>,<span class="w"> </span><span class="s1">&#39;PASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;航班FLIGHT&#39;</span>,<span class="w"> </span><span class="s1">&#39;日期&#39;</span>,<span class="w"> </span><span class="s1">&#39;DATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;舱位&#39;</span>,<span class="w"> </span><span class="s1">&#39;CLASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;序号&#39;</span>,<span class="w"> </span><span class="s1">&#39;SERIALNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;座位号&#39;</span>,<span class="w"> </span><span class="s1">&#39;SEAT NO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;一&#39;</span>,<span class="w"> </span><span class="s1">&#39;MU 2379&#39;</span>,<span class="w"> </span><span class="s1">&#39;03DEC&#39;</span>,<span class="w"> </span><span class="s1">&#39;M&#39;</span>,<span class="w"> </span><span class="s1">&#39;0&#39;</span>,<span class="w"> </span><span class="s1">&#39;目的地TO&#39;</span>,<span class="w"> </span><span class="s1">&#39;始发地&#39;</span>,<span class="w"> </span><span class="s1">&#39;FROM&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口&#39;</span>,<span class="w"> </span><span class="s1">&#39;GATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机时间&#39;</span>,<span class="w"> </span><span class="s1">&#39;BDT&#39;</span>,<span class="w"> </span><span class="s1">&#39;福州&#39;</span>,<span class="w"> </span><span class="s1">&#39;FUZHOU&#39;</span>,<span class="w"> </span><span class="s1">&#39;TAIYUAN&#39;</span>,<span class="w"> </span><span class="s1">&#39;G11&#39;</span>,<span class="w"> </span><span class="s1">&#39;姓名NAME&#39;</span>,<span class="w"> </span><span class="s1">&#39;身份识别IDNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;ZHANGQIWEI&#39;</span>,<span class="w"> </span><span class="s1">&#39;张祺伟&#39;</span>,<span class="w"> </span><span class="s1">&#39;票号TKTNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;票价FARE&#39;</span>,<span class="w"> </span><span class="s1">&#39;ETKT7813699238489/1&#39;</span><span class="o">]</span>,<span class="w"> </span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99898976,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.99082142<span class="o">])</span>,<span class="w"> </span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="m">143</span>,<span class="w">   </span><span class="m">6</span><span class="o">]</span>,
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span>...,
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="o">[</span><span class="m">143</span>,<span class="w">  </span><span class="m">71</span><span class="o">]]</span>,
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">       </span>...,
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">       </span><span class="o">[[</span><span class="m">325</span>,<span class="w"> </span><span class="m">361</span><span class="o">]</span>,
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span>...,
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="o">[</span><span class="m">325</span>,<span class="w"> </span><span class="m">386</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="m">143</span>,<span class="w"> </span>...,<span class="w">  </span><span class="m">71</span><span class="o">]</span>,
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">       </span>...,
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">       </span><span class="o">[</span><span class="m">325</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">392</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">       </span><span class="o">[[</span><span class="m">331</span>,<span class="w"> </span><span class="m">472</span><span class="o">]</span>,
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span>...,
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="o">[</span><span class="m">331</span>,<span class="w"> </span><span class="m">494</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">736</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;min&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;max_side_limit&#39;</span>:<span class="w"> </span><span class="m">4000</span>,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">1</span>.5<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span><span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;登机牌&#39;</span>,<span class="w"> </span><span class="s1">&#39;&#39;</span>,<span class="w"> </span><span class="s1">&#39;BOARDING&#39;</span>,<span class="w"> </span><span class="s1">&#39;PASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;航班&#39;</span>,<span class="w"> </span><span class="s1">&#39;FLIGHT&#39;</span>,<span class="w"> </span><span class="s1">&#39;日期&#39;</span>,<span class="w"> </span><span class="s1">&#39;DATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;舱位&#39;</span>,<span class="w"> </span><span class="s1">&#39;CLASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;序号&#39;</span>,<span class="w"> </span><span class="s1">&#39;SERIAL NO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;座位号&#39;</span>,<span class="w"> </span><span class="s1">&#39;SEAT NO&#39;</span>,<span class="w"> </span><span class="s1">&#39;MU&#39;</span>,<span class="w"> </span><span class="s1">&#39;2379&#39;</span>,<span class="w"> </span><span class="s1">&#39;03DEG&#39;</span>,<span class="w"> </span><span class="s1">&#39;M&#39;</span>,<span class="w"> </span><span class="s1">&#39;035&#39;</span>,<span class="w"> </span><span class="s1">&#39;12F&#39;</span>,<span class="w"> </span><span class="s1">&#39;目的地&#39;</span>,<span class="w"> </span><span class="s1">&#39;TO&#39;</span>,<span class="w"> </span><span class="s1">&#39;始发地&#39;</span>,<span class="w"> </span><span class="s1">&#39;FROM&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口&#39;</span>,<span class="w"> </span><span class="s1">&#39;GATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机时间&#39;</span>,<span class="w"> </span><span class="s1">&#39;BDT&#39;</span>,<span class="w"> </span><span class="s1">&#39;福州&#39;</span>,<span class="w"> </span><span class="s1">&#39;FUZHOU&#39;</span>,<span class="w"> </span><span class="s1">&#39;TAIYUAN&#39;</span>,<span class="w"> </span><span class="s1">&#39;G11&#39;</span>,<span class="w"> </span><span class="s1">&#39;姓名&#39;</span>,<span class="w"> </span><span class="s1">&#39;NAME&#39;</span>,<span class="w"> </span><span class="s1">&#39;身份识别IDNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;ZHANGQIWEI&#39;</span>,<span class="w"> </span><span class="s1">&#39;张祺件&#39;</span>,<span class="w"> </span><span class="s1">&#39;票号TKTNO&#39;</span>,<span class="w"> </span><span class="s1">&#39;票价FARE&#39;</span>,<span class="w"> </span><span class="s1">&#39;ETKT&#39;</span>,<span class="w"> </span><span class="s1">&#39;7813699238489/1&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口于起飞前10分钟关闭&#39;</span>,<span class="w"> </span><span class="s1">&#39;GATES CLOSE 10 MINUTES BEFORE DEPARTURE TIME&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99727374,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.9353174<span class="w"> </span><span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="m">134</span>,<span class="w">   </span><span class="m">6</span><span class="o">]</span>,
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span>...,
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">        </span><span class="o">[</span><span class="m">134</span>,<span class="w">  </span><span class="m">66</span><span class="o">]]</span>,
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">       </span>...,
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">       </span><span class="o">[[</span><span class="m">331</span>,<span class="w"> </span><span class="m">472</span><span class="o">]</span>,
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">        </span>...,
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="o">[</span><span class="m">331</span>,<span class="w"> </span><span class="m">494</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="m">134</span>,<span class="w"> </span>...,<span class="w">  </span><span class="m">66</span><span class="o">]</span>,
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">       </span>...,
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">       </span><span class="o">[</span><span class="m">331</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">507</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
 </span></code></pre></div>
-<p>若指定了<code>save_path</code>，则会保存可视化结果在<code>save_path</code>下。可视化结果如下：</p>
+<p>If <code>save_path</code> is specified, the visualization results will be saved under <code>save_path</code>. The visualization output is shown below:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/></p>
-<h3 id="22-python">2.2 Python脚本方式集成<a class="headerlink" href="#22-python" title="Permanent link">&para;</a></h3>
-<p>命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
+<h2 id="22-python-script-integration">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration" title="Permanent link">&para;</a></h2>
+<p>The command-line method is for quick testing. For project integration, you can achieve OCR inference with just a few lines of code:  </p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>  
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ocr = PaddleOCR(lang=&quot;en&quot;) # 通过 lang 参数来使用英文模型</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># ocr = PaddleOCR(ocr_version=&quot;PP-OCRv3&quot;) # 通过 ocr_version 参数来使用 PP-OCR 其他版本</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># ocr = PaddleOCR(device=&quot;gpu&quot;) # 通过 device 参数使得在模型推理时使用 GPU</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># ocr = PaddleOCR(use_textline_orientation=False) # 通过 device 参数指定不使用文本行方向分类模型</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span>  
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ocr = PaddleOCR(lang=&quot;en&quot;)  # Use English model via `lang`  </span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># ocr = PaddleOCR(ocr_version=&quot;PP-OCRv4&quot;)  # Use PP-OCRv4 via `ocr_version`  </span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># ocr = PaddleOCR(device=&quot;gpu&quot;)  # Use GPU for inference  </span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># ocr = PaddleOCR(use_textline_orientation=False)  # Disable text line orientation  </span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>  
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>  
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>  
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>  
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>  
 </span></code></pre></div>
-<p>在上述 Python 脚本中，执行了如下几个步骤：</p>
-<details><summary>（1）通过 <code>PaddleOCR()</code> 实例化 OCR 产线对象，具体参数说明如下：</summary>
+<p>The Python script above performs the following steps:  </p>
+<details><summary>(1) Initialize the OCR pipeline with <code>PaddleOCR()</code>. Parameter details:</summary>  
 
-<table>
-  <thead>
-    <tr>
-      <th>参数</th>
-      <th>参数说明</th>
-      <th>参数类型</th>
-      <th>默认值</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_line_orientation_batch_size</code></td>
-<td>文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>是否使用文档方向分类功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>是否使用文本图像矫正功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_textline_orientation</code></td>
-<td>是否使用文本行方向功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>文本检测的最大边长度限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>；</li>
-</ul>
-</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code></li></li></ul>
-</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_input_shape</code></td>
-<td>文本检测的输入形状。</td>
-<td><code>tuple</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
+<table>  
+  <thead>  
+    <tr>  
+      <th>Parameter</th>  
+      <th>Description</th>  
+      <th>Type</th>  
+      <th>Default</th>  
+    </tr>  
+  </thead>  
+  <tbody>  
+<tr>  
+<td><code>doc_orientation_classify_model_name</code></td>  
+<td>Name of the document orientation model. If <code>None</code>, uses the default pipeline model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_orientation_classify_model_dir</code></td>  
+<td>Directory path of the document orientation model. If <code>None</code>, downloads the official model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_unwarping_model_name</code></td>  
+<td>Name of the text image correction model. If <code>None</code>, uses the default pipeline model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>doc_unwarping_model_dir</code></td>  
+<td>Directory path of the text image correction model. If <code>None</code>, downloads the official model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_detection_model_name</code></td>  
+<td>Name of the text detection model. If <code>None</code>, uses the default pipeline model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_detection_model_dir</code></td>  
+<td>Directory path of the text detection model. If <code>None</code>, downloads the official model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_model_name</code></td>  
+<td>Name of the text line orientation model. If <code>None</code>, uses the default pipeline model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_model_dir</code></td>  
+<td>Directory path of the text line orientation model. If <code>None</code>, downloads the official model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_line_orientation_batch_size</code></td>  
+<td>Batch size for the text line orientation model. If <code>None</code>, defaults to <code>1</code>.</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_model_name</code></td>  
+<td>Name of the text recognition model. If <code>None</code>, uses the default pipeline model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_model_dir</code></td>  
+<td>Directory path of the text recognition model. If <code>None</code>, downloads the official model.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_recognition_batch_size</code></td>  
+<td>Batch size for the text recognition model. If <code>None</code>, defaults to <code>1</code>.</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_orientation_classify</code></td>  
+<td>Whether to enable document orientation classification. If <code>None</code>, defaults to pipeline initialization (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_unwarping</code></td>  
+<td>Whether to enable text image correction. If <code>None</code>, defaults to pipeline initialization (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_textline_orientation</code></td>  
+<td>Whether to enable text line orientation classification. If <code>None</code>, defaults to pipeline initialization (<code>True</code>).</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_limit_side_len</code></td>  
+<td>Maximum side length limit for text detection.  
+<ul>  
+<li><b>int</b>: Any integer > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>960</code>).</li>  
+</ul>  
+</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_limit_type</code></td>  
+<td>Side length limit type for text detection.  
+<ul>  
+<li><b>str</b>: Supports <code>min</code> (ensures shortest side ≥ <code>det_limit_side_len</code>) or <code>max</code> (ensures longest side ≤ <code>limit_side_len</code>);</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>max</code>).</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_thresh</code></td>  
+<td>Pixel threshold for text detection. Pixels with scores > this threshold are considered text.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>0.3</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_box_thresh</code></td>  
+<td>Box threshold for text detection. Detected regions with average scores > this threshold are retained.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>0.6</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_unclip_ratio</code></td>  
+<td>Expansion ratio for text detection. Larger values expand text regions more.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>2.0</code>).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_det_input_shape</code></td>  
+<td>Input shape for text detection.</td>  
+<td><code>tuple</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_rec_score_thresh</code></td>  
+<td>Score threshold for text recognition. Results with scores > this threshold are retained.  
+<ul>  
+<li><b>float</b>: Any float > <code>0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to pipeline initialization (<code>0.0</code>, no threshold).</li>  
+</ul>  
+</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>text_rec_input_shape</code></td>  
+<td>Input shape for text recognition.</td>  
+<td><code>tuple</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>lang</code></td>  
+<td>Specifies the OCR model language.  
+<ul>  
+<li><b>ch</b>: Chinese;</li>  
+<li><b>en</b>: English;</li>  
+<li><b>korean</b>: Korean;</li>  
+<li><b>japan</b>: Japanese;</li>  
+<li><b>chinese_cht</b>: Traditional Chinese;</li>  
+<li><b>te</b>: Telugu;</li>  
+<li><b>ka</b>: Kannada;</li>  
+<li><b>ta</b>: Tamil;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to <code>ch</code>.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>ocr_version</code></td>  
+<td>OCR model version.  
+<ul>  
+<li><b>PP-OCRv5</b>: Uses PP-OCRv5 models;</li>  
+<li><b>PP-OCRv4</b>: Uses PP-OCRv4 models;</li>  
+<li><b>PP-OCRv3</b>: Uses PP-OCRv3 models;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to PP-OCRv5 models.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>device</code></td>  
+<td>Device for inference. Supports:  
+<ul>  
+<li><b>CPU</b>: <code>cpu</code>;</li>  
+<li><b>GPU</b>: <code>gpu:0</code> (first GPU);</li>  
+<li><b>NPU</b>: <code>npu:0</code>;</li>  
+<li><b>XPU</b>: <code>xpu:0</code>;</li>  
+<li><b>MLU</b>: <code>mlu:0</code>;</li>  
+<li><b>DCU</b>: <code>dcu:0</code>;</li>  
+<li><b>None</b>: If <code>None</code>, defaults to GPU 0 (if available) or CPU.</li>  
+</ul>  
+</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>enable_hpi</code></td>  
+<td>Whether to enable high-performance inference.</td>  
+<td><code>bool</code></td>  
+<td><code>False</code></td>  
+</tr>  
+<tr>  
+<td><code>use_tensorrt</code></td>  
+<td>Whether to use TensorRT for acceleration.</td>  
+<td><code>bool</code></td>  
+<td><code>False</code></td>  
+</tr>  
+<tr>  
+<td><code>min_subgraph_size</code></td>  
+<td>Minimum subgraph size for model optimization.</td>  
+<td><code>int</code></td>  
+<td><code>3</code></td>  
+</tr>  
+<tr>  
+<td><code>precision</code></td>  
+<td>Computation precision (e.g., <code>fp32</code>, <code>fp16</code>).</td>  
+<td><code>str</code></td>  
+<td><code>fp32</code></td>  
+</tr>  
+<tr>  
+<td><code>enable_mkldnn</code></td>  
+<td>Whether to enable MKL-DNN acceleration. If <code>None</code>, enabled by default.</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>cpu_threads</code></td>  
+<td>Number of CPU threads for inference.</td>  
+<td><code>int</code></td>  
+<td><code>8</code></td>  
+</tr>  
+</tbody>  
+</table>  
+</details>
+
+<details><summary>(2) Call the <code>predict()</code> method for inference. Alternatively, <code>predict_iter()</code> returns a generator for memory-efficient batch processing. Parameters:</summary>  
+
+<table>  
+<thead>  
+<tr>  
+<th>Parameter</th>  
+<th>Description</th>  
+<th>Type</th>  
+<th>Default</th>  
+</tr>  
+</thead>  
+<tr>  
+<td><code>input</code></td>  
+<td>Input data (required). Supports:  
+<ul>  
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
+<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
+<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
+</ul>  
+</td>  
+<td><code>Python Var|str|list</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>device</code></td>  
+<td>Same as initialization.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_orientation_classify</code></td>  
+<td>Whether to enable document orientation classification during inference.</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<tr>  
+<td><code>use_doc_unwarping</code></td>  
+<td>Whether to enable text image correction during inference.</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>use_textline_orientation</code></td>  
+<td>Whether to enable text line orientation classification during inference.</td>  
+<td><code>bool</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>text_det_limit_side_len</code></td>  
+<td>Same as initialization.</td>  
+<td><code>int</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>text_det_limit_type</code></td>  
+<td>Same as initialization.</td>  
+<td><code>str</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>text_det_thresh</code></td>  
+<td>Same as initialization.</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>text_det_box_thresh</code></td>  
+<td>Same as initialization.</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
+<td><code>text_det_unclip_ratio</code></td>  
+<td>Same as initialization.</td>  
+<td><code>float</code></td>  
+<td><code>None</code></td>  
+</tr>  
 <td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>
-</td>
+<td>Same as initialization.</td>  
 <td><code>float</code></td>
 <td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_rec_input_shape</code></td>
-<td>文本识别的输入形状。</td>
-<td><code>tuple</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>ch</code>；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>ocr_version</code></td>
-<td>OCR 版本。
-<ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>PP-OCRv5</code>系列模型；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-</tbody>
 </table>
 </details>
 
-<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
+<details><summary>(3) Processing prediction results: Each sample's prediction result is a corresponding Result object, supporting printing, saving as images, and saving as <code>json</code> files:</summary>
 
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
-<ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>是否在推理时使用文档方向分类模块。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>是否在推理时使用文本图像矫正模块。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>use_textline_orientation</code></td>
-<td>是否在推理时使用文本行方向分类模块。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_det_limit_type</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_det_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_det_box_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
-<td><code>None</code></td>
-</table>
-</details>
-
-<details><summary>（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
-
-<table>
-<thead>
-<tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Explanation</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="3"><code>print()</code></td>
-<td rowspan="3">打印结果到终端</td>
+<td rowspan="3">Print results to terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format output with <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Indentation level for prettifying <code>JSON</code> output (only when <code>format_json=True</code>)</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code> (only when <code>format_json=True</code>)</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan="3"><code>save_to_json()</code></td>
-<td rowspan="3">将结果保存为json格式的文件</td>
+<td rowspan="3">Save results as JSON file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>Output file path (uses input filename when directory specified)</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Indentation level for prettifying <code>JSON</code> output (only when <code>format_json=True</code>)</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Whether to escape non-<code>ASCII</code> characters (only when <code>format_json=True</code>)</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>Save results as image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
-<td>无</td>
+<td>Output path (supports directory or file path)</td>
+<td>None</td>
 </tr>
 </table>
 
-- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
+- The <code>print()</code> method outputs results to terminal with the following structure:
 
-    - `input_path`: `(str)` 待预测图像的输入路径
+    - <code>input_path</code>: <code>(str)</code> Input image path
 
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
+    - <code>page_index</code>: <code>(Union[int, None])</code> PDF page number (if input is PDF), otherwise <code>None</code>
 
-    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
+    - <code>model_settings</code>: <code>(Dict[str, bool])</code> Pipeline configuration
+        - <code>use_doc_preprocessor</code>: <code>(bool)</code> Whether document preprocessing is enabled
+        - <code>use_textline_orientation</code>: <code>(bool)</code> Whether text line orientation classification is enabled
 
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能
+    - <code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> Document preprocessing results (only when <code>use_doc_preprocessor=True</code>)
+        - <code>input_path</code>: <code>(Union[str, None])</code> Preprocessor input path (<code>None</code> for <code>numpy.ndarray</code> input)
+        - <code>model_settings</code>: <code>(Dict)</code> Preprocessor configuration
+            - <code>use_doc_orientation_classify</code>: <code>(bool)</code> Whether document orientation classification is enabled
+            - <code>use_doc_unwarping</code>: <code>(bool)</code> Whether text image correction is enabled
+        - <code>angle</code>: <code>(int)</code> Document orientation prediction (0-3 for 0°,90°,180°,270°; -1 if disabled)
 
-    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
-        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
-            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
-            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+    - <code>dt_polys</code>: <code>(List[numpy.ndarray])</code> Text detection polygons (4 vertices per box, shape=(4,2), dtype=int16)
 
-    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
+    - <code>dt_scores</code>: <code>(List[float])</code> Text detection confidence scores
 
-    - `dt_scores`: `(List[float])` 文本检测框的置信度列表
+    - <code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Text detection parameters
+        - <code>limit_side_len</code>: <code>(int)</code> Image side length limit
+        - <code>limit_type</code>: <code>(str)</code> Length limit handling method
+        - <code>thresh</code>: <code>(float)</code> Text pixel classification threshold
+        - <code>box_thresh</code>: <code>(float)</code> Detection box confidence threshold
+        - <code>unclip_ratio</code>: <code>(float)</code> Text region expansion ratio
+        - <code>text_type</code>: <code>(str)</code> Fixed as "general"
 
-    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数
-        - `limit_side_len`: `(int)` 图像预处理时的边长限制值
-        - `limit_type`: `(str)` 边长限制的处理方式
-        - `thresh`: `(float)` 文本像素分类的置信度阈值
-        - `box_thresh`: `(float)` 文本检测框的置信度阈值
-        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数
-        - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
+    - <code>textline_orientation_angles</code>: <code>(List[int])</code> Text line orientation predictions (actual angles when enabled, [-1,-1,-1] when disabled)
 
-    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]
+    - <code>text_rec_score_thresh</code>: <code>(float)</code> Text recognition score threshold
 
-    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
+    - <code>rec_texts</code>: <code>(List[str])</code> Recognized texts (filtered by <code>text_rec_score_thresh</code>)
 
-    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
+    - <code>rec_scores</code>: <code>(List[float])</code> Recognition confidence scores (filtered)
 
-    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤
+    - <code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered detection polygons (same format as <code>dt_polys</code>)
 
-    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`
+    - <code>rec_boxes</code>: <code>(numpy.ndarray)</code> Rectangular bounding boxes (shape=(n,4), dtype=int16) with [x_min, y_min, x_max, y_max] coordinates
 
-    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标
-    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标
+- <code>save_to_json()</code> saves results to specified <code>save_path</code>:
+  - Directory: saves as <code>save_path/{your_img_basename}_res.json</code>
+  - File: saves directly to specified path
+  - Note: Converts <code>numpy.array</code> to lists since JSON doesn't support numpy arrays
 
-- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)
+- <code>save_to_img()</code> saves visualization results:
+  - Directory: saves as <code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>
+  - File: saves directly (not recommended for multiple images to avoid overwriting)
 
-* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
+* Additionally, results with visualizations and predictions can be obtained through the following attributes:
 
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="1"><code>json</code></td>
-<td rowspan="1">获取预测的 <code>json</code> 格式的结果</td>
+<td rowspan="1">Retrieves prediction results in <code>json</code> format</td>
 </tr>
 <tr>
 <td rowspan="2"><code>img</code></td>
-<td rowspan="2">获取格式为 <code>dict</code> 的可视化图像</td>
+<td rowspan="2">Retrieves visualized images in <code>dict</code> format</td>
 </tr>
 </table>
 
-- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。
+- The `json` attribute returns prediction results as a dict, with content identical to what's saved by the `save_to_json()` method.
+- The `img` attribute returns prediction results as a dictionary containing two `Image.Image` objects under keys `ocr_res_img` (OCR result visualization) and `preprocessed_img` (preprocessing visualization). If the image preprocessing submodule isn't used, only `ocr_res_img` will be present.
 
 </details>
 
-<h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>如果通用 OCR 产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。</p>
-<p>若您需要将通用 OCR 产线直接应用在您的Python项目中，可以参考<a href="#22-python脚本方式">2.2 Python脚本方式</a>中的示例代码。</p>
-<p>此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：</p>
-<p>🚀 高性能推理：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleOCR 提供高性能推理功能，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能推理流程请参考<a href="../deployment/high_performance_inference.html">高性能推理指南</a>。</p>
-<p>☁️ 服务化部署：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。详细的产线服务化部署流程请参考<a href="../deployment/serving.html">服务化部署指南</a>。</p>
-<p>以下是基础服务化部署的API参考与多语言服务调用示例：</p>
-<details><summary>API参考</summary>
-<p>对于服务提供的主要操作：</p>
+<h2 id="3-development-integrationdeployment">3. Development Integration/Deployment<a class="headerlink" href="#3-development-integrationdeployment" title="Permanent link">&para;</a></h2>
+<p>If the general OCR pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.</p>
+<p>If you need to apply the general OCR pipeline directly in your Python project, you can refer to the sample code in <a href="#22-python-script-intergration">2.2 Python Script Integration</a>.</p>
+<p>Additionally, PaddleOCR provides two other deployment methods, detailed as follows:</p>
+<p>🚀 <strong>High-Performance Inference</strong>: In real-world production environments, many applications have stringent performance requirements (especially for response speed) to ensure system efficiency and smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities, which deeply optimize model inference and pre/post-processing to achieve significant end-to-end speed improvements. For detailed high-performance inference workflows, refer to the <a href="../deployment/high_performance_inference.html">High-Performance Inference Guide</a>.</p>
+<p>☁️ <strong>Service Deployment</strong>: Service deployment is a common form of deployment in production environments. By encapsulating inference functionality as a service, clients can access these services via network requests to obtain inference results. For detailed pipeline service deployment workflows, refer to the <a href="../deployment/serving.html">Service Deployment Guide</a>.</p>
+<p>Below are the API reference for basic service deployment and examples of multi-language service calls:</p>
+<details><summary>API Reference</summary>
+<p>For the main operations provided by the service:</p>
 <ul>
-<li>HTTP请求方法为POST。</li>
-<li>请求体和响应体均为JSON数据（JSON对象）。</li>
-<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>
+<li>The HTTP request method is POST.</li>
+<li>Both the request body and response body are JSON data (JSON objects).</li>
+<li>When the request is processed successfully, the response status code is <code>200</code>, and the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。固定为<code>0</code>。</td>
+<td>Error code. Fixed as <code>0</code>.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。固定为<code>"Success"</code>。</td>
+<td>Error message. Fixed as <code>"Success"</code>.</td>
 </tr>
 <tr>
 <td><code>result</code></td>
 <td><code>object</code></td>
-<td>操作结果。</td>
+<td>Operation result.</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>当请求处理未成功时，响应体的属性如下：</li>
+<li>When the request fails, the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。与响应状态码相同。</td>
+<td>Error code. Same as the response status code.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。</td>
+<td>Error message.</td>
 </tr>
 </tbody>
 </table>
-<p>服务提供的主要操作如下：</p>
+<p>The main operations provided by the service are as follows:</p>
 <ul>
 <li><b><code>infer</code></b></li>
 </ul>
-<p>获取图像OCR结果。</p>
+<p>Obtain OCR results for an image.</p>
 <p><code>POST /ocr</code></p>
 <ul>
-<li>请求体的属性如下：</li>
+<li>The request body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
+<td>A server-accessible URL to an image or PDF file, or the Base64-encoded content of such a file. By default, for PDF files with more than 10 pages, only the first 10 pages are processed.<br /> To remove the page limit, add the following configuration to the pipeline config file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
 </code></pre>
 </td>
-<td>是</td>
+<td>Yes</td>
 </tr>
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>文件类型。<code>0</code>表示PDF文件，<code>1</code>表示图像文件。若请求体无此属性，则将根据URL推断文件类型。</td>
-<td>否</td>
+<td>File type. <code>0</code> for PDF, <code>1</code> for image. If omitted, the type is inferred from the URL.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>use_doc_orientation_classify</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>use_doc_unwarping</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <tr>
 <td><code>useTextlineOrientation</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_textline_orientation</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>use_textline_orientation</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_det_limit_side_len</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_det_limit_type</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_det_thresh</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_det_box_thresh</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_det_unclip_ratio</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
-<td>否</td>
+<td>Refer to the <code>text_rec_score_thresh</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+<li>When the request is successful, the <code>result</code> in the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>ocrResults</code></td>
 <td><code>object</code></td>
-<td>OCR结果。数组长度为1（对于图像输入）或实际处理的文档页数（对于PDF输入）。对于PDF输入，数组中的每个元素依次表示PDF文件中实际处理的每一页的结果。</td>
+<td>OCR results. The array length is 1 (for image input) or the number of processed document pages (for PDF input). For PDF input, each element represents the result for a corresponding page.</td>
 </tr>
 <tr>
 <td><code>dataInfo</code></td>
 <td><code>object</code></td>
-<td>输入数据信息。</td>
+<td>Input data information.</td>
 </tr>
 </tbody>
 </table>
-<p><code>ocrResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<p>Each element in <code>ocrResults</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>产线对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+<td>A simplified version of the <code>res</code> field in the JSON output of the pipeline object's <code>predict</code> method, excluding <code>input_path</code> and <code>page_index</code>.</td>
 </tr>
 <tr>
 <td><code>ocrImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>OCR结果图，其中标注检测到的文本位置。图像为JPEG格式，使用Base64编码。</td>
+<td>OCR result image with detected text regions highlighted. JPEG format, Base64-encoded.</td>
 </tr>
 <tr>
 <td><code>docPreprocessingImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>可视化结果图像。图像为JPEG格式，使用Base64编码。</td>
+<td>Visualization of preprocessing results. JPEG format, Base64-encoded.</td>
 </tr>
 <tr>
 <td><code>inputImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+<td>Input image. JPEG format, Base64-encoded.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
-<details><summary>多语言调用服务示例</summary>
+<details><summary>Multi-Language Service Call Examples</summary>
 
 <details>
 <summary>Python</summary>
@@ -7042,9 +7047,44 @@ for i, res in enumerate(result["ocrResults"]):
 </code></pre></details>
 </details>
 
-<h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>如果通用 OCR 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用您自己拥有的特定领域或应用场景的数据对现有模型进行进一步的微调，以提升通用 OCR 产线的在您的场景中的识别效果。</p>
-<p>...</p>
+<h2 id="4-custom-development">4. Custom Development<a class="headerlink" href="#4-custom-development" title="Permanent link">&para;</a></h2>
+<p>The general OCR pipeline consists of multiple modules. If the pipeline's performance does not meet expectations, the issue may stem from any of these modules. You can analyze poorly recognized images to identify the problematic module and refer to the corresponding fine-tuning tutorials in the table below for adjustments.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Module to Fine-Tune</th>
+<th>Fine-Tuning Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inaccurate whole-image rotation correction</td>
+<td>Document orientation classification module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate image distortion correction</td>
+<td>Text image unwarping module</td>
+<td>Fine-tuning not supported</td>
+</tr>
+<tr>
+<td>Inaccurate textline rotation correction</td>
+<td>Textline orientation classification module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html">Link</a></td>
+</tr>
+<tr>
+<td>Text detection misses</td>
+<td>Text detection module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html">Link</a></td>
+</tr>
+<tr>
+<td>Incorrect text recognition</td>
+<td>Text recognition module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">Link</a></td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -7067,7 +7107,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:37:26">May 19, 2025</span>
   </span>
 
     
@@ -7077,7 +7117,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 17:28:07">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:37:26">May 19, 2025</span>
   </span>
 
     
