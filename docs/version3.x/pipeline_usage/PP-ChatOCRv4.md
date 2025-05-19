@@ -2,17 +2,17 @@
 comments: true
 ---
 
-# 文档场景信息抽取v4产线使用教程
+# PP-ChatOCRv4 产线使用教程
 
-## 1. 文档场景信息抽取v4产线介绍
+## 1. PP-ChatOCRv4 产线介绍
 
-文档场景信息抽取v4（PP-ChatOCRv4）是飞桨特色的文档和图像智能分析解决方案，结合了 LLM、MLLM 和 OCR 技术，一站式解决版面分析、生僻字、多页 pdf、表格、印章识别等常见的复杂文档信息抽取难点问题，结合文心大模型将海量数据和知识相融合，准确率高且应用广泛。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上部署。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
+PP-ChatOCRv4 是飞桨特色的文档和图像智能分析解决方案，结合了 LLM、MLLM 和 OCR 技术，一站式解决版面分析、生僻字、多页 pdf、表格、印章识别等常见的复杂文档信息抽取难点问题，结合文心大模型将海量数据和知识相融合，准确率高且应用广泛。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上部署。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
 
 <img src="https://github.com/user-attachments/assets/0870cdec-1909-4247-9004-d9efb4ab9635">
 
-文档场景信息抽取v4产线中包含<b>版面区域检测模块</b>、<b>表格结构识别模块</b>、<b>表格分类模块</b>、<b>表格单元格定位模块</b>、<b>文本检测模块</b>、<b>文本识别模块</b>、<b>印章文本检测模块</b>、<b>文本图像矫正模块</b>、<b>文档图像方向分类模块</b>。其中相关的模型是以子产线的方式集成，您可以通过[产线配置](../../../../paddlex/configs/pipelines/PP-ChatOCRv4-doc.yaml)来查看不同模块的模型配置。
+PP-ChatOCRv4 产线中包含<b>版面区域检测模块</b>、<b>表格结构识别模块</b>、<b>表格分类模块</b>、<b>表格单元格定位模块</b>、<b>文本检测模块</b>、<b>文本识别模块</b>、<b>印章文本检测模块</b>、<b>文本图像矫正模块</b>、<b>文档图像方向分类模块</b>。其中相关的模型是以子产线的方式集成，您可以通过[产线配置](../../../../paddlex/configs/pipelines/PP-ChatOCRv4-doc.yaml)来查看不同模块的模型配置。
 
-<b>文档场景信息抽取v4产线中包含以下9个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
+<b>PP-ChatOCRv4 产线中包含以下9个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
 
 - [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）
 - [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）
@@ -746,7 +746,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用文档场景信息抽取v4产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。
+在本地使用 PP-ChatOCRv4 产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。
 
 在进行模型推理之前，首先需要准备大语言模型的 api_key，PP-ChatOCRv4 支持在[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)或者本地部署的标准 OpenAI 接口大模型服务。如果使用百度云千帆平台，可以参考[认证鉴权](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Um2wxbaps) 获取 api_key。如果使用本地部署的大模型服务，可以参考[PaddleNLP大模型部署文档](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm)进行大模型部署对话接口部署和向量化接口部署，并填写对应的 base_url 和 api_key 即可。如果需要使用多模态大模型进行数据融合，可以参考[PaddleMIX模型文档](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee)中的OpenAI服务部署进行多模态大模型部署，并填写对应的 base_url 和 api_key 即可。
 
@@ -2946,7 +2946,90 @@ print(result_chat["chatResult"])
 <br/>
 
 ## 4. 二次开发
+如果 PP-ChatOCRv4 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升在您的场景中的识别效果。
 
-如果文档场景信息抽取v4产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升通用表格识别产线的在您的场景中的识别效果。
+### 4.1 模型微调
+由于 PP-ChatOCRv4 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对提取效果差的 case 进行分析，通过可视化图像，确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
 
+
+<table>
+  <thead>
+    <tr>
+      <th>情形</th>
+      <th>微调模块</th>
+      <th>微调参考链接</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>版面区域检测不准，如印章、表格未检出等</td>
+      <td>版面区域检测模块</td>
+      <td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>表格结构识别不准</td>
+      <td>表格结构识别</td>
+      <td><a href="../module_usage/table_structure_recognition.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>印章文本存在漏检</td>
+      <td>印章文本检测模块</td>
+      <td><a href="../module_usage/seal_text_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>文本存在漏检</td>
+      <td>文本检测模块</td>
+      <td><a href="../module_usage/text_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>文本内容都不准</td>
+      <td>文本识别模块</td>
+      <td><a href="../module_usage/text_recognition.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>垂直或者旋转文本行矫正不准</td>
+      <td>文本行方向分类模块</td>
+      <td><a href="../module_usage/text_line_orientation_classification.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>整图旋转矫正不准</td>
+      <td>文档图像方向分类模块</td>
+      <td><a href="../module_usage/doc_img_orientation_classification.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>图像扭曲矫正不准</td>
+      <td>文本图像矫正模块</td>
+      <td>暂不支持微调</td>
+    </tr>
+  </tbody>
+</table>
+
+
+### 4.2 模型应用
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件。
+
+若您需要使用微调后的模型权重，只需对产线配置文件做修改，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可：
+
+```yaml
 ......
+SubModules:
+    TextDetection:
+    module_name: text_detection
+    model_name: PP-OCRv5_server_det
+    model_dir: null # 替换为微调后的文本检测模型权重路径
+    limit_side_len: 960
+    limit_type: max
+    thresh: 0.3
+    box_thresh: 0.6
+    unclip_ratio: 1.5
+
+    TextRecognition:
+    module_name: text_recognition
+    model_name: PP-OCRv5_server_rec
+    model_dir: null # 替换为微调后的文本检测模型权重路径
+    batch_size: 1
+            score_thresh: 0
+......
+```
+
+随后， 参考[2.2 本地体验](#22-本地体验)中的命令行方式或Python脚本方式，加载修改后的产线配置文件即可。

@@ -2,13 +2,13 @@
 comments: true
 ---
 
-# 通用版面解析v3产线使用教程
+# PP-StructureV3 产线使用教程
 
-## 1. 通用版面解析v3(PP-StructureV3)产线介绍
+## 1. PP-StructureV3 产线介绍
 
-版面解析是一种从文档图像中提取结构化信息的技术，主要用于将复杂的文档版面转换为机器可读的数据格式。这项技术在文档管理、信息提取和数据数字化等领域具有广泛的应用。版面解析通过结合光学字符识别（OCR）、图像处理和机器学习算法，能够识别和提取文档中的文本块、标题、段落、图片、表格以及其他版面元素。此过程通常包括版面分析、元素分析和数据格式化三个主要步骤，最终生成结构化的文档数据，提升数据处理的效率和准确性。<b>通用版面解析v3产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。</b>本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
+版面解析是一种从文档图像中提取结构化信息的技术，主要用于将复杂的文档版面转换为机器可读的数据格式。这项技术在文档管理、信息提取和数据数字化等领域具有广泛的应用。版面解析通过结合光学字符识别（OCR）、图像处理和机器学习算法，能够识别和提取文档中的文本块、标题、段落、图片、表格以及其他版面元素。此过程通常包括版面分析、元素分析和数据格式化三个主要步骤，最终生成结构化的文档数据，提升数据处理的效率和准确性。<b>PP-StructureV3 产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。</b>本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
 
-<b>通用版面解析v3产线中包含以下6个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
+<b>PP-StructureV3 产线中包含以下6个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
 
 - [版面区域检测模块](../module_usage/layout_detection.md)
 - [通用OCR子产线](./OCR.md)
@@ -186,7 +186,7 @@ comments: true
 <th>检测Hmean（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（M）</th>
 <th>介绍</th>
 </tr>
 </thead>
@@ -568,7 +568,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（M）</th>
 <th>介绍</th>
 </tr>
 </thead>
@@ -729,7 +729,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用通用版面解析v3产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用 PP-StructureV3 产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -746,6 +746,9 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
 
 # 通过 --use_textline_orientation 指定是否使用文本行方向分类模型
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
+
+# 通过 --use_e2e_wireless_table_rec_model 启用无线表格端到端预测模式
+paddleocr PP-StructureV3 -i ./pp_structure_v3_demo.png --use_e2e_wireless_table_rec_model True
 
 # 通过 --device 指定模型推理时使用 GPU
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
@@ -1835,7 +1838,7 @@ for item in markdown_images:
 
 </details>
 
-<details><summary>（2）调用版面解析产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
+<details><summary>（2）调用 PP-StructureV3 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
 
 <table>
 <thead>
@@ -2639,6 +2642,138 @@ for i, res in enumerate(result["layoutParsingResults"]):
 
 
 ## 4. 二次开发
-如果通用版面解析v3产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升通用版面解析v3产线的在您的场景中的识别效果。
+如果 PP-StructureV3 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升 PP-StructureV3 产线的在您的场景中的识别效果。
 
+### 4.1 模型微调
+由于 PP-StructureV3 产线包含若干模块，模型产线的效果不及预期可能来自于其中任何一个模块。您可以对提取效果差的 case 进行分析，通过可视化图像，确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
+
+
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版面区域检测不准，如印章、表格未检出等</td>
+<td>版面区域检测模块</td>
+<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>表格结构识别不准</td>
+<td>表格结构识别模块</td>
+<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>公式识别不准</td>
+<td>公式识别模块</td>
+<td><a href="../module_usage/formula_recognition.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>印章文本存在漏检</td>
+<td>印章文本检测模块</td>
+<td><a href="../module_usage/seal_text_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>文本存在漏检</td>
+<td>文本检测模块</td>
+<td><a href="../module_usage/text_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>文本内容都不准</td>
+<td>文本识别模块</td>
+<td><a href="../module_usage/text_recognition.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>垂直或者旋转文本行矫正不准</td>
+<td>文本行方向分类模块</td>
+<td><a href="../module_usage/text_line_orientation_classification.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="../module_usage/doc_img_orientation_classification.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
+
+### 4.2 模型应用
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+1. 获取产线配置文件
+
+可调用 PaddleOCR 中 PPStructureV3 产线对象的 export_paddlex_config_to_yaml 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import PPStructureV3
+
+pipeline = PPStructureV3()
+pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
+```
+
+2. 修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
+
+```yaml
 ......
+SubModules:
+  LayoutDetection:
+    module_name: layout_detection
+    model_name: PP-DocLayout_plus-L
+    model_dir: null # 替换为微调后的版面区域检测模型权重路径
+......
+SubPipelines:
+  GeneralOCR:
+    pipeline_name: OCR
+    text_type: general
+    use_doc_preprocessor: False
+    use_textline_orientation: False
+    SubModules:
+      TextDetection:
+        module_name: text_detection
+        model_name: PP-OCRv5_server_det
+        model_dir: null # 替换为微调后的文本测模型权重路径
+        limit_side_len: 960
+        limit_type: max
+        max_side_limit: 4000
+        thresh: 0.3
+        box_thresh: 0.6
+        unclip_ratio: 1.5
+
+      TextRecognition:
+        module_name: text_recognition
+        model_name: PP-OCRv5_server_rec_doc
+        model_dir: null # 替换为微调后的文本识别模型权重路径
+        batch_size: 1
+        score_thresh: 0
+......
+```
+
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3. 在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr ocr --paddlex_config PP-StructureV3.yaml ...
+```
+
+4. 在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import PPStructureV3
+
+pipeline = PPStructureV3(paddlex_config="PP-StructureV3.yaml")
+```
