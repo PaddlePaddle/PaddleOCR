@@ -55,7 +55,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 
 ## 2. Quick Start
 
-Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the [installation tutorial](../ppocr/installation.md). After installation, you can experience it locally using the command line or Python integration.
+Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). After installation, you can experience it locally using the command line or Python integration.
 
 ### 2.1 Command Line Experience
 

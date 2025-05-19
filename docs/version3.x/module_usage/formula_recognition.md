@@ -127,7 +127,7 @@ comments: true
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../ppocr/installation.md)。
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
 使用一行命令即可快速体验：
 
@@ -342,7 +342,7 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 
 
 ## 四、二次开发
-如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-FormulaNet_plus-M` 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考[公式识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](xxx)安装了 PaddleOCR 所需要的依赖。
+如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-FormulaNet-S` 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考[公式识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 ## 4.1 环境配置
 
@@ -398,7 +398,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 
 ### 4.4 模型评估
 
-您可以评估已经训练好的权重，如，`output/xxx/xxx.pdprams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar )，使用如下命令进行评估：
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar )，使用如下命令进行评估：
 
 ```bash
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。

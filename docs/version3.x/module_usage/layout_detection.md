@@ -290,7 +290,7 @@ comments: true
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../ppocr/installation.md)。
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
 使用一行命令即可快速体验：
 
@@ -328,7 +328,7 @@ for res in output:
 
 可视化图片如下：
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res.jpg"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res_plus.jpg"/>
 
 
 相关方法、参数等说明如下：

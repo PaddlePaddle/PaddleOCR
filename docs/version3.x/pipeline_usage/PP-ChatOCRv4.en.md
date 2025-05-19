@@ -400,8 +400,8 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
                           <li>ch_RepSVTR_rec: Evaluation set B for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a></li>
                           <li>English Recognition Model: A self-built English dataset using PaddleX.</li>
                           <li>Multilingual Recognition Model: A self-built multilingual dataset using PaddleX.</li>
-                          <li>Text Line Orientation Classification Model: A self-built dataset using PaddleX, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
-                          <li>Seal Text Detection Model: A self-built dataset using PaddleX, containing 500 images of circular seal textures.</li>
+                          <li>Text Line Orientation Classification Model: A self-built dataset using PaddleOCR, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
+                          <li>Seal Text Detection Model: A self-built dataset using PaddleOCR, containing 500 images of circular seal textures.</li>
                         </ul>
                     </li>
               <li><strong>Hardware Configuration：</strong>

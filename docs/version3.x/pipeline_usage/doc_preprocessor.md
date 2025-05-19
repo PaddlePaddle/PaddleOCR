@@ -118,7 +118,9 @@ comments: true
 
 ## 2. 快速开始
 
-在本地使用通用文档图像预处理产线前，请确保您已经按照[安装教程](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+
+在本地使用通用文档图像预处理产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+
 
 ### 2.1 命令行方式体验
 

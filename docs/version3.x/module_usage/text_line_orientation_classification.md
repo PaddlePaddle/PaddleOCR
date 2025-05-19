@@ -40,7 +40,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleX 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+              <li><strong>测试数据集：</strong>PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>

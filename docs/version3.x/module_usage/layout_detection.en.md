@@ -288,7 +288,7 @@ The core task of structure analysis is to parse and segment the content of input
 
 ## III. Quick Integration  <a id="quick"> </a>
 
-> ❗ Before quick integration, please install the PaddleOCR wheel package. For detailed instructions, refer to [PaddleOCR Local Installation Tutorial](../ppocr/installation.en.md)。
+> ❗ Before quick integration, please install the PaddleOCR wheel package. For detailed instructions, refer to [PaddleOCR Local Installation Tutorial](../installation.en.md)。
 
 Quickly experience with just one command:
 
@@ -327,7 +327,7 @@ The meanings of the parameters are as follows:
 
 The visualized image is as follows:
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res.jpg"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res_plus.jpg"/>
 
 Relevant methods, parameters, and explanations are as follows:
 
@@ -620,3 +620,5 @@ Relevant methods, parameters, and explanations are as follows:
 ## IV. Custom Development
 
 Since PaddleOCR does not directly provide training for the layout detection module, if you need to train the layout area detection model, you can refer to [PaddleX Layout Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5)Partially conduct training. The trained model can be seamlessly integrated into PaddleOCR's API for inference.
+
+## V. FAQ

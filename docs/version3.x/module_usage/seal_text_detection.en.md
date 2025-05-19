@@ -87,7 +87,7 @@ The seal text detection module typically outputs multi-point bounding boxes arou
 
 ## III. Quick Integration  <a id="quick"> </a>
 
-> ❗ Before quick integration, please install the PaddleOCR wheel package. For detailed instructions, refer to [PaddleOCR Local Installation Tutorial](../ppocr/installation.en.md)。
+> ❗ Before quick integration, please install the PaddleOCR wheel package. For detailed instructions, refer to [PaddleOCR Local Installation Tutorial](../installation.en.md)。
 
 Quickly experience with just one command:
 
