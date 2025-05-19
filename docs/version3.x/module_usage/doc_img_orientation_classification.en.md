@@ -1,4 +1,3 @@
-```markdown
 ---
 comments: true
 ---
@@ -289,4 +288,4 @@ The descriptions of relevant methods and parameters are as follows:
 
 ## 4. Secondary Development
 
-Since PaddleOCR does not directly provide training for document image orientation classification, if you need to train a document image orientation classification model, you can refer to the [Secondary Development for Document Image Orientation Classification in PaddleX](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5) section for training instructions. The trained model can be seamlessly integrated into PaddleOCR's API for inference purposes.
+Since PaddleOCR does not directly provide training for document image orientation classification, if you need to train a document image orientation classification model, you can refer to the [Secondary Development for Document Image Orientation Classification in PaddleX](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development) section for training instructions. The trained model can be seamlessly integrated into PaddleOCR's API for inference purposes.
