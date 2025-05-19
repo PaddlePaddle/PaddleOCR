@@ -383,7 +383,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
 
 ## 2. Quick Start
 
-Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../ppocr/installation.en.md). Once installed, you can experience it locally via the command line or integrate it with Python.
+Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../installation.en.md). Once installed, you can experience it locally via the command line or integrate it with Python.
 
 
 ### 2.1 Command Line Experience

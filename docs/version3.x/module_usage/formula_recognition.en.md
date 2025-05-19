@@ -386,7 +386,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
 ```
 
 ### 4.4 Model Evaluation
-You can evaluate trained weights, e.g., output/xxx/xxx.pdprams, or use the downloaded [model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar ) with the following command:
+You can evaluate trained weights, e.g., output/xxx/xxx.pdparams, or use the downloaded [model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar ) with the following command:
 
 ```bash
 # Make sure pretrained_model is set to the local path.

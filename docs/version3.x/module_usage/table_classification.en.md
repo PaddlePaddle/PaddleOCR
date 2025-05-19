@@ -74,7 +74,7 @@ The Table Classification Module is a key component in computer vision systems, r
 
 ## 3. Quick Start
 
-> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../ppocr/installation.md).
+> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.md).
 
 You can quickly experience it with one command:
 
