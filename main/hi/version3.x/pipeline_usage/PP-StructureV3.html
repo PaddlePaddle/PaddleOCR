@@ -22,7 +22,7 @@
     
     
       
-        <title>通用版面解析v3产线使用教程 - पैडलओसीआर दस्तावेज़ीकरण</title>
+        <title>PP-StructureV3 产线使用教程 - पैडलओसीआर दस्तावेज़ीकरण</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#v3" class="md-skip">
+        <a href="#pp-structurev3" class="md-skip">
           विषय पर बढ़ें
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              通用版面解析v3产线使用教程
+              PP-StructureV3 产线使用教程
             
           </span>
         </div>
@@ -5376,9 +5376,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-v3pp-structurev3" class="md-nav__link">
+  <a href="#1-pp-structurev3" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 通用版面解析v3(PP-StructureV3)产线介绍
+      1. PP-StructureV3 产线介绍
     </span>
   </a>
   
@@ -5433,6 +5433,30 @@ You're not viewing the latest version.
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. 二次开发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 模型微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 模型应用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -5467,10 +5491,10 @@ You're not viewing the latest version.
   
 
 
-<h1 id="v3">通用版面解析v3产线使用教程<a class="headerlink" href="#v3" title="Permanent link">&para;</a></h1>
-<h2 id="1-v3pp-structurev3">1. 通用版面解析v3(PP-StructureV3)产线介绍<a class="headerlink" href="#1-v3pp-structurev3" title="Permanent link">&para;</a></h2>
-<p>版面解析是一种从文档图像中提取结构化信息的技术，主要用于将复杂的文档版面转换为机器可读的数据格式。这项技术在文档管理、信息提取和数据数字化等领域具有广泛的应用。版面解析通过结合光学字符识别（OCR）、图像处理和机器学习算法，能够识别和提取文档中的文本块、标题、段落、图片、表格以及其他版面元素。此过程通常包括版面分析、元素分析和数据格式化三个主要步骤，最终生成结构化的文档数据，提升数据处理的效率和准确性。<b>通用版面解析v3产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。</b>本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
-<p><b>通用版面解析v3产线中包含以下6个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
+<h1 id="pp-structurev3">PP-StructureV3 产线使用教程<a class="headerlink" href="#pp-structurev3" title="Permanent link">&para;</a></h1>
+<h2 id="1-pp-structurev3">1. PP-StructureV3 产线介绍<a class="headerlink" href="#1-pp-structurev3" title="Permanent link">&para;</a></h2>
+<p>版面解析是一种从文档图像中提取结构化信息的技术，主要用于将复杂的文档版面转换为机器可读的数据格式。这项技术在文档管理、信息提取和数据数字化等领域具有广泛的应用。版面解析通过结合光学字符识别（OCR）、图像处理和机器学习算法，能够识别和提取文档中的文本块、标题、段落、图片、表格以及其他版面元素。此过程通常包括版面分析、元素分析和数据格式化三个主要步骤，最终生成结构化的文档数据，提升数据处理的效率和准确性。<b>PP-StructureV3 产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。</b>本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<p><b>PP-StructureV3 产线中包含以下6个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
 <ul>
 <li><a href="../module_usage/layout_detection.html">版面区域检测模块</a></li>
 <li><a href="OCR.html">通用OCR子产线</a></li>
@@ -5647,7 +5671,7 @@ You're not viewing the latest version.
 <th>检测Hmean（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（M）</th>
 <th>介绍</th>
 </tr>
 </thead>
@@ -6029,7 +6053,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（M）</th>
 <th>介绍</th>
 </tr>
 </thead>
@@ -6188,7 +6212,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <p><br />
 <b>如果您更注重模型的精度，请选择精度较高的模型；如果您更在意模型的推理速度，请选择推理速度较快的模型；如果您关注模型的存储大小，请选择存储体积较小的模型。</b></p>
 <h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>在本地使用通用版面解析v3产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。</p>
+<p>在本地使用 PP-StructureV3 产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。</p>
 <h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
 <p>一行命令即可快速体验 PP-StructureV3 产线效果：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
@@ -6202,8 +6226,11 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># 通过 --use_textline_orientation 指定是否使用文本行方向分类模型</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_textline_orientation<span class="w"> </span>False
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># 通过 --device 指定模型推理时使用 GPU</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--device<span class="w"> </span>gpu
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># 通过 --use_e2e_wireless_table_rec_model 启用无线表格端到端预测模式</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>paddleocr<span class="w"> </span>PP-StructureV3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_e2e_wireless_table_rec_model<span class="w"> </span>True
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># 通过 --device 指定模型推理时使用 GPU</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--device<span class="w"> </span>gpu
 </span></code></pre></div>
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
@@ -7281,7 +7308,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 </details>
 
-<details><summary>（2）调用版面解析产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
+<details><summary>（2）调用 PP-StructureV3 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
 
 <table>
 <thead>
@@ -8075,8 +8102,129 @@ for i, res in enumerate(result["layoutParsingResults"]):
 </details>
 <p><br/></p>
 <h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>如果通用版面解析v3产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升通用版面解析v3产线的在您的场景中的识别效果。</p>
-<p>......</p>
+<p>如果 PP-StructureV3 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升 PP-StructureV3 产线的在您的场景中的识别效果。</p>
+<h3 id="41">4.1 模型微调<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>由于 PP-StructureV3 产线包含若干模块，模型产线的效果不及预期可能来自于其中任何一个模块。您可以对提取效果差的 case 进行分析，通过可视化图像，确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。</p>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版面区域检测不准，如印章、表格未检出等</td>
+<td>版面区域检测模块</td>
+<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>表格结构识别不准</td>
+<td>表格结构识别模块</td>
+<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>公式识别不准</td>
+<td>公式识别模块</td>
+<td><a href="../module_usage/formula_recognition.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>印章文本存在漏检</td>
+<td>印章文本检测模块</td>
+<td><a href="../module_usage/seal_text_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>文本存在漏检</td>
+<td>文本检测模块</td>
+<td><a href="../module_usage/text_detection.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>文本内容都不准</td>
+<td>文本识别模块</td>
+<td><a href="../module_usage/text_recognition.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>垂直或者旋转文本行矫正不准</td>
+<td>文本行方向分类模块</td>
+<td><a href="../module_usage/text_line_orientation_classification.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="../module_usage/doc_img_orientation_classification.md#四二次开发">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="42">4.2 模型应用<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。</p>
+<ol>
+<li>获取产线配置文件</li>
+</ol>
+<p>可调用 PaddleOCR 中 PPStructureV3 产线对象的 export_paddlex_config_to_yaml 方法，将当前产线配置导出为 YAML 文件：</p>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>修改配置文件</li>
+</ol>
+<p>在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">LayoutDetection</span><span class="p">:</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">layout_detection</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-DocLayout_plus-L</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的版面区域检测模型权重路径</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nt">SubPipelines</span><span class="p">:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">GeneralOCR</span><span class="p">:</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="nt">pipeline_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OCR</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="nt">text_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">use_doc_preprocessor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">use_textline_orientation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="nt">SubModules</span><span class="p">:</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nt">TextDetection</span><span class="p">:</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_detection</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_det</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本测模型权重路径</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">        </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">960</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">max</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">        </span><span class="nt">max_side_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4000</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">        </span><span class="nt">thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">        </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">        </span><span class="nt">unclip_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">      </span><span class="nt">TextRecognition</span><span class="p">:</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_recognition</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_rec_doc</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本识别模型权重路径</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">        </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">        </span><span class="nt">score_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span></code></pre></div>
+<p>在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 <a href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html">PaddleX模型产线使用概览</a> 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。</p>
+<ol>
+<li>在 CLI 中加载产线配置文件</li>
+</ol>
+<p>在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-StructureV3.yaml<span class="w"> </span>...
+</span></code></pre></div>
+<ol>
+<li>在 Python API 中加载产线配置文件</li>
+</ol>
+<p>初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
 
 
 
@@ -8099,7 +8247,7 @@ for i, res in enumerate(result["layoutParsingResults"]):
     <span class="md-icon" title="आखिरी अपडेट">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:00:41">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:22:36">2025年5月19日</span>
   </span>
 
     
@@ -8109,7 +8257,7 @@ for i, res in enumerate(result["layoutParsingResults"]):
     <span class="md-icon" title="बनाया था">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:00:41">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:22:36">2025年5月19日</span>
   </span>
 
     

@@ -22,7 +22,7 @@
     
     
       
-        <title>文档场景信息抽取v4产线使用教程 - PaddleOCR 文档</title>
+        <title>PP-ChatOCRv4 产线使用教程 - PaddleOCR 文档</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#v4" class="md-skip">
+        <a href="#pp-chatocrv4" class="md-skip">
           跳转至
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文档场景信息抽取v4产线使用教程
+              PP-ChatOCRv4 产线使用教程
             
           </span>
         </div>
@@ -5376,9 +5376,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-v4" class="md-nav__link">
+  <a href="#1-pp-chatocrv4" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 文档场景信息抽取v4产线介绍
+      1. PP-ChatOCRv4 产线介绍
     </span>
   </a>
   
@@ -5433,6 +5433,30 @@ You're not viewing the latest version.
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="4. 二次开发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 模型微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 模型应用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -5467,12 +5491,12 @@ You're not viewing the latest version.
   
 
 
-<h1 id="v4">文档场景信息抽取v4产线使用教程<a class="headerlink" href="#v4" title="Permanent link">&para;</a></h1>
-<h2 id="1-v4">1. 文档场景信息抽取v4产线介绍<a class="headerlink" href="#1-v4" title="Permanent link">&para;</a></h2>
-<p>文档场景信息抽取v4（PP-ChatOCRv4）是飞桨特色的文档和图像智能分析解决方案，结合了 LLM、MLLM 和 OCR 技术，一站式解决版面分析、生僻字、多页 pdf、表格、印章识别等常见的复杂文档信息抽取难点问题，结合文心大模型将海量数据和知识相融合，准确率高且应用广泛。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上部署。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<h1 id="pp-chatocrv4">PP-ChatOCRv4 产线使用教程<a class="headerlink" href="#pp-chatocrv4" title="Permanent link">&para;</a></h1>
+<h2 id="1-pp-chatocrv4">1. PP-ChatOCRv4 产线介绍<a class="headerlink" href="#1-pp-chatocrv4" title="Permanent link">&para;</a></h2>
+<p>PP-ChatOCRv4 是飞桨特色的文档和图像智能分析解决方案，结合了 LLM、MLLM 和 OCR 技术，一站式解决版面分析、生僻字、多页 pdf、表格、印章识别等常见的复杂文档信息抽取难点问题，结合文心大模型将海量数据和知识相融合，准确率高且应用广泛。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上部署。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
 <p><img src="https://github.com/user-attachments/assets/0870cdec-1909-4247-9004-d9efb4ab9635"></p>
-<p>文档场景信息抽取v4产线中包含<b>版面区域检测模块</b>、<b>表格结构识别模块</b>、<b>表格分类模块</b>、<b>表格单元格定位模块</b>、<b>文本检测模块</b>、<b>文本识别模块</b>、<b>印章文本检测模块</b>、<b>文本图像矫正模块</b>、<b>文档图像方向分类模块</b>。其中相关的模型是以子产线的方式集成，您可以通过<a href="../../../../paddlex/configs/pipelines/PP-ChatOCRv4-doc.yaml">产线配置</a>来查看不同模块的模型配置。</p>
-<p><b>文档场景信息抽取v4产线中包含以下9个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
+<p>PP-ChatOCRv4 产线中包含<b>版面区域检测模块</b>、<b>表格结构识别模块</b>、<b>表格分类模块</b>、<b>表格单元格定位模块</b>、<b>文本检测模块</b>、<b>文本识别模块</b>、<b>印章文本检测模块</b>、<b>文本图像矫正模块</b>、<b>文档图像方向分类模块</b>。其中相关的模型是以子产线的方式集成，您可以通过<a href="../../../../paddlex/configs/pipelines/PP-ChatOCRv4-doc.yaml">产线配置</a>来查看不同模块的模型配置。</p>
+<p><b>PP-ChatOCRv4 产线中包含以下9个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
 <ul>
 <li><a href="../module_usage/doc_img_orientation_classification.html">文档图像方向分类模块</a>（可选）</li>
 <li><a href="../module_usage/text_image_unwarping.html">文本图像矫正模块</a>（可选）</li>
@@ -6203,7 +6227,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <p><br />
 <b>如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</b></p>
 <h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>在本地使用文档场景信息抽取v4产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。</p>
+<p>在本地使用 PP-ChatOCRv4 产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。</p>
 <p>在进行模型推理之前，首先需要准备大语言模型的 api_key，PP-ChatOCRv4 支持在<a href="https://console.bce.baidu.com/qianfan/ais/console/onlineService">百度云千帆平台</a>或者本地部署的标准 OpenAI 接口大模型服务。如果使用百度云千帆平台，可以参考<a href="https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Um2wxbaps">认证鉴权</a> 获取 api_key。如果使用本地部署的大模型服务，可以参考<a href="https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm">PaddleNLP大模型部署文档</a>进行大模型部署对话接口部署和向量化接口部署，并填写对应的 base_url 和 api_key 即可。如果需要使用多模态大模型进行数据融合，可以参考<a href="https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee">PaddleMIX模型文档</a>中的OpenAI服务部署进行多模态大模型部署，并填写对应的 base_url 和 api_key 即可。</p>
 <p><strong>注:</strong> 如果因本地环境限制无法在本地部署多模态大模型，可以将代码中的含有“mllm”变量的行注释掉，仅使用大语言模型完成信息抽取。</p>
 <h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
@@ -8374,8 +8398,85 @@ print(result_chat["chatResult"])
 </details>
 <p><br/></p>
 <h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>如果文档场景信息抽取v4产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升通用表格识别产线的在您的场景中的识别效果。</p>
-<p>......</p>
+<p>如果 PP-ChatOCRv4 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升在您的场景中的识别效果。</p>
+<h3 id="41">4.1 模型微调<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>由于 PP-ChatOCRv4 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对提取效果差的 case 进行分析，通过可视化图像，确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。</p>
+<table>
+  <thead>
+    <tr>
+      <th>情形</th>
+      <th>微调模块</th>
+      <th>微调参考链接</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>版面区域检测不准，如印章、表格未检出等</td>
+      <td>版面区域检测模块</td>
+      <td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>表格结构识别不准</td>
+      <td>表格结构识别</td>
+      <td><a href="../module_usage/table_structure_recognition.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>印章文本存在漏检</td>
+      <td>印章文本检测模块</td>
+      <td><a href="../module_usage/seal_text_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>文本存在漏检</td>
+      <td>文本检测模块</td>
+      <td><a href="../module_usage/text_detection.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>文本内容都不准</td>
+      <td>文本识别模块</td>
+      <td><a href="../module_usage/text_recognition.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>垂直或者旋转文本行矫正不准</td>
+      <td>文本行方向分类模块</td>
+      <td><a href="../module_usage/text_line_orientation_classification.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>整图旋转矫正不准</td>
+      <td>文档图像方向分类模块</td>
+      <td><a href="../module_usage/doc_img_orientation_classification.md#四二次开发">链接</a></td>
+    </tr>
+    <tr>
+      <td>图像扭曲矫正不准</td>
+      <td>文本图像矫正模块</td>
+      <td>暂不支持微调</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42">4.2 模型应用<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>当您使用私有数据集完成微调训练后，可获得本地模型权重文件。</p>
+<p>若您需要使用微调后的模型权重，只需对产线配置文件做修改，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可：</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">TextDetection</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_detection</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_det</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本检测模型权重路径</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">960</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">max</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">unclip_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="nt">TextRecognition</span><span class="p">:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_recognition</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_rec</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本检测模型权重路径</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">score_thresh</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span></code></pre></div>
+<p>随后， 参考<a href="#22-本地体验">2.2 本地体验</a>中的命令行方式或Python脚本方式，加载修改后的产线配置文件即可。</p>
 
 
 
@@ -8398,7 +8499,7 @@ print(result_chat["chatResult"])
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:00:41">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:22:36">2025年5月19日</span>
   </span>
 
     
@@ -8408,7 +8509,7 @@ print(result_chat["chatResult"])
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:00:41">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 16:22:36">2025年5月19日</span>
   </span>
 
     
