@@ -23,8 +23,24 @@ comments: true
 </thead>
 <tbody>
 <tr>
+<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>83.8</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>101</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>79.0</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.7</td>
+<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
-<td>82.56</td>
+<td>69.2</td>
 <td>83.34 / 80.91</td>
 <td>442.58 / 442.58</td>
 <td>109</td>
@@ -32,27 +48,11 @@ comments: true
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>77.35</td>
+<td>63.8</td>
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
 <td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>78.68</td>
-<td>8.44 / 2.91</td>
-<td>27.87 / 27.87</td>
-<td>2.1</td>
-<td>PP-OCRv3 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv3_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_server_det_pretrained.pdparams">训练模型</a></td>
-<td>80.11</td>
-<td>65.41 / 13.67</td>
-<td>305.07 / 305.07</td>
-<td>102.1</td>
-<td>PP-OCRv3 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
 </tr>
 </tbody>
 </table>
@@ -62,7 +62,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleOCR 自建的中英文数据集，覆盖街景、网图、文档、手写多个场景，其中文本检测包含 593 张图片。</li>
+              <li><strong>测试数据集：</strong>PaddleOCR3.0 全新构建多语种（包含中、繁、英、日），覆盖街景、网图、文档、手写、模糊、旋转、扭曲等多个场景的文本检测数据集，包含2677 张图片。</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
@@ -114,7 +114,7 @@ paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(model_name="PP-OCRv4_mobile_det")
+model = TextDetection(model_name="PP-OCRv5_mobile_det")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -125,15 +125,15 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 73, 553],
+{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 75, 553],
         ...,
-        [ 74, 585]],
+        [ 77, 585]],
 
        ...,
 
-       [[ 41, 413],
+       [[ 37, 409],
         ...,
-        [ 43, 453]]], dtype=int16), 'dt_scores': [0.7556245964900372, 0.701596019903398, 0.883855323880584, 0.8123647151167767]}}
+        [ 39, 453]]], dtype=int16), 'dt_scores': [0.8574396614433001, 0.8343834504056786, 0.8720446452934176, 0.8090656290206919]}}
 ```
 
 运行结果参数含义如下：
@@ -148,7 +148,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* `TextDetection`实例化文本检测模型（此处以`PP-OCRv4_mobile_det`为例），具体说明如下：
+* `TextDetection`实例化文本检测模型（此处以`PP-OCRv5_mobile_det`为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -274,7 +274,7 @@ for res in output:
 <ul>
   <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
   <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">示例</a></li>
+  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png">示例</a></li>
   <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
   <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
@@ -430,4 +430,83 @@ for res in output:
 
 ## 四、二次开发
 
-......
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../ppocr/installation.md)安装了 PaddleOCR 所需要的依赖。
+
+
+## 4.1 数据集、预训练模型准备
+
+### 4.1.1 准备数据集
+
+```shell
+# 下载示例数据集
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar
+tar -xf ocr_det_dataset_examples.tar
+```
+
+### 4.1.2 下载预训练模型
+
+```shell
+# 下载 PP-OCRv5_server_det 预训练模型
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams 
+```
+
+### 4.2 模型训练
+
+PaddleOCR 对代码进行了模块化，训练 `PP-OCRv5_server_det` 识别模型时需要使用 `PP-OCRv5_server_det` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/det/PP-OCRv5/PP-OCRv5_server_det.yml)。
+
+
+训练命令如下：
+
+```bash
+#单卡训练 (默认训练方式)
+python3 tools/train.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
+    Train.dataset.data_dir=./ocr_det_dataset_examples \
+    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Eval.dataset.data_dir=./ocr_det_dataset_examples \
+    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+
+#多卡训练，通过--gpus参数指定卡号
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
+    -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
+    Train.dataset.data_dir=./ocr_det_dataset_examples \
+    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Eval.dataset.data_dir=./ocr_det_dataset_examples \
+    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+```
+
+### 4.3 模型评估
+
+您可以评估已经训练好的权重，如，`output/PP-OCRv5_server_det/best_accuracy.pdprams`，使用如下命令进行评估：
+
+```bash
+# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+ # demo 测试集评估
+python3 tools/eval.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
+    -o Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
+    Eval.dataset.data_dir=./ocr_det_dataset_examples \
+    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt] 
+ ```
+
+### 4.4 模型导出
+
+```bash
+python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o \
+    Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
+    Global.save_inference_dir="./PP-OCRv5_server_det_infer/"
+ ```
+
+ 导出模型后，静态图模型会存放于当前目录的`./PP-OCRv5_server_det_infer/`中，在该目录下，您将看到如下文件：
+ ```
+ ./PP-OCRv5_server_det_infer/
+ ├── inference.json
+ ├── inference.pdiparams
+ ├── inference.yml
+ ```
+至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。
+
+## 五、FAQ
+
+- 通过参数`limit_type`和`limit_side_len`来对图片的尺寸进行限制，`limit_type`可选参数为[`max`, `min`]，`limit_side_len` 为正整数，一般设置为 32 的倍数，比如 960。
+如果输入图形分辨率不大，建议使用`limit_type=min` 和 `limit_side_len=960` 节省计算资源的同时能获得最佳检测效果。如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置 `limit_side_len` 为想要的值，比如 1216。
