@@ -303,7 +303,7 @@ paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 ```python
 from paddleocr import LayoutDetection
 
-model = LayoutDetection(model_name="PP-DocLayout-L")
+model = LayoutDetection(model_name="PP-DocLayout_plus-L")
 output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
 for res in output:
     res.print()
@@ -314,7 +314,7 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'layout.jpg', 'page_index': None, 'boxes': [{'cls_id': 8, 'label': 'table', 'score': 0.9866452813148499, 'coordinate': [74.30952, 105.71375, 321.98676, 299.11072]}, {'cls_id': 2, 'label': 'text', 'score': 0.9859839081764221, 'coordinate': [34.65901, 349.91003, 358.33832, 611.3427]}, {'cls_id': 2, 'label': 'text', 'score': 0.9850624799728394, 'coordinate': [34.945335, 647.378, 358.32523, 849.23413]}, {'cls_id': 8, 'label': 'table', 'score': 0.9850127696990967, 'coordinate': [438.06952, 105.37871, 662.88666, 313.88693]}, {'cls_id': 2, 'label': 'text', 'score': 0.9847850799560547, 'coordinate': [385.97076, 497.04156, 710.9561, 697.6779]}, {'cls_id': 2, 'label': 'text', 'score': 0.9805672764778137, 'coordinate': [385.79672, 345.93826, 710.07385, 459.14514]}, {'cls_id': 2, 'label': 'text', 'score': 0.9799845814704895, 'coordinate': [386.07553, 735.38086, 710.6084, 850.1987]}, {'cls_id': 9, 'label': 'table_title', 'score': 0.9376267194747925, 'coordinate': [35.27453, 19.852173, 358.92462, 77.81253]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8755457997322083, 'coordinate': [386.6317, 476.607, 699.7845, 490.11603]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8617177605628967, 'coordinate': [387.27615, 715.9574, 524.3855, 729.2082]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8607730865478516, 'coordinate': [35.451878, 627.4962, 185.63542, 640.4025]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8575080633163452, 'coordinate': [35.334385, 330.80493, 141.46948, 344.40747]}, {'cls_id': 9, 'label': 'table_title', 'score': 0.7959735989570618, 'coordinate': [385.93796, 19.755125, 711.5128, 75.00555]}]}}
+{'res': {'input_path': 'layout.jpg', 'page_index': None, 'boxes': [{'cls_id': 2, 'label': 'text', 'score': 0.9870226979255676, 'coordinate': [34.101906, 349.85275, 358.59213, 611.0772]}, {'cls_id': 2, 'label': 'text', 'score': 0.9866003394126892, 'coordinate': [34.500324, 647.1585, 358.29367, 848.66797]}, {'cls_id': 2, 'label': 'text', 'score': 0.9846674203872681, 'coordinate': [385.71445, 497.40973, 711.2261, 697.84265]}, {'cls_id': 8, 'label': 'table', 'score': 0.984126091003418, 'coordinate': [73.76879, 105.94899, 321.95303, 298.84888]}, {'cls_id': 8, 'label': 'table', 'score': 0.9834211468696594, 'coordinate': [436.95642, 105.81531, 662.7168, 313.48462]}, {'cls_id': 2, 'label': 'text', 'score': 0.9832247495651245, 'coordinate': [385.62787, 346.2288, 710.10095, 458.77127]}, {'cls_id': 2, 'label': 'text', 'score': 0.9816061854362488, 'coordinate': [385.7802, 735.1931, 710.56134, 849.9764]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.9577341079711914, 'coordinate': [34.421448, 20.055151, 358.71283, 76.53663]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.9505634307861328, 'coordinate': [385.72278, 20.053688, 711.29333, 74.92744]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9001723527908325, 'coordinate': [386.46344, 477.03488, 699.4023, 490.07474]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8845751285552979, 'coordinate': [35.413048, 627.73596, 185.58383, 640.52264]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8837394118309021, 'coordinate': [387.17603, 716.3423, 524.7841, 729.258]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.8508939743041992, 'coordinate': [35.50064, 331.18445, 141.6444, 344.81097]}]}}
 ```
 
 参数含义如下：
@@ -333,7 +333,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* `LayoutDetection`实例化目标检测模型（此处以`PP-DocLayout-L`为例），具体说明如下：
+* `LayoutDetection`实例化目标检测模型（此处以`PP-DocLayout_plus-L`为例），具体说明如下：
 <table>
 <thead>
 <tr>
