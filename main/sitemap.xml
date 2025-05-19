@@ -1343,6 +1343,17 @@
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/quick_start.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/high_performance_inference.html</loc>
         <lastmod>2025-05-19</lastmod>
         <changefreq>daily</changefreq>
@@ -2977,6 +2988,17 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/quick_start.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/high_performance_inference.html</loc>
         <lastmod>2025-05-19</lastmod>
         <changefreq>daily</changefreq>
@@ -4603,6 +4625,17 @@
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/quick_start.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/quick_start.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/quick_start.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/main/ja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/version3.x/deployment/high_performance_inference.html</loc>
@@ -6233,6 +6266,17 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/quick_start.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/main/ru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/version3.x/deployment/high_performance_inference.html</loc>
         <lastmod>2025-05-19</lastmod>
         <changefreq>daily</changefreq>
@@ -7861,6 +7905,17 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/quick_start.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/main/hi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/version3.x/deployment/high_performance_inference.html</loc>
         <lastmod>2025-05-19</lastmod>
         <changefreq>daily</changefreq>
@@ -9487,6 +9542,17 @@
         <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/quick_start.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/quick_start.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/quick_start.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html</loc>
+        <lastmod>2025-05-19</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/main/ko/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/algorithm/PP-OCRv5/PP-OCRv5.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/version3.x/deployment/high_performance_inference.html</loc>
