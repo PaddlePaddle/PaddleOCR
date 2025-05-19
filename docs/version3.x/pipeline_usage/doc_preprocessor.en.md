@@ -780,7 +780,7 @@ Since the document image preprocessing pipeline comprises multiple modules, any 
 <tr>
 <td>Inaccurate rotation correction of the entire image</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate distortion correction of the image</td>
