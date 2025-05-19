@@ -22,7 +22,7 @@
     
     
       
-        <title>文档图像预处理产线使用教程 - PaddleOCR Documentation</title>
+        <title>Document Image Preprocessing Pipeline Tutorial - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#document-image-preprocessing-pipeline-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文档图像预处理产线使用教程
+              Document Image Preprocessing Pipeline Tutorial
             
           </span>
         </div>
@@ -5376,37 +5376,37 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1" class="md-nav__link">
+  <a href="#1-introduction-to-document-image-preprocessing-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. 文档图像预处理产线介绍
+      1. Introduction to Document Image Preprocessing Pipeline
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2" class="md-nav__link">
+  <a href="#2-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      2. 快速开始
+      2. Quick Start
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. 快速开始">
+    <nav class="md-nav" aria-label="2. Quick Start">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
+  <a href="#21-command-line-experience" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 命令行方式体验
+      2.1 Command Line Experience
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-python" class="md-nav__link">
+  <a href="#22-integration-via-python-script" class="md-nav__link">
     <span class="md-ellipsis">
-      2.2 Python脚本方式集成
+      2.2 Integration via Python Script
     </span>
   </a>
   
@@ -5418,18 +5418,27 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3" class="md-nav__link">
+  <a href="#3-development-integrationdeployment" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 开发集成/部署
+      3. Development Integration/Deployment
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
+  <a href="#4-secondary-development" class="md-nav__link">
     <span class="md-ellipsis">
-      4. 二次开发
+      4. Secondary Development
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#41-model-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Model Fine-Tuning
     </span>
   </a>
   
@@ -5451,7 +5460,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/doc_preprocessor.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/doc_preprocessor.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5460,193 +5469,191 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/doc_preprocessor.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/doc_preprocessor.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">文档图像预处理产线使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="1">1. 文档图像预处理产线介绍<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<h1 id="document-image-preprocessing-pipeline-tutorial">Document Image Preprocessing Pipeline Tutorial<a class="headerlink" href="#document-image-preprocessing-pipeline-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduction-to-document-image-preprocessing-pipeline">1. Introduction to Document Image Preprocessing Pipeline<a class="headerlink" href="#1-introduction-to-document-image-preprocessing-pipeline" title="Permanent link">&para;</a></h2>
+<p>The Document Image Preprocessing Pipeline integrates two key functions: document orientation classification and geometric distortion correction. The document orientation classification module automatically identifies the four possible orientations of a document (0°, 90°, 180°, 270°), ensuring that the document is processed in the correct direction. The text image unwarping model is designed to correct geometric distortions that occur during document photography or scanning, restoring the document's original shape and proportions. This pipeline is suitable for digital document management, preprocessing tasks for OCR, and any scenario requiring improved document image quality. By automating orientation correction and geometric distortion correction, this module significantly enhances the accuracy and efficiency of document processing, providing a more reliable foundation for image analysis. The pipeline also offers flexible service-oriented deployment options, supporting calls from various programming languages on multiple hardware platforms. Additionally, the pipeline supports secondary development, allowing you to fine-tune the models on your own datasets and seamlessly integrate the trained models.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg"></p>
-<p><b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
+<p><b>The General Document Image Preprocessing Pipeline includes the following two modules. Each module can be trained and inferred independently and contains multiple models. For detailed information, please click on the corresponding module to view the documentation.</b></p>
 <ul>
-<li><a href="../module_usage/doc_img_orientation_classification.html">文档图像方向分类模块</a>（可选）</li>
-<li><a href="../module_usage/text_image_unwarping.html">文本图像矫正模块</a>（可选）</li>
+<li><a href="../module_usage/doc_img_orientation_classification.html">Document Image Orientation Classification Module</a> (Optional)</li>
+<li><a href="../module_usage/text_image_unwarping.html">Text Image Unwarping Module</a> (Optional)</li>
 </ul>
-<p>在本产线中，您可以根据下方的基准测试数据选择使用的模型。</p>
+<p>In this pipeline, you can select the models to use based on the benchmark data provided below.</p>
 <details>
-<summary> <b>文档图像方向分类模块（可选）：</b></summary>
+<summary> <b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>Top-1 Acc（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Top-1 Acc (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Training Model</a></td>
 <td>99.06</td>
 <td>2.31 / 0.43</td>
 <td>3.37 / 1.27</td>
 <td>7</td>
-<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
+<td>A document image classification model based on PP-LCNet_x1_0, which includes four categories: 0°, 90°, 180°, and 270°.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
 <details>
-<summary> <b>文本图像矫正模块（可选）：</b></summary>
+<summary> <b>Text Image Unwarping Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
-<th>模型</th><th>模型下载链接</th>
+<th>Model</th><th>Model Download Links</th>
 <th>CER </th>
-<th>模型存储大小（M)</th>
-<th>介绍</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
+<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">Training Model</a></td>
 <td>0.179</td>
-<td>30.3 M</td>
-<td>高精度文本图像矫正模型</td>
+<td>30.3 MB</td>
+<td>A high-precision text image unwarping model.</td>
 </tr>
 </tbody>
 </table>
 </details>
 
 <details>
-<summary> <b>测试环境说明：</b></summary>
+<summary> <b>Test Environment Description:</b></summary>
 
   <ul>
-      <li><b>性能测试环境</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-                      <li><strong>测试数据集：
+                      <li><strong>Test Datasets:
              </strong>
                 <ul>
-                  <li>文档图像方向分类模型：PaddleX自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
-                  <li> 文本图像矫正模型：<a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet。</a></li>
+                  <li>Document Image Orientation Classification Model: A self-built dataset by PaddleX, covering various scenarios including ID cards and documents, containing 1000 images.</li>
+                  <li>Text Image Unwarping Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet.</a></li>
                 </ul>
              </li>
-              <li><strong>硬件配置：</strong>
+              <li><strong>Hardware Configuration:</strong>
                   <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
       </li>
-      <li><b>推理模式说明</b></li>
+      <li><b>Inference Mode Description</b></li>
   </ul>
 
 <table border="1">
     <thead>
         <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
+            <th>Mode</th>
+            <th>GPU Configuration</th>
+            <th>CPU Configuration</th>
+            <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
+            <td>Normal Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+            <td>High-Performance Mode</td>
+            <td>Optimal combination of precision type and acceleration strategy selected in advance</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Optimal backend (Paddle/OpenVINO/TRT, etc.) selected in advance</td>
         </tr>
     </tbody>
 </table>
 </details>
 
-<h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>在本地使用通用文档图像预处理产线前，请确保您已经按照<a href="../ppocr/installation.md">安装教程</a>完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。</p>
-<h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
-<p>一行命令即可快速体验 doc_preprocessor 产线效果：</p>
+<h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
+<p>Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md.en">Installation Guide</a>. After installation, you can experience it via the command line or integrate it into Python locally.</p>
+<h3 id="21-command-line-experience">2.1 Command Line Experience<a class="headerlink" href="#21-command-line-experience" title="Permanent link">&para;</a></h3>
+<p>You can quickly experience the <code>doc_preprocessor</code> pipeline with a single command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>doc_preprocessor<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Specify whether to use the document orientation classification model via --use_doc_orientation_classify</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>paddleocr<span class="w"> </span>doc_preprocessor<span class="w"> </span>-i<span class="w"> </span>./doc_test_rotated.jpg<span class="w"> </span>--use_doc_orientation_classify<span class="w"> </span>True
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Specify whether to use the text image unwarping module via --use_doc_unwarping</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>paddleocr<span class="w"> </span>doc_preprocessor<span class="w"> </span>-i<span class="w"> </span>./doc_test_rotated.jpg<span class="w"> </span>--use_doc_unwarping<span class="w"> </span>True
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># 通过 --device 指定模型推理时使用 GPU</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Specify the use of GPU for model inference via --device</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>paddleocr<span class="w"> </span>doc_preprocessor<span class="w"> </span>-i<span class="w"> </span>./doc_test_rotated.jpg<span class="w"> </span>--device<span class="w"> </span>gpu
 </span></code></pre></div>
-<details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
+<details><summary><b>The command line supports more parameter settings. Click to expand for detailed explanations of command line parameters.</b></summary>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the text image unwarping model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。
-</td>
+<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。
-</td>
+<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td>The data to be predicted, supporting multiple input types. This parameter is required.
 <ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
+<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
+<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -5654,21 +5661,21 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
+<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5676,38 +5683,37 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
+<td>Whether to use TensorRT for inference acceleration.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
+<td>The minimum subgraph size, used to optimize the computation of model subgraphs.</td>
 <td><code>int</code></td>
 <td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
@@ -5715,86 +5721,84 @@ You're not viewing the latest version.
 </table>
 </details>
 <p><br /></p>
-<p>运行结果会被打印到终端上，默认配置的 doc_preprocessor 产线的运行结果如下：</p>
+<p>The running results will be printed to the terminal. The running results of the <code>doc_preprocessor</code> pipeline with default configuration are as follows:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/doc_test_rotated.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span><span class="m">180</span><span class="o">}}</span>
-</span></code></pre></div>
-<p>可视化结果保存在<code>save_path</code>下，可视化结果如下：</p>
+</span></code></pre></div></p>
+<p>The visualization results are saved under the <code>save_path</code>. The visualization results are as follows:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg"/></p>
-<h3 id="22-python">2.2 Python脚本方式集成<a class="headerlink" href="#22-python" title="Permanent link">&para;</a></h3>
-<p>命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：</p>
+<h3 id="22-integration-via-python-script">2.2 Integration via Python Script<a class="headerlink" href="#22-integration-via-python-script" title="Permanent link">&para;</a></h3>
+<p>The command-line approach is for quick experience and viewing results. Generally, in projects, integration through code is often required. You can achieve rapid inference in production lines with just a few lines of code. The inference code is as follows:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocPreprocessor</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">DocPreprocessor</span><span class="p">()</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># ocr = TableRecognitionPipelineV2(device=&quot;gpu&quot;) # 通过 device 指定模型推理时使用 GPU</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model via use_doc_orientation_classify</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # Specify whether to use the text image unwarping module via use_doc_unwarping</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># ocr = TableRecognitionPipelineV2(device=&quot;gpu&quot;) # Specify whether to use GPU for model inference via device</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./doc_test_rotated.jpg&quot;</span><span class="p">)</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## 打印预测的结构化输出</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>  <span class="c1">## Print the structured output of the prediction</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>在上述 Python 脚本中，执行了如下几个步骤：</p>
-<p>（1）通过 <code>DocPreprocessor()</code> 实例化 doc_preprocessor 产线对象：具体参数说明如下：</p>
+<p>In the above Python script, the following steps are executed:</p>
+<p>(1) Instantiate the <code>doc_preprocessor</code> pipeline object via <code>DocPreprocessor()</code>. The specific parameter descriptions are as follows:</p>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>The name of the text image unwarping model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>The directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。
-</td>
+<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。
-</td>
+<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5802,63 +5806,62 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
+<td>Whether to use TensorRT for inference acceleration.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
+<td>The minimum subgraph size, used to optimize the computation of model subgraphs.</td>
 <td><code>int</code></td>
 <td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 </tbody>
 </table>
 
-<p>（2）调用 doc_preprocessor 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。</p>
-<p>另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。</p>
-<p>以下是 <code>predict()</code> 方法的参数及其说明：</p>
+<p>(2) Call the <code>predict()</code> method of the <code>doc_preprocessor</code> pipeline object for inference prediction. This method will return a list of results.</p>
+<p>In addition, the pipeline also provides the <code>predict_iter()</code> method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and obtain prediction results step by step, suitable for scenarios with large datasets or where memory savings are desired. You can choose either of the two methods according to your actual needs.</p>
+<p>The following are the parameters and their descriptions of the <code>predict()</code> method:</p>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td>The data to be predicted, supporting multiple input types. This parameter is required.
 <ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
+<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
+<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -5866,322 +5869,322 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
+<td>Same as the parameter during instantiation.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否在推理时使用文档方向分类模块。</td>
+<td>Whether to use the document orientation classification module during inference.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否在推理时使用文本图像矫正模块。</td>
+<td>Whether to use the text image unwarping module during inference.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 
 </table>
 
-<p>（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</p>
+<p>(3) Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports operations such as printing, saving as an image, and saving as a <code>json</code> file:</p>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Parameter Type</th>
+<th>Description</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="3"><code>print()</code></td>
-<td rowspan="3">打印结果到终端</td>
+<td rowspan="3">Print the result to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability. Only valid when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Only valid when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan="3"><code>save_to_json()</code></td>
-<td rowspan="3">将结果保存为json格式的文件</td>
+<td rowspan="3">Save the result as a JSON file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The file path for saving. When it is a directory, the saved file name will be consistent with the input file type name.</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability. Only valid when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Only valid when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>Save the result as an image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
-<td>无</td>
+<td>The file path for saving. Supports directory or file paths.</td>
+<td>None</td>
 </tr>
 </table>
-
+<p>Here's the continuation of the translation:</p>
 <ul>
 <li>
-<p>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：</p>
+<p>Calling the <code>print()</code> method will output the results to the terminal. The content printed to the terminal is explained as follows:</p>
 <ul>
 <li>
-<p><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</p>
+<p><code>input_path</code>: <code>(str)</code> The input path of the image to be predicted</p>
 </li>
 <li>
-<p><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></p>
+<p><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is <code>None</code></p>
 </li>
 <li>
-<p><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数</p>
+<p><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the production line</p>
 <ul>
-<li><code>use_doc_orientation_classify</code>: <code>(bool)</code> 控制是否启用文档方向分类模块</li>
-<li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像矫正模块</li>
+<li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Controls whether to enable the document orientation classification module</li>
+<li><code>use_doc_unwarping</code>: <code>(bool)</code> Controls whether to enable the text image rectification module</li>
 </ul>
 </li>
 <li>
-<p><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1</p>
+<p><code>angle</code>: <code>(int)</code> The prediction result of the document orientation classification. When enabled, the value is one of [0, 90, 180, 270]; when disabled, it is -1</p>
 </li>
 </ul>
 </li>
 <li>
-<p>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}.json</code>，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的<code>numpy.array</code>类型转换为列表形式。</p>
+<p>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}.json</code>. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, <code>numpy.array</code> types will be converted to list form.</p>
 </li>
 <li>
-<p>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}</code>，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)</p>
+<p>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (Production lines usually contain many result images, so it is not recommended to specify a specific file path directly, as multiple images will be overwritten, and only the last image will be retained)</p>
 </li>
 <li>
-<p>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</p>
+<p>In addition, it also supports obtaining visualization images and prediction results with results through attributes, as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Attribute Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="1"><code>json</code></td>
-<td rowspan="1">获取预测的 <code>json</code> 格式的结果</td>
+<td rowspan="1">Obtain the prediction result in JSON format</td>
 </tr>
 <tr>
 <td rowspan="2"><code>img</code></td>
-<td rowspan="2">获取格式为 <code>dict</code> 的可视化图像</td>
+<td rowspan="2">Obtain visualization images in dictionary format</td>
 </tr>
 </table>
 
 <ul>
-<li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-<li><code>img</code> 属性返回的预测结果是一个字典类型的数据。其中，键为 <code>preprocessed_img</code>，对应的值是 <code>Image.Image</code> 对象：用于显示 doc_preprocessor 结果的可视化图像。</li>
+<li>The prediction result obtained by the <code>json</code> attribute is data of type dict, and the content is consistent with that saved by calling the <code>save_to_json()</code> method.</li>
+<li>The prediction result returned by the <code>img</code> attribute is a dictionary-type data. The key is <code>preprocessed_img</code>, and the corresponding value is an <code>Image.Image</code> object: a visualization image for displaying the doc_preprocessor result.</li>
 </ul>
-<h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。</p>
-<p>若您需要将产线直接应用在您的Python项目中，可以参考 <a href="#22-python脚本方式集成">2.2 Python脚本方式</a>中的示例代码。</p>
-<p>此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：</p>
-<p>🚀 高性能推理：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleOCR 提供高性能推理功能，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能推理流程请参考<a href="../deployment/high_performance_inference.html">高性能推理指南</a>。</p>
-<p>☁️ 服务化部署：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。详细的产线服务化部署流程请参考<a href="../deployment/serving.html">服务化部署指南</a>。</p>
-<p>以下是基础服务化部署的API参考与多语言服务调用示例：</p>
-<details><summary>API参考</summary>
-<p>对于服务提供的主要操作：</p>
+<h2 id="3-development-integrationdeployment">3. Development Integration/Deployment<a class="headerlink" href="#3-development-integrationdeployment" title="Permanent link">&para;</a></h2>
+<p>If the production line meets your requirements for inference speed and accuracy, you can proceed directly to development integration/deployment.</p>
+<p>If you need to apply the production line directly to your Python project, you can refer to the example code in <a href="#22-python脚本方式集成">2.2 Python Script Integration</a>.</p>
+<p>In addition, PaddleOCR also provides two other deployment methods, which are detailed as follows:</p>
+<p>🚀 High-performance inference: In actual production environments, many applications have strict performance requirements (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference functionality, aiming to deeply optimize model inference and pre/post-processing to achieve significant end-to-end process acceleration. For detailed high-performance inference procedures, please refer to the <a href="../deployment/high_performance_inference.html">High-Performance Inference Guide</a>.</p>
+<p>☁️ Service-oriented deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed production line service-oriented deployment procedures, please refer to the <a href="../deployment/serving.html">Service-Oriented Deployment Guide</a>.</p>
+<p>Below are the API references for basic service-oriented deployment and examples of multi-language service calls:</p>
+<details><summary>API Reference</summary>
+<p>Main operations provided by the service:</p>
 <ul>
-<li>HTTP请求方法为POST。</li>
-<li>请求体和响应体均为JSON数据（JSON对象）。</li>
-<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>
+<li>The HTTP request method is POST.</li>
+<li>The request body and response body are both JSON data (JSON objects).</li>
+<li>When the request is processed successfully, the response status code is <code>200</code>, and the properties of the response body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>The UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。固定为<code>0</code>。</td>
+<td>Error code. Fixed to <code>0</code>.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。固定为<code>"Success"</code>。</td>
+<td>Error description. Fixed to <code>"Success"</code>.</td>
 </tr>
 <tr>
 <td><code>result</code></td>
 <td><code>object</code></td>
-<td>操作结果。</td>
+<td>Operation result.</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>当请求处理未成功时，响应体的属性如下：</li>
+<li>When the request is not processed successfully, the properties of the response body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>请求的UUID。</td>
+<td>The UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>错误码。与响应状态码相同。</td>
+<td>Error code. Same as the response status code.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>错误说明。</td>
+<td>Error description.</td>
 </tr>
 </tbody>
 </table>
-<p>服务提供的主要操作如下：</p>
+<p>Main operations provided by the service:</p>
 <ul>
 <li><b><code>infer</code></b></li>
 </ul>
-<p>获取图像文档图像预处理结果。</p>
+<p>Obtain the preprocessing result of the image document image.</p>
 <p><code>POST /document-preprocessing</code></p>
 <ul>
-<li>请求体的属性如下：</li>
+<li>Properties of the request body:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
-<th>是否必填</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
+<td>The URL of an image file or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the production line configuration file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
 </code></pre>
 </td>
-<td>是</td>
+<td>Yes</td>
 </tr>
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>文件类型。<code>0</code>表示PDF文件，<code>1</code>表示图像文件。若请求体无此属性，则将根据URL推断文件类型。</td>
-<td>否</td>
+<td>File type. <code>0</code> indicates a PDF file, and <code>1</code> indicates an image file. If this property is not present in the request body, the file type will be inferred based on the URL.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
-<td>否</td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the production line object.</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
-<td>否</td>
+<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter in the <code>predict</code> method of the production line object.</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+<li>When the request is processed successfully, the <code>result</code> in the response body has the following properties:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>docPreprocessingResults</code></td>
 <td><code>object</code></td>
-<td>文档图像预处理结果。数组长度为1（对于图像输入）或实际处理的文档页数（对于PDF输入）。对于PDF输入，数组中的每个元素依次表示PDF文件中实际处理的每一页的结果。</td>
+<td>Document image preprocessing results. The array length is 1 (for image input) or the actual number of processed document pages (for PDF input). For PDF input, each element in the array represents the result of each page actually processed in the PDF file.</td>
 </tr>
 <tr>
 <td><code>dataInfo</code></td>
 <td><code>object</code></td>
-<td>输入数据信息。</td>
+<td>Input data information.</td>
 </tr>
 </tbody>
 </table>
-<p><code>docPreprocessingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<p>Each element in <code>docPreprocessingResults</code> is an <code>object</code> with the following properties:</p>
 <table>
 <thead>
 <tr>
-<th>名称</th>
-<th>类型</th>
-<th>含义</th>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>outputImage</code></td>
 <td><code>string</code></td>
-<td>经过预处理的图像。图像为PNG格式，使用Base64编码。</td>
+<td>The preprocessed image. The image is in PNG format and uses Base64 encoding.</td>
 </tr>
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>产线对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+<td>A simplified version of the <code>res</code> field in the JSON representation of the result generated by the <code>predict</code> method of the production line object, with the <code>input_path</code> and <code>page_index</code> fields removed.</td>
 </tr>
 <tr>
 <td><code>docPreprocessingImage</code></td>
 <td><code>string</code> ｜ <code>null</code></td>
-<td>可视化结果图。图像为JPEG格式，使用Base64编码。</td>
+<td>Visualization result image. The image is in JPEG format and uses Base64 encoding.</td>
 </tr>
 <tr>
 <td><code>inputImage</code></td>
 <td><code>string</code> ｜ <code>null</code></td>
-<td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+<td>Input image. The image is in JPEG format and uses Base64 encoding.</td>
 </tr>
 </tbody>
 </table>
 </details>
-<details><summary>多语言调用服务示例</summary>
+<details><summary>Multi-language Service Call Examples</summary>
 <details>
 <summary>Python</summary>
 
@@ -6210,9 +6213,31 @@ for i, res in enumerate(result["docPreprocessingResults"]):
 </code></pre></details>
 </details>
 <p><br/></p>
-<h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>如果文档图像预处理产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升文档图像预处理产线的在您的场景中的识别效果。</p>
-<p>......</p>
+<h2 id="4-secondary-development">4. Secondary Development<a class="headerlink" href="#4-secondary-development" title="Permanent link">&para;</a></h2>
+<p>If the default model weights provided by the document image preprocessing pipeline do not meet your accuracy or speed requirements in your specific scenario, you can attempt to further <strong>fine-tune</strong> the existing model using <strong>your own domain-specific or application-specific data</strong> to enhance the recognition performance of the document image preprocessing pipeline in your context.</p>
+<h2 id="41-model-fine-tuning">4.1 Model Fine-Tuning<a class="headerlink" href="#41-model-fine-tuning" title="Permanent link">&para;</a></h2>
+<p>Since the document image preprocessing pipeline comprises multiple modules, any module could potentially contribute to suboptimal performance if the overall pipeline does not meet expectations. You can analyze images with poor recognition results to identify which module is causing the issue and then refer to the corresponding fine-tuning tutorial links in the table below to perform model fine-tuning.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Module to Fine-Tune</th>
+<th>Fine-Tuning Reference Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inaccurate rotation correction of the entire image</td>
+<td>Document Image Orientation Classification Module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate distortion correction of the image</td>
+<td>Text Image Rectification Module</td>
+<td>Fine-tuning is currently not supported</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -6235,7 +6260,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 18:37:26">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:53:42">May 19, 2025</span>
   </span>
 
     
@@ -6245,7 +6270,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 18:37:26">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:53:42">May 19, 2025</span>
   </span>
 
     

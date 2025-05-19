@@ -22,7 +22,7 @@
     
     
       
-        <title>文本识别模块使用教程 - PaddleOCR Documentation</title>
+        <title>Text Recognition Module Tutorial - PaddleOCR Documentation</title>
       
     
     
@@ -142,7 +142,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#_1" class="md-skip">
+        <a href="#text-recognition-module-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -193,7 +193,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              文本识别模块使用教程
+              Text Recognition Module Tutorial
             
           </span>
         </div>
@@ -5376,82 +5376,91 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#1-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      一、概述
+      1. Overview
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#2-list-of-supported-models" class="md-nav__link">
     <span class="md-ellipsis">
-      二、支持模型列表
+      2. List of Supported Models
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+  <a href="#iii-quick-start" class="md-nav__link">
     <span class="md-ellipsis">
-      三、快速开始
+      III. Quick Start
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#v-secondary-development" class="md-nav__link">
     <span class="md-ellipsis">
-      四、二次开发
+      V. Secondary Development
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#41" class="md-nav__link">
+  <a href="#41-dataset-and-pre-trained-model-preparation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.1 数据集、预训练模型准备
+      4.1 Dataset and Pre-trained Model Preparation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4.1 数据集、预训练模型准备">
+    <nav class="md-nav" aria-label="4.1 Dataset and Pre-trained Model Preparation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#411" class="md-nav__link">
+  <a href="#411-prepare-the-dataset" class="md-nav__link">
     <span class="md-ellipsis">
-      4.1.1 准备数据集
+      4.1.1 Prepare the Dataset
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#412" class="md-nav__link">
+  <a href="#412-download-the-pre-trained-model" class="md-nav__link">
     <span class="md-ellipsis">
-      4.1.2 下载预训练模型
+      4.1.2 Download the Pre-trained Model
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#42" class="md-nav__link">
+  <a href="#42-model-training" class="md-nav__link">
     <span class="md-ellipsis">
-      4.2 模型训练
+      4.2 Model Training
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#44" class="md-nav__link">
+  <a href="#44-model-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.4 模型评估
+      4.4 Model Evaluation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-model-exporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.5 Model Exporting
     </span>
   </a>
   
@@ -5459,6 +5468,15 @@ You're not viewing the latest version.
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-faq" class="md-nav__link">
+    <span class="md-ellipsis">
+      V. FAQ
+    </span>
+  </a>
   
 </li>
       
@@ -5478,7 +5496,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/text_recognition.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/module_usage/text_recognition.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -5487,102 +5505,102 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/text_recognition.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/module_usage/text_recognition.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<h1 id="_1">文本识别模块使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
-<h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。</p>
-<h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h1 id="text-recognition-module-tutorial">Text Recognition Module Tutorial<a class="headerlink" href="#text-recognition-module-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
+<p>The text recognition module is the core component of an OCR (Optical Character Recognition) system, responsible for extracting text information from text regions within images. The performance of this module directly impacts the accuracy and efficiency of the entire OCR system. Typically, the text recognition module takes the bounding boxes of text regions output by the text detection module as input and then converts the text in the images into editable and searchable electronic text through complex image processing and deep learning algorithms. The accuracy of the text recognition results is crucial for subsequent applications such as information extraction and data mining.</p>
+<h2 id="2-list-of-supported-models">2. List of Supported Models<a class="headerlink" href="#2-list-of-supported-models" title="Permanent link">&para;</a></h2>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Recognition Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
 <td> - </td>
 <td> - </td>
 <td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
 <td> - </td>
 <td> - </td>
 <td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
 <td>91 M</td>
-<td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
 <td>11 M</td>
-<td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
 <td>87 M</td>
-<td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
+<td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
 <td>7.3 M</td>
-<td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
 </tr>
 </table>
 
 <blockquote>
-<p>❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：</p>
+<p>❗ The above section lists the <strong>6 core models</strong> that are primarily supported by the text recognition module. In total, the module supports <strong>20 comprehensive models</strong>, including multiple multilingual text recognition models. Below is the complete list of models:</p>
 </blockquote>
-<details><summary> 👉模型列表详情</summary>
+<details><summary> 👉Details of the Model List</summary>
 
-* <b>PP-OCRv5 多场景模型</b>
+* <b>PP-OCRv5 Multi-Scenario Models</b>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>中文识别 Avg Accuracy(%)</th>
-<th>英文识别 Avg Accuracy(%)</th>
-<th>繁体中文识别 Avg Accuracy(%)</th>
-<th>日文识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy for Chinese Recognition (%)</th>
+<th>Avg Accuracy for English Recognition (%)</th>
+<th>Avg Accuracy for Traditional Chinese Recognition (%)</th>
+<th>Avg Accuracy for Japanese Recognition (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
 <td>64.70</td>
 <td>93.29</td>
@@ -5590,11 +5608,11 @@ PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td> - </td>
 <td> - </td>
 <td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
 <td>66.00</td>
 <td>83.55</td>
@@ -5602,301 +5620,300 @@ PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td> - </td>
 <td> - </td>
 <td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 </table>
 
-* <b>中文识别模型</b>
+* <b>Chinese Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
 <td>91 M</td>
-<td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
 <td>11 M</td>
-<td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
 <td>87 M</td>
-<td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
+<td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
 <td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>75.43</td>
 <td>5.87 / 1.19</td>
 <td>9.07 / 4.28</td>
 <td>11 M</td>
-<td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+<td>A lightweight recognition model of PP-OCRv3 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 </table>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
-<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>68.81</td>
 <td>8.08 / 2.74</td>
 <td>50.17 / 42.50</td>
 <td>73.9 M</td>
 <td rowspan="1">
-SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
+SVTRv2 is a server-side text recognition model developed by the OpenOCR team of the Vision and Learning Lab (FVL) at Fudan University. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 6% improvement in end-to-end recognition accuracy on Leaderboard A compared to PP-OCRv4.
 </td>
 </tr>
 </table>
 
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
-<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>65.07</td>
 <td>5.93 / 1.62</td>
 <td>20.73 / 7.32</td>
 <td>22.1 M</td>
-<td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
+<td rowspan="1">    RepSVTR is a mobile-side text recognition model based on SVTRv2. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 2.5% improvement in end-to-end recognition accuracy on Leaderboard B compared to PP-OCRv4, while maintaining similar inference speed.</td>
 </tr>
 </table>
 
-* <b>英文识别模型</b>
+* <b>English Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td> 70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
 <td>6.8 M</td>
-<td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
 </tr>
 <tr>
 <td>en_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>70.69</td>
 <td>5.44 / 0.75</td>
 <td>8.65 / 5.57</td>
 <td>7.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv3 recognition model, supporting English and numeric character recognition.</td>
 </tr>
 </table>
 
 
-* <b>多语言识别模型</b>
+* <b>Multilingual Recognition Models</b>
 <table>
 <tr>
-<th>模型</th><th>模型下载链接</th>
-<th>识别 Avg Accuracy(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
-<th>介绍</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>60.21</td>
 <td>5.40 / 0.97</td>
 <td>9.11 / 4.05</td>
 <td>8.6 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
+<td>An ultra-lightweight Korean recognition model trained based on the PP-OCRv3 recognition model, supporting Korean and numeric character recognition.</td>
 </tr>
 <tr>
 <td>japan_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-japan_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>45.69</td>
 <td>5.70 / 1.02</td>
 <td>8.48 / 4.07</td>
 <td>8.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量日文识别模型，支持日文、数字识别</td>
+<td>An ultra-lightweight Japanese recognition model trained based on the PP-OCRv3 recognition model, supporting Japanese and numeric character recognition.</td>
 </tr>
 <tr>
 <td>chinese_cht_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-chinese_cht_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>82.06</td>
 <td>5.90 / 1.28</td>
 <td>9.28 / 4.34</td>
 <td>9.7 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量繁体中文识别模型，支持繁体中文、数字识别</td>
+<td>An ultra-lightweight Traditional Chinese recognition model trained based on the PP-OCRv3 recognition model, supporting Traditional Chinese and numeric character recognition.</td>
 </tr>
 <tr>
 <td>te_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-te_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>95.88</td>
 <td>5.42 / 0.82</td>
 <td>8.10 / 6.91</td>
 <td>7.8 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量泰卢固文识别模型，支持泰卢固文、数字识别</td>
+<td>An ultra-lightweight Telugu recognition model trained based on the PP-OCRv3 recognition model, supporting Telugu and numeric character recognition.</td>
 </tr>
 <tr>
 <td>ka_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-ka_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>96.96</td>
 <td>5.25 / 0.79</td>
 <td>9.09 / 3.86</td>
 <td>8.0 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量卡纳达文识别模型，支持卡纳达文、数字识别</td>
+<td>An ultra-lightweight Kannada recognition model trained based on the PP-OCRv3 recognition model, supporting Kannada and numeric character recognition.</td>
 </tr>
 <tr>
 <td>ta_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-ta_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>76.83</td>
 <td>5.23 / 0.75</td>
 <td>10.13 / 4.30</td>
 <td>8.0 M </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量泰米尔文识别模型，支持泰米尔文、数字识别</td>
+<td>An ultra-lightweight Tamil recognition model trained based on the PP-OCRv3 recognition model, supporting Tamil and numeric character recognition.</td>
 </tr>
 <tr>
 <td>latin_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>76.93</td>
 <td>5.20 / 0.79</td>
 <td>8.83 / 7.15</td>
 <td>7.8 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
+<td>An ultra-lightweight Latin recognition model trained based on the PP-OCRv3 recognition model, supporting Latin and numeric character recognition.</td>
 </tr>
 <tr>
 <td>arabic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>73.55</td>
 <td>5.35 / 0.79</td>
 <td>8.80 / 4.56</td>
 <td>7.8 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
+<td>An ultra-lightweight Arabic alphabet recognition model trained based on the PP-OCRv3 recognition model, supporting Arabic alphabet and numeric character recognition.</td>
 </tr>
 <tr>
 <td>cyrillic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>94.28</td>
 <td>5.23 / 0.76</td>
 <td>8.89 / 3.88</td>
 <td>7.9 M  </td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量斯拉夫字母识别模型，支持斯拉夫字母、数字识别</td>
+<td>An ultra-lightweight Cyrillic alphabet recognition model trained based on the PP-OCRv3 recognition model, supporting Cyrillic alphabet and numeric character recognition.</td>
 </tr>
 <tr>
 <td>devanagari_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>96.44</td>
 <td>5.22 / 0.79</td>
 <td>8.56 / 4.06</td>
 <td>7.9 M</td>
-<td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
+<td>An ultra-lightweight Devanagari alphabet recognition model trained based on the PP-OCRv3 recognition model, supporting Devanagari alphabet and numeric character recognition.</td>
 </tr>
 </table>
 
 
-<strong>测试环境说明:</strong>
+<strong>Test Environment Description:</strong>
 
   <ul>
-      <li><b>性能测试环境</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>测试数据集：</strong>
+              <li><strong>Test Dataset:</strong>
                  <ul>
                     <li>
-                    中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。
+                    Chinese Recognition Models: A self-built Chinese dataset by PaddleOCR, covering various scenarios such as street views, online images, documents, and handwriting, with 11,000 images for text recognition.
                     </li>
                     <li>
-                      ch_SVTRv2_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。
+                      ch_SVTRv2_rec: The evaluation set of Leaderboard A in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a>.
                     </li>
                     <li>
-                      ch_RepSVTR_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。
+                      ch_RepSVTR_rec: The evaluation set of Leaderboard B in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a>.
                     </li>
                     <li>
-                      英文识别模型：PaddleX 自建的英文数据集。
+                      English Recognition Models: A self-built English dataset by PaddleX.
                     </li>
                     <li>
-                      多语言识别模型：PaddleX 自建的多语种数据集。
+                      Multilingual Recognition Models: A self-built multilingual dataset by PaddleX.
                     </li>
                  </ul>
               </li>
-              <li><strong>硬件配置：</strong>
+              <li><strong>Hardware Configuration:</strong>
                   <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
       </li>
-      <li><b>推理模式说明</b></li>
+      <li><b>Explanation of Inference Modes</b></li>
   </ul>
 
 <table border="1">
     <thead>
         <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
+            <th>Mode</th>
+            <th>GPU Configuration</th>
+            <th>CPU Configuration</th>
+            <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
+            <td>Normal Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+            <td>High-Performance Mode</td>
+            <td>Optimal combination of precision type and acceleration strategy</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Selection of the optimal backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
 
 </details>
-
-<h2 id="_4">三、快速开始<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h2 id="iii-quick-start">III. Quick Start<a class="headerlink" href="#iii-quick-start" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 <a href="../ppocr/installation.md">安装教程</a>。</p>
+<p>❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md">Installation Guide</a>.</p>
 </blockquote>
-<p>使用一行命令即可快速体验：</p>
+<p>You can quickly experience the functionality with a single command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>text_recognition<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png
 </span></code></pre></div>
-<p>您也可以将文本识别的模块中的模型推理集成到您的项目中。运行以下代码前，请您下载<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">示例图片</a>到本地。</p>
+<p>You can also integrate the model inference of the text recognition module into your project. Before running the following code, please download the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">sample image</a> to your local machine.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextRecognition</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">TextRecognition</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-OCRv5_server_rec&quot;</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;general_ocr_rec_001.png&quot;</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -5905,236 +5922,235 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>运行后，得到的结果为：
+<p>After running, the obtained result is as follows:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_ocr_rec_001.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;rec_text&#39;</span>:<span class="w"> </span><span class="s1">&#39;绿洲仕格维花园公寓&#39;</span>,<span class="w"> </span><span class="s1">&#39;rec_score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9823867082595825<span class="o">}}</span>
 </span></code></pre></div></p>
-<p>运行结果参数含义如下：
-- <code>input_path</code>：表示输入待预测文本行图像的路径
-- <code>page_index</code>：如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code>
-- <code>rec_text</code>：表示文本行图像的预测文本
-- <code>rec_score</code>：表示文本行图像的预测置信度</p>
-<p>可视化图片如下：</p>
+<p>The meanings of the parameters in the running result are as follows:
+- <code>input_path</code>: Indicates the path to the input image containing the text line to be predicted.
+- <code>page_index</code>: If the input is a PDF file, it indicates which page of the PDF the current text line is from; otherwise, it is <code>None</code>.
+- <code>rec_text</code>: Indicates the predicted text of the text line image.
+- <code>rec_score</code>: Indicates the confidence score of the predicted text for the text line image.</p>
+<p>The visualized image is as follows:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/text_recog/general_ocr_rec_001.png"/></p>
-<p>相关方法、参数等说明如下：</p>
+<p>The descriptions of relevant methods and parameters are as follows:</p>
 <ul>
-<li><code>TextRecognition</code>实例化文本识别模型（此处以<code>PP-OCRv5_server_rec</code>为例），具体说明如下：</li>
+<li>Instantiate a text recognition model using <code>TextRecognition</code> (taking <code>PP-OCRv5_server_rec</code> as an example here). The specific descriptions are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>Model name</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的模型名称</td>
-<td>无</td>
+<td>All model names supported by PaddleX</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td>None</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>Model inference device</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+<td>Supports specifying specific GPU card numbers, such as "gpu:0", specific card numbers for other hardware, such as "npu:0", and "cpu" for CPU.</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td>Whether to enable the high-performance inference plugin</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
+<td>High-performance inference configuration</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>无</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
 <ul>
 <li>
-<p>其中，<code>model_name</code> 必须指定，指定 <code>model_name</code> 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 <code>model_dir</code> 时，使用用户自定义的模型。</p>
+<p>Among them, <code>model_name</code> must be specified. After specifying <code>model_name</code>, the default model parameters built into PaddleX are used. On this basis, when <code>model_dir</code> is specified, the user-defined model is used.</p>
 </li>
 <li>
-<p>调用文本识别模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code> 和 <code>batch_size</code>，具体说明如下：</p>
+<p>Call the <code>predict()</code> method of the text recognition model for inference prediction. This method returns a list of results. In addition, this module also provides the <code>predict_iter()</code> method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and obtain prediction results step by step. It is suitable for scenarios where large datasets need to be processed or memory savings are desired. You can choose either of these two methods according to your actual needs. The parameters of the <code>predict()</code> method include <code>input</code> and <code>batch_size</code>, with specific descriptions as follows:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Options</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
+<td>Data to be predicted, supporting multiple input types</td>
 <td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
 <td>
 <ul>
-<li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-<li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-<li><b>URL链接</b>，如图像文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">示例</a></li>
-<li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-<li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
+<li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
+<li><b>URL link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a></li>
+<li><b>Local directory</b>, which should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
+<li><b>List</b>, the elements of which should be data of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>Batch size</td>
 <td><code>int</code></td>
-<td>任意整数</td>
+<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
 
 <ul>
-<li>对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</li>
+<li>Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports operations such as printing, saving as an image, and saving as a <code>json</code> file:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>方法</th>
-<th>方法说明</th>
-<th>参数</th>
-<th>参数类型</th>
-<th>参数说明</th>
-<th>默认值</th>
+<th>Method</th>
+<th>Description</th>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="3"><code>print()</code></td>
-<td rowspan="3">打印结果到终端</td>
+<td rowspan="3">Print the result to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data, making it more readable. Only effective when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Only effective when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan="3"><code>save_to_json()</code></td>
-<td rowspan="3">将结果保存为json格式的文件</td>
+<td rowspan="3">Save the result as a file in <code>json</code> format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The file path to save the result. When it is a directory, the saved file name is consistent with the naming of the input file type.</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data, making it more readable. Only effective when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>Controls whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Only effective when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>Save the result as a file in image format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
-<td>无</td>
+<td>The file path to save the result. When it is a directory, the saved file name is consistent with the naming of the input file type.</td>
+<td>None</td>
 </tr>
 </table>
 
 <ul>
-<li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</li>
+<li>In addition, it also supports obtaining the visualized image with results and the prediction results through attributes, as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>属性</th>
-<th>属性说明</th>
+<th>Attribute</th>
+<th>Description</th>
 </tr>
 </thead>
 <tr>
 <td rowspan="1"><code>json</code></td>
-<td rowspan="1">获取预测的<code>json</code>格式的结果</td>
+<td rowspan="1">Obtain the prediction result in <code>json</code> format</td>
 </tr>
 <tr>
 <td rowspan="1"><code>img</code></td>
-<td rowspan="1">获取格式为<code>dict</code>的可视化图像</td>
+<td rowspan="1">Obtain the visualized image in <code>dict</code> format</td>
 </tr>
 </table>
-
-<h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 <code>PP-OCRv5_server_rec</code> 举例，其他模型替换对应配置文件即可。首先，您需要准备文本识别的数据集，可以参考<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar">文本识别 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本识别 Demo 数据示例。在训练模型之前，请确保已经按照<a href="../installation.html">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
-<h2 id="41">4.1 数据集、预训练模型准备<a class="headerlink" href="#41" title="Permanent link">&para;</a></h2>
-<h3 id="411">4.1.1 准备数据集<a class="headerlink" href="#411" title="Permanent link">&para;</a></h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 下载示例数据集</span>
+<h2 id="v-secondary-development">V. Secondary Development<a class="headerlink" href="#v-secondary-development" title="Permanent link">&para;</a></h2>
+<p>If the performance of the above models does not meet your requirements in your specific scenario, you can follow the steps below for secondary development. Here, we use the training of <code>PP-OCRv5_server_rec</code> as an example; for other models, simply replace the corresponding configuration files. First, you need to prepare a dataset for text recognition. You can refer to the format of the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar">Text Recognition Demo Dataset</a> for preparation. Once prepared, you can proceed with model training and exporting as described below. After exporting, the model can be quickly integrated into the aforementioned API. This example uses the Text Recognition Demo Dataset. Before training the model, ensure that you have installed the dependencies required by PaddleOCR as per the <a href="../installation.html">Installation Guide</a>.</p>
+<h2 id="41-dataset-and-pre-trained-model-preparation">4.1 Dataset and Pre-trained Model Preparation<a class="headerlink" href="#41-dataset-and-pre-trained-model-preparation" title="Permanent link">&para;</a></h2>
+<h3 id="411-prepare-the-dataset">4.1.1 Prepare the Dataset<a class="headerlink" href="#411-prepare-the-dataset" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Download the example dataset</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>ocr_rec_dataset_examples.tar
 </span></code></pre></div>
-<h3 id="412">4.1.2 下载预训练模型<a class="headerlink" href="#412" title="Permanent link">&para;</a></h3>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 下载 PP-OCRv5_server_rec 预训练模型</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams<span class="w"> </span>
+<h3 id="412-download-the-pre-trained-model">4.1.2 Download the Pre-trained Model<a class="headerlink" href="#412-download-the-pre-trained-model" title="Permanent link">&para;</a></h3>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Download the PP-OCRv5_server_rec pre-trained model</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams
 </span></code></pre></div>
-<h3 id="42">4.2 模型训练<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR 对代码进行了模块化，训练 <code>PP-OCRv5_server_rec</code> 识别模型时需要使用 <code>PP-OCRv5_server_rec</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml">配置文件</a>。</p>
-<p>训练命令如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">#单卡训练 (默认训练方式)</span>
+<h3 id="42-model-training">4.2 Model Training<a class="headerlink" href="#42-model-training" title="Permanent link">&para;</a></h3>
+<p>PaddleOCR modularizes its code. To train the <code>PP-OCRv5_server_rec</code> recognition model, you need to use its <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml">configuration file</a>.</p>
+<p>The training commands are as follows:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Single-GPU training (default training method)</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./PP-OCRv5_server_rec_pretrained.pdparams
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">#多卡训练，通过--gpus参数指定卡号</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Multi-GPU training, specify GPU IDs via the --gpus parameter</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./PP-OCRv5_server_rec_pretrained.pdparams
 </span></code></pre></div>
-<h3 id="44">4.4 模型评估<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
-<p>您可以评估已经训练好的权重，如，<code>output/xxx/xxx.pdparams</code>，使用如下命令进行评估：</p>
-<p>```bash</p>
-<h1 id="pretrained_modelpathtoweightsmodel_name">注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。<a class="headerlink" href="#pretrained_modelpathtoweightsmodel_name" title="Permanent link">&para;</a></h1>
-<p># demo 测试集评估
- python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams
- ```</p>
-<h3 id="45">4.5 模型导出<a class="headerlink" href="#45" title="Permanent link">&para;</a></h3>
-<p><code>bash
- python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams \
- Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"</code></p>
-<p>导出模型后，静态图模型会存放于当前目录的<code>./PP-OCRv5_server_rec_infer/</code>中，在该目录下，您将看到如下文件：
- <code>./PP-OCRv5_server_rec_infer/
- ├── inference.json
- ├── inference.pdiparams
- ├── inference.yml</code>
-至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。</p>
-<h2 id="faq">五、FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h2>
+<h3 id="44-model-evaluation">4.4 Model Evaluation<a class="headerlink" href="#44-model-evaluation" title="Permanent link">&para;</a></h3>
+<p>You can evaluate the weights of a trained model, such as <code>output/xxx/xxx.pdparams</code>, using the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Note: Set the path of pretrained_model to a local path. If using a model you trained and saved yourself, ensure to modify the path and filename to {path/to/weights}/{model_name}.</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># Evaluation on the demo test set</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams
+</span></code></pre></div>
+<h3 id="45-model-exporting">4.5 Model Exporting<a class="headerlink" href="#45-model-exporting" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Global.save_inference_dir<span class="o">=</span><span class="s2">&quot;./PP-OCRv5_server_rec_infer/&quot;</span>
+</span></code></pre></div>
+<p>After exporting the model, the static graph model will be stored in <code>./PP-OCRv5_server_rec_infer/</code> in the current directory. Under this directory, you will see the following files:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./PP-OCRv5_server_rec_infer/
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── inference.json
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── inference.pdiparams
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>├── inference.yml
+</span></code></pre></div></p>
+<p>At this point, the secondary development is complete. This static graph model can be directly integrated into the PaddleOCR API.</p>
+<h2 id="v-faq">V. FAQ<a class="headerlink" href="#v-faq" title="Permanent link">&para;</a></h2>
 
 
 
@@ -6157,7 +6173,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 18:37:26">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:53:42">May 19, 2025</span>
   </span>
 
     
@@ -6167,7 +6183,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月19日 18:37:26">2025年5月19日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 19, 2025 18:53:42">May 19, 2025</span>
   </span>
 
     
