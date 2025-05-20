@@ -195,6 +195,12 @@ A single model can cover multiple languages and text types, with recognition acc
 
 # PP-OCRv5 Demo Examples
 
+<div align="center">
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-OCRv5/algorithm_ppocrv5_demo1.png" width="600"/>
+</div>
+
+<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex%2FPaddleX3.0%2Fdoc_images%2FPP-OCRv5%2Falgorithm_ppocrv5_demo.pdf">More Demos</a>
+
 # Deployment and Secondary Development
 * **Multiple System Support**: Compatible with mainstream operating systems including Windows, Linux, and Mac.
 * **Multiple Hardware Support**: Besides NVIDIA GPUs, it also supports inference and deployment on Intel CPU, Kunlun chips, Ascend, and other new hardware.

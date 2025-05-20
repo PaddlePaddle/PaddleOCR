@@ -334,11 +334,11 @@ comments: true
             <li><strong>测试数据集：
              </strong>
                 <ul>
-                  <li>文档图像方向分类模型：PaddleX自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
                   <li> 文本图像矫正模型：<a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a>。</li>
                   <li>版面区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
                   <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
-                  <li>公式识别模型：PaddleX 内部自建公式识别测试集。</li>
+                  <li>公式识别模型：自建的内部公式识别测试集。</li>
                 </ul>
              </li>
               <li><strong>硬件配置：</strong>
@@ -499,7 +499,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用默认值</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -517,7 +517,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <ul>
 <li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
 <li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用默认值：1.0</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -530,7 +530,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
 <li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
 <li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用默认值：“large”</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -748,7 +748,7 @@ for res in output:
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用默认值：0.5</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -766,7 +766,7 @@ for res in output:
 <ul>
 <li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
 <li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用默认值：1.0</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -779,7 +779,7 @@ for res in output:
 <li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
 <li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
 <li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用默认值：“large”</li>
 </ul>
 </td>
 <td><code>str</code></td>

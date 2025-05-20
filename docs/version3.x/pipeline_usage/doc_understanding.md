@@ -10,7 +10,7 @@ comments: true
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/doc_understanding/doc_understanding.png">
 
-<b>通用文档理解产线中包含以下1个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
+<b>文档理解产线中包含以下1个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>
 
 - [文档类视觉语言模型模块](../module_usage/doc_vlm.md)
 

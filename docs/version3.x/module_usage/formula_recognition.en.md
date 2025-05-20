@@ -336,7 +336,7 @@ You can choose either method based on your actual needs. The `predict()` method 
 If the models above do not perform well in your scenario, you can try the following steps for custom development.  
 Here we take training `PP-FormulaNet_plus-M` as an example. For other models, just replace the corresponding config file.  First, you need to prepare a formula recognition dataset. You can follow the format of the [formula recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar).  Once the data is ready, follow the steps below to train and export the model. After export, the model can be quickly integrated into the API described above.  This example uses the demo dataset. Before training the model, please ensure you have installed all PaddleOCR dependencies as described in the [installation documentation](xxx).
 
-## 4.1 Environment Setup
+### 4.1 Environment Setup
 
 To train the formula recognition model, you need to install additional Python and Linux dependencies. Run the following commands:
 
@@ -346,16 +346,16 @@ sudo apt-get install libmagickwand-dev
 pip install tokenizers==0.19.1 imagesize ftfy Wand
 ```
 
-## 4.2 Dataset and Pretrained Model Preparation
+### 4.2 Dataset and Pretrained Model Preparation
 
-### 4.2.1 Prepare the Dataset
+#### 4.2.1 Prepare the Dataset
 ```shell
 # Download the demo dataset
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar
 tar -xf ocr_rec_latexocr_dataset_example.tar
 ```
 
-### 4.2.2 Download the Pretrained Model
+#### 4.2.2 Download the Pretrained Model
 ```shell
 # Download the PP-FormulaNet_plus-M pre-trained model
 wget https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar 
@@ -394,14 +394,14 @@ You can evaluate trained weights, e.g., output/xxx/xxx.pdparams, or use the down
 # Demo test set evaluation
 python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
 Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
-
 ```
+
 ### 4.5 Model Export
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
  Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
- ```
+```
 
 After exporting, the static graph model will be saved in `./PP-FormulaNet_plus-M_infer/`, and you will see the following files:
  ```

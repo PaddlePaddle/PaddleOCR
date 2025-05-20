@@ -45,7 +45,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleX自建数据集，包含500张圆形印章图像。</li>
+              <li><strong>测试数据集：</strong>自建的内部数据集，包含500张圆形印章图像。</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
@@ -145,7 +145,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的印章文本检测模型名称</td>
+<td>所有支持的印章文本检测模型名称</td>
 <td>无</td>
 </tr>
 <tr>
@@ -169,7 +169,7 @@ for res in output:
 <td>
 <ul>
 <li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：736</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -180,7 +180,7 @@ for res in output:
 <td>
 <ul>
 <li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：“min”</li></li></ul></td>
 
 
 <td>None</td>
@@ -192,7 +192,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.2</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -203,19 +203,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>max_candidates</code></td>
-<td>输出的最大文本框数量 </td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
-
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.6</li></li></ul></td>
 <td>None</td>
 </tr>
 <tr>
@@ -225,8 +213,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
-
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.5</li></li></ul></td>
 <td>None</td>
 </tr>
 <tr>
@@ -252,7 +239,7 @@ for res in output:
 </tr>
 </table>
 
-* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
+* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
 * 调用印章文本检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、 `batch_size`、 `limit_side_len`、 `limit_type`、 `thresh`、 `box_thresh`、 `max_candidates`、`unclip_ratio`和`use_dilation`，具体说明如下：
 
@@ -451,9 +438,9 @@ for res in output:
 如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv4_server_seal_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[印章文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以印章文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
-## 4.1 数据集、预训练模型准备
+### 4.1 数据集、预训练模型准备
 
-### 4.1.1 准备数据集
+#### 4.1.1 准备数据集
 
 ```shell
 # 下载示例数据集
@@ -461,7 +448,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_datas
 tar -xf ./dataset/ocr_curve_det_dataset_examples.tar -C ./dataset/
 ```
 
-### 4.1.2 下载预训练模型
+#### 4.1.2 下载预训练模型
 
 ```shell
 # 下载 PP-OCRv4_server_seal_det 预训练模型
@@ -495,7 +482,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  # demo 测试集评估
  python3 tools/eval.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+```
 
 ### 4.4 模型导出
 
@@ -503,7 +490,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./PP-OCRv4_server_seal_det_infer/"
- ```
+```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-OCRv4_server_seal_det_infer/`中，在该目录下，您将看到如下文件：
  ```

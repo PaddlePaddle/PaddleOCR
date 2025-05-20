@@ -56,7 +56,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleX 内部自建高难度中文表格识别数据集。</li>
+              <li><strong>测试数据集：</strong>内部自建的高难度中文表格识别数据集。</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
@@ -147,7 +147,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的模型名称</td>
+<td>所有支持的模型名称</td>
 <td>无</td>
 </tr>
 <tr>
@@ -180,7 +180,7 @@ for res in output:
 </tr>
 </table>
 
-* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
+* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
 * 调用表格结构识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：
 
@@ -293,9 +293,9 @@ for res in output:
 如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `SLANet` 举例，其他模型替换对应配置文件即可。首先，您需要准备表格结构识别的数据集，可以参考[表格结构识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以表格结构识别 Demo 数据示例。在训练模型之前，请确保已经按照[[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
-## 4.1 数据集、预训练模型准备
+### 4.1 数据集、预训练模型准备
 
-### 4.1.1 准备数据集
+#### 4.1.1 准备数据集
 
 ```shell
 # 下载示例数据集
@@ -303,7 +303,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_e
 tar -xf table_rec_dataset_examples.tar
 ```
 
-### 4.1.2 下载预训练模型
+#### 4.1.2 下载预训练模型
 
 ```shell
 # 下载 SLANet 预训练模型
@@ -336,7 +336,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  # demo 测试集评估
  python3 tools/eval.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+```
 
 ### 4.4 模型导出
 
@@ -344,7 +344,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./SLANet_infer/"
- ```
+```
 
  导出模型后，静态图模型会存放于当前目录的`./SLANet_infer/`中，在该目录下，您将看到如下文件：
  ```

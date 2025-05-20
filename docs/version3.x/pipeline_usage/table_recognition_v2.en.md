@@ -168,108 +168,106 @@ In this production line, you can choose the models to use based on the benchmark
 <summary><b>Text Recognition Module:</b></summary>
 <table>
 <tr>
-<th>Model</th><th>Model Download Link</th>
-<th>Recognition Avg Accuracy (%)</th>
-<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
-<th>Description</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Recognition Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
-<td> - </td>
-<td> - </td>
-<td>205M</td>
-<td>PP-OCRv5_server_rec is a new generation text recognition model. This model aims to efficiently and accurately support four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenarios like handwriting, vertical text, pinyin, and rare characters. While maintaining recognition effectiveness, it also considers inference speed and model robustness, providing efficient and accurate technical support for document understanding across various scenarios.</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
-<td> - </td>
-<td> - </td>
-<td>128</td>
-<td>PP-OCRv5_mobile_rec is a new generation text recognition model. This model aims to efficiently and accurately support four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenarios like handwriting, vertical text, pinyin, and rare characters. While maintaining recognition effectiveness, it also considers inference speed and model robustness, providing efficient and accurate technical support for document understanding across various scenarios.</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Training Model</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>181 M</td>
-<td>PP-OCRv4_server_rec_doc is based on PP-OCRv4_server_rec, trained with a mix of more Chinese document data and PP-OCR training data, increasing the recognition capabilities for some Traditional Chinese, Japanese, and special characters, supporting recognition of over 15,000 characters. In addition to improving the document-related text recognition capabilities, it also enhances general text recognition capabilities.</td>
+<td>91 M</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>88 M</td>
-<td>PP-OCRv4's lightweight recognition model has high inference efficiency and can be deployed on various hardware, including edge devices.</td>
+<td>11 M</td>
+<td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>151 M</td>
-<td>PP-OCRv4's server-side model has high inference accuracy and can be deployed on various servers.</td>
+<td>87 M</td>
+<td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>66 M</td>
-<td>Based on the PP-OCRv4 recognition model, this ultra-lightweight English recognition model supports English and digit recognition.</td>
+<td>7.3 M</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
 </tr>
 </table>
 
-> ❗ The above lists the <b>6 core models</b> that are key to the text recognition module. The module supports a total of <b>10 complete models</b>, including multiple multilingual text recognition models. The complete model list is as follows:
+> ❗ The above section lists the **6 core models** that are primarily supported by the text recognition module. In total, the module supports **20 comprehensive models**, including multiple multilingual text recognition models. Below is the complete list of models:
 
-<details><summary> 👉 Model List Details</summary>
+<details><summary> 👉Details of the Model List</summary>
 
-* <b>PP-OCRv5 Multi-Scene Model</b>
+* <b>PP-OCRv5 Multi-Scenario Models</b>
 
 <table>
 <tr>
-<th>Model</th><th>Model Download Link</th>
-<th>Chinese Recognition Avg Accuracy (%)</th>
-<th>English Recognition Avg Accuracy (%)</th>
-<th>Traditional Chinese Recognition Avg Accuracy (%)</th>
-<th>Japanese Recognition Avg Accuracy (%)</th>
-<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
-<th>Description</th>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy for Chinese Recognition (%)</th>
+<th>Avg Accuracy for English Recognition (%)</th>
+<th>Avg Accuracy for Traditional Chinese Recognition (%)</th>
+<th>Avg Accuracy for Japanese Recognition (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
-<td> - </td>
-<td> - </td>
-<td>205M</td>
-<td>PP-OCRv5_server_rec is a new generation text recognition model. This model aims to efficiently and accurately support four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenarios like handwriting, vertical text, pinyin, and rare characters. While maintaining recognition effectiveness, it also considers inference speed and model robustness, providing efficient and accurate technical support for document understanding across various scenarios.</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
 <td>66.00</td>
 <td>83.55</td>
 <td>54.65</td>
-<td> - </td>
-<td> - </td>
-<td>128</td>
-<td>PP-OCRv5_mobile_rec is a new generation text recognition model. This model aims to efficiently and accurately support four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenarios like handwriting, vertical text, pinyin, and rare characters. While maintaining recognition effectiveness, it also considers inference speed and model robustness, providing efficient and accurate technical support for document understanding across various scenarios.</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 </table>
 
@@ -822,6 +820,24 @@ paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device
 </thead>
 <tbody>
 <tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports multiple input types, required.
+<ul>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
+<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
+<li><b>List</b>: The elements of the list must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>layout_detection_model_name</code></td>
 <td>Name of the layout detection model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
@@ -1038,24 +1054,6 @@ paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types, required.
-<ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
-<li><b>List</b>: The elements of the list must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>device</code></td>
 <td>The device used for inference. Supports specifying a specific card number.
 <ul>
@@ -1106,6 +1104,12 @@ paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device
 <td>Number of threads to use for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -1428,6 +1432,12 @@ In the above Python script, the following steps are performed:
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -1457,7 +1467,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>

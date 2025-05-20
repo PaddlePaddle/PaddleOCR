@@ -8,7 +8,7 @@ comments: true
 
 OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。
 
-通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线集成了业界知名的 PP-OCRv3 和 PP-OCRv4 的端到端 OCR 串联系统，支持超过 80 种语言的识别，并在此基础上，增加了对图像的方向矫正和扭曲矫正功能。基于本产线，可实现 CPU 上毫秒级的文本内容精准预测，使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
+通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -135,19 +135,18 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
 <td>86.38</td>
-<td> - </td>
-<td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>81.29</td>
-<td> - </td>
-<td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
@@ -155,7 +154,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>91 M</td>
+<td>181 M</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
@@ -163,7 +162,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>11 M</td>
+<td>88 M</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
@@ -171,7 +170,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>87 M</td>
+<td>151 M</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
@@ -180,7 +179,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>7.3 M</td>
+<td>66 M</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
@@ -210,10 +209,10 @@ PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
-<td> - </td>
-<td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
@@ -222,10 +221,9 @@ PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>66.00</td>
 <td>83.55</td>
 <td>54.65</td>
-<td> - </td>
-<td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 </table>
 
@@ -530,7 +528,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --device gpu:0 
 
 # 通过 --ocr_version 指定 PP-OCR 其他版本
-paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
+paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv5
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>

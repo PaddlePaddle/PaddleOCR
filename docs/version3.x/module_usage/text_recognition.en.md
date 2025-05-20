@@ -24,19 +24,18 @@ The text recognition module is the core component of an OCR (Optical Character R
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
-<td> - </td>
-<td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
-<td> - </td>
-<td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
@@ -99,10 +98,10 @@ PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
-<td> - </td>
-<td> - </td>
-<td>205 M</td>
-<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
@@ -111,10 +110,9 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>66.00</td>
 <td>83.55</td>
 <td>54.65</td>
-<td> - </td>
-<td> - </td>
-<td>136 M</td>
-<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
 </tr>
 </table>
 
@@ -611,9 +609,9 @@ The descriptions of relevant methods and parameters are as follows:
 
 If the performance of the above models does not meet your requirements in your specific scenario, you can follow the steps below for secondary development. Here, we use the training of `PP-OCRv5_server_rec` as an example; for other models, simply replace the corresponding configuration files. First, you need to prepare a dataset for text recognition. You can refer to the format of the [Text Recognition Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar) for preparation. Once prepared, you can proceed with model training and exporting as described below. After exporting, the model can be quickly integrated into the aforementioned API. This example uses the Text Recognition Demo Dataset. Before training the model, ensure that you have installed the dependencies required by PaddleOCR as per the [Installation Guide](../installation.md).
 
-## 4.1 Dataset and Pre-trained Model Preparation
+### 4.1 Dataset and Pre-trained Model Preparation
 
-### 4.1.1 Prepare the Dataset
+#### 4.1.1 Prepare the Dataset
 
 ```shell
 # Download the example dataset
@@ -621,7 +619,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_exa
 tar -xf ocr_rec_dataset_examples.tar
 ```
 
-### 4.1.2 Download the Pre-trained Model
+#### 4.1.2 Download the Pre-trained Model
 
 ```shell
 # Download the PP-OCRv5_server_rec pre-trained model
