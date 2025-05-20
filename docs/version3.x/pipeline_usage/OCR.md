@@ -8,7 +8,7 @@ comments: true
 
 OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。
 
-通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线集成了业界知名的 PP-OCRv3 和 PP-OCRv4 的端到端 OCR 串联系统，支持超过 80 种语言的识别，并在此基础上，增加了对图像的方向矫正和扭曲矫正功能。基于本产线，可实现 CPU 上毫秒级的文本内容精准预测，使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
+通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线集成了业界知名的 PP-OCRv3, PP-OCRv4 以及 PaddleOCR 3.0 全新发布的 PP-OCRv5，支持超过 80 种语言的识别，并在此基础上，增加了对图像的方向矫正和扭曲矫正功能。基于本产线，可实现 CPU 上毫秒级的文本内容精准预测，使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -1701,7 +1701,9 @@ for i, res in enumerate(result["ocrResults"]):
 </details>
 
 ## 4. 二次开发
+如果 通用OCR 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升 通用OCR 产线的在您的场景中的识别效果。
 
+### 4.1 模型微调
 通用 OCR 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
 
 <table>
@@ -1740,3 +1742,68 @@ for i, res in enumerate(result["ocrResults"]):
 </tr>
 </tbody>
 </table>
+
+### 4.2 模型应用
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+1. 获取产线配置文件
+
+可调用 PaddleOCR 中 通用OCR 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import PaddleOCR
+
+pipeline = PaddleOCR()
+pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")
+```
+
+2. 修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
+
+```yaml
+......
+SubModules:
+  TextDetection:
+    box_thresh: 0.6
+    limit_side_len: 960
+    limit_type: max
+    max_side_limit: 4000
+    model_dir: null # 替换为微调后的文本测模型权重路径
+    model_name: PP-OCRv5_server_det
+    module_name: text_detection
+    thresh: 0.3
+    unclip_ratio: 1.5
+  TextLineOrientation:
+    batch_size: 6
+    model_dir: null
+    model_name: PP-LCNet_x0_25_textline_ori
+    module_name: textline_orientation
+  TextRecognition:
+    batch_size: 6
+    model_dir: null # 替换为微调后的文本识模型权重路径
+    model_name: PP-OCRv5_server_rec
+    module_name: text_recognition
+    score_thresh: 0.0
+......
+```
+
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3. 在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr ocr --paddlex_config PaddleOCR.yaml ...
+```
+
+4. 在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import PaddleOCR
+
+pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
+```
