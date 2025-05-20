@@ -394,14 +394,14 @@ You can evaluate trained weights, e.g., output/xxx/xxx.pdparams, or use the down
 # Demo test set evaluation
 python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
 Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
-
 ```
+
 ### 4.5 Model Export
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
  Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
- ```
+```
 
 After exporting, the static graph model will be saved in `./PP-FormulaNet_plus-M_infer/`, and you will see the following files:
  ```

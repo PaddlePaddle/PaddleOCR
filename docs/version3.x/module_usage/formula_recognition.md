@@ -401,19 +401,20 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)，使用如下命令进行评估：
 
 ```bash
-# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
- # demo 测试集评估
+
+#注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+#demo 测试集评估
  python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
- ```
+```
 
 ### 4.5 模型导出
 
 ```bash
- python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
- Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
- ```
+python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
+Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
+Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
+```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-FormulaNet_plus-M_infer/`中，在该目录下，您将看到如下文件：
  ```

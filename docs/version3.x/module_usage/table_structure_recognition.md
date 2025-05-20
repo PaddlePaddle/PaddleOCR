@@ -336,7 +336,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  # demo 测试集评估
  python3 tools/eval.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+```
 
 ### 4.4 模型导出
 
@@ -344,7 +344,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./SLANet_infer/"
- ```
+```
 
  导出模型后，静态图模型会存放于当前目录的`./SLANet_infer/`中，在该目录下，您将看到如下文件：
  ```

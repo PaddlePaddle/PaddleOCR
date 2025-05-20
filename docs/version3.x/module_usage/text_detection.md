@@ -487,7 +487,7 @@ python3 tools/eval.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
     Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt] 
- ```
+```
 
 ### 4.4 模型导出
 
@@ -495,7 +495,7 @@ python3 tools/eval.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
 python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o \
     Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
     Global.save_inference_dir="./PP-OCRv5_server_det_infer/"
- ```
+```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-OCRv5_server_det_infer/`中，在该目录下，您将看到如下文件：
  ```
