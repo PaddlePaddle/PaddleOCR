@@ -23,69 +23,28 @@ Please refer to [PaddleOCR Installation Guide](../installation.en.md) to install
 ## 2、Usage
 
 The methods for training and inference of PaddleOCR on hardware platforms such as Ascend NPU and Kunlun XPU are the same as those on GPU. You only need to modify the configuration parameters according to the specific hardware platform.
+On these two hardware platforms, quick inference and model fine-tuning are supported for the three major features of PaddleOCR, including the text recognition model PP-OCRv5, the document parsing solution PP-StructureV3, and PP-ChatOCRv4.
 
 ### 2.1 Quick Inference
 
-Taking table structure recognition as an example, you can quickly experience it with a single command:
-
-```bash
-paddleocr table_structure_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg --device npu:0 # change device to npu or xpu
-```
-
-Integrate the model inference from the table structure recognition module into your project using the following code.Please download [demo image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg) to your device first。
-
-```python
-from paddleocr import TableStructureRecognition
-
-model = TableStructureRecognition(model_name="SLANet", device="npu:0") # change device to npu or xpu
-output = model.predict("table_recognition.jpg", batch_size=1)
-for res in output:
-    res.print()
-    res.save_to_img(save_path="./output/")
-    res.save_to_json(save_path="./output/res.json")
-```
-
-### 2.2 Model Fine-tuning
-
-If you are not satisfied with the performance of the pre-trained model, you can fine-tune it.：
-
-```bash
-# train on  Ascend NPU 
-export FLAGS_npu_storage_format=0
-export FLAGS_npu_jit_compile=0
-export FLAGS_use_stride_kernel=0
-export FLAGS_allocator_strategy=auto_growth
-export FLAGS_npu_split_aclnn=True
-export FLAGS_npu_scale_aclnn=True
-export CUSTOM_DEVICE_BLACK_LIST=pad3d,pad3d_grad
-python3 -m paddle.distributed.launch --devices '0,1,2,3' \
-        tools/train.py -c configs/table/SLANet.yml \
-        -o Global.use_gpu=False Global.use_npu=True
-
-# train on Kunlun XPU
-export FLAGS_use_stride_kernel=0
-export BKCL_FORCE_SYNC=1
-export BKCL_TIMEOUT=1800
-export XPU_BLACK_LIST=pad3d,pad3d_grad
-python3 -m paddle.distributed.launch --devices '0,1,2,3' \
-        tools/train.py -c configs/table/SLANet.yml \
-        -o Global.use_gpu=False Global.use_xpu=True
-```
-
-For more information on using the table structure recognition module, please refer to [Table Structure Recognition Module Usage Tutorial](../module_usage/table_structure_recognition.en.md).Introductions to other modules can be found in the documents located in the same directory as the table structure recognition module.
-
-### 2.3 Pipeline Inference
-
-On hardware platforms such as Ascend NPU and Kunlun XPU, you can also perform pipeline inference like OCR and PP-StructureV3. The method is similar to using GPU, requiring only a change in the device.
-
 You can quickly experience the OCR pipeline inference with a single command:
+
+* OCR pipeline inference
 
 ```bash
 # The default model used is PP-OCRv5
 paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --device npu:0
 ```
 
+* PP-StructureV3 pipeline inference
+
+```bash
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --device npu:0
+```
+
 To perform quick inference using the production line in your project, you can achieve this with just a few lines of code. Here’s an example of how you might set it up:
+
+* OCR pipeline inference
 
 ```python
 from paddleocr import PaddleOCR
@@ -99,6 +58,74 @@ for res in result:
     res.save_to_json("output")
 ```
 
-If you want to know more about OCR pipeline inference,please refer to [general OCR pipeline use guide](../pipeline_usage/OCR.en.md)。
+* PP-StructureV3 pipeline inference
 
-In addition, the Ascend NPU supports high-performance inference with PaddleX. Both single OCR models and production lines can utilize models in OM + ONNX format for enhanced performance, offering optimized inference speed and accuracy. For detailed instructions on how to use this feature, please refer to the [Ascend NPU High-Performance Inference Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/practical_tutorials/high_performance_npu_tutorial.en.md)。
+```python
+from paddleocr import PPStructureV3
+
+pipeline = PPStructureV3(device="npu:0")
+output = pipeline.predict("./pp_structure_v3_demo.png")
+for res in output:
+    res.print() 
+    res.save_to_json(save_path="output") 
+    res.save_to_markdown(save_path="output")
+```
+
+If you want to know more about OCR pipeline inference,please refer to [general OCR pipeline use guide](../pipeline_usage/OCR.en.md).
+If you want to know more about PPStructureV3 pipeline inference,please refer to [PP-StructureV3 pipeline use guide](../pipeline_usage/PP-StructureV3.en.md).
+
+### 2.2 Model Fine-tuning
+
+If you are not satisfied with the performance of the pre-trained model, you can fine-tune it.
+
+* train on Ascend NPU
+```bash
+export FLAGS_npu_storage_format=0
+export FLAGS_npu_jit_compile=0
+export FLAGS_use_stride_kernel=0
+export FLAGS_allocator_strategy=auto_growth
+export FLAGS_npu_split_aclnn=True
+export FLAGS_npu_scale_aclnn=True
+export CUSTOM_DEVICE_BLACK_LIST=pad3d,pad3d_grad
+python3 -m paddle.distributed.launch --devices '0,1,2,3' \
+        tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml \
+        -o Global.use_gpu=False Global.use_npu=True
+```
+
+* train on Kunlun XPU
+```bash
+export FLAGS_use_stride_kernel=0
+export BKCL_FORCE_SYNC=1
+export BKCL_TIMEOUT=1800
+export XPU_BLACK_LIST=pad3d,pad3d_grad
+python3 -m paddle.distributed.launch --devices '0,1,2,3' \
+        tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml \
+        -o Global.use_gpu=False Global.use_xpu=True
+```
+
+### 2.3 Other Inference methods
+
+On the Ascend NPU, for a small number of inference samples, using the aforementioned pipeline inference method may result in abnormal outcomes (primarily with the PP-StructureV3 pipeline). To address this issue, we support using ONNX models for inference to ensure correct results.
+
+You can use the following command to convert a Paddle model to an ONNX model:
+
+```bash
+paddlex --install paddle2onnx
+paddlex --paddle2onnx --paddle_model_dir /paddle_model_dir --onnx_model_dir /onnx_model_dir --opset_version 7
+```
+
+Meanwhile, some models support Ascend offline OM inference, effectively optimizing inference performance and memory usage. Using models in OM + ONNX format for pipeline inference can ensure both accuracy and speed.
+
+Use the ATC conversion tool to convert an ONNX model to an OM model:
+
+```bash
+atc --model=inference.onnx --framework=5 --output=inference --soc_version="your_device_type" --input_shape "your_input_shape"
+```
+
+We have deeply integrated ONNX and OM models into PaddleX for high-performance inference. By modifying the pipeline configuration file to set the model inference backend to ONNX or OM, you can use the PaddleX high-performance inference API for inference.
+
+For specific modification methods, inference code, and more usage instructions, please refer to [Ascend NPU High-Performance Inference Tutorial](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/practical_tutorials/high_performance_npu_tutorial.en.md)。
+
+## 3、 FAQ
+### 1.The inference results using PP-StructureV3 on the production line are incorrect. 
+Some models on this line have precision errors in a small number of cases. You can try adjusting the model in the configuration file or use ONNX+OM models for inference.
