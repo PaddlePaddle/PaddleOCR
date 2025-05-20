@@ -6,9 +6,9 @@ comments: true
 
 ## 1. OCR Pipeline Introduction
 
-OCR (Optical Character Recognition) is a technology that converts text in images into editable text. It is widely used in document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
+OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
 
-The General OCR Pipeline is designed to solve text recognition tasks by extracting text information from images and outputting it in text format. This pipeline integrates the industry-renowned PP-OCRv3 and PP-OCRv4 end-to-end OCR systems, supporting recognition for over 80 languages. Additionally, it includes functionalities for image orientation correction and distortion correction. Based on this pipeline, millisecond-level accurate text prediction can be achieved on CPUs, covering various scenarios such as general, manufacturing, finance, and transportation. The pipeline also offers flexible service-oriented deployment options, supporting calls in multiple programming languages across various hardware platforms. Furthermore, it provides secondary development capabilities, allowing you to fine-tune models on your own datasets, with trained models seamlessly integrable.
+The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_mobile model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_mobile in various scenarios.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
