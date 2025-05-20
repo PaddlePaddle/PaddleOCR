@@ -12,7 +12,7 @@ The Document Understanding Pipeline is an advanced document processing technolog
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/doc_understanding/doc_understanding.png">
 
-<b>The general document image preprocessing pipeline includes the following module. Each module can be trained and inferred independently and contains multiple models. For more details, click the corresponding module to view the documentation.</b>
+<b>The document understanding pipeline includes the following module. Each module can be trained and inferred independently and contains multiple models. For more details, click the corresponding module to view the documentation.</b>
 
 - [Document-like Vision Language Model Module](../module_usage/doc_vlm.md)
 
@@ -77,6 +77,22 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 </thead>
 <tbody>
 <tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports dictionary type input, required.
+<ul>
+<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>doc_understanding_model_name</code></td>
 <td>The name of the document understanding model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
@@ -92,22 +108,6 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td><code>doc_understanding_batch_size</code></td>
 <td>The batch size of the document understanding model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>input</code></td>
-<td>Data to be predicted, supports dictionary type input, required.
-<ul>
-<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
-<td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -161,6 +161,12 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -276,6 +282,12 @@ In the above Python script, the following steps are performed:
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -302,7 +314,7 @@ Below are the parameters and their descriptions for the `predict()` method:
 </ul>
 </td>
 <td><code>Python Dict</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>

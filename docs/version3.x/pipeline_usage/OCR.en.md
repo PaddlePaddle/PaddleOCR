@@ -545,6 +545,24 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </thead>  
 <tbody>  
 <tr>  
+<td><code>input</code></td>  
+<td>Input data (required). Supports:  
+<ul>  
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
+<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
+<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
+</ul>  
+</td>  
+<td><code>Python Var|str|list</code></td>  
+<td></td>  
+</tr>  
+<tr>  
+<td><code>save_path</code></td>  
+<td>Path to save inference results. If <code>None</code>, results are not saved locally.</td>  
+<td><code>str</code></td>  
+<td></td>  
+</tr>  
+<tr>  
 <td><code>doc_orientation_classify_model_name</code></td>  
 <td>Name of the document orientation classification model. If <code>None</code>, the default pipeline model is used.</td>  
 <td><code>str</code></td>  
@@ -744,24 +762,6 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>None</code></td>  
 </tr>  
 <tr>  
-<td><code>input</code></td>  
-<td>Input data (required). Supports:  
-<ul>  
-<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
-<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
-<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
-</ul>  
-</td>  
-<td><code>Python Var|str|list</code></td>  
-<td><code>None</code></td>  
-</tr>  
-<tr>  
-<td><code>save_path</code></td>  
-<td>Path to save inference results. If <code>None</code>, results are not saved locally.</td>  
-<td><code>str</code></td>  
-<td><code>None</code></td>  
-</tr>  
-<tr>  
 <td><code>device</code></td>  
 <td>Device for inference. Supports:  
 <ul>  
@@ -813,6 +813,12 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>int</code></td>  
 <td><code>8</code></td>  
 </tr>  
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>  
 </table>  
 </details>  
@@ -1133,6 +1139,12 @@ The Python script above performs the following steps:
 <td><code>int</code></td>  
 <td><code>8</code></td>  
 </tr>  
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>  
 </table>  
 </details>  
@@ -1158,7 +1170,7 @@ The Python script above performs the following steps:
 </ul>  
 </td>  
 <td><code>Python Var|str|list</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>  
 <tr>  
 <td><code>device</code></td>  
