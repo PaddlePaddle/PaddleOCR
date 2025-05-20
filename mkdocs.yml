@@ -166,6 +166,7 @@ plugins:
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
+            配置 PaddleOCR 推理包的日志系统: Configure the logging system for the PaddleOCR inference package
         # - locale: ja
         #   name: 日本語
         #   site_name: PaddleOCR ドキュメント
@@ -298,6 +299,7 @@ nav:
     - 昆仑 XPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_XPU.md
   - 其他说明:
     - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
+    - 配置 PaddleOCR 推理包的日志系统: version3.x/logging.md
     - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md
