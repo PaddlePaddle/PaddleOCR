@@ -3367,57 +3367,57 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>输入图像大小；如果不指定，PP-DocLayout_plus-L模型将默认使用800x800</td>
 <td><code>int/list/None</code></td>
 <td>
 <ul>
 <li><b>int</b>, 如 640 , 表示将输入图像resize到640x640大小</li>
 <li><b>列表</b>, 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，PP-DocLayout_plus-L模型将默认使用800x800</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用0.5</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用0.5</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认不使用NMS</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
 <li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认不使用</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>检测框的边长缩放倍数；如果不指定，将默认使用1.0</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
 <li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
 <li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用1.0</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用union模式</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
@@ -3425,7 +3425,7 @@ You're not viewing the latest version.
 <li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
 <li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
 <li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用union模式</li>
 </ul>
 </td>
 <td>None</td>
@@ -3448,12 +3448,7 @@ You're not viewing the latest version.
 </table>
 
 <ul>
-<li>
-<p>其中，<code>model_name</code> 必须指定，指定 <code>model_name</code> 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 <code>model_dir</code> 时，使用用户自定义的模型。</p>
-</li>
-<li>
-<p>调用目标检测模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code>、<code>batch_size</code>和<code>threshold</code>，具体说明如下：</p>
-</li>
+<li>调用目标检测模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code>、<code>batch_size</code>和<code>threshold</code>，具体说明如下：</li>
 </ul>
 <table>
 <thead>
@@ -3495,36 +3490,36 @@ You're not viewing the latest version.
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>threshold</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>threshold</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用0.5</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认不使用NMS</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
 <li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_nms</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_nms</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认不使用NMS</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>检测框的边长缩放倍数；如果不指定，将默认使用1.0</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
 <li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
 <li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_unclip_ratio</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_unclip_ratio</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用1.0</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用union模式</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
@@ -3532,7 +3527,7 @@ You're not viewing the latest version.
 <li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
 <li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
 <li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_merge_bboxes_mode</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_merge_bboxes_mode</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用union模式</li>
 </ul>
 </td>
 <td>无</td>
@@ -3648,7 +3643,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:24:05">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:34:26">2025年5月20日</span>
   </span>
 
     
@@ -3658,7 +3653,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:24:05">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:34:26">2025年5月20日</span>
   </span>
 
     
