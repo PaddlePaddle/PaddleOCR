@@ -2296,9 +2296,9 @@ This method will print the result to the terminal. The content printed to the te
 ## 3. Development Integration/Deployment
 If the pipeline meets your requirements for inference speed and accuracy in production, you can proceed directly with development integration/deployment.
 
-If you need to apply the pipeline directly in your Python project, you can refer to the sample code in [2.2 Local Experience](#22-local-experience).
+If you need to apply the pipeline directly in your Python project, you can refer to the sample code in [2.2  Python Script Experience](#22-python-script-experience).
 
-Additionally, PaddleX provides three other deployment methods, detailed as follows:
+Additionally, PaddleX provides two other deployment methods, detailed as follows:
 
 🚀 **High-Performance Inference**: In actual production environments, many applications have stringent standards for the performance metrics of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleX provides a high-performance inference plugin aimed at deeply optimizing model inference and pre/post-processing to significantly speed up the end-to-end process. For detailed instructions on high-performance inference, please refer to the [PaddleX High-Performance Inference Guide](../../../pipeline_deploy/high_performance_inference.md).
 
