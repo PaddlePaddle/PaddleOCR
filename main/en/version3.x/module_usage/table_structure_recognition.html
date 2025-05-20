@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#table-structure-recognition-module-usage-tutorial" class="md-skip">
+        <a href="#table-structure-recognition-module-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -1616,9 +1616,9 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-model-evaluation" class="md-nav__link">
+  <a href="#43-model-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.4 Model Evaluation
+      4.3 Model Evaluation
     </span>
   </a>
   
@@ -3083,9 +3083,9 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-model-evaluation" class="md-nav__link">
+  <a href="#43-model-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
-      4.4 Model Evaluation
+      4.3 Model Evaluation
     </span>
   </a>
   
@@ -3128,7 +3128,7 @@ You're not viewing the latest version.
   
 
 
-<h1 id="table-structure-recognition-module-usage-tutorial">Table Structure Recognition Module Usage Tutorial<a class="headerlink" href="#table-structure-recognition-module-usage-tutorial" title="Permanent link">&para;</a></h1>
+<h1 id="table-structure-recognition-module-tutorial">Table Structure Recognition Module Tutorial<a class="headerlink" href="#table-structure-recognition-module-tutorial" title="Permanent link">&para;</a></h1>
 <h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
 <p>Table structure recognition is an important component of table recognition systems, capable of converting non-editable table images into editable table formats (such as HTML). The goal of table structure recognition is to identify the positions of rows, columns, and cells in tables. The performance of this module directly affects the accuracy and efficiency of the entire table recognition system. The table structure recognition module usually outputs HTML or Latex code for the table area, which is then passed as input to the table content recognition module for further processing.</p>
 <h2 id="2-supported-model-list">2. Supported Model List<a class="headerlink" href="#2-supported-model-list" title="Permanent link">&para;</a></h2>
@@ -3217,7 +3217,7 @@ You're not viewing the latest version.
 
 <h2 id="3-quick-start">3. Quick Start<a class="headerlink" href="#3-quick-start" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the <a href="../installation.html">Installation Tutorial</a>.</p>
+<p>❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the <a href="../installation.en.md">Installation Tutorial</a>.</p>
 </blockquote>
 <p>Quickly experience with a single command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>table_structure_recognition<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg
@@ -3428,7 +3428,7 @@ You're not viewing the latest version.
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet.yml<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./SLANet_pretrained.pdparams
 </span></code></pre></div>
-<h3 id="44-model-evaluation">4.4 Model Evaluation<a class="headerlink" href="#44-model-evaluation" title="Permanent link">&para;</a></h3>
+<h3 id="43-model-evaluation">4.3 Model Evaluation<a class="headerlink" href="#43-model-evaluation" title="Permanent link">&para;</a></h3>
 <p>You can evaluate the trained weights, such as <code>output/xxx/xxx.pdparams</code>, using the following command:</p>
 <p>```bash</p>
 <h1 id="note-to-set-the-path-of-pretrained_model-to-the-local-path-if-you-use-the-model-saved-by-your-own-training-please-modify-the-path-and-file-name-to-pathtoweightsmodel_name">Note to set the path of pretrained_model to the local path. If you use the model saved by your own training, please modify the path and file name to {path/to/weights}/{model_name}.<a class="headerlink" href="#note-to-set-the-path-of-pretrained_model-to-the-local-path-if-you-use-the-model-saved-by-your-own-training-please-modify-the-path-and-file-name-to-pathtoweightsmodel_name" title="Permanent link">&para;</a></h1>
@@ -3436,7 +3436,7 @@ You're not viewing the latest version.
  python3 tools/eval.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
  ```</p>
-<h3 id="45-model-export">4.5 Model Export<a class="headerlink" href="#45-model-export" title="Permanent link">&para;</a></h3>
+<h3 id="44-model-export">4.4 Model Export<a class="headerlink" href="#44-model-export" title="Permanent link">&para;</a></h3>
 <p><code>bash
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
@@ -3470,7 +3470,7 @@ At this point, secondary development is complete, and this static graph model ca
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 07:52:14">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 07:56:36">May 20, 2025</span>
   </span>
 
     
@@ -3480,7 +3480,7 @@ At this point, secondary development is complete, and this static graph model ca
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 07:52:14">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 07:56:36">May 20, 2025</span>
   </span>
 
     
