@@ -166,7 +166,7 @@ plugins:
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
-            配置 PaddleOCR 推理包的日志系统: Configure the logging system for the PaddleOCR inference package
+            配置 PaddleOCR 推理包日志系统: Configure the logging system for the PaddleOCR inference package
         # - locale: ja
         #   name: 日本語
         #   site_name: PaddleOCR ドキュメント
