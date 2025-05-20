@@ -53,23 +53,10 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 
 - **PP-ChatOCRv4**: 智能文档理解方案
-   1. 🔥 文档文件（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15个百分点**！
+   1. 🔥 文档图像（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15个百分点**！
    2. 💻 原生支持**文心大模型4.5 Turbo**，还兼容 PaddleNLP、Ollama、vLLM 等工具部署的大模型。
    3. 🤝 集成 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支持印刷文字、手写体文字、印章信息、表格、图表等常见的复杂文档信息抽取和理解的能力。
 
-<details>
-   <summary><strong>历史更新记录</strong></summary>
-
-- 🔥🔥2025.03.07: **PaddleOCR v2.10** 发布：
-  - 新增 **12 个自研模型**:
-    - **[版式检测系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)**(3 模型): PP-DocLayout-L/M/S - 支持 23 类中英文文档版式检测（论文/报告/试卷/图书/期刊/合同等），最高达 **90.4% mAP@0.5**，轻量化设计支持每秒处理 100+ 页面
-    - **[公式识别系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/formula_recognition.html)**(2 模型): PP-FormulaNet-L/S - 支持 50,000+ LaTeX 公式识别，涵盖印刷体与手写体。PP-FormulaNet-L 精度提升 **6%**；PP-FormulaNet-S 速度提升 16 倍且精度相当
-    - **[表格结构识别系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_structure_recognition.html)**(2 模型): SLANeXt_wired/wireless - 新型模型复杂表格识别精度提升 **6%**
-    - **[表格分类模型](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html)**(1 模型): PP-LCNet_x1_0_table_cls - 超轻量有线/无线表格分类器
-
-[更多详情，请查看](https://paddlepaddle.github.io/PaddleOCR/latest/en/update.html)
-
-</details>
 
 ## ⚡ 快速开始
 ### 1. 在线体验
@@ -79,9 +66,8 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ### 2. 本地安装
 
-请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装。
+请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装, 然后，安装paddleocr。
 
-安装paddleocr
 ```bash
 # 安装 paddleocr
 pip install paddleocr
@@ -237,11 +223,11 @@ print(chat_result)
 </details>
 
 
-### 5. **国产化硬件支持**
+### 5. **国产化硬件使用**
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
   
-## ⚙️ 进阶指南
+## ⛰️ 进阶指南
 - [PP-OCRv5 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
