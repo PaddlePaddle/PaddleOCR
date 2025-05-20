@@ -241,7 +241,7 @@ print(chat_result)
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
   
-## 进阶指南
+## ⚙️ 进阶指南
 - [PP-OCRv5 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
@@ -288,7 +288,7 @@ print(chat_result)
 
 
 ## 📄 许可协议
-本项目采用 [Apache 2.0 协议](./LICENSE) 开源发布。
+本项目的发布受[Apache 2.0 license](LICENSE)许可认证。
 
 ## 🎓 学术引用
 
