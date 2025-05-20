@@ -121,7 +121,7 @@ The formula recognition module is a key component of an OCR (Optical Character R
 
 ## III. Quick Start
 
-> ❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../ppocr/installation.md).
+> ❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly try it out with a single command:
 ```bash
@@ -334,7 +334,7 @@ You can choose either method based on your actual needs. The `predict()` method 
 ## IV. Custom Development
 
 If the models above do not perform well in your scenario, you can try the following steps for custom development.  
-Here we take training `PP-FormulaNet_plus-M` as an example. For other models, just replace the corresponding config file.  First, you need to prepare a formula recognition dataset. You can follow the format of the [formula recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar).  Once the data is ready, follow the steps below to train and export the model. After export, the model can be quickly integrated into the API described above.  This example uses the demo dataset. Before training the model, please ensure you have installed all PaddleOCR dependencies as described in the [installation documentation](xxx).
+Here we take training `PP-FormulaNet_plus-M` as an example. For other models, just replace the corresponding config file.  First, you need to prepare a formula recognition dataset. You can follow the format of the [formula recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar).  Once the data is ready, follow the steps below to train and export the model. After export, the model can be quickly integrated into the API described above.  This example uses the demo dataset. Before training the model, please ensure you have installed all PaddleOCR dependencies as described in the [installation documentation](../installation.en.md).
 
 ### 4.1 Environment Setup
 

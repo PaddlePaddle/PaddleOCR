@@ -1,3 +1,9 @@
+---
+comments: true
+hide:
+  - navigation
+---
+
 ### Installation
 
 #### 1. Install PaddlePaddle
