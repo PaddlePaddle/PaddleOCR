@@ -307,7 +307,6 @@ The above data is from:
 
 * Paddle 3.0
 * PaddleOCR 3.0.0
-* PaddleX 3.0.0
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9

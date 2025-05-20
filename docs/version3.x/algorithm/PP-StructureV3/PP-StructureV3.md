@@ -307,7 +307,6 @@
 
 * Paddle 3.0正式版
 * PaddleOCR 3.0.0正式版
-* PaddleX 3.0.0正式版
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9
