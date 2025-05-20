@@ -783,7 +783,13 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>keys</code></td>
+<td>用于信息提取的键。</td>
+<td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
@@ -792,73 +798,8 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
-</ul>
-</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
-</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
 <td><code>invoke_mllm</code></td>
 <td>是否使用多模态大模型。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>qianfan_api_key</code></td>
-<td>qianfan api_key</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>pp_docbee_base_url</code></td>
-<td>多模态大模型服务的url。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -983,12 +924,6 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_general_ocr</code></td>
-<td>是否加载通用OCR子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>use_seal_recognition</code></td>
 <td>是否加载印章识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
@@ -1056,7 +991,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>
+<td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
 <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
@@ -1165,6 +1100,77 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
     <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>
 </td>
 <td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>qianfan_api_key</code></td>
+<td>qianfan api_key</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>pp_docbee_base_url</code></td>
+<td>多模态大模型服务的url。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>用于推理的设备。支持指定具体卡号。
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+</ul>
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否使用 TensorRT 进行推理加速。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>最小子图大小，用于优化模型子图的计算。</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>计算精度，如 fp32、fp16。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -1389,12 +1395,6 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_general_ocr</code></td>
-<td>是否加载通用OCR子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>use_seal_recognition</code></td>
 <td>是否加载印章识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
@@ -1462,7 +1462,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>
+<td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
 <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
@@ -1588,12 +1588,12 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>chat_bot_config</code></td>
-<td>大语言模型配置信息。配置内容为如下字典：
+<td><code>mllm_chat_bot_config</code></td>
+<td>多模态大模型配置参数。配置内容为如下字典：
 <pre><code>{
 "module_name": "chat_bot",
-"model_name": "ernie-3.5-8k",
-"base_url": "https://qianfan.baidubce.com/v2",
+"model_name": "PP-DocBee",
+"base_url": "http://127.0.0.1:8080/", # 请将此设置为实际的多模态大模型服务的url
 "api_type": "openai",
 "api_key": "api_key"  # 请将此设置为实际的API密钥
 }</code></pre>
@@ -1602,12 +1602,12 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>mllm_chat_bot_config</code></td>
-<td>多模态大模型配置参数。配置内容为如下字典：
+<td><code>chat_bot_config</code></td>
+<td>大语言模型配置信息。配置内容为如下字典：
 <pre><code>{
 "module_name": "chat_bot",
-"model_name": "PP-DocBee",
-"base_url": "http://127.0.0.1:8080/", # 请将此设置为实际的多模态大模型服务的url
+"model_name": "ernie-3.5-8k",
+"base_url": "https://qianfan.baidubce.com/v2",
 "api_type": "openai",
 "api_key": "api_key"  # 请将此设置为实际的API密钥
 }</code></pre>
@@ -1686,6 +1686,12 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 </details>
@@ -1711,7 +1717,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -1734,12 +1740,6 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td>是否在推理时使用文本行方向分类模块。</td>
-<td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_general_ocr</code></td>
-<td>是否在推理时使用 OCR 子产线。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1959,7 +1959,6 @@ for res in visual_predict_res:
     - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
 
         - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-        - `use_general_ocr`: `(bool)` 控制是否启用 OCR 子产线
         - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线
         - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线
         - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线
@@ -2115,7 +2114,7 @@ for res in visual_predict_res:
 </ul>
 </td>
 <td><code>Python Var|str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>key_list</code></td>
@@ -2399,12 +2398,6 @@ for res in visual_predict_res:
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
-<td>否</td>
-</tr>
-<tr>
-<td><code>useGeneralOcr</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_general_ocr</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
