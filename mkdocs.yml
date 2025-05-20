@@ -258,7 +258,7 @@ extra_css:
 
 nav:
   - Home: index.md
-  - 快速开始: version3.x/quick_start.md
+  - 快速开始: quick_start.md
   - PP-OCRv5: 
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
