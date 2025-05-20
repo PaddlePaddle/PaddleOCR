@@ -1365,7 +1365,7 @@ The Python script above performs the following steps:
 
 If the general OCR pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.
 
-If you need to apply the general OCR pipeline directly in your Python project, you can refer to the sample code in [2.2 Python Script Integration](#22-python-script-intergration).
+If you need to apply the general OCR pipeline directly in your Python project, you can refer to the sample code in [2.2 Python Script Integration](#22-python-script-integration).
 
 Additionally, PaddleOCR provides two other deployment methods, detailed as follows:
 
