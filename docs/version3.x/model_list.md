@@ -6,7 +6,7 @@ comments: true
 
 PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个模块包含若干模型，具体使用哪些模型，您可以根据下边的 benchmark 数据来选择。如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型。
 
-## [文本检测模块](../module_usage/tutorials/ocr_modules/text_detection.md)
+## [文本检测模块](./module_usage/text_detection.md)
 
 <table>
 <thead>
@@ -79,7 +79,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 </table>
 <b>注：以上精度指标的评估集是 PaddleOCR 自建的中英文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 593 张图片。</b>
 
-## [印章文本检测模块](../module_usage/tutorials/ocr_modules/seal_text_detection.md)
+## [印章文本检测模块](./module_usage/seal_text_detection.md)
 <table>
 <thead>
 <tr>
@@ -112,7 +112,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 </table>
 <b>注：以上精度指标的评估集是 PaddleOCR 自建的印章数据集，包含500印章图像。</b>
 
-## [文本识别模块](../module_usage/tutorials/ocr_modules/text_recognition.md)
+## [文本识别模块](./module_usage/text_recognition.md)
 
 * <b>中文识别模型</b>
 <table>
@@ -375,7 +375,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <p><b>注：以上精度指标的评估集是 PaddleOCR 自建的多语种数据集。</b></p>
 
-## [公式识别模块](../module_usage/tutorials/ocr_modules/formula_recognition.md)
+## [公式识别模块](./module_usage/formula_recognition.md)
 
 <table>
 <tr>
@@ -457,7 +457,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <b>注：以上精度指标测量自 PaddleX 内部自建公式识别测试集。LaTeX_OCR_rec在LaTeX-OCR公式识别测试集的BLEU score为 0.8821。</b>
 
-## [表格结构识别模块](../module_usage/tutorials/ocr_modules/table_structure_recognition.md)
+## [表格结构识别模块](./module_usage/table_structure_recognition.md)
 
 <table>
 <tr>
@@ -505,7 +505,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 <b>注：以上精度指标测量自 PaddleX 内部自建高难度中文表格识别数据集。</b>
 
 
-## [表格单元格检测模块](../module_usage/tutorials/ocr_modules/table_cells_detection.md)
+## [表格单元格检测模块](./module_usage/table_cells_detection.md)
 
 <table>
 <tr>
@@ -535,7 +535,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <p><b>注：以上精度指标测量自 PaddleX 内部自建表格单元格检测数据集。</b></p>
 
-## [表格分类模块](../module_usage/tutorials/ocr_modules/table_classification.md)
+## [表格分类模块](./module_usage/table_classification.md)
 
 <table>
 <tr>
@@ -559,7 +559,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <p><b>注：以上精度指标测量自 PaddleX 内部自建表格分类数据集。</b></p>
 
-## [文本图像矫正模块](../module_usage/tutorials/ocr_modules/text_image_unwarping.md)
+## [文本图像矫正模块](./module_usage/text_image_unwarping.md)
 <table>
 <thead>
 <tr>
@@ -584,7 +584,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <b>注：以上精度指标测量自 </b><b>PaddleX自建的图像矫正数据集</b><b>。</b>
 
-## [版面区域检测模块](../module_usage/tutorials/ocr_modules/layout_detection.md)
+## [版面区域检测模块](./module_usage/layout_detection.md)
 
 * <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
 <table>
@@ -830,7 +830,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 </table>
 <b>注：以上精度指标的评估集是 PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</b>
 
-## [文档图像方向分类模块](../module_usage/tutorials/ocr_modules/doc_img_orientation_classification.md)
+## [文档图像方向分类模块](./module_usage/doc_img_orientation_classification.md)
 
 <table>
 <thead>
@@ -859,7 +859,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 <b>注：以上精度指标的评估集是自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</b>
 
 
-## [文本行方向分类模块](../module_usage/tutorials/ocr_modules/doc_img_orientation_classification.md)
+## [文本行方向分类模块](./module_usage/doc_img_orientation_classification.md)
 
 <table>
 <thead>
