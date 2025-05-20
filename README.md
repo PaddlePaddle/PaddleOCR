@@ -33,7 +33,7 @@ PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到�
 PaddleOCR 3.0**新增**三大特色能力：：
 - 🖼️全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。
 - 🧮通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。
-- 📈智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15.7个百分点**。
+- 📈智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
@@ -61,7 +61,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 
 - **PP-ChatOCRv4**: 智能文档理解方案
-   1. 🔥 文档文件（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15.7%**！
+   1. 🔥 文档文件（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15个百分点%**！
    2. 💻 原生支持**文心大模型4.5 Turbo**，还兼容 [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP)、Ollama、vLLM 等工具部署的大模型。
    3. 🤝 集成 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee)，支持印刷文字、手写体文字、印章信息、表格、图表等常见的复杂文档信息抽取和理解的能力。
 
@@ -137,7 +137,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 # 运行 PP-StructureV3 推理
 paddleocr PP-StructureV3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
 
-# 运行 PP-ChatOCRv4 推理
+# 运行 PP-ChatOCRv4 推理前，请先获得千帆KPI Key
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
 
 # 查看 "paddleocr ocr" 详细参数
