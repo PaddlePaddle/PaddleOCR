@@ -79,7 +79,9 @@ comments: true
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../ppocr/installation.md)。
+
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
+
 
 使用一行命令即可快速体验：
 
@@ -289,4 +291,4 @@ for res in output:
 
 ## 四、二次开发
 
-......
+由于 PaddleOCR 并不直接提供文档图像方向分类的训练，因此，如果需要训练文档图像方向分类模型，可以参考 [PaddleX 文档图像方向分类二次开发](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5)部分进行训练。训练后的模型可以无缝集成到 PaddleOCR 的 API 中进行推理。

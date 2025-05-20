@@ -794,7 +794,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../ppocr/installation.md). After installation, you can experience it locally using the command line or Python integration.
+Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../installation.md). After installation, you can experience it locally using the command line or Python integration.
 
 ### 2.1 Command Line Experience
 

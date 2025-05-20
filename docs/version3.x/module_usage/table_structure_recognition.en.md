@@ -97,7 +97,7 @@ Table structure recognition is an important component of table recognition syste
 
 ## 3. Quick Start
 
-> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../ppocr/installation.md).
+> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../installation.md).
 
 Quickly experience with a single command:
 
@@ -329,20 +329,20 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 
 ### 4.4 Model Evaluation
 
-You can evaluate the trained weights, such as `output/xxx/xxx.pdprams`, using the following command:
+You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
 
 ```bash
 # Note to set the path of pretrained_model to the local path. If you use the model saved by your own training, please modify the path and file name to {path/to/weights}/{model_name}.
  # Demo test set evaluation
  python3 tools/eval.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdprams
+ Global.pretrained_model=output/xxx/xxx.pdparams
  ```
 
 ### 4.5 Model Export
 
 ```bash
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdprams \
+ Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./SLANet_infer/"
  ```
 

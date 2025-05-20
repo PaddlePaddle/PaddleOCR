@@ -13,7 +13,8 @@ comments: true
 <table>
 <tr>
 <th>模型</th><th>模型下载链接</th>
-<th>Avg-BLEU(%)</th>
+<th>En-BLEU(%)</th>
+<th>Zh-BLEU(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>模型存储大小 (M)</th>
@@ -21,53 +22,62 @@ comments: true
 </tr>
 <td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
 <td>85.91</td>
+<td>43.50</td>
 <td>2266.96/-</td>
 <td>-/-</td>
-<td>1.4 G</td>
+<td>1.53 G</td>
 <td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
 <tr>
 <td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
 <td>87.00</td>
+<td>45.71</td>
 <td>202.25/-</td>
 <td>-/-</td>
-<td>223.6 M</td>
+<td>224 M</td>
 <td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
 
 </tr>
 <td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
 <td>90.36</td>
+<td>45.78</td>
 <td>1976.52/-</td>
 <td>-/-</td>
-<td>694.6 M</td>
+<td>695 M</td>
 <tr>
-</tr>
-<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
-<td>92.22</td>
-<td>-/-</td>
-<td>-/-</td>
-<td>697.6 M</td>
-<td rowspan="3">PP-FormulaNet_plus 是在 PP-FormulaNet 的基础上开发的增强版 。该版本使用了来自中文学位论文、专业书籍、教材试卷和数学期刊的丰富数据集，大幅提升了识别能力。其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 新增了对中文公式的支持，并将最大预测 token 数从 1024 扩大至 2560，显著提升了复杂公式的识别性能；而 PP-FormulaNet_plus-S 则专注于增强英文公式识别能力。PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。
- </td>
-<tr>
-</tr>
-<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
-<td>91.45</td>
-<td>-/-</td>
-<td>-/-</td>
-<td>591.71 M</td>
-<tr>
-</tr>
 <td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
 <td>88.71</td>
+<td>53.32</td>
+<td>191.69/-</td>
 <td>-/-</td>
+<td>248 M</td>
+<td rowspan="3">PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 的基础上开发的增强版公式识别模型。与原版相比，PP-FormulaNet_plus 在训练中使用了更为丰富的公式数据集，包括中文学位论文、专业书籍、教材试卷以及数学期刊等多种来源。这一扩展显著提升了模型的识别能力。
+
+其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 模型新增了对中文公式的支持，并将公式的最大预测 token 数从 1024 扩大至 2560，大幅提升了对复杂公式的识别性能。同时，PP-FormulaNet_plus-S 模型则专注于增强英文公式的识别能力。通过这些改进，PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。 </td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
+<td>91.45</td>
+<td>89.76</td>
+<td>1301.56/-</td>
 <td>-/-</td>
-<td>247.6 M</td>
+<td>592 M</td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>92.22</td>
+<td>90.64</td>
+<td>1745.25/-</td>
+<td>-/-</td>
+<td>698 M</td>
+</tr>
+
 <tr>
 <td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
-<td>71.63</td>
+<td>74.55</td>
+<td>39.96</td>
+<td>1244.61/-</td>
 <td>-/-</td>
-<td>-/-</td>
-<td>89.7 M</td>
+<td>99 M</td>
 <td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
 </tr>
 </table>
@@ -117,7 +127,7 @@ comments: true
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../ppocr/installation.md)。
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
 使用一行命令即可快速体验：
 
@@ -129,7 +139,7 @@ paddleocr formula_recognition -i https://paddle-model-ecology.bj.bcebos.com/padd
 
 ```python
 from paddleocr import FormulaRecognition
-model = FormulaRecognition(model_name="PP-FormulaNet-S")
+model = FormulaRecognition(model_name="PP-FormulaNet_plus-M")
 output = model.predict(input="general_formula_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -140,7 +150,7 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-{\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z{\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}}\\ \\ {vec\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
+{'res': {'input_path': '/root/.paddlex/predict_input/general_formula_rec_001.png', 'page_index': None, 'rec_formula': '\\zeta_{0}(\\nu)=-\\frac{\\nu\\varrho^{-2\\nu}}{\\pi}\\int_{\\mu}^{\\infty}d\\omega\\int_{C_{+}}d z\\frac{2z^{2}}{(z^{2}+\\omega^{2})^{\\nu+1}}\\breve{\\Psi}(\\omega;z)e^{i\\epsilon z}\\quad,'}}
 ```
 
 运行结果参数含义如下：
@@ -151,17 +161,17 @@ for res in output:
 
 可视化图片如下，左侧是待预测的公式图像，右边是预测的结果渲染后的公式图像：
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res.png">
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/formula_recog/general_formula_rec_001_res_paddleocr3.png">
 
 <b> 注：如果您需要对公式识别模块进行可视化，需要运行如下命令来对LaTeX渲染环境进行安装。目前公式识别模块可视化只支持Ubuntu环境，其他环境暂不支持。对于复杂公式，LaTeX 结果可能包含部分高级的表示，Markdown等环境中未必可以成功显示：</b>
 ```bash
 sudo apt-get update
-sudo apt-get install texlive texlive-latex-base texlive-latex-extra -y
+sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texlive-latex-extra -y
 ```
 
 相关方法、参数等说明如下：
 
-* `FormulaRecognition`实例化公式识别模型（此处以`PP-FormulaNet-S`为例），具体说明如下：
+* `FormulaRecognition`实例化公式识别模型（此处以`PP-FormulaNet_plus-M`为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -332,7 +342,7 @@ sudo apt-get install texlive texlive-latex-base texlive-latex-extra -y
 
 
 ## 四、二次开发
-如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-FormulaNet-S` 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考[公式识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](xxx)安装了 PaddleOCR 所需要的依赖。
+如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-FormulaNet-S` 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考[公式识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 ## 4.1 环境配置
 
@@ -356,58 +366,58 @@ tar -xf ocr_rec_latexocr_dataset_example.tar
 ### 4.2.2 下载预训练模型
 
 ```shell
-# 下载 PP-FormulaNet-S 预训练模型
-wget https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar 
-tar -xf rec_ppformulanet_s_train.tar
+# 下载 PP-FormulaNet_plus-M 预训练模型
+wget https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar 
+tar -xf rec_ppformulanet_plus_m_train.tar
 ```
 
 ### 4.3 模型训练
 
-PaddleOCR对代码进行了模块化，训练 `PP-FormulaNet-S` 识别模型时需要使用 `PP-FormulaNet-S` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml)。
+PaddleOCR对代码进行了模块化，训练 `PP-FormulaNet_plus-M` 识别模型时需要使用 `PP-FormulaNet_plus-M` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml)。
 
 
 训练命令如下：
 
 ```bash
 #单卡训练 (默认训练方式)
-python3 tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
-   -o Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
+python3 tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml \
+   -o Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 #多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
-        -o Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml \
+        -o Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 ```
 
 **注意：**
 
 - 默认每训练 1个 epoch 进行 1 次评估，若您更改训练的 batch_size，或更换数据集，请在训练时作出如下修改
 ```bash
-python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml \
+python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml \
   -o Global.eval_batch_step=[0,{length_of_dataset//batch_size//4}] \
-   Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
+   Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
 ```
 
 ### 4.4 模型评估
 
-您可以评估已经训练好的权重，如，`output/xxx/xxx.pdprams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar )，使用如下命令进行评估：
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar )，使用如下命令进行评估：
 
 ```bash
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
  # demo 测试集评估
- python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams
+ python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
+ Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
  ```
 
 ### 4.5 模型导出
 
 ```bash
- python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_s_train/best_accuracy.pdparams \
- save_inference_dir="./PP-FormulaNet-S_infer/"
+ python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
+ Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
+ Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
  ```
 
- 导出模型后，静态图模型会存放于当前目录的`./PP-FormulaNet-S_infer/`中，在该目录下，您将看到如下文件：
+ 导出模型后，静态图模型会存放于当前目录的`./PP-FormulaNet_plus-M_infer/`中，在该目录下，您将看到如下文件：
  ```
- ./PP-FormulaNet-S_infer/
+ ./PP-FormulaNet_plus-M_infer/
  ├── inference.json
  ├── inference.pdiparams
  ├── inference.yml
