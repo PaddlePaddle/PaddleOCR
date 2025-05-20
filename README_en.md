@@ -270,7 +270,8 @@ print(chat_result)
 
 
 ## 😃 Awesome Projects Leveraging PaddleOCR
-💗 PaddleOCR wouldn’t be where it is today without its incredible community! A massive 🙌 thank you 🙌 to all our longtime partners, new collaborators, and everyone who’s poured their passion into PaddleOCR — whether we’ve named you or not. Your support fuels our fire! 🔥
+PaddleOCR wouldn’t be where it is today without its incredible community! 💗 A massive thank you to all our longtime partners, new collaborators, and everyone who’s poured their passion into PaddleOCR — whether we’ve named you or not. Your support fuels our fire!
+
 | Project Name | Description |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|RAG engine based on deep document understanding.|
