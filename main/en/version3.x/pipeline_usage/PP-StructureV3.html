@@ -984,81 +984,6 @@ You're not viewing the latest version.
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#2-quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Quick Start
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-experiencing-via-command-line" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.1 Experiencing via Command Line
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-python-script-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2 Python Script Integration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-development-integrationdeployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Development Integration/Deployment
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-custom-development" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Custom Development
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Custom Development">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-model-fine-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Model Fine-Tuning
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-model-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 Model Application
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -2985,81 +2910,6 @@ You're not viewing the latest version.
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#2-quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Quick Start
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#21-experiencing-via-command-line" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.1 Experiencing via Command Line
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#22-python-script-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2 Python Script Integration
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-development-integrationdeployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Development Integration/Deployment
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-custom-development" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Custom Development
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Custom Development">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-model-fine-tuning" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Model Fine-Tuning
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-model-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 Model Application
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -3327,7 +3177,7 @@ You're not viewing the latest version.
 * <b>Chinese Recognition Model</b>
 <table>
 <tr>
-<th>Model</th><th>Model Download Link</th>
+<th>Model</th><th>Model Download Links</th>
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
@@ -3335,36 +3185,100 @@ You're not viewing the latest version.
 <th>Introduction</th>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>81.53</td>
+<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>86.38</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>81.29</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
+<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
+<td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>74.7 M</td>
-<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data based on PP-OCRv4_server_rec. It has added the recognition capabilities for some traditional Chinese characters, Japanese, and special characters. The number of recognizable characters is over 15,000. In addition to the improvement in document-related text recognition, it also enhances the general text recognition capability.</td>
+<td>91 M</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
-<td>78.74</td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>10.6 M</td>
-<td>The lightweight recognition model of PP-OCRv4 has high inference efficiency and can be deployed on various hardware devices, including edge devices.</td>
+<td>11 M</td>
+<td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Trained Model</a></td>
-<td>80.61 </td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>71.2 M</td>
-<td>The server-side model of PP-OCRv4 offers high inference accuracy and can be deployed on various types of servers.</td>
+<td>87 M</td>
+<td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
-<td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>72.96</td>
-<td>5.87 / 1.19</td>
-<td>9.07 / 4.28</td>
-<td>9.2 M</td>
-<td>PP-OCRv3’s lightweight recognition model is designed for high inference efficiency and can be deployed on a variety of hardware devices, including edge devices.</td>
+<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>70.39</td>
+<td>4.81 / 0.75</td>
+<td>16.10 / 5.31</td>
+<td>7.3 M</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
+</tr>
+</table>
+
+> ❗ The above section lists the **6 core models** that are primarily supported by the text recognition module. In total, the module supports **20 comprehensive models**, including multiple multilingual text recognition models. Below is the complete list of models:
+
+<details><summary> 👉Details of the Model List</summary>
+
+* <b>PP-OCRv5 Multi-Scenario Models</b>
+
+<table>
+<tr>
+<th>Model</th><th>Model Download Links</th>
+<th>Avg Accuracy for Chinese Recognition (%)</th>
+<th>Avg Accuracy for English Recognition (%)</th>
+<th>Avg Accuracy for Traditional Chinese Recognition (%)</th>
+<th>Avg Accuracy for Japanese Recognition (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (M)</th>
+<th>Introduction</th>
+</tr>
+<tr>
+<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>86.38</td>
+<td>64.70</td>
+<td>93.29</td>
+<td>60.35</td>
+<td> 8.45/2.36 </td>
+<td> 122.69/122.69 </td>
+<td>81 M</td>
+<td>PP-OCRv5_server_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>81.29</td>
+<td>66.00</td>
+<td>83.55</td>
+<td>54.65</td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
+<td>16 M</td>
+<td>PP-OCRv5_mobile_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 </table>
 
@@ -3716,14 +3630,17 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 
 </details>
 
-<h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
-<p>All the model pipelines provided by PaddleX can be quickly experienced. You can use the command line or Python on your local machine to experience the effect of the PP-StructureV3 pipeline.</p>
-<p>Before using the PP-StructureV3 pipeline locally, please ensure that you have completed the installation of the PaddleX wheel package according to the <a href="../installation.html">PaddleOCR Local Installation Guide</a>. If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is <code>ocr</code>.</p>
-<blockquote>
-<p>When performing GPU inference, the default configuration may use more than 16 GB of VRAM. Please ensure that your GPU has sufficient memory. To reduce VRAM usage, you can modify the configuration file as described below to disable unnecessary features.</p>
-</blockquote>
-<h3 id="21-experiencing-via-command-line">2.1 Experiencing via Command Line<a class="headerlink" href="#21-experiencing-via-command-line" title="Permanent link">&para;</a></h3>
-<p>You can quickly experience the PP-StructureV3 pipeline with a single command. Use the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png">test file</a> and replace <code>--input</code> with the local path to perform prediction.</p>
+## 2. Quick Start
+All the model pipelines provided by PaddleX can be quickly experienced. You can use the command line or Python on your local machine to experience the effect of the PP-StructureV3 pipeline.
+
+Before using the PP-StructureV3 pipeline locally, please ensure that you have completed the installation of the PaddleX wheel package according to the [PaddleOCR Local Installation Guide](../installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ocr`.
+
+> When performing GPU inference, the default configuration may use more than 16 GB of VRAM. Please ensure that your GPU has sufficient memory. To reduce VRAM usage, you can modify the configuration file as described below to disable unnecessary features.
+
+### 2.1 Experiencing via Command Line
+
+You can quickly experience the PP-StructureV3 pipeline with a single command. Use the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png) and replace `--input` with the local path to perform prediction.
+
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddlex --pipeline PP-StructureV3 \
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        --input pp_structure_v3_demo.png \
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        --use_doc_orientation_classify False \
@@ -3733,8 +3650,11 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        --save_path ./output \
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        --device gpu:0
 </span></code></pre></div>
-<p>The parameter description can be found in <a href="#222-python-script-integration">2.2.2 Python Script Integration</a>. Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to <a href="../../instructions/parallel_inference.en.md#specifying-multiple-inference-devices">Pipeline Parallel Inference</a>.</p>
-<p>After running, the result will be printed to the terminal, as follows:</p>
+
+The parameter description can be found in [2.2.2 Python Script Integration](#222-python-script-integration). Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to [Pipeline Parallel Inference](../../instructions/parallel_inference.en.md#specifying-multiple-inference-devices).
+
+After running, the result will be printed to the terminal, as follows:
+
 <details><summary>👉Click to Expand</summary>
 <pre><code>
 
@@ -3770,11 +3690,14 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 
 </code></pre></details>
 
-<p>The result parameter description can be found in the result interpretation in <a href="#222-python-script-integration">2.2.2 Python Script Integration</a>.</p>
-<p><b>Note:</b> Since the default model of the pipeline is relatively large, the inference speed may be slow. You can refer to the model list in Section 1 and replace it with a model that has faster inference speed.</p>
-<h3 id="22-python-script-integration">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration" title="Permanent link">&para;</a></h3>
-<p>Just a few lines of code can complete the quick inference of the pipeline. Taking the PP-StructureV3 pipeline as an example:</p>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
+The result parameter description can be found in the result interpretation in [2.2.2 Python Script Integration](#222-python-script-integration).
+
+<b>Note:</b> Since the default model of the pipeline is relatively large, the inference speed may be slow. You can refer to the model list in Section 1 and replace it with a model that has faster inference speed.
+
+### 2.2 Python Script Integration
+Just a few lines of code can complete the quick inference of the pipeline. Taking the PP-StructureV3 pipeline as an example:
+
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3&quot;</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
@@ -3789,7 +3712,8 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the structured JSON result of the current image</span>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the result of the current image in Markdown format</span>
 </span></code></pre></div>
-If it is a PDF file, each page of the PDF will be processed separately, and each page will have its own corresponding Markdown file. If you want to convert the entire PDF file into a Markdown file, it is recommended to run it in the following way:</p>
+If it is a PDF file, each page of the PDF will be processed separately, and each page will have its own corresponding Markdown file. If you want to convert the entire PDF file into a Markdown file, it is recommended to run it in the following way:
+
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
@@ -3824,20 +3748,19 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>            <span class="n">file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 </span></code></pre></div>
-<p><strong>Note:</strong></p>
-<ul>
-<li>
-<p>The default text recognition model used by PP-StructureV3 is the <strong>Chinese-English recognition model</strong>. Limited recognition capability for purely English text. For fully English scenarios, you can modify the <code>model_name</code> under the <code>TextRecognition</code> configuration item in the <a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-rc/paddlex/configs/pipelines/PP-StructureV3.yaml">PP-StructureV3 configuration file</a> to <code>en_PP-OCRv4_mobile_rec</code> or other English recognition models for better recognition results. For other language scenarios, you can also refer to the model list mentioned earlier and choose the corresponding language recognition model for replacement.</p>
-</li>
-<li>
-<p>In the example code, the parameters <code>use_doc_orientation_classify</code>, <code>use_doc_unwarping</code>, and <code>use_textline_orientation</code> are all set to False by default. These parameters respectively control the document orientation classification, document unwarping, and text line orientation classification functions. If you need to use these features, you can manually set them to True.</p>
-</li>
-<li>
-<p>PP-StructureV3 provides flexible parameter configuration, allowing you to adjust parameters for layout detection, text detection, text recognition, etc., based on the characteristics of the document for better results. For more detailed configurations, please refer to the <a href="https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-rc/paddlex/configs/pipelines/PP-StructureV3.yaml">PP-StructureV3 configuration file</a>.</p>
-</li>
-</ul>
-<p>In the above Python script, the following steps are executed:</p>
-<p>(1) Instantiate the <code>create_pipeline</code> instance to create a pipeline object. The specific parameter descriptions are as follows:</p>
+
+**Note:**
+
+- The default text recognition model used by PP-StructureV3 is the **Chinese-English recognition model**. Limited recognition capability for purely English text. For fully English scenarios, you can modify the `model_name` under the `TextRecognition` configuration item in the [PP-StructureV3 configuration file](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-rc/paddlex/configs/pipelines/PP-StructureV3.yaml) to `en_PP-OCRv4_mobile_rec` or other English recognition models for better recognition results. For other language scenarios, you can also refer to the model list mentioned earlier and choose the corresponding language recognition model for replacement.
+
+- In the example code, the parameters `use_doc_orientation_classify`, `use_doc_unwarping`, and `use_textline_orientation` are all set to False by default. These parameters respectively control the document orientation classification, document unwarping, and text line orientation classification functions. If you need to use these features, you can manually set them to True.
+
+- PP-StructureV3 provides flexible parameter configuration, allowing you to adjust parameters for layout detection, text detection, text recognition, etc., based on the characteristics of the document for better results. For more detailed configurations, please refer to the [PP-StructureV3 configuration file](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-rc/paddlex/configs/pipelines/PP-StructureV3.yaml).
+
+In the above Python script, the following steps are executed:
+
+(1) Instantiate the `create_pipeline` instance to create a pipeline object. The specific parameter descriptions are as follows:
+
 <table>
 <thead>
 <tr>
@@ -3883,7 +3806,8 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </tbody>
 </table>
 
-<p>(2) Call the <code>predict()</code> method of the pipeline object to perform inference prediction. This method will return a <code>generator</code>. Below are the parameters and their descriptions for the <code>predict()</code> method:</p>
+(2) Call the `predict()` method of the pipeline object to perform inference prediction. This method will return a `generator`. Below are the parameters and their descriptions for the `predict()` method:
+
 <table>
 <thead>
 <tr>
@@ -4302,7 +4226,8 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </tr>
 </table>
 
-<p>(3) Process the prediction results: The prediction result of each sample is a corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a <code>json</code> file:</p>
+(3) Process the prediction results: The prediction result of each sample is a corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a `json` file:
+
 <table>
 <thead>
 <tr>
@@ -4388,117 +4313,81 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </tr>
 </table>
 
-<ul>
-<li>
-<p>Calling the <code>print()</code> method will print the results to the terminal. The content printed to the terminal is explained as follows:</p>
-<ul>
-<li>
-<p><code>input_path</code>: <code>(str)</code> The input path of the image to be predicted.</p>
-</li>
-<li>
-<p><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, this indicates which page of the PDF it is; otherwise, it is <code>None</code>.</p>
-</li>
-<li>
-<p><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters required for configuring the pipeline.</p>
-<ul>
-<li><code>use_doc_preprocessor</code>: <code>(bool)</code> Controls whether to enable the document preprocessor sub-line.</li>
-<li><code>use_general_ocr</code>: <code>(bool)</code> Controls whether to enable the OCR sub-line.</li>
-<li><code>use_seal_recognition</code>: <code>(bool)</code> Controls whether to enable the seal recognition sub-line.</li>
-<li><code>use_table_recognition</code>: <code>(bool)</code> Controls whether to enable the table recognition sub-line.</li>
-<li><code>use_formula_recognition</code>: <code>(bool)</code> Controls whether to enable the formula recognition sub-line.</li>
-</ul>
-</li>
-<li>
-<p><code>parsing_res_list</code>: <code>(List[Dict])</code> A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.</p>
-<ul>
-<li><code>layout_bbox</code>: <code>(np.ndarray)</code> The bounding box of the layout area.</li>
-<li><code>{label}</code>: <code>(str)</code> The key is the label of the layout area, such as <code>text</code>, <code>table</code>, etc., and the content is the content within the layout area.</li>
-<li><code>layout</code>: <code>(str)</code> The layout type, such as <code>double</code>, <code>single</code>, etc.</li>
-</ul>
-</li>
-<li>
-<p><code>overall_ocr_res</code>: <code>(Dict[str, Union[List[str], List[float], numpy.ndarray]])</code> A dictionary of global OCR results</p>
-</li>
-<li><code>input_path</code>: <code>(Union[str, None])</code> The image path accepted by the image OCR sub-line. When the input is a <code>numpy.ndarray</code>, it is saved as <code>None</code>.</li>
-<li><code>model_settings</code>: <code>(Dict)</code> Model configuration parameters for the OCR sub-line.</li>
-<li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> A list of polygon boxes for text detection. Each detection box is represented by a numpy array of 4 vertex coordinates, with a shape of (4, 2) and a data type of int16.</li>
-<li><code>dt_scores</code>: <code>(List[float])</code> A list of confidence scores for text detection boxes.</li>
-<li>
-<p><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Configuration parameters for the text detection module.</p>
-<ul>
-<li><code>limit_side_len</code>: <code>(int)</code> The side length limit value during image preprocessing.</li>
-<li><code>limit_type</code>: <code>(str)</code> The processing method for side length limits.</li>
-<li><code>thresh</code>: <code>(float)</code> The confidence threshold for text pixel classification.</li>
-<li><code>box_thresh</code>: <code>(float)</code> The confidence threshold for text detection boxes.</li>
-<li><code>unclip_ratio</code>: <code>(float)</code> The expansion ratio for text detection boxes.</li>
-<li><code>text_type</code>: <code>(str)</code> The type of text detection, currently fixed as "general".</li>
-</ul>
-</li>
-<li>
-<p><code>text_type</code>: <code>(str)</code> The type of text detection, currently fixed as "general".</p>
-</li>
-<li><code>textline_orientation_angles</code>: <code>(List[int])</code> The prediction results for text line orientation classification. When enabled, it returns the actual angle values (e.g., [0,0,1]).</li>
-<li><code>text_rec_score_thresh</code>: <code>(float)</code> The filtering threshold for text recognition results.</li>
-<li><code>rec_texts</code>: <code>(List[str])</code> A list of text recognition results, containing only texts with confidence scores above <code>text_rec_score_thresh</code>.</li>
-<li><code>rec_scores</code>: <code>(List[float])</code> A list of confidence scores for text recognition, filtered by <code>text_rec_score_thresh</code>.</li>
-<li>
-<p><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> A list of text detection boxes filtered by confidence score, in the same format as <code>dt_polys</code>.</p>
-</li>
-<li>
-<p><code>text_paragraphs_ocr_res</code>: <code>(Dict[str, Union[List[str], List[float], numpy.ndarray]])</code> OCR results for paragraphs, excluding paragraphs of layout types such as tables, seals, and formulas.</p>
-<ul>
-<li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> A list of text detection boxes, in the same format as <code>dt_polys</code>.</li>
-<li><code>rec_texts</code>: <code>(List[str])</code> A list of text recognition results.</li>
-<li><code>rec_scores</code>: <code>(List[float])</code> A list of confidence scores for text recognition results.</li>
-<li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.</li>
-</ul>
-</li>
-<li>
-<p><code>formula_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> A list of formula recognition results, where each element is a dictionary.</p>
-<ul>
-<li><code>rec_formula</code>: <code>(str)</code> The result of formula recognition.</li>
-<li><code>rec_polys</code>: <code>(numpy.ndarray)</code> The detection box for the formula, with a shape of (4, 2) and a dtype of int16.</li>
-<li><code>formula_region_id</code>: <code>(int)</code> The region ID where the formula is located.</li>
-</ul>
-</li>
-<li>
-<p><code>seal_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> A list of seal recognition results, where each element is a dictionary.</p>
-<ul>
-<li><code>input_path</code>: <code>(str)</code> The input path of the seal image.</li>
-<li><code>model_settings</code>: <code>(Dict)</code> Model configuration parameters for the seal recognition sub-line.</li>
-<li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> A list of seal detection boxes, in the same format as <code>dt_polys</code>.</li>
-<li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Configuration parameters for the seal detection module, with the same specific parameter meanings as above.</li>
-<li><code>text_type</code>: <code>(str)</code> The type of seal detection, currently fixed as "seal".</li>
-<li><code>text_rec_score_thresh</code>: <code>(float)</code> The filtering threshold for seal recognition results.</li>
-<li><code>rec_texts</code>: <code>(List[str])</code> A list of seal recognition results, containing only texts with confidence scores above <code>text_rec_score_thresh</code>.</li>
-<li><code>rec_scores</code>: <code>(List[float])</code> A list of confidence scores for seal recognition, filtered by <code>text_rec_score_thresh</code>.</li>
-<li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> A list of seal detection boxes filtered by confidence score, in the same format as <code>dt_polys</code>.</li>
-<li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.</li>
-</ul>
-</li>
-<li>
-<p><code>table_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> A list of table recognition results, where each element is a dictionary.</p>
-<ul>
-<li><code>cell_box_list</code>: <code>(List[numpy.ndarray])</code> A list of bounding boxes for table cells.</li>
-<li><code>pred_html</code>: <code>(str)</code> The HTML format string of the table.</li>
-<li><code>table_ocr_pred</code>: <code>(dict)</code> The OCR recognition results of the table.<ul>
-<li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> A list of detection boxes for cells.</li>
-<li><code>rec_texts</code>: <code>(List[str])</code> The recognition results of cells.</li>
-<li><code>rec_scores</code>: <code>(List[float])</code> The recognition confidence scores of cells.</li>
-<li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_res.json</code>. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving NumPy arrays, <code>numpy.array</code> types will be converted to lists.</p>
-</li>
-<li>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, it will save images such as layout detection visualization, global OCR visualization, and layout reading order visualization. If a file is specified, it will be saved directly to that file. (The pipeline usually contains many result images, so it is not recommended to specify a specific file path directly; otherwise, multiple images will be overwritten, and only the last image will be retained.)</li>
-<li>Calling the <code>save_to_markdown()</code> method will save the converted Markdown file to the specified <code>save_path</code>. The save path will be <code>save_path/{your_img_basename}.md</code>. If the input is a PDF file, it is recommended to specify a directory directly; otherwise, multiple Markdown files will be overwritten.</li>
-</ul>
-<p>In addition, it also supports obtaining visualized images with results and prediction results through attributes, as follows:</p>
+- Calling the `print()` method will print the results to the terminal. The content printed to the terminal is explained as follows:
+    - `input_path`: `(str)` The input path of the image to be predicted.
+
+    - `page_index`: `(Union[int, None])` If the input is a PDF file, this indicates which page of the PDF it is; otherwise, it is `None`.
+
+    - `model_settings`: `(Dict[str, bool])` Model parameters required for configuring the pipeline.
+
+        - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessor sub-line.
+        - `use_general_ocr`: `(bool)` Controls whether to enable the OCR sub-line.
+        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal recognition sub-line.
+        - `use_table_recognition`: `(bool)` Controls whether to enable the table recognition sub-line.
+        - `use_formula_recognition`: `(bool)` Controls whether to enable the formula recognition sub-line.
+
+    - `parsing_res_list`: `(List[Dict])` A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.
+        - `layout_bbox`: `(np.ndarray)` The bounding box of the layout area.
+        - `{label}`: `(str)` The key is the label of the layout area, such as `text`, `table`, etc., and the content is the content within the layout area.
+        - `layout`: `(str)` The layout type, such as `double`, `single`, etc.
+
+    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` A dictionary of global OCR results
+      -  `input_path`: `(Union[str, None])` The image path accepted by the image OCR sub-line. When the input is a `numpy.ndarray`, it is saved as `None`.
+      - `model_settings`: `(Dict)` Model configuration parameters for the OCR sub-line.
+      - `dt_polys`: `(List[numpy.ndarray])` A list of polygon boxes for text detection. Each detection box is represented by a numpy array of 4 vertex coordinates, with a shape of (4, 2) and a data type of int16.
+      - `dt_scores`: `(List[float])` A list of confidence scores for text detection boxes.
+      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the text detection module.
+        - `limit_side_len`: `(int)` The side length limit value during image preprocessing.
+        - `limit_type`: `(str)` The processing method for side length limits.
+        - `thresh`: `(float)` The confidence threshold for text pixel classification.
+        - `box_thresh`: `(float)` The confidence threshold for text detection boxes.
+        - `unclip_ratio`: `(float)` The expansion ratio for text detection boxes.
+        - `text_type`: `(str)` The type of text detection, currently fixed as "general".
+
+      - `text_type`: `(str)` The type of text detection, currently fixed as "general".
+      - `textline_orientation_angles`: `(List[int])` The prediction results for text line orientation classification. When enabled, it returns the actual angle values (e.g., [0,0,1]).
+      - `text_rec_score_thresh`: `(float)` The filtering threshold for text recognition results.
+      - `rec_texts`: `(List[str])` A list of text recognition results, containing only texts with confidence scores above `text_rec_score_thresh`.
+      - `rec_scores`: `(List[float])` A list of confidence scores for text recognition, filtered by `text_rec_score_thresh`.
+      - `rec_polys`: `(List[numpy.ndarray])` A list of text detection boxes filtered by confidence score, in the same format as `dt_polys`.
+
+    - `text_paragraphs_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` OCR results for paragraphs, excluding paragraphs of layout types such as tables, seals, and formulas.
+        - `rec_polys`: `(List[numpy.ndarray])` A list of text detection boxes, in the same format as `dt_polys`.
+        - `rec_texts`: `(List[str])` A list of text recognition results.
+        - `rec_scores`: `(List[float])` A list of confidence scores for text recognition results.
+        - `rec_boxes`: `(numpy.ndarray)` An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.
+
+    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` A list of formula recognition results, where each element is a dictionary.
+        - `rec_formula`: `(str)` The result of formula recognition.
+        - `rec_polys`: `(numpy.ndarray)` The detection box for the formula, with a shape of (4, 2) and a dtype of int16.
+        - `formula_region_id`: `(int)` The region ID where the formula is located.
+
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` A list of seal recognition results, where each element is a dictionary.
+        - `input_path`: `(str)` The input path of the seal image.
+        - `model_settings`: `(Dict)` Model configuration parameters for the seal recognition sub-line.
+        - `dt_polys`: `(List[numpy.ndarray])` A list of seal detection boxes, in the same format as `dt_polys`.
+        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the seal detection module, with the same specific parameter meanings as above.
+        - `text_type`: `(str)` The type of seal detection, currently fixed as "seal".
+        - `text_rec_score_thresh`: `(float)` The filtering threshold for seal recognition results.
+        - `rec_texts`: `(List[str])` A list of seal recognition results, containing only texts with confidence scores above `text_rec_score_thresh`.
+        - `rec_scores`: `(List[float])` A list of confidence scores for seal recognition, filtered by `text_rec_score_thresh`.
+        - `rec_polys`: `(List[numpy.ndarray])` A list of seal detection boxes filtered by confidence score, in the same format as `dt_polys`.
+        - `rec_boxes`: `(numpy.ndarray)` An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.
+
+    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` A list of table recognition results, where each element is a dictionary.
+        - `cell_box_list`: `(List[numpy.ndarray])` A list of bounding boxes for table cells.
+        - `pred_html`: `(str)` The HTML format string of the table.
+        - `table_ocr_pred`: `(dict)` The OCR recognition results of the table.
+            - `rec_polys`: `(List[numpy.ndarray])` A list of detection boxes for cells.
+            - `rec_texts`: `(List[str])` The recognition results of cells.
+            - `rec_scores`: `(List[float])` The recognition confidence scores of cells.
+            - `rec_boxes`: `(numpy.ndarray)` An array of rectangular bounding boxes for detection boxes, with a shape of (n, 4) and a dtype of int16. Each row represents a rectangle.
+
+- Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the save path will be `save_path/{your_img_basename}_res.json`. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving NumPy arrays, `numpy.array` types will be converted to lists.
+- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, it will save images such as layout detection visualization, global OCR visualization, and layout reading order visualization. If a file is specified, it will be saved directly to that file. (The pipeline usually contains many result images, so it is not recommended to specify a specific file path directly; otherwise, multiple images will be overwritten, and only the last image will be retained.)
+- Calling the `save_to_markdown()` method will save the converted Markdown file to the specified `save_path`. The save path will be `save_path/{your_img_basename}.md`. If the input is a PDF file, it is recommended to specify a directory directly; otherwise, multiple Markdown files will be overwritten.
+
+In addition, it also supports obtaining visualized images with results and prediction results through attributes, as follows:
 <table>
 <thead>
 <tr>
@@ -4542,19 +4431,17 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </tbody>
 </table>
 
-<ul>
-<li>The prediction result obtained through the <code>json</code> attribute is data of the dict type, and its content is consistent with the content saved by calling the <code>save_to_json()</code> method.</li>
-<li>The prediction result returned by the <code>img</code> attribute is data of the dictionary type. The keys are <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, and the corresponding values are <code>Image.Image</code> objects: used to display the visualized images of layout detection, OCR, OCR text paragraphs, formulas, tables, and seal results. If the optional module is not used, the dictionary only contains <code>layout_det_res</code>.</li>
-<li>
-<ul>
-<li>The <code>markdown</code> property returns the prediction result as a dictionary. The keys are <code>markdown_texts</code> and <code>markdown_images</code>, corresponding to markdown text and images for display in Markdown (<code>Image.Image</code> objects).</li>
-</ul>
-</li>
-</ul>
-<p>In addition, you can obtain the PP-StructureV3 pipeline configuration file and load the configuration file for prediction. You can execute the following command to save the result in <code>my_path</code>:</p>
+- The prediction result obtained through the `json` attribute is data of the dict type, and its content is consistent with the content saved by calling the `save_to_json()` method.
+- The prediction result returned by the `img` attribute is data of the dictionary type. The keys are `layout_det_res`, `overall_ocr_res`, `text_paragraphs_ocr_res`, `formula_res_region1`, `table_cell_img`, and `seal_res_region1`, and the corresponding values are `Image.Image` objects: used to display the visualized images of layout detection, OCR, OCR text paragraphs, formulas, tables, and seal results. If the optional module is not used, the dictionary only contains `layout_det_res`.
+- - The `markdown` property returns the prediction result as a dictionary. The keys are `markdown_texts` and `markdown_images`, corresponding to markdown text and images for display in Markdown (`Image.Image` objects).
+
+In addition, you can obtain the PP-StructureV3 pipeline configuration file and load the configuration file for prediction. You can execute the following command to save the result in `my_path`:
+
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>paddlex --get_pipeline_config PP-StructureV3 --save_path ./my_path
 </span></code></pre></div>
-<p>If you have obtained the configuration file, you can customize the PP-StructureV3 pipeline configuration. You just need to modify the <code>pipeline</code> parameter value in the <code>create_pipeline</code> method to the path of the pipeline configuration file. The example is as follows:</p>
+
+If you have obtained the configuration file, you can customize the PP-StructureV3 pipeline configuration. You just need to modify the `pipeline` parameter value in the `create_pipeline` method to the path of the pipeline configuration file. The example is as follows:
+
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="s2">&quot;./my_path/PP-StructureV3.yaml&quot;</span><span class="p">)</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
@@ -4569,14 +4456,22 @@ If it is a PDF file, each page of the PDF will be processed separately, and each
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the structured JSON result of the current image</span>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the result of the current image in Markdown format</span>
 </span></code></pre></div>
-<p><b>Note:</b> The parameters in the configuration file are the pipeline initialization parameters. If you wish to change the initialization parameters of the PP-StructureV3 pipeline, you can directly modify the parameters in the configuration file and load the configuration file for prediction. Additionally, CLI prediction also supports passing in a configuration file, simply specify the path of the configuration file with <code>--pipeline</code>.</p>
-<h2 id="3-development-integrationdeployment">3. Development Integration/Deployment<a class="headerlink" href="#3-development-integrationdeployment" title="Permanent link">&para;</a></h2>
-<p>If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.</p>
-<p>If you need to integrate the pipeline directly into your Python project, you can refer to the example code in <a href="#22-python脚本方式集成">2.2 Python Script Method</a>.</p>
-<p>In addition, PaddleX also provides three other deployment methods, which are detailed as follows:</p>
-<p>🚀 <b>High-Performance Inference</b>: In actual production environments, many applications have strict performance requirements (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To this end, PaddleX provides a high-performance inference plugin aimed at deeply optimizing the performance of model inference and pre/post-processing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to the <a href="../../../pipeline_deploy/high_performance_inference.en.md">PaddleX High-Performance Inference Guide</a>.</p>
-<p>☁️ <b>Serving Deployment</b>: Serving Deployment is a common form of deployment in actual production environments. By encapsulating the inference functionality into a service, clients can access these services through network requests to obtain inference results. PaddleX supports various serving deployment solutions for pipelines. For detailed procedures, please refer to the <a href="../../../pipeline_deploy/serving.en.md">PaddleX Serving Deployment Guide</a>.</p>
-<p>Below is the API reference for basic serving deployment and examples of service calls in multiple languages:</p>
+
+<b>Note:</b> The parameters in the configuration file are the pipeline initialization parameters. If you wish to change the initialization parameters of the PP-StructureV3 pipeline, you can directly modify the parameters in the configuration file and load the configuration file for prediction. Additionally, CLI prediction also supports passing in a configuration file, simply specify the path of the configuration file with `--pipeline`.
+
+## 3. Development Integration/Deployment
+If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.
+
+If you need to integrate the pipeline directly into your Python project, you can refer to the example code in [2.2 Python Script Method](#22-python脚本方式集成).
+
+In addition, PaddleX also provides three other deployment methods, which are detailed as follows:
+
+🚀 <b>High-Performance Inference</b>: In actual production environments, many applications have strict performance requirements (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To this end, PaddleX provides a high-performance inference plugin aimed at deeply optimizing the performance of model inference and pre/post-processing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to the [PaddleX High-Performance Inference Guide](../../../pipeline_deploy/high_performance_inference.en.md).
+
+☁️ <b>Serving Deployment</b>: Serving Deployment is a common form of deployment in actual production environments. By encapsulating the inference functionality into a service, clients can access these services through network requests to obtain inference results. PaddleX supports various serving deployment solutions for pipelines. For detailed procedures, please refer to the [PaddleX Serving Deployment Guide](../../../pipeline_deploy/serving.en.md).
+
+Below is the API reference for basic serving deployment and examples of service calls in multiple languages:
+
 <details><summary>API Reference</summary>
 <p>For the main operations provided by the service:</p>
 <ul>
@@ -4998,13 +4893,18 @@ for i, res in enumerate(result["layoutParsingResults"]):
         print(f"Output image saved at {img_path}")
 </code></pre></details>
 </details>
-<p><br/></p>
-<p>📱 <b>Edge Deployment</b>: Edge deployment is a method of placing computing and data processing capabilities directly on user devices, allowing the device to process data without relying on remote servers. PaddleX supports deploying models on edge devices such as Android. For detailed edge deployment procedures, please refer to the <a href="../../../pipeline_deploy/edge_deploy.en.md">PaddleX Edge Deployment Guide</a>.
-You can choose the appropriate deployment method based on your needs to integrate the model into your pipeline and proceed with subsequent AI application integration.</p>
-<h2 id="4-custom-development">4. Custom Development<a class="headerlink" href="#4-custom-development" title="Permanent link">&para;</a></h2>
-<p>If the default model weights provided by the PP-StructureV3 pipeline do not meet your requirements in terms of accuracy or speed, you can try to fine-tune the existing model using your own domain-specific or application-specific data to improve the recognition performance of the PP-StructureV3 pipeline in your scenario.</p>
-<h3 id="41-model-fine-tuning">4.1 Model Fine-Tuning<a class="headerlink" href="#41-model-fine-tuning" title="Permanent link">&para;</a></h3>
-<p>Since the PP-StructureV3 pipeline includes several modules, the unsatisfactory performance of the pipeline may originate from any one of these modules. You can analyze the cases with poor extraction results, identify which module is problematic through visualizing the images, and refer to the corresponding fine-tuning tutorial links in the table below to fine-tune the model.</p>
+<br/>
+
+📱 <b>Edge Deployment</b>: Edge deployment is a method of placing computing and data processing capabilities directly on user devices, allowing the device to process data without relying on remote servers. PaddleX supports deploying models on edge devices such as Android. For detailed edge deployment procedures, please refer to the [PaddleX Edge Deployment Guide](../../../pipeline_deploy/edge_deploy.en.md).
+You can choose the appropriate deployment method based on your needs to integrate the model into your pipeline and proceed with subsequent AI application integration.
+
+## 4. Custom Development
+If the default model weights provided by the PP-StructureV3 pipeline do not meet your requirements in terms of accuracy or speed, you can try to fine-tune the existing model using your own domain-specific or application-specific data to improve the recognition performance of the PP-StructureV3 pipeline in your scenario.
+
+
+### 4.1 Model Fine-Tuning
+Since the PP-StructureV3 pipeline includes several modules, the unsatisfactory performance of the pipeline may originate from any one of these modules. You can analyze the cases with poor extraction results, identify which module is problematic through visualizing the images, and refer to the corresponding fine-tuning tutorial links in the table below to fine-tune the model.
+
 <table>
 <thead>
 <tr>
@@ -5062,22 +4962,25 @@ You can choose the appropriate deployment method based on your needs to integrat
 </tbody>
 </table>
 
-<h3 id="42-model-application">4.2 Model Application<a class="headerlink" href="#42-model-application" title="Permanent link">&para;</a></h3>
-<p>After you complete fine-tuning with your private dataset, you will obtain a local model weight file.</p>
-<p>If you need to use the fine-tuned model weights, simply modify the production configuration file by replacing the local directory of the fine-tuned model weights to the corresponding position in the production configuration file:</p>
-<ol>
-<li>Exporting Pipeline Configuration Files</li>
-</ol>
-<p>You can call the <code>export_paddlex_config_to_yaml</code> method of the pipeline object to export the current pipeline configuration to a YAML file. Here is an example:</p>
+### 4.2 Model Application
+After you complete fine-tuning with your private dataset, you will obtain a local model weight file.
+
+If you need to use the fine-tuned model weights, simply modify the production configuration file by replacing the local directory of the fine-tuned model weights to the corresponding position in the production configuration file:
+
+1. Exporting Pipeline Configuration Files
+
+You can call the `export_paddlex_config_to_yaml` method of the pipeline object to export the current pipeline configuration to a YAML file. Here is an example:
+
 <div class="language-Python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<ol>
-<li>Editing Pipeline Configuration Files</li>
-</ol>
-<p>Replace the local directory of the fine-tuned model weights to the corresponding position in the pipeline configuration file. For example:</p>
+
+2. Editing Pipeline Configuration Files
+
+Replace the local directory of the fine-tuned model weights to the corresponding position in the pipeline configuration file. For example:
+
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">LayoutDetection</span><span class="p">:</span>
@@ -5111,17 +5014,21 @@ You can choose the appropriate deployment method based on your needs to integrat
 </span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">        </span><span class="nt">score_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 </span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
 </span></code></pre></div>
-<p>The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html">PaddleX Pipeline Usage Overview</a> for detailed instructions on adjusting various configurations according to your needs.</p>
-<ol>
-<li>Loading Pipeline Configuration Files in CLI</li>
-</ol>
-<p>By specifying the path to the PaddleX pipeline configuration file using the <code>--paddlex_config</code> parameter, PaddleOCR will read its contents as the configuration for inference. Here is an example:</p>
+
+The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
+
+
+3. Loading Pipeline Configuration Files in CLI
+
+By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the configuration for inference. Here is an example:
+
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-StructureV3.yaml<span class="w"> </span>...
 </span></code></pre></div>
-<ol>
-<li>Loading Pipeline Configuration Files in Python API</li>
-</ol>
-<p>When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the <code>paddlex_config</code> parameter, and PaddleOCR will use it as the configuration for inference. Here is an example:</p>
+
+4. Loading Pipeline Configuration Files in Python API
+
+When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the configuration for inference. Here is an example:
+
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
@@ -5148,7 +5055,7 @@ You can choose the appropriate deployment method based on your needs to integrat
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:05:03">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:08:13">May 20, 2025</span>
   </span>
 
     
@@ -5158,7 +5065,7 @@ You can choose the appropriate deployment method based on your needs to integrat
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:05:03">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:08:13">May 20, 2025</span>
   </span>
 
     
