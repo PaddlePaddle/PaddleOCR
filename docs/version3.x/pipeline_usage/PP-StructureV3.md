@@ -1298,7 +1298,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
        [1142, ..., 1367]], dtype=int16)}}}
 </code></pre></details>
 
-运行结果参数说明可以参考[2.2.2 Python脚本方式集成](#222-python脚本方式集成)中的结果解释。
+运行结果参数说明可以参考[2.2 Python脚本方式集成](#222-python脚本方式集成)中的结果解释。
 
 <b>注：</b>由于产线的默认模型较大，推理速度可能较慢，您可以参考第一节的模型列表，替换推理速度更快的模型。
 
