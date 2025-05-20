@@ -79,7 +79,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 # 运行 PP-StructureV3 推理
 paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False 
 
-# 运行 PP-ChatOCRv4 推理前，需要先获得千帆KPI Key
+# 运行 PP-ChatOCRv4 推理前，需要先获得千帆API Key
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
 # 查看 "paddleocr ocr" 详细参数
