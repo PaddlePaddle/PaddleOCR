@@ -163,7 +163,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的文本检测模型名称</td>
+<td>所有支持的文本检测模型名称</td>
 <td>无</td>
 </tr>
 <tr>
@@ -186,8 +186,7 @@ for res in output:
 <td><code>int/None</code></td>
 <td>
 <ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>int</b>: 大于0的任意整数</li></ul></td>
 
 <td>None</td>
 </tr>
@@ -197,8 +196,7 @@ for res in output:
 <td><code>str/None</code></td>
 <td>
 <ul>
-<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len。</li></ul></td>
 
 
 <td>None</td>
@@ -210,7 +208,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+</li></ul></td>
 
 <td>None</td>
 </tr>
@@ -221,7 +219,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+</li></ul></td>
 
 <td>None</td>
 </tr>
@@ -232,7 +230,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+</li></ul></td>
 
 <td>None</td>
 </tr>

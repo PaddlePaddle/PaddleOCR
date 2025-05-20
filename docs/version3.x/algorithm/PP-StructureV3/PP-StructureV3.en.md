@@ -307,7 +307,6 @@ The above data is from:
 
 * Paddle 3.0
 * PaddleOCR 3.0.0
-* PaddleX 3.0.0
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9
@@ -518,14 +517,14 @@ Use default configuration.
    <td>Success Number/Total Number</td> 
   </tr> 
   <tr"> 
-   <tddata-morpho-td-border-index="1" cellindex="0">4卡*1</td> 
+   <td>4 GPUs * 1</td> 
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 
    <td>1</td> 
   </tr> 
   <tr"> 
-   <td>4卡*4</td> 
+   <td>4 GPUs * 4</td> 
    <td>16</td> 
    <td>4.05</td> 
    <td>3.87</td> 
