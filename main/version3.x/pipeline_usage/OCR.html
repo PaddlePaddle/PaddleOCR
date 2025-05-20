@@ -2063,7 +2063,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../upgrade_notes.html" class="md-nav__link">
+      <a href="../../update/upgrade_notes.html" class="md-nav__link">
         
   
   
@@ -3047,7 +3047,7 @@ You're not viewing the latest version.
 <h1 id="ocr">通用OCR产线使用教程<a class="headerlink" href="#ocr" title="Permanent link">&para;</a></h1>
 <h2 id="1-ocr">1. OCR产线介绍<a class="headerlink" href="#1-ocr" title="Permanent link">&para;</a></h2>
 <p>OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。</p>
-<p>通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线集成了业界知名的 PP-OCRv3 和 PP-OCRv4 的端到端 OCR 串联系统，支持超过 80 种语言的识别，并在此基础上，增加了对图像的方向矫正和扭曲矫正功能。基于本产线，可实现 CPU 上毫秒级的文本内容精准预测，使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<p>通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/></p>
 <p><b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b></p>
 <ul>
@@ -3558,7 +3558,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span>--device<span class="w"> </span>gpu:0<span class="w"> </span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># 通过 --ocr_version 指定 PP-OCR 其他版本</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--ocr_version<span class="w"> </span>PP-OCRv4
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--ocr_version<span class="w"> </span>PP-OCRv5
 </span></code></pre></div>
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
@@ -4769,7 +4769,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:34:26">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:36:06">2025年5月20日</span>
   </span>
 
     
@@ -4779,7 +4779,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:34:26">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:36:06">2025年5月20日</span>
   </span>
 
     
