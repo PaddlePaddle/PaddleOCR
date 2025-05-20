@@ -2709,7 +2709,7 @@ for i, res in enumerate(result["layoutParsingResults"]):
 
 1. 获取产线配置文件
 
-可调用 PaddleOCR 中 PPStructureV3 产线对象的 export_paddlex_config_to_yaml 方法，将当前产线配置导出为 YAML 文件：
+可调用 PaddleOCR 中 PPStructureV3 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
 
 ```Python
 from paddleocr import PPStructureV3
@@ -2750,7 +2750,7 @@ SubPipelines:
 
       TextRecognition:
         module_name: text_recognition
-        model_name: PP-OCRv5_server_rec_doc
+        model_name: PP-OCRv5_server_rec
         model_dir: null # 替换为微调后的文本识别模型权重路径
         batch_size: 1
         score_thresh: 0
@@ -2764,7 +2764,7 @@ SubPipelines:
 在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```bash
-paddleocr ocr --paddlex_config PP-StructureV3.yaml ...
+paddleocr pp_structurev3 --paddlex_config PP-StructureV3.yaml ...
 ```
 
 4. 在 Python API 中加载产线配置文件

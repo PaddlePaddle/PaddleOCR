@@ -1203,7 +1203,7 @@ retriever_config = {
 
 mllm_chat_bot_config = {
     "module_name": "chat_bot",
-    "model_name": "PP-DocBee",
+    "model_name": "PP-DocBee2",
     "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
@@ -3005,9 +3005,22 @@ print(result_chat["chatResult"])
 
 
 ### 4.2 模型应用
-当您使用私有数据集完成微调训练后，可获得本地模型权重文件。
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。
 
-若您需要使用微调后的模型权重，只需对产线配置文件做修改，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可：
+1. 获取产线配置文件
+
+可调用 PaddleOCR 中 PPChatOCRv4 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import PPChatOCRv4
+
+pipeline = PPChatOCRv4()
+pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4.yaml")
+```
+
+2. 修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
 
 ```yaml
 ......
@@ -3031,4 +3044,22 @@ SubModules:
 ......
 ```
 
-随后， 参考[2.2 本地体验](#22-本地体验)中的命令行方式或Python脚本方式，加载修改后的产线配置文件即可。
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3. 在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4.yaml ...
+```
+
+4. 在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import PPChatOCRv4
+
+pipeline = PPChatOCRv4(paddlex_config="PP-ChatOCRv4.yaml")
+```
