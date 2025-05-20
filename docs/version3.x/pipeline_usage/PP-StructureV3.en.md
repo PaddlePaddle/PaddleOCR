@@ -863,20 +863,21 @@ Before using the PP-StructureV3 pipeline locally, please ensure that you have co
 
 ### 2.1 Experiencing via Command Line
 
-You can quickly experience the PP-StructureV3 pipeline with a single command. Use the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png) and replace `--input` with the local path to perform prediction.
+You can quickly experience the PP-StructureV3 pipeline with a single command.
 
-```
-paddlex --pipeline PP-StructureV3 \
-        --input pp_structure_v3_demo.png \
-        --use_doc_orientation_classify False \
-        --use_doc_unwarping False \
-        --use_textline_orientation False \
-        --use_e2e_wireless_table_rec_model True \
-        --save_path ./output \
-        --device gpu:0
+```bash
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_classify True
+
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
+
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
+
+paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 ```
 
-The parameter description can be found in [2.2.2 Python Script Integration](#222-python-script-integration). Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to [Pipeline Parallel Inference](../../instructions/parallel_inference.en.md#specifying-multiple-inference-devices).
+The parameter description can be found in [2.2 Python Script Integration](#22PythonScriptIntegration). Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to [Pipeline Parallel Inference](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/instructions/parallel_inference.html).
 
 After running, the result will be printed to the terminal, as follows:
 
