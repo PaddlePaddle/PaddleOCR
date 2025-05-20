@@ -1,11 +1,10 @@
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
       <img width="100%" src="./docs/images/Banner_cn.png" alt="PaddleOCR Banner"></a>
   </p>
 
 <!-- language -->
-[English](./README_en.md) | 简体中文| [日本語](./README_ja.md)
+中文 | [English](./README_en.md) |  [日本語](./README_ja.md)
 
 <!-- icon -->
 
@@ -27,14 +26,13 @@
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配**飞桨框架3.0正式版**，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5 Turbo**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
 PaddleOCR 3.0**新增**三大特色能力：：
-- 🖼️全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。
-- 🧮通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。
-- 📈智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。
+- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。
+- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。
+- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
       <img width="100%" src="./docs/images/Arch_cn.png" alt="PaddleOCR Architecture"></a>
   </p>
 </div>
@@ -74,21 +72,19 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 </details>
 
 ## ⚡ 快速开始
-### 1. 在线体验无需安装
+### 1. 在线体验
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
-### 2. 本地安装指南
+### 2. 本地安装
 
-首先，请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装。
+请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装。
 
-然后，安装paddleocr
+安装paddleocr
 ```bash
-# 1. 安装 paddleocr
+# 安装 paddleocr
 pip install paddleocr
-# 2. 安装完毕后自检
-paddleocr --version
 ```
 
 ### 3. 命令行方式推理
@@ -99,7 +95,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 # 运行 PP-StructureV3 推理
 paddleocr PP-StructureV3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
 
-# 运行 PP-ChatOCRv4 推理
+# 运行 PP-ChatOCRv4 推理前，需要先获得千帆KPI Key
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
 
 # 查看 "paddleocr ocr" 详细参数
@@ -240,10 +236,30 @@ print(chat_result)
 
 </details>
 
+[进阶指南]()
+
 ### 5. **国产化硬件支持**
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
   
+
+
+## 🔄 效果展示
+
+<div align="center">
+  <p>
+       <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
+  </p>
+</div>
+
+<div align="center">
+  <p>
+      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+  </p>
+</div>
+
+## 👩‍👩‍👧‍👦 开发者社区
+
 ## 😃 使用 PaddleOCR 的优秀项目
 💗 PaddleOCR 的发展离不开社区贡献！衷心感谢所有开发者、合作伙伴与贡献者！
 | 项目名称 | 简介 |
@@ -255,25 +271,7 @@ print(chat_result)
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |基于任意内容的问答系统|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|高效复杂PDF文档提取工具包|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |屏幕实时翻译工具|
-| [更多项目](./awesome_projects.md) | [基于 PaddleOCR 的扩展项目](./awesome_projects.md)|
-
-## 🔄 快速一览运行效果
-
-<div align="center">
-  <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
-  </p>
-</div>
-
-<div align="center">
-  <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
-  </p>
-</div>
-
-## 👩‍👩‍👧‍👦 开发者社区
+| [更多项目](./awesome_projects.md) | |
 
 ## 📄 许可协议
 本项目采用 [Apache 2.0 协议](./LICENSE) 开源发布。
