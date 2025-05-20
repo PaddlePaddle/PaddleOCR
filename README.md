@@ -63,7 +63,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 - **PP-ChatOCRv4**: 智能文档理解方案
    1. 🔥 文档文件（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15.7%**！
    2. 💻 原生支持**文心大模型4.5 Turbo**，还兼容 [PaddleNLP](https://github.com/PaddlePaddle/PaddleNLP)、Ollama、vLLM 等工具部署的大模型。
-   3. 🤝 集成 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee)，支持印刷文字、手写体文字、印章信息、表格、图表等常见的复杂文档信息抽取和理解的能力。
+   3. 🤝 集成 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支持印刷文字、手写体文字、印章信息、表格、图表等常见的复杂文档信息抽取和理解的能力。
 
 <details>
    <summary><strong>历史更新记录</strong></summary>
