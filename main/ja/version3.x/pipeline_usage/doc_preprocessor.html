@@ -3228,6 +3228,24 @@ You're not viewing the latest version.
 </thead>
 <tbody>
 <tr>
+<td><code>input</code></td>
+<td>待预测数据，支持多种输入类型，必填。
+<ul>
+<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
+<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
 <td><code>str</code></td>
@@ -3263,24 +3281,6 @@ You're not viewing the latest version.
 <td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
-<ul>
-<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
-<td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -3335,6 +3335,12 @@ You're not viewing the latest version.
 <td>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -3462,6 +3468,12 @@ You're not viewing the latest version.
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -3487,7 +3499,7 @@ You're not viewing the latest version.
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -3882,7 +3894,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
     <span class="md-icon" title="最終更新日">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 07:13:40">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 07:17:30">2025年5月20日</span>
   </span>
 
     
@@ -3892,7 +3904,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
     <span class="md-icon" title="作成日">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 07:13:40">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 07:17:30">2025年5月20日</span>
   </span>
 
     
