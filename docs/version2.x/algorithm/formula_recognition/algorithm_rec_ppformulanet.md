@@ -4,22 +4,16 @@
 
 `PP-FormulaNet` 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持识别 5 万个常见 LaTeX 源码词汇。其中，PP-FormulaNet-S 版本采用 PP-HGNetV2-B4 作为骨干网络，通过并行掩码和模型蒸馏等技术大幅提升推理速度并保持高识别精度，适用于简单印刷公式和跨行简单印刷公式等场景；而 PP-FormulaNet-L 版本基于 Vary_VIT_B 并经过大规模公式数据集的深入训练，在复杂公式识别方面表现显著提升，适用于简单印刷、复杂印刷和手写公式。
 
-为了进一步提升性能，百度飞桨团队在 PP-FormulaNet 的基础上开发了增强版 `PP-FormulaNet_plus`。该版本使用了来自中文学位论文、专业书籍、教材试卷和数学期刊的丰富数据集，大幅提升了识别能力。其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 新增了对中文公式的支持，并将最大预测 token 数从 1024 扩大至 2560，显著提升了复杂公式的识别性能；而 PP-FormulaNet_plus-S 则专注于增强英文公式识别能力，使得 PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。
-
 上述模型在对应测试集上的精度如下：
 
-| 模型          | 骨干网络       | 配置文件                   | En-<br/>BLEU↑ |Zh-<br/>BLEU(%)↑ |OmniDocBench-<br/>BLEU(%)↑  |GPU推理耗时（ms）| 下载链接 |
-|-----------|--------|----------------------------------------|:----------------:|:---------:|:-----------------:|:--------------:|:--------------:|
-| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     85.91  |   43.50       | 67.75 | 2266.96 | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
-| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00   |   45.71   | 59.57| 202.25 |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
-| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36   |    45.78       | 64.81  | 1976.52  |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
-| PP-FormulaNet_plus-S | PPHGNetV2_B4 | [PP-FormulaNet_plus-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-S.yaml) |     88.71   |     53.32       | 70.54  |     	191.69  |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_s_train.tar )|
-| PP-FormulaNet_plus-M | PPHGNetV2_B6 | [PP-FormulaNet_plus-M.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml) |     91.45   |     89.76       | 	72.07  |     	1301.56    |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_m_train.tar )|
-| PP-FormulaNet_plus-L | Vary_VIT_B | [PP-FormulaNet_plus-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet_plus-L.yaml) |     92.22   |     90.64       | 	72.45  |     1745.25    |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_plus_l_train.tar )|
-| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   74.55   |       39.96        | 47.59| 	1244.61   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| 模型          | 骨干网络       | 配置文件                   | En-BLEU↑  |GPU推理耗时（ms）| 下载链接 |
+|-----------|--------|----------------------------------------|:-----------------:|:--------------:|:--------------:|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     85.91   | 2266.96 | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00 | 202.25 |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
+| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36    | 1976.52  |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   74.55   | 	1244.61   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
-
-其中，En-BLEU、Zh-BLEU（%）和OmniDocBench-BLEU（%）分别表示英文公式、中文公式以及OmniDocBench的BLEU分数。这里，英文公式的评估数据集包含UniMERNet的简单和复杂公式，以及PaddleX内部自建的简单、中等和复杂公式。中文公式的评估数据集则来自PaddleX自建的中文公式数据集。而 OmniDocBench 评估集由 [OmniDocBench](https://github.com/opendatalab/OmniDocBench) 中的行间公式图片组成。
+这里，英文公式评估集包含UniMERNet的简单和复杂公式，以及PaddleX内部自建的简单、中等和复杂公式。
 
 ## 2. 环境配置
 请先参考[《运行环境准备》](../../ppocr/environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](../../ppocr/blog/clone.md)克隆项目代码。

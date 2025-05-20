@@ -24,16 +24,16 @@ The text detection module is a critical component of OCR (Optical Character Reco
 <tr>
 <td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
 <td>83.8</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>101</td>
+<td>89.55 / 70.19</td>
+<td>371.65 / 371.65</td>
+<td>84.3</td>
 <td>PP-OCRv5 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>79.0</td>
-<td>- / -</td>
-<td>- / -</td>
+<td>8.79 / 3.13</td>
+<td>51.00 / 28.58</td>
 <td>4.7</td>
 <td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
@@ -101,7 +101,7 @@ The text detection module is a critical component of OCR (Optical Character Reco
 
 ## 3. Quick Start
 
-> ❗ Before starting, please install the PaddleOCR wheel package. Refer to the [Installation Guide](../ppocr/installation.en.md) for details.
+> ❗ Before starting, please install the PaddleOCR wheel package. Refer to the [Installation Guide](../installation.en.md) for details.
 
 Use the following command for a quick experience:
 
@@ -124,15 +124,15 @@ for res in output:
 The output will be:
 
 ```bash
-{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 75, 553],
+{'res': {'input_path': 'general_ocr_001.png', 'page_index': None, 'dt_polys': array([[[ 75, 549],
         ...,
-        [ 77, 585]],
+        [ 77, 586]],
 
        ...,
 
-       [[ 37, 409],
+       [[ 37, 408],
         ...,
-        [ 39, 453]]], dtype=int16), 'dt_scores': [0.8574396614433001, 0.8343834504056786, 0.8720446452934176, 0.8090656290206919]}}
+        [ 39, 453]]], dtype=int16), 'dt_scores': [0.832930755107492, 0.8186143846140158, 0.8591595100376676, 0.8718863959111733]}}
 ```
 
 Output parameter meanings:
@@ -374,7 +374,7 @@ Method and parameter descriptions:
 
 ## 4. Custom Development
 
-If the above models do not meet your requirements, follow these steps for custom development (using `PP-OCRv5_server_det` as an example). First, prepare a text detection dataset (refer to the [Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar) format). After preparation, proceed with model training and export. The exported model can be integrated into the API. Ensure PaddleOCR dependencies are installed as per the [Installation Guide](../ppocr/installation.en.md).
+If the above models do not meet your requirements, follow these steps for custom development (using `PP-OCRv5_server_det` as an example). First, prepare a text detection dataset (refer to the [Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar) format). After preparation, proceed with model training and export. The exported model can be integrated into the API. Ensure PaddleOCR dependencies are installed as per the [Installation Guide](../installation.en.md).
 
 ## 4.1 Dataset and Pretrained Model Preparation
 

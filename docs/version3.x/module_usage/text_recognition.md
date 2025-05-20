@@ -353,10 +353,10 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
                       ch_RepSVTR_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。
                     </li>
                     <li>
-                      英文识别模型：PaddleX 自建的英文数据集。
+                      英文识别模型：PaddleOCR 自建的英文数据集。
                     </li>
                     <li>
-                      多语言识别模型：PaddleX 自建的多语种数据集。
+                      多语言识别模型：PaddleOCR 自建的多语种数据集。
                     </li>
                  </ul>
               </li>
@@ -401,7 +401,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../ppocr/installation.md)。
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
 使用一行命令即可快速体验：
 
@@ -648,7 +648,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ```
 
 
-### 4.4 模型评估
+### 4.3 模型评估
 
 您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，使用如下命令进行评估：
 
@@ -659,7 +659,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  Global.pretrained_model=output/xxx/xxx.pdparams
  ```
 
-### 4.5 模型导出
+### 4.4 模型导出
 
 ```bash
  python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \

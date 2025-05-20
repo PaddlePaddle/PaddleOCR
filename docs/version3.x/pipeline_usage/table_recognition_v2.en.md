@@ -131,37 +131,34 @@ In this production line, you can choose the models to use based on the benchmark
 <tr>
 <td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
 <td>83.8</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>101</td>
-<td>PP-OCRv5's server-side text detection model has higher accuracy, suitable for deployment on high-performance servers.</td>
+<td>89.55 / 70.19</td>
+<td>371.65 / 371.65</td>
+<td>84.3</td>
+<td>PP-OCRv5 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>79.0</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>4.7</td>
-<td>PP-OCRv5's mobile text detection model is more efficient, suitable for deployment on edge devices.</td>
-</tr>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
-<td>82.69</td>
-<td>83.34 / 80.91</td>
-<td>442.58 / 442.58</td>
-<td>109</td>
-<td>PP-OCRv4's server-side text detection model has higher accuracy, suitable for deployment on high-performance servers.</td>
-</tr>
-<tr>
-<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
-<td>77.79</td>
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
-<td>PP-OCRv4's mobile text detection model is more efficient, suitable for deployment on edge devices.</td>
+<td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
+<td>69.2</td>
+<td>83.34 / 80.91</td>
+<td>442.58 / 442.58</td>
+<td>109</td>
+<td>PP-OCRv4 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
+</tr>
+<tr>
+<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>63.8</td>
+<td>8.79 / 3.13</td>
+<td>51.00 / 28.58</td>
+<td>4.7</td>
+<td>PP-OCRv4 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 </tbody>
 </table>
@@ -794,7 +791,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../ppocr/installation.md). After installation, you can experience it locally using the command line or Python integration.
+Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../installation.md). After installation, you can experience it locally using the command line or Python integration.
 
 ### 2.1 Command Line Experience
 
@@ -1730,9 +1727,9 @@ If you need to apply the model directly in your Python project, you can refer to
 
 Additionally, PaddleOCR provides two other deployment methods, which are described in detail below:
 
-🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
-☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../deployment/serving.md).
+☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to [Serving](../deployment/serving.md).
 
 Below is the API reference for basic service-oriented deployment and examples of multilingual service calls:
 
@@ -2043,37 +2040,37 @@ Since the General Table Recognition v2 model consists of several modules, if the
 <tr>
 <td>Table classification error</td>
 <td>Table Classification Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html#iv-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Table cell location error</td>
 <td>Table Cell Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_cells_detection.html#iv-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Table structure recognition error</td>
 <td>Table Structure Recognition Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/table_structure_recognition.html#4-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Failed to detect the area where the table is located</td>
 <td>Layout Area Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Text detection missed</td>
 <td>Text Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect text content</td>
 <td>Text Recognition Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#v-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Overall image rotation/table rotation correction is inaccurate</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Image distortion correction is inaccurate</td>

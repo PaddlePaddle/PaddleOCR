@@ -110,7 +110,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">训练模型</a></td></tr>
 </tbody>
 </table>
-<b>注：以上精度指标的评估集是 PaddleX 自建的印章数据集，包含500印章图像。</b>
+<b>注：以上精度指标的评估集是 PaddleOCR 自建的印章数据集，包含500印章图像。</b>
 
 ## [文本识别模块](../module_usage/tutorials/ocr_modules/text_recognition.md)
 
@@ -259,7 +259,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模型</a></
 </tr>
 </table>
 
-<p><b>注：以上精度指标的评估集是 PaddleX 自建的英文数据集。 </b></p>
+<p><b>注：以上精度指标的评估集是 PaddleOCR 自建的英文数据集。 </b></p>
 
 * <b>多语言识别模型</b>
 <table>
@@ -373,7 +373,7 @@ cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模型
 devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
 </tr>
 </table>
-<p><b>注：以上精度指标的评估集是 PaddleX 自建的多语种数据集。</b></p>
+<p><b>注：以上精度指标的评估集是 PaddleOCR 自建的多语种数据集。</b></p>
 
 ## [公式识别模块](../module_usage/tutorials/ocr_modules/formula_recognition.md)
 
