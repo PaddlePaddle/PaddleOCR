@@ -444,142 +444,29 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 </details>
 
 ## 2. Quick Start
-The pre-trained pipelines provided by PaddleX allow for quick experience of their effects. You can locally use Python to experience the effects of the PP-ChatOCRv4-doc pipeline.
 
-### 2.1 Local Experience
-Before using the PP-ChatOCRv4-doc pipeline locally, ensure you have completed the installation of the PaddleX wheel package according to the [PaddleX Local Installation Tutorial](../../../installation/installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ie`.
+The pre-trained pipelines provided by PaddleOCR allow for quick experience of their effects. You can locally use Python to experience the effects of the PP-ChatOCRv4-doc pipeline.
+
+
+Before using the PP-ChatOCRv4-doc pipeline locally, ensure you have completed the installation of the PaddleOCR wheel package according to the [PaddleOCR Local Installation Tutorial](../installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ie`.
 
 Before performing model inference, you first need to prepare the API key for the large language model. PP-ChatOCRv4 supports large model services on the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService) or the locally deployed standard OpenAI interface. If using the Baidu Cloud Qianfan Platform, refer to [Authentication and Authorization](https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Um2wxbaps_en) to obtain the API key. If using a locally deployed large model service, refer to the [PaddleNLP Large Model Deployment Documentation](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm) for deployment of the dialogue interface and vectorization interface for large models, and fill in the corresponding `base_url` and `api_key`. If you need to use a multimodal large model for data fusion, refer to the OpenAI service deployment in the [PaddleMIX Model Documentation](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee) for multimodal large model deployment, and fill in the corresponding `base_url` and `api_key`.
 
-After updating the configuration file, you can complete quick inference using just a few lines of Python code. You can use the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png) for testing:
-
 **Note**: If local deployment of a multimodal large model is restricted due to the local environment, you can comment out the lines containing the `mllm` variable in the code and only use the large language model for information extraction.
 
-```python
-from paddlex import create_pipeline
+### 2.1 Command Line Experience
 
-chat_bot_config = {
-    "module_name": "chat_bot",
-    "model_name": "ernie-3.5-8k",
-    "base_url": "https://qianfan.baidubce.com/v2",
-    "api_type": "openai",
-    "api_key": "api_key",  # your api_key
-}
+After updating the configuration file, you can complete quick inference using just a few lines of Python code. You can use the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png) for testing:
 
-retriever_config = {
-    "module_name": "retriever",
-    "model_name": "embedding-v1",
-    "base_url": "https://qianfan.baidubce.com/v2",
-    "api_type": "qianfan",
-    "api_key": "api_key",  # your api_key
-}
 
-mllm_chat_bot_config = {
-    "module_name": "chat_bot",
-    "model_name": "PP-DocBee2",
-    "base_url": "http://172.0.0.1:8080/v1/chat/completions",  # your local mllm service url
-    "api_type": "openai",
-    "api_key": "api_key",  # your api_key
-}
+```bash
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
 
-pipeline = create_pipeline(pipeline="PP-ChatOCRv4-doc", initial_predictor=False)
-
-visual_predict_res = pipeline.visual_predict(
-    input="vehicle_certificate-1.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
-    use_common_ocr=True,
-    use_seal_recognition=True,
-    use_table_recognition=True,
-)
-
-visual_info_list = []
-for res in visual_predict_res:
-    visual_info_list.append(res["visual_info"])
-    layout_parsing_result = res["layout_parsing_result"]
-
-vector_info = pipeline.build_vector(
-    visual_info_list, flag_save_bytes_vector=True, retriever_config=retriever_config
-)
-mllm_predict_res = pipeline.mllm_pred(
-    input="vehicle_certificate-1.png",
-    key_list=["驾驶室准乘人数"],
-    mllm_chat_bot_config=mllm_chat_bot_config,
-)
-mllm_predict_info = mllm_predict_res["mllm_res"]
-chat_result = pipeline.chat(
-    key_list=["驾驶室准乘人数"],
-    visual_info=visual_info_list,
-    vector_info=vector_info,
-    mllm_predict_info=mllm_predict_info,
-    chat_bot_config=chat_bot_config,
-    retriever_config=retriever_config,
-)
-print(chat_result)
-
+# 通过 --invoke_mllm 和 --pp_docbee_base_url 使用多模态大模型
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
 ```
 
-After running, the output result is as follows:
-
-```
-{'chat_res': {'驾驶室准乘人数': '2'}}
-```
-
-PP-ChatOCRv4 Prediction Process, API Description, and Output Description:
-
-<details><summary>(1) Instantiate the PP-ChatOCRv4 Pipeline Object by Calling the <code>create_pipeline</code> Method.</summary>
-
-The following are the parameter descriptions:
-
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>pipeline</code></td>
-<td>The name of the pipeline or the path to the pipeline configuration file. If it is the name of the pipeline, it must be a pipeline supported by PaddleX.</td>
-<td><code>str</code></td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>The device for pipeline inference. Supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", and CPU as "cpu".</td>
-<td><code>str</code></td>
-<td><code>gpu</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin. If set to <code>None</code>, the setting from the configuration file or <code>config</code> will be used.</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>initial_predictor</code></td>
-<td>Whether to initialize the inference module (if <code>False</code>, it will be initialized when the relevant inference module is used for the first time).</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-</tbody>
-</table>
-</details>
-
-<details><summary>(2) Call the <code>visual_predict()</code> Method of the PP-ChatOCRv4 Pipeline Object to Obtain Visual Prediction Results. This method returns a generator.</summary>
-
-The following are the parameters and descriptions of the `visual_predict()` method:
+<details><summary><b>The command line supports more parameter configurations. Click to expand for a detailed explanation of the command line parameters.</b></summary>
 
 <table>
 <thead>
@@ -2015,37 +1902,37 @@ Since the PP-ChatOCRv4 pipeline includes several modules, the unsatisfactory per
 <tr>
 <td>Inaccurate layout region detection, such as missed detection of seals, tables, etc.</td>
 <td>Layout Region Detection Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate table structure recognition</td>
 <td>Table Structure Recognition Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/table_structure_recognition.html#4-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Missed detection of seal text</td>
 <td>Seal Text Detection Module</td>
-<td><a href="../module_usage/seal_text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/seal_text_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missed detection of text</td>
 <td>Text Detection Module</td>
-<td><a href="../module_usage/text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate text content</td>
 <td>Text Recognition Module</td>
-<td><a href="../module_usage/text_recognition.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#41-dataset-and-pre-trained-model-preparation">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of vertical or rotated text lines</td>
 <td>Text Line Orientation Classification Module</td>
-<td><a href="../module_usage/text_line_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of whole-image rotation</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="../module_usage/doc_img_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of image distortion</td>

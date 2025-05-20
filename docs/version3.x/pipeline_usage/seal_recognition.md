@@ -1801,22 +1801,22 @@ for i, res in enumerate(result["sealRecResults"]):
 <tr>
 <td>印章位置检测不准或未检出</td>
 <td>版面检测模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>印章文本存在漏检</td>
 <td>印章文本检测模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/seal_text_detection.html">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/seal_text_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>文本内容不准</td>
 <td>文本识别模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>

@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Formula Recognition Module User Guide
+# Formula Recognition Module Tutorial
 
 ## I. Overview
 
@@ -81,7 +81,7 @@ The formula recognition module is a key component of an OCR (Optical Character R
     <ul>
         <li><b>Performance Test Environment</b>
             <ul>
-                <li><strong>Test Dataset:</strong> PaddleX internal custom formula recognition test set</li>
+                <li><strong>Test Dataset:</strong> PaddleOCR internal custom formula recognition test set</li>
                 <li><strong>Hardware Configuration:</strong>
                     <ul>
                         <li>GPU: NVIDIA Tesla T4</li>
@@ -414,7 +414,7 @@ At this point, the secondary development is complete. This static graph model ca
 
 ## V. FAQ
 
-**Q1:Which formula recognition model does PaddleOCR recommend?**
+**Q1: Which formula recognition model does PaddleOCR recommend?**
 
 A1: It is recommended to use the PP-FormulaNet series.
 If your scenario is mainly in English and inference speed is not a concern, use PP-FormulaNet-L or PP-FormulaNet_plus-L.

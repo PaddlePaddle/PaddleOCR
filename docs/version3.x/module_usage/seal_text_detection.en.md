@@ -463,7 +463,7 @@ If the above model is still not performing well in your scenario, you can try th
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar -P ./dataset
 tar -xf ./dataset/ocr_curve_det_dataset_examples.tar -C ./dataset/
 ```
-### 4.1.1 Preparing the pre-trained model
+### 4.1.2 Preparing the pre-trained model
 
 ```shell
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams
@@ -485,7 +485,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
         -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams
 ```
 
-### 4.4 Model Evaluation
+### 4.3 Model Evaluation
 
 You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
 
@@ -496,7 +496,7 @@ python3 tools/eval.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
 Global.pretrained_model=output/xxx/xxx.pdparams
 ```
 
-### 4.5 Model Export
+### 4.4 Model Export
 
 ```bash
 python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \

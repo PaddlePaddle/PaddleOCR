@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Table Structure Recognition Module Usage Tutorial
+# Table Structure Recognition Module Tutorial
 
 ## 1. Overview
 
@@ -97,7 +97,7 @@ Table structure recognition is an important component of table recognition syste
 
 ## 3. Quick Start
 
-> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../installation.md).
+> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../installation.en.md).
 
 Quickly experience with a single command:
 
@@ -327,7 +327,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ```
 
 
-### 4.4 Model Evaluation
+### 4.3 Model Evaluation
 
 You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
 
@@ -338,7 +338,7 @@ You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using t
  Global.pretrained_model=output/xxx/xxx.pdparams
  ```
 
-### 4.5 Model Export
+### 4.4 Model Export
 
 ```bash
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \

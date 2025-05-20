@@ -1334,17 +1334,17 @@ for i, res in enumerate(result["formulaRecResults"]):
 <tr>
 <td>公式存在漏检</td>
 <td>版面区域检测模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>公式内容不准</td>
 <td>公式识别模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>

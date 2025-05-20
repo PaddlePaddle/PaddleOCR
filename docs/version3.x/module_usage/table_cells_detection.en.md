@@ -330,6 +330,6 @@ The relevant methods, parameters, etc., are described as follows:
 
 ## IV. Secondary Development
 
-Since PaddleOCR does not directly provide training for the table cell detection module, if you need to train a table cell detection model, you can refer to the [PaddleX Table Cell Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html#_4) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
+Since PaddleOCR does not directly provide training for the table cell detection module, if you need to train a table cell detection model, you can refer to the [PaddleX Table Cell Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_cells_detection.html#iv-secondary-development) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
 
 ## V. FAQ

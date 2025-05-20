@@ -2040,37 +2040,37 @@ Since the General Table Recognition v2 model consists of several modules, if the
 <tr>
 <td>Table classification error</td>
 <td>Table Classification Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html#iv-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Table cell location error</td>
 <td>Table Cell Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_cells_detection.html#iv-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Table structure recognition error</td>
 <td>Table Structure Recognition Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/table_structure_recognition.html#4-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Failed to detect the area where the table is located</td>
 <td>Layout Area Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Text detection missed</td>
 <td>Text Detection Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect text content</td>
 <td>Text Recognition Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#v-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Overall image rotation/table rotation correction is inaccurate</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Image distortion correction is inaccurate</td>

@@ -289,9 +289,9 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 from paddleocr import DocPreprocessor
 
 pipeline = DocPreprocessor()
-# ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
-# ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
-# ocr = TableRecognitionPipelineV2(device="gpu") # 通过 device 指定模型推理时使用 GPU
+# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
+# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+# docpp = DocPreprocessor(device="gpu") # 通过 device 指定模型推理时使用 GPU
 output = pipeline.predict("./doc_test_rotated.jpg")
 for res in output:
     res.print() ## 打印预测的结构化输出
@@ -801,7 +801,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>

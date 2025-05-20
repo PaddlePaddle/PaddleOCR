@@ -2048,37 +2048,37 @@ for i, res in enumerate(result["tableRecResults"]):
 <tr>
 <td>表格分类错误</td>
 <td>表格分类模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>表格单元格定位错误</td>
 <td>表格单元格检测模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>表格结构识别错误</td>
 <td>表格结构识别模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_structure_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>未能成功检测到表格所在区域</td>
 <td>版面区域检测模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>文本存在漏检</td>
 <td>文本检测模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>文本内容都不准</td>
 <td>文本识别模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转/表格旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>

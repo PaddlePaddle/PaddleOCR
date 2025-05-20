@@ -86,7 +86,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleX 内部自建公式识别测试集</li>
+              <li><strong>测试数据集：</strong>PaddleOCR 内部自建公式识别测试集</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
@@ -398,7 +398,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 
 ### 4.4 模型评估
 
-您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar )，使用如下命令进行评估：
+您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)，使用如下命令进行评估：
 
 ```bash
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
@@ -426,7 +426,7 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 
 ## 五、FAQ
 
-**Q1:PaddleOCR 更推荐哪个公式识别模型？**
+**Q1: PaddleOCR 更推荐哪个公式识别模型？**
 
 A1: 更推荐使用 PP-FormulaNet 系列模型，如果是英文场景居多且不考虑推理耗时，则可以使用 PP-FormulaNet-L 或者 PP-FormulaNet_plus-L 模型，如果中文场景居多，则可以使用 PP-FormulaNet_plus-L 或者 PP-FormulaNet_plus-M，如果推理设备算力有限且是英文场景，则可以使用 PP-FormulaNet-S。
 

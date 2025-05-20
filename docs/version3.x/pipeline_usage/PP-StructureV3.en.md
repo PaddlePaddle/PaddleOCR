@@ -633,7 +633,7 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 ## 2. Quick Start
 All the model pipelines provided by PaddleX can be quickly experienced. You can use the command line or Python on your local machine to experience the effect of the PP-StructureV3 pipeline.
 
-Before using the PP-StructureV3 pipeline locally, please ensure that you have completed the installation of the PaddleX wheel package according to the [PaddleX Local Installation Guide](../../../installation/installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ocr`.
+Before using the PP-StructureV3 pipeline locally, please ensure that you have completed the installation of the PaddleX wheel package according to the [PaddleOCR Local Installation Guide](../installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ocr`.
 
 > When performing GPU inference, the default configuration may use more than 16 GB of VRAM. Please ensure that your GPU has sufficient memory. To reduce VRAM usage, you can modify the configuration file as described below to disable unnecessary features.
 
@@ -1922,42 +1922,42 @@ Since the PP-StructureV3 pipeline includes several modules, the unsatisfactory p
 <tr>
 <td>Inaccurate layout region detection, such as missed detection of seals, tables, etc.</td>
 <td>Layout Region Detection Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate table structure recognition</td>
 <td>Table Structure Recognition Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/table_structure_recognition.html#4-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate formula recognition</td>
 <td>Formula Recognition Module</td>
-<td><a href="../module_usage/formula_recognition.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missed detection of seal text</td>
 <td>Seal Text Detection Module</td>
-<td><a href="../module_usage/seal_text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/seal_text_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missed detection of text</td>
 <td>Text Detection Module</td>
-<td><a href="../module_usage/text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate text content</td>
 <td>Text Recognition Module</td>
-<td><a href="../module_usage/text_recognition.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#v-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of vertical or rotated text lines</td>
 <td>Text Line Orientation Classification Module</td>
-<td><a href="../module_usage/text_line_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of whole-image rotation</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="../module_usage/doc_img_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate correction of image distortion</td>

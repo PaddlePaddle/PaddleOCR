@@ -728,7 +728,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用 PP-StructureV3 产线前，请确保您已经按照[安装教程](../ppocr/installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用 PP-StructureV3 产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
 ### 2.1 命令行方式体验
 
@@ -2683,42 +2683,42 @@ for i, res in enumerate(result["layoutParsingResults"]):
 <tr>
 <td>版面区域检测不准，如印章、表格未检出等</td>
 <td>版面区域检测模块</td>
-<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>表格结构识别不准</td>
 <td>表格结构识别模块</td>
-<td><a href="../module_usage/layout_detection.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_structure_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>公式识别不准</td>
 <td>公式识别模块</td>
-<td><a href="../module_usage/formula_recognition.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>印章文本存在漏检</td>
 <td>印章文本检测模块</td>
-<td><a href="../module_usage/seal_text_detection.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/seal_text_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>文本存在漏检</td>
 <td>文本检测模块</td>
-<td><a href="../module_usage/text_detection.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>文本内容都不准</td>
 <td>文本识别模块</td>
-<td><a href="../module_usage/text_recognition.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>垂直或者旋转文本行矫正不准</td>
 <td>文本行方向分类模块</td>
-<td><a href="../module_usage/text_line_orientation_classification.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="../module_usage/doc_img_orientation_classification.md#四二次开发">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>

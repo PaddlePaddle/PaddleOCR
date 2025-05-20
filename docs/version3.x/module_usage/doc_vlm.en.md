@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Tutorial on Using Document Visual Language Model Module
+# Document Visual Language Model Module Tutorial
 
 ## I. Overview
 
