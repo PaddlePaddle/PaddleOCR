@@ -3988,17 +3988,18 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <p>When performing GPU inference, the default configuration may use more than 16 GB of VRAM. Please ensure that your GPU has sufficient memory. To reduce VRAM usage, you can modify the configuration file as described below to disable unnecessary features.</p>
 </blockquote>
 <h3 id="21-experiencing-via-command-line">2.1 Experiencing via Command Line<a class="headerlink" href="#21-experiencing-via-command-line" title="Permanent link">&para;</a></h3>
-<p>You can quickly experience the PP-StructureV3 pipeline with a single command. Use the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png">test file</a> and replace <code>--input</code> with the local path to perform prediction.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddlex --pipeline PP-StructureV3 \
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>        --input pp_structure_v3_demo.png \
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        --use_doc_orientation_classify False \
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        --use_doc_unwarping False \
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        --use_textline_orientation False \
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        --use_e2e_wireless_table_rec_model True \
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        --save_path ./output \
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        --device gpu:0
+<p>You can quickly experience the PP-StructureV3 pipeline with a single command.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_doc_orientation_classify<span class="w"> </span>True
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_doc_unwarping<span class="w"> </span>True
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_textline_orientation<span class="w"> </span>False
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--device<span class="w"> </span>gpu
 </span></code></pre></div>
-<p>The parameter description can be found in <a href="#222-python-script-integration">2.2.2 Python Script Integration</a>. Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to <a href="../../instructions/parallel_inference.en.md#specifying-multiple-inference-devices">Pipeline Parallel Inference</a>.</p>
+<p>The parameter description can be found in <a href="#22PythonScriptIntegration">2.2 Python Script Integration</a>. Supports specifying multiple devices simultaneously for parallel inference. For details, please refer to <a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/instructions/parallel_inference.html">Pipeline Parallel Inference</a>.</p>
 <p>After running, the result will be printed to the terminal, as follows:</p>
 <details><summary>👉Click to Expand</summary>
 <pre><code>
@@ -6106,7 +6107,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 11:23:54">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 11:29:01">May 20, 2025</span>
   </span>
 
     
@@ -6116,7 +6117,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 11:23:54">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 11:29:01">May 20, 2025</span>
   </span>
 
     
