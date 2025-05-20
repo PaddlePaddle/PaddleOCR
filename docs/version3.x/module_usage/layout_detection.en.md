@@ -622,4 +622,3 @@ Relevant methods, parameters, and explanations are as follows:
 Since PaddleOCR does not directly provide training for the layout detection module, if you need to train the layout area detection model, you can refer to [PaddleX Layout Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development)Partially conduct training. The trained model can be seamlessly integrated into PaddleOCR's API for inference.
 
 ## V. FAQ
-
