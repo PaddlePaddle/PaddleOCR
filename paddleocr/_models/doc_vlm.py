@@ -34,7 +34,7 @@ class DocVLM(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-DocBee-2B"
+        return "PP-DocBee2-3B"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
