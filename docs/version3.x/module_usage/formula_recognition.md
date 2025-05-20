@@ -86,7 +86,7 @@ comments: true
   <ul>
       <li><b>性能测试环境</b>
           <ul>
-              <li><strong>测试数据集：</strong>PaddleX 内部自建公式识别测试集</li>
+              <li><strong>测试数据集：</strong>PaddleOCR 内部自建公式识别测试集</li>
               <li><strong>硬件配置：</strong>
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
@@ -427,7 +427,7 @@ Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
 
 ## 五、FAQ
 
-**Q1:PaddleOCR 更推荐哪个公式识别模型？**
+**Q1: PaddleOCR 更推荐哪个公式识别模型？**
 
 A1: 更推荐使用 PP-FormulaNet 系列模型，如果是英文场景居多且不考虑推理耗时，则可以使用 PP-FormulaNet-L 或者 PP-FormulaNet_plus-L 模型，如果中文场景居多，则可以使用 PP-FormulaNet_plus-L 或者 PP-FormulaNet_plus-M，如果推理设备算力有限且是英文场景，则可以使用 PP-FormulaNet-S。
 

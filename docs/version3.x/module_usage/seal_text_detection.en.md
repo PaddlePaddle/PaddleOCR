@@ -463,7 +463,9 @@ If the above model is still not performing well in your scenario, you can try th
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar -P ./dataset
 tar -xf ./dataset/ocr_curve_det_dataset_examples.tar -C ./dataset/
 ```
+
 #### 4.1.1 Preparing the pre-trained model
+
 
 ```shell
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams

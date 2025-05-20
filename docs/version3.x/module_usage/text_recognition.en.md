@@ -399,9 +399,11 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
     </tbody>
 </table>
 
-</details>## III. Quick Start
+</details>
 
-> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md).
+## III. Quick Start
+
+> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly experience the functionality with a single command:
 

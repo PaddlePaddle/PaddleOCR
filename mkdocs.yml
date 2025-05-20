@@ -13,8 +13,8 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: ./static/images/logo.jpg
-  favicon: ./static/images/logo.jpg
+  logo: version2.x/static/images/logo.jpg
+  favicon: version2.x/static/images/logo.jpg
   custom_dir: overrides
   features:
     - announce.dismiss
@@ -99,74 +99,70 @@ plugins:
           nav_translations:
             Home: Home
             快速开始: Quick Start
-            近期更新: Recently Update
+            快速开始: Quick Start
+            PP-OCRv5: PP-OCRv5
+            使用教程: Usage Tutorial
+            PP-OCRv5简介: PP-OCRv5 Introduction
+            PP-StructureV3: PP-StructureV3
+            PP-StructureV3简介: PP-StructureV3 Introduction
+            PP-ChatOCRv4: PP-ChatOCRv4
+            PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
+            推理部署: Model Deploy
+            高性能推理: High-Performance Inference
+            获取onnx模型: Obtaining ONNX Models
+            端侧部署: Edge Deployment
+            服务化部署: Serving Deployment
+            模块列表: Module List
+            文档图像方向分类模块: Document Image Orientation Classification Module
+            文档类视觉语言模型模块: Document Visual Language Model Module
+            公式识别模块: Formula Recognition Module
+            版面区域检测模块: Layout Detection
+            印章文本检测模块: Seal Text Detection
+            表格单元格检测模块: Table Cell Detection Module
+            表格分类模块: Table Classification Module
+            表格结构识别模块: Table Structure Recognition Module
+            文本检测模块: Text Detection Module
+            文本图像矫正模块: Text Image Rectification Module
+            文本行方向分类模块: Text Line Orientation Classification Module
+            文本识别模块: Text Recognition Module
+            产线列表: Pipeline List
+            公式识别产线: Formula Recognition Pipeline
+            文档图像预处理产线: Document Image Preprocessing Pipeline
+            文档理解产线: Document Understanding Pipeline
+            印章文本识别产线: Seal Text Recognition Pipeline
+            通用表格识别v2产线: General Table Recognition v2 Pipeline
+            多硬件使用: Multi-Devices Usage
+            PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
+            昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
+            昆仑 XPU 飞桨安装教程: Kunlun XPU PaddlePaddle Installation Tutorial
+            其他说明: Other Notes
+            PaddleOCR 与 PaddleX: PaddleOCR and PaddleX
+            PaddleOCR 3.x 升级说明: PaddleOCR 3.x Upgrade Notes
             低代码全流程开发: All-in-One Development
             概述: Overview
-            模型: Model
-            PP-OCR 文本检测识别: PP-OCR
-            快速安装: Quick Installation
-            效果展示: Visualization
-            运行环境: Environment Preparation
-            模型库: Model
-            模型训练: Model Training
-            基本概念: Basic concepts
-            文本检测: Text Detection
-            文本识别: Text Recognition
-            文本方向分类器: Text Angle Classification
-            关键信息提取: Key Information Extraction
-            模型微调: Fine-tune
-            训练tricks: Training Tricks
-            模型压缩: Model Compression
-            模型量化: Model Quantization
-            模型裁剪: Model Prune
-            知识蒸馏: Knowledge Distillation
-            推理部署: Model Deploy
-            基于Python预测引擎推理: Python Inference
-            基于C++预测引擎推理: CPP Inference
-            Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
-            服务化部署: Sever Deployment
-            端侧部署: Device-side Deployment
-            Paddle2ONNX模型转化与预测: Paddle2ONNX
-            云上飞桨部署工具: Paddle Cloud
-            Benchmark: Benchmark
-            博客: Blog
-            paddleocr package使用说明: Paddleocr Package Instructions
-            多语言模型: Multi-language model
-            动手学OCR: Dive into OCR
-            切片操作: Slice
-            PaddleOCR模型推理参数解释: PaddleOCR Model Inference Parameter Explanation
-            分布式训练: Distributed training
-            项目克隆: Project Clone
-            配置文件内容与生成: Configuration
-            如何生产自定义超轻量模型？: How To Make Your own lightweight OCR model?
-            PP-Structure文档分析: PP-Structure
-            版面分析: Layout Analysis
-            版面恢复: Recovery To Doc
-            表格识别: Table Recognition
-            返回识别位置: Return Recognition Location
-            怎样完成基于图像数据的信息抽取任务: Key Information Extraction Pipeline
-            前沿算法与模型: Academic Algorithms
-            文本检测算法: Text Detection Algorithms
-            DB与DB++: DB and DB++
-            文本识别算法: Text Recognition Algorithms
-            文本超分辨率算法: Text Super-Resolution Algorithm
-            公式识别算法: Formulat Recognition
-            端到端OCR算法: End-to-End OCR Algorithms
-            表格识别算法: Table Recognition Algorithms
-            关键信息抽取算法: Key Information Extraction Algorithms
-            使用PaddleOCR架构添加新算法: Add new algorithms
-            场景应用: Applications
-            数据标注与合成: Data Annotation and Synthesis
+            数据标注与合成&数据集: Data Annotation and Synthesis & Datasets
             其它数据标注工具: Other data annotation tools
             其它数据合成工具: Others data synthesis tools
-            数据集: Datasets
             通用中英文OCR数据集: General Chinese and English OCR dataset
             手写中文OCR数据集: Handwritten Chinese OCR Dataset
             垂类多语言OCR数据集: Vertical multi-language OCR dataset
             版面分析数据集: Layout Analysis Dataset
             表格识别数据集: Table recognition dataset
             关键信息提取数据集: Key Information Extraction Dataset
-            FAQ: FAQ
+            近期更新: Recently Update
+            版本2.x: Version 2.x
+            模型列表: Model List
+            基于Python预测引擎推理: Python Inference
+            基于C++预测引擎推理: CPP Inference
+            Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
+            服务化部署: Sever Deployment
+            端侧部署: Device-side Deployment
+            Android部署: Android Deployment
+            Paddle2ONNX模型转化与预测: Paddle2ONNX
+            云上飞桨部署工具: Paddle Cloud
+            Benchmark: Benchmark
+            博客: Blog
+            常见问题: FAQ
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
@@ -262,157 +258,73 @@ extra_css:
 
 nav:
   - Home: index.md
-  - 快速开始: quick_start.md
-  - 近期更新: update.md
+  - 快速开始: version3.x/quick_start.md
+  - PP-OCRv5: 
+    - 使用教程: version3.x/pipeline_usage/OCR.md
+    - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
+  - PP-StructureV3: 
+    - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
+    - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
+  - PP-ChatOCRv4: 
+    - 使用教程: version3.x/pipeline_usage/PP-ChatOCRv4.md
+    - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
+  - 推理部署: 
+    - 高性能推理: version3.x/deployment/high_performance_inference.md
+    - 获取onnx模型: version3.x/deployment/obtaining_onnx_models.md
+    - 端侧部署: version3.x/deployment/on_device_deployment.md
+    - 服务化部署: version3.x/deployment/serving.md
+  - 模块列表: 
+    - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
+    - 文档类视觉语言模型模块: version3.x/module_usage/doc_vlm.md
+    - 公式识别模块: version3.x/module_usage/formula_recognition.md
+    - 版面区域检测模块: version3.x/module_usage/layout_detection.md
+    - 印章文本检测模块: version3.x/module_usage/seal_text_detection.md
+    - 表格单元格检测模块: version3.x/module_usage/table_cells_detection.md
+    - 表格分类模块: version3.x/module_usage/table_classification.md
+    - 表格结构识别模块: version3.x/module_usage/table_structure_recognition.md
+    - 文本检测模块: version3.x/module_usage/text_detection.md
+    - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
+    - 文本行方向分类模块: version3.x/module_usage/text_line_orientation_classification.md
+    - 文本识别模块: version3.x/module_usage/text_recognition.md
+  - 产线列表: 
+    - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
+    - 文档图像预处理产线: version3.x/pipeline_usage/doc_preprocessor.md
+    - 文档理解产线: version3.x/pipeline_usage/doc_understanding.md
+    - 印章文本识别产线: version3.x/pipeline_usage/seal_recognition.md
+    - 通用表格识别v2产线: version3.x/pipeline_usage/table_recognition_v2.md
+  - 多硬件使用:
+    - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
+    - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
+    - 昆仑 XPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_XPU.md
+  - 其他说明:
+    - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
+    - PaddleOCR 3.x 升级说明: upgrade_notes.md
   - 低代码全流程开发:
-      - 概述: paddlex/overview.md
-      - 快速开始: paddlex/quick_start.md
-  - 模型:
-    - 概览: model/index.md
-    - 多硬件安装飞桨:
-      - 多硬件安装飞桨: model/hardware/install_other_devices.md
-      - 支持硬件列表: model/hardware/supported_models.md
-  - 历史遗留功能:
-    - 概述: legacy/index.md
-    - 模型列表: legacy/model_list.md
-    - 基于Python预测引擎推理: legacy/python_infer.md
-    - 基于C++预测引擎推理: legacy/cpp_infer.md
-    - Visual Studio 2019 Community CMake 编译指南: legacy/windows_vs2019_build.md
-    - 服务化部署: legacy/paddle_server.md
-    - Android部署: legacy/android_demo.md
-    - 端侧部署: legacy/lite.md
-    - Paddle2ONNX模型转化与预测: legacy/paddle2onnx.md
-    - 云上飞桨部署工具: legacy/paddle_cloud.md
-    - Benchmark: legacy/benchmark.md
-  - PP-OCR 文本检测识别:
-    - 概述: ppocr/overview.md
-    - 快速开始: ppocr/quick_start.md
-    - 快速安装: ppocr/installation.md
-    - 效果展示: ppocr/visualization.md
-    - 运行环境: ppocr/environment.md
-    - 模型库: ppocr/model_list.md
-    - 模型训练:
-      - 基本概念: ppocr/model_train/training.md
-      - 文本检测: ppocr/model_train/detection.md
-      - 文本识别: ppocr/model_train/recognition.md
-      - 文本方向分类器: ppocr/model_train/angle_class.md
-      - 关键信息提取: ppocr/model_train/kie.md
-      - 模型微调: ppocr/model_train/finetune.md
-      - 训练tricks: ppocr/model_train/tricks.md
-    - 模型压缩:
-      - 模型量化: ppocr/model_compress/quantization.md
-      - 模型裁剪: ppocr/model_compress/prune.md
-      - 知识蒸馏: ppocr/model_compress/knowledge_distillation.md
-    - 博客:
-      - PP-OCRv3技术报告: ppocr/blog/PP-OCRv3_introduction.md
-      - PP-OCRv4技术报告: ppocr/blog/PP-OCRv4_introduction.md
-      - paddleocr package使用说明: ppocr/blog/whl.md
-      - 多语言模型: ppocr/blog/multi_languages.md
-      - 动手学OCR: ppocr/blog/ocr_book.md
-      - Enhanced CTC Loss: ppocr/blog/enhanced_ctc_loss.md
-      - 切片操作: ppocr/blog/slice.md
-      - PaddleOCR模型推理参数解释: ppocr/blog/inference_args.md
-      - 分布式训练: ppocr/blog/distributed_training.md
-      - 项目克隆: ppocr/blog/clone.md
-      - 配置文件内容与生成: ppocr/blog/config.md
-      - 如何生产自定义超轻量模型？: ppocr/blog/customize.md
-  - PP-Structure文档分析:
-    - 概述: ppstructure/overview.md
-    - 快速开始: ppstructure/quick_start.md
-    - 模型库: ppstructure/models_list.md
-    - 模型训练:
-      - 基本概念: ppstructure/model_train/training.md
-      - 版面分析: ppstructure/model_train/train_layout.md
-      - 表格识别: ppstructure/model_train/train_table.md
-      - 版面恢复: ppstructure/model_train/recovery_to_doc.md
-      - 关键信息提取: ppstructure/model_train/train_kie.md
-    - 推理部署:
-      - 概述: ppstructure/legacy/index.md
-      - 基于Python预测引擎推理: ppstructure/legacy/python_infer.md
-      - 基于C++预测引擎推理: ppstructure/legacy/cpp_infer.md
-      - 服务化部署: ppstructure/legacy/paddle_server.md
-    - 博客:
-      - 返回识别位置: ppstructure/blog/return_word_pos.md
-      - 怎样完成基于图像数据的信息抽取任务: ppstructure/blog/how_to_do_kie.md
-  - 前沿算法与模型:
-    - 概述: algorithm/overview.md
-    - 文本检测算法:
-      - DB与DB++: algorithm/text_detection/algorithm_det_db.md
-      - EAST: algorithm/text_detection/algorithm_det_east.md
-      - SAST: algorithm/text_detection/algorithm_det_sast.md
-      - PSENet: algorithm/text_detection/algorithm_det_psenet.md
-      - FCENet: algorithm/text_detection/algorithm_det_fcenet.md
-      - DRRG: algorithm/text_detection/algorithm_det_drrg.md
-      - CT: algorithm/text_detection/algorithm_det_ct.md
-    - 文本识别算法:
-      - CRNN: algorithm/text_recognition/algorithm_rec_crnn.md
-      - Rosetta: algorithm/text_recognition/algorithm_rec_rosetta.md
-      - STAR-Net: algorithm/text_recognition/algorithm_rec_starnet.md
-      - RARE: algorithm/text_recognition/algorithm_rec_rare.md
-      - SRN: algorithm/text_recognition/algorithm_rec_srn.md
-      - NRTR: algorithm/text_recognition/algorithm_rec_nrtr.md
-      - SAR: algorithm/text_recognition/algorithm_rec_sar.md
-      - SEED: algorithm/text_recognition/algorithm_rec_seed.md
-      - SVTR: algorithm/text_recognition/algorithm_rec_svtr.md
-      - SVTRv2: algorithm/text_recognition/algorithm_rec_svtrv2.md
-      - ViTSTR: algorithm/text_recognition/algorithm_rec_vitstr.md
-      - ABINet: algorithm/text_recognition/algorithm_rec_abinet.md
-      - VisionLAN: algorithm/text_recognition/algorithm_rec_visionlan.md
-      - SPIN: algorithm/text_recognition/algorithm_rec_spin.md
-      - RobustScanner: algorithm/text_recognition/algorithm_rec_robustscanner.md
-      - RFL: algorithm/text_recognition/algorithm_rec_rfl.md
-      - ParseQ: algorithm/text_recognition/algorithm_rec_parseq.md
-      - CPPD: algorithm/text_recognition/algorithm_rec_cppd.md
-      - SATRN: algorithm/text_recognition/algorithm_rec_satrn.md
-    - 文本超分辨率算法:
-      - Text Gestalt: algorithm/super_resolution/algorithm_sr_gestalt.md
-      - Text Telescope: algorithm/super_resolution/algorithm_sr_telescope.md
-    - 公式识别算法:
-      - CAN: algorithm/formula_recognition/algorithm_rec_can.md
-      - LaTeX-OCR: algorithm/formula_recognition/algorithm_rec_latex_ocr.md
-      - UniMERNet: algorithm/formula_recognition/algorithm_rec_unimernet.md
-      - PP-FormulaNet: algorithm/formula_recognition/algorithm_rec_ppformulanet.md
-    - 端到端OCR算法:
-      - PGNet: algorithm/end_to_end/algorithm_e2e_pgnet.md
-    - 表格识别算法:
-      - TableMaster: algorithm/table_recognition/algorithm_table_master.md
-      - TableSLANet: algorithm/table_recognition/algorithm_table_slanet.md
-    - 关键信息抽取算法:
-      - VI-LayoutXLM: algorithm/kie/algorithm_kie_vi_layoutxlm.md
-      - LayoutLM: algorithm/kie/algorithm_kie_layoutxlm.md
-      # - LayoutLMv2: algorithm/kie/algorithm_kie_layoutxlm.md
-      # - LayoutXLM: algorithm/kie/algorithm_kie_layoutxlm.md
-      - SDMGR: algorithm/kie/./algorithm_kie_sdmgr.md
-    - 使用PaddleOCR架构添加新算法: algorithm/add_new_algorithm.md
-  - 场景应用:
-    - 概述: applications/overview.md
-    - 通用:
-      - 高精度中文场景文本识别模型SVTR: applications/高精度中文识别模型.md
-      - 手写体识别: applications/手写文字识别.md
-    - 制造:
-      - 数码管识别: applications/光功率计数码管字符识别.md
-      - 液晶屏读数识别: applications/液晶屏读数识别.md
-      - 包装生产日期: applications/包装生产日期识别.md
-      - PCB文字识别: applications/PCB字符识别.md
-    - 金融:
-      - 表单VQA: applications/多模态表单识别.md
-      - 增值税发票: applications/发票关键信息抽取.md
-      - 印章检测与识别: applications/印章弯曲文字识别.md
-      - 通用卡证识别: applications/快速构建卡证类OCR.md
-      - 合同比对: applications/扫描合同关键信息提取.md
-    - 交通:
-      - 车牌识别: applications/轻量级车牌识别.md
-  - 数据标注与合成:
+      - 概述: version3.x/paddlex/overview.md
+      - 快速开始: version3.x/paddlex/quick_start.md
+  - 数据标注与合成&数据集:
     - 概述: data_anno_synth/overview.md
     - 其它数据标注工具: data_anno_synth/data_annotation.md
     - 其它数据合成工具: data_anno_synth/data_synthesis.md
-  - 数据集:
     - 通用中英文OCR数据集: datasets/datasets.md
     - 手写中文OCR数据集: datasets/handwritten_datasets.md
     - 垂类多语言OCR数据集: datasets/vertical_and_multilingual_datasets.md
     - 版面分析数据集: datasets/layout_datasets.md
     - 表格识别数据集: datasets/table_datasets.md
     - 关键信息提取数据集: datasets/kie_datasets.md
+  - 近期更新: update/update.md 
+  - version2.x:
+    - 概述: version2.x/legacy/index.md
+    - 模型列表: version2.x/legacy/model_list_2.x.md
+    - 基于Python预测引擎推理: version2.x/legacy/python_infer.md
+    - 基于C++预测引擎推理: version2.x/legacy/cpp_infer.md
+    - Visual Studio 2019 Community CMake 编译指南: version2.x/legacy/windows_vs2019_build.md
+    - 服务化部署: version2.x/legacy/paddle_server.md
+    - Android部署: version2.x/legacy/android_demo.md
+    - 端侧部署: version2.x/legacy/lite.md
+    - Paddle2ONNX模型转化与预测: version2.x/legacy/paddle2onnx.md
+    - 云上飞桨部署工具: version2.x/legacy/paddle_cloud.md
+    - Benchmark: version2.x/legacy/benchmark.md
   - FAQ: FAQ.md
   - 社区:
     - 社区贡献: community/community_contribution.md

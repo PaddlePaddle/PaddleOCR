@@ -87,18 +87,18 @@ In this pipeline, you can select models based on the benchmark test data provide
 <tr>
 <td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
 <td>83.8</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>101</td>
-<td>Server-side text detection model for PP-OCRv5, offering higher accuracy, suitable for deployment on high-performance servers.</td>
+<td>89.55 / 70.19</td>
+<td>371.65 / 371.65</td>
+<td>84.3</td>
+<td>PP-OCRv5 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>79.0</td>
-<td>- / -</td>
-<td>- / -</td>
+<td>8.79 / 3.13</td>
+<td>51.00 / 28.58</td>
 <td>4.7</td>
-<td>Mobile-side text detection model for PP-OCRv5, offering higher efficiency, suitable for deployment on edge devices.</td>
+<td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
@@ -106,7 +106,7 @@ In this pipeline, you can select models based on the benchmark test data provide
 <td>83.34 / 80.91</td>
 <td>442.58 / 442.58</td>
 <td>109</td>
-<td>Server-side text detection model for PP-OCRv4, offering higher accuracy, suitable for deployment on high-performance servers.</td>
+<td>PP-OCRv4 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
@@ -114,7 +114,7 @@ In this pipeline, you can select models based on the benchmark test data provide
 <td>8.79 / 3.13</td>
 <td>51.00 / 28.58</td>
 <td>4.7</td>
-<td>Mobile-side text detection model for PP-OCRv4, offering higher efficiency, suitable for deployment on edge devices.</td>
+<td>PP-OCRv4 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 </tbody>
 </table>
@@ -545,6 +545,24 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </thead>  
 <tbody>  
 <tr>  
+<td><code>input</code></td>  
+<td>Input data (required). Supports:  
+<ul>  
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
+<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
+<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
+</ul>  
+</td>  
+<td><code>Python Var|str|list</code></td>  
+<td></td>  
+</tr>  
+<tr>  
+<td><code>save_path</code></td>  
+<td>Path to save inference results. If <code>None</code>, results are not saved locally.</td>  
+<td><code>str</code></td>  
+<td></td>  
+</tr>  
+<tr>  
 <td><code>doc_orientation_classify_model_name</code></td>  
 <td>Name of the document orientation classification model. If <code>None</code>, the default pipeline model is used.</td>  
 <td><code>str</code></td>  
@@ -744,24 +762,6 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>None</code></td>  
 </tr>  
 <tr>  
-<td><code>input</code></td>  
-<td>Input data (required). Supports:  
-<ul>  
-<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> image data;</li>  
-<li><b>str</b>: Local file path (e.g., <code>/root/data/img.jpg</code>), URL (e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>), or directory (e.g., <code>/root/data/</code>);</li>  
-<li><b>List</b>: List of inputs, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>.</li>  
-</ul>  
-</td>  
-<td><code>Python Var|str|list</code></td>  
-<td><code>None</code></td>  
-</tr>  
-<tr>  
-<td><code>save_path</code></td>  
-<td>Path to save inference results. If <code>None</code>, results are not saved locally.</td>  
-<td><code>str</code></td>  
-<td><code>None</code></td>  
-</tr>  
-<tr>  
 <td><code>device</code></td>  
 <td>Device for inference. Supports:  
 <ul>  
@@ -813,6 +813,12 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>int</code></td>  
 <td><code>8</code></td>  
 </tr>  
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>  
 </table>  
 </details>  
@@ -1133,6 +1139,12 @@ The Python script above performs the following steps:
 <td><code>int</code></td>  
 <td><code>8</code></td>  
 </tr>  
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>  
 </table>  
 </details>  
@@ -1158,7 +1170,7 @@ The Python script above performs the following steps:
 </ul>  
 </td>  
 <td><code>Python Var|str|list</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>  
 <tr>  
 <td><code>device</code></td>  
@@ -1631,7 +1643,7 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 <tr>
 <td>Inaccurate whole-image rotation correction</td>
 <td>Document orientation classification module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate image distortion correction</td>
@@ -1641,17 +1653,17 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 <tr>
 <td>Inaccurate textline rotation correction</td>
 <td>Textline orientation classification module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Text detection misses</td>
 <td>Text detection module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_detection.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect text recognition</td>
 <td>Text recognition module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#v-secondary-development">Link</a></td>
 </tr>
 </tbody>
 </table>

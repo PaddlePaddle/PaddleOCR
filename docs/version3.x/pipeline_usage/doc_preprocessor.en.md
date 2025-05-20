@@ -118,7 +118,7 @@ In this pipeline, you can select the models to use based on the benchmark data p
 
 ## 2. Quick Start
 
-Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md.en). After installation, you can experience it via the command line or integrate it into Python locally.
+Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](../installation.en.md). After installation, you can experience it via the command line or integrate it into Python locally.
 
 ### 2.1 Command Line Experience
 
@@ -148,6 +148,24 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>input</code></td>
+<td>The data to be predicted, supporting multiple input types. This parameter is required.
+<ul>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
+<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
+<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
@@ -182,24 +200,6 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>input</code></td>
-<td>The data to be predicted, supporting multiple input types. This parameter is required.
-<ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
-<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
-<td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -254,6 +254,12 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 </details>
@@ -277,9 +283,9 @@ The command-line approach is for quick experience and viewing results. Generally
 from paddleocr import DocPreprocessor
 
 pipeline = DocPreprocessor()
-# ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model via use_doc_orientation_classify
-# ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # Specify whether to use the text image unwarping module via use_doc_unwarping
-# ocr = TableRecognitionPipelineV2(device="gpu") # Specify whether to use GPU for model inference via device
+# docpp = DocPreprocessor(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model via use_doc_orientation_classify
+# docpp = DocPreprocessor(use_doc_unwarping=True) # Specify whether to use the text image unwarping module via use_doc_unwarping
+# docpp = DocPreprocessor(device="gpu") # Specify whether to use GPU for model inference via device
 output = pipeline.predict("./doc_test_rotated.jpg")
 for res in output:
     res.print()  ## Print the structured output of the prediction
@@ -389,6 +395,12 @@ In the above Python script, the following steps are executed:
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -417,7 +429,7 @@ The following are the parameters and their descriptions of the `predict()` metho
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>

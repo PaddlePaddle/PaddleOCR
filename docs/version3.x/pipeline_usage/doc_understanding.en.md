@@ -12,7 +12,7 @@ The Document Understanding Pipeline is an advanced document processing technolog
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/doc_understanding/doc_understanding.png">
 
-<b>The general document image preprocessing pipeline includes the following module. Each module can be trained and inferred independently and contains multiple models. For more details, click the corresponding module to view the documentation.</b>
+<b>The document understanding pipeline includes the following module. Each module can be trained and inferred independently and contains multiple models. For more details, click the corresponding module to view the documentation.</b>
 
 - [Document-like Vision Language Model Module](../module_usage/doc_vlm.md)
 
@@ -55,7 +55,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 
 ## 2. Quick Start
 
-Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). After installation, you can experience it locally using the command line or Python integration.
+Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.en.md). After installation, you can experience it locally using the command line or Python integration.
 
 ### 2.1 Command Line Experience
 
@@ -77,6 +77,22 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 </thead>
 <tbody>
 <tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports dictionary type input, required.
+<ul>
+<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>doc_understanding_model_name</code></td>
 <td>The name of the document understanding model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
@@ -92,22 +108,6 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td><code>doc_understanding_batch_size</code></td>
 <td>The batch size of the document understanding model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>input</code></td>
-<td>Data to be predicted, supports dictionary type input, required.
-<ul>
-<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
-</ul>
-</td>
-<td><code>Python Var|str|list</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
-<td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -161,6 +161,12 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -276,6 +282,12 @@ In the above Python script, the following steps are performed:
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>Path to PaddleX pipeline configuration file.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -302,7 +314,7 @@ Below are the parameters and their descriptions for the `predict()` method:
 </ul>
 </td>
 <td><code>Python Dict</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -405,9 +417,9 @@ If you need to apply the pipeline directly to your Python project, you can refer
 
 In addition, PaddleOCR also provides two other deployment methods, detailed descriptions are as follows:
 
-🚀 High-Performance Inference: In real production environments, many applications have strict standards for the performance indicators of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize the performance of model inference and pre-and post-processing, achieving significant acceleration of the end-to-end process. For detailed high-performance inference processes, refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In real production environments, many applications have strict standards for the performance indicators of deployment strategies (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize the performance of model inference and pre-and post-processing, achieving significant acceleration of the end-to-end process. For detailed high-performance inference processes, refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
-☁️ Service Deployment: Service deployment is a common form of deployment in real production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service deployment processes, refer to the [Service Deployment Guide](../deployment/serving.md).
+☁️ Service Deployment: Service deployment is a common form of deployment in real production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service deployment processes, refer to [Serving](../deployment/serving.md).
 
 Below is the API reference for basic service deployment and examples of service invocation in multiple languages:
 
