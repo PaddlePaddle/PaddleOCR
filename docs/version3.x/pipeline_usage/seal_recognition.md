@@ -605,7 +605,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
                     <li>ch_SVTRv2_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>
                   <li>ch_RepSVTR_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>
                   <li>英文识别模型：自建的内部英文数据集。</li>
-                   <li>多语言识别模型：P自建的内部多语种数据集。</li>
+                   <li>多语言识别模型：自建的内部多语种数据集。</li>
                     <li>文本行方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
                    <li>印章文本检测模型：自建的内部数据集，包含500张圆形印章图像。</li>
                 </ul>
