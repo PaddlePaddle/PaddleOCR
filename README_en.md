@@ -18,9 +18,7 @@
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
-
 </div>
-<br>
 
 ## 🚀 Introduction
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
@@ -265,6 +263,11 @@ print(chat_result)
 </div>
 
 ## 👩‍👩‍👧‍👦 Community
+
+| PaddlePaddle WeChat official account |  Join the tech discussion group |
+| :---: | :---: |
+| <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
+
 
 ## 😃 Awesome Projects Leveraging PaddleOCR
 💗 PaddleOCR wouldn’t be where it is today without its incredible community! A massive 🙌 thank you 🙌 to all our longtime partners, new collaborators, and everyone who’s poured their passion into PaddleOCR — whether we’ve named you or not. Your support fuels our fire! 🔥
