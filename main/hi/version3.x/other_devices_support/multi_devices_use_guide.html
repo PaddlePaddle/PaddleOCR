@@ -5450,6 +5450,30 @@ You're not viewing the latest version.
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、常见问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3、常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pp-structurev3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 使用 PP-StructureV3 产线推理结果不正确
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5492,56 +5516,94 @@ You're not viewing the latest version.
 <h3 id="12-paddleocr">1.2 PaddleOCR安装<a class="headerlink" href="#12-paddleocr" title="Permanent link">&para;</a></h3>
 <p>请参考<a href="../installation.html">PaddleOCR安装教程</a>安装 PaddleOCR。</p>
 <h2 id="2">2、使用<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>基于昇腾 NPU、昆仑 XPU 等硬件平台的 PaddleOCR 训练、推理使用方法与 GPU 相同，只需根据所属硬件平台，修改配置设备的参数。在这两款硬件上，支持 PaddleOCR 三大特色能力的快速推理和模型微调，包括 文字识别模型 PP-OCRv5、文档解析方案 PP-StructureV3 和 PP-ChatOCRv4。下面以 PP-OCRv5 模型为例，介绍如何使用。</p>
+<p>基于昇腾 NPU、昆仑 XPU 等硬件平台的 PaddleOCR 训练、推理使用方法与 GPU 相同，只需根据所属硬件平台，修改配置设备的参数。在这两款硬件上，支持 PaddleOCR 三大特色能力的快速推理和模型微调，包括 文字识别模型 PP-OCRv5、文档解析方案 PP-StructureV3 和 PP-ChatOCRv4。</p>
 <h3 id="21">2.1 快速推理<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
 <p>使用一行命令即可快速体验：</p>
+<ul>
+<li>OCR 产线推理</li>
+</ul>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 默认使用 PP-OCRv5 模型</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png<span class="w"> </span>--device<span class="w"> </span>npu:0<span class="w"> </span><span class="c1"># 将设备名修改为 npu或xpu</span>
 </span></code></pre></div>
-<p>在项目中，您可以通过几行代码即可完成产线的快速推理，推理代码如下：</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;npu:0&quot;</span><span class="p">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<ul>
+<li>PP-StructureV3 产线推理</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png<span class="w"> </span>--device<span class="w"> </span>npu:0
 </span></code></pre></div>
-<p>更多关于 OCR 产线推理的使用说明，请参考<a href="../pipeline_usage/OCR.html">通用OCR产线使用教程</a>。</p>
+<p>在项目中，您可以通过几行代码即可完成产线的快速推理，推理代码如下：</p>
+<ul>
+<li>
+<p>OCR 产线推理
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;npu:0&quot;</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>PP-StructureV3 产线推理
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="s2">&quot;npu:0&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## 打印预测的结构化输出</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## 保存当前图像的结构化json结果</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## 保存当前图像的markdown格式的结果</span>
+</span></code></pre></div></p>
+</li>
+</ul>
+<p>更多关于 OCR 产线推理的使用说明，请参考<a href="../pipeline_usage/OCR.html">通用OCR产线使用教程</a>。
+更多关于 PP-StructureV3 产线推理的使用说明，请参考<a href="../pipeline_usage/PP-StructureV3.html">PP-StructureV3产线使用教程</a>。</p>
 <h3 id="22">2.2 模型微调<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
 <p>如果对预训练模型的效果不满意，可以对产线上的模型进行模型微调，示例如下：</p>
 <ul>
 <li>
 <p>昇腾 NPU
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_storage_format</span><span class="o">=</span><span class="m">0</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_jit_compile</span><span class="o">=</span><span class="m">0</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_use_stride_kernel</span><span class="o">=</span><span class="m">0</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_allocator_strategy</span><span class="o">=</span>auto_growth
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_split_aclnn</span><span class="o">=</span>True
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_scale_aclnn</span><span class="o">=</span>True
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CUSTOM_DEVICE_BLACK_LIST</span><span class="o">=</span>pad3d,pad3d_grad
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--devices<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">        </span>-o<span class="w"> </span>Global.use_gpu<span class="o">=</span>False<span class="w"> </span>Global.use_npu<span class="o">=</span>True
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_storage_format</span><span class="o">=</span><span class="m">0</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_jit_compile</span><span class="o">=</span><span class="m">0</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_use_stride_kernel</span><span class="o">=</span><span class="m">0</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_allocator_strategy</span><span class="o">=</span>auto_growth
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_split_aclnn</span><span class="o">=</span>True
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_npu_scale_aclnn</span><span class="o">=</span>True
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CUSTOM_DEVICE_BLACK_LIST</span><span class="o">=</span>pad3d,pad3d_grad
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--devices<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">        </span>-o<span class="w"> </span>Global.use_gpu<span class="o">=</span>False<span class="w"> </span>Global.use_npu<span class="o">=</span>True
 </span></code></pre></div></p>
 </li>
 <li>
 <p>昆仑 XPU
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_use_stride_kernel</span><span class="o">=</span><span class="m">0</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BKCL_FORCE_SYNC</span><span class="o">=</span><span class="m">1</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BKCL_TIMEOUT</span><span class="o">=</span><span class="m">1800</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">XPU_BLACK_LIST</span><span class="o">=</span>pad3d,pad3d_grad
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--devices<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span>-o<span class="w"> </span>Global.use_gpu<span class="o">=</span>False<span class="w"> </span>Global.use_xpu<span class="o">=</span>True
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FLAGS_use_stride_kernel</span><span class="o">=</span><span class="m">0</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BKCL_FORCE_SYNC</span><span class="o">=</span><span class="m">1</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">BKCL_TIMEOUT</span><span class="o">=</span><span class="m">1800</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">XPU_BLACK_LIST</span><span class="o">=</span>pad3d,pad3d_grad
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--devices<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/rec/PP-OCRv5/PP-OCRv5_mobile_rec.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span>-o<span class="w"> </span>Global.use_gpu<span class="o">=</span>False<span class="w"> </span>Global.use_xpu<span class="o">=</span>True
 </span></code></pre></div></p>
 </li>
 </ul>
-<p>更多关于表格结构识别模块的使用说明，请参考<a href="../module_usage/table_structure_recognition.html">表格结构识别模块使用教程</a>,其它模块的介绍可参考表格结构识别同级目录下的其它文档。</p>
 <h3 id="23">2.3 其它方式推理<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
-<p>在昇腾 NPU 上，对于少量推理样本，使用上述产线推理方式存在结果异常的可能（主要是 PP-StructureV3 产线），针对这种情况，我们支持使用 ONNX 模型进行推理，保证推理结果正确。同时，部分模型支持昇腾离线 OM 推理，有效优化推理性能和内存占用。使用 OM + ONNX 格式的模型进行产线推理，能够同时保障精度和速度。我们已将 ONNX 和 OM 模型深度集成进了 PaddleX 高性能推理，详细使用方法参考<a href="https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/practical_tutorials/high_performance_npu_tutorial.md">昇腾 NPU 高性能推理教程</a>。</p>
+<p>在昇腾 NPU 上，对于少量推理样本，使用上述产线推理方式存在结果异常的可能（主要是 PP-StructureV3 产线），针对这种情况，我们支持使用 ONNX 模型进行推理，保证推理结果正确。</p>
+<p>使用如下命令可以将 Paddle 模型转换为 ONNX 模型：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>paddle2onnx
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>paddlex<span class="w"> </span>--paddle2onnx<span class="w"> </span>--paddle_model_dir<span class="w"> </span>/paddle_model_dir<span class="w"> </span>--onnx_model_dir<span class="w"> </span>/onnx_model_dir<span class="w"> </span>--opset_version<span class="w"> </span><span class="m">7</span>
+</span></code></pre></div>
+<p>同时，部分模型支持昇腾离线 OM 推理，有效优化推理性能和内存占用。使用 OM + ONNX 格式的模型进行产线推理，能够同时保障精度和速度。</p>
+<p>使用 atc 转换工具将 ONNX 模型转换为 OM 模型：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>atc<span class="w"> </span>--model<span class="o">=</span>inference.onnx<span class="w"> </span>--framework<span class="o">=</span><span class="m">5</span><span class="w"> </span>--output<span class="o">=</span>inference<span class="w"> </span>--soc_version<span class="o">=</span><span class="s2">&quot;your_device_type&quot;</span><span class="w"> </span>--input_shape<span class="w"> </span><span class="s2">&quot;your_input_shape&quot;</span>
+</span></code></pre></div>
+<p>我们已将 ONNX 和 OM 模型深度集成进了 PaddleX 高性能推理，修改产线配置文件，配置模型推理后端为 ONNX 或 OM 即可使用 PaddleX 高性能推理 API 进行推理。</p>
+<p>具体修改方法、推理代码以及更多的使用方法请参考<a href="https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/practical_tutorials/high_performance_npu_tutorial.md">昇腾 NPU 高性能推理教程</a>。</p>
+<h2 id="3">3、常见问题<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="1-pp-structurev3">1. 使用 PP-StructureV3 产线推理结果不正确<a class="headerlink" href="#1-pp-structurev3" title="Permanent link">&para;</a></h3>
+<p>该产线上的部分模型在少量 case 上存在精度误差，可以尝试调整配置文件中的模型，或者使用 ONNX+OM 模型进行推理。</p>
 
 
 
@@ -5564,7 +5626,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="आखिरी अपडेट">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 03:52:20">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 05:57:37">2025年5月20日</span>
   </span>
 
     
@@ -5574,7 +5636,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="बनाया था">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 03:52:20">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 05:57:37">2025年5月20日</span>
   </span>
 
     
