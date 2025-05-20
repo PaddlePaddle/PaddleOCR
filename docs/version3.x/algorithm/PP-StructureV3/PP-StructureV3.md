@@ -307,105 +307,12 @@
 
 * Paddle 3.0正式版
 * PaddleOCR 3.0.0正式版
-* PaddleX 3.0.0正式版
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9
 
 ## 3.2 测试数据
 1. 本地推理
-
-
-<table>
- <colgroup>
-  <col> 
- </colgroup>
- <tbody>
-  <tr> 
-   <td></td> 
-   <td>Pipeline Configurations</td> 
-   <td>Average time per page (s)</td> 
-   <td>Average CPU (%)</td> 
-   <td>Peak RAM Usage (MB)</td> 
-   <td>Average RAM Usage (MB)</td> 
-   <td>Average GPU (%)</td> 
-   <td>Peak VRAM Usage (MB)</td> 
-   <td>Average VRAM Usage (MB)</td> 
-  </tr> 
-  <tr> 
-   <td rowspan="6">PP-StructureV3</td> 
-   <td>Basic</td> 
-   <td>1.77</td> 
-   <td>111.4</td> 
-   <td>6822.4</td> 
-   <td>5278.2</td> 
-   <td>38.9</td> 
-   <td>17403</td> 
-   <td>16909.3</td> 
-  </tr> 
-  <tr> 
-   <td>Use chart recognition pipeline</td> 
-   <td>4.09</td> 
-   <td>105.3</td> 
-   <td>5628</td> 
-   <td>4085.1</td> 
-   <td>24.7</td> 
-   <td>17403</td> 
-   <td>17030.9</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec</td> 
-   <td>1.56</td> 
-   <td>113.7</td> 
-   <td>6712.9</td> 
-   <td>5052</td> 
-   <td>29.1</td> 
-   <td>10929</td> 
-   <td>10840.7</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-FormulaNet_plus-M</td> 
-   <td>1.42</td> 
-   <td>112.9</td> 
-   <td>6944.1</td> 
-   <td>5193.6</td> 
-   <td>38</td> 
-   <td>16390</td> 
-   <td>15840</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M</td> 
-   <td>1.15</td> 
-   <td>114.8</td> 
-   <td>6666.5</td> 
-   <td>5105.4</td> 
-   <td>26.1</td> 
-   <td>8606</td> 
-   <td>8517.2</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M, and max input length of text detection set to 1200</td> 
-   <td>0.99</td> 
-   <td>113</td> 
-   <td>7172.9</td> 
-   <td>5686.4</td> 
-   <td>29.2</td> 
-   <td>8776</td> 
-   <td>8680.8</td> 
-  </tr> 
-  <tr> 
-   <td>MinerU</td> 
-   <td>-</td> 
-   <td>1.57</td> 
-   <td>142.9</td> 
-   <td>13655.8</td> 
-   <td>12083</td> 
-   <td>43.3</td> 
-   <td>32406</td> 
-   <td>9915.4</td> 
-  </tr> 
- </tbody>
-</table>
 
 测试硬件：NVIDIA Tesla V100 + Intel Xeon Gold 6271C
 
@@ -601,14 +508,14 @@
 <table>
  <tbody>
   <tr> 
-   <td>Instances Number</td> 
-   <td>Concurrent Requests Number</td> 
-   <td>Throughput</td> 
-   <td>Average Latency (s)</td> 
-   <td>Success Number/Total Number</td> 
+   <td>实例数</td> 
+   <td>并发请求数</td> 
+   <td>吞吐</td> 
+   <td>平均时延（s）</td> 
+   <td>成功请求数/总请求数</td> 
   </tr> 
   <tr"> 
-   <tddata-morpho-td-border-index="1" cellindex="0">4卡*1</td> 
+   <td>4卡*1</td>
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 

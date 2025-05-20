@@ -70,9 +70,9 @@ It’s worth noting that the `PPStructure` module in PaddleOCR 2.x has been remo
 
 Also, in 2.x, the `show_log` parameter could be passed when creating a `PaddleOCR` object to control logging. However, this design affected all `PaddleOCR` instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see [Logging](version3.x/logging.en.md).
 
-## 4. Known Issues in PaddleOCR 3.x
+## 4. Known Issues in PaddleOCR 3.0
 
-PaddleOCR 3.x is still under active development. Current known limitations include:
+PaddleOCR 3.0 is still under active development. Current known limitations include:
 
 1. Incomplete support for native C++ deployment.
 2. High-performance service-oriented deployment is not yet on par with PaddleServing in 2.x.
