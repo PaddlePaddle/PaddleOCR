@@ -365,57 +365,57 @@ Relevant methods, parameters, and explanations are as follows:
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>Size of the input image; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Size of the input image; if not specified, the default 800x800 be used</td>
 <td><code>int/list/None</code></td>
 <td>
 <ul>
 <li><b>int</b>, e.g., 640, means resizing the input image to 640x640</li>
 <li><b>List</b>, e.g., [640, 512], means resizing the input image to a width of 640 and a height of 512</li>
-<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
+<li><b>None</b>, not specified, will use the default 0.5</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering low-confidence prediction results; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Threshold for filtering low-confidence prediction results; if not specified, the default 0.5 will be used</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
 <li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
-<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
+<li><b>None</b>, not specified, will use the default 0.5</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default False will be used</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
 <li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
-<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
+<li><b>None</b>, not specified, will use the default False</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Scaling factor for the side length of the detection box; if not specified, the default 1.0 will be used</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
 <li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
 <li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
-<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
+<li><b>None</b>, not specified, will use the default 1.0</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Merging mode for the detection boxes output by the model; if not specified, the default union will be used</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
@@ -423,7 +423,7 @@ Relevant methods, parameters, and explanations are as follows:
 <li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
 <li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
 <li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
-<li><b>None</b>, not specified, will use the default PaddleX official model configuration</li>
+<li><b>None</b>, not specified, will use the default union</li>
 </ul>
 </td>
 <td>None</td>
@@ -444,7 +444,6 @@ Relevant methods, parameters, and explanations are as follows:
 </tr>
 </table>
 
-* Note that `model_name` must be specified. After specifying `model_name`, the default PaddleX built-in model parameters will be used. If `model_dir` is specified, the user-defined model will be used.
 
 * The `predict()` method of the target detection model is called for inference prediction. The parameters of the `predict()` method are `input`, `batch_size`, and `threshold`, which are explained as follows:
 
@@ -488,37 +487,37 @@ Relevant methods, parameters, and explanations are as follows:
 <ul>
 <li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
 <li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
-<li><b>None</b>, not specified, will use the <code>threshold</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, not specified, will use the <code>threshold</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default 0.5 will be used</li>
 </ul>
 </td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default False will be used</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
 <li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
-<li><b>None</b>, not specified, will use the <code>layout_nms</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, not specified, will use the <code>layout_nms</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default False will be used</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Scaling factor for the side length of the detection box; if not specified, the default 1.0 will be used</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
 <li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
 <li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
-<li><b>None</b>, not specified, will use the <code>layout_unclip_ratio</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, not specified, will use the <code>layout_unclip_ratio</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default 1.0 will be used</li>
 </ul>
 </td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Merging mode for the detection boxes output by the model; if not specified, the default union will be used</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
@@ -526,7 +525,7 @@ Relevant methods, parameters, and explanations are as follows:
 <li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
 <li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
 <li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
-<li><b>None</b>, not specified, will use the <code>layout_merge_bboxes_mode</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, not specified, will use the <code>layout_merge_bboxes_mode</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default union will be used</li>
 </ul>
 </td>
 <td>None</td>

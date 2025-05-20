@@ -70,7 +70,7 @@ res.save_to_img("result")
 
 此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](version3.x/logging.md)。
 
-## 4. PaddleOCR 3.x 已知问题
+## 4. PaddleOCR 3.0 已知问题
 
 PaddleOCR 3.x 仍在持续迭代与优化中，目前已知存在以下尚待完善之处：
 
