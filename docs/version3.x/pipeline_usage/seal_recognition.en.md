@@ -15,7 +15,7 @@ The seal text recognition pipeline is used to recognize the text content of seal
 
 - [Seal Text Detection Module](../module_usage/seal_text_detection.en.md)
 - [Text Recognition Module](../module_usage/text_recognition.en.md)
-- [Layout Detection Module](../module_usage/layout_detection.en.mdmd) (Optional)
+- [Layout Detection Module](../module_usage/layout_detection.en.md) (Optional)
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.en.md) (Optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.en.md) (Optional)
 
