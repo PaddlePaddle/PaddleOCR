@@ -1215,6 +1215,1084 @@ This method will print the results to the terminal. The content printed to the t
 
 </details>
 
+
+### 2.2 Python Script Experience
+
+The command-line method is for a quick experience and to view results. Generally, in projects, integration via code is often required. You can download the [Test File](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png) and use the following example code for inference:
+
+```python
+from paddleocr import PPChatOCRv4Doc
+
+chat_bot_config = {
+    "module_name": "chat_bot",
+    "model_name": "ernie-3.5-8k",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "api_type": "openai",
+    "api_key": "api_key",  # your api_key
+}
+
+retriever_config = {
+    "module_name": "retriever",
+    "model_name": "embedding-v1",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "api_type": "qianfan",
+    "api_key": "api_key",  # your api_key
+}
+
+mllm_chat_bot_config = {
+    "module_name": "chat_bot",
+    "model_name": "PP-DocBee2",
+    "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
+    "api_type": "openai",
+    "api_key": "api_key",  # your api_key
+}
+
+pipeline = PPChatOCRv4Doc()
+
+visual_predict_res = pipeline.visual_predict(
+    input="vehicle_certificate-1.png",
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_common_ocr=True,
+    use_seal_recognition=True,
+    use_table_recognition=True,
+)
+
+visual_info_list = []
+for res in visual_predict_res:
+    visual_info_list.append(res["visual_info"])
+    layout_parsing_result = res["layout_parsing_result"]
+
+vector_info = pipeline.build_vector(
+    visual_info_list, flag_save_bytes_vector=True, retriever_config=retriever_config
+)
+mllm_predict_res = pipeline.mllm_pred(
+    input="vehicle_certificate-1.png",
+    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    mllm_chat_bot_config=mllm_chat_bot_config,
+)
+mllm_predict_info = mllm_predict_res["mllm_res"]
+chat_result = pipeline.chat(
+    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    visual_info=visual_info_list,
+    vector_info=vector_info,
+    mllm_predict_info=mllm_predict_info,
+    chat_bot_config=chat_bot_config,
+    retriever_config=retriever_config,
+)
+print(chat_result)
+
+```
+
+After running, the output is as follows:
+
+```
+{'chat_res': {'Cab Seating Capacity': '2'}}
+```
+
+The prediction process, API description, and output description for PP-ChatOCRv4 are as follows:
+
+<details><summary>(1) Call the <code>PPChatOCRv4Doc</code> method to instantiate the PP-ChatOCRv4 pipeline object.</summary>
+
+The relevant parameter descriptions are as follows:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layout_detection_model_name</code></td>
+<td>The name of the model used for layout region detection. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_dir</code></td>
+<td>The directory path of the layout region detection model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td>The name of the document orientation classification model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td>The directory path of the document orientation classification model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_name</code></td>
+<td>The name of the document unwarping model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_dir</code></td>
+<td>The directory path of the document unwarping model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_detection_model_name</code></td>
+<td>The name of the text detection model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_detection_model_dir</code></td>
+<td>The directory path of the text detection model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_name</code></td>
+<td>The name of the text recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_dir</code></td>
+<td>The directory path of the text recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_batch_size</code></td>
+<td>The batch size for the text recognition model. If set to<code>None</code>, the batch size will default to <code>1</code>.</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_structure_recognition_model_name</code></td>
+<td>The name of the table structure recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_structure_recognition_model_dir</code></td>
+<td>The directory path of the table structure recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_name</code></td>
+<td>The name of the seal text detection model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_dir</code></td>
+<td>The directory path of the seal text detection model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_name</code></td>
+<td>The name of the seal text recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_dir</code></td>
+<td>The directory path of the seal text recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_batch_size</code></td>
+<td>The batch size for the seal text recognition model. If set to<code>None</code>, the batch size will default to <code>1</code>.</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>Whether to load the document orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>Whether to load the document unwarping function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>Whether to load the seal recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>Whether to load the table recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td>Layout model score threshold.
+<ul>
+<li><b>float</b>：Any float between <code>0-1</code>;</li>
+<li><b>dict</b>： <code>{0:0.1}</code> where key is the class ID, and value is the threshold for that class;</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>0.5</code>);</li>
+</ul>
+</td>
+<td><code>float|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td>Whether the layout region detection model uses NMS post-processing.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td>Expansion factor for the detection boxes of the layout region detection model.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>;</li>
+<li><b>Tuple[float,float]</b>：Expansion factors in the horizontal and vertical directions respectively;</li>
+<li><b>dict</b>, where the key is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>tuple</b> type, e.g.,<code>{0: (1.1, 2.0)}</code>, meaning the center of the detection box for class 0 remains unchanged, width is expanded by 1.1 times, and height by 2.0 times.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>1.0</code>);</li>
+</ul>
+</td>
+<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>Method for filtering overlapping boxes in layout region detection.
+<ul>
+<li><b>str</b>：<code>large</code>，<code>small</code>, <code>union</code>, representing whether to keep the large box, small box, or both when filtering overlapping boxes.</li>
+<li><b>dict</b>, where the key is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>str</b> type, e.g.,<code>{0: "large", 2: "small"}</code>, meaning use "large" mode for class 0 detection boxes and "small" mode for class 2 detection boxes.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>large</code>);</li>
+</ul>
+</td>
+<td><code>str|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>Maximum side length limit for text detection.
+<ul>
+<li><b>int</b>：Any integer greater than <code>0</code>;</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>);</li>
+</ul>
+</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>Type of side length limit for text detection.
+<ul>
+<li><b>str</b>：Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>max</code>).</li>
+</ul>
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.3</code>) will be used by default.</li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>Text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>2.0</code>) will be used by default.</li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>Text recognition threshold. Text results with scores greater than this threshold will be kept.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_side_len</code></td>
+<td>Image side length limit for seal text detection.
+<ul>
+<li><b>int</b>：Any integer greater than <code>0</code>;</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>736</code>);</li>
+</ul>
+</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_type</code></td>
+<td>Type of image side length limit for seal text detection.
+<ul>
+<li><b>str</b>：Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>.</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>min</code>);</li>
+</ul>
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_thresh</code></td>
+<td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.
+    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.2</code>) will be used by default.</li></li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_box_thresh</code></td>
+<td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.
+    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_unclip_ratio</code></td>
+<td>Seal text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.
+    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.5</code>) will be used by default.</li></li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_rec_score_thresh</code></td>
+<td>Seal text recognition threshold. Text results with scores greater than this threshold will be kept.
+<ul>
+<li><b>float</b>：Any float greater than <code>0</code>.
+    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></li></ul>
+</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>retriever_config</code></td>
+<td>Configuration parameters for the vector retrieval large model. The configuration content is the following dictionary:
+<pre><code>{
+"module_name": "retriever",
+"model_name": "embedding-v1",
+"base_url": "https://qianfan.baidubce.com/v2",
+"api_type": "qianfan",
+"api_key": "api_key"  # Please set this to your actual API key
+}</code></pre>
+</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>mllm_chat_bot_config</code></td>
+<td>Configuration parameters for the multimodal large model. The configuration content is the following dictionary:
+<pre><code>{
+"module_name": "chat_bot",
+"model_name": "PP-DocBee",
+"base_url": "http://127.0.0.1:8080/", # Please set this to the actual URL of your multimodal large model service
+"api_type": "openai",
+"api_key": "api_key"  # Please set this to your actual API key
+}</code></pre>
+</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chat_bot_config</code></td>
+<td>Configuration information for the large language model. The configuration content is the following dictionary:
+<pre><code>{
+"module_name": "chat_bot",
+"model_name": "ernie-3.5-8k",
+"base_url": "https://qianfan.baidubce.com/v2",
+"api_type": "openai",
+"api_key": "api_key"  # Please set this to your actual API key
+}</code></pre>
+</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports multiple input types, required.
+<ul>
+<li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
+<li><b>str</b>：e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
+<li><b>List</b>：List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Specifies the path to save the inference result file. If set to<code>None</code>, inference results will not be saved locally.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>Device used for inference. Supports specifying a specific card number.
+<ul>
+<li><b>CPU</b>：e.g., <code>cpu</code> indicates using CPU for inference;</li>
+<li><b>GPU</b>：e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
+<li><b>NPU</b>：e.g., <code>npu:0</code> indicates using the 1st NPU for inference;</li>
+<li><b>XPU</b>：e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
+<li><b>MLU</b>：e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
+<li><b>DCU</b>：e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default. During initialization, it will prioritize using the local GPU 0 device; if not available, it will use the CPU device;</li>
+</ul>
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use TensorRT for inference acceleration.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size, used to optimize model subgraph computation.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Computation precision, e.g., fp32, fp16.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Whether to enable MKL-DNN acceleration library. If set to<code>None</code>, it will be enabled by default.
+</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads used when performing inference on CPU.</td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX pipeline configuration file path.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details><summary>(2) Call the <code>visual_predict()</code> method of the PP-ChatOCRv4 pipeline object to obtain visual prediction results. This method returns a list of results. Additionally, the pipeline also provides the <code>visual_predict_iter()</code> method. Both are identical in terms of parameter acceptance and result return, with the difference being that <code>visual_predict_iter()</code> returns a <code>generator</code>, allowing for step-by-step processing and retrieval of prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose either of these two methods based on your actual needs. The following are the parameters and their descriptions for the <code>visual_predict()</code> method:</summary>
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports multiple input types, required.
+<ul>
+  <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
+  <li><b>str</b>：e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
+  <li><b>List</b>：List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>Whether to use the document orientation classification module during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>Whether to use the text image correction module during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to use the text line orientation classification module during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>Whether to use the seal recognition sub-pipeline during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>Whether to use the table recognition sub-pipeline during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>str|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_side_len</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_type</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_box_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_unclip_ratio</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_rec_score_thresh</code></td>
+<td>Same as the parameter during instantiation.</td>
+<td><code>float</code></td>
+<td><code>None</code></td>
+</tr>
+</table>
+</details>
+
+<details><summary>(3) Process the visual prediction results.</summary>
+
+The prediction result for each sample is of `dict` type, containing two fields: `visual_info` and `layout_parsing_result`. Visual information (including `normal_text_dict`, `table_text_list`, `table_html_list`, etc.) is obtained through `visual_info`, and the information for each sample is placed in the `visual_info_list` list. The content of this list will later be fed into the large language model.
+
+Of course, you can also obtain the layout parsing results through `layout_parsing_result`. This result contains content such as tables, text, and images found in the file or image, and supports operations like printing, saving as an image, and saving as a `json` file:
+
+```python
+......
+for res in visual_predict_res:
+    visual_info_list.append(res["visual_info"])
+    layout_parsing_result = res["layout_parsing_result"]
+    layout_parsing_result.print()
+    layout_parsing_result.save_to_img("./output")
+    layout_parsing_result.save_to_json("./output")
+    layout_parsing_result.save_to_xlsx("./output")
+    layout_parsing_result.save_to_html("./output")
+......
+```
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Method Description</th>
+<th>Parameter</th>
+<th>Parameter Type</th>
+<th>Parameter Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+
+<tr>
+<td rowspan = "3"><code>print()</code></td>
+<td rowspan = "3">Prints the result to the terminal</td>
+<td><code>format_json</code></td>
+<td><code>bool</code></td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Controls whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Set to <code>True</code> to escape all non-<code>ASCII</code> characters; <code>False</code> to preserve original characters, effective only when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td rowspan = "3"><code>save_to_json()</code></td>
+<td rowspan = "3">Saves the result as a JSON format file</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>Save file path. When it's a directory, the saved file name will be consistent with the input file name.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specifies the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Controls whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Set to <code>True</code> to escape all non-<code>ASCII</code> characters; <code>False</code> to preserve original characters, effective only when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>save_to_img()</code></td>
+<td>Saves the visualization images of various intermediate modules as PNG format images</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>Save file path, supports directory or file path</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>save_to_html()</code></td>
+<td>Saves the tables in the file as HTML format files</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>Save file path, supports directory or file path</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>save_to_xlsx()</code></td>
+<td>Saves the tables in the file as XLSX format files</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>Save file path, supports directory or file path</td>
+<td>None</td>
+</tr>
+</table>
+
+- Calling the `print()` method will print the results to the terminal. The content printed to the terminal is explained as follows:
+    - `input_path`: `(str)` Input path of the image to be predicted.
+    - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
+    - `model_settings`: `(Dict[str, bool])` Model parameters required to configure the pipeline.
+        - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessor sub-pipeline.
+        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal recognition sub-pipeline.
+        - `use_table_recognition`: `(bool)` Controls whether to enable the table recognition sub-pipeline.
+        - `use_formula_recognition`: `(bool)` Controls whether to enable the formula recognition sub-pipeline.
+    - `parsing_res_list`: `(List[Dict])` List of parsing results, where each element is a dictionary. The list order is the reading order after parsing.
+        - `block_bbox`: `(np.ndarray)` Bounding box of the layout region.
+        - `block_label`: `(str)` Label of the layout region, e.g., `text`, `table`, etc.
+        - `block_content`: `(str)` Content within the layout region.
+    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` Dictionary of global OCR results.
+      -  `input_path`: `(Union[str, None])` Image path accepted by the image OCR sub-pipeline. When the input is `numpy.ndarray`, it is saved as `None`.
+      - `model_settings`: `(Dict)` Model configuration parameters for the OCR sub-pipeline.
+      - `dt_polys`: `(List[numpy.ndarray])` List of polygon boxes for text detection. Each detection box is represented by a numpy array of 4 vertex coordinates, with array shape (4, 2) and data type int16.
+      - `dt_scores`: `(List[float])` List of confidence scores for text detection boxes.
+      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the text detection module.
+        - `limit_side_len`: `(int)` Side length limit value for image preprocessing.
+        - `limit_type`: `(str)` Processing method for side length limit.
+        - `thresh`: `(float)` Confidence threshold for text pixel classification.
+        - `box_thresh`: `(float)` Confidence threshold for text detection boxes.
+        - `unclip_ratio`: `(float)` Expansion factor for text detection boxes.
+        - `text_type`: `(str)` Type of text detection, currently fixed to "general".
+      - `text_type`: `(str)` Type of text detection, currently fixed to "general".
+      - `textline_orientation_angles`: `(List[int])` Prediction results of text line orientation classification. When enabled, returns actual angle values (e.g., [0,0,1]).
+      - `text_rec_score_thresh`: `(float)` Filtering threshold for text recognition results.
+      - `rec_texts`: `(List[str])` List of text recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
+      - `rec_scores`: `(List[float])` List of text recognition confidence scores, filtered by `text_rec_score_thresh`.
+      - `rec_polys`: `(List[numpy.ndarray])` List of text detection boxes filtered by confidence, format same as `dt_polys`.
+    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of formula recognition results, each element is a dictionary.
+        - `rec_formula`: `(str)` Formula recognition result.
+        - `rec_polys`: `(numpy.ndarray)` Formula detection box, shape (4, 2), dtype int16.
+        - `formula_region_id`: `(int)` Region number where the formula is located.
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal recognition results, each element is a dictionary.
+        - `input_path`: `(str)` Input path of the seal image.
+        - `model_settings`: `(Dict)` Model configuration parameters for the seal recognition sub-pipeline.
+        - `dt_polys`: `(List[numpy.ndarray])` List of seal detection boxes, format same as `dt_polys`.
+        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the seal detection module, specific parameter meanings are the same as above.
+        - `text_type`: `(str)` Type of seal detection, currently fixed to "seal".
+        - `text_rec_score_thresh`: `(float)` Filtering threshold for seal recognition results.
+        - `rec_texts`: `(List[str])` List of seal recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
+        - `rec_scores`: `(List[float])` List of seal recognition confidence scores, filtered by `text_rec_score_thresh`.
+        - `rec_polys`: `(List[numpy.ndarray])` List of seal detection boxes filtered by confidence, format same as `dt_polys`.
+        - `rec_boxes`: `(numpy.ndarray)` Array of rectangular bounding boxes for detections, shape (n, 4), dtype int16. Each row represents a rectangle.
+    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of table recognition results, each element is a dictionary.
+        - `cell_box_list`: `(List[numpy.ndarray])` List of bounding boxes for table cells.
+        - `pred_html`: `(str)` HTML format string of the table.
+        - `table_ocr_pred`: `(dict)` OCR recognition result for the table.
+            - `rec_polys`: `(List[numpy.ndarray])` List of detection boxes for cells.
+            - `rec_texts`: `(List[str])` Recognition results for cells.
+            - `rec_scores`: `(List[float])` Recognition confidence scores for cells.
+            - `rec_boxes`: `(numpy.ndarray)` Array of rectangular bounding boxes for detections, shape (n, 4), dtype int16. Each row represents a rectangle.
+
+- Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the save path will be `save_path/{your_img_basename}.json`. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, `numpy.array` types will be converted to list form.
+- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, the save path will be `save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`. If a file is specified, it will be saved directly to that file. (The pipeline usually contains many result images, so it is not recommended to specify a specific file path directly, otherwise multiple images will be overwritten, and only the last image will be retained).
+
+Additionally, it supports obtaining visualization images with results and prediction results through properties, as follows:
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Property Description</th>
+</tr>
+</thead>
+<tr>
+<td rowspan = "1"><code>json</code></td>
+<td rowspan = "1">Gets the prediction results in <code>json</code> format.</td>
+</tr>
+<tr>
+<td rowspan = "2"><code>img</code></td>
+<td rowspan = "2">Gets the visualization images in <code>dict</code> format.</td>
+</tr>
+</table>
+
+- The prediction result obtained by the `json` property is dict-type data, and its content is consistent with the content saved by calling the `save_to_json()` method.
+- The prediction result returned by the `img` property is a dictionary-type data. The keys are `layout_det_res`, `overall_ocr_res`, `text_paragraphs_ocr_res`, `formula_res_region1`, `table_cell_img`, and `seal_res_region1`, and the corresponding values are `Image.Image` objects: used to display visualization images of layout region detection, OCR, OCR text paragraphs, formulas, tables, and seal results, respectively. If optional modules are not used, the dictionary will only contain `layout_det_res`.
+</details>
+
+<details><summary>(4) Call the <code>build_vector()</code> method of the PP-ChatOCRv4 pipeline object to build vectors for the text content.</summary>
+
+The following are the parameters and their descriptions for the `build_vector()` method:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tr>
+<td><code>visual_info</code></td>
+<td>Visual information, can be a dictionary containing visual information, or a list of such dictionaries.</td>
+<td><code>list|dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>min_characters</code></td>
+<td>Minimum number of characters. A positive integer greater than 0, can be determined based on the token length supported by the large language model.</td>
+<td><code>int</code></td>
+<td><code>3500</code></td>
+</tr>
+<tr>
+<td><code>block_size</code></td>
+<td>Block size when building a vector library for long text. A positive integer greater than 0, can be determined based on the token length supported by the large language model.</td>
+<td><code>int</code></td>
+<td><code>300</code></td>
+</tr>
+<tr>
+<td><code>flag_save_bytes_vector</code></td>
+<td>Whether to save text as a binary file.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>retriever_config</code></td>
+<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation.</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+</table>
+This method returns a dictionary containing visual text information. The content of the dictionary is as follows:
+
+- `flag_save_bytes_vector`：`(bool)` Whether to save the result as a binary file.
+- `flag_too_short_text`：`(bool)` Whether the text length is less than the minimum number of characters.
+- `vector`: `(str|list)` Binary content of the text or the text content itself, depending on the values of `flag_save_bytes_vector` and `min_characters`. If `flag_save_bytes_vector=True` and the text length is greater than or equal to the minimum number of characters, it returns binary content; otherwise, it returns the original text.
+</details>
+
+<details><summary>(5) Call the <code>mllm_pred()</code> method of the PP-ChatOCRv4 pipeline object to get the extraction results from the multimodal large model.</summary>
+
+The following are the parameters and their descriptions for the `mllm_pred()` method:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supports multiple input types, required.
+<ul>
+  <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
+  <li><b>str</b>：e.g., local path of an image file or single-page PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or single-page PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>；</li>
+</ul>
+</td>
+<td><code>Python Var|str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>key_list</code></td>
+<td>A single key or a list of keys used for extracting information.</td>
+<td><code>Union[str, List[str]]</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>mllm_chat_bot_config</code></td>
+<td>Configuration parameters for the multimodal large model, same as the parameter during instantiation.</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+
+</details>
+
+<details><summary>(6) Call the <code>chat()</code> method of the PP-ChatOCRv4 pipeline object to extract key information.</summary>
+
+The following are the parameters and their descriptions for the `chat()` method:
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>key_list</code></td>
+<td>A single key or a list of keys used for extracting information.</td>
+<td><code>Union[str, List[str]]</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>visual_info</code></td>
+<td>Visual information result.</td>
+<td><code>List[dict]</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_vector_retrieval</code></td>
+<td>Whether to use vector retrieval.</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>vector_info</code></td>
+<td>Vector information used for retrieval.</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>min_characters</code></td>
+<td>Required minimum number of characters. A positive integer greater than 0.</td>
+<td><code>int</code></td>
+<td><code>3500</code></td>
+</tr>
+<tr>
+<td><code>text_task_description</code></td>
+<td>Description of the text task.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_output_format</code></td>
+<td>Output format for text results.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_rules_str</code></td>
+<td>Rules for generating text results.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_few_shot_demo_text_content</code></td>
+<td>Text content for few-shot demonstration.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_few_shot_demo_key_value_list</code></td>
+<td>Key-value list for few-shot demonstration.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_task_description</code></td>
+<td>Description of the table task.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_output_format</code></td>
+<td>Output format for table results.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_rules_str</code></td>
+<td>Rules for generating table results.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_few_shot_demo_text_content</code></td>
+<td>Text content for table few-shot demonstration.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_few_shot_demo_key_value_list</code></td>
+<td>Key-value list for table few-shot demonstration.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>mllm_predict_info</code></td>
+<td>Multimodal large model result.</td>
+<td><code>dict</code></td>
+<td>
+<code>None</code>
+</td>
+</tr>
+<td><code>mllm_integration_strategy</code></td>
+<td>Data fusion strategy for multimodal large model and large language model, supports using one of them separately or fusing the results of both. Options: "integration", "llm_only", and "mllm_only".</td>
+<td><code>str</code></td>
+<td><code>"integration"</code></td>
+</tr>
+<tr>
+<td><code>chat_bot_config</code></td>
+<td>Configuration information for the large language model, same as the parameter during instantiation.</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>retriever_config</code></td>
+<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation.</td>
+<td><code>dict</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+
+This method will print the result to the terminal. The content printed to the terminal is explained as follows:
+  - `chat_res`: `(dict)` The result of information extraction, which is a dictionary containing the keys to be extracted and their corresponding values.
+
+</details>
+
+
 ## 3. Development Integration/Deployment
 If the pipeline meets your requirements for inference speed and accuracy in production, you can proceed directly with development integration/deployment.
 
