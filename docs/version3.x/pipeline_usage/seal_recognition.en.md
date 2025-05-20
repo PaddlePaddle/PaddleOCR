@@ -1584,9 +1584,9 @@ If you need to integrate the pipeline into your Python project, you can refer to
 
 In addition, PaddleX also provides three other deployment methods, which are detailed as follows:
 
-🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance requirements for deployment strategies, especially in terms of response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities aimed at deeply optimizing the performance of model inference and pre/post-processing, thereby significantly accelerating the end-to-end process. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance requirements for deployment strategies, especially in terms of response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities aimed at deeply optimizing the performance of model inference and pre/post-processing, thereby significantly accelerating the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
-☁️ Service Deployment: Service deployment is a common form of deployment in real-world production environments. By encapsulating inference functionality into a service, clients can access these services via network requests to obtain inference results. For detailed production service deployment procedures, please refer to the [Service Deployment Guide](../deployment/serving.md).
+☁️ Service Deployment: Service deployment is a common form of deployment in real-world production environments. By encapsulating inference functionality into a service, clients can access these services via network requests to obtain inference results. For detailed production service deployment procedures, please refer to [Serving](../deployment/serving.md).
 
 Below are the API references for basic serving deployment and multi-language service invocation examples:
 
