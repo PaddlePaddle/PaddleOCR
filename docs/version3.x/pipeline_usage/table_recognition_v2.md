@@ -739,9 +739,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
                   <li>3类版面检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 1154 张文档类型图片。</li>
                   <li> 5类英文文档区域检测模型：<a href="https://developer.ibm.com/exchanges/data/all/publaynet">PubLayNet</a> 的评估数据集，包含英文文档的 11245 张图片。</li>
                   <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
-                  <li>表格结构识别模型：PaddleX 内部自建高难度中文表格识别数据集。</li>
-                  <li>表格单元格检测模型：PaddleX 内部自建评测集。</li>
-                  <li>表格分类模型：PaddleX 内部自建评测集。</li>
+                  <li>表格结构识别模型：自建的内部高难度中文表格识别数据集。</li>
+                  <li>表格单元格检测模型：自建的内部评测集。</li>
+                  <li>表格分类模型：自建的内部评测集。</li>
                   <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>
                   <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>
                   <li>ch_SVTRv2_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>

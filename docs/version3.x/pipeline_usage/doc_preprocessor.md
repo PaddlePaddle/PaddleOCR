@@ -74,7 +74,7 @@ comments: true
                       <li><strong>测试数据集：
              </strong>
                 <ul>
-                  <li>文档图像方向分类模型：PaddleX自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
                   <li> 文本图像矫正模型：<a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet。</a></li>
                 </ul>
              </li>

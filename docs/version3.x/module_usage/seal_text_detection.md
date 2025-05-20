@@ -169,7 +169,7 @@ for res in output:
 <td>
 <ul>
 <li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：736</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -180,7 +180,7 @@ for res in output:
 <td>
 <ul>
 <li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：“min”</li></li></ul></td>
 
 
 <td>None</td>
@@ -192,7 +192,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.2</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -203,7 +203,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.6</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -225,7 +225,7 @@ for res in output:
 <td>
 <ul>
 <li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
+<li><b>None</b>: 如果设置为None, 将使用默认值：0.5</li></li></ul></td>
 
 <td>None</td>
 </tr>
