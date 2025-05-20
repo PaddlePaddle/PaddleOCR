@@ -4,7 +4,7 @@
   </p>
 
 <!-- language -->
-中文 | [English](./README_en.md) |  [日本語](./README_ja.md)
+中文 | [English](./README_en.md) 
 
 <!-- icon -->
 
