@@ -15,7 +15,7 @@ The seal text recognition pipeline is used to recognize the text content of seal
 
 - [Seal Text Detection Module](../module_usage/seal_text_detection.en.md)
 - [Text Recognition Module](../module_usage/text_recognition.en.md)
-- [Layout Detection Module](../module_usage/layout_detection.en.mdmd) (Optional)
+- [Layout Detection Module](../module_usage/layout_detection.en.md) (Optional)
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.en.md) (Optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.en.md) (Optional)
 
@@ -631,13 +631,9 @@ Before using the seal text recognition production line locally, please ensure th
 You can quickly experience the seal_recognition production line effect with a single command:
 
 ```bash
-paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png
-
-# Specify whether to use the document orientation classification model with --use_doc_orientation_classify
-paddleocr seal_recognition -i ./seal_text_det.png --use_doc_orientation_classify True
-
-# Specify whether to use the text image correction module with --use_doc_unwarping.
-paddleocr seal_recognition -i ./seal_text_det.png --use_doc_unwarping True
+paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False
 
 # Use --device to specify the use of GPU for model inference.
 paddleocr seal_recognition -i ./seal_text_det.png --device gpu
@@ -981,17 +977,16 @@ The visualized results are saved under `save_path`, and the visualized result of
 * The above command line is for quickly experiencing and viewing the effect. Generally, in a project, you often need to integrate through code. You can complete the quick inference of the pipeline with just a few lines of code. The inference code is as follows:
 
 ```python
-from paddlex import create_pipeline
+from paddleocr import SealRecognition
 
-pipeline = create_pipeline(pipeline="seal_recognition")
-
-output = pipeline.predict(
-    "seal_text_det.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
+pipeline = SealRecognition(
+    use_doc_orientation_classify=False, # Set whether to use document orientation classification model
+    use_doc_unwarping=False, # Set whether to use document image unwarping module
 )
+# ocr = SealRecognition(device="gpu") # Specify GPU for model inference
+output = pipeline.predict("./seal_text_det.png")
 for res in output:
-    res.print()
+    res.print() ## Print structured prediction results
     res.save_to_img("./output/")
     res.save_to_json("./output/")
 ```

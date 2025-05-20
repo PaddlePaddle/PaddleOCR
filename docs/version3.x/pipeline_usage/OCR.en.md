@@ -849,7 +849,7 @@ If `save_path` is specified, the visualization results will be saved under `save
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
 
-## 2.2 Python Script Integration  
+### 2.2 Python Script Integration  
 
 The command-line method is for quick testing. For project integration, you can achieve OCR inference with just a few lines of code:  
 
@@ -1626,6 +1626,10 @@ for i, res in enumerate(result["ocrResults"]):
 
 ## 4. Custom Development
 
+If the default model weights provided by the General OCR Pipeline do not meet your expectations in terms of accuracy or speed for your specific scenario, you can leverage your own domain-specific or application-specific data to further fine-tune the existing models, thereby improving the recognition performance of the General OCR Pipeline in your use case.
+
+### 4.1 Model Fine-Tuning
+
 The general OCR pipeline consists of multiple modules. If the pipeline's performance does not meet expectations, the issue may stem from any of these modules. You can analyze poorly recognized images to identify the problematic module and refer to the corresponding fine-tuning tutorials in the table below for adjustments.
 
 <table>
@@ -1664,3 +1668,68 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 </tr>
 </tbody>
 </table>
+
+### 4.2 Model Deployment  
+After fine-tuning the model with your private dataset, you will obtain local model weight files. You can then use these fine-tuned weights by customizing the pipeline configuration file.  
+
+1. **Obtain the Pipeline Configuration File**  
+
+Call the `export_paddlex_config_to_yaml` method of the **General OCR Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
+
+```Python  
+from paddleocr import PaddleOCR  
+
+pipeline = PaddleOCR()  
+pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")  
+```  
+
+2. **Modify the Configuration File**  
+
+After obtaining the default pipeline configuration file, replace the paths of the default model weights with the local paths of your fine-tuned model weights. For example:  
+
+```yaml  
+......  
+SubModules:  
+  TextDetection:  
+    box_thresh: 0.6  
+    limit_side_len: 960  
+    limit_type: max  
+    max_side_limit: 4000  
+    model_dir: null # Replace with the path to your fine-tuned text detection model weights  
+    model_name: PP-OCRv5_server_det  
+    module_name: text_detection  
+    thresh: 0.3  
+    unclip_ratio: 1.5  
+  TextLineOrientation:  
+    batch_size: 6  
+    model_dir: null  
+    model_name: PP-LCNet_x0_25_textline_ori  
+    module_name: textline_orientation  
+  TextRecognition:  
+    batch_size: 6  
+    model_dir: null # Replace with the path to your fine-tuned text recognition model weights  
+    model_name: PP-OCRv5_server_rec  
+    module_name: text_recognition  
+    score_thresh: 0.0  
+......  
+```  
+
+The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
+
+3. **Load the Configuration File in CLI**  
+
+After modifying the configuration file, specify its path using the `--paddlex_config` parameter in the command line. PaddleOCR will read the file and apply the configurations. Example:  
+
+```bash  
+paddleocr ocr --paddlex_config PaddleOCR.yaml ...  
+```  
+
+4. **Load the Configuration File in Python API**  
+
+When initializing the pipeline object, pass the path of the PaddleX pipeline configuration file or a configuration dictionary via the `paddlex_config` parameter. PaddleOCR will read and apply the configurations. Example:  
+
+```python  
+from paddleocr import PaddleOCR  
+
+pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")  
+```
