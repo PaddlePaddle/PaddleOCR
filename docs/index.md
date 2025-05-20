@@ -7,7 +7,7 @@ hide:
 
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
       <img width="100%" src="./images/Banner_cn.png" alt="PaddleOCR Banner"></a>
   </p>
 </div>
@@ -27,7 +27,7 @@ PaddleOCR 3.0**新增**三大特色能力：
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
       <img width="100%" src="./images/Arch_cn.png" alt="PaddleOCR Architecture"></a>
   </p>
 </div>
@@ -39,14 +39,14 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
       <img width="100%" src="./images/demo.gif" alt="PP-OCRv5 Demo"></a>
   </p>
 </div>
 
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
       <img width="100%" src="./images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
   </p>
 </div>
