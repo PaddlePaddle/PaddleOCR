@@ -166,34 +166,34 @@ plugins:
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
-        - locale: ja
-          name: 日本語
-          site_name: PaddleOCR ドキュメント
-          link: /ja/
-          nav_translations:
-            Home: トップページ
-        - locale: ru
-          name: Pу́сский язы́к
-          site_name: Документация PaddleOCR
-          link: /ru/
-          nav_translations:
-            Home: Главная страница
-        - locale: hi
-          name: हिन्दी
-          site_name: पैडलओसीआर दस्तावेज़ीकरण
-          link: /hi/
-          nav_translations:
-            Home: घर पृष्ठ
-        - locale: ko
-          name: 한국인
-          site_name: PaddleOCR 문서
-          link: /ko/
-          nav_translations:
-            Home: 첫 페이지
-        - locale: "null"
-          name: Help translating
-          build: false
-          fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
+        # - locale: ja
+        #   name: 日本語
+        #   site_name: PaddleOCR ドキュメント
+        #   link: /ja/
+        #   nav_translations:
+        #     Home: トップページ
+        # - locale: ru
+        #   name: Pу́сский язы́к
+        #   site_name: Документация PaddleOCR
+        #   link: /ru/
+        #   nav_translations:
+        #     Home: Главная страница
+        # - locale: hi
+        #   name: हिन्दी
+        #   site_name: पैडलओसीआर दस्तावेज़ीकरण
+        #   link: /hi/
+        #   nav_translations:
+        #     Home: घर पृष्ठ
+        # - locale: ko
+        #   name: 한국인
+        #   site_name: PaddleOCR 문서
+        #   link: /ko/
+        #   nav_translations:
+        #     Home: 첫 페이지
+        # - locale: "null"
+        #   name: Help translating
+        #   build: false
+        #   fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
   - git-committers:
       repository: PaddlePaddle/PaddleOCR
       branch: main
@@ -258,7 +258,7 @@ extra_css:
 
 nav:
   - Home: index.md
-  - 快速开始: version3.x/quick_start.md
+  - 快速开始: quick_start.md
   - PP-OCRv5: 
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
