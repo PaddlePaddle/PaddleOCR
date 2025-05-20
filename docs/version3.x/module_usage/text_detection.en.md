@@ -376,9 +376,9 @@ Method and parameter descriptions:
 
 If the above models do not meet your requirements, follow these steps for custom development (using `PP-OCRv5_server_det` as an example). First, prepare a text detection dataset (refer to the [Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar) format). After preparation, proceed with model training and export. The exported model can be integrated into the API. Ensure PaddleOCR dependencies are installed as per the [Installation Guide](../installation.en.md).
 
-## 4.1 Dataset and Pretrained Model Preparation
+### 4.1 Dataset and Pretrained Model Preparation
 
-### 4.1.1 Prepare Dataset
+#### 4.1.1 Prepare Dataset
 
 ```shell
 # Download example dataset
@@ -386,7 +386,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_exa
 tar -xf ocr_det_dataset_examples.tar
 ```
 
-### 4.1.2 Download Pretrained Model
+#### 4.1.2 Download Pretrained Model
 
 ```shell
 # Download PP-OCRv5_server_det pretrained model

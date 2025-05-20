@@ -609,9 +609,9 @@ The descriptions of relevant methods and parameters are as follows:
 
 If the performance of the above models does not meet your requirements in your specific scenario, you can follow the steps below for secondary development. Here, we use the training of `PP-OCRv5_server_rec` as an example; for other models, simply replace the corresponding configuration files. First, you need to prepare a dataset for text recognition. You can refer to the format of the [Text Recognition Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar) for preparation. Once prepared, you can proceed with model training and exporting as described below. After exporting, the model can be quickly integrated into the aforementioned API. This example uses the Text Recognition Demo Dataset. Before training the model, ensure that you have installed the dependencies required by PaddleOCR as per the [Installation Guide](../installation.md).
 
-## 4.1 Dataset and Pre-trained Model Preparation
+### 4.1 Dataset and Pre-trained Model Preparation
 
-### 4.1.1 Prepare the Dataset
+#### 4.1.1 Prepare the Dataset
 
 ```shell
 # Download the example dataset
@@ -619,7 +619,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_exa
 tar -xf ocr_rec_dataset_examples.tar
 ```
 
-### 4.1.2 Download the Pre-trained Model
+#### 4.1.2 Download the Pre-trained Model
 
 ```shell
 # Download the PP-OCRv5_server_rec pre-trained model
@@ -642,7 +642,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 ```
 
-### 4.4 Model Evaluation
+### 4.3 Model Evaluation
 
 You can evaluate the weights of a trained model, such as `output/xxx/xxx.pdparams`, using the following command:
 
@@ -653,7 +653,7 @@ python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
 Global.pretrained_model=output/xxx/xxx.pdparams
 ```
 
-### 4.5 Model Exporting
+### 4.4 Model Exporting
 
 ```bash
 python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \

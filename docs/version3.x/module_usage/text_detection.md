@@ -102,7 +102,7 @@ comments: true
 
 ## 三、快速开始
 
-> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](..installation.md)。
+> ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
 使用一行命令即可快速体验：
 
@@ -433,9 +433,9 @@ for res in output:
 如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv5_server_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
-## 4.1 数据集、预训练模型准备
+### 4.1 数据集、预训练模型准备
 
-### 4.1.1 准备数据集
+#### 4.1.1 准备数据集
 
 ```shell
 # 下载示例数据集
@@ -443,7 +443,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_exa
 tar -xf ocr_det_dataset_examples.tar
 ```
 
-### 4.1.2 下载预训练模型
+#### 4.1.2 下载预训练模型
 
 ```shell
 # 下载 PP-OCRv5_server_det 预训练模型
