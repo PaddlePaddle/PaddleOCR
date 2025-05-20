@@ -18,9 +18,7 @@
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
-
 </div>
-<br>
 
 ## 🚀 简介
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配**飞桨框架3.0正式版**，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5 Turbo**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
@@ -66,7 +64,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ### 2. 本地安装
 
-请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装, 然后，安装paddleocr。
+请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装，然后安装paddleocr。
 
 ```bash
 # 安装 paddleocr
@@ -247,6 +245,10 @@ print(chat_result)
 </div>
 
 ## 👩‍👩‍👧‍👦 开发者社区
+
+| 扫码关注飞桨公众号 | 扫码加入技术交流群 |
+| :---: | :---: |
+| <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
 
 ## 😃 使用 PaddleOCR 的优秀项目
 💗 PaddleOCR 的发展离不开社区贡献！衷心感谢所有开发者、合作伙伴与贡献者！

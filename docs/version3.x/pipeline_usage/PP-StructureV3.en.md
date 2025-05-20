@@ -2882,42 +2882,42 @@ Since the PP-StructureV3 pipeline contains multiple modules, unsatisfactory resu
 <tr>
 <td>Inaccurate layout detection, such as missing seals or tables</td>
 <td>Layout Detection Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate table structure recognition</td>
 <td>Table Structure Recognition Module</td>
-<td><a href="../module_usage/layout_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/table_structure_recognition.html#4-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate formula recognition</td>
 <td>Formula Recognition Module</td>
-<td><a href="../module_usage/formula_recognition.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missing seal text detection</td>
 <td>Seal Text Detection Module</td>
-<td><a href="../module_usage/seal_text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/seal_text_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missing text detection</td>
 <td>Text Detection Module</td>
-<td><a href="../module_usage/text_detection.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect text recognition results</td>
 <td>Text Recognition Module</td>
-<td><a href="../module_usage/text_recognition.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#v-secondary-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect correction of vertical or rotated text lines</td>
 <td>Text Line Orientation Classification Module</td>
-<td><a href="../module_usage/text_line_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Incorrect correction of full image orientation</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="../module_usage/doc_img_orientation_classification.en.md#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate image distortion correction</td>
