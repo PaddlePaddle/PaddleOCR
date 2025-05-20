@@ -276,6 +276,6 @@ For more information on how to use PaddleX's single-model inference API, you can
 
 ## 4. Secondary Development
 
-Since PaddleOCR does not directly provide training for the table classification module, if you need to train a table classification model, you can refer to the [PaddleX Table Classification Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html#_4) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
+Since PaddleOCR does not directly provide training for the table classification module, if you need to train a table classification model, you can refer to the [PaddleX Table Classification Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html#iv-secondary-development) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
 
 ## 5. FAQ

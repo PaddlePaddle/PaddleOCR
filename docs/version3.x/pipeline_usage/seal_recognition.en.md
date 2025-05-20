@@ -511,7 +511,7 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
           <ul>
             <li><strong>Test Dataset：</strong>
                         <ul>
-                         <li>Document Image Orientation Classification Module: A self-built dataset using PaddleX, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
+                         <li>Document Image Orientation Classification Module: A self-built dataset using PaddleOCR, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
                           <li>Text Image Rectification Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a></li>
                           <li>Layout Detection Model: A self-built layout detection dataset using PaddleOCR, including 500 images of common document types such as Chinese and English papers, magazines, contracts, books, exam papers, and research reports.</li>
                           <li>3-Category Layout Detection Model: A self-built layout detection dataset using PaddleOCR, containing 1154 images of common document types such as Chinese and English papers, magazines, and research reports.</li>
@@ -522,8 +522,8 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
                           <li>ch_RepSVTR_rec: Evaluation set B for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a>.</li>
                           <li>English Recognition Model: A self-built English dataset using PaddleX.</li>
                           <li>Multilingual Recognition Model: A self-built multilingual dataset using PaddleX.</li>
-                          <li>Text Line Orientation Classification Model: A self-built dataset using PaddleX, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
-                          <li>Seal Text Detection Model: A self-built dataset using PaddleX, containing 500 images of circular seal textures.</li>
+                          <li>Text Line Orientation Classification Model: A self-built dataset using PaddleOCR, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
+                          <li>Seal Text Detection Model: A self-built dataset using PaddleOCR, containing 500 images of circular seal textures.</li>
                         </ul>
                 </li>
               <li><strong>Hardware Configuration：</strong>
@@ -567,7 +567,7 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 
 ## 2. Quick Start
 
-Before using the seal text recognition production line locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../ppocr/installation.md). Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
+Before using the seal text recognition production line locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
 
 ### 2.1 命令行方式体验
 
@@ -1873,22 +1873,22 @@ Since the seal text recognition pipeline consists of several modules, if the pip
 <tr>
 <td>Inaccurate or missing seal position detection</td>
 <td>Layout Detection Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Missing text detection</td>
 <td>Text Detection Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/seal_text_detection.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate text content</td>
 <td>Text Recognition Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/text_recognition.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#41-dataset-and-pre-trained-model-preparation">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate full-image rotation correction</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Inaccurate image distortion correction</td>

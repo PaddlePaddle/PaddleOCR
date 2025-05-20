@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Tutorial for Document Image Orientation Classification Module
+# Document Image Orientation Classification Module Tutorial
 
 ## 1. Overview
 
@@ -78,7 +78,7 @@ The Document Image Orientation Classification Module is primarily designed to di
 
 ## 3. Quick Start
 
-> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md).
+> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly experience it with one command:
 
@@ -285,6 +285,10 @@ The explanations of relevant methods and parameters are as follows:
 <td rowspan = "1">Get the visualization image in <code>dict</code> format</td>
 </tr>
 
-</table>## IV. Secondary Development
+</table>
+
+## IV. Secondary Development
 
 Since PaddleOCR does not directly provide training functionality for document image orientation classification, if you need to train a document image orientation classification model, you can refer to the [PaddleX Secondary Development for Document Image Orientation Classification](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development) section for training guidance. The trained model can be seamlessly integrated into PaddleOCR's API for inference purposes.
+
+## V. FAQ

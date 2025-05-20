@@ -118,7 +118,7 @@ In this pipeline, you can select the models to use based on the benchmark data p
 
 ## 2. Quick Start
 
-Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.md.en). After installation, you can experience it via the command line or integrate it into Python locally.
+Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](../installation.en.md). After installation, you can experience it via the command line or integrate it into Python locally.
 
 ### 2.1 Command Line Experience
 
@@ -277,9 +277,9 @@ The command-line approach is for quick experience and viewing results. Generally
 from paddleocr import DocPreprocessor
 
 pipeline = DocPreprocessor()
-# ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model via use_doc_orientation_classify
-# ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # Specify whether to use the text image unwarping module via use_doc_unwarping
-# ocr = TableRecognitionPipelineV2(device="gpu") # Specify whether to use GPU for model inference via device
+# docpp = DocPreprocessor(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model via use_doc_orientation_classify
+# docpp = DocPreprocessor(use_doc_unwarping=True) # Specify whether to use the text image unwarping module via use_doc_unwarping
+# docpp = DocPreprocessor(device="gpu") # Specify whether to use GPU for model inference via device
 output = pipeline.predict("./doc_test_rotated.jpg")
 for res in output:
     res.print()  ## Print the structured output of the prediction

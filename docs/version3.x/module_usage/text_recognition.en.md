@@ -399,9 +399,11 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
     </tbody>
 </table>
 
-</details>## III. Quick Start
+</details>
 
-> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md).
+## III. Quick Start
+
+> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly experience the functionality with a single command:
 
@@ -642,7 +644,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 ```
 
-### 4.4 Model Evaluation
+### 4.3 Model Evaluation
 
 You can evaluate the weights of a trained model, such as `output/xxx/xxx.pdparams`, using the following command:
 
@@ -653,7 +655,7 @@ python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
 Global.pretrained_model=output/xxx/xxx.pdparams
 ```
 
-### 4.5 Model Exporting
+### 4.4 Model Exporting
 
 ```bash
 python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \

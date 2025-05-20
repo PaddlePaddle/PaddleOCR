@@ -292,3 +292,5 @@ for res in output:
 ## 四、二次开发
 
 由于 PaddleOCR 并不直接提供文档图像方向分类的训练，因此，如果需要训练文档图像方向分类模型，可以参考 [PaddleX 文档图像方向分类二次开发](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5)部分进行训练。训练后的模型可以无缝集成到 PaddleOCR 的 API 中进行推理。
+
+## 五、FAQ

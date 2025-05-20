@@ -327,7 +327,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ```
 
 
-### 4.4 模型评估
+### 4.3 模型评估
 
 您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，使用如下命令进行评估：
 
@@ -338,7 +338,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  Global.pretrained_model=output/xxx/xxx.pdparams
  ```
 
-### 4.5 模型导出
+### 4.4 模型导出
 
 ```bash
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
