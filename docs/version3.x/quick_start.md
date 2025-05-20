@@ -54,7 +54,7 @@ pip install paddleocr
 
 ### Python脚本使用
 
-=== "OCR产线：
+=== "OCR产线"
 
     ```python linenums="1"
     from paddleocr import PaddleOCR
