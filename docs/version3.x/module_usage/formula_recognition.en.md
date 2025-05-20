@@ -121,7 +121,7 @@ The formula recognition module is a key component of an OCR (Optical Character R
 
 ## III. Quick Start
 
-> ❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../ppocr/installation.md).
+> ❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly try it out with a single command:
 ```bash

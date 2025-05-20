@@ -40,7 +40,7 @@ Document visual language models are a cutting-edge multimodal processing technol
 
 ## III. Quick Start
 
-> ❗ Before starting quickly, please install the PaddleOCR wheel package. For details, please refer to the [Installation Guide](../ppocr/installation.md).
+> ❗ Before starting quickly, please install the PaddleOCR wheel package. For details, please refer to the [Installation Guide](../installation.en.md).
 
 You can quickly experience it with one line of command:
 
