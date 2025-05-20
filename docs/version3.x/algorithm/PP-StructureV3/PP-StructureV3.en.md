@@ -517,14 +517,14 @@ Use default configuration.
    <td>Success Number/Total Number</td> 
   </tr> 
   <tr"> 
-   <tddata-morpho-td-border-index="1" cellindex="0">4卡*1</td> 
+   <td>4 GPUs * 1</td> 
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 
    <td>1</td> 
   </tr> 
   <tr"> 
-   <td>4卡*4</td> 
+   <td>4 GPUs * 4</td> 
    <td>16</td> 
    <td>4.05</td> 
    <td>3.87</td> 
