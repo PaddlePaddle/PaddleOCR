@@ -888,7 +888,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模�
 
 <b>注：以上精度指标的评估集是自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</b>
 
-## [文档类视觉语言模型模块](../module_usage/tutorials/vlm_modules/doc_vlm.md)
+## [文档类视觉语言模型模块](./module_usage/doc_vlm.md)
 
 <table>
 <tr>
