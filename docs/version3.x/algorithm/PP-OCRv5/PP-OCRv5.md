@@ -197,7 +197,11 @@
 
 # 三、PP-OCRv5 Demo示例
 
+<div align="center">
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-OCRv5/algorithm_ppocrv5_demo1.png" width="600"/>
+</div>
 
+<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex%2FPaddleX3.0%2Fdoc_images%2FPP-OCRv5%2Falgorithm_ppocrv5_demo.pdf">更多示例</a>
 
 # 四、部署与二次开发
 * **多系统支持**：兼容Windows、Linux、Mac等主流操作系统。
