@@ -14,18 +14,11 @@ Given this background, we’ve decided to implement a major, non-backward-compat
 
 ## 2. Key Upgrades from PaddleOCR 2.x to 3.x
 
-The 3.x upgrade consists of four major enhancements:
+The 3.x upgrade consists of three major enhancements:
 
 1. **New Model Pipelines**: Introduced several new pipelines such as PP-OCRv5, PP-StructureV3, and PP-ChatOCR v4, covering a wide range of base models. These significantly enhance recognition capabilities for various text types, including handwriting, to meet the growing demand for high-precision parsing in complex documents. All models are ready-to-use out of the box, improving development efficiency.
-
-2. **Clear Separation of Training and Inference**: In PaddleOCR 2.x, both wheel packages and local scripts were available, but the boundary between them was relatively unclear. PaddleOCR 3.x explicitly separates the two:
-
-   * For users who want to quickly experience model inference or integrate pretrained models into their own projects, the PaddleOCR 3.x inference package is recommended.
-   * For users who wish to train or export custom models, or modify the training pipeline, using the PaddleOCR 3.x source code with training dependencies installed is advised.
-
-3. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using PaddleX’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.
-
-4. **PaddlePaddle 3.0 Compatibility and Optimized Training**: The new version is fully compatible with PaddlePaddle 3.0, including features like the CINN compiler. It also introduces a standardized model naming system to streamline future updates and maintenance.
+2. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using PaddleX’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.
+3. **PaddlePaddle 3.0 Compatibility and Optimized Training**: The new version is fully compatible with PaddlePaddle 3.0, including features like the CINN compiler. It also introduces a standardized model naming system to streamline future updates and maintenance.
 
 Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to [Legacy Features](version2.x/legacy/index.en.md).
 
