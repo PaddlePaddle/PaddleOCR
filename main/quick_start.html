@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/quick_start.html">
       
       
+        <link rel="prev" href="index.html">
+      
+      
+        <link rel="next" href="version3.x/pipeline_usage/OCR.html">
       
       
       <link rel="icon" href="version2.x/static/images/logo.jpg">
@@ -22,7 +26,7 @@
     
     
       
-        <title>Quick start - PaddleOCR 文档</title>
+        <title>快速开始 - PaddleOCR 文档</title>
       
     
     
@@ -193,7 +197,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick start
+              快速开始
             
           </span>
         </div>
@@ -248,36 +252,6 @@ You're not viewing the latest version.
           <li class="md-select__item">
             <a href="en/quick_start.html" hreflang="en" class="md-select__link">
               English
-            </a>
-          </li>
-        
-          <li class="md-select__item">
-            <a href="ja/quick_start.html" hreflang="ja" class="md-select__link">
-              日本語
-            </a>
-          </li>
-        
-          <li class="md-select__item">
-            <a href="ru/quick_start.html" hreflang="ru" class="md-select__link">
-              Pу́сский язы́к
-            </a>
-          </li>
-        
-          <li class="md-select__item">
-            <a href="hi/quick_start.html" hreflang="hi" class="md-select__link">
-              हिन्दी
-            </a>
-          </li>
-        
-          <li class="md-select__item">
-            <a href="ko/quick_start.html" hreflang="ko" class="md-select__link">
-              한국인
-            </a>
-          </li>
-        
-          <li class="md-select__item">
-            <a href="https://github.com/PaddlePaddle/PaddleOCR/discussions/13374" hreflang="null" class="md-select__link">
-              Help translating
             </a>
           </li>
         
@@ -378,9 +352,11 @@ You're not viewing the latest version.
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="version3.x/quick_start.html" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="quick_start.html" class="md-tabs__link">
         
   
   
@@ -773,10 +749,30 @@ You're not viewing the latest version.
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="version3.x/quick_start.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    快速开始
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quick_start.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -787,6 +783,75 @@ You're not viewing the latest version.
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="安装">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-paddlepaddle" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 安装PaddlePaddle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-paddleocr" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 安装paddleocr
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令行使用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python脚本使用
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2907,15 +2972,6 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#python" class="md-nav__link">
-    <span class="md-ellipsis">
-      Python脚本使用
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
       命令行使用
@@ -2925,18 +2981,9 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#demo" class="md-nav__link">
+  <a href="#python" class="md-nav__link">
     <span class="md-ellipsis">
-      在线demo
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
-    <span class="md-ellipsis">
-      相关文档
+      Python脚本使用
     </span>
   </a>
   
@@ -2976,206 +3023,113 @@ You're not viewing the latest version.
   
 
 
-  <h1>Quick start</h1>
+  <h1>快速开始</h1>
 
 <h3 id="_1">安装<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
 <h4 id="1-paddlepaddle">1. 安装PaddlePaddle<a class="headerlink" href="#1-paddlepaddle" title="Permanent link">&para;</a></h4>
-<blockquote>
-<p>如果您没有基础的Python运行环境，请参考<a href="./ppocr/environment.md">运行环境准备</a>。</p>
-</blockquote>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CPU端安装</label><label for="__tabbed_1_2">GPU端安装</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0rc1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<p>由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考<a href="https://www.paddlepaddle.org.cn/install/quick">飞桨官网安装文档</a>中的说明进行操作。</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
-</span></code></pre></div></td></tr></table></div>
-</div>
-</div>
-</div>
+<p>CPU端安装：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
+</span></code></pre></div>
+<p>GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考<a href="https://www.paddlepaddle.org.cn/install/quick">飞桨官网安装文档</a>中的说明进行操作。</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
+</span></code></pre></div>
 <h4 id="2-paddleocr">2. 安装<code>paddleocr</code><a class="headerlink" href="#2-paddleocr" title="Permanent link">&para;</a></h4>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>paddleocr
-</span></code></pre></div></td></tr></table></div>
-<p>NOTE: 可以通过设置环境变量 <code>PADDLE_OCR_BASE_DIR</code> 来自定义 OCR 模型的存储位置。如果未设置此变量，模型将下载到以下默认位置：</p>
-<ul>
-<li>在Linux/macOS上路径为：<code>${HOME}/.paddleocr</code></li>
-<li>在Windows上路径为：<code>C:\Users\{username}\.paddleocr</code></li>
-</ul>
-<h3 id="python">Python脚本使用<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:6"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><input id="__tabbed_2_5" name="__tabbed_2" type="radio" /><input id="__tabbed_2_6" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">文本检测+方向分类+文本识别</label><label for="__tabbed_2_2">文本检测+文本识别</label><label for="__tabbed_2_3">方向分类+文本识别</label><label for="__tabbed_2_4">只有文本检测</label><label for="__tabbed_2_5">只有识别</label><label for="__tabbed_2_6">只有方向分类</label></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>paddleocr
+</span></code></pre></div>
+<h3 id="_2">命令行使用<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">OCR产线</label><label for="__tabbed_1_2">文本检测模块</label><label for="__tabbed_1_3">文本识别模块</label><label for="__tabbed_1_4">PP-StructureV3产线</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-3-10">10</a></span>
-<span class="normal"><a href="#__codelineno-3-11">11</a></span>
-<span class="normal"><a href="#__codelineno-3-12">12</a></span>
-<span class="normal"><a href="#__codelineno-3-13">13</a></span>
-<span class="normal"><a href="#__codelineno-3-14">14</a></span>
-<span class="normal"><a href="#__codelineno-3-15">15</a></span>
-<span class="normal"><a href="#__codelineno-3-16">16</a></span>
-<span class="normal"><a href="#__codelineno-3-17">17</a></span>
-<span class="normal"><a href="#__codelineno-3-18">18</a></span>
-<span class="normal"><a href="#__codelineno-3-19">19</a></span>
-<span class="normal"><a href="#__codelineno-3-20">20</a></span>
-<span class="normal"><a href="#__codelineno-3-21">21</a></span>
-<span class="normal"><a href="#__codelineno-3-22">22</a></span>
-<span class="normal"><a href="#__codelineno-3-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span> <span class="n">draw_ocr</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="c1"># Paddleocr supports Chinese, English, French, German, Korean and Japanese</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="c1"># You can set the parameter `lang` as `ch`, `en`, `french`, `german`, `korean`, `japan`</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="c1"># to switch the language model in order</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)</span> <span class="c1"># need to run only once to download and load model into memory</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_en/img_12.jpg&#39;</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="c1"># draw result</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="n">txts</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">draw_ocr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">txts</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">font_path</span><span class="o">=</span><span class="s1">&#39;/path/to/PaddleOCR/doc/fonts/simfang.ttf&#39;</span><span class="p">)</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">im_show</span><span class="p">)</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="n">im_show</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;result.jpg&#39;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
-<span class="normal"><a href="#__codelineno-4-2">2</a></span>
-<span class="normal"><a href="#__codelineno-4-3">3</a></span>
-<span class="normal"><a href="#__codelineno-4-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="o">......</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-5-10">10</a></span>
-<span class="normal"><a href="#__codelineno-5-11">11</a></span>
-<span class="normal"><a href="#__codelineno-5-12">12</a></span>
-<span class="normal"><a href="#__codelineno-5-13">13</a></span>
-<span class="normal"><a href="#__codelineno-5-14">14</a></span>
-<span class="normal"><a href="#__codelineno-5-15">15</a></span>
-<span class="normal"><a href="#__codelineno-5-16">16</a></span>
-<span class="normal"><a href="#__codelineno-5-17">17</a></span>
-<span class="normal"><a href="#__codelineno-5-18">18</a></span>
-<span class="normal"><a href="#__codelineno-5-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span><span class="n">draw_ocr</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)</span> <span class="c1"># need to run only once to download and load model into memory</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_en/img_12.jpg&#39;</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="c1"># draw result</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="n">txts</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">draw_ocr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">boxes</span><span class="p">,</span> <span class="n">txts</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">font_path</span><span class="o">=</span><span class="s1">&#39;/path/to/PaddleOCR/doc/fonts/simfang.ttf&#39;</span><span class="p">)</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">im_show</span><span class="p">)</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><span class="n">im_show</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;result.jpg&#39;</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
-<span class="normal"><a href="#__codelineno-6-2">2</a></span>
-<span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="o">......</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>paddleocr<span class="w"> </span>text_detection<span class="w"> </span>-i<span class="w"> </span>./general_ocr_001.png
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
-<span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span>
-<span class="normal"><a href="#__codelineno-7-4">4</a></span>
-<span class="normal"><a href="#__codelineno-7-5">5</a></span>
-<span class="normal"><a href="#__codelineno-7-6">6</a></span>
-<span class="normal"><a href="#__codelineno-7-7">7</a></span>
-<span class="normal"><a href="#__codelineno-7-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)</span> <span class="c1"># need to run only once to load model into memory</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words_en/word_10.png&#39;</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">det</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>paddleocr<span class="w"> </span>text_recognition<span class="w"> </span>-i<span class="w"> </span>./general_ocr_rec_001.png
 </span></code></pre></div></td></tr></table></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-9-10">10</a></span>
-<span class="normal"><a href="#__codelineno-9-11">11</a></span>
-<span class="normal"><a href="#__codelineno-9-12">12</a></span>
-<span class="normal"><a href="#__codelineno-9-13">13</a></span>
-<span class="normal"><a href="#__codelineno-9-14">14</a></span>
-<span class="normal"><a href="#__codelineno-9-15">15</a></span>
-<span class="normal"><a href="#__codelineno-9-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span><span class="p">,</span><span class="n">draw_ocr</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span> <span class="c1"># need to run only once to download and load model into memory</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_en/img_12.jpg&#39;</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span><span class="n">rec</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="c1"># draw result</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">draw_ocr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">txts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scores</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">font_path</span><span class="o">=</span><span class="s1">&#39;/path/to/PaddleOCR/doc/fonts/simfang.ttf&#39;</span><span class="p">)</span>
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="n">im_show</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">im_show</span><span class="p">)</span>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="n">im_show</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;result.jpg&#39;</span><span class="p">)</span>
+<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png
+</span></code></pre></div></td></tr></table></div>
+</div>
+</div>
+</div>
+<h3 id="python">Python脚本使用<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">OCR产线</label><label for="__tabbed_2_2">文本检测模块</label><label for="__tabbed_2_3">文本识别模块</label><label for="__tabbed_2_4">PP-StructureV3产线</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">()</span> <span class="c1"># 文本图像预处理+文本检测+方向分类+文本识别</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="c1"># ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+方向分类+文本识别</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="c1"># ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False, use_textline_orientation=False) # 文本检测+文本识别</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
 <p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
-<span class="normal"><a href="#__codelineno-10-2">2</a></span>
-<span class="normal"><a href="#__codelineno-10-3">3</a></span>
-<span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="p">[[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">]]</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="p">[[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">803.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">838.0</span><span class="p">]]</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="p">[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">805.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">839.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">]]</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="o">......</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;./general_ocr_002.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span>-1<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="w">  </span><span class="m">1</span>,<span class="w">   </span><span class="m">4</span><span class="o">]</span>,
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>...,
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="o">[</span><span class="w">  </span><span class="m">1</span>,<span class="w">  </span><span class="m">33</span><span class="o">]]</span>,
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">   </span>...,
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">   </span><span class="o">[[</span><span class="w"> </span><span class="m">99</span>,<span class="w"> </span><span class="m">455</span><span class="o">]</span>,
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span>...,
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="o">[</span><span class="w"> </span><span class="m">99</span>,<span class="w"> </span><span class="m">480</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">960</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;max&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;max_side_limit&#39;</span>:<span class="w"> </span><span class="m">4000</span>,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">1</span>.5<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span>-1,<span class="w"> </span>...,<span class="w"> </span>-1<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;www.997788.com&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机牌&#39;</span>,<span class="w"> </span><span class="s1">&#39;BOARDING PASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;舱位CLASS&#39;</span>,<span class="w"> </span><span class="s1">&#39;序号 SERIAL NO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;座位号&#39;</span>,<span class="w"> </span><span class="s1">&#39;SEAT NO&#39;</span>,<span class="w"> </span><span class="s1">&#39;航班FLIGHT&#39;</span>,<span class="w"> </span><span class="s1">&#39;日期&#39;</span>,<span class="w"> </span><span class="s1">&#39;DATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;MU 2379&#39;</span>,<span class="w"> </span><span class="s1">&#39;03DEC&#39;</span>,<span class="w"> </span><span class="s1">&#39;W&#39;</span>,<span class="w"> </span><span class="s1">&#39;035&#39;</span>,<span class="w"> </span><span class="s1">&#39;&#39;</span>,<span class="w"> </span><span class="s1">&#39;始发地&#39;</span>,<span class="w"> </span><span class="s1">&#39;FROM&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口&#39;</span>,<span class="w"> </span><span class="s1">&#39;GATE&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机时间BDT&#39;</span>,<span class="w"> </span><span class="s1">&#39;目的地TO&#39;</span>,<span class="w"> </span><span class="s1">&#39;福州&#39;</span>,<span class="w"> </span><span class="s1">&#39;TAIYUAN&#39;</span>,<span class="w"> </span><span class="s1">&#39;G11&#39;</span>,<span class="w"> </span><span class="s1">&#39;FUZHOU&#39;</span>,<span class="w"> </span><span class="s1">&#39;身份识别IDNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;姓名NAME&#39;</span>,<span class="w"> </span><span class="s1">&#39;ZHANGQIWEI&#39;</span>,<span class="w"> </span><span class="s1">&#39;票号TKTNO.&#39;</span>,<span class="w"> </span><span class="s1">&#39;张祺伟&#39;</span>,<span class="w"> </span><span class="s1">&#39;票价FARE&#39;</span>,<span class="w"> </span><span class="s1">&#39;ETKT7813699238489/1&#39;</span>,<span class="w"> </span><span class="s1">&#39;登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99684608,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.97179604<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="w">  </span><span class="m">1</span>,<span class="w">   </span><span class="m">4</span><span class="o">]</span>,
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span>...,
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="o">[</span><span class="w">  </span><span class="m">1</span>,<span class="w">  </span><span class="m">33</span><span class="o">]]</span>,
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">   </span>...,
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">   </span><span class="o">[[</span><span class="w"> </span><span class="m">99</span>,<span class="w"> </span><span class="m">455</span><span class="o">]</span>,
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">    </span>...,
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">    </span><span class="o">[</span><span class="w"> </span><span class="m">99</span>,<span class="w"> </span><span class="m">480</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="w">  </span><span class="m">1</span>,<span class="w"> </span>...,<span class="w">  </span><span class="m">33</span><span class="o">]</span>,
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">   </span>...,
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a><span class="w">   </span><span class="o">[</span><span class="w"> </span><span class="m">99</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">480</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span>
+<span class="normal"><a href="#__codelineno-9-3">3</a></span>
+<span class="normal"><a href="#__codelineno-9-4">4</a></span>
+<span class="normal"><a href="#__codelineno-9-5">5</a></span>
+<span class="normal"><a href="#__codelineno-9-6">6</a></span>
+<span class="normal"><a href="#__codelineno-9-7">7</a></span>
+<span class="normal"><a href="#__codelineno-9-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextDetection</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">TextDetection</span><span class="p">()</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;general_ocr_001.png&quot;</span><span class="p">)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_ocr_001.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="w"> </span><span class="m">77</span>,<span class="w"> </span><span class="m">551</span><span class="o">]</span>,
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>...,
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="o">[</span><span class="w"> </span><span class="m">78</span>,<span class="w"> </span><span class="m">587</span><span class="o">]]</span>,
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">   </span>...,
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">   </span><span class="o">[[</span><span class="w"> </span><span class="m">34</span>,<span class="w"> </span><span class="m">408</span><span class="o">]</span>,
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span>...,
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="o">[</span><span class="w"> </span><span class="m">36</span>,<span class="w"> </span><span class="m">456</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;dt_scores&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">0</span>.8562385635646694,<span class="w"> </span><span class="m">0</span>.8818259002228059,<span class="w"> </span><span class="m">0</span>.8406072284043453,<span class="w"> </span><span class="m">0</span>.8855339313157491<span class="o">]}}</span>
+</span></code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
@@ -3185,128 +3139,70 @@ You're not viewing the latest version.
 <span class="normal"><a href="#__codelineno-11-5">5</a></span>
 <span class="normal"><a href="#__codelineno-11-6">6</a></span>
 <span class="normal"><a href="#__codelineno-11-7">7</a></span>
-<span class="normal"><a href="#__codelineno-11-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;en&#39;</span><span class="p">)</span> <span class="c1"># need to run only once to load model into memory</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words_en/word_10.png&#39;</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">det</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-11-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextRecognition</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">TextRecognition</span><span class="p">()</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="s2">&quot;general_ocr_rec_001.png&quot;</span><span class="p">)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/&quot;</span><span class="p">)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
 <p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;general_ocr_rec_001.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;rec_text&#39;</span>:<span class="w"> </span><span class="s1">&#39;绿洲仕格维花园公寓&#39;</span>,<span class="w"> </span><span class="s1">&#39;rec_score&#39;</span>:<span class="w"> </span><span class="m">0</span>.990813672542572<span class="o">}}</span>
+</span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
-<span class="normal"><a href="#__codelineno-13-2">2</a></span>
-<span class="normal"><a href="#__codelineno-13-3">3</a></span>
-<span class="normal"><a href="#__codelineno-13-4">4</a></span>
-<span class="normal"><a href="#__codelineno-13-5">5</a></span>
-<span class="normal"><a href="#__codelineno-13-6">6</a></span>
-<span class="normal"><a href="#__codelineno-13-7">7</a></span>
-<span class="normal"><a href="#__codelineno-13-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># need to run only once to load model into memory</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="n">img_path</span> <span class="o">=</span> <span class="s1">&#39;PaddleOCR/doc/imgs_words_en/word_10.png&#39;</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">det</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">rec</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a>    <span class="n">res</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">res</span><span class="p">:</span>
-</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5"></a>    <span class="nb">input</span><span class="o">=</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8"></a>    <span class="n">use_textline_orientation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>                          
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="p">)</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
 <p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mf">0.99999964</span><span class="p">]</span>
-</span></code></pre></div></td></tr></table></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;./pp_structure_v3_demo.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_seal_recognition&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_table_recognition&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_formula_recognition&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_chart_recognition&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_region_detection&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;layout_det_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">1</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;image&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9864752888679504,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">774</span>.821,<span class="w"> </span><span class="m">201</span>.05177,<span class="w"> </span><span class="m">1502</span>.1008,<span class="w"> </span><span class="m">685</span>.7733<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9859225749969482,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">769</span>.8655,<span class="w"> </span><span class="m">776</span>.2446,<span class="w"> </span><span class="m">1121</span>.5986,<span class="w"> </span><span class="m">1058</span>.417<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9857110381126404,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">1151</span>.98,<span class="w"> </span><span class="m">1112</span>.5356,<span class="w"> </span><span class="m">1502</span>.7852,<span class="w"> </span><span class="m">1346</span>.3569<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9847239255905151,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.0322,<span class="w"> </span><span class="m">1136</span>.3547,<span class="w"> </span><span class="m">740</span>.2322,<span class="w"> </span><span class="m">1345</span>.928<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9842492938041687,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">1152</span>.1504,<span class="w"> </span><span class="m">800</span>.1625,<span class="w"> </span><span class="m">1502</span>.1265,<span class="w"> </span><span class="m">986</span>.1522<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9840831160545349,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.158066,<span class="w"> </span><span class="m">848</span>.8696,<span class="w"> </span><span class="m">358</span>.5725,<span class="w"> </span><span class="m">1057</span>.832<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9802583456039429,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.335953,<span class="w"> </span><span class="m">201</span>.10046,<span class="w"> </span><span class="m">358</span>.31543,<span class="w"> </span><span class="m">338</span>.78876<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9801402688026428,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.1556,<span class="w"> </span><span class="m">297</span>.4113,<span class="w"> </span><span class="m">740</span>.07556,<span class="w"> </span><span class="m">435</span>.41647<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9793564081192017,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.18976,<span class="w"> </span><span class="m">752</span>.0959,<span class="w"> </span><span class="m">740</span>.0832,<span class="w"> </span><span class="m">889</span>.88043<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9793409109115601,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.02496,<span class="w"> </span><span class="m">896</span>.34143,<span class="w"> </span><span class="m">740</span>.7431,<span class="w"> </span><span class="m">1033</span>.9465<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9776486754417419,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">8</span>.950775,<span class="w"> </span><span class="m">1184</span>.7842,<span class="w"> </span><span class="m">358</span>.75067,<span class="w"> </span><span class="m">1297</span>.8755<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9773538708686829,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">770</span>.7178,<span class="w"> </span><span class="m">1064</span>.5714,<span class="w"> </span><span class="m">1121</span>.2249,<span class="w"> </span><span class="m">1177</span>.9928<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9773064255714417,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.38086,<span class="w"> </span><span class="m">609</span>.7071,<span class="w"> </span><span class="m">740</span>.0553,<span class="w"> </span><span class="m">745</span>.3206<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9765821099281311,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">1152</span>.0112,<span class="w"> </span><span class="m">992</span>.296,<span class="w"> </span><span class="m">1502</span>.4927,<span class="w"> </span><span class="m">1106</span>.1166<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9761461019515991,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.46727,<span class="w"> </span><span class="m">536</span>.993,<span class="w"> </span><span class="m">358</span>.2047,<span class="w"> </span><span class="m">651</span>.32025<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.975399911403656,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.353531,<span class="w"> </span><span class="m">1064</span>.3059,<span class="w"> </span><span class="m">358</span>.45312,<span class="w"> </span><span class="m">1177</span>.8347<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9730532169342041,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.932312,<span class="w"> </span><span class="m">345</span>.36237,<span class="w"> </span><span class="m">358</span>.03476,<span class="w"> </span><span class="m">435</span>.1646<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9722575545310974,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">388</span>.91736,<span class="w"> </span><span class="m">200</span>.93637,<span class="w"> </span><span class="m">740</span>.00793,<span class="w"> </span><span class="m">290</span>.80692<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9710633158683777,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.39496,<span class="w"> </span><span class="m">1040</span>.3186,<span class="w"> </span><span class="m">740</span>.0091,<span class="w"> </span><span class="m">1129</span>.7168<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9696939587593079,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">9</span>.6145935,<span class="w"> </span><span class="m">658</span>.1123,<span class="w"> </span><span class="m">359</span>.06088,<span class="w"> </span><span class="m">770</span>.0288<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9664146900177002,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">770</span>.235,<span class="w"> </span><span class="m">1280</span>.4562,<span class="w"> </span><span class="m">1122</span>.0927,<span class="w"> </span><span class="m">1346</span>.4742<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9597565531730652,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">389</span>.66678,<span class="w"> </span><span class="m">537</span>.5609,<span class="w"> </span><span class="m">740</span>.06274,<span class="w"> </span><span class="m">603</span>.17725<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9594324827194214,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">10</span>.162949,<span class="w"> </span><span class="m">776</span>.86414,<span class="w"> </span><span class="m">359</span>.08307,<span class="w"> </span><span class="m">842</span>.1771<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9484634399414062,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">10</span>.402863,<span class="w"> </span><span class="m">1304</span>.7743,<span class="w"> </span><span class="m">358</span>.9441,<span class="w"> </span><span class="m">1346</span>.3749<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9476125240325928,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">28</span>.159409,<span class="w"> </span><span class="m">456</span>.7627,<span class="w"> </span><span class="m">339</span>.5631,<span class="w"> </span><span class="m">514</span>.9665<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9427680969238281,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">790</span>.6992,<span class="w"> </span><span class="m">1200</span>.3663,<span class="w"> </span><span class="m">1102</span>.3799,<span class="w"> </span><span class="m">1259</span>.1647<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;paragraph_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9424256682395935,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">409</span>.02832,<span class="w"> </span><span class="m">456</span>.6831,<span class="w"> </span><span class="m">718</span>.8154,<span class="w"> </span><span class="m">515</span>.5757<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">10</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;doc_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9376171827316284,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">133</span>.77905,<span class="w"> </span><span class="m">36</span>.8844,<span class="w"> </span><span class="m">1379</span>.6667,<span class="w"> </span><span class="m">123</span>.46869<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.9020252823829651,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">584</span>.9165,<span class="w"> </span><span class="m">159</span>.1416,<span class="w"> </span><span class="m">927</span>.22876,<span class="w"> </span><span class="m">179</span>.01605<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">2</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;text&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.895164430141449,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">1154</span>.3364,<span class="w"> </span><span class="m">776</span>.74646,<span class="w"> </span><span class="m">1331</span>.8564,<span class="w"> </span><span class="m">794</span>.2301<span class="o">]}</span>,<span class="w"> </span><span class="o">{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">6</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;figure_title&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.7892374396324158,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">808</span>.9641,<span class="w"> </span><span class="m">704</span>.2555,<span class="w"> </span><span class="m">1484</span>.0623,<span class="w"> </span><span class="m">747</span>.2296<span class="o">]}]}</span>,<span class="w"> </span><span class="s1">&#39;overall_ocr_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="w"> </span><span class="m">129</span>,<span class="w">   </span><span class="m">42</span><span class="o">]</span>,
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">        </span>...,
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">        </span><span class="o">[</span><span class="w"> </span><span class="m">129</span>,<span class="w">  </span><span class="m">140</span><span class="o">]]</span>,
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span>...,
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="o">[[</span><span class="m">1156</span>,<span class="w"> </span><span class="m">1330</span><span class="o">]</span>,
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">        </span>...,
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">        </span><span class="o">[</span><span class="m">1156</span>,<span class="w"> </span><span class="m">1351</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">736</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;min&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.3,<span class="w"> </span><span class="s1">&#39;max_side_limit&#39;</span>:<span class="w"> </span><span class="m">4000</span>,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">1</span>.5<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;general&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span>-1,<span class="w"> </span>...,<span class="w"> </span>-1<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.0,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;助力双方交往&#39;</span>,<span class="w"> </span><span class="s1">&#39;搭建友谊桥梁&#39;</span>,<span class="w"> </span><span class="s1">&#39;本报记者沈小晓&#39;</span>,<span class="w"> </span><span class="s1">&#39;任&#39;</span>,<span class="w"> </span><span class="s1">&#39;彦&#39;</span>,<span class="w"> </span><span class="s1">&#39;黄培昭&#39;</span>,<span class="w"> </span><span class="s1">&#39;身着中国传统民族服装的厄立特里亚青&#39;</span>,<span class="w"> </span><span class="s1">&#39;厄立特里亚高等教育与研究院合作建立，开&#39;</span>,<span class="w"> </span><span class="s1">&#39;年依次登台表演中国民族舞、现代舞、扇子舞&#39;</span>,<span class="w"> </span><span class="s1">&#39;设了中国语言课程和中国文化课程，注册学&#39;</span>,<span class="w"> </span><span class="s1">&#39;等，曼妙的舞姿赢得现场观众阵阵掌声。这&#39;</span>,<span class="w"> </span><span class="s1">&#39;生2万余人次。10余年来，厄特孔院已成为&#39;</span>,<span class="w"> </span><span class="s1">&#39;是日前危立特里亚高等教育与研究院孔子学&#39;</span>,<span class="w"> </span><span class="s1">&#39;当地民众了解中国的一扇窗口。&#39;</span>,<span class="w"> </span><span class="s1">&#39;院(以下简称“厄特孔院&quot;)举办“喜迎新年&quot;中国&#39;</span>,<span class="w"> </span><span class="s1">&#39;黄鸣飞表示，随着来学习中文的人日益&#39;</span>,<span class="w"> </span><span class="s1">&#39;歌舞比赛的场景。&#39;</span>,<span class="w"> </span><span class="s1">&#39;增多，阿斯马拉大学教学点已难以满足教学&#39;</span>,<span class="w"> </span><span class="s1">&#39;中国和厄立特里亚传统友谊深厚。近年&#39;</span>,<span class="w"> </span><span class="s1">&#39;需要。2024年4月，由中企蜀道集团所属四&#39;</span>,<span class="w"> </span><span class="s1">&#39;来，在高质量共建“一带一路”框架下，中厄两&#39;</span>,<span class="w"> </span><span class="s1">&#39;川路桥承建的孔院教学楼项目在阿斯马拉开&#39;</span>,<span class="w"> </span><span class="s1">&#39;国人文交流不断深化，互利合作的民意基础&#39;</span>,<span class="w"> </span><span class="s1">&#39;工建设，预计今年上半年竣工，建成后将为危&#39;</span>,<span class="w"> </span><span class="s1">&#39;日益深厚。&#39;</span>,<span class="w"> </span><span class="s1">&#39;特孔院提供全新的办学场地。&#39;</span>,<span class="w"> </span><span class="s1">&#39;“学好中文，我们的&#39;</span>,<span class="w"> </span><span class="s1">&#39;“在中国学习的经历&#39;</span>,<span class="w"> </span><span class="s1">&#39;未来不是梦”&#39;</span>,<span class="w"> </span><span class="s1">&#39;让我看到更广阔的世界”&#39;</span>,<span class="w"> </span><span class="s1">&#39;“鲜花曾告诉我你怎样走过，大地知道你&#39;</span>,<span class="w"> </span><span class="s1">&#39;多年来，厄立特里亚广大赴华留学生和&#39;</span>,<span class="w"> </span><span class="s1">&#39;心中的每一个角落……&quot;厄立特里亚阿斯马拉&#39;</span>,<span class="w"> </span><span class="s1">&#39;培训人员积极投身国家建设，成为助力该国&#39;</span>,<span class="w"> </span><span class="s1">&#39;大学综合楼二层，一阵优美的歌声在走廊里回&#39;</span>,<span class="w"> </span><span class="s1">&#39;发展的人才和厄中友好的见证者和推动者。&#39;</span>,<span class="w"> </span><span class="s1">&#39;响。循着熟悉的旋律轻轻推开一间教室的门，&#39;</span>,<span class="w"> </span><span class="s1">&#39;在厄立特里亚全国妇女联盟工作的约翰&#39;</span>,<span class="w"> </span><span class="s1">&#39;学生们正跟着老师学唱中文歌曲《同一首歌》。&#39;</span>,<span class="w"> </span><span class="s1">&#39;娜·特韦尔德·凯莱塔就是其中一位。她曾在&#39;</span>,<span class="w"> </span><span class="s1">&#39;这是厄特孔院阿斯马拉大学教学点的一&#39;</span>,<span class="w"> </span><span class="s1">&#39;中华女子学院攻读硕士学位，研究方向是女&#39;</span>,<span class="w"> </span><span class="s1">&#39;节中文歌曲课。为了让学生们更好地理解歌&#39;</span>,<span class="w"> </span><span class="s1">&#39;性领导力与社会发展。其间，她实地走访中国&#39;</span>,<span class="w"> </span><span class="s1">&#39;词大意，老师尤斯拉·穆罕默德萨尔·侯赛因逐&#39;</span>,<span class="w"> </span><span class="s1">&#39;多个地区，获得了观察中国社会发展的第一&#39;</span>,<span class="w"> </span><span class="s1">&#39;在厄立特里亚不久前举办的第六届中国风筝文化节上，当地小学生体验风筝制作。&#39;</span>,<span class="w"> </span><span class="s1">&#39;字翻译和解释歌词。随着伴奏声响起，学生们&#39;</span>,<span class="w"> </span><span class="s1">&#39;手资料。&#39;</span>,<span class="w"> </span><span class="s1">&#39;中国驻厄立特里亚大使馆供图&#39;</span>,<span class="w"> </span><span class="s1">&#39;边唱边随着节拍摇动身体，现场气氛热烈。&#39;</span>,<span class="w"> </span><span class="s1">&#39;谈起在中国求学的经历，约翰娜记忆犹&#39;</span>,<span class="w"> </span><span class="s1">&#39;“这是中文歌曲初级班，共有32人。学&#39;</span>,<span class="w"> </span><span class="s1">&#39;新：“中国的发展在当今世界是独一无二的。&#39;</span>,<span class="w"> </span><span class="s1">&#39;“不管远近都是客人，请不用客气；相约&#39;</span>,<span class="w"> </span><span class="s1">&#39;瓦的北红海省博物馆。&#39;</span>,<span class="w"> </span><span class="s1">&#39;生大部分来自首都阿斯马拉的中小学，年龄&#39;</span>,<span class="w"> </span><span class="s1">&#39;沿着中国特色社会主义道路坚定前行，中国&#39;</span>,<span class="w"> </span><span class="s1">&#39;好了在一起，我们欢迎你……”在一场中厄青&#39;</span>,<span class="w"> </span><span class="s1">&#39;博物馆二层陈列着一个发掘自阿杜利&#39;</span>,<span class="w"> </span><span class="s1">&#39;最小的仅有6岁。”尤斯拉告诉记者。&#39;</span>,<span class="w"> </span><span class="s1">&#39;创造了发展奇迹，这一切都离不开中国共产党&#39;</span>,<span class="w"> </span><span class="s1">&#39;年联谊活动上，四川路桥中方员工同当地大&#39;</span>,<span class="w"> </span><span class="s1">&#39;斯古城的中国古代陶制酒器，罐身上写着&#39;</span>,<span class="w"> </span><span class="s1">&#39;尤斯拉今年23岁，是厄立特里亚一所公立&#39;</span>,<span class="w"> </span><span class="s1">&#39;的领导。中国的发展经验值得许多国家学习&#39;</span>,<span class="w"> </span><span class="s1">&#39;学生合唱《北京欢迎你》。厄立特里亚技术学&#39;</span>,<span class="w"> </span><span class="s1">&#39;“万”“和”“禅”“山”等汉字。“这件文物证&#39;</span>,<span class="w"> </span><span class="s1">&#39;学校的艺术老师。她12岁开始在厄特孔院学&#39;</span>,<span class="w"> </span><span class="s1">&#39;借鉴。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;院计算机科学与工程专业学生鲁夫塔·谢拉&#39;</span>,<span class="w"> </span><span class="s1">&#39;明，很早以前我们就通过海上丝绸之路进行&#39;</span>,<span class="w"> </span><span class="s1">&#39;习中文，在2017年第十届“汉语桥&quot;世界中学生&#39;</span>,<span class="w"> </span><span class="s1">&#39;正在西南大学学习的厄立特里亚博士生&#39;</span>,<span class="w"> </span><span class="s1">&#39;是其中一名演唱者，她很早便在孔院学习中&#39;</span>,<span class="w"> </span><span class="s1">&#39;贸易往来与文化交流。这也是厄立特里亚&#39;</span>,<span class="w"> </span><span class="s1">&#39;中文比赛中获得厄立特里亚赛区第一名，并和&#39;</span>,<span class="w"> </span><span class="s1">&#39;穆卢盖塔·泽穆伊对中国怀有深厚感情。8&#39;</span>,<span class="w"> </span><span class="s1">&#39;文，一直在为去中国留学作准备。“这句歌词&#39;</span>,<span class="w"> </span><span class="s1">&#39;与中国友好交往历史的有力证明。”北红海&#39;</span>,<span class="w"> </span><span class="s1">&#39;同伴代表厄立特里亚前往中国参加决赛，获得&#39;</span>,<span class="w"> </span><span class="s1">&#39;年前，在北京师范大学获得硕士学位后，穆卢&#39;</span>,<span class="w"> </span><span class="s1">&#39;是我们两国人民友谊的生动写照。无论是投&#39;</span>,<span class="w"> </span><span class="s1">&#39;省博物馆研究与文献部负责人伊萨亚斯·特&#39;</span>,<span class="w"> </span><span class="s1">&#39;团体优胜奖。2022年起，尤斯拉开始在厄特孔&#39;</span>,<span class="w"> </span><span class="s1">&#39;盖塔在社交媒体上写下这样一段话：“这是我&#39;</span>,<span class="w"> </span><span class="s1">&#39;身于厄立特里亚基础设施建设的中企员工，&#39;</span>,<span class="w"> </span><span class="s1">&#39;斯法兹吉说。&#39;</span>,<span class="w"> </span><span class="s1">&#39;院兼职教授中文歌曲，每周末两个课时。“中国&#39;</span>,<span class="w"> </span><span class="s1">&#39;人生的重要一步，自此我拥有了一双坚固的&#39;</span>,<span class="w"> </span><span class="s1">&#39;还是在中国留学的厄立特里亚学子，两国人&#39;</span>,<span class="w"> </span><span class="s1">&#39;厄立特里亚国家博物馆考古学和人类学&#39;</span>,<span class="w"> </span><span class="s1">&#39;文化博大精深，我希望我的学生们能够通过中&#39;</span>,<span class="w"> </span><span class="s1">&#39;鞋子，赋予我穿越荆棘的力量。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;民携手努力，必将推动两国关系不断向前发&#39;</span>,<span class="w"> </span><span class="s1">&#39;研究员菲尔蒙·特韦尔德十分喜爱中国文&#39;</span>,<span class="w"> </span><span class="s1">&#39;文歌曲更好地理解中国文化。”她说。&#39;</span>,<span class="w"> </span><span class="s1">&#39;穆卢盖塔密切关注中国在经济、科技、教&#39;</span>,<span class="w"> </span><span class="s1">&#39;展。”鲁夫塔说。&#39;</span>,<span class="w"> </span><span class="s1">&#39;化。他表示：“学习彼此的语言和文化，将帮&#39;</span>,<span class="w"> </span><span class="s1">&#39;“姐姐，你想去中国吗?”“非常想！我想&#39;</span>,<span class="w"> </span><span class="s1">&#39;育等领域的发展，“中国在科研等方面的实力&#39;</span>,<span class="w"> </span><span class="s1">&#39;厄立特里亚高等教育委员会主任助理萨&#39;</span>,<span class="w"> </span><span class="s1">&#39;助厄中两国人民更好地理解彼此，助力双方&#39;</span>,<span class="w"> </span><span class="s1">&#39;去看故宫、爬长城。”尤斯拉的学生中有一对&#39;</span>,<span class="w"> </span><span class="s1">&#39;与日俱增。在中国学习的经历让我看到更广&#39;</span>,<span class="w"> </span><span class="s1">&#39;马瑞表示：“每年我们都会组织学生到中国访&#39;</span>,<span class="w"> </span><span class="s1">&#39;交往，搭建友谊桥梁。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;能歌善舞的姐妹，姐姐露娅今年15岁，妹妹&#39;</span>,<span class="w"> </span><span class="s1">&#39;阔的世界，从中受益匪浅。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;问学习，自前有超过5000名厄立特里亚学生&#39;</span>,<span class="w"> </span><span class="s1">&#39;厄立特里亚国家博物馆馆长塔吉丁·努&#39;</span>,<span class="w"> </span><span class="s1">&#39;莉娅14岁，两人都已在厄特孔院学习多年，&#39;</span>,<span class="w"> </span><span class="s1">&#39;23岁的莉迪亚·埃斯蒂法诺斯已在厄特&#39;</span>,<span class="w"> </span><span class="s1">&#39;在中国留学。学习中国的教育经验，有助于&#39;</span>,<span class="w"> </span><span class="s1">&#39;重达姆·优素福曾多次访问中国，对中华文明&#39;</span>,<span class="w"> </span><span class="s1">&#39;中文说得格外流利。&#39;</span>,<span class="w"> </span><span class="s1">&#39;孔院学习3年，在中国书法、中国画等方面表&#39;</span>,<span class="w"> </span><span class="s1">&#39;提升厄立特里亚的教育水平。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;的传承与创新、现代化博物馆的建设与发展&#39;</span>,<span class="w"> </span><span class="s1">&#39;露娅对记者说：“这些年来，怀着对中文&#39;</span>,<span class="w"> </span><span class="s1">&#39;现干分优秀，在2024年厄立特里亚赛区的&#39;</span>,<span class="w"> </span><span class="s1">&#39;印象深刻。“中国博物馆不仅有许多保存完好&#39;</span>,<span class="w"> </span><span class="s1">&#39;“共同向世界展示非&#39;</span>,<span class="w"> </span><span class="s1">&#39;和中国文化的热爱，我们姐妹俩始终相互鼓&#39;</span>,<span class="w"> </span><span class="s1">&#39;“汉语桥”比赛中获得一等奖。莉迪亚说：“学&#39;</span>,<span class="w"> </span><span class="s1">&#39;的文物，还充分运用先进科技手段进行展示，&#39;</span>,<span class="w"> </span><span class="s1">&#39;励，一起学习。我们的中文一天比一天好，还&#39;</span>,<span class="w"> </span><span class="s1">&#39;习中国书法让我的内心变得安宁和纯粹。我&#39;</span>,<span class="w"> </span><span class="s1">&#39;洲和亚洲的灿烂文明”&#39;</span>,<span class="w"> </span><span class="s1">&#39;帮助人们更好理解中华文明。”塔吉丁说，“危&#39;</span>,<span class="w"> </span><span class="s1">&#39;学会了中文歌和中国舞。我们一定要到中国&#39;</span>,<span class="w"> </span><span class="s1">&#39;也喜欢中国的服饰，希望未来能去中国学习，&#39;</span>,<span class="w"> </span><span class="s1">&#39;立特里亚与中国都拥有悠久的文明，始终相&#39;</span>,<span class="w"> </span><span class="s1">&#39;去。学好中文，我们的未来不是梦！”&#39;</span>,<span class="w"> </span><span class="s1">&#39;把中国不同民族元素融入服装设计中，创作&#39;</span>,<span class="w"> </span><span class="s1">&#39;从阿斯马拉出发，沿着蜿蜒曲折的盘山&#39;</span>,<span class="w"> </span><span class="s1">&#39;互理解、相互尊重。我希望未来与中国同行&#39;</span>,<span class="w"> </span><span class="s1">&#39;据厄特孔院中方院长黄鸣飞介绍，这所&#39;</span>,<span class="w"> </span><span class="s1">&#39;出更多精美作品，也把厄特文化分享给更多&#39;</span>,<span class="w"> </span><span class="s1">&#39;公路一路向东寻找丝路印迹。驱车两个小&#39;</span>,<span class="w"> </span><span class="s1">&#39;加强合作，共同向世界展示非洲和亚洲的灿&#39;</span>,<span class="w"> </span><span class="s1">&#39;孔院成立于2013年3月，由贵州财经大学和&#39;</span>,<span class="w"> </span><span class="s1">&#39;的中国朋友。”&#39;</span>,<span class="w"> </span><span class="s1">&#39;时，记者来到位于厄立特里亚港口城市马萨&#39;</span>,<span class="w"> </span><span class="s1">&#39;烂文明。”&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99113536,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.95110035<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="w"> </span><span class="m">129</span>,<span class="w">   </span><span class="m">42</span><span class="o">]</span>,
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">        </span>...,
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">        </span><span class="o">[</span><span class="w"> </span><span class="m">129</span>,<span class="w">  </span><span class="m">140</span><span class="o">]]</span>,
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">    </span>...,
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">    </span><span class="o">[[</span><span class="m">1156</span>,<span class="w"> </span><span class="m">1330</span><span class="o">]</span>,
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">        </span>...,
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">        </span><span class="o">[</span><span class="m">1156</span>,<span class="w"> </span><span class="m">1351</span><span class="o">]]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([[</span><span class="w"> </span><span class="m">129</span>,<span class="w"> </span>...,<span class="w">  </span><span class="m">140</span><span class="o">]</span>,
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span>...,
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">    </span><span class="o">[</span><span class="m">1156</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">1351</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}}</span>
+</span></code></pre></div>
 </div>
 </div>
 </div>
-<h3 id="_2">命令行使用<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
-<p>显示帮助信息</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a>paddleocr<span class="w"> </span>-h
-</span></code></pre></div></td></tr></table></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:6"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><input id="__tabbed_3_5" name="__tabbed_3" type="radio" /><input id="__tabbed_3_6" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">文本检测+方向分类+文本识别</label><label for="__tabbed_3_2">文本检测+文本识别</label><label for="__tabbed_3_3">方向分类+文本识别</label><label for="__tabbed_3_4">只有文本检测</label><label for="__tabbed_3_5">只有识别</label><label for="__tabbed_3_6">只有方向分类</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--lang<span class="w"> </span>en
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1">1</a></span>
-<span class="normal"><a href="#__codelineno-17-2">2</a></span>
-<span class="normal"><a href="#__codelineno-17-3">3</a></span>
-<span class="normal"><a href="#__codelineno-17-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="o">......</span>
-</span></code></pre></div></td></tr></table></div>
-<p>还支持 PDF 文件，可以通过设置 <code>page_num</code> 参数来推理前几页，默认值为 0，这意味着处理全部页面。</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>./xxx.pdf<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--use_gpu<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--page_num<span class="w"> </span><span class="m">2</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-19-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--lang<span class="w"> </span>en
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-20-1">1</a></span>
-<span class="normal"><a href="#__codelineno-20-2">2</a></span>
-<span class="normal"><a href="#__codelineno-20-3">3</a></span>
-<span class="normal"><a href="#__codelineno-20-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1"></a><span class="p">[[[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">173.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1169.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">442.0</span><span class="p">,</span> <span class="mf">225.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;ACKNOWLEDGEMENTS&#39;</span><span class="p">,</span> <span class="mf">0.99283075</span><span class="p">]]</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2"></a><span class="p">[[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">340.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">342.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1207.0</span><span class="p">,</span> <span class="mf">389.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">387.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;We would like to thank all the designers and&#39;</span><span class="p">,</span> <span class="mf">0.9357758</span><span class="p">]]</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3"></a><span class="p">[[[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">398.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1204.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">399.0</span><span class="p">,</span> <span class="mf">433.0</span><span class="p">]],</span> <span class="p">[</span><span class="s1">&#39;contributors whohave been involved in the&#39;</span><span class="p">,</span> <span class="mf">0.9592447</span><span class="p">]]</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4"></a><span class="o">......</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-21-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--lang<span class="w"> </span>en
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-22-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-23-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_en/img_12.jpg<span class="w"> </span>--rec<span class="w"> </span><span class="nb">false</span>
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-24-1">1</a></span>
-<span class="normal"><a href="#__codelineno-24-2">2</a></span>
-<span class="normal"><a href="#__codelineno-24-3">3</a></span>
-<span class="normal"><a href="#__codelineno-24-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1"></a><span class="p">[[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">812.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">805.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">756.0</span><span class="p">,</span> <span class="mf">830.0</span><span class="p">]]</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2"></a><span class="p">[[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">803.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1085.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">820.0</span><span class="p">,</span> <span class="mf">838.0</span><span class="p">]]</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3"></a><span class="p">[[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">801.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">805.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">715.0</span><span class="p">,</span> <span class="mf">839.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">393.0</span><span class="p">,</span> <span class="mf">836.0</span><span class="p">]]</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4"></a><span class="o">......</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-25-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--lang<span class="w"> </span>en
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-26-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1"></a><span class="p">[</span><span class="s1">&#39;PAIN&#39;</span><span class="p">,</span> <span class="mf">0.990372</span><span class="p">]</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-<div class="tabbed-block">
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-27-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1"></a>paddleocr<span class="w"> </span>--image_dir<span class="w"> </span>PaddleOCR/doc/imgs_words_en/word_10.png<span class="w"> </span>--use_angle_cls<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--det<span class="w"> </span><span class="nb">false</span><span class="w"> </span>--rec<span class="w"> </span><span class="nb">false</span>
-</span></code></pre></div></td></tr></table></div>
-<p>输出示例：</p>
-<div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-28-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1"></a><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="mf">0.99999964</span><span class="p">]</span>
-</span></code></pre></div></td></tr></table></div>
-</div>
-</div>
-</div>
-<p>更加详细的文档，请移步：<a href="./ppocr/quick_start.md">PaddleOCR快速开始</a></p>
-<h3 id="demo">在线demo<a class="headerlink" href="#demo" title="Permanent link">&para;</a></h3>
-<ul>
-<li>PP-OCRv4 在线体验地址：<a href="https://aistudio.baidu.com/community/app/91660">https://aistudio.baidu.com/community/app/91660</a></li>
-<li>SLANet 在线体验地址：<a href="https://aistudio.baidu.com/community/app/91661">https://aistudio.baidu.com/community/app/91661</a></li>
-<li>PP-ChatOCRv3-doc 在线体验地址：<a href="https://aistudio.baidu.com/community/app/182491">https://aistudio.baidu.com/community/app/182491</a></li>
-<li>PP-ChatOCRv2-common 在线体验地址：<a href="https://aistudio.baidu.com/community/app/91662">https://aistudio.baidu.com/community/app/91662</a></li>
-<li>PP-ChatOCRv2-doc 在线体验地址：<a href="https://aistudio.baidu.com/community/app/70303">https://aistudio.baidu.com/community/app/70303</a></li>
-</ul>
-<h3 id="_3">相关文档<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
-<ul>
-<li><a href="https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/quick_start.html">一键调用48个PaddleOCR核心模型</a></li>
-<li>一行命令快速使用：<a href="https://paddlepaddle.github.io/PaddleOCR/latest/ppocr/overview.html">文本检测识别（中英文/多语言）</a></li>
-<li>一行命令快速使用：<a href="https://paddlepaddle.github.io/PaddleOCR/latest/ppstructure/overview.html">文档分析</a></li>
-</ul>
 
 
 
@@ -3329,7 +3225,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:01:30">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:05:03">2025年5月20日</span>
   </span>
 
     
@@ -3339,7 +3235,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:01:30">2025年5月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月20日 10:05:03">2025年5月20日</span>
   </span>
 
     
@@ -3357,9 +3253,9 @@ You're not viewing the latest version.
     
     <nav>
       
-        <a href="https://github.com/cuicheng01" class="md-author" title="@cuicheng01">
+        <a href="https://github.com/zhang-prog" class="md-author" title="@zhang-prog">
           
-          <img src="https://avatars.githubusercontent.com/u/45199522?v=4&size=72" alt="cuicheng01">
+          <img src="https://avatars.githubusercontent.com/u/69562787?v=4&size=72" alt="zhang-prog">
         </a>
       
         <a href="https://github.com/web-flow" class="md-author" title="@web-flow">
@@ -3367,21 +3263,21 @@ You're not viewing the latest version.
           <img src="https://avatars.githubusercontent.com/u/19864447?v=4&size=72" alt="web-flow">
         </a>
       
+        <a href="https://github.com/cuicheng01" class="md-author" title="@cuicheng01">
+          
+          <img src="https://avatars.githubusercontent.com/u/45199522?v=4&size=72" alt="cuicheng01">
+        </a>
+      
         <a href="https://github.com/GreatV" class="md-author" title="@GreatV">
           
           <img src="https://avatars.githubusercontent.com/u/17264618?v=4&size=72" alt="GreatV">
-        </a>
-      
-        <a href="https://github.com/SWHL" class="md-author" title="@SWHL">
-          
-          <img src="https://avatars.githubusercontent.com/u/28639377?v=4&size=72" alt="SWHL">
         </a>
       
       
       
         
           <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/quick_start.md" class="md-author md-author--more">
-            +1
+            +2
           </a>
         
       
@@ -3462,6 +3358,46 @@ You're not viewing the latest version.
       
         <footer class="md-footer">
   
+    
+      
+        
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="version3.x/pipeline_usage/OCR.html" class="md-footer__link md-footer__link--next" aria-label="下一页: 使用教程">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                使用教程
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
