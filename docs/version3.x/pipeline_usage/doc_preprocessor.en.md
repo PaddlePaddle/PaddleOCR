@@ -776,7 +776,7 @@ for i, res in enumerate(result["docPreprocessingResults"]):
 
 If the default model weights provided by the document image preprocessing pipeline do not meet your accuracy or speed requirements in your specific scenario, you can attempt to further **fine-tune** the existing model using **your own domain-specific or application-specific data** to enhance the recognition performance of the document image preprocessing pipeline in your context.
 
-## 4.1 Model Fine-Tuning
+### 4.1 Model Fine-Tuning
 
 Since the document image preprocessing pipeline comprises multiple modules, any module could potentially contribute to suboptimal performance if the overall pipeline does not meet expectations. You can analyze images with poor recognition results to identify which module is causing the issue and then refer to the corresponding fine-tuning tutorial links in the table below to perform model fine-tuning.
 

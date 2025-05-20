@@ -451,9 +451,9 @@ for res in output:
 如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv4_server_seal_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[印章文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以印章文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
-## 4.1 数据集、预训练模型准备
+### 4.1 数据集、预训练模型准备
 
-### 4.1.1 准备数据集
+#### 4.1.1 准备数据集
 
 ```shell
 # 下载示例数据集
@@ -461,7 +461,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_datas
 tar -xf ./dataset/ocr_curve_det_dataset_examples.tar -C ./dataset/
 ```
 
-### 4.1.2 下载预训练模型
+#### 4.1.2 下载预训练模型
 
 ```shell
 # 下载 PP-OCRv4_server_seal_det 预训练模型
@@ -495,7 +495,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  # demo 测试集评估
  python3 tools/eval.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+```
 
 ### 4.4 模型导出
 
@@ -503,7 +503,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
  python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./PP-OCRv4_server_seal_det_infer/"
- ```
+```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-OCRv4_server_seal_det_infer/`中，在该目录下，您将看到如下文件：
  ```

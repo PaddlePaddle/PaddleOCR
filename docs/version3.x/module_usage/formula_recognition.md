@@ -344,7 +344,7 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 ## 四、二次开发
 如果以上模型在您的场景下效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-FormulaNet-S` 举例，其他模型替换对应配置文件即可。首先，您需要准备公式识别的数据集，可以参考[公式识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_dataset_example.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述API中。此处以公式识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
-## 4.1 环境配置
+### 4.1 环境配置
 
 训练公式识别模型需要安装额外的Python依赖和linux依赖，执行如下命令安装：
 ```shell
@@ -353,9 +353,9 @@ sudo apt-get install libmagickwand-dev
 pip install tokenizers==0.19.1 imagesize ftfy Wand
 ```
 
-## 4.2 数据集、预训练模型准备
+### 4.2 数据集、预训练模型准备
 
-### 4.2.1 准备数据集
+#### 4.2.1 准备数据集
 
 ```shell
 # 下载示例数据集
@@ -363,7 +363,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_latexocr_da
 tar -xf ocr_rec_latexocr_dataset_example.tar
 ```
 
-### 4.2.2 下载预训练模型
+#### 4.2.2 下载预训练模型
 
 ```shell
 # 下载 PP-FormulaNet_plus-M 预训练模型
@@ -401,19 +401,20 @@ python3  -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c config
 您可以评估已经训练好的权重，如，`output/xxx/xxx.pdparams`，也可以使用已经下载的[模型文件](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)，使用如下命令进行评估：
 
 ```bash
-# 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
- # demo 测试集评估
+
+#注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
+#demo 测试集评估
  python3 tools/eval.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
  Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams
- ```
+```
 
 ### 4.5 模型导出
 
 ```bash
- python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
- Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
- Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
- ```
+python3 tools/export_model.py -c configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml -o \
+Global.pretrained_model=./rec_ppformulanet_plus_m_train/best_accuracy.pdparams \
+Global.save_inference_dir="./PP-FormulaNet_plus-M_infer/"
+```
 
  导出模型后，静态图模型会存放于当前目录的`./PP-FormulaNet_plus-M_infer/`中，在该目录下，您将看到如下文件：
  ```

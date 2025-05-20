@@ -336,7 +336,7 @@ You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using t
  # Demo test set evaluation
  python3 tools/eval.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+```
 
 ### 4.4 Model Export
 
@@ -344,7 +344,7 @@ You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using t
  python3 tools/export_model.py -c configs/table/SLANet.yml -o \
  Global.pretrained_model=output/xxx/xxx.pdparams \
  save_inference_dir="./SLANet_infer/"
- ```
+```
 
  After exporting the model, the static graph model will be stored in `./SLANet_infer/` in the current directory. In this directory, you will see the following files:
  ```
