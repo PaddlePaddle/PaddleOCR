@@ -26,5 +26,3 @@
 | [python-office](https://github.com/CoderWanFeng/python-office) <a href="https://github.com/CoderWanFeng/python-office"><img src="https://img.shields.io/github/stars/CoderWanFeng/python-office"></a> | Python tool for office works. |
 | [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR) <a href="https://github.com/jingsongliujing/OnnxOCR"><img src="https://img.shields.io/github/stars/jingsongliujing/OnnxOCR"></a>|A lightweight OCR system based on PaddleOCR, decoupled from the PaddlePaddle deep learning training framework, with ultra-fast inference speed |
 | ... |... |
-
-
