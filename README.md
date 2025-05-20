@@ -236,13 +236,15 @@ print(chat_result)
 
 </details>
 
-[进阶指南]()
 
 ### 5. **国产化硬件支持**
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
   
-
+## 进阶指南
+- [PP-OCRv5 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
+- [PP-StructureV3 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
+- [PP-ChatOCRv4 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
 
 ## 🔄 效果展示
 
@@ -273,5 +275,28 @@ print(chat_result)
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |屏幕实时翻译工具|
 | [更多项目](./awesome_projects.md) | |
 
+## 👩‍👩‍👧‍👦 贡献者
+
+<a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
+</a>
+
+
+## 🌟 Star
+
+[![Star History Chart](https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date)](https://star-history.com/#PaddlePaddle/PaddleOCR&Date)
+
+
 ## 📄 许可协议
 本项目采用 [Apache 2.0 协议](./LICENSE) 开源发布。
+
+## 🎓 学术引用
+
+```
+@misc{paddleocr2020,
+title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
+author={PaddlePaddle Authors},
+howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
+year={2020}
+}
+```
