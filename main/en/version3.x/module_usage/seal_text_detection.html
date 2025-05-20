@@ -3581,9 +3581,8 @@ You're not viewing the latest version.
 </tr>
 </table>
 
-<p>For more information on using PaddleX's single-model inference API, refer to the <a href="../../instructions/model_python_API.en.md">PaddleX Single Model Python Script Usage Instructions</a>.</p>
 <h2 id="iv-custom-development">IV. Custom Development<a class="headerlink" href="#iv-custom-development" title="Permanent link">&para;</a></h2>
-<p>If the above model is still not performing well in your scenario, you can try the following steps for secondary development. Here, we'll use training <code>PP-OCRv4_server_seal_det</code> as an example; you can replace it with the corresponding configuration files for other models. First, you need to prepare a text detection dataset. You can refer to the format of the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar">seal text detection demo data</a> for preparation. Once prepared, you can follow the steps below for model training and export. After export, you can quickly integrate the model into the above API. This example uses a seal text detection demo dataset. Before training the model, please ensure that you have installed the dependencies required by PaddleOCR as per the <a href="xxx">installation documentation</a>.</p>
+<p>If the above model is still not performing well in your scenario, you can try the following steps for secondary development. Here, we'll use training <code>PP-OCRv4_server_seal_det</code> as an example; you can replace it with the corresponding configuration files for other models. First, you need to prepare a text detection dataset. You can refer to the format of the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar">seal text detection demo data</a> for preparation. Once prepared, you can follow the steps below for model training and export. After export, you can quickly integrate the model into the above API. This example uses a seal text detection demo dataset. Before training the model, please ensure that you have installed the dependencies required by PaddleOCR as per the <a href="../installation.html">installation documentation</a>.</p>
 <h3 id="41-dataset-and-pre-trained-model-preparation">4.1 Dataset and Pre-trained Model Preparation<a class="headerlink" href="#41-dataset-and-pre-trained-model-preparation" title="Permanent link">&para;</a></h3>
 <h4 id="411-preparing-the-dataset">4.1.1 Preparing the Dataset<a class="headerlink" href="#411-preparing-the-dataset" title="Permanent link">&para;</a></h4>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar<span class="w"> </span>-P<span class="w"> </span>./dataset
@@ -3645,7 +3644,7 @@ With this, the secondary development is complete, and the static graph model can
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:37:15">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:40:37">May 20, 2025</span>
   </span>
 
     
@@ -3655,7 +3654,7 @@ With this, the secondary development is complete, and the static graph model can
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:37:15">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 10:40:37">May 20, 2025</span>
   </span>
 
     
