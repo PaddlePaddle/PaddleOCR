@@ -1668,9 +1668,10 @@ You're not viewing the latest version.
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="V. Secondary Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#41-dataset-and-pre-trained-model-preparation" class="md-nav__link">
     <span class="md-ellipsis">
       4.1 Dataset and Pre-trained Model Preparation
@@ -1695,6 +1696,11 @@ You're not viewing the latest version.
       4.1.2 Download the Pre-trained Model
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -3061,9 +3067,10 @@ You're not viewing the latest version.
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="V. Secondary Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#41-dataset-and-pre-trained-model-preparation" class="md-nav__link">
     <span class="md-ellipsis">
       4.1 Dataset and Pre-trained Model Preparation
@@ -3088,6 +3095,11 @@ You're not viewing the latest version.
       4.1.2 Download the Pre-trained Model
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -3763,13 +3775,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </table>
 <h2 id="v-secondary-development">V. Secondary Development<a class="headerlink" href="#v-secondary-development" title="Permanent link">&para;</a></h2>
 <p>If the performance of the above models does not meet your requirements in your specific scenario, you can follow the steps below for secondary development. Here, we use the training of <code>PP-OCRv5_server_rec</code> as an example; for other models, simply replace the corresponding configuration files. First, you need to prepare a dataset for text recognition. You can refer to the format of the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar">Text Recognition Demo Dataset</a> for preparation. Once prepared, you can proceed with model training and exporting as described below. After exporting, the model can be quickly integrated into the aforementioned API. This example uses the Text Recognition Demo Dataset. Before training the model, ensure that you have installed the dependencies required by PaddleOCR as per the <a href="../installation.html">Installation Guide</a>.</p>
-<h2 id="41-dataset-and-pre-trained-model-preparation">4.1 Dataset and Pre-trained Model Preparation<a class="headerlink" href="#41-dataset-and-pre-trained-model-preparation" title="Permanent link">&para;</a></h2>
-<h3 id="411-prepare-the-dataset">4.1.1 Prepare the Dataset<a class="headerlink" href="#411-prepare-the-dataset" title="Permanent link">&para;</a></h3>
+<h3 id="41-dataset-and-pre-trained-model-preparation">4.1 Dataset and Pre-trained Model Preparation<a class="headerlink" href="#41-dataset-and-pre-trained-model-preparation" title="Permanent link">&para;</a></h3>
+<h4 id="411-prepare-the-dataset">4.1.1 Prepare the Dataset<a class="headerlink" href="#411-prepare-the-dataset" title="Permanent link">&para;</a></h4>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Download the example dataset</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>ocr_rec_dataset_examples.tar
 </span></code></pre></div>
-<h3 id="412-download-the-pre-trained-model">4.1.2 Download the Pre-trained Model<a class="headerlink" href="#412-download-the-pre-trained-model" title="Permanent link">&para;</a></h3>
+<h4 id="412-download-the-pre-trained-model">4.1.2 Download the Pre-trained Model<a class="headerlink" href="#412-download-the-pre-trained-model" title="Permanent link">&para;</a></h4>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Download the PP-OCRv5_server_rec pre-trained model</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams
 </span></code></pre></div>
@@ -3826,7 +3838,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 08:49:56">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 09:11:58">May 20, 2025</span>
   </span>
 
     
@@ -3836,7 +3848,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 08:49:56">May 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 20, 2025 09:11:58">May 20, 2025</span>
   </span>
 
     
