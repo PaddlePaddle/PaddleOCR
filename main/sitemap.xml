@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/FAQ.html</loc>
         <lastmod>2025-05-20</lastmod>
         <changefreq>daily</changefreq>
@@ -1704,6 +1715,17 @@
         <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/pipeline_usage/table_recognition_v2.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/index.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/FAQ.html</loc>
@@ -3417,6 +3439,17 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/pipeline_usage/table_recognition_v2.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/main/ja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ja/FAQ.html</loc>
         <lastmod>2025-05-20</lastmod>
         <changefreq>daily</changefreq>
@@ -5120,6 +5153,17 @@
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/pipeline_usage/table_recognition_v2.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/main/ru/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ru/FAQ.html</loc>
@@ -6827,6 +6871,17 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/pipeline_usage/table_recognition_v2.html"/>
     </url>
     <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/main/hi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.html"/>
+    </url>
+    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/hi/FAQ.html</loc>
         <lastmod>2025-05-20</lastmod>
         <changefreq>daily</changefreq>
@@ -8530,6 +8585,17 @@
         <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/mainko/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/version3.x/pipeline_usage/table_recognition_v2.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/pipeline_usage/table_recognition_v2.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/index.html</loc>
+        <lastmod>2025-05-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="https://paddlepaddle.github.io/PaddleOCR/main/ko/index.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/index.html"/>
+        <xhtml:link rel="alternate" hreflang="hi" href="https://paddlepaddle.github.io/PaddleOCR/mainhi/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://paddlepaddle.github.io/PaddleOCR/mainja/index.html"/>
+        <xhtml:link rel="alternate" hreflang="ru" href="https://paddlepaddle.github.io/PaddleOCR/mainru/index.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainindex.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/ko/FAQ.html</loc>
