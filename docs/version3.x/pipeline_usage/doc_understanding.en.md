@@ -316,11 +316,7 @@ Below are the parameters and their descriptions for the `predict()` method:
 <td><code>Python Dict</code></td>
 <td></td>
 </tr>
-<tr>
-<td><code>device</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
+
 </table>
 
 (3) Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports printing and saving as a `json` file:

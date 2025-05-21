@@ -1170,12 +1170,6 @@ The Python script above performs the following steps:
 <td></td>  
 </tr>  
 <tr>  
-<td><code>device</code></td>  
-<td>Same as initialization.</td>  
-<td><code>str</code></td>  
-<td><code>None</code></td>  
-</tr>  
-<tr>  
 <td><code>use_doc_orientation_classify</code></td>  
 <td>Whether to enable document orientation classification during inference.</td>  
 <td><code>bool</code></td>  

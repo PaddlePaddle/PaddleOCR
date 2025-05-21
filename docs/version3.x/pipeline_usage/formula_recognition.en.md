@@ -920,11 +920,6 @@ Here are the parameters of the `predict()` method and their descriptions:
 </td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
-<tr>
-<td><code>device</code></td>
-<td>The parameters are the same as those used during instantiation.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>

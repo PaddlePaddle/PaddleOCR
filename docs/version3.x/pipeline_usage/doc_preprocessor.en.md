@@ -432,12 +432,6 @@ The following are the parameters and their descriptions of the `predict()` metho
 <td></td>
 </tr>
 <tr>
-<td><code>device</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use the document orientation classification module during inference.</td>
 <td><code>bool</code></td>

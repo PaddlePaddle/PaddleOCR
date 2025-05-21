@@ -318,11 +318,6 @@ for res in output:
 <td><code>Python Dict</code></td>
 <td></td>
 </tr>
-<tr>
-<td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </table>
 
 （3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为`json`文件的操作:

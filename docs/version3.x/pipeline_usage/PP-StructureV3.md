@@ -2141,12 +2141,6 @@ for item in markdown_images:
 <td></td>
 </tr>
 <tr>
-<td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。</td>
 <td><code>bool</code></td>

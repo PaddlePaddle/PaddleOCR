@@ -927,6 +927,7 @@ Just a few lines of code can complete the quick inference of the pipeline. Takin
 from paddlex import create_pipeline
 
 pipeline = create_pipeline(pipeline="PP-StructureV3")
+```
 
 ## 2. Quick Start
 
@@ -951,6 +952,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientatio
 # Use --device to specify GPU for inference
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 ```
+
 <details><summary><b>Command line supports more parameters. Click to expand for detailed parameter descriptions</b></summary>
 <table>
 <thead>
@@ -2095,12 +2097,6 @@ The above Python script performs the following steps:
 </td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Same as the parameter used during initialization.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
