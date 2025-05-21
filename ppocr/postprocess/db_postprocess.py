@@ -38,6 +38,7 @@ class DBPostProcess(object):
                  unclip_ratio=2.0,
                  use_dilation=False,
                  score_mode="fast",
+                 visual_output=False,
                  **kwargs):
         self.thresh = thresh
         self.box_thresh = box_thresh
@@ -51,6 +52,7 @@ class DBPostProcess(object):
 
         self.dilation_kernel = None if not use_dilation else np.array(
             [[1, 1], [1, 1]])
+        self.visual = visual_output
 
     def boxes_from_bitmap(self, pred, _bitmap, dest_width, dest_height):
         '''
@@ -169,12 +171,19 @@ class DBPostProcess(object):
         cv2.fillPoly(mask, contour.reshape(1, -1, 2).astype(np.int32), 1)
         return cv2.mean(bitmap[ymin:ymax + 1, xmin:xmax + 1], mask)[0]
 
+    def visual_output(self, pred):
+        im = np.array(pred[0] * 255).astype(np.uint8)
+        cv2.imwrite("db_probability_map.png", im)
+        print("The probalibity map is visualized in db_probability_map.png")
+
     def __call__(self, outs_dict, shape_list):
         pred = outs_dict['maps']
         if isinstance(pred, paddle.Tensor):
             pred = pred.numpy()
         pred = pred[:, 0, :, :]
         segmentation = pred > self.thresh
+        if self.visual:
+            self.visual_output(pred)
 
         boxes_batch = []
         for batch_index in range(pred.shape[0]):

@@ -31,7 +31,12 @@ from ppocr.utils.logging import get_logger
 from tools.program import load_config, merge_config, ArgsParser
 
 
-def export_single_model(model, arch_config, save_path, logger, quanter=None):
+def export_single_model(model,
+                        arch_config,
+                        save_path,
+                        logger,
+                        input_shape=None,
+                        quanter=None):
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
@@ -53,6 +58,8 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
         other_shape = [
             paddle.static.InputSpec(
                 shape=[None, 3, 48, 160], dtype="float32"),
+            [paddle.static.InputSpec(
+                shape=[None], dtype="float32")]
         ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "SVTR":
@@ -64,7 +71,7 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
         else:
             other_shape = [
                 paddle.static.InputSpec(
-                    shape=[None, 3, 64, 256], dtype="float32"),
+                    shape=[None] + input_shape, dtype="float32"),
             ]
         model = to_static(model, input_spec=other_shape)
     elif arch_config["algorithm"] == "PREN":
@@ -76,7 +83,7 @@ def export_single_model(model, arch_config, save_path, logger, quanter=None):
     else:
         infer_shape = [3, -1, -1]
         if arch_config["model_type"] == "rec":
-            infer_shape = [3, 48, -1]  # for rec model, H must be 32
+            infer_shape = [3, 32, -1]  # for rec model, H must be 32
             if "Transform" in arch_config and arch_config[
                     "Transform"] is not None and arch_config["Transform"][
                         "name"] == "TPS":
@@ -157,6 +164,13 @@ def main():
 
     arch_config = config["Architecture"]
 
+    if arch_config["algorithm"] == "SVTR" and arch_config["Head"][
+            "name"] != 'MultiHead':
+        input_shape = config["Eval"]["dataset"]["transforms"][-2][
+            'SVTRRecResizeImg']['image_shape']
+    else:
+        input_shape = None
+
     if arch_config["algorithm"] in ["Distillation", ]:  # distillation model
         archs = list(arch_config["Models"].values())
         for idx, name in enumerate(model.model_name_list):
@@ -165,7 +179,8 @@ def main():
                                 sub_model_save_path, logger)
     else:
         save_path = os.path.join(save_path, "inference")
-        export_single_model(model, arch_config, save_path, logger)
+        export_single_model(
+            model, arch_config, save_path, logger, input_shape=input_shape)
 
 
 if __name__ == "__main__":

@@ -60,7 +60,7 @@ Loss:
       - ["Student", "Student2"]
       maps_name: "thrink_maps"
       weight: 1.0
-      act: "softmax"
+      # act: None
       model_name_pairs: ["Student", "Student2"]
       key: maps
   - DistillationDBLoss:

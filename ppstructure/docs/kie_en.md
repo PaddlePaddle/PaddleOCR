@@ -18,6 +18,22 @@ This section provides a tutorial example on how to quickly use, train, and evalu
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/wildreceipt.tar && tar xf wildreceipt.tar
 ```
 
+The dataset format are as follows:
+```
+./wildreceipt
+├── class_list.txt          # The text category inside the box, such as amount, time, date, etc.
+├── dict.txt                # A recognized dictionary file, a list of characters contained in the dataset
+├── wildreceipt_train.txt   # training data label file
+└── wildreceipt_test.txt    # testing data label file
+└── image_files/            # image dataset file
+```
+
+The format in the label file is:
+```
+" The image file path                    Image annotation information encoded by json.dumps"
+image_files/Image_16/11/d5de7f2a20751e50b84c747c17a24cd98bed3554.jpeg    [{"label": 1, "transcription": "SAFEWAY", "points": [[550.0, 190.0], [937.0, 190.0], [937.0, 104.0], [550.0, 104.0]]}, {"label": 25, "transcription": "TM", "points": [[1048.0, 211.0], [1074.0, 211.0], [1074.0, 196.0], [1048.0, 196.0]]}, {"label": 25, "transcription": "ATOREMGRTOMMILAZZO", "points": [[535.0, 239.0], [833.0, 239.0], [833.0, 200.0], [535.0, 200.0]]}, {"label": 5, "transcription": "703-777-5833", "points": [[907.0, 256.0], [1081.0, 256.0], [1081.0, 223.0], [907.0, 223.0]]}......
+```
+
 Download the pretrained model and predict the result:
 
 ```shell

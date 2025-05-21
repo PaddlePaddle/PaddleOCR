@@ -8,7 +8,7 @@ PPOCRLabelv2 is a semi-automatic graphic annotation tool suitable for OCR field,
 | :-------------------------------------------------: | :--------------------------------------------: |
 | <img src="./data/gif/steps_en.gif" width="80%"/>    | <img src="./data/gif/table.gif" width="100%"/> |
 | **irregular text annotation**                        | **key information annotation**                               |
-| <img src="./data/gif/multi-point.gif" width="80%"/> | <img src="./data/gif/kie.gif" width="300%"/>   |
+| <img src="./data/gif/multi-point.gif" width="80%"/> | <img src="./data/gif/kie.gif" width="100%"/>   |
 
 ### Recent Update
 

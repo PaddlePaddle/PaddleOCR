@@ -47,7 +47,7 @@ str_to_cpu_mode(const std::string &cpu_mode) {
   std::string upper_key;
   std::transform(cpu_mode.cbegin(), cpu_mode.cend(), upper_key.begin(),
                  ::toupper);
-  auto index = cpu_mode_map.find(upper_key);
+  auto index = cpu_mode_map.find(upper_key.c_str());
   if (index == cpu_mode_map.end()) {
     LOGE("cpu_mode not found %s", upper_key.c_str());
     return paddle::lite_api::LITE_POWER_HIGH;

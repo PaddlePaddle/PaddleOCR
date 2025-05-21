@@ -19,6 +19,24 @@ SDMGR是一个关键信息提取算法，将每个检测到的文本区域分类
 wget https://paddleocr.bj.bcebos.com/dygraph_v2.1/kie/wildreceipt.tar && tar xf wildreceipt.tar
 ```
 
+数据集格式：
+```
+./wildreceipt
+├── class_list.txt          # box内的文本类别，比如金额、时间、日期等。
+├── dict.txt                # 识别的字典文件，数据集中包含的字符列表
+├── wildreceipt_train.txt   # 训练数据标签文件
+└── wildreceipt_test.txt    # 评估数据标签文件
+└── image_files/            # 图像数据文件夹
+```
+
+其中标签文件里的格式为：
+```
+" 图像文件名                    json.dumps编码的图像标注信息"
+image_files/Image_16/11/d5de7f2a20751e50b84c747c17a24cd98bed3554.jpeg	[{"label": 1, "transcription": "SAFEWAY", "points": [[550.0, 190.0], [937.0, 190.0], [937.0, 104.0], [550.0, 104.0]]}, {"label": 25, "transcription": "TM", "points": [[1048.0, 211.0], [1074.0, 211.0], [1074.0, 196.0], [1048.0, 196.0]]}, {"label": 25, "transcription": "ATOREMGRTOMMILAZZO", "points": [[535.0, 239.0], [833.0, 239.0], [833.0, 200.0], [535.0, 200.0]]}, {"label": 5, "transcription": "703-777-5833", "points": [[907.0, 256.0], [1081.0, 256.0], [1081.0, 223.0], [907.0, 223.0]]}......
+```
+
+**注：如果您希望在自己的数据集上训练，建议按照上述数据个数准备数据集。**
+
 执行预测：
 
 ```

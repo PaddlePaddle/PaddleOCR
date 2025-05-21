@@ -8,7 +8,7 @@ PPOCRLabel是一款适用于OCR领域的半自动化图形标注工具，内置P
 | :---------------------------------------------------: | :----------------------------------------------: |
 | <img src="./data/gif/steps_en.gif" width="80%"/>    | <img src="./data/gif/table.gif" width="100%"/> |
 | **不规则文本标注**                        | **关键信息标注**                               |
-| <img src="./data/gif/multi-point.gif" width="80%"/> | <img src="./data/gif/kie.gif" width="300%"/>   |
+| <img src="./data/gif/multi-point.gif" width="80%"/> | <img src="./data/gif/kie.gif" width="100%"/>   |
 
 
 #### 近期更新

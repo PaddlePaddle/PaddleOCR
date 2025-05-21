@@ -57,17 +57,27 @@ class CELoss(nn.Layer):
 class KLJSLoss(object):
     def __init__(self, mode='kl'):
         assert mode in ['kl', 'js', 'KL', 'JS'
-                        ], "mode can only be one of ['kl', 'js', 'KL', 'JS']"
+                        ], "mode can only be one of ['kl', 'KL', 'js', 'JS']"
         self.mode = mode
 
-    def __call__(self, p1, p2, reduction="mean"):
+    def __call__(self, p1, p2, reduction="mean", eps=1e-5):
 
-        loss = paddle.multiply(p2, paddle.log((p2 + 1e-5) / (p1 + 1e-5) + 1e-5))
-
-        if self.mode.lower() == "js":
-            loss += paddle.multiply(
-                p1, paddle.log((p1 + 1e-5) / (p2 + 1e-5) + 1e-5))
+        if self.mode.lower() == 'kl':
+            loss = paddle.multiply(p2,
+                                   paddle.log((p2 + eps) / (p1 + eps) + eps))
+            loss += paddle.multiply(p1,
+                                    paddle.log((p1 + eps) / (p2 + eps) + eps))
             loss *= 0.5
+        elif self.mode.lower() == "js":
+            loss = paddle.multiply(
+                p2, paddle.log((2 * p2 + eps) / (p1 + p2 + eps) + eps))
+            loss += paddle.multiply(
+                p1, paddle.log((2 * p1 + eps) / (p1 + p2 + eps) + eps))
+            loss *= 0.5
+        else:
+            raise ValueError(
+                "The mode.lower() if KLJSLoss should be one of ['kl', 'js']")
+
         if reduction == "mean":
             loss = paddle.mean(loss, axis=[1, 2])
         elif reduction == "none" or reduction is None:
@@ -95,7 +105,7 @@ class DMLLoss(nn.Layer):
             self.act = None
 
         self.use_log = use_log
-        self.jskl_loss = KLJSLoss(mode="js")
+        self.jskl_loss = KLJSLoss(mode="kl")
 
     def _kldiv(self, x, target):
         eps = 1.0e-10
@@ -115,7 +125,7 @@ class DMLLoss(nn.Layer):
             loss = (
                 self._kldiv(log_out1, out2) + self._kldiv(log_out2, out1)) / 2.0
         else:
-            # for detection distillation log is not needed
+            # log is not needed for detection 
             loss = self.jskl_loss(out1, out2)
         return loss
 

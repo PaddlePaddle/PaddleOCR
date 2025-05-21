@@ -26,6 +26,8 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
 </div>
 
 ## Recent updates
+- **🔥2022.7 Release [OCR scene application collection](./applications/README_en.md)**
+    - PaddleOCR scene application covers general, manufacturing, finance, transportation industry of the main OCR vertical applications, including digital tube, LCD screen character, license plate, high-precision SVTR model, etc. **7 vertical models**.
 - **🔥2022.5.9 Release PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
     - Release [PP-OCRv3](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
     - Release [PPOCRLabelv2](./PPOCRLabel): Add the annotation function for table recognition task, key information extraction task and irregular text image.
@@ -37,7 +39,6 @@ PaddleOCR aims to create multilingual, awesome, leading, and practical OCR tools
     - Release [PP-OCRv2](./doc/doc_en/ppocr_introduction_en.md#pp-ocrv2). The inference speed of PP-OCRv2 is 220% higher than that of PP-OCR server in CPU device. The F-score of PP-OCRv2 is 7% higher than that of PP-OCR mobile.
 - 2021.8.3 Release PaddleOCR [release/2.2](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.2)
     - Release a new structured documents analysis toolkit, i.e., [PP-Structure](./ppstructure/README.md), support layout analysis and table recognition (One-key to export chart images to Excel files).
-
 - [more](./doc/doc_en/update_en.md)
 
 
@@ -47,14 +48,15 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 ![](./doc/features_en.png)
 
-> It is recommended to start with the “quick experience” in the document tutorial
+> It is recommended to start with the “quick start” in the document tutorial
 
 
 ## Quick Experience
 
+- One line of code quick use: [Quick Start](./doc/doc_en/quickstart_en.md)
 - Web online experience for the ultra-lightweight OCR: [Online Experience](https://www.paddlepaddle.org.cn/hub/scene/ocr)
 - Mobile DEMO experience (based on EasyEdge and Paddle-Lite, supports iOS and Android systems): [Sign in to the website to obtain the QR code for  installing the App](https://ai.baidu.com/easyedge/app/openSource?from=paddlelite)
-- One line of code quick use: [Quick Start](./doc/doc_en/quickstart_en.md)
+
 
 
 <a name="book"></a>
@@ -63,14 +65,16 @@ PaddleOCR support a variety of cutting-edge algorithms related to OCR, and devel
 
 
 <a name="Community"></a>
-## Community
+## Community👬
 
-- **Join us**👬: Scan the QR code below with your Wechat, you can join the official technical discussion group. Looking forward to your participation.
+- For international developers, we regard [PaddleOCR Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) as our international community platform. All ideas and questions can be discussed here in English.
 
+- For Chinese develops, Scan the QR code below with your Wechat, you can join the official technical discussion group. For richer community content, please refer to [中文README](README_ch.md), looking forward to your participation.
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "200" height = "200" />
+<img src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/dygraph/doc/joinus.PNG"  width = "150" height = "150" />
 </div>
+
 <a name="Supported-Chinese-model-list"></a>
 
 ## PP-OCR Series Model List（Update on September 8th）

@@ -20,7 +20,7 @@ from shapely.geometry import Polygon
 import numpy as np
 from collections import defaultdict
 import operator
-import Levenshtein
+from rapidfuzz.distance import Levenshtein
 import argparse
 import json
 import copy

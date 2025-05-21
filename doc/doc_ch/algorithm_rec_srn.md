@@ -78,7 +78,7 @@ python3 tools/export_model.py -c configs/rec/rec_r50_fpn_srn.yml -o Global.pretr
 SRN文本识别模型推理，可以执行如下命令：
 
 ```
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_srn/" --rec_image_shape="1,64,256" --rec_char_type="ch" --rec_algorithm="SRN" --rec_char_dict_path=./ppocr/utils/ic15_dict.txt  --use_space_char=False
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_srn/" --rec_image_shape="1,64,256"  --rec_algorithm="SRN" --rec_char_dict_path=./ppocr/utils/ic15_dict.txt  --use_space_char=False
 ```
 
 <a name="4-2"></a>

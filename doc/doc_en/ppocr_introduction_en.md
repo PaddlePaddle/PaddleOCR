@@ -29,10 +29,10 @@ PP-OCR pipeline is as follows:
 
 PP-OCR system is in continuous optimization. At present, PP-OCR and PP-OCRv2 have been released:
 
-PP-OCR adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module (as shown in the green box above). The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the PP-OCR technical article (https://arxiv.org/abs/2009.09941).
+PP-OCR adopts 19 effective strategies from 8 aspects including backbone network selection and adjustment, prediction head design, data augmentation, learning rate transformation strategy, regularization parameter selection, pre-training model use, and automatic model tailoring and quantization to optimize and slim down the models of each module (as shown in the green box above). The final results are an ultra-lightweight Chinese and English OCR model with an overall size of 3.5M and a 2.8M English digital OCR model. For more details, please refer to the [PP-OCR technical report](https://arxiv.org/abs/2009.09941).
 
 #### PP-OCRv2
-On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the technical report of PP-OCRv2 (https://arxiv.org/abs/2109.03144).
+On the basis of PP-OCR, PP-OCRv2 is further optimized in five aspects. The detection model adopts CML(Collaborative Mutual Learning) knowledge distillation strategy and CopyPaste data expansion strategy. The recognition model adopts LCNet lightweight backbone network, U-DML knowledge distillation strategy and enhanced CTC loss function improvement (as shown in the red box above), which further improves the inference speed and prediction effect. For more details, please refer to the [PP-OCRv2 technical report](https://arxiv.org/abs/2109.03144).
 
 #### PP-OCRv3
 
@@ -46,7 +46,7 @@ PP-OCRv3 pipeline is as follows:
     <img src="../ppocrv3_framework.png" width="800">
 </div>
 
-For more details, please refer to [PP-OCRv3 technical report](./PP-OCRv3_introduction_en.md).
+For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/abs/2206.03001v2).
 
 <a name="2"></a>
 ## 2. Features

@@ -54,6 +54,8 @@ PostProcess:
 Metric:
   name: KIEMetric
   main_indicator: hmean
+  # Classes that will be ignored while computing F1 score.
+  ignore_classes: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 25]
 
 Train:
   dataset:

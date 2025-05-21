@@ -5,6 +5,7 @@
 - [1. Installation](#1-installation)
     - [1.1 Install PaddlePaddle](#11-install-paddlepaddle)
     - [1.2 Install PaddleOCR Whl Package](#12-install-paddleocr-whl-package)
+    - [1.3 Use PaddleOCR with Docker](#13-use-paddleocr-with-docker)
 - [2. Easy-to-Use](#2-easy-to-use)
     - [2.1 Use by Command Line](#21-use-by-command-line)
       - [2.1.1 Chinese and English Model](#211-chinese-and-english-model)
@@ -56,6 +57,17 @@ pip install "paddleocr>=2.0.1" # Recommend to use version 2.0.1+
   ```bash
   pip3 install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl
   ```
+<a name="13-use-paddleocr-with-docker"></a>
+
+### 1.3 Use PaddleOCR with Docker
+
+> If you  do not have a Docker environment, please refer to [Docker](https://www.docker.com/).
+
+PaddleOCR provides built docker images with latest code. All you have to do is to **pull the docker image **and **run the docker image**. Then you can enjoy PaddleOCR without any extra action.
+
+Get these images and guidance in [docker hub](https://hub.docker.com/repository/docker/paddlecloud/paddleocr), including CPU, GPU, ROCm environment versions. 
+
+If you have some customized requirements about automatic building docker images, you can get it in github repo [PaddlePaddle/PaddleCloud](https://github.com/PaddlePaddle/PaddleCloud/tree/main/tekton).
 
 <a name="2-easy-to-use"></a>
 

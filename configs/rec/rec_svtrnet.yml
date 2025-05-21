@@ -83,8 +83,7 @@ Train:
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - RecResizeImg:
-          character_dict_path:
+      - SVTRRecResizeImg:
           image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:
@@ -98,14 +97,13 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: ./train_data/data_lmdb_release/validation/
+    data_dir: ./train_data/data_lmdb_release/evaluation/
     transforms:
       - DecodeImage: # load image
           img_mode: BGR
           channel_first: False
       - CTCLabelEncode: # Class handling label
-      - RecResizeImg:
-          character_dict_path:
+      - SVTRRecResizeImg:
           image_shape: [3, 64, 256]
           padding: False
       - KeepKeys:

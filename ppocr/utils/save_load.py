@@ -177,9 +177,9 @@ def save_model(model,
             model.backbone.model.save_pretrained(model_prefix)
         metric_prefix = os.path.join(model_prefix, 'metric')
     # save metric and config
+    with open(metric_prefix + '.states', 'wb') as f:
+        pickle.dump(kwargs, f, protocol=2)
     if is_best:
-        with open(metric_prefix + '.states', 'wb') as f:
-            pickle.dump(kwargs, f, protocol=2)
         logger.info('save best model is to {}'.format(model_prefix))
     else:
         logger.info("save model in {}".format(model_prefix))
