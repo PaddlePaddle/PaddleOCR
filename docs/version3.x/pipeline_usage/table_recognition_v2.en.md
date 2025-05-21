@@ -799,13 +799,13 @@ A single command allows you to quickly experience the effects of the table_recog
 paddleocr table_recognition_v2 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg
 
 # Specify whether to use the document orientation classification model with --use_doc_orientation_classify
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_orientation_classify True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_orientation_classify True
 
 # Specify whether to use the text image unwarping module with --use_doc_unwarping
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_unwarping True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_unwarping True
 
 # Specify the device to use GPU for model inference with --device
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device gpu
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 ```
 
 <details><summary><b>More command line parameters are supported. Click to expand for detailed descriptions of the command line parameters</b></summary>
@@ -1141,7 +1141,7 @@ pipeline = TableRecognitionPipelineV2()
 # ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model with use_doc_orientation_classify
 # ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # Specify whether to use the text image unwarping module with use_doc_unwarping
 # ocr = TableRecognitionPipelineV2(device="gpu") # Specify the device to use GPU for model inference
-output = pipeline.predict("./general_formula_recognition_001.png")
+output = pipeline.predict("./table_recognition_v2.jpg")
 for res in output:
     res.print() ## Print the predicted structured output
     res.save_to_img("./output/")

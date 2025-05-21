@@ -803,13 +803,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 paddleocr table_recognition_v2 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_orientation_classify True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_orientation_classify True
 
 # 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_unwarping True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_unwarping True
 
 # 通过 --device 指定模型推理时使用 GPU
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device gpu
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1142,7 +1142,7 @@ pipeline = TableRecognitionPipelineV2()
 # ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
 # ocr = TableRecognitionPipelineV2(device="gpu") # 通过 device 指定模型推理时使用 GPU
-output = pipeline.predict("./general_formula_recognition_001.png")
+output = pipeline.predict("./table_recognition_v2.jpg")
 for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_img("./output/")
