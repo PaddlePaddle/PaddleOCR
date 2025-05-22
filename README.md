@@ -156,14 +156,6 @@ retriever_config = {
     "api_key": "api_key",  # your api_key
 }
 
-mllm_chat_bot_config = {
-    "module_name": "chat_bot",
-    "model_name": "PP-DocBee",
-    "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
-    "api_type": "openai",
-    "api_key": "api_key",  # your api_key
-}
-
 pipeline = PPChatOCRv4Doc(
     use_doc_orientation_classify=False,
     use_doc_unwarping=False
@@ -176,6 +168,25 @@ visual_predict_res = pipeline.visual_predict(
     use_table_recognition=True,
 )
 
+mllm_predict_info = None
+use_mllm = False
+# 如果使用多模态大模型，需要启动本地 mllm 服务，可以参考文档：https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.md 进行部署，并更新 mllm_chat_bot_config 配置。
+if use_mllm:
+    mllm_chat_bot_config = {
+        "module_name": "chat_bot",
+        "model_name": "PP-DocBee",
+        "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
+        "api_type": "openai",
+        "api_key": "api_key",  # your api_key
+    }
+
+    mllm_predict_res = pipeline.mllm_pred(
+        input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
+        key_list=["驾驶室准乘人数"],
+        mllm_chat_bot_config=mllm_chat_bot_config,
+    )
+    mllm_predict_info = mllm_predict_res["mllm_res"]
+
 visual_info_list = []
 for res in visual_predict_res:
     visual_info_list.append(res["visual_info"])
@@ -184,12 +195,6 @@ for res in visual_predict_res:
 vector_info = pipeline.build_vector(
     visual_info_list, flag_save_bytes_vector=True, retriever_config=retriever_config
 )
-mllm_predict_res = pipeline.mllm_pred(
-    input="vehicle_certificate-1.png",
-    key_list=["驾驶室准乘人数"],
-    mllm_chat_bot_config=mllm_chat_bot_config,
-)
-mllm_predict_info = mllm_predict_res["mllm_res"]
 chat_result = pipeline.chat(
     key_list=["驾驶室准乘人数"],
     visual_info=visual_info_list,
