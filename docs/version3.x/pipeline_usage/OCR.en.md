@@ -1751,10 +1751,10 @@ Command line mode:
 
 ```bash
 # Specify the local model path via --text_detection_model_dir
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir yours_det_model_path
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
 # PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir yours_v5_server_det_model_path
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
 ```
 
 脚本方式：
@@ -1764,10 +1764,10 @@ paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_serv
 from paddleocr import PaddleOCR
 
 #  Specify the local model path via text_detection_model_dir
-pipeline = PaddleOCR(text_detection_model_dir="./yours_det_model_path")
+pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 # PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
-# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./yours_v5_server_det_model_path")
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
 
 ```
 
