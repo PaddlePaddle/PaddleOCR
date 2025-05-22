@@ -17,10 +17,10 @@
 本次升级内容主要可分为三个部分：
 
 1. **新增多条模型产线**：推出 PP-OCRv5、PP-StructureV3、PP-ChatOCR v4 等多条模型产线，并补充覆盖多种方向的基础模型，重点增强了多文字类型识别、手写体识别等能力，满足大模型应用对复杂文档高精度解析的旺盛需求。用户可直接开箱使用，提升开发效率。
-2. **重构部署能力，统一推理接口**：PaddleOCR 3.x 融合了飞桨 [PaddleX](version3.x/paddleocr_and_paddlex.md) 工具的底层能力，全面升级推理、部署模块，修正 2.x 版本中的设计错误，统一并优化了 Python API 和命令行接口（CLI）。部署能力现覆盖高性能推理、服务化部署及端侧部署三大场景。
+2. **重构部署能力，统一推理接口**：PaddleOCR 3.x 融合了飞桨 [PaddleX](../version3.x/paddleocr_and_paddlex.md) 工具的底层能力，全面升级推理、部署模块，修正 2.x 版本中的设计错误，统一并优化了 Python API 和命令行接口（CLI）。部署能力现覆盖高性能推理、服务化部署及端侧部署三大场景。
 3. **适配飞桨 3.0，优化训练流程**：新版本已兼容飞桨 3.0 的 CINN 编译器等最新特性，并对模型命名体系进行了更新，采用更规范、统一的命名规则，为后续迭代与维护奠定基础。
 
-对于 PaddleOCR 2.x 中的部分历史遗留功能，PaddleOCR 3.x 目前仍提供了一定程度的兼容支持。详情请参阅 [历史遗留功能](version2.x/legacy/index.md)。
+对于 PaddleOCR 2.x 中的部分历史遗留功能，PaddleOCR 3.x 目前仍提供了一定程度的兼容支持。详情请参阅 [历史遗留功能](../version2.x/legacy/index.md)。
 
 ## 3. 将 PaddleOCR 2.x 的推理代码移到 PaddleOCR 3.x
 
@@ -68,7 +68,7 @@ res.save_to_img("result")
 
 需要特别指出的是，PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。
 
-此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](version3.x/logging.md)。
+此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](../version3.x/logging.md)。
 
 ## 4. PaddleOCR 3.0 已知问题
 

@@ -17,10 +17,10 @@ Given this background, we’ve decided to implement a major, non-backward-compat
 The 3.x upgrade consists of three major enhancements:
 
 1. **New Model Pipelines**: Introduced several new pipelines such as PP-OCRv5, PP-StructureV3, and PP-ChatOCR v4, covering a wide range of base models. These significantly enhance recognition capabilities for various text types, including handwriting, to meet the growing demand for high-precision parsing in complex documents. All models are ready-to-use out of the box, improving development efficiency.
-2. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using PaddleX’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.
+2. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using [PaddleX](../version3.x/paddleocr_and_paddlex.en.md)’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.
 3. **PaddlePaddle 3.0 Compatibility and Optimized Training**: The new version is fully compatible with PaddlePaddle 3.0, including features like the CINN compiler. It also introduces a standardized model naming system to streamline future updates and maintenance.
 
-Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to [Legacy Features](version2.x/legacy/index.en.md).
+Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to [Legacy Features](../version2.x/legacy/index.en.md).
 
 ## 3. Migrating Inference Code from PaddleOCR 2.x to 3.x
 
@@ -68,7 +68,7 @@ res.save_to_img("result")
 
 It’s worth noting that the `PPStructure` module in PaddleOCR 2.x has been removed in 3.x. We recommend switching to `PPStructureV3`, which offers richer functionality and better parsing results. Refer to the relevant documentation for usage details.
 
-Also, in 2.x, the `show_log` parameter could be passed when creating a `PaddleOCR` object to control logging. However, this design affected all `PaddleOCR` instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see [Logging](version3.x/logging.en.md).
+Also, in 2.x, the `show_log` parameter could be passed when creating a `PaddleOCR` object to control logging. However, this design affected all `PaddleOCR` instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see [Logging](../version3.x/logging.en.md).
 
 ## 4. Known Issues in PaddleOCR 3.0
 

@@ -10,8 +10,9 @@
 
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
 [![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
-![python](https://img.shields.io/badge/python-3.8+-aff.svg)
+![python](https://img.shields.io/badge/python-3.8～3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
+![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
 [![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
@@ -26,11 +27,11 @@ Since its initial release, PaddleOCR has gained widespread acclaim across academ
 On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the **PaddlePaddle 3.0** framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5T**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**.
 
 Three Major New Features in PaddleOCR 3.0:
-- Universal-Scene Text Recognition Model [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): A single model that handles five different text types plus complex handwriting. Overall recognition accuracy has increased by 13 percentage points over the previous generation.
+- Universal-Scene Text Recognition Model [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): A single model that handles five different text types plus complex handwriting. Overall recognition accuracy has increased by 13 percentage points over the previous generation. [Online Demo](https://aistudio.baidu.com/community/app/91660/webUI)
 
-- General Document-Parsing Solution [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks.
+- General Document-Parsing Solution [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks. [Online Demo](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- Intelligent Document-Understanding Solution [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the WenXin large model 4.5T, achieving 15 percentage points higher accuracy than its predecessor.
+- Intelligent Document-Understanding Solution [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the WenXin large model 4.5T, achieving 15 percentage points higher accuracy than its predecessor. [Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 <div align="center">
@@ -86,19 +87,19 @@ Install PaddlePaddle refer to [Installation Guide](https://www.paddlepaddle.org.
 
 ```bash
 # Install paddleocr
-pip install paddleocr
+pip install paddleocr==3.0.0
 ```
 
 ### 3. Run inference by CLI
 ```bash
 # Run PP-OCRv5 inference
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False 
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False  
 
 # Run PP-StructureV3 inference
 paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
 
 # Get the Qianfan API Key at first, and then run PP-ChatOCRv4 inference
-paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key  --use_doc_orientation_classify False --use_doc_unwarping False 
+paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
 # Get more information about "paddleocr ocr"
 paddleocr ocr --help
@@ -107,13 +108,15 @@ paddleocr ocr --help
 ### 4. Run inference by API
 **4.1 PP-OCRv5 Example**
 ```python
-from paddleocr import PaddleOCR
-
 # Initialize PaddleOCR instance
-ocr = PaddleOCR()
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False)
 
 # Run OCR inference on a sample image 
-result = ocr.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
+result = ocr.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
 
 # Visualize the results and save the JSON results
 for res in result:
@@ -132,41 +135,17 @@ from paddleocr import PPStructureV3
 pipeline = PPStructureV3()
 
 # For Image
-output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png")
+output = pipeline.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+    )
 
 # Visualize the results and save the JSON results
 for res in output:
     res.print() 
-    res.save_to_json(save_path="output")
-    res.save_to_markdown(save_path="output") 
-# For PDF File
-input_file = "./your_pdf_file.pdf"
-output_path = Path("./output")
-
-output = pipeline.predict(input_file)
-
-markdown_list = []
-markdown_images = []
-
-for res in output:
-    md_info = res.markdown
-    markdown_list.append(md_info)
-    markdown_images.append(md_info.get("markdown_images", {}))
-
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
-
-mkd_file_path = output_path / f"{Path(input_file).stem}.md"
-mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(mkd_file_path, "w", encoding="utf-8") as f:
-    f.write(markdown_texts)
-
-for item in markdown_images:
-    if item:
-        for path, image in item.items():
-            file_path = output_path / path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            image.save(file_path)
+    res.save_to_json(save_path="output") 
+    res.save_to_markdown(save_path="output")           
 ```
 
 </details>
@@ -201,12 +180,12 @@ mllm_chat_bot_config = {
     "api_key": "api_key",  # your api_key
 }
 
-pipeline = PPChatOCRv4Doc()
+pipeline = PPChatOCRv4Doc(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False)
 
 visual_predict_res = pipeline.visual_predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
     use_common_ocr=True,
     use_seal_recognition=True,
     use_table_recognition=True,
