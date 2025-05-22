@@ -1805,8 +1805,8 @@ SubModules:
     unclip_ratio: 1.5
   TextLineOrientation:
     batch_size: 6
-    model_dir: null
-    model_name: PP-LCNet_x0_25_textline_ori
+    model_dir: null  # 替换为微调后的文本行方向分类模型权重路径
+    model_name: PP-LCNet_x0_25_textline_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: textline_orientation
   TextRecognition:
     batch_size: 6
