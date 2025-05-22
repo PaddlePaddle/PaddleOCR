@@ -113,7 +113,7 @@ You can also integrate the model inference into your project. Before running the
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(model_name="PP-OCRv5_mobile_det")
+model = TextDetection(model_name="PP-OCRv5_server_det")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -130,9 +130,9 @@ The output will be:
 
        ...,
 
-       [[ 37, 408],
+       [[ 31, 406],
         ...,
-        [ 39, 453]]], dtype=int16), 'dt_scores': [0.832930755107492, 0.8186143846140158, 0.8591595100376676, 0.8718863959111733]}}
+        [ 34, 455]]], dtype=int16), 'dt_scores': [0.873949039891189, 0.8948166013613552, 0.8842595305917041, 0.876953790920377]}}
 ```
 
 Output parameter meanings:
@@ -147,7 +147,7 @@ Visualization example:
 
 Method and parameter descriptions:
 
-* Instantiate the text detection model (e.g., `PP-OCRv5_mobile_det`):
+* Instantiate the text detection model (e.g., `PP-OCRv5_server_det`):
 <table>
 <thead>
 <tr>
@@ -404,18 +404,18 @@ Training command:
 python3 tools/train.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
     Train.dataset.data_dir=./ocr_det_dataset_examples \
-    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Train.dataset.label_file_list='[./ocr_det_dataset_examples/train.txt]' \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]'
 
 # Multi-GPU training (specify GPUs with --gpus)
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
     -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
     Train.dataset.data_dir=./ocr_det_dataset_examples \
-    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Train.dataset.label_file_list='[./ocr_det_dataset_examples/train.txt]' \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]'
 ```
 
 ### 4.3 Model Evaluation
@@ -428,7 +428,7 @@ You can evaluate trained weights (e.g., `output/PP-OCRv5_server_det/best_accurac
 python3 tools/eval.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt] 
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]' 
 ```
 
 ### 4.4 Model Export
