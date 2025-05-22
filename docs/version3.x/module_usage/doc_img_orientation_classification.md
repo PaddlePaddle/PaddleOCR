@@ -122,99 +122,53 @@ for res in output:
 
 * `DocImgOrientationClassification`实例化文档图像方向分类模型（此处以`PP-LCNet_x1_0_doc_ori`为例），具体说明如下：
 <table>
-  <thead>
-    <tr>
-      <th>参数</th>
-      <th>参数说明</th>
-      <th>参数类型</th>
-      <th>可选项</th>
-      <th>默认值</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>model_name</code></td>
-      <td>模型名称；留空时自动使用类属性 <code>default_model_name</code></td>
-      <td><code>str</code></td>
-      <td>无</td>
-      <td><code>"PP-LCNet_x1_0_doc_ori"</code></td>
-    </tr>
-    <tr>
-      <td><code>model_dir</code></td>
-      <td>模型存储路径</td>
-      <td><code>str</code></td>
-      <td>无</td>
-      <td><code>None</code></td>
-    </tr>
-    <tr>
-      <td><code>device</code></td>
-      <td>模型推理设备</td>
-      <td><code>str</code></td>
-      <td>支持指定 GPU 卡号（如 <code>"gpu:0"</code>）、NPU 卡号（如 <code>"npu:0"</code>）、或 <code>"cpu"</code></td>
-      <td><code>"cpu"</code></td>
-    </tr>
-    <tr>
-      <td><code>enable_hpi</code></td>
-      <td>是否启用高性能推理插件（HPI）</td>
-      <td><code>bool</code></td>
-      <td>无</td>
-      <td><code>False</code></td>
-    </tr>
-    <tr>
-      <td><code>hpi_config</code></td>
-      <td>高性能推理配置</td>
-      <td><code>dict</code> | <code>None</code></td>
-      <td>无</td>
-      <td><code>None</code></td>
-    </tr>
-    <tr>
-      <td><code>topk</code></td>
-      <td>返回前 top-k 个预测结果，用于控制输出的类别数量</td>
-      <td><code>int</code> | <code>None</code></td>
-      <td>如 <code>1</code>、<code>5</code> 等正整数</td>
-      <td><code>None</code></td>
-    </tr>
-    <tr>
-      <td><code>use_tensorrt</code></td>
-      <td>是否启用 TensorRT 加速</td>
-      <td><code>bool</code></td>
-      <td><code>True</code> / <code>False</code></td>
-      <td><code>False</code></td>
-    </tr>
-    <tr>
-      <td><code>min_subgraph_size</code></td>
-      <td>TensorRT 子图最小节点数</td>
-      <td><code>int</code></td>
-      <td>&gt; 0 的正整数</td>
-      <td><code>30</code></td>
-    </tr>
-    <tr>
-      <td><code>precision</code></td>
-      <td>TensorRT 精度</td>
-      <td><code>str</code></td>
-      <td><code>"fp32"</code> / <code>"fp16"</code> / <code>"int8"</code></td>
-      <td><code>"fp32"</code></td>
-    </tr>
-    <tr>
-      <td><code>enable_mkldnn</code></td>
-      <td>是否启用 oneDNN（MKL-DNN）加速（仅 CPU 有效）</td>
-      <td><code>bool</code></td>
-      <td><code>True</code> / <code>False</code></td>
-      <td><code>True</code></td>
-    </tr>
-    <tr>
-      <td><code>cpu_threads</code></td>
-      <td>CPU 线程数</td>
-      <td><code>int</code></td>
-      <td>&gt;= 1</td>
-      <td><code>10</code></td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>可选项</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td><code>model_name</code></td>
+<td>模型名称</td>
+<td><code>str</code></td>
+<td>无</td>
+<td><code>无</code></td>
+</tr>
+<tr>
+<td><code>model_dir</code></td>
+<td>模型存储路径</td>
+<td><code>str</code></td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>模型推理设备</td>
+<td><code>str</code></td>
+<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+<td><code>gpu:0</code></td>
+</tr>
+<tr>
+<td><code>use_hpip</code></td>
+<td>是否启用高性能推理插件</td>
+<td><code>bool</code></td>
+<td>无</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>hpi_config</code></td>
+<td>高性能推理配置</td>
+<td><code>dict</code> | <code>None</code></td>
+<td>无</td>
+<td><code>None</code></td>
+</tr>
 </table>
 
-
-
-* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
+* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
 * 调用文档图像方向分类模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：
 
