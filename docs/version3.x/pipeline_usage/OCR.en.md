@@ -1740,9 +1740,40 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 </table>
 
 ### 4.2 Model Deployment  
-After fine-tuning the model with your private dataset, you will obtain local model weight files. You can then use these fine-tuned weights by customizing the pipeline configuration file.  
 
-1. **Obtain the Pipeline Configuration File**  
+After you complete fine-tuning training using a private dataset, you can obtain a local model weight file. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by customizing the production line configuration file.
+
+#### 4.2.1 Specify the local model path through parameters
+
+When initializing the production line object, specify the local model path through parameters. Take the usage of the weights after fine-tuning the text detection model as an example, as follows:
+
+Command line mode:
+
+```bash
+# Specify the local model path via --text_detection_model_dir
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir yours_det_model_path
+
+# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir yours_v5_server_det_model_path
+```
+
+脚本方式：
+
+```python
+
+from paddleocr import PaddleOCR
+
+#  Specify the local model path via text_detection_model_dir
+pipeline = PaddleOCR(text_detection_model_dir="./yours_det_model_path")
+
+# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./yours_v5_server_det_model_path")
+
+```
+
+#### 4.2.2 Specify the local model path through the configuration file
+
+1. Obtain the production line configuration file
 
 Call the `export_paddlex_config_to_yaml` method of the **General OCR Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
 
@@ -1766,19 +1797,19 @@ SubModules:
     limit_type: max  
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
-    model_name: PP-OCRv5_server_det  
+    model_name: PP-OCRv5_server_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_detection  
     thresh: 0.3  
     unclip_ratio: 1.5  
   TextLineOrientation:  
     batch_size: 6  
-    model_dir: null  
-    model_name: PP-LCNet_x0_25_textline_ori  
+    model_dir: null  # Replace with the path to your fine-tuned text LineOrientation model weights  
+    model_name: PP-LCNet_x0_25_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: textline_orientation  
   TextRecognition:  
     batch_size: 6  
     model_dir: null # Replace with the path to your fine-tuned text recognition model weights  
-    model_name: PP-OCRv5_server_rec  
+    model_name: PP-OCRv5_server_rec  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_recognition  
     score_thresh: 0.0  
 ......  
