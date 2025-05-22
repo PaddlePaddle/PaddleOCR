@@ -78,37 +78,37 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports dictionary type input, required.
+<td>Data to be predicted,  required.
 <ul>
-<li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
+<li><b>str</b>: "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': 'Recognize the content of this table and output it in markdown format'}"</li>
 </ul>
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path for saving the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td>Specify the path for saving the inference result file. If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>The name of the document understanding model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>The name of the document understanding model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>The directory path of the document understanding model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the document understanding model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>The batch size of the document understanding model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td>The batch size of the document understanding model. If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -120,11 +120,10 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.</li>
-</ul>
+</ul>If not set, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -152,9 +151,9 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -166,7 +165,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -240,8 +239,8 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.</li>
 </ul>
+If not set, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>

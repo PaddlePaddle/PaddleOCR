@@ -652,129 +652,125 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types, required.
+<td>Data to be predicted, required.
 <ul>
-<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
 <li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path)</li>
-<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
 </ul>
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
 <td>
-Specify the path to save the inference results file. If set to <code>None</code>, the inference results will not be saved locally.</td>
+Specify the path to save the inference results file. If not set, the inference results will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td> 
-The name of the document orientation classification model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+The name of the document orientation classification model. If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td> The name of the text image unwarping model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+<td> The name of the text image unwarping model. If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td> The directory path of the  text image unwarping model. If set to <code>None</code>, the official model will be downloaded.
+<td> The directory path of the  text image unwarping model. If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td>
-The name of the layout detection model. If set to <code>None</code>, the default model in pipeline will be used. </td>
+The name of the layout detection model. If not set, the default model in pipeline will be used. </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td> The directory path of the  layout detection model. If set to <code>None</code>, the official model will be downloaded.
+<td> The directory path of the  layout detection model. If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>The name of the seal text detection model. If set to <code>None</code>, the production line's default model will be used.</td>
+<td>The name of the seal text detection model. If not set, the production line's default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
-<td>The directory path of the seal text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the seal text detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>  
 <td><code>text_recognition_model_name</code></td>  
-<td>Name of the text recognition model. If <code>None</code>, the default pipeline model is used.</td>  
+<td>Name of the text recognition model. If not set, the default pipeline model is used.</td>  
 <td><code>str</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>  
 <tr>  
 <td><code>text_recognition_model_dir</code></td>  
-<td>Directory path of the text recognition model. If <code>None</code>, the official model is downloaded.</td>  
+<td>Directory path of the text recognition model. If not set, the official model is downloaded.</td>  
 <td><code>str</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>
 <tr>  
 <td><code>text_recognition_batch_size</code></td>  
-<td>Batch size for the text recognition model. If <code>None</code>, defaults to <code>1</code>.</td>  
+<td>Batch size for the text recognition model. If not set, defaults to <code>1</code>.</td>  
 <td><code>int</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>
 <tr>  
 <td><code>use_doc_orientation_classify</code></td>  
-<td>Whether to enable document orientation classification. If <code>None</code>, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to enable document orientation classification.If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>  
 <tr>  
 <td><code>use_doc_unwarping</code></td>  
-<td>Whether to enable text image correction. If <code>None</code>, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to enable text image correction. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
-<td><code>None</code></td>  
+<td></td>  
 </tr>   
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to load the layout detection module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load the layout detection module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
 <ul>
 <li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
-<li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
-<li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
-</ul>
+</ul> If not set, the default PaddleX official model configuration will be used.
 </td>
-<td><code>float|dict</code></td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If set to <code>None</code>, the default configuration of the official model will be used.</td>
+<td>Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If not set, the default configuration of the official model will be used.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
@@ -782,11 +778,10 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <ul>
 <li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
 <li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
-</ul>
+</ul>If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float|list</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
@@ -795,85 +790,70 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
-</ul>
+</ul>If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>The side length limit for seal detection images.</td>
-<td><code>int|None</code></td>
-<td>
+<td>Image side length limit for seal text detection.
 <ul>
-  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-  <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>960</code>;</li>
-</ul>
+<li><b>int</b>: any integer > <code>0</code>;</li>
+</ul>If not set, the default is <code>736</code>.
 </td>
-<td><code>None</code></td>
+<td><code>int</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>The type of side length limit for seal detection images.</td>
-<td><code>str|None</code></td>
-<td>
+<td>Limit type for image side in seal text detection.
 <ul>
-  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, and <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-  <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>max</code>;</li>
-</ul>
+<li><b>str</b>: supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code></li>
+</ul>If not set, default is <code>min</code>.
 </td>
-<td><code>None</code></td>
+<td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>The pixel threshold for detection. In the output probability map, pixel points with scores greater than this threshold will be considered as seal pixels.</td>
-<td><code>float|None</code></td>
-<td>
+<td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
 <ul>
-    <li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-    <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>0.3</code>.</li>
-</ul>
+<li><b>float</b>: any float > <code>0</code></li>
+</ul>If not set, default is <code>0.2</code>.
 </td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>The bounding box threshold for detection. When the average score of all pixel points within the detection result bounding box is greater than this threshold, the result will be considered as a seal region.</td>
-<td><code>float|None</code></td>
-<td>
+<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
 <ul>
-    <li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-    <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>0.6</code>.</li>
-</ul>
+<li><b>float</b>: any float > <code>0</code></li>
+</ul>If not set, default is <code>0.6</code>.
 </td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>The expansion coefficient for seal detection. This method is used to expand the seal region, and the larger the value, the larger the expansion area.</td>
-<td><code>float|None</code></td>
-<td>
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.
 <ul>
-    <li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-    <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>2.0</code>.</li>
-</ul>
-</ul>
+<li><b>float</b>: any float > <code>0</code></li>
+</ul>If not set, default is <code>0.5</code>.
 </td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>The seal recognition threshold. Text results with scores greater than this threshold will be retained.</td>
-<td><code>float|None</code></td>
-<td>
+<td>Recognition score threshold. Text results above this value will be kept.
 <ul>
-    <li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-    <li><b>None</b>: If set to <code>None</code>, it will default to the value initialized by the pipeline, initialized to <code>0.0</code>. I.e., no threshold is set.</li>
-</ul>
-</ul>
+<li><b>float</b>: any float > <code>0</code></li>
+</ul>If not set, default is <code>0.0</code> (no threshold).
 </td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -885,11 +865,10 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
-</ul>
+</ul>If not set, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -917,9 +896,9 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -931,7 +910,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>

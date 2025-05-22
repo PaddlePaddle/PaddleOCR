@@ -152,55 +152,53 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>input</code></td>
 <td>The data to be predicted, supporting multiple input types. This parameter is required.
 <ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
 <li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
-<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td>Specify the path to save the inference result file. If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td>The name of the document orientation classification model. If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>The name of the text image unwarping model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td>The name of the text image unwarping model. If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>The directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the text image unwarping model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -212,11 +210,11 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
 </ul>
+If not set, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -246,7 +244,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>enable_mkldnn</code></td>
 <td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -258,7 +256,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>

@@ -416,108 +416,105 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types, required.
+<td>Data to be predicted,required.
 <ul>
-<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
 <li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path)</li>
-<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
 </ul>
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
 <td>
-Specify the path to save the inference results file. If set to <code>None</code>, the inference results will not be saved locally.</td>
+Specify the path to save the inference results file. If not set, the inference results will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td> 
-The name of the document orientation classification model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+The name of the document orientation classification model. If no set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
-<td>The batch size of the document orientation classification model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.
+<td>The batch size of the document orientation classification model. If not set, the default batch size will be set to <code>1</code>.
 </td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td> The name of the text image unwarping model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+<td> The name of the text image unwarping model. If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td> The directory path of the  text image unwarping model. If set to <code>None</code>, the official model will be downloaded.
+<td> The directory path of the  text image unwarping model. If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
-<td>The batch size of the text image unwarping model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td>The batch size of the text image unwarping model. If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load the document orientation classification module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>
-Whether to load the text image unwarping module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load the text image unwarping module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td>
-The name of the layout detection model. If set to <code>None</code>, the default model in pipeline will be used. </td>
+The name of the layout detection model. If not set, the default model in pipeline will be used. </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td> The directory path of the  layout detection model. If set to <code>None</code>, the official model will be downloaded.
+<td> The directory path of the  layout detection model. If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
 <ul>
 <li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
-<li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
-<li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
 </ul>
+If not set, the default PaddleX official model configuration will be used
 </td>
-<td><code>float|dict</code></td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
 <td>
-Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If set to <code>None</code>, the default configuration of the official model will be used.
+Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If not set, the default configuration of the official model will be used.
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
@@ -525,12 +522,10 @@ Whether to use NMS (Non-Maximum Suppression) post-processing for layout region d
 The scaling factor for the side length of the detection boxes in layout region detection.
 <ul>
 <li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
-<li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
-</ul>
+</ul>If not set, the default PaddleX official model configuration will be used.
 </td>
-<td><code>float|list</code></td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
@@ -539,45 +534,44 @@ The scaling factor for the side length of the detection boxes in layout region d
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
-</ul>
+</ul>If not set, the default PaddleX official model configuration will be used
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_batch_size</code></td>
-<td>The batch size for the layout region detection model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td>The batch size for the layout region detection model. If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to load the layout detection module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load the layout detection module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
 <td>
-The name of the formula recognition model. If set to <code>None</code>, the default model from the pipeline will be used.
+The name of the formula recognition model. If not set, the default model from the pipeline will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>The directory path of the formula recognition model. If set to <code>None</code>, the official model will be downloaded.
+<td>The directory path of the formula recognition model. If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
 <td>The batch size for the formula recognition model. If set to  <code>None</code>, the batch size will default to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -589,11 +583,10 @@ The name of the formula recognition model. If set to <code>None</code>, the defa
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.</li>
-</ul>
+</ul>If not set, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -621,10 +614,10 @@ The name of the formula recognition model. If set to <code>None</code>, the defa
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -637,7 +630,7 @@ The number of threads to use when performing inference on the CPU.</td>
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -841,8 +834,7 @@ In the above Python script, the following steps are executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.</li>
-</ul>
+</ul>If set to <code>None</code>, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
