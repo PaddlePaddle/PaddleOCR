@@ -6,7 +6,7 @@ comments: true
 
 ## 1. Overview
 
-Table structure recognition is an important component of table recognition systems, capable of converting non-editable table images into editable table formats (such as HTML). The goal of table structure recognition is to identify the positions of rows, columns, and cells in tables. The performance of this module directly affects the accuracy and efficiency of the entire table recognition system. The table structure recognition module usually outputs HTML or Latex code for the table area, which is then passed as input to the table content recognition module for further processing.
+Table structure recognition is an important component of table recognition systems, capable of converting non-editable table images into editable table formats (such as HTML). The goal of table structure recognition is to identify the positions of rows, columns, and cells in tables. The performance of this module directly affects the accuracy and efficiency of the entire table recognition system. The table structure recognition module usually outputs HTML code for the table area, which is then passed as input to the tabl recognition pipeline for further processing.
 
 ## 2. Supported Model List
 
@@ -56,7 +56,7 @@ Table structure recognition is an important component of table recognition syste
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>Test Dataset:</strong> High-difficulty Chinese table recognition dataset built internally by PaddleX.</li>
+              <li><strong>Test Dataset:</strong> High-difficulty Chinese table recognition dataset.</li>
               <li><strong>Hardware Configuration:</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
@@ -147,7 +147,7 @@ Descriptions of related methods and parameters are as follows:
 <td><code>model_name</code></td>
 <td>Model name</td>
 <td><code>str</code></td>
-<td>All model names supported by PaddleX</td>
+<td>All model names</td>
 <td>None</td>
 </tr>
 <tr>
@@ -180,7 +180,7 @@ Descriptions of related methods and parameters are as follows:
 </tr>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the built-in model parameters of PaddleX are used by default. On this basis, if `model_dir` is specified, the user's custom model is used.
+* Among them, `model_name` must be specified. If `model_dir` is specified, the user's custom model is used.
 
 * Call the `predict()` method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the `predict_iter()` method. The two are completely consistent in parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The `predict()` method has parameters `input` and `batch_size`, described as follows:
 
