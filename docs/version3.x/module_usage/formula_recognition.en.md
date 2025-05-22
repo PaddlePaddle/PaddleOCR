@@ -174,38 +174,74 @@ Related methods and parameter descriptions are as follows:
 <td><code>model_name</code></td>
 <td>Model name</td>
 <td><code>str</code></td>
-<td>All model names supported by PaddleX</td>
-<td>None</td>
+<td>All model names supported by Paddleocr</td>
+<td><code>PP-FormulaNet_plus-M</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>Model storage path</td>
 <td><code>str</code></td>
 <td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>Device used for model inference</td>
 <td><code>str</code></td>
-<td>Supports specifying a specific GPU card such as \"gpu:0\", other hardware card such as \"npu:0\", and CPU such as \"cpu\".</td>
-<td><code>gpu:0</code></td>
+<td>Supports specifying a specific GPU card such as "gpu:0", other hardware like "npu:0", or "cpu".</td>
+<td><code>cpu</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference plugin (HPI)</td>
 <td><code>bool</code></td>
-<td>None</td>
+<td>True / False</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
+<td>Configuration for high-performance inference plugin</td>
 <td><code>dict</code> | <code>None</code></td>
 <td>None</td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to enable TensorRT acceleration</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum number of ops in a subgraph to use TensorRT</td>
+<td><code>int</code></td>
+<td>&gt;0</td>
+<td><code>30</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision used for TensorRT inference</td>
+<td><code>str</code></td>
+<td><code>fp32</code>, <code>fp16</code>, <code>int8</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Enable oneDNN acceleration (CPU only)</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads for CPU inference</td>
+<td><code>int</code></td>
+<td>&gt;=1</td>
+<td><code>10</code></td>
+</tr>
 </table>
+
 
 * Among these, `model_name` must be specified. When `model_name` is provided, the built-in model parameters from PaddleX are used by default. If `model_dir` is also specified, it will use the user-defined model instead.
 

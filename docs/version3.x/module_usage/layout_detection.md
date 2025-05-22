@@ -349,90 +349,91 @@ for res in output:
 <td>模型名称</td>
 <td><code>str</code></td>
 <td>无</td>
-<td>无</td>
+<td><code>PP-DocLayout-L</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
 <td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>模型推理设备</td>
 <td><code>str</code></td>
 <td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td><code>cpu</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>输入图像大小；如果不指定，将使用模型默认配置</td>
 <td><code>int/list/None</code></td>
 <td>
 <ul>
 <li><b>int</b>, 如 640 , 表示将输入图像resize到640x640大小</li>
 <li><b>列表</b>, 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>None</b>, 不指定，将使用模型默认配置</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将使用模型默认配置</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code></li>
+<li><b>None</b>, 不指定，将使用模型默认配置</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>是否使用NMS后处理，过滤重叠框；如果不指定，将使用模型默认配置</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
-<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理</li>
+<li><b>None</b>, 不指定，将使用模型默认配置</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>检测框的边长缩放倍数；如果不指定，将使用模型默认配置</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
-</ul>
-</td>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
-<td><code>string/dict/None</code></td>
-<td>
-<ul>
-<li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用PaddleX官方模型配置</li>
+<li><b>float</b>, 如 1.1 , 表示宽和高都扩张1.1倍</li>
+<li><b>列表</b>, 如 [1.2, 1.5] , 表示宽度扩张1.2倍，高度扩张1.5倍</li>
+<li><b>字典</b>, 如<code>{0: (1.1, 2.0)}</code>, 表示对cls_id=0的框宽扩张1.1倍，高扩张2.0倍</li>
+<li><b>None</b>, 不指定，将使用模型默认配置</li>
 </ul>
 </td>
 <td>None</td>
 </tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>模型输出的检测框的合并处理模式；如果不指定，将使用模型默认配置</td>
+<td><code>string/dict/None</code></td>
+<td>
+<ul>
+<li><b>large</b>: 保留最大外部框，删除内部重叠框</li>
+<li><b>small</b>: 保留被包含的小框，删除外部框</li>
+<li><b>union</b>: 不进行过滤</li>
+<li><b>dict</b>: 如<code>{0: "large", 2: "small"}</code></li>
+<li><b>None</b>: 不指定，使用模型默认</li>
+</ul>
+</td>
+<td>None</td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
+<td><code>enable_hpi</code></td>
 <td>是否启用高性能推理插件</td>
 <td><code>bool</code></td>
 <td>无</td>
@@ -446,6 +447,7 @@ for res in output:
 <td><code>None</code></td>
 </tr>
 </table>
+
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
@@ -464,15 +466,13 @@ for res in output:
 <tr>
 <td><code>input</code></td>
 <td>待预测数据，支持多种输入类型</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
+<td><code>Python Var/str/list</code></td>
 <td>
-<ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
-</ul>
+Python变量，如 <code>numpy.ndarray</code><br>
+文件路径，如 <code>/root/data/img.jpg</code><br>
+URL链接，如网络图像 URL<br>
+本地目录，目录下需包含待预测文件<br>
+列表，元素可为上述任意类型
 </td>
 <td>无</td>
 </tr>
@@ -489,51 +489,59 @@ for res in output:
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>threshold</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>float</b>，如 0.2，过滤掉得分&nbsp;&lt;&nbsp;0.2 的检测框</li>
+<li><b>dict</b>，键为 <b>int</b> (cls_id)，值为 <b>float</b> 阈值，如 <code>{0: 0.45, 2: 0.48}</code></li>
+<li><b>None</b>，说明见默认值</li>
 </ul>
 </td>
+<td><b>None<sup>①</sup></b></td>
+</tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>是否使用 NMS 后处理，过滤重叠框</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
-<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_nms</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>bool</b>，True / False</li>
+<li><b>None</b>，说明见默认值</li>
 </ul>
 </td>
-<td>None</td>
+<td><b>None<sup>①</sup></b></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>检测框的边长缩放倍数</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, 大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>列表</b>, 如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_unclip_ratio</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>float</b>，如 1.1</li>
+<li><b>list</b>，如 [1.2,&nbsp;1.5]</li>
+<li><b>dict</b>，如 <code>{0: (1.1, 2.0)}</code></li>
+<li><b>None</b></li>
 </ul>
 </td>
+<td><b>None<sup>①</sup></b></td>
+</tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleX官方模型配置</td>
+<td>检测框合并处理模式</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
-<li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式</li>
-<li><b>None</b>, 不指定，将默认使用 <code>creat_model</code> 指定的 <code>layout_merge_bboxes_mode</code> 参数，如果 <code>creat_model</code> 也没有指定，则默认使用PaddleX官方模型配置</li>
+<li><b>large</b>：保留外部大框</li>
+<li><b>small</b>：保留内部小框</li>
+<li><b>union</b>：保留全部</li>
+<li><b>dict</b>，如 <code>{0:"large", 2:"small"}</code></li>
+<li><b>None</b></li>
 </ul>
 </td>
-<td>无</td>
+<td><b>None<sup>①</sup></b></td>
 </tr>
-</tr></tr></table>
+</table>
+
+<p><sup>①</sup> 当调用 <code>predict()</code> 时该参数为 <code>None</code> 时，将继承模型实例化 (<code>__init__</code>) 时对应参数的值；若实例化时也未显式指定，则使用框架默认：<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>threshold=0.5</code>，<code>layout_nms=False</code>，<code>layout_unclip_ratio=1.0</code>，<code>layout_merge_bboxes_mode="union"</code>。</p>
+
 
 * 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
 

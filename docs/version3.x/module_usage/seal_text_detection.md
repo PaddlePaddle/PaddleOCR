@@ -146,111 +146,140 @@ for res in output:
 <td>模型名称</td>
 <td><code>str</code></td>
 <td>所有PaddleX支持的印章文本检测模型名称</td>
-<td>无</td>
+<td><code>"PP-OCRv4_mobile_seal_det"</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
 <td>无</td>
-<td>无</td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>模型推理设备</td>
 <td><code>str</code></td>
 <td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td><code>"cpu"</code></td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
 <td>检测的图像边长限制</td>
-<td><code>int/None</code></td>
+<td><code>int</code> / <code>None</code></td>
 <td>
 <ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将使用默认值：736</li></li></ul></td>
-
+<li><b>int</b>: 大于0的任意整数</li>
+<li><b>None</b>: 使用默认值736</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型 </td>
-<td><code>str/None</code></td>
+<td>检测的图像边长限制,检测的边长限制类型	</td>
+<td><code>str</code> / <code>None</code></td>
 <td>
 <ul>
-<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将使用默认值：“min”</li></li></ul></td>
-
-
+<li><b>str</b>: "min" / "max"</li>
+<li><b>None</b>: 使用默认值 "min"</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点 </td>
-<td><code>float/None</code></td>
+<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点	</td>
+<td><code>float</code> / <code>None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将使用默认值：0.2</li></li></ul></td>
-
+<li><b>float</b>: > 0 的任意浮点数</li>
+<li><b>None</b>: 默认值 0.2</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域 </td>
-<td><code>float/None</code></td>
+<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域	</td>
+<td><code>float</code> / <code>None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将使用默认值：0.6</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>max_candidates</code></td>
-<td>输出的最大文本框数量 </td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用PaddleX官方模型配置中的该参数值</li></li></ul></td>
-
+<li><b>float</b>: > 0 的任意浮点数</li>
+<li><b>None</b>: 默认值 0.6</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张 </td>
-<td><code>float/None</code></td>
+<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张	</td>
+<td><code>float</code> / <code>None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将使用默认值：0.5</li></li></ul></td>
-
+<li><b>float</b>: > 0 的任意浮点数</li>
+<li><b>None</b>: 默认值 0.5</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
-<td><code>use_dilation</code></td>
-<td>是否对分割结果进行膨胀 </td>
-<td><code>bool/None</code></td>
-<td>True/False/None</td>
+<td><code>input_shape</code></td>
+<td>模型输入尺寸 (C, H, W)</td>
+<td><code>tuple</code> / <code>None</code></td>
+<td>如 <code>(3, 960, 960)</code>，或None使用模型默认</td>
 <td>None</td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理插件（HPI）</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>True / False</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
+<td>高性能推理插件配置</td>
+<td><code>dict</code> / <code>None</code></td>
 <td>无</td>
-<td><code>None</code></td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 TensorRT 加速</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td>False</td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>TensorRT 精度类型</td>
+<td><code>str</code></td>
+<td>"fp32" / "fp16" / "int8"</td>
+<td>"fp32"</td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>TensorRT 最小子图节点数</td>
+<td><code>int</code></td>
+<td>大于0的整数</td>
+<td>30</td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 oneDNN (MKL-DNN)</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>CPU 线程数</td>
+<td><code>int</code></td>
+<td>大于0的整数</td>
+<td>10</td>
 </tr>
 </table>
+
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
@@ -283,7 +312,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>批处理大小</td>
 <td><code>int</code></td>
 <td>大于0的任意整数</td>
 <td>1</td>
@@ -294,75 +323,81 @@ for res in output:
 <td><code>int/None</code></td>
 <td>
 <ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
+<li><b>int</b>: 大于0的任意整数</li>
+<li><b>None</b>: 若为None，则使用模型初始化参数</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型 </td>
+<td>图像边长限制类型</td>
 <td><code>str/None</code></td>
 <td>
 <ul>
-<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-
+<li><b>str</b>: "min" / "max"</li>
+<li><b>None</b>: 若为None，则使用模型初始化参数</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点 </td>
+<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点	</td>
 <td><code>float/None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
+<li><b>float</b>: >0 的任意浮点数</li>
+<li><b>None</b>: 若为None，则使用模型初始化参数</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域 </td>
+<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域	</td>
 <td><code>float/None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
+<li><b>float</b>: >0 的任意浮点数</li>
+<li><b>None</b>: 若为None，则使用模型初始化参数</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>max_candidates</code></td>
-<td>输出的最大文本框数量 </td>
+<td>输出的最大文本框数量</td>
 <td><code>int/None</code></td>
 <td>
 <ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
+<li><b>int</b>: >0 的任意整数</li>
+<li><b>None</b>: 使用模型默认</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张 </td>
+<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张	</td>
 <td><code>float/None</code></td>
 <td>
 <ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
+<li><b>float</b>: >0 的任意浮点数</li>
+<li><b>None</b>: 使用模型初始化参数</li>
+</ul>
+</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_dilation</code></td>
-<td>是否对分割结果进行膨胀 </td>
+<td>是否对分割结果进行膨胀</td>
 <td><code>bool/None</code></td>
-<td>True/False/None</td>
+<td>True / False / None</td>
 <td>None</td>
 </tr>
 </table>
+
 
 * 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
 

@@ -113,7 +113,7 @@ for res in results:
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>模型名称，如 <code>PP-DocBee2-3B</code> 等</td>
 <td><code>str</code></td>
 <td>无</td>
 <td><code>无</code></td>
@@ -123,28 +123,63 @@ for res in results:
 <td>模型存储路径</td>
 <td><code>str</code></td>
 <td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>模型推理设备</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td>支持指定 GPU 具体卡号，如 <code>gpu:0</code>，其他硬件如 <code>npu:0</code>，CPU 如 <code>cpu</code></td>
+<td><code>cpu</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件。目前暂不支持。</td>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理插件（HPI）</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td><code>True</code> / <code>False</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>高性能推理配置。目前暂不支持。</td>
+<td>高性能推理插件的配置</td>
 <td><code>dict</code> | <code>None</code></td>
 <td>无</td>
 <td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 TensorRT 加速</td>
+<td><code>bool</code></td>
+<td><code>True</code> / <code>False</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>TensorRT 子图最小节点数</td>
+<td><code>int</code></td>
+<td>&ge; 1</td>
+<td><code>30</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>TensorRT 精度类型</td>
+<td><code>str</code></td>
+<td><code>fp32</code> / <code>fp16</code> / <code>int8</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 oneDNN（仅在 CPU 推理时生效）</td>
+<td><code>bool</code></td>
+<td><code>True</code> / <code>False</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>CPU 推理线程数</td>
+<td><code>int</code></td>
+<td>&ge; 1</td>
+<td><code>10</code></td>
 </tr>
 </table>
 

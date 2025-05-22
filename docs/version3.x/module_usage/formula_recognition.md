@@ -186,28 +186,28 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>所有PaddleX支持的模型名称</td>
-<td>无</td>
+<td>模型名称</td>
+<td><code>PP-FormulaNet_plus-M</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
 <td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>模型推理设备</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号如“npu:0”，CPU如“cpu”。</td>
+<td><code>cpu</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
+<td><code>enable_hpi</code></td>
 <td>是否启用高性能推理插件</td>
 <td><code>bool</code></td>
-<td>无</td>
+<td>True / False</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -217,7 +217,43 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 <td>无</td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 TensorRT 加速</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>TensorRT 子图最小节点数</td>
+<td><code>int</code></td>
+<td>&gt;0</td>
+<td><code>30</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>TensorRT 推理精度</td>
+<td><code>str</code></td>
+<td><code>fp32</code>, <code>fp16</code>, <code>int8</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 oneDNN（仅在 CPU 下有效）</td>
+<td><code>bool</code></td>
+<td>True / False</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>CPU 推理线程数</td>
+<td><code>int</code></td>
+<td>&gt;=1</td>
+<td><code>10</code></td>
+</tr>
 </table>
+
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 

@@ -110,38 +110,73 @@ Explanations of related methods, parameters, etc., are as follows:
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>Model Name</td>
+<td>Name of the model, e.g. <code>PP-DocBee2-3B</code></td>
 <td><code>str</code></td>
 <td>None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model Storage Path</td>
+<td>Path to the model directory</td>
 <td><code>str</code></td>
 <td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Model Inference Device</td>
+<td>Device for model inference</td>
 <td><code>str</code></td>
-<td>Supports specifying specific GPU card number, such as "gpu:0", other hardware specific card numbers, such as "npu:0", CPU such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td>Supports specifying a specific device such as <code>gpu:0</code>, <code>npu:0</code>, or <code>cpu</code></td>
+<td><code>cpu</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin. Currently not supported.</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference (HPI)</td>
 <td><code>bool</code></td>
-<td>None</td>
+<td><code>True</code> / <code>False</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>High-performance inference configuration. Currently not supported.</td>
+<td>Configuration for high-performance inference</td>
 <td><code>dict</code> | <code>None</code></td>
 <td>None</td>
 <td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to enable TensorRT acceleration</td>
+<td><code>bool</code></td>
+<td><code>True</code> / <code>False</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT optimization</td>
+<td><code>int</code></td>
+<td>&ge; 1</td>
+<td><code>30</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision type for TensorRT</td>
+<td><code>str</code></td>
+<td><code>fp32</code> / <code>fp16</code> / <code>int8</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Whether to enable oneDNN (only effective on CPU)</td>
+<td><code>bool</code></td>
+<td><code>True</code> / <code>False</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for CPU inference</td>
+<td><code>int</code></td>
+<td>&ge; 1</td>
+<td><code>10</code></td>
 </tr>
 </table>
 

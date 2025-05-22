@@ -460,16 +460,14 @@ Relevant methods, parameters, and explanations are as follows:
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data for prediction, supporting multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
+<td>Data to be predicted; multiple formats are supported</td>
+<td><code>Python Var/str/list</code></td>
 <td>
-<ul>
-<li><b>Python Variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
-<li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-<li><b>URL link</b>, such as the network URL of an image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例</a></li>
-<li><b>Local Directory</b>, the directory should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
-<li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
-</ul>
+Python objects such as <code>numpy.ndarray</code><br>
+File path, e.g. <code>/root/data/img.jpg</code><br>
+URL of an image<br>
+Local directory containing image files<br>
+List whose elements are any of the above
 </td>
 <td>None</td>
 </tr>
@@ -477,61 +475,68 @@ Relevant methods, parameters, and explanations are as follows:
 <td><code>batch_size</code></td>
 <td>Batch size</td>
 <td><code>int</code></td>
-<td>Any integer greater than 0</td>
+<td>Any integer &gt; 0</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering low-confidence prediction results</td>
+<td>Confidence threshold for filtering predictions</td>
 <td><code>float/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
-<li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
-<li><b>None</b>, not specified, will use the <code>threshold</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>float</b>, e.g.&nbsp;0.2 → drop boxes with score&nbsp;&lt;&nbsp;0.2</li>
+<li><b>dict</b>, keys as <b>int</b> (<code>cls_id</code>), values as <b>float</b>, e.g.&nbsp;<code>{0: 0.45, 2: 0.48}</code></li>
+<li><b>None</b></li>
 </ul>
 </td>
+<td><b>None<sup>＊</sup></b></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Apply NMS to filter overlapping boxes</td>
 <td><code>bool/None</code></td>
 <td>
 <ul>
-<li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
-<li><b>None</b>, not specified, will use the <code>layout_nms</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>True / False</b></li>
+<li><b>None</b></li>
 </ul>
 </td>
-<td>None</td>
+<td><b>None<sup>＊</sup></b></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Scaling ratio for detected boxes</td>
 <td><code>float/list/dict/None</code></td>
 <td>
 <ul>
-<li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
-<li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
-<li><b>None</b>, not specified, will use the <code>layout_unclip_ratio</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>float</b>, e.g.&nbsp;1.1</li>
+<li><b>list</b>, e.g.&nbsp;[1.2,&nbsp;1.5]</li>
+<li><b>dict</b>, e.g.&nbsp;<code>{0: (1.1, 2.0)}</code></li>
+<li><b>None</b></li>
 </ul>
 </td>
+<td><b>None<sup>＊</sup></b></td>
+</tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model; if not specified, the default PaddleX official model configuration will be used</td>
+<td>Merging mode for overlapping boxes</td>
 <td><code>string/dict/None</code></td>
 <td>
 <ul>
-<li><b>large</b>, when set to large, only the largest external box will be retained for overlapping detection boxes, and the internal overlapping boxes will be deleted</li>
-<li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
-<li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
-<li><b>None</b>, not specified, will use the <code>layout_merge_bboxes_mode</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default PaddleX official model configuration will be used</li>
+<li><b>large</b>: keep outer box</li>
+<li><b>small</b>: keep inner box</li>
+<li><b>union</b>: keep all</li>
+<li><b>dict</b>, e.g.&nbsp;<code>{0:"large", 2:"small"}</code></li>
+<li><b>None</b></li>
 </ul>
 </td>
-<td>None</td>
+<td><b>None<sup>＊</sup></b></td>
 </tr>
-</tr></table>
+</table>
+
+<p><sup>＊</sup> If <code>None</code> is passed to <code>predict()</code>, the value set during model instantiation (<code>__init__</code>) will be used; if it was also <code>None</code> there, the framework defaults are applied:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>threshold=0.5</code>, <code>layout_nms=False</code>, <code>layout_unclip_ratio=1.0</code>, <code>layout_merge_bboxes_mode="union"</code>.</p>
+
 
 * Process the prediction results, with each sample's prediction result being the corresponding Result object, and supporting operations such as printing, saving as an image, and saving as a 'json' file:
 

@@ -120,51 +120,96 @@ The explanations of relevant methods and parameters are as follows:
 * Instantiate the document image orientation classification model with `DocImgOrientationClassification` (taking `PP-LCNet_x1_0_doc_ori` as an example here). The specific explanations are as follows:
 
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model inference device</td>
-<td><code>str</code></td>
-<td>Supports specifying the specific card number of GPU, such as "gpu:0", specific card numbers of other hardware, such as "npu:0", and CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Parameter Type</th>
+      <th>Options</th>
+      <th>Default Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model; if not specified, the default model of the class will be used</td>
+      <td><code>str</code></td>
+      <td>None</td>
+      <td><code>"PP-LCNet_x1_0_doc_ori"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Path to the local model directory</td>
+      <td><code>str</code></td>
+      <td>None</td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device for model inference</td>
+      <td><code>str</code></td>
+      <td>Supports values like <code>"gpu:0"</code>, <code>"npu:0"</code>, <code>"cpu"</code></td>
+      <td><code>"cpu"</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable the high-performance inference (HPI) plugin</td>
+      <td><code>bool</code></td>
+      <td><code>True</code> / <code>False</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>hpi_config</code></td>
+      <td>Configuration dictionary for the high-performance inference plugin</td>
+      <td><code>dict</code> | <code>None</code></td>
+      <td>None</td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>topk</code></td>
+      <td>Return the top-k prediction results; <code>None</code> returns all results</td>
+      <td><code>int</code> | <code>None</code></td>
+      <td>Positive integers such as <code>1</code>, <code>5</code>, etc.</td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to enable TensorRT acceleration</td>
+      <td><code>bool</code></td>
+      <td><code>True</code> / <code>False</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size for TensorRT fusion</td>
+      <td><code>int</code></td>
+      <td>Positive integer &gt; 0</td>
+      <td><code>30</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Precision for TensorRT inference</td>
+      <td><code>str</code></td>
+      <td><code>"fp32"</code>, <code>"fp16"</code>, <code>"int8"</code></td>
+      <td><code>"fp32"</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable oneDNN (MKL-DNN) acceleration (only effective for CPU)</td>
+      <td><code>bool</code></td>
+      <td><code>True</code> / <code>False</code></td>
+      <td><code>True</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of CPU threads used for inference</td>
+      <td><code>int</code></td>
+      <td>Integer &ge; 1</td>
+      <td><code>10</code></td>
+    </tr>
+  </tbody>
 </table>
+
 
 * Among them, `model_name` must be specified. After specifying `model_name`, the model parameters built into PaddleX are used by default. On this basis, when `model_dir` is specified, the user-defined model is used.
 
