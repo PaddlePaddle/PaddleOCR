@@ -737,13 +737,13 @@ The name of the layout detection model. If not set, the default model in pipelin
 </tr>
 <tr>  
 <td><code>use_doc_orientation_classify</code></td>  
-<td>Whether to enable document orientation classification.If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use document orientation classification.If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>  
 <tr>  
 <td><code>use_doc_unwarping</code></td>  
-<td>Whether to enable text image correction. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use text image correction. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>   

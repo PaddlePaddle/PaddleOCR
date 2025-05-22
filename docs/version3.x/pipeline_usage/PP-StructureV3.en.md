@@ -1325,13 +1325,13 @@ any float > <code>0</code>.If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to enable document orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document orientation classification. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to enable document unwarping. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document unwarping. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1343,19 +1343,19 @@ any float > <code>0</code>.If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use seal recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use table recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use formula recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
