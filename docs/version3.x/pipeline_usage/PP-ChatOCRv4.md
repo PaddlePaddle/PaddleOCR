@@ -20,7 +20,7 @@ PP-ChatOCRv4 产线中包含<b>版面区域检测模块</b>、<b>表格结构识
 - [表格结构识别模块](../module_usage/table_structure_recognition.md)（可选）
 - [文本检测模块](../module_usage/text_detection.md)
 - [文本识别模块](../module_usage/text_recognition.md)
-- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md)（可选）
+- [文本行方向分类模块](../module_usage/textline_orientation_classification.md)（可选）
 - [公式识别模块](../module_usage/formula_recognition.md)（可选）
 - [印章文本检测模块](../module_usage/seal_text_detection.md)（可选）
 
