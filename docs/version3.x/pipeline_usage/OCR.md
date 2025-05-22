@@ -1740,7 +1740,40 @@ for i, res in enumerate(result["ocrResults"]):
 </table>
 
 ### 4.2 模型应用
-当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过参数指定本地模型保存路径的方式，或者通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+#### 4.2.1 通过参数指定本地模型路径
+
+在初始化产线对象时，通过参数指定本地模型路径。以文本检测模型微调后的权重的使用方法为例，示例如下：
+
+命令行方式:
+
+```bash
+# 通过 --text_detection_model_dir 指定本地模型路径
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir yours_det_model_path
+
+# 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir yours_v5_server_det_model_path
+```
+
+脚本方式：
+
+```python
+
+from paddleocr import PaddleOCR
+
+# 通过 text_detection_model_dir 指定本地模型路径
+pipeline = PaddleOCR(text_detection_model_dir="./yours_det_model_path")
+
+# 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./yours_v5_server_det_model_path")
+
+```
+
+
+#### 4.2.2 通过配置文件指定本地模型路径
+
 
 1. 获取产线配置文件
 
@@ -1766,7 +1799,7 @@ SubModules:
     limit_type: max
     max_side_limit: 4000
     model_dir: null # 替换为微调后的文本测模型权重路径
-    model_name: PP-OCRv5_server_det
+    model_name: PP-OCRv5_server_det # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: text_detection
     thresh: 0.3
     unclip_ratio: 1.5
@@ -1778,7 +1811,7 @@ SubModules:
   TextRecognition:
     batch_size: 6
     model_dir: null # 替换为微调后的文本识模型权重路径
-    model_name: PP-OCRv5_server_rec
+    model_name: PP-OCRv5_server_rec # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: text_recognition
     score_thresh: 0.0
 ......
