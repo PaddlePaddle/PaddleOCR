@@ -1751,10 +1751,10 @@ for i, res in enumerate(result["ocrResults"]):
 
 ```bash
 # 通过 --text_detection_model_dir 指定本地模型路径
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir yours_det_model_path
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
 # 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir yours_v5_server_det_model_path
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
 ```
 
 脚本方式：
@@ -1764,10 +1764,10 @@ paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_serv
 from paddleocr import PaddleOCR
 
 # 通过 text_detection_model_dir 指定本地模型路径
-pipeline = PaddleOCR(text_detection_model_dir="./yours_det_model_path")
+pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 # 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
-# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./yours_v5_server_det_model_path")
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
 
 ```
 
