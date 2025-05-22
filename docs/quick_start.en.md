@@ -75,7 +75,7 @@ pip install paddleocr==3.0.0
     for res in result:
         res.print()
         res.save_to_img("output")
-        res.save_to_json("output")
+        res.save_to_json("output")    
     ```
 
     Example output:
