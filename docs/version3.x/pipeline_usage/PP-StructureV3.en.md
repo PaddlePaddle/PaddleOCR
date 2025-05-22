@@ -6,7 +6,7 @@ comments: true
 
 ## 1. Introduction to PP-StructureV3 Production Line
 
-Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3</b> improves upon the general layout analysis v1 production line by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.  This production line also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.
+Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3</b> improves upon the general layout analysis v1 pipeline by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.  This pipeline also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.
 
 <b>PP-StructureV3</b> includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.
 
@@ -967,9 +967,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted. Required.
-<ul>
-<li><b>str</b>: e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path)</li>
-</ul>
+.e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -995,9 +993,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Score threshold for the layout model.
-<ul>
-<li><b>float</b>: any value between <code>0-1</code></li>
-</ul>If not set, the default value is used, which is <code>0.5</code>.
+.any value between <code>0-1</code>.If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1011,19 +1007,14 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Unclip ratio for detected boxes in layout detection model.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>Tuple[float,float]</b>: separate ratios for width and height</li>
-</ul>If not set, default is <code>1.0</code>.
+.any float > <code>0</code>.If not set, default is <code>1.0</code>.
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>Merge mode for overlapping boxes in layout detection.
-<ul>
-<li><b>str</b>: <code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both</li>
-</ul>If not set, default is <code>large</code>.
+.<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both.If not set, default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1097,9 +1088,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-<ul>
-<li><b>int</b>: any integer > <code>0</code>;</li>
-</ul>If not set, the default value will be <code>960</code>.
+.any integer > <code>0</code>.If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1107,19 +1096,15 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
-<ul>
-<li><b>str</b>: supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code></li>
-</ul>If not set, the default value will be <code>max</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>.If not set, the default value will be <code>max</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.3</code>.
+<td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
+.If not set, default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1127,9 +1112,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.6</code>.
+Any float > <code>0</code>.If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1137,9 +1120,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>2.0</code>.
+any float > <code>0</code>.If not set, default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1183,9 +1164,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Score threshold for text recognition. Only results above this value will be kept.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1265,9 +1244,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
-<ul>
-<li><b>int</b>: any integer > <code>0</code>;</li>
-</ul>If not set, the default is <code>736</code>.
+.any integer > <code>0</code>.If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1275,9 +1252,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-<ul>
-<li><b>str</b>: supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code></li>
-</ul>If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>.If not set, default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1285,9 +1260,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.2</code>.
+any float > <code>0</code>.If not set, default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1295,19 +1268,14 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.6</code>.
+any float > <code>0</code>.If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.5</code>.
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>.If not set, default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1332,10 +1300,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-</ul>If not set, default is <code>0.0</code> (no threshold).
+<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1372,7 +1337,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the text line orientation classification. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1396,13 +1361,13 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to enable chart recognition model. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the chart recognition sub-production line. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to enable region detection submodule for document images. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the document region detection production line. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1416,7 +1381,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means XPU 0</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means MLU 0</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means DCU 0</li>
-</ul>If not set, GPU 0 will be used by default if available; otherwise, CPU will be used.
+</ul>If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1447,7 +1412,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN. If not set, enabled by default.</td>
+<td>Whether to enable MKL-DNN. If not set, disabled by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2009,15 +1974,14 @@ The above Python script performs the following steps:
 <td></td>
 </tr>
 <tr>
-<tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to enable the chart recognition model. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to enable the region detection model for document layout. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2031,7 +1995,7 @@ The above Python script performs the following steps:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
-<li><b>None</b>: If set to <code>None</code>, GPU 0 will be used by default. If GPU is not available, CPU will be used;</li>
+<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -2063,7 +2027,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is enabled by default.</td>
+<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is disabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2140,6 +2104,18 @@ The above Python script performs the following steps:
 <tr>
 <td><code>use_formula_recognition</code></td>
 <td>Whether to use the formula recognition sub-pipeline during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2238,6 +2214,66 @@ The above Python script performs the following steps:
 <td>Same as the parameter used during initialization.</td>
 <td><code>float</code></td>
 <td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_wired_table_cells_trans_to_html</code></td>
+<td>Whether to enable direct conversion of wired table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wireless_table_cells_trans_to_html</code></td>
+<td>Whether to enable direct conversion of wireless table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_table_orientation_classify</code></td>
+<td>Whether to enable table orientation classification. When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_results_with_table_cells</code></td>
+<td>Whether to enable OCR within cell segmentation. When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wired_table_rec_model</code></td>
+<td>Whether to enable end-to-end wired table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wireless_table_rec_model</code></td>
+<td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
 </tr>
 </table>
 </details>

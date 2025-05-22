@@ -10,7 +10,7 @@ Table recognition is a technology that automatically identifies and extracts tab
 
 The General Table Recognition v2 Production Line (PP-TableMagic) is designed to tackle table recognition tasks, identifying tables in images and outputting them in HTML format. Unlike the original General Table Recognition Production Line, this version introduces two new modules: table classification and table cell detection. By adopting a <b>multi-model pipeline combining "table classification + table structure recognition + cell detection"</b>, it achieves better end-to-end table recognition performance compared to the previous version. Based on this, the General Table Recognition v2 Production Line <b>natively supports targeted model fine-tuning</b>, allowing developers to customize it to varying degrees for satisfactory performance in different application scenarios. <b>Furthermore, the General Table Recognition v2 Production Line also supports end-to-end table structure recognition models (e.g., SLANet, SLANet_plus, etc.) and allows independent configuration for wired and wireless table recognition methods, enabling developers to freely select and combine the best table recognition solutions.</b>
 
-This production line is applicable in a variety of fields, including general, manufacturing, finance, and transportation. It also provides flexible service deployment options, supporting multiple programming languages on various hardware. Additionally, it offers capabilities for secondary development, allowing you to train and fine-tune your own datasets based on this production line, with the trained models seamlessly integrated.
+This pipeline is applicable in a variety of fields, including general, manufacturing, finance, and transportation. It also provides flexible service deployment options, supporting multiple programming languages on various hardware. Additionally, it offers capabilities for secondary development, allowing you to train and fine-tune your own datasets based on this pipeline, with the trained models seamlessly integrated.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/01.png"/>
 
@@ -25,7 +25,7 @@ This production line is applicable in a variety of fields, including general, ma
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.md) (optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.md) (optional)
 
-In this production line, you can choose the models to use based on the benchmark data below.
+In this pipeline, you can choose the models to use based on the benchmark data below.
 
 <details>
 <summary> <b>Table Structure Recognition Module Models:</b></summary>
@@ -822,9 +822,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted, required.
-<ul>
-<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
-</ul>
+Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -946,9 +944,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limit for text detection.
-<ul>
-<li><b>int</b>: Any integer greater than <code>0</code>;</li>
-</ul>If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
+Any integer greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -956,9 +952,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
-<ul>
-<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, initialized to <code>max</code>.
+Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>.If not set, the default value initialized by the pipeline will be used, initialized to <code>max</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -966,9 +960,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
+Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -976,9 +968,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
+Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -986,9 +976,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
+Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1014,34 +1002,32 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load the layout detection module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load the OCR module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1055,7 +1041,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which prioritizes using the local GPU device 0; if not available, it will use the CPU device.
+</ul>If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1086,7 +1072,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be disabled by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1348,25 +1334,25 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1380,7 +1366,7 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which prioritizes using the local GPU device 0; if not available, it will use the CPU device.
+</ul>If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1411,7 +1397,7 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be disabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>

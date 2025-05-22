@@ -1007,9 +1007,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>input</code></td>
 <td>待预测数据，必填。
-<ul>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-</ul>
+如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1051,9 +1049,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>版面区域检测模型检测框的扩张系数。
-<ul>
-<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
+任意大于 <code>0</code>  浮点数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1061,9 +1057,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
-<ul>
-<li><b>str</b>：<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
+<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1137,19 +1131,14 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>文本检测的最大边长度限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+大于 <code>0</code> 的任意整数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+<td>Type of side length limit for text detection。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1157,9 +1146,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.3</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.3</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1167,9 +1155,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1177,9 +1164,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>2.0</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>2.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1223,9 +1209,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1305,9 +1290,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>印章文本检测的图像边长限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
+大于 <code>0</code> 的任意整数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1315,9 +1298,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1325,18 +1306,16 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.2</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.2</code>。
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1344,9 +1323,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.5</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1372,9 +1350,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1399,43 +1376,49 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载印章识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载表格识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>是否加载公式识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用公式识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载图表解析模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用图表解析模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载文档图像版面子模块检测模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用并使用文档区域检测产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1449,7 +1432,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化时，会优先使用编号最小的可用 GPU 设备，如果没有，则使用 CPU 设备。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1480,7 +1463,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果不设置, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果不设置, 将默认关闭。
 </td>
 <td><code>bool</code></td>
 <td></td>
@@ -1998,43 +1981,49 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载印章识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载表格识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>是否加载公式识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用公式识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载图表解析模型。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用并使用图表识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载文档图像版面子模块检测模型。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用并使用文档区域检测产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2048,7 +2037,7 @@ for item in markdown_images:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>None</b>：如果设置为 <code>None</code>, 初始化时，会优先使用编号最小的可用 GPU 设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -2080,7 +2069,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认关闭。
 </td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
@@ -2158,6 +2147,18 @@ for item in markdown_images:
 <tr>
 <td><code>use_formula_recognition</code></td>
 <td>是否在推理时使用公式识别子产线。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>是否加载并使用并使用图表识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>是否加载并使用并使用文档区域检测产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2256,6 +2257,65 @@ for item in markdown_images:
 <td>与实例化时的参数相同。</td>
 <td><code>float</code></td>
 <td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_wired_table_cells_trans_to_html</code></td>
+<td>是否启用有线表单元格检测结果直转HTML，默认False，启用则直接基于有线表单元格检测结果的几何关系构建HTML。
+<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+</ul></td>
+<td><code>float|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wireless_table_cells_trans_to_html</code></td>
+<td>是否启用无线表单元格检测结果直转HTML，默认False，启用则直接基于无线表单元格检测结果的几何关系构建HTML。
+<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+</ul></td>
+<td><code>float|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_table_orientation_classify</code></td>
+<td>是否启用表格使用表格方向分类，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。
+<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>；</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_results_with_table_cells</code></td>
+<td>是否启用单元格切分OCR，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。
+<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>；</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wired_table_rec_model</code></td>
+<td>是否启用有线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。
+<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wireless_table_rec_model</code></td>
+<td>是否启用无线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。<ul>
+<li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
 </tr>
 </table>
 </details>

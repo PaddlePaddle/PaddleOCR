@@ -826,9 +826,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>input</code></td>
 <td>待预测数据，必填。
-<ul>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-</ul>
+如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -950,9 +948,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>文本检测的图像边长限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+大于 <code>0</code> 的任意整数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -960,9 +956,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的图像边长限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -970,9 +964,8 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.3</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.3</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -980,9 +973,8 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -990,9 +982,8 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>2.0</code>。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>2.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1018,34 +1009,33 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数
-</ul>如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+大于 <code>0</code> 的任意浮点数
+。如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>是否加载版面检测模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用版面检测模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>是否加载OCR模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用OCR模块。如果不设置, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1059,7 +1049,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化时，会优先使用编号最小的可用 GPU 设备，如果没有，则使用 CPU 设备。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1090,7 +1080,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果不设置, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果不设置, 将默认关闭。
 </td>
 <td><code>bool</code></td>
 <td></td>
@@ -1350,25 +1340,25 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>是否加载版面检测模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用版面检测模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>是否加载OCR模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用OCR模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1382,7 +1372,7 @@ for res in output:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>None</b>：如果设置为 <code>None</code>, 初始化时，会优先使用编号最小的可用 GPU 设备，如果没有，则使用 CPU 设备.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1414,7 +1404,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认关闭。
 </td>
 <td><code>bool</code></td>
 <td><code>None</code></td>

@@ -417,9 +417,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted,required.
-<ul>
-<li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path)</li>
-</ul>
+Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -472,14 +470,14 @@ The name of the document orientation classification model. If no set, the defaul
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>
-Whether to load the text image unwarping module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load and use the text image unwarping module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -500,10 +498,7 @@ The name of the layout detection model. If not set, the default model in pipelin
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
-<ul>
-<li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
-</ul>
-If not set, the default PaddleX official model configuration will be used
+such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -520,9 +515,7 @@ Whether to use NMS (Non-Maximum Suppression) post-processing for layout region d
 <td><code>layout_unclip_ratio</code></td>
 <td>
 The scaling factor for the side length of the detection boxes in layout region detection.
-<ul>
-<li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
-</ul>If not set, the default PaddleX official model configuration will be used.
+A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1.If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -548,7 +541,7 @@ The scaling factor for the side length of the detection boxes in layout region d
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to load the layout detection module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load and use the layout detection module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -583,7 +576,7 @@ The name of the formula recognition model. If not set, the default model from th
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-</ul>If not set, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.
+</ul>If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -614,7 +607,7 @@ The name of the formula recognition model. If not set, the default model from th
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be disabled by default.
 </td>
 <td><code>bool</code></td>
 <td></td>
@@ -729,13 +722,13 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -755,7 +748,7 @@ In the above Python script, the following steps are executed:
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
 <ul>
-<li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
+<li><b>float</b>, such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
 <li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
 <li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
 </ul>
@@ -802,7 +795,7 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load the layout detection module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -834,7 +827,8 @@ In the above Python script, the following steps are executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-</ul>If set to <code>None</code>, the default value initialized by the pipeline will be used. During initialization, the local GPU 0 will be prioritized; if unavailable, the CPU will be used.
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
+</ur>
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -865,7 +859,7 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be disabled by default.
 </td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
@@ -885,8 +879,7 @@ In the above Python script, the following steps are executed:
 </tbody>
 </table>
 
-（2）
-Call the `predict()` method of the formula recognition pipeline object to perform inference prediction. This method will return a list of results.
+（2）Call the `predict()` method of the formula recognition pipeline object to perform inference prediction. This method will return a list of results.
 
 Additionally, the pipeline also provides the `predict_iter()` method. Both methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which allows for step-by-step processing and retrieval of prediction results. This is suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on your actual needs.
 
@@ -1090,7 +1083,7 @@ In addition, PaddleOCR also provides two other deployment methods, which are det
 
 
 ☁️ Service-Based Deployment：
-Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in production lines, please refer to the [Service-Based Deployment Guide](../deployment/serving.md).
+Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in pipelines, please refer to the [Service-Based Deployment Guide](../deployment/serving.md).
 
 Below are the API references for basic service-based deployment and multi-language service invocation examples:
 

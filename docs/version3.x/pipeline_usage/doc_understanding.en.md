@@ -79,9 +79,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted,  required.
-<ul>
-<li><b>str</b>: "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': 'Recognize the content of this table and output it in markdown format'}"</li>
-</ul>
+"{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': 'Recognize the content of this table and output it in markdown format'}".
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -120,7 +118,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-</ul>If not set, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.
+</ul>If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -240,7 +238,7 @@ In the above Python script, the following steps are performed:
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
 </ul>
-If not set, the initialized value of this parameter will be used by default, which will preferentially use the local GPU device 0, or the CPU device if none is available.
+If not set, the value initialized by the pipeline for this parameter will be used by default. During initialization, the GPU device with the smallest available ID will be prioritized for use. If none is available, the CPU device will be used instead.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
