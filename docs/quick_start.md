@@ -23,77 +23,80 @@ python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn
 #### 2. 安装`paddleocr`
 
 ```bash
-pip install paddleocr
+pip install paddleocr==3.0.0
 ```
 
 ### 命令行使用
 
-=== "OCR产线"
+=== "PP-OCRv5"
 
     ```bash linenums="1"
-    paddleocr ocr -i ./general_ocr_002.png
+    paddleocr ocr -i ./general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False
     ```
 
-=== "文本检测模块"
+=== "PP-OCRv5文本检测模块"
 
     ```bash linenums="1"
-    paddleocr text_detection -i ./general_ocr_001.png
+    paddleocr text_detection -i ./general_ocr_001.png 
     ```
 
-=== "文本识别模块"
+=== "PP-OCRv5文本识别模块"
 
     ```bash linenums="1"
     paddleocr text_recognition -i ./general_ocr_rec_001.png
     ```
 
-=== "PP-StructureV3产线"
+=== "PP-StructureV3"
 
     ```bash linenums="1"
-    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
     ```
 
 ### Python脚本使用
 
-=== "OCR产线"
+=== "PP-OCRv5"
 
     ```python linenums="1"
     from paddleocr import PaddleOCR
 
-    ocr = PaddleOCR() # 文本图像预处理+文本检测+方向分类+文本识别
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+方向分类+文本识别
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False, use_textline_orientation=False) # 文本检测+文本识别
+    ocr = PaddleOCR(
+        use_doc_orientation_classify=False, 
+        use_doc_unwarping=False, 
+        use_textline_orientation=False) # 文本检测+文本识别
+    # ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # 文本图像预处理+文本检测+方向分类+文本识别
+    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+文本行方向分类+文本识别
     result = ocr.predict("./general_ocr_002.png")
     for res in result:
         res.print()
         res.save_to_img("output")
-        res.save_to_json("output")
+        res.save_to_json("output")     
     ```
 
     输出示例：
 
     ```bash
-    {'res': {'input_path': './general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  1,   4],
-        ...,
-        [  1,  33]],
+    {'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  3,  10],
+            ...,
+            [  4,  30]],
 
-       ...,
-
-       [[ 99, 455],
         ...,
-        [ 99, 480]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997788.com', '登机牌', 'BOARDING PASS', '舱位CLASS', '序号 SERIAL NO.', '座位号', 'SEAT NO', '航班FLIGHT', '日期', 'DATE', 'MU 2379', '03DEC', 'W', '035', '', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKTNO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.99684608, ..., 0.97179604]), 'rec_polys': array([[[  1,   4],
-        ...,
-        [  1,  33]],
 
-       ...,
+        [[ 99, 456],
+            ...,
+            [ 99, 479]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997700', '', 'Cm', '登机牌', 'BOARDING', 'PASS', 'CLASS', '序号SERIAL NO.', '座位号', 'SEAT NO.', '航班FLIGHT', '日期DATE', '舱位', '', 'W', '035', '12F', 'MU2379', '03DEc', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKT NO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.67582953, ..., 0.97418666]), 'rec_polys': array([[[  3,  10],
+            ...,
+            [  4,  30]],
 
-       [[ 99, 455],
         ...,
-        [ 99, 480]]], dtype=int16), 'rec_boxes': array([[  1, ...,  33],
-       ...,
-       [ 99, ..., 480]], dtype=int16)}}
+
+        [[ 99, 456],
+            ...,
+            [ 99, 479]]], dtype=int16), 'rec_boxes': array([[  3, ...,  30],
+        ...,
+        [ 99, ..., 479]], dtype=int16)}}
     ```
 
-=== "文本检测模块"
+=== "PP-OCRv5文本检测模块"
 
     ```python linenums="1"
     from paddleocr import TextDetection
@@ -118,7 +121,7 @@ pip install paddleocr
         [ 36, 456]]], dtype=int16), 'dt_scores': [0.8562385635646694, 0.8818259002228059, 0.8406072284043453, 0.8855339313157491]}}
     ```
 
-=== "文本识别模块"
+=== "PP-OCRv5文本识别模块"
 
     ```python linenums="1"
     from paddleocr import TextRecognition
@@ -137,17 +140,16 @@ pip install paddleocr
     {'res': {'input_path': 'general_ocr_rec_001.png', 'page_index': None, 'rec_text': '绿洲仕格维花园公寓', 'rec_score': 0.990813672542572}}
     ```
 
-=== "PP-StructureV3产线"
+=== "PP-StructureV3"
 
     ```python linenums="1"
     from paddleocr import PPStructureV3
 
-    pipeline = PPStructureV3()
-    output = pipeline.predict(
-        input="./pp_structure_v3_demo.png",
+    pipeline = PPStructureV3(
         use_doc_orientation_classify=False,
-        use_doc_unwarping=False,
-        use_textline_orientation=False,                          
+        use_doc_unwarping=False)
+    output = pipeline.predict(
+        input="./pp_structure_v3_demo.png",          
     )
     for res in output:
         res.print()

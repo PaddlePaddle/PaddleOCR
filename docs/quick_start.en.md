@@ -23,50 +23,53 @@ python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn
 #### 2. Install `paddleocr`
 
 ```bash
-pip install paddleocr
+pip install paddleocr==3.0.0
 ```
 
 ### Command Line Usage
 
-=== "OCR Pipeline"
+=== "PP-OCRv5"
 
     ```bash linenums="1"
-    paddleocr ocr -i ./general_ocr_002.png
+    paddleocr ocr -i ./general_ocr_002.png  --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False
     ```
 
-=== "Text Detection Module"
+=== "PP-OCRv5 Text Detection Module"
 
     ```bash linenums="1"
     paddleocr text_detection -i ./general_ocr_001.png
     ```
 
-=== "Text Recognition Module"
+=== "PP-OCRv5 Text Recognition Module"
 
     ```bash linenums="1"
     paddleocr text_recognition -i ./general_ocr_rec_001.png
     ```
 
-=== "PP-StructureV3 Pipeline"
+=== "PP-StructureV3"
 
     ```bash linenums="1"
-    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png  --use_doc_orientation_classify False --use_doc_unwarping False
     ```
 
 ### Python Script Usage
 
-=== "OCR Pipeline"
+=== "PP-OCRv5"
 
     ```python linenums="1"
     from paddleocr import PaddleOCR
 
-    ocr = PaddleOCR() # text image preprocessing + text detection + text orientation classification + text recognition
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # text detection + text orientation classification + text recognition
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False, use_textline_orientation=False) # text detection + text recognition
+    ocr = PaddleOCR(
+        use_doc_orientation_classify=False, 
+        use_doc_unwarping=False, 
+        use_textline_orientation=False) # text detection + text recognition
+    # ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # text image preprocessing + text detection + textline orientation classification + text recognition
+    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # text detection + textline orientation classification + text recognition
     result = ocr.predict("./general_ocr_002.png")
     for res in result:
         res.print()
         res.save_to_img("output")
-        res.save_to_json("output")
+        res.save_to_json("output")    
     ```
 
     Example output:
@@ -93,7 +96,7 @@ pip install paddleocr
        [ 99, ..., 480]], dtype=int16)}}
     ```
 
-=== "Text Detection Module"
+=== "PP-OCRv5 Text Detection Module"
 
     ```python linenums="1"
     from paddleocr import TextDetection
@@ -118,7 +121,7 @@ pip install paddleocr
         [ 36, 456]]], dtype=int16), 'dt_scores': [0.8562385635646694, 0.8818259002228059, 0.8406072284043453, 0.8855339313157491]}}
     ```
 
-=== "Text Recognition Module"
+=== "PP-OCRv5 Text Recognition Module"
 
     ```python linenums="1"
     from paddleocr import TextRecognition
@@ -137,18 +140,17 @@ pip install paddleocr
     {'res': {'input_path': 'general_ocr_rec_001.png', 'page_index': None, 'rec_text': '绿洲仕格维花园公寓', 'rec_score': 0.990813672542572}}
     ```
 
-=== "PP-StructureV3 Pipeline"
+=== "PP-StructureV3"
 
     ```python linenums="1"
     from paddleocr import PPStructureV3
 
-    pipeline = PPStructureV3()
-    output = pipeline.predict(
-        input="./pp_structure_v3_demo.png",
+    pipeline = PPStructureV3(
         use_doc_orientation_classify=False,
-        use_doc_unwarping=False,
-        use_textline_orientation=False,                          
+        use_doc_unwarping=False
     )
+    output = pipeline.predict(
+        input="./pp_structure_v3_demo.png")
     for res in output:
         res.print()
         res.save_to_json(save_path="output")
