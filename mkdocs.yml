@@ -197,7 +197,7 @@ plugins:
         #   fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
   - git-committers:
       repository: PaddlePaddle/PaddleOCR
-      branch: main
+      branch: release/3.0
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   - git-revision-date-localized:
       fallback_to_build_date: false
