@@ -4,31 +4,31 @@
   </p>
 
 <!-- language -->
-中文 | [English](./README_en.md) |  [日本語](./README_ja.md)
+中文 | [English](./README_en.md)
 
 <!-- icon -->
 
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
 [![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
-![python](https://img.shields.io/badge/python-3.8+-aff.svg)
+![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
+![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
+
 
 [![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
-
 </div>
-<br>
 
 ## 🚀 简介
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配**飞桨框架3.0正式版**，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5 Turbo**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
-PaddleOCR 3.0**新增**三大特色能力：：
-- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。
-- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。
-- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。
+PaddleOCR 3.0**新增**三大特色能力：
+- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。[在线体验](https://aistudio.baidu.com/community/app/91660/webUI)
+- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。[在线体验](https://aistudio.baidu.com/community/app/518494/webUI)
+- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
@@ -53,23 +53,10 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 
 - **PP-ChatOCRv4**: 智能文档理解方案
-   1. 🔥 文档文件（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15个百分点**！
+   1. 🔥 文档图像（PDF/PNG/JPG）关键信息提取精度相比上一代**提升15个百分点**！
    2. 💻 原生支持**文心大模型4.5 Turbo**，还兼容 PaddleNLP、Ollama、vLLM 等工具部署的大模型。
    3. 🤝 集成 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支持印刷文字、手写体文字、印章信息、表格、图表等常见的复杂文档信息抽取和理解的能力。
 
-<details>
-   <summary><strong>历史更新记录</strong></summary>
-
-- 🔥🔥2025.03.07: **PaddleOCR v2.10** 发布：
-  - 新增 **12 个自研模型**:
-    - **[版式检测系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)**(3 模型): PP-DocLayout-L/M/S - 支持 23 类中英文文档版式检测（论文/报告/试卷/图书/期刊/合同等），最高达 **90.4% mAP@0.5**，轻量化设计支持每秒处理 100+ 页面
-    - **[公式识别系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/formula_recognition.html)**(2 模型): PP-FormulaNet-L/S - 支持 50,000+ LaTeX 公式识别，涵盖印刷体与手写体。PP-FormulaNet-L 精度提升 **6%**；PP-FormulaNet-S 速度提升 16 倍且精度相当
-    - **[表格结构识别系列](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_structure_recognition.html)**(2 模型): SLANeXt_wired/wireless - 新型模型复杂表格识别精度提升 **6%**
-    - **[表格分类模型](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html)**(1 模型): PP-LCNet_x1_0_table_cls - 超轻量有线/无线表格分类器
-
-[更多详情，请查看](https://paddlepaddle.github.io/PaddleOCR/latest/en/update.html)
-
-</details>
 
 ## ⚡ 快速开始
 ### 1. 在线体验
@@ -79,24 +66,23 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ### 2. 本地安装
 
-请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装。
+请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装，然后安装paddleocr。
 
-安装paddleocr
 ```bash
 # 安装 paddleocr
-pip install paddleocr
+pip install paddleocr==3.0.0
 ```
 
 ### 3. 命令行方式推理
 ```bash
 # 运行 PP-OCRv5 推理
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False 
 
 # 运行 PP-StructureV3 推理
-paddleocr PP-StructureV3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
 
-# 运行 PP-ChatOCRv4 推理前，需要先获得千帆KPI Key
-paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
+# 运行 PP-ChatOCRv4 推理前，需要先获得千帆API Key
+paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
 # 查看 "paddleocr ocr" 详细参数
 paddleocr ocr --help
@@ -107,9 +93,13 @@ paddleocr ocr --help
 ```python
 from paddleocr import PaddleOCR
 # 初始化 PaddleOCR 实例
-ocr = PaddleOCR()
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False)
 # 对示例图像执行 OCR 推理 
-result = ocr.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
+result = ocr.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
 # 可视化结果并保存 json 结果
 for res in result:
     res.print()
@@ -124,45 +114,21 @@ for res in result:
 from pathlib import Path
 from paddleocr import PPStructureV3
 
-pipeline = PPStructureV3()
+pipeline = PPStructureV3(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 # For Image
-output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png")
+output = pipeline.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
+    )
 
 # 可视化结果并保存 json 结果
 for res in output:
     res.print() 
     res.save_to_json(save_path="output") 
     res.save_to_markdown(save_path="output") 
-
-# For PDF File
-input_file = "./your_pdf_file.pdf"
-output_path = Path("./output")
-
-output = pipeline.predict(input_file)
-
-markdown_list = []
-markdown_images = []
-
-for res in output:
-    md_info = res.markdown
-    markdown_list.append(md_info)
-    markdown_images.append(md_info.get("markdown_images", {}))
-
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
-
-mkd_file_path = output_path / f"{Path(input_file).stem}.md"
-mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(mkd_file_path, "w", encoding="utf-8") as f:
-    f.write(markdown_texts)
-
-for item in markdown_images:
-    if item:
-        for path, image in item.items():
-            file_path = output_path / path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            image.save(file_path)
 ```
 
 </details>
@@ -198,12 +164,13 @@ mllm_chat_bot_config = {
     "api_key": "api_key",  # your api_key
 }
 
-pipeline = PPChatOCRv4Doc()
+pipeline = PPChatOCRv4Doc(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 visual_predict_res = pipeline.visual_predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
     use_common_ocr=True,
     use_seal_recognition=True,
     use_table_recognition=True,
@@ -237,11 +204,11 @@ print(chat_result)
 </details>
 
 
-### 5. **国产化硬件支持**
+### 5. **国产化硬件使用**
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
   
-## ⚙️ 进阶指南
+## ⛰️ 进阶指南
 - [PP-OCRv5 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
@@ -262,8 +229,12 @@ print(chat_result)
 
 ## 👩‍👩‍👧‍👦 开发者社区
 
-## 😃 使用 PaddleOCR 的优秀项目
-💗 PaddleOCR 的发展离不开社区贡献！衷心感谢所有开发者、合作伙伴与贡献者！
+| 扫码关注飞桨公众号 | 扫码加入技术交流群 |
+| :---: | :---: |
+| <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
+
+## 🏆 使用 PaddleOCR 的优秀项目
+PaddleOCR 的发展离不开社区贡献！💗衷心感谢所有开发者、合作伙伴与贡献者！
 | 项目名称 | 简介 |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|基于RAG的AI工作流引擎|

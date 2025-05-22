@@ -1,44 +1,41 @@
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
       <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR Banner"></a>
   </p>
 
 <!-- language -->
-English | [简体中文](./readme_c.md)| [日本語](./README_ja.md)
+[中文](./readme_c.md)| English 
 
 <!-- icon -->
 
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
 [![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
-![python](https://img.shields.io/badge/python-3.8+-aff.svg)
+![python](https://img.shields.io/badge/python-3.8～3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
+![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
 [![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
-
 </div>
-<br>
 
 ## 🚀 Introduction
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
 On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the **PaddlePaddle 3.0** framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5T**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**.
 
-Three Major New Features in PaddleOCR 3.0
-- 🖼️ Universal-Scene Text Recognition Model [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): A single model that handles five different text types plus complex handwriting. Overall recognition accuracy has increased by 13 percentage points over the previous generation.
+Three Major New Features in PaddleOCR 3.0:
+- Universal-Scene Text Recognition Model [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): A single model that handles five different text types plus complex handwriting. Overall recognition accuracy has increased by 13 percentage points over the previous generation. [Online Demo](https://aistudio.baidu.com/community/app/91660/webUI)
 
-- 🧮 General Document-Parsing Solution [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks.
+- General Document-Parsing Solution [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks. [Online Demo](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the WenXin large model 4.5T, achieving 15 percentage points higher accuracy than its predecessor.
+- Intelligent Document-Understanding Solution [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the WenXin large model 4.5T, achieving 15 percentage points higher accuracy than its predecessor. [Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
       <img width="100%" src="./docs/images/Arch.png" alt="PaddleOCR Architecture"></a>
   </p>
 </div>
@@ -59,7 +56,7 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 - **PP-ChatOCRv4**: Intelligent Document Understanding – Extract Key Information, not just text from Images/PDFs.
    1. 🔥 **15-point accuracy gain** in key-information extraction on PDF/PNG/JPG files over the previous generation.
    2. 💻 Native support for **ERINE4.5 Turbo**, with compatibility for large-model deployments via PaddleNLP, Ollama, vLLM, and more.
-   3. 🤝 Integrated **PP-DocBee2**, enabling extraction and understanding of printed text, handwriting, seals, tables, charts, and other common elements in complex documents.
+   3. 🤝 Integrated [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2), enabling extraction and understanding of printed text, handwriting, seals, tables, charts, and other common elements in complex documents.
 
 <details>
    <summary><strong>The history of updates </strong></summary>
@@ -79,79 +76,47 @@ PP-LCNet_x1_0_table_cls -- an ultra-lightweight classifier for wired and wireles
 </details>
 
 ## ⚡ Quick Start
-### 1. Run online demo without installation
+### 1. Run online demo 
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
 
 ### 2. Installation
 
-First, please install PaddlePaddle using the official [Installation Guide](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html).
-
-Then, install the PaddleOCR toolkit.
+Install PaddlePaddle refer to [Installation Guide](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html), after then, install the PaddleOCR toolkit.
 
 ```bash
-# 1. Install paddleocr
-pip install paddleocr
-# 2. Self-check after installation is complete
-paddleocr --version
+# Install paddleocr
+pip install paddleocr==3.0.0
 ```
-
-
-### 3. Domestic AI Accelerators
-- [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html)
-- [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html)
-<table>
-  <tr>
-    <th>Model </th>
-    <th>Ascend </th>
-    <th>KUNLUNXIN </th>
-    <th>More...under development </th>
-  </tr>
-  <tr>
-    <td>PP-OCRv5</td>
-    <td>✅</td>
-    <td>✅</td>
-    <td> </td>
-  </tr>
-  <tr>
-    <td>PP-StructureV3</td>
-    <td>✅</td>
-    <td>✅</td>
-    <td> </td>
-  </tr>
-  <tr>
-    <td>PP-ChatOCRv4</td>
-    <td>✅</td>
-    <td>✅</td>
-    <td> </td>
-  </tr>
-</table>
 
 ### 3. Run inference by CLI
 ```bash
 # Run PP-OCRv5 inference
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False  
 
 # Run PP-StructureV3 inference
-paddleocr PP-StructureV3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
 
 # Get the Qianfan API Key at first, and then run PP-ChatOCRv4 inference
-paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
+paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
 # Get more information about "paddleocr ocr"
 paddleocr ocr --help
 ```
-### 4. Run inference by API
-#### 4.1 PP-OCRv5 Example
-```python
-from paddleocr import PaddleOCR
 
+### 4. Run inference by API
+**4.1 PP-OCRv5 Example**
+```python
 # Initialize PaddleOCR instance
-ocr = PaddleOCR()
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False)
 
 # Run OCR inference on a sample image 
-result = ocr.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
+result = ocr.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
 
 # Visualize the results and save the JSON results
 for res in result:
@@ -170,41 +135,17 @@ from paddleocr import PPStructureV3
 pipeline = PPStructureV3()
 
 # For Image
-output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png")
+output = pipeline.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+    )
 
 # Visualize the results and save the JSON results
 for res in output:
     res.print() 
-    res.save_to_json(save_path="output")
-    res.save_to_markdown(save_path="output") 
-# For PDF File
-input_file = "./your_pdf_file.pdf"
-output_path = Path("./output")
-
-output = pipeline.predict(input_file)
-
-markdown_list = []
-markdown_images = []
-
-for res in output:
-    md_info = res.markdown
-    markdown_list.append(md_info)
-    markdown_images.append(md_info.get("markdown_images", {}))
-
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
-
-mkd_file_path = output_path / f"{Path(input_file).stem}.md"
-mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(mkd_file_path, "w", encoding="utf-8") as f:
-    f.write(markdown_texts)
-
-for item in markdown_images:
-    if item:
-        for path, image in item.items():
-            file_path = output_path / path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            image.save(file_path)
+    res.save_to_json(save_path="output") 
+    res.save_to_markdown(save_path="output")           
 ```
 
 </details>
@@ -239,12 +180,12 @@ mllm_chat_bot_config = {
     "api_key": "api_key",  # your api_key
 }
 
-pipeline = PPChatOCRv4Doc()
+pipeline = PPChatOCRv4Doc(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False)
 
 visual_predict_res = pipeline.visual_predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
     use_common_ocr=True,
     use_seal_recognition=True,
     use_table_recognition=True,
@@ -277,9 +218,39 @@ print(chat_result)
 
 </details>
 
+### 5. Domestic AI Accelerators
+- [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
+- [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
+
+## ⛰️ Advanced Tutorials
+- [PP-OCRv5 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
+- [PP-StructureV3 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
+- [PP-ChatOCRv4 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+
+## 🔄 Quick Overview of Execution Results
+
+<div align="center">
+  <p>
+     <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
+  </p>
+</div>
+
+<div align="center">
+  <p>
+     <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+  </p>
+</div>
+
+## 👩‍👩‍👧‍👦 Community
+
+| PaddlePaddle WeChat official account |  Join the tech discussion group |
+| :---: | :---: |
+| <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
+
 
 ## 😃 Awesome Projects Leveraging PaddleOCR
-💗 PaddleOCR wouldn’t be where it is today without its incredible community! A massive 🙌 thank you 🙌 to all our longtime partners, new collaborators, and everyone who’s poured their passion into PaddleOCR — whether we’ve named you or not. Your support fuels our fire! 🔥
+PaddleOCR wouldn’t be where it is today without its incredible community! 💗 A massive thank you to all our longtime partners, new collaborators, and everyone who’s poured their passion into PaddleOCR — whether we’ve named you or not. Your support fuels our fire!
+
 | Project Name | Description |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|RAG engine based on deep document understanding.|
@@ -291,29 +262,28 @@ print(chat_result)
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |Recognize text on the screen, translate it and show the translation results in real time.|
 | [Learn more projects](./awesome_projects.md) | [More projects based on PaddleOCR](./awesome_projects.md)|
 
-## 🔄 Quick Overview of Execution Results
+## 👩‍👩‍👧‍👦 Contributors
 
-<div align="center">
-  <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
-  </p>
-</div>
+<a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
+</a>
 
-<div align="center">
-  <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
-  </p>
-</div>
 
-## 👩‍👩‍👧‍👦 Community
-* 👫 Join the [PaddlePaddle Community](https://github.com/PaddlePaddle/community), where you can engage with [paddlepaddle developers](https://www.paddlepaddle.org.cn/developercommunity), researchers, and enthusiasts from around the world.
-* 🎓 Learn from experts through workshops, tutorials, and Q&A sessions [hosted by the AI Studio](https://aistudio.baidu.com/learn/center).
-* 🏆 Participate in [hackathons, challenges, and competitions](https://aistudio.baidu.com/competition) to showcase your skills and win exciting prizes.
-* 📣 Stay updated with the latest news, announcements, and events by following our [Twitter](https://x.com/PaddlePaddle) and [WeChat](https://mp.weixin.qq.com/s/MAdo7fZ6dfeGcCQUtRP2ag).
-Let’s build the future of AI together! 🚀
+## 🌟 Star
+
+[![Star History Chart](https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date)](https://star-history.com/#PaddlePaddle/PaddleOCR&Date)
+
 
 ## 📄 License
+This project is released under the [Apache 2.0 license](LICENSE).
 
-This project is released under [Apache License Version 2.0](./LICENSE).
+## 🎓 Citation
+
+```
+@misc{paddleocr2020,
+title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
+author={PaddlePaddle Authors},
+howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
+year={2020}
+}
+```

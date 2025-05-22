@@ -660,13 +660,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 一行命令即可快速体验 seal_recognition 产线效果：
 
 ```bash
-paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png
-
-# 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
-paddleocr seal_recognition -i ./seal_text_det.png --use_doc_orientation_classify True
-
-# 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块
-paddleocr seal_recognition -i ./seal_text_det.png --use_doc_unwarping True
+paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False
 
 # 通过 --device 指定模型推理时使用 GPU
 paddleocr seal_recognition -i ./seal_text_det.png --device gpu
@@ -974,9 +970,10 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 ```python
 from paddleocr import SealRecognition
 
-pipeline = SealRecognition()
-# ocr = SealRecognition(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
-# ocr = SealRecognition(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+pipeline = SealRecognition(
+    use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
+    use_doc_unwarping=False, # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+)
 # ocr = SealRecognition(device="gpu") # 通过 device 指定模型推理时使用 GPU
 output = pipeline.predict("./seal_text_det.png")
 for res in output:
