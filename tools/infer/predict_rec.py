@@ -321,7 +321,7 @@ class TextRecognizer(object):
             resize_w = min(imgW_max, resize_w)
         resized_image = cv2.resize(img, (resize_w, imgH))
         resized_image = resized_image.astype('float32')
-        # norm 
+        # norm
         if image_shape[0] == 1:
             resized_image = resized_image / 255
             resized_image = resized_image[np.newaxis, :]
@@ -672,6 +672,7 @@ class TextRecognizer(object):
                     for output_tensor in self.output_tensors:
                         output = output_tensor.copy_to_cpu()
                         outputs.append(output)
+                    self.predictor.try_shrink_memory()
                     if self.benchmark:
                         self.autolog.times.stamp()
                     if len(outputs) != 1:
