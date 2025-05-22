@@ -3032,10 +3032,10 @@ You're not viewing the latest version.
 <p>The 3.x upgrade consists of three major enhancements:</p>
 <ol>
 <li><strong>New Model Pipelines</strong>: Introduced several new pipelines such as PP-OCRv5, PP-StructureV3, and PP-ChatOCR v4, covering a wide range of base models. These significantly enhance recognition capabilities for various text types, including handwriting, to meet the growing demand for high-precision parsing in complex documents. All models are ready-to-use out of the box, improving development efficiency.</li>
-<li><strong>Refactored Deployment and Unified Inference Interface</strong>: The deployment module in PaddleOCR 3.x is rebuilt using PaddleX’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.</li>
+<li><strong>Refactored Deployment and Unified Inference Interface</strong>: The deployment module in PaddleOCR 3.x is rebuilt using <a href="../version3.x/paddleocr_and_paddlex.html">PaddleX</a>’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.</li>
 <li><strong>PaddlePaddle 3.0 Compatibility and Optimized Training</strong>: The new version is fully compatible with PaddlePaddle 3.0, including features like the CINN compiler. It also introduces a standardized model naming system to streamline future updates and maintenance.</li>
 </ol>
-<p>Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to <a href="version2.x/legacy/index.en.md">Legacy Features</a>.</p>
+<p>Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to <a href="../version2.x/legacy/index.html">Legacy Features</a>.</p>
 <h2 id="3-migrating-inference-code-from-paddleocr-2x-to-3x">3. Migrating Inference Code from PaddleOCR 2.x to 3.x<a class="headerlink" href="#3-migrating-inference-code-from-paddleocr-2x-to-3x" title="Permanent link">&para;</a></h2>
 <p>For OCR tasks, PaddleOCR 3.x still supports a usage pattern similar to 2.x. Here’s an example using the Python API in 2.x:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
@@ -3074,7 +3074,7 @@ You're not viewing the latest version.
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>It’s worth noting that the <code>PPStructure</code> module in PaddleOCR 2.x has been removed in 3.x. We recommend switching to <code>PPStructureV3</code>, which offers richer functionality and better parsing results. Refer to the relevant documentation for usage details.</p>
-<p>Also, in 2.x, the <code>show_log</code> parameter could be passed when creating a <code>PaddleOCR</code> object to control logging. However, this design affected all <code>PaddleOCR</code> instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see <a href="version3.x/logging.en.md">Logging</a>.</p>
+<p>Also, in 2.x, the <code>show_log</code> parameter could be passed when creating a <code>PaddleOCR</code> object to control logging. However, this design affected all <code>PaddleOCR</code> instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see <a href="../version3.x/logging.html">Logging</a>.</p>
 <h2 id="4-known-issues-in-paddleocr-30">4. Known Issues in PaddleOCR 3.0<a class="headerlink" href="#4-known-issues-in-paddleocr-30" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR 3.0 is still under active development. Current known limitations include:</p>
 <ol>
@@ -3105,7 +3105,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 21, 2025 07:27:27">May 21, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 22, 2025 04:02:21">May 22, 2025</span>
   </span>
 
     
@@ -3115,7 +3115,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 21, 2025 07:27:27">May 21, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 22, 2025 04:02:21">May 22, 2025</span>
   </span>
 
     
