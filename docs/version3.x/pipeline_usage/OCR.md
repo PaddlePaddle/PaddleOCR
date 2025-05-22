@@ -1364,52 +1364,54 @@ for res in result:
 </tr>
 </table>
 
-- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
+<ul>
+  <li>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：
+    <ul>
+      <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
+      <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
+      <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
+        <ul>
+          <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
+          <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类功能</li>
+        </ul>
+      </li>
+      <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
+        <ul>
+          <li><code>input_path</code>: <code>(Union[str, None])</code> 图像预处理子产线接受的图像路径，当输入为<code>numpy.ndarray</code>时，保存为<code>None</code></li>
+          <li><code>model_settings</code>: <code>(Dict)</code> 预处理子产线的模型配置参数
+            <ul>
+              <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> 控制是否启用文档方向分类</li>
+              <li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像矫正</li>
+            </ul>
+          </li>
+          <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1</li>
+        </ul>
+      </li>
+      <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16</li>
+      <li><code>dt_scores</code>: <code>(List[float])</code> 文本检测框的置信度列表</li>
+      <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> 文本检测模块的配置参数
+        <ul>
+          <li><code>limit_side_len</code>: <code>(int)</code> 图像预处理时的边长限制值</li>
+          <li><code>limit_type</code>: <code>(str)</code> 边长限制的处理方式</li>
+          <li><code>thresh</code>: <code>(float)</code> 文本像素分类的置信度阈值</li>
+          <li><code>box_thresh</code>: <code>(float)</code> 文本检测框的置信度阈值</li>
+          <li><code>unclip_ratio</code>: <code>(float)</code> 文本检测框的膨胀系数</li>
+          <li><code>text_type</code>: <code>(str)</code> 文本检测的类型，当前固定为"general"</li>
+        </ul>
+      </li>
+      <li><code>textline_orientation_angles</code>: <code>(List[int])</code> 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]</li>
+      <li><code>text_rec_score_thresh</code>: <code>(float)</code> 文本识别结果的过滤阈值</li>
+      <li><code>rec_texts</code>: <code>(List[str])</code> 文本识别结果列表，仅包含置信度超过<code>text_rec_score_thresh</code>的文本</li>
+      <li><code>rec_scores</code>: <code>(List[float])</code> 文本识别的置信度列表，已按<code>text_rec_score_thresh</code>过滤</li>
+      <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> 经过置信度过滤的文本检测框列表，格式同<code>dt_polys</code></li>
+      <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标</li>
+    </ul>
+  </li>
+  <li>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的<code>numpy.array</code>类型转换为列表形式。</li>
+  <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)</li>
+</ul>
 
-    - `input_path`: `(str)` 待预测图像的输入路径
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
-        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
-            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
-            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
-
-    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
-
-    - `dt_scores`: `(List[float])` 文本检测框的置信度列表
-
-    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数
-        - `limit_side_len`: `(int)` 图像预处理时的边长限制值
-        - `limit_type`: `(str)` 边长限制的处理方式
-        - `thresh`: `(float)` 文本像素分类的置信度阈值
-        - `box_thresh`: `(float)` 文本检测框的置信度阈值
-        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数
-        - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-
-    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]
-
-    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
-
-    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
-
-    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤
-
-    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`
-
-    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标
-
-- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)
-
-* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
+<p>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：</p>
 
 <table>
 <thead>
@@ -1428,8 +1430,10 @@ for res in result:
 </tr>
 </table>
 
-- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。
+<ul>
+  <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
+  <li><code>img</code> 属性返回的预测结果是一个字典类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 <code>ocr_res_img</code>。</li>
+</ul>
 
 </details>
 
