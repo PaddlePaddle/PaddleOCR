@@ -121,50 +121,82 @@ Visualization:
 * **`TextLineOrientationClassification` Initialization** (using `PP-LCNet_x0_25_textline_ori` as an example):  
 
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>N/A</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Custom model path</td>
-<td><code>str</code></td>
-<td>N/A</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Inference device</td>
-<td><code>str</code></td>
-<td>E.g., "gpu:0", "npu:0", "cpu"</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Enable high-performance inference</td>
-<td><code>bool</code></td>
-<td>N/A</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>HPI configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>N/A</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Directory path where the model is stored</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific device index.
+        <ul>
+          <li><b>CPU</b>: e.g., <code>cpu</code> to use CPU for inference;</li>
+          <li><b>GPU</b>: e.g., <code>gpu:0</code> to use the first GPU;</li>
+          <li><b>None</b>: If set to <code>None</code>, the system will initialize the default device, prioritizing local GPU 0; if unavailable, CPU will be used instead.</li>
+        </ul>
+      </td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference .</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Computation precision, such as <code>fp32</code>, <code>fp16</code>.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use for inference on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+  <tr>
+  <td><code>top_k</code></td>
+  <td>Return the top-k predicted classes</td>
+  <td><code>int</code></td>
+  <td><code>None</code></td>
+  </tr>
+  </tbody>
 </table>
 
 * **`predict()` Method**:  

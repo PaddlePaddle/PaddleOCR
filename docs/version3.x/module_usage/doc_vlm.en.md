@@ -99,53 +99,84 @@ Explanations of related methods, parameters, etc., are as follows:
 
 * `DocVLM` instantiates the document visual language model (taking `PP-DocBee-2B` as an example), with specific explanations as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model Name</td>
-<td><code>str</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model Storage Path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card number, such as "gpu:0", other hardware specific card numbers, such as "npu:0", CPU such as "cpu".</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin. Currently not supported.</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration. Currently not supported.</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model</td>
+      <td><code>str</code></td>
+      <td><code>"PP-DocBee-2B"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Path to the directory where the model is stored</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific device index.
+        <ul>
+          <li><b>CPU</b>: e.g., <code>cpu</code> indicates inference on CPU;</li>
+          <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates inference on the first GPU;</li>
+          <li><b>NPU</b>: e.g., <code>npu:0</code> indicates inference on the first NPU;</li>
+          <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates inference on the first XPU;</li>
+          <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates inference on the first MLU;</li>
+          <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates inference on the first DCU;</li>
+          <li><b>None</b>: If set to <code>None</code>, the system will use the default device initialized by the pipeline, which prioritizes GPU 0 if available, otherwise CPU will be used.</li>
+        </ul>
+      </td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference .</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize model computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Computation precision, such as <code>fp32</code>, <code>fp16</code>.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use for inference when running on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+  </tbody>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the default built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
+
+* Among them, `model_name` must be specified. After specifying `model_name`, the default PaddleX built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
 
 * Call the `predict()` method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the `predict_iter()` method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that `predict_iter()` returns a `generator`, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The `predict()` method parameters include `input`, `batch_size`, with specific explanations as follows:
 
@@ -155,25 +186,21 @@ Explanations of related methods, parameters, etc., are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted</td>
-<td><code>dict</code></td>
-<td>
-<code>Dict</code>, as multimodal models have different input requirements, it needs to be determined based on the specific model. Specifically:
-<li>PP-DocBee series input format is <code>{'image': image_path, 'query': query_text}</code></li>
+<td>Input data. Required. Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
+For example, for the PP-DocBee series models, the input format should be: <code>{'image': image_path, 'query': query_text}</code>
 </td>
+<td><code>dict</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size. Accepts any integer value.</td>
 <td><code>int</code></td>
-<td>Integer</td>
 <td>1</td>
 </tr>
 </table>
