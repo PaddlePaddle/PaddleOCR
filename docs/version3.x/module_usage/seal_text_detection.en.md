@@ -46,7 +46,7 @@ The seal text detection module typically outputs multi-point bounding boxes arou
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-               <li><strong>Test Dataset：</strong> PaddleX Custom Dataset, Containing 500 Images of Circular Stamps.</li>
+               <li><strong>Test Dataset：</strong> A Self-built Internal Dataset, Containing 500 Images of Circular Stamps.</li>
               <li><strong>Hardware Configuration：</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
@@ -148,7 +148,7 @@ The explanations of related methods and parameters are as follows:
 <td><code>model_name</code></td>
 <td>Name of the model</td>
 <td><code>str</code></td>
-<td>All model names supported by PaddleX for seal text detection</td>
+<td>All model names supported for seal text detection</td>
 <td>None</td>
 </tr>
 <tr>
@@ -172,7 +172,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 736</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -183,7 +183,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>str</b>: Supports min and max. min ensures the shortest side of the image is not less than det_limit_side_len, max ensures the longest side is not greater than limit_side_len
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is `min`</li></li></ul></td>
 
 
 <td>None</td>
@@ -195,7 +195,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.2</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -206,7 +206,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.6</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -217,7 +217,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 1000</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -228,7 +228,7 @@ The explanations of related methods and parameters are as follows:
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.5</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -255,7 +255,7 @@ The explanations of related methods and parameters are as follows:
 </tr>
 </table>
 
-* The `model_name` must be specified. After specifying `model_name`, the built-in model parameters of PaddleX will be used by default. On this basis, if `model_dir` is specified, the user-defined model will be used.
+* The `model_name` must be specified. After specifying `model_name`, the built-in model parameters will be used by default. On this basis, if `model_dir` is specified, the user-defined model will be used.
 
 * The `predict()` method of the seal text detection model is called for inference prediction. The parameters of the `predict()` method include `input`, `batch_size`, `limit_side_len`, `limit_type`, `thresh`, `box_thresh`, `max_candidates`, `unclip_ratio`, and `use_dilation`. The specific descriptions are as follows:
 
