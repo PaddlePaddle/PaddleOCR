@@ -18,7 +18,7 @@ comments: true
 
 - [表格结构识别模块](../module_usage/table_structure_recognition.md)
 - [表格分类模块](../module_usage/table_classification.md)
-- [表格单元格定位模块](../module_usage/table_cells_detection.md)
+- [表格单元格检测模块](../module_usage/table_cells_detection.md)
 - [文本检测模块](../module_usage/text_detection.md)
 - [文本识别模块](../module_usage/text_recognition.md)
 - [版面区域检测模块](../module_usage/layout_detection.md)（可选）
@@ -1728,7 +1728,7 @@ for res in output:
 
 如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。
 
-若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式](#22-python脚本方式集成)中的示例代码。
+若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式集成](#22-python)中的示例代码。
 
 此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：
 
@@ -2046,7 +2046,7 @@ for i, res in enumerate(result["tableRecResults"]):
 <tr>
 <td>表格分类错误</td>
 <td>表格分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>表格单元格定位错误</td>

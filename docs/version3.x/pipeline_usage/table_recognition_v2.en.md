@@ -2050,7 +2050,7 @@ Since the General Table Recognition v2 model consists of several modules, if the
 <tr>
 <td>Table classification error</td>
 <td>Table Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html#iv-secondary-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_classification.html#_5">Link</a></td>
 </tr>
 <tr>
 <td>Table cell location error</td>
