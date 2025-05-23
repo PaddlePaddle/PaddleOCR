@@ -83,7 +83,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
 </ul>
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>Python Dict</code></td>
 <td></td>
 </tr>
 <tr>
