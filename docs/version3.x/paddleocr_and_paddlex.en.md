@@ -16,7 +16,7 @@ PaddleOCR fully reuses the capabilities of PaddleX in the inference deployment p
 - The high-performance inference capabilities of PaddleOCR are achieved through PaddleX's Paddle2ONNX plugin and high-performance inference plugins.
 - The service deployment solutions of PaddleOCR are based on PaddleX's implementations.
 
-It is important to note that although PaddleOCR uses PaddleX at the underlying level, thanks to PaddleX’s optional dependency installation feature, **installing the PaddleOCR inference package does not include all of PaddleX’s dependencies—only those required for OCR-related tasks are installed**. Therefore, users generally do not need to worry about excessive expansion of dependency size.
+It is important to note that although PaddleOCR uses PaddleX at the underlying level, thanks to PaddleX’s optional dependency installation feature, **installing the PaddleOCR inference package does not include all of PaddleX’s dependencies—only those required for OCR-related tasks are installed**. Therefore, users generally do not need to worry about excessive expansion of dependency size (tested in May 2025, in an x86-64 + Linux + Python 3.10 environment, the total size of required dependencies increased only from 717 MB to 738 MB.).
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
