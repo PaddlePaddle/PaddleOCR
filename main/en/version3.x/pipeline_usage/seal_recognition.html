@@ -1784,20 +1784,14 @@ You're not viewing the latest version.
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.1 Command Line Experience">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#222-python-script-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2.2 Python Script Integration
-    </span>
-  </a>
-  
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#22-python-script-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Python Script Integration
+    </span>
+  </a>
   
 </li>
         
@@ -1821,6 +1815,54 @@ You're not viewing the latest version.
       4. Custom Development
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="4. Custom Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-model-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Model Fine-Tuning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-model-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Model Application
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Model Application">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-specify-local-model-path-via-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.1 Specify Local Model Path via Parameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-specify-local-model-path-via-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.2 Specify Local Model Path via Configuration File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3009,20 +3051,14 @@ You're not viewing the latest version.
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2.1 Command Line Experience">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#222-python-script-integration" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.2.2 Python Script Integration
-    </span>
-  </a>
-  
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#22-python-script-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Python Script Integration
+    </span>
+  </a>
   
 </li>
         
@@ -3046,6 +3082,54 @@ You're not viewing the latest version.
       4. Custom Development
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="4. Custom Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-model-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Model Fine-Tuning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-model-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Model Application
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.2 Model Application">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#421-specify-local-model-path-via-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.1 Specify Local Model Path via Parameters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#422-specify-local-model-path-via-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2.2 Specify Local Model Path via Configuration File
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3094,21 +3178,20 @@ You're not viewing the latest version.
 <li><a href="../module_usage/doc_img_orientation_classification.html">Document Image Orientation Classification Module</a> (Optional)</li>
 <li><a href="../module_usage/text_image_unwarping.html">Text Image Unwarping Module</a> (Optional)</li>
 </ul>
-<p><b>If you prioritize model accuracy, choose a model with higher accuracy. If you prioritize inference speed, choose a model with faster inference speed. If you prioritize model storage size, choose a model with smaller storage size.</b></p>
-<p><b>Layout Region Detection Module (Optional):</b></p>
+<p>In this pipeline, you can choose the model to use based on the benchmark data below.</p>
+<details>
+<summary> <b>Layout Region Detection Module (Optional):</b></summary>
 
-<ul>
-<li><b>The layout detection model includes 20 common categories: document title, paragraph title, text, page number, abstract, table, references, footnotes, header, footer, algorithm, formula, formula number, image, table, seal, figure_table title, chart, and sidebar text and lists of references</b></li>
-</ul>
+* <b>Layout detection model, including 20 common categories: document title, paragraph title, text, page number, abstract, table of contents, references, footnotes, header, footer, algorithm, formula, formula number, image, table, figure and table title (figure title, table title, and chart title), seal, chart, sidebar text, and reference content</b>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>mAP(0.5) (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
@@ -3118,24 +3201,22 @@ You're not viewing the latest version.
 <td>34.6244 / 10.3945</td>
 <td>510.57 / - </td>
 <td>126.01 M</td>
-<td>A higher-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
+<td>A higher precision layout region localization model based on RT-DETR-L trained on a self-built dataset including Chinese and English papers, multi-column magazines, newspapers, PPTs, contracts, books, exam papers, research reports, ancient books, Japanese documents, and vertical text documents</td>
 </tr>
 <tr>
 </tbody>
 </table>
 
-<ul>
-<li><b>Layout detection model, including 23 common categories: document title, paragraph title, text, page number, abstract, table of contents, references, footnotes, header, footer, algorithm, formula, formula number, image, chart title, table, table title, seal, chart title, chart, header image, footer image, sidebar text</b></li>
-</ul>
+* <b>Layout detection model, including 23 common categories: document title, paragraph title, text, page number, abstract, table of contents, references, footnotes, header, footer, algorithm, formula, formula number, image, chart title, table, table title, seal, chart title, chart, header image, footer image, sidebar text</b>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>mAP(0.5) (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
@@ -3145,7 +3226,7 @@ You're not viewing the latest version.
 <td>34.6244 / 10.3945</td>
 <td>510.57 / -</td>
 <td>123.76 M</td>
-<td>A high-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using RT-DETR-L.</td>
+<td>A high precision layout region localization model based on RT-DETR-L trained on a self-built dataset including Chinese and English papers, magazines, contracts, books, exam papers, and research reports</td>
 </tr>
 <tr>
 <td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Training Model</a></td>
@@ -3153,7 +3234,7 @@ You're not viewing the latest version.
 <td>13.3259 / 4.8685</td>
 <td>44.0680 / 44.0680</td>
 <td>22.578</td>
-<td>A layout area localization model with balanced precision and efficiency, trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-L.</td>
+<td>A balanced model of accuracy and efficiency based on PicoDet-L trained on a self-built dataset including Chinese and English papers, magazines, contracts, books, exam papers, and research reports</td>
 </tr>
 <tr>
 <td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Training Model</a></td>
@@ -3161,26 +3242,25 @@ You're not viewing the latest version.
 <td>8.3008 / 2.3794</td>
 <td>10.0623 / 9.9296</td>
 <td>4.834</td>
-<td>A high-efficiency layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-S.</td>
+<td>A highly efficient layout region localization model based on PicoDet-S trained on a self-built dataset including Chinese and English papers, magazines, contracts, books, exam papers, and research reports</td>
 </tr>
 </tbody>
 </table>
 
-<blockquote>
-<p>❗ The above list includes the <b>4 core models</b> that are key supported by the text recognition module. The module actually supports a total of <b>13 full models</b>. It includes multiple predefined models of different categories, among which there are 10 models specifically for the seal category. Apart from the three core models mentioned above, the remaining models are listed as follows:</p>
-</blockquote>
-<details><summary> 👉 Details of Model List</summary>
+>❗ Listed above are the <b>4 core models</b> that are the focus of the layout detection module, which supports a total of <b>13 full models</b>, including multiple models with pre-defined different categories, among which 9 models include the seal category. Apart from the 3 core models mentioned above, the remaining models are as follows:
 
-* <b>3-Class Layout Detection Model, including Table, Image, and Stamp</b>
+<details><summary> 👉Details of the Model List</summary>
+
+* <b>3-class layout detection model, including table, image, seal</b>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>mAP(0.5) (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
@@ -3190,7 +3270,7 @@ You're not viewing the latest version.
 <td>8.99 / 2.22</td>
 <td>16.11 / 8.73</td>
 <td>4.8</td>
-<td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
+<td>A highly efficient layout region localization model based on the lightweight PicoDet-S model trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 <tr>
 <td>PicoDet-L_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">Training Model</a></td>
@@ -3198,7 +3278,7 @@ You're not viewing the latest version.
 <td>13.05 / 4.50</td>
 <td>41.30 / 41.30</td>
 <td>22.6</td>
-<td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
+<td>An efficiency-accuracy balanced layout region localization model based on PicoDet-L trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 <tr>
 <td>RT-DETR-H_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">Training Model</a></td>
@@ -3206,20 +3286,20 @@ You're not viewing the latest version.
 <td>114.93 / 27.71</td>
 <td>947.56 / 947.56</td>
 <td>470.1</td>
-<td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
+<td>A high precision layout region localization model based on RT-DETR-H trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 </tbody></table>
 
-* <b>17-Class Area Detection Model, including 17 common layout categories: Paragraph Title, Image, Text, Number, Abstract, Content, Figure Caption, Formula, Table, Table Caption, References, Document Title, Footnote, Header, Algorithm, Footer, and Stamp</b>
+* <b>17-class region detection model, including 17 common layout categories: paragraph title, image, text, number, abstract, content, chart title, formula, table, table title, references, document title, footnote, header, algorithm, footer, seal</b>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>mAP(0.5) (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
@@ -3229,7 +3309,7 @@ You're not viewing the latest version.
 <td>9.11 / 2.12</td>
 <td>15.42 / 9.12</td>
 <td>4.8</td>
-<td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
+<td>A highly efficient layout region localization model based on the lightweight PicoDet-S model trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 <tr>
 <td>PicoDet-L_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">Training Model</a></td>
@@ -3237,7 +3317,7 @@ You're not viewing the latest version.
 <td>13.50 / 4.69</td>
 <td>43.32 / 43.32</td>
 <td>22.6</td>
-<td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
+<td>An efficiency-accuracy balanced layout region localization model based on PicoDet-L trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 <tr>
 <td>RT-DETR-H_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">Training Model</a></td>
@@ -3245,20 +3325,22 @@ You're not viewing the latest version.
 <td>115.29 / 104.09</td>
 <td>995.27 / 995.27</td>
 <td>470.2</td>
-<td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
+<td>A high precision layout region localization model based on RT-DETR-H trained on a self-built dataset including Chinese and English papers, magazines, and research reports</td>
 </tr>
 </tbody>
 </table>
 </details>
+</details>
 
-<p><b>Document Image Orientation Classification Module (Optional):</b></p>
+<details>
+<summary> <b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Top-1 Acc (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
 <th>Description</th>
 </tr>
@@ -3274,12 +3356,15 @@ You're not viewing the latest version.
 </tr>
 </tbody>
 </table>
-<p><b>Text Image Correction Module (Optional):</b></p>
+</details>
+
+<details>
+<summary> <b>Text Image Correction Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
-<th>CER</th>
+<th>CER </th>
 <th>Model Storage Size (M)</th>
 <th>Description</th>
 </tr>
@@ -3289,19 +3374,21 @@ You're not viewing the latest version.
 <td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">Training Model</a></td>
 <td>0.179</td>
 <td>30.3 M</td>
-<td>High-precision text image correction model</td>
+<td>A high precision text image correction model</td>
 </tr>
 </tbody>
 </table>
+</details>
 
-<p><b>Text Detection Module:</b></p>
+<details>
+<summary> <b>Seal Text Detection Module:</b></summary>
 <table>
 <thead>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Detection Hmean (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
 <th>Description</th>
 </tr>
@@ -3309,7 +3396,7 @@ You're not viewing the latest version.
 <tbody>
 <tr>
 <td>PP-OCRv4_server_seal_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">Training Model</a></td>
-<td>98.21</td>
+<td>98.40</td>
 <td>74.75 / 67.72</td>
 <td>382.55 / 382.55</td>
 <td>109</td>
@@ -3317,7 +3404,7 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_seal_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">Training Model</a></td>
-<td>96.47</td>
+<td>96.36</td>
 <td>7.82 / 3.09</td>
 <td>48.28 / 23.97</td>
 <td>4.6</td>
@@ -3325,30 +3412,31 @@ You're not viewing the latest version.
 </tr>
 </tbody>
 </table>
+</details>
 
-<p><b>Text Recognition Module:</b></p>
-
+<details>
+<summary><b>Text Recognition Module:</b></summary>
 <table>
 <tr>
-<th>Model</th><th>Model Download Links</th>
+<th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>86.38</td>
 <td> 8.45/2.36 </td>
 <td> 122.69/122.69 </td>
 <td>81 M</td>
-<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td rowspan="2">PP-OCRv5_rec is a new generation text recognition model. This model aims to efficiently and accurately support the recognition of four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenes like handwriting, vertical text, pinyin, and rare characters with a single model. It balances recognition effectiveness, inference speed, and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>81.29</td>
 <td> 1.46/5.43 </td>
 <td> 5.32/91.79 </td>
@@ -3356,74 +3444,73 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Training Model</a></td>
 <td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>91 M</td>
-<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
+<td>181 M</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mix of more Chinese document data and PP-OCR training data based on PP-OCRv4_server_rec, enhancing recognition capabilities for some traditional Chinese characters, Japanese, and special characters, supporting over 15,000+ characters. Besides improving document-related text recognition, it also enhances general text recognition capabilities</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>11 M</td>
-<td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
+<td>88 M</td>
+<td>PP-OCRv4 lightweight recognition model, with high inference efficiency, can be deployed on multiple hardware devices, including edge devices</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>87 M</td>
-<td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
+<td>151 M</td>
+<td>PP-OCRv4 server-side model, with high inference accuracy, can be deployed on various servers</td>
 </tr>
 <tr>
 <td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
-<td>7.3 M</td>
-<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
+<td>66 M</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and number recognition</td>
 </tr>
 </table>
 
-<blockquote>
-<p>❗ The above section lists the <strong>6 core models</strong> that are primarily supported by the text recognition module. In total, the module supports <strong>20 comprehensive models</strong>, including multiple multilingual text recognition models. Below is the complete list of models:</p>
-</blockquote>
+> ❗ Listed above are the <b>6 core models</b> that are the focus of the text recognition module, which supports a total of <b>20 full models</b>, including multiple multi-language text recognition models, with the complete model list as follows:
+
 <details><summary> 👉Details of the Model List</summary>
 
-* <b>PP-OCRv5 Multi-Scenario Models</b>
+* <b>PP-OCRv5 Multi-Scene Model</b>
 
 <table>
 <tr>
-<th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy for Chinese Recognition (%)</th>
-<th>Avg Accuracy for English Recognition (%)</th>
-<th>Avg Accuracy for Traditional Chinese Recognition (%)</th>
-<th>Avg Accuracy for Japanese Recognition (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Chinese Recognition Avg Accuracy(%)</th>
+<th>English Recognition Avg Accuracy(%)</th>
+<th>Traditional Chinese Recognition Avg Accuracy(%)</th>
+<th>Japanese Recognition Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Training Model</a></td>
 <td>86.38</td>
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
-<td> 8.45/2.36 </td>
-<td> 122.69/122.69 </td>
+<td> 1.46/5.43 </td>
+<td> 5.32/91.79 </td>
 <td>81 M</td>
-<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td rowspan="2">PP-OCRv5_rec is a new generation text recognition model. This model aims to efficiently and accurately support the recognition of four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as complex text scenes like handwriting, vertical text, pinyin, and rare characters with a single model. It balances recognition effectiveness, inference speed, and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>81.29</td>
 <td>66.00</td>
 <td>83.55</td>
@@ -3439,42 +3526,44 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>81.53</td>
+<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Training Model</a></td>
+<td>86.58</td>
 <td>6.65 / 2.38</td>
 <td>32.92 / 32.92</td>
-<td>74.7 M</td>
-<td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data based on PP-OCRv4_server_rec. It has added the recognition capabilities for some traditional Chinese characters, Japanese, and special characters. The number of recognizable characters is over 15,000. In addition to the improvement in document-related text recognition, it also enhances the general text recognition capability.</td>
+<td>91 M</td>
+<td>PP-OCRv4_server_rec_doc is trained on a mix of more Chinese document data and PP-OCR training data based on PP-OCRv4_server_rec, enhancing recognition capabilities for some traditional Chinese characters, Japanese, and special characters, supporting over 15,000+ characters. Besides improving document-related text recognition, it also enhances general text recognition capabilities</td>
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
-<td>78.74</td>
+<td>83.28</td>
 <td>4.82 / 1.20</td>
 <td>16.74 / 4.64</td>
-<td>10.6 M</td>
-<td>The lightweight recognition model of PP-OCRv4 has high inference efficiency and can be deployed on various hardware devices, including edge devices.</td>
+<td>11 M</td>
+<td>PP-OCRv4 lightweight recognition model, with high inference efficiency, can be deployed on multiple hardware devices, including edge devices</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Training Model</a></td>
-<td>80.61 </td>
+<td>85.19 </td>
 <td>6.58 / 2.43</td>
 <td>33.17 / 33.17</td>
-<td>71.2 M</td>
-<td>The server-side model of PP-OCRv4 offers high inference accuracy and can be deployed on various types of servers.</td>
+<td>87 M</td>
+<td>PP-OCRv4 server-side model, with high inference accuracy, can be deployed on various servers</td>
 </tr>
 <tr>
-<td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>72.96</td>
+<td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
+<td>75.43</td>
 <td>5.87 / 1.19</td>
 <td>9.07 / 4.28</td>
-<td>9.2 M</td>
-<td>PP-OCRv3’s lightweight recognition model is designed for high inference efficiency and can be deployed on a variety of hardware devices, including edge devices.</td>
+<td>11 M</td>
+<td>PP-OCRv3 lightweight recognition model, with high inference efficiency, can be deployed on multiple hardware devices, including edge devices</td>
 </tr>
 </table>
 
@@ -3482,10 +3571,10 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">Training Model</a></td>
@@ -3494,7 +3583,7 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>50.17 / 42.50</td>
 <td>73.9 M</td>
 <td rowspan="1">
-SVTRv2 is a server text recognition model developed by the OpenOCR team of Fudan University's Visual and Learning Laboratory (FVL). It won the first prize in the PaddleOCR Algorithm Model Challenge - Task One: OCR End-to-End Recognition Task. The end-to-end recognition accuracy on the A list is 6% higher than that of PP-OCRv4.
+SVTRv2 is a server-side text recognition model developed by the OpenOCR team from Fudan University's Visual and Learning Lab (FVL), which won first place in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition, improving the end-to-end recognition accuracy on the A leaderboard by 6% compared to PP-OCRv4.
 </td>
 </tr>
 </table>
@@ -3503,10 +3592,10 @@ SVTRv2 is a server text recognition model developed by the OpenOCR team of Fudan
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
 <td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">Training Model</a></td>
@@ -3514,7 +3603,7 @@ SVTRv2 is a server text recognition model developed by the OpenOCR team of Fudan
 <td>5.93 / 1.62</td>
 <td>20.73 / 7.32</td>
 <td>22.1 M</td>
-<td rowspan="1">    The RepSVTR text recognition model is a mobile text recognition model based on SVTRv2. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task One: OCR End-to-End Recognition Task. The end-to-end recognition accuracy on the B list is 2.5% higher than that of PP-OCRv4, with the same inference speed.</td>
+<td rowspan="1">RepSVTR text recognition model is a mobile-side text recognition model based on SVTRv2, which won first place in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition, improving the end-to-end recognition accuracy on the B leaderboard by 2.5% compared to PP-OCRv4, with comparable inference speed.</td>
 </tr>
 </table>
 
@@ -3523,26 +3612,28 @@ SVTRv2 is a server text recognition model developed by the OpenOCR team of Fudan
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td> 70.39</td>
 <td>4.81 / 0.75</td>
 <td>16.10 / 5.31</td>
 <td>6.8 M</td>
-<td>The ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model supports the recognition of English and numbers.</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and number recognition</td>
 </tr>
 <tr>
-<td>en_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>en_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>70.69</td>
 <td>5.44 / 0.75</td>
 <td>8.65 / 5.57</td>
 <td>7.8 M </td>
-<td>The ultra-lightweight English recognition model trained based on the PP-OCRv3 recognition model supports the recognition of English and numbers.</td>
+<td>An ultra-lightweight English recognition model trained based on the PP-OCRv3 recognition model, supporting English and number recognition</td>
 </tr>
 </table>
 
@@ -3551,121 +3642,134 @@ SVTRv2 is a server text recognition model developed by the OpenOCR team of Fudan
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>Recognition Avg Accuracy(%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
-<th>Introduction</th>
+<th>Description</th>
 </tr>
 <tr>
-<td>korean_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>korean_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>60.21</td>
 <td>5.40 / 0.97</td>
 <td>9.11 / 4.05</td>
 <td>8.6 M</td>
-<td>The ultra-lightweight Korean recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Korean and numbers. </td>
+<td>An ultra-lightweight Korean recognition model trained based on the PP-OCRv3 recognition model, supporting Korean and number recognition</td>
 </tr>
 <tr>
-<td>japan_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>japan_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>45.69</td>
 <td>5.70 / 1.02</td>
 <td>8.48 / 4.07</td>
 <td>8.8 M </td>
-<td>The ultra-lightweight Japanese recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Japanese and numbers.</td>
+<td>An ultra-lightweight Japanese recognition model trained based on the PP-OCRv3 recognition model, supporting Japanese and number recognition</td>
 </tr>
 <tr>
-<td>chinese_cht_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>chinese_cht_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>82.06</td>
 <td>5.90 / 1.28</td>
 <td>9.28 / 4.34</td>
 <td>9.7 M </td>
-<td>The ultra-lightweight Traditional Chinese recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Traditional Chinese and numbers.</td>
+<td>An ultra-lightweight Traditional Chinese recognition model trained based on the PP-OCRv3 recognition model, supporting Traditional Chinese and number recognition</td>
 </tr>
 <tr>
-<td>te_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>te_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>95.88</td>
 <td>5.42 / 0.82</td>
 <td>8.10 / 6.91</td>
 <td>7.8 M </td>
-<td>The ultra-lightweight Telugu recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Telugu and numbers.</td>
+<td>An ultra-lightweight Telugu recognition model trained based on the PP-OCRv3 recognition model, supporting Telugu and number recognition</td>
 </tr>
 <tr>
-<td>ka_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>ka_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>96.96</td>
 <td>5.25 / 0.79</td>
 <td>9.09 / 3.86</td>
 <td>8.0 M </td>
-<td>The ultra-lightweight Kannada recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Kannada and numbers.</td>
+<td>An ultra-lightweight Kannada recognition model trained based on the PP-OCRv3 recognition model, supporting Kannada and number recognition</td>
 </tr>
 <tr>
-<td>ta_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>ta_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>76.83</td>
 <td>5.23 / 0.75</td>
 <td>10.13 / 4.30</td>
 <td>8.0 M </td>
-<td>The ultra-lightweight Tamil recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Tamil and numbers.</td>
+<td>An ultra-lightweight Tamil recognition model trained based on the PP-OCRv3 recognition model, supporting Tamil and number recognition</td>
 </tr>
 <tr>
-<td>latin_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>latin_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>76.93</td>
 <td>5.20 / 0.79</td>
 <td>8.83 / 7.15</td>
 <td>7.8 M</td>
-<td>The ultra-lightweight Latin recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Latin script and numbers.</td>
+<td>An ultra-lightweight Latin recognition model trained based on the PP-OCRv3 recognition model, supporting Latin and number recognition</td>
 </tr>
 <tr>
-<td>arabic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>arabic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>73.55</td>
 <td>5.35 / 0.79</td>
 <td>8.80 / 4.56</td>
 <td>7.8 M</td>
-<td>The ultra-lightweight Arabic script recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Arabic script and numbers.</td>
+<td>An ultra-lightweight Arabic letter recognition model trained based on the PP-OCRv3 recognition model, supporting Arabic letters and number recognition</td>
 </tr>
 <tr>
-<td>cyrillic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>cyrillic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>94.28</td>
 <td>5.23 / 0.76</td>
 <td>8.89 / 3.88</td>
 <td>7.9 M  </td>
-<td>
-The ultra-lightweight cyrillic alphabet recognition model trained based on the PP-OCRv3 recognition model supports the recognition of cyrillic letters and numbers.</td>
+<td>An ultra-lightweight Cyrillic letter recognition model trained based on the PP-OCRv3 recognition model, supporting Cyrillic letters and number recognition</td>
 </tr>
 <tr>
-<td>devanagari_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td>devanagari_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">Training Model</a></td>
 <td>96.44</td>
 <td>5.22 / 0.79</td>
 <td>8.56 / 4.06</td>
-<td>7.9 M  </td>
-<td>The ultra-lightweight Devanagari script recognition model trained based on the PP-OCRv3 recognition model supports the recognition of Devanagari script and numbers.</td>
+<td>7.9 M</td>
+<td>An ultra-lightweight Devanagari letter recognition model trained based on the PP-OCRv3 recognition model, supporting Devanagari letters and number recognition</td>
 </tr>
 </table>
 </details>
+</details>
 
-<p><strong>Test Environment Description:</strong></p>
-<ul>
+<details>
+<summary> <b>Test Environment Description:</b></summary>
+
+  <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-            <li><strong>Test Dataset：</strong>
-                        <ul>
-                         <li>Document Image Orientation Classification Module: A self-built dataset using PaddleOCR, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
-                          <li>Text Image Rectification Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a></li>
-                          <li>Layout Detection Model: A self-built layout detection dataset using PaddleOCR, including 500 images of common document types such as Chinese and English papers, magazines, contracts, books, exam papers, and research reports.</li>
-                          <li>3-Category Layout Detection Model: A self-built layout detection dataset using PaddleOCR, containing 1154 images of common document types such as Chinese and English papers, magazines, and research reports.</li>
-                          <li>17-Category Region Detection Model: A self-built layout detection dataset using PaddleOCR, including 892 images of common document types such as Chinese and English papers, magazines, and research reports.</li>
-                          <li>Text Detection Model: A self-built Chinese dataset using PaddleOCR, covering multiple scenarios such as street scenes, web images, documents, and handwriting, with 500 images for detection.</li>
-                          <li> Chinese Recognition Model: A self-built Chinese dataset using PaddleOCR, covering multiple scenarios such as street scenes, web images, documents, and handwriting, with 11,000 images for text recognition.</li>
-                          <li>ch_SVTRv2_rec: Evaluation set A for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a></li>
-                          <li>ch_RepSVTR_rec: Evaluation set B for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a>.</li>
-                          <li>English Recognition Model: A self-built English dataset using PaddleX.</li>
-                          <li>Multilingual Recognition Model: A self-built multilingual dataset using PaddleX.</li>
-                          <li>Text Line Orientation Classification Model: A self-built dataset using PaddleOCR, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
-                          <li>Seal Text Detection Model: A self-built dataset using PaddleOCR, containing 500 images of circular seal textures.</li>
-                        </ul>
-                </li>
-              <li><strong>Hardware Configuration：</strong>
+            <li><strong>Test Dataset:
+             </strong>
+                <ul>
+                  <li>Document Image Orientation Classification Model: Self-built internal dataset covering multiple scenarios such as documents and certificates, containing 1000 images.</li>
+                  <li>Text Image Correction Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a>.</li>
+                   <li>Layout Region Detection Model: PaddleOCR self-built layout region detection dataset, containing 500 common document type images such as Chinese and English papers, magazines, contracts, books, exam papers, and research reports.</li>
+                    <li>3-Class Layout Detection Model: PaddleOCR self-built layout region detection dataset, containing 1154 common document type images such as Chinese and English papers, magazines, and research reports.</li>
+                  <li>17-Class Region Detection Model: PaddleOCR self-built layout region detection dataset, containing 892 common document type images such as Chinese and English papers, magazines, and research reports.</li>
+                  <li>Text Detection Model: PaddleOCR self-built Chinese dataset covering multiple scenarios such as street scenes, web images, documents, and handwriting, where detection includes 500 images.</li>
+                   <li>Chinese Recognition Model: PaddleOCR self-built Chinese dataset covering multiple scenarios such as street scenes, web images, documents, and handwriting, where text recognition includes 11,000 images.</li>
+                    <li>ch_SVTRv2_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition</a> A leaderboard evaluation set.</li>
+                  <li>ch_RepSVTR_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition</a> B leaderboard evaluation set.</li>
+                  <li>English Recognition Model: Self-built internal English dataset.</li>
+                   <li>Multilingual Recognition Model: Self-built internal multilingual dataset.</li>
+                    <li>Text Line Orientation Classification Model: Self-built internal dataset covering multiple scenarios such as documents and certificates, containing 1000 images.</li>
+                   <li>Seal Text Detection Model: Self-built internal dataset containing 500 circular seal images.</li>
+                </ul>
+             </li>
+              <li><strong>Hardware Configuration:</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
@@ -3677,31 +3781,34 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
     <thead>
         <tr>
             <th>Mode</th>
-            <th>GPU Configuration </th>
-            <th>CPU Configuration </th>
+            <th>GPU Configuration</th>
+            <th>CPU Configuration</th>
             <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Normal Mode</td>
+            <td>Regular Mode</td>
             <td>FP32 Precision / No TRT Acceleration</td>
             <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
             <td>High-Performance Mode</td>
-            <td>Optimal combination of pre-selected precision types and acceleration strategies</td>
+            <td>Optimal combination of prior precision type and acceleration strategy</td>
             <td>FP32 Precision / 8 Threads</td>
-            <td>Pre-selected optimal backend (Paddle/OpenVINO/TRT, etc.)</td>
+            <td>Select optimal prior backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
+</details>
 
+<p><br />
+<b>If you are more concerned with model accuracy, please choose a model with higher accuracy. If you are more concerned with inference speed, please choose a model with faster inference speed. If you are more concerned with model storage size, please choose a model with smaller storage size</b>.</p>
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
-<p>Before using the seal text recognition production line locally, please ensure that you have completed the installation of the wheel package according to the <a href="../installation.html">installation tutorial</a>. Once the installation is complete, you can experience it locally via the command line or integrate it with Python.</p>
+<p>Before using the seal text recognition pipeline locally, please ensure that you have completed the installation of the wheel package according to the <a href="../installation.html">installation tutorial</a>. Once the installation is complete, you can experience it locally via the command line or integrate it with Python.</p>
 <h3 id="21-command-line-experience">2.1 Command Line Experience<a class="headerlink" href="#21-command-line-experience" title="Permanent link">&para;</a></h3>
-<p>You can quickly experience the seal_recognition production line effect with a single command:</p>
+<p>You can quickly experience the seal_recognition pipeline effect with a single command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>seal_recognition<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--use_doc_unwarping<span class="w"> </span>False
@@ -3781,7 +3888,7 @@ The name of the layout detection model. If set to <code>None</code>, the default
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>The name of the seal text detection model. If set to <code>None</code>, the production line's default model will be used.</td>
+<td>The name of the seal text detection model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
@@ -3834,7 +3941,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <ul>
 <li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
 <li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
-<li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -3852,7 +3959,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <ul>
 <li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
 <li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>: If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -3865,7 +3972,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>: If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -4008,9 +4115,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 </details>
 <p><br /></p>
 <p>After running, the results will be printed to the terminal, as follows:</p>
-<details><summary> 👉Click to Expand</summary>
-
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;seal_text_det.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_layout_detection&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;layout_det_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">16</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;seal&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.975531280040741,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">6</span>.195526,<span class="w"> </span><span class="m">0</span>.1579895,<span class="w"> </span><span class="m">634</span>.3982,<span class="w"> </span><span class="m">628</span>.84595<span class="o">]}]}</span>,<span class="w"> </span><span class="s1">&#39;seal_res_list&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="m">320</span>,<span class="w">  </span><span class="m">38</span><span class="o">]</span>,
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;./seal_text_det.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_layout_detection&#39;</span>:<span class="w"> </span>True<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span>-1<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;layout_det_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;boxes&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;cls_id&#39;</span>:<span class="w"> </span><span class="m">16</span>,<span class="w"> </span><span class="s1">&#39;label&#39;</span>:<span class="w"> </span><span class="s1">&#39;seal&#39;</span>,<span class="w"> </span><span class="s1">&#39;score&#39;</span>:<span class="w"> </span><span class="m">0</span>.975529670715332,<span class="w"> </span><span class="s1">&#39;coordinate&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="m">6</span>.191284,<span class="w"> </span><span class="m">0</span>.16680908,<span class="w"> </span><span class="m">634</span>.39325,<span class="w"> </span><span class="m">628</span>.85345<span class="o">]}]}</span>,<span class="w"> </span><span class="s1">&#39;seal_res_list&#39;</span>:<span class="w"> </span><span class="o">[{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="m">320</span>,<span class="w">  </span><span class="m">38</span><span class="o">]</span>,
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">       </span>...,
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">       </span><span class="o">[</span><span class="m">315</span>,<span class="w">  </span><span class="m">38</span><span class="o">]])</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">461</span>,<span class="w"> </span><span class="m">347</span><span class="o">]</span>,
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">       </span>...,
@@ -4018,7 +4123,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">       </span>...,
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">       </span><span class="o">[</span><span class="m">434</span>,<span class="w"> </span><span class="m">444</span><span class="o">]])</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">158</span>,<span class="w"> </span><span class="m">468</span><span class="o">]</span>,
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">       </span>...,
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">       </span><span class="o">[</span><span class="m">154</span>,<span class="w"> </span><span class="m">466</span><span class="o">]])]</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">736</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;min&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.2,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.5<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;seal&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span>-1,<span class="w"> </span>...,<span class="w"> </span>-1<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;天津君和缘商贸有限公司&#39;</span>,<span class="w"> </span><span class="s1">&#39;发票专用章&#39;</span>,<span class="w"> </span><span class="s1">&#39;吗繁物&#39;</span>,<span class="w"> </span><span class="s1">&#39;5263647368706&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.9934051<span class="w"> </span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.99139398<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="m">320</span>,<span class="w">  </span><span class="m">38</span><span class="o">]</span>,
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">       </span><span class="o">[</span><span class="m">154</span>,<span class="w"> </span><span class="m">466</span><span class="o">]])]</span>,<span class="w"> </span><span class="s1">&#39;text_det_params&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;limit_side_len&#39;</span>:<span class="w"> </span><span class="m">736</span>,<span class="w"> </span><span class="s1">&#39;limit_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;min&#39;</span>,<span class="w"> </span><span class="s1">&#39;thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.2,<span class="w"> </span><span class="s1">&#39;max_side_limit&#39;</span>:<span class="w"> </span><span class="m">4000</span>,<span class="w"> </span><span class="s1">&#39;box_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>.6,<span class="w"> </span><span class="s1">&#39;unclip_ratio&#39;</span>:<span class="w"> </span><span class="m">0</span>.5<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;text_type&#39;</span>:<span class="w"> </span><span class="s1">&#39;seal&#39;</span>,<span class="w"> </span><span class="s1">&#39;textline_orientation_angles&#39;</span>:<span class="w"> </span>array<span class="o">([</span>-1,<span class="w"> </span>...,<span class="w"> </span>-1<span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;text_rec_score_thresh&#39;</span>:<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="s1">&#39;rec_texts&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;天津君和缘商贸有限公司&#39;</span>,<span class="w"> </span><span class="s1">&#39;发票专用章&#39;</span>,<span class="w"> </span><span class="s1">&#39;吗繁物&#39;</span>,<span class="w"> </span><span class="s1">&#39;5263647368706&#39;</span><span class="o">]</span>,<span class="w"> </span><span class="s1">&#39;rec_scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99340463,<span class="w"> </span>...,<span class="w"> </span><span class="m">0</span>.9916274<span class="w"> </span><span class="o">])</span>,<span class="w"> </span><span class="s1">&#39;rec_polys&#39;</span>:<span class="w"> </span><span class="o">[</span>array<span class="o">([[</span><span class="m">320</span>,<span class="w">  </span><span class="m">38</span><span class="o">]</span>,
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">       </span>...,
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">       </span><span class="o">[</span><span class="m">315</span>,<span class="w">  </span><span class="m">38</span><span class="o">]])</span>,<span class="w"> </span>array<span class="o">([[</span><span class="m">461</span>,<span class="w"> </span><span class="m">347</span><span class="o">]</span>,
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">       </span>...,
@@ -4028,13 +4133,9 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">       </span>...,
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">       </span><span class="o">[</span><span class="m">154</span>,<span class="w"> </span><span class="m">466</span><span class="o">]])]</span>,<span class="w"> </span><span class="s1">&#39;rec_boxes&#39;</span>:<span class="w"> </span>array<span class="o">([]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>float64<span class="o">)}]}}</span>
 </span></code></pre></div>
-
-</details>
-
-<p>The explanation of the result parameters can be found in <a href="#212-python-script-integration">2.1.2 Python Script Integration</a>.</p>
-<p>The visualized results are saved under <code>save_path</code>, and the visualized result of seal OCR is as follows:</p>
-<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/03.png"/></p>
-<h4 id="222-python-script-integration">2.2.2 Python Script Integration<a class="headerlink" href="#222-python-script-integration" title="Permanent link">&para;</a></h4>
+The visualized results are saved under <code>save_path</code>, and the visualized result of seal OCR is as follows:</p>
+<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/04.png"/></p>
+<h3 id="22-python-script-integration">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The above command line is for quickly experiencing and viewing the effect. Generally, in a project, you often need to integrate through code. You can complete the quick inference of the pipeline with just a few lines of code. The inference code is as follows:</li>
 </ul>
@@ -4431,7 +4532,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <h2 id="3-development-integrationdeployment">3. Development Integration/Deployment<a class="headerlink" href="#3-development-integrationdeployment" title="Permanent link">&para;</a></h2>
 <p>If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.</p>
 <p>If you need to integrate the pipeline into your Python project, you can refer to the example code in <a href="#22-python脚本方式集成">2.2 Python Script Method</a>.</p>
-<p>In addition, PaddleX also provides three other deployment methods, which are detailed as follows:</p>
+<p>In addition, PaddleOCR also provides three other deployment methods, which are detailed as follows:</p>
 <p>🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance requirements for deployment strategies, especially in terms of response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities aimed at deeply optimizing the performance of model inference and pre/post-processing, thereby significantly accelerating the end-to-end process. For detailed high-performance inference procedures, please refer to <a href="../deployment/high_performance_inference.html">High-Performance Inference</a>.</p>
 <p>☁️ Service Deployment: Service deployment is a common form of deployment in real-world production environments. By encapsulating inference functionality into a service, clients can access these services via network requests to obtain inference results. For detailed production service deployment procedures, please refer to <a href="../deployment/serving.html">Serving</a>.</p>
 <p>Below are the API references for basic serving deployment and multi-language service invocation examples:</p>
@@ -4701,6 +4802,7 @@ for i, res in enumerate(result["sealRecResults"]):
 <p><br/></p>
 <h2 id="4-custom-development">4. Custom Development<a class="headerlink" href="#4-custom-development" title="Permanent link">&para;</a></h2>
 <p>If the default model weights provided by the seal text recognition pipeline do not meet your requirements in terms of accuracy or speed, you can try to <b>fine-tune</b> the existing models using <b>your own domain-specific or application data</b> to improve the recognition performance of the seal text recognition pipeline in your scenario.</p>
+<h3 id="41-model-fine-tuning">4.1 Model Fine-Tuning<a class="headerlink" href="#41-model-fine-tuning" title="Permanent link">&para;</a></h3>
 <p>Since the seal text recognition pipeline consists of several modules, if the pipeline's performance does not meet expectations, the issue may arise from any one of these modules. You can analyze images with poor recognition results to identify which module is problematic and refer to the corresponding fine-tuning tutorial links in the table below for model fine-tuning.</p>
 <table>
 <thead>
@@ -4739,6 +4841,73 @@ for i, res in enumerate(result["sealRecResults"]):
 </tbody>
 </table>
 
+<h3 id="42-model-application">4.2 Model Application<a class="headerlink" href="#42-model-application" title="Permanent link">&para;</a></h3>
+<p>After you complete the fine-tuning training with a private dataset, you can obtain the local model weight files. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by using a custom pipeline configuration file.</p>
+<h4 id="421-specify-local-model-path-via-parameters">4.2.1 Specify Local Model Path via Parameters<a class="headerlink" href="#421-specify-local-model-path-via-parameters" title="Permanent link">&para;</a></h4>
+<p>When initializing the pipeline object, specify the local model path through parameters. Taking the usage of fine-tuned weights for a text detection model as an example, the demonstration is as follows:</p>
+<p>Command line method:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Specify the local model path through --doc_orientation_classify_model_dir</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>paddleocr<span class="w"> </span>seal_recognition<span class="w"> </span>-i<span class="w"> </span>./seal_text_det.png<span class="w"> </span>--doc_orientation_classify_model_dir<span class="w"> </span>your_orientation_classify_model_path
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># By default, the PP-LCNet_x1_0_doc_ori model is used as the default text detection model. If the fine-tuned model is not this one, modify the model name with --text_detection_model_name</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>paddleocr<span class="w"> </span>seal_recognition<span class="w"> </span>-i<span class="w"> </span>./seal_text_det.png<span class="w"> </span>--doc_orientation_classify_model_name<span class="w"> </span>PP-LCNet_x1_0_doc_ori<span class="w"> </span>--doc_orientation_classify_model_dir<span class="w"> </span>your_orientation_classify_model_path
+</span></code></pre></div>
+<p>Script method:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">SealRecognition</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Specify the local model path through doc_orientation_classify_model_dir</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">SealRecognition</span><span class="p">(</span><span class="n">doc_orientation_classify_model_dir</span> <span class="o">=</span><span class="s2">&quot;./your_orientation_classify_model_path&quot;</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># By default, the PP-LCNet_x1_0_doc_ori model is used as the default text detection model. If the fine-tuned model is not this one, modify the model name with doc_orientation_classify_model_name</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># pipeline = SealRecognition(doc_orientation_classify_model_name=&quot;PP-LCNet_x1_0_doc_ori&quot;, doc_orientation_classify_model_dir=&quot;./your_orientation_classify_model_path&quot;)</span>
+</span></code></pre></div>
+<h4 id="422-specify-local-model-path-via-configuration-file">4.2.2 Specify Local Model Path via Configuration File<a class="headerlink" href="#422-specify-local-model-path-via-configuration-file" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Obtain pipeline Configuration File</li>
+</ol>
+<p>You can call the <code>export_paddlex_config_to_yaml</code> method of the general OCR pipeline object in PaddleOCR to export the current pipeline configuration to a YAML file:</p>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">SealRecognition</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">SealRecognition</span><span class="p">()</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;SealRecognition.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>Modify Configuration File</li>
+</ol>
+<p>After obtaining the default pipeline configuration file, replace the local path of the fine-tuned model weights in the corresponding position of the pipeline configuration file. For example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="l l-Scalar l-Scalar-Plain">SubPipelines</span><span class="p p-Indicator">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">DocPreprocessor</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">SubModules</span><span class="p">:</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">DocOrientationClassify</span><span class="p">:</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">  </span><span class="c1"># Replace with the path of the fine-tuned document orientation classification model weights</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-LCNet_x1_0_doc_ori</span><span class="w"> </span><span class="c1"># If the name of the fine-tuned model is different from the default model name, please also modify here</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">doc_text_orientation</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="nt">DocUnwarping</span><span class="p">:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w">  </span><span class="c1"># Replace with the path of the fine-tuned document unwarping model weights</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UVDoc</span><span class="w"> </span><span class="c1"># If the name of the fine-tuned model is different from the default model name, please also modify here</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image_unwarping</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">pipeline_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">doc_preprocessor</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">use_doc_orientation_classify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="nt">use_doc_unwarping</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span></code></pre></div>
+<p>The pipeline configuration file not only contains the parameters supported by the SealRecognition CLI and Python API but also allows for more advanced configurations. Detailed information can be found in the <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html">PaddleX Model pipeline Usage Overview</a>, where you can find the corresponding pipeline usage tutorial and adjust various configurations as needed.</p>
+<ol>
+<li>Load pipeline Configuration File in CLI</li>
+</ol>
+<p>After modifying the configuration file, specify the path of the modified pipeline configuration file using the --paddlex_config parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. Example:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>paddleocr<span class="w"> </span>seal_recognition<span class="w"> </span>--paddlex_config<span class="w"> </span>SealRecognition.yaml<span class="w"> </span>...
+</span></code></pre></div>
+<ol>
+<li>Load pipeline Configuration File in Python API</li>
+</ol>
+<p>When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the paddlex_config parameter. PaddleOCR will read its contents as the pipeline configuration. Example:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">SealRecognition</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">SealRecognition</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;SealRecognition.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+
 
 
 
@@ -4760,7 +4929,7 @@ for i, res in enumerate(result["sealRecResults"]):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 03:52:04">May 23, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 04:20:00">May 23, 2025</span>
   </span>
 
     
@@ -4770,7 +4939,7 @@ for i, res in enumerate(result["sealRecResults"]):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 03:52:04">May 23, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 04:20:00">May 23, 2025</span>
   </span>
 
     

@@ -3210,7 +3210,7 @@ You're not viewing the latest version.
 <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-               <li><strong>Test Dataset：</strong> PaddleX Custom Dataset, Containing 500 Images of Circular Stamps.</li>
+               <li><strong>Test Dataset：</strong> A Self-built Internal Dataset, Containing 500 Images of Circular Stamps.</li>
               <li><strong>Hardware Configuration：</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
@@ -3299,7 +3299,7 @@ You're not viewing the latest version.
 <td><code>model_name</code></td>
 <td>Name of the model</td>
 <td><code>str</code></td>
-<td>All model names supported by PaddleX for seal text detection</td>
+<td>All model names supported for seal text detection</td>
 <td>None</td>
 </tr>
 <tr>
@@ -3323,7 +3323,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 736</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -3334,7 +3334,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>str</b>: Supports min and max. min ensures the shortest side of the image is not less than det_limit_side_len, max ensures the longest side is not greater than limit_side_len
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is `min`</li></li></ul></td>
 
 
 <td>None</td>
@@ -3346,7 +3346,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.2</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -3357,7 +3357,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.6</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -3368,7 +3368,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 1000</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -3379,7 +3379,7 @@ You're not viewing the latest version.
 <td>
 <ul>
 <li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value from the official PaddleX model configuration will be used</li></li></ul></td>
+<li><b>None</b>: If set to None, the default value is 0.5</li></li></ul></td>
 
 <td>None</td>
 </tr>
@@ -3408,7 +3408,7 @@ You're not viewing the latest version.
 
 <ul>
 <li>
-<p>The <code>model_name</code> must be specified. After specifying <code>model_name</code>, the built-in model parameters of PaddleX will be used by default. On this basis, if <code>model_dir</code> is specified, the user-defined model will be used.</p>
+<p>The <code>model_name</code> must be specified. After specifying <code>model_name</code>, the built-in model parameters will be used by default. On this basis, if <code>model_dir</code> is specified, the user-defined model will be used.</p>
 </li>
 <li>
 <p>The <code>predict()</code> method of the seal text detection model is called for inference prediction. The parameters of the <code>predict()</code> method include <code>input</code>, <code>batch_size</code>, <code>limit_side_len</code>, <code>limit_type</code>, <code>thresh</code>, <code>box_thresh</code>, <code>max_candidates</code>, <code>unclip_ratio</code>, and <code>use_dilation</code>. The specific descriptions are as follows:</p>
@@ -3669,7 +3669,7 @@ With this, the secondary development is complete, and the static graph model can
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 03:52:04">May 23, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 04:20:00">May 23, 2025</span>
   </span>
 
     
@@ -3679,7 +3679,7 @@ With this, the secondary development is complete, and the static graph model can
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 03:52:04">May 23, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 23, 2025 04:20:00">May 23, 2025</span>
   </span>
 
     
