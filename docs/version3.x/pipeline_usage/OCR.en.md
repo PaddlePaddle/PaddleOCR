@@ -1784,7 +1784,7 @@ pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 #### 4.2.2 Specify the local model path through the configuration file
 
-1. Obtain the production line configuration file
+1.Obtain the production line configuration file
 
 Call the `export_paddlex_config_to_yaml` method of the **General OCR Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
 
@@ -1795,7 +1795,7 @@ pipeline = PaddleOCR()
 pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")  
 ```  
 
-2. **Modify the Configuration File**  
+2.Modify the Configuration File  
 
 After obtaining the default pipeline configuration file, replace the paths of the default model weights with the local paths of your fine-tuned model weights. For example:  
 
@@ -1828,7 +1828,7 @@ SubModules:
 
 The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
 
-3. **Load the Configuration File in CLI**  
+3.Load the Configuration File in CLI  
 
 After modifying the configuration file, specify its path using the `--paddlex_config` parameter in the command line. PaddleOCR will read the file and apply the configurations. Example:  
 
@@ -1836,7 +1836,7 @@ After modifying the configuration file, specify its path using the `--paddlex_co
 paddleocr ocr --paddlex_config PaddleOCR.yaml ...  
 ```  
 
-4. **Load the Configuration File in Python API**  
+4.Load the Configuration File in Python API  
 
 When initializing the pipeline object, pass the path of the PaddleX pipeline configuration file or a configuration dictionary via the `paddlex_config` parameter. PaddleOCR will read and apply the configurations. Example:  
 
