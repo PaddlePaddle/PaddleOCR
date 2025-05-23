@@ -577,8 +577,8 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
                           <li> Chinese Recognition Model: A self-built Chinese dataset using PaddleOCR, covering multiple scenarios such as street scenes, web images, documents, and handwriting, with 11,000 images for text recognition.</li>
                           <li>ch_SVTRv2_rec: Evaluation set A for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a></li>
                           <li>ch_RepSVTR_rec: Evaluation set B for "OCR End-to-End Recognition Task" in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge</a>.</li>
-                          <li>English Recognition Model: A self-built English dataset using PaddleX.</li>
-                          <li>Multilingual Recognition Model: A self-built multilingual dataset using PaddleX.</li>
+                          <li>English Recognition Model: A self-built English dataset.</li>
+                          <li>Multilingual Recognition Model: A self-built multilingual dataset.</li>
                           <li>Text Line Orientation Classification Model: A self-built dataset using PaddleOCR, covering various scenarios such as ID cards and documents, containing 1000 images.</li>
                           <li>Seal Text Detection Model: A self-built dataset using PaddleOCR, containing 500 images of circular seal textures.</li>
                         </ul>
@@ -624,11 +624,11 @@ The ultra-lightweight cyrillic alphabet recognition model trained based on the P
 
 ## 2. Quick Start
 
-Before using the seal text recognition production line locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
+Before using the seal text recognition pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
 
 ### 2.1 Command Line Experience
 
-You can quickly experience the seal_recognition production line effect with a single command:
+You can quickly experience the seal_recognition pipeline effect with a single command:
 
 ```bash
 paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png \
@@ -711,7 +711,7 @@ The name of the layout detection model. If set to <code>None</code>, the default
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>The name of the seal text detection model. If set to <code>None</code>, the production line's default model will be used.</td>
+<td>The name of the seal text detection model. If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
@@ -764,7 +764,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <ul>
 <li><b>float</b>， such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
 <li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
-<li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>, If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -782,7 +782,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <ul>
 <li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
 <li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>: If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -795,7 +795,7 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>None</b>: If not specified, the default official model configuration will be used</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -942,10 +942,8 @@ Whether to load the layout detection module. If set to <code>None</code>, the pa
 
 After running, the results will be printed to the terminal, as follows:
 
-<details><summary> 👉Click to Expand</summary>
-
 ```bash
-{'res': {'input_path': 'seal_text_det.png', 'model_settings': {'use_doc_preprocessor': False, 'use_layout_detection': True}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 16, 'label': 'seal', 'score': 0.975531280040741, 'coordinate': [6.195526, 0.1579895, 634.3982, 628.84595]}]}, 'seal_res_list': [{'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': [array([[320,  38],
+{'res': {'input_path': './seal_text_det.png', 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 16, 'label': 'seal', 'score': 0.975529670715332, 'coordinate': [6.191284, 0.16680908, 634.39325, 628.85345]}]}, 'seal_res_list': [{'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': [array([[320,  38],
        ...,
        [315,  38]]), array([[461, 347],
        ...,
@@ -953,7 +951,7 @@ After running, the results will be printed to the terminal, as follows:
        ...,
        [434, 444]]), array([[158, 468],
        ...,
-       [154, 466]])], 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.2, 'box_thresh': 0.6, 'unclip_ratio': 0.5}, 'text_type': 'seal', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0, 'rec_texts': ['天津君和缘商贸有限公司', '发票专用章', '吗繁物', '5263647368706'], 'rec_scores': array([0.9934051 , ..., 0.99139398]), 'rec_polys': [array([[320,  38],
+       [154, 466]])], 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.2, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 0.5}, 'text_type': 'seal', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0, 'rec_texts': ['天津君和缘商贸有限公司', '发票专用章', '吗繁物', '5263647368706'], 'rec_scores': array([0.99340463, ..., 0.9916274 ]), 'rec_polys': [array([[320,  38],
        ...,
        [315,  38]]), array([[461, 347],
        ...,
@@ -963,16 +961,11 @@ After running, the results will be printed to the terminal, as follows:
        ...,
        [154, 466]])], 'rec_boxes': array([], dtype=float64)}]}}
 ```
-
-</details>
-
-The explanation of the result parameters can be found in [2.1.2 Python Script Integration](#212-python-script-integration).
-
 The visualized results are saved under `save_path`, and the visualized result of seal OCR is as follows:
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/03.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/04.png"/>
 
-#### 2.2.2 Python Script Integration
+### 2.2 Python Script Integration
 
 * The above command line is for quickly experiencing and viewing the effect. Generally, in a project, you often need to integrate through code. You can complete the quick inference of the pipeline with just a few lines of code. The inference code is as follows:
 
@@ -1345,7 +1338,7 @@ If the pipeline meets your requirements for inference speed and accuracy, you ca
 
 If you need to integrate the pipeline into your Python project, you can refer to the example code in [2.2 Python Script Method](#22-python脚本方式集成).
 
-In addition, PaddleX also provides three other deployment methods, which are detailed as follows:
+In addition, PaddleOCR also provides three other deployment methods, which are detailed as follows:
 
 🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance requirements for deployment strategies, especially in terms of response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities aimed at deeply optimizing the performance of model inference and pre/post-processing, thereby significantly accelerating the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
 
@@ -1622,6 +1615,7 @@ for i, res in enumerate(result["sealRecResults"]):
 ## 4. Custom Development
 If the default model weights provided by the seal text recognition pipeline do not meet your requirements in terms of accuracy or speed, you can try to <b>fine-tune</b> the existing models using <b>your own domain-specific or application data</b> to improve the recognition performance of the seal text recognition pipeline in your scenario.
 
+### 4.1 Model Fine-Tuning
 Since the seal text recognition pipeline consists of several modules, if the pipeline's performance does not meet expectations, the issue may arise from any one of these modules. You can analyze images with poor recognition results to identify which module is problematic and refer to the corresponding fine-tuning tutorial links in the table below for model fine-tuning.
 
 <table>
@@ -1660,3 +1654,92 @@ Since the seal text recognition pipeline consists of several modules, if the pip
 </tr>
 </tbody>
 </table>
+
+
+### 4.2 Model Application
+
+After you complete the fine-tuning training with a private dataset, you can obtain the local model weight files. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by using a custom pipeline configuration file.
+
+#### 4.2.1 Specify Local Model Path via Parameters
+
+When initializing the pipeline object, specify the local model path through parameters. Taking the usage of fine-tuned weights for a text detection model as an example, the demonstration is as follows:
+
+Command line method:
+
+```bash
+# Specify the local model path through --doc_orientation_classify_model_dir
+paddleocr seal_recognition -i ./seal_text_det.png --doc_orientation_classify_model_dir your_orientation_classify_model_path
+
+# By default, the PP-LCNet_x1_0_doc_ori model is used as the default text detection model. If the fine-tuned model is not this one, modify the model name with --text_detection_model_name
+paddleocr seal_recognition -i ./seal_text_det.png --doc_orientation_classify_model_name PP-LCNet_x1_0_doc_ori --doc_orientation_classify_model_dir your_orientation_classify_model_path
+```
+
+Script method:
+
+```python
+
+from paddleocr import SealRecognition
+
+# Specify the local model path through doc_orientation_classify_model_dir
+pipeline = SealRecognition(doc_orientation_classify_model_dir ="./your_orientation_classify_model_path")
+
+# By default, the PP-LCNet_x1_0_doc_ori model is used as the default text detection model. If the fine-tuned model is not this one, modify the model name with doc_orientation_classify_model_name
+# pipeline = SealRecognition(doc_orientation_classify_model_name="PP-LCNet_x1_0_doc_ori", doc_orientation_classify_model_dir="./your_orientation_classify_model_path")
+
+```
+
+#### 4.2.2 Specify Local Model Path via Configuration File
+
+1. Obtain pipeline Configuration File
+
+You can call the `export_paddlex_config_to_yaml` method of the general OCR pipeline object in PaddleOCR to export the current pipeline configuration to a YAML file:
+
+```Python
+from paddleocr import SealRecognition
+
+pipeline = SealRecognition()
+pipeline.export_paddlex_config_to_yaml("SealRecognition.yaml")
+```
+
+2. Modify Configuration File
+
+After obtaining the default pipeline configuration file, replace the local path of the fine-tuned model weights in the corresponding position of the pipeline configuration file. For example:
+
+```yaml
+......
+SubPipelines:
+  DocPreprocessor:
+    SubModules:
+      DocOrientationClassify:
+        model_dir: null  # Replace with the path of the fine-tuned document orientation classification model weights
+        model_name: PP-LCNet_x1_0_doc_ori # If the name of the fine-tuned model is different from the default model name, please also modify here
+        module_name: doc_text_orientation
+      DocUnwarping:
+        model_dir: null  # Replace with the path of the fine-tuned document unwarping model weights
+        model_name: UVDoc # If the name of the fine-tuned model is different from the default model name, please also modify here
+        module_name: image_unwarping
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: true
+    use_doc_unwarping: true
+......
+```
+
+The pipeline configuration file not only contains the parameters supported by the SealRecognition CLI and Python API but also allows for more advanced configurations. Detailed information can be found in the [PaddleX Model pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), where you can find the corresponding pipeline usage tutorial and adjust various configurations as needed.
+
+3. Load pipeline Configuration File in CLI
+
+After modifying the configuration file, specify the path of the modified pipeline configuration file using the --paddlex_config parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. Example:
+
+```bash
+paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
+```
+
+4. Load pipeline Configuration File in Python API
+
+When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the paddlex_config parameter. PaddleOCR will read its contents as the pipeline configuration. Example:
+
+```python
+from paddleocr import SealRecognition
+
+pipeline = SealRecognition(paddlex_config="SealRecognition.yaml")
+```
