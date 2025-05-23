@@ -22,7 +22,8 @@ PaddleOCR 3.0**新增**三大特色能力：
 
 - 🧮通用文档解析方案[PP-StructureV3](./version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。[在线体验](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 📈智能文档理解方案[PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15.7个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
+- 📈智能文档理解方案[PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
+
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
@@ -32,7 +33,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
   </p>
 </div>
 
-您可直接[快速开始](#-快速开始)，或查阅完整的 [PaddleOCR 文档](https://paddlepaddle.github.io/PaddleOCR/main/index.html)，或通过 [Github Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) 获取支持，或在 [AIStudio 课程平台](https://aistudio.baidu.com/course/introduce/25207) 探索我们的 OCR 课程。
+您可直接[快速开始](./quick_start.md)，或查阅完整的 [PaddleOCR 文档](https://paddlepaddle.github.io/PaddleOCR/main/index.html)，或通过 [Github Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) 获取支持，或在 [AIStudio 课程平台](https://aistudio.baidu.com/course/introduce/25207) 探索我们的 OCR 课程。
 
 
 ## 🔄 快速一览运行效果
@@ -56,4 +57,4 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 * 👫 加入 [PaddlePaddle 开发者社区](https://github.com/PaddlePaddle/community)，与全球开发者、研究人员互动交流
 * 🎓 通过 AI Studio 的 [技术研讨会](https://aistudio.baidu.com/learn/center) 学习前沿技术
 * 🏆 参与 [黑客马拉松](https://aistudio.baidu.com/competition) 展示才能，赢取奖励
-* 📣 关注 [微信公众号](https://mp.weixin.qq.com/s/MAdo7fZ6dfeGcCQUtRP2ag) 获取最新动态
+* 📣 关注 [微信公众号](https://mp.weixin.qq.com/s/vYj1ZDcAfJ1lu_DzlOKgtQ) 获取最新动态
