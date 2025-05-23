@@ -207,6 +207,15 @@ for res in output:
 <td>None</td>
 </tr>
 <tr>
+<td><code>max_candidates</code></td>
+<td>输出的最大文本框数量</td>
+<td><code>int/None</code></td>
+<td>
+<ul>
+<li><b>int</b>: 大于0的任意整数
+<li><b>None</b>: 如果设置为None, 将使用默认值：1000</li></li></ul></td>
+<td>None</td>
+<tr>
 <td><code>unclip_ratio</code></td>
 <td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张 </td>
 <td><code>float/None</code></td>
