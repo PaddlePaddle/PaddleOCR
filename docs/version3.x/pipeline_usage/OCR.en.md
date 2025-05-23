@@ -184,7 +184,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 </tr>
 </table>
 
-> ❗ The above section lists the **6 core models** that are primarily supported by the text recognition module. In total, the module supports **20 comprehensive models**, including multiple multilingual text recognition models. Below is the complete list of models:
+> ❗ The above section lists the <b>6 core models</b> that are primarily supported by the text recognition module. In total, the module supports <b>20 comprehensive models</b>, including multiple multilingual text recognition models. Below is the complete list of models:
 
 <details><summary> 👉Details of the Model List</summary>
 
