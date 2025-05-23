@@ -334,118 +334,136 @@ for res in output:
 相关方法、参数等说明如下：
 
 * `LayoutDetection`实例化目标检测模型（此处以`PP-DocLayout_plus-L`为例），具体说明如下：
+
 <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
-<td>无</td>
-<td><code>PP-DocLayout-L</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>模型推理设备</td>
-<td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>cpu</code></td>
-</tr>
-<tr>
-<td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将使用模型默认配置</td>
-<td><code>int/list/None</code></td>
-<td>
-<ul>
-<li><b>int</b>, 如 640 , 表示将输入图像resize到640x640大小</li>
-<li><b>列表</b>, 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-<li><b>None</b>, 不指定，将使用模型默认配置</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将使用模型默认配置</td>
-<td><code>float/dict/None</code></td>
-<td>
-<ul>
-<li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code></li>
-<li><b>None</b>, 不指定，将使用模型默认配置</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将使用模型默认配置</td>
-<td><code>bool/None</code></td>
-<td>
-<ul>
-<li><b>bool</b>, True/False , 表示使用/不使用NMS进行检测框的后处理</li>
-<li><b>None</b>, 不指定，将使用模型默认配置</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将使用模型默认配置</td>
-<td><code>float/list/dict/None</code></td>
-<td>
-<ul>
-<li><b>float</b>, 如 1.1 , 表示宽和高都扩张1.1倍</li>
-<li><b>列表</b>, 如 [1.2, 1.5] , 表示宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>字典</b>, 如<code>{0: (1.1, 2.0)}</code>, 表示对cls_id=0的框宽扩张1.1倍，高扩张2.0倍</li>
-<li><b>None</b>, 不指定，将使用模型默认配置</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将使用模型默认配置</td>
-<td><code>string/dict/None</code></td>
-<td>
-<ul>
-<li><b>large</b>: 保留最大外部框，删除内部重叠框</li>
-<li><b>small</b>: 保留被包含的小框，删除外部框</li>
-<li><b>union</b>: 不进行过滤</li>
-<li><b>dict</b>: 如<code>{0: "large", 2: "small"}</code></li>
-<li><b>None</b>: 不指定，使用模型默认</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理插件</td>
-<td><code>bool</code></td>
-<td>无</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>参数说明</th>
+      <th>参数类型</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>模型名称</td>
+      <td><code>str</code></td>
+      <td><code>PP-DocLayout-L</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>模型存储路径</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+    <td><code>device</code></td>
+    <td>模型推理设备<br/><b>可选示例:</b> 支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+    </ul>
+    </td>
+    <td><code>str</code></td>
+    <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>是否启用高性能推理插件</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+        <td><code>use_tensorrt</code></td>
+        <td>是否使用 TensorRT 进行推理加速。</td>
+        <td><code>bool</code></td>
+        <td><code>False</code></td>
+    </tr>
+    <tr>
+        <td><code>min_subgraph_size</code></td>
+        <td>最小子图大小，用于优化模型子图的计算。</td>
+        <td><code>int</code></td>
+        <td><code>3</code></td>
+    </tr>
+    <tr>
+        <td><code>precision</code></td>
+        <td>计算精度，如 fp32、fp16。</td>
+        <td><code>str</code></td>
+        <td><code>fp32</code></td>
+    </tr>
+    <tr>
+        <td><code>enable_mkldnn</code></td>
+        <td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。</td>
+        <td><code>bool</code></td>
+        <td><code>None</code></td>
+    </tr>
+    <tr>
+        <td><code>cpu_threads</code></td>
+        <td>在 CPU 上进行推理时使用的线程数。</td>
+        <td><code>int</code></td>
+        <td><code>10</code></td>
+    </tr>
+    <tr>
+      <td><code>img_size</code></td>
+      <td>输入图像大小；如果不指定，PP-DocLayout_plus-L模型将默认使用800x800<br/><b>可选示例:</b>
+        <ul>
+          <li><b>int</b>:如 640 , 表示将输入图像resize到640x640大小</li>
+          <li><b>list</b>: 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
+          <li><b>None</b>:不指定，PP-DocLayout_plus-L模型将默认使用800x800</li>
+        </ul>
+      </td>
+      <td><code>int/list/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>threshold</code></td>
+      <td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用0.5<br/><b>可选示例:</b>
+        <ul>
+          <li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
+          <li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+          <li><b>None</b>: 不指定，将默认使用0.5</li>
+        </ul>
+      </td>
+      <td><code>float/dict/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_nms</code></td>
+      <td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认不使用NMS<br/><b>可选示例:</b>
+        <ul>
+          <li><b>bool</b>True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
+          <li><b>None</b>不指定，将默认不使用</li>
+        </ul>
+      </td>
+      <td><code>bool/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_unclip_ratio</code></td>
+      <td>检测框的边长缩放倍数；如果不指定，将默认使用1.0<br/><b>可选示例:</b>
+        <ul>
+          <li><b>float</b>:大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
+          <li><b>list</b>:如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
+          <li><b>dict</b>:字典的key为int类型，代表cls_id, value为tuple类型，如{0: (1.1, 2.0)}, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
+          <li><b>None</b>:,不指定，将默认使用1.0</li>
+        </ul>
+      </td>
+      <td><code>float/list/dict/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_merge_bboxes_mode</code></td>
+      <td>模型输出的检测框的合并处理模式；如果不指定，将默认使用union模式<br/><b>可选示例:</b>
+        <ul>
+          <li><b>large</b>: 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
+          <li><b>small</b>: 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
+          <li><b>union</b>: 不进行框的过滤处理，内外框都保留</li>
+          <li><b>dict</b>: 字典的key为int类型，代表cls_id, value为str类型, 如{0: "large", 2: "small"}, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式/li>
+          <li><b>None</b>: 不指定，将默认使用union模式</li>
+        </ul>
+      </td>
+      <td><code>string/dict/None</code></td>
+      <td>None</td>
+    </tr>
+  </tbody>
 </table>
 
 
@@ -454,89 +472,84 @@ for res in output:
 * 调用目标检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、`batch_size`和`threshold`，具体说明如下：
 
 <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
-<td><code>Python Var/str/list</code></td>
-<td>
-Python变量，如 <code>numpy.ndarray</code><br>
-文件路径，如 <code>/root/data/img.jpg</code><br>
-URL链接，如网络图像 URL<br>
-本地目录，目录下需包含待预测文件<br>
-列表，元素可为上述任意类型
-</td>
-<td>无</td>
-</tr>
-<tr>
-<td><code>batch_size</code></td>
-<td>批大小</td>
-<td><code>int</code></td>
-<td>大于0的任意整数</td>
-<td>1</td>
-</tr>
-<tr>
-<td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值</td>
-<td><code>float/dict/None</code></td>
-<td>
-<ul>
-<li><b>float</b>，如 0.2，过滤掉得分&nbsp;&lt;&nbsp;0.2 的检测框</li>
-<li><b>dict</b>，键为 <b>int</b> (cls_id)，值为 <b>float</b> 阈值，如 <code>{0: 0.45, 2: 0.48}</code></li>
-<li><b>None</b>，说明见默认值</li>
-</ul>
-</td>
-<td><b>None<sup>①</sup></b></td>
-</tr>
-<tr>
-<td><code>layout_nms</code></td>
-<td>是否使用 NMS 后处理，过滤重叠框</td>
-<td><code>bool/None</code></td>
-<td>
-<ul>
-<li><b>bool</b>，True / False</li>
-<li><b>None</b>，说明见默认值</li>
-</ul>
-</td>
-<td><b>None<sup>①</sup></b></td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数</td>
-<td><code>float/list/dict/None</code></td>
-<td>
-<ul>
-<li><b>float</b>，如 1.1</li>
-<li><b>list</b>，如 [1.2,&nbsp;1.5]</li>
-<li><b>dict</b>，如 <code>{0: (1.1, 2.0)}</code></li>
-<li><b>None</b></li>
-</ul>
-</td>
-<td><b>None<sup>①</sup></b></td>
-</tr>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>检测框合并处理模式</td>
-<td><code>string/dict/None</code></td>
-<td>
-<ul>
-<li><b>large</b>：保留外部大框</li>
-<li><b>small</b>：保留内部小框</li>
-<li><b>union</b>：保留全部</li>
-<li><b>dict</b>，如 <code>{0:"large", 2:"small"}</code></li>
-<li><b>None</b></li>
-</ul>
-</td>
-<td><b>None<sup>①</sup></b></td>
-</tr>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>参数说明</th>
+      <th>参数类型</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>input</code></td>
+      <td>待预测数据，支持多种输入类型，必填。
+        <ul>
+          <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+          <li><b>str</b>：如图像文件或 PDF 文件的本地路径：<code>/root/data/img.jpg</code>；<b>URL链接</b>：如网络图像或 PDF 文件的链接；<b>本地目录</b>：目录中应包含待预测图像（当前不支持目录中直接包含 PDF 文件）</li>
+          <li><b>List</b>：列表元素为上述任意类型，例如 <code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+        </ul>
+      </td>
+      <td><code>Python Var|str|list</code></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><code>batch_size</code></td>
+      <td>批大小，支持大于 0 的任意整数。</td>
+      <td><code>int</code></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code>threshold</code></td>
+      <td>用于过滤掉低置信度预测结果的阈值；如果不指定，将使用模型默认配置<br/><b>可选示例:</b>
+        <ul>
+          <li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
+          <li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+          <li><b>None</b>: 不指定，将默认使用0.5</li>
+        </ul>
+      </td>
+      <td><code>float/dict/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_nms</code></td>
+      <td>是否使用NMS后处理，过滤重叠框；<br/><b>可选示例:</b>
+        <ul>
+          <li><b>bool</b>True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
+          <li><b>None</b>不指定，将默认使用 creat_model 指定的 layout_nms 参数，如果 creat_model 也没有指定，则默认不使用NMS</li>
+        </ul>
+      </td>
+      <td><code>bool/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_unclip_ratio</code></td>
+      <td>检测框的边长缩放倍数；如果不指定，将默认使用1.0<br/><b>可选示例:</b>
+        <ul>
+          <li><b>float</b>:大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
+          <li><b>list</b>:如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
+          <li><b>dict</b>:字典的key为int类型，代表cls_id, value为tuple类型，如{0: (1.1, 2.0)}, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
+          <li><b>None</b>:,不指定，将默认使用1.0</li>
+        </ul>
+      </td>
+      <td><code>float/list/dict/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>layout_merge_bboxes_mode</code></td>
+      <td>模型输出的检测框的合并处理模式；如果不指定，将默认使用union模式<br/><b>可选示例:</b>
+        <ul>
+          <li><b>large</b>: 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
+          <li><b>small</b>: 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
+          <li><b>union</b>: 不进行框的过滤处理，内外框都保留</li>
+          <li><b>dict</b>: 字典的key为int类型，代表cls_id, value为str类型, 如{0: "large", 2: "small"}, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式/li>
+          <li><b>None</b>: 不指定，将默认使用union模式</li>
+        </ul>
+      </td>
+      <td><code>string/dict/None</code></td>
+      <td>None</td>
+    </tr>
+  </tbody>
 </table>
 
 <p><sup>①</sup> 当调用 <code>predict()</code> 时该参数为 <code>None</code> 时，将继承模型实例化 (<code>__init__</code>) 时对应参数的值；若实例化时也未显式指定，则使用框架默认：<br>

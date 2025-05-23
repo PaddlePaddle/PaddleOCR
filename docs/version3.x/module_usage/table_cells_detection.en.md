@@ -125,74 +125,93 @@ The relevant methods, parameters, etc., are described as follows:
 
 * `TableCellsDetection` instantiates the table cell detection model (taking `RT-DETR-L_wired_table_cell_det` as an example here), with specific explanations as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model Name</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model Storage Path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card numbers, such as “gpu:0”, specific hardware card numbers, such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-Performance Inference Configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>img_size</code></td>
-<td>Input image size; if not specified, the PaddleX official model configuration will be used by default</td>
-<td><code>int/list</code></td>
-<td>
-<ul>
-  <li><b>int</b>, e.g., 640, indicates resizing the input image to 640x640</li>
-  <li><b>list</b>, e.g., [640, 512], indicates resizing the input image to a width of 640 and a height of 512</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the PaddleX official model configuration will be used by default. In table cell detection tasks, appropriately lowering the threshold may help achieve more accurate results</td>
-<td><code>float/dict</code></td>
-<td>
-<ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Model name</td>
+      <td><code>str</code></td>
+      <td><code>PP-DocLayout-L</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Path to the model directory</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device for inference<br/><b>Examples:</b> Specify a specific GPU as "gpu:0", other hardware as "npu:0", or use CPU as "cpu".</td>
+      <td><code>str</code></td>
+      <td><code>cpu</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference </td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize model subgraph computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Inference precision, such as fp32 or fp16.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads used for inference on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+    <tr>
+      <td><code>img_size</code></td>
+      <td>Input image size; if not specified, the default 800x800 will be used by PP-DocLayout_plus-L<br/><b>Examples:</b>
+        <ul>
+          <li><b>int</b>: e.g. 640, resizes input image to 640x640</li>
+          <li><b>list</b>: e.g. [640, 512], resizes input image to 640 width and 512 height</li>
+          <li><b>None</b>: not specified, defaults to 800x800</li>
+        </ul>
+      </td>
+      <td><code>int/list/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>threshold</code></td>
+      <td>Threshold for filtering low-confidence predictions; defaults to 0.5 if not specified<br/><b>Examples:</b>
+        <ul>
+          <li><b>float</b>: e.g. 0.2, filters out all boxes with confidence below 0.2</li>
+          <li><b>dict</b>: key is <code>int</code> cls_id, value is <code>float</code> threshold, e.g. <code>{0: 0.45, 2: 0.48, 7: 0.4}</code></li>
+          <li><b>None</b>: not specified, defaults to 0.5</li>
+        </ul>
+      </td>
+      <td><code>float/dict/None</code></td>
+      <td>None</td>
+    </tr>
 </table>
 
 * Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. When `model_dir` is specified, the user-defined model is used.
@@ -200,49 +219,45 @@ The relevant methods, parameters, etc., are described as follows:
 * Call the `predict()` method of the table cell detection model for inference prediction. This method will return a result list. Additionally, this module also provides a `predict_iter()` method. Both methods are consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods according to your actual needs. The `predict()` method has parameters `input`, `batch_size`, and `threshold`, with specific explanations as follows:
 
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
-<ul>
-  <li><b>Python Variable</b>, such as <code>numpy.ndarray</code> representing image data</li>
-  <li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL Link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local Directory</b>, which should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
-  <li><b>List</b>, where list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>batch_size</code></td>
-<td>Batch Size</td>
-<td><code>int</code></td>
-<td>Any integer</td>
-<td>1</td>
-</tr>
-<tr>
-<td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the <code>threshold</code> parameter specified in <code>create_model</code> will be used by default, and if <code>create_model</code> is not specified, the PaddleX official model configuration will be used</td>
-<td><code>float/dict</code></td>
-<td>
-<ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>input</code></td>
+      <td>Input data to be predicted. Required. Supports multiple input types:
+        <ul>
+          <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+          <li><b>str</b>: e.g., local path to an image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>: link to an image or PDF file on the web; <b>Directory</b>: should contain images to be predicted (currently, PDF files in directories are not supported)</li>
+          <li><b>List</b>: elements can be any of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+        </ul>
+      </td>
+      <td><code>Python Var|str|list</code></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><code>batch_size</code></td>
+      <td>Batch size. Must be a positive integer.</td>
+      <td><code>int</code></td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><code>threshold</code></td>
+      <td>Threshold for filtering low-confidence predictions. If not specified, the model's default will be used.<br/><b>Examples:</b>
+        <ul>
+          <li><b>float</b>: e.g., 0.2, filters out all boxes with scores below 0.2</li>
+          <li><b>dict</b>: keys are <code>int</code> representing <code>cls_id</code>, and values are <code>float</code> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies thresholds of 0.45 to class 0, 0.48 to class 2, and 0.4 to class 7</li>
+          <li><b>None</b>: if not specified, defaults to 0.5</li>
+        </ul>
+      </td>
+      <td><code>float/dict/None</code></td>
+      <td>None</td>
+    </tr>
 </table>
 
 * Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports printing, saving as an image, and saving as a `json` file:

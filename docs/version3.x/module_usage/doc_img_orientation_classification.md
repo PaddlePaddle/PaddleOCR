@@ -127,91 +127,75 @@ for res in output:
       <th>参数</th>
       <th>参数说明</th>
       <th>参数类型</th>
-      <th>可选项</th>
       <th>默认值</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><code>model_name</code></td>
-      <td>模型名称；留空时自动使用类属性 <code>default_model_name</code></td>
+      <td>模型名称</td>
       <td><code>str</code></td>
-      <td>无</td>
       <td><code>"PP-LCNet_x1_0_doc_ori"</code></td>
     </tr>
     <tr>
       <td><code>model_dir</code></td>
       <td>模型存储路径</td>
       <td><code>str</code></td>
-      <td>无</td>
       <td><code>None</code></td>
     </tr>
-    <tr>
-      <td><code>device</code></td>
-      <td>模型推理设备</td>
-      <td><code>str</code></td>
-      <td>支持指定 GPU 卡号（如 <code>"gpu:0"</code>）、NPU 卡号（如 <code>"npu:0"</code>）、或 <code>"cpu"</code></td>
-      <td><code>"cpu"</code></td>
-    </tr>
-    <tr>
-      <td><code>enable_hpi</code></td>
-      <td>是否启用高性能推理插件（HPI）</td>
-      <td><code>bool</code></td>
-      <td>无</td>
-      <td><code>False</code></td>
-    </tr>
-    <tr>
-      <td><code>hpi_config</code></td>
-      <td>高性能推理配置</td>
-      <td><code>dict</code> | <code>None</code></td>
-      <td>无</td>
-      <td><code>None</code></td>
-    </tr>
-    <tr>
-      <td><code>topk</code></td>
-      <td>返回前 top-k 个预测结果，用于控制输出的类别数量</td>
-      <td><code>int</code> | <code>None</code></td>
-      <td>如 <code>1</code>、<code>5</code> 等正整数</td>
-      <td><code>None</code></td>
-    </tr>
-    <tr>
-      <td><code>use_tensorrt</code></td>
-      <td>是否启用 TensorRT 加速</td>
-      <td><code>bool</code></td>
-      <td><code>True</code> / <code>False</code></td>
-      <td><code>False</code></td>
-    </tr>
-    <tr>
-      <td><code>min_subgraph_size</code></td>
-      <td>TensorRT 子图最小节点数</td>
-      <td><code>int</code></td>
-      <td>&gt; 0 的正整数</td>
-      <td><code>30</code></td>
-    </tr>
-    <tr>
-      <td><code>precision</code></td>
-      <td>TensorRT 精度</td>
-      <td><code>str</code></td>
-      <td><code>"fp32"</code> / <code>"fp16"</code> / <code>"int8"</code></td>
-      <td><code>"fp32"</code></td>
-    </tr>
-    <tr>
-      <td><code>enable_mkldnn</code></td>
-      <td>是否启用 oneDNN（MKL-DNN）加速（仅 CPU 有效）</td>
-      <td><code>bool</code></td>
-      <td><code>True</code> / <code>False</code></td>
-      <td><code>True</code></td>
-    </tr>
-    <tr>
-      <td><code>cpu_threads</code></td>
-      <td>CPU 线程数</td>
-      <td><code>int</code></td>
-      <td>&gt;= 1</td>
-      <td><code>10</code></td>
-    </tr>
-  </tbody>
+<tr>
+<td><code>device</code></td>
+<td>模型推理设备<br/><b>可选示例:</b> 支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+</ul>
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否使用 TensorRT 进行推理加速。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>最小子图大小，用于优化模型子图的计算。</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>计算精度，如 fp32、fp16。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>返回 top-k 个预测类别。</td>
+<td><code>int</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
 </table>
-
 
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
@@ -224,30 +208,25 @@ for res in output:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>待预测数据，支持多种输入类型，必填。
 <ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
+<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
 <td>批大小</td>
 <td><code>int</code></td>
-<td>任意整数</td>
 <td>1</td>
 </tr>
 </table>

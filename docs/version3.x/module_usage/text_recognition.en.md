@@ -443,50 +443,82 @@ The descriptions of relevant methods and parameters are as follows:
 
 * Instantiate a text recognition model using `TextRecognition` (taking `PP-OCRv5_server_rec` as an example here). The specific descriptions are as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>All model names supported by PaddleX</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model inference device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card numbers, such as "gpu:0", specific card numbers for other hardware, such as "npu:0", and "cpu" for CPU.</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model</td>
+      <td><code>str</code></td>
+      <td><code>"None"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Directory path where the model is stored</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific device index.
+        <ul>
+          <li><b>CPU</b>: e.g., <code>cpu</code> to use CPU for inference;</li>
+          <li><b>GPU</b>: e.g., <code>gpu:0</code> to use the first GPU;</li>
+          <li><b>None</b>: If set to <code>None</code>, the system will initialize the default device, prioritizing local GPU 0; if unavailable, CPU will be used instead.</li>
+        </ul>
+      </td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference .</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Computation precision, such as <code>fp32</code>, <code>fp16</code>.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use for inference on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+    <tr>
+      <td><code>input_shape</code></td>
+      <td>Input image size for the model in the format <code>(C, H, W)</code>. If set to <code>None</code>, the model's default size will be used.</td>
+      <td><code>tuple</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+  </tbody>
 </table>
 
 * Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. On this basis, when `model_dir` is specified, the user-defined model is used.

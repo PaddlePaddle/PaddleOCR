@@ -102,86 +102,79 @@ for res in results:
 
 * `DocVLM`实例化文档类视觉语言模型（此处以`PP-DocBee-2B`为例），具体说明如下：
 <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>模型名称，如 <code>PP-DocBee2-3B</code> 等</td>
-<td><code>str</code></td>
-<td>无</td>
-<td><code>无</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>参数说明</th>
+      <th>参数类型</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>模型名称</td>
+      <td><code>str</code></td>
+      <td><code>"PP-DocBee-2B"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>模型存储路径</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>模型推理设备<br/><b>可选示例:</b> 支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+</ul>
+</td>
 <td><code>str</code></td>
-<td>支持指定 GPU 具体卡号，如 <code>gpu:0</code>，其他硬件如 <code>npu:0</code>，CPU 如 <code>cpu</code></td>
-<td><code>cpu</code></td>
+<td><code>None</code></td>
+</tr>
+<td><code>str</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理插件（HPI）</td>
+<td>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理插件的配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
-<tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 TensorRT 加速</td>
+<td>是否使用 TensorRT 进行推理加速。</td>
 <td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>min_subgraph_size</code></td>
-<td>TensorRT 子图最小节点数</td>
+<td>最小子图大小，用于优化模型子图的计算。</td>
 <td><code>int</code></td>
-<td>&ge; 1</td>
-<td><code>30</code></td>
+<td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>TensorRT 精度类型</td>
+<td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
-<td><code>fp32</code> / <code>fp16</code> / <code>int8</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 oneDNN（仅在 CPU 推理时生效）</td>
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+</td>
 <td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
-<td><code>True</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>CPU 推理线程数</td>
+<td>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
-<td>&ge; 1</td>
 <td><code>10</code></td>
 </tr>
+</tbody>
 </table>
+
+
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
@@ -193,25 +186,21 @@ for res in results:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据</td>
-<td><code>dict</code></td>
-<td>
-<code>Dict</code>, 由于多模态模型对输入有不同的要求，需要根据具体的模型确定，具体而言:
-<li>PP-DocBee系列的输入形式为<code>{'image': image_path, 'query': query_text}</code></li>
+<td>待预测数据，必填。由于多模态模型对输入要求不同，请根据具体模型设定输入格式。<br/>
+例如：对于 PP-DocBee 系列模型，输入形式应为：<code>{'image': image_path, 'query': query_text}</code>
 </td>
+<td><code>dict</code></td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>批大小，支持任意整数。</td>
 <td><code>int</code></td>
-<td>整数</td>
 <td>1</td>
 </tr>
 </table>

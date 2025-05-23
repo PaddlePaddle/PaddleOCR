@@ -135,306 +135,177 @@ The explanations of related methods and parameters are as follows:
 
 * `SealTextDetection` instantiates a text detection model (here we take `PP-OCRv4_server_seal_det` as an example), and the specific explanations are as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Name of the model</td>
-<td><code>str</code></td>
-<td>All model names supported by PaddleX for seal text detection</td>
-<td><code>"PP-OCRv4_mobile_seal_det"</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Path to store the model</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>The device used for model inference</td>
-<td><code>str</code></td>
-<td>Supports GPU (e.g., "gpu:0"), NPU (e.g., "npu:0"), or CPU ("cpu")</td>
-<td><code>"cpu"</code></td>
-</tr>
-<tr>
-<td><code>limit_side_len</code></td>
-<td>Limit on the side length of the image for detection</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0</li>
-<li><b>None</b>: Default is 736</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>Type of side length limit for detection</td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: "min" or "max"</li>
-<li><b>None</b>: Default is "min"</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>Threshold for classifying a pixel as text</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.2</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>Threshold for considering a region as a text box</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.6</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.5</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>input_shape</code></td>
-<td>Input shape of the model as (C, H, W)</td>
-<td><code>tuple</code> / <code>None</code></td>
-<td>e.g., <code>(3, 960, 960)</code>, or None to use model default</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>Enable high-performance inference plugin (HPI)</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> / <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>Enable TensorRT acceleration</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td>False</td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>Precision type for TensorRT</td>
-<td><code>str</code></td>
-<td>"fp32", "fp16", or "int8"</td>
-<td>"fp32"</td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for TensorRT</td>
-<td><code>int</code></td>
-<td>Any integer greater than 0</td>
-<td>30</td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>Enable oneDNN (MKL-DNN) acceleration (CPU only)</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td>True</td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>Number of CPU threads</td>
-<td><code>int</code></td>
-<td>Any integer greater than 0</td>
-<td>10</td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Model name. All supported seal text detection model names, such as <code>PP-OCRv4_mobile_seal_det</code>.</td>
+      <td><code>str</code></td>
+      <td><code>"PP-OCRv4_mobile_seal_det"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Path to the model directory.</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific devices such as <code>cpu</code>, <code>gpu:0</code>, <code>npu:0</code>, etc.</td>
+      <td><code>str</code></td>
+      <td><code>"cpu"</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to enable TensorRT acceleration for inference.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Precision mode for inference. Options: <code>"fp32"</code>, <code>"fp16"</code>, <code>"int8"</code>.</td>
+      <td><code>str</code></td>
+      <td><code>"fp32"</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum number of nodes in a TensorRT subgraph, used to control subgraph fusion granularity.</td>
+      <td><code>int</code></td>
+      <td><code>30</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable oneDNN (MKL-DNN) acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>True</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use when running inference on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+    <tr>
+      <td><code>limit_side_len</code></td>
+      <td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the default value 736 will be used.</td>
+      <td><code>int</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>limit_type</code></td>
+      <td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the default value <code>"min"</code> will be used.</td>
+      <td><code>str</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>thresh</code></td>
+      <td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.2 will be used.</td>
+      <td><code>float</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>box_thresh</code></td>
+      <td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.6 will be used.</td>
+      <td><code>float</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>unclip_ratio</code></td>
+      <td>Expansion ratio used in the Vatti clipping algorithm to expand the detected text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.5 will be used.</td>
+      <td><code>float</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>input_shape</code></td>
+      <td>Input image size for the model in the format <code>(C, H, W)</code>. If set to <code>None</code>, the model's default size will be used.</td>
+      <td><code>tuple</code> / <code>None</code></td>
+      <td><code>None</code></td>
+    </tr>
+  </tbody>
 </table>
+
 
 
 * The `model_name` must be specified. After specifying `model_name`, the built-in model parameters of PaddleX will be used by default. On this basis, if `model_dir` is specified, the user-defined model will be used.
 
-* The `predict()` method of the seal text detection model is called for inference prediction. The parameters of the `predict()` method include `input`, `batch_size`, `limit_side_len`, `limit_type`, `thresh`, `box_thresh`, `max_candidates`, `unclip_ratio`, and `use_dilation`. The specific descriptions are as follows:
+* The `predict()` method of the seal text detection model is called for inference prediction. The parameters of the `predict()` method include `input`, `batch_size`, `limit_side_len`, `limit_type`, `thresh`, `box_thresh`, `max_candidates`, `unclip_ratio`. The specific descriptions are as follows:
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
-<td><code>model_name</code></td>
-<td>Name of the model</td>
-<td><code>str</code></td>
-<td>All model names supported by PaddleX for seal text detection</td>
-<td><code>"PP-OCRv4_mobile_seal_det"</code></td>
+<td><code>input</code></td>
+<td>
+Input data to be predicted. Required. Supports multiple input types:
+<ul>
+  <li><b>Python variable</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>File path</b>: e.g., local image file path <code>/root/data/img.jpg</code></li>
+  <li><b>URL</b>: e.g., image file URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a></li>
+  <li><b>Directory</b>: should contain image files for prediction (PDF files are not supported)</li>
+  <li><b>List</b>: contains elements of the above types, e.g., <code>[numpy.ndarray, "/root/data/img.jpg"]</code></li>
+</ul>
+</td>
+<td><code>Python Var</code> / <code>str</code> / <code>dict</code> / <code>list</code></td>
+<td></td>
 </tr>
 <tr>
-<td><code>model_dir</code></td>
-<td>Path to store the model</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>The device used for model inference</td>
-<td><code>str</code></td>
-<td>Supports GPU (e.g., "gpu:0"), NPU (e.g., "npu:0"), or CPU ("cpu")</td>
-<td><code>"cpu"</code></td>
+<td><code>batch_size</code></td>
+<td>Batch size. Must be a positive integer.</td>
+<td><code>int</code></td>
+<td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Limit on the side length of the image for detection</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0</li>
-<li><b>None</b>: Default is 736</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>Type of side length limit for detection</td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: "min" or "max"</li>
-<li><b>None</b>: Default is "min"</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>Threshold for classifying a pixel as text</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.2</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>Threshold for considering a region as a text box</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.6</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0</li>
-<li><b>None</b>: Default is 0.5</li>
-</ul>
-</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>input_shape</code></td>
-<td>Input shape of the model as (C, H, W)</td>
-<td><code>tuple</code> / <code>None</code></td>
-<td>e.g., <code>(3, 960, 960)</code>, or None to use model default</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>Enable high-performance inference plugin (HPI)</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> / <code>None</code></td>
-<td>None</td>
+<td>Limit for the side length of the image to be detected: <code>int</code> specifies the side length. If set to <code>None</code>, the default value 736 will be used.</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_tensorrt</code></td>
-<td>Enable TensorRT acceleration</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td>False</td>
+<td><code>limit_type</code></td>
+<td>Type of side length constraint for detection. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the default value "min" will be used.</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>precision</code></td>
-<td>Precision type for TensorRT</td>
-<td><code>str</code></td>
-<td>"fp32", "fp16", or "int8"</td>
-<td>"fp32"</td>
+<td><code>thresh</code></td>
+<td>Pixel score threshold. In the output probability map, pixels with scores higher than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.2 will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for TensorRT</td>
-<td><code>int</code></td>
-<td>Any integer greater than 0</td>
-<td>30</td>
+<td><code>box_thresh</code></td>
+<td>If the average score of all pixels within the detection box is greater than this threshold, the result will be considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.6 will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>enable_mkldnn</code></td>
-<td>Enable oneDNN (MKL-DNN) acceleration (CPU only)</td>
-<td><code>bool</code></td>
-<td>True / False</td>
-<td>True</td>
+<td><code>unclip_ratio</code></td>
+<td>Expansion ratio used in the Vatti clipping algorithm to expand the detected text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value 0.5 will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>Number of CPU threads</td>
-<td><code>int</code></td>
-<td>Any integer greater than 0</td>
-<td>10</td>
-</tr>
+</tbody>
 </table>
+
 
 
 * Process the prediction results. Each sample's prediction result is a corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a `json` file:

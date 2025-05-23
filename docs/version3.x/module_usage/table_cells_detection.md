@@ -124,74 +124,93 @@ for res in output:
 
 * `TableCellsDetection`实例化表格单元格检测模型（此处以`RT-DETR-L_wired_table_cell_det`为例），具体说明如下：
 <table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>可选项</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
-<td>无</td>
-<td>无</td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
-<td>无</td>
-<td>无</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>模型推理设备</td>
-<td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
-<td><code>bool</code></td>
-<td>无</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将默认使用PaddleX官方模型配置</td>
-<td><code>int/list</code></td>
-<td>
-<ul>
-  <li><b>int</b>, 如 640 , 表示将输入图像resize到640x640大小</li>
-  <li><b>列表</b>, 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-</ul>
-</td>
-<td>无</td>
-</tr>
-<tr>
-<td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleX官方模型配置。在表格单元格检测任务中，适当降低阈值可能有助于获得更准确的结果</td>
-<td><code>float/dict</code></td>
-<td>
-<ul>
-  <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-  <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-</ul>
-</td>
-<td>无</td>
-</tr>
+  <thead>
+    <tr>
+      <th>参数</th>
+      <th>参数说明</th>
+      <th>参数类型</th>
+      <th>默认值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>模型名称</td>
+      <td><code>str</code></td>
+      <td><code>PP-DocLayout-L</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>模型存储路径</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>模型推理设备<br/><b>可选示例:</b> 支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
+      <td><code>str</code></td>
+      <td><code>cpu</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>是否启用高性能推理</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+        <td><code>use_tensorrt</code></td>
+        <td>是否使用 TensorRT 进行推理加速。</td>
+        <td><code>bool</code></td>
+        <td><code>False</code></td>
+    </tr>
+    <tr>
+        <td><code>min_subgraph_size</code></td>
+        <td>最小子图大小，用于优化模型子图的计算。</td>
+        <td><code>int</code></td>
+        <td><code>3</code></td>
+    </tr>
+    <tr>
+        <td><code>precision</code></td>
+        <td>计算精度，如 fp32、fp16。</td>
+        <td><code>str</code></td>
+        <td><code>fp32</code></td>
+    </tr>
+    <tr>
+        <td><code>enable_mkldnn</code></td>
+        <td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。</td>
+        <td><code>bool</code></td>
+        <td><code>None</code></td>
+    </tr>
+    <tr>
+        <td><code>cpu_threads</code></td>
+        <td>在 CPU 上进行推理时使用的线程数。</td>
+        <td><code>int</code></td>
+        <td><code>8</code></td>
+    </tr>
+    <tr>
+      <td><code>img_size</code></td>
+      <td>输入图像大小；如果不指定，PP-DocLayout_plus-L模型将默认使用800x800<br/><b>可选示例:</b>
+        <ul>
+          <li><b>int</b>:如 640 , 表示将输入图像resize到640x640大小</li>
+          <li><b>list</b>: 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
+          <li><b>None</b>:不指定，PP-DocLayout_plus-L模型将默认使用800x800</li>
+        </ul>
+      </td>
+      <td><code>int/list/None</code></td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <td><code>threshold</code></td>
+      <td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用0.5<br/><b>可选示例:</b>
+        <ul>
+          <li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
+          <li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+          <li><b>None</b>: 不指定，将默认使用0.5</li>
+        </ul>
+      </td>
+      <td><code>float/dict/None</code></td>
+      <td>None</td>
+    </tr>
 </table>
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。

@@ -114,51 +114,78 @@ The relevant methods, parameters, etc., are described as follows:
 
 * `TableClassification` instantiates the table classification model (taking `PP-LCNet_x1_0_table_cls` as an example here), with specific explanations as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Model Name</td>
-<td><code>str</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model Storage Path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card numbers, such as “gpu:0”, specific hardware card numbers, such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-Performance Inference Configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model</td>
+      <td><code>str</code></td>
+      <td><code>"PP-LCNet_x1_0_doc_ori"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Directory path where the model is stored</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific device index.
+        <ul>
+          <li><b>CPU</b>: e.g., <code>cpu</code> to use CPU for inference;</li>
+          <li><b>GPU</b>: e.g., <code>gpu:0</code> to use the first GPU;</li>
+          <li><b>None</b>: If set to <code>None</code>, the system will initialize the default device, prioritizing local GPU 0; if unavailable, CPU will be used instead.</li>
+        </ul>
+      </td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference .</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Computation precision, such as <code>fp32</code>, <code>fp16</code>.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use for inference on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>8</code></td>
+    </tr>
+  </tbody>
 </table>
+
 
 * Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. When `model_dir` is specified, the user-defined model is used.
 
@@ -170,30 +197,28 @@ The relevant methods, parameters, etc., are described as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python Variable</b>, such as <code>numpy.ndarray</code> representing image data</li>
-  <li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL Link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local Directory</b>, which should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
-  <li><b>List</b>, where list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>

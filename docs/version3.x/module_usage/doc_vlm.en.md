@@ -99,86 +99,82 @@ Explanations of related methods, parameters, etc., are as follows:
 
 * `DocVLM` instantiates the document visual language model (taking `PP-DocBee-2B` as an example), with specific explanations as follows:
 <table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
-<th>Options</th>
-<th>Default</th>
-</tr>
-</thead>
-<tr>
-<td><code>model_name</code></td>
-<td>Name of the model, e.g. <code>PP-DocBee2-3B</code></td>
-<td><code>str</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Path to the model directory</td>
-<td><code>str</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Device for model inference</td>
-<td><code>str</code></td>
-<td>Supports specifying a specific device such as <code>gpu:0</code>, <code>npu:0</code>, or <code>cpu</code></td>
-<td><code>cpu</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference (HPI)</td>
-<td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>Configuration for high-performance inference</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>Whether to enable TensorRT acceleration</td>
-<td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for TensorRT optimization</td>
-<td><code>int</code></td>
-<td>&ge; 1</td>
-<td><code>30</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>Precision type for TensorRT</td>
-<td><code>str</code></td>
-<td><code>fp32</code> / <code>fp16</code> / <code>int8</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>Whether to enable oneDNN (only effective on CPU)</td>
-<td><code>bool</code></td>
-<td><code>True</code> / <code>False</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>Number of threads to use for CPU inference</td>
-<td><code>int</code></td>
-<td>&ge; 1</td>
-<td><code>10</code></td>
-</tr>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>model_name</code></td>
+      <td>Name of the model</td>
+      <td><code>str</code></td>
+      <td><code>"PP-DocBee-2B"</code></td>
+    </tr>
+    <tr>
+      <td><code>model_dir</code></td>
+      <td>Path to the directory where the model is stored</td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>device</code></td>
+      <td>Device used for inference. Supports specifying specific device index.
+        <ul>
+          <li><b>CPU</b>: e.g., <code>cpu</code> indicates inference on CPU;</li>
+          <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates inference on the first GPU;</li>
+          <li><b>NPU</b>: e.g., <code>npu:0</code> indicates inference on the first NPU;</li>
+          <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates inference on the first XPU;</li>
+          <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates inference on the first MLU;</li>
+          <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates inference on the first DCU;</li>
+          <li><b>None</b>: If set to <code>None</code>, the system will use the default device initialized by the pipeline, which prioritizes GPU 0 if available, otherwise CPU will be used.</li>
+        </ul>
+      </td>
+      <td><code>str</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_hpi</code></td>
+      <td>Whether to enable High Performance Inference .</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>use_tensorrt</code></td>
+      <td>Whether to use TensorRT for inference acceleration.</td>
+      <td><code>bool</code></td>
+      <td><code>False</code></td>
+    </tr>
+    <tr>
+      <td><code>min_subgraph_size</code></td>
+      <td>Minimum subgraph size used to optimize model computation.</td>
+      <td><code>int</code></td>
+      <td><code>3</code></td>
+    </tr>
+    <tr>
+      <td><code>precision</code></td>
+      <td>Computation precision, such as <code>fp32</code>, <code>fp16</code>.</td>
+      <td><code>str</code></td>
+      <td><code>fp32</code></td>
+    </tr>
+    <tr>
+      <td><code>enable_mkldnn</code></td>
+      <td>Whether to enable MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+      <td><code>bool</code></td>
+      <td><code>None</code></td>
+    </tr>
+    <tr>
+      <td><code>cpu_threads</code></td>
+      <td>Number of threads to use for inference when running on CPU.</td>
+      <td><code>int</code></td>
+      <td><code>10</code></td>
+    </tr>
+  </tbody>
 </table>
+
 
 * Among them, `model_name` must be specified. After specifying `model_name`, the default PaddleX built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
 
@@ -190,25 +186,21 @@ Explanations of related methods, parameters, etc., are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted</td>
-<td><code>dict</code></td>
-<td>
-<code>Dict</code>, as multimodal models have different input requirements, it needs to be determined based on the specific model. Specifically:
-<li>PP-DocBee series input format is <code>{'image': image_path, 'query': query_text}</code></li>
+<td>Input data. Required. Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
+For example, for the PP-DocBee series models, the input format should be: <code>{'image': image_path, 'query': query_text}</code>
 </td>
+<td><code>dict</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size. Accepts any integer value.</td>
 <td><code>int</code></td>
-<td>Integer</td>
 <td>1</td>
 </tr>
 </table>
