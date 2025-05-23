@@ -290,6 +290,7 @@ class TextDetector(object):
 
         post_result = self.postprocess_op(preds, shape_list)
         dt_boxes = post_result[0]["points"]
+        dt_scores = post_result[0]["scores"]
 
         if self.args.det_box_type == "poly":
             dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_im.shape)
@@ -299,7 +300,7 @@ class TextDetector(object):
         if self.args.benchmark:
             self.autolog.times.end(stamp=True)
         et = time.time()
-        return dt_boxes, et - st
+        return dt_boxes, dt_scores, et - st
 
     def __call__(self, img, use_slice=False):
         # For image like poster with one side much greater than the other side,
@@ -319,7 +320,7 @@ class TextDetector(object):
                 subimg = img[start_h:end_h, :]
                 if len(subimg) == 0:
                     break
-                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                sub_dt_boxes, sub_dt_scores, sub_elapse = self.predict(subimg)
                 offset = start_h
                 # To prevent text blocks from being cut off, roll back a certain buffer area.
                 if (
@@ -367,7 +368,7 @@ class TextDetector(object):
                 subimg = img[:, start_w:end_w]
                 if len(subimg) == 0:
                     break
-                sub_dt_boxes, sub_elapse = self.predict(subimg)
+                sub_dt_boxes, sub_dt_scores, sub_elapse = self.predict(subimg)
                 offset = start_w
                 if (
                     len(sub_dt_boxes) == 0
@@ -401,8 +402,8 @@ class TextDetector(object):
                         )
                 elapse += sub_elapse
         else:
-            dt_boxes, elapse = self.predict(img)
-        return dt_boxes, elapse
+            dt_boxes, dt_scores, elapse = self.predict(img)
+        return dt_boxes, dt_scores, elapse
 
 
 if __name__ == "__main__":
@@ -445,7 +446,7 @@ if __name__ == "__main__":
             imgs = img[:page_num]
         for index, img in enumerate(imgs):
             st = time.time()
-            dt_boxes, _ = text_detector(img)
+            dt_boxes, dt_scores, _ = text_detector(img)
             elapse = time.time() - st
             total_time += elapse
             if len(imgs) > 1:
@@ -455,6 +456,8 @@ if __name__ == "__main__":
                     + str(index)
                     + "\t"
                     + str(json.dumps([x.tolist() for x in dt_boxes]))
+                    + "\t"
+                    + str(score for score in dt_scores)
                     + "\n"
                 )
             else:
@@ -462,6 +465,8 @@ if __name__ == "__main__":
                     os.path.basename(image_file)
                     + "\t"
                     + str(json.dumps([x.tolist() for x in dt_boxes]))
+                    + "\t"
+                    + str(score for score in dt_scores)
                     + "\n"
                 )
             save_results.append(save_pred)
