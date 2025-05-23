@@ -56,7 +56,7 @@ from paddleocr import PaddleOCR
 # 基础的初始化参数保持一致
 ocr = PaddleOCR(lang="en")
 result = ocr.ocr("img.png")
-# 也可以使用新的统接口
+# 也可以使用新的统一接口
 # result = ocr.predict("img.png")
 for res in result:
     # 可直接调用方法打印识别结果，无需嵌套循环
