@@ -184,7 +184,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 </tr>
 </table>
 
-> ❗ The above section lists the **6 core models** that are primarily supported by the text recognition module. In total, the module supports **20 comprehensive models**, including multiple multilingual text recognition models. Below is the complete list of models:
+> ❗ The above section lists the <b>6 core models</b> that are primarily supported by the text recognition module. In total, the module supports <b>20 comprehensive models</b>, including multiple multilingual text recognition models. Below is the complete list of models:
 
 <details><summary> 👉Details of the Model List</summary>
 
@@ -912,6 +912,13 @@ ocr = PaddleOCR(
 # ocr = PaddleOCR(lang="en") # Uses English model by specifying language parameter
 # ocr = PaddleOCR(ocr_version="PP-OCRv4") # Uses other PP-OCR versions via version parameter
 # ocr = PaddleOCR(device="gpu") # Enables GPU acceleration for model inference via device parameter
+# ocr = PaddleOCR(
+#     text_detection_model_name="PP-OCRv5_server_det",
+#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     use_doc_orientation_classify=False,
+#     use_doc_unwarping=False,
+#     use_textline_orientation=False,
+# ) # Switch to PP-OCRv5_server models
 result = ocr.predict("./general_ocr_002.png")  
 for res in result:  
     res.print()  
@@ -1325,52 +1332,54 @@ In the above Python script, the following steps are performed:
 </tr>
 </table>
 
-- Calling the `print()` method will print the results to the terminal. The content printed to the terminal is explained as follows:
+<ul>
+    <li>Calling the <code>print()</code> method will print the results to the terminal. The content printed to the terminal is explained as follows:
+        <ul>
+            <li><code>input_path</code>: <code>(str)</code> Input path of the image to be predicted</li>
+            <li><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is <code>None</code></li>
+            <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the production line
+                <ul>
+                    <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Control whether to enable the document preprocessing sub-production line</li>
+                    <li><code>use_textline_orientation</code>: <code>(bool)</code> Control whether to enable the text line orientation classification function</li>
+                </ul>
+            </li>
+            <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> Output results of the document preprocessing sub-production line. Only exists when <code>use_doc_preprocessor=True</code>
+                <ul>
+                    <li><code>input_path</code>: <code>(Union[str, None])</code> Image path accepted by the image preprocessing sub-production line. When the input is <code>numpy.ndarray</code>, it is saved as <code>None</code></li>
+                    <li><code>model_settings</code>: <code>(Dict)</code> Model configuration parameters of the preprocessing sub-production line
+                        <ul>
+                            <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Control whether to enable document orientation classification</li>
+                            <li><code>use_doc_unwarping</code>: <code>(bool)</code> Control whether to enable text image unwarping</li>
+                        </ul>
+                    </li>
+                    <li><code>angle</code>: <code>(int)</code> Prediction result of document orientation classification. When enabled, the values are [0,1,2,3], corresponding to [0°,90°,180°,270°]; when disabled, it is -1</li>
+                </ul>
+            </li>
+            <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> List of text detection polygon boxes. Each detection box is represented by a numpy array of 4 vertex coordinates, with the array shape being (4, 2) and the data type being int16</li>
+            <li><code>dt_scores</code>: <code>(List[float])</code> List of confidence scores for text detection boxes</li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Configuration parameters for the text detection module
+                <ul>
+                    <li><code>limit_side_len</code>: <code>(int)</code> Side length limit value during image preprocessing</li>
+                    <li><code>limit_type</code>: <code>(str)</code> Processing method for side length limits</li>
+                    <li><code>thresh</code>: <code>(float)</code> Confidence threshold for text pixel classification</li>
+                    <li><code>box_thresh</code>: <code>(float)</code> Confidence threshold for text detection boxes</li>
+                    <li><code>unclip_ratio</code>: <code>(float)</code> Dilation coefficient for text detection boxes</li>
+                    <li><code>text_type</code>: <code>(str)</code> Type of text detection, currently fixed as "general"</li>
+                </ul>
+            </li>
+            <li><code>textline_orientation_angles</code>: <code>(List[int])</code> Prediction results of text line orientation classification. When enabled, actual angle values are returned (e.g., [0,0,1]); when disabled, [-1,-1,-1] is returned</li>
+            <li><code>text_rec_score_thresh</code>: <code>(float)</code> Filtering threshold for text recognition results</li>
+            <li><code>rec_texts</code>: <code>(List[str])</code> List of text recognition results, containing only texts with confidence scores exceeding <code>text_rec_score_thresh</code></li>
+            <li><code>rec_scores</code>: <code>(List[float])</code> List of text recognition confidence scores, filtered by <code>text_rec_score_thresh</code></li>
+            <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> List of text detection boxes filtered by confidence, in the same format as <code>dt_polys</code></li>
+            <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> Array of rectangular bounding boxes for detection boxes, with shape (n, 4) and dtype int16. Each row represents the [x_min, y_min, x_max, y_max] coordinates of a rectangular box, where (x_min, y_min) is the top-left coordinate and (x_max, y_max) is the bottom-right coordinate</li>
+        </ul>
+    </li>
+    <li>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_res.json</code>. If a file is specified, it will be saved directly to that file. Since json files do not support saving numpy arrays, <code>numpy.array</code> types will be converted to list form.</li>
+    <li>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (The production line usually generates many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, leaving only the last one.)</li>
+</ul>
 
-    - `input_path`: `(str)` Input path of the image to be predicted
-
-    - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is `None`
-
-    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
-
-        - `use_doc_preprocessor`: `(bool)` Control whether to enable the document preprocessing sub-pipeline
-        - `use_textline_orientation`: `(bool)` Control whether to enable the text line orientation classification function
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` Output results of the document preprocessing sub-pipeline. Only exists when `use_doc_preprocessor=True`
-        - `input_path`: `(Union[str, None])` Image path accepted by the image preprocessing sub-pipeline. When the input is `numpy.ndarray`, it is saved as `None`
-        - `model_settings`: `(Dict)` Model configuration parameters of the preprocessing sub-pipeline
-            - `use_doc_orientation_classify`: `(bool)` Control whether to enable document orientation classification
-            - `use_doc_unwarping`: `(bool)` Control whether to enable text image unwarping
-        - `angle`: `(int)` Prediction result of document orientation classification. When enabled, the values are [0,1,2,3], corresponding to [0°,90°,180°,270°]; when disabled, it is -1
-
-    - `dt_polys`: `(List[numpy.ndarray])` List of text detection polygon boxes. Each detection box is represented by a numpy array of 4 vertex coordinates, with the array shape being (4, 2) and the data type being int16
-
-    - `dt_scores`: `(List[float])` List of confidence scores for text detection boxes
-
-    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the text detection module
-        - `limit_side_len`: `(int)` Side length limit value during image preprocessing
-        - `limit_type`: `(str)` Processing method for side length limits
-        - `thresh`: `(float)` Confidence threshold for text pixel classification
-        - `box_thresh`: `(float)` Confidence threshold for text detection boxes
-        - `unclip_ratio`: `(float)` Dilation coefficient for text detection boxes
-        - `text_type`: `(str)` Type of text detection, currently fixed as "general"
-
-    - `textline_orientation_angles`: `(List[int])` Prediction results of text line orientation classification. When enabled, actual angle values are returned (e.g., [0,0,1]); when disabled, [-1,-1,-1] is returned
-
-    - `text_rec_score_thresh`: `(float)` Filtering threshold for text recognition results
-
-    - `rec_texts`: `(List[str])` List of text recognition results, containing only texts with confidence scores exceeding `text_rec_score_thresh`
-
-    - `rec_scores`: `(List[float])` List of text recognition confidence scores, filtered by `text_rec_score_thresh`
-
-    - `rec_polys`: `(List[numpy.ndarray])` List of text detection boxes filtered by confidence, in the same format as `dt_polys`
-
-    - `rec_boxes`: `(numpy.ndarray)` Array of rectangular bounding boxes for detection boxes, with shape (n, 4) and dtype int16. Each row represents the [x_min, y_min, x_max, y_max] coordinates of a rectangular box, where (x_min, y_min) is the top-left coordinate and (x_max, y_max) is the bottom-right coordinate
-
-- Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the save path will be `save_path/{your_img_basename}_res.json`. If a file is specified, it will be saved directly to that file. Since json files do not support saving numpy arrays, `numpy.array` types will be converted to list form.
-- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, the save path will be `save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`. If a file is specified, it will be saved directly to that file. (The pipeline usually generates many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, leaving only the last one.)
-
-* Additionally, you can also obtain the visualized image with results and prediction results through attributes, as follows:
+<p>Additionally, you can also obtain the visualized image with results and prediction results through attributes, as follows:</p>
 
 <table>
 <thead>
@@ -1389,8 +1398,10 @@ In the above Python script, the following steps are performed:
 </tr>
 </table>
 
-- The prediction results obtained by the `json` attribute are in dict format, and the content is consistent with that saved by calling the `save_to_json()` method.
-- The `img` attribute returns a dictionary-type result. The keys are `ocr_res_img` and `preprocessed_img`, with corresponding values being two `Image.Image` objects: one for displaying the visualized image of OCR results and the other for displaying the visualized image of image preprocessing. If the image preprocessing submodule is not used, only `ocr_res_img` will be included in the dictionary.
+<ul>
+    <li>The prediction results obtained by the <code>json</code> attribute are in dict format, and the content is consistent with that saved by calling the <code>save_to_json()</code> method.</li>
+    <li>The <code>img</code> attribute returns a dictionary-type result. The keys are <code>ocr_res_img</code> and <code>preprocessed_img</code>, with corresponding values being two <code>Image.Image</code> objects: one for displaying the visualized image of OCR results and the other for displaying the visualized image of image preprocessing. If the image preprocessing submodule is not used, only <code>ocr_res_img</code> will be included in the dictionary.</li>
+</ul>
 
 </details>
 
@@ -1701,9 +1712,40 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 </table>
 
 ### 4.2 Model Deployment  
-After fine-tuning the model with your private dataset, you will obtain local model weight files. You can then use these fine-tuned weights by customizing the pipeline configuration file.  
 
-1. **Obtain the Pipeline Configuration File**  
+After you complete fine-tuning training using a private dataset, you can obtain a local model weight file. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by customizing the production line configuration file.
+
+#### 4.2.1 Specify the local model path through parameters
+
+When initializing the production line object, specify the local model path through parameters. Take the usage of the weights after fine-tuning the text detection model as an example, as follows:
+
+Command line mode:
+
+```bash
+# Specify the local model path via --text_detection_model_dir
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
+
+# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
+```
+
+Script mode：
+
+```python
+
+from paddleocr import PaddleOCR
+
+#  Specify the local model path via text_detection_model_dir
+pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
+
+# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
+
+```
+
+#### 4.2.2 Specify the local model path through the configuration file
+
+1.Obtain the production line configuration file
 
 Call the `export_paddlex_config_to_yaml` method of the **General OCR Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
 
@@ -1714,7 +1756,7 @@ pipeline = PaddleOCR()
 pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")  
 ```  
 
-2. **Modify the Configuration File**  
+2.Modify the Configuration File  
 
 After obtaining the default pipeline configuration file, replace the paths of the default model weights with the local paths of your fine-tuned model weights. For example:  
 
@@ -1727,27 +1769,27 @@ SubModules:
     limit_type: max  
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
-    model_name: PP-OCRv5_server_det  
+    model_name: PP-OCRv5_server_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_detection  
     thresh: 0.3  
     unclip_ratio: 1.5  
   TextLineOrientation:  
     batch_size: 6  
-    model_dir: null  
-    model_name: PP-LCNet_x0_25_textline_ori  
+    model_dir: null  # Replace with the path to your fine-tuned text LineOrientation model weights  
+    model_name: PP-LCNet_x0_25_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: textline_orientation  
   TextRecognition:  
     batch_size: 6  
     model_dir: null # Replace with the path to your fine-tuned text recognition model weights  
-    model_name: PP-OCRv5_server_rec  
+    model_name: PP-OCRv5_server_rec  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_recognition  
     score_thresh: 0.0  
 ......  
 ```  
 
-The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
+The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
 
-3. **Load the Configuration File in CLI**  
+3.Load the Configuration File in CLI  
 
 After modifying the configuration file, specify its path using the `--paddlex_config` parameter in the command line. PaddleOCR will read the file and apply the configurations. Example:  
 
@@ -1755,7 +1797,7 @@ After modifying the configuration file, specify its path using the `--paddlex_co
 paddleocr ocr --paddlex_config PaddleOCR.yaml ...  
 ```  
 
-4. **Load the Configuration File in Python API**  
+4.Load the Configuration File in Python API  
 
 When initializing the pipeline object, pass the path of the PaddleX pipeline configuration file or a configuration dictionary via the `paddlex_config` parameter. PaddleOCR will read and apply the configurations. Example:  
 

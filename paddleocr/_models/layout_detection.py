@@ -21,7 +21,7 @@ from ._object_detection import (
 class LayoutDetection(ObjectDetection):
     @property
     def default_model_name(self):
-        return "PP-DocLayout-L"
+        return "PP-DocLayout_plus-L"
 
     @classmethod
     def get_cli_subcommand_executor(cls):

@@ -4,14 +4,16 @@
   </p>
 
 <!-- language -->
-中文 | [English](./README_en.md) |  [日本語](./README_ja.md)
+中文 | [English](./README_en.md)
 
 <!-- icon -->
 
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
 [![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
-![python](https://img.shields.io/badge/python-3.8+-aff.svg)
+![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
+![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
+
 
 [![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
@@ -24,9 +26,9 @@
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配**飞桨框架3.0正式版**，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5 Turbo**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
 PaddleOCR 3.0**新增**三大特色能力：
-- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。
-- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。
-- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。
+- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。[在线体验](https://aistudio.baidu.com/community/app/91660/webUI)
+- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。[在线体验](https://aistudio.baidu.com/community/app/518494/webUI)
+- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5 Turbo，精度相比上一代**提升15个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
@@ -68,18 +70,18 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ```bash
 # 安装 paddleocr
-pip install paddleocr
+pip install paddleocr==3.0.0
 ```
 
 ### 3. 命令行方式推理
 ```bash
 # 运行 PP-OCRv5 推理
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False 
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False 
 
 # 运行 PP-StructureV3 推理
-paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False 
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
 
-# 运行 PP-ChatOCRv4 推理前，需要先获得千帆KPI Key
+# 运行 PP-ChatOCRv4 推理前，需要先获得千帆API Key
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
 # 查看 "paddleocr ocr" 详细参数
@@ -91,9 +93,13 @@ paddleocr ocr --help
 ```python
 from paddleocr import PaddleOCR
 # 初始化 PaddleOCR 实例
-ocr = PaddleOCR()
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False,
+    use_textline_orientation=False)
 # 对示例图像执行 OCR 推理 
-result = ocr.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
+result = ocr.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
 # 可视化结果并保存 json 结果
 for res in result:
     res.print()
@@ -108,45 +114,21 @@ for res in result:
 from pathlib import Path
 from paddleocr import PPStructureV3
 
-pipeline = PPStructureV3()
+pipeline = PPStructureV3(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 # For Image
-output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png")
+output = pipeline.predict(
+    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
+    )
 
 # 可视化结果并保存 json 结果
 for res in output:
     res.print() 
     res.save_to_json(save_path="output") 
     res.save_to_markdown(save_path="output") 
-
-# For PDF File
-input_file = "./your_pdf_file.pdf"
-output_path = Path("./output")
-
-output = pipeline.predict(input_file)
-
-markdown_list = []
-markdown_images = []
-
-for res in output:
-    md_info = res.markdown
-    markdown_list.append(md_info)
-    markdown_images.append(md_info.get("markdown_images", {}))
-
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
-
-mkd_file_path = output_path / f"{Path(input_file).stem}.md"
-mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(mkd_file_path, "w", encoding="utf-8") as f:
-    f.write(markdown_texts)
-
-for item in markdown_images:
-    if item:
-        for path, image in item.items():
-            file_path = output_path / path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            image.save(file_path)
 ```
 
 </details>
@@ -182,12 +164,13 @@ mllm_chat_bot_config = {
     "api_key": "api_key",  # your api_key
 }
 
-pipeline = PPChatOCRv4Doc()
+pipeline = PPChatOCRv4Doc(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 visual_predict_res = pipeline.visual_predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
     use_common_ocr=True,
     use_seal_recognition=True,
     use_table_recognition=True,
