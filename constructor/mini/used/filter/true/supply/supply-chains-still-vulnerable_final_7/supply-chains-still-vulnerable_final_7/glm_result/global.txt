@@ -1,0 +1,11 @@
+```json
+{
+  "background": "这是一张显示了供应链领导者在人才发展策略上调整的图表。",
+  
+  "context": "图表的内容为过去几年中，供应链领导者采取的人才发展行动的比例变化，具体包括招聘新人才、重新培训现有劳动力、重新部署现有劳动力和临时雇佣外部人才。",
+  
+  "legend": "图例内容分别表示招聘新人才（Hired new talent）、重新培训现有劳动力（Reskilled today's labor force）、重新部署现有劳动力（Redeployed today's labor force）和临时雇佣外部人才（Hired external talent temporarily）的比例变化。",
+  
+  "type": "图表类型为多系列柱状图"
+}
+```
