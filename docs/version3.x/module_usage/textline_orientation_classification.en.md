@@ -84,7 +84,7 @@ The text line orientation classification module identifies the orientation of te
 Run the following command for a quick demo:  
 
 ```bash
-paddleocr text_line_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
+paddleocr textline_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
 ```  
 
 Alternatively, integrate the module into your project. Download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg) locally before running the code below.  

@@ -16,7 +16,7 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 
 - [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）
 - [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）
-- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）
+- [文本行方向分类模块](../module_usage/textline_orientation_classification.md) （可选）
 - [文本检测模块](../module_usage/text_detection.md)
 - [文本识别模块](../module_usage/text_recognition.md)
 
@@ -597,19 +597,19 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_name</code></td>
+<td><code>textline_orientation_model_name</code></td>
 <td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_dir</code></td>
+<td><code>textline_orientation_model_dir</code></td>
 <td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_batch_size</code></td>
+<td><code>textline_orientation_batch_size</code></td>
 <td>文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
 <td><code>int</code></td>
 <td><code>None</code></td>
@@ -828,13 +828,13 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>cls_model_dir</code></td>
-<td>已废弃，请使用<code>text_line_orientation_model_dir</code>代替。文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>已废弃，请使用<code>textline_orientation_model_dir</code>代替。文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>cls_batch_num</code></td>
-<td>已废弃，请使用<code>text_line_orientation_batch_size</code>代替。文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
+<td>已废弃，请使用<code>textline_orientation_batch_size</code>代替。文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
 <td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1010,19 +1010,19 @@ for res in result:
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_name</code></td>
+<td><code>textline_orientation_model_name</code></td>
 <td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_dir</code></td>
+<td><code>textline_orientation_model_dir</code></td>
 <td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_batch_size</code></td>
+<td><code>textline_orientation_batch_size</code></td>
 <td>文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
 <td><code>int</code></td>
 <td><code>None</code></td>

@@ -31,6 +31,9 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         doc_unwarping_model_dir=None,
         text_detection_model_name=None,
         text_detection_model_dir=None,
+        textline_orientation_model_name=None,
+        textline_orientation_model_dir=None,
+        textline_orientation_batch_size=None,
         text_recognition_model_name=None,
         text_recognition_model_dir=None,
         text_recognition_batch_size=None,
@@ -83,6 +86,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -107,6 +111,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
+            use_textline_orientation=use_textline_orientation,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             layout_threshold=layout_threshold,
@@ -134,6 +139,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -159,6 +165,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
                 use_seal_recognition=use_seal_recognition,
                 use_table_recognition=use_table_recognition,
                 layout_threshold=layout_threshold,
@@ -279,6 +286,15 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             ],
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
                 "text_detection_model_dir"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
+                "textline_orientation_model_name"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
+                "textline_orientation_model_dir"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
+                "textline_orientation_batch_size"
             ],
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
@@ -453,6 +469,21 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Path to the text detection model directory.",
         )
         subparser.add_argument(
+            "--textline_orientation_model_name",
+            type=str,
+            help="Name of the text line orientation classification model.",
+        )
+        subparser.add_argument(
+            "--textline_orientation_model_dir",
+            type=str,
+            help="Path to the text line orientation classification model directory.",
+        )
+        subparser.add_argument(
+            "--textline_orientation_batch_size",
+            type=int,
+            help="Batch size for the text line orientation classification model.",
+        )
+        subparser.add_argument(
             "--text_recognition_model_name",
             type=str,
             help="Name of the text recognition model.",
@@ -505,12 +536,17 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
+        )
+        subparser.add_argument(
+            "--use_textline_orientation",
+            type=str2bool,
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
