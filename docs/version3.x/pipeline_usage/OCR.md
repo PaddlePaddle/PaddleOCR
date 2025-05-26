@@ -184,7 +184,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 </tr>
 </table>
 
-> ❗ 以上列出的是文本识别模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
+> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
 
@@ -1786,7 +1786,7 @@ pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 #### 4.2.2 通过配置文件指定本地模型路径
 
 
-1. 获取产线配置文件
+1.获取产线配置文件
 
 可调用 PaddleOCR 中 通用OCR 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
 
@@ -1797,7 +1797,7 @@ pipeline = PaddleOCR()
 pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")
 ```
 
-2. 修改配置文件
+2.修改配置文件
 
 在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
 
@@ -1830,7 +1830,7 @@ SubModules:
 
 在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
 
-3. 在 CLI 中加载产线配置文件
+3.在 CLI 中加载产线配置文件
 
 在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
@@ -1838,7 +1838,7 @@ SubModules:
 paddleocr ocr --paddlex_config PaddleOCR.yaml ...
 ```
 
-4. 在 Python API 中加载产线配置文件
+4.在 Python API 中加载产线配置文件
 
 初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
