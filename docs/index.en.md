@@ -5,6 +5,8 @@ hide:
   - toc
 ---
 
+
+
 ![PaddleOCR Banner](./images/Banner.png)
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
