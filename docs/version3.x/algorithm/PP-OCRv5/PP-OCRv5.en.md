@@ -209,7 +209,7 @@ Test Environment:
 - Intel Xeon Gold 6271C
 - PaddlePaddle 3.0.0
 
-Tested on 200 images (including both general and document images). Each metric was measured 3 times and averaged. During testing, images are read from disk, so the image reading time and other associated overhead are also included in the total time consumption. If the images are preloaded into memory, the average time per image can be further reduced by approximately 25 ms.
+Tested on 200 images (including both general and document images). During testing, images are read from disk, so the image reading time and other associated overhead are also included in the total time consumption. If the images are preloaded into memory, the average time per image can be further reduced by approximately 25 ms.
 
 Unless otherwise specified:
 
