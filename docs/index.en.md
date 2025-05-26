@@ -7,7 +7,7 @@ hide:
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./images/Banner.png" alt="PaddleOCR Banner"></a>
+      <img width="100%" src="./en/images/Banner.png" alt="PaddleOCR Banner"></a>
   </p>
 </div>
 
@@ -22,13 +22,13 @@ Three Major New Features in PaddleOCR 3.0:
 
 - 🧮 General Document-Parsing Solution [PP-StructureV3](./version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks. [Online Demo](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the ERNIE 4.5 Turbo, achieving 15 percentage points higher accuracy than its predecessor.
+- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the ERNIE 4.5 Turbo, achieving 15 percentage points higher accuracy than its predecessor.[Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./images/Arch.png" alt="PaddleOCR Architecture"></a>
+      <img width="100%" src="./en/images/Arch.png" alt="PaddleOCR Architecture"></a>
   </p>
 </div>
 
@@ -39,14 +39,14 @@ You can [Quick Start](./quick_start.en.md) directly, find comprehensive document
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./images/demo.gif" alt="PP-OCRv5 Demo"></a>
+      <img width="100%" src="./en/images/demo.gif" alt="PP-OCRv5 Demo"></a>
   </p>
 </div>
 
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html" target="_blank">
-      <img width="100%" src="./images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+      <img width="100%" src="./en/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
   </p>
 </div>
 
