@@ -188,13 +188,13 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use a n d the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use and use the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -209,7 +209,7 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
 </ul>
-If not set, the production line's initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
+If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -349,7 +349,7 @@ In the above Python script, the following steps are executed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
-<li><b>None</b>: If set to <code>None</code>,  the production line's initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
+<li><b>None</b>: If set to <code>None</code>,  the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -377,7 +377,7 @@ In the above Python script, the following steps are executed:
 <td><code>precision</code></td>
 <td>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>

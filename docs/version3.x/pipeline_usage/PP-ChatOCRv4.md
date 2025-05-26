@@ -1059,7 +1059,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>qianfan_api_key</code></td>
-<td>千帆大模型的api_key</td>
+<td>千帆平台的api_key</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1607,7 +1607,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>

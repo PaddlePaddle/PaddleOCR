@@ -816,7 +816,7 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 <li><b>XPU</b>: <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-</ul>If not set, the production line's initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
+</ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1145,7 +1145,7 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> for inference on the 1st XPU;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> for inference on the 1st MLU;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> for inference on the 1st DCU;</li>
-<li><b>None</b>: If set to <code>None</code>, the production line's initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1173,7 +1173,7 @@ In the above Python script, the following steps are performed:
 <td><code>precision</code></td>
 <td>Computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
