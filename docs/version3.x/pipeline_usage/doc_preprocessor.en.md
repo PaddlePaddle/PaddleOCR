@@ -150,7 +150,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>The data to be predicted, supporting multiple input types. This parameter is required.
+<td>The data to be predicted. This parameter is required.
 For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).
 </td>
 <td><code>str</code></td>

@@ -562,7 +562,7 @@ The name of the formula recognition model. If not set, the default model from th
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>The batch size for the formula recognition model. If set to  <code>None</code>, the batch size will default to <code>1</code>.</td>
+<td>The batch size for the formula recognition model. If not set, the batch size will default to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>

@@ -822,7 +822,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted, required.
-Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).
+Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -944,7 +944,7 @@ Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as U
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limit for text detection.
-Any integer greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
+Any integer greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -960,7 +960,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that th
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
-Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -968,7 +968,7 @@ Any floating-point number greater than <code>0</code>.If not set, the default va
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
-Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -976,7 +976,7 @@ Any floating-point number greater than <code>0</code>.If not set, the default va
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1002,7 +1002,7 @@ Any floating-point number greater than <code>0</code>.If not set, the default va
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
-Any floating-point number greater than <code>0</code>.If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
 </td>
 <td><code>float</code></td>
 <td></td>

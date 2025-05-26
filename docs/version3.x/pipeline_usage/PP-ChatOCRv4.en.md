@@ -515,7 +515,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, required. Such as the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>; <b>Local directory</b>, which should contain images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories, PDF files need to be specified to the specific file path).
+<td>Data to be predicted, required. Such as the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>; <b>Local directory</b>, which should contain images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories, PDF files need to be specified to the specific file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -716,7 +716,7 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-Any integer greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -724,7 +724,7 @@ Any integer greater than <code>0</code>.If not set, the pipeline's initialized v
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>.If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -733,7 +733,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring 
 <td><code>text_det_thresh</code></td>
 <td>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.
 Any floating-point number greater than <code>0</code>
-.If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
+. If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -741,7 +741,7 @@ Any floating-point number greater than <code>0</code>
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Text detection box threshold. If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
- Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
+ Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -750,7 +750,7 @@ Any floating-point number greater than <code>0</code>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area.
 Any floating-point number greater than <code>0</code>
-.If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
+. If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -759,7 +759,7 @@ Any floating-point number greater than <code>0</code>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with scores higher than this threshold will be retained.
  Any floating-point number greater than <code>0</code>
-.If not set, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.
+. If not set, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -767,7 +767,7 @@ Any floating-point number greater than <code>0</code>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
-Any integer > <code>0</code>.If not set, the default is <code>736</code>.
+Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>don’t 
 <td></td>
@@ -775,7 +775,7 @@ Any integer > <code>0</code>.If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>..If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -791,7 +791,7 @@ Any float > <code>0</code></li>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.Any float > <code>0</code>.If not set, default is <code>0.6</code>.
+<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.Any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -799,7 +799,7 @@ Any float > <code>0</code></li>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-any float > <code>0</code>.If not set, default is <code>0.5</code>.
+any float > <code>0</code>. If not set, default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1403,7 +1403,7 @@ The relevant parameter descriptions are as follows:
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
   <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
-  <li><b>str</b>：e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
+  <li><b>str</b>：e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
   <li><b>List</b>：List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>,<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>,<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
@@ -1779,7 +1779,7 @@ The following are the parameters and their descriptions for the `mllm_pred()` me
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
   <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
-  <li><b>str</b>：e.g., local path of an image file or single-page PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or single-page PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>；</li>
+  <li><b>str</b>：e.g., local path of an image file or single-page PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or single-page PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；</li>
 </ul>
 </td>
 <td><code>Python Var|str</code></td>

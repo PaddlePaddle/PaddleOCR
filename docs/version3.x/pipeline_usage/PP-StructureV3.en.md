@@ -967,7 +967,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>input</code></td>
 <td>Data to be predicted. Required.
-.e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path).
+.e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -993,7 +993,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Score threshold for the layout model.
-.any value between <code>0-1</code>.If not set, the default value is used, which is <code>0.5</code>.
+.any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1006,15 +1006,14 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model.
-.any float > <code>0</code>.If not set, default is <code>1.0</code>.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, default is <code>1.0</code>.
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>Merge mode for overlapping boxes in layout detection.
-.<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both.If not set, default is <code>large</code>.
+<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both. If not set, default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1087,8 +1086,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
-.any integer > <code>0</code>.If not set, the default value will be <code>960</code>.
+<td>Maximum side length limit for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1096,7 +1094,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>.If not set, the default value will be <code>max</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>. If not set, the default value will be <code>max</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1104,7 +1102,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
-.If not set, default is <code>0.3</code>.
+. If not set, default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1112,7 +1110,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
-Any float > <code>0</code>.If not set, default is <code>0.6</code>.
+Any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1120,7 +1118,7 @@ Any float > <code>0</code>.If not set, default is <code>0.6</code>.
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-any float > <code>0</code>.If not set, default is <code>2.0</code>.
+any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1164,7 +1162,7 @@ any float > <code>0</code>.If not set, default is <code>2.0</code>.
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Score threshold for text recognition. Only results above this value will be kept.
-Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1244,7 +1242,7 @@ Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
-.any integer > <code>0</code>.If not set, the default is <code>736</code>.
+Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1252,7 +1250,7 @@ Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>.If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1260,7 +1258,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>.If not set, default is <code>0.2</code>.
+any float > <code>0</code>. If not set, default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1268,14 +1266,14 @@ any float > <code>0</code>.If not set, default is <code>0.2</code>.
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>.If not set, default is <code>0.6</code>.
+any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>.If not set, default is <code>0.5</code>.
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1300,7 +1298,7 @@ any float > <code>0</code>.If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold).
+<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>

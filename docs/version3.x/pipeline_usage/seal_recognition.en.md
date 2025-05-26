@@ -764,7 +764,7 @@ The name of the layout detection model. If not set, the default model in pipelin
 </tr>
 <tr>  
 <td><code>use_doc_orientation_classify</code></td>  
-<td>Whether to load and use document orientation classification.If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use document orientation classification. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>  
@@ -784,7 +784,7 @@ Whether to load and use the layout detection module. If not set, the parameter w
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
-Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.If not set, the default PaddleX official model configuration will be used.
+Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2. If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -798,7 +798,7 @@ Such as 0.2, indicates filtering out all bounding boxes with a confidence score 
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>The scaling factor for the side length of the detection boxes in layout region detection.
-A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1.If not set, the default PaddleX official model configuration will be used.
+A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1. If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -818,7 +818,7 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
-Any integer > <code>0</code>.If not set, the default is <code>736</code>.
+Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -826,7 +826,7 @@ Any integer > <code>0</code>.If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>.If not set, default is <code>min</code>.
+Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -834,7 +834,7 @@ Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>.If not set, default is <code>0.2</code>.
+any float > <code>0</code>. If not set, default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -842,7 +842,7 @@ any float > <code>0</code>.If not set, default is <code>0.2</code>.
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>.If not set, default is <code>0.6</code>.
+any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -850,7 +850,7 @@ any float > <code>0</code>.If not set, default is <code>0.6</code>.
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-Any float > <code>0</code>.If not set, default is <code>0.5</code>.
+Any float > <code>0</code>. If not set, default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -858,7 +858,7 @@ Any float > <code>0</code>.If not set, default is <code>0.5</code>.
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>Recognition score threshold. Text results above this value will be kept.
-Any float > <code>0</code>.If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>

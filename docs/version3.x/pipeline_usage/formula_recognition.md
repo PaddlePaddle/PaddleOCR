@@ -417,7 +417,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tr>
 <td><code>input</code></td>
 <td>待预测数据，必填。
-如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
+如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -492,7 +492,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tr>
 <td><code>layout_threshold</code></td>
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
-如 0.2，表示过滤掉所有阈值小于0.2的目标框。不设置，将默认使用默认值。
+如 0.2，表示过滤掉所有阈值小于0.2的目标框。如果不设置，将默认使用默认值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -506,7 +506,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>版面区域检测中检测框的边长缩放倍数。
-大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍。不设置，将使用默认值：1.0。
+大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍。如果不设置，将使用默认值：1.0。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -518,7 +518,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <li><b>large</b>, 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
 <li><b>small</b>, 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
 <li><b>union</b>, 不进行框的过滤处理，内外框都保留</li>
-</ul>不设置，将使用默认值：“large”。
+</ul>如果不设置，将使用默认值：“large”。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -735,7 +735,7 @@ for res in output:
 <ul>
 <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>不指定，将使用默认值：0.5</li>
+<li><b>None</b>，不指定，将使用默认值：0.5</li>
 </td>
 <td><code>float|dict</code></td>
 <td><code>None</code></td>

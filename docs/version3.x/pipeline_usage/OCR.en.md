@@ -544,7 +544,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, required. Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">Example</a>; <b>Local directory</b>, which must contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDFs in a directory is not supported; PDFs need to specify the exact file path).
+<td>Data to be predicted, required. Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">Example</a>; <b>Local directory</b>, which must contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDFs in a directory is not supported; PDFs need to specify the exact file path).
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -648,7 +648,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-Any integer greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -656,14 +656,14 @@ Any integer greater than <code>0</code>.If not set, the pipeline's initialized v
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>.If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
+<td>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -671,7 +671,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Text detection box threshold. If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
-Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -679,7 +679,7 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -693,7 +693,7 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with scores higher than this threshold will be retained.Any floating-point number greater than <code>0</code>
-.If not set, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.
+. If not set, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -748,14 +748,14 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 </tr>
 <tr>
 <td><code>det_limit_type</code></td>
-<td>Deprecated. Please use <code>text_det_limit_type</code> instead. Type of side length limit for text detection.Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len.If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+<td>Deprecated. Please use <code>text_det_limit_type</code> instead. Type of side length limit for text detection.Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_thresh</code></td>
-<td>Deprecated. Please use <code>text_det_thresh</code> instead. Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
+<td>Deprecated. Please use <code>text_det_thresh</code> instead. Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels. Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -763,7 +763,7 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 <tr>
 <td><code>det_db_box_thresh</code></td>
 <td>Deprecated. Please use <code>text_det_box_thresh</code> instead. Text detection box threshold. If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
-Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -771,7 +771,7 @@ Any floating-point number greater than <code>0</code>.If not set, the pipeline's
 <tr>
 <td><code>det_db_unclip_ratio</code></td>
 <td>Deprecated. Please use <code>text_det_unclip_ratio</code> instead. Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>.If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
