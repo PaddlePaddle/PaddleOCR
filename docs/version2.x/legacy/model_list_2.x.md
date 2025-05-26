@@ -6,8 +6,6 @@
 
 ### 中文检测模型
 
-* PP-OCRv5_mobile_det
-* PP-OCRv5_server_det
 * ch_PP-OCRv4_det
 * ch_PP-OCRv4_server_det
 * ch_PP-OCRv3_det_slim
@@ -32,8 +30,6 @@
 
 ### 中文识别模型
 
-* PP-OCRv5_mobile_rec
-* PP-OCRv5_server_rec
 * ch_PP-OCRv4_rec
 * ch_PP-OCRv4_server_rec
 * ch_PP-OCRv4_server_rec_doc
