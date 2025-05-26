@@ -236,11 +236,11 @@ for res in output:
 <td><code>float/dict</code></td>
 <td>
 <ul>
-  <li><b>float</b>，如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-  <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+  <li><b>float</b>，如 0.3， 表示过滤掉所有阈值小于0.3的目标框</li>
+  <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.3}</code>，表示对cls_id为0的类别应用阈值0.3</li>
 </ul>
 </td>
-<td>无</td>
+<td>None</td>
 </tr>
 </table>
 
