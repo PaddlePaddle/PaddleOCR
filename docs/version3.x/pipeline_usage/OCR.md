@@ -1855,7 +1855,6 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
 - NVIDIA Tesla V100
 - Intel Xeon Gold 6271C
 - PaddlePaddle 3.0.0
-- PaddleOCR 3.0.1
 
 在 200 张图像（包括通用图像与文档图像）上测试。对于每项指标，测量 3 次取平均值。统计的推理耗时包括图像读取时间，平均读图时间约为 8.78 ms。
 

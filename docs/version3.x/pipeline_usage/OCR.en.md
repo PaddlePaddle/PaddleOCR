@@ -1853,7 +1853,6 @@ Test Environment:
 - NVIDIA Tesla V100
 - Intel Xeon Gold 6271C
 - PaddlePaddle 3.0.0
-- PaddleOCR 3.0.1
 
 Tested on 200 images (including both general and document images). Each metric was measured 3 times and averaged. The reported inference time includes image loading time, which averages around 8.78 ms.
 
