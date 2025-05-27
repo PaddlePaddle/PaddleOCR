@@ -4,18 +4,17 @@ comments: true
 
 # Text Line Orientation Classification Module Tutorial
 
-## 1. Overview  
-The text line orientation classification module identifies the orientation of text lines and corrects them through post-processing. During processes like document scanning or ID photo capture, users may rotate the shooting device for better clarity, resulting in text lines with varying orientations. Standard OCR workflows often struggle with such data. By employing image classification technology, this module pre-determines text line orientation and adjusts it, thereby enhancing OCR accuracy.
+## 1. Overview
+The text line orientation classification module primarily distinguishes the orientation of text lines and corrects them using post-processing. In processes such as document scanning and license/certificate photography, to capture clearer images, the capture device may be rotated, resulting in text lines in various orientations. Standard OCR pipelines cannot handle such data well. By utilizing image classification technology, the orientation of text lines can be predetermined and adjusted, thereby enhancing the accuracy of OCR processing.
 
-## 2. Supported Models  
+## 2. Supported Model List
 
 <table>
 <thead>
 <tr>
-<th>Model</th>
-<th>Download Links</th>
-<th>Top-1 Acc (%)</th>
-<th>GPU Inference Time (ms)</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)</th>
 <th>Model Size (M)</th>
 <th>Description</th>
@@ -24,26 +23,36 @@ The text line orientation classification module identifies the orientation of te
 <tbody>
 <tr>
 <td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
-<td>95.54</td>
+<td>98.85</td>
 <td>-</td>
 <td>-</td>
 <td>0.32</td>
-<td>A text line classification model based on PP-LCNet_x0_25, with two classes: 0° and 180°.</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>Text line classification model based on PP-LCNet_x1_0, with two classes: 0 degrees and 180 degrees</td>
 </tr>
 </tbody>
 </table>
 
-<strong>Testing Environment:</strong>
+> ❗ **Note**: The text line orientation classification model has been recently upgraded, and `PP-LCNet_x1_0_textline_ori` has been added. If you need to use the pre-upgrade model weights, please click the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">download link</a>.
+
+<strong>Test Environment Description:</strong>
 
   <ul>
-      <li><b>Performance Testing Environment</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>Test Dataset:</strong> PaddleX's proprietary dataset, covering scenarios like IDs and documents, with 1,000 images.</li>
-              <li><strong>Hardware:</strong>
+             <li><strong>Test Dataset：</strong> PaddleX Self-built Dataset, Covering Multiple Scenarios Such as Documents and Certificates, Containing 1000 Images.</li>
+              <li><strong>Hardware Configuration：</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
@@ -51,45 +60,44 @@ The text line orientation classification module identifies the orientation of te
       <li><b>Inference Mode Description</b></li>
   </ul>
 
-
 <table border="1">
     <thead>
         <tr>
             <th>Mode</th>
-            <th>GPU Configuration</th>
-            <th>CPU Configuration</th>
-            <th>Acceleration Techniques</th>
+            <th>GPU Configuration </th>
+            <th>CPU Configuration </th>
+            <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Standard Mode</td>
-            <td>FP32 precision / No TRT acceleration</td>
-            <td>FP32 precision / 8 threads</td>
+            <td>Normal Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
             <td>High-Performance Mode</td>
-            <td>Optimal combination of precision and acceleration strategies</td>
-            <td>FP32 precision / 8 threads</td>
-            <td>Optimal backend selection (Paddle/OpenVINO/TRT, etc.)</td>
+            <td>Optimal combination of pre-selected precision types and acceleration strategies</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Pre-selected optimal backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
 
-## 3. Quick Start  
+## 3. Quick Integration
 
-> ❗ Before starting, ensure you have installed the PaddleOCR wheel package. Refer to the [Installation Guide](../installation.en.md) for details.  
+> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](../installation.en.md).
 
-Run the following command for a quick demo:  
+You can quickly experience the functionality with a single command:
 
 ```bash
 paddleocr text_line_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
-```  
+```
 
-Alternatively, integrate the module into your project. Download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg) locally before running the code below.  
+You can also integrate the text line orientation classification model into your project. Run the following code after downloading the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg) to your local machine. 
 
-```python
+```bash
 from paddleocr import TextLineOrientationClassification
 model = TextLineOrientationClassification(model_name="PP-LCNet_x0_25_textline_ori")
 output = model.predict("textline_rot180_demo.jpg",  batch_size=1)
@@ -97,123 +105,197 @@ for res in output:
     res.print(json_format=False)
     res.save_to_img("./output/demo.png")
     res.save_to_json("./output/res.json")
-```  
+```
 
-The output will be:  
+After running, the result obtained is:
 
 ```bash
-{'res': {'input_path': 'textline_rot180_demo.jpg', 'page_index': None, 'class_ids': array([1], dtype=int32), 'scores': array([1.], dtype=float32), 'label_names': ['180_degree']}}
-```  
+{'res': {'input_path': 'textline_rot180_demo.jpg', 'page_index': None, 'class_ids': array([1], dtype=int32), 'scores': array([0.99864], dtype=float32), 'label_names': ['180_degree']}}
+```
 
-Key output fields:  
-- `input_path`: Path of the input image.  
-- `page_index`: For PDF inputs, indicates the page number; otherwise, `None`.  
-- `class_ids`: Predicted class IDs (0° or 180°).  
-- `scores`: Confidence scores.  
-- `label_names`: Predicted class labels.  
+The meanings of the running results parameters are as follows:
 
-Visualization:  
+- `input_path`：Indicates the path of the input image.
+- `page_index`：If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
+- `class_ids`：Indicates the class ID of the prediction result.
+- `scores`：Indicates the confidence score of the prediction result.
+- `label_names`：Indicates the class name of the prediction result.
+The visualization image is as follows:
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg">  
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg">
 
-### Method and Parameter Details  
+The explanations for the methods, parameters, etc., are as follows:
 
-* **`TextLineOrientationClassification` Initialization** (using `PP-LCNet_x0_25_textline_ori` as an example):  
+* `TextLineOrientationClassification` instantiates a textline classification model (here, `PP-LCNet_x0_25_textline_ori` is used as an example), and the specific explanations are as follows:
 
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
 <th>Options</th>
-<th>Default</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
+<td>Name of the model</td>
 <td><code>str</code></td>
-<td>N/A</td>
-<td><code>None</code></td>
+<td>None</td>
+<td><code>PP-LCNet_x0_25_textline_ori</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Custom model path</td>
+<td>Path to store the model</td>
 <td><code>str</code></td>
-<td>N/A</td>
+<td>None</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Inference device</td>
+<td>The device used for model inference</td>
 <td><code>str</code></td>
-<td>E.g., "gpu:0", "npu:0", "cpu"</td>
+<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>Enable high-performance inference</td>
+<td>Whether to enable the high-performance inference plugin</td>
 <td><code>bool</code></td>
-<td>N/A</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>HPI configuration</td>
+<td>High-performance inference configuration</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>N/A</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
-* **`predict()` Method**:  
-  - `input`: Supports various input types (numpy array, file path, URL, directory, or list).  
-  - `batch_size`: Batch size (default: 1).  
+* The `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. If `model_dir` is specified, the user-defined model is used.
 
-* **Result Handling**:  
-  Each prediction result is a `Result` object with methods like `print()`, `save_to_img()`, and `save_to_json()`.  
+* Call the `predict()` method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a `predict_iter()` method. Both methods accept the same parameters and return the same results, but `predict_iter()` returns a `generator`, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the `predict()` method are `input` and `batch_size`, as described below:
+
+
+
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Options</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td>Data to be predicted, supporting multiple input types</td>
+<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
+<td>
+<ul>
+  <li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
+  <li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
+  <li><b>URL link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg">Example</a></li>
+  <li><b>Local directory</b>, the directory should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
+  <li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+</ul>
+</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td>Batch size</td>
+<td><code>int</code></td>
+<td>Any integer</td>
+<td>1</td>
+</tr>
+</table>
+
+* The prediction results are processed, and the prediction result for each sample is of type `dict`. It supports operations such as printing, saving as an image, and saving as a `json` file:
 
 <table>
 <thead>
 <tr>
 <th>Method</th>
-<th>Description</th>
-<th>Parameters</th>
-<th>Type</th>
-<th>Details</th>
-<th>Default</th>
+<th>Method Description</th>
+<th>Parameter</th>
+<th>Parameter Type</th>
+<th>Parameter Description</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
-<td><code>print()</code></td>
-<td>Print results</td>
-<td><code>format_json</code>, <code>indent</code>, <code>ensure_ascii</code></td>
-<td><code>bool</code>, <code>int</code>, <code>bool</code></td>
-<td>Control JSON formatting and ASCII escaping</td>
-<td><code>True</code>, 4, <code>False</code></td>
+<td rowspan="3"><code>print()</code></td>
+<td rowspan="3">Print the results to the terminal</td>
+<td><code>format_json</code></td>
+<td><code>bool</code></td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td><code>True</code></td>
 </tr>
 <tr>
-<td><code>save_to_json()</code></td>
-<td>Save results as JSON</td>
-<td><code>save_path</code>, <code>indent</code>, <code>ensure_ascii</code></td>
-<td><code>str</code>, <code>int</code>, <code>bool</code></td>
-<td>Same as <code>print()</code></td>
-<td>N/A, 4, <code>False</code></td>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, only effective when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. If set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only effective when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>save_to_json()</code></td>
+<td rowspan="3">Save the results as a JSON file</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>The path to save the file. If it is a directory, the saved file name will be consistent with the input file name</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, only effective when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. If set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only effective when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>Save visualized results</td>
+<td>Save the results as an image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Output path</td>
-<td>N/A</td>
+<td>The path to save the file. If it is a directory, the saved file name will be consistent with the input file name</td>
+<td>None</td>
 </tr>
 </table>
 
-* **Attributes**:  
-  - `json`: Get results in JSON format.  
-  - `img`: Get visualized images as a dictionary.  
+* Additionally, it supports obtaining the visualization image with results and the prediction results through attributes, as follows:
+
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Attribute Description</th>
+</tr>
+</thead>
+<tr>
+<td rowspan="1"><code>json</code></td>
+<td rowspan="1">Get the prediction result in <code>json</code> format</td>
+</tr>
+<tr>
+<td rowspan="1"><code>img</code></td>
+<td rowspan="1">Get the visualization image in <code>dict</code> format</td>
+</tr>
+</table>
 
 ## 4. Custom Development  
 
