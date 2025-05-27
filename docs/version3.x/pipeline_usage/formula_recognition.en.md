@@ -1361,17 +1361,17 @@ Since the formula recognition pipeline consists of several modules, if the pipel
 <tr>
 <td>Formulas are missing</td>
 <td>Layout Detection Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/layout_detection.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Formula content is inaccurate</td>
 <td>Formula Recognition Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Whole-image rotation correction is inaccurate</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Image distortion correction is inaccurate</td>
