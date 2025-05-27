@@ -388,7 +388,7 @@ comments: true
 
 ### 2.1 命令行方式体验
 
-一行命令即可快速体验 formula_recognition 产线效果：
+一行命令即可快速体验 formula_recognition 产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png)到本地：
 
 ```bash
 paddleocr formula_recognition_pipeline -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png
@@ -424,7 +424,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td>无</td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
@@ -902,7 +902,7 @@ for res in output:
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td>无</td>
 <tr>
 <td><code>device</code></td>
 <td>与实例化时的参数相同。</td>
@@ -1335,17 +1335,17 @@ for i, res in enumerate(result["formulaRecResults"]):
 <tr>
 <td>公式存在漏检</td>
 <td>版面区域检测模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/version3.x/module_usage/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>公式内容不准</td>
 <td>公式识别模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/version3.x/module_usage/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>
