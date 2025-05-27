@@ -1045,7 +1045,7 @@ In the above Python script, the following steps are performed:
  <td><code>text_det_limit_type</code></td>
  <td>Type of side length limit for text detection.
  <ul>
- <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code></li>
+ <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used;</li>
  </ul>
  </td>
@@ -1056,7 +1056,7 @@ In the above Python script, the following steps are performed:
  <td><code>text_det_thresh</code></td>
  <td>Pixel threshold for text detection. Pixels with scores higher than this threshold in the output probability map will be considered text pixels.
  <ul>
- <li><b>float</b>: Any floating-point number greater than <code>0</code>
+ <li><b>float</b>: Any floating-point number greater than <code>0</code>;
 <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used;</li></li></ul>
  </td>
  <td><code>float</code></td>
@@ -1066,7 +1066,7 @@ In the above Python script, the following steps are performed:
  <td><code>text_det_box_thresh</code></td>
  <td>Box threshold for text detection. A detection result will be considered a text region if the average score of all pixels within the bounding box is higher than this threshold.
  <ul>
- <li><b>float</b>: Any floating-point number greater than <code>0</code>
+ <li><b>float</b>: Any floating-point number greater than <code>0</code>;
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used;</li></li></ul>
  </td>
  <td><code>float</code></td>
@@ -1076,7 +1076,7 @@ In the above Python script, the following steps are performed:
  <td><code>text_det_unclip_ratio</code></td>
  <td>Dilation coefficient for text detection. This method is used to dilate the text region, and the larger this value, the larger the dilated area.
  <ul>
- <li><b>float</b>: Any floating-point number greater than <code>0</code>
+ <li><b>float</b>: Any floating-point number greater than <code>0</code>;
 <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used;</li></li></ul>
  </td>
  <td><code>float</code></td>
@@ -1092,7 +1092,7 @@ In the above Python script, the following steps are performed:
  <td><code>text_rec_score_thresh</code></td>
  <td>Recognition score threshold for text. Text results with scores higher than this threshold will be retained.
  <ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>
+<li><b>float</b>: Any floating-point number greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used;</li></li></ul>
 </td>
 <td><code>float</code></td>
@@ -1729,7 +1729,7 @@ paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
 ```
 
-Script mode：
+Script mode: 
 
 ```python
 

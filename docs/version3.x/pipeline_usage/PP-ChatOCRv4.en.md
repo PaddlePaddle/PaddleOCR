@@ -425,7 +425,7 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-                    <li><strong>Test Dataset：</strong>
+                    <li><strong>Test Dataset: </strong>
                         <ul>
                           <li>Text Image Rectification Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a></li>
                           <li>Layout Region Detection Model: A self-built layout analysis dataset using PaddleOCR, containing 10,000 images of common document types such as Chinese and English papers, magazines, and research reports.</li>
@@ -440,7 +440,7 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
                           <li>Seal Text Detection Model: A self-built dataset using PaddleOCR, containing 500 images of circular seal textures.</li>
                         </ul>
                     </li>
-              <li><strong>Hardware Configuration：</strong>
+              <li><strong>Hardware Configuration: </strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
@@ -705,10 +705,10 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>The merging mode for the detection boxes output by the model in layout region detection.
 <ul>
-<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
-<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
-<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-</ul>If not set, the default PaddleX official model configuration will be used
+<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
+<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
+<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
+</ul>If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1121,8 +1121,8 @@ The relevant parameter descriptions are as follows:
 <td><code>layout_threshold</code></td>
 <td>Layout model score threshold.
 <ul>
-<li><b>float</b>：Any float between <code>0-1</code>;</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>0.5</code>);</li>
+<li><b>float</b>: Any float between <code>0-1</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>0.5</code>);</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1138,9 +1138,9 @@ The relevant parameter descriptions are as follows:
 <td><code>layout_unclip_ratio</code></td>
 <td>Expansion factor for the detection boxes of the layout region detection model.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>;</li>
-<li><b>Tuple[float,float]</b>：Expansion factors in the horizontal and vertical directions respectively;</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>1.0</code>);</li>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>Tuple[float,float]</b>: Expansion factors in the horizontal and vertical directions respectively;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>1.0</code>);</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -1150,9 +1150,9 @@ The relevant parameter descriptions are as follows:
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>Method for filtering overlapping boxes in layout region detection.
 <ul>
-<li><b>str</b>：<code>large</code>,<code>small</code>, <code>union</code>, representing whether to keep the large box, small box, or both when filtering overlapping boxes.</li>
-<li><b>dict</b>, where the key is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>str</b> type, e.g.,<code>{0: "large", 2: "small"}</code>, meaning use "large" mode for class 0 detection boxes and "small" mode for class 2 detection boxes.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>large</code>);</li>
+<li><b>str</b>: <code>large</code>,<code>small</code>, <code>union</code>, representing whether to keep the large box, small box, or both when filtering overlapping boxes;</li>
+<li><b>dict</b>, where the key is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>str</b> type, e.g.,<code>{0: "large", 2: "small"}</code>, meaning use "large" mode for class 0 detection boxes and "small" mode for class 2 detection boxes;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>large</code>);</li>
 </ul>
 </td>
 <td><code>str|dict</code></td>
@@ -1162,8 +1162,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
 <ul>
-<li><b>int</b>：Any integer greater than <code>0</code>;</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>);</li>
+<li><b>int</b>: Any integer greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>);</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1173,8 +1173,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
 <ul>
-<li><b>str</b>：Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>max</code>).</li>
+<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>max</code>);</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1184,8 +1184,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.3</code>) will be used by default.</li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.3</code>) will be used by default;</li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1194,8 +1194,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default;</li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1204,8 +1204,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>2.0</code>) will be used by default.</li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>2.0</code>) will be used by default;</li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1214,8 +1214,8 @@ The relevant parameter descriptions are as follows:
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with scores greater than this threshold will be kept.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default;</li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1224,8 +1224,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
 <ul>
-<li><b>int</b>：Any integer greater than <code>0</code>;</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>736</code>);</li>
+<li><b>int</b>: Any integer greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>736</code>);</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1235,8 +1235,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_det_limit_type</code></td>
 <td>Type of image side length limit for seal text detection.
 <ul>
-<li><b>str</b>：Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-<li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>min</code>);</li>
+<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>min</code>);</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1246,8 +1246,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.
-    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.2</code>) will be used by default.</li></li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.2</code>) will be used by default;</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1256,8 +1256,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_det_box_thresh</code></td>
 <td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.
-    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default;</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1266,8 +1266,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_det_unclip_ratio</code></td>
 <td>Seal text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.
-    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.5</code>) will be used by default.</li></li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.5</code>) will be used by default;</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1276,8 +1276,8 @@ The relevant parameter descriptions are as follows:
 <td><code>seal_rec_score_thresh</code></td>
 <td>Seal text recognition threshold. Text results with scores greater than this threshold will be kept.
 <ul>
-<li><b>float</b>：Any float greater than <code>0</code>.
-    <li><b>None</b>：If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></li></ul>
+<li><b>float</b>: Any float greater than <code>0</code>;
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default;</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1328,13 +1328,13 @@ The relevant parameter descriptions are as follows:
 <td><code>device</code></td>
 <td>Device used for inference. Supports specifying a specific card number.
 <ul>
-<li><b>CPU</b>：e.g., <code>cpu</code> indicates using CPU for inference;</li>
-<li><b>GPU</b>：e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
-<li><b>NPU</b>：e.g., <code>npu:0</code> indicates using the 1st NPU for inference;</li>
-<li><b>XPU</b>：e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
-<li><b>MLU</b>：e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
-<li><b>DCU</b>：e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-<li><b>None</b>：If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
+<li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
+<li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
+<li><b>NPU</b>: e.g., <code>npu:0</code> indicates using the 1st NPU for inference;</li>
+<li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
+<li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
+<li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1402,9 +1402,9 @@ The relevant parameter descriptions are as follows:
 <td><code>input</code></td>
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
-  <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
-  <li><b>str</b>：e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
-  <li><b>List</b>：List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>,<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>,<code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python Var</b>: e.g., image data represented by <code>numpy.ndarray</code></li>
+  <li><b>str</b>: e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；<b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path)</li>
+  <li><b>List</b>: List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>,<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>,<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1755,8 +1755,8 @@ The following are the parameters and their descriptions for the `build_vector()`
 </table>
 This method returns a dictionary containing visual text information. The content of the dictionary is as follows:
 
-- `flag_save_bytes_vector`：`(bool)` Whether to save the result as a binary file.
-- `flag_too_short_text`：`(bool)` Whether the text length is less than the minimum number of characters.
+- `flag_save_bytes_vector`: `(bool)` Whether to save the result as a binary file.
+- `flag_too_short_text`: `(bool)` Whether the text length is less than the minimum number of characters.
 - `vector`: `(str|list)` Binary content of the text or the text content itself, depending on the values of `flag_save_bytes_vector` and `min_characters`. If `flag_save_bytes_vector=True` and the text length is greater than or equal to the minimum number of characters, it returns binary content; otherwise, it returns the original text.
 </details>
 
@@ -1778,8 +1778,8 @@ The following are the parameters and their descriptions for the `mllm_pred()` me
 <td><code>input</code></td>
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
-  <li><b>Python Var</b>：e.g., image data represented by <code>numpy.ndarray</code></li>
-  <li><b>str</b>：e.g., local path of an image file or single-page PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or single-page PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；</li>
+  <li><b>Python Var</b>: e.g., image data represented by <code>numpy.ndarray</code></li>
+  <li><b>str</b>: e.g., local path of an image file or single-page PDF file: <code>/root/data/img.jpg</code>；<b>URL link</b>, e.g., network URL of an image file or single-page PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>；</li>
 </ul>
 </td>
 <td><code>Python Var|str</code></td>

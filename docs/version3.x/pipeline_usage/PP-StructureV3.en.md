@@ -773,7 +773,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </details>
 
 <details>
-<summary><b>Chart Parsing Model Module：</b></summary>
+<summary><b>Chart Parsing Model Module: </b></summary>
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
@@ -797,7 +797,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-          <li><strong>Test Dataset：</strong>
+          <li><strong>Test Dataset: </strong>
                         <ul>
                          <li>Document Image Orientation Classification Module: A self-built dataset using PaddleX, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
                           <li>Text Image Rectification Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a></li>
@@ -813,7 +813,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                           <li>Seal Text Detection Model: A self-built dataset using PaddleX, containing 500 images of circular seal textures.</li>
                         </ul>
                 </li>
-              <li><strong>Hardware Configuration：</strong>
+              <li><strong>Hardware Configuration: </strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
@@ -1992,7 +1992,7 @@ The above Python script performs the following steps:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
-<li><b>None</b>：If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;</li>
 </ul>
 </td>
 <td><code>str</code></td>

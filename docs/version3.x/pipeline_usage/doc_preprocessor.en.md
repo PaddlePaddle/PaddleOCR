@@ -202,12 +202,12 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 <td><code>device</code></td>
 <td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
-<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
-<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
-<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
-<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
-<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
 </ul>
 If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
@@ -240,7 +240,7 @@ If not set, the pipeline initialized value for this parameter will be used. Duri
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -343,12 +343,12 @@ In the above Python script, the following steps are executed:
 <td><code>device</code></td>
 <td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
-<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
-<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
-<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
-<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
-<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
 <li><b>None</b>: If set to <code>None</code>,  the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>

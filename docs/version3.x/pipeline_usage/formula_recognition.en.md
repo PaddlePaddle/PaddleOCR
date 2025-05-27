@@ -255,7 +255,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
 </details>
 
 <details>
-<summary><b>Formula Recognition Module ：</b></summary>
+<summary><b>Formula Recognition Module : </b></summary>
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
@@ -331,7 +331,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-            <li><strong>Test Dataset：
+            <li><strong>Test Dataset: 
              </strong>
                 <ul>
                   <li>Document Image Orientation Classification Module: A self-built dataset using PaddleOCR, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
@@ -341,7 +341,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
                   <li>Formula Recognition Module: A self-built formula recognition test set using PaddleX.</li>
                 </ul>
              </li>
-             <li><strong>Hardware Configuration：</strong>
+             <li><strong>Hardware Configuration: </strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
@@ -388,7 +388,7 @@ Before using the formula recognition pipeline locally, please ensure that you ha
 
 ### 2.1 Command Line Experience
 
-You can quickly experience the effect of the formula recognition pipeline with one command：
+You can quickly experience the effect of the formula recognition pipeline with one command: 
 
 ```bash
 paddleocr formula_recognition_pipeline -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png
@@ -524,10 +524,10 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>The merging mode for the detection boxes output by the model in layout region detection.
 <ul>
-<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
-<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
-<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-</ul>If not set, the default PaddleX official model configuration will be used
+<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
+<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
+<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
+</ul>If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -748,9 +748,9 @@ In the above Python script, the following steps are executed:
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
 <ul>
-<li><b>float</b>, such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.</li>
-<li><b>Dictionary</b>, with <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7</li>
-<li><b>None</b>, If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>float</b>: Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2;</li>
+<li><b>Dictionary</b>: With <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -766,9 +766,9 @@ In the above Python script, the following steps are executed:
 <td><code>layout_unclip_ratio</code></td>
 <td>The scaling factor for the side length of the detection boxes in layout region detection.
 <ul>
-<li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1</li>
-<li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1;</li>
+<li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -778,10 +778,10 @@ In the above Python script, the following steps are executed:
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>The merging mode for the detection boxes output by the model in layout region detection.
 <ul>
-<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed.</li>
-<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed.</li>
-<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained.</li>
-<li><b>None</b>: If not specified, the default PaddleX official model configuration will be used</li>
+<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
+<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
+<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -827,7 +827,7 @@ In the above Python script, the following steps are executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1082,7 +1082,7 @@ In addition, PaddleOCR also provides two other deployment methods, which are det
 🚀 High-Performance Inference: In real-world production environments, many applications have stringent standards for performance metrics of deployment strategies, particularly regarding response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities designed to deeply optimize the performance of model inference and pre/post-processing, significantly accelerating the end-to-end process. For detailed information on the high-performance inference process, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.en.md).
 
 
-☁️ Service-Based Deployment：
+☁️ Service-Based Deployment: 
 Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in pipelines, please refer to the [Service-Based Deployment Guide](../deployment/serving.md).
 
 Below are the API references for basic service-based deployment and multi-language service invocation examples:
