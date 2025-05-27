@@ -772,7 +772,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)
+<td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1353,7 +1353,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
 <li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1372,7 +1372,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -1384,7 +1384,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
 <td><code>str|dict</code></td>
@@ -1395,7 +1395,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的最大边长度限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1406,7 +1406,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1417,7 +1417,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1427,7 +1427,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1447,7 +1447,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1457,7 +1457,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于<code>0</code>的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>736</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1468,7 +1468,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测的图像边长限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1479,7 +1479,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1489,7 +1489,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1499,7 +1499,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1509,7 +1509,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1566,7 +1566,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1634,9 +1634,9 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>input</code></td>
 <td>待预测数据，支持多种输入类型，必填。
 <ul>
-  <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-  <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-  <li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
+  <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
+  <li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code>。</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1801,19 +1801,19 @@ for res in visual_predict_res:
 <td rowspan = "3">打印结果到终端</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化。</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1821,43 +1821,43 @@ for res in visual_predict_res:
 <td rowspan = "3">将结果保存为json格式的文件</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将中间各个模块的可视化图像保存在png格式的图像</td>
+<td>将中间各个模块的可视化图像保存在png格式的图像。</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>save_to_html()</code></td>
-<td>将文件中的表格保存为html格式的文件</td>
+<td>将文件中的表格保存为html格式的文件。</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>save_to_xlsx()</code></td>
-<td>将文件中的表格保存为xlsx格式的文件</td>
+<td>将文件中的表格保存为xlsx格式的文件。</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 </table>
@@ -1938,11 +1938,11 @@ for res in visual_predict_res:
 </thead>
 <tr>
 <td rowspan = "1"><code>json</code></td>
-<td rowspan = "1">获取预测的 <code>json</code> 格式的结果</td>
+<td rowspan = "1">获取预测的 <code>json</code> 格式的结果。</td>
 </tr>
 <tr>
 <td rowspan = "2"><code>img</code></td>
-<td rowspan = "2">获取格式为 <code>dict</code> 的可视化图像</td>
+<td rowspan = "2">获取格式为 <code>dict</code> 的可视化图像。</td>
 </tr>
 </table>
 
@@ -1966,25 +1966,25 @@ for res in visual_predict_res:
 </thead>
 <tr>
 <td><code>visual_info</code></td>
-<td>视觉信息，可以是包含视觉信息的字典，或者由这些字典组成的列表</td>
+<td>视觉信息，可以是包含视觉信息的字典，或者由这些字典组成的列表。</td>
 <td><code>list|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>min_characters</code></td>
-<td>最小字符数量。为大于0的正整数，可以根据大语言模型支持的token长度来决定</td>
+<td>最小字符数量。为大于0的正整数，可以根据大语言模型支持的token长度来决定。</td>
 <td><code>int</code></td>
 <td><code>3500</code></td>
 </tr>
 <tr>
 <td><code>block_size</code></td>
-<td>长文本建立向量库时分块大小。为大于0的正整数，可以根据大语言模型支持的token长度来决定</td>
+<td>长文本建立向量库时分块大小。为大于0的正整数，可以根据大语言模型支持的token长度来决定。</td>
 <td><code>int</code></td>
 <td><code>300</code></td>
 </tr>
 <tr>
 <td><code>flag_save_bytes_vector</code></td>
-<td>文字是否保存为二进制文件</td>
+<td>文字是否保存为二进制文件。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -2020,8 +2020,8 @@ for res in visual_predict_res:
 <td><code>input</code></td>
 <td>待预测数据，支持多种输入类型，必填。
 <ul>
-  <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
-  <li><b>str</b>：如图像文件或者单页PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或单页PDF文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；</li>
+  <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
+  <li><b>str</b>：如图像文件或者单页PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或单页PDF文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>。</li>
 </ul>
 </td>
 <td><code>Python Var|str</code></td>
@@ -2029,7 +2029,7 @@ for res in visual_predict_res:
 </tr>
 <tr>
 <td><code>key_list</code></td>
-<td>用于提取信息的单个键或键列表</td>
+<td>用于提取信息的单个键或键列表。</td>
 <td><code>Union[str, List[str]]</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2060,25 +2060,25 @@ for res in visual_predict_res:
 <tbody>
 <tr>
 <td><code>key_list</code></td>
-<td>用于提取信息的单个键或键列表</td>
+<td>用于提取信息的单个键或键列表。</td>
 <td><code>Union[str, List[str]]</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>visual_info</code></td>
-<td>视觉信息结果</td>
+<td>视觉信息结果。</td>
 <td><code>List[dict]</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_vector_retrieval</code></td>
-<td>是否使用向量检索</td>
+<td>是否使用向量检索。</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>vector_info</code></td>
-<td>用于检索的向量信息</td>
+<td>用于检索的向量信息。</td>
 <td><code>dict</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2090,67 +2090,67 @@ for res in visual_predict_res:
 </tr>
 <tr>
 <td><code>text_task_description</code></td>
-<td>文本任务的描述</td>
+<td>文本任务的描述。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_output_format</code></td>
-<td>文本结果的输出格式</td>
+<td>文本结果的输出格式。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rules_str</code></td>
-<td>生成文本结果的规则</td>
+<td>生成文本结果的规则。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_text_content</code></td>
-<td>用于少样本演示的文本内容</td>
+<td>用于少样本演示的文本内容。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_key_value_list</code></td>
-<td>用于少样本演示的键值列表</td>
+<td>用于少样本演示的键值列表。/td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_task_description</code></td>
-<td>表任务的描述</td>
+<td>表任务的描述。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_output_format</code></td>
-<td>表结果的输出格式</td>
+<td>表结果的输出格式。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_rules_str</code></td>
-<td>生成表结果的规则</td>
+<td>生成表结果的规则。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_text_content</code></td>
-<td>表少样本演示的文本内容</td>
+<td>表少样本演示的文本内容。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_key_value_list</code></td>
-<td>表少样本演示的键值列表</td>
+<td>表少样本演示的键值列表。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>mllm_predict_info</code></td>
-<td>多模态大模型结果</td>
+<td>多模态大模型结果。</td>
 <td><code>dict</code></td>
 <td>
 <code>None</code>
@@ -2158,7 +2158,7 @@ for res in visual_predict_res:
 <td><code>None</code></td>
 </tr>
 <td><code>mllm_integration_strategy</code></td>
-<td>多模态大模型和大语言模型数据融合策略，支持单独使用其中一个或者融合两者结果。可选："integration", "llm_only" and "mllm_only"</td>
+<td>多模态大模型和大语言模型数据融合策略，支持单独使用其中一个或者融合两者结果。可选："integration", "llm_only" and "mllm_only"。</td>
 <td><code>str</code></td>
 <td><code>"integration"</code></td>
 </tr>
@@ -2302,121 +2302,121 @@ for res in visual_predict_res:
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_orientation_classify</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_unwarping</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useSealRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_seal_recognition</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTableRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_table_recognition</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_table_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_threshold</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutNms</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_nms</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutUnclipRatio</code></td>
 <td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_merge_bboxes_mode</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_side_len</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_type</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_box_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_rec_score_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_side_len</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_type</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_box_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_rec_score_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>
@@ -2510,13 +2510,13 @@ for res in visual_predict_res:
 <tr>
 <td><code>blockSize</code></td>
 <td><code>int</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>block_size</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>block_size</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>retrieverConfig</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>retriever_config</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>retriever_config</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>
@@ -2573,7 +2573,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>mllmChatBotConfig</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>mllm_pred</code> 方法的 <code>mllm_chat_bot_config</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>mllm_pred</code> 方法的 <code>mllm_chat_bot_config</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>
@@ -2630,7 +2630,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>useVectorRetrieval</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>use_vector_retrieval</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>use_vector_retrieval</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -2648,61 +2648,61 @@ for res in visual_predict_res:
 <tr>
 <td><code>textTaskDescription</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_task_description</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_task_description</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textOutputFormat</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_output_format</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_output_format</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textRulesStr</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_rules_str</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_rules_str</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textFewShotDemoTextContent</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_few_shot_demo_text_content</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_few_shot_demo_text_content</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textFewShotDemoKeyValueList</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_few_shot_demo_key_value_list</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>text_few_shot_demo_key_value_list</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>tableTaskDescription</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_task_description</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_task_description</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>tableOutputFormat</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_output_format</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_output_format</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>tableRulesStr</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_rules_str</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_rules_str</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>tableFewShotDemoTextContent</code></td>
 <td><code>string</code> | <code>null</code></td>
 <td></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_few_shot_demo_text_content</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_few_shot_demo_text_content</code> 参数相关说明。</td>
 </tr>
 <tr>
 <td><code>tableFewShotDemoKeyValueList</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_few_shot_demo_key_value_list</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>table_few_shot_demo_key_value_list</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -2714,19 +2714,19 @@ for res in visual_predict_res:
 <tr>
 <td><code>mllmIntegrationStrategy</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>mllm_integration_strategy</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>mllm_integration_strategy</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>chatBotConfig</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>chat_bot_config</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>chat_bot_config</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>retrieverConfig</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>chat</code> 方法的 <code>retriever_config</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>retriever_config</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>

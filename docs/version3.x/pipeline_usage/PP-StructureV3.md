@@ -1602,7 +1602,7 @@ for item in markdown_images:
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
 <li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1621,7 +1621,7 @@ for item in markdown_images:
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>字典</b>, 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -1633,7 +1633,7 @@ for item in markdown_images:
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>： 字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>str</b>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>large</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
 <td><code>str|dict</code></td>
@@ -1710,7 +1710,7 @@ for item in markdown_images:
 <td>文本检测的最大边长度限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1721,7 +1721,7 @@ for item in markdown_images:
 <td>文本检测的图像边长限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1732,7 +1732,7 @@ for item in markdown_images:
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1742,7 +1742,7 @@ for item in markdown_images:
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1752,7 +1752,7 @@ for item in markdown_images:
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1798,7 +1798,7 @@ for item in markdown_images:
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1880,7 +1880,7 @@ for item in markdown_images:
 <td>印章文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>736</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1891,7 +1891,7 @@ for item in markdown_images:
 <td>印章文本检测的图像边长限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>min</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1902,7 +1902,7 @@ for item in markdown_images:
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于 <code>0</code> 的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.2</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1912,7 +1912,7 @@ for item in markdown_images:
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1922,7 +1922,7 @@ for item in markdown_images:
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.5</code>；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1950,7 +1950,7 @@ for item in markdown_images:
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值；</li></li></ul>
+    <li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -2031,7 +2031,7 @@ for item in markdown_images:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -2102,7 +2102,7 @@ for item in markdown_images:
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -2257,7 +2257,7 @@ for item in markdown_images:
 <td>是否启用有线表单元格检测结果直转HTML，默认False，启用则直接基于有线表单元格检测结果的几何关系构建HTML。
 <ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>。</li>
 </ul></td>
 <td><code>float|None</code></td>
 <td><code>False</code></td>
@@ -2267,7 +2267,7 @@ for item in markdown_images:
 <td>是否启用无线表单元格检测结果直转HTML，默认False，启用则直接基于无线表单元格检测结果的几何关系构建HTML。
 <ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>。</li>
 </ul></td>
 <td><code>float|None</code></td>
 <td><code>False</code></td>
@@ -2277,7 +2277,7 @@ for item in markdown_images:
 <td>是否启用表格使用表格方向分类，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。
 <ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</li>
 </ul></td>
 <td><code>bool|None</code></td>
 <td><code>True</code></td>
@@ -2287,7 +2287,7 @@ for item in markdown_images:
 <td>是否启用单元格切分OCR，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。
 <ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</li>
 </ul></td>
 <td><code>bool|None</code></td>
 <td><code>True</code></td>
@@ -2297,7 +2297,7 @@ for item in markdown_images:
 <td>是否启用有线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。
 <ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>。</li>
 </ul></td>
 <td><code>bool|None</code></td>
 <td><code>False</code></td>
@@ -2306,7 +2306,7 @@ for item in markdown_images:
 <td><code>use_e2e_wireless_table_rec_model</code></td>
 <td>是否启用无线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。<ul>
 <li><b>bool</b>：<code>True</code> 或者 <code>False</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>False</code>。</li>
 </ul></td>
 <td><code>bool|None</code></td>
 <td><code>True</code></td>
@@ -2332,19 +2332,19 @@ for item in markdown_images:
 <td rowspan="3">打印结果到终端</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化。</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -2352,19 +2352,19 @@ for item in markdown_images:
 <td rowspan="3">将结果保存为json格式的文件</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -2372,15 +2372,15 @@ for item in markdown_images:
 <td>将中间各个模块的可视化图像保存在png格式的图像</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>save_to_markdown()</code></td>
-<td>将图像或者PDF文件中的每一页分别保存为markdown格式的文件</td>
+<td>将图像或者PDF文件中的每一页分别保存为markdown格式的文件。</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
@@ -2388,7 +2388,7 @@ for item in markdown_images:
 <td>将文件中的表格保存为html格式的文件</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
@@ -2396,7 +2396,7 @@ for item in markdown_images:
 <td>将文件中的表格保存为xlsx格式的文件</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，支持目录或文件路径</td>
+<td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
 <tr>
@@ -2404,8 +2404,8 @@ for item in markdown_images:
 <td>将多页Markdown内容拼接为单一文档</td>
 <td><code>markdown_list</code></td>
 <td><code>list</code></td>
-<td>包含每一页Markdown数据的列表</td>
-<td>返回处理后的Markdown文本和图像列表</td>
+<td>包含每一页Markdown数据的列表。</td>
+<td>返回处理后的Markdown文本和图像列表。</td>
 </tr>
 </table>
 
@@ -2654,151 +2654,151 @@ for item in markdown_images:
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTextlineOrientation</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_textline_orientation</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_textline_orientation</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useSealRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_seal_recognition</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTableRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_recognition</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useFormulaRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_formula_recognition</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_formula_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutNms</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_nms</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutUnclipRatio</code></td>
 <td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_merge_bboxes_mode</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_side_len</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_type</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_box_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_side_len</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_type</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_box_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_unclip_ratio</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_rec_score_thresh</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTableCellsOcrResults</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_cells_ocr_results</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_cells_ocr_results</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useE2eWiredTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wired_table_rec_model</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wired_table_rec_model</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code>参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>

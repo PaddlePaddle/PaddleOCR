@@ -1554,7 +1554,7 @@ The above Python script performs the following steps:
 <ul>
 <li><b>float</b>: Any float between <code>0-1</code>;</li>
 <li><b>dict</b>: <code>{0:0.1}</code> where the key is the class ID and the value is the threshold for that class;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1573,7 +1573,7 @@ The above Python script performs the following steps:
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -1585,7 +1585,7 @@ The above Python script performs the following steps:
 <ul>
 <li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>.</li>
 </ul>
 </td>
 <td><code>str|dict</code></td>
@@ -1662,7 +1662,7 @@ The above Python script performs the following steps:
 <td>Maximum side length limit for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1673,7 +1673,7 @@ The above Python script performs the following steps:
 <td>
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>max</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>max</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1684,7 +1684,7 @@ The above Python script performs the following steps:
 <td>Pixel threshold for detection. Pixels in the output probability map with scores above this value are considered as text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.3</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.3</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1695,7 +1695,7 @@ The above Python script performs the following steps:
 <td>Bounding box threshold. If the average score of all pixels inside the box exceeds this threshold, it is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1706,7 +1706,7 @@ The above Python script performs the following steps:
 <td>Expansion ratio for text detection. The larger the value, the more the text region is expanded.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>2.0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>2.0</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1753,7 +1753,7 @@ The above Python script performs the following steps:
 <td>Score threshold for text recognition. Only results with scores above this threshold will be retained.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.0</code> (no threshold);</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.0</code> (no threshold).</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1837,7 +1837,7 @@ The above Python script performs the following steps:
 <td>Image side length limit for seal text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1848,7 +1848,7 @@ The above Python script performs the following steps:
 <td>Limit type for seal text detection image side length.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1859,7 +1859,7 @@ The above Python script performs the following steps:
 <td>Pixel threshold for detection. Pixels with scores greater than this value in the probability map are considered text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1870,7 +1870,7 @@ The above Python script performs the following steps:
 <td>Bounding box threshold. If the average score of all pixels inside a detection box exceeds this threshold, it is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1881,7 +1881,7 @@ The above Python script performs the following steps:
 <td>Expansion ratio for seal text detection. The larger the value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1910,7 +1910,7 @@ The above Python script performs the following steps:
 <td>Score threshold for seal text recognition. Text results with scores above this threshold will be retained.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold);</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold).</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1992,7 +1992,7 @@ The above Python script performs the following steps:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
-<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -2060,9 +2060,9 @@ The above Python script performs the following steps:
 <td><code>input</code></td>
 <td>Input data to be predicted. Required. Supports multiple types:
 <ul>
-<li><b>Python Var</b>: Image data represented as <code>numpy.ndarray</code></li>
-<li><b>str</b>: Local path to image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b> to image or PDF, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>directory</b> containing image files, e.g., <code>/root/data/</code> (directories with PDFs are not supported, use full file path for PDFs)</li>
-<li><b>List</b>: Elements can be any of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: Image data represented as <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path to image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b> to image or PDF, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>directory</b> containing image files, e.g., <code>/root/data/</code> (directories with PDFs are not supported, use full file path for PDFs);</li>
+<li><b>List</b>: Elements can be any of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"].</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -2293,19 +2293,19 @@ The above Python script performs the following steps:
 <td rowspan="3">Print result to terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format output as indented <code>JSON</code></td>
+<td>Whether to format output as indented <code>JSON</code>.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Indentation level to beautify the <code>JSON</code> output. Only effective when <code>format_json=True</code></td>
+<td>Indentation level to beautify the <code>JSON</code> output. Only effective when <code>format_json=True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When <code>True</code>, all non-ASCII characters are escaped. When <code>False</code>, original characters are retained. Only effective when <code>format_json=True</code></td>
+<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When <code>True</code>, all non-ASCII characters are escaped. When <code>False</code>, original characters are retained. Only effective when <code>format_json=True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -2313,19 +2313,19 @@ The above Python script performs the following steps:
 <td rowspan="3">Save result as a JSON file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file. If a directory, the filename will be based on the input type</td>
+<td>Path to save the file. If a directory, the filename will be based on the input type.</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Indentation level for beautified <code>JSON</code> output. Only effective when <code>format_json=True</code></td>
+<td>Indentation level for beautified <code>JSON</code> output. Only effective when <code>format_json=True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Only effective when <code>format_json=True</code></td>
+<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Only effective when <code>format_json=True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -2333,7 +2333,7 @@ The above Python script performs the following steps:
 <td>Save intermediate visualization results as PNG image files</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -2341,7 +2341,7 @@ The above Python script performs the following steps:
 <td>Save each page of an image or PDF file as a markdown file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -2349,7 +2349,7 @@ The above Python script performs the following steps:
 <td>Save tables in the file as HTML format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -2357,7 +2357,7 @@ The above Python script performs the following steps:
 <td>Save tables in the file as XLSX format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -2365,8 +2365,8 @@ The above Python script performs the following steps:
 <td>Concatenate multiple markdown pages into a single document</td>
 <td><code>markdown_list</code></td>
 <td><code>list</code></td>
-<td>List of markdown data for each page</td>
-<td>Returns the merged markdown text and image list</td>
+<td>List of markdown data for each page.</td>
+<td>Returns the merged markdown text and image list.</td>
 </tr>
 </table>
 

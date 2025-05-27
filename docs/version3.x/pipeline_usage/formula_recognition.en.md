@@ -750,7 +750,7 @@ In the above Python script, the following steps are executed:
 <ul>
 <li><b>float</b>: Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2;</li>
 <li><b>Dictionary</b>: With <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -768,7 +768,7 @@ In the above Python script, the following steps are executed:
 <ul>
 <li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1;</li>
 <li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
 </ul>
 </td>
 <td><code>float|list</code></td>
@@ -781,7 +781,7 @@ In the above Python script, the following steps are executed:
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -827,7 +827,7 @@ In the above Python script, the following steps are executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> indicates using the 1st XPU for inference;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> indicates using the 1st MLU for inference;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> indicates using the 1st DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </ur>
 </td>
 <td><code>str</code></td>
@@ -898,9 +898,9 @@ Here are the parameters of the `predict()` method and their descriptions:
 <td><code>input</code></td>
 <td>Data to be predicted, supporting multiple input types, required.
 <ul>
-<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
-<li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path)</li>
-<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray;</code></li>
+<li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path);</li>
+<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"].</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -970,19 +970,19 @@ Whether to use the document orientation classification module during inference.<
 <td rowspan="3">Print results to terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td>Whether to format the output content using <code>JSON</code> indentation.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -990,19 +990,19 @@ Whether to use the document orientation classification module during inference.<
 <td rowspan="3">Save results as a JSON file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file. If it is a directory, the saved file will be named the same as the input file type</td>
+<td>Path to save the file. If it is a directory, the saved file will be named the same as the input file type.</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1010,7 +1010,7 @@ Whether to use the document orientation classification module during inference.<
 <td>Save results as an image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>无</td>
 </tr>
 </table>

@@ -736,73 +736,71 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>det_model_dir</code></td>
-<td>Deprecated. Please use <code>text_detection_model_dir</code> instead. Directory path of the text detection model. If not set, the official model will be downloaded.</td>
+<td>Deprecated. Please refer <code>text_detection_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_limit_side_len</code></td>
-<td>Deprecated. Please use <code>text_det_limit_side_len</code> instead. Maximum side length limit for text detection.</td>
+<td>Deprecated. Please refer <code>text_det_limit_side_len</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_limit_type</code></td>
-<td>Deprecated. Please use <code>text_det_limit_type</code> instead. Type of side length limit for text detection.Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+<td>Deprecated. Please refer <code>text_det_limit_type</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_thresh</code></td>
-<td>Deprecated. Please use <code>text_det_thresh</code> instead. Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels. Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
+<td>Deprecated. Please refer <code>text_det_thresh</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_box_thresh</code></td>
-<td>Deprecated. Please use <code>text_det_box_thresh</code> instead. Text detection box threshold. If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
-Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
+<td>Deprecated. Please refer <code>text_det_box_thresh</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_unclip_ratio</code></td>
-<td>Deprecated. Please use <code>text_det_unclip_ratio</code> instead. Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
+<td>Deprecated. Please refer <code>text_det_unclip_ratio</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>rec_model_dir</code></td>
-<td>Deprecated. Please use <code>text_recognition_model_dir</code> instead. Directory path of the text recognition model. If not set, the official model will be downloaded.</td>
+<td>Deprecated. Please refer <code>text_recognition_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>rec_batch_num</code></td>
-<td>Deprecated. Please use <code>text_recognition_batch_size</code> instead. Batch size for the text recognition model. If not set, the default batch size will be <code>1</code>.</td>
+<td>Deprecated. Please refer <code>text_recognition_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_angle_cls</code></td>
-<td>Deprecated. Please use <code>use_textline_orientation</code> instead. Whether to load and use the text line orientation function. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Deprecated. Please refer <code>use_textline_orientation</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_model_dir</code></td>
-<td>Deprecated. Please use <code>text_line_orientation_model_dir</code> instead. Directory path of the text line orientation model. If not set, the official model will be downloaded.</td>
+<td>Deprecated. Please refer <code>text_line_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_batch_num</code></td>
-<td>Deprecated. Please use <code>text_line_orientation_batch_size</code> instead. Batch size for the text line orientation model. If not set, the default batch size will be <code>1</code>.</td>
+<td>Deprecated. Please refer <code>text_line_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -1035,7 +1033,7 @@ In the above Python script, the following steps are performed:
  <td>Maximum side length limit for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used;</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.</li>
  </ul>
  </td>
  <td><code>int</code></td>
@@ -1046,7 +1044,7 @@ In the above Python script, the following steps are performed:
  <td>Type of side length limit for text detection.
  <ul>
  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used;</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.</li>
  </ul>
  </td>
  <td><code>str</code></td>
@@ -1057,7 +1055,7 @@ In the above Python script, the following steps are performed:
  <td>Pixel threshold for text detection. Pixels with scores higher than this threshold in the output probability map will be considered text pixels.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used;</li></li></ul>
+<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.</li></li></ul>
  </td>
  <td><code>float</code></td>
  <td><code>None</code></td>
@@ -1067,7 +1065,7 @@ In the above Python script, the following steps are performed:
  <td>Box threshold for text detection. A detection result will be considered a text region if the average score of all pixels within the bounding box is higher than this threshold.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used;</li></li></ul>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.</li></li></ul>
  </td>
  <td><code>float</code></td>
  <td><code>None</code></td>
@@ -1077,7 +1075,7 @@ In the above Python script, the following steps are performed:
  <td>Dilation coefficient for text detection. This method is used to dilate the text region, and the larger this value, the larger the dilated area.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used;</li></li></ul>
+<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.</li></li></ul>
  </td>
  <td><code>float</code></td>
  <td><code>None</code></td>
@@ -1093,7 +1091,7 @@ In the above Python script, the following steps are performed:
  <td>Recognition score threshold for text. Text results with scores higher than this threshold will be retained.
  <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used;</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.</li></li></ul>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1116,7 +1114,7 @@ In the above Python script, the following steps are performed:
 <li><b>te</b>: Telugu;</li>
 <li><b>ka</b>: Kannada;</li>
 <li><b>ta</b>: Tamil;</li>
-<li><b>None</b>: If set to <code>None</code>, <code>ch</code> will be used by default;</li>
+<li><b>None</b>: If set to <code>None</code>, <code>ch</code> will be used by default.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1129,7 +1127,7 @@ In the above Python script, the following steps are performed:
 <li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;</li>
 <li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;</li>
 <li><b>PP-OCRv3</b>: Use <code>PP-OCRv3</code> series models;</li>
-<li><b>None</b>: If set to <code>None</code>, <code>PP-OCRv5</code> series models will be used by default;</li>
+<li><b>None</b>: If set to <code>None</code>, <code>PP-OCRv5</code> series models will be used by default.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1212,9 +1210,9 @@ In the above Python script, the following steps are performed:
 <td><code>input</code></td>
 <td>Data to be predicted, supporting multiple input types, required.
 <ul>
-<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
-<li><b>str</b>: Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">example</a>; <b>local directory</b>, which needs to contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDF files in the directory is not supported; PDF files need to specify the specific file path)</li>
-<li><b>List</b>: List elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">example</a>; <b>local directory</b>, which needs to contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDF files in the directory is not supported; PDF files need to specify the specific file path);</li>
+<li><b>List</b>: List elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1287,39 +1285,39 @@ In the above Python script, the following steps are performed:
 <td rowspan="3">Print the results to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format the output content with <code>JSON</code> indentation</td>
+<td>Whether to format the output content with <code>JSON</code> indentation.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data and make it more readable, only valid when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data and make it more readable, only valid when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only valid when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only valid when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td rowspan="3"><code>save_to_json()</code></td>
-<td rowspan="3">Save the results as a json-formatted file</td>
+<td rowspan="3">Save the results as a json-formatted file.</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>File path to save. When it is a directory, the saved file name will be consistent with the input file type name</td>
+<td>File path to save. When it is a directory, the saved file name will be consistent with the input file type name.</td>
 <td>No default</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data and make it more readable, only valid when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data and make it more readable, only valid when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only valid when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters as <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only valid when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1327,7 +1325,7 @@ In the above Python script, the following steps are performed:
 <td>Save the results as an image-formatted file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>File path to save, supporting directory or file path</td>
+<td>File path to save, supporting directory or file path.</td>
 <td>No default</td>
 </tr>
 </table>

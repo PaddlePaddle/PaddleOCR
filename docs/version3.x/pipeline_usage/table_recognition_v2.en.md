@@ -1254,7 +1254,7 @@ In the above Python script, the following steps are performed:
 <td>Image side length limit for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1265,7 +1265,7 @@ In the above Python script, the following steps are performed:
 <td>Type of the image side length limit for text detection.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1276,7 +1276,7 @@ In the above Python script, the following steps are performed:
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.3</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.3</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1287,7 +1287,7 @@ In the above Python script, the following steps are performed:
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1298,7 +1298,7 @@ In the above Python script, the following steps are performed:
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>2.0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>2.0</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1327,7 +1327,7 @@ In the above Python script, the following steps are performed:
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set;
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
 </ur>
 </td>
 <td><code>float</code></td>
@@ -1367,7 +1367,7 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1438,8 +1438,8 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td><code>input</code></td>
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path);</li>
 <li><b>List</b>: The elements of the list must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
@@ -1564,19 +1564,19 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td rowspan="3">Print results to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td>Whether to format the output content using <code>JSON</code> indentation.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1590,13 +1590,13 @@ The parameters and descriptions of the `predict()` method are as follows:
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1604,7 +1604,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an image format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -1612,7 +1612,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an xlsx format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -1620,7 +1620,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an html format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 </tbody>

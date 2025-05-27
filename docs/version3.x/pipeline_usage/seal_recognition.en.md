@@ -1098,7 +1098,7 @@ In the above Python script, the following steps were executed:
 <td>Image side length limit for seal text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1109,7 +1109,7 @@ In the above Python script, the following steps were executed:
 <td>Limit type for seal text detection image side length.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1120,7 +1120,7 @@ In the above Python script, the following steps were executed:
 <td>Pixel threshold for detection. Pixels with scores greater than this value in the probability map are considered text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1131,7 +1131,7 @@ In the above Python script, the following steps were executed:
 <td>Bounding box threshold. If the average score of all pixels inside a detection box exceeds this threshold, it is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1142,7 +1142,7 @@ In the above Python script, the following steps were executed:
 <td>Expansion ratio for seal text detection. The larger the value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1153,7 +1153,7 @@ In the above Python script, the following steps were executed:
 <td>Score threshold for seal text recognition. Text results with scores above this threshold will be retained.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold);</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold).</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -1169,7 +1169,7 @@ In the above Python script, the following steps were executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
-<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used；</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1235,9 +1235,9 @@ In the above Python script, the following steps were executed:
 <td><code>input</code></td>
 <td>Input data to be predicted. Required. Supports multiple types:
 <ul>
-<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
-<li><b>str</b>: Local path of an image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., the network URL of an image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png">Example</a>; <b>Local directory</b>, containing images to be predicted, e.g., <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with an exact file path)</li>
-<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path of an image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., the network URL of an image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png">Example</a>; <b>Local directory</b>, containing images to be predicted, e.g., <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with an exact file path);</li>
+<li><b>List</b>: Elements of the list must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1343,19 +1343,19 @@ Whether to use the layout detection module during inference. </td>
 <td rowspan="3">Print results to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td>Whether to format the output content using <code>JSON</code> indentation.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1363,19 +1363,19 @@ Whether to use the layout detection module during inference. </td>
 <td rowspan="3">Save results as a json file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The file path to save the results. When it is a directory, the saved file name will be consistent with the input file type</td>
+<td>The file path to save the results. When it is a directory, the saved file name will be consistent with the input file type.</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data for better readability, effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> will retain the original characters, effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1383,7 +1383,7 @@ Whether to use the layout detection module during inference. </td>
 <td>Save results as an image file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The file path to save the results, supports directory or file path</td>
+<td>The file path to save the results, supports directory or file path.</td>
 <td>None</td>
 </tr>
 </table>
