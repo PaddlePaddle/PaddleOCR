@@ -3173,7 +3173,7 @@ You're not viewing the latest version.
 
 <h1 id="_1">表格结构识别模块使用教程<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
 <h2 id="_2">一、概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
-<p>表格结构识别是表格识别系统中的重要组成部分，能够将不可编辑表格图片转换为可编辑的表格形式（例如html）。表格结构识别的目标是对表格的行、列和单元格位置进行识别，该模块的性能直接影响到整个表格识别系统的准确性和效率。表格结构识别模块通常会输出表格区域的html代码或Latex代码，这些代码将作为输入传递给表格内容识别模块进行后续处理。</p>
+<p>表格结构识别是表格识别系统中的重要组成部分，能够将不可编辑表格图片转换为可编辑的表格形式（例如html）。表格结构识别的目标是对表格的行、列和单元格位置进行识别，该模块的性能直接影响到整个表格识别系统的准确性和效率。表格结构识别模块会输出表格区域的html代码，这些代码将作为输入传递给表格识别产线进行后续处理。</p>
 <h2 id="_3">二、支持模型列表<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
 <table>
 <tr>
@@ -3450,7 +3450,7 @@ You're not viewing the latest version.
 </table>
 
 <h2 id="_5">四、二次开发<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
-<p>如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 <code>SLANet</code> 举例，其他模型替换对应配置文件即可。首先，您需要准备表格结构识别的数据集，可以参考<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar">表格结构识别 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以表格结构识别 Demo 数据示例。在训练模型之前，请确保已经按照[<a href="../installation.html">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
+<p>如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 <code>SLANet_plus</code> 举例，其他模型替换对应配置文件即可。首先，您需要准备表格结构识别的数据集，可以参考<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar">表格结构识别 Demo 数据</a>的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以表格结构识别 Demo 数据示例。在训练模型之前，请确保已经按照<a href="../installation.html">安装文档</a>安装了 PaddleOCR 所需要的依赖。</p>
 <h3 id="41">4.1 数据集、预训练模型准备<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
 <h4 id="411">4.1.1 准备数据集<a class="headerlink" href="#411" title="Permanent link">&para;</a></h4>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># 下载示例数据集</span>
@@ -3458,33 +3458,46 @@ You're not viewing the latest version.
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>table_rec_dataset_examples.tar
 </span></code></pre></div>
 <h4 id="412">4.1.2 下载预训练模型<a class="headerlink" href="#412" title="Permanent link">&para;</a></h4>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 下载 SLANet 预训练模型</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># 下载 SLANet_plus 预训练模型</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams
 </span></code></pre></div>
 <h3 id="42">4.2 模型训练<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR 对代码进行了模块化，训练 <code>SLANet</code> 识别模型时需要使用 <code>SLANet</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet.yml">配置文件</a>。</p>
+<p>PaddleOCR 对代码进行了模块化，训练 <code>SLANet_plus</code> 识别模型时需要使用 <code>SLANet_plus</code> 的<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml">配置文件</a>。</p>
 <p>训练命令如下：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">#单卡训练 (默认训练方式)</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet.yml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">   </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./SLANet_pretrained.pdparams
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1">#多卡训练，通过--gpus参数指定卡号</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w">  </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet.yml<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./SLANet_pretrained.pdparams
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python3<span class="w"> </span>tools/train.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet_plus.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./SLANet_plus_pretrained.pdparams
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span>Train.dataset.data_dir<span class="o">=</span>./table_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span>Train.dataset.label_file_list<span class="o">=</span><span class="s1">&#39;[./table_rec_dataset_examples/train.txt]&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>Eval.dataset.data_dir<span class="o">=</span>./table_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span>Eval.dataset.label_file_list<span class="o">=</span><span class="s1">&#39;[./table_rec_dataset_examples/val.txt]&#39;</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">#多卡训练，通过--gpus参数指定卡号</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>python3<span class="w"> </span>-m<span class="w"> </span>paddle.distributed.launch<span class="w"> </span>--gpus<span class="w"> </span><span class="s1">&#39;0,1,2,3&#39;</span><span class="w"> </span>tools/train.py<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span>-c<span class="w"> </span>configs/table/SLANet_plus.yml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./SLANet_plus_pretrained.pdparams
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span>-o<span class="w"> </span>Global.pretrained_model<span class="o">=</span>./PP-OCRv5_server_det_pretrained.pdparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span>Train.dataset.data_dir<span class="o">=</span>./table_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">    </span>Train.dataset.label_file_list<span class="o">=</span><span class="s1">&#39;[./table_rec_dataset_examples/train.txt]&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span>Eval.dataset.data_dir<span class="o">=</span>./table_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span>Eval.dataset.label_file_list<span class="o">=</span><span class="s1">&#39;[./table_rec_dataset_examples/val.txt]&#39;</span>
 </span></code></pre></div>
 <h3 id="43">4.3 模型评估<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
 <p>您可以评估已经训练好的权重，如，<code>output/xxx/xxx.pdparams</code>，使用如下命令进行评估：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w"> </span><span class="c1"># demo 测试集评估</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w"> </span>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w"> </span>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w"> </span>python3<span class="w"> </span>tools/eval.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet_plus.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span>Eval.dataset.data_dir<span class="o">=</span>./table_rec_dataset_examples<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span>Eval.dataset.label_file_list<span class="o">=</span><span class="s1">&#39;[./table_rec_dataset_examples/val.txt]&#39;</span>
 </span></code></pre></div>
 <h3 id="44">4.4 模型导出<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w"> </span>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w"> </span>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w"> </span><span class="nv">save_inference_dir</span><span class="o">=</span><span class="s2">&quot;./SLANet_infer/&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="w"> </span>python3<span class="w"> </span>tools/export_model.py<span class="w"> </span>-c<span class="w"> </span>configs/table/SLANet_plus.yml<span class="w"> </span>-o<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>Global.pretrained_model<span class="o">=</span>output/xxx/xxx.pdparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>Global.save_inference_dir<span class="o">=</span><span class="s2">&quot;./SLANet_plus_infer/&quot;</span>
 </span></code></pre></div>
-<p>导出模型后，静态图模型会存放于当前目录的<code>./SLANet_infer/</code>中，在该目录下，您将看到如下文件：
- <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./SLANet_infer/
+<p>导出模型后，静态图模型会存放于当前目录的<code>./SLANet_plus_infer/</code>中，在该目录下，您将看到如下文件：
+ <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./SLANet_plus_infer/
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── inference.json
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── inference.pdiparams
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>├── inference.yml
@@ -3513,7 +3526,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月27日 12:14:53 UTC">2025年5月27日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月27日 12:15:36 UTC">2025年5月27日</span>
   </span>
 
     
@@ -3523,7 +3536,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月27日 12:14:53 UTC">2025年5月27日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月27日 12:15:36 UTC">2025年5月27日</span>
   </span>
 
     
