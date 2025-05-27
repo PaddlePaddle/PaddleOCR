@@ -388,7 +388,7 @@ Before using the formula recognition pipeline locally, please ensure that you ha
 
 ### 2.1 Command Line Experience
 
-You can quickly experience the effect of the formula recognition pipeline with one command：
+You can quickly experience the effect of the formula recognition pipeline with one command. Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png) locally：
 
 ```bash
 paddleocr formula_recognition_pipeline -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png
@@ -424,7 +424,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
@@ -919,7 +919,7 @@ Here are the parameters of the `predict()` method and their descriptions:
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td><code>None</code></td>
 <tr>
 <td><code>device</code></td>
 <td>The parameters are the same as those used during instantiation.</td>
@@ -1103,7 +1103,7 @@ In addition, PaddleOCR also provides two other deployment methods, which are det
 
 
 ☁️ Service-Based Deployment：
-Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in production lines, please refer to the [Service-Based Deployment Guide](../deployment/serving.md).
+Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in production lines, please refer to the [Service-Based Deployment Guide](../deployment/serving.en.md).
 
 Below are the API references for basic service-based deployment and multi-language service invocation examples:
 
@@ -1361,17 +1361,17 @@ Since the formula recognition pipeline consists of several modules, if the pipel
 <tr>
 <td>Formulas are missing</td>
 <td>Layout Detection Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Formula content is inaccurate</td>
 <td>Formula Recognition Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Whole-image rotation correction is inaccurate</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/v3.0.0/en/version3.x/module_usage/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Image distortion correction is inaccurate</td>
