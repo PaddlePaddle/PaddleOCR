@@ -81,7 +81,7 @@ The Table Cell Detection Module is a key component of the table recognition task
 
 ## III. Quick Start
 
-> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.md).
+> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.en.md).
 
 You can quickly experience it with one command:
 

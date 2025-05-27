@@ -290,7 +290,7 @@ Descriptions of related methods and parameters are as follows:
 
 ## 4. Secondary Development
 
-If the above models are still not ideal for your scenario, you can try the following steps for secondary development. Here, training `SLANet` is used as an example, and for other models, just replace the corresponding configuration file. First, you need to prepare a dataset for table structure recognition, which can be prepared with reference to the format of the [table structure recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar). Once ready, you can train and export the model as follows. After exporting, you can quickly integrate the model into the above API. Here, the table structure recognition demo data is used as an example. Before training the model, please make sure you have installed the dependencies required by PaddleOCR according to the [installation documentation](../installation.en.md).
+If the above models are still not ideal for your scenario, you can try the following steps for secondary development. Here, training `SLANet_plus` is used as an example, and for other models, just replace the corresponding configuration file. First, you need to prepare a dataset for table structure recognition, which can be prepared with reference to the format of the [table structure recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar). Once ready, you can train and export the model as follows. After exporting, you can quickly integrate the model into the above API. Here, the table structure recognition demo data is used as an example. Before training the model, please make sure you have installed the dependencies required by PaddleOCR according to the [installation documentation](../installation.en.md).
 
 
 ## 4.1 Dataset and Pretrained Model Preparation
@@ -306,24 +306,35 @@ tar -xf table_rec_dataset_examples.tar
 ### 4.1.2 Download Pretrained Model
 
 ```shell
-# Download SLANet pretrained model
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams
+# Download SLANet_plus pretrained model
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams
 ```
 
 ### 4.2 Model Training
 
-PaddleOCR is modularized. When training the `SLANet` recognition model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet.yml) of `SLANet`.
+PaddleOCR is modularized. When training the `SLANet_plus` recognition model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml) of `SLANet_plus`.
 
 
 The training commands are as follows:
 
 ```bash
 # Single card training (default training method)
-python3 tools/train.py -c configs/table/SLANet.yml \
-   -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 tools/train.py -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
+
 # Multi-card training, specify card numbers via --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/table/SLANet.yml \
-        -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
+    -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
 ```
 
 
@@ -334,21 +345,23 @@ You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using t
 ```bash
 # Note to set the path of pretrained_model to the local path. If you use the model saved by your own training, please modify the path and file name to {path/to/weights}/{model_name}.
  # Demo test set evaluation
- python3 tools/eval.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams
+ python3 tools/eval.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
 ```
 
 ### 4.4 Model Export
 
 ```bash
- python3 tools/export_model.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams \
- save_inference_dir="./SLANet_infer/"
+ python3 tools/export_model.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams \
+    Global.save_inference_dir="./SLANet_plus_infer/"
 ```
 
- After exporting the model, the static graph model will be stored in `./SLANet_infer/` in the current directory. In this directory, you will see the following files:
+ After exporting the model, the static graph model will be stored in `./SLANet_plus_infer/` in the current directory. In this directory, you will see the following files:
  ```
- ./SLANet_infer/
+ ./SLANet_plus_infer/
  ├── inference.json
  ├── inference.pdiparams
  ├── inference.yml
