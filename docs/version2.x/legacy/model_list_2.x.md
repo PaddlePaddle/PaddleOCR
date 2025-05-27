@@ -1,6 +1,6 @@
 # PaddleOCR 2.x及更低版本支持的模型
 
-由于串联逻辑和模型训练、推理时用到的配置不同，PaddleOCR 2.x 版本的 PP-OCRv4、PP-OCRv3 系列模型与 PaddleOCR 3.0 及以上版本的 PP-OCRv4、PP-OCRv3 系列模型不能互相使用。
+由于串联逻辑和模型训练、推理时用到的配置不同，PaddleOCR 2.x 分支的 PP-OCRv4、PP-OCRv3 系列模型与 PaddleOCR 3.0 及以上分支的 PP-OCRv4、PP-OCRv3 系列模型不能互相使用。
 
 ## 检测模型
 
