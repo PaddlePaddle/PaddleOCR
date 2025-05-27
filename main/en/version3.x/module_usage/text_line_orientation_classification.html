@@ -1591,35 +1591,20 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-supported-models" class="md-nav__link">
+  <a href="#2-supported-model-list" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Supported Models
+      2. Supported Model List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-quick-start" class="md-nav__link">
+  <a href="#3-quick-integration" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Quick Start
+      3. Quick Integration
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#method-and-parameter-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Method and Parameter Details
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2978,35 +2963,20 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-supported-models" class="md-nav__link">
+  <a href="#2-supported-model-list" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Supported Models
+      2. Supported Model List
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-quick-start" class="md-nav__link">
+  <a href="#3-quick-integration" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Quick Start
+      3. Quick Integration
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#method-and-parameter-details" class="md-nav__link">
-    <span class="md-ellipsis">
-      Method and Parameter Details
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3053,15 +3023,14 @@ You're not viewing the latest version.
 
 <h1 id="text-line-orientation-classification-module-tutorial">Text Line Orientation Classification Module Tutorial<a class="headerlink" href="#text-line-orientation-classification-module-tutorial" title="Permanent link">&para;</a></h1>
 <h2 id="1-overview">1. Overview<a class="headerlink" href="#1-overview" title="Permanent link">&para;</a></h2>
-<p>The text line orientation classification module identifies the orientation of text lines and corrects them through post-processing. During processes like document scanning or ID photo capture, users may rotate the shooting device for better clarity, resulting in text lines with varying orientations. Standard OCR workflows often struggle with such data. By employing image classification technology, this module pre-determines text line orientation and adjusts it, thereby enhancing OCR accuracy.</p>
-<h2 id="2-supported-models">2. Supported Models<a class="headerlink" href="#2-supported-models" title="Permanent link">&para;</a></h2>
+<p>The text line orientation classification module primarily distinguishes the orientation of text lines and corrects them using post-processing. In processes such as document scanning and license/certificate photography, to capture clearer images, the capture device may be rotated, resulting in text lines in various orientations. Standard OCR pipelines cannot handle such data well. By utilizing image classification technology, the orientation of text lines can be predetermined and adjusted, thereby enhancing the accuracy of OCR processing.</p>
+<h2 id="2-supported-model-list">2. Supported Model List<a class="headerlink" href="#2-supported-model-list" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Model</th>
-<th>Download Links</th>
-<th>Top-1 Acc (%)</th>
-<th>GPU Inference Time (ms)</th>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)</th>
 <th>Model Size (M)</th>
 <th>Description</th>
@@ -3070,25 +3039,36 @@ You're not viewing the latest version.
 <tbody>
 <tr>
 <td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
-<td>95.54</td>
+<td>98.85</td>
 <td>-</td>
 <td>-</td>
 <td>0.32</td>
-<td>A text line classification model based on PP-LCNet_x0_25, with two classes: 0° and 180°.</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>Text line classification model based on PP-LCNet_x1_0, with two classes: 0 degrees and 180 degrees</td>
 </tr>
 </tbody>
 </table>
 
-<p><strong>Testing Environment:</strong></p>
+<blockquote>
+<p>❗ <strong>Note</strong>: The text line orientation classification model has been recently upgraded, and <code>PP-LCNet_x1_0_textline_ori</code> has been added. If you need to use the pre-upgrade model weights, please click the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">download link</a>.</p>
+</blockquote>
+<p><strong>Test Environment Description:</strong></p>
 <ul>
-      <li><b>Performance Testing Environment</b>
+      <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>Test Dataset:</strong> PaddleX's proprietary dataset, covering scenarios like IDs and documents, with 1,000 images.</li>
-              <li><strong>Hardware:</strong>
+             <li><strong>Test Dataset：</strong> PaddleX Self-built Dataset, Covering Multiple Scenarios Such as Documents and Certificates, Containing 1000 Images.</li>
+              <li><strong>Hardware Configuration：</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
                   </ul>
               </li>
           </ul>
@@ -3100,158 +3080,233 @@ You're not viewing the latest version.
     <thead>
         <tr>
             <th>Mode</th>
-            <th>GPU Configuration</th>
-            <th>CPU Configuration</th>
-            <th>Acceleration Techniques</th>
+            <th>GPU Configuration </th>
+            <th>CPU Configuration </th>
+            <th>Acceleration Technology Combination</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>Standard Mode</td>
-            <td>FP32 precision / No TRT acceleration</td>
-            <td>FP32 precision / 8 threads</td>
+            <td>Normal Mode</td>
+            <td>FP32 Precision / No TRT Acceleration</td>
+            <td>FP32 Precision / 8 Threads</td>
             <td>PaddleInference</td>
         </tr>
         <tr>
             <td>High-Performance Mode</td>
-            <td>Optimal combination of precision and acceleration strategies</td>
-            <td>FP32 precision / 8 threads</td>
-            <td>Optimal backend selection (Paddle/OpenVINO/TRT, etc.)</td>
+            <td>Optimal combination of pre-selected precision types and acceleration strategies</td>
+            <td>FP32 Precision / 8 Threads</td>
+            <td>Pre-selected optimal backend (Paddle/OpenVINO/TRT, etc.)</td>
         </tr>
     </tbody>
 </table>
 
-<h2 id="3-quick-start">3. Quick Start<a class="headerlink" href="#3-quick-start" title="Permanent link">&para;</a></h2>
+<h2 id="3-quick-integration">3. Quick Integration<a class="headerlink" href="#3-quick-integration" title="Permanent link">&para;</a></h2>
 <blockquote>
-<p>❗ Before starting, ensure you have installed the PaddleOCR wheel package. Refer to the <a href="../installation.html">Installation Guide</a> for details.  </p>
+<p>❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the <a href="../installation.html">Installation Guide</a>.</p>
 </blockquote>
-<p>Run the following command for a quick demo:  </p>
+<p>You can quickly experience the functionality with a single command:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>text_line_orientation_classification<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
 </span></code></pre></div>
-<p>Alternatively, integrate the module into your project. Download the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg">sample image</a> locally before running the code below.  </p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextLineOrientationClassification</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">TextLineOrientationClassification</span><span class="p">(</span><span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;PP-LCNet_x0_25_textline_ori&quot;</span><span class="p">)</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;textline_rot180_demo.jpg&quot;</span><span class="p">,</span>  <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">json_format</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;./output/demo.png&quot;</span><span class="p">)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;./output/res.json&quot;</span><span class="p">)</span>
+<p>You can also integrate the text line orientation classification model into your project. Run the following code after downloading the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg">example image</a> to your local machine. </p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>from<span class="w"> </span>paddleocr<span class="w"> </span>import<span class="w"> </span>TextLineOrientationClassification
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>TextLineOrientationClassification<span class="o">(</span><span class="nv">model_name</span><span class="o">=</span><span class="s2">&quot;PP-LCNet_x0_25_textline_ori&quot;</span><span class="o">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nv">output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>model.predict<span class="o">(</span><span class="s2">&quot;textline_rot180_demo.jpg&quot;</span>,<span class="w">  </span><span class="nv">batch_size</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">for</span><span class="w"> </span>res<span class="w"> </span><span class="k">in</span><span class="w"> </span>output:
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span>res.print<span class="o">(</span><span class="nv">json_format</span><span class="o">=</span>False<span class="o">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span>res.save_to_img<span class="o">(</span><span class="s2">&quot;./output/demo.png&quot;</span><span class="o">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span>res.save_to_json<span class="o">(</span><span class="s2">&quot;./output/res.json&quot;</span><span class="o">)</span>
 </span></code></pre></div>
-<p>The output will be:  </p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;textline_rot180_demo.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;class_ids&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">1</span><span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int32<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">1</span>.<span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>float32<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;label_names&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;180_degree&#39;</span><span class="o">]}}</span>
+<p>After running, the result obtained is:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;textline_rot180_demo.jpg&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;class_ids&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">1</span><span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int32<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;scores&#39;</span>:<span class="w"> </span>array<span class="o">([</span><span class="m">0</span>.99864<span class="o">]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>float32<span class="o">)</span>,<span class="w"> </span><span class="s1">&#39;label_names&#39;</span>:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;180_degree&#39;</span><span class="o">]}}</span>
 </span></code></pre></div>
-<p>Key output fields:<br />
-- <code>input_path</code>: Path of the input image.<br />
-- <code>page_index</code>: For PDF inputs, indicates the page number; otherwise, <code>None</code>.<br />
-- <code>class_ids</code>: Predicted class IDs (0° or 180°).<br />
-- <code>scores</code>: Confidence scores.<br />
-- <code>label_names</code>: Predicted class labels.  </p>
-<p>Visualization:  </p>
-<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg">  </p>
-<h3 id="method-and-parameter-details">Method and Parameter Details<a class="headerlink" href="#method-and-parameter-details" title="Permanent link">&para;</a></h3>
+<p>The meanings of the running results parameters are as follows:</p>
 <ul>
-<li><strong><code>TextLineOrientationClassification</code> Initialization</strong> (using <code>PP-LCNet_x0_25_textline_ori</code> as an example):  </li>
+<li><code>input_path</code>：Indicates the path of the input image.</li>
+<li><code>page_index</code>：If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is <code>None</code>.</li>
+<li><code>class_ids</code>：Indicates the class ID of the prediction result.</li>
+<li><code>scores</code>：Indicates the confidence score of the prediction result.</li>
+<li><code>label_names</code>：Indicates the class name of the prediction result.
+The visualization image is as follows:</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg"></p>
+<p>The explanations for the methods, parameters, etc., are as follows:</p>
+<ul>
+<li><code>TextLineOrientationClassification</code> instantiates a textline classification model (here, <code>PP-LCNet_x0_25_textline_ori</code> is used as an example), and the specific explanations are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Description</th>
-<th>Type</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
 <th>Options</th>
-<th>Default</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
+<td>Name of the model</td>
 <td><code>str</code></td>
-<td>N/A</td>
-<td><code>None</code></td>
+<td>None</td>
+<td><code>PP-LCNet_x0_25_textline_ori</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Custom model path</td>
+<td>Path to store the model</td>
 <td><code>str</code></td>
-<td>N/A</td>
+<td>None</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Inference device</td>
+<td>The device used for model inference</td>
 <td><code>str</code></td>
-<td>E.g., "gpu:0", "npu:0", "cpu"</td>
+<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
 <td><code>gpu:0</code></td>
 </tr>
 <tr>
 <td><code>use_hpip</code></td>
-<td>Enable high-performance inference</td>
+<td>Whether to enable the high-performance inference plugin</td>
 <td><code>bool</code></td>
-<td>N/A</td>
+<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>hpi_config</code></td>
-<td>HPI configuration</td>
+<td>High-performance inference configuration</td>
 <td><code>dict</code> | <code>None</code></td>
-<td>N/A</td>
+<td>None</td>
 <td><code>None</code></td>
 </tr>
 </table>
 
 <ul>
-<li><strong><code>predict()</code> Method</strong>:  </li>
-<li><code>input</code>: Supports various input types (numpy array, file path, URL, directory, or list).  </li>
 <li>
-<p><code>batch_size</code>: Batch size (default: 1).  </p>
+<p>The <code>model_name</code> must be specified. After specifying <code>model_name</code>, the default model parameters built into PaddleX are used. If <code>model_dir</code> is specified, the user-defined model is used.</p>
 </li>
 <li>
-<p><strong>Result Handling</strong>:<br />
-  Each prediction result is a <code>Result</code> object with methods like <code>print()</code>, <code>save_to_img()</code>, and <code>save_to_json()</code>.  </p>
+<p>Call the <code>predict()</code> method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a <code>predict_iter()</code> method. Both methods accept the same parameters and return the same results, but <code>predict_iter()</code> returns a <code>generator</code>, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the <code>predict()</code> method are <code>input</code> and <code>batch_size</code>, as described below:</p>
 </li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>Method</th>
-<th>Description</th>
-<th>Parameters</th>
-<th>Type</th>
-<th>Details</th>
-<th>Default</th>
+<th>Parameter</th>
+<th>Parameter Description</th>
+<th>Parameter Type</th>
+<th>Options</th>
+<th>Default Value</th>
 </tr>
 </thead>
 <tr>
-<td><code>print()</code></td>
-<td>Print results</td>
-<td><code>format_json</code>, <code>indent</code>, <code>ensure_ascii</code></td>
-<td><code>bool</code>, <code>int</code>, <code>bool</code></td>
-<td>Control JSON formatting and ASCII escaping</td>
-<td><code>True</code>, 4, <code>False</code></td>
+<td><code>input</code></td>
+<td>Data to be predicted, supporting multiple input types</td>
+<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
+<td>
+<ul>
+  <li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
+  <li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
+  <li><b>URL link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg">Example</a></li>
+  <li><b>Local directory</b>, the directory should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
+  <li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+</ul>
+</td>
+<td>None</td>
 </tr>
 <tr>
-<td><code>save_to_json()</code></td>
-<td>Save results as JSON</td>
-<td><code>save_path</code>, <code>indent</code>, <code>ensure_ascii</code></td>
-<td><code>str</code>, <code>int</code>, <code>bool</code></td>
-<td>Same as <code>print()</code></td>
-<td>N/A, 4, <code>False</code></td>
-</tr>
-<tr>
-<td><code>save_to_img()</code></td>
-<td>Save visualized results</td>
-<td><code>save_path</code></td>
-<td><code>str</code></td>
-<td>Output path</td>
-<td>N/A</td>
+<td><code>batch_size</code></td>
+<td>Batch size</td>
+<td><code>int</code></td>
+<td>Any integer</td>
+<td>1</td>
 </tr>
 </table>
 
 <ul>
-<li><strong>Attributes</strong>:  </li>
-<li><code>json</code>: Get results in JSON format.  </li>
-<li><code>img</code>: Get visualized images as a dictionary.  </li>
+<li>The prediction results are processed, and the prediction result for each sample is of type <code>dict</code>. It supports operations such as printing, saving as an image, and saving as a <code>json</code> file:</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Method Description</th>
+<th>Parameter</th>
+<th>Parameter Type</th>
+<th>Parameter Description</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tr>
+<td rowspan="3"><code>print()</code></td>
+<td rowspan="3">Print the results to the terminal</td>
+<td><code>format_json</code></td>
+<td><code>bool</code></td>
+<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, only effective when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. If set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only effective when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>save_to_json()</code></td>
+<td rowspan="3">Save the results as a JSON file</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>The path to save the file. If it is a directory, the saved file name will be consistent with the input file name</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable, only effective when <code>format_json</code> is <code>True</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. If set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> retains the original characters, only effective when <code>format_json</code> is <code>True</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>save_to_img()</code></td>
+<td>Save the results as an image file</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>The path to save the file. If it is a directory, the saved file name will be consistent with the input file name</td>
+<td>None</td>
+</tr>
+</table>
+
+<ul>
+<li>Additionally, it supports obtaining the visualization image with results and the prediction results through attributes, as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Attribute Description</th>
+</tr>
+</thead>
+<tr>
+<td rowspan="1"><code>json</code></td>
+<td rowspan="1">Get the prediction result in <code>json</code> format</td>
+</tr>
+<tr>
+<td rowspan="1"><code>img</code></td>
+<td rowspan="1">Get the visualization image in <code>dict</code> format</td>
+</tr>
+</table>
+
 <h2 id="4-custom-development">4. Custom Development<a class="headerlink" href="#4-custom-development" title="Permanent link">&para;</a></h2>
 <p>Since PaddleOCR does not natively support training for text line orientation classification, refer to <a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development">PaddleX's Custom Development Guide</a> for training. Trained models can seamlessly integrate into PaddleOCR's API for inference.</p>
 
@@ -3276,7 +3331,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 27, 2025 12:15:36 UTC">May 27, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 27, 2025 14:42:09 UTC">May 27, 2025</span>
   </span>
 
     
@@ -3286,7 +3341,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 27, 2025 12:15:36 UTC">May 27, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 27, 2025 14:42:09 UTC">May 27, 2025</span>
   </span>
 
     
