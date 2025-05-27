@@ -18,7 +18,7 @@ comments: true
 
 - [表格结构识别模块](../module_usage/table_structure_recognition.md)
 - [表格分类模块](../module_usage/table_classification.md)
-- [表格单元格定位模块](../module_usage/table_cells_detection.md)
+- [表格单元格检测模块](../module_usage/table_cells_detection.md)
 - [文本检测模块](../module_usage/text_detection.md)
 - [文本识别模块](../module_usage/text_recognition.md)
 - [版面区域检测模块](../module_usage/layout_detection.md)（可选）
@@ -803,13 +803,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 paddleocr table_recognition_v2 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_orientation_classify True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_orientation_classify True
 
 # 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --use_doc_unwarping True
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_unwarping True
 
 # 通过 --device 指定模型推理时使用 GPU
-paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device gpu
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1117,14 +1117,43 @@ paddleocr table_recognition_v2 -i ./general_formula_recognition_001.png --device
 </details>
 <br />
 
+接下来，通过下列一行命令来对[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg)进行推理：
+```bash
+paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_orientation_classify False --use_doc_unwarping False
+```
+
 运行结果会被打印到终端上，默认配置的 table_recognition_v2 产线的运行结果如下：
 
 ```
-{'res': {'input_path': '/root/.paddlex/predict_input/table_recognition_v2.jpg', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True, 'use_ocr_model': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 18, 'label': 'chart', 'score': 0.6778535842895508, 'coordinate': [0, 0, 1281.0206, 585.5999]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[  4, 301],
+{'res': {'input_path': 'table_recognition_v2.jpg', 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_layout_detection': True, 'use_ocr_model': True}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 8, 'label': 'table', 'score': 0.86655592918396, 'coordinate': [0.0125130415, 0.41920784, 1281.3737, 585.3884]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[   9,   21],
         ...,
-        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],
+        [   9,   59]],
+
+       ...,
+
+       [[1046,  536],
         ...,
-        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}
+        [1046,  573]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.6, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0, 'rec_texts': ['部门', '报销人', '报销事由', '批准人：', '单据', '张', '合计金额', '元', '车费票', '其', '火车费票', '飞机票', '中', '旅住宿费', '其他', '补贴'], 'rec_scores': array([0.99958128, ..., 0.99317062]), 'rec_polys': array([[[   9,   21],
+        ...,
+        [   9,   59]],
+
+       ...,
+
+       [[1046,  536],
+        ...,
+        [1046,  573]]], dtype=int16), 'rec_boxes': array([[   9, ...,   59],
+       ...,
+       [1046, ...,  573]], dtype=int16)}, 'table_res_list': [{'cell_box_list': [array([ 0.13052222, ..., 73.08310249]), array([104.43082511, ...,  73.27777413]), array([319.39041221, ...,  73.30439308]), array([424.2436837 , ...,  73.44736794]), array([580.75836265, ...,  73.24003914]), array([723.04370201, ...,  73.22717598]), array([984.67315757, ...,  73.20420387]), array([1.25130415e-02, ..., 5.85419208e+02]), array([984.37072837, ..., 137.02281502]), array([984.26586998, ..., 201.22290352]), array([984.24017417, ..., 585.30775765]), array([1039.90606773, ...,  265.44664314]), array([1039.69549644, ...,  329.30540779]), array([1039.66546714, ...,  393.57319954]), array([1039.5122689 , ...,  457.74644783]), array([1039.55535972, ...,  521.73030403]), array([1039.58612144, ...,  585.09468392])], 'pred_html': '<html><body><table><tbody><tr><td>部门</td><td></td><td>报销人</td><td></td><td>报销事由</td><td></td><td colspan="2">批准人：</td></tr><tr><td colspan="6" rowspan="8"></td><td colspan="2">单据 张</td></tr><tr><td colspan="2">合计金额 元</td></tr><tr><td rowspan="6">其 中</td><td>车费票</td></tr><tr><td>火车费票</td></tr><tr><td>飞机票</td></tr><tr><td>旅住宿费</td></tr><tr><td>其他</td></tr><tr><td>补贴</td></tr></tbody></table></body></html>', 'table_ocr_pred': {'rec_polys': array([[[   9,   21],
+        ...,
+        [   9,   59]],
+
+       ...,
+
+       [[1046,  536],
+        ...,
+        [1046,  573]]], dtype=int16), 'rec_texts': ['部门', '报销人', '报销事由', '批准人：', '单据', '张', '合计金额', '元', '车费票', '其', '火车费票', '飞机票', '中', '旅住宿费', '其他', '补贴'], 'rec_scores': array([0.99958128, ..., 0.99317062]), 'rec_boxes': array([[   9, ...,   59],
+       ...,
+       [1046, ...,  573]], dtype=int16)}}]}}
 ```
 
 可视化结果保存在`save_path`下，可视化结果如下：
@@ -1142,7 +1171,7 @@ pipeline = TableRecognitionPipelineV2()
 # ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
 # ocr = TableRecognitionPipelineV2(device="gpu") # 通过 device 指定模型推理时使用 GPU
-output = pipeline.predict("./general_formula_recognition_001.png")
+output = pipeline.predict("./table_recognition_v2.jpg")
 for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_img("./output/")
@@ -1728,7 +1757,7 @@ for res in output:
 
 如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。
 
-若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式](#22-python脚本方式集成)中的示例代码。
+若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式集成](#22-python)中的示例代码。
 
 此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：
 
@@ -2046,7 +2075,7 @@ for i, res in enumerate(result["tableRecResults"]):
 <tr>
 <td>表格分类错误</td>
 <td>表格分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_classification.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>表格单元格定位错误</td>
@@ -2085,3 +2114,148 @@ for i, res in enumerate(result["tableRecResults"]):
 </tr>
 </tbody>
 </table>
+
+
+### 4.2 模型应用
+
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过参数指定本地模型保存路径的方式，或者通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+#### 4.2.1 通过参数指定本地模型路径
+
+在初始化产线对象时，通过参数指定本地模型路径。以有线表结构识别模型 SLANeXt_wired 微调后的权重的使用方法为例，示例如下：
+
+命令行方式:
+
+```bash
+# 通过 --wired_table_structure_recognition_model_dir 指定本地模型路径
+paddleocr table_recognition_v2_pipeline -i ./table_recognition_v2.jpg --wired_table_structure_recognition_model_dir your_model_path
+
+# 假设使用 SLANeXt_wired 模型作为默认有线表结构识别模型，如果微调的不是该模型，通过 --wired_table_structure_recognition_model_name 修改模型名称
+paddleocr table_recognition_v2_pipeline -i ./table_recognition_v2.jpg --wired_table_structure_recognition_model_name SLANeXt_wired --wired_table_structure_recognition_model_dir your_model_path
+```
+
+脚本方式：
+
+```python
+
+from paddleocr import TableRecognitionPipelineV2
+
+# 通过 wired_table_structure_recognition_model_dir 指定本地模型路径
+pipeline = TableRecognitionPipelineV2(wired_table_structure_recognition_model_dir="./your_model_path")
+
+# 默认使用 SLANeXt_wired 模型作为默认表格识别模型，如果微调的不是该模型，通过 wired_table_structure_recognition_model_name 修改模型名称
+# pipeline = PaddleOCR(wired_table_structure_recognition_model_name="SLANeXt_wired", wired_table_structure_recognition_model_dir="./your_model_path")
+
+```
+
+#### 4.2.2 通过配置文件指定本地模型路径
+
+1.获取产线配置文件
+
+可调用 PaddleOCR 中 通用表格识别v2产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import TableRecognitionPipelineV2
+
+pipeline = TableRecognitionPipelineV2()
+pipeline.export_paddlex_config_to_yaml("TableRecognitionPipelineV2.yaml")
+```
+
+2.修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
+
+```yaml
+......
+SubModules:
+  LayoutDetection:
+    module_name: layout_detection
+    model_name: PicoDet_layout_1x_table
+    model_dir: null # 替换为微调后的版面区域检测模型权重路径
+
+  TableClassification:
+    module_name: table_classification
+    model_name: PP-LCNet_x1_0_table_cls
+    model_dir: null # 替换为微调后的表格分类模型权重路径
+
+  WiredTableStructureRecognition:
+    module_name: table_structure_recognition
+    model_name: SLANeXt_wired
+    model_dir: null # 替换为微调后的有线表格结构识别模型权重路径
+
+  WirelessTableStructureRecognition:
+    module_name: table_structure_recognition
+    model_name: SLANeXt_wireless
+    model_dir: null # 替换为微调后的无线表格结构识别模型权重路径
+
+  WiredTableCellsDetection:
+    module_name: table_cells_detection
+    model_name: RT-DETR-L_wired_table_cell_det
+    model_dir: null # 替换为微调后的有线表格单元格检测模型权重路径
+
+  WirelessTableCellsDetection:
+    module_name: table_cells_detection
+    model_name: RT-DETR-L_wireless_table_cell_det
+    model_dir: null # 替换为微调后的无线表格单元格检测模型权重路径
+
+SubPipelines:
+  DocPreprocessor:
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: True
+    use_doc_unwarping: True
+    SubModules:
+      DocOrientationClassify:
+        module_name: doc_text_orientation
+        model_name: PP-LCNet_x1_0_doc_ori
+        model_dir: null # 替换为微调后的文档图像方向分类模型权重路径
+
+      DocUnwarping:
+        module_name: image_unwarping
+        model_name: UVDoc
+        model_dir: null
+
+  GeneralOCR:
+    pipeline_name: OCR
+    text_type: general
+    use_doc_preprocessor: False
+    use_textline_orientation: False
+    SubModules:
+      TextDetection:
+        module_name: text_detection
+        model_name: PP-OCRv5_server_det
+        model_dir: null # 替换为微调后的文本检测模型权重路径
+        limit_side_len: 960
+        limit_type: max
+        max_side_limit: 4000
+        thresh: 0.3
+        box_thresh: 0.4
+        unclip_ratio: 1.5
+
+      TextRecognition:
+        module_name: text_recognition
+        model_name: PP-OCRv5_server_rec
+        model_dir: null # 替换为微调后文本识别的模型权重路径
+        batch_size: 1
+        score_thresh: 0
+......
+```
+
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3.在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr table_recognition_v2_pipeline --paddlex_config PaddleOCR.yaml ...
+```
+
+4.在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import TableRecognitionPipelineV2
+
+pipeline = TableRecognitionPipelineV2(paddlex_config="TableRecognitionPipelineV2.yaml")
+```
