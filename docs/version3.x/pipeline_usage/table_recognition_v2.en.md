@@ -1327,7 +1327,8 @@ In the above Python script, the following steps are performed:
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-</ul>If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+</ur>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1366,7 +1367,8 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-</ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
+</ul>
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>

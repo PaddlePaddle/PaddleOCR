@@ -1023,13 +1023,13 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>Name of the seal text detection model. If not set, the default model will be used.</td>
+<td>Name of the seal text detection model. If set to <code>None</code>, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
-<td>Directory of the seal text detection model. If not set, the official model will be downloaded.</td>
+<td>Directory of the seal text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

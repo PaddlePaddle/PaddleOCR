@@ -432,7 +432,7 @@ Specify the path to save the inference results file. If not set, the inference r
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td> 
-The name of the document orientation classification model. If no set, the default model in pipeline will be used.</td>
+The name of the document orientation classification model. If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -498,7 +498,7 @@ The name of the layout detection model. If not set, the default model in pipelin
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Threshold for layout detection, used to filter out predictions with low confidence.
-such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.If not set, the default PaddleX official model configuration will be used.
+such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2. If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -515,7 +515,7 @@ Whether to use NMS (Non-Maximum Suppression) post-processing for layout region d
 <td><code>layout_unclip_ratio</code></td>
 <td>
 The scaling factor for the side length of the detection boxes in layout region detection.
-A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1.If not set, the default PaddleX official model configuration will be used.
+A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1. If not set, the default PaddleX official model configuration will be used.
 </td>
 <td><code>float</code></td>
 <td></td>

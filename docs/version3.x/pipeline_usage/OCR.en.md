@@ -736,7 +736,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>det_model_dir</code></td>
-<td>Deprecated. Please use <code>text_detection_model_dir</code> instead. Directory path of the text detection model. If set to None, the official model will be downloaded.</td>
+<td>Deprecated. Please use <code>text_detection_model_dir</code> instead. Directory path of the text detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -748,7 +748,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>det_limit_type</code></td>
-<td>Deprecated. Please use <code>text_det_limit_type</code> instead. Type of side length limit for text detection.Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+<td>Deprecated. Please use <code>text_det_limit_type</code> instead. Type of side length limit for text detection.Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>

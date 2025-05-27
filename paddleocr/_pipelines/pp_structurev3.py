@@ -540,7 +540,7 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--textline_orientation_model_name",
             type=str,
-            help="Name of the text line orientation classification.",
+            help="Name of the text line orientation classification model.",
         )
         subparser.add_argument(
             "--textline_orientation_model_dir",
