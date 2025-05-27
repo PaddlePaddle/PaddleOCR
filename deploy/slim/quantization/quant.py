@@ -21,7 +21,8 @@ import sys
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
-sys.path.insert(0, os.path.abspath(os.path.join(__dir__, "..")))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..", "..", "..")))
+sys.path.append(os.path.abspath(os.path.join(__dir__, "..", "..", "..", "tools")))
 
 import yaml
 import paddle
@@ -223,11 +224,6 @@ def main(config, device, logger, vdl_writer, seed):
         model=model,
     )
 
-    # resume PACT training process
-    pre_best_model_dict = load_model(
-        config, model, optimizer, config["Architecture"]["model_type"]
-    )
-
     # build metric
     eval_class = build_metric(config["Metric"])
 
@@ -278,7 +274,7 @@ def main(config, device, logger, vdl_writer, seed):
     else:
         scaler = None
 
-    # load pretrain model
+    # resume PACT training process
     pre_best_model_dict = load_model(
         config, model, optimizer, config["Architecture"]["model_type"]
     )
