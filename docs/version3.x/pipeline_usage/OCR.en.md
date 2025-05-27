@@ -1845,3 +1845,38 @@ from paddleocr import PaddleOCR
 
 pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")  
 ```
+
+#### 4.2.3 Specifying the Local Font File Path via Environment Variables
+Before initializing the production line object, you can set an environment variable to specify the local font file path. This enables the production line to use the specified font when saving the annotated result image via the `save_to_img` method.  
+This approach is convenient for offline deployment as it eliminates the need to download font files over the network and simplifies file management. **It is essential to ensure that the specified font file exists!** **
+
+Suppose the font file `simfang.ttf` is stored in the `fonts` folder in the current directory. 
+
+Python script: 
+
+```python
+import os
+
+# Specify the location of the font file before initializing the production line.
+os.environ["PADDLE_PDX_LOCAL_FONT_FILE_PATH"] = "./fonts/simfang.ttf"
+
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False, 
+    use_doc_unwarping=False, 
+    use_textline_orientation=False) # text detection + text recognition
+# ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # text image preprocessing + text detection + textline orientation classification + text recognition
+# ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # text detection + textline orientation classification + text recognition
+# ocr = PaddleOCR(
+#     text_detection_model_name="PP-OCRv5_server_det",
+#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     use_doc_orientation_classify=False,
+#     use_doc_unwarping=False,
+#     use_textline_orientation=False) # Switch to PP-OCRv5_server models
+result = ocr.predict("./general_ocr_002.png")
+for res in result:
+    res.print()
+    res.save_to_img("output")
+    res.save_to_json("output")
+```
