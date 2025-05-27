@@ -23,6 +23,7 @@ PaddleOCR 和 PaddleX 的版本存在如下对应关系：
 | PaddleOCR 版本 | PaddleX 版本 |
 | --- | --- |
 | `3.0.0` | `3.0.0` |
+| `3.0.1` | `3.0.1` |
 
 ## 2. PaddleOCR 产线与 PaddleX 产线注册名的对应关系
 

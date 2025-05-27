@@ -23,6 +23,7 @@ The version correspondence between PaddleOCR and PaddleX is as follows:
 | PaddleOCR Version | PaddleX Version |
 | --- | --- |
 | `3.0.0` | `3.0.0` |
+| `3.0.1` | `3.0.1` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
