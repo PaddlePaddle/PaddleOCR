@@ -516,7 +516,7 @@ Before using the general OCR pipeline locally, ensure you have installed the whe
 
 ### 2.1 Command Line  
 
-Run a single command to quickly test the OCR pipeline:  
+Run a single command to quickly test the OCR pipeline.  Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png) locally:  
 
 ```bash  
 # Default: Uses PP-OCRv5 model  

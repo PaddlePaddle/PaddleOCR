@@ -61,7 +61,8 @@ public:
         if (config["Global"] && config["Global"]["model_name"]) {
           model_name = config["Global"]["model_name"].as<std::string>();
         }
-        if (!model_name.empty()) {
+        if (!model_name.empty() && model_name != "PP-OCRv5_mobile_rec" &&
+            model_name != "PP-OCRv5_server_rec") {
           std::cerr << "Error: " << model_name << " is currently not supported."
                     << std::endl;
           std::exit(EXIT_FAILURE);
