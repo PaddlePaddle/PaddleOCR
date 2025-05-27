@@ -516,7 +516,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ### 2.1 命令行方式
 
-一行命令即可快速体验OCR产线效果：
+一行命令即可快速体验OCR产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：
 
 ```bash
 # 默认使用 PP-OCRv5 模型

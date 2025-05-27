@@ -388,7 +388,7 @@ Before using the formula recognition pipeline locally, please ensure that you ha
 
 ### 2.1 Command Line Experience
 
-You can quickly experience the effect of the formula recognition pipeline with one command：
+You can quickly experience the effect of the formula recognition pipeline with one command. Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png) locally：
 
 ```bash
 paddleocr formula_recognition_pipeline -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png
@@ -424,7 +424,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
@@ -919,7 +919,7 @@ Here are the parameters of the `predict()` method and their descriptions:
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td><code>None</code></td>
 <tr>
 <td><code>device</code></td>
 <td>The parameters are the same as those used during instantiation.</td>
@@ -1103,7 +1103,7 @@ In addition, PaddleOCR also provides two other deployment methods, which are det
 
 
 ☁️ Service-Based Deployment：
-Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in production lines, please refer to the [Service-Based Deployment Guide](../deployment/serving.md).
+Service-Based Deployment is a common deployment form in real-world production environments. By encapsulating inference capabilities as a service, clients can access these services via network requests to obtain inference results. For detailed instructions on Service-Based Deployment in production lines, please refer to the [Service-Based Deployment Guide](../deployment/serving.en.md).
 
 Below are the API references for basic service-based deployment and multi-language service invocation examples:
 
@@ -1345,6 +1345,8 @@ for i, res in enumerate(result["formulaRecResults"]):
 
 If the default model weights provided by the formula recognition pipeline do not meet your requirements in terms of accuracy or speed, you can try to <b>fine-tune</b> the existing models using <b>your own domain-specific or application-specific data</b> to improve the recognition performance of the formula recognition pipeline in your scenario.
 
+### 4.1 Model Fine-Tuning
+
 Since the formula recognition pipeline consists of several modules, if the pipeline's performance is not satisfactory, the issue may arise from any one of these modules. You can analyze the poorly recognized images to determine which module is problematic and refer to the corresponding fine-tuning tutorial links in the table below for model fine-tuning.
 
 <table>
@@ -1359,17 +1361,17 @@ Since the formula recognition pipeline consists of several modules, if the pipel
 <tr>
 <td>Formulas are missing</td>
 <td>Layout Detection Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/layout_detection.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Formula content is inaccurate</td>
 <td>Formula Recognition Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/formula_recognition.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Whole-image rotation correction is inaccurate</td>
 <td>Document Image Orientation Classification Module</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/module_usage/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
 </tr>
 <tr>
 <td>Image distortion correction is inaccurate</td>
@@ -1378,3 +1380,122 @@ Since the formula recognition pipeline consists of several modules, if the pipel
 </tr>
 </tbody>
 </table>
+
+### 4.2  Model Deployment
+
+After you complete fine-tuning training using a private dataset, you can obtain a local model weight file. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by customizing the pipeline configuration file.
+
+#### 4.2.1 Specify the local model path through parameters
+
+When initializing the pipeline object, specify the local model path through parameters. Take the usage of the weights after fine-tuning the text detection model as an example, as follows:
+
+Command line mode:
+
+```bash
+# Specify the local model path via --formula_recognition_model_dir
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --formula_recognition_model_dir your_formula_recognition_model_path
+
+# PP-FormulaNet_plus-M model is used as the default formula recognition model. If you do not fine-tune this model, modify the model name by using --formula_recognition_model_name
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --formula_recognition_model_name PP-FormulaNet_plus-M --formula_recognition_model_dir your_ppformulanet_plus-m_formula_recognition_model_path
+```
+
+Script mode：
+
+```python
+
+from paddleocr import FormulaRecognitionPipeline
+
+#  Specify the local model path via formula_recognition_model_dir
+pipeline = FormulaRecognitionPipeline(formula_recognition_model_dir="./your_formula_recognition_model_path")
+output = pipeline.predict("./general_formula_recognition_001.png")
+for res in output:
+    res.print() ## Print the structured output of the prediction
+    res.save_to_img(save_path="output") ## Save the formula visualization result of the current image.
+    res.save_to_json(save_path="output") ## Save the structured JSON result of the current image
+
+# PP-FormulaNet_plus-M model is used as the default formula recognition model. If you do not fine-tune this model, modify the model name by using  formula_recognition_model_name
+# pipeline = FormulaRecognitionPipeline(formula_recognition_model_name="PP-FormulaNet_plus-M", formula_recognition_model_dir="./your_ppformulanet_plus-m_formula_recognition_model_path")
+
+```
+
+
+#### 4.2.2 Specify the local model path through the configuration file
+
+
+1.Obtain the pipeline configuration file
+
+Call the `export_paddlex_config_to_yaml` method of the **Formula Recognition Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
+
+```Python
+from paddleocr import FormulaRecognitionPipeline
+
+pipeline = FormulaRecognitionPipeline()
+pipeline.export_paddlex_config_to_yaml("FormulaRecognitionPipeline.yaml")
+```
+
+2.Modify the Configuration File 
+
+After obtaining the default pipeline configuration file, replace the paths of the default model weights with the local paths of your fine-tuned model weights. For example:  
+
+```yaml
+......
+SubModules:
+  FormulaRecognition:
+    batch_size: 5
+    model_dir: null # Replace with the path to your fine-tuned formula recognition model weights  
+    model_name: PP-FormulaNet_plus-M # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    module_name: formula_recognition
+  LayoutDetection:
+    batch_size: 1
+    layout_merge_bboxes_mode: large
+    layout_nms: true
+    layout_unclip_ratio: 1.0
+    model_dir: null # Replace with the path to your fine-tuned layout detection model weights 
+    model_name: PP-DocLayout_plus-L # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    module_name: layout_detection
+    threshold: 0.5
+SubPipelines:
+  DocPreprocessor:
+    SubModules:
+      DocOrientationClassify:
+        batch_size: 1
+        model_dir: null # Replace with the path to your fine-tuned document image orientation classification model weights 
+        model_name: PP-LCNet_x1_0_doc_ori # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+        module_name: doc_text_orientation
+      DocUnwarping:
+        batch_size: 1
+        model_dir: null 
+        model_name: UVDoc 
+        module_name: image_unwarping
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: true
+    use_doc_unwarping: true
+pipeline_name: formula_recognition
+use_doc_preprocessor: true
+use_layout_detection: true
+......
+```
+
+The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
+
+3.Load the Configuration File in CLI  
+
+After modifying the configuration file, specify its path using the `--paddlex_config` parameter in the command line. PaddleOCR will read the file and apply the configurations. Example:  
+
+```bash
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --paddlex_config FormulaRecognitionPipeline.yaml 
+```
+4.Load the Configuration File in Python API  
+
+When initializing the pipeline object, pass the path of the PaddleX pipeline configuration file or a configuration dictionary via the `paddlex_config` parameter. PaddleOCR will read and apply the configurations. Example: 
+
+```python
+from paddleocr import  FormulaRecognitionPipeline
+
+pipeline =  FormulaRecognitionPipeline(paddlex_config="FormulaRecognitionPipeline.yaml")
+output = pipeline.predict("./general_formula_recognition_001.png")
+for res in output:
+    res.print() ## Print the structured output of the prediction
+    res.save_to_img(save_path="output") ## Save the formula visualization result of the current image.
+    res.save_to_json(save_path="output") ## Save the structured JSON result of the current image
+```

@@ -388,7 +388,7 @@ comments: true
 
 ### 2.1 命令行方式体验
 
-一行命令即可快速体验 formula_recognition 产线效果：
+一行命令即可快速体验 formula_recognition 产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png)到本地：
 
 ```bash
 paddleocr formula_recognition_pipeline -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png
@@ -424,7 +424,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td>无</td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
@@ -902,7 +902,7 @@ for res in output:
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
-<td></td>
+<td>无</td>
 <tr>
 <td><code>device</code></td>
 <td>与实例化时的参数相同。</td>
@@ -1319,6 +1319,7 @@ for i, res in enumerate(result["formulaRecResults"]):
 
 如果公式识别产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升公式识别产线的在您的场景中的识别效果。
 
+### 4.1 模型微调
 由于公式识别产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
 
 
@@ -1334,17 +1335,17 @@ for i, res in enumerate(result["formulaRecResults"]):
 <tr>
 <td>公式存在漏检</td>
 <td>版面区域检测模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/module_usage/layout_detection.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>公式内容不准</td>
 <td>公式识别模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>整图旋转矫正不准</td>
 <td>文档图像方向分类模块</td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/module_usage/doc_img_orientation_classification.html#_5">链接</a></td>
 </tr>
 <tr>
 <td>图像扭曲矫正不准</td>
@@ -1353,3 +1354,122 @@ for i, res in enumerate(result["formulaRecResults"]):
 </tr>
 </tbody>
 </table>
+
+### 4.2 模型应用
+
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过参数指定本地模型保存路径的方式，或者通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+#### 4.2.1 通过参数指定本地模型路径
+
+在初始化产线对象时，通过参数指定本地模型路径。以公式识别模型微调后的权重的使用方法为例，示例如下：
+
+命令行方式:
+
+```bash
+# 通过 --formula_recognition_model_dir 指定本地模型路径
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --formula_recognition_model_dir your_formula_recognition_model_path
+
+# 默认使用 PP-FormulaNet_plus-M 模型作为默认公式识别模型，如果微调的不是该模型，通过 --formula_recognition_model_name 修改模型名称
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --formula_recognition_model_name PP-FormulaNet_plus-M --formula_recognition_model_dir your_ppformulanet_plus-m_formula_recognition_model_path
+```
+
+脚本方式：
+
+```python
+
+from paddleocr import FormulaRecognitionPipeline
+
+# 通过 formula_recognition_model_dir 指定本地模型路径
+pipeline = FormulaRecognitionPipeline(formula_recognition_model_dir="./your_formula_recognition_model_path")
+output = pipeline.predict("./general_formula_recognition_001.png")
+for res in output:
+    res.print() ## 打印预测的结构化输出
+    res.save_to_img(save_path="output") ## 保存当前图像的公式可视化结果
+    res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
+# 默认使用 PP-FormulaNet_plus-M 模型作为默认公式识别模型，如果微调的不是该模型，通过 formula_recognition_model_name 修改模型名称
+# pipeline = FormulaRecognitionPipeline(formula_recognition_model_name="PP-FormulaNet_plus-M", formula_recognition_model_dir="./your_ppformulanet_plus-m_formula_recognition_model_path")
+
+```
+
+
+#### 4.2.2 通过配置文件指定本地模型路径
+
+
+1.获取产线配置文件
+
+可调用 PaddleOCR 中 公式识别 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import FormulaRecognitionPipeline
+
+pipeline = FormulaRecognitionPipeline()
+pipeline.export_paddlex_config_to_yaml("FormulaRecognitionPipeline.yaml")
+```
+
+2.修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
+
+```yaml
+......
+SubModules:
+  FormulaRecognition:
+    batch_size: 5
+    model_dir: null # 替换为微调后的公式模型权重路径
+    model_name: PP-FormulaNet_plus-M # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    module_name: formula_recognition
+  LayoutDetection:
+    batch_size: 1
+    layout_merge_bboxes_mode: large
+    layout_nms: true
+    layout_unclip_ratio: 1.0
+    model_dir: null # 替换为微调后的版面区域检测模型权重路径
+    model_name: PP-DocLayout_plus-L # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    module_name: layout_detection
+    threshold: 0.5
+SubPipelines:
+  DocPreprocessor:
+    SubModules:
+      DocOrientationClassify:
+        batch_size: 1
+        model_dir: null # 替换为微调后的文档图像方向分类模型权重路径
+        model_name: PP-LCNet_x1_0_doc_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+        module_name: doc_text_orientation
+      DocUnwarping:
+        batch_size: 1
+        model_dir: null 
+        model_name: UVDoc  
+        module_name: image_unwarping
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: true
+    use_doc_unwarping: true
+pipeline_name: formula_recognition
+use_doc_preprocessor: true
+use_layout_detection: true
+......
+```
+
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3.在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --paddlex_config FormulaRecognitionPipeline.yaml 
+```
+
+4.在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import  FormulaRecognitionPipeline
+
+pipeline =  FormulaRecognitionPipeline(paddlex_config="FormulaRecognitionPipeline.yaml")
+output = pipeline.predict("./general_formula_recognition_001.png")
+for res in output:
+    res.print() ## 打印预测的结构化输出
+    res.save_to_img(save_path="output") ## 保存当前图像的公式可视化结果
+    res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
+```
