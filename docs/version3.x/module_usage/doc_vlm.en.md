@@ -145,7 +145,7 @@ Explanations of related methods, parameters, etc., are as follows:
 </tr>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the default PaddleX built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
+* Among them, `model_name` must be specified. After specifying `model_name`, the default built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
 
 * Call the `predict()` method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the `predict_iter()` method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that `predict_iter()` returns a `generator`, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The `predict()` method parameters include `input`, `batch_size`, with specific explanations as follows:
 

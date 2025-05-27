@@ -952,16 +952,28 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 运行结果会被打印到终端上，默认配置的 seal_recognition 产线的运行结果如下：
 
 ```bash
-{'res': {'input_path': '/root/.paddlex/predict_input/seal_text_det.png', 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 0}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 16, 'label': 'seal', 'score': 0.9700419902801514, 'coordinate': [0.7737427, 2.4994812, 639.28375, 640]}]}, 'seal_res_list': [{'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': [array([[433,  32],
+{'res': {'input_path': './seal_text_det.png', 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 16, 'label': 'seal', 'score': 0.975529670715332, 'coordinate': [6.191284, 0.16680908, 634.39325, 628.85345]}]}, 'seal_res_list': [{'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': [array([[320,  38],
        ...,
-       [323,  27]])], 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.2, 'box_thresh': 0.6, 'unclip_ratio': 0.5}, 'text_type': 'seal', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['天津君和缘商贸有限公司'], 'rec_scores': array([0.99743599]), 'rec_polys': [array([[433,  32],
+       [315,  38]]), array([[461, 347],
        ...,
-       [323,  27]])], 'rec_boxes': array([], dtype=float64)}]}}
+       [456, 346]]), array([[439, 445],
+       ...,
+       [434, 444]]), array([[158, 468],
+       ...,
+       [154, 466]])], 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.2, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 0.5}, 'text_type': 'seal', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0, 'rec_texts': ['天津君和缘商贸有限公司', '发票专用章', '吗繁物', '5263647368706'], 'rec_scores': array([0.99340463, ..., 0.9916274 ]), 'rec_polys': [array([[320,  38],
+       ...,
+       [315,  38]]), array([[461, 347],
+       ...,
+       [456, 346]]), array([[439, 445],
+       ...,
+       [434, 444]]), array([[158, 468],
+       ...,
+       [154, 466]])], 'rec_boxes': array([], dtype=float64)}]}}
 ```
 
 可视化结果保存在`save_path`下，其中印章OCR的可视化结果如下：
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/03.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/seal_recognition/04.png"/>
 
 ### 2.2 Python脚本方式集成
 
@@ -1782,6 +1794,7 @@ for i, res in enumerate(result["sealRecResults"]):
 ## 4. 二次开发
 如果印章文本识别产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升印章文本识别产线的在您的场景中的识别效果。
 
+### 4.1 模型微调
 由于印章文本识别产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对识别效果差的图片进行分析，进而确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。
 
 <table>
@@ -1820,3 +1833,93 @@ for i, res in enumerate(result["sealRecResults"]):
 </tr>
 </tbody>
 </table>
+
+### 4.2 模型应用
+
+当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过参数指定本地模型保存路径的方式，或者通过自定义产线配置文件的方式，使用微调后的模型权重。
+
+#### 4.2.1 通过参数指定本地模型路径
+
+在初始化产线对象时，通过参数指定本地模型路径。以文本检测模型微调后的权重的使用方法为例，示例如下：
+
+命令行方式:
+
+```bash
+# 通过 --doc_orientation_classify_model_dir 指定本地模型路径
+paddleocr seal_recognition -i ./seal_text_det.png --doc_orientation_classify_model_dir your_orientation_classify_model_path
+
+# 默认使用 PP-LCNet_x1_0_doc_ori 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
+paddleocr seal_recognition -i ./seal_text_det.png --doc_orientation_classify_model_name PP-LCNet_x1_0_doc_ori --doc_orientation_classify_model_dir your_orientation_classify_model_path
+```
+
+脚本方式：
+
+```python
+
+from paddleocr import SealRecognition
+
+# 通过 doc_orientation_classify_model_dir 指定本地模型路径
+pipeline = SealRecognition(doc_orientation_classify_model_dir ="./your_orientation_classify_model_path")
+
+# 默认使用 PP-LCNet_x1_0_doc_ori 模型作为默认文本检测模型，如果微调的不是该模型，通过 doc_orientation_classify_model_name 修改模型名称
+# pipeline = SealRecognition(doc_orientation_classify_model_name="PP-LCNet_x1_0_doc_ori", doc_orientation_classify_model_dir="./your_orientation_classify_model_path")
+
+```
+
+
+#### 4.2.2 通过配置文件指定本地模型路径
+
+
+1. 获取产线配置文件
+
+可调用 PaddleOCR 中 通用OCR 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+
+```Python
+from paddleocr import SealRecognition
+
+pipeline = SealRecognition()
+pipeline.export_paddlex_config_to_yaml("SealRecognition.yaml")
+```
+
+2. 修改配置文件
+
+在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如
+
+```yaml
+......
+SubPipelines:
+  DocPreprocessor:
+    SubModules:
+      DocOrientationClassify:
+        model_dir: null  # 替换为微调后的文档方向分类模型权重路径
+        model_name: PP-LCNet_x1_0_doc_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+        module_name: doc_text_orientation
+      DocUnwarping:
+        model_dir: null  # 替换为微调后的文档矫正模型权重路径
+        model_name: UVDoc # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+        module_name: image_unwarping
+    pipeline_name: doc_preprocessor
+    use_doc_orientation_classify: true
+    use_doc_unwarping: true
+......
+```
+
+在产线配置文件中，不仅包含 SealRecognition CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+
+3. 在 CLI 中加载产线配置文件
+
+在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```bash
+paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
+```
+
+4. 在 Python API 中加载产线配置文件
+
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+
+```python
+from paddleocr import SealRecognition
+
+pipeline = SealRecognition(paddlex_config="SealRecognition.yaml")
+```
