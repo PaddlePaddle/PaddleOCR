@@ -45,7 +45,7 @@ comments: true
 </tr>
 </table>
 
-<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height, width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
+<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height，width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
 </details>
 
 <br />
@@ -76,37 +76,34 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>预测的输入数据，需要是Python字典
-<ul>
-<li><b>Dict</b>: PP-DocBee 系列的输入形式为: <code>{"image":/path/to/image, "query": user question}</code>, 代表输入的图像和对应的用户问题。</li>
-</ul>
+<td>待预测数据，必填。如"{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容, 以markdown格式输出'}"。
 </td>
-<td><code>Dict</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>
+<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>文档理解模型的名称。如果不设置，将会使用产线默认模型。</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>文档理解模型的目录路径。如果不设置，将会下载官方模型。</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的批处理大小。如果设置为 <code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
+<td>文档理解模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -118,11 +115,10 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
-</ul>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -150,10 +146,10 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果不设置，将默认关闭。
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -165,7 +161,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <td><code>paddlex_config</code></td>
 <td>PaddleX产线配置文件路径。</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -189,7 +185,7 @@ pipeline = DocUnderstanding()
 output = pipeline.predict(
     {
         "image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png",
-        "query": "识别这份表格的内容, 以markdown格式输出"
+        "query": "识别这份表格的内容，以markdown格式输出"
     }
 )
 for res in output:
@@ -199,7 +195,7 @@ for res in output:
 
 在上述 Python 脚本中，执行了如下几个步骤：
 
-（1）通过 `DocUnderstanding()` 实例化 文档理解产线 产线对象，具体参数说明如下：
+（1）通过 `DocUnderstanding()` 实例化文档理解产线产线对象，具体参数说明如下：
 
 <table>
 <thead>
@@ -213,19 +209,19 @@ for res in output:
 <tbody>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>
+<td>文档理解模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>
+<td>文档理解模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的批处理大小。如果设置为 <code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>
+<td>文档理解模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
 <td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
@@ -239,7 +235,7 @@ for res in output:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -253,7 +249,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否使用 TensorRT 进行推理加速。</td>
+<td>是否使用TensorRT进行推理加速。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -267,11 +263,11 @@ for res in output:
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>，将默认关闭。
 </td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
@@ -310,17 +306,12 @@ for res in output:
 <td><code>input</code></td>
 <td>待预测数据，目前仅支持字典类型的输入
 <ul>
-  <li><b>Python Dict</b>：如PP-DocBee的输入形式为: <code>{"image":/path/to/image, "query": user question}</code> ,分别表示输入的图像和对应的用户问题</li>
+  <li><b>Python Dict</b>：如PP-DocBee的输入形式为: <code>{"image":/path/to/image, "query": user question}</code> ,分别表示输入的图像和对应的用户问题。</li>
 </ul>
 </td>
 <td><code>Python Dict</code></td>
 <td></td>
 </tr>
-<tr>
-<td><code>device</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </table>
 
 （3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为`json`文件的操作:
@@ -341,19 +332,19 @@ for res in output:
 <td rowspan = "3">打印结果到终端</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化。</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -361,19 +352,19 @@ for res in output:
 <td rowspan = "3">将结果保存为json格式的文件</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致。</td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
 <td><code>False</code></td>
 </tr>
 </table>
