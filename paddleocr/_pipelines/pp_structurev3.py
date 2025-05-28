@@ -711,7 +711,7 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use the text line orientation classification model.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
