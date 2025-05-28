@@ -10,7 +10,7 @@ Table recognition is a technology that automatically identifies and extracts tab
 
 The General Table Recognition v2 Production Line (PP-TableMagic) is designed to tackle table recognition tasks, identifying tables in images and outputting them in HTML format. Unlike the original General Table Recognition Production Line, this version introduces two new modules: table classification and table cell detection. By adopting a <b>multi-model pipeline combining "table classification + table structure recognition + cell detection"</b>, it achieves better end-to-end table recognition performance compared to the previous version. Based on this, the General Table Recognition v2 Production Line <b>natively supports targeted model fine-tuning</b>, allowing developers to customize it to varying degrees for satisfactory performance in different application scenarios. <b>Furthermore, the General Table Recognition v2 Production Line also supports end-to-end table structure recognition models (e.g., SLANet, SLANet_plus, etc.) and allows independent configuration for wired and wireless table recognition methods, enabling developers to freely select and combine the best table recognition solutions.</b>
 
-This production line is applicable in a variety of fields, including general, manufacturing, finance, and transportation. It also provides flexible service deployment options, supporting multiple programming languages on various hardware. Additionally, it offers capabilities for secondary development, allowing you to train and fine-tune your own datasets based on this production line, with the trained models seamlessly integrated.
+This pipeline is applicable in a variety of fields, including general, manufacturing, finance, and transportation. It also provides flexible service deployment options, supporting multiple programming languages on various hardware. Additionally, it offers capabilities for secondary development, allowing you to train and fine-tune your own datasets based on this pipeline, with the trained models seamlessly integrated.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/01.png"/>
 
@@ -25,7 +25,7 @@ This production line is applicable in a variety of fields, including general, ma
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.md) (optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.md) (optional)
 
-In this production line, you can choose the models to use based on the benchmark data below.
+In this pipeline, you can choose the models to use based on the benchmark data below.
 
 <details>
 <summary> <b>Table Structure Recognition Module Models:</b></summary>
@@ -821,237 +821,215 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types, required.
-<ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
-<li><b>List</b>: The elements of the list must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
-</ul>
+<td>Data to be predicted, required.
+Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td>Specify the path to save the inference result file. If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout detection model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the layout detection model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the layout detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>table_classification_model_name</code></td>
-<td>Name of the table classification model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the table classification model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>table_classification_model_dir</code></td>
-<td>Directory path of the table classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the table classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_name</code></td>
-<td>Name of the wired table structure recognition model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the wired table structure recognition model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>Directory path of the wired table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the wired table structure recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>Name of the wireless table structure recognition model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the wireless table structure recognition model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>Directory path of the wireless table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the wireless table structure recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_name</code></td>
-<td>Name of the wired table cell detection model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the wired table cell detection model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_dir</code></td>
-<td>Directory path of the wired table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the wired table cell detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_name</code></td>
-<td>Name of the wireless table cell detection model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the wireless table cell detection model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>Directory path of the wireless table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the wireless table cell detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the document orientation classification model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the text image unwarping model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the text image unwarping model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the text image unwarping model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>Name of the text detection model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the text detection model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>Directory path of the text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the text detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limit for text detection.
-<ul>
-<li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>;</li>
-</ul>
+Any integer greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
 </td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
-<ul>
-<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>;</li>
-</ul>
+Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>. If not set, the default value initialized by the pipeline will be used, initialized to <code>max</code>.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.3</code>.</li>
-</ul>
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.6</code>.</li>
-</ul>
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>2.0</code>.</li>
-</ul>
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>Name of the text recognition model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
+<td>Name of the text recognition model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>Directory path of the text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the text recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for the text recognition model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td>Batch size for the text recognition model. If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
-<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.</li>
-</ul>
+Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -1063,11 +1041,10 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which prioritizes using the local GPU device 0; if not available, it will use the CPU device.</li>
-</ul>
+</ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -1095,9 +1072,9 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be disabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1109,7 +1086,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -1171,7 +1148,7 @@ pipeline = TableRecognitionPipelineV2()
 # ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # Specify whether to use the document orientation classification model with use_doc_orientation_classify
 # ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # Specify whether to use the text image unwarping module with use_doc_unwarping
 # ocr = TableRecognitionPipelineV2(device="gpu") # Specify the device to use GPU for model inference
-output = pipeline.predict("./table_recognition_v2.png")
+output = pipeline.predict("./table_recognition_v2.jpg")
 for res in output:
     res.print() ## Print the predicted structured output
     res.save_to_img("./output/")
@@ -1307,7 +1284,7 @@ In the above Python script, the following steps are performed:
 <td>Image side length limit for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1317,8 +1294,8 @@ In the above Python script, the following steps are performed:
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
 <ul>
-<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>;</li>
+<li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1328,7 +1305,7 @@ In the above Python script, the following steps are performed:
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
 <ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
+<li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.3</code>.</li>
 </ul>
 </td>
@@ -1339,7 +1316,7 @@ In the above Python script, the following steps are performed:
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
 <ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
+<li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.6</code>.</li>
 </ul>
 </td>
@@ -1350,7 +1327,7 @@ In the above Python script, the following steps are performed:
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
 <ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
+<li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>2.0</code>.</li>
 </ul>
 </td>
@@ -1379,34 +1356,34 @@ In the above Python script, the following steps are performed:
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
 <ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>.</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.</li>
-</ul>
+<li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+</ur>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1420,7 +1397,7 @@ In the above Python script, the following steps are performed:
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which prioritizes using the local GPU device 0; if not available, it will use the CPU device.</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1448,11 +1425,11 @@ In the above Python script, the following steps are performed:
 <td><code>precision</code></td>
 <td>Computation precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be disabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1491,19 +1468,13 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td><code>input</code></td>
 <td>Data to be predicted, supports multiple input types, required.
 <ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path).</li>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as URL links</b>, such as network URLs for image files or PDF files: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg">example</a>; <b>as local directories</b>, the directory must contain images to be predicted, such as local path: <code>/root/data/</code> (currently, predictions do not support directories that contain PDF files; the PDF file must be specified to the specific file path);</li>
 <li><b>List</b>: The elements of the list must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Same as the parameters during instantiation.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
@@ -1623,19 +1594,19 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td rowspan="3">Print results to the terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format the output content using <code>JSON</code> indentation</td>
+<td>Whether to format the output content using <code>JSON</code> indentation.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1649,13 +1620,13 @@ The parameters and descriptions of the `predict()` method are as follows:
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Specify the indentation level to beautify the output <code>JSON</code> data, making it more readable. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code></td>
+<td>Control whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When set to <code>True</code>, all non-<code>ASCII</code> characters will be escaped; <code>False</code> keeps the original characters. Effective only when <code>format_json</code> is <code>True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -1663,7 +1634,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an image format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -1671,7 +1642,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an xlsx format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -1679,7 +1650,7 @@ The parameters and descriptions of the `predict()` method are as follows:
 <td>Save results as an html format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>The path to save the file, supporting directory or file path</td>
+<td>The path to save the file, supporting directory or file path.</td>
 <td>None</td>
 </tr>
 </tbody>
