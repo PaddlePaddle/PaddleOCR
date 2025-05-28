@@ -416,7 +416,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted,required.
+<td>Data to be predicted, required.
 Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path).
 </td>
 <td><code>str</code></td>

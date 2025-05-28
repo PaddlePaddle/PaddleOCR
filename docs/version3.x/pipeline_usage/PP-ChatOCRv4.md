@@ -205,7 +205,7 @@ PP-ChatOCRv4 产线中包含<b>版面区域检测模块</b>、<b>表格结构识
 <td>140.29 / 140.29</td>
 <td>195.39 / 195.39</td>
 <td>6.9 M</td>
-<td>SLANet_plus 是百度飞桨视觉团队自研的表格结构识别模型SLANet的增强版。相较于SLANet，SLANet_plus 对无线表、复杂表格的识别能力得到了大幅提升，并降低了模型对表格定位准确性的敏感度，即使表格定位出现偏移，也能够较准确地进行识别。</td>
+<td>SLANet_plus 是百度飞桨视觉团队自研的表格结构识别模型SLANet的增强版。相较于SLANet, SLANet_plus 对无线表、复杂表格的识别能力得到了大幅提升，并降低了模型对表格定位准确性的敏感度，即使表格定位出现偏移，也能够较准确地进行识别。</td>
 </tr>
 </table>
 </details>
@@ -785,7 +785,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果不设置, 推理结果将不会保存到本地。</td>
+<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -930,7 +930,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>layout_threshold</code></td>
 <td>版面模型得分阈值。
-<code>0-1</code> 之间的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。
+<code>0-1</code> 之间的任意浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -943,7 +943,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
+<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -951,29 +951,29 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
-<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
+<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的最大边长度限制。大于 <code>0</code> 的任意整数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+<td>文本检测的最大边长度限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>检测像素阈值。输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。大于 <code>0</code> 的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值 <code>0.3</code>。
+<td>检测像素阈值。输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.3</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -981,49 +981,49 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 <code>0</code> 的任意浮点数
-。如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值 <code>2.0</code>。
+<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>2.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。大于 <code>0</code> 的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+<td>文本识别阈值，得分大于该阈值的文本结果会被保留。大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
+<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置, 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。大于 <code>0</code> 的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值 <code>0.2</code>。
+<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.2</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 <code>0</code> 的任意浮点数。如果不设置, 将默认使用产线初始化的该参数值 <code>0.6</code>。
+<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1031,7 +1031,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数
-。如果不设置, 将默认使用产线初始化的该参数值 <code>0.5</code>。
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1039,7 +1039,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。大于 <code>0</code> 的任意浮点数
-。如果不设置, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1066,7 +1066,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1097,7 +1097,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果不设置, 将默认启用。
+<td>是否启用 MKL-DNN 加速库。如果不设置，将默认启用。
 </td>
 <td><code>bool</code></td>
 <td></td>
@@ -1352,7 +1352,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面模型得分阈值。
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
-<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
+<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID, value为该类别的阈值；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
@@ -1370,19 +1370,19 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面区域检测模型检测框的扩张系数。
 <ul>
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
-<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>Tuple[float, float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float, float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
 <ul>
-<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>str</b>：<code>large</code>, <code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
@@ -1405,7 +1405,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ul>
 </td>
@@ -1467,7 +1467,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ul>
 </td>
@@ -1681,7 +1681,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float, float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1893,7 +1893,7 @@ for res in visual_predict_res:
         - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
 
       - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]
+      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0, 0, 1]
       - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
       - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
       - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤

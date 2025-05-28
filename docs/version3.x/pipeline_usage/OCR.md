@@ -629,19 +629,19 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -655,7 +655,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1010,19 +1010,19 @@ for res in result:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1031,7 +1031,7 @@ for res in result:
 <td>文本检测的最大边长度限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
 </ur>
 </td>
 <td><code>int</code></td>
@@ -1041,8 +1041,8 @@ for res in result:
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1053,7 +1053,7 @@ for res in result:
 <td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1063,7 +1063,7 @@ for res in result:
 <td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>将默认使用产线初始化的该参数值 <code>0.6</code>。
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1127,7 +1127,7 @@ for res in result:
 <li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
 <li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
 <li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用<code>PP-OCRv5</code>系列模型。
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用<code>PP-OCRv5</code>系列模型。
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1350,7 +1350,7 @@ for res in result:
               <li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像矫正</li>
             </ul>
           </li>
-          <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1</li>
+          <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°, 90°, 180°, 270°]；未启用时为-1</li>
         </ul>
       </li>
       <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16</li>

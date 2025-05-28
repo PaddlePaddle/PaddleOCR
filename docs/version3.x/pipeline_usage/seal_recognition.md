@@ -822,7 +822,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
-支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1072,7 +1072,7 @@ for res in output:
 <td>版面检测置信度阈值，得分大于该阈值才会被输出。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>dict</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
+    <li><b>dict</b>：key是int类别id, value是大于<code>0</code>的任意浮点数；
     <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></li></ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1124,7 +1124,7 @@ for res in output:
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ul>
 </td>
@@ -1419,7 +1419,7 @@ for res in output:
         - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段
             - `cls_id`: `(int)` 检测框的印章类别id
             - `score`: `(float)` 检测框的置信度
-            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
+            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1, y1, x2, y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
     - `seal_res_list`: `List[Dict]` 印章文本识别的结果列表，每个元素包含以下字段
         - `input_path`: `(Union[str, None])` 印章文本识别产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
@@ -1431,7 +1431,7 @@ for res in output:
         - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
             - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
             - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°,90°,180°,270°]；未启用时为-1
 
     - `dt_polys`: `(List[numpy.ndarray])` 印章文本检测的多边形框列表。每个检测框由多个顶点坐标构成的numpy数组表示，数组shape为(n, 2)
 

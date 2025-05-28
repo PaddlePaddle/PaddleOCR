@@ -629,19 +629,19 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification function. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping function. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation function. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text line orientation module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1012,19 +1012,19 @@ In the above Python script, the following steps are performed:
  </tr>
  <tr>
  <td><code>use_doc_orientation_classify</code></td>
- <td>Whether to load and use the document orientation classification function. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+ <td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
  <td><code>bool</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
  <td><code>use_doc_unwarping</code></td>
- <td>Whether to load and use the text image unwarping function. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+ <td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
  <td><code>bool</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
  <td><code>use_textline_orientation</code></td>
- <td>Whether to load and use the text line orientation function. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+ <td>Whether to load and use the text line orientation module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
  <td><code>bool</code></td>
  <td><code>None</code></td>
  </tr>
