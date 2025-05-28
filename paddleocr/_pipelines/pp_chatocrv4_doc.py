@@ -46,6 +46,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         seal_text_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -331,6 +332,9 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             ],
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.use_textline_orientation": self._params[
+                "use_textline_orientation"
             ],
             "SubPipelines.LayoutParser.use_seal_recognition": self._params[
                 "use_seal_recognition"
