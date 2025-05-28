@@ -733,7 +733,7 @@ for res in output:
 <td><code>layout_threshold</code></td>
 <td>版面区域检测的阈值，用于过滤掉低置信度预测结果的阈值。
 <ul>
-<li><b>float</b>：如 0.2， 表示过滤掉所有阈值小于0.2的目标框；</li>
+<li><b>float</b>：如 0.2，表示过滤掉所有阈值小于0.2的目标框；</li>
 <li><b>字典</b>：字典的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45，2: 0.48，7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4；</li>
 <li><b>None</b>：不指定，将使用默认值：0.5。</li>
 </td>
@@ -751,7 +751,7 @@ for res in output:
 <td>版面区域检测中检测框的边长缩放倍数。
 <ul>
 <li><b>float</b>：大于0的浮点数，如 1.1，表示将模型输出的检测框中心不变，宽和高都扩张1.1倍；</li>
-<li><b>列表</b>：如 [1.2，1.5] ，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍；</li>
+<li><b>列表</b>：如 [1.2, 1.5]，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍；</li>
 <li><b>None</b>：不指定，将使用默认值：1.0。</li>
 </ul>
 </td>
@@ -1013,7 +1013,7 @@ for res in output:
         - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
             - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
             - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°, 90°, 180°, 270°]；未启用时为-1
     - `layout_det_res`: `(Dict[str, List[Dict]])` 版面区域检测模块的输出结果。仅当`use_layout_detection=True`时存在
         - `input_path`: `(Union[str, None])` 版面区域检测模块接收的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `boxes`: `(List[Dict[int, str, float, List[float]]])` 版面区域检测预测结果列表

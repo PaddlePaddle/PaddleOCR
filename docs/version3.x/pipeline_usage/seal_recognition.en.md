@@ -203,13 +203,13 @@ The name of the layout detection model. If not set, the default model in pipelin
 </tr>
 <tr>  
 <td><code>use_doc_orientation_classify</code></td>  
-<td>Whether to load and use document orientation classification. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use document orientation classification module. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>  
 <tr>  
 <td><code>use_doc_unwarping</code></td>  
-<td>Whether to load and use text image correction. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use text image correction module. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>   
@@ -532,7 +532,7 @@ Descriptions of related methods and parameters are as follows:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Same as the parameter used during initialization.</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float, float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -726,7 +726,7 @@ Whether to use the layout detection module during inference. </td>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Same as the parameter during instantiation.</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float, float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
