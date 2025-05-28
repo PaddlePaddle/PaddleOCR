@@ -209,8 +209,8 @@ Enable MKL-DNN acceleration for inference. When set to <code>None</code>, MKL-DN
 <td><code>threshold</code></td>
 <td>Threshold to filter out low-confidence predictions; In table cell detection tasks, lowering the threshold appropriately may help to obtain more accurate results. <br/><b>Examples:</b>
 <ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
+  <li><b>float</b>, e.g., 0.3, indicates filtering out all bounding boxes with confidence lower than 0.3</li>
+  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.3}</code> applies a threshold of 0.3 for category cls_id 0</li>
 </ul>
 </td>
 <td><code>float/dict/None</code></td>
