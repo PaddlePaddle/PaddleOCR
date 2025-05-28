@@ -60,7 +60,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </tr>
 <tr>
 <td><code>--device</code></td>
-<td>产线部署设备。默认为 <code>cpu</code>（如 GPU 不可用）或 <code>gpu</code>（如 GPU 可用）。</td>
+<td>产线部署设备。默认情况下，当 GPU 可用时，将使用 GPU；否则使用 CPU。</td>
 </tr>
 <tr>
 <td><code>--host</code></td>

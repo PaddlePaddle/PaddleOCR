@@ -45,7 +45,7 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 ## 📣 Recent updates
 🔥🔥2025.05.20: Official Release of **PaddleOCR v3.0**, including:
 - **PP-OCRv5**: High-Accuracy Text Recognition Model for All Scenarios - Instant Text from Images/PDFs.
-   1. 🌐 Single-model support for **five** text types - Seamlessly process **Simplified Chinese, Traditional Chinese, Simplified Chinese Pinyin, English** and **Japanse** within a single model.
+   1. 🌐 Single-model support for **five** text types - Seamlessly process **Simplified Chinese, Traditional Chinese, Simplified Chinese Pinyin, English** and **Japanese** within a single model.
    2. ✍️ Improved **handwriting recognition**: Significantly better at complex cursive scripts and non-standard handwriting.
    3. 🎯 **13-point accuracy gain** over PP-OCRv4, achieving state-of-the-art performance across a variety of real-world scenarios.
 
@@ -172,17 +172,10 @@ retriever_config = {
     "api_key": "api_key",  # your api_key
 }
 
-mllm_chat_bot_config = {
-    "module_name": "chat_bot",
-    "model_name": "PP-DocBee",
-    "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
-    "api_type": "openai",
-    "api_key": "api_key",  # your api_key
-}
-
 pipeline = PPChatOCRv4Doc(
     use_doc_orientation_classify=False,
-    use_doc_unwarping=False)
+    use_doc_unwarping=False
+)
 
 visual_predict_res = pipeline.visual_predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
@@ -190,6 +183,25 @@ visual_predict_res = pipeline.visual_predict(
     use_seal_recognition=True,
     use_table_recognition=True,
 )
+
+mllm_predict_info = None
+use_mllm = False
+# If a multimodal large model is used, the local mllm service needs to be started. You can refer to the documentation: https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.m d performs deployment and updates the mllm_chat_bot_config configuration.
+if use_mllm:
+    mllm_chat_bot_config = {
+        "module_name": "chat_bot",
+        "model_name": "PP-DocBee",
+        "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
+        "api_type": "openai",
+        "api_key": "api_key",  # your api_key
+    }
+
+    mllm_predict_res = pipeline.mllm_pred(
+        input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
+        key_list=["驾驶室准乘人数"],
+        mllm_chat_bot_config=mllm_chat_bot_config,
+    )
+    mllm_predict_info = mllm_predict_res["mllm_res"]
 
 visual_info_list = []
 for res in visual_predict_res:
@@ -199,12 +211,6 @@ for res in visual_predict_res:
 vector_info = pipeline.build_vector(
     visual_info_list, flag_save_bytes_vector=True, retriever_config=retriever_config
 )
-mllm_predict_res = pipeline.mllm_pred(
-    input="vehicle_certificate-1.png",
-    key_list=["驾驶室准乘人数"],
-    mllm_chat_bot_config=mllm_chat_bot_config,
-)
-mllm_predict_info = mllm_predict_res["mllm_res"]
 chat_result = pipeline.chat(
     key_list=["驾驶室准乘人数"],
     visual_info=visual_info_list,

@@ -7,6 +7,34 @@ hide:
 
 ### Recently Update
 
+#### **🔥🔥 2025.05.20: PaddleOCR 3.0 Official Release Highlights**
+
+- **PP-OCRv5: All-Scene Text Recognition Model**  
+  - Supports five text types and complex handwriting in a single model.  
+  - Achieves a 13% accuracy improvement over the previous generation.
+
+- **PP-StructureV3: General Document Parsing Solution**  
+  - Offers high-precision parsing for multi-scene, multi-layout PDFs.  
+  - Outperforms numerous open and closed-source solutions in public benchmarks.
+
+- **PP-ChatOCRv4: Intelligent Document Understanding Solution**  
+  - Natively supports ERNIE 4.5 Turbo.  
+  - Delivers a 15% accuracy boost over the previous version.
+
+- **Rebuilt Deployment Capabilities with Unified Inference Interface:**  
+  - Integrates PaddleX3.0's core features for a comprehensive upgrade of the inference and deployment modules.  
+  - Optimizes the design from version 2.x and unifies the Python API and CLI.  
+  - Supports high-performance inference, serving, and edge deployment scenarios.
+
+- **Optimized Training with PaddlePaddle Framework 3.0:**  
+  - Compatible with the latest features such as the CINN compiler.  
+  - Inference model files now use `xxx.json` instead of `xxx.pdmodel`.
+
+- **Unified Model Naming:**  
+  - Updated naming conventions for models supported by PaddleOCR 3.0 for consistency and easier maintenance.
+
+- For more details, check out the [Upgrade Notes from 2.x to 3.x](./upgrade_notes.en.md).
+
 #### **🔥🔥2025.3.7 release PaddleOCR v2.10, including**:
 
   - **12 new self-developed single models:**

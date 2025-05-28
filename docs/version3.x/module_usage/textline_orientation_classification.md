@@ -26,14 +26,24 @@ comments: true
 <tbody>
 <tr>
 <td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
-<td>95.54</td>
+<td>98.85</td>
 <td>-</td>
 <td>-</td>
 <td>0.32</td>
 <td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
 </tbody>
 </table>
+
+> ❗ <b>注</b>：文本行方向分类模型近期升级，并增加 `PP-LCNet_x1_0_textline_ori`，如需使用升级前的模型权重，请点击<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">下载链接</a>。
 
 <strong>测试环境说明:</strong>
 
@@ -104,7 +114,7 @@ for res in output:
 运行后，得到的结果为：
 
 ```bash
-{'res': {'input_path': 'textline_rot180_demo.jpg', 'page_index': None, 'class_ids': array([1], dtype=int32), 'scores': array([1.], dtype=float32), 'label_names': ['180_degree']}}
+{'res': {'input_path': 'textline_rot180_demo.jpg', 'page_index': None, 'class_ids': array([1], dtype=int32), 'scores': array([0.99864], dtype=float32), 'label_names': ['180_degree']}}
 ```
 
 运行结果参数含义如下：

@@ -150,73 +150,69 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>The data to be predicted, supporting multiple input types. This parameter is required.
-<ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
-<li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
-</ul>
+<td>The data to be predicted. This parameter is required.
+For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If set to <code>None</code>, the inference result will not be saved locally.</td>
+<td>Specify the path to save the inference result file. If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td>The name of the document orientation classification model. If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>The name of the text image unwarping model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td>The name of the text image unwarping model. If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>The directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>The directory path of the text image unwarping model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
-<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
-<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
-<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
-<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
-<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
 </ul>
+If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -244,9 +240,9 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -258,7 +254,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>paddlex_config</code></td>
 <td>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -277,7 +273,7 @@ The visualization results are saved under the `save_path`. The visualization res
 
 ### 2.2 Integration via Python Script
 
-The command-line approach is for quick experience and viewing results. Generally, in projects, integration through code is often required. You can achieve rapid inference in production lines with just a few lines of code. The inference code is as follows:
+The command-line approach is for quick experience and viewing results. Generally, in projects, integration through code is often required. You can achieve rapid inference in pipelines with just a few lines of code. The inference code is as follows:
 
 ```python
 from paddleocr import DocPreprocessor
@@ -333,13 +329,13 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -347,13 +343,13 @@ In the above Python script, the following steps are executed:
 <td><code>device</code></td>
 <td>The device used for inference. Support for specifying specific card numbers.
 <ul>
-<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
-<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
-<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference.</li>
-<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
-<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
-<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU 0 device will be prioritized; if not available, the CPU device will be used.</li>
+<li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
+<li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
+<li><b>NPU</b>: For example, <code>npu:0</code> indicates using the first NPU for inference;</li>
+<li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference;</li>
+<li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference;</li>
+<li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>None</b>: If set to <code>None</code>,  the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -381,7 +377,7 @@ In the above Python script, the following steps are executed:
 <td><code>precision</code></td>
 <td>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -423,19 +419,13 @@ The following are the parameters and their descriptions of the `predict()` metho
 <td><code>input</code></td>
 <td>The data to be predicted, supporting multiple input types. This parameter is required.
 <ul>
-<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>.</li>
-<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).</li>
+<li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path);</li>
 <li><b>List</b>: The list elements should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
@@ -521,7 +511,7 @@ The following are the parameters and their descriptions of the `predict()` metho
 
     - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`
 
-    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the production line
+    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
 
         - `use_doc_orientation_classify`: `(bool)` Controls whether to enable the document orientation classification module
         - `use_doc_unwarping`: `(bool)` Controls whether to enable the text image rectification module
@@ -556,15 +546,15 @@ The following are the parameters and their descriptions of the `predict()` metho
 
 ## 3. Development Integration/Deployment
 
-If the production line meets your requirements for inference speed and accuracy, you can proceed directly to development integration/deployment.
+If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly to development integration/deployment.
 
-If you need to apply the production line directly to your Python project, you can refer to the example code in [2.2 Python Script Integration](#22-python脚本方式集成).
+If you need to apply the pipeline directly to your Python project, you can refer to the example code in [2.2 Python Script Integration](#22-python脚本方式集成).
 
 In addition, PaddleOCR also provides two other deployment methods, which are detailed as follows:
 
 🚀 High-performance inference: In actual production environments, many applications have strict performance requirements (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference functionality, aiming to deeply optimize model inference and pre/post-processing to achieve significant end-to-end process acceleration. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
 
-☁️ Service-oriented deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed production line service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../deployment/serving.md).
+☁️ Service-oriented deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../deployment/serving.md).
 
 Below are the API references for basic service-oriented deployment and examples of multi-language service calls:
 
@@ -657,7 +647,7 @@ Below are the API references for basic service-oriented deployment and examples 
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the production line configuration file:
+<td>The URL of an image file or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
@@ -674,13 +664,13 @@ Below are the API references for basic service-oriented deployment and examples 
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the production line object.</td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the pipeline object.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter in the <code>predict</code> method of the production line object.</td>
+<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter in the <code>predict</code> method of the pipeline object.</td>
 <td>No</td>
 </tr>
 </tbody>
@@ -727,7 +717,7 @@ Below are the API references for basic service-oriented deployment and examples 
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>A simplified version of the <code>res</code> field in the JSON representation of the result generated by the <code>predict</code> method of the production line object, with the <code>input_path</code> and <code>page_index</code> fields removed.</td>
+<td>A simplified version of the <code>res</code> field in the JSON representation of the result generated by the <code>predict</code> method of the pipeline object, with the <code>input_path</code> and <code>page_index</code> fields removed.</td>
 </tr>
 <tr>
 <td><code>docPreprocessingImage</code></td>
