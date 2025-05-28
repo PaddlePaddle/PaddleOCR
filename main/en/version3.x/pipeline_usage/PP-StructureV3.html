@@ -1012,6 +1012,30 @@ You're not viewing the latest version.
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-quick-start_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-command-line-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Command Line Usage
+    </span>
+  </a>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#22-python-script-integration_1" class="md-nav__link">
     <span class="md-ellipsis">
@@ -3122,6 +3146,30 @@ You're not viewing the latest version.
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-quick-start_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-command-line-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Command Line Usage
+    </span>
+  </a>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#22-python-script-integration_1" class="md-nav__link">
     <span class="md-ellipsis">
@@ -3212,8 +3260,8 @@ You're not viewing the latest version.
 
 <h1 id="pp-structurev3-production-line-user-guide">PP-StructureV3 Production Line User Guide<a class="headerlink" href="#pp-structurev3-production-line-user-guide" title="Permanent link">&para;</a></h1>
 <h2 id="1-introduction-to-pp-structurev3-production-line">1. Introduction to PP-StructureV3 Production Line<a class="headerlink" href="#1-introduction-to-pp-structurev3-production-line" title="Permanent link">&para;</a></h2>
-<p>Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 production line by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.<b>  This production line also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.</p>
-<p><b>PP-StructureV3 includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.<b></p>
+<p>Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 production line by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This production line also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.</p>
+<p><b>PP-StructureV3</b> includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.</p>
 <ul>
 <li><a href="../module_usage/layout_detection.html">Layout Detection Module</a></li>
 <li><a href="OCR.html">General OCR Subline</a></li>
@@ -3976,7 +4024,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </details>
 </details>
 <details>
-<summary><b>Chart Parsing Model Module：</b></summary>
+<summary><b>Chart Parsing Model Module: </b></summary>
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
@@ -4000,7 +4048,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-          <li><strong>Test Dataset：</strong>
+          <li><strong>Test Dataset: </strong>
                         <ul>
                          <li>Document Image Orientation Classification Module: A self-built dataset using PaddleX, covering multiple scenarios such as ID cards and documents, containing 1000 images.</li>
                           <li>Text Image Rectification Model: <a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a></li>
@@ -4016,7 +4064,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                           <li>Seal Text Detection Model: A self-built dataset using PaddleX, containing 500 images of circular seal textures.</li>
                         </ul>
                 </li>
-              <li><strong>Hardware Configuration：</strong>
+              <li><strong>Hardware Configuration: </strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
@@ -4117,29 +4165,24 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3&quot;</span><span class="p">)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">## 2. Quick Start</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">Before</span> <span class="n">using</span> <span class="n">the</span> <span class="n">PP</span><span class="o">-</span><span class="n">StructureV3</span> <span class="n">pipeline</span> <span class="n">locally</span><span class="p">,</span> <span class="n">please</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">have</span> <span class="n">completed</span> <span class="n">the</span> <span class="n">installation</span> <span class="n">of</span> <span class="n">the</span> <span class="n">wheel</span> <span class="n">package</span> <span class="n">according</span> <span class="n">to</span> <span class="n">the</span> <span class="p">[</span><span class="n">installation</span> <span class="n">guide</span><span class="p">](</span><span class="o">../</span><span class="n">installation</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">md</span><span class="p">)</span><span class="o">.</span> <span class="n">After</span> <span class="n">installation</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">use</span> <span class="n">it</span> <span class="n">via</span> <span class="n">command</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">Python</span> <span class="n">integration</span><span class="o">.</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1">### 2.1 Command Line Usage</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">Use</span> <span class="n">a</span> <span class="n">single</span> <span class="n">command</span> <span class="n">to</span> <span class="n">quickly</span> <span class="n">experience</span> <span class="n">the</span> <span class="n">PP</span><span class="o">-</span><span class="n">StructureV3</span> <span class="n">pipeline</span><span class="p">:</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="err">```</span><span class="n">bash</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">paddleocr</span> <span class="n">pp_structurev3</span> <span class="o">-</span><span class="n">i</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">paddle</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">ecology</span><span class="o">.</span><span class="n">bj</span><span class="o">.</span><span class="n">bcebos</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">paddlex</span><span class="o">/</span><span class="n">imgs</span><span class="o">/</span><span class="n">demo_image</span><span class="o">/</span><span class="n">pp_structure_v3_demo</span><span class="o">.</span><span class="n">png</span>
-</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="c1"># Use --use_doc_orientation_classify to enable document orientation classification</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="n">paddleocr</span> <span class="n">pp_structurev3</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">pp_structure_v3_demo</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">use_doc_orientation_classify</span> <span class="kc">True</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># Use --use_doc_unwarping to enable document unwarping module</span>
-</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="n">paddleocr</span> <span class="n">pp_structurev3</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">pp_structure_v3_demo</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">use_doc_unwarping</span> <span class="kc">True</span>
-</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
-</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="c1"># Use --use_textline_orientation to enable text line orientation classification</span>
-</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="n">paddleocr</span> <span class="n">pp_structurev3</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">pp_structure_v3_demo</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">use_textline_orientation</span> <span class="kc">False</span>
-</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
-</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="c1"># Use --device to specify GPU for inference</span>
-</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="n">paddleocr</span> <span class="n">pp_structurev3</span> <span class="o">-</span><span class="n">i</span> <span class="o">./</span><span class="n">pp_structure_v3_demo</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">device</span> <span class="n">gpu</span>
+</span></code></pre></div>
+<h2 id="2-quick-start_1">2. Quick Start<a class="headerlink" href="#2-quick-start_1" title="Permanent link">&para;</a></h2>
+<p>Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the <a href="../installation.html">installation guide</a>. After installation, you can use it via command line or Python integration.</p>
+<h3 id="21-command-line-usage">2.1 Command Line Usage<a class="headerlink" href="#21-command-line-usage" title="Permanent link">&para;</a></h3>
+<p>Use a single command to quickly experience the PP-StructureV3 pipeline:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Use --use_doc_orientation_classify to enable document orientation classification</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_doc_orientation_classify<span class="w"> </span>True
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># Use --use_doc_unwarping to enable document unwarping module</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_doc_unwarping<span class="w"> </span>True
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># Use --use_textline_orientation to enable text line orientation classification</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--use_textline_orientation<span class="w"> </span>False
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1"># Use --device to specify GPU for inference</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>-i<span class="w"> </span>./pp_structure_v3_demo.png<span class="w"> </span>--device<span class="w"> </span>gpu
 </span></code></pre></div>
 <details><summary><b>Command line supports more parameters. Click to expand for detailed parameter descriptions</b></summary>
 <table>
@@ -4154,460 +4197,408 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted. Required. Supports multiple input types.
-<ul>
-<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
-<li><b>str</b>: e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path)</li>
-<li><b>List</b>: list elements must be one of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
-</ul>
+<td>Data to be predicted. Required.
+.e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path).
 </td>
-<td><code>Python Var|str|list</code></td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Path to save inference results. If set to <code>None</code>, results will not be saved locally.</td>
+<td>Path to save inference results. If not set, results will not be saved locally.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the layout detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the layout detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
 <td>Score threshold for the layout model.
-<ul>
-<li><b>float</b>: any value between <code>0-1</code></li>
-<li><b>dict</b>: <code>{0:0.1}</code>, where key is class ID and value is the threshold for that class</li>
-<li><b>None</b>: if set to <code>None</code>, the default value is used, which is <code>0.5</code></li>
-</ul>
+.any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
-<td><code>float|dict</code></td>
-<td><code>None</code></td>
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
 <td>Whether to apply NMS post-processing for layout detection model.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>Tuple[float,float]</b>: separate ratios for width and height</li>
-<li><b>dict</b>: key is <b>int</b> (class ID), value is <b>tuple</b>, e.g., <code>{0: (1.1, 2.0)}</code> means class 0 boxes will be expanded 1.1x in width, 2.0x in height</li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>1.0</code></li>
-</ul>
-</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
-<td><code>None</code></td>
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, default is <code>1.0</code>.
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>Merge mode for overlapping boxes in layout detection.
-<ul>
-<li><b>str</b>: <code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both</li>
-<li><b>dict</b>: key is <b>int</b> (class ID), value is <b>str</b>, e.g., <code>{0: "large", 2: "small"}</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>large</code></li>
-</ul>
+<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both. If not set, default is <code>large</code>.
 </td>
-<td><code>str|dict</code></td>
-<td><code>None</code></td>
+<td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_name</code></td>
-<td>Name of the chart recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the chart recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_dir</code></td>
-<td>Directory path of the chart recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the chart recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_batch_size</code></td>
-<td>Batch size for the chart recognition model. If set to <code>None</code>, the default batch size is <code>1</code>.</td>
+<td>Batch size for the chart recognition model. If not set, the default batch size is <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>region_detection_model_name</code></td>
-<td>Name of the region detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the region detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>region_detection_model_dir</code></td>
-<td>Directory path of the region detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the region detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the document orientation classification model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the document unwarping model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the document unwarping model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the document unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the document unwarping model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>Name of the text detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the text detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>Directory path of the text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the text detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
-<ul>
-<li><b>int</b>: any integer > <code>0</code>;</li>
-<li><b>None</b>: if set to <code>None</code>, the default value will be <code>960</code>;</li>
-</ul>
+<td>Maximum side length limit for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>
-<ul>
-<li><b>str</b>: supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code></li>
-<li><b>None</b>: if set to <code>None</code>, the default value will be <code>max</code>.</li>
-</ul>
+<td>Type of the image side length limit for text detection.
+supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>. If not set, the default value will be <code>max</code>.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.3</code></li>
-</ul>
+<td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
+. If not set, default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.6</code></li>
-</ul>
+Any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>2.0</code></li>
-</ul>
+any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
-<td>Name of the text line orientation model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the text line orientation model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
-<td>Directory of the text line orientation model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the text line orientation model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>Batch size for the text line orientation model. If set to <code>None</code>, default is <code>1</code>.</td>
+<td>Batch size for the text line orientation model. If not set, default is <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>Name of the text recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the text recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>Directory of the text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the text recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for text recognition. If set to <code>None</code>, default is <code>1</code>.</td>
+<td>Batch size for text recognition. If not set, default is <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Score threshold for text recognition. Only results above this value will be kept.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.0</code> (no threshold)</li>
-</ul>
+Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>table_classification_model_name</code></td>
-<td>Name of the table classification model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the table classification model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>table_classification_model_dir</code></td>
-<td>Directory of the table classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the table classification model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_name</code></td>
-<td>Name of the wired table structure recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the wired table structure recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>Directory of the wired table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the wired table structure recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>Name of the wireless table structure recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the wireless table structure recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>Directory of the wireless table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the wireless table structure recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_name</code></td>
-<td>Name of the wired table cell detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the wired table cell detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_dir</code></td>
-<td>Directory of the wired table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the wired table cell detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_name</code></td>
-<td>Name of the wireless table cell detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the wireless table cell detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>Directory of the wireless table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the wireless table cell detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>Name of the seal text detection model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the seal text detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
-<td>Directory of the seal text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the seal text detection model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
 <td>Image side length limit for seal text detection.
-<ul>
-<li><b>int</b>: any integer > <code>0</code>;</li>
-<li><b>None</b>: if set to <code>None</code>, the default is <code>736</code>;</li>
-</ul>
+Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-<ul>
-<li><b>str</b>: supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>min</code>;</li>
-</ul>
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.2</code></li>
-</ul>
+any float > <code>0</code>. If not set, default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.6</code></li>
-</ul>
+any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.5</code></li>
-</ul>
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_name</code></td>
-<td>Name of the seal text recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the seal text recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_dir</code></td>
-<td>Directory of the seal text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the seal text recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size for seal text recognition. If set to <code>None</code>, default is <code>1</code>.</td>
+<td>Batch size for seal text recognition. If not set, default is <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept.
-<ul>
-<li><b>float</b>: any float > <code>0</code></li>
-<li><b>None</b>: if set to <code>None</code>, default is <code>0.0</code> (no threshold)</li>
-</ul>
+<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
-<td>Name of the formula recognition model. If set to <code>None</code>, the default model will be used.</td>
+<td>Name of the formula recognition model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>Directory of the formula recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory of the formula recognition model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>Batch size of the formula recognition model. If set to <code>None</code>, the default is <code>1</code>.</td>
+<td>Batch size of the formula recognition model. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to enable document orientation classification. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use document orientation classification. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to enable document unwarping. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use document unwarping. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to load and use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal recognition subpipeline. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use seal recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use table recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use formula recognition subpipeline. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to enable chart recognition model. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use the chart recognition sub-production line. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to enable region detection submodule for document images. If set to <code>None</code>, default is <code>True</code>.</td>
+<td>Whether to load and use the document region detection production line. If not set, default is <code>True</code>.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
@@ -4619,11 +4610,10 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means XPU 0</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means MLU 0</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means DCU 0</li>
-<li><b>None</b>: If set to <code>None</code>, GPU 0 will be used by default if available; otherwise, CPU will be used.</li>
-</ul>
+</ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
@@ -4651,9 +4641,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN. If set to <code>None</code>, enabled by default.</td>
+<td>Whether to enable MKL-DNN. If not set, disabled by default.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -4665,7 +4655,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td><code>paddlex_config</code></td>
 <td>Path to the PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -4700,51 +4690,51 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <p><b>Note:</b> Due to the large size of the default model in the pipeline, the inference speed may be slow. You can refer to the model list in Section 1 to replace it with a faster model.</p>
 <h3 id="22-python-script-integration_1">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration_1" title="Permanent link">&para;</a></h3>
 <p>The command line method is for quick testing and visualization. In actual projects, you usually need to integrate the model via code. You can perform pipeline inference with just a few lines of code as shown below:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># ocr = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># ocr = PPStructureV3(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># ocr = PPStructureV3(use_textline_orientation=True) # Use use_textline_orientation to enable/disable textline orientation classification model</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># ocr = PPStructureV3(device=&quot;gpu&quot;) # Use device to specify GPU for model inference</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">)</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## Print the structured prediction output</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the current image&#39;s structured result in JSON format</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the current image&#39;s result in Markdown format</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># ocr = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># ocr = PPStructureV3(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># ocr = PPStructureV3(use_textline_orientation=True) # Use use_textline_orientation to enable/disable textline orientation classification model</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># ocr = PPStructureV3(device=&quot;gpu&quot;) # Use device to specify GPU for model inference</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">## Print the structured prediction output</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the current image&#39;s structured result in JSON format</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span> <span class="c1">## Save the current image&#39;s result in Markdown format</span>
 </span></code></pre></div>
 <p>For PDF files, each page will be processed individually and generate a separate Markdown file. If you want to convert the entire PDF to a single Markdown file, use the following method:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">input_file</span> <span class="o">=</span> <span class="s2">&quot;./your_pdf_file.pdf&quot;</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">)</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">markdown_list</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">markdown_images</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">md_info</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">markdown</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="n">markdown_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md_info</span><span class="p">)</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    <span class="n">markdown_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;markdown_images&quot;</span><span class="p">,</span> <span class="p">{}))</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">markdown_texts</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">concatenate_markdown_pages</span><span class="p">(</span><span class="n">markdown_list</span><span class="p">)</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="n">mkd_file_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.md&quot;</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="n">mkd_file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mkd_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">markdown_texts</span><span class="p">)</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">markdown_images</span><span class="p">:</span>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>            <span class="n">file_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">path</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>            <span class="n">file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">input_file</span> <span class="o">=</span> <span class="s2">&quot;./your_pdf_file.pdf&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">output_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="n">output</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./pp_structure_v3_demo.png&quot;</span><span class="p">)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">markdown_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="n">markdown_images</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">output</span><span class="p">:</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="n">md_info</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">markdown</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="n">markdown_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md_info</span><span class="p">)</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="n">markdown_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">md_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;markdown_images&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">markdown_texts</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">concatenate_markdown_pages</span><span class="p">(</span><span class="n">markdown_list</span><span class="p">)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="n">mkd_file_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.md&quot;</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="n">mkd_file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mkd_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">markdown_texts</span><span class="p">)</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">markdown_images</span><span class="p">:</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>    <span class="k">if</span> <span class="n">item</span><span class="p">:</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>        <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>            <span class="n">file_path</span> <span class="o">=</span> <span class="n">output_path</span> <span class="o">/</span> <span class="n">path</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>            <span class="n">file_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>            <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 </span></code></pre></div>
 <p><strong>Note:</strong></p>
 <ul>
@@ -4786,7 +4776,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <ul>
 <li><b>float</b>: Any float between <code>0-1</code>;</li>
 <li><b>dict</b>: <code>{0:0.1}</code> where the key is the class ID and the value is the threshold for that class;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -4805,7 +4795,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -4817,7 +4807,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <ul>
 <li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>.</li>
 </ul>
 </td>
 <td><code>str|dict</code></td>
@@ -4894,7 +4884,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Maximum side length limit for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -4905,7 +4895,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>max</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>max</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -4916,7 +4906,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Pixel threshold for detection. Pixels in the output probability map with scores above this value are considered as text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.3</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.3</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -4927,7 +4917,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Bounding box threshold. If the average score of all pixels inside the box exceeds this threshold, it is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -4938,7 +4928,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Expansion ratio for text detection. The larger the value, the more the text region is expanded.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>2.0</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>2.0</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -4985,7 +4975,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Score threshold for text recognition. Only results with scores above this threshold will be retained.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.0</code> (no threshold);</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.0</code> (no threshold).</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -5069,7 +5059,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Image side length limit for seal text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>.</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -5080,7 +5070,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Limit type for seal text detection image side length.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5091,7 +5081,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Pixel threshold for detection. Pixels with scores greater than this value in the probability map are considered text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -5102,7 +5092,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Bounding box threshold. If the average score of all pixels inside a detection box exceeds this threshold, it is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -5113,7 +5103,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Expansion ratio for seal text detection. The larger the value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -5142,7 +5132,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Score threshold for seal text recognition. Text results with scores above this threshold will be retained.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold);</li>
+<li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold).</li>
 </ul>
 </td>
 <td><code>float</code></td>
@@ -5179,14 +5169,38 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>Whether to enable seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>Whether to enable table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_formula_recognition</code></td>
+<td>Whether to enable formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to enable the chart recognition model. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to enable the region detection model for document layout. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5200,7 +5214,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
-<li><b>None</b>: If set to <code>None</code>, GPU 0 will be used by default. If GPU is not available, CPU will be used;</li>
+<li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -5228,11 +5242,11 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td><code>precision</code></td>
 <td>Computation precision, e.g., fp32, fp16.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is enabled by default.</td>
+<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is disabled by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5268,19 +5282,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td><code>input</code></td>
 <td>Input data to be predicted. Required. Supports multiple types:
 <ul>
-<li><b>Python Var</b>: Image data represented as <code>numpy.ndarray</code></li>
-<li><b>str</b>: Local path to image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b> to image or PDF, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>directory</b> containing image files, e.g., <code>/root/data/</code> (directories with PDFs are not supported, use full file path for PDFs)</li>
-<li><b>List</b>: Elements can be any of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: Image data represented as <code>numpy.ndarray</code>;</li>
+<li><b>str</b>: Local path to image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b> to image or PDF, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>directory</b> containing image files, e.g., <code>/root/data/</code> (directories with PDFs are not supported, use full file path for PDFs);</li>
+<li><b>List</b>: Elements can be any of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"].</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Same as the parameter used during initialization.</td>
-<td><code>str</code></td>
-<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
@@ -5315,6 +5323,18 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <tr>
 <td><code>use_formula_recognition</code></td>
 <td>Whether to use the formula recognition sub-pipeline during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5414,6 +5434,66 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td><code>float</code></td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>use_wired_table_cells_trans_to_html</code></td>
+<td>Whether to enable direct conversion of wired table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wireless_table_cells_trans_to_html</code></td>
+<td>Whether to enable direct conversion of wireless table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_table_orientation_classify</code></td>
+<td>Whether to enable table orientation classification. When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_results_with_table_cells</code></td>
+<td>Whether to enable OCR within cell segmentation. When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wired_table_rec_model</code></td>
+<td>Whether to enable end-to-end wired table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wireless_table_rec_model</code></td>
+<td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
+<ul>
+<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
+<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
+</ul></td>
+<td><code>bool|None</code></td>
+<td><code>True</code></td>
+</tr>
 </table>
 </details>
 
@@ -5435,19 +5515,19 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td rowspan="3">Print result to terminal</td>
 <td><code>format_json</code></td>
 <td><code>bool</code></td>
-<td>Whether to format output as indented <code>JSON</code></td>
+<td>Whether to format output as indented <code>JSON</code>.</td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Indentation level to beautify the <code>JSON</code> output. Only effective when <code>format_json=True</code></td>
+<td>Indentation level to beautify the <code>JSON</code> output. Only effective when <code>format_json=True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When <code>True</code>, all non-ASCII characters are escaped. When <code>False</code>, original characters are retained. Only effective when <code>format_json=True</code></td>
+<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. When <code>True</code>, all non-ASCII characters are escaped. When <code>False</code>, original characters are retained. Only effective when <code>format_json=True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -5455,19 +5535,19 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td rowspan="3">Save result as a JSON file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file. If a directory, the filename will be based on the input type</td>
+<td>Path to save the file. If a directory, the filename will be based on the input type.</td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Indentation level for beautified <code>JSON</code> output. Only effective when <code>format_json=True</code></td>
+<td>Indentation level for beautified <code>JSON</code> output. Only effective when <code>format_json=True</code>.</td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Only effective when <code>format_json=True</code></td>
+<td>Whether to escape non-<code>ASCII</code> characters to <code>Unicode</code>. Only effective when <code>format_json=True</code>.</td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -5475,7 +5555,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Save intermediate visualization results as PNG image files</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -5483,7 +5563,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Save each page of an image or PDF file as a markdown file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -5491,7 +5571,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Save tables in the file as HTML format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -5499,7 +5579,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Save tables in the file as XLSX format</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
-<td>Path to save the file, supports directory or file path</td>
+<td>Path to save the file, supports directory or file path.</td>
 <td>None</td>
 </tr>
 <tr>
@@ -5507,8 +5587,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>Concatenate multiple markdown pages into a single document</td>
 <td><code>markdown_list</code></td>
 <td><code>list</code></td>
-<td>List of markdown data for each page</td>
-<td>Returns the merged markdown text and image list</td>
+<td>List of markdown data for each page.</td>
+<td>Returns the merged markdown text and image list.</td>
 </tr>
 </table>
 
@@ -6102,46 +6182,46 @@ for i, res in enumerate(result["layoutParsingResults"]):
 <li>Export the pipeline configuration file</li>
 </ol>
 <p>You can call the <code>export_paddlex_config_to_yaml</code> method of the PPStructureV3 object in PaddleOCR to export the current pipeline configuration as a YAML file:</p>
-<div class="language-Python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">()</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <ol>
 <li>Modify the configuration file
 After obtaining the default pipeline configuration file, replace the corresponding path in the configuration with the local path of your fine-tuned model weights. For example:
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">LayoutDetection</span><span class="p">:</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">layout_detection</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-DocLayout_plus-L</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned layout detection model weights</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">SubPipelines</span><span class="p">:</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">GeneralOCR</span><span class="p">:</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nt">pipeline_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OCR</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">text_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="nt">use_doc_preprocessor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="nt">use_textline_orientation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="nt">SubModules</span><span class="p">:</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">      </span><span class="nt">TextDetection</span><span class="p">:</span>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_detection</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_det</span>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned text detection model weights</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">        </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">960</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">        </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">max</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">        </span><span class="nt">max_side_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4000</span>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">        </span><span class="nt">thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">        </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">        </span><span class="nt">unclip_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">      </span><span class="nt">TextRecognition</span><span class="p">:</span>
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_recognition</span>
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_rec</span>
-</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned text recognition model weights</span>
-</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">        </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">        </span><span class="nt">score_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">LayoutDetection</span><span class="p">:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">layout_detection</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-DocLayout_plus-L</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned layout detection model weights</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nt">SubPipelines</span><span class="p">:</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nt">GeneralOCR</span><span class="p">:</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">pipeline_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OCR</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">text_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">general</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="nt">use_doc_preprocessor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">use_textline_orientation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">SubModules</span><span class="p">:</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="nt">TextDetection</span><span class="p">:</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_detection</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_det</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned text detection model weights</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">        </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">960</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">        </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">max</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">        </span><span class="nt">max_side_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4000</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="nt">thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">        </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">        </span><span class="nt">unclip_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">      </span><span class="nt">TextRecognition</span><span class="p">:</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">        </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_recognition</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">        </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_rec</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">        </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to the fine-tuned text recognition model weights</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">        </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">        </span><span class="nt">score_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
 </span></code></pre></div></li>
 </ol>
 <p>The pipeline configuration file not only includes parameters supported by the PaddleOCR CLI and Python API but also allows for more advanced configurations. For more details, refer to the corresponding pipeline usage tutorial in the <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html">PaddleX Pipeline Usage Overview</a>, and adjust the configurations as needed based on your requirements.</p>
@@ -6149,15 +6229,15 @@ After obtaining the default pipeline configuration file, replace the correspondi
 <li>Load the pipeline configuration file via CLI</li>
 </ol>
 <p>After modifying the configuration file, specify the updated pipeline configuration path using the <code>--paddlex_config</code> parameter in the command line. PaddleOCR will load its content as the pipeline configuration. Example:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-StructureV3.yaml<span class="w"> </span>...
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>paddleocr<span class="w"> </span>pp_structurev3<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-StructureV3.yaml<span class="w"> </span>...
 </span></code></pre></div>
 <ol>
 <li>Load the pipeline configuration file via Python API
 When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or a configuration dictionary using the paddlex_config parameter. PaddleOCR will load its content as the pipeline configuration. Example:</li>
 </ol>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPStructureV3</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-StructureV3.yaml&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 
 
@@ -6181,7 +6261,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 28, 2025 02:22:30 UTC">May 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 28, 2025 02:24:37 UTC">May 28, 2025</span>
   </span>
 
     
@@ -6191,7 +6271,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 28, 2025 02:22:30 UTC">May 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 28, 2025 02:24:37 UTC">May 28, 2025</span>
   </span>
 
     
