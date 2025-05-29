@@ -1893,7 +1893,7 @@ for res in visual_predict_res:
         - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
 
       - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0, 0, 1]
+      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]
       - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
       - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
       - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤

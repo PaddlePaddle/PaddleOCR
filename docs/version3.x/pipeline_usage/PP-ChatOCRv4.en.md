@@ -1139,7 +1139,7 @@ The relevant parameter descriptions are as follows:
 <td>Expansion factor for the detection boxes of the layout region detection model.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>Tuple[float,float]</b>：: Expansion factors in the horizontal and vertical directions respectively;</li>
+<li><b>Tuple[float,float]</b>: Expansion factors in the horizontal and vertical directions respectively;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>1.0</code>).</li>
 </ul>
 </td>
