@@ -1095,13 +1095,21 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
+<<<<<<< HEAD
 <td>Whether to load and use the document orientation classification module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+=======
+<td>Whether to load and use the document orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+>>>>>>> 6210a3af18ac5bf5a984f2f37a32faff5772b4be
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
+<<<<<<< HEAD
 <td>Whether to load and use the document unwarping module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+=======
+<td>Whether to load and use the document unwarping function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+>>>>>>> 6210a3af18ac5bf5a984f2f37a32faff5772b4be
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>

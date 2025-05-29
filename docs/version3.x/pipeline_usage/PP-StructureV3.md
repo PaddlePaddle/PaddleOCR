@@ -1412,11 +1412,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档区域检测产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
 <td><code>device</code></td>
 <td>用于推理的设备。支持指定具体卡号。
 <ul>
