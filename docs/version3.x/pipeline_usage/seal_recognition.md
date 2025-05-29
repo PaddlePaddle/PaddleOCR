@@ -822,7 +822,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
-支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1124,7 +1124,7 @@ for res in output:
 <td><code>seal_det_limit_type</code></td>
 <td>印章文本检测的图像边长限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ul>
 </td>
@@ -1431,7 +1431,7 @@ for res in output:
         - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
             - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
             - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
 
     - `dt_polys`: `(List[numpy.ndarray])` 印章文本检测的多边形框列表。每个检测框由多个顶点坐标构成的numpy数组表示，数组shape为(n, 2)
 

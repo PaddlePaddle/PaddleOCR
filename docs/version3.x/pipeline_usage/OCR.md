@@ -655,7 +655,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1041,7 +1041,7 @@ for res in result:
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。
 <ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>, <code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>, <code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ur>
 </td>
@@ -1350,7 +1350,7 @@ for res in result:
               <li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像矫正</li>
             </ul>
           </li>
-          <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°, 90°, 180°, 270°]；未启用时为-1</li>
+          <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1</li>
         </ul>
       </li>
       <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16</li>

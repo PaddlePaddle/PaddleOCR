@@ -1013,7 +1013,7 @@ for res in output:
         - `model_settings`: `(Dict)` 预处理子产线的模型配置参数
             - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
             - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正
-        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0, 1, 2, 3]，分别对应[0°, 90°, 180°, 270°]；未启用时为-1
+        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
     - `layout_det_res`: `(Dict[str, List[Dict]])` 版面区域检测模块的输出结果。仅当`use_layout_detection=True`时存在
         - `input_path`: `(Union[str, None])` 版面区域检测模块接收的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `boxes`: `(List[Dict[int, str, float, List[float]]])` 版面区域检测预测结果列表
