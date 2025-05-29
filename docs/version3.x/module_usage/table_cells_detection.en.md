@@ -81,7 +81,7 @@ The Table Cell Detection Module is a key component of the table recognition task
 
 ## III. Quick Start
 
-> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.md).
+> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.en.md).
 
 You can quickly experience it with one command:
 
@@ -187,8 +187,8 @@ The relevant methods, parameters, etc., are described as follows:
 <td><code>float/dict</code></td>
 <td>
 <ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
+  <li><b>float</b>, e.g., 0.3, indicates filtering out all bounding boxes with confidence lower than 0.3</li>
+  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.3}</code> applies a threshold of 0.3 for category cls_id 0</li>
 </ul>
 </td>
 <td>None</td>

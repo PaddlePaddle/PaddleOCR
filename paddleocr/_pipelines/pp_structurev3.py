@@ -80,6 +80,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         formula_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
@@ -251,6 +252,9 @@ class PPStructureV3(PaddleXPipelineWrapper):
             ],
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
+            ],
+            "SubPipelines.GeneralOCR.use_textline_orientation": self._params[
+                "use_textline_orientation"
             ],
             "use_seal_recognition": self._params["use_seal_recognition"],
             "use_table_recognition": self._params["use_table_recognition"],
@@ -536,17 +540,17 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--textline_orientation_model_name",
             type=str,
-            help="Name of the text tetextline orientation.",
+            help="Name of the text line orientation classification model.",
         )
         subparser.add_argument(
             "--textline_orientation_model_dir",
             type=str,
-            help="Path to the text tetextline orientation directory.",
+            help="Path to the text line orientation classification directory.",
         )
         subparser.add_argument(
             "--textline_orientation_batch_size",
             type=int,
-            help="Batch size for the tetextline orientation model.",
+            help="Batch size for the text line orientation classification model.",
         )
         subparser.add_argument(
             "--text_recognition_model_name",
@@ -703,6 +707,11 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str2bool,
             default=False,
             help="Whether to use the text image unwarping model.",
+        )
+        subparser.add_argument(
+            "--use_textline_orientation",
+            type=str2bool,
+            help="Whether to use the text line orientation classification model.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
