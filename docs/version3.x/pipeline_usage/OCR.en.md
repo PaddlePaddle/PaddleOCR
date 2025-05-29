@@ -648,7 +648,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -656,7 +656,7 @@ Any integer greater than <code>0</code>. If not set, the pipeline's initialized 
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1033,7 +1033,7 @@ In the above Python script, the following steps are performed:
  <td>Maximum side length limit for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.</li>
  </ul>
  </td>
  <td><code>int</code></td>
@@ -1044,7 +1044,7 @@ In the above Python script, the following steps are performed:
  <td>Type of side length limit for text detection.
  <ul>
  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.</li>
  </ul>
  </td>
  <td><code>str</code></td>
@@ -1763,8 +1763,8 @@ After obtaining the default pipeline configuration file, replace the paths of th
 SubModules:  
   TextDetection:  
     box_thresh: 0.6  
-    limit_side_len: 960  
-    limit_type: max  
+    limit_side_len: 736  
+    limit_type: min
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
     model_name: PP-OCRv5_server_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
