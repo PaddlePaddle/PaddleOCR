@@ -1997,8 +1997,8 @@ for res in visual_predict_res:
 </table>
 该方法会返回一个包含视觉文本信息的字典，字典的内容如下：
 
-- `flag_save_bytes_vector`：`(bool)`是否将结果保存为二进制文件
-- `flag_too_short_text`：`(bool)`是否文本长度小于最小字符数量
+- `flag_save_bytes_vector`：`(bool)`是否将结果保存为二进制文件。
+- `flag_too_short_text`：`(bool)`是否文本长度小于最小字符数量。
 - `vector`: `(str|list)` 文本的二进制内容或者文本内容，取决于`flag_save_bytes_vector`和`min_characters`的值，如果`flag_save_bytes_vector=True`且文本长度大于等于最小字符数量，则返回二进制内容；否则返回原始的文本。
 </details>
 
