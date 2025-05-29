@@ -1072,7 +1072,7 @@ for res in output:
 <td>版面检测置信度阈值，得分大于该阈值才会被输出。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>dict</b>：key是int类别id, value是大于<code>0</code>的任意浮点数；
+    <li><b>dict</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
     <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></li></ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1419,7 +1419,7 @@ for res in output:
         - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段
             - `cls_id`: `(int)` 检测框的印章类别id
             - `score`: `(float)` 检测框的置信度
-            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1, y1, x2, y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
+            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1，y1，x2，y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
     - `seal_res_list`: `List[Dict]` 印章文本识别的结果列表，每个元素包含以下字段
         - `input_path`: `(Union[str, None])` 印章文本识别产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`

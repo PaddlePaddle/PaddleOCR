@@ -905,13 +905,13 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文档去扭曲功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档去扭曲模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1325,13 +1325,13 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文档去扭曲功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档去扭曲模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1352,7 +1352,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面模型得分阈值。
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
-<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID, value为该类别的阈值；</li>
+<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
@@ -1370,19 +1370,19 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面区域检测模型检测框的扩张系数。
 <ul>
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
-<li><b>Tuple[float, float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
 <ul>
-<li><b>str</b>：<code>large</code>, <code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
@@ -1681,7 +1681,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>

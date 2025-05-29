@@ -1674,7 +1674,7 @@ for res in output:
         - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段
             - `cls_id`: `(int)` 检测框的印章类别id
             - `score`: `(float)` 检测框的置信度
-            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1, y1, x2, y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
+            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1，y1，x2，y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
     - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在
         - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `model_settings`: `(Dict)` 预处理子产线的模型配置参数

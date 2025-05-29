@@ -516,7 +516,7 @@ The following are the parameters and their descriptions of the `predict()` metho
         - `use_doc_orientation_classify`: `(bool)` Controls whether to enable the document orientation classification module
         - `use_doc_unwarping`: `(bool)` Controls whether to enable the text image rectification module
 
-    - `angle`: `(int)` The prediction result of the document orientation classification. When enabled, the value is one of [0, 90, 180, 270]; when disabled, it is -1
+    - `angle`: `(int)` The prediction result of the document orientation classification. When enabled, the value is one of [0,90,180,270]; when disabled, it is -1
 
 - Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the saved path will be `save_path/{your_img_basename}.json`. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, `numpy.array` types will be converted to list form.
 

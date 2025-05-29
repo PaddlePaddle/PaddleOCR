@@ -524,7 +524,7 @@ for res in output:
         - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块
         - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块
 
-    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0, 90, 180, 270]；未启用时为-1
+    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1
 
 - 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。
 - 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)

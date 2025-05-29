@@ -45,7 +45,7 @@ comments: true
 </tr>
 </table>
 
-<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height, width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
+<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height，width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
 </details>
 
 <br />
@@ -488,7 +488,7 @@ for res in output:
 </ul>
 <p>对输入消息进行推理生成响应。</p>
 <p><code>POST /document-understanding</code></p>
-<p>说明 以上接口别名/chat/completion, openai兼容的接口</p>
+<p>说明 以上接口别名/chat/completion，openai兼容的接口</p>
 
 <ul>
 <li>请求体的属性如下：</li>

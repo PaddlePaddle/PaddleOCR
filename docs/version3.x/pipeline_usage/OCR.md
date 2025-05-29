@@ -1338,7 +1338,7 @@ for res in result:
       <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
         <ul>
           <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
-          <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类功能</li>
+          <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类模块</li>
         </ul>
       </li>
       <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在

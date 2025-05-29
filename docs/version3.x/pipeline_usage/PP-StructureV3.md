@@ -315,7 +315,7 @@ comments: true
 <td rowspan="2">--</td>
 <td rowspan="2">--</td>
 <td rowspan="2">351M</td>
-<td rowspan="2">SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模型。相较于 SLANet 和 SLANet_plus, SLANeXt 专注于对表格结构进行识别，并且对有线表格(wired)和无线表格(wireless)的识别分别训练了专用的权重，对各类型表格的识别能力都得到了明显提高，特别是对有线表格的识别能力得到了大幅提升。</td>
+<td rowspan="2">SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模型。相较于 SLANet 和 SLANet_plus，SLANeXt 专注于对表格结构进行识别，并且对有线表格(wired)和无线表格(wireless)的识别分别训练了专用的权重，对各类型表格的识别能力都得到了明显提高，特别是对有线表格的识别能力得到了大幅提升。</td>
 </tr>
 <tr>
 <td>SLANeXt_wireless</td>
@@ -1053,7 +1053,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
-<code>large</code>, <code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
+<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1601,7 +1601,7 @@ for item in markdown_images:
 <td>版面模型得分阈值。
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
-<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID, value为该类别的阈值；</li>
+<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
@@ -1619,19 +1619,19 @@ for item in markdown_images:
 <td>版面区域检测模型检测框的扩张系数。
 <ul>
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
-<li><b>Tuple[float, float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>Tuple[float,float]</b>：：在横纵两个方向各自的扩张系数；</li>
 <li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>版面区域检测的重叠框过滤方式。
 <ul>
-<li><b>str</b>：<code>large</code>, <code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>： 字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
@@ -2171,7 +2171,7 @@ for item in markdown_images:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -2458,7 +2458,7 @@ for item in markdown_images:
         - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
 
       - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0, 0, 1]
+      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]
       - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
       - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
       - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤

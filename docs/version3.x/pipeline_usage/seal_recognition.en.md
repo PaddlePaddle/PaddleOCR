@@ -1084,7 +1084,7 @@ In the above Python script, the following steps were executed:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Same as the parameter used during initialization.</td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1277,7 +1277,7 @@ Whether to use the layout detection module during inference. </td>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Same as the parameter during instantiation.</td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>

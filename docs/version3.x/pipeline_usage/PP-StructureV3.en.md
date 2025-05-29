@@ -1571,12 +1571,12 @@ The above Python script performs the following steps:
 <td>Expansion ratio for the bounding boxes from the layout detection model.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>Tuple[float, float]</b>: Expansion ratios in horizontal and vertical directions;</li>
+<li><b>Tuple[float,float]</b>：: Expansion ratios in horizontal and vertical directions;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -2131,7 +2131,7 @@ The above Python script performs the following steps:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>Same as the parameter used during initialization.</td>
-<td><code>float|Tuple[float, float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
