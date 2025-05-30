@@ -14,7 +14,7 @@ This pipeline is applicable in a variety of fields, including general, manufactu
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/01.png"/>
 
-<b>The General Table Recognition pipeline v2 includes the following 8 modules. Each module can be trained and inferred independently and contains multiple models. For detailed information, please click on the corresponding module to view the documentation.</b>
+<b>The General Table Recognition Pipeline v2 includes the following 8 modules. Each module can be trained and inferred independently and contains multiple models. For detailed information, please click on the corresponding module to view the documentation.</b>
 
 - [Table Structure Recognition Module](../module_usage/table_structure_recognition.md)
 - [Table Classification Module](../module_usage/table_classification.md)
