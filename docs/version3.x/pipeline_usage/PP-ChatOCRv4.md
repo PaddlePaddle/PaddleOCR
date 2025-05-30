@@ -20,7 +20,7 @@ PP-ChatOCRv4 产线中包含<b>版面区域检测模块</b>、<b>表格结构识
 - [表格结构识别模块](../module_usage/table_structure_recognition.md)（可选）
 - [文本检测模块](../module_usage/text_detection.md)
 - [文本识别模块](../module_usage/text_recognition.md)
-- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md)（可选）
+- [文本行方向分类模块](../module_usage/textline_orientation_classification.md)（可选）
 - [公式识别模块](../module_usage/formula_recognition.md)（可选）
 - [印章文本检测模块](../module_usage/seal_text_detection.md)（可选）
 
@@ -905,13 +905,19 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文档去扭曲功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档去扭曲模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块。如果不设置，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1325,13 +1331,19 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文档去扭曲功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档去扭曲模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块. 如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1651,6 +1663,12 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>

@@ -16,7 +16,7 @@ The general OCR pipeline is used to solve text recognition tasks by extracting t
 
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.md) (Optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.md) (Optional)
-- [Text Line Orientation Classification Module](../module_usage/text_line_orientation_classification.md) (Optional)
+- [Text Line Orientation Classification Module](../module_usage/textline_orientation_classification.md) (Optional)
 - [Text Detection Module](../module_usage/text_detection.md)
 - [Text Recognition Module](../module_usage/text_recognition.md)
 
@@ -592,19 +592,19 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_name</code></td>
+<td><code>textline_orientation_model_name</code></td>
 <td>Name of the text line orientation model. If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_dir</code></td>
+<td><code>textline_orientation_model_dir</code></td>
 <td>Directory path of the text line orientation model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_batch_size</code></td>
+<td><code>textline_orientation_batch_size</code></td>
 <td>Batch size for the text line orientation model. If not set, the default batch size will be <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -794,13 +794,13 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>cls_model_dir</code></td>
-<td>Deprecated. Please refer <code>text_line_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td>Deprecated. Please refer <code>textline_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_batch_num</code></td>
-<td>Deprecated. Please refer <code>text_line_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td>Deprecated. Please refer <code>textline_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -975,19 +975,19 @@ In the above Python script, the following steps are performed:
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_model_name</code></td>
+ <td><code>textline_orientation_model_name</code></td>
  <td>Name of the text line orientation model. If set to <code>None</code>, the pipeline's default model will be used.</td>
  <td><code>str</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_model_dir</code></td>
+ <td><code>textline_orientation_model_dir</code></td>
  <td>Directory path of the text line orientation model. If set to <code>None</code>, the official model will be downloaded.</td>
  <td><code>str</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_batch_size</code></td>
+ <td><code>textline_orientation_batch_size</code></td>
  <td>Batch size for the text line orientation model. If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
  <td><code>int</code></td>
  <td><code>None</code></td>

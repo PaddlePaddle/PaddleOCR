@@ -705,18 +705,18 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_doc_orientation_classify",
             type=str2bool,
             default=False,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
             default=False,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
             "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use the text line orientation classification model.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",

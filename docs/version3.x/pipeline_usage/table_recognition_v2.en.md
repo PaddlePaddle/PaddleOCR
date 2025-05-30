@@ -1872,30 +1872,6 @@ Below is the API reference for basic service-oriented deployment and examples of
 <td>No</td>
 </tr>
 <tr>
-<td><code>layoutThreshold</code></td>
-<td><code>number</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_threshold</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutNms</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_nms</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutUnclipRatio</code></td>
-<td><code>number</code> | <code>array</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_unclip_ratio</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutMergeBboxesMode</code></td>
-<td><code>string</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_merge_bboxes_mode</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
 <td>Please refer to the <code>text_det_limit_side_len</code> parameter description in the <code>predict</code> method of the model object.</td>
