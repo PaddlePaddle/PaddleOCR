@@ -26,7 +26,7 @@ The text line orientation classification module primarily distinguishes the orie
 <td>98.85</td>
 <td>-</td>
 <td>-</td>
-<td>0.32</td>
+<td>0.96</td>
 <td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
 </tr>
 <tr>
@@ -40,7 +40,7 @@ The text line orientation classification module primarily distinguishes the orie
 </tbody>
 </table>
 
-> ❗ **Note**: The text line orientation classification model has been recently upgraded, and `PP-LCNet_x1_0_textline_ori` has been added. If you need to use the pre-upgrade model weights, please click the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">download link</a>.
+> ❗ **Note**: The text line orientation classification model was upgraded on May 26, 2025, and `PP-LCNet_x1_0_textline_ori` has been added. If you need to use the pre-upgrade model weights, please click the <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">download link</a>.
 
 <strong>Test Environment Description:</strong>
 
