@@ -22,8 +22,6 @@ from .._common_args import (
     parse_common_args,
     prepare_common_init_args,
 )
-from .._mkldnn_blocklists import MODEL_MKLDNN_BLOCKLIST
-from .._utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = False
 
@@ -41,14 +39,6 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
             model_name if model_name is not None else self.default_model_name
         )
         self._model_dir = model_dir
-        if (
-            common_args.get("enable_mkldnn", None) is None
-            and self._model_name in MODEL_MKLDNN_BLOCKLIST
-        ):
-            logger.warning(
-                f"oneDNN will be disabled for the {repr(self._model_name)} model."
-            )
-            common_args["enable_mkldnn"] = False
         self._common_args = parse_common_args(
             common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
         )

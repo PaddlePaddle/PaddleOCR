@@ -25,8 +25,6 @@ from .._common_args import (
     parse_common_args,
     prepare_common_init_args,
 )
-from .._mkldnn_blocklists import PIPELINE_MKLDNN_BLOCKLIST
-from .._utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = None
 
@@ -58,14 +56,6 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     ):
         super().__init__()
         self._paddlex_config = paddlex_config
-        if (
-            common_args.get("enable_mkldnn", None) is None
-            and self._paddlex_pipeline_name in PIPELINE_MKLDNN_BLOCKLIST
-        ):
-            logger.warning(
-                f"oneDNN will be disabled for the {repr(self._paddlex_pipeline_name)} pipeline."
-            )
-            common_args["enable_mkldnn"] = False
         self._common_args = parse_common_args(
             common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
         )
