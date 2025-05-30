@@ -647,7 +647,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
+<td>Image side length limitation for text detection.
 Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.
 </td>
 <td><code>int</code></td>
@@ -1030,7 +1030,7 @@ In the above Python script, the following steps are performed:
  </tr>
  <tr>
  <td><code>text_det_limit_side_len</code></td>
- <td>Maximum side length limit for text detection.
+ <td>Image side length limitation for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.</li>
