@@ -3204,7 +3204,590 @@ You're not viewing the latest version.
 </div>
 
 <p><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/doc_images/PP-OCRv5/algorithm_ppocrv5_demo.pdf">更多示例</a></p>
-<h1 id="_2">四、部署与二次开发<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h1>
+<h2 id="_2">四、推理性能参考数据<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>测试环境：</p>
+<ul>
+<li>NVIDIA Tesla V100</li>
+<li>Intel Xeon Gold 6271C</li>
+<li>PaddlePaddle 3.0.0</li>
+</ul>
+<p>在 200 张图像（包括通用图像与文档图像）上测试。测试时从磁盘读取图像，因此读图时间及其他额外开销也被包含在总耗时内。如果将图像提前载入到内存，可进一步减少平均每图约 25 ms 的时间开销。</p>
+<p>如果不特别说明，则：</p>
+<ul>
+<li>使用 PP-OCRv4_mobile_det 和 PP-OCRv4_mobile_rec 模型。</li>
+<li>不使用文档图像方向分类、文本图像矫正、文本行方向分类。</li>
+<li>将 <code>text_det_limit_type</code> 设置为 <code>"min"</code>、<code>text_det_limit_side_len</code> 设置为 <code>732</code>。</li>
+</ul>
+<h3 id="1-pp-ocrv5-pp-ocrv4">1. PP-OCRv5 与 PP-OCRv4 推理性能对比<a class="headerlink" href="#1-pp-ocrv5-pp-ocrv4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v5_mobile</td>
+<td>使用 PP-OCRv5_mobile_det 和 PP-OCRv5_mobile_rec 模型。</td>
+</tr>
+<tr>
+<td>v4_mobile</td>
+<td>使用 PP-OCRv4_mobile_det 和 PP-OCRv4_mobile_rec 模型。</td>
+</tr>
+<tr>
+<td>v5_server</td>
+<td>使用 PP-OCRv5_server_det 和 PP-OCRv5_server_rec 模型。</td>
+</tr>
+<tr>
+<td>v4_server</td>
+<td>使用 PP-OCRv4_server_det 和 PP-OCRv4_server_rec 模型。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>GPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+<th>峰值 VRAM 用量（MB）</th>
+<th>平均 VRAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v5_mobile</td>
+<td>0.56</td>
+<td>1162</td>
+<td>106.02</td>
+<td>1576.43</td>
+<td>1420.83</td>
+<td>18.95</td>
+<td>4342.00</td>
+</tr>
+<tr>
+<td>v4_mobile</td>
+<td>0.27</td>
+<td>2246</td>
+<td>111.20</td>
+<td>1392.22</td>
+<td>1318.76</td>
+<td>28.90</td>
+<td>1304.00</td>
+</tr>
+<tr>
+<td>v5_server</td>
+<td>0.70</td>
+<td>929</td>
+<td>105.31</td>
+<td>1634.85</td>
+<td>1428.55</td>
+<td>36.21</td>
+<td>5402.00</td>
+</tr>
+<tr>
+<td>v4_server</td>
+<td>0.44</td>
+<td>1418</td>
+<td>106.96</td>
+<td>1455.34</td>
+<td>1346.95</td>
+<td>58.82</td>
+<td>6760.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>GPU，使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+<th>峰值 VRAM 用量（MB）</th>
+<th>平均 VRAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v5_mobile</td>
+<td>0.50</td>
+<td>1301</td>
+<td>106.50</td>
+<td>1338.12</td>
+<td>1155.86</td>
+<td>11.97</td>
+<td>4112.00</td>
+</tr>
+<tr>
+<td>v4_mobile</td>
+<td>0.21</td>
+<td>2887</td>
+<td>114.09</td>
+<td>1113.27</td>
+<td>1054.46</td>
+<td>15.22</td>
+<td>2072.00</td>
+</tr>
+<tr>
+<td>v5_server</td>
+<td>0.60</td>
+<td>1084</td>
+<td>105.73</td>
+<td>1980.73</td>
+<td>1776.20</td>
+<td>22.10</td>
+<td>12150.00</td>
+</tr>
+<tr>
+<td>v4_server</td>
+<td>0.36</td>
+<td>1687</td>
+<td>104.15</td>
+<td>1186.42</td>
+<td>1065.67</td>
+<td>38.12</td>
+<td>13058.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v5_mobile</td>
+<td>1.43</td>
+<td>455</td>
+<td>798.93</td>
+<td>11695.40</td>
+<td>6829.09</td>
+</tr>
+<tr>
+<td>v4_mobile</td>
+<td>1.09</td>
+<td>556</td>
+<td>813.16</td>
+<td>11996.30</td>
+<td>6834.25</td>
+</tr>
+<tr>
+<td>v5_server</td>
+<td>3.79</td>
+<td>172</td>
+<td>799.24</td>
+<td>50216.00</td>
+<td>27902.40</td>
+</tr>
+<tr>
+<td>v4_server</td>
+<td>4.22</td>
+<td>148</td>
+<td>803.74</td>
+<td>51428.70</td>
+<td>28593.60</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CPU，使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v5_mobile</td>
+<td>1.14</td>
+<td>571</td>
+<td>339.68</td>
+<td>3245.17</td>
+<td>2560.55</td>
+</tr>
+<tr>
+<td>v4_mobile</td>
+<td>0.68</td>
+<td>892</td>
+<td>443.00</td>
+<td>3057.38</td>
+<td>2329.44</td>
+</tr>
+<tr>
+<td>v5_server</td>
+<td>3.56</td>
+<td>183</td>
+<td>797.03</td>
+<td>45664.70</td>
+<td>26905.90</td>
+</tr>
+<tr>
+<td>v4_server</td>
+<td>4.22</td>
+<td>148</td>
+<td>803.74</td>
+<td>51428.70</td>
+<td>28593.60</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：PP-OCRv5 的识别模型使用了更大的字典，需要更长的推理时间，导致 PP-OCRv5 的推理速度慢于 PP-OCRv4。</p>
+</blockquote>
+<h3 id="2-pp-ocrv5">2. 使用辅助功能对 PP-OCRv5 推理性能的影响<a class="headerlink" href="#2-pp-ocrv5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base</td>
+<td>不使用文档图像方向分类、文本图像矫正、文本行方向分类。</td>
+</tr>
+<tr>
+<td>with_textline</td>
+<td>使用文本行方向分类，不使用文档图像方向分类、文本图像矫正。</td>
+</tr>
+<tr>
+<td>with_all</td>
+<td>使用文档图像方向分类、文本图像矫正、文本行方向分类。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>GPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+<th>峰值 VRAM 用量（MB）</th>
+<th>平均 VRAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base</td>
+<td>0.56</td>
+<td>1162</td>
+<td>106.02</td>
+<td>1576.43</td>
+<td>1420.83</td>
+<td>18.95</td>
+<td>4342.00</td>
+</tr>
+<tr>
+<td>with_textline</td>
+<td>0.60</td>
+<td>1083</td>
+<td>105.59</td>
+<td>1715.65</td>
+<td>1510.83</td>
+<td>18.48</td>
+<td>4342.00</td>
+</tr>
+<tr>
+<td>with_all</td>
+<td>1.01</td>
+<td>605</td>
+<td>104.89</td>
+<td>1949.11</td>
+<td>1612.00</td>
+<td>10.85</td>
+<td>2624.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base</td>
+<td>1.43</td>
+<td>455</td>
+<td>798.93</td>
+<td>11695.40</td>
+<td>6829.09</td>
+</tr>
+<tr>
+<td>with_textline</td>
+<td>1.43</td>
+<td>454</td>
+<td>801.90</td>
+<td>11994.30</td>
+<td>6947.94</td>
+</tr>
+<tr>
+<td>with_all</td>
+<td>1.90</td>
+<td>320</td>
+<td>642.48</td>
+<td>11710.80</td>
+<td>6944.01</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>说明：文本图像矫正等辅助功能会对端到端推理精度造成影响，因此并不一定使用的辅助功能越多、资源用量越大。</p>
+</blockquote>
+<h3 id="3-pp-ocrv5">3. 文本检测模块输入缩放尺寸策略对 PP-OCRv5 推理性能的影响<a class="headerlink" href="#3-pp-ocrv5" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mobile_min_1280</td>
+<td>使用 PP-OCRv5_mobile_det 和 PP-OCRv5_mobile_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"min"</code>、<code>text_det_limit_side_len</code> 设置为 <code>1280</code>。</td>
+</tr>
+<tr>
+<td>mobile_min_736</td>
+<td>使用 PP-OCRv5_mobile_det 和 PP-OCRv5_mobile_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"min"</code>、<code>text_det_limit_side_len</code> 设置为 <code>1280</code>。</td>
+</tr>
+<tr>
+<td>mobile_max_960</td>
+<td>使用 PP-OCRv5_mobile_det 和 PP-OCRv5_mobile_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"max"</code>、<code>text_det_limit_side_len</code> 设置为 <code>960</code>。</td>
+</tr>
+<tr>
+<td>mobile_max_640</td>
+<td>使用 PP-OCRv5_mobile_det 和 PP-OCRv5_mobile_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"max"</code>、<code>text_det_limit_side_len</code> 设置为 <code>640</code>。</td>
+</tr>
+<tr>
+<td>server_min_1280</td>
+<td>使用 PP-OCRv5_server_det 和 PP-OCRv5_server_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"min"</code>、<code>text_det_limit_side_len</code> 设置为 <code>1280</code>。</td>
+</tr>
+<tr>
+<td>server_min_736</td>
+<td>使用 PP-OCRv5_server_det 和 PP-OCRv5_server_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"min"</code>、<code>text_det_limit_side_len</code> 设置为 <code>1280</code>。</td>
+</tr>
+<tr>
+<td>server_max_960</td>
+<td>使用 PP-OCRv5_server_det 和 PP-OCRv5_server_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"max"</code>、<code>text_det_limit_side_len</code> 设置为 <code>960</code>。</td>
+</tr>
+<tr>
+<td>server_max_640</td>
+<td>使用 PP-OCRv5_server_det 和 PP-OCRv5_server_rec 模型，将 <code>text_det_limit_type</code> 设置为 <code>"max"</code>、<code>text_det_limit_side_len</code> 设置为 <code>640</code>。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>GPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+<th>峰值 VRAM 用量（MB）</th>
+<th>平均 VRAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mobile_min_1280</td>
+<td>0.61</td>
+<td>1071</td>
+<td>109.12</td>
+<td>1663.71</td>
+<td>1439.72</td>
+<td>19.27</td>
+<td>4202.00</td>
+</tr>
+<tr>
+<td>mobile_min_736</td>
+<td>0.56</td>
+<td>1162</td>
+<td>106.02</td>
+<td>1576.43</td>
+<td>1420.83</td>
+<td>18.95</td>
+<td>4342.00</td>
+</tr>
+<tr>
+<td>mobile_max_960</td>
+<td>0.48</td>
+<td>1313</td>
+<td>103.49</td>
+<td>1587.25</td>
+<td>1395.48</td>
+<td>19.37</td>
+<td>2642.00</td>
+</tr>
+<tr>
+<td>mobile_max_640</td>
+<td>0.42</td>
+<td>1436</td>
+<td>103.07</td>
+<td>1651.14</td>
+<td>1422.62</td>
+<td>18.95</td>
+<td>2530.00</td>
+</tr>
+<tr>
+<td>server_min_1280</td>
+<td>0.82</td>
+<td>795</td>
+<td>107.17</td>
+<td>1678.16</td>
+<td>1428.94</td>
+<td>40.43</td>
+<td>10368.00</td>
+</tr>
+<tr>
+<td>server_min_736</td>
+<td>0.70</td>
+<td>929</td>
+<td>105.31</td>
+<td>1634.85</td>
+<td>1428.55</td>
+<td>36.21</td>
+<td>5402.00</td>
+</tr>
+<tr>
+<td>server_max_960</td>
+<td>0.59</td>
+<td>1073</td>
+<td>103.03</td>
+<td>1590.19</td>
+<td>1383.62</td>
+<td>33.42</td>
+<td>2928.00</td>
+</tr>
+<tr>
+<td>server_max_640</td>
+<td>0.54</td>
+<td>1099</td>
+<td>102.63</td>
+<td>1602.09</td>
+<td>1416.49</td>
+<td>30.77</td>
+<td>3152.00</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CPU，不使用高性能推理：</strong></p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>平均每图耗时（s）</th>
+<th>平均每秒预测字符数量</th>
+<th>平均 CPU 利用率（%）</th>
+<th>峰值 RAM 用量（MB）</th>
+<th>平均 RAM 用量（MB）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mobile_min_1280</td>
+<td>1.64</td>
+<td>398</td>
+<td>799.45</td>
+<td>12344.10</td>
+<td>7100.60</td>
+</tr>
+<tr>
+<td>mobile_min_736</td>
+<td>1.43</td>
+<td>455</td>
+<td>798.93</td>
+<td>11695.40</td>
+<td>6829.09</td>
+</tr>
+<tr>
+<td>mobile_max_960</td>
+<td>1.21</td>
+<td>521</td>
+<td>800.13</td>
+<td>11099.10</td>
+<td>6369.49</td>
+</tr>
+<tr>
+<td>mobile_max_640</td>
+<td>1.01</td>
+<td>597</td>
+<td>802.52</td>
+<td>9585.48</td>
+<td>5573.52</td>
+</tr>
+<tr>
+<td>server_min_1280</td>
+<td>4.48</td>
+<td>145</td>
+<td>800.49</td>
+<td>50683.10</td>
+<td>28273.30</td>
+</tr>
+<tr>
+<td>server_min_736</td>
+<td>3.79</td>
+<td>172</td>
+<td>799.24</td>
+<td>50216.00</td>
+<td>27902.40</td>
+</tr>
+<tr>
+<td>server_max_960</td>
+<td>2.67</td>
+<td>237</td>
+<td>797.63</td>
+<td>49362.50</td>
+<td>26075.60</td>
+</tr>
+<tr>
+<td>server_max_640</td>
+<td>2.36</td>
+<td>251</td>
+<td>795.18</td>
+<td>45656.10</td>
+<td>24900.80</td>
+</tr>
+</tbody>
+</table>
+<h1 id="_3">五、部署与二次开发<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h1>
 <ul>
 <li><strong>多系统支持</strong>：兼容Windows、Linux、Mac等主流操作系统。</li>
 <li><strong>多硬件支持</strong>：除了英伟达GPU外，还支持Intel CPU、昆仑芯、昇腾等新硬件推理和部署。</li>
@@ -3234,7 +3817,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月30日 06:35:58 UTC">2025年5月30日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月30日 06:36:45 UTC">2025年5月30日</span>
   </span>
 
     
@@ -3244,7 +3827,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月30日 06:35:58 UTC">2025年5月30日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年5月30日 06:36:45 UTC">2025年5月30日</span>
   </span>
 
     
