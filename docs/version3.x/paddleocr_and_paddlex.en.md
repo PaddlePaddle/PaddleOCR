@@ -61,7 +61,7 @@ The exported PaddleX pipeline configuration file not only includes parameters su
 
 ### 3.3 Loading Pipeline Configuration Files in CLI
 
-By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the default configuration for the pipeline. Here is an example:
+By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the default configuration for the pipeline (this takes precedence over the default values of individual initialization parameters). Here is an example:
 
 ```bash
 paddleocr ocr --paddlex_config ocr_config.yaml ...
@@ -69,7 +69,7 @@ paddleocr ocr --paddlex_config ocr_config.yaml ...
 
 ### 3.4 Loading Pipeline Configuration Files in Python API
 
-When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the default configuration. Here is an example:
+When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the default configuration (this takes precedence over the default values of individual initialization parameters). Here is an example:
 
 ```python
 from paddleocr import PaddleOCR

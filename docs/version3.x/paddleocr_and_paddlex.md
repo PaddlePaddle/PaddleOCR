@@ -61,7 +61,7 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 
 ### 3.3 在 CLI 中加载产线配置文件
 
-通过 `--paddlex_config` 参数指定 PaddleX 产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线的默认配置。示例如下：
+通过 `--paddlex_config` 参数指定 PaddleX 产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线的默认配置（优先级高于各参数默认初始化的值）。示例如下：
 
 ```bash
 paddleocr ocr --paddlex_config ocr_config.yaml ...
@@ -69,7 +69,7 @@ paddleocr ocr --paddlex_config ocr_config.yaml ...
 
 ### 3.4 在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会将其作为默认配置。示例如下：
+初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会将其作为默认配置（优先级高于各参数默认初始化的值）。示例如下：
 
 ```python
 from paddleocr import PaddleOCR
