@@ -16,6 +16,15 @@ PaddleOCR 在推理部署环节充分复用了 PaddleX 的能力，具体包括�
 - PaddleOCR 的高性能推理能力通过 PaddleX 的 Paddle2ONNX 插件及高性能推理插件实现。
 - PaddleOCR 的服务化部署方案基于 PaddleX 的实现。
 
+需要特别说明的是，尽管 PaddleOCR 在底层使用了 PaddleX，但得益于 PaddleX 的可选依赖安装功能，**安装 PaddleOCR 推理包时并不会安装 PaddleX 的全部依赖，而只会安装 OCR 类任务需要使用到的依赖**，用户通常无需关心依赖体积的过度膨胀问题。2025 年 5 月测试，在 x86-64 + Linux + Python 3.10 环境中，需要安装的依赖总体积仅仅从 717 MB 增加到 738 MB。
+
+PaddleOCR 和 PaddleX 的版本存在如下对应关系：
+
+| PaddleOCR 版本 | PaddleX 版本 |
+| --- | --- |
+| `3.0.0` | `3.0.0` |
+| `3.0.1` | `3.0.1` |
+
 ## 2. PaddleOCR 产线与 PaddleX 产线注册名的对应关系
 
 | PaddleOCR 产线 | PaddleX 产线注册名 |
@@ -52,7 +61,7 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 
 ### 3.3 在 CLI 中加载产线配置文件
 
-通过 `--paddlex_config` 参数指定 PaddleX 产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线的默认配置。示例如下：
+通过 `--paddlex_config` 参数指定 PaddleX 产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线的默认配置（优先级高于各参数默认初始化的值）。示例如下：
 
 ```bash
 paddleocr ocr --paddlex_config ocr_config.yaml ...
@@ -60,7 +69,7 @@ paddleocr ocr --paddlex_config ocr_config.yaml ...
 
 ### 3.4 在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会将其作为默认配置。示例如下：
+初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会将其作为默认配置（优先级高于各参数默认初始化的值）。示例如下：
 
 ```python
 from paddleocr import PaddleOCR

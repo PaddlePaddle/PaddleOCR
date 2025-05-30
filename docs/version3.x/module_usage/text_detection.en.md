@@ -154,80 +154,107 @@ Method and parameter descriptions:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
+<td>Model name. All supported seal text detection model names, such as <code>PP-OCRv5_mobile_det</code>.</td>
 <td><code>str</code></td>
-<td>All PaddleX-supported text detection model names</td>
-<td>Required</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>Model storage path</td>
 <td><code>str</code></td>
-<td>N/A</td>
-<td>N/A</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Inference device</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>GPU (e.g., "gpu:0"), NPU (e.g., "npu:0"), CPU ("cpu")</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>limit_side_len</code></td>
-<td>Image side length limit for detection</td>
-<td><code>int/None</code></td>
-<td>Positive integer or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>Side length restriction type</td>
-<td><code>str/None</code></td>
-<td>"min" (shortest side ≥ limit) or "max" (longest side ≤ limit)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>Pixel score threshold for text detection</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>Average score threshold for text regions</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping algorithm</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Enable high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
 <td><code>bool</code></td>
-<td>N/A</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>N/A</td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>limit_side_len</code></td>
+<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>limit_type</code></td>
+<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>thresh</code></td>
+<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>box_thresh</code></td>
+<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>unclip_ratio</code></td>
+<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input_shape</code></td>
+<td>Input image size for the model in the format <code>(C, H, W)</code>. If set to <code>None</code>, the model's default size will be used.</td>
+<td><code>tuple</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
 </table>
 
 * The `predict()` method parameters:
@@ -237,60 +264,64 @@ Method and parameter descriptions:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>input</code></td>
-<td>Input data (image path, URL, directory, or list)</td>
-<td><code>Python Var</code>/<code>str</code>/<code>dict</code>/<code>list</code></td>
-<td>Numpy array, file path, URL, directory, or list of these</td>
-<td>Required</td>
+<td>
+Input data to be predicted. Required. Supports multiple input types:
+<ul>
+  <li><b>Python variable</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>File path</b>: e.g., local image file path <code>/root/data/img.jpg</code></li>
+  <li><b>URL</b>: e.g., image file URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a></li>
+  <li><b>Directory</b>: should contain image files for prediction (PDF files are not supported)</li>
+  <li><b>List</b>: contains elements of the above types, e.g., <code>[numpy.ndarray, "/root/data/img.jpg"]</code></li>
+</ul>
+</td>
+<td><code>Python Var</code> / <code>str</code> / <code>dict</code> / <code>list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Positive integer</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Image side length limit for detection</td>
-<td><code>int/None</code></td>
-<td>Positive integer or None (uses model default)</td>
-<td>None</td>
+<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>int</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>Side length restriction type</td>
-<td><code>str/None</code></td>
-<td>"min" or "max"</td>
-<td>None</td>
+<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>Pixel score threshold for text detection</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>Average score threshold for text regions</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping algorithm</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
+</tbody>
 </table>
+
 
 * Result processing methods:
 <table>

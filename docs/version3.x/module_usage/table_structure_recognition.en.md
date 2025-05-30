@@ -139,50 +139,77 @@ Descriptions of related methods and parameters are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
+<td>Name of the model</td>
 <td><code>str</code></td>
-<td>All model names</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Model inference device</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>Supports specifying specific GPU cards, such as “gpu:0”, other hardware such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>EWhether to use the high performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
 </table>
 
 * Among them, `model_name` must be specified. If `model_dir` is specified, the user's custom model is used.
 
 * Call the `predict()` method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the `predict_iter()` method. The two are completely consistent in parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The `predict()` method has parameters `input` and `batch_size`, described as follows:
+
 
 <table>
 <thead>
@@ -190,34 +217,31 @@ Descriptions of related methods and parameters are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python variable</b>, such as <code>numpy.ndarray</code> image data</li>
-  <li><b>File path</b>, such as the local path of the image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL link</b>, such as the network URL of the image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local directory</b>, which should contain the data files to be predicted, e.g., <code>/root/data/</code></li>
-  <li><b>List</b>, list elements should be the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
-
 * For processing prediction results, the prediction result of each sample is the corresponding Result object, and supports printing and saving as a `json` file:
 
 <table>
