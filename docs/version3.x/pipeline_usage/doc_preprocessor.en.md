@@ -791,4 +791,3 @@ Since the document image preprocessing pipeline comprises multiple modules, any 
 </tr>
 </tbody>
 </table>
-
