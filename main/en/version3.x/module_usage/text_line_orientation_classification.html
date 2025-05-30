@@ -3238,56 +3238,120 @@ The visualization image is as follows:</li>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
 <td>Name of the model</td>
 <td><code>str</code></td>
-<td>None</td>
-<td><code>PP-LCNet_x0_25_textline_ori</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Path to store the model</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for model inference</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>The top-k value for prediction results. If not specified, the default value in the official PaddleOCR model configuration is used. If the value is 5, the top 5 categories and their corresponding classification probabilities will be returned.</td>
+<td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
+</tbody>
 </table>
 
 <ul>
 <li>
-<p>The <code>model_name</code> must be specified. After specifying <code>model_name</code>, the default model parameters built into PaddleX are used. If <code>model_dir</code> is specified, the user-defined model is used.</p>
+<p><code>model_name</code> must be specified. Once <code>model_name</code> is set, the default built-in model parameters of PaddleOCR will be used. On this basis, if <code>model_dir</code> is specified, the user-defined model will be used.</p>
 </li>
 <li>
-<p>Call the <code>predict()</code> method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a <code>predict_iter()</code> method. Both methods accept the same parameters and return the same results, but <code>predict_iter()</code> returns a <code>generator</code>, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the <code>predict()</code> method are <code>input</code> and <code>batch_size</code>, as described below:</p>
+<p>Use the <code>predict()</code> method of the text line direction classification model to perform inference. This method returns a list of results. In addition, this module also provides the <code>predict_iter()</code> method. Both methods accept the same parameters and return the same result format. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which processes and retrieves prediction results step by step. It is suitable for handling large datasets or memory-efficient scenarios. You can choose either method based on your actual needs. The <code>predict()</code> method accepts the parameters <code>input</code> and <code>batch_size</code>, which are described in detail below:</p>
 </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td>Input data for prediction. Multiple input types are supported. This parameter is required.
+<ul>
+<li><b>Python Var</b>: such as <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: such as the local path of an image or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the online URL of an image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">Example</a>; <b>or a local directory</b> that contains images for prediction, such as <code>/root/data/</code> (currently, directories containing PDF files are not supported; PDF files must be specified as individual file paths)</li>
+<li><b>List</b>: list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td>Batch size,  positive integer.</td>
+<td><code>int</code></td>
+<td>1</td>
+</tr>
+</table>
+
+<ul>
+<li>Call the <code>predict()</code> method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a <code>predict_iter()</code> method. Both methods accept the same parameters and return the same results, but <code>predict_iter()</code> returns a <code>generator</code>, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the <code>predict()</code> method are <code>input</code> and <code>batch_size</code>, as described below:</li>
 </ul>
 <table>
 <thead>
@@ -3431,7 +3495,7 @@ The visualization image is as follows:</li>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 30, 2025 03:42:08 UTC">May 30, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 30, 2025 05:50:57 UTC">May 30, 2025</span>
   </span>
 
     
@@ -3441,7 +3505,7 @@ The visualization image is as follows:</li>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 30, 2025 03:42:08 UTC">May 30, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 30, 2025 05:50:57 UTC">May 30, 2025</span>
   </span>
 
     
