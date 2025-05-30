@@ -290,7 +290,7 @@ nav:
     - 表格结构识别模块: version3.x/module_usage/table_structure_recognition.md
     - 文本检测模块: version3.x/module_usage/text_detection.md
     - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
-    - 文本行方向分类模块: version3.x/module_usage/text_line_orientation_classification.md
+    - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
     - 文本识别模块: version3.x/module_usage/text_recognition.md
   - 产线列表: 
     - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
