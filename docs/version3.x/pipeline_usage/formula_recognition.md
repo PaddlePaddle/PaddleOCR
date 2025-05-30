@@ -499,7 +499,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面区域检测是否使用NMS后处理，过滤重叠框。如果不设置，将会使用官方模型配置。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -742,33 +742,33 @@ for res in output:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面区域检测是否使用NMS后处理，过滤重叠框。如果设置为<code>None</code>，将会使用官方模型配置。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测中检测框的边长缩放倍数。
+<td>版面区域检测模型检测框的扩张系数。
 <ul>
-<li><b>float</b>：大于0的浮点数，如 1.1，表示将模型输出的检测框中心不变，宽和高都扩张1.1倍；</li>
-<li><b>列表</b>：如 [1.2,1.5]，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍；</li>
-<li><b>None</b>：不指定，将使用默认值：1.0。</li>
+<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
+<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|list</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>版面区域检测中模型输出的检测框的合并处理模式。
+<td>版面区域检测的重叠框过滤方式。
 <ul>
-<li><b>large</b>：设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
-<li><b>small</b>：设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
-<li><b>union</b>：不进行框的过滤处理，内外框都保留；</li>
-<li><b>None</b>：不指定，将使用默认值：“large”。</li>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>字典</b>： 字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -923,12 +923,12 @@ for res in output:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float|list</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>string</code></td>
+<td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
 </tr></tr></tbody>

@@ -791,9 +791,9 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>invoke_mllm</code></td>
-<td>是否加载并使用多模态大模型。</td>
+<td>是否加载并使用多模态大模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -937,7 +937,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面区域检测模型是否使用NMS后处理。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -950,15 +950,19 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>版面区域检测的重叠框过滤方式。
-<code>large</code>，<code>small</code>, <code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。
+<td>版面检测中模型输出的检测框的合并处理模式。
+<ul>
+<li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
+<li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
+<li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为<code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。
+<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -966,7 +970,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1352,7 +1356,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面模型得分阈值。
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
-<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
+<li><b>字典</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
@@ -1361,7 +1365,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面区域检测模型是否使用NMS后处理。</td>
+<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1383,7 +1387,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>版面区域检测的重叠框过滤方式。
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
-<li><b>dict</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
@@ -1395,7 +1399,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
 </ul>
 </td>
 <td><code>int</code></td>
@@ -1406,7 +1410,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
 </ul>
 </td>
 <td><code>str</code></td>

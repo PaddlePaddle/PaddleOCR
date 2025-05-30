@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Document Image Preprocessing Pipeline Tutorial
+# Document Image Preprocessing Pipeline Usage Tutorial
 
 ## 1. Introduction to Document Image Preprocessing Pipeline
 
@@ -791,3 +791,4 @@ Since the document image preprocessing pipeline comprises multiple modules, any 
 </tr>
 </tbody>
 </table>
+

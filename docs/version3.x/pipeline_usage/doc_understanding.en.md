@@ -1,7 +1,5 @@
 ---
-
 comments: true
-
 ---
 
 # Document Understanding Pipeline Usage Tutorial

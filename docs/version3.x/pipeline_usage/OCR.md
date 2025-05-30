@@ -648,7 +648,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>文本检测的图像边长限制。
-大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
+大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -706,23 +706,14 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>lang</code></td>
 <td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-</ul>如果不设置，将默认使用<code>ch</code>。
+<a href="#languages">支持的语言列表</a>，如果不设置，将默认使用<code>ch</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本。
+<td>OCR 版本，注意不是每个ocr_version都支持所有的lang。
 <ul>
 <li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
 <li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
@@ -892,6 +883,153 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
+<a id="languages"></a>
+<details><summary><b>支持的语言列表</b></summary>
+<table>
+<thead>
+<tr>
+<th>LANGS 类型</th>
+<th>语言列表</th>
+<th>支持模型</th>
+</tr>
+<tr>
+<td><code>LANG</code></td>
+<td>使用指定语言的 OCR 模型。
+<ul>
+<li><b>ch</b>：中文；
+<li><b>en</b>：英文；
+<li><b>korean</b>：韩文；
+<li><b>japan</b>：日文；
+<li><b>chinese_cht</b>：繁体中文；
+<li><b>te</b>：泰卢固文；
+<li><b>ka</b>：卡纳达文；
+<li><b>ta</b>：泰米尔文。
+</ul></td>
+<td>
+对于ch，使用的模型为：PP-OCRv3_mobile_rec，其他语言使用的模型为{语言}_PP-OCRv3_mobile_rec，例如en，则使用en_PP-OCRv3_mobile_rec。
+</td>
+</tr>
+<tr>
+<td><code>LATIN_LANGS</code></td>
+<td>使用指定语言的 OCR 模型。
+<details>
+  <summary>语言列表</summary>
+  <ul>
+<li><b>af</b>：阿非利堪斯语；
+<li><b>az</b>：阿塞拜疆语；
+<li><b>bs</b>：波斯尼亚语；
+<li><b>cs</b>：捷克语；
+<li><b>cy</b>：威尔士语；
+<li><b>da</b>：丹麦语；
+<li><b>de</b>：德语；
+<li><b>es</b>：西班牙语；
+<li><b>et</b>：爱沙尼亚语；
+<li><b>fr</b>：法语；
+<li><b>ga</b>：爱尔兰语；
+<li><b>hr</b>：克罗地亚语；
+<li><b>hu</b>：匈牙利语；
+<li><b>id</b>：印度尼西亚语；
+<li><b>is</b>：冰岛语；
+<li><b>it</b>：意大利语；
+<li><b>ku</b>：库尔德语；
+<li><b>la</b>：拉丁语；
+<li><b>lt</b>：立陶宛语；
+<li><b>lv</b>：拉脱维亚语；
+<li><b>mi</b>：毛利语；
+<li><b>ms</b>：马来语；
+<li><b>mt</b>：马耳他语；
+<li><b>nl</b>：荷兰语；
+<li><b>no</b>：挪威语；
+<li><b>oc</b>：奥克语；
+<li><b>pi</b>：帕利亚语；
+<li><b>pl</b>：波兰语；
+<li><b>pt</b>：葡萄牙语；
+<li><b>ro</b>：罗马尼亚语；
+<li><b>rs_latin</b>：塞尔维亚语；
+<li><b>sk</b>：斯洛伐克语；
+<li><b>sl</b>：斯洛文尼亚语；
+<li><b>sq</b>：阿尔巴尼亚语；
+<li><b>sv</b>：瑞典语；
+<li><b>sw</b>：斯瓦希里语；
+<li><b>tl</b>：他加禄语；
+<li><b>tr</b>：土耳其语；
+<li><b>uz</b>：乌兹别克语；
+<li><b>vi</b>：越南语；
+<li><b>french</b>：法语；
+<li><b>german</b>：德语。
+  </ul>
+</details></td>
+<td>
+latin_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>ARABIC_LANGS</code></td>
+<td>使用指定语言的 OCR 模型。
+<ul>
+<li><b>ar</b>：阿拉伯语；
+<li><b>fa</b>：波斯语；
+<li><b>ug</b>：维吾尔语；
+<li><b>ur</b>：乌尔都语；
+</ul></td>
+<td>
+arabic_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>CYRILLIC_LANGS</code></td>
+<td>使用指定语言的 OCR 模型。
+<ul>
+<li><b>ru</b>：俄语；
+<li><b>rs_cyrillic</b>：塞尔维亚语(西里尔字母)；
+<li><b>be</b>：白俄罗斯语；
+<li><b>bg</b>：保加利亚语；
+<li><b>uk</b>：乌克兰语；
+<li><b>mn</b>：蒙古语；
+<li><b>abq</b>：阿巴扎语；
+<li><b>ady</b>：阿迪格语；
+<li><b>kbd</b>：卡巴尔达语；
+<li><b>ava</b>：阿瓦尔语；
+<li><b>dar</b>：达尔金语；
+<li><b>inh</b>：印古什语；
+<li><b>che</b>：车臣语；
+<li><b>lbe</b>：拉克语；
+<li><b>lez</b>：列兹金语；
+<li><b>tab</b>：塔巴萨兰语。
+</ul></td>
+<td>
+cyrillic_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>DEVANAGARI_LANGS</code></td>
+<td>使用指定语言的 OCR 模型。
+<ul>
+<li><b>hi</b>：印地语；</li>
+<li><b>mr</b>：马拉地语；</li>
+<li><b>ne</b>：尼泊尔语；</li>
+<li><b>bh</b>：比哈尔语；</li>
+<li><b>mai</b>：迈蒂利语；</li>
+<li><b>ang</b>：古英语；</li>
+<li><b>bho</b>：博杰普尔语；</li>
+<li><b>mah</b>：马绍尔语；</li>
+<li><b>sck</b>：锡金语；</li>
+<li><b>new</b>：尼瓦尔语；</li>
+<li><b>gom</b>：孔卡尼语；</li>
+<li><b>sa</b>：梵语；</li>
+<li><b>bgc</b>：孟加拉语群的方言。</li>
+</ul>
+</td>
+<td>
+devanagari_PP-OCRv3_mobile_rec
+</td>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</details>
+<br />
 
 ### 2.2 Python脚本方式集成
 
@@ -1031,7 +1169,7 @@ for res in result:
 <td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
 </ur>
 </td>
 <td><code>int</code></td>
@@ -1105,24 +1243,14 @@ for res in result:
 <tr>
 <td><code>lang</code></td>
 <td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用<code>ch</code>。
-</ur>
+<a href="#languages">支持的语言列表</a>，如果设置为<code>None</code>，将默认使用<code>ch</code>。
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本。
+<td>OCR 版本，注意不是每个ocr_version都支持所有的lang。
 <ul>
 <li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
 <li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；

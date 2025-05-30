@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# General OCR Pipeline Usage Guide
+# General OCR Pipeline Usage Tutorial
 
 ## 1. OCR Pipeline Introduction
 
@@ -648,7 +648,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limitation for text detection.
-Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -706,25 +706,15 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model for a specified language.
-<ul>
-<li><b>ch</b>: Chinese;
-<li><b>en</b>: English;
-<li><b>korean</b>: Korean;
-<li><b>japan</b>: Japanese;
-<li><b>chinese_cht</b>: Traditional Chinese;
-<li><b>te</b>: Telugu;
-<li><b>ka</b>: Kannada;
-<li><b>ta</b>: Tamil;
-</ul>If not set, <code>ch</code> will be used by default.
-
+<td>OCR model language to use.
+<a href="#languages">Supported Language List</a>. If not set, <code>ch</code> will be used by default.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version.
+<td>OCR version, note that not every ocr_version supports all languages.
 <ul>
 <li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;
 <li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;
@@ -894,6 +884,153 @@ Results are printed to the terminal:
 If `save_path` is specified, the visualization results will be saved under `save_path`. The visualization output is shown below:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
+<a id="languages"></a>
+<details><summary><b>Supported Language List</b></summary>
+<table>
+<thead>
+<tr>
+<th>LANG Type</th>
+<th>Language List</th>
+<th>Supported Models</th>
+</tr>
+<tr>
+<td><code>LANG</code></td>
+<td>OCR models for the specified language.
+<ul>
+<li><b>ch</b>: Chinese;</li>
+<li><b>en</b>: English;</li>
+<li><b>korean</b>: Korean;</li>
+<li><b>japan</b>: Japanese;</li>
+<li><b>chinese_cht</b>: Traditional Chinese;</li>
+<li><b>te</b>: Telugu;</li>
+<li><b>ka</b>: Kannada;</li>
+<li><b>ta</b>: Tamil.</li>
+</ul></td>
+<td>
+For <b>ch</b>, the model used is PP-OCRv3_mobile_rec, while for other languages, the model used is {language}_PP-OCRv3_mobile_rec (e.g., for <b>en</b>, it is en_PP-OCRv3_mobile_rec).
+</td>
+</tr>
+<tr>
+<td><code>LATIN_LANGS</code></td>
+<td>OCR models for the specified language.
+<details>
+  <summary>Language List</summary>
+  <ul>
+<li><b>af</b>: Afrikaans;</li>
+<li><b>az</b>: Azerbaijani;</li>
+<li><b>bs</b>: Bosnian;</li>
+<li><b>cs</b>: Czech;</li>
+<li><b>cy</b>: Welsh;</li>
+<li><b>da</b>: Danish;</li>
+<li><b>de</b>: German;</li>
+<li><b>es</b>: Spanish;</li>
+<li><b>et</b>: Estonian;</li>
+<li><b>fr</b>: French;</li>
+<li><b>ga</b>: Irish;</li>
+<li><b>hr</b>: Croatian;</li>
+<li><b>hu</b>: Hungarian;</li>
+<li><b>id</b>: Indonesian;</li>
+<li><b>is</b>: Icelandic;</li>
+<li><b>it</b>: Italian;</li>
+<li><b>ku</b>: Kurdish;</li>
+<li><b>la</b>: Latin;</li>
+<li><b>lt</b>: Lithuanian;</li>
+<li><b>lv</b>: Latvian;</li>
+<li><b>mi</b>: Maori;</li>
+<li><b>ms</b>: Malay;</li>
+<li><b>mt</b>: Maltese;</li>
+<li><b>nl</b>: Dutch;</li>
+<li><b>no</b>: Norwegian;</li>
+<li><b>oc</b>: Occitan;</li>
+<li><b>pi</b>: Pali;</li>
+<li><b>pl</b>: Polish;</li>
+<li><b>pt</b>: Portuguese;</li>
+<li><b>ro</b>: Romanian;</li>
+<li><b>rs_latin</b>: Serbian (Latin script);</li>
+<li><b>sk</b>: Slovak;</li>
+<li><b>sl</b>: Slovenian;</li>
+<li><b>sq</b>: Albanian;</li>
+<li><b>sv</b>: Swedish;</li>
+<li><b>sw</b>: Swahili;</li>
+<li><b>tl</b>: Tagalog;</li>
+<li><b>tr</b>: Turkish;</li>
+<li><b>uz</b>: Uzbek;</li>
+<li><b>vi</b>: Vietnamese;</li>
+<li><b>french</b>: French;</li>
+<li><b>german</b>: German.</li>
+  </ul>
+</details></td>
+<td>
+latin_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>ARABIC_LANGS</code></td>
+<td>OCR models for the specified language.
+<ul>
+<li><b>ar</b>: Arabic;</li>
+<li><b>fa</b>: Persian;</li>
+<li><b>ug</b>: Uighur;</li>
+<li><b>ur</b>: Urdu;</li>
+</ul></td>
+<td>
+arabic_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>CYRILLIC_LANGS</code></td>
+<td>OCR models for the specified language.
+<ul>
+<li><b>ru</b>: Russian;</li>
+<li><b>rs_cyrillic</b>: Serbian (Cyrillic script);</li>
+<li><b>be</b>: Belarusian;</li>
+<li><b>bg</b>: Bulgarian;</li>
+<li><b>uk</b>: Ukrainian;</li>
+<li><b>mn</b>: Mongolian;</li>
+<li><b>abq</b>: Abkhaz;</li>
+<li><b>ady</b>: Adyghe;</li>
+<li><b>kbd</b>: Kabardian;</li>
+<li><b>ava</b>: Avar;</li>
+<li><b>dar</b>: Dargwa;</li>
+<li><b>inh</b>: Ingush;</li>
+<li><b>che</b>: Chechen;</li>
+<li><b>lbe</b>: Lak;</li>
+<li><b>lez</b>: Lezgian;</li>
+<li><b>tab</b>: Tabasaran;</li>
+</ul></td>
+<td>
+cyrillic_PP-OCRv3_mobile_rec
+</td>
+</tr>
+<tr>
+<td><code>DEVANAGARI_LANGS</code></td>
+<td>OCR models for the specified language.
+<ul>
+<li><b>hi</b>: Hindi;</li>
+<li><b>mr</b>: Marathi;</li>
+<li><b>ne</b>: Nepali;</li>
+<li><b>bh</b>: Bhojpuri;</li>
+<li><b>mai</b>: Maithili;</li>
+<li><b>ang</b>: Old English;</li>
+<li><b>bho</b>: Bhojpuri;</li>
+<li><b>mah</b>: Marshallese;</li>
+<li><b>sck</b>: Sikkimese;</li>
+<li><b>new</b>: Newar;</li>
+<li><b>gom</b>: Konkani;</li>
+<li><b>sa</b>: Sanskrit;</li>
+<li><b>bgc</b>: Bengali dialects.</li>
+</ul>
+</td>
+<td>
+devanagari_PP-OCRv3_mobile_rec
+</td>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</details>
+
 
 ### 2.2 Python Script Integration  
 
@@ -1033,7 +1170,7 @@ In the above Python script, the following steps are performed:
  <td>Image side length limitation for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.</li>
  </ul>
  </td>
  <td><code>int</code></td>
@@ -1105,24 +1242,14 @@ In the above Python script, the following steps are performed:
 <tr>
 <td><code>lang</code></td>
 <td>OCR model language to use.
-<ul>
-<li><b>ch</b>: Chinese;</li>
-<li><b>en</b>: English;</li>
-<li><b>korean</b>: Korean;</li>
-<li><b>japan</b>: Japanese;</li>
-<li><b>chinese_cht</b>: Traditional Chinese;</li>
-<li><b>te</b>: Telugu;</li>
-<li><b>ka</b>: Kannada;</li>
-<li><b>ta</b>: Tamil;</li>
-<li><b>None</b>: If set to <code>None</code>, <code>ch</code> will be used by default.</li>
-</ul>
+<a href="#languages">Supported Language List</a>. If set to <code>None</code>, <code>ch</code> will be used by default.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version.
+<td>OCR version, note that not every ocr_version supports all languages.
 <ul>
 <li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;</li>
 <li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;</li>
@@ -1335,16 +1462,16 @@ In the above Python script, the following steps are performed:
         <ul>
             <li><code>input_path</code>: <code>(str)</code> Input path of the image to be predicted</li>
             <li><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is <code>None</code></li>
-            <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the production line
+            <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline
                 <ul>
-                    <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Control whether to enable the document preprocessing sub-production line</li>
+                    <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Control whether to enable the document preprocessing sub-pipeline</li>
                     <li><code>use_textline_orientation</code>: <code>(bool)</code> Control whether to enable the text line orientation classification function</li>
                 </ul>
             </li>
-            <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> Output results of the document preprocessing sub-production line. Only exists when <code>use_doc_preprocessor=True</code>
+            <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> Output results of the document preprocessing sub-pipeline. Only exists when <code>use_doc_preprocessor=True</code>
                 <ul>
-                    <li><code>input_path</code>: <code>(Union[str, None])</code> Image path accepted by the image preprocessing sub-production line. When the input is <code>numpy.ndarray</code>, it is saved as <code>None</code></li>
-                    <li><code>model_settings</code>: <code>(Dict)</code> Model configuration parameters of the preprocessing sub-production line
+                    <li><code>input_path</code>: <code>(Union[str, None])</code> Image path accepted by the image preprocessing sub-pipeline. When the input is <code>numpy.ndarray</code>, it is saved as <code>None</code></li>
+                    <li><code>model_settings</code>: <code>(Dict)</code> Model configuration parameters of the preprocessing sub-pipeline
                         <ul>
                             <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Control whether to enable document orientation classification</li>
                             <li><code>use_doc_unwarping</code>: <code>(bool)</code> Control whether to enable text image unwarping</li>
@@ -1374,7 +1501,7 @@ In the above Python script, the following steps are performed:
         </ul>
     </li>
     <li>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_res.json</code>. If a file is specified, it will be saved directly to that file. Since json files do not support saving numpy arrays, <code>numpy.array</code> types will be converted to list form.</li>
-    <li>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (The production line usually generates many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, leaving only the last one.)</li>
+    <li>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, the save path will be <code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (The pipeline usually generates many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, leaving only the last one.)</li>
 </ul>
 
 <p>Additionally, you can also obtain the visualized image with results and prediction results through attributes, as follows:</p>
@@ -1711,11 +1838,11 @@ The general OCR pipeline consists of multiple modules. If the pipeline's perform
 
 ### 4.2 Model Deployment  
 
-After you complete fine-tuning training using a private dataset, you can obtain a local model weight file. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by customizing the production line configuration file.
+After you complete fine-tuning training using a private dataset, you can obtain a local model weight file. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by customizing the pipeline configuration file.
 
 #### 4.2.1 Specify the local model path through parameters
 
-When initializing the production line object, specify the local model path through parameters. Take the usage of the weights after fine-tuning the text detection model as an example, as follows:
+When initializing the pipeline object, specify the local model path through parameters. Take the usage of the weights after fine-tuning the text detection model as an example, as follows:
 
 Command line mode:
 
@@ -1743,7 +1870,7 @@ pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 #### 4.2.2 Specify the local model path through the configuration file
 
-1.Obtain the production line configuration file
+1.Obtain the pipeline configuration file
 
 Call the `export_paddlex_config_to_yaml` method of the **General OCR Pipeline** object in PaddleOCR to export the current pipeline configuration as a YAML file:  
 
