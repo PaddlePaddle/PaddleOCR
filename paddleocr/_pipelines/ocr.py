@@ -17,6 +17,7 @@
 # maintainability?
 
 import sys
+import warnings
 
 from .._utils.cli import (
     add_simple_inference_args,
@@ -86,7 +87,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 f"Invalid OCR version: {ocr_version}. Supported values are {_SUPPORTED_OCR_VERSIONS}."
             )
 
-        if text_detection_model_dir is None and text_recognition_model_dir is None:
+        if all(
+            map(
+                lambda p: p is None,
+                (
+                    text_detection_model_name,
+                    text_detection_model_dir,
+                    text_recognition_model_name,
+                    text_recognition_model_dir,
+                ),
+            )
+        ):
             if lang is not None or ocr_version is not None:
                 det_model_name, rec_model_name = self._get_ocr_model_names(
                     lang, ocr_version
@@ -97,6 +108,12 @@ class PaddleOCR(PaddleXPipelineWrapper):
                     )
                 text_detection_model_name = det_model_name
                 text_recognition_model_name = rec_model_name
+        else:
+            if lang is not None or ocr_version is not None:
+                warnings.warn(
+                    "`lang` and `ocr_version` will be ignored when model names or model directories are not `None`.",
+                    stacklevel=2,
+                )
 
         params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
