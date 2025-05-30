@@ -241,6 +241,9 @@ class PPStructureV3(PaddleXPipelineWrapper):
             )
         )
 
+    def concatenate_markdown_pages(self, markdown_list):
+        return self.paddlex_pipeline.concatenate_markdown_pages(markdown_list)
+
     @classmethod
     def get_cli_subcommand_executor(cls):
         return PPStructureV3CLISubcommandExecutor()
@@ -259,6 +262,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "use_seal_recognition": self._params["use_seal_recognition"],
             "use_table_recognition": self._params["use_table_recognition"],
             "use_formula_recognition": self._params["use_formula_recognition"],
+            "use_chart_recognition": self._params["use_chart_recognition"],
+            "use_region_detection": self._params["use_region_detection"],
             "SubModules.LayoutDetection.model_name": self._params[
                 "layout_detection_model_name"
             ],
@@ -700,18 +705,18 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_doc_orientation_classify",
             type=str2bool,
             default=False,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
             default=False,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
             "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use the text line orientation classification model.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",

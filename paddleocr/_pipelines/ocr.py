@@ -17,6 +17,7 @@
 # maintainability?
 
 import sys
+import warnings
 
 from .._utils.cli import (
     add_simple_inference_args,
@@ -43,8 +44,8 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
     "rec_model_dir": "text_recognition_model_dir",
     "rec_batch_num": "text_recognition_batch_size",
     "use_angle_cls": "use_textline_orientation",
-    "cls_model_dir": "text_line_orientation_model_dir",
-    "cls_batch_num": "text_line_orientation_batch_size",
+    "cls_model_dir": "textline_orientation_model_dir",
+    "cls_batch_num": "textline_orientation_batch_size",
 }
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
@@ -60,9 +61,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
         doc_unwarping_model_dir=None,
         text_detection_model_name=None,
         text_detection_model_dir=None,
-        text_line_orientation_model_name=None,
-        text_line_orientation_model_dir=None,
-        text_line_orientation_batch_size=None,
+        textline_orientation_model_name=None,
+        textline_orientation_model_dir=None,
+        textline_orientation_batch_size=None,
         text_recognition_model_name=None,
         text_recognition_model_dir=None,
         text_recognition_batch_size=None,
@@ -86,7 +87,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 f"Invalid OCR version: {ocr_version}. Supported values are {_SUPPORTED_OCR_VERSIONS}."
             )
 
-        if text_detection_model_dir is None and text_recognition_model_dir is None:
+        if all(
+            map(
+                lambda p: p is None,
+                (
+                    text_detection_model_name,
+                    text_detection_model_dir,
+                    text_recognition_model_name,
+                    text_recognition_model_dir,
+                ),
+            )
+        ):
             if lang is not None or ocr_version is not None:
                 det_model_name, rec_model_name = self._get_ocr_model_names(
                     lang, ocr_version
@@ -97,6 +108,12 @@ class PaddleOCR(PaddleXPipelineWrapper):
                     )
                 text_detection_model_name = det_model_name
                 text_recognition_model_name = rec_model_name
+        else:
+            if lang is not None or ocr_version is not None:
+                warnings.warn(
+                    "`lang` and `ocr_version` will be ignored when model names or model directories are not `None`.",
+                    stacklevel=2,
+                )
 
         params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
@@ -105,9 +122,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "doc_unwarping_model_dir": doc_unwarping_model_dir,
             "text_detection_model_name": text_detection_model_name,
             "text_detection_model_dir": text_detection_model_dir,
-            "text_line_orientation_model_name": text_line_orientation_model_name,
-            "text_line_orientation_model_dir": text_line_orientation_model_dir,
-            "text_line_orientation_batch_size": text_line_orientation_batch_size,
+            "textline_orientation_model_name": textline_orientation_model_name,
+            "textline_orientation_model_dir": textline_orientation_model_dir,
+            "textline_orientation_batch_size": textline_orientation_batch_size,
             "text_recognition_model_name": text_recognition_model_name,
             "text_recognition_model_dir": text_recognition_model_dir,
             "text_recognition_batch_size": text_recognition_batch_size,
@@ -232,13 +249,13 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 "text_detection_model_dir"
             ],
             "SubModules.TextLineOrientation.model_name": self._params[
-                "text_line_orientation_model_name"
+                "textline_orientation_model_name"
             ],
             "SubModules.TextLineOrientation.model_dir": self._params[
-                "text_line_orientation_model_dir"
+                "textline_orientation_model_dir"
             ],
             "SubModules.TextLineOrientation.batch_size": self._params[
-                "text_line_orientation_batch_size"
+                "textline_orientation_batch_size"
             ],
             "SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
@@ -443,17 +460,17 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Path to the text detection model directory.",
         )
         subparser.add_argument(
-            "--text_line_orientation_model_name",
+            "--textline_orientation_model_name",
             type=str,
             help="Name of the text line orientation classification model.",
         )
         subparser.add_argument(
-            "--text_line_orientation_model_dir",
+            "--textline_orientation_model_dir",
             type=str,
             help="Path to the text line orientation classification model directory.",
         )
         subparser.add_argument(
-            "--text_line_orientation_batch_size",
+            "--textline_orientation_batch_size",
             type=int,
             help="Batch size for the text line orientation classification model.",
         )
@@ -475,17 +492,17 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
             "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use the text line orientation classification model.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--text_det_limit_side_len",
