@@ -301,7 +301,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
             ppocr_version = "PP-OCRv5"
 
         if ppocr_version == "PP-OCRv5":
-            if lang in ("ch","chinese_cht","en","japan"):
+            if lang in ("ch", "chinese_cht", "en", "japan"):
                 return "PP-OCRv5_mobile_det", "PP-OCRv5_mobile_rec"
             else:
                 return None, None
