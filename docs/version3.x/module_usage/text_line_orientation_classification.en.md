@@ -162,7 +162,7 @@ By default, GPU 0 will be used if available; otherwise, the CPU will be used.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Enable the high performance inference.</td>
+<td>Whether to use the high performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -187,7 +187,7 @@ By default, GPU 0 will be used if available; otherwise, the CPU will be used.
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-Enable MKL-DNN acceleration for inference.
+Whether to use MKL-DNN acceleration for inference.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
