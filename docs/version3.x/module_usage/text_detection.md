@@ -155,104 +155,112 @@ for res in output:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
+<td>模型名称。所有支持的文本检测模型名称，如 <code>PP-OCRv5_mobile_det</code>。</td>
 <td><code>str</code></td>
-<td>所有支持的文本检测模型名称</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>用于推理的设备。<br/>
+<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+如指定多个设备，将进行并行推理。<br/>
+默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
+</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>limit_side_len</code></td>
-<td>检测的图像边长限制</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: 大于0的任意整数</li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型 </td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len。</li></ul></td>
-
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-</li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-</li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-</li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td>无</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时，设置的最小子图大小。</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+是否启用MKL-DNN加速库。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上推理时使用的线程数量。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>limit_side_len</code></td>
+<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>limit_type</code></td>
+<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为None, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>thresh</code></td>
+<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>box_thresh</code></td>
+<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>unclip_ratio</code></td>
+<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input_shape</code></td>
+<td>模型输入图像尺寸，格式为 <code>(C, H, W)</code>。若为 <code>None</code> 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>tuple</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
 </table>
 
 * 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
-* 调用文本检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、 `batch_size`、 `limit_side_len`、 `limit_type`、 `thresh`、 `box_thresh`、 `max_candidates`、`unclip_ratio`和`use_dilation`，具体说明如下：
+* 调用文本检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、 `batch_size`、 `limit_side_len`、 `limit_type`、 `thresh`、 `box_thresh`、 `max_candidates`、`unclip_ratio`，具体说明如下：
 
 <table>
 <thead>
@@ -260,88 +268,58 @@ for res in output:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
-<td><code>Python Var</code>/<code>str</code>/<code>dict</code>/<code>list</code></td>
-<td>
+<td>待预测数据，支持多种输入类型，必填。
 <ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
+<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>批大小，可设置为任意正整数。</td>
 <td><code>int</code></td>
-<td>大于0的任意整数</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>检测的图像边长限制</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: 大于0的任意整数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-<td>None</td>
+<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 如果设置为None, 将默认使用模型初始化的该参数值。</td>
+<td><code>int</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型 </td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: 支持min和max. min表示保证图像最短边不小于det_limit_side_len, max: 表示保证图像最长边不大于limit_side_len
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-
-<td>None</td>
+<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为None, 将默认使用模型初始化的该参数值。</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-<td>None</td>
+<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-<td>None</td>
+<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张 </td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: 大于0的任意浮点数
-<li><b>None</b>: 如果设置为None, 将默认使用模型初始化的该参数值</li></li></ul></td>
-
-<td>None</td>
+<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
+</tbody>
 </table>
 
 * 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:

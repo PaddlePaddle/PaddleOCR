@@ -130,67 +130,90 @@ The relevant methods, parameters, etc., are described as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model Name</td>
+<td>Model name</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>PP-DocLayout-L</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model Storage Path</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card numbers, such as “gpu:0”, specific hardware card numbers, such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-Performance Inference Configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>img_size</code></td>
-<td>Input image size; if not specified, the PaddleX official model configuration will be used by default</td>
-<td><code>int/list</code></td>
+<td><code>device</code></td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
 <td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>img_size</code></td>
+<td>Size of the input image;If not specified, the default configuration of the PaddleOCR official model will be used<br/><b>Examples:</b>
 <ul>
-  <li><b>int</b>, e.g., 640, indicates resizing the input image to 640x640</li>
-  <li><b>list</b>, e.g., [640, 512], indicates resizing the input image to a width of 640 and a height of 512</li>
+<li><b>int</b>: e.g. 640, resizes input image to 640x640</li>
+<li><b>list</b>: e.g. [640, 512], resizes input image to 640 width and 512 height</li>
 </ul>
 </td>
+<td><code>int/list/None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the PaddleX official model configuration will be used by default. In table cell detection tasks, appropriately lowering the threshold may help achieve more accurate results</td>
-<td><code>float/dict</code></td>
-<td>
+<td>Threshold to filter out low-confidence predictions; In table cell detection tasks, lowering the threshold appropriately may help to obtain more accurate results. <br/><b>Examples:</b>
 <ul>
   <li><b>float</b>, e.g., 0.3, indicates filtering out all bounding boxes with confidence lower than 0.3</li>
   <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.3}</code> applies a threshold of 0.3 for category cls_id 0</li>
 </ul>
 </td>
+<td><code>float/dict/None</code></td>
 <td>None</td>
 </tr>
 </table>
@@ -205,42 +228,40 @@ The relevant methods, parameters, etc., are described as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python Variable</b>, such as <code>numpy.ndarray</code> representing image data</li>
-  <li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL Link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local Directory</b>, which should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
-  <li><b>List</b>, where list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the <code>threshold</code> parameter specified in <code>create_model</code> will be used by default, and if <code>create_model</code> is not specified, the PaddleX official model configuration will be used</td>
-<td><code>float/dict</code></td>
-<td>
+<td>Threshold for filtering out low-confidence prediction results; <br/><b>Examples:</b>
 <ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
+<li><b>float</b>: e.g., 0.2, filters out all boxes with scores below 0.2</li>
+<li><b>dict</b>: keys are <code>int</code> representing <code>cls_id</code>, and values are <code>float</code> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies thresholds of 0.45 to class 0, 0.48 to class 2, and 0.4 to class 7</li>
+<li><b>None</b>: if not specified, the threshold parameter specified in creat_model will be used by default, and if creat_model also does not specify it, the default PaddleOCR official model configuration will be used</li>
 </ul>
 </td>
+<td><code>float/dict/None</code></td>
 <td>None</td>
 </tr>
 </table>

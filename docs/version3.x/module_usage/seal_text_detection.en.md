@@ -138,234 +138,179 @@ The explanations of related methods and parameters are as follows:
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Name of the model</td>
+<td>Model name. All supported seal text detection model names, such as <code>PP-OCRv4_mobile_seal_det</code>.</td>
 <td><code>str</code></td>
-<td>All model names supported for seal text detection</td>
-<td>None</td>
+<td><code>PP-OCRv4_mobile_seal_det</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Path to store the model</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for model inference</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>limit_side_len</code></td>
-<td>Limit on the side length of the image for detection</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value is 736</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>Type of side length limit for detection</td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: Supports min and max. min ensures the shortest side of the image is not less than det_limit_side_len, max ensures the longest side is not greater than limit_side_len
-<li><b>None</b>: If set to None, the default value is `min`</li></li></ul></td>
-
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>In the output probability map, pixels with scores greater than this threshold will be considered as text pixels</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value is 0.2</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>If the average score of all pixels within a detection result box is greater than this threshold, the result will be considered as a text region</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value is 0.6</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>max_candidates</code></td>
-<td>Maximum number of text boxes to output</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the default value is 1000</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the default value is 0.5</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>use_dilation</code></td>
-<td>Whether to dilate the segmentation result</td>
-<td><code>bool/None</code></td>
-<td>True/False/None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>limit_side_len</code></td>
+<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>limit_type</code></td>
+<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>thresh</code></td>
+<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>box_thresh</code></td>
+<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>unclip_ratio</code></td>
+<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input_shape</code></td>
+<td>Input image size for the model in the format <code>(C, H, W)</code>. If set to <code>None</code>, the model's default size will be used.</td>
+<td><code>tuple</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
 </table>
 
-* The `model_name` must be specified. After specifying `model_name`, the built-in model parameters will be used by default. On this basis, if `model_dir` is specified, the user-defined model will be used.
 
-* The `predict()` method of the seal text detection model is called for inference prediction. The parameters of the `predict()` method include `input`, `batch_size`, `limit_side_len`, `limit_type`, `thresh`, `box_thresh`, `max_candidates`, `unclip_ratio`, and `use_dilation`. The specific descriptions are as follows:
 
+* The `model_name` must be specified. After specifying `model_name`, the built-in model parameters of PaddleX will be used by default. On this basis, if `model_dir` is specified, the user-defined model will be used.
+
+* The `predict()` method of the seal text detection model is called for inference prediction. The parameters of the `predict()` method include `input`, `batch_size`, `limit_side_len`, `limit_type`, `thresh`, `box_thresh`, `max_candidates`, `unclip_ratio`. The specific descriptions are as follows:
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>dict</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-<li><b>Python Variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
-<li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-<li><b>URL Link</b>, such as the web URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a></li>
-<li><b>Local Directory</b>, the directory should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
-<li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer greater than 0</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Side length limit for detection</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-<td>None</td>
+<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>int</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>Type of side length limit for detection</td>
-<td><code>str/None</code></td>
-<td>
-<ul>
-<li><b>str</b>: Supports min and max. min indicates that the shortest side of the image is not less than det_limit_side_len, max indicates that the longest side of the image is not greater than limit_side_len
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-
-<td>None</td>
+<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>In the output probability map, pixels with scores greater than this threshold will be considered as text pixels</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-<td>None</td>
+<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>If the average score of all pixels within the detection result box is greater than this threshold, the result will be considered as a text area</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-<td>None</td>
-</tr>
-<tr>
-<td><code>max_candidates</code></td>
-<td>Maximum number of text boxes to be output</td>
-<td><code>int/None</code></td>
-<td>
-<ul>
-<li><b>int</b>: Any integer greater than 0
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-<td>None</td>
+<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Expansion coefficient of the Vatti clipping algorithm, used to expand the text area</td>
-<td><code>float/None</code></td>
-<td>
-<ul>
-<li><b>float</b>: Any float greater than 0
-<li><b>None</b>: If set to None, the parameter value initialized by the model will be used by default</li></li></ul></td>
-
-<td>None</td>
+<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. Accepts any float value greater than 0. If set to <code>None</code>, the parameter value initialized by the model will be used by default.</td>
+<td><code>float</code> / <code>None</code></td>
+<td><code>None</code></td>
 </tr>
-<tr>
-<td><code>use_dilation</code></td>
-<td>Whether to dilate the segmentation result</td>
-<td><code>bool/None</code></td>
-<td>True/False/None</td>
-<td>None</td>
-</tr>
+</tbody>
 </table>
+
 
 * Process the prediction results. Each sample's prediction result is a corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a `json` file:
 
