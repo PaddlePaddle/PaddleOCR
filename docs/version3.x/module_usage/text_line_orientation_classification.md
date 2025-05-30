@@ -29,7 +29,7 @@ comments: true
 <td>98.85</td>
 <td>-</td>
 <td>-</td>
-<td>0.32</td>
+<td>0.96</td>
 <td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
 <tr>
@@ -43,7 +43,7 @@ comments: true
 </tbody>
 </table>
 
-> ❗ <b>注</b>：文本行方向分类模型近期升级，并增加 `PP-LCNet_x1_0_textline_ori`，如需使用升级前的模型权重，请点击<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">下载链接</a>。
+> ❗ <b>注</b>：文本行方向分类模型于 2025.5.26 升级，并增加 `PP-LCNet_x1_0_textline_ori`，如需使用升级前的模型权重，请点击<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">下载链接</a>。
 
 <strong>测试环境说明:</strong>
 
