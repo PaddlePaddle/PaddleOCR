@@ -338,112 +338,137 @@ Relevant methods, parameters, and explanations are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Name of the model</td>
+<td>Model name</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>PP-DocLayout-L</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Path to store the model</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for model inference</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>Size of the input image; if not specified, the default 800x800 be used</td>
-<td><code>int/list/None</code></td>
-<td>
+<td>Input image size; if not specified, the default 800x800 will be used by PP-DocLayout_plus-L<br/><b>Examples:</b>
 <ul>
-<li><b>int</b>, e.g., 640, means resizing the input image to 640x640</li>
-<li><b>List</b>, e.g., [640, 512], means resizing the input image to a width of 640 and a height of 512</li>
-<li><b>None</b>, not specified, will use the default 0.5</li>
+<li><b>int</b>: e.g. 640, resizes input image to 640x640</li>
+<li><b>list</b>: e.g. [640, 512], resizes input image to 640 width and 512 height</li>
+<li><b>None</b>: not specified, defaults to 800x800</li>
 </ul>
 </td>
+<td><code>int/list/None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering low-confidence prediction results; if not specified, the default 0.5 will be used</td>
-<td><code>float/dict/None</code></td>
-<td>
+<td>Threshold for filtering low-confidence predictions; defaults to 0.5 if not specified<br/><b>Examples:</b>
 <ul>
-<li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
-<li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
-<li><b>None</b>, not specified, will use the default 0.5</li>
+<li><b>float</b>: e.g. 0.2, filters out all boxes with confidence below 0.2</li>
+<li><b>dict</b>: key is <code>int</code> cls_id, value is<code>float</code> threshold, e.g. <code>{0: 0.45, 2: 0.48, 7: 0.4}</code></li>
+<li><b>None</b>: not specified, defaults to PaddleOCR model config</li>
 </ul>
 </td>
+<td><code>float/dict/None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default False will be used</td>
-<td><code>bool/None</code></td>
-<td>
+<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default PaddleOCR official model configuration will be used<br/><b>Examples:</b>
 <ul>
-<li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
-<li><b>None</b>, not specified, will use the default False</li>
+<li><b>bool</b>: indicates whether to use NMS for post-processing to filter overlapping boxes</li>
+<li><b>None</b>:  not specified, will use the default PaddleOCR official model configuration</li>
 </ul>
 </td>
+<td><code>bool/None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box; if not specified, the default 1.0 will be used</td>
-<td><code>float/list/dict/None</code></td>
-<td>
+<td>Scaling factor for the side length of the detection box;  if not specified, the default PaddleX official model configuration will be used<br/><b>Examples:</b>
 <ul>
-<li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
-<li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
-<li><b>None</b>, not specified, will use the default 1.0</li>
+<li><b>float</b>: a float greater than 0, e.g. 1.1, expands width and height of the box by 1.1 times</li>
+<li><b>list</b>: e.g. [1.2, 1.5], expands width by 1.2x and height by 1.5x</li>
+<li><b>dict</b>: key is <code>int</code> cls_id, value is<code>tuple</code>, e.g. <code>{0: (1.1, 2.0)}</code></li>
+<li><b>None</b>: not specified, will use the default PaddleOCR official model configuration</li>
 </ul>
 </td>
+<td><code>float/list/dict/None</code></td>
+<td>None</td>
+</tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model; if not specified, the default union will be used</td>
-<td><code>string/dict/None</code></td>
-<td>
+<td>Bounding box merge mode for model output; ; if not specified, the default PaddleOCR official model configuration will be used.<br/><b>Examples:</b>
 <ul>
-<li><b>large</b>, when set to large, only the largest external box will be retained for overlapping detection boxes, and the internal overlapping boxes will be deleted</li>
-<li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
-<li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
-<li><b>None</b>, not specified, will use the default union</li>
+<li><b>large</b>: keep the largest outer box, remove inner overlapping boxes</li>
+<li><b>small</b>: keep the smallest inner box, remove outer overlapping boxes</li>
+<li><b>union</b>: keep all boxes, no filtering</li>
+<li><b>dict</b>: key is <code>int</code> cls_id, value is<code>str</code>, e.g. <code>{0: "large", 2: "small"}</code></li>
+<li><b>None</b>:not specified, will use the default PaddleOCR official model configuration.</li>
 </ul>
 </td>
+<td><code>string/dict/None</code></td>
 <td>None</td>
 </tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
-</tr>
+</tbody>
 </table>
 
+
+* Note that `model_name` must be specified. After specifying `model_name`, the default PaddleX built-in model parameters will be used. If `model_dir` is specified, the user-defined model will be used.
 
 * The `predict()` method of the target detection model is called for inference prediction. The parameters of the `predict()` method are `input`, `batch_size`, and `threshold`, which are explained as follows:
 
@@ -453,84 +478,87 @@ Relevant methods, parameters, and explanations are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data for prediction, supporting multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-<li><b>Python Variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
-<li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-<li><b>URL link</b>, such as the network URL of an image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">示例</a></li>
-<li><b>Local Directory</b>, the directory should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
-<li><b>List</b>, the elements of the list should be of the above-mentioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>, <code>[\"/root/data1\", \"/root/data2\"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer greater than 0</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering low-confidence prediction results</td>
-<td><code>float/dict/None</code></td>
-<td>
+<td>Threshold for filtering low-confidence predictions. If not specified, the model's default will be used.<br/><b>Examples:</b>
 <ul>
-<li><b>float</b>, e.g., 0.2, means filtering out all bounding boxes with a confidence score less than 0.2</li>
-<li><b>Dictionary</b>, with keys as <b>int</b> representing <code>cls_id</code> and values as <b>float</b> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means applying a threshold of 0.45 for cls_id 0, 0.48 for cls_id 2, and 0.4 for cls_id 7</li>
-<li><b>None</b>, not specified, will use the <code>threshold</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default 0.5 will be used</li>
+<li><b>float</b>: e.g., 0.2, filters out all boxes with scores below 0.2</li>
+<li><b>dict</b>: keys are <code>int</code> representing <code>cls_id</code>, and values are <code>float</code> thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies thresholds of 0.45 to class 0, 0.48 to class 2, and 0.4 to class 7</li>
+<li><b>None</b>: if not specified, defaults to 0.5</li>
 </ul>
 </td>
+<td><code>float/dict/None</code></td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes; if not specified, the default False will be used</td>
-<td><code>bool/None</code></td>
-<td>
+<td>Whether to use NMS post-processing to filter overlapping boxes<br/><b>Examples:</b>
 <ul>
-<li><b>bool</b>, True/False, indicates whether to use NMS for post-processing to filter overlapping boxes</li>
-<li><b>None</b>, not specified, will use the <code>layout_nms</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default False will be used</li>
+<li><b>bool</b>: True/False, whether to apply NMS to filter overlapping detection boxes</li>
+<li><b>None</b>: if not specified, uses the <code>layout_nms</code> value from <code>creat_model</code>; if that is also not set, NMS will not be used by default</li>
 </ul>
 </td>
+<td><code>bool/None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box; if not specified, the default 1.0 will be used</td>
+<td>Scaling ratio for the detected box size. If not specified, defaults to 1.0<br/><b>Examples:</b>
+<ul>
+<li><b>float</b>:a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
+<li><b>list</b>: e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
+<li><b>dict</b>: keys are <code>int</code> representing <code>cls_id</code>, values are <code>tuple</code>, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
+<li><b>None</b>: if not specified, defaults to 1.0</li>
+</ul>
+</td>
 <td><code>float/list/dict/None</code></td>
-<td>
-<ul>
-<li><b>float</b>, a positive float number, e.g., 1.1, means expanding the width and height of the detection box by 1.1 times while keeping the center unchanged</li>
-<li><b>List</b>, e.g., [1.2, 1.5], means expanding the width by 1.2 times and the height by 1.5 times while keeping the center unchanged</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code>, values as float scaling factors, e.g., <code>{0: (1.1, 2.0)}</code> means cls_id 0 expanding the width by 1.1 times and the height by 2.0 times while keeping the center unchanged</li>
-<li><b>None</b>, not specified, will use the <code>layout_unclip_ratio</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default 1.0 will be used</li>
-</ul>
-</td>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model; if not specified, the default union will be used</td>
-<td><code>string/dict/None</code></td>
-<td>
-<ul>
-<li><b>large</b>, when set to large, only the largest external box will be retained for overlapping detection boxes, and the internal overlapping boxes will be deleted</li>
-<li><b>small</b>, when set to small, only the smallest internal box will be retained for overlapping detection boxes, and the external overlapping boxes will be deleted</li>
-<li><b>union</b>, no filtering of boxes will be performed, and both internal and external boxes will be retained</li>
-<li><b>dict</b>, keys as <b>int</b> representing <code>cls_id</code> and values as merging modes, e.g., <code>{0: "large", 2: "small"}</li>
-<li><b>None</b>, not specified, will use the <code>layout_merge_bboxes_mode</code> parameter specified in <code>create_model</code>. If not specified in <code>create_model</code>, the default union will be used</li>
-</ul>
-</td>
 <td>None</td>
 </tr>
-</tr></table>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>Merge mode for detected bounding boxes. Defaults to <code>union</code> if not specified<br/><b>Examples:</b>
+<ul>
+<li><b>large</b>: keeps only the largest outer box when overlapping/contained boxes exist</li>
+<li><b>small</b>: keeps only the smallest inner box when overlapping/contained boxes exist</li>
+<li><b>union</b>: no filtering, keeps all overlapping boxes</li>
+<li><b>dict</b>: keys are <code>int</code> <code>cls_id</code>, values are <code>str</code>, e.g., <code>{0: "large", 2: "small"}</code> applies different merge modes to different classes</li>
+<li><b>None</b>: if not specified, defaults to <code>union</code></li>
+</ul>
+</td>
+<td><code>string/dict/None</code></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><sup>＊</sup> If <code>None</code> is passed to <code>predict()</code>, the value set during model instantiation (<code>__init__</code>) will be used; if it was also <code>None</code> there, the framework defaults are applied:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<code>threshold=0.5</code>, <code>layout_nms=False</code>, <code>layout_unclip_ratio=1.0</code>, <code>layout_merge_bboxes_mode="union"</code>.</p>
+
 
 * Process the prediction results, with each sample's prediction result being the corresponding Result object, and supporting operations such as printing, saving as an image, and saving as a 'json' file:
 

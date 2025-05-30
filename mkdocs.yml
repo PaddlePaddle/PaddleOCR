@@ -307,6 +307,8 @@ nav:
     - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
     - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
     - 配置 PaddleOCR 推理包日志系统: version3.x/logging.md
+    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
+
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md
       - 快速开始: version3.x/paddlex/quick_start.md

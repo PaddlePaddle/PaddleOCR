@@ -241,6 +241,9 @@ class PPStructureV3(PaddleXPipelineWrapper):
             )
         )
 
+    def concatenate_markdown_pages(self, markdown_list):
+        return self.paddlex_pipeline.concatenate_markdown_pages(markdown_list)
+
     @classmethod
     def get_cli_subcommand_executor(cls):
         return PPStructureV3CLISubcommandExecutor()
@@ -259,6 +262,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "use_seal_recognition": self._params["use_seal_recognition"],
             "use_table_recognition": self._params["use_table_recognition"],
             "use_formula_recognition": self._params["use_formula_recognition"],
+            "use_chart_recognition": self._params["use_chart_recognition"],
+            "use_region_detection": self._params["use_region_detection"],
             "SubModules.LayoutDetection.model_name": self._params[
                 "layout_detection_model_name"
             ],

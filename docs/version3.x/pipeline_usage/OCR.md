@@ -648,14 +648,14 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>文本检测的最大边长度限制。
-大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1031,7 +1031,7 @@ for res in result:
 <td>文本检测的最大边长度限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
 </ur>
 </td>
 <td><code>int</code></td>
@@ -1042,7 +1042,7 @@ for res in result:
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1765,8 +1765,8 @@ pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")
 SubModules:
   TextDetection:
     box_thresh: 0.6
-    limit_side_len: 960
-    limit_type: max
+    limit_side_len: 736
+    limit_type: min
     max_side_limit: 4000
     model_dir: null # 替换为微调后的文本测模型权重路径
     model_name: PP-OCRv5_server_det # 如果微调的模型名称与默认模型名称不同，请一并修改此处
