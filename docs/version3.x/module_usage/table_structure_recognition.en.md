@@ -192,10 +192,10 @@ By default, GPU 0 will be used if available; otherwise, the CPU will be used.
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-Enable MKL-DNN acceleration for inference. When set to <code>None</code>, MKL-DNN will be enabled if the model supports it, but not enabled for models that do not support it.
+Enable MKL-DNN acceleration for inference.
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

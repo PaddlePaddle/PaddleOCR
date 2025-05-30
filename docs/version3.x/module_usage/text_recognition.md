@@ -497,11 +497,10 @@ for res in output:
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-是否启用 MKL-DNN加速库。<br/>
-None情况下，在模型支持时会启用，但对于不支持的模型将不启用。
+是否启用MKL-DNN加速库。<br/>
 </td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
