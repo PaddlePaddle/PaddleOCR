@@ -132,50 +132,112 @@ The explanations for the methods, parameters, etc., are as follows:
 <thead>
 <tr>
 <th>Parameter</th>
-<th>Parameter Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
 <td>Name of the model</td>
 <td><code>str</code></td>
-<td>None</td>
-<td><code>PP-LCNet_x0_25_textline_ori</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Path to store the model</td>
+<td>Model storage path</td>
 <td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for model inference</td>
+<td>Device(s) to use for inference.<br/>
+<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
+By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+</td>
 <td><code>str</code></td>
-<td>It supports specifying specific GPU card numbers, such as "gpu:0", other hardware card numbers, such as "npu:0", or CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to use the high performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to use MKL-DNN acceleration for inference.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>top_k</code></td>
+<td>The top-k value for prediction results. If not specified, the default value in the official PaddleOCR model configuration is used. If the value is 5, the top 5 categories and their corresponding classification probabilities will be returned.</td>
+<td><code>int</code></td>
 <td><code>None</code></td>
 </tr>
+</tbody>
 </table>
 
-* The `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. If `model_dir` is specified, the user-defined model is used.
+* `model_name` must be specified. Once `model_name` is set, the default built-in model parameters of PaddleOCR will be used. On this basis, if `model_dir` is specified, the user-defined model will be used.
+
+* Use the `predict()` method of the text line direction classification model to perform inference. This method returns a list of results. In addition, this module also provides the `predict_iter()` method. Both methods accept the same parameters and return the same result format. The difference is that `predict_iter()` returns a `generator`, which processes and retrieves prediction results step by step. It is suitable for handling large datasets or memory-efficient scenarios. You can choose either method based on your actual needs. The `predict()` method accepts the parameters `input` and `batch_size`, which are described in detail below:
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td>Input data for prediction. Multiple input types are supported. This parameter is required.
+<ul>
+<li><b>Python Var</b>: such as <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: such as the local path of an image or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the online URL of an image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">Example</a>; <b>or a local directory</b> that contains images for prediction, such as <code>/root/data/</code> (currently, directories containing PDF files are not supported; PDF files must be specified as individual file paths)</li>
+<li><b>List</b>: list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td>Batch size,  positive integer.</td>
+<td><code>int</code></td>
+<td>1</td>
+</tr>
+</table>
 
 * Call the `predict()` method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a `predict_iter()` method. Both methods accept the same parameters and return the same results, but `predict_iter()` returns a `generator`, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the `predict()` method are `input` and `batch_size`, as described below:
 
