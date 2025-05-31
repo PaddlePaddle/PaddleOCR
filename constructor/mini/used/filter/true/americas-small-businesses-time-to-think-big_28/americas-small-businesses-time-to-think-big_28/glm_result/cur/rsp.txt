@@ -1,0 +1,7 @@
+这张图片展示了一张图表，标题为“Exhibit 9: Narrowing the productivity gap in the United States is equivalent to 5.4 percent of GDP—and ten to 15 subsectors contribute three-fourths of the potential.” 图表展示了美国各子行业对生产率提升的贡献百分比。
+
+图表中列出了多个子行业，每个子行业旁边都有一个条形图，表示其对生产率提升的贡献百分比。这些子行业包括批发和汽车贸易、零售贸易、建筑、采矿、信息服务等。每个子行业都有相应的贡献百分比，例如批发和汽车贸易贡献了35%，零售贸易贡献了32%。
+
+图表下方还有一段注释，解释了数据来源和计算方法。注释提到，数据来自2017年，包括微型、小型和中型企业，排除了某些行业，如农业、金融和保险活动等。数据来源包括“McKinsey Global Institute analysis”和“US Census Bureau”。
+
+此外，图片底部还有一段文字，讨论了不同国家中小企业的生产率差异，并指出美国在这些子行业中的生产率提升潜力。
