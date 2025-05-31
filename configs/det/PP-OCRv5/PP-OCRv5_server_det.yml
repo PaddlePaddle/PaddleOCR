@@ -142,7 +142,6 @@ Eval:
     label_file_list:
       - ./train_data/icdar2015/text_localization/test_icdar2015_label.txt
     transforms:
-    transforms:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
