@@ -119,6 +119,6 @@ def main():
     parser = _get_parser()
     args = parser.parse_args()
     if args.subcommand is None:
-        parser.print_usage()
+        parser.print_usage(sys.stderr)
         sys.exit(2)
     _execute(args)

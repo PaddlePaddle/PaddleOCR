@@ -343,9 +343,9 @@ Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshol
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library.</td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -649,9 +649,9 @@ Descriptions of related methods and parameters are as follows:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is enabled by default.</td>
+<td>Whether to enable MKL-DNN acceleration.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
