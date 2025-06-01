@@ -664,6 +664,12 @@ The name of the document orientation classification model. If not set, the defau
 <td></td>
 </tr>
 <tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to load and use the text line orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>use_seal_recognition</code></td>
 <td>Whether to load and use the seal recognition sub-pipeline. If not set, the parameter's value initialized during pipeline setup will be used, defaulting to <code>True</code>.</td>
 <td><code>bool</code></td>
@@ -1106,6 +1112,12 @@ The relevant parameter descriptions are as follows:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to load and use the text line orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>use_seal_recognition</code></td>
 <td>Whether to load and use the seal recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
 <td><code>bool</code></td>
@@ -1418,7 +1430,13 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use the text image correction module during inference.</td>
+<td>Whether to use the document image unwarping module during inference.</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>Whether to use the text line orientation classification module during inference.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
