@@ -71,6 +71,40 @@ In this pipeline, you can select models based on the benchmark test data provide
 </details>
 
 <details>
+<summary><b>Text Line Orientation Classification Module (Optional):</b></summary>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)</th>
+<th>Model Size (M)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>98.85</td>
+<td>-</td>
+<td>-</td>
+<td>0.96</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>Text line classification model based on PP-LCNet_x1_0, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
 <summary><b>Text Detection Module:</b></summary>
 <table>
 <thead>
@@ -1774,7 +1808,7 @@ SubModules:
   TextLineOrientation:  
     batch_size: 6  
     model_dir: null  # Replace with the path to your fine-tuned text LineOrientation model weights  
-    model_name: PP-LCNet_x0_25_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    model_name: PP-LCNet_x1_0_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: textline_orientation  
   TextRecognition:  
     batch_size: 6  
