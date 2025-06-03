@@ -71,6 +71,41 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </details>
 
 <details>
+<summary><b>文本行方向分类模块（可选）：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>GPU推理耗时（ms）</th>
+<th>CPU推理耗时 (ms)</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>98.85</td>
+<td>-</td>
+<td>-</td>
+<td>0.96</td>
+<td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
 <summary><b>文本检测模块：</b></summary>
 <table>
 <thead>
@@ -1776,7 +1811,7 @@ SubModules:
   TextLineOrientation:
     batch_size: 6
     model_dir: null  # 替换为微调后的文本行方向分类模型权重路径
-    model_name: PP-LCNet_x0_25_textline_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    model_name: PP-LCNet_x1_0_textline_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: textline_orientation
   TextRecognition:
     batch_size: 6
