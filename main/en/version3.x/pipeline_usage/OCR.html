@@ -3268,7 +3268,7 @@ You're not viewing the latest version.
 <h1 id="general-ocr-pipeline-usage-guide">General OCR Pipeline Usage Guide<a class="headerlink" href="#general-ocr-pipeline-usage-guide" title="Permanent link">&para;</a></h1>
 <h2 id="1-ocr-pipeline-introduction">1. OCR Pipeline Introduction<a class="headerlink" href="#1-ocr-pipeline-introduction" title="Permanent link">&para;</a></h2>
 <p>OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.</p>
-<p>The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_mobile model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_mobile in various scenarios.</p>
+<p>The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_server model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_server in various scenarios.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/></p>
 <p><b>The General OCR Pipeline consists of the following 5 modules. Each module can be independently trained and inferred, and includes multiple models. For detailed information, click the corresponding module to view its documentation.</b></p>
 <ul>
@@ -3898,7 +3898,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -4152,12 +4152,12 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="c1"># ocr = PaddleOCR(ocr_version=&quot;PP-OCRv4&quot;) # Uses other PP-OCR versions via version parameter</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># ocr = PaddleOCR(device=&quot;gpu&quot;) # Enables GPU acceleration for model inference via device parameter</span>
 </span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1"># ocr = PaddleOCR(</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1">#     text_detection_model_name=&quot;PP-OCRv5_server_det&quot;,</span>
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1">#     text_recognition_model_name=&quot;PP-OCRv5_server_rec&quot;,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="c1">#     text_detection_model_name=&quot;PP-OCRv5_mobile_det&quot;,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1">#     text_recognition_model_name=&quot;PP-OCRv5_mobile_rec&quot;,</span>
 </span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1">#     use_doc_orientation_classify=False,</span>
 </span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="c1">#     use_doc_unwarping=False,</span>
 </span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1">#     use_textline_orientation=False,</span>
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># ) # Switch to PP-OCRv5_server models</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1"># ) # Switch to PP-OCRv5_mobile models</span>
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;./general_ocr_002.png&quot;</span><span class="p">)</span>  
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>  
 </span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="n">res</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>  
@@ -4272,7 +4272,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
  <td>Maximum side length limit for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>736</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.</li>
  </ul>
  </td>
  <td><code>int</code></td>
@@ -4947,8 +4947,8 @@ for i, res in enumerate(result["ocrResults"]):
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Specify the local model path via --text_detection_model_dir</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--text_detection_model_dir<span class="w"> </span>your_det_model_path
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--text_detection_model_name<span class="w"> </span>PP-OCRv5_server_det<span class="w"> </span>--text_detection_model_dir<span class="w"> </span>your_v5_server_det_model_path
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--text_detection_model_name<span class="w"> </span>PP-OCRv5_mobile_det<span class="w"> </span>--text_detection_model_dir<span class="w"> </span>your_v5_mobile_det_model_path
 </span></code></pre></div>
 <p>Script mode: </p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
@@ -4956,8 +4956,8 @@ for i, res in enumerate(result["ocrResults"]):
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1">#  Specify the local model path via text_detection_model_dir</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">text_detection_model_dir</span><span class="o">=</span><span class="s2">&quot;./your_det_model_path&quot;</span><span class="p">)</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># pipeline = PaddleOCR(text_detection_model_name=&quot;PP-OCRv5_server_det&quot;, text_detection_model_dir=&quot;./your_v5_server_det_model_path&quot;)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1"># pipeline = PaddleOCR(text_detection_model_name=&quot;PP-OCRv5_mobile_det&quot;, text_detection_model_dir=&quot;./your_v5_mobile_det_model_path&quot;)</span>
 </span></code></pre></div>
 <h4 id="422-specify-the-local-model-path-through-the-configuration-file">4.2.2 Specify the local model path through the configuration file<a class="headerlink" href="#422-specify-the-local-model-path-through-the-configuration-file" title="Permanent link">&para;</a></h4>
 <p>1.Obtain the production line configuration file</p>
@@ -4973,7 +4973,7 @@ for i, res in enumerate(result["ocrResults"]):
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span><span class="w">  </span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">TextDetection</span><span class="p">:</span><span class="w">  </span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span><span class="w">  </span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">736</span><span class="w">  </span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64</span><span class="w">  </span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">min</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">max_side_limit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4000</span><span class="w">  </span>
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># Replace with the path to your fine-tuned text detection model weights  </span>
@@ -5027,7 +5027,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 10:31:22 UTC">June 1, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 3, 2025 03:46:22 UTC">June 3, 2025</span>
   </span>
 
     
@@ -5037,7 +5037,7 @@ for i, res in enumerate(result["ocrResults"]):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 10:31:22 UTC">June 1, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 3, 2025 03:46:22 UTC">June 3, 2025</span>
   </span>
 
     
