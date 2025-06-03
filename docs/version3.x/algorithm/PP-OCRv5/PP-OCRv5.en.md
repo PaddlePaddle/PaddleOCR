@@ -277,16 +277,16 @@ Unless otherwise specified:
 | Config         | Avg Time/Image (s) | Avg Chars/sec | Avg CPU Usage (%) | Peak RAM (MB) | Avg RAM (MB) | Peak VRAM (MB) | Avg VRAM (MB) |
 | -------------- | ------------------ | ------------- | ----------------- | ------------- | ------------ | -------------- | ------------- |
 | base           | 0.56               | 1162          | 106.02            | 1576.43       | 1420.83      | 4342.00        | 3258.95       |
-| with_textline | 0.60               | 1083          | 105.59            | 1715.65       | 1510.83      | 4342.00        | 3266.05       |
-| with_all      | 1.01               | 605           | 104.89            | 1949.11       | 1612.00      | 2624.00        | 2210.15       |
+| with_textline | 0.59 | 1104 | 105.58 | 1765.64 | 1478.53 | 19.48 | 4350.00 | 3267.77 |
+| with_all | 1.02 | 600 | 104.92 | 1924.23 | 1628.50 | 10.96 | 2632.00 | 2217.01 |
 
 **CPU, without high-performance inference:**
 
 | Config         | Avg Time/Image (s) | Avg Chars/sec | Avg CPU Usage (%) | Peak RAM (MB) | Avg RAM (MB) |
 | -------------- | ------------------ | ------------- | ----------------- | ------------- | ------------ |
 | base           | 1.43               | 455           | 798.93            | 11695.40      | 6829.09      |
-| with_textline | 1.43               | 454           | 801.90            | 11994.30      | 6947.94      |
-| with_all      | 1.90               | 320           | 642.48            | 11710.80      | 6944.01      |
+| with_textline | 1.50 | 434 | 799.47 | 12007.20 | 6882.22 |
+| with_all | 1.93 | 316 | 646.49 | 11759.60 | 6940.54 |
 
 > Note: Auxiliary features such as image unwarping can impact inference accuracy. More features do not necessarily yield better results and may increase resource usage.
 
