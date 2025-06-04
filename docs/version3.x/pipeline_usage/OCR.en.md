@@ -8,7 +8,7 @@ comments: true
 
 OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
 
-The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_mobile model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_mobile in various scenarios.
+The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_server model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_server in various scenarios.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -16,7 +16,7 @@ The general OCR pipeline is used to solve text recognition tasks by extracting t
 
 - [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.md) (Optional)
 - [Text Image Unwarping Module](../module_usage/text_image_unwarping.md) (Optional)
-- [Text Line Orientation Classification Module](../module_usage/text_line_orientation_classification.md) (Optional)
+- [Text Line Orientation Classification Module](../module_usage/textline_orientation_classification.md) (Optional)
 - [Text Detection Module](../module_usage/text_detection.md)
 - [Text Recognition Module](../module_usage/text_recognition.md)
 
@@ -65,6 +65,40 @@ In this pipeline, you can select models based on the benchmark test data provide
 <td>0.179</td>
 <td>30.3</td>
 <td>High-precision Text Image Unwarping model.</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>Text Line Orientation Classification Module (Optional):</b></summary>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)</th>
+<th>Model Size (M)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>98.85</td>
+<td>-</td>
+<td>-</td>
+<td>0.96</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>Text line classification model based on PP-LCNet_x1_0, with two classes: 0 degrees and 180 degrees</td>
 </tr>
 </tbody>
 </table>
@@ -592,19 +626,19 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_name</code></td>
+<td><code>textline_orientation_model_name</code></td>
 <td>Name of the text line orientation model. If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_model_dir</code></td>
+<td><code>textline_orientation_model_dir</code></td>
 <td>Directory path of the text line orientation model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
-<td><code>text_line_orientation_batch_size</code></td>
+<td><code>textline_orientation_batch_size</code></td>
 <td>Batch size for the text line orientation model. If not set, the default batch size will be <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -648,7 +682,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Maximum side length limit for text detection.
-Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -656,7 +690,7 @@ Any integer greater than <code>0</code>. If not set, the pipeline's initialized 
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.
+Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -794,13 +828,13 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>cls_model_dir</code></td>
-<td>Deprecated. Please refer <code>text_line_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td>Deprecated. Please refer <code>textline_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_batch_num</code></td>
-<td>Deprecated. Please refer <code>text_line_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td>Deprecated. Please refer <code>textline_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -845,10 +879,10 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.
+<td>Whether to enable the MKL-DNN acceleration library.
 </td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -911,12 +945,12 @@ ocr = PaddleOCR(
 # ocr = PaddleOCR(ocr_version="PP-OCRv4") # Uses other PP-OCR versions via version parameter
 # ocr = PaddleOCR(device="gpu") # Enables GPU acceleration for model inference via device parameter
 # ocr = PaddleOCR(
-#     text_detection_model_name="PP-OCRv5_server_det",
-#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     text_detection_model_name="PP-OCRv5_mobile_det",
+#     text_recognition_model_name="PP-OCRv5_mobile_rec",
 #     use_doc_orientation_classify=False,
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
-# ) # Switch to PP-OCRv5_server models
+# ) # Switch to PP-OCRv5_mobile models
 result = ocr.predict("./general_ocr_002.png")  
 for res in result:  
     res.print()  
@@ -975,19 +1009,19 @@ In the above Python script, the following steps are performed:
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_model_name</code></td>
+ <td><code>textline_orientation_model_name</code></td>
  <td>Name of the text line orientation model. If set to <code>None</code>, the pipeline's default model will be used.</td>
  <td><code>str</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_model_dir</code></td>
+ <td><code>textline_orientation_model_dir</code></td>
  <td>Directory path of the text line orientation model. If set to <code>None</code>, the official model will be downloaded.</td>
  <td><code>str</code></td>
  <td><code>None</code></td>
  </tr>
  <tr>
- <td><code>text_line_orientation_batch_size</code></td>
+ <td><code>textline_orientation_batch_size</code></td>
  <td>Batch size for the text line orientation model. If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
  <td><code>int</code></td>
  <td><code>None</code></td>
@@ -1033,7 +1067,7 @@ In the above Python script, the following steps are performed:
  <td>Maximum side length limit for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.</li>
  </ul>
  </td>
  <td><code>int</code></td>
@@ -1044,7 +1078,7 @@ In the above Python script, the following steps are performed:
  <td>Type of side length limit for text detection.
  <ul>
  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>max</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.</li>
  </ul>
  </td>
  <td><code>str</code></td>
@@ -1175,9 +1209,9 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1723,8 +1757,8 @@ Command line mode:
 # Specify the local model path via --text_detection_model_dir
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
-# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
+# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path
 ```
 
 Script mode: 
@@ -1736,8 +1770,8 @@ from paddleocr import PaddleOCR
 #  Specify the local model path via text_detection_model_dir
 pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
-# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
-# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
+# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_mobile_det", text_detection_model_dir="./your_v5_mobile_det_model_path")
 
 ```
 
@@ -1763,8 +1797,8 @@ After obtaining the default pipeline configuration file, replace the paths of th
 SubModules:  
   TextDetection:  
     box_thresh: 0.6  
-    limit_side_len: 960  
-    limit_type: max  
+    limit_side_len: 64  
+    limit_type: min
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
     model_name: PP-OCRv5_server_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
@@ -1774,7 +1808,7 @@ SubModules:
   TextLineOrientation:  
     batch_size: 6  
     model_dir: null  # Replace with the path to your fine-tuned text LineOrientation model weights  
-    model_name: PP-LCNet_x0_25_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    model_name: PP-LCNet_x1_0_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: textline_orientation  
   TextRecognition:  
     batch_size: 6  

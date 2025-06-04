@@ -39,7 +39,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "paddlex[ocr,ie,multimodal]==3.0.0",
+    "paddlex[ocr,ie,multimodal]==3.0.1",
     "PyYAML>=6",
     "typing-extensions>=4.12",
 ]

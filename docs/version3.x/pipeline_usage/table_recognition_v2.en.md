@@ -1072,9 +1072,9 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be disabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library.</td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1429,9 +1429,9 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be disabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1869,30 +1869,6 @@ Below is the API reference for basic service-oriented deployment and examples of
 <td><code>useOcrModel</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Please refer to the <code>use_ocr_model</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutThreshold</code></td>
-<td><code>number</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_threshold</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutNms</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_nms</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutUnclipRatio</code></td>
-<td><code>number</code> | <code>array</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_unclip_ratio</code> parameter description in the <code>predict</code> method of the model object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>layoutMergeBboxesMode</code></td>
-<td><code>string</code> | <code>null</code></td>
-<td>Please refer to the <code>layout_merge_bboxes_mode</code> parameter description in the <code>predict</code> method of the model object.</td>
 <td>No</td>
 </tr>
 <tr>
