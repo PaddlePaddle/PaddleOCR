@@ -127,21 +127,21 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td>
-<td>-</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>206 M</td>
+<td>86.38</td>
+<td>8.45/2.36</td>
+<td>122.69/122.69</td>
+<td>81 M</td>
 <td><a href="https://github.com/PaddlePaddle/PaddleX/blob/develop/paddlex/configs/modules/text_recognition/PP-OCRv5_server_rec.yaml">PP-OCRv5_server_rec.yaml</a></td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td>
-<td>-</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>137 M</td>
+<td>81.29</td>
+<td>1.46/5.43</td>
+<td>5.32/91.79</td>
+<td>16 M</td>
 <td><a href="https://github.com/PaddlePaddle/PaddleX/blob/develop/paddlex/configs/modules/text_recognition/PP-OCRv5_mobile_rec.yaml">PP-OCRv5_mobile_rec.yaml</a></td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>

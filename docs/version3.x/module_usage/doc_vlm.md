@@ -107,48 +107,76 @@ for res in results:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>无</td>
-<td><code>无</code></td>
+<td><code>PP-DocBee-2B</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>用于推理的设备。<br/>
+<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+如指定多个设备，将进行并行推理。<br/>
+默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
+</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件。目前暂不支持。</td>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td>无</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置。目前暂不支持。</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时，设置的最小子图大小。</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+是否启用MKL-DNN加速库。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上推理时使用的线程数量。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
 </table>
 
-* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
+
+
+* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleX 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
 * 调用文档类视觉语言模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 、 `batch_size`，具体说明如下：
 
@@ -158,25 +186,21 @@ for res in results:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据</td>
-<td><code>dict</code></td>
-<td>
-<code>Dict</code>, 由于多模态模型对输入有不同的要求，需要根据具体的模型确定，具体而言:
-<li>PP-DocBee系列的输入形式为<code>{'image': image_path, 'query': query_text}</code></li>
+<td>待预测数据，必填。由于多模态模型对输入要求不同，请根据具体模型设定输入格式。<br/>
+例如：对于 PP-DocBee 系列模型，输入形式应为：<code>{'image': image_path, 'query': query_text}</code>
 </td>
+<td><code>dict</code></td>
 <td>无</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>批大小，可设置为任意正整数。</td>
 <td><code>int</code></td>
-<td>整数</td>
 <td>1</td>
 </tr>
 </table>

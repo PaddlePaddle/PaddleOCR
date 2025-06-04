@@ -46,13 +46,23 @@ def add_simple_inference_args(subparser, *, input_help=None):
     )
 
 
-def perform_simple_inference(wrapper_cls, params):
+def perform_simple_inference(wrapper_cls, params, predict_param_names=None):
+    params = params.copy()
+
     input_ = params.pop("input")
     save_path = params.pop("save_path")
 
-    wrapper = wrapper_cls(**params)
+    if predict_param_names is not None:
+        predict_params = {}
+        for name in predict_param_names:
+            predict_params[name] = params.pop(name)
+    else:
+        predict_params = {}
+    init_params = params
 
-    result = wrapper.predict_iter(input_)
+    wrapper = wrapper_cls(**init_params)
+
+    result = wrapper.predict_iter(input_, **predict_params)
 
     t1 = time.time()
     for i, res in enumerate(result):

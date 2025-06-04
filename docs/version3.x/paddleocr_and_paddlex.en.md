@@ -16,6 +16,15 @@ PaddleOCR fully reuses the capabilities of PaddleX in the inference deployment p
 - The high-performance inference capabilities of PaddleOCR are achieved through PaddleX's Paddle2ONNX plugin and high-performance inference plugins.
 - The service deployment solutions of PaddleOCR are based on PaddleX's implementations.
 
+It is important to note that although PaddleOCR uses PaddleX at the underlying level, thanks to PaddleX’s optional dependency installation feature, **installing the PaddleOCR inference package does not include all of PaddleX’s dependencies—only those required for OCR-related tasks are installed**. Therefore, users generally do not need to worry about excessive expansion of dependency size. Tested in May 2025, in an x86-64 + Linux + Python 3.10 environment, the total size of required dependencies increased only from 717 MB to 738 MB.
+
+The version correspondence between PaddleOCR and PaddleX is as follows:
+
+| PaddleOCR Version | PaddleX Version |
+| --- | --- |
+| `3.0.0` | `3.0.0` |
+| `3.0.1` | `3.0.1` |
+
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
 | PaddleOCR Pipeline | PaddleX Pipeline Registration Name |
@@ -52,7 +61,7 @@ The exported PaddleX pipeline configuration file not only includes parameters su
 
 ### 3.3 Loading Pipeline Configuration Files in CLI
 
-By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the default configuration for the pipeline. Here is an example:
+By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the default configuration for the pipeline (this takes precedence over the default values of individual initialization parameters). Here is an example:
 
 ```bash
 paddleocr ocr --paddlex_config ocr_config.yaml ...
@@ -60,7 +69,7 @@ paddleocr ocr --paddlex_config ocr_config.yaml ...
 
 ### 3.4 Loading Pipeline Configuration Files in Python API
 
-When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the default configuration. Here is an example:
+When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the default configuration (this takes precedence over the default values of individual initialization parameters). Here is an example:
 
 ```python
 from paddleocr import PaddleOCR

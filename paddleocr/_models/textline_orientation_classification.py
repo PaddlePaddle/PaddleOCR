@@ -33,7 +33,7 @@ class TextLineOrientationClassificationSubcommandExecutor(
 ):
     @property
     def subparser_name(self):
-        return "text_line_orientation_classification"
+        return "textline_orientation_classification"
 
     @property
     def wrapper_cls(self):
