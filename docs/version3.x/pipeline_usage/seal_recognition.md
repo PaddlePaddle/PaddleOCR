@@ -1071,7 +1071,7 @@ for res in output:
 <td>版面检测置信度阈值，得分大于该阈值才会被输出。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>字典</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
+<li><b>dict</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></li></ul>
 </td>
 <td><code>float|dict</code></td>
@@ -1089,7 +1089,7 @@ for res in output:
 <ul>
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
-<li><b>字典</b>，字典的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
+<li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
@@ -1101,7 +1101,7 @@ for res in output:
 <td>版面区域检测的重叠框过滤方式。
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
-<li><b>字典</b>： 字典的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
@@ -1478,7 +1478,7 @@ for res in output:
 </table>
 
 - `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `layout_det_res` 、  `seal_res_region1`和 `preprocessed_img`，对应的值是三个 `Image.Image` 对象：一个用于显示版面检测可视化，一个用于显示印章文本识别结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中不包含preprocessed_img，如果没有使用版面区域检测模块，则字典中不包含layout_det_res。
+- `img` 属性返回的预测结果是一个dict类型的数据。其中，键分别为 `layout_det_res` 、  `seal_res_region1`和 `preprocessed_img`，对应的值是三个 `Image.Image` 对象：一个用于显示版面检测可视化，一个用于显示印章文本识别结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中不包含preprocessed_img，如果没有使用版面区域检测模块，则dict中不包含layout_det_res。
 
 ## 3. 开发集成/部署
 
@@ -1884,7 +1884,7 @@ paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
 
 4. 在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import SealRecognition

@@ -714,7 +714,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version, note that not every ocr_version supports all languages.
+<td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
 <ul>
 <li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;
 <li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;
@@ -1249,7 +1249,7 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version, note that not every ocr_version supports all languages.
+<td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
 <ul>
 <li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;</li>
 <li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;</li>

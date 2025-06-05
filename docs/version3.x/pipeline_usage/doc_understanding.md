@@ -304,7 +304,7 @@ for res in output:
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，目前仅支持字典类型的输入
+<td>待预测数据，目前仅支持dict类型的输入
 <ul>
   <li><b>Python Dict</b>：如PP-DocBee的输入形式为: <code>{"image":/path/to/image, "query": user question}</code> ,分别表示输入的图像和对应的用户问题。</li>
 </ul>

@@ -713,7 +713,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本，注意不是每个ocr_version都支持所有的lang。
+<td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
 <li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
 <li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
@@ -1250,7 +1250,7 @@ for res in result:
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本，注意不是每个ocr_version都支持所有的lang。
+<td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
 <li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
 <li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
@@ -1526,7 +1526,7 @@ for res in result:
 
 <ul>
   <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-  <li><code>img</code> 属性返回的预测结果是一个字典类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 <code>ocr_res_img</code>。</li>
+  <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中只包含 <code>ocr_res_img</code>。</li>
 </ul>
 
 </details>
@@ -1927,7 +1927,7 @@ paddleocr ocr --paddlex_config PaddleOCR.yaml ...
 
 4.在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import PaddleOCR
