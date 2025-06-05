@@ -64,6 +64,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         wired_table_cells_detection_model_dir=None,
         wireless_table_cells_detection_model_name=None,
         wireless_table_cells_detection_model_dir=None,
+        table_orientation_classify_model_name=None,
+        table_orientation_classify_model_dir=None,
         seal_text_detection_model_name=None,
         seal_text_detection_model_dir=None,
         seal_det_limit_side_len=None,
@@ -376,6 +378,54 @@ class PPStructureV3(PaddleXPipelineWrapper):
             ],
             "SubPipelines.TableRecognition.SubModules.WirelessTableCellsDetection.model_dir": self._params[
                 "wireless_table_cells_detection_model_dir"
+            ],
+            "SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_name": self._params[
+                "table_orientation_classify_model_name"
+            ],
+            "SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_dir": self._params[
+                "table_orientation_classify_model_dir"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_name": self._params[
+                "text_detection_model_name"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
+                "text_detection_model_dir"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_side_len": self._params[
+                "text_det_limit_side_len"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_type": self._params[
+                "text_det_limit_type"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.thresh": self._params[
+                "text_det_thresh"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.box_thresh": self._params[
+                "text_det_box_thresh"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.unclip_ratio": self._params[
+                "text_det_unclip_ratio"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
+                "textline_orientation_model_name"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
+                "textline_orientation_model_dir"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
+                "textline_orientation_batch_size"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
+                "text_recognition_model_name"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_dir": self._params[
+                "text_recognition_model_dir"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.batch_size": self._params[
+                "text_recognition_batch_size"
+            ],
+            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
+                "text_rec_score_thresh"
             ],
             "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_name": self._params[
                 "seal_text_detection_model_name"
