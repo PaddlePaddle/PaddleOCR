@@ -8,7 +8,7 @@ comments: true
 
 OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。
 
-通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。
+通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_server 模型，其在多个场景中较 PP-OCRv4_server 提升 13 个百分点。
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -65,6 +65,41 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <td>0.179</td>
 <td>30.3 M</td>
 <td>高精度文本图像矫正模型</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>文本行方向分类模块（可选）：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>GPU推理耗时（ms）</th>
+<th>CPU推理耗时 (ms)</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>98.85</td>
+<td>-</td>
+<td>-</td>
+<td>0.96</td>
+<td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
 </tbody>
 </table>
@@ -706,7 +741,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>lang</code></td>
 <td>使用指定语言的 OCR 模型。
-<a href="#languages">支持的语言列表</a>，如果不设置，将默认使用<code>ch</code>。
+请查看下方的详细语言列表，如果不设置，将默认使用<code>ch</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -834,10 +869,10 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果不设置，将默认启用。
+<td>是否启用 MKL-DNN 加速库。
 </td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -883,146 +918,118 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
-<a id="languages"></a>
 <details><summary><b>支持的语言列表</b></summary>
 <table>
 <thead>
 <tr>
-<th>LANGS 类型</th>
-<th>语言列表</th>
-<th>支持模型</th>
+<th><code>OCR_version</code></th>
+<th>语种</th>
 </tr>
 <tr>
-<td><code>LANG</code></td>
-<td>使用指定语言的 OCR 模型。
+<td><code>PP-OCRv5系列模型</code></td>
+<td><code>PP-OCRv5系列模型</code>支持以下语言列表。
 <ul>
 <li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
 <li><b>chinese_cht</b>：繁体中文；
+<li><b>en</b>：英文；
+<li><b>japan</b>：日文；
+<li><b>korean</b>：韩文；
 <li><b>te</b>：泰卢固文；
 <li><b>ka</b>：卡纳达文；
 <li><b>ta</b>：泰米尔文。
 </ul></td>
-<td>
-对于ch，使用的模型为：PP-OCRv3_mobile_rec，其他语言使用的模型为{语言}_PP-OCRv3_mobile_rec，例如en，则使用en_PP-OCRv3_mobile_rec。
-</td>
 </tr>
 <tr>
-<td><code>LATIN_LANGS</code></td>
-<td>使用指定语言的 OCR 模型。
+<td><code>PP-OCRv4系列模型</code></td>
+<td><code>PP-OCRv4系列模型</code>支持以下语言列表。
+<ul>
+<li><b>ch</b>：中文；
+<li><b>en</b>：英文。
+</ul></td>
+</tr>
+<tr>
+<td><code>PP-OCRv3系列模型</code></td>
+<td><code>PP-OCRv3系列模型</code>支持以下语言列表。
 <details>
-  <summary>语言列表</summary>
-  <ul>
-<li><b>af</b>：阿非利堪斯语；
-<li><b>az</b>：阿塞拜疆语；
-<li><b>bs</b>：波斯尼亚语；
-<li><b>cs</b>：捷克语；
-<li><b>cy</b>：威尔士语；
-<li><b>da</b>：丹麦语；
-<li><b>de</b>：德语；
-<li><b>es</b>：西班牙语；
-<li><b>et</b>：爱沙尼亚语；
-<li><b>fr</b>：法语；
-<li><b>ga</b>：爱尔兰语；
-<li><b>hr</b>：克罗地亚语；
-<li><b>hu</b>：匈牙利语；
-<li><b>id</b>：印度尼西亚语；
-<li><b>is</b>：冰岛语；
-<li><b>it</b>：意大利语；
-<li><b>ku</b>：库尔德语；
-<li><b>la</b>：拉丁语；
-<li><b>lt</b>：立陶宛语；
-<li><b>lv</b>：拉脱维亚语；
-<li><b>mi</b>：毛利语；
-<li><b>ms</b>：马来语；
-<li><b>mt</b>：马耳他语；
-<li><b>nl</b>：荷兰语；
-<li><b>no</b>：挪威语；
-<li><b>oc</b>：奥克语；
-<li><b>pi</b>：帕利亚语；
-<li><b>pl</b>：波兰语；
-<li><b>pt</b>：葡萄牙语；
-<li><b>ro</b>：罗马尼亚语；
-<li><b>rs_latin</b>：塞尔维亚语；
-<li><b>sk</b>：斯洛伐克语；
-<li><b>sl</b>：斯洛文尼亚语；
-<li><b>sq</b>：阿尔巴尼亚语；
-<li><b>sv</b>：瑞典语；
-<li><b>sw</b>：斯瓦希里语；
-<li><b>tl</b>：他加禄语；
-<li><b>tr</b>：土耳其语；
-<li><b>uz</b>：乌兹别克语；
-<li><b>vi</b>：越南语；
-<li><b>french</b>：法语；
-<li><b>german</b>：德语。
-  </ul>
-</details></td>
-<td>
-latin_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>ARABIC_LANGS</code></td>
-<td>使用指定语言的 OCR 模型。
+<summary>语言列表</summary>
 <ul>
-<li><b>ar</b>：阿拉伯语；
-<li><b>fa</b>：波斯语；
-<li><b>ug</b>：维吾尔语；
-<li><b>ur</b>：乌尔都语；
-</ul></td>
-<td>
-arabic_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>CYRILLIC_LANGS</code></td>
-<td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ru</b>：俄语；
-<li><b>rs_cyrillic</b>：塞尔维亚语(西里尔字母)；
-<li><b>be</b>：白俄罗斯语；
-<li><b>bg</b>：保加利亚语；
-<li><b>uk</b>：乌克兰语；
-<li><b>mn</b>：蒙古语；
-<li><b>abq</b>：阿巴扎语；
-<li><b>ady</b>：阿迪格语；
-<li><b>kbd</b>：卡巴尔达语；
-<li><b>ava</b>：阿瓦尔语；
-<li><b>dar</b>：达尔金语；
-<li><b>inh</b>：印古什语；
-<li><b>che</b>：车臣语；
-<li><b>lbe</b>：拉克语；
-<li><b>lez</b>：列兹金语；
-<li><b>tab</b>：塔巴萨兰语。
-</ul></td>
-<td>
-cyrillic_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>DEVANAGARI_LANGS</code></td>
-<td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>hi</b>：印地语；</li>
-<li><b>mr</b>：马拉地语；</li>
-<li><b>ne</b>：尼泊尔语；</li>
-<li><b>bh</b>：比哈尔语；</li>
-<li><b>mai</b>：迈蒂利语；</li>
-<li><b>ang</b>：古英语；</li>
-<li><b>bho</b>：博杰普尔语；</li>
-<li><b>mah</b>：马绍尔语；</li>
-<li><b>sck</b>：锡金语；</li>
-<li><b>new</b>：尼瓦尔语；</li>
-<li><b>gom</b>：孔卡尼语；</li>
-<li><b>sa</b>：梵语；</li>
-<li><b>bgc</b>：孟加拉语群的方言。</li>
+<li><b>af</b>：南非荷兰文；
+<li><b>az</b>：阿塞拜疆文；
+<li><b>bs</b>：波斯尼亚文；
+<li><b>cs</b>：捷克文；
+<li><b>cy</b>：威尔士文；
+<li><b>da</b>：丹麦文；
+<li><b>de</b>：德文；
+<li><b>es</b>：西班牙文；
+<li><b>et</b>：爱沙尼亚文；
+<li><b>fr</b>：法文；
+<li><b>ga</b>：爱尔兰文；
+<li><b>hr</b>：克罗地亚文；
+<li><b>hu</b>：匈牙利文；
+<li><b>id</b>：印度尼西亚文；
+<li><b>is</b>：冰岛文；
+<li><b>it</b>：意大利文；
+<li><b>ku</b>：库尔德文；
+<li><b>la</b>：拉丁文；
+<li><b>lt</b>：立陶宛文；
+<li><b>lv</b>：拉脱维亚文；
+<li><b>mi</b>：毛利文；
+<li><b>ms</b>：马来文；
+<li><b>mt</b>：马耳他文；
+<li><b>nl</b>：荷兰文；
+<li><b>no</b>：挪威文；
+<li><b>oc</b>：奥克文；
+<li><b>pi</b>：帕利亚文；
+<li><b>pl</b>：波兰文；
+<li><b>pt</b>：葡萄牙文；
+<li><b>ro</b>：罗马尼亚文；
+<li><b>rs_latin</b>：塞尔维亚文（latin）；
+<li><b>sk</b>：斯洛伐克文；
+<li><b>sl</b>：斯洛文尼亚文；
+<li><b>sq</b>：阿尔巴尼亚文；
+<li><b>sv</b>：瑞典文；
+<li><b>sw</b>：斯瓦希里文；
+<li><b>tl</b>：塔加洛文；
+<li><b>tr</b>：土耳其文；
+<li><b>uz</b>：乌兹别克文；
+<li><b>vi</b>：越南文；
+<li><b>french</b>：法文；
+<li><b>german</b>：德文；
+<li><b>ar</b>：阿拉伯文；
+<li><b>fa</b>：波斯文；
+<li><b>ug</b>：维吾尔文；
+<li><b>ur</b>：乌尔都文；
+<li><b>ru</b>：俄罗斯文；
+<li><b>rs_cyrillic</b>：塞尔维亚文(cyrillic)；
+<li><b>be</b>：白俄罗斯文；
+<li><b>bg</b>：保加利亚文；
+<li><b>uk</b>：乌克兰文；
+<li><b>mn</b>：蒙古文；
+<li><b>abq</b>：阿巴扎文；
+<li><b>ady</b>：阿迪赫文；
+<li><b>kbd</b>：卡巴尔达文；
+<li><b>ava</b>：阿瓦尔文；
+<li><b>dar</b>：达尔金文；
+<li><b>inh</b>：印古什文；
+<li><b>che</b>：车臣文；
+<li><b>lbe</b>：拉克文；
+<li><b>lez</b>：莱兹甘文；
+<li><b>tab</b>：塔巴萨兰文；
+<li><b>hi</b>：印地文；</li>
+<li><b>mr</b>：马拉地文；</li>
+<li><b>ne</b>：尼泊尔文；</li>
+<li><b>bh</b>：比哈尔文；</li>
+<li><b>mai</b>：迈蒂利文；</li>
+<li><b>ang</b>：昂加文；</li>
+<li><b>bho</b>：孟加拉文；</li>
+<li><b>mah</b>：摩揭陀文；</li>
+<li><b>sck</b>：那格浦尔文；</li>
+<li><b>new</b>：尼瓦尔文；</li>
+<li><b>gom</b>：保加利亚文；</li>
+<li><b>sa</b>：梵文；</li>
+<li><b>bgc</b>：哈里亚纳文。</li>
 </ul>
-</td>
-<td>
-devanagari_PP-OCRv3_mobile_rec
-</td>
+</details></td>
 </tr>
 </thead>
 <tbody>
@@ -1242,8 +1249,7 @@ for res in result:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-<a href="#languages">支持的语言列表</a>，如果设置为<code>None</code>，将默认使用<code>ch</code>。
+<td>使用指定语言的 OCR 模型。请查看上方的详细列表，如果设置为<code>None</code>，将默认使用<code>ch</code>。
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1303,9 +1309,9 @@ for res in result:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>，将默认启用。</td>
+<td>是否启用 MKL-DNN 加速库。
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1851,8 +1857,8 @@ for i, res in enumerate(result["ocrResults"]):
 # 通过 --text_detection_model_dir 指定本地模型路径
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
-# 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
+# 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path
 ```
 
 脚本方式：
@@ -1864,8 +1870,8 @@ from paddleocr import PaddleOCR
 # 通过 text_detection_model_dir 指定本地模型路径
 pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
-# 默认使用 PP-OCRv5_mobile_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
-# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
+# 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_mobile_det", text_detection_model_dir="./your_v5_mobile_det_model_path")
 
 ```
 
@@ -1893,7 +1899,7 @@ pipeline.export_paddlex_config_to_yaml("PaddleOCR.yaml")
 SubModules:
   TextDetection:
     box_thresh: 0.6
-    limit_side_len: 736
+    limit_side_len: 64
     limit_type: min
     max_side_limit: 4000
     model_dir: null # 替换为微调后的文本测模型权重路径
@@ -1904,7 +1910,7 @@ SubModules:
   TextLineOrientation:
     batch_size: 6
     model_dir: null  # 替换为微调后的文本行方向分类模型权重路径
-    model_name: PP-LCNet_x0_25_textline_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    model_name: PP-LCNet_x1_0_textline_ori # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: textline_orientation
   TextRecognition:
     batch_size: 6

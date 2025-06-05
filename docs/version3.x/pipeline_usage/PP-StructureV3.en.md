@@ -1412,9 +1412,9 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN. If not set, disabled by default.</td>
+<td>Whether to enable MKL-DNN.
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -2027,9 +2027,9 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration. If set to <code>None</code>, MKL-DNN is disabled by default.</td>
+<td>Whether to enable MKL-DNN acceleration.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

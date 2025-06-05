@@ -8,7 +8,7 @@ comments: true
 
 OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
 
-The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_mobile model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_mobile in various scenarios.
+The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_server model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_server in various scenarios.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -65,6 +65,40 @@ In this pipeline, you can select models based on the benchmark test data provide
 <td>0.179</td>
 <td>30.3</td>
 <td>High-precision Text Image Unwarping model.</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>Text Line Orientation Classification Module (Optional):</b></summary>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)</th>
+<th>Model Size (M)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>98.85</td>
+<td>-</td>
+<td>-</td>
+<td>0.96</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.42</td>
+<td>-</td>
+<td>-</td>
+<td>6.5</td>
+<td>Text line classification model based on PP-LCNet_x1_0, with two classes: 0 degrees and 180 degrees</td>
 </tr>
 </tbody>
 </table>
@@ -706,8 +740,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use.
-<a href="#languages">Supported Language List</a>. If not set, <code>ch</code> will be used by default.
+<td>OCR model language to use.Please refer to the detailed list of languages below.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -835,10 +868,10 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If not set, it will be enabled by default.
+<td>Whether to enable the MKL-DNN acceleration library.
 </td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -884,38 +917,41 @@ Results are printed to the terminal:
 If `save_path` is specified, the visualization results will be saved under `save_path`. The visualization output is shown below:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
-<a id="languages"></a>
 <details><summary><b>Supported Language List</b></summary>
 <table>
 <thead>
 <tr>
-<th>LANG Type</th>
-<th>Language List</th>
-<th>Supported Models</th>
+<th><code>OCR_version</code></th>
+<th>Languages</th>
 </tr>
 <tr>
-<td><code>LANG</code></td>
-<td>OCR models for the specified language.
+<td><code>PP-OCRv5 Series Models</code></td>
+<td><code>PP-OCRv5 Series Models</code> support the following list of languages.
 <ul>
 <li><b>ch</b>: Chinese;</li>
-<li><b>en</b>: English;</li>
-<li><b>korean</b>: Korean;</li>
-<li><b>japan</b>: Japanese;</li>
 <li><b>chinese_cht</b>: Traditional Chinese;</li>
+<li><b>en</b>: English;</li>
+<li><b>japan</b>: Japanese;</li>
+<li><b>korean</b>: Korean;</li>
 <li><b>te</b>: Telugu;</li>
 <li><b>ka</b>: Kannada;</li>
 <li><b>ta</b>: Tamil.</li>
 </ul></td>
-<td>
-For <b>ch</b>, the model used is PP-OCRv3_mobile_rec, while for other languages, the model used is {language}_PP-OCRv3_mobile_rec (e.g., for <b>en</b>, it is en_PP-OCRv3_mobile_rec).
-</td>
 </tr>
 <tr>
-<td><code>LATIN_LANGS</code></td>
-<td>OCR models for the specified language.
+<td><code>PP-OCRv4 Series Models</code></td>
+<td><code>PP-OCRv4 Series Models</code> support the following list of languages.
+<ul>
+<li><b>ch</b>: Chinese;</li>
+<li><b>en</b>: English.</li>
+</ur></td>
+</tr>
+<tr>
+<td><code>PP-OCRv3 Series Models</code></td>
+<td><code>PP-OCRv3 Series Models</code> support the following list of languages.
 <details>
-  <summary>Language List</summary>
-  <ul>
+<summary>Language List</summary>
+<ul>
 <li><b>af</b>: Afrikaans;</li>
 <li><b>az</b>: Azerbaijani;</li>
 <li><b>bs</b>: Bosnian;</li>
@@ -946,7 +982,7 @@ For <b>ch</b>, the model used is PP-OCRv3_mobile_rec, while for other languages,
 <li><b>pl</b>: Polish;</li>
 <li><b>pt</b>: Portuguese;</li>
 <li><b>ro</b>: Romanian;</li>
-<li><b>rs_latin</b>: Serbian (Latin script);</li>
+<li><b>rs_latin</b>: Serbian (Latin);</li>
 <li><b>sk</b>: Slovak;</li>
 <li><b>sl</b>: Slovenian;</li>
 <li><b>sq</b>: Albanian;</li>
@@ -957,32 +993,13 @@ For <b>ch</b>, the model used is PP-OCRv3_mobile_rec, while for other languages,
 <li><b>uz</b>: Uzbek;</li>
 <li><b>vi</b>: Vietnamese;</li>
 <li><b>french</b>: French;</li>
-<li><b>german</b>: German.</li>
-  </ul>
-</details></td>
-<td>
-latin_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>ARABIC_LANGS</code></td>
-<td>OCR models for the specified language.
-<ul>
+<li><b>german</b>: German;</li>
 <li><b>ar</b>: Arabic;</li>
 <li><b>fa</b>: Persian;</li>
 <li><b>ug</b>: Uighur;</li>
 <li><b>ur</b>: Urdu;</li>
-</ul></td>
-<td>
-arabic_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>CYRILLIC_LANGS</code></td>
-<td>OCR models for the specified language.
-<ul>
 <li><b>ru</b>: Russian;</li>
-<li><b>rs_cyrillic</b>: Serbian (Cyrillic script);</li>
+<li><b>rs_cyrillic</b>: Serbian (Cyrillic);</li>
 <li><b>be</b>: Belarusian;</li>
 <li><b>bg</b>: Bulgarian;</li>
 <li><b>uk</b>: Ukrainian;</li>
@@ -997,39 +1014,28 @@ arabic_PP-OCRv3_mobile_rec
 <li><b>lbe</b>: Lak;</li>
 <li><b>lez</b>: Lezgian;</li>
 <li><b>tab</b>: Tabasaran;</li>
-</ul></td>
-<td>
-cyrillic_PP-OCRv3_mobile_rec
-</td>
-</tr>
-<tr>
-<td><code>DEVANAGARI_LANGS</code></td>
-<td>OCR models for the specified language.
-<ul>
 <li><b>hi</b>: Hindi;</li>
 <li><b>mr</b>: Marathi;</li>
 <li><b>ne</b>: Nepali;</li>
 <li><b>bh</b>: Bhojpuri;</li>
 <li><b>mai</b>: Maithili;</li>
-<li><b>ang</b>: Old English;</li>
+<li><b>ang</b>: Angika;</li>
 <li><b>bho</b>: Bhojpuri;</li>
-<li><b>mah</b>: Marshallese;</li>
-<li><b>sck</b>: Sikkimese;</li>
+<li><b>mah</b>: Magahi;</li>
+<li><b>sck</b>: Nagpur;</li>
 <li><b>new</b>: Newar;</li>
-<li><b>gom</b>: Konkani;</li>
+<li><b>gom</b>: Goan Konkani;</li>
 <li><b>sa</b>: Sanskrit;</li>
-<li><b>bgc</b>: Bengali dialects.</li>
+<li><b>bgc</b>: Haryanvi.</li>
 </ul>
-</td>
-<td>
-devanagari_PP-OCRv3_mobile_rec
-</td>
+</details></td>
 </tr>
 </thead>
 <tbody>
 </tbody>
 </table>
 </details>
+<br />
 
 
 ### 2.2 Python Script Integration  
@@ -1048,12 +1054,12 @@ ocr = PaddleOCR(
 # ocr = PaddleOCR(ocr_version="PP-OCRv4") # Uses other PP-OCR versions via version parameter
 # ocr = PaddleOCR(device="gpu") # Enables GPU acceleration for model inference via device parameter
 # ocr = PaddleOCR(
-#     text_detection_model_name="PP-OCRv5_server_det",
-#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     text_detection_model_name="PP-OCRv5_mobile_det",
+#     text_recognition_model_name="PP-OCRv5_mobile_rec",
 #     use_doc_orientation_classify=False,
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
-# ) # Switch to PP-OCRv5_server models
+# ) # Switch to PP-OCRv5_mobile models
 result = ocr.predict("./general_ocr_002.png")  
 for res in result:  
     res.print()  
@@ -1241,8 +1247,7 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use.
-<a href="#languages">Supported Language List</a>. If set to <code>None</code>, <code>ch</code> will be used by default.
+<td>OCR model language to use. Please refer to the detailed list of languages above. If set to <code>None</code>, <code>ch</code> will be used by default.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1302,9 +1307,9 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library. If set to <code>None</code>, it will be enabled by default.</td>
+<td>Whether to enable the MKL-DNN acceleration library.</td>
 <td><code>bool</code></td>
-<td><code>None</code></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1850,8 +1855,8 @@ Command line mode:
 # Specify the local model path via --text_detection_model_dir
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
-# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
-paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_server_det --text_detection_model_dir your_v5_server_det_model_path
+# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
+paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path
 ```
 
 Script mode: 
@@ -1863,8 +1868,8 @@ from paddleocr import PaddleOCR
 #  Specify the local model path via text_detection_model_dir
 pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
-# PP-OCRv5_mobile_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
-# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_server_det", text_detection_model_dir="./your_v5_server_det_model_path")
+# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
+# pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_mobile_det", text_detection_model_dir="./your_v5_mobile_det_model_path")
 
 ```
 
@@ -1890,7 +1895,7 @@ After obtaining the default pipeline configuration file, replace the paths of th
 SubModules:  
   TextDetection:  
     box_thresh: 0.6  
-    limit_side_len: 736  
+    limit_side_len: 64  
     limit_type: min
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
@@ -1901,7 +1906,7 @@ SubModules:
   TextLineOrientation:  
     batch_size: 6  
     model_dir: null  # Replace with the path to your fine-tuned text LineOrientation model weights  
-    model_name: PP-LCNet_x0_25_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    model_name: PP-LCNet_x1_0_textline_ori  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: textline_orientation  
   TextRecognition:  
     batch_size: 6  
