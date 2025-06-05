@@ -6,7 +6,7 @@ comments: true
 
 ## 一、概述
 
-表格结构识别是表格识别系统中的重要组成部分，能够将不可编辑表格图片转换为可编辑的表格形式（例如html）。表格结构识别的目标是对表格的行、列和单元格位置进行识别，该模块的性能直接影响到整个表格识别系统的准确性和效率。表格结构识别模块通常会输出表格区域的html代码或Latex代码，这些代码将作为输入传递给表格内容识别模块进行后续处理。
+表格结构识别是表格识别系统中的重要组成部分，能够将不可编辑表格图片转换为可编辑的表格形式（例如html）。表格结构识别的目标是对表格的行、列和单元格位置进行识别，该模块的性能直接影响到整个表格识别系统的准确性和效率。表格结构识别模块会输出表格区域的html代码，这些代码将作为输入传递给表格识别产线进行后续处理。
 
 ## 二、支持模型列表
 
@@ -139,45 +139,71 @@ for res in output:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
 <td>模型名称</td>
 <td><code>str</code></td>
-<td>所有支持的模型名称</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
 <td>模型存储路径</td>
 <td><code>str</code></td>
-<td>无</td>
-<td>无</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>模型推理设备</td>
+<td>用于推理的设备。<br/>
+<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+如指定多个设备，将进行并行推理。<br/>
+默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
+</td>
 <td><code>str</code></td>
-<td>支持指定GPU具体卡号，如“gpu:0”，其他硬件具体卡号，如“npu:0”，CPU如“cpu”。</td>
-<td><code>gpu:0</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>是否启用高性能推理插件</td>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td>无</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>高性能推理配置</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>无</td>
-<td><code>None</code></td>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
+<tr>
+<td><code>min_subgraph_size</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时，设置的最小子图大小。</td>
+<td><code>int</code></td>
+<td><code>3</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+是否启用MKL-DNN加速库。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上推理时使用的线程数量。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
 </table>
 
 * 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
@@ -190,30 +216,25 @@ for res in output:
 <th>参数</th>
 <th>参数说明</th>
 <th>参数类型</th>
-<th>可选项</th>
 <th>默认值</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>待预测数据，支持多种输入类型，必填。
 <ul>
-  <li><b>Python变量</b>，如<code>numpy.ndarray</code>表示的图像数据</li>
-  <li><b>文件路径</b>，如图像文件的本地路径：<code>/root/data/img.jpg</code></li>
-  <li><b>URL链接</b>，如图像文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">示例</a></li>
-  <li><b>本地目录</b>，该目录下需包含待预测数据文件，如本地路径：<code>/root/data/</code></li>
-  <li><b>列表</b>，列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
+<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>无</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小</td>
+<td>批大小，可设置为任意正整数。</td>
 <td><code>int</code></td>
-<td>任意整数</td>
 <td>1</td>
 </tr>
 </table>
@@ -290,7 +311,7 @@ for res in output:
 
 ## 四、二次开发
 
-如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `SLANet` 举例，其他模型替换对应配置文件即可。首先，您需要准备表格结构识别的数据集，可以参考[表格结构识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以表格结构识别 Demo 数据示例。在训练模型之前，请确保已经按照[[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `SLANet_plus` 举例，其他模型替换对应配置文件即可。首先，您需要准备表格结构识别的数据集，可以参考[表格结构识别 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以表格结构识别 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
 ### 4.1 数据集、预训练模型准备
@@ -306,24 +327,35 @@ tar -xf table_rec_dataset_examples.tar
 #### 4.1.2 下载预训练模型
 
 ```shell
-# 下载 SLANet 预训练模型
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams
+# 下载 SLANet_plus 预训练模型
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams
 ```
 
 ### 4.2 模型训练
 
-PaddleOCR 对代码进行了模块化，训练 `SLANet` 识别模型时需要使用 `SLANet` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet.yml)。
+PaddleOCR 对代码进行了模块化，训练 `SLANet_plus` 识别模型时需要使用 `SLANet_plus` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml)。
 
 
 训练命令如下：
 
 ```bash
 #单卡训练 (默认训练方式)
-python3 tools/train.py -c configs/table/SLANet.yml \
-   -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 tools/train.py -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
+
 #多卡训练，通过--gpus参数指定卡号
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/table/SLANet.yml \
-        -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
+    -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
 ```
 
 
@@ -334,21 +366,23 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 ```bash
 # 注意将pretrained_model的路径设置为本地路径。若使用自行训练保存的模型，请注意修改路径和文件名为{path/to/weights}/{model_name}。
  # demo 测试集评估
- python3 tools/eval.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams
+ python3 tools/eval.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
 ```
 
 ### 4.4 模型导出
 
 ```bash
- python3 tools/export_model.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams \
- save_inference_dir="./SLANet_infer/"
+ python3 tools/export_model.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams \
+    Global.save_inference_dir="./SLANet_plus_infer/"
 ```
 
- 导出模型后，静态图模型会存放于当前目录的`./SLANet_infer/`中，在该目录下，您将看到如下文件：
+ 导出模型后，静态图模型会存放于当前目录的`./SLANet_plus_infer/`中，在该目录下，您将看到如下文件：
  ```
- ./SLANet_infer/
+ ./SLANet_plus_infer/
  ├── inference.json
  ├── inference.pdiparams
  ├── inference.yml

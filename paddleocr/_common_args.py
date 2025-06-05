@@ -77,15 +77,10 @@ def prepare_common_init_args(model_name, common_args):
                 pp_option.run_mode = "trt_fp16"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
-        if enable_mkldnn is None:
-            from paddle.inference import Config
-
-            if hasattr(Config, "set_mkldnn_cache_capacity"):
-                enable_mkldnn = True
-            else:
-                enable_mkldnn = False
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
+        else:
+            pp_option.run_mode = "paddle"
     pp_option.cpu_threads = common_args["cpu_threads"]
     init_kwargs["pp_option"] = pp_option
 
@@ -132,7 +127,7 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models and pipelines that have known oneDNN issues.",
+        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference.",
     )
     parser.add_argument(
         "--cpu_threads",

@@ -41,7 +41,10 @@ class TextRecognizer(object):
         if os.path.exists(f"{args.rec_model_dir}/inference.yml"):
             model_config = utility.load_config(f"{args.rec_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
-            if model_name:
+            if model_name and model_name not in [
+                "PP-OCRv5_mobile_rec",
+                "PP-OCRv5_server_rec",
+            ]:
                 raise ValueError(
                     f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
                 )
