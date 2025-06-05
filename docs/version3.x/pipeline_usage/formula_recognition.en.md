@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Formula Recognition Pipeline Tutorial
+# Formula Recognition Pipeline Usage Tutorial
 
 ## 1. Introduction to Formula Recognition Pipeline
 
@@ -416,7 +416,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted,required.
+<td>Data to be predicted, required.
 Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path).
 </td>
 <td><code>str</code></td>
@@ -497,8 +497,7 @@ The name of the layout detection model. If not set, the default model in pipelin
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Threshold for layout detection, used to filter out predictions with low confidence.
-such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2. If not set, the default PaddleX official model configuration will be used.
+<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -506,16 +505,14 @@ such as 0.2, indicates filtering out all bounding boxes with a confidence score 
 <tr>
 <td><code>layout_nms</code></td>
 <td>
-Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If not set, the default configuration of the official model will be used.
+Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.
 </td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>
-The scaling factor for the side length of the detection boxes in layout region detection.
-A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1. If not set, the default PaddleX official model configuration will be used.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -527,7 +524,7 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
-</ul>If not set, the default PaddleX official model configuration will be used.
+</ul>If not set, the default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -568,7 +565,7 @@ The name of the formula recognition model. If not set, the default model from th
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -750,7 +747,7 @@ In the above Python script, the following steps are executed:
 <ul>
 <li><b>float</b>: Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2;</li>
 <li><b>Dictionary</b>: With <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the default is <code>0.5</code>.</li>
 </ul>
 </td>
 <td><code>float|dict</code></td>
@@ -758,33 +755,33 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If set to <code>None</code>, the default configuration of the official model will be used.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>The scaling factor for the side length of the detection boxes in layout region detection.
+<td>Expansion factor for the detection boxes of the layout region detection model.
 <ul>
-<li><b>float</b>: A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1;</li>
-<li><b>List</b>: e.g., [1.2, 1.5], indicating that the center of the bounding box remains unchanged while the width is scaled up by a factor of 1.2 and the height by a factor of 1.5;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
+<li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
-<td><code>float|list</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>The merging mode for the detection boxes output by the model in layout region detection.
+<td>Filtering method for overlapping boxes in layout detection.
 <ul>
-<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
-<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
-<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
-<li><b>None</b>: If set to <code>None</code>, the default PaddleX official model configuration will be used.</li>
+<li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
+<li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>.</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -819,7 +816,7 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -941,7 +938,7 @@ Whether to use the document orientation classification module during inference.<
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>The parameters are the same as those used during instantiation.</td>
-<td><code>float|list</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
