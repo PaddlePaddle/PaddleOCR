@@ -926,8 +926,8 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <th>语种</th>
 </tr>
 <tr>
-<td><code>PP-OCRv5模型</code></td>
-<td><code>PP-OCRv5模型</code>支持以下语言。
+<td>PP-OCRv5模型</td>
+<td>PP-OCRv5模型支持以下语言。
 <ul>
 <li><b>ch</b>：简体中文；
 <li><b>chinese_cht</b>：繁体中文；
@@ -941,7 +941,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td>PP-OCRv4模型</td>
-<td><code>PP-OCRv4模型</code>支持以下语言。
+<td>PP-OCRv4模型支持以下语言。
 <ul>
 <li><b>ch</b>：简体中文；
 <li><b>en</b>：英文。
@@ -949,7 +949,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td>PP-OCRv3模型</td>
-<td>PP-OCRv3模型支持以下语言。
+<td>PP-OCRv3模型支持以下语言列表。
 <details>
 <summary>语言列表</summary>
 <ul>
