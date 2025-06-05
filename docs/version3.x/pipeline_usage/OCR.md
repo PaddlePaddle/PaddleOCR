@@ -750,10 +750,10 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>ocr_version</code></td>
 <td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-</ul>如果不设置，将默认使用<code>PP-OCRv5</code>系列模型。
+<li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
+<li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
+<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型；
+</ul>如果不设置，将默认使用PP-OCRv5系列模型。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -926,10 +926,10 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <th>语种</th>
 </tr>
 <tr>
-<td><code>PP-OCRv5系列模型</code></td>
-<td><code>PP-OCRv5系列模型</code>支持以下语言列表。
+<td><code>PP-OCRv5模型</code></td>
+<td><code>PP-OCRv5模型</code>支持以下语言。
 <ul>
-<li><b>ch</b>：中文；
+<li><b>ch</b>：简体中文；
 <li><b>chinese_cht</b>：繁体中文；
 <li><b>en</b>：英文；
 <li><b>japan</b>：日文；
@@ -940,16 +940,16 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </ul></td>
 </tr>
 <tr>
-<td><code>PP-OCRv4系列模型</code></td>
-<td><code>PP-OCRv4系列模型</code>支持以下语言列表。
+<td>PP-OCRv4模型</td>
+<td><code>PP-OCRv4模型</code>支持以下语言。
 <ul>
-<li><b>ch</b>：中文；
+<li><b>ch</b>：简体中文；
 <li><b>en</b>：英文。
 </ul></td>
 </tr>
 <tr>
-<td><code>PP-OCRv3系列模型</code></td>
-<td><code>PP-OCRv3系列模型</code>支持以下语言列表。
+<td>PP-OCRv3模型</td>
+<td>PP-OCRv3模型支持以下语言。
 <details>
 <summary>语言列表</summary>
 <ul>
@@ -1258,10 +1258,10 @@ for res in result:
 <td><code>ocr_version</code></td>
 <td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用<code>PP-OCRv5</code>系列模型。
+<li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
+<li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
+<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用PP-OCRv5系列模型。
 </ur>
 </td>
 <td><code>str</code></td>

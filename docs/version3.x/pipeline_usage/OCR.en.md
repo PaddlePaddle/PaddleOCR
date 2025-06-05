@@ -749,10 +749,10 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <td><code>ocr_version</code></td>
 <td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
 <ul>
-<li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;
-<li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;
-<li><b>PP-OCRv3</b>: Use <code>PP-OCRv3</code> series models;
-</ul>If not set, <code>PP-OCRv5</code> series models will be used by default.
+<li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;
+<li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;
+<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models;
+</ul>If not set, PP-OCRv5 series models will be used by default.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -925,10 +925,10 @@ If `save_path` is specified, the visualization results will be saved under `save
 <th>Languages</th>
 </tr>
 <tr>
-<td><code>PP-OCRv5 Series Models</code></td>
-<td><code>PP-OCRv5 Series Models</code> support the following list of languages.
+<td>PP-OCRv5 Models</td>
+<td>PP-OCRv5 Models support the following languages.
 <ul>
-<li><b>ch</b>: Chinese;</li>
+<li><b>ch</b>: Simplified Chinese;</li>
 <li><b>chinese_cht</b>: Traditional Chinese;</li>
 <li><b>en</b>: English;</li>
 <li><b>japan</b>: Japanese;</li>
@@ -939,16 +939,16 @@ If `save_path` is specified, the visualization results will be saved under `save
 </ul></td>
 </tr>
 <tr>
-<td><code>PP-OCRv4 Series Models</code></td>
-<td><code>PP-OCRv4 Series Models</code> support the following list of languages.
+<td>PP-OCRv4 Models</td>
+<td>PP-OCRv4 Models support the following languages.
 <ul>
-<li><b>ch</b>: Chinese;</li>
+<li><b>ch</b>: Simplified Chinese;</li>
 <li><b>en</b>: English.</li>
 </ur></td>
 </tr>
 <tr>
-<td><code>PP-OCRv3 Series Models</code></td>
-<td><code>PP-OCRv3 Series Models</code> support the following list of languages.
+<td>PP-OCRv3 Models</td>
+<td>PP-OCRv3 Models support the following languages.
 <details>
 <summary>Language List</summary>
 <ul>
@@ -1256,10 +1256,10 @@ In the above Python script, the following steps are performed:
 <td><code>ocr_version</code></td>
 <td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
 <ul>
-<li><b>PP-OCRv5</b>: Use <code>PP-OCRv5</code> series models;</li>
-<li><b>PP-OCRv4</b>: Use <code>PP-OCRv4</code> series models;</li>
-<li><b>PP-OCRv3</b>: Use <code>PP-OCRv3</code> series models;</li>
-<li><b>None</b>: If set to <code>None</code>, <code>PP-OCRv5</code> series models will be used by default.</li>
+<li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;</li>
+<li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;</li>
+<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models;</li>
+<li><b>None</b>: If set to <code>None</code>, PP-OCRv5 series models will be used by default.</li>
 </ul>
 </td>
 <td><code>str</code></td>
