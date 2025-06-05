@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# Seal Text Recognition Pipeline Tutorial
+# Seal Text Recognition Pipeline Usage Tutorial
 
 ## 1. Introduction to Seal Text Recognition Pipeline
 Seal text recognition is a technology that automatically extracts and recognizes the content of seals from documents or images. The recognition of seal text is part of document processing and has many applications in various scenarios, such as contract comparison, warehouse entry and exit review, and invoice reimbursement review.
@@ -764,13 +764,13 @@ The name of the layout detection model. If not set, the default model in pipelin
 </tr>
 <tr>  
 <td><code>use_doc_orientation_classify</code></td>  
-<td>Whether to load and use document orientation classification. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use document orientation classification module. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>  
 <tr>  
 <td><code>use_doc_unwarping</code></td>  
-<td>Whether to load and use text image correction. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
+<td>Whether to load and use text image correction module. If not set, defaults to pipeline initialization value (<code>True</code>).</td>  
 <td><code>bool</code></td>  
 <td></td>  
 </tr>   
@@ -783,22 +783,20 @@ Whether to load and use the layout detection module. If not set, the parameter w
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Threshold for layout detection, used to filter out predictions with low confidence.
-Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2. If not set, the default PaddleX official model configuration will be used.
+<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to load and use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If not set, the default configuration of the official model will be used.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>The scaling factor for the side length of the detection boxes in layout region detection.
-A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1. If not set, the default PaddleX official model configuration will be used.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -810,7 +808,7 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
-</ul>If not set, the default PaddleX official model configuration will be used.
+</ul>If not set, the default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -826,7 +824,7 @@ Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
+Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -834,7 +832,7 @@ Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>. If not set, default is <code>0.2</code>.
+any float > <code>0</code>. If not set, the default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -842,7 +840,7 @@ any float > <code>0</code>. If not set, default is <code>0.2</code>.
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>. If not set, default is <code>0.6</code>.
+any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -850,7 +848,7 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-Any float > <code>0</code>. If not set, default is <code>0.5</code>.
+Any float > <code>0</code>. If not set, the default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -858,14 +856,14 @@ Any float > <code>0</code>. If not set, default is <code>0.5</code>.
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>Recognition score threshold. Text results above this value will be kept.
-Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers.
+<td>The device used for inference. Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
@@ -1071,25 +1069,44 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Same as the parameter used during initialization.</td>
+<td>Score threshold for the layout model.
+<ul>
+<li><b>float</b>: Any float between <code>0-1</code>;</li>
+<li><b>dict</b>: <code>{0:0.1}</code> where the key is the class ID and the value is the threshold for that class;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>.</li>
+</ul>
+</td>
 <td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Same as the parameter used during initialization.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Same as the parameter used during initialization.</td>
+<td>Expansion ratio for the bounding boxes from the layout detection model.
+<ul>
+<li><b>float</b>: Any float greater than <code>0</code>;</li>
+<li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
+<li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
+</ul>
+</td>
 <td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Same as the parameter used during initialization.</td>
+<td>Filtering method for overlapping boxes in layout detection.
+<ul>
+<li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
+<li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default value <code>large</code>.</li>
+</ul>
+</td>
 <td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1161,7 +1178,7 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying device ID.
+<td>Device used for inference. Supports specifying device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means using GPU 0;</li>
