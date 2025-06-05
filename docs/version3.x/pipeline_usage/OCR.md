@@ -664,25 +664,25 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向功能。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的最大边长度限制。
+<td>文本检测的图像边长限制。
 大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。
 </td>
 <td><code>int</code></td>
@@ -741,28 +741,18 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>lang</code></td>
 <td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-</ul>如果不设置，将默认使用<code>ch</code>。
+请查看下方的详细语言列表。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本。
+<td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-</ul>如果不设置，将默认使用<code>PP-OCRv5</code>系列模型。
+<li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
+<li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
+<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -839,7 +829,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -927,6 +917,125 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
+<details><summary><b>支持的语言列表</b></summary>
+<table>
+<thead>
+<tr>
+<th><code>ocr_version</code></th>
+<th>语种</th>
+</tr>
+<tr>
+<td>PP-OCRv5</td>
+<td>PP-OCRv5支持以下语言：
+<ul>
+<li><b>ch</b>：简体中文；
+<li><b>chinese_cht</b>：繁体中文；
+<li><b>en</b>：英文；
+<li><b>japan</b>：日文；
+<li><b>korean</b>：韩文；
+<li><b>te</b>：泰卢固文；
+<li><b>ka</b>：卡纳达文；
+<li><b>ta</b>：泰米尔文。
+</ul></td>
+</tr>
+<tr>
+<td>PP-OCRv4</td>
+<td>PP-OCRv4支持以下语言：
+<ul>
+<li><b>ch</b>：简体中文；
+<li><b>en</b>：英文。
+</ul></td>
+</tr>
+<tr>
+<td>PP-OCRv3</td>
+<td>PP-OCRv3支持以下语言：
+<details>
+<summary>语言列表</summary>
+<ul>
+<li><b>af</b>：南非荷兰文；
+<li><b>az</b>：阿塞拜疆文；
+<li><b>bs</b>：波斯尼亚文；
+<li><b>cs</b>：捷克文；
+<li><b>cy</b>：威尔士文；
+<li><b>da</b>：丹麦文；
+<li><b>de</b>：德文；
+<li><b>es</b>：西班牙文；
+<li><b>et</b>：爱沙尼亚文；
+<li><b>fr</b>：法文；
+<li><b>ga</b>：爱尔兰文；
+<li><b>hr</b>：克罗地亚文；
+<li><b>hu</b>：匈牙利文；
+<li><b>id</b>：印度尼西亚文；
+<li><b>is</b>：冰岛文；
+<li><b>it</b>：意大利文；
+<li><b>ku</b>：库尔德文；
+<li><b>la</b>：拉丁文；
+<li><b>lt</b>：立陶宛文；
+<li><b>lv</b>：拉脱维亚文；
+<li><b>mi</b>：毛利文；
+<li><b>ms</b>：马来文；
+<li><b>mt</b>：马耳他文；
+<li><b>nl</b>：荷兰文；
+<li><b>no</b>：挪威文；
+<li><b>oc</b>：奥克文；
+<li><b>pi</b>：帕利亚文；
+<li><b>pl</b>：波兰文；
+<li><b>pt</b>：葡萄牙文；
+<li><b>ro</b>：罗马尼亚文；
+<li><b>rs_latin</b>：塞尔维亚文（latin）；
+<li><b>sk</b>：斯洛伐克文；
+<li><b>sl</b>：斯洛文尼亚文；
+<li><b>sq</b>：阿尔巴尼亚文；
+<li><b>sv</b>：瑞典文；
+<li><b>sw</b>：斯瓦希里文；
+<li><b>tl</b>：塔加洛文；
+<li><b>tr</b>：土耳其文；
+<li><b>uz</b>：乌兹别克文；
+<li><b>vi</b>：越南文；
+<li><b>french</b>：法文；
+<li><b>german</b>：德文；
+<li><b>ar</b>：阿拉伯文；
+<li><b>fa</b>：波斯文；
+<li><b>ug</b>：维吾尔文；
+<li><b>ur</b>：乌尔都文；
+<li><b>ru</b>：俄罗斯文；
+<li><b>rs_cyrillic</b>：塞尔维亚文(cyrillic)；
+<li><b>be</b>：白俄罗斯文；
+<li><b>bg</b>：保加利亚文；
+<li><b>uk</b>：乌克兰文；
+<li><b>mn</b>：蒙古文；
+<li><b>abq</b>：阿巴扎文；
+<li><b>ady</b>：阿迪赫文；
+<li><b>kbd</b>：卡巴尔达文；
+<li><b>ava</b>：阿瓦尔文；
+<li><b>dar</b>：达尔金文；
+<li><b>inh</b>：印古什文；
+<li><b>che</b>：车臣文；
+<li><b>lbe</b>：拉克文；
+<li><b>lez</b>：莱兹甘文；
+<li><b>tab</b>：塔巴萨兰文；
+<li><b>hi</b>：印地文；</li>
+<li><b>mr</b>：马拉地文；</li>
+<li><b>ne</b>：尼泊尔文；</li>
+<li><b>bh</b>：比哈尔文；</li>
+<li><b>mai</b>：迈蒂利文；</li>
+<li><b>ang</b>：昂加文；</li>
+<li><b>bho</b>：孟加拉文；</li>
+<li><b>mah</b>：摩揭陀文；</li>
+<li><b>sck</b>：那格浦尔文；</li>
+<li><b>new</b>：尼瓦尔文；</li>
+<li><b>gom</b>：保加利亚文；</li>
+<li><b>sa</b>：梵文；</li>
+<li><b>bgc</b>：哈里亚纳文。</li>
+</ul>
+</details></td>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</details>
+<br />
 
 ### 2.2 Python脚本方式集成
 
@@ -1045,28 +1154,28 @@ for res in result:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向功能。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的最大边长度限制。
+<td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
 </ur>
 </td>
 <td><code>int</code></td>
@@ -1077,7 +1186,7 @@ for res in result:
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1088,7 +1197,7 @@ for res in result:
 <td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1098,7 +1207,7 @@ for res in result:
 <td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>将默认使用产线初始化的该参数值 <code>0.6</code>。
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
 <td><code>float</code></td>
 <td><code>None</code></td>
@@ -1139,30 +1248,18 @@ for res in result:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-<ul>
-<li><b>ch</b>：中文；
-<li><b>en</b>：英文；
-<li><b>korean</b>：韩文；
-<li><b>japan</b>：日文；
-<li><b>chinese_cht</b>：繁体中文；
-<li><b>te</b>：泰卢固文；
-<li><b>ka</b>：卡纳达文；
-<li><b>ta</b>：泰米尔文；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用<code>ch</code>。
-</ur>
+<td>使用指定语言的 OCR 模型。请查看上方的详细列表。
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 版本。
+<td>OCR 版本，注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>。
 <ul>
-<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；
-<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；
-<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；
-<li><b>None</b>：如果设置为<code>None</code>， 将默认使用<code>PP-OCRv5</code>系列模型。
+<li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
+<li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
+<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型；
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1170,7 +1267,7 @@ for res in result:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -1373,7 +1470,7 @@ for res in result:
       <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
         <ul>
           <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
-          <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类功能</li>
+          <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类模块</li>
         </ul>
       </li>
       <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
@@ -1433,7 +1530,7 @@ for res in result:
 
 <ul>
   <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-  <li><code>img</code> 属性返回的预测结果是一个字典类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 <code>ocr_res_img</code>。</li>
+  <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中只包含 <code>ocr_res_img</code>。</li>
 </ul>
 
 </details>
@@ -1834,7 +1931,7 @@ paddleocr ocr --paddlex_config PaddleOCR.yaml ...
 
 4.在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import PaddleOCR
