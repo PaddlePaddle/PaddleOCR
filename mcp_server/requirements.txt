@@ -1,0 +1,14 @@
+fastmcp>=2.0.0
+
+# 图像处理依赖
+numpy
+Pillow
+
+# 本地OCR模式依赖（可选）
+# 如果只使用API模式，可以不安装
+paddleocr>=3.0.0
+
+# PaddleOCR运行时依赖（本地模式需要）
+opencv-python
+pyyaml
+requests
