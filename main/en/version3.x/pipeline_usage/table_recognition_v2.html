@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#general-table-recognition-v2-production-line-user-guide" class="md-skip">
+        <a href="#general-table-recognition-v2-pipeline-usage-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -1857,9 +1857,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-introduction-to-general-table-recognition-v2-production-line" class="md-nav__link">
+  <a href="#1-introduction-to-general-table-recognition-v2-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Introduction to General Table Recognition v2 Production Line
+      1. Introduction to General Table Recognition v2 pipeline
     </span>
   </a>
   
@@ -3117,9 +3117,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-introduction-to-general-table-recognition-v2-production-line" class="md-nav__link">
+  <a href="#1-introduction-to-general-table-recognition-v2-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Introduction to General Table Recognition v2 Production Line
+      1. Introduction to General Table Recognition v2 pipeline
     </span>
   </a>
   
@@ -3247,13 +3247,13 @@ You're not viewing the latest version.
   
 
 
-<h1 id="general-table-recognition-v2-production-line-user-guide">General Table Recognition v2 Production Line User Guide<a class="headerlink" href="#general-table-recognition-v2-production-line-user-guide" title="Permanent link">&para;</a></h1>
-<h2 id="1-introduction-to-general-table-recognition-v2-production-line">1. Introduction to General Table Recognition v2 Production Line<a class="headerlink" href="#1-introduction-to-general-table-recognition-v2-production-line" title="Permanent link">&para;</a></h2>
+<h1 id="general-table-recognition-v2-pipeline-usage-tutorial">General Table Recognition V2 Pipeline Usage Tutorial<a class="headerlink" href="#general-table-recognition-v2-pipeline-usage-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduction-to-general-table-recognition-v2-pipeline">1. Introduction to General Table Recognition v2 pipeline<a class="headerlink" href="#1-introduction-to-general-table-recognition-v2-pipeline" title="Permanent link">&para;</a></h2>
 <p>Table recognition is a technology that automatically identifies and extracts table content and its structure from documents or images. It is widely used in fields such as data entry, information retrieval, and document analysis. By using computer vision and machine learning algorithms, table recognition can convert complex table information into an editable format, making it easier for users to further process and analyze data.</p>
-<p>The General Table Recognition v2 Production Line (PP-TableMagic) is designed to tackle table recognition tasks, identifying tables in images and outputting them in HTML format. Unlike the original General Table Recognition Production Line, this version introduces two new modules: table classification and table cell detection. By adopting a <b>multi-model pipeline combining "table classification + table structure recognition + cell detection"</b>, it achieves better end-to-end table recognition performance compared to the previous version. Based on this, the General Table Recognition v2 Production Line <b>natively supports targeted model fine-tuning</b>, allowing developers to customize it to varying degrees for satisfactory performance in different application scenarios. <b>Furthermore, the General Table Recognition v2 Production Line also supports end-to-end table structure recognition models (e.g., SLANet, SLANet_plus, etc.) and allows independent configuration for wired and wireless table recognition methods, enabling developers to freely select and combine the best table recognition solutions.</b></p>
+<p>The General Table Recognition v2 pipeline (PP-TableMagic) is designed to tackle table recognition tasks, identifying tables in images and outputting them in HTML format. Unlike the original General Table Recognition pipeline, this version introduces two new modules: table classification and table cell detection. By adopting a <b>multi-model pipeline combining "table classification + table structure recognition + cell detection"</b>, it achieves better end-to-end table recognition performance compared to the previous version. Based on this, the General Table Recognition v2 pipeline <b>natively supports targeted model fine-tuning</b>, allowing developers to customize it to varying degrees for satisfactory performance in different application scenarios. <b>Furthermore, the General Table Recognition v2 pipeline also supports end-to-end table structure recognition models (e.g., SLANet, SLANet_plus, etc.) and allows independent configuration for wired and wireless table recognition methods, enabling developers to freely select and combine the best table recognition solutions.</b></p>
 <p>This pipeline is applicable in a variety of fields, including general, manufacturing, finance, and transportation. It also provides flexible service deployment options, supporting multiple programming languages on various hardware. Additionally, it offers capabilities for secondary development, allowing you to train and fine-tune your own datasets based on this pipeline, with the trained models seamlessly integrated.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/01.png"/></p>
-<p><b>The General Table Recognition Production Line v2 includes the following 8 modules. Each module can be trained and inferred independently and contains multiple models. For detailed information, please click on the corresponding module to view the documentation.</b></p>
+<p><b>The General Table Recognition Pipeline v2 includes the following 8 modules. Each module can be trained and inferred independently and contains multiple models. For detailed information, please click on the corresponding module to view the documentation.</b></p>
 <ul>
 <li><a href="../module_usage/table_structure_recognition.html">Table Structure Recognition Module</a></li>
 <li><a href="../module_usage/table_classification.html">Table Classification Module</a></li>
@@ -4263,7 +4263,7 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Supports specifying a specific card number.
+<td>The device used for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
@@ -4604,7 +4604,7 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Supports specifying a specific card number.
+<td>The device used for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
@@ -5437,7 +5437,7 @@ You can call the <code>export_paddlex_config_to_yaml method</code> of the TableR
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 03:24:31 UTC">June 5, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 09:43:57 UTC">June 5, 2025</span>
   </span>
 
     
@@ -5447,7 +5447,7 @@ You can call the <code>export_paddlex_config_to_yaml method</code> of the TableR
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 03:24:31 UTC">June 5, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 09:43:57 UTC">June 5, 2025</span>
   </span>
 
     

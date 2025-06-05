@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pp-structurev3-production-line-user-guide" class="md-skip">
+        <a href="#pp-structurev3-pipeline-usage-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -976,9 +976,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-introduction-to-pp-structurev3-production-line" class="md-nav__link">
+  <a href="#1-introduction-to-pp-structurev3-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Introduction to PP-StructureV3 Production Line
+      1. Introduction to PP-StructureV3 Pipeline
     </span>
   </a>
   
@@ -3135,9 +3135,9 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-introduction-to-pp-structurev3-production-line" class="md-nav__link">
+  <a href="#1-introduction-to-pp-structurev3-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Introduction to PP-StructureV3 Production Line
+      1. Introduction to PP-StructureV3 Pipeline
     </span>
   </a>
   
@@ -3283,9 +3283,9 @@ You're not viewing the latest version.
   
 
 
-<h1 id="pp-structurev3-production-line-user-guide">PP-StructureV3 Production Line User Guide<a class="headerlink" href="#pp-structurev3-production-line-user-guide" title="Permanent link">&para;</a></h1>
-<h2 id="1-introduction-to-pp-structurev3-production-line">1. Introduction to PP-StructureV3 Production Line<a class="headerlink" href="#1-introduction-to-pp-structurev3-production-line" title="Permanent link">&para;</a></h2>
-<p>Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 production line by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This production line also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.</p>
+<h1 id="pp-structurev3-pipeline-usage-tutorial">PP-StructureV3 Pipeline Usage Tutorial<a class="headerlink" href="#pp-structurev3-pipeline-usage-tutorial" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduction-to-pp-structurev3-pipeline">1. Introduction to PP-StructureV3 Pipeline<a class="headerlink" href="#1-introduction-to-pp-structurev3-pipeline" title="Permanent link">&para;</a></h2>
+<p>Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 pipeline by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This pipeline also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.</p>
 <p><b>PP-StructureV3</b> includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.</p>
 <ul>
 <li><a href="../module_usage/layout_detection.html">Layout Detection Module</a></li>
@@ -4248,28 +4248,31 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model.
-.any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
+<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to apply NMS post-processing for layout detection model.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, default is <code>1.0</code>.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merge mode for overlapping boxes in layout detection.
-<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both. If not set, default is <code>large</code>.
+<td>The merging mode for the detection boxes output by the model in layout region detection.
+<ul>
+<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
+<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
+<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
+</ul>If not set, the default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -4342,7 +4345,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
+<td>Image side length limitation for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -4358,7 +4361,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
-. If not set, default is <code>0.3</code>.
+. If not set, the default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4366,7 +4369,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
-Any float > <code>0</code>. If not set, default is <code>0.6</code>.
+Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4374,7 +4377,7 @@ Any float > <code>0</code>. If not set, default is <code>0.6</code>.
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-any float > <code>0</code>. If not set, default is <code>2.0</code>.
+any float > <code>0</code>. If not set, the default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4393,7 +4396,7 @@ any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>Batch size for the text line orientation model. If not set, default is <code>1</code>.</td>
+<td>Batch size for the text line orientation model. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -4411,14 +4414,14 @@ any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for text recognition. If not set, default is <code>1</code>.</td>
+<td>Batch size for text recognition. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Score threshold for text recognition. Only results above this value will be kept.
-Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4506,7 +4509,7 @@ Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -4514,7 +4517,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>. If not set, default is <code>0.2</code>.
+any float > <code>0</code>. If not set, the default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4522,14 +4525,14 @@ any float > <code>0</code>. If not set, default is <code>0.2</code>.
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>. If not set, default is <code>0.6</code>.
+any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, default is <code>0.5</code>.
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, the default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4548,13 +4551,13 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size for seal text recognition. If not set, default is <code>1</code>.</td>
+<td>Batch size for seal text recognition. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
+<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4579,57 +4582,57 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use document orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document orientation classification module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use document unwarping. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document unwarping module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the text line orientation classification module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to load and use table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use table recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to load and use formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart recognition sub-production line. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the chart recognition sub-pipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection production line. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the document region detection pipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference. You can specify a device ID.
+<td>Device for inference. You can specify a device ID:
 <ul>
-<li><b>CPU</b>: e.g., <code>cpu</code></li>
+<li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means GPU 0</li>
 <li><b>NPU</b>: e.g., <code>npu:0</code> means NPU 0</li>
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means XPU 0</li>
@@ -4809,7 +4812,7 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing for the layout detection model.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -4906,7 +4909,7 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
+<td>Image side length limitation for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>.</li>
@@ -5195,43 +5198,43 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to use the text line orientation classification. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable table recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying device ID.
+<td>Device used for inference. Supports specifying device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means using GPU 0;</li>
@@ -5353,13 +5356,13 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -6286,7 +6289,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 03:24:31 UTC">June 5, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 09:43:57 UTC">June 5, 2025</span>
   </span>
 
     
@@ -6296,7 +6299,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 03:24:31 UTC">June 5, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 5, 2025 09:43:57 UTC">June 5, 2025</span>
   </span>
 
     

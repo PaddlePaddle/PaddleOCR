@@ -4271,7 +4271,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -4609,7 +4609,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -4767,7 +4767,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>use_wired_table_cells_trans_to_html</code></td>
-<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>
+<td>是否在推理时使用有线表单元格检测结果直转HTML模式，启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -4893,7 +4893,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <li><code>boxes</code>: <code>(List[Dict])</code> 版面印章区域的检测框列表，每个列表中的元素，包含以下字段<ul>
 <li><code>cls_id</code>: <code>(int)</code> 检测框的印章类别id</li>
 <li><code>score</code>: <code>(float)</code> 检测框的置信度</li>
-<li><code>coordinate</code>: <code>(List[float])</code> 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标</li>
+<li><code>coordinate</code>: <code>(List[float])</code> 检测框的四个顶点坐标，顺序为x1，y1，x2，y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标</li>
 <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在</li>
 </ul>
 </li>
@@ -4972,7 +4972,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 <ul>
 <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-<li><code>img</code> 属性返回的预测结果是一个字典类型的数据。其中，键分别为 <code>table_res_img</code>、<code>ocr_res_img</code> 、<code>layout_res_img</code> 和 <code>preprocessed_img</code>，对应的值是四个 <code>Image.Image</code> 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。</li>
+<li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>table_res_img</code>、<code>ocr_res_img</code> 、<code>layout_res_img</code> 和 <code>preprocessed_img</code>，对应的值是四个 <code>Image.Image</code> 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则dict中不包含对应的结果图像。</li>
 </ul>
 <h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <p>如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。</p>
@@ -5409,7 +5409,7 @@ for i, res in enumerate(result["tableRecResults"]):
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>paddleocr<span class="w"> </span>table_recognition_v2_pipeline<span class="w"> </span>--paddlex_config<span class="w"> </span>PaddleOCR.yaml<span class="w"> </span>...
 </span></code></pre></div>
 <p>4.在 Python API 中加载产线配置文件</p>
-<p>初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<p>初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableRecognitionPipelineV2</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">TableRecognitionPipelineV2</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;TableRecognitionPipelineV2.yaml&quot;</span><span class="p">)</span>
@@ -5436,7 +5436,7 @@ for i, res in enumerate(result["tableRecResults"]):
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月5日 03:24:31 UTC">2025年6月5日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月5日 09:43:57 UTC">2025年6月5日</span>
   </span>
 
     
@@ -5446,7 +5446,7 @@ for i, res in enumerate(result["tableRecResults"]):
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月5日 03:24:31 UTC">2025年6月5日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月5日 09:43:57 UTC">2025年6月5日</span>
   </span>
 
     
