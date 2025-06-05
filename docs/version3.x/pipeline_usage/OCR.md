@@ -741,7 +741,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>lang</code></td>
 <td>使用指定语言的 OCR 模型。
-请查看下方的详细语言列表，如果不设置，将默认使用<code>ch</code>。
+请查看下方的详细语言列表。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -752,8 +752,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <ul>
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
-<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型；
-</ul>如果不设置，将默认使用PP-OCRv5系列模型。
+<li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -830,7 +829,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -922,12 +921,12 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <table>
 <thead>
 <tr>
-<th><code>OCR_version</code></th>
+<th><code>ocr_version</code></th>
 <th>语种</th>
 </tr>
 <tr>
-<td>PP-OCRv5模型</td>
-<td>PP-OCRv5模型支持以下语言。
+<td>PP-OCRv5</td>
+<td>PP-OCRv5支持以下语言：
 <ul>
 <li><b>ch</b>：简体中文；
 <li><b>chinese_cht</b>：繁体中文；
@@ -940,16 +939,16 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </ul></td>
 </tr>
 <tr>
-<td>PP-OCRv4模型</td>
-<td>PP-OCRv4模型支持以下语言。
+<td>PP-OCRv4</td>
+<td>PP-OCRv4支持以下语言：
 <ul>
 <li><b>ch</b>：简体中文；
 <li><b>en</b>：英文。
 </ul></td>
 </tr>
 <tr>
-<td>PP-OCRv3模型</td>
-<td>PP-OCRv3模型支持以下语言列表。
+<td>PP-OCRv3</td>
+<td>PP-OCRv3支持以下语言：
 <details>
 <summary>语言列表</summary>
 <ul>
@@ -1249,7 +1248,7 @@ for res in result:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。请查看上方的详细列表，如果设置为<code>None</code>，将默认使用<code>ch</code>。
+<td>使用指定语言的 OCR 模型。请查看上方的详细列表。
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1261,7 +1260,6 @@ for res in result:
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
 <li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用PP-OCRv5系列模型。
 </ur>
 </td>
 <td><code>str</code></td>
@@ -1269,7 +1267,7 @@ for res in result:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>

@@ -740,7 +740,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use.Please refer to the detailed list of languages below.
+<td>OCR model language to use. Please refer to the detailed list of languages below.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -751,8 +751,8 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;
-<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models;
-</ul>If not set, PP-OCRv5 series models will be used by default.
+<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
+</ul>
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -829,7 +829,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference. Supports specifying a specific card number.
+<td>Device for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -925,8 +925,8 @@ If `save_path` is specified, the visualization results will be saved under `save
 <th>Languages</th>
 </tr>
 <tr>
-<td>PP-OCRv5 Models</td>
-<td>PP-OCRv5 Models support the following languages.
+<td>PP-OCRv5</td>
+<td>PP-OCRv5 support the following languages:
 <ul>
 <li><b>ch</b>: Simplified Chinese;</li>
 <li><b>chinese_cht</b>: Traditional Chinese;</li>
@@ -939,16 +939,16 @@ If `save_path` is specified, the visualization results will be saved under `save
 </ul></td>
 </tr>
 <tr>
-<td>PP-OCRv4 Models</td>
-<td>PP-OCRv4 Models support the following languages.
+<td>PP-OCRv4</td>
+<td>PP-OCRv4 support the following languages:
 <ul>
 <li><b>ch</b>: Simplified Chinese;</li>
 <li><b>en</b>: English.</li>
 </ur></td>
 </tr>
 <tr>
-<td>PP-OCRv3 Models</td>
-<td>PP-OCRv3 Models support the following languages.
+<td>PP-OCRv3</td>
+<td>PP-OCRv3 support the following languages:
 <details>
 <summary>Language List</summary>
 <ul>
@@ -1247,7 +1247,7 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use. Please refer to the detailed list of languages above. If set to <code>None</code>, <code>ch</code> will be used by default.
+<td>OCR model language to use. Please refer to the detailed list of languages above.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1258,8 +1258,7 @@ In the above Python script, the following steps are performed:
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;</li>
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;</li>
-<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models;</li>
-<li><b>None</b>: If set to <code>None</code>, PP-OCRv5 series models will be used by default.</li>
+<li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
 </ul>
 </td>
 <td><code>str</code></td>
@@ -1267,7 +1266,7 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference. Supports specifying a specific card number.
+<td>Device for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> for CPU inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> for inference on the 1st GPU;</li>

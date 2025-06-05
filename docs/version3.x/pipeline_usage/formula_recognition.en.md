@@ -565,7 +565,7 @@ The name of the formula recognition model. If not set, the default model from th
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -816,7 +816,7 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>

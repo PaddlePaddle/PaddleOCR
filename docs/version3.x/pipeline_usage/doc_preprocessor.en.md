@@ -200,7 +200,7 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers.
+<td>The device used for inference. Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
@@ -341,7 +341,7 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers.
+<td>The device used for inference. Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>

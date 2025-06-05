@@ -830,7 +830,7 @@ Any float > <code>0</code></li>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -1339,7 +1339,7 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying a specific card number.
+<td>Device used for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>

@@ -863,7 +863,7 @@ Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no thre
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers.
+<td>The device used for inference. Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference.</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference.</li>
@@ -1178,7 +1178,7 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying device ID.
+<td>Device used for inference. Supports specifying device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means using GPU 0;</li>
