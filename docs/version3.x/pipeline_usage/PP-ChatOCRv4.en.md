@@ -1,4 +1,7 @@
-# PP-ChatOCRv4-doc Pipeline Tutorial
+---
+comments: true
+---
+# PP-ChatOCRv4-doc Pipeline Usage Tutorial
 
 ## 1. Introduction to PP-ChatOCRv4-doc Pipeline
 PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution from PaddlePaddle, combining LLM, MLLM, and OCR technologies to address complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal recognition. Integrated with ERNIE Bot, it fuses massive data and knowledge, achieving high accuracy and wide applicability. This pipeline also provides flexible service deployment options, supporting deployment on various hardware. Furthermore, it offers custom development capabilities, allowing you to train and fine-tune models on your own datasets, with seamless integration of trained models.
@@ -535,7 +538,7 @@ Specify the path to save the inference results file. If not set, the inference r
 </tr>
 <tr>
 <td><code>invoke_mllm</code></td>
-<td>Whether to load and use a multimodal large model.</td>
+<td>Whether to load and use a multimodal large model. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -683,9 +686,7 @@ The name of the document orientation classification model. If not set, the defau
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Threshold for layout detection, used to filter out predictions with low confidence.
-Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2.
-If not set, the default PaddleX official model configuration will be used
+<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -693,16 +694,14 @@ If not set, the default PaddleX official model configuration will be used
 <tr>
 <td><code>layout_nms</code></td>
 <td>
-Whether to load and use NMS (Non-Maximum Suppression) post-processing for layout region detection to filter out overlapping boxes. If not set, the default configuration of the official model will be used.
+Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.
 </td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>
-The scaling factor for the side length of the detection boxes in layout region detection.
-A positive float number, e.g., 1.1, indicating that the center of the bounding box remains unchanged while the width and height are both scaled up by a factor of 1.1.If not set, the default PaddleX official model configuration will be used.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -714,14 +713,14 @@ A positive float number, e.g., 1.1, indicating that the center of the bounding b
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
 <li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
-</ul>If not set, the default PaddleX official model configuration will be used.
+</ul>If not set, the default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
+<td>Image side length limitation for text detection.
 Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>960</code>) will be used.
 </td>
 <td><code>int</code></td>
@@ -781,7 +780,7 @@ Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -790,14 +789,14 @@ supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
 Any float > <code>0</code></li>
-</ul>If not set, default is <code>0.2</code>.
+</ul>If not set, the default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.Any float > <code>0</code>. If not set, default is <code>0.6</code>.
+<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -805,7 +804,7 @@ Any float > <code>0</code></li>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>Expansion ratio for seal text detection. Higher value means larger expansion area.
-any float > <code>0</code>. If not set, default is <code>0.5</code>.
+any float > <code>0</code>. If not set, the default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -814,7 +813,7 @@ any float > <code>0</code>. If not set, default is <code>0.5</code>.
 <td><code>seal_rec_score_thresh</code></td>
 <td>Recognition score threshold. Text results above this value will be kept.
 Any float > <code>0</code></li>
-</ul>If not set, default is <code>0.0</code> (no threshold).
+</ul>If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -831,7 +830,7 @@ Any float > <code>0</code></li>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number.
+<td>The device used for inference. You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -1101,13 +1100,13 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the document orientation classification module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the document unwarping function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the document unwarping module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1134,15 +1133,16 @@ The relevant parameter descriptions are as follows:
 <td>Layout model score threshold.
 <ul>
 <li><b>float</b>: Any float between <code>0-1</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>0.5</code>);</li>
+<li><b>dict</b>: <code>{0:0.1}</code> where the key is the class ID and the value is the threshold for that class;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>.</li>
 </ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether the layout region detection model uses NMS post-processing.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1151,8 +1151,9 @@ The relevant parameter descriptions are as follows:
 <td>Expansion factor for the detection boxes of the layout region detection model.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>Tuple[float,float]</b>: Expansion factors in the horizontal and vertical directions respectively;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>1.0</code>).</li>
+<li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
+<li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>tuple</b> values, e.g., <code>{0: (1.1, 2.0)}</code> means width is expanded 1.1× and height 2.0× for class 0 boxes;</li>
+<li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict</code></td>
@@ -1172,7 +1173,7 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
+<td>Image side length limitation for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>).</li>
@@ -1338,7 +1339,7 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying a specific card number.
+<td>Device used for inference. Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
