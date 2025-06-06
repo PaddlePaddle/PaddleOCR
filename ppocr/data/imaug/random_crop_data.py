@@ -156,11 +156,14 @@ class EastRandomCropData(object):
         scale = min(scale_w, scale_h)
         h = int(crop_h * scale)
         w = int(crop_w * scale)
+        mask = None
         if self.keep_ratio:
             padimg = np.zeros((self.size[1], self.size[0], img.shape[2]), img.dtype)
+            mask = np.zeros((self.size[1], self.size[0]), img.dtype)
             padimg[:h, :w] = cv2.resize(
                 img[crop_y : crop_y + crop_h, crop_x : crop_x + crop_w], (w, h)
             )
+            mask[:h, :w] = 1 # mask the padding area
             img = padimg
         else:
             img = cv2.resize(
@@ -181,6 +184,7 @@ class EastRandomCropData(object):
         data["polys"] = np.array(text_polys_crop)
         data["ignore_tags"] = ignore_tags_crop
         data["texts"] = texts_crop
+        data["crop_mask"] = mask
         return data
 
 
