@@ -150,7 +150,7 @@ The detection visualized image saved in ./test_img_result.jpg
 15      发足够的滋养    0.998037
 ``` 
 
-![预测结果](../../../../docs_img/ocr/PP-OCRv5_mobile.jpg)
+![预测结果](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipeline_deploy/edge_PP-OCRv5_mobile.jpg)
 
 ## 代码介绍
 
