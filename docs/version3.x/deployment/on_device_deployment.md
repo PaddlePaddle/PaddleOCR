@@ -7,6 +7,7 @@
 - [工程详解](#工程详解)
 - [进阶使用](#进阶使用)
   - [更新预测库](#更新预测库) 
+  - [更新预测库](#转换-nb-模型) 
   - [更新模型、标签文件和预测图片](#更新模型标签文件和预测图片)
     - [更新模型](#更新模型)
     - [更新标签文件](#更新标签文件)
@@ -263,11 +264,19 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
 ## 进阶使用
 
 如果快速开始部分无法满足你的需求，可以参考本节对 demo 进行自定义修改。
-本节主要包含两部分： 更新预测库，更新模型、输入和输出预处理。
+
+本节主要包含四部分： 
+
+- 更新预测库；
+- 转换 `.nb` 模型；
+- 更新模型、标签文件和预测图片；
+- 更新输入/输出预处理。
 
 ### 更新预测库
 
-本指南所使用的预测库为最新版本（214rc），若需使用其他版本，可参考如下步骤：
+本指南所使用的预测库为最新版本（214rc），不推荐自行更新预测库。
+
+若有使用其他版本的需求，可参考如下步骤更新预测库：
 
 * Paddle Lite 项目：https://github.com/PaddlePaddle/Paddle-Lite
   * 参考 [Paddle Lite 源码编译文档](https://www.paddlepaddle.org.cn/lite/develop/source_compile/compile_env.html)，编译 Android 预测库
@@ -279,6 +288,59 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
           将生成的 `build.lite.android.armv7.gcc/inference_lite_lib.android.armv7/cxx/libs/libpaddle_lite_api_shared.so` 库替换 demo 中的 `PaddleX-Lite-Deploy/libs/android/cxx/libs/armeabi-v7a/libpaddle_lite_api_shared.so`
         * arm64-v8a
           将生成的 `build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/cxx/libs/libpaddle_lite_api_shared.so` 库替换 demo 中的 `PaddleX-Lite-Deploy/libs/android/cxx/libs/arm64-v8a/libpaddle_lite_api_shared.so`
+
+### 转换 .nb 模型
+
+若想使用自己训练的模型，可先参考以下流程得到 `.nb` 模型。
+
+#### 终端命令方法（支持Mac/Ubuntu）
+
+1. 进入Paddle-Lite Github仓库的[release界面](https://github.com/PaddlePaddle/Paddle-Lite/releases)，选择所需版本下载对应的转化工具opt（推荐使用最新版本）。
+
+2. 下载 opt 工具后，执行以下命令（此处以 2.14rc 版本的 linux_x86 opt 工具转换 PP-OCRv5_mobile_det 模型为例）：
+
+    ```bash
+    ./opt_linux_x86 \
+      --model_file=PP-OCRv5_mobile_det/inference.pdmodel \
+      --param_file=PP-OCRv5_mobile_det/inference.pdiparams \
+      --optimize_out=PP-OCRv5_mobile_det \
+      --valid_targets=arm
+    ```
+
+有关使用终端命令方法转换 `.nb` 模型的详细介绍，可参考 Paddle-Lite 仓库的[使用可执行文件 opt](https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/opt/opt_bin.html)。
+
+### python 脚本方法（支持Windows/Mac/Ubuntu）
+
+1. 安装最新版本的 paddlelite wheel 包。
+
+    ```bash
+    pip install --pre paddlelite
+    ```
+
+2. 使用 python 脚本进行模型转换。以下为转换 PP-OCRv5_mobile_det 模型的示例代码：
+
+    ```python
+    from paddlelite.lite import Opt
+
+    # 1. 创建opt实例
+    opt = Opt()
+    # 2. 指定输入模型地址 
+    opt.set_model_file("./PP-OCRv5_mobile_det/inference.pdmodel")
+    opt.set_param_file("./PP-OCRv5_mobile_det/inference.pdiparams")
+    # 3. 指定转化类型
+    opt.set_valid_places("arm")
+    # 4. 指定输出模型地址
+    opt.set_optimize_out("./PP-OCRv5_mobile_det")
+    # 5. 执行模型优化
+    opt.run()
+    ```
+
+有关使用 python 脚本方法转换 `.nb` 模型的详细介绍，可参考 Paddle-Lite 仓库的[使用 Python 脚本 opt](https://www.paddlepaddle.org.cn/lite/v2.12/api_reference/python_api/opt.html)。
+
+**注意**
+
+- 有关模型优化工具 opt 的详细介绍，可参考 Paddle-Lite 仓库的[模型优化工具 opt](https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/model_optimize_tool.html)
+- 目前仅支持将 `.pdmodel` 格式的静态图模型转换为 `.nb` 格式。
 
 ### 更新模型、标签文件和预测图片
 
