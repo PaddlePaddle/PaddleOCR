@@ -1,3 +1,4 @@
+import ast
 # -*- coding: utf-8 -*-
 # @Time    : 2019/12/4 13:12
 # @Author  : zhoujun
@@ -40,7 +41,7 @@ class BaseDataSet(Dataset):
                 else:
                     args = aug["args"]
                 if isinstance(args, dict):
-                    cls = eval(aug["type"])(**args)
+                    cls = ast.literal_eval(aug["type"])(**args)
                 else:
                     cls = eval(aug["type"])(args)
                 self.aug.append(cls)
