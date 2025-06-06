@@ -1409,7 +1409,7 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN.
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
@@ -2024,7 +2024,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
