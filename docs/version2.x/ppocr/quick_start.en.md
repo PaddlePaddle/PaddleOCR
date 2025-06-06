@@ -15,13 +15,13 @@ comments: true
 - If you have CUDA 11 installed on your machine, please run the following command to install
 
   ```bash linenums="1"
-  pip install paddlepaddle-gpu
+  pip install "paddlepaddle-gpu<=2.6"
   ```
 
 - If you have no available GPU on your machine, please run the following command to install the CPU version
 
   ```bash linenums="1"
-  python -m pip install paddlepaddle
+  python -m pip install "paddlepaddle<=2.6"
   ```
 
 For more software version requirements, please refer to the instructions in [Installation Document](https://www.paddlepaddle.org.cn/en/install/quick) for operation.
