@@ -38,16 +38,16 @@ This document will briefly introduce how to use the multilingual model.
 
 ```bash linenums="1"
 # cpu
-pip install paddlepaddle
+pip install "paddlepaddle<=2.6"
 
 # gpu
-pip install paddlepaddle-gpu
+pip install "paddlepaddle-gpu<=2.6"
 ```
 
 ### 1.2 PaddleOCR package installation
 
 ```bash linenums="1"
-pip install paddleocr
+pip install "paddleocr<3.0"
 ```
 
 Build and install locally

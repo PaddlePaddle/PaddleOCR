@@ -55,7 +55,9 @@ public:
         if (config["Global"] && config["Global"]["model_name"]) {
           model_name = config["Global"]["model_name"].as<std::string>();
         }
-        if (!model_name.empty()) {
+        if (!model_name.empty() &&
+            model_name != "PP-LCNet_x0_25_textline_ori" &&
+            model_name != "PP-LCNet_x1_0_textline_ori") {
           std::cerr << "Error: " << model_name << " is currently not supported."
                     << std::endl;
           std::exit(EXIT_FAILURE);

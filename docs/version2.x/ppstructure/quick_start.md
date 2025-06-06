@@ -13,19 +13,19 @@ comments: true
 - CUDA11.8 的 PaddlePaddle
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+  python3 -m pip install "paddlepaddle-gpu<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
   ```
 
 -  CUDA12.3 的 PaddlePaddle
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+  python3 -m pip install "paddlepaddle-gpu<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+  python3 -m pip install "paddlepaddle<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
@@ -33,7 +33,7 @@ comments: true
 ### 1.2 安装PaddleOCR whl包
 
 ```bash linenums="1"
-python3 -m pip install paddleocr
+python3 -m pip install "paddleocr<3.0"
 
 # 安装 图像方向分类依赖包paddleclas（如不需要图像方向分类功能，可跳过）
 python3 -m pip install paddleclas
