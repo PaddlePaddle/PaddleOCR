@@ -228,7 +228,7 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-是否启用MKL-DNN加速库。<br/>
+是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
