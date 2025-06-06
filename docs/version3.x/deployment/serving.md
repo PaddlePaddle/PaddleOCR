@@ -72,11 +72,11 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </tr>
 <tr>
 <td><code>--use_hpip</code></td>
-<td>如果指定，则使用高性能推理。</td>
+<td>如果指定，则使用高性能推理。请参考高性能推理文档了解更多信息。</td>
 </tr>
 <tr>
 <td><code>--hpi_config</code></td>
-<td>高性能推理配置。请参考 <a href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22">PaddleX 高性能推理指南</a> 了解更多信息。</td>
+<td>高性能推理配置。请参考高性能推理文档了解更多信息。</td>
 </tr>
 </tbody>
 </table>
