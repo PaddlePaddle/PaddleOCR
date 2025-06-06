@@ -72,11 +72,11 @@ The command-line options related to serving are as follows:
 </tr>
 <tr>
 <td><code>--use_hpip</code></td>
-<td>If specified, uses high-performance inference. Refer to the <a href="./high_performance_inference.en.md">High-Performance Inference documentation</a> for more information.</td>
+<td>If specified, uses high-performance inference. Refer to the High-Performance Inference documentation for more information.</td>
 </tr>
 <tr>
 <td><code>--hpi_config</code></td>
-<td>High-performance inference configuration. Refer to the <a href="./high_performance_inference.en.md">High-Performance Inference documentation</a> for more information.</td>
+<td>High-performance inference configuration. Refer to the High-Performance Inference documentation for more information.</td>
 </tr>
 </tbody>
 </table>
