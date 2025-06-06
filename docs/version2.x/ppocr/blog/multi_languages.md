@@ -36,10 +36,10 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 
 ```bash linenums="1"
 # cpu
-pip install paddlepaddle
+pip install "paddlepaddle<=2.6"
 
 # gpu
-pip install paddlepaddle-gpu
+pip install "paddlepaddle-gpu<=2.6"
 ```
 
 ### 1.2 paddleocr package 安装
@@ -47,7 +47,7 @@ pip install paddlepaddle-gpu
 pip 安装
 
 ```bash linenums="1"
-pip install paddleocr
+pip install "paddleocr<3.0"
 ```
 
 本地构建并安装
