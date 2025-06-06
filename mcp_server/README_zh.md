@@ -1,144 +1,150 @@
-# PaddleOCR MCP Server v2.0
+# PaddleOCR MCP 服务器
 
-强大的 MCP (Model Context Protocol) 服务器，支持三种 OCR 处理模式：
-- **本地模式**: 使用本地 PaddleOCR 库（离线、隐私保护）
-- **星河API模式**: 调用百度星河云端 API（高性能）
-- **本地服务模式**: 调用本地部署的 PaddleOCR 服务
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/mcp.svg)](https://pypi.org/project/mcp/)
+[![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
+[![OCR Engine](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 
-## 🚀 快速开始
+轻量级 MCP (Model Context Protocol) 服务器，为所有 MCP Host 提供强大的 OCR 和文档分析功能。
 
-### 1. 安装依赖
+**三种模式设计**：一套代码同时支持：
+1. **星河/AI Studio 服务**：云端 API 调用
+2. **本地服务化部署**：用户配置的 PaddleOCR 服务
+3. **本地直接运行**：Python 环境直接调用 PaddleOCR
+
+用户自主选择依赖管理策略，支持渐进式部署。
+
+提供两个核心工具：
+- `ocr_text(input_data)` - 文本识别，支持图像和 PDF
+- `analyze_structure(input_data)` - 文档结构分析
+
+输入支持：`http://`、`https://`、`file://`、`data:` URI，以及本地文件路径。
+
+## 安装
+
+### 基础安装（支持云端服务和本地服务化模式）
 
 ```bash
-# 克隆项目
-git clone <repository-url>
-cd mcp_server
-
-# 安装基础依赖
-pip install -r requirements.txt
-
-# 本地模式需要额外安装
-paddle paddle > 3.0.0
-paddleocr>=3.0.0
+pip install mcp httpx numpy pillow
 ```
 
-### 2. 配置 Claude Desktop 示例
+### 完整安装（支持本地直接运行模式）
 
-编辑配置文件:
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`  
-- **Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+```bash
+# 基础依赖
+pip install mcp httpx numpy pillow
 
-**将 `/absolute/path/to/PaddleOCR/mcp_server` 替换为实际项目路径**
+# PaddleOCR 本地库（用户自行安装）
+pip install paddlepaddle paddleocr opencv-python
+```
 
-#### 本地模式（离线处理）
+## 使用
+
+### STDIO 模式（默认）
+
+```bash
+python main.py
+```
+
+### HTTP 服务模式
+
+```bash
+python main.py --http --host 127.0.0.1 --port 3001
+```
+
+## MCP Host 配置
+
+### 星河/AI Studio 模式（推荐 - 快速开始）
 
 ```json
 {
   "mcpServers": {
     "paddleocr": {
       "command": "python",
-      "args": ["/absolute/path/to/PaddleOCR/mcp_server/main.py"],
-      "cwd": "/absolute/path/to/PaddleOCR/mcp_server"
-    }
-  }
-}
-```
-
-#### 星河API模式（云端处理）
-
-```json
-{
-  "mcpServers": {
-    "paddleocr-aistudio": {
-      "command": "python",
-      "args": ["/absolute/path/to/PaddleOCR/mcp_server/main.py"],
-      "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
+      "args": ["/absolute/path/to/main.py"],
+      "cwd": "/absolute/path/to/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "aistudio",
-        "PADDLEOCR_API_URL": "https://xxx.aistudio-hub.baidu.com/ocr",
-        "PADDLEOCR_API_TOKEN": "your_api_token_here"
+        "PADDLEOCR_MCP_OCR_SOURCE": "aistudio",
+        "PADDLEOCR_MCP_API_URL": "https://your-api-endpoint.com/ocr",
+        "PADDLEOCR_MCP_API_TOKEN": "your_token_here"
       }
     }
   }
 }
 ```
 
-获取API Token: [百度AI Studio](https://aistudio.baidu.com/index/accessToken)
-
-#### 本地服务模式
+### 本地服务化模式
 
 ```json
 {
   "mcpServers": {
-    "paddleocr-service": {
+    "paddleocr": {
       "command": "python",
-      "args": ["/absolute/path/to/PaddleOCR/mcp_server/main.py"],
-      "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
+      "args": ["/absolute/path/to/main.py"],
+      "cwd": "/absolute/path/to/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "local_service",
-        "PADDLEOCR_API_URL": "your_url_here"
+        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_API_URL": "http://your-service-host:8080/ocr"
       }
     }
   }
 }
 ```
 
-### 3. 重启 Claude Desktop
+### 本地直接运行模式
 
-## 🛠️ 可用工具
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "python", 
+      "args": ["/absolute/path/to/main.py"],
+      "cwd": "/absolute/path/to/mcp_server"
+    }
+  }
+}
+```
 
-### `ocr_text(input_path, output_mode="simple")`
-从图片和PDF中提取文字
+**重要**：将路径替换为实际的绝对路径。
 
-### `analyze_structure(input_path, output_mode="detailed")`
-分析文档结构（表格、公式、布局等）
+## 环境变量
 
-## 📋 输入支持
-- 文件路径: `/path/to/document.pdf`
-- URL地址: `https://example.com/image.jpg`  
-- Base64数据
+- `PADDLEOCR_MCP_OCR_SOURCE` - OCR 来源：`local`（默认）、`aistudio`、`user_service`
+- `PADDLEOCR_MCP_API_URL` - API 服务地址
+- `PADDLEOCR_MCP_API_TOKEN` - API 认证令牌
+- `PADDLEOCR_MCP_TIMEOUT` - 超时时间（秒，默认 30）
 
-## 📊 输出模式
-- **Simple (L1)**: 简洁文本/Markdown，适合AI处理
-- **Detailed (L2)**: JSON格式，包含坐标和元数据
+## 调试
 
-## 🔍 故障排除
+使用 MCP Inspector 调试：
 
-查看 Claude Desktop 日志:
+```bash
+npx @modelcontextprotocol/inspector
+```
+
+选择 `STDIO` 传输类型，命令输入 `python /path/to/main.py`，点击连接。
+
+## 架构特点
+
+- **渐进式依赖**：云端模式零配置，本地模式可选安装 PaddleOCR
+- **统一接口**：三种模式使用相同的工具调用方式
+- **智能切换**：运行时自动检测可用 OCR 来源
+- **跨平台兼容**：支持 Windows、macOS、Linux
+
+## 故障排除
+
+检查 MCP Host 日志，如 Claude Desktop：
 - **macOS**: `~/Library/Logs/Claude/mcp*.log`
 - **Windows**: `%APPDATA%\Claude\logs\mcp*.log`
 
-确保配置文件中使用绝对路径。
+常见问题：
+- 确认路径为绝对路径
+- 云端模式检查网络连接和令牌
+- 本地模式确认 PaddleOCR 安装
 
-## 📦 模式对比
-
-| 功能特性 | 本地模式 | 星河API | 本地服务 |
-|---------|---------|--------|----------|
-| **隐私安全** | ✅ 完全离线 | ⚠️ 云端处理 | ✅ 自主部署 |
-| **部署简便** | ❌ 需要模型文件 | ✅ 即开即用 | ⚠️ 需要服务 |
-| **处理速度** | ⚠️ 取决于硬件 | ✅ 云端算力 | ✅ 可扩展 |
-| **成本费用** | ✅ 免费使用 | ⚠️ API费用 | ✅ 仅基础设施 |
-
-## 🔧 命令行用法
-
-```bash
-# 本地模式
-python main.py --engine local
-
-# 星河API模式  
-python main.py --engine aistudio \
-  --api-url https://xxx.aistudio-hub.baidu.com/ocr \
-  --api-token your_token
-
-# 本地服务模式
-python main.py --engine local_service \
-  --api-url http://your-server:8080/ocr
-```
-
-## 📄 许可证
+## 许可证
 
 MIT License
 
 ---
 
-**基于 [FastMCP v2](https://gofastmcp.com) 构建** - 简洁优雅的 MCP 服务器开发框架
+**基于 [FastMCP v2](https://gofastmcp.com) 构建**

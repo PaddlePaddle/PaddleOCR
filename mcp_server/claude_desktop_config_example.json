@@ -14,9 +14,9 @@
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "aistudio",
-        "PADDLEOCR_API_URL": "https://xxx.aistudio-hub.baidu.com/ocr",
-        "PADDLEOCR_API_TOKEN": "your_api_token_here"
+        "PADDLEOCR_MCP_OCR_SOURCE": "aistudio",
+        "PADDLEOCR_MCP_SERVER_URL": "https://xxx.aistudio-hub.baidu.com/ocr",
+        "PADDLEOCR_MCP_API_TOKEN": "your_api_token_here"
       }
     },
     "paddleocr-aistudio-structure": {
@@ -26,32 +26,32 @@
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "aistudio",
-        "PADDLEOCR_API_URL": "https://xxx.aistudio-hub.baidu.com/layout-parsing",
-        "PADDLEOCR_API_TOKEN": "your_api_token_here",
-        "PADDLEOCR_TIMEOUT": "60"
+        "PADDLEOCR_MCP_OCR_SOURCE": "aistudio",
+        "PADDLEOCR_MCP_SERVER_URL": "https://xxx.aistudio-hub.baidu.com/layout-parsing",
+        "PADDLEOCR_MCP_API_TOKEN": "your_api_token_here",
+        "PADDLEOCR_MCP_TIMEOUT": "60"
       }
     },
-    "paddleocr-local-service-ocr": {
+    "paddleocr-user-service-ocr": {
       "command": "python",
       "args": [
         "/absolute/path/to/PaddleOCR/mcp_server/main.py"
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "local_service",
-        "PADDLEOCR_API_URL": "your_api_url_here"
+        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_SERVER_URL": "your_server_url_here"
       }
     },
-    "paddleocr-local-service-structure": {
+    "paddleocr-user-service-structure": {
       "command": "python",
       "args": [
         "/absolute/path/to/PaddleOCR/mcp_server/main.py"
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_ENGINE": "local_service",
-        "PADDLEOCR_API_URL": "your_api_url_here"
+        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_SERVER_URL": "your_server_url_here"
       }
     }
   }

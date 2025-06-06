@@ -1,298 +1,281 @@
-"""
-PaddleOCR MCP Server
-采用FastMCP v2
-"""
-
+# 标准库导入
+import asyncio
 import base64
 import io
 import json
+import logging
 import os
 import re
 import sys
-from contextlib import contextmanager
-from io import StringIO
+from pathlib import Path
 from typing import Optional, Union, Dict, Any
 
+# 第三方库导入
 import numpy as np
 from PIL import Image
 from fastmcp import Context
 
+# 配置logger - 仅错误级别
+logger = logging.getLogger(__name__)
+
 # 本地OCR库（可选导入）
 try:
     from paddleocr import PaddleOCR, PPStructureV3
+
     LOCAL_OCR_AVAILABLE = True
 except ImportError:
     LOCAL_OCR_AVAILABLE = False
 
-# 全局引擎实例（延迟初始化）
-_ocr_engine = None
-_structure_engine = None
-_api_config = None
+# ==================== 统一引擎管理容器 ====================
 
 
-# ==================== 配置管理 ====================
+class EngineContainer:
+    """智能引擎容器 - 统一管理所有OCR产线"""
 
-def configure_api(api_url: str, api_token: str = None, timeout: int = 30):
-    """配置API参数 - 支持AI Studio和本地服务"""
-    global _api_config
-    
-    # 智能检测服务类型
-    is_local_service = any(indicator in api_url.lower() for indicator in [
-        'localhost', '127.0.0.1', '10.', '192.168.', '172.'
-    ])
-    
-    _api_config = {
-        'url': api_url,
-        'token': api_token,
-        'timeout': timeout,
-        'is_local_service': is_local_service,
-        'service_type': 'layout-parsing' if 'layout-parsing' in api_url.lower() else 'ocr'
-    }
+    def __init__(self):
+        self._engines = {}
+        self._api_config = None
 
+    def configure_api(
+        self, api_url: str, service_type: str, api_token: str = None, timeout: int = 30
+    ):
+        """配置API连接参数 - 明确指定服务类型"""
+        self._api_config = {
+            "url": api_url,
+            "token": api_token,
+            "timeout": timeout,
+            "is_user_service": service_type == "user_service",
+            "service_type": (
+                "layout-parsing" if "layout-parsing" in api_url.lower() else "ocr"
+            ),
+        }
 
-def is_api_mode() -> bool:
-    """判断是否为API模式"""
-    return _api_config is not None
+    def is_api_mode(self) -> bool:
+        """判断是否为API模式"""
+        return self._api_config is not None
 
+    def get_engine(self, engine_name: str):
+        """智能获取引擎实例 - 支持按需或预初始化"""
+        if engine_name not in self._engines:
+            self._engines[engine_name] = self._create_engine(engine_name)
+        return self._engines[engine_name]
 
-# ==================== 输入处理（简化版） ====================
-
-def process_input(input_path: str) -> Union[str, np.ndarray]:
-    """智能输入处理 - 根据模式自动选择最佳方式"""
-    
-    if is_api_mode():
-        # API模式：转换为Base64
-        return _to_base64(input_path)
-    else:
-        # 本地模式：优先文件路径
-        if _is_file_path(input_path):
-            return input_path
-        elif input_path.startswith(('http://', 'https://')):
-            return input_path
-        elif _is_base64_like(input_path):
-            return _base64_to_numpy(input_path)
-        return input_path
-
-
-async def process_input_async(input_path: str, ctx: Optional[Context] = None) -> Union[str, np.ndarray]:
-    """异步智能输入处理 - 支持URL下载"""
-    
-    if is_api_mode():
-        # API模式：转换为Base64
-        return await _to_base64_async(input_path, ctx)
-    else:
-        # 本地模式：优先文件路径
-        if _is_file_path(input_path):
-            return input_path
-        elif input_path.startswith(('http://', 'https://')):
-            return input_path
-        elif _is_base64_like(input_path):
-            return _base64_to_numpy(input_path)
-        return input_path
-
-
-def _to_base64(input_path: str) -> str:
-    """转换任何输入为Base64（同步版本）"""
-    # Data URI
-    if input_path.startswith('data:'):
-        return input_path.split(',', 1)[1] if ',' in input_path else input_path
-    
-    # 已经是Base64
-    if _is_base64_like(input_path) and not _is_file_path(input_path):
-        return input_path
-    
-    # 文件路径
-    if _is_file_path(input_path):
-        with open(input_path, 'rb') as f:
-            return base64.b64encode(f.read()).decode('utf-8')
-    
-    # URL需要异步处理，这里抛出异常提示
-    if input_path.startswith(('http://', 'https://')):
-        raise ValueError("URL input requires async processing. Use process_input_async instead.")
-    
-    # 默认当作Base64
-    return input_path
-
-
-async def _to_base64_async(input_path: str, ctx: Optional[Context] = None) -> str:
-    """转换任何输入为Base64（异步版本，支持URL下载）"""
-    # Data URI
-    if input_path.startswith('data:'):
-        return input_path.split(',', 1)[1] if ',' in input_path else input_path
-    
-    # 已经是Base64
-    if _is_base64_like(input_path) and not _is_file_path(input_path):
-        return input_path
-    
-    # URL处理 - 使用Context下载
-    if input_path.startswith(('http://', 'https://')):
-        if not ctx:
-            raise ValueError("Context required for URL download")
-        
-        response = await ctx.http_request(method="GET", url=input_path, timeout=15)
-        if response.status_code != 200:
-            raise Exception(f"Failed to download URL: {response.status_code}")
-        
-        return base64.b64encode(response.content).decode('utf-8')
-    
-    # 文件路径
-    if _is_file_path(input_path):
-        with open(input_path, 'rb') as f:
-            return base64.b64encode(f.read()).decode('utf-8')
-    
-    # 默认当作Base64
-    return input_path
-
-
-def _base64_to_numpy(data: str) -> np.ndarray:
-    """Base64转numpy数组（本地OCR使用）"""
-    if data.startswith('data:'):
-        base64_data = data.split(',', 1)[1]
-    else:
-        base64_data = data
-    
-    image_bytes = base64.b64decode(base64_data)
-    image = Image.open(io.BytesIO(image_bytes))
-    
-    # 转RGB + 限制大小
-    if image.mode != 'RGB':
-        if image.mode == 'RGBA':
-            bg = Image.new('RGB', image.size, (255, 255, 255))
-            bg.paste(image, mask=image.split()[-1])
-            image = bg
-        else:
-            image = image.convert('RGB')
-    
-    # 限制图像大小
-    if image.width * image.height > 4096 * 4096:
-        scale = (4096 * 4096 / (image.width * image.height)) ** 0.5
-        new_size = (int(image.width * scale), int(image.height * scale))
-        image = image.resize(new_size, Image.LANCZOS)
-    
-    return np.array(image)
-
-
-def _is_file_path(path: str) -> bool:
-    """简单的文件路径判断"""
-    return (path.startswith(('/', './', '../', '~')) or 
-            (len(path) > 3 and path[1] == ':'))
-
-
-def _is_base64_like(s: str) -> bool:
-    """简单的Base64格式检查"""
-    return len(s) > 10 and len(s) % 4 == 0 and re.match(r'^[A-Za-z0-9+/]*={0,2}$', s)
-
-
-def _detect_file_type(input_path: str) -> int:
-    """检测文件类型 (0=PDF, 1=Image)"""
-    lower_path = input_path.lower()
-    
-    if 'application/pdf' in lower_path or lower_path.endswith('.pdf'):
-        return 0
-    
-    # Base64 PDF检查
-    if _is_base64_like(input_path) and input_path.startswith('JVBERi'):
-        return 0
-    
-    return 1  # 默认图像
-
-
-# ==================== 本地OCR引擎（简化版） ====================
-
-@contextmanager
-def _suppress_output():
-    """抑制PaddleOCR输出"""
-    original = sys.stdout
-    sys.stdout = StringIO()
-    try:
-        yield
-    finally:
-        sys.stdout = original
-
-
-def _get_ocr_engine():
-    """获取OCR引擎实例"""
-    global _ocr_engine
-    if _ocr_engine is None:
+    def _create_engine(self, engine_name: str):
+        """创建指定引擎实例"""
         if not LOCAL_OCR_AVAILABLE:
             raise RuntimeError("PaddleOCR not available. Please install paddleocr.")
-        with _suppress_output():
-            _ocr_engine = PaddleOCR(
+
+        # PaddleOCR日志默认输出到stderr，无需额外抑制stdout
+        if engine_name == "ocr":
+            return PaddleOCR(
                 use_doc_orientation_classify=False,
                 use_doc_unwarping=False,
                 use_textline_orientation=False,
                 text_det_limit_type="min",
                 text_det_limit_side_len=736,
                 text_detection_model_name="PP-OCRv5_mobile_det",
-                text_recognition_model_name="PP-OCRv5_mobile_rec"
+                text_recognition_model_name="PP-OCRv5_mobile_rec",
             )
-    return _ocr_engine
-
-
-def _get_structure_engine():
-    """获取结构分析引擎实例"""
-    global _structure_engine
-    if _structure_engine is None:
-        if not LOCAL_OCR_AVAILABLE:
-            raise RuntimeError("PaddleOCR not available. Please install paddleocr.")
-        with _suppress_output():
-            _structure_engine = PPStructureV3(
+        elif engine_name == "structure":
+            return PPStructureV3(
                 use_doc_orientation_classify=False,
                 use_doc_unwarping=False,
                 use_chart_recognition=False,
-                use_seal_recognition=False,  
-                use_table_recognition=False,    
+                use_seal_recognition=False,
+                use_table_recognition=False,
                 text_detection_model_name="PP-OCRv5_mobile_det",
                 text_recognition_model_name="PP-OCRv5_mobile_rec",
-                layout_detection_model_name="PP-DocLayout-M",  
-                device="cpu"
+                layout_detection_model_name="PP-DocLayout-M",
+                device="cpu",
             )
-    return _structure_engine
+        else:
+            raise ValueError(f"Unknown engine: {engine_name}")
+
+    def warmup_engines(self, ocr_source_types: list = None):
+        """预热引擎 - eager初始化，避免首次运行延迟"""
+        if not LOCAL_OCR_AVAILABLE:
+            return  # API模式下无需预热
+
+        if ocr_source_types is None:
+            ocr_source_types = ["ocr", "structure"]  # 默认预热所有引擎
+
+        for ocr_source_type in ocr_source_types:
+            try:
+                self.get_engine(ocr_source_type)
+                logger.info(f"Engine '{ocr_source_type}' warmed up successfully")
+            except Exception as e:
+                logger.warning(f"Failed to warm up engine '{ocr_source_type}': {e}")
+
+
+# 全局引擎容器实例
+engines = EngineContainer()
+
+# ==================== 兼容性接口（保持API不变） ====================
+
+
+def configure_api(
+    api_url: str,
+    api_token: str = None,
+    timeout: int = 30,
+    service_type: str = "aistudio",
+):
+    """配置API连接参数 - 兼容接口"""
+    engines.configure_api(api_url, service_type, api_token, timeout)
+
+
+def is_api_mode() -> bool:
+    """判断是否为API模式 - 兼容接口"""
+    return engines.is_api_mode()
+
+
+# ==================== 输入处理（简化版） ====================
+
+
+def _validate_input_data(input_data: str) -> str:
+    """验证输入数据的有效性 - 支持file path, URL, base64三种核心输入"""
+    if not input_data or not input_data.strip():
+        raise ValueError("Input data cannot be empty")
+
+    input_data = input_data.strip()
+
+    # 检查核心支持格式
+    if (
+        input_data.startswith(("http://", "https://", "file://", "data:"))
+        or _is_file_path(input_data)
+        or _is_base64_like(input_data)
+    ):
+        return input_data
+
+    # 其他情况尝试作为文件路径处理
+    return input_data
+
+
+def process_input(input_data: str) -> Union[str, np.ndarray]:
+    """统一智能输入处理 - 简化同步异步逻辑"""
+    # 输入验证
+    validated_input = _validate_input_data(input_data)
+
+    if is_api_mode():
+        # API模式：直接返回，让API调用函数处理转换
+        return validated_input
+    else:
+        # 本地模式：优先文件路径，Base64转numpy
+        if _is_file_path(validated_input):
+            return validated_input
+        elif validated_input.startswith(("http://", "https://")):
+            return validated_input
+        elif _is_base64_like(validated_input):
+            return _base64_to_numpy(validated_input)
+        return validated_input
+
+
+def _base64_to_numpy(data: str) -> np.ndarray:
+    """Base64转numpy数组"""
+    if data.startswith("data:"):
+        base64_data = data.split(",", 1)[1]
+    else:
+        base64_data = data
+
+    image_bytes = base64.b64decode(base64_data)
+    image = Image.open(io.BytesIO(image_bytes))
+    return np.array(image)
+
+
+def _is_file_path(path: str) -> bool:
+    """跨平台文件路径判断"""
+    try:
+        if path.startswith(("http://", "https://", "data:")):
+            return False
+
+        path_obj = Path(path)
+        return (
+            path_obj.is_absolute()
+            or os.sep in path
+            or "/" in path
+            or path.startswith(("./", "../", ".\\", "..\\", "~"))
+        )
+
+    except (ValueError, OSError):
+        return False
+
+
+def _is_base64_like(s: str) -> bool:
+    """Base64格式检查"""
+    return len(s) > 10 and len(s) % 4 == 0 and re.match(r"^[A-Za-z0-9+/]*={0,2}$", s)
+
+
+def _detect_file_type(input_data: str) -> int:
+    """检测文件类型 (0=PDF, 1=Image)"""
+    lower_data = input_data.lower()
+
+    if "application/pdf" in lower_data or lower_data.endswith(".pdf"):
+        return 0
+
+    if _is_base64_like(input_data) and input_data.startswith("JVBERi"):
+        return 0
+
+    return 1
 
 
 # ==================== API调用（使用Context简化） ====================
 
+
 async def _call_aistudio_api(input_data: str, ctx: Context, **options) -> dict:
-    """调用API - 统一支持AI Studio和本地服务"""
-    if not _api_config:
+    """调用星河API"""
+    if not engines._api_config:
         raise ValueError("API not configured")
-    
-    # 构建请求payload
-    payload = {
-        'file': input_data,
-        'fileType': _detect_file_type(input_data)
-    }
-    
-    # OCR服务的额外参数
-    if _api_config['service_type'] == 'ocr':
-        payload.update({
-            'useDocOrientationClassify': options.get('useDocOrientationClassify', False),
-            'useDocUnwarping': options.get('useDocUnwarping', False),
-            'useTextlineOrientation': options.get('useTextlineOrientation', False)
-        })
-    
-    # 智能构建请求头 - 本地服务不需要token
-    headers = {'Content-Type': 'application/json'}
-    if not _api_config['is_local_service'] and _api_config['token']:
-        headers['Authorization'] = f'token {_api_config["token"]}'
-    
-    # 使用Context发送HTTP请求
+
+    # 转换为Base64
+    if _is_file_path(input_data):
+        with open(input_data, "rb") as f:
+            file_data = base64.b64encode(f.read()).decode("ascii")
+    elif input_data.startswith("data:"):
+        file_data = input_data.split(",", 1)[1] if "," in input_data else input_data
+    elif input_data.startswith(("http://", "https://")):
+        response = await ctx.http_request(method="GET", url=input_data)
+        if response.status_code != 200:
+            raise Exception(f"Failed to download URL: {response.status_code}")
+        file_data = base64.b64encode(response.content).decode("ascii")
+    else:
+        file_data = input_data
+
+    # 构建payload
+    payload = {"file": file_data, "fileType": _detect_file_type(input_data)}
+
+    if options.get("useDocOrientationClassify") is not None:
+        payload["useDocOrientationClassify"] = options["useDocOrientationClassify"]
+    if options.get("useDocUnwarping") is not None:
+        payload["useDocUnwarping"] = options["useDocUnwarping"]
+
+    # 构建headers
+    headers = {"Content-Type": "application/json"}
+    if engines._api_config["token"]:
+        headers["Authorization"] = f'token {engines._api_config["token"]}'
+
+    # 发送请求
     response = await ctx.http_request(
         method="POST",
-        url=_api_config['url'],
+        url=engines._api_config["url"],
         headers=headers,
         json=payload,
-        timeout=_api_config['timeout']
+        timeout=engines._api_config.get("timeout", 30),
     )
-    
+
     if response.status_code != 200:
-        service_type = "本地服务" if _api_config['is_local_service'] else "AI Studio"
-        raise Exception(f"{service_type} API error {response.status_code}: {response.text}")
-    
-    return response.json()['result']
+        raise Exception(f"API error {response.status_code}: {response.text}")
+
+    response_json = response.json()
+    error_code = response_json.get("errorCode", 0)
+
+    if error_code != 0:
+        error_msg = response_json.get("errorMsg", "Unknown API error")
+        raise Exception(f"API failed (errorCode: {error_code}): {error_msg}")
+
+    return response_json["result"]
 
 
 # ==================== 结果解析（简化版） ====================
+
 
 def _parse_ocr_result(raw_result) -> dict:
     """解析OCR结果 - 统一格式"""
@@ -302,195 +285,112 @@ def _parse_ocr_result(raw_result) -> dict:
         return _parse_local_ocr(raw_result)
 
 
-def _parse_api_ocr(api_result: dict) -> dict:
-    """解析星河API OCR结果"""
-    if not api_result.get('ocrResults'):
-        return {"text": "", "confidence": 0, "blocks": [], "text_type": "api", "det_params": None}
-    
-    texts, confidences, blocks = [], [], []
-    
-    for ocr_result in api_result['ocrResults']:
-        pruned = ocr_result.get('prunedResult', {})
-        
-        if isinstance(pruned, dict):
-            for i, text in enumerate(pruned.get('rec_texts', [])):
-                if text and text.strip():
-                    conf = pruned.get('rec_scores', [])[i] if i < len(pruned.get('rec_scores', [])) else 0
-                    texts.append(text.strip())
-                    confidences.append(conf)
-                    
-                    block = {"text": text.strip(), "confidence": round(conf, 3)}
-                    
-                    # 添加边界框信息（如果有）
-                    rec_boxes = pruned.get('rec_boxes', [])
-                    if i < len(rec_boxes) and rec_boxes[i] is not None:
-                        bbox = _normalize_bbox(rec_boxes[i])
-                        if bbox:
-                            block["bbox"] = bbox
-                    
-                    blocks.append(block)
-        elif isinstance(pruned, str) and pruned.strip():
-            texts.append(pruned.strip())
-            blocks.append({"text": pruned.strip(), "confidence": None})
-    
-    return {
-        "text": "\n".join(texts),
-        "confidence": sum(confidences) / len(confidences) if confidences else 0,
-        "blocks": blocks,
-        "text_type": "api", 
-        "det_params": api_result.get('ocrResults', [{}])[0].get('prunedResult', {}).get('text_det_params')
-    }
+def _build_ocr_result(
+    rec_texts: list,
+    rec_scores: list,
+    rec_boxes_list: list,
+    text_type: str,
+    det_params: Any,
+) -> dict:
+    """通用OCR结果构建器 - 复用核心解析逻辑"""
+    if not rec_texts:
+        return {
+            "text": "",
+            "confidence": 0,
+            "blocks": [],
+            "text_type": text_type,
+            "det_params": det_params,
+        }
 
-
-def _parse_local_ocr(raw_result) -> dict:
-    """解析本地OCR结果"""
-    if not raw_result or not raw_result[0]:
-        return {"text": "", "confidence": 0, "blocks": [], "text_type": "unknown", "det_params": None}
-    
-    ocr_result = raw_result[0]
-    
-    # v5格式处理
-    def safe_get(obj, key, default=None):
-        if hasattr(obj, key):
-            return getattr(obj, key)
-        elif isinstance(obj, dict):
-            return obj.get(key, default)
-        return default
-    
-    rec_texts = safe_get(ocr_result, 'rec_texts', [])
-    rec_scores = safe_get(ocr_result, 'rec_scores', [])
-    rec_boxes = safe_get(ocr_result, 'rec_boxes', [])
-    rec_polys = safe_get(ocr_result, 'rec_polys', [])
-    
-    # 提取元数据
-    text_type = safe_get(ocr_result, 'text_type', 'general')
-    det_params = safe_get(ocr_result, 'text_det_params', {})
-    
     texts, confidences, blocks = [], [], []
-    
+
     for i, text in enumerate(rec_texts):
         if text and text.strip():
             conf = rec_scores[i] if i < len(rec_scores) else 0
             texts.append(text.strip())
             confidences.append(conf)
-            
+
             block = {"text": text.strip(), "confidence": round(conf, 3)}
-            
-            # 统一处理边界框 - 优先使用rec_boxes
-            bbox = None
-            if i < len(rec_boxes) and rec_boxes[i] is not None:
-                bbox = _normalize_bbox(rec_boxes[i])
-            elif i < len(rec_polys) and rec_polys[i] is not None:
-                bbox = _normalize_bbox(rec_polys[i])
-            
-            if bbox:
-                block["bbox"] = bbox
-            
+
+            # 添加边界框信息（如果有）- 支持多种边界框来源
+            for bbox_source in rec_boxes_list:
+                if i < len(bbox_source) and bbox_source[i] is not None:
+                    # 保留原始边界框格式，不做标准化处理
+                    block["bbox"] = bbox_source[i]
+                    break
+
             blocks.append(block)
-    
-    # 如果上述v5格式解析失败，尝试遗留格式
-    if not texts and isinstance(raw_result[0], list):
-        legacy_result = _parse_legacy_ocr_format(raw_result[0])
-        legacy_result.update({"text_type": "legacy", "det_params": None})
-        return legacy_result
-    
+
     return {
         "text": "\n".join(texts),
         "confidence": sum(confidences) / len(confidences) if confidences else 0,
         "blocks": blocks,
         "text_type": text_type,
-        "det_params": det_params
+        "det_params": det_params,
     }
 
 
-def _parse_legacy_ocr_format(text_lines) -> dict:
-    """解析遗留OCR格式（旧版本兼容）"""
-    texts, confidences, blocks = [], [], []
-    
-    for line_result in text_lines:
-        if isinstance(line_result, list) and len(line_result) >= 2:
-            bbox_data = line_result[0]  # 边界框
-            text_data = line_result[1]  # 文本和置信度
-            
-            if isinstance(text_data, tuple) and len(text_data) >= 2:
-                text, confidence = text_data[0], text_data[1]
-                if text and text.strip():
-                    texts.append(text.strip())
-                    confidences.append(confidence)
-                    
-                    block = {
-                        "text": text.strip(),
-                        "confidence": round(confidence, 3) if confidence > 0 else None
-                    }
-                    
-                    # 添加边界框（遗留格式）
-                    if bbox_data and len(bbox_data) >= 4:
-                        bbox = _normalize_bbox(bbox_data)
-                        if bbox:
-                            block["bbox"] = bbox
-                    
-                    blocks.append(block)
-        
-    return {
-        "text": "\n".join(texts),
-        "confidence": sum(confidences) / len(confidences) if confidences else 0,
-        "blocks": blocks
-    }
+def _parse_api_ocr(api_result: dict) -> dict:
+    """解析星河API OCR结果 - 基于确定的API响应结构"""
+    # ocrResults字段必定存在，直接访问
+    ocr_results = api_result["ocrResults"]
+
+    if not ocr_results:
+        return _build_ocr_result([], [], [], "api", None)
+
+    # 处理多个OCR结果（通常只有一个）
+    all_texts, all_scores, all_boxes = [], [], []
+    det_params = None
+
+    for ocr_result in ocr_results:
+        # prunedResult字段必定存在，直接访问
+        pruned = ocr_result["prunedResult"]
+
+        if isinstance(pruned, dict):
+            # rec_texts等字段在API响应中是确定存在的
+            rec_texts = pruned.get("rec_texts", [])
+            rec_scores = pruned.get("rec_scores", [])
+            rec_boxes = pruned.get("rec_boxes", [])
+
+            all_texts.extend(rec_texts)
+            all_scores.extend(rec_scores)
+            all_boxes.extend(rec_boxes)
+
+            # 获取检测参数（只取第一个）
+            if det_params is None:
+                det_params = pruned.get("text_det_params")
+
+        elif isinstance(pruned, str) and pruned.strip():
+            # 处理纯字符串结果
+            all_texts.append(pruned.strip())
+            all_scores.append(1.0)  # 默认置信度
+            all_boxes.append(None)
+
+    # 使用通用构建器
+    return _build_ocr_result(all_texts, all_scores, [all_boxes], "api", det_params)
 
 
-def _normalize_bbox(bbox) -> list:
-    """标准化边界框格式 - 转换为 [x1, y1, x2, y2]"""
-    try:
-        # 处理numpy数组
-        if hasattr(bbox, 'tolist'):
-            bbox = bbox.tolist()
-        
-        if not isinstance(bbox, (list, tuple)) or len(bbox) < 4:
-            return None
-        
-        # 如果已经是4个坐标格式 [x1,y1,x2,y2]
-        if len(bbox) == 4 and all(isinstance(coord, (int, float)) for coord in bbox):
-            return [round(float(coord), 1) for coord in bbox]
-        
-        # 如果是8个坐标的多边形格式 [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]
-        elif len(bbox) == 4 and all(isinstance(point, (list, tuple)) and len(point) == 2 for point in bbox):
-            x_coords = [float(point[0]) for point in bbox]
-            y_coords = [float(point[1]) for point in bbox]
-            return [
-                round(min(x_coords), 1), round(min(y_coords), 1),
-                round(max(x_coords), 1), round(max(y_coords), 1)
-            ]
-        
-        # 如果是扁平化的8个坐标 [x1,y1,x2,y2,x3,y3,x4,y4]
-        elif len(bbox) == 8:
-            x_coords = [float(bbox[i]) for i in range(0, 8, 2)]
-            y_coords = [float(bbox[i]) for i in range(1, 8, 2)]
-            return [
-                round(min(x_coords), 1), round(min(y_coords), 1),
-                round(max(x_coords), 1), round(max(y_coords), 1)
-            ]
-        
-        # 尝试处理嵌套数组格式（numpy特有）
-        elif len(bbox) > 4 and hasattr(bbox[0], '__iter__'):
-            # 展平所有坐标点
-            all_points = []
-            for item in bbox:
-                if hasattr(item, 'tolist'):
-                    item = item.tolist()
-                if isinstance(item, (list, tuple)) and len(item) == 2:
-                    all_points.append([float(item[0]), float(item[1])])
-            
-            if all_points:
-                x_coords = [point[0] for point in all_points]
-                y_coords = [point[1] for point in all_points]
-                return [
-                    round(min(x_coords), 1), round(min(y_coords), 1),
-                    round(max(x_coords), 1), round(max(y_coords), 1)
-                ]
-        
-        return None
-    except (ValueError, TypeError, IndexError):
-        return None
+def _parse_local_ocr(raw_result) -> dict:
+    """解析本地OCR结果"""
+    if not raw_result or not raw_result[0]:
+        return _build_ocr_result([], [], [], "unknown", None)
+
+    ocr_result = raw_result[0]
+
+    # v5格式处理 - 直接访问字典键，因为ocr_result已确认为字典类型
+    rec_texts = ocr_result.get("rec_texts", [])
+    rec_scores = ocr_result.get("rec_scores", [])
+    rec_boxes = ocr_result.get("rec_boxes", [])
+    rec_polys = ocr_result.get("rec_polys", [])
+
+    # 提取元数据
+    text_type = ocr_result.get("text_type", "general")
+    det_params = ocr_result.get("text_det_params", {})
+
+    # 使用通用构建器 - 支持多种边界框来源（boxes优先，polys备选）
+    return _build_ocr_result(
+        rec_texts, rec_scores, [rec_boxes, rec_polys], text_type, det_params
+    )
 
 
 def _parse_structure_result(raw_result) -> dict:
@@ -502,31 +402,37 @@ def _parse_structure_result(raw_result) -> dict:
 
 
 def _parse_api_structure(api_result: dict) -> dict:
-    """解析星河API结构结果"""
-    if not api_result.get('layoutParsingResults'):
+    """解析星河API结构结果 - 基于确定的API响应结构"""
+    # layoutParsingResults字段必定存在，直接访问
+    layout_results = api_result["layoutParsingResults"]
+
+    if not layout_results:
         return {"markdown": "", "pages": [], "has_images": False}
-    
+
     markdown_parts = []
     pages = []
     has_images = False
-    
-    for i, res in enumerate(api_result['layoutParsingResults']):
-        markdown_data = res.get('markdown', {})
-        if markdown_data.get('text'):
-            text = markdown_data['text']
+
+    for i, res in enumerate(layout_results):
+        # markdown字段在API响应中是确定存在的
+        markdown_data = res.get("markdown", {})  # 这里保留get，因为可能确实为空
+        if markdown_data.get("text"):
+            text = markdown_data["text"]
             markdown_parts.append(text)
-            pages.append({
-                "page": i,
-                "content": text,
-                "has_images": bool(markdown_data.get('images'))
-            })
-            if markdown_data.get('images'):
+            pages.append(
+                {
+                    "page": i,
+                    "content": text,
+                    "has_images": bool(markdown_data.get("images")),
+                }
+            )
+            if markdown_data.get("images"):
                 has_images = True
-    
+
     return {
         "markdown": "\n".join(markdown_parts),
         "pages": pages,
-        "has_images": has_images
+        "has_images": has_images,
     }
 
 
@@ -534,46 +440,52 @@ def _parse_local_structure(raw_results) -> dict:
     """解析本地结构结果"""
     if not raw_results:
         return {"markdown": "", "pages": [], "has_images": False}
-    
+
     markdown_parts = []
     pages = []
-    
+
     for i, result in enumerate(raw_results):
         text = ""
-        if hasattr(result, 'markdown') and result.markdown:
+        if hasattr(result, "markdown") and result.markdown:
             if isinstance(result.markdown, dict):
-                text = result.markdown.get('text', str(result.markdown))
+                text = result.markdown.get("text", str(result.markdown))
             else:
                 text = str(result.markdown)
-        
+
         if text:
             markdown_parts.append(text)
-            pages.append({
-                "page": i,
-                "content": text,
-                "has_images": False  # 本地模式简化处理
-            })
-    
-    return {
-        "markdown": "\n".join(markdown_parts),
-        "pages": pages,
-        "has_images": False
-    }
+            pages.append(
+                {"page": i, "content": text, "has_images": False}  # 本地模式简化处理
+            )
+
+    return {"markdown": "\n".join(markdown_parts), "pages": pages, "has_images": False}
 
 
 # ==================== 格式化输出（简化版） ====================
+
 
 def format_ocr_output(result: dict, detailed: bool = False) -> str:
     """格式化OCR输出 - 统一L1/L2格式"""
     if not result["text"].strip():
         error_msg = "❌ No text detected"
-        return error_msg if not detailed else json.dumps({
-            "error": "No text detected", 
-            "text": "", 
-            "blocks": [],
-            "meta": {"block_count": 0, "avg_confidence": 0, "text_type": "unknown"}
-        }, ensure_ascii=False)
-    
+        return (
+            error_msg
+            if not detailed
+            else json.dumps(
+                {
+                    "error": "No text detected",
+                    "text": "",
+                    "blocks": [],
+                    "meta": {
+                        "block_count": 0,
+                        "avg_confidence": 0,
+                        "text_type": "unknown",
+                    },
+                },
+                ensure_ascii=False,
+            )
+        )
+
     if detailed:
         # L2: 完整结构化输出
         output = {
@@ -581,26 +493,31 @@ def format_ocr_output(result: dict, detailed: bool = False) -> str:
             "blocks": result["blocks"],
             "meta": {
                 "block_count": len(result["blocks"]),
-                "avg_confidence": round(result["confidence"], 3) if result["confidence"] > 0 else None,
+                "avg_confidence": (
+                    round(result["confidence"], 3) if result["confidence"] > 0 else None
+                ),
                 "has_coordinates": any("bbox" in block for block in result["blocks"]),
                 "text_type": result.get("text_type", "unknown"),
-                "engine_type": "api" if is_api_mode() else "local"
-            }
+                "source_type": "api" if is_api_mode() else "local",
+            },
         }
-        
+
         # 添加检测参数（如果有且有用）
         if result.get("det_params") and isinstance(result["det_params"], dict):
             # 只包含关键参数，避免信息过载
-            key_params = {k: v for k, v in result["det_params"].items() 
-                         if k in ['box_thresh', 'limit_side_len', 'limit_type', 'thresh']}
+            key_params = {
+                k: v
+                for k, v in result["det_params"].items()
+                if k in ["box_thresh", "limit_side_len", "limit_type", "thresh"]
+            }
             if key_params:
                 output["meta"]["detection_params"] = key_params
-        
+
         return json.dumps(output, ensure_ascii=False, indent=2)
     else:
         # L1: 简洁文本输出 + 关键信息
         output = result["text"]
-        
+
         # 添加简洁的元信息
         info_parts = []
         if result["confidence"] > 0:
@@ -608,10 +525,10 @@ def format_ocr_output(result: dict, detailed: bool = False) -> str:
         info_parts.append(f"{len(result['blocks'])}个文本块")
         if result.get("text_type") and result["text_type"] != "unknown":
             info_parts.append(f"类型: {result['text_type']}")
-        
+
         if info_parts:
             output += f"\n\n📊 {' | '.join(info_parts)}"
-        
+
         return output
 
 
@@ -619,13 +536,20 @@ def format_structure_output(result: dict, detailed: bool = False) -> str:
     """格式化结构分析输出 - 统一L1/L2"""
     if not result["markdown"].strip():
         error_msg = "❌ No document structure detected"
-        return error_msg if not detailed else json.dumps({
-            "error": "No structure detected", 
-            "markdown": "", 
-            "pages": [],
-            "meta": {"page_count": 0, "has_images": False}
-        }, ensure_ascii=False)
-    
+        return (
+            error_msg
+            if not detailed
+            else json.dumps(
+                {
+                    "error": "No structure detected",
+                    "markdown": "",
+                    "pages": [],
+                    "meta": {"page_count": 0, "has_images": False},
+                },
+                ensure_ascii=False,
+            )
+        )
+
     if detailed:
         # L2: 完整结构化输出
         output = {
@@ -634,8 +558,8 @@ def format_structure_output(result: dict, detailed: bool = False) -> str:
             "meta": {
                 "page_count": len(result["pages"]),
                 "has_images": result["has_images"],
-                "engine_type": "api" if is_api_mode() else "local"
-            }
+                "source_type": "api" if is_api_mode() else "local",
+            },
         }
         return json.dumps(output, ensure_ascii=False, indent=2)
     else:
@@ -645,35 +569,40 @@ def format_structure_output(result: dict, detailed: bool = False) -> str:
 
 # ==================== MCP工具注册（简化版） ====================
 
-def register_tools(mcp, engine_type: str = "local", **api_config):
-    """注册MCP工具 - 支持本地、AI Studio、本地服务三种模式"""
-    
+
+def register_tools(mcp, ocr_source_type: str = "local", **api_config):
+    """注册MCP工具 - 支持本地、AI Studio、用户服务三种模式"""
+
     # 配置API（如果是API模式）
-    if engine_type in ["aistudio", "local_service"]:
-        configure_api(**api_config)
-    
-    # 智能描述引擎类型
-    if is_api_mode():
-        if _api_config['is_local_service']:
-            engine_desc = "本地服务API"
-        else:
-            engine_desc = "星河API"
+    if ocr_source_type in ["aistudio", "user_service"]:
+        # 明确传递服务类型，而不是通过URL推测
+        engines.configure_api(service_type=ocr_source_type, **api_config)
     else:
-        engine_desc = "本地PaddleOCR"
-    
+        # 本地模式：预热引擎避免首次运行延迟
+        engines.warmup_engines()
+
+    # 智能描述引擎类型
+    if engines.is_api_mode():
+        if engines._api_config["is_user_service"]:
+            source_desc = "用户服务API"
+        else:
+            source_desc = "星河API"
+    else:
+        source_desc = "本地PaddleOCR"
+
     @mcp.tool()
     async def ocr_text(
-        input_path: str, 
+        input_data: str,
         output_mode: str = "simple",
         file_type: str = "auto",
         useDocOrientationClassify: bool = True,
         useDocUnwarping: bool = True,
-        ctx: Optional[Context] = None
+        ctx: Optional[Context] = None,
     ) -> str:
-        f"""Extract text from images and PDFs using {engine_desc}.
-        
+        f"""Extract text from images and PDFs using {source_desc}.
+
         Args:
-            input_path: 文件路径、URL或Base64数据
+            input_data: 文件路径、URL或Base64数据
             output_mode: "simple" (L1简洁) 或 "detailed" (L2详细)
             file_type: 文件类型 ("auto", "pdf", "image") - API模式
             useDocOrientationClassify: 文档方向分类 - API模式
@@ -684,71 +613,83 @@ def register_tools(mcp, engine_type: str = "local", **api_config):
             api_kwargs = {
                 "file_type": file_type,
                 "useDocOrientationClassify": useDocOrientationClassify,
-                "useDocUnwarping": useDocUnwarping
+                "useDocUnwarping": useDocUnwarping,
             }
-            
-            # 使用异步输入处理（支持URL下载）
-            if is_api_mode():
-                processed_input = await process_input_async(input_path, ctx)
-            else:
-                processed_input = process_input(input_path)
-            
-            if is_api_mode():
-                # API模式 (AI Studio 或本地服务)
+
+            # 输入处理
+            processed_input = process_input(input_data)
+
+            if engines.is_api_mode():
+                # API模式 (AI Studio 或用户服务)
                 if not ctx:
                     raise ValueError("Context required for API mode")
-                raw_result = await _call_aistudio_api(processed_input, ctx, **api_kwargs)
+                raw_result = await _call_aistudio_api(
+                    processed_input, ctx, **api_kwargs
+                )
             else:
-                # 本地OCR模式
-                ocr = _get_ocr_engine()
-                with _suppress_output():
-                    raw_result = ocr.predict(processed_input)
-            
+                # 本地OCR模式 - 使用引擎容器，异步执行避免阻塞event loop
+                ocr = engines.get_engine("ocr")
+                # 使用run_in_executor在线程池中执行耗时的同步OCR操作
+                loop = asyncio.get_running_loop()
+                raw_result = await loop.run_in_executor(
+                    None, ocr.predict, processed_input
+                )
+
             result = _parse_ocr_result(raw_result)
             return format_ocr_output(result, output_mode == "detailed")
-            
+
         except Exception as e:
             error_msg = f"OCR failed: {str(e)}"
-            return error_msg if output_mode == "simple" else json.dumps({"error": error_msg}, ensure_ascii=False)
-    
+            return (
+                error_msg
+                if output_mode == "simple"
+                else json.dumps({"error": error_msg}, ensure_ascii=False)
+            )
+
     @mcp.tool()
     async def analyze_structure(
-        input_path: str,
+        input_data: str,
         output_mode: str = "detailed",
         file_type: str = "auto",
-        ctx: Optional[Context] = None
+        ctx: Optional[Context] = None,
     ) -> str:
-        f"""Analyze document structure using {engine_desc}.
-        
+        f"""Analyze document structure using {source_desc}.
+
         Args:
-            input_path: 文件路径、URL或Base64数据
+            input_data: 文件路径、URL或Base64数据
             output_mode: "simple" (L1纯markdown) 或 "detailed" (L2结构化)
             file_type: 文件类型 ("auto", "pdf", "image") - API模式
         """
         try:
             # 准备API参数
             api_kwargs = {"file_type": file_type}
-            
-            # 使用异步输入处理（支持URL下载）
-            if is_api_mode():
-                processed_input = await process_input_async(input_path, ctx)
-            else:
-                processed_input = process_input(input_path)
-            
-            if is_api_mode():
-                # API模式 (AI Studio 或本地服务)
+
+            # 输入处理
+            processed_input = process_input(input_data)
+
+            if engines.is_api_mode():
+                # API模式 (AI Studio 或用户服务)
                 if not ctx:
                     raise ValueError("Context required for API mode")
-                raw_result = await _call_aistudio_api(processed_input, ctx, **api_kwargs)
+                raw_result = await _call_aistudio_api(
+                    processed_input, ctx, **api_kwargs
+                )
             else:
-                # 本地结构分析模式
-                structure = _get_structure_engine()
-                with _suppress_output():
-                    raw_result = structure.predict(processed_input)
-            
+                # 本地结构分析模式 - 使用引擎容器，异步执行避免阻塞event loop
+                structure = engines.get_engine("structure")
+                # 使用run_in_executor在线程池中执行耗时的同步结构分析操作
+                loop = asyncio.get_running_loop()
+                raw_result = await loop.run_in_executor(
+                    None, structure.predict, processed_input
+                )
+
             result = _parse_structure_result(raw_result)
             return format_structure_output(result, output_mode == "detailed")
-            
+
         except Exception as e:
             error_msg = f"Structure analysis failed: {str(e)}"
-            return error_msg if output_mode == "simple" else json.dumps({"error": error_msg}, ensure_ascii=False) 
+            return (
+                error_msg
+                if output_mode == "simple"
+                else json.dumps({"error": error_msg}, ensure_ascii=False)
+            )
