@@ -1,0 +1,18 @@
+这张图片展示了一份关于开发有洞察力、公平的护理路径的文档。文档标题为“Three steps for developing an insightful, equitable care pathway (continued)”，并分为三个主要步骤：
+
+1. **Step 2: Create personas to illustrate diversity within each care pathway inequity**
+   - 利益相关者可以使用人物角色来应用数据在现实生活中的情境，但避免使用人物角色作为规划服务的工具。
+   - 使用收集的数据，利益相关者可以创建两个或三个不同的人物角色，提供不同类型障碍的见解。
+   - 人物角色可以包括听力、视力或认知障碍等关键特征，以及性别、年龄、地理位置、就业状况和教育水平等人口统计信息。
+   - 人物角色还可以包括独立性水平和可用支持系统，以及财务状况（如支付医疗费用的能力）。
+
+2. **Step 3: Build the pathways and derive insights**
+   - 使用收集的定量和定性数据，利益相关者可以开发基于人物角色体验的路径，以识别整个护理路径中的挑战和痛点。
+   - 利益相关者可以应用“Missing Billion”包容性健康服务框架，为每个人物角色绘制最佳患者路径，并优化系统驱动因素（如国家法律和政策、卫生工作者知识、残疾包容预算）以及利益相关者在护理路径中的角色。
+
+3. **Enable system-level changes as foundations for inclusive care pathways**
+   - 政府可以做出系统级改变，为量身定制的包容性项目奠定基础，例如，将残疾人纳入国家卫生部门计划和疾病计划。
+   - 教育和意识提升是改善服务利用的重要环节。
+   - 民间社会和患者倡导组织可以使用护理路径来构建一个全面的图景，以解决每个阶段的复合不平等和差距。
+
+文档底部提到“Advancing inclusive care pathways for people with disabilities”，表明这是关于推进残疾人包容性护理路径的文档。

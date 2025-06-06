@@ -1,0 +1,8 @@
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_6/1 中国数字经济发展研究报告（2023年）_6/[107, 475, 494, 699]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_19/1 中国数字经济发展研究报告（2023年）_19/[84, 237, 502, 474]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_17/1 中国数字经济发展研究报告（2023年）_17/[89, 67, 506, 316]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_20/1 中国数字经济发展研究报告（2023年）_20/[86, 202, 510, 434]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_56/1 中国数字经济发展研究报告（2023年）_56/[88, 167, 507, 579]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_18/1 中国数字经济发展研究报告（2023年）_18/[78, 68, 515, 295]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_16/1 中国数字经济发展研究报告（2023年）_16/[83, 103, 513, 350]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/1 中国数字经济发展研究报告（2023年）/1 中国数字经济发展研究报告（2023年）_15/1 中国数字经济发展研究报告（2023年）_15/[80, 332, 513, 583]_0.jpg'

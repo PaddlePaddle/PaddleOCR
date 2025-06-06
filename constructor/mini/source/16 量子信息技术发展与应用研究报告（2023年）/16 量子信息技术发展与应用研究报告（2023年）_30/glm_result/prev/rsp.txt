@@ -1,0 +1,1 @@
+"这是一张包含大量文本的图片，内容主要涉及量子信息技术的发展与应用研究报告（2023年）。图片中的文字描述了量子计算软件和硬件的发展情况，提到了一些公司和他们的产品，如Pascal、Intel、QC Ware、Quantum Brilliance、苏黎世仪器、启科量子、亚马逊等。此外，还提及了一些具体的软件和工具，如Pulser Studio、SDK、SaaS Promethium、Qrystal SDK、LabOne Q、Aba|Qu|EN、Palace和EDA软件天乙。图片底部还附有多个参考文献的链接。\n\n图片的排版整齐，文字清晰，内容详实，适合对量子信息技术感兴趣的人士阅读。"

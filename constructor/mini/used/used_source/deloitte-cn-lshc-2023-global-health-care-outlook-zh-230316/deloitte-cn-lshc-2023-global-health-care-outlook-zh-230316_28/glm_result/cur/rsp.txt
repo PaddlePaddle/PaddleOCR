@@ -1,0 +1,14 @@
+这张图片显示了一份文件的页面，标题为“2023年全球医疗行业展望”。页面包含了一系列的参考文献，每个文献都有对应的编号。以下是这些参考文献的详细描述：
+
+1. **28.** Becky Sullivan, "Hackers disrupt payroll for thousands of employers — including hospitals," NPR, January 15, 2022, https://www.npr.org/2022/01/15/1072846933/hackers-disrupt-payroll-for-thousands-of-employers-including-hospitals
+2. **29.** Joe Tidy, "NHS IT supplier held to ransom by hackers," BBC News, August 11, 2022, https://www.bbc.com/news/technology-62506039
+3. **30.** Deborah Golden, Jesse Goldhammer, Jay Parikh, and Diana Kearns-Manolatos, "Earning digital trust: Where to invest today and tomorrow," Deloitte Insights, February 16, 2022, https://www2.deloitte.com/global/en/insights/topics/digital-transformation/digital-trust-solutions.html
+4. **31.** Asha Barbaschow, "Australian Department of Health using blockchain for medical research records," ZDNet, May 20, 2018, https://www.zdnet.com/article/australian-department-of-health-using-blockchain-for-medical-research-records/
+5. **32.** Trevor Clawson, "Broken Records: UK Entrepreneurs See Blockchain as the Solution to the Patient Data Problem," Forbes, August 31, 2018, https://www.forbes.com/sites/trevorclawson/2018/08/31/broken-records-uk-entrepreneurs-see-blockchain-as-the-solution-to-the-patient-data-problem/?sh=35c0b3072ac
+6. **33.** "Estonia — the Digital Republic Secured by Blockchain," PwC, https://www.pwc.com/gx/en/services/legal/techassets/estonia-the-digital-republic-secured-by-blockchain.pdf
+7. **34.** Apple Health is a registered trademark of Apple Inc.
+8. **35.** https://www.grandviewresearch.com/industry-analysis/fitness-tracker-market
+9. **36. "Mastering the new digital life: 2022 Connectivity and Mobile Trends," 3rd edition, Deloitte Insights, 18, https://www2.deloitte.com/content/dam/insights/us/articles/8531_tmt-connectivity-and-mobile-trends-interactive-landing-page/DI_Connectivity-mobile-trends-2022.pdf
+10. **37.** Jeff Loucks, Duncan Stewart, Arlene Bucaille, and Gillian Crossan, "We are better technology," Deloitte Insights, December 1, 2021, https://www2.deloitte.com/us/en/insights/industry/technology-media-and-telecom/predictions/2022/we-are-better-technology-healthcare.html
+
+页面的右上角显示了页码“29”。整体来看，这些参考文献涉及医疗行业的多个方面，包括网络安全、区块链技术、数字健康记录等。

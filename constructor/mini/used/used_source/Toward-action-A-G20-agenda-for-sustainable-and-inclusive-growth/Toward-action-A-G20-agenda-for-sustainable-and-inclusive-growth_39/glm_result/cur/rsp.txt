@@ -1,0 +1,13 @@
+这张图片显示的是一份文档的页脚部分，背景为蓝色。页脚包含以下信息：
+
+1. **公司名称**：McKinsey & Company
+2. **日期**：September 2024
+3. **封面图片版权**：© Alistair Berg/Getty Images
+4. **版权声明**：Copyright © McKinsey & Company
+5. **网站链接**：www.McKinsey.com
+6. **社交媒体链接**：
+   - Twitter: @McKinsey
+   - Facebook: @McKinsey
+   - LinkedIn: @McKinsey
+
+这些信息通常用于标识文档的来源和版权，并提供公司的联系方式和社会媒体信息。

@@ -1,0 +1,4 @@
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/11 全球数字经贸规则年度观察报告（2023年）/11 全球数字经贸规则年度观察报告（2023年）_16/11 全球数字经贸规则年度观察报告（2023年）_16/[107, 229, 499, 514]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/11 全球数字经贸规则年度观察报告（2023年）/11 全球数字经贸规则年度观察报告（2023年）_9/11 全球数字经贸规则年度观察报告（2023年）_9/[83, 66, 513, 507]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/11 全球数字经贸规则年度观察报告（2023年）/11 全球数字经贸规则年度观察报告（2023年）_12/11 全球数字经贸规则年度观察报告（2023年）_12/[87, 77, 512, 234]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/11 全球数字经贸规则年度观察报告（2023年）/11 全球数字经贸规则年度观察报告（2023年）_11/11 全球数字经贸规则年度观察报告（2023年）_11/[92, 187, 501, 358]_0.jpg'

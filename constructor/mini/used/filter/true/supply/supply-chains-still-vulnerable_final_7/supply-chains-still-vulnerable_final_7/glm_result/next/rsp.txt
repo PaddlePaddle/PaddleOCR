@@ -1,0 +1,33 @@
+这是一张来自麦肯锡公司（McKinsey & Company）的文档图片，标题为“Interest is rising in AI-based supply chain tools, especially for demand planning”（对基于人工智能的供应链工具的兴趣正在上升，特别是在需求规划方面）。文档中包含了一些关于供应链管理和人工智能应用的内容。
+
+### 文本内容概述：
+1. **加速人工智能的采用**：
+   - 先进的数字工具的快速发展为供应链规划、运营和风险管理提供了新的机会。
+   - 这些工具正在改变组织的数字化计划，特别是在需求规划工具方面。
+
+2. **填补董事会间的差距**：
+   - 供应链领导者在供应链中断成为高级管理团队议程的焦点时未能抓住机会。
+   - 他们现在需要找到方法来教育高级管理人员供应链问题与挑战。
+
+### 图表内容（Exhibit 6）：
+- **对先进数字和人工智能工具的兴趣**（Interest in advanced digital and AI-based tools, % of respondents）：
+  - **规划和调度**（Planning and scheduling）：
+    - 需求规划（Demand planning）：74%
+    - 库存优化（Inventory optimization）：57%
+    - 生产与物料规划（Production and material planning）：49%
+    - S&OP/BP（销售与运营计划/业务计划）：48%
+    - 配送规划（Distribution planning）：36%
+  - **风险与透明度**（Risk and transparency）：
+    - 端到端供应链可见性（End-to-end supply chain visibility）：55%
+    - 风险评估与模拟（Risk assessment and simulation）：52%
+    - 早期预警系统（Early-warning system）：33%
+  - **网络与物流**（Network and logistics）：
+    - 运输管理（Transport management）：36%
+    - 网络建模（Network modeling）：35%
+    - 仓库管理（Warehouse management）：26%
+
+### 其他信息：
+- 文档来源：麦肯锡全球供应链领导调查（McKinsey Global Supply Chain Leader Survey），调查时间为2024年4月26日至6月10日，样本量为88。
+
+### 总结：
+该文档强调了人工智能在供应链管理中的重要性，特别是在需求规划、风险管理和网络物流方面的应用。同时，文档也指出了供应链领导者需要更好地与高级管理层沟通，以推动供应链管理的数字化转型。
