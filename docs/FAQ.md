@@ -427,11 +427,11 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 
 #### Q: PP-OCR系统中，文本检测的结果有置信度吗？
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
 
 #### Q: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
 
-**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+**A**：特征提取网络金字塔构建的部分:[代码位置](../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
 
 #### Q：PaddleOCR如何做到横排和竖排同时支持的？
 
