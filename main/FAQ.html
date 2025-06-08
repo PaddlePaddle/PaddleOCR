@@ -6380,9 +6380,9 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 <h4 id="q-pp-ocrse">Q: 在PP-OCR系统中，文本检测的骨干网络为什么没有使用SE模块？<a class="headerlink" href="#q-pp-ocrse" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：SE模块是MobileNetV3网络一个重要模块，目的是估计特征图每个特征通道重要性，给特征图每个特征分配权重，提高网络的表达能力。但是，对于文本检测，输入网络的分辨率比较大，一般是640*640，利用SE模块估计特征图每个特征通道重要性比较困难，网络提升能力有限，但是该模块又比较耗时，因此在PP-OCR系统中，文本检测的骨干网络没有使用SE模块。实验也表明，当去掉SE模块，超轻量模型大小可以减小40%，文本检测效果基本不受影响。详细可以参考PP-OCR技术文章，<a href="https://arxiv.org/abs/2009.09941">https://arxiv.org/abs/2009.09941</a>.</p>
 <h4 id="q-pp-ocr">Q: PP-OCR系统中，文本检测的结果有置信度吗？<a class="headerlink" href="#q-pp-ocr" title="Permanent link">&para;</a></h4>
-<p><strong>A</strong>：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在<a href="../../ppocr/postprocess/db_postprocess.py">文本检测DB的后处理代码</a>的155行，添加scores信息。这样，在<a href="../../tools/infer/predict_det.py">检测预测代码</a>的197行，就可以拿到文本检测的scores信息。</p>
+<p><strong>A</strong>：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在<a href="../ppocr/postprocess/db_postprocess.py">文本检测DB的后处理代码</a>的155行，添加scores信息。这样，在<a href="../tools/infer/predict_det.py">检测预测代码</a>的197行，就可以拿到文本检测的scores信息。</p>
 <h4 id="q-db">Q: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？<a class="headerlink" href="#q-db" title="Permanent link">&para;</a></h4>
-<p><strong>A</strong>：特征提取网络金字塔构建的部分:<a href="../../ppocr/modeling/necks/db_fpn.py">代码位置</a>。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考<a href="./tree.md">代码组织结构</a>。</p>
+<p><strong>A</strong>：特征提取网络金字塔构建的部分:<a href="../ppocr/modeling/necks/db_fpn.py">代码位置</a>。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考<a href="./tree.md">代码组织结构</a>。</p>
 <h4 id="qpaddleocr">Q：PaddleOCR如何做到横排和竖排同时支持的？<a class="headerlink" href="#qpaddleocr" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：合成了一批竖排文字，逆时针旋转90度后加入训练集与横排一起训练。预测时根据图片长宽比判断是否为竖排，若为竖排则将crop出的文本逆时针旋转90度后送入识别网络。</p>
 <h4 id="q_27">Q: 目前知识蒸馏有哪些主要的实践思路？<a class="headerlink" href="#q_27" title="Permanent link">&para;</a></h4>
@@ -6605,7 +6605,7 @@ ocr_system: 检测识别串联预测</p>
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月6日 11:20:18 UTC">2025年6月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月8日 01:14:47 UTC">2025年6月8日</span>
   </span>
 
     
@@ -6615,7 +6615,7 @@ ocr_system: 检测识别串联预测</p>
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月6日 11:20:18 UTC">2025年6月6日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月8日 01:14:47 UTC">2025年6月8日</span>
   </span>
 
     
@@ -6633,9 +6633,9 @@ ocr_system: 检测识别串联预测</p>
     
     <nav>
       
-        <a href="https://github.com/zhangyubo0722" class="md-author" title="@zhangyubo0722">
+        <a href="https://github.com/emmanuel-ferdman" class="md-author" title="@emmanuel-ferdman">
           
-          <img src="https://avatars.githubusercontent.com/u/94225063?v=4&size=72" alt="zhangyubo0722">
+          <img src="https://avatars.githubusercontent.com/u/35470921?v=4&size=72" alt="emmanuel-ferdman">
         </a>
       
         <a href="https://github.com/web-flow" class="md-author" title="@web-flow">
@@ -6643,17 +6643,23 @@ ocr_system: 检测识别串联预测</p>
           <img src="https://avatars.githubusercontent.com/u/19864447?v=4&size=72" alt="web-flow">
         </a>
       
+        <a href="https://github.com/zhangyubo0722" class="md-author" title="@zhangyubo0722">
+          
+          <img src="https://avatars.githubusercontent.com/u/94225063?v=4&size=72" alt="zhangyubo0722">
+        </a>
+      
         <a href="https://github.com/GreatV" class="md-author" title="@GreatV">
           
           <img src="https://avatars.githubusercontent.com/u/17264618?v=4&size=72" alt="GreatV">
         </a>
       
-        <a href="https://github.com/SWHL" class="md-author" title="@SWHL">
-          
-          <img src="https://avatars.githubusercontent.com/u/28639377?v=4&size=72" alt="SWHL">
-        </a>
       
       
+        
+          <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/FAQ.md" class="md-author md-author--more">
+            +1
+          </a>
+        
       
     </nav>
   </span>
