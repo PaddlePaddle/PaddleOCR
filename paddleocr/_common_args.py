@@ -79,6 +79,8 @@ def prepare_common_init_args(model_name, common_args):
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
+            # cache 10 different shapes for mkldnn to avoid memory leak
+            pp_option.mkldnn_cache_capacity = 10
         else:
             pp_option.run_mode = "paddle"
     pp_option.cpu_threads = common_args["cpu_threads"]
