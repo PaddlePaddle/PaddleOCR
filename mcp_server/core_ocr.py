@@ -12,8 +12,9 @@ from typing import Optional, Union, Dict, Any
 
 # 第三方库导入
 import numpy as np
+import httpx
 from PIL import Image
-from fastmcp import Context
+from fastmcp import Context, Image as FastMCPImage
 
 # 配置logger - 仅错误级别
 logger = logging.getLogger(__name__)
@@ -232,10 +233,12 @@ async def _call_aistudio_api(input_data: str, ctx: Context, **options) -> dict:
     elif input_data.startswith("data:"):
         file_data = input_data.split(",", 1)[1] if "," in input_data else input_data
     elif input_data.startswith(("http://", "https://")):
-        response = await ctx.http_request(method="GET", url=input_data)
-        if response.status_code != 200:
-            raise Exception(f"Failed to download URL: {response.status_code}")
-        file_data = base64.b64encode(response.content).decode("ascii")
+        # 使用httpx下载URL
+        async with httpx.AsyncClient() as client:
+            response = await client.get(input_data)
+            if response.status_code != 200:
+                raise Exception(f"Failed to download URL: {response.status_code}")
+            file_data = base64.b64encode(response.content).decode("ascii")
     else:
         file_data = input_data
 
@@ -253,13 +256,13 @@ async def _call_aistudio_api(input_data: str, ctx: Context, **options) -> dict:
         headers["Authorization"] = f'token {engines._api_config["token"]}'
 
     # 发送请求
-    response = await ctx.http_request(
-        method="POST",
-        url=engines._api_config["url"],
-        headers=headers,
-        json=payload,
-        timeout=engines._api_config.get("timeout", 30),
-    )
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            engines._api_config["url"],
+            headers=headers,
+            json=payload,
+            timeout=engines._api_config.get("timeout", 30),
+        )
 
     if response.status_code != 200:
         raise Exception(f"API error {response.status_code}: {response.text}")
@@ -407,11 +410,12 @@ def _parse_api_structure(api_result: dict) -> dict:
     layout_results = api_result["layoutParsingResults"]
 
     if not layout_results:
-        return {"markdown": "", "pages": [], "has_images": False}
+        return {"markdown": "", "pages": [], "has_images": False, "images": []}
 
     markdown_parts = []
     pages = []
     has_images = False
+    image_urls = []
 
     for i, res in enumerate(layout_results):
         # markdown字段在API响应中是确定存在的
@@ -426,20 +430,24 @@ def _parse_api_structure(api_result: dict) -> dict:
                     "has_images": bool(markdown_data.get("images")),
                 }
             )
+
+            # 提取图片URL - 优雅简洁的图片数据提取
             if markdown_data.get("images"):
                 has_images = True
+                image_urls.extend(markdown_data["images"].values())
 
     return {
         "markdown": "\n".join(markdown_parts),
         "pages": pages,
         "has_images": has_images,
+        "images": image_urls,  # 图片URL列表
     }
 
 
 def _parse_local_structure(raw_results) -> dict:
     """解析本地结构结果"""
     if not raw_results:
-        return {"markdown": "", "pages": [], "has_images": False}
+        return {"markdown": "", "pages": [], "has_images": False, "images": []}
 
     markdown_parts = []
     pages = []
@@ -458,7 +466,12 @@ def _parse_local_structure(raw_results) -> dict:
                 {"page": i, "content": text, "has_images": False}  # 本地模式简化处理
             )
 
-    return {"markdown": "\n".join(markdown_parts), "pages": pages, "has_images": False}
+    return {
+        "markdown": "\n".join(markdown_parts),
+        "pages": pages,
+        "has_images": False,
+        "images": [],
+    }
 
 
 # ==================== 格式化输出（简化版） ====================
@@ -532,164 +545,230 @@ def format_ocr_output(result: dict, detailed: bool = False) -> str:
         return output
 
 
-def format_structure_output(result: dict, detailed: bool = False) -> str:
-    """格式化结构分析输出 - 统一L1/L2"""
+def format_structure_output(
+    result: dict, detailed: bool = False, include_image_refs: bool = True
+) -> str:
+    """格式化结构分析输出 - L1纯净markdown，L2精准元数据"""
     if not result["markdown"].strip():
         error_msg = "❌ No document structure detected"
         return (
             error_msg
             if not detailed
             else json.dumps(
-                {
-                    "error": "No structure detected",
-                    "markdown": "",
-                    "pages": [],
-                    "meta": {"page_count": 0, "has_images": False},
-                },
-                ensure_ascii=False,
+                {"error": "No structure detected", "pages": 0}, ensure_ascii=False
             )
         )
 
     if detailed:
-        # L2: 完整结构化输出
+        # L2: 精简元数据 + 图片URL信息
         output = {
-            "markdown": result["markdown"],
-            "pages": result["pages"],
-            "meta": {
-                "page_count": len(result["pages"]),
-                "has_images": result["has_images"],
-                "source_type": "api" if is_api_mode() else "local",
-            },
+            "pages": len(result["pages"]),
+            "has_images": result["has_images"],
+            "source": "api" if is_api_mode() else "local",
+            "content": result["markdown"],
         }
+
+        # 包含图片URL（如果有且需要）
+        if result["images"] and include_image_refs:
+            output["image_urls"] = result["images"]
+
         return json.dumps(output, ensure_ascii=False, indent=2)
     else:
-        # L1: 纯markdown输出
-        return result["markdown"]
+        # L1: 纯markdown + 图片引用提示（可选）
+        markdown = result["markdown"]
+
+        if result["images"] and include_image_refs:
+            image_refs = "\n\n📸 **Document contains images**: " + ", ".join(
+                f"[Image {i+1}]({url})" for i, url in enumerate(result["images"])
+            )
+            markdown += image_refs
+
+        return markdown
 
 
 # ==================== MCP工具注册（简化版） ====================
 
 
-def register_tools(mcp, ocr_source_type: str = "local", **api_config):
-    """注册MCP工具 - 支持本地、AI Studio、用户服务三种模式"""
+def register_tools(
+    mcp, ocr_source_type: str = "local", tool_type: str = "auto", **api_config
+):
+    """注册MCP工具 - 智能工具注册策略
 
-    # 配置API（如果是API模式）
+    工具注册规则：
+    • 本地模式(local): 注册两个工具（ocr_text + ocr_structure）
+    • API模式(aistudio/user_service): 每个服务注册一个专用工具，根据URL自动判断
+
+    Args:
+        mcp: FastMCP实例
+        ocr_source_type: 数据源类型 ("local", "aistudio", "user_service")
+        tool_type: 工具类型 ("auto", "ocr", "structure") - API模式使用
+        **api_config: API配置参数（必须包含api_url）
+    """
+
+    # 配置数据源
     if ocr_source_type in ["aistudio", "user_service"]:
-        # 明确传递服务类型，而不是通过URL推测
         engines.configure_api(service_type=ocr_source_type, **api_config)
     else:
-        # 本地模式：预热引擎避免首次运行延迟
         engines.warmup_engines()
 
-    # 智能描述引擎类型
+    # 智能描述
     if engines.is_api_mode():
-        if engines._api_config["is_user_service"]:
-            source_desc = "用户服务API"
-        else:
-            source_desc = "星河API"
+        source_desc = (
+            "用户服务API" if engines._api_config["is_user_service"] else "星河API"
+        )
     else:
         source_desc = "本地PaddleOCR"
 
-    @mcp.tool()
-    async def ocr_text(
-        input_data: str,
-        output_mode: str = "simple",
-        file_type: str = "auto",
-        useDocOrientationClassify: bool = True,
-        useDocUnwarping: bool = True,
-        ctx: Optional[Context] = None,
-    ) -> str:
-        f"""Extract text from images and PDFs using {source_desc}.
-
-        Args:
-            input_data: 文件路径、URL或Base64数据
-            output_mode: "simple" (L1简洁) 或 "detailed" (L2详细)
-            file_type: 文件类型 ("auto", "pdf", "image") - API模式
-            useDocOrientationClassify: 文档方向分类 - API模式
-            useDocUnwarping: 文档图像校正 - API模式
-        """
-        try:
-            # 准备API参数
-            api_kwargs = {
-                "file_type": file_type,
-                "useDocOrientationClassify": useDocOrientationClassify,
-                "useDocUnwarping": useDocUnwarping,
-            }
-
-            # 输入处理
-            processed_input = process_input(input_data)
-
-            if engines.is_api_mode():
-                # API模式 (AI Studio 或用户服务)
-                if not ctx:
-                    raise ValueError("Context required for API mode")
-                raw_result = await _call_aistudio_api(
-                    processed_input, ctx, **api_kwargs
-                )
+    # 确定要注册的工具
+    if ocr_source_type == "local":
+        # 本地模式：注册两个工具（支持完整功能）
+        tools_to_register = ["ocr", "structure"]
+    else:
+        # API模式（星河API + 用户服务API）：每个服务专注一个工具，根据URL判断
+        if tool_type == "auto":
+            # 智能识别：从URL推断工具类型
+            api_url = api_config.get("api_url", "").lower()
+            if "layout-parsing" in api_url or "structure" in api_url:
+                tools_to_register = ["structure"]
             else:
-                # 本地OCR模式 - 使用引擎容器，异步执行避免阻塞event loop
-                ocr = engines.get_engine("ocr")
-                # 使用run_in_executor在线程池中执行耗时的同步OCR操作
-                loop = asyncio.get_running_loop()
-                raw_result = await loop.run_in_executor(
-                    None, ocr.predict, processed_input
+                tools_to_register = ["ocr"]
+        else:
+            # 明确指定工具类型
+            tools_to_register = [tool_type]
+
+    # 注册OCR工具
+    if "ocr" in tools_to_register:
+
+        @mcp.tool()
+        async def ocr_text(
+            input_data: str,
+            output_mode: str = "simple",
+            ctx: Optional[Context] = None,
+        ) -> str:
+            f"""Extract text from images and PDF documents using OCR.
+
+            Args:
+                input_data: File path, URL, or base64 data
+                output_mode: "simple" for clean text, "detailed" for JSON with positioning
+            Notes:
+                for most cases, use "simple" mode is enough. Detaisl mode contain position layout information, which is not necessary for most cases.
+
+            Powered by: {source_desc}
+            """
+            try:
+                api_kwargs = {}
+
+                processed_input = process_input(input_data)
+
+                if engines.is_api_mode():
+                    if not ctx:
+                        raise ValueError("Context required for API mode")
+                    raw_result = await _call_aistudio_api(
+                        processed_input, ctx, **api_kwargs
+                    )
+                else:
+                    ocr = engines.get_engine("ocr")
+                    loop = asyncio.get_running_loop()
+                    raw_result = await loop.run_in_executor(
+                        None, ocr.predict, processed_input
+                    )
+
+                result = _parse_ocr_result(raw_result)
+                return format_ocr_output(result, output_mode == "detailed")
+
+            except Exception as e:
+                error_msg = f"OCR failed: {str(e)}"
+                return (
+                    error_msg
+                    if output_mode == "simple"
+                    else json.dumps({"error": error_msg}, ensure_ascii=False)
                 )
 
-            result = _parse_ocr_result(raw_result)
-            return format_ocr_output(result, output_mode == "detailed")
+    # 注册结构分析工具
+    if "structure" in tools_to_register:
 
-        except Exception as e:
-            error_msg = f"OCR failed: {str(e)}"
-            return (
-                error_msg
-                if output_mode == "simple"
-                else json.dumps({"error": error_msg}, ensure_ascii=False)
-            )
+        @mcp.tool()
+        async def ocr_structure(
+            input_data: str,
+            output_mode: str = "simple",
+            ctx: Optional[Context] = None,
+        ):
+            f"""Analyze document layout and extract structured content with images.
 
-    @mcp.tool()
-    async def analyze_structure(
-        input_data: str,
-        output_mode: str = "detailed",
-        file_type: str = "auto",
-        ctx: Optional[Context] = None,
-    ) -> str:
-        f"""Analyze document structure using {source_desc}.
+            Args:
+                input_data: File path, URL, or base64 data
+                output_mode: "simple" for markdown, "detailed" for JSON with metadata
+            Notes:
+                for most cases, use "simple" mode is enough. Detaisl mode contain position layout information, which is not necessary for most cases.
 
-        Args:
-            input_data: 文件路径、URL或Base64数据
-            output_mode: "simple" (L1纯markdown) 或 "detailed" (L2结构化)
-            file_type: 文件类型 ("auto", "pdf", "image") - API模式
-        """
-        try:
-            # 准备API参数
-            api_kwargs = {"file_type": file_type}
+            Returns: Markdown text + images (if available) or structured JSON
+            Powered by: {source_desc}
+            """
+            try:
+                api_kwargs = {}
+                processed_input = process_input(input_data)
 
-            # 输入处理
-            processed_input = process_input(input_data)
+                if engines.is_api_mode():
+                    if not ctx:
+                        raise ValueError("Context required for API mode")
+                    raw_result = await _call_aistudio_api(
+                        processed_input, ctx, **api_kwargs
+                    )
+                else:
+                    structure = engines.get_engine("structure")
+                    loop = asyncio.get_running_loop()
+                    raw_result = await loop.run_in_executor(
+                        None, structure.predict, processed_input
+                    )
 
-            if engines.is_api_mode():
-                # API模式 (AI Studio 或用户服务)
-                if not ctx:
-                    raise ValueError("Context required for API mode")
-                raw_result = await _call_aistudio_api(
-                    processed_input, ctx, **api_kwargs
+                result = _parse_structure_result(raw_result)
+
+                # 🖼️ 混合内容传输 - 官方FastMCP实现
+                if result["images"] and engines.is_api_mode():
+                    try:
+                        import base64
+
+                        content_list = []
+
+                        # 添加文本内容（无图片引用避免重复）
+                        text_content = format_structure_output(
+                            result, output_mode == "detailed", include_image_refs=False
+                        )
+                        content_list.append(text_content)
+
+                        # 添加第一张图片
+                        first_image = result["images"][0]
+                        if first_image.startswith("/9j/") or first_image.startswith(
+                            "iVBOR"
+                        ):
+                            image_data = base64.b64decode(first_image)
+                            content_list.append(
+                                FastMCPImage(data=image_data, format="jpeg")
+                            )
+                        else:
+                            async with httpx.AsyncClient() as client:
+                                response = await client.get(first_image)
+                                if response.status_code == 200:
+                                    image_format = response.headers.get(
+                                        "content-type", "image/jpeg"
+                                    ).split("/")[-1]
+                                    content_list.append(
+                                        FastMCPImage(
+                                            data=response.content, format=image_format
+                                        )
+                                    )
+
+                        return content_list
+                    except Exception:
+                        pass
+
+                # 标准文本返回（包含图片URL引用）
+                return format_structure_output(result, output_mode == "detailed")
+
+            except Exception as e:
+                error_msg = f"Structure analysis failed: {str(e)}"
+                return (
+                    error_msg
+                    if output_mode == "simple"
+                    else json.dumps({"error": error_msg}, ensure_ascii=False)
                 )
-            else:
-                # 本地结构分析模式 - 使用引擎容器，异步执行避免阻塞event loop
-                structure = engines.get_engine("structure")
-                # 使用run_in_executor在线程池中执行耗时的同步结构分析操作
-                loop = asyncio.get_running_loop()
-                raw_result = await loop.run_in_executor(
-                    None, structure.predict, processed_input
-                )
-
-            result = _parse_structure_result(raw_result)
-            return format_structure_output(result, output_mode == "detailed")
-
-        except Exception as e:
-            error_msg = f"Structure analysis failed: {str(e)}"
-            return (
-                error_msg
-                if output_mode == "simple"
-                else json.dumps({"error": error_msg}, ensure_ascii=False)
-            )
