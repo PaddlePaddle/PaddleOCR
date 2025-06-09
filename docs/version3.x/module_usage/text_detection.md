@@ -245,6 +245,12 @@ MKL-DNN 缓存容量。
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>max_side_limit</code></td>
+<td>检测的图像边长最大值限制：<code>int</code> 限制输入检测模型的图片最长边，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>int</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>thresh</code></td>
 <td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
 <td><code>float</code> / <code>None</code></td>
