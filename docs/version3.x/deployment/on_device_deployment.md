@@ -99,12 +99,13 @@
 4. 将工作目录切换到 `PaddleX-Lite-Deploy/ocr/android/shell/cxx/ppocr_demo`，运行 `run.sh` 脚本，完成在端侧的预测。
 
 **注意事项：**
+
 - 在运行 `build.sh` 脚本前，需要更改 `NDK_ROOT` 指定的路径为实际安装的 NDK 路径。
 - 在 Windows 系统上可以使用 Git Bash 执行部署步骤。
 - 若在 Windows 系统上编译，需要将 `CMakeLists.txt` 中的 `CMAKE_SYSTEM_NAME` 设置为 `windows`。
 - 若在 Mac 系统上编译，需要将 `CMakeLists.txt` 中的 `CMAKE_SYSTEM_NAME` 设置为 `darwin`。
 - 在运行 `run.sh` 脚本时需保持 ADB 连接。
-- `download.sh` 和 `run.sh` 支持传入参数来指定模型，若不指定则默认使用 `PP-OCRv5_mobile` 模型。目前适配了以下模型： 
+- `download.sh` 和 `run.sh` 支持传入参数来指定模型，若不指定则默认使用 `PP-OCRv5_mobile` 模型。目前适配了以下模型：
     - `PP-OCRv3_mobile`
     - `PP-OCRv4_mobile`
     - `PP-OCRv5_mobile`
