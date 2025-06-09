@@ -20,6 +20,7 @@ from ._constants import (
     DEFAULT_DEVICE,
     DEFAULT_ENABLE_MKLDNN,
     DEFAULT_MIN_SUBGRAPH_SIZE,
+    DEFAULT_MKLDNN_CACHE_CAPACITY,
     DEFAULT_PRECISION,
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
@@ -35,6 +36,7 @@ def parse_common_args(kwargs, *, default_enable_hpi):
         "min_subgraph_size": DEFAULT_MIN_SUBGRAPH_SIZE,
         "precision": DEFAULT_PRECISION,
         "enable_mkldnn": DEFAULT_ENABLE_MKLDNN,
+        "mkldnn_cache_capacity": DEFAULT_MKLDNN_CACHE_CAPACITY,
         "cpu_threads": DEFAULT_CPU_THREADS,
     }
 
@@ -79,6 +81,7 @@ def prepare_common_init_args(model_name, common_args):
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
+            pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
         else:
             pp_option.run_mode = "paddle"
     pp_option.cpu_threads = common_args["cpu_threads"]
@@ -128,6 +131,12 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
         help="Enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.",
+    )
+    parser.add_argument(
+        "--mkldnn_cache_capacity",
+        type=int,
+        default=DEFAULT_MKLDNN_CACHE_CAPACITY,
+        help="MKL-DNN cache capacity.",
     )
     parser.add_argument(
         "--cpu_threads",

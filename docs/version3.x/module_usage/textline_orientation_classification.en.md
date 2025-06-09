@@ -196,6 +196,14 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
 <td><code>cpu_threads</code></td>
 <td>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>

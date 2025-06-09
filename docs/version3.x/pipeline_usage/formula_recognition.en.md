@@ -613,6 +613,14 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
 <td><code>cpu_threads</code></td>
 <td>
 The number of threads to use when performing inference on the CPU.</td>
@@ -866,6 +874,14 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

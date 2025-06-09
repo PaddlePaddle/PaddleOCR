@@ -1470,6 +1470,14 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
 <td><code>cpu_threads</code></td>
 <td>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
@@ -2077,6 +2085,14 @@ for item in markdown_images:
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

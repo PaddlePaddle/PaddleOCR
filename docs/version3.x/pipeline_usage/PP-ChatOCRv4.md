@@ -1116,6 +1116,14 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
 <td><code>cpu_threads</code></td>
 <td>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
@@ -1624,6 +1632,14 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

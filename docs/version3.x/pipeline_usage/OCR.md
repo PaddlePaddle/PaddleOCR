@@ -877,6 +877,14 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
 <td><code>cpu_threads</code></td>
 <td>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
@@ -1316,6 +1324,14 @@ for res in result:
 <td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
