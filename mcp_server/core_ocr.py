@@ -8,7 +8,7 @@ import os
 import re
 import sys
 from pathlib import Path
-from typing import Optional, Union, Dict, Any
+from typing import Optional, Union, Dict, Any, List
 
 # 第三方库导入
 import numpy as np
@@ -319,33 +319,51 @@ def _parse_api_structure(api_result: dict) -> dict:
     """解析星河API结构结果 - 直接构建最终格式"""
     layout_results = api_result["layoutParsingResults"]
     if not layout_results:
-        return {"markdown": "", "pages": [], "has_images": False, "images": []}
+        return {
+            "markdown": "",
+            "pages": [],
+            "has_images": False,
+            "images": [],
+            "referenced_images": [],
+        }
 
-    markdown_parts, pages, image_urls = [], [], []
+    markdown_parts, pages, all_images = [], [], []
+    referenced_images = []  # 所有在markdown中被引用的图片
 
     for i, res in enumerate(layout_results):
         markdown_data = res["markdown"]  # 直接访问，因为markdown是必须字段
+        page_images = []
+
         if markdown_data.get("text"):
             text = markdown_data["text"]
             markdown_parts.append(text)
 
+            # 收集当前页面的图片
+            if markdown_data.get("images"):
+                sorted_images = sorted(markdown_data["images"].items())
+                page_images = [url for filename, url in sorted_images]
+                all_images.extend(page_images)
+
+                # 提取当前页面markdown中实际引用的所有图片
+                page_referenced_images = _extract_referenced_images_from_markdown(
+                    text, markdown_data["images"]
+                )
+                referenced_images.extend(page_referenced_images)
+
             page = {
                 "page": i,
                 "content": text,
-                "has_images": bool(markdown_data.get("images")),
+                "has_images": bool(page_images),
+                "images": page_images,  # 保存页面级图片关联
             }
             pages.append(page)
-
-            # 收集图片URL - 修复字典顺序问题
-            if markdown_data.get("images"):
-                sorted_images = sorted(markdown_data["images"].items())
-                image_urls.extend([url for filename, url in sorted_images])
 
     return {
         "markdown": "\n".join(markdown_parts),
         "pages": pages,
-        "has_images": bool(image_urls),
-        "images": image_urls,
+        "has_images": bool(all_images),
+        "images": all_images,
+        "referenced_images": referenced_images,  # 所有在markdown中被引用的图片
     }
 
 
@@ -431,6 +449,37 @@ def format_structure_output(
             markdown += image_refs
 
         return markdown
+
+
+# ==================== 图片引用解析 ====================
+
+
+def _extract_referenced_images_from_markdown(
+    markdown_text: str, available_images: Dict[str, str]
+) -> List[str]:
+    """从markdown文本中提取实际被引用的图片URL"""
+    if not markdown_text or not available_images:
+        return []
+
+    # 匹配markdown中的图片引用：<img src="path" /> 或 ![alt](path)
+    img_patterns = [
+        r'<img[^>]+src=["\']([^"\']+)["\'][^>]*>',  # HTML img标签
+        r"!\[[^\]]*\]\(([^)]+)\)",  # Markdown图片语法
+    ]
+
+    referenced_images = []
+    for pattern in img_patterns:
+        matches = re.findall(pattern, markdown_text)
+        for img_path in matches:
+            # 提取文件名（去掉路径前缀）
+            img_filename = img_path.split("/")[-1]
+            # 在available_images中查找对应的URL
+            for filename, url in available_images.items():
+                if filename == img_filename or img_path.endswith(filename):
+                    referenced_images.append(url)
+                    break
+
+    return referenced_images
 
 
 # ==================== MCP工具注册 ====================
@@ -603,43 +652,45 @@ def register_tools(
                         )
                         content_list.append(text_content)
 
-                        # 添加第一张图片 - 改进检测逻辑
-                        first_image = result["images"][0]
-
-                        # 检测是否为URL
-                        if first_image.startswith(("http://", "https://")):
-                            # URL：下载图片
-                            async with httpx.AsyncClient() as client:
-                                try:
-                                    response = await client.get(first_image)
-                                    if response.status_code == 200:
-                                        image_format = response.headers.get(
-                                            "content-type", "image/jpeg"
-                                        ).split("/")[-1]
-                                        content_list.append(
-                                            FastMCPImage(
-                                                data=response.content,
-                                                format=image_format,
+                        # 添加所有在markdown中引用的图片
+                        referenced_images = result.get("referenced_images", [])
+                        for target_image in referenced_images:
+                            # 检测是否为URL
+                            if target_image.startswith(("http://", "https://")):
+                                # URL：下载图片
+                                async with httpx.AsyncClient() as client:
+                                    try:
+                                        response = await client.get(target_image)
+                                        if response.status_code == 200:
+                                            image_format = response.headers.get(
+                                                "content-type", "image/jpeg"
+                                            ).split("/")[-1]
+                                            content_list.append(
+                                                FastMCPImage(
+                                                    data=response.content,
+                                                    format=image_format,
+                                                )
                                             )
+                                    except Exception as e:
+                                        logger.debug(f"Image download failed: {e}")
+                            else:
+                                # 假设为base64数据：直接使用
+                                try:
+                                    image_data = base64.b64decode(target_image)
+                                    # 根据数据头判断格式
+                                    if image_data.startswith(b"\xff\xd8\xff"):
+                                        format_type = "jpeg"
+                                    elif image_data.startswith(b"\x89PNG"):
+                                        format_type = "png"
+                                    else:
+                                        format_type = "jpeg"  # 默认
+                                    content_list.append(
+                                        FastMCPImage(
+                                            data=image_data, format=format_type
                                         )
+                                    )
                                 except Exception as e:
-                                    logger.debug(f"Image download failed: {e}")
-                        else:
-                            # 假设为base64数据：直接使用
-                            try:
-                                image_data = base64.b64decode(first_image)
-                                # 根据数据头判断格式
-                                if image_data.startswith(b"\xff\xd8\xff"):
-                                    format_type = "jpeg"
-                                elif image_data.startswith(b"\x89PNG"):
-                                    format_type = "png"
-                                else:
-                                    format_type = "jpeg"  # 默认
-                                content_list.append(
-                                    FastMCPImage(data=image_data, format=format_type)
-                                )
-                            except Exception as e:
-                                logger.debug(f"Base64 decode failed: {e}")
+                                    logger.debug(f"Base64 decode failed: {e}")
 
                         return content_list
                     except Exception:

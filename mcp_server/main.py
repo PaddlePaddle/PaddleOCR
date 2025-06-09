@@ -117,7 +117,7 @@ def main():
         server_name = f"PaddleOCR AI Studio {service_type} MCP Server"
 
     # 创建并配置服务器
-    mcp = FastMCP(name=server_name, log_level="info" if args.verbose else "warning")
+    mcp = FastMCP(name=server_name, log_level="INFO" if args.verbose else "WARNING")
 
     try:
         # 注册工具
