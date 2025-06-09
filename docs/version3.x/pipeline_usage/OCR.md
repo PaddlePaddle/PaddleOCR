@@ -1944,3 +1944,39 @@ from paddleocr import PaddleOCR
 
 pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
 ```
+
+#### 4.2.3 通过环境变量指定使用本地字体文件路径
+在初始化产线对象前，可通过设置环境变量，指定本地字体文件路径，使产线在执行 save_to_img 方法保存标注结果图像时使用该字体。  
+方便离线部署时无需网络下载字体文件，便于文件的管理，**通过该方法需要确保指定的字体文件存在！**  
+
+示例如下：  
+假设字体文件 `simfang.ttf` 存放于当前目录下的 `fonts` 文件夹内
+
+Python 脚本：
+
+```python
+import os
+
+# 在初始化产线前指定字体文件的位置
+os.environ["PADDLE_PDX_LOCAL_FONT_FILE_PATH"] = "./fonts/simfang.ttf"
+
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False, 
+    use_doc_unwarping=False, 
+    use_textline_orientation=False) # 文本检测+文本识别
+# ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # 文本图像预处理+文本检测+方向分类+文本识别
+# ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+文本行方向分类+文本识别
+# ocr = PaddleOCR(
+#     text_detection_model_name="PP-OCRv5_server_det",
+#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     use_doc_orientation_classify=False,
+#     use_doc_unwarping=False,
+#     use_textline_orientation=False) # 更换 PP-OCRv5_server 模型
+result = ocr.predict("./general_ocr_002.png")
+for res in result:
+    res.print()
+    res.save_to_img("output")
+    res.save_to_json("output")
+```
