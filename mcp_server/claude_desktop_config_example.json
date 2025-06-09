@@ -16,7 +16,7 @@
       "env": {
         "PADDLEOCR_MCP_OCR_SOURCE": "aistudio",
         "PADDLEOCR_MCP_SERVER_URL": "https://xxx.aistudio-hub.baidu.com/ocr",
-        "PADDLEOCR_MCP_API_TOKEN": "your_api_token_here"
+        "AISTUDIO_ACCESS_TOKEN": "your_api_token_here"
       }
     },
     "paddleocr-aistudio-structure": {
@@ -28,7 +28,7 @@
       "env": {
         "PADDLEOCR_MCP_OCR_SOURCE": "aistudio",
         "PADDLEOCR_MCP_SERVER_URL": "https://xxx.aistudio-hub.baidu.com/layout-parsing",
-        "PADDLEOCR_MCP_API_TOKEN": "your_api_token_here",
+        "AISTUDIO_ACCESS_TOKEN": "your_api_token_here",
         "PADDLEOCR_MCP_TIMEOUT": "60"
       }
     },

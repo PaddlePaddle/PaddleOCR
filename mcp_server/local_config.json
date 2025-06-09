@@ -1,0 +1,25 @@
+{
+  "engines": {
+    "ocr": {
+      "use_doc_orientation_classify": false,
+      "use_doc_unwarping": false,
+      "use_textline_orientation": false,
+      "text_det_limit_type": "min",
+      "text_det_limit_side_len": 736,
+      "text_detection_model_name": "PP-OCRv5_mobile_det",
+      "text_recognition_model_name": "PP-OCRv5_mobile_rec",
+      "device": "cpu"
+    },
+    "structure": {
+      "use_doc_orientation_classify": false,
+      "use_doc_unwarping": false,
+      "use_chart_recognition": false,
+      "use_seal_recognition": false,
+      "use_table_recognition": false,
+      "text_detection_model_name": "PP-OCRv5_mobile_det",
+      "text_recognition_model_name": "PP-OCRv5_mobile_rec",
+      "layout_detection_model_name": "PP-DocLayout-M",
+      "device": "cpu"
+    }
+  }
+} 
