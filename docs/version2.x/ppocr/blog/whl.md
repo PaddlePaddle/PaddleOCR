@@ -12,7 +12,7 @@ comments: true
 pip安装
 
 ```bash linenums="1"
-pip install paddleocr
+pip install "paddleocr<3.0"
 ```
 
 本地构建并安装

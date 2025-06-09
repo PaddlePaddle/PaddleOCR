@@ -2,11 +2,11 @@
 comments: true
 ---
 
-# PP-StructureV3 Production Line User Guide
+# PP-StructureV3 Pipeline Usage Tutorial
 
-## 1. Introduction to PP-StructureV3 Production Line
+## 1. Introduction to PP-StructureV3 Pipeline
 
-Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 production line by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This production line also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.
+Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 pipeline by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This pipeline also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.
 
 <b>PP-StructureV3</b> includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.
 
@@ -991,28 +991,31 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model.
-.any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
+<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to apply NMS post-processing for layout detection model.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, default is <code>1.0</code>.
+<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merge mode for overlapping boxes in layout detection.
-<code>large</code>, <code>small</code>, <code>union</code>, for keeping larger box, smaller box, or both. If not set, default is <code>large</code>.
+<td>The merging mode for the detection boxes output by the model in layout region detection.
+<ul>
+<li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
+<li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
+<li><b>union</b>: No filtering of bounding boxes will be performed, and both inner and outer boxes will be retained;</li>
+</ul>If not set, the default is <code>large</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1085,7 +1088,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
+<td>Image side length limitation for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1101,7 +1104,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
-. If not set, default is <code>0.3</code>.
+. If not set, the default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1109,7 +1112,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
-Any float > <code>0</code>. If not set, default is <code>0.6</code>.
+Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1117,7 +1120,7 @@ Any float > <code>0</code>. If not set, default is <code>0.6</code>.
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-any float > <code>0</code>. If not set, default is <code>2.0</code>.
+any float > <code>0</code>. If not set, the default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1136,7 +1139,7 @@ any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>Batch size for the text line orientation model. If not set, default is <code>1</code>.</td>
+<td>Batch size for the text line orientation model. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -1154,14 +1157,14 @@ any float > <code>0</code>. If not set, default is <code>2.0</code>.
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for text recognition. If not set, default is <code>1</code>.</td>
+<td>Batch size for text recognition. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Score threshold for text recognition. Only results above this value will be kept.
-Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
+Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1249,7 +1252,7 @@ Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 <tr>
 <td><code>seal_det_limit_type</code></td>
 <td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, default is <code>min</code>.
+supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1257,7 +1260,7 @@ supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortes
 <tr>
 <td><code>seal_det_thresh</code></td>
 <td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>. If not set, default is <code>0.2</code>.
+any float > <code>0</code>. If not set, the default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1265,14 +1268,14 @@ any float > <code>0</code>. If not set, default is <code>0.2</code>.
 <tr>
 <td><code>seal_det_box_thresh</code></td>
 <td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>. If not set, default is <code>0.6</code>.
+any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, default is <code>0.5</code>.
+<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, the default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1291,13 +1294,13 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size for seal text recognition. If not set, default is <code>1</code>.</td>
+<td>Batch size for seal text recognition. If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, default is <code>0.0</code> (no threshold).
+<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1322,57 +1325,57 @@ any float > <code>0</code>. If not set, default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use document orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document orientation classification module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use document unwarping. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use document unwarping module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the text line orientation classification module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to load and use table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use table recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to load and use formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart recognition sub-production line. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the chart recognition sub-pipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection production line. If not set, default is <code>True</code>.</td>
+<td>Whether to load and use the document region detection pipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference. You can specify a device ID.
+<td>Device for inference. You can specify a device ID:
 <ul>
-<li><b>CPU</b>: e.g., <code>cpu</code></li>
+<li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means GPU 0</li>
 <li><b>NPU</b>: e.g., <code>npu:0</code> means NPU 0</li>
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means XPU 0</li>
@@ -1562,7 +1565,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing for the layout detection model.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1659,7 +1662,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Maximum side length limit for text detection.
+<td>Image side length limitation for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>.</li>
@@ -1948,43 +1951,43 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If not set, default is <code>True</code>.</td>
+<td>Whether to use the text line orientation classification. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable table recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If not set, default is <code>True</code>.</td>
+<td>Whether to enable formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying device ID.
+<td>Device used for inference. Supports specifying device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means using GPU 0;</li>
@@ -2106,13 +2109,13 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection production line. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>

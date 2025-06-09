@@ -13,19 +13,19 @@ comments: true
 - PaddlePaddle with CUDA 11.8
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+  python3 -m pip install "paddlepaddle-gpu<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
   ```
 
 - PaddlePaddle with CUDA 12.3
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle-gpu -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+  python3 -m pip install "paddlepaddle-gpu<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
   ```
 
 - If your machine does not have an available GPU, please run the following command to install the CPU version
 
   ```bash linenums="1"
-  python3 -m pip install paddlepaddle -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+  python3 -m pip install "paddlepaddle<=2.6" -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
   ```
 
 For more software version requirements, please refer to the instructions in the [Installation Document](https://www.paddlepaddle.org.cn/en/install/quick).
@@ -33,7 +33,7 @@ For more software version requirements, please refer to the instructions in the 
 ### 1.2 Install PaddleOCR Whl Package
 
 ```bash linenums="1"
-python3 -m pip install paddleocr
+python3 -m pip install "paddleocr<3.0"
 
 # Install the image direction classification dependency package paddleclas (if you do not use the image direction classification, you can skip it)
 python3 -m pip install paddleclas

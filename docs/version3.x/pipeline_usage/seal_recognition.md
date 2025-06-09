@@ -779,8 +779,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>版面检测置信度阈值，得分大于该阈值才会被输出。
-大于 <code>0</code> 的任意浮点数如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
+<td>版面模型得分阈值。<code>0-1</code> 之间的任意浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -863,7 +862,7 @@ paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -1072,8 +1071,8 @@ for res in output:
 <td>版面检测置信度阈值，得分大于该阈值才会被输出。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-    <li><b>dict</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
-    <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></li></ul>
+<li><b>dict</b>：key是int类别id，value是大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></li></ul>
 </td>
 <td><code>float|dict</code></td>
 <td><code>None</code></td>
@@ -1086,27 +1085,27 @@ for res in output:
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数。
+<td>版面区域检测模型检测框的扩张系数。
 <ul>
-<li><b>float</b>，大于0的浮点数，如 1.1 ，表示将模型输出的检测框中心不变，宽和高都扩张1.1倍；</li>
-<li><b>列表</b>，如 [1.2, 1.5] ，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为1.0。</li>
+<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
+<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|list</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>版面检测中模型输出的检测框的合并处理模式。
+<td>版面区域检测的重叠框过滤方式。
 <ul>
-<li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
-<li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
-<li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>large</code>。</li>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1173,7 +1172,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号。
+<td>用于推理的设备。支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -1293,13 +1292,13 @@ for res in output:
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
+<td><code>float|Tuple[float,float]|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td>与实例化时的参数相同。</td>
-<td><code>string</code></td>
+<td><code>str|dict</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1419,7 +1418,7 @@ for res in output:
         - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段
             - `cls_id`: `(int)` 检测框的印章类别id
             - `score`: `(float)` 检测框的置信度
-            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
+            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1，y1，x2，y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标
     - `seal_res_list`: `List[Dict]` 印章文本识别的结果列表，每个元素包含以下字段
         - `input_path`: `(Union[str, None])` 印章文本识别产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
         - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
@@ -1479,7 +1478,7 @@ for res in output:
 </table>
 
 - `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `layout_det_res` 、  `seal_res_region1`和 `preprocessed_img`，对应的值是三个 `Image.Image` 对象：一个用于显示版面检测可视化，一个用于显示印章文本识别结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中不包含preprocessed_img，如果没有使用版面区域检测模块，则字典中不包含layout_det_res。
+- `img` 属性返回的预测结果是一个dict类型的数据。其中，键分别为 `layout_det_res` 、  `seal_res_region1`和 `preprocessed_img`，对应的值是三个 `Image.Image` 对象：一个用于显示版面检测可视化，一个用于显示印章文本识别结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中不包含preprocessed_img，如果没有使用版面区域检测模块，则dict中不包含layout_det_res。
 
 ## 3. 开发集成/部署
 
@@ -1885,7 +1884,7 @@ paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
 
 4. 在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置字典，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import SealRecognition
