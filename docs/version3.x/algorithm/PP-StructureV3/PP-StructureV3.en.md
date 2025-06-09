@@ -366,7 +366,7 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    PP-StructureV3
   </td>
   <td>
-   OCR模型
+   OCR Models
   </td>
   <td>
    Formula Recognition Model
@@ -375,7 +375,7 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    Chart Recognition Model
   </td>
   <td>
-   max_side_limit setting of the text detection module
+   text detection module max_side_limit
   </td>
  </tr>
  <tr>
@@ -398,19 +398,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    111.4
   </td>
   <td>
-   6822.4
+   6.7
   </td>
   <td>
-   5278.2
+   5.2
   </td>
   <td>
    38.9
   </td>
   <td>
-   17403
+   17.0
   </td>
   <td>
-   16909.3
+   16.5
   </td>
  </tr>
  <tr>
@@ -433,19 +433,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    105.3
   </td>
   <td>
-   5628
+   5.5
   </td>
   <td>
-   4085.1
+   4.0
   </td>
   <td>
    24.7
   </td>
   <td>
-   17403
+   17.0
   </td>
   <td>
-   17030.9
+   16.6
   </td>
  </tr>
  <tr>
@@ -468,19 +468,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    113.7
   </td>
   <td>
-   6712.9
+   6.6
   </td>
   <td>
-   5052
+   4.9
   </td>
   <td>
    29.1
   </td>
   <td>
-   10929
+   10.7
   </td>
   <td>
-   10840.7
+   10.6
   </td>
  </tr>
  <tr>
@@ -503,19 +503,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    112.9
   </td>
   <td>
-   6944.1
+   6.8
   </td>
   <td>
-   5193.6
+   5.1
   </td>
   <td>
    38
   </td>
   <td>
-   16390
+   16.0
   </td>
   <td>
-   15840
+   15.5
   </td>
  </tr>
  <tr>
@@ -538,19 +538,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    114.8
   </td>
   <td>
-   6666.5
+   6.5
   </td>
   <td>
-   5105.4
+   5.0
   </td>
   <td>
    26.1
   </td>
   <td>
-   8606
+   8.4
   </td>
   <td>
-   8517.2
+   8.3
   </td>
  </tr>
  <tr>
@@ -573,19 +573,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    113
   </td>
   <td>
-   7172.9
+   7.0
   </td>
   <td>
-   5686.4
+   5.6
   </td>
   <td>
    29.2
   </td>
   <td>
-   8776
+   8.6
   </td>
   <td>
-   8680.8
+   8.5
   </td>
  </tr>
  <tr>
@@ -602,19 +602,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    142.9
   </td>
   <td>
-   13655.8
+   13.3
   </td>
   <td>
-   12083
+   11.8
   </td>
   <td>
    43.3
   </td>
   <td>
-   32406
+   31.6
   </td>
   <td>
-   9915.4
+   9.7
   </td>
  </tr>
 </table>
@@ -675,7 +675,7 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    Chart Recognition Model
   </td>
   <td>
-   max_side_limit setting of the text detection module
+   text detection module max_side_limit
   </td>
  </tr>
  <tr>
@@ -698,19 +698,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    109.8
   </td>
   <td>
-   9418.3
+   9.2
   </td>
   <td>
-   7977.9
+   7.8
   </td>
   <td>
    29.8
   </td>
   <td>
-   22294
+   21.8
   </td>
   <td>
-   21638.4
+   21.1
   </td>
  </tr>
  <tr>
@@ -733,19 +733,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    103.7
   </td>
   <td>
-   9253.6
+   9.0
   </td>
   <td>
-   7840.6
+   7.7
   </td>
   <td>
    24
   </td>
   <td>
-   22298
+   21.8
   </td>
   <td>
-   21555.3
+   21.1
   </td>
  </tr>
  <tr>
@@ -768,19 +768,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    110.7
   </td>
   <td>
-   9520.8
+   9.3
   </td>
   <td>
-   8034.3
+   7.8
   </td>
   <td>
    22
   </td>
   <td>
-   12490
+   12.2
   </td>
   <td>
-   12383.1
+   12.1
   </td>
  </tr>
  <tr>
@@ -803,19 +803,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    111.4
   </td>
   <td>
-   9272.9
+   9.1
   </td>
   <td>
-   7939.9
+   7.8
   </td>
   <td>
    28.1
   </td>
   <td>
-   22350
+   21.8
   </td>
   <td>
-   21498.4
+   21.0
   </td>
  </tr>
  <tr>
@@ -838,19 +838,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    112.1
   </td>
   <td>
-   9457.2
+   9.2
   </td>
   <td>
-   8031.5
+   7.8
   </td>
   <td>
    18.5
   </td>
   <td>
-   11642
+   11.4
   </td>
   <td>
-   11433.6
+   11.2
   </td>
  </tr>
  <tr>
@@ -873,19 +873,19 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    113.5
   </td>
   <td>
-   10401.1
+   10.2
   </td>
   <td>
-   8688.8
+   8.5
   </td>
   <td>
    23.7
   </td>
   <td>
-   11716
+   11.4
   </td>
   <td>
-   11453.9
+   11.2
   </td>
  </tr>
  <tr>
@@ -902,23 +902,22 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
    168.3
   </td>
   <td>
-   18690.4
+   18.3
   </td>
   <td>
-   17213.8
+   16.8
   </td>
   <td>
    27.5
   </td>
   <td>
-   78760
+   76.9
   </td>
   <td>
-   15119
+   14.8
   </td>
  </tr>
 </table>
-
 
 ## Serving Inference
 
