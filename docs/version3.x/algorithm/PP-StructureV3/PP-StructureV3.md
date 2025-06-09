@@ -338,11 +338,11 @@
   </td>
   <td rowspan="2">
    峰值RAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均RAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均GPU利用率
@@ -350,11 +350,11 @@
   </td>
   <td rowspan="2">
    峰值VRAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均VRAM用量
-    （MB）
+    （GB）
   </td>
  </tr>
  <tr>
@@ -634,11 +634,11 @@
   </td>
   <td rowspan="2">
    峰值RAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均RAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均GPU利用率
@@ -646,11 +646,11 @@
   </td>
   <td rowspan="2">
    峰值VRAM用量
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    平均VRAM用量
-    （MB）
+    （GB）
   </td>
  </tr>
  <tr>
