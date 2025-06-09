@@ -1427,7 +1427,7 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN.
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
@@ -2057,7 +2057,7 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
