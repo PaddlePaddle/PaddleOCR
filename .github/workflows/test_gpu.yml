@@ -1,4 +1,4 @@
-name: PaddleOCR PR Tests
+name: PaddleOCR PR Tests GPU
 
 on:
   push:
@@ -15,7 +15,8 @@ on:
       - '**.txt'
       - '**.yml'
       - '**.yaml'
-
+  workflow_dispatch:
+  
 permissions:
   contents: read
 
