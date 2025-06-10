@@ -70,6 +70,7 @@ jobs:
           tar xf PaddleOCR.tar
           cd PaddleOCR
           git log
+
           
       # - name: Upgrade pip and install dependencies
       #   run: |
