@@ -6,14 +6,14 @@ on:
     paths-ignore:
       - '**.md'
       - '**.txt'
-      - '**.yml'
+ #     - '**.yml'
       - '**.yaml'
   pull_request:
     branches: ["main", "release/*"]
     paths-ignore:
       - '**.md'
       - '**.txt'
-      - '**.yml'
+#      - '**.yml'
       - '**.yaml'
   workflow_dispatch:
 env:
@@ -24,16 +24,35 @@ env:
   TASK: paddleocr-CI-${{ github.event.pull_request.number }}
   BRANCH: ${{ github.event.pull_request.base.ref }}
   AGILE_COMPILE_BRANCH: ${{ github.event.pull_request.base.ref }}
+  DIR_NAME: ${{ github.repository }}
 permissions:
   contents: read
 
 jobs:
+  tar2cloud:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone and fetch
+        run: |
+          git clone https://github.com/PaddlePaddle/PaddleOCR.git
+          cd PaddleOCR
+          git fetch origin pull/${PR_ID}/head:ci_build
+          git checkout ci_build
+          cd ../
+          tar cf PaddleOCR.tar PaddleOCR
+
+      - name: Upload
+        env:
+          AK: ${{ secrets.BOS_AK }}
+          SK: ${{ secrets.BOS_SK }}
+        run: |
+          python - pip install bce-python-sdk==0.8.74
+          wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
+          tar xf bos_new.tar.gz
+          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
+          
   test-pr:
     runs-on: self-hosted  # ✅ 使用自托管 runner
-    # container:            # ✅ 使用容器执行步骤
-    #   image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
-    #   options: --ipc=host # 可选，防止深度学习框架内存通信问题（如需要）
-
     steps:
       - name: check env
         run: |
@@ -42,6 +61,15 @@ jobs:
           echo ${TASK}
           echo ${BRANCH}
           echo ${AGILE_COMPILE_BRANCH}
+          echo ${DIR_NAME}
+          
+      - name: get code
+        run: |
+          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/${PR_ID}/PaddleOCR.tar
+          tar xf PaddleOCR.tar
+          cd PaddleOCR
+          git log
+          
       - name: Upgrade pip and install dependencies
         run: |
           python -m pip install --upgrade pip
