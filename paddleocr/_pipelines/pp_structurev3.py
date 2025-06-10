@@ -747,4 +747,12 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
-        perform_simple_inference(PPStructureV3, params)
+        perform_simple_inference(
+            PPStructureV3,
+            params,
+            predict_param_names={
+                "use_doc_orientation_classify",
+                "use_doc_unwarping",
+                "use_chart_recognition",
+            },
+        )
