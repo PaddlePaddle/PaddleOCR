@@ -53,7 +53,7 @@ jobs:
           
   test-pr:
     needs: tar2cloud
-    runs-on: self-hosted  # ✅ 使用自托管 runner
+    runs-on: self-hosted
     steps:
       - name: check env
         run: |
