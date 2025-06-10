@@ -52,6 +52,7 @@ jobs:
           python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
           
   test-pr:
+    needs: tar2cloud
     runs-on: self-hosted  # ✅ 使用自托管 runner
     steps:
       - name: check env
