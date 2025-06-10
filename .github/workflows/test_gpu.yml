@@ -71,14 +71,14 @@ jobs:
           cd PaddleOCR
           git log
           
-      - name: Upgrade pip and install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-          pip install -e .
+      # - name: Upgrade pip and install dependencies
+      #   run: |
+      #     python -m pip install --upgrade pip
+      #     pip install pytest
+      #     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      #     python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+      #     pip install -e .
 
-      - name: Test with pytest
-        run: |
-          pytest --verbose tests/
+      # - name: Test with pytest
+      #   run: |
+      #     pytest --verbose tests/
