@@ -70,7 +70,6 @@ comments: true
 <td>-/-</td>
 <td>698 M</td>
 </tr>
-
 <tr>
 <td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
 <td>74.55</td>
@@ -215,12 +214,6 @@ sudo apt-get install texlive texlive-latex-base texlive-xetex latex-cjk-all texl
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时，设置的最小子图大小。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
