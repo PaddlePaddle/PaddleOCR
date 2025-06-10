@@ -39,7 +39,7 @@
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_OCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SERVER_URL": "your_server_url_here"
       }
     },
@@ -50,7 +50,7 @@
       ],
       "cwd": "/absolute/path/to/PaddleOCR/mcp_server",
       "env": {
-        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_OCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SERVER_URL": "your_server_url_here"
       }
     }

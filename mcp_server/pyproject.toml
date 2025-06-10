@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools >= 69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paddleocr-mcp"
+version = "0.1.0"
+# TODO: Set dep version range
+dependencies = [
+    "fastmcp",
+    "httpx",
+    "numpy",
+    "pillow",
+    "python-magic",
+    "typing-extensions",
+]
+
+[project.scripts]
+paddleocr_mcp = "paddleocr_mcp.__main__:main"

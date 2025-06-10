@@ -1,146 +1,165 @@
 #!/usr/bin/env python3
-"""
-PaddleOCR MCP Server - Simplified Main Entry
-"""
 
-# 标准库导入
+# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import argparse
+import contextlib
 import os
 import sys
+from typing import AsyncIterator, Dict
 
-# 第三方库导入
 from fastmcp import FastMCP
 
-# 本地应用导入
-from .core import register_tools
+from .pipelines import create_pipeline_handler
 
 
-def main():
-    """主函数 - 支持三种模式和多传输协议"""
+def _parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="PaddleOCR MCP Server v2.0 - Support local/AI Studio/user service modes"
+        description="PaddleOCR MCP server - Supports local library, AI Studio service, and self-hosted servers."
     )
 
-    # OCR来源配置
     parser.add_argument(
-        "--ocr_source",
-        choices=["local", "aistudio", "user_service"],
-        default=os.getenv("PADDLEOCR_MCP_OCR_SOURCE", "local"),
-        help="OCR service source: local (local library), aistudio (AI Studio), user_service (on-premises)",
+        "--pipeline",
+        choices=["OCR", "PP-StructureV3"],
+        default=os.getenv("PADDLEOCR_MCP_PIPELINE", "OCR"),
+        help="Pipeline name.",
     )
     parser.add_argument(
-        "--server_url",
-        default=os.getenv("PADDLEOCR_MCP_SERVER_URL"),
-        help="Server base URL (for AI Studio or user service)",
+        "--ppocr_source",
+        choices=["local", "aistudio", "self_hosted"],
+        default=os.getenv("PADDLEOCR_MCP_PPOCR_SOURCE", "local"),
+        help="Source of PaddleOCR functionality: local (local library), aistudio (AI Studio service), self_hosted (self-hosted server).",
     )
-    parser.add_argument(
-        "--aistudio_access_token",
-        default=os.getenv("AISTUDIO_ACCESS_TOKEN"),
-        help="AI Studio access token (required for AI Studio)",
-    )
-    parser.add_argument(
-        "--timeout",
-        type=int,
-        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "30")),
-        help="API request timeout in seconds (for remote services)",
-    )
-
-    # 本地模式YAML配置 (支持PaddleOCR官方配置格式)
-    parser.add_argument(
-        "--ocr_config",
-        default=os.getenv("PADDLEOCR_MCP_OCR_CONFIG"),
-        help="OCR pipeline YAML configuration file path (local mode)",
-    )
-    parser.add_argument(
-        "--structure_config",
-        default=os.getenv("PADDLEOCR_MCP_STRUCTURE_CONFIG"),
-        help="Structure analysis pipeline YAML configuration file path (local mode)",
-    )
-    parser.add_argument(
-        "--config",
-        default=os.getenv("PADDLEOCR_MCP_CONFIG"),
-        help="Legacy configuration file path for local mode (deprecated, use --ocr_config and --structure_config instead)",
-    )
-
-    # 传输协议配置 (参考markitdown的简洁实现)
     parser.add_argument(
         "--http",
         action="store_true",
-        help="Use HTTP transport instead of STDIO (suitable for remote deployment and multiple clients)",
+        help="Use HTTP transport instead of STDIO (suitable for remote deployment and multiple clients).",
     )
     parser.add_argument(
         "--host",
         default="127.0.0.1",
-        help="Host address for HTTP mode (default: 127.0.0.1)",
+        help="Host address for HTTP mode (default: 127.0.0.1).",
     )
     parser.add_argument(
         "--port",
         type=int,
         default=8000,
-        help="Port for HTTP mode (default: 8000)",
+        help="Port for HTTP mode (default: 8000).",
     )
     parser.add_argument(
-        "--verbose", action="store_true", help="Enable verbose logging for debugging"
+        "--verbose", action="store_true", help="Enable verbose logging for debugging."
+    )
+
+    # Local mode configuration
+    parser.add_argument(
+        "--pipeline_config",
+        default=os.getenv("PADDLEOCR_MCP_PIPELINE_CONFIG"),
+        help="PaddleOCR pipeline configuration file path (for local mode).",
+    )
+
+    # Service mode configuration
+    parser.add_argument(
+        "--server_url",
+        default=os.getenv("PADDLEOCR_MCP_SERVER_URL"),
+        help="Base URL of the underlying server (required in service mode).",
+    )
+    parser.add_argument(
+        "--aistudio_access_token",
+        default=os.getenv("PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN"),
+        help="AI Studio access token (required for AI Studio).",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "30")),
+        help="API request timeout in seconds for the underlying server.",
     )
 
     args = parser.parse_args()
+    return args
 
-    # 传输协议验证
-    use_web_transport = args.http
 
-    if not use_web_transport and (args.host or args.port):
-        parser.error(
-            "Host and port arguments are only valid when using HTTP transport (see: --http)"
+def _validate_args(args: argparse.Namespace) -> None:
+    """Validate command line arguments."""
+    if not args.http and (args.host != "127.0.0.1" or args.port != 8000):
+        print(
+            "Host and port arguments are only valid when using HTTP transport (see: `--http`).",
+            file=sys.stderr,
         )
         sys.exit(2)
 
-    # API配置验证（只输出错误信息）
-    if args.ocr_source in ["aistudio", "user_service"] and not args.server_url:
-        print("Error: API mode requires server URL configuration", file=sys.stderr)
-        print("  Set environment variable: PADDLEOCR_MCP_SERVER_URL", file=sys.stderr)
-        sys.exit(2)
+    if args.ppocr_source in ["aistudio", "self_hosted"]:
+        if not args.server_url:
+            print("Error: The server base URL is required.", file=sys.stderr)
+            print(
+                "Please either set `--server_url` or set the environment variable "
+                "`PADDLEOCR_MCP_SERVER_URL`.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
 
-    if args.ocr_source == "aistudio" and not args.aistudio_access_token:
-        print("Error: AI Studio mode requires API token", file=sys.stderr)
-        print("  Set environment variable: AISTUDIO_ACCESS_TOKEN", file=sys.stderr)
-        sys.exit(2)
+        if args.ppocr_source == "aistudio" and not args.aistudio_access_token:
+            print("Error: The AI Studio access token is required.", file=sys.stderr)
+            print(
+                "Please either set `--aistudio_access_token` or set the environment variable "
+                "`PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN`.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
 
-    # 确定服务名称
-    if args.ocr_source == "local":
-        server_name = "PaddleOCR Local MCP Server"
-    elif args.ocr_source == "user_service":
-        service_type = (
-            "Layout Analysis" if "layout-parsing" in args.server_url.lower() else "OCR"
-        )
-        server_name = f"PaddleOCR User Service {service_type} MCP Server"
-    else:  # aistudio
-        service_type = (
-            "Layout Analysis" if "layout-parsing" in args.server_url.lower() else "OCR"
-        )
-        server_name = f"PaddleOCR AI Studio {service_type} MCP Server"
 
-    # 创建并配置服务器 - 使用FastMCP内置日志管理
-    mcp = FastMCP(name=server_name, log_level="INFO" if args.verbose else "WARNING")
+def main() -> None:
+    """Main entry point."""
+    args = _parse_args()
+
+    _validate_args(args)
 
     try:
-        # 注册工具
-        if args.ocr_source == "local":
-            register_tools(
-                mcp,
-                ocr_source_type="local",
-                ocr_config_path=args.ocr_config,
-                structure_config_path=args.structure_config,
-            )
-        else:
-            # API模式 (aistudio 或 user_service)
-            api_kwargs = {"api_url": args.server_url, "timeout": args.timeout}
-            if args.aistudio_access_token:
-                api_kwargs["api_token"] = args.aistudio_access_token
+        pipeline_handler = create_pipeline_handler(
+            args.pipeline,
+            args.ppocr_source,
+            pipeline_config=args.pipeline_config,
+            server_url=args.server_url,
+            aistudio_access_token=args.aistudio_access_token,
+            timeout=args.timeout,
+        )
+    except Exception as e:
+        print(f"Failed to create the pipeline handler: {e}", file=sys.stderr)
+        if args.verbose:
+            import traceback
 
-            register_tools(mcp, ocr_source_type=args.ocr_source, **api_kwargs)
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
 
-        # 启动服务器 (参考markitdown的简洁启动逻辑)
-        if use_web_transport:
+    @contextlib.asynccontextmanager
+    async def _lifespan(mcp: FastMCP) -> AsyncIterator[Dict]:
+        async with pipeline_handler:
+            yield {}
+
+    try:
+        server_name = f"PaddleOCR {args.pipeline} MCP server"
+        mcp = FastMCP(
+            name=server_name,
+            lifespan=_lifespan,
+            log_level="INFO" if args.verbose else "WARNING",
+        )
+
+        pipeline_handler.register_tools(mcp)
+
+        if args.http:
             mcp.run(
                 transport="streamable-http",
                 host=args.host,
@@ -150,11 +169,11 @@ def main():
             mcp.run()
 
     except Exception as e:
-        print(f"启动失败: {e}", file=sys.stderr)
+        print(f"Failed to start the server: {e}", file=sys.stderr)
         if args.verbose:
             import traceback
 
-            traceback.print_exc()
+            traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
 

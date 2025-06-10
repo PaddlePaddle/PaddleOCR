@@ -82,7 +82,7 @@ python main.py --http --host 127.0.0.1 --port 3001
       "args": ["/absolute/path/to/main.py"],
       "cwd": "/absolute/path/to/mcp_server",
       "env": {
-        "PADDLEOCR_MCP_OCR_SOURCE": "user_service",
+        "PADDLEOCR_MCP_OCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_API_URL": "http://your-service-host:8080/ocr"
       }
     }
@@ -108,7 +108,7 @@ python main.py --http --host 127.0.0.1 --port 3001
 
 ## 环境变量
 
-- `PADDLEOCR_MCP_OCR_SOURCE` - OCR 来源：`local`（默认）、`aistudio`、`user_service`
+- `PADDLEOCR_MCP_OCR_SOURCE` - OCR 来源：`local`（默认）、`aistudio`、`self_hosted`
 - `PADDLEOCR_MCP_API_URL` - API 服务地址
 - `PADDLEOCR_MCP_API_TOKEN` - API 认证令牌
 - `PADDLEOCR_MCP_TIMEOUT` - 超时时间（秒，默认 30）
