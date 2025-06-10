@@ -16,7 +16,14 @@ on:
       - '**.yml'
       - '**.yaml'
   workflow_dispatch:
-  
+env:
+  PR_ID: ${{ github.event.pull_request.number }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+  work_dir: /workspace/PaddleOCR
+  PADDLENLP_ROOT: /workspace/PaddleOCR
+  TASK: paddleocr-CI-${{ github.event.pull_request.number }}
+  BRANCH: ${{ github.event.pull_request.base.ref }}
+  AGILE_COMPILE_BRANCH: ${{ github.event.pull_request.base.ref }}
 permissions:
   contents: read
 
@@ -28,8 +35,13 @@ jobs:
     #   options: --ipc=host # 可选，防止深度学习框架内存通信问题（如需要）
 
     steps:
-      - uses: actions/checkout@v4
-
+      - name: check env
+        run: |
+          echo ${PR_ID}
+          echo ${COMMIT_ID}
+          echo ${TASK}
+          echo ${BRANCH}
+          echo ${AGILE_COMPILE_BRANCH}
       - name: Upgrade pip and install dependencies
         run: |
           python -m pip install --upgrade pip
