@@ -40,6 +40,9 @@ except ImportError:
     LOCAL_OCR_AVAILABLE = False
 
 
+OutputMode = Literal["simple", "detailed"]
+
+
 def _is_file_path(s: str) -> bool:
     try:
         PurePath(s)
@@ -223,7 +226,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
     """Base class for simple inference pipeline handlers."""
 
     async def process(
-        self, input_data: str, output_mode: str, ctx: Context, **kwargs: Any
+        self, input_data: str, output_mode: OutputMode, ctx: Context, **kwargs: Any
     ) -> Union[str, List[Dict]]:
         """Process input data through the pipeline.
 
@@ -339,7 +342,9 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         payload = {"data": processed_input, "file_type": file_type, **kwargs}
         return payload
 
-    def _handle_error(self, error_msg: str, output_mode: str) -> Union[str, List[Dict]]:
+    def _handle_error(
+        self, error_msg: str, output_mode: OutputMode
+    ) -> Union[str, List[Dict]]:
         if output_mode == "detailed":
             return [{"error": error_msg}]
         return f"Error: {error_msg}"
@@ -422,7 +427,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
         @mcp.tool()
         async def _ocr(
             input_data: str,
-            output_mode: str,
+            output_mode: OutputMode,
             ctx: Context,
         ) -> Union[str, List[Dict]]:
             """Extract text from images and PDFs.
@@ -534,7 +539,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         @mcp.tool()
         async def _pp_structurev3(
             input_data: str,
-            output_mode: str,
+            output_mode: OutputMode,
             ctx: Context,
         ) -> Union[str, List[Dict]]:
             """Document layout analysis.
