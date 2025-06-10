@@ -23,9 +23,9 @@ permissions:
 jobs:
   test-pr:
     runs-on: self-hosted  # ✅ 使用自托管 runner
-    container:            # ✅ 使用容器执行步骤
-      image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
-      options: --ipc=host # 可选，防止深度学习框架内存通信问题（如需要）
+    # container:            # ✅ 使用容器执行步骤
+    #   image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
+    #   options: --ipc=host # 可选，防止深度学习框架内存通信问题（如需要）
 
     steps:
       - uses: actions/checkout@v4
