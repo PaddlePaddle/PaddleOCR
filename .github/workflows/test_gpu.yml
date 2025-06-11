@@ -6,14 +6,14 @@ on:
     paths-ignore:
       - '**.md'
       - '**.txt'
- #     - '**.yml'
+      - '**.yml'
       - '**.yaml'
   pull_request:
     branches: ["main"]
     paths-ignore:
       - '**.md'
       - '**.txt'
-#      - '**.yml'
+      - '**.yml'
       - '**.yaml'
   workflow_dispatch:
 env:
@@ -37,8 +37,8 @@ jobs:
         run: |
           git clone https://github.com/PaddlePaddle/PaddleOCR.git
           cd PaddleOCR
-          # git fetch origin pull/${PR_ID}/head:ci_build
-          # git checkout ci_build
+          git fetch origin pull/${PR_ID}/head:ci_build
+          git checkout ci_build
           cd ../
           tar cf PaddleOCR.tar PaddleOCR
 
@@ -51,7 +51,7 @@ jobs:
           wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
           tar xf bos_new.tar.gz
           ls
-          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr
+          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
           
   test-pr:
     needs: tar2cloud
@@ -68,7 +68,7 @@ jobs:
           
       - name: get code
         run: |
-          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/PaddleOCR.tar
+          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/${PR_ID}/PaddleOCR.tar
           tar xf PaddleOCR.tar
           cd PaddleOCR
           git log
@@ -97,6 +97,7 @@ jobs:
             ln -s $(which python${py_version}) run_env/python3
             ln -s $(which pip${py_version}) run_env/pip
             export PATH=$PWD/run_env:${PATH}
+            
             python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
             python -c "import paddle; paddle.version.show()"
             python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
@@ -105,16 +106,3 @@ jobs:
             python -m pip install -e .
             python -m pytest --verbose tests/
             '
-          
-          
-      # - name: Upgrade pip and install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install pytest
-      #     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      #     python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-      #     pip install -e .
-
-      # - name: Test with pytest
-      #   run: |
-      #     pytest --verbose tests/
