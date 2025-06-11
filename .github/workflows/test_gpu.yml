@@ -68,11 +68,42 @@ jobs:
           
       - name: get code
         run: |
-          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/${PR_ID}/PaddleOCR.tar
+          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/PaddleOCR.tar
           tar xf PaddleOCR.tar
           cd PaddleOCR
           git log
 
+      - name: run test
+        env:
+          py_version: "3.10"
+          paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
+          docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
+        run: |
+          docker run --gpus all --rm -i --name ${docker_name} \
+            --shm-size=128g --net=host \
+            -v $PWD:/workspace -w /workspace  \
+            -e "py_version=${py_version}" \
+            -e "paddle_whl=${paddle_whl}" \
+            ${docker_image} /bin/bash -c '
+            ldconfig;
+            nvidia-smi
+            df -hl
+
+            echo ${py_version}
+            rm -rf run_env
+            mkdir run_env
+            ln -s $(which python${py_version}) run_env/python
+            ln -s $(which python${py_version}) run_env/python3
+            ln -s $(which pip${py_version}) run_env/pip
+            export PATH=$PWD/run_env:${PATH}
+            python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+            python -c "import paddle; paddle.version.show()"
+            python -m pip install pytest
+            if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+            python -m pip install -e .
+            pytest --verbose tests/
+            '
+          
           
       # - name: Upgrade pip and install dependencies
       #   run: |
