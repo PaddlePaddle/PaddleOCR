@@ -29,57 +29,25 @@ permissions:
   contents: read
 
 jobs:
-  tar2cloud:
-    environment: CodeSync
-    runs-on: ubuntu-latest
+  test-pr-gpu:
+    runs-on: [self-hosted, GPU-2Card-OCR]
     steps:
       - name: clone and fetch
         run: |
-          git clone https://github.com/PaddlePaddle/PaddleOCR.git
+          mkdir $PR_ID
+          cd $PR_ID
+          git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
           cd PaddleOCR
           git fetch origin pull/${PR_ID}/head:ci_build
           git checkout ci_build
-          cd ../
-          tar cf PaddleOCR.tar PaddleOCR
-
-      - name: Upload
-        env:
-          AK: ${{ secrets.BOS_AK }}
-          SK: ${{ secrets.BOS_SK }}
-        run: |
-          python -m pip install bce-python-sdk==0.8.74
-          wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
-          tar xf bos_new.tar.gz
-          ls
-          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
           
-  test-pr:
-    needs: tar2cloud
-    runs-on: self-hosted
-    steps:
-      - name: check env
-        run: |
-          echo ${PR_ID}
-          echo ${COMMIT_ID}
-          echo ${TASK}
-          echo ${BRANCH}
-          echo ${AGILE_COMPILE_BRANCH}
-          echo ${DIR_NAME}
-          
-      - name: get code
-        run: |
-          wget -q https://paddle-qa.bj.bcebos.com/PaddleOCR/pr/${PR_ID}/PaddleOCR.tar
-          tar xf PaddleOCR.tar
-          cd PaddleOCR
-          git log
-
       - name: run test
         env:
           py_version: "3.10"
           paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
           docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
         run: |
-          cd PaddleOCR
+          cd $PR_ID/PaddleOCR
           docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
             --shm-size=128g --net=host \
             -v $PWD:/workspace -w /workspace  \
