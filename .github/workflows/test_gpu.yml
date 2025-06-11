@@ -79,6 +79,7 @@ jobs:
           paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
           docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
         run: |
+          cd PaddleOCR
           docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
             --shm-size=128g --net=host \
             -v $PWD:/workspace -w /workspace  \
