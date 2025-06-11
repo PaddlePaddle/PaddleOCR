@@ -71,7 +71,6 @@ jobs:
           cd PaddleOCR
           git log
 
-
           
       # - name: Upgrade pip and install dependencies
       #   run: |
