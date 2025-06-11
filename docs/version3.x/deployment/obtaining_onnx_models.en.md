@@ -5,6 +5,9 @@ PaddleOCR provides a rich collection of pre-trained models, all stored in Paddle
 First, install the Paddle2ONNX plugin for PaddleX using the following command via the PaddleX CLI:
 
 ```bash
+# Windows users need to use the following command to install the dev version of paddlepaddle
+# python -m pip install --pre paddlepaddle -i https://www.paddlepaddle.org.cn/packages/nightly/cpu/
+
 paddlex --install paddle2onnx
 ```
 
