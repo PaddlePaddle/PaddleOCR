@@ -30,7 +30,7 @@ permissions:
 
 jobs:
   test-pr-gpu:
-    runs-on: self-hosted
+    runs-on: [self-hosted, GPU-2Card-OCR]
     steps:
       - name: clone and fetch
         run: |
