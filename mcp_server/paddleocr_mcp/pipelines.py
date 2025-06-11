@@ -28,8 +28,8 @@ from urllib.parse import urlparse
 import httpx
 import magic
 import numpy as np
-from fastmcp import Context, FastMCP
-from PIL import Image
+from fastmcp import Context, FastMCP, Image
+from PIL import Image as PILImage
 from typing_extensions import Literal, Self, assert_never
 
 try:
@@ -83,6 +83,23 @@ def _infer_file_type_from_bytes(data: bytes) -> str:
     elif mime == "application/pdf":
         return "PDF"
     return "UNKNOWN"
+
+
+async def _download_images_from_markdown(
+    markdown_text: str, images_mapping: Dict[str, str], timeout: int = 30
+) -> List[Image]:
+    img_pattern = r'<img[^>]+src="([^"]+)"[^>]*>'
+    img_paths = re.findall(img_pattern, markdown_text)
+    if not img_paths:
+        return []
+    images = []
+    for img_path in img_paths:
+        img_data = images_mapping.get(img_path)
+        if img_data:
+            image_data = base64.b64decode(img_data)
+            image_obj = Image(data=image_data, format="jpeg")
+            images.append(image_obj)
+    return images
 
 
 class _EngineWrapper:
@@ -255,7 +272,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 raw_result = await self._call_service(
                     processed_input, file_type, ctx, **kwargs
                 )
-                result = self._parse_service_result(raw_result, ctx)
+                result = await self._parse_service_result(raw_result, ctx)
 
             await self._log_completion_stats(result, ctx)
             return self._format_output(result, output_mode == "detailed", ctx)
@@ -274,7 +291,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 base64_data = input_data
             try:
                 image_bytes = base64.b64decode(base64_data)
-                image_pil = Image.open(io.BytesIO(image_bytes))
+                image_pil = PILImage.open(io.BytesIO(image_bytes))
                 image_arr = np.array(image_pil.convert("RGB"))
                 # Convert RGB to BGR
                 return np.ascontiguousarray(image_arr[..., ::-1])
@@ -339,7 +356,8 @@ class SimpleInferencePipelineHandler(PipelineHandler):
     def _prepare_service_payload(
         self, processed_input: str, file_type: str, **kwargs: Any
     ) -> Dict[str, Any]:
-        payload = {"data": processed_input, "file_type": file_type, **kwargs}
+        api_file_type = 1 if file_type == "IMAGE" else 0
+        payload = {"file": processed_input, "fileType": api_file_type, **kwargs}
         return payload
 
     def _handle_error(
@@ -372,7 +390,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _parse_service_result(
+    async def _parse_service_result(
         self, service_result: Dict[str, Any], ctx: Context
     ) -> Dict[str, Any]:
         """Parse raw result from the service into a unified format.
@@ -470,8 +488,9 @@ class OCRHandler(SimpleInferencePipelineHandler):
             "blocks": blocks,
         }
 
-    def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
-        ocr_results = service_result["ocrResults"]
+    async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
+        result_data = service_result.get("result", service_result)
+        ocr_results = result_data.get("ocrResults")
 
         # Direct extraction and assembly
         all_texts, all_confidences, blocks = [], [], []
@@ -571,24 +590,30 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             # TODO: Page concatenation can be done better via `pipeline.concatenate_markdown_pages`
             "markdown": "\n".join(markdown_parts),
             "pages": pages,
+            "images": [],
         }
 
-    def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
-        layout_results = service_result["layoutParsingResults"]
+    async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
+        result_data = service_result.get("result", service_result)
+        layout_results = result_data.get("layoutParsingResults")
+
         if not layout_results:
             return {
                 "markdown": "",
                 "pages": [],
+                "images": [],
             }
 
         markdown_parts, pages = [], []
+        all_images_mapping = {}
 
         for i, res in enumerate(layout_results):
             markdown_data = res["markdown"]
-
             text = markdown_data["text"]
             markdown_parts.append(text)
             images = markdown_data["images"]
+
+            all_images_mapping.update(images)
 
             page = {
                 "page": i,
@@ -597,9 +622,14 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             }
             pages.append(page)
 
+        full_markdown = "\n".join(markdown_parts)
+        downloaded_images = await _download_images_from_markdown(
+            full_markdown, all_images_mapping, self._timeout
+        )
         return {
-            "markdown": "\n".join(markdown_parts),
+            "markdown": full_markdown,
             "pages": pages,
+            "images": downloaded_images,
         }
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
@@ -608,18 +638,33 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
 
     def _format_output(
         self, result: Dict, detailed: bool, ctx: Context
-    ) -> Union[str, List[Dict]]:
+    ) -> Union[str, List]:
         if not result["markdown"].strip():
             return (
                 "❌ No document content detected"
                 if not detailed
                 else json.dumps({"error": "No content detected"}, ensure_ascii=False)
             )
+        images = result.get("images", [])
 
         if detailed:
-            return json.dumps(result, ensure_ascii=False, indent=2)
+            # L2: JSON text + images (same images as L1)
+            json_text = json.dumps(
+                {
+                    "markdown": result["markdown"],
+                    "pages": result["pages"],
+                    "image_count": len(images),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+
+            output_list = [json_text] + images
+            return output_list
         else:
-            return result["markdown"]
+            # L1: Markdown text + images
+            output_list = [result["markdown"]] + images
+            return output_list
 
 
 _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
