@@ -24,7 +24,7 @@ from ._constants import (
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
 )
-from .utils.cli import str2bool
+from ._utils.cli import str2bool
 
 
 def parse_common_args(kwargs, *, default_enable_hpi):
@@ -77,27 +77,26 @@ def prepare_common_init_args(model_name, common_args):
                 pp_option.run_mode = "trt_fp16"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
-        if enable_mkldnn is None:
-            from paddle.inference import Config
-
-            if hasattr(Config, "set_mkldnn_cache_capacity"):
-                enable_mkldnn = True
-            else:
-                enable_mkldnn = False
         if enable_mkldnn:
             pp_option.run_mode = "mkldnn"
+        else:
+            pp_option.run_mode = "paddle"
     pp_option.cpu_threads = common_args["cpu_threads"]
     init_kwargs["pp_option"] = pp_option
 
     return init_kwargs
 
 
-def add_common_cli_args(parser, *, default_enable_hpi):
+def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
+    if allow_multiple_devices:
+        help_ = "Device(s) to use for inference, e.g., `cpu`, `gpu`, `npu`, `gpu:0`, `gpu:0,1`. If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported. By default, GPU 0 will be used if available; otherwise, the CPU will be used."
+    else:
+        help_ = "Device to use for inference, e.g., `cpu`, `gpu`, `npu`, `gpu:0`. By default, GPU 0 will be used if available; otherwise, the CPU will be used."
     parser.add_argument(
         "--device",
         type=str,
         default=DEFAULT_DEVICE,
-        help="Device to use for inference.",
+        help=help_,
     )
     parser.add_argument(
         "--enable_hpi",
@@ -128,7 +127,7 @@ def add_common_cli_args(parser, *, default_enable_hpi):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models and pipelines that have known oneDNN issues.",
+        help="Enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.",
     )
     parser.add_argument(
         "--cpu_threads",

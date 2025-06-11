@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from paddlex.utils.pipeline_arguments import custom_type
+
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
 )
 from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
+from paddlex.utils.pipeline_arguments import custom_type
 
 
 class DocVLM(PaddleXPredictorWrapper):
@@ -31,7 +34,7 @@ class DocVLM(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-DocBee-2B"
+        return "PP-DocBee2-3B"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
@@ -42,13 +45,19 @@ class DocVLM(PaddleXPredictorWrapper):
 
 
 class DocVLMSubcommandExecutor(PredictorCLISubcommandExecutor):
+    input_validator = staticmethod(custom_type(dict))
+
     @property
     def subparser_name(self):
         return "doc_vlm"
 
     def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+        add_simple_inference_args(
+            subparser,
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
+        params["input"] = self.input_validator(params["input"])
         perform_simple_inference(DocVLM, params)

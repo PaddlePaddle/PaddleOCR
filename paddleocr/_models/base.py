@@ -18,12 +18,10 @@ from paddlex import create_predictor
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
-    add_common_cli_args,
+    add_common_cli_opts,
     parse_common_args,
     prepare_common_init_args,
 )
-from .._mkldnn_blocklists import MODEL_MKLDNN_BLOCKLIST
-from ..utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = False
 
@@ -41,14 +39,6 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
             model_name if model_name is not None else self.default_model_name
         )
         self._model_dir = model_dir
-        if (
-            common_args.get("enable_mkldnn", None) is None
-            and self._model_name in MODEL_MKLDNN_BLOCKLIST
-        ):
-            logger.warning(
-                f"oneDNN will be disabled for the {repr(self._model_name)} model."
-            )
-            common_args["enable_mkldnn"] = False
         self._common_args = parse_common_args(
             common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
         )
@@ -59,10 +49,11 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
     def default_model_name(self):
         raise NotImplementedError
 
+    def predict_iter(self, *args, **kwargs):
+        return self.paddlex_predictor.predict(*args, **kwargs)
+
     def predict(self, *args, **kwargs):
-        result = []
-        for res in self.paddlex_predictor.predict(*args, **kwargs):
-            result.append(res)
+        result = list(self.predict_iter(*args, **kwargs))
         return result
 
     @classmethod
@@ -90,12 +81,16 @@ class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
 
     def add_subparser(self, subparsers):
         subparser = subparsers.add_parser(name=self.subparser_name)
+        self._update_subparser(subparser)
         subparser.add_argument("--model_name", type=str, help="Name of the model.")
         subparser.add_argument(
             "--model_dir", type=str, help="Directory where the model is stored."
         )
-        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
-        self._update_subparser(subparser)
+        add_common_cli_opts(
+            subparser,
+            default_enable_hpi=_DEFAULT_ENABLE_HPI,
+            allow_multiple_devices=False,
+        )
         return subparser
 
     @abc.abstractmethod

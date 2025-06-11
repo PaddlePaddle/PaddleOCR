@@ -22,7 +22,7 @@ from .table_classification import TableClassification
 from .table_structure_recognition import TableStructureRecognition
 from .text_detection import TextDetection
 from .text_image_unwarping import TextImageUnwarping
-from .text_line_orientation_classification import TextLineOrientationClassification
+from .textline_orientation_classification import TextLineOrientationClassification
 from .text_recognition import TextRecognition
 
 __all__ = [

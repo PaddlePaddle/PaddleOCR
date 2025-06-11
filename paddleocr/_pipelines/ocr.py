@@ -17,19 +17,20 @@
 # maintainability?
 
 import sys
+import warnings
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
     str2bool,
 )
-from ..utils.deprecation import (
+from .._utils.deprecation import (
     DeprecatedOptionAction,
     deprecated,
     warn_deprecated_param,
 )
-from ..utils.logging import logger
+from .._utils.logging import logger
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
@@ -43,8 +44,8 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
     "rec_model_dir": "text_recognition_model_dir",
     "rec_batch_num": "text_recognition_batch_size",
     "use_angle_cls": "use_textline_orientation",
-    "cls_model_dir": "text_line_orientation_model_dir",
-    "cls_batch_num": "text_line_orientation_batch_size",
+    "cls_model_dir": "textline_orientation_model_dir",
+    "cls_batch_num": "textline_orientation_batch_size",
 }
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
@@ -60,9 +61,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
         doc_unwarping_model_dir=None,
         text_detection_model_name=None,
         text_detection_model_dir=None,
-        text_line_orientation_model_name=None,
-        text_line_orientation_model_dir=None,
-        text_line_orientation_batch_size=None,
+        textline_orientation_model_name=None,
+        textline_orientation_model_dir=None,
+        textline_orientation_batch_size=None,
         text_recognition_model_name=None,
         text_recognition_model_dir=None,
         text_recognition_batch_size=None,
@@ -86,7 +87,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 f"Invalid OCR version: {ocr_version}. Supported values are {_SUPPORTED_OCR_VERSIONS}."
             )
 
-        if text_detection_model_dir is None and text_recognition_model_dir is None:
+        if all(
+            map(
+                lambda p: p is None,
+                (
+                    text_detection_model_name,
+                    text_detection_model_dir,
+                    text_recognition_model_name,
+                    text_recognition_model_dir,
+                ),
+            )
+        ):
             if lang is not None or ocr_version is not None:
                 det_model_name, rec_model_name = self._get_ocr_model_names(
                     lang, ocr_version
@@ -97,6 +108,12 @@ class PaddleOCR(PaddleXPipelineWrapper):
                     )
                 text_detection_model_name = det_model_name
                 text_recognition_model_name = rec_model_name
+        else:
+            if lang is not None or ocr_version is not None:
+                warnings.warn(
+                    "`lang` and `ocr_version` will be ignored when model names or model directories are not `None`.",
+                    stacklevel=2,
+                )
 
         params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
@@ -105,9 +122,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "doc_unwarping_model_dir": doc_unwarping_model_dir,
             "text_detection_model_name": text_detection_model_name,
             "text_detection_model_dir": text_detection_model_dir,
-            "text_line_orientation_model_name": text_line_orientation_model_name,
-            "text_line_orientation_model_dir": text_line_orientation_model_dir,
-            "text_line_orientation_batch_size": text_line_orientation_batch_size,
+            "textline_orientation_model_name": textline_orientation_model_name,
+            "textline_orientation_model_dir": textline_orientation_model_dir,
+            "textline_orientation_batch_size": textline_orientation_batch_size,
             "text_recognition_model_name": text_recognition_model_name,
             "text_recognition_model_dir": text_recognition_model_dir,
             "text_recognition_batch_size": text_recognition_batch_size,
@@ -147,6 +164,33 @@ class PaddleOCR(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "OCR"
 
+    def predict_iter(
+        self,
+        input,
+        *,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_textline_orientation=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_det_thresh=None,
+        text_det_box_thresh=None,
+        text_det_unclip_ratio=None,
+        text_rec_score_thresh=None,
+    ):
+        return self.paddlex_pipeline.predict(
+            input,
+            use_doc_orientation_classify=use_doc_orientation_classify,
+            use_doc_unwarping=use_doc_unwarping,
+            use_textline_orientation=use_textline_orientation,
+            text_det_limit_side_len=text_det_limit_side_len,
+            text_det_limit_type=text_det_limit_type,
+            text_det_thresh=text_det_thresh,
+            text_det_box_thresh=text_det_box_thresh,
+            text_det_unclip_ratio=text_det_unclip_ratio,
+            text_rec_score_thresh=text_rec_score_thresh,
+        )
+
     def predict(
         self,
         input,
@@ -161,21 +205,20 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_det_unclip_ratio=None,
         text_rec_score_thresh=None,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_textline_orientation=use_textline_orientation,
-            text_det_limit_side_len=text_det_limit_side_len,
-            text_det_limit_type=text_det_limit_type,
-            text_det_thresh=text_det_thresh,
-            text_det_box_thresh=text_det_box_thresh,
-            text_det_unclip_ratio=text_det_unclip_ratio,
-            text_rec_score_thresh=text_rec_score_thresh,
-        ):
-            result.append(res)
-        return result
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+            )
+        )
 
     @deprecated("Please use `predict` instead.")
     def ocr(self, img, **kwargs):
@@ -206,13 +249,13 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 "text_detection_model_dir"
             ],
             "SubModules.TextLineOrientation.model_name": self._params[
-                "text_line_orientation_model_name"
+                "textline_orientation_model_name"
             ],
             "SubModules.TextLineOrientation.model_dir": self._params[
-                "text_line_orientation_model_dir"
+                "textline_orientation_model_dir"
             ],
             "SubModules.TextLineOrientation.batch_size": self._params[
-                "text_line_orientation_batch_size"
+                "textline_orientation_batch_size"
             ],
             "SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
@@ -252,13 +295,118 @@ class PaddleOCR(PaddleXPipelineWrapper):
         return create_config_from_structure(STRUCTURE)
 
     def _get_ocr_model_names(self, lang, ppocr_version):
+        LATIN_LANGS = [
+            "af",
+            "az",
+            "bs",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "es",
+            "et",
+            "fr",
+            "ga",
+            "hr",
+            "hu",
+            "id",
+            "is",
+            "it",
+            "ku",
+            "la",
+            "lt",
+            "lv",
+            "mi",
+            "ms",
+            "mt",
+            "nl",
+            "no",
+            "oc",
+            "pi",
+            "pl",
+            "pt",
+            "ro",
+            "rs_latin",
+            "sk",
+            "sl",
+            "sq",
+            "sv",
+            "sw",
+            "tl",
+            "tr",
+            "uz",
+            "vi",
+            "french",
+            "german",
+        ]
+        ARABIC_LANGS = ["ar", "fa", "ug", "ur"]
+        CYRILLIC_LANGS = [
+            "ru",
+            "rs_cyrillic",
+            "be",
+            "bg",
+            "uk",
+            "mn",
+            "abq",
+            "ady",
+            "kbd",
+            "ava",
+            "dar",
+            "inh",
+            "che",
+            "lbe",
+            "lez",
+            "tab",
+        ]
+        DEVANAGARI_LANGS = [
+            "hi",
+            "mr",
+            "ne",
+            "bh",
+            "mai",
+            "ang",
+            "bho",
+            "mah",
+            "sck",
+            "new",
+            "gom",
+            "sa",
+            "bgc",
+        ]
+        SPECIFIC_LANGS = [
+            "ch",
+            "en",
+            "korean",
+            "japan",
+            "chinese_cht",
+            "te",
+            "ka",
+            "ta",
+        ]
+
         if lang is None:
             lang = "ch"
+
         if ppocr_version is None:
-            ppocr_version = "PP-OCRv5"
+            if lang in ("ch", "chinese_cht", "en", "japan"):
+                ppocr_version = "PP-OCRv5"
+            elif lang in (
+                LATIN_LANGS
+                + ARABIC_LANGS
+                + CYRILLIC_LANGS
+                + DEVANAGARI_LANGS
+                + SPECIFIC_LANGS
+            ):
+                ppocr_version = "PP-OCRv3"
+            else:
+                # Unknown language specified
+                return None, None
 
         if ppocr_version == "PP-OCRv5":
-            return "PP-OCRv5_mobile_det", "PP-OCRv5_mobile_rec"
+            if lang in ("ch", "chinese_cht", "en", "japan"):
+                return "PP-OCRv5_server_det", "PP-OCRv5_server_rec"
+            else:
+                return None, None
         elif ppocr_version == "PP-OCRv4":
             if lang == "ch":
                 return "PP-OCRv4_mobile_det", "PP-OCRv4_mobile_rec"
@@ -268,84 +416,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 return None, None
         else:
             # PP-OCRv3
-            LATIN_LANGS = [
-                "af",
-                "az",
-                "bs",
-                "cs",
-                "cy",
-                "da",
-                "de",
-                "es",
-                "et",
-                "fr",
-                "ga",
-                "hr",
-                "hu",
-                "id",
-                "is",
-                "it",
-                "ku",
-                "la",
-                "lt",
-                "lv",
-                "mi",
-                "ms",
-                "mt",
-                "nl",
-                "no",
-                "oc",
-                "pi",
-                "pl",
-                "pt",
-                "ro",
-                "rs_latin",
-                "sk",
-                "sl",
-                "sq",
-                "sv",
-                "sw",
-                "tl",
-                "tr",
-                "uz",
-                "vi",
-                "french",
-                "german",
-            ]
-            ARABIC_LANGS = ["ar", "fa", "ug", "ur"]
-            CYRILLIC_LANGS = [
-                "ru",
-                "rs_cyrillic",
-                "be",
-                "bg",
-                "uk",
-                "mn",
-                "abq",
-                "ady",
-                "kbd",
-                "ava",
-                "dar",
-                "inh",
-                "che",
-                "lbe",
-                "lez",
-                "tab",
-            ]
-            DEVANAGARI_LANGS = [
-                "hi",
-                "mr",
-                "ne",
-                "bh",
-                "mai",
-                "ang",
-                "bho",
-                "mah",
-                "sck",
-                "new",
-                "gom",
-                "sa",
-                "bgc",
-            ]
             rec_lang = None
             if lang in LATIN_LANGS:
                 rec_lang = "latin"
@@ -356,17 +426,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
             elif lang in DEVANAGARI_LANGS:
                 rec_lang = "devanagari"
             else:
-                if lang in [
-                    "ch",
-                    "en",
-                    "korean",
-                    "japan",
-                    "chinese_cht",
-                    "te",
-                    "ka",
-                    "ta",
-                ]:
+                if lang in SPECIFIC_LANGS:
                     rec_lang = lang
+
             rec_model_name = None
             if rec_lang == "ch":
                 rec_model_name = "PP-OCRv3_mobile_rec"
@@ -414,17 +476,17 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Path to the text detection model directory.",
         )
         subparser.add_argument(
-            "--text_line_orientation_model_name",
+            "--textline_orientation_model_name",
             type=str,
             help="Name of the text line orientation classification model.",
         )
         subparser.add_argument(
-            "--text_line_orientation_model_dir",
+            "--textline_orientation_model_dir",
             type=str,
             help="Path to the text line orientation classification model directory.",
         )
         subparser.add_argument(
-            "--text_line_orientation_batch_size",
+            "--textline_orientation_batch_size",
             type=int,
             help="Batch size for the text line orientation classification model.",
         )
@@ -446,17 +508,17 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
             "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use the text line orientation classification model.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--text_det_limit_side_len",

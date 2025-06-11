@@ -13,6 +13,9 @@
 # limitations under the License.
 
 import argparse
+import logging
+import subprocess
+import sys
 import warnings
 
 from ._models import (
@@ -40,7 +43,8 @@ from ._pipelines import (
     TableRecognitionPipelineV2,
 )
 from ._version import version
-from .utils.deprecation import CLIDeprecationWarning
+from ._utils.deprecation import CLIDeprecationWarning
+from ._utils.logging import logger
 
 
 def _register_pipelines(subparsers):
@@ -79,13 +83,30 @@ def _register_models(subparsers):
         subparser.set_defaults(executor=subcommand_executor.execute_with_args)
 
 
-def _parse_args():
+def _register_install_hpi_deps_command(subparsers):
+    def _install_hpi_deps(args):
+        hpip = f"hpi-{args.variant}"
+        try:
+            subprocess.check_call(["paddlex", "--install", hpip])
+            subprocess.check_call(["paddlex", "--install", "paddle2onnx"])
+        except subprocess.CalledProcessError:
+            sys.exit("Failed to install dependencies")
+
+    subparser = subparsers.add_parser("install_hpi_deps")
+    subparser.add_argument("variant", type=str, choices=["cpu", "gpu", "npu"])
+    subparser.set_defaults(executor=_install_hpi_deps)
+
+
+def _get_parser():
     parser = argparse.ArgumentParser(prog="paddleocr")
-    parser.add_argument("--version", action="version", version=f"%(prog)s {version}")
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {version}"
+    )
     subparsers = parser.add_subparsers(dest="subcommand")
     _register_pipelines(subparsers)
     _register_models(subparsers)
-    return parser.parse_args()
+    _register_install_hpi_deps_command(subparsers)
+    return parser
 
 
 def _execute(args):
@@ -93,6 +114,11 @@ def _execute(args):
 
 
 def main():
+    logger.setLevel(logging.INFO)
     warnings.filterwarnings("default", category=CLIDeprecationWarning)
-    args = _parse_args()
+    parser = _get_parser()
+    args = parser.parse_args()
+    if args.subcommand is None:
+        parser.print_usage(sys.stderr)
+        sys.exit(2)
     _execute(args)

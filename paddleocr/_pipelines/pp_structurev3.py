@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -31,6 +31,11 @@ class PPStructureV3(PaddleXPipelineWrapper):
         layout_nms=None,
         layout_unclip_ratio=None,
         layout_merge_bboxes_mode=None,
+        chart_recognition_model_name=None,
+        chart_recognition_model_dir=None,
+        chart_recognition_batch_size=None,
+        region_detection_model_name=None,
+        region_detection_model_dir=None,
         doc_orientation_classify_model_name=None,
         doc_orientation_classify_model_dir=None,
         doc_unwarping_model_name=None,
@@ -75,10 +80,12 @@ class PPStructureV3(PaddleXPipelineWrapper):
         formula_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
-        use_general_ocr=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=None,
+        use_region_detection=None,
         **kwargs,
     ):
         params = locals().copy()
@@ -92,16 +99,17 @@ class PPStructureV3(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "PP-StructureV3"
 
-    def predict(
+    def predict_iter(
         self,
         input,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
         use_textline_orientation=None,
-        use_general_ocr=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
+        use_chart_recognition=False,
+        use_region_detection=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -118,21 +126,24 @@ class PPStructureV3(PaddleXPipelineWrapper):
         seal_det_box_thresh=None,
         seal_det_unclip_ratio=None,
         seal_rec_score_thresh=None,
-        use_table_cells_ocr_results=None,
-        use_e2e_wired_table_rec_model=None,
-        use_e2e_wireless_table_rec_model=None,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(
+        return self.paddlex_pipeline.predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
             use_textline_orientation=use_textline_orientation,
-            use_general_ocr=use_general_ocr,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             use_formula_recognition=use_formula_recognition,
+            use_chart_recognition=use_chart_recognition,
+            use_region_detection=use_region_detection,
             layout_threshold=layout_threshold,
             layout_nms=layout_nms,
             layout_unclip_ratio=layout_unclip_ratio,
@@ -149,13 +160,89 @@ class PPStructureV3(PaddleXPipelineWrapper):
             seal_det_box_thresh=seal_det_box_thresh,
             seal_det_unclip_ratio=seal_det_unclip_ratio,
             seal_rec_score_thresh=seal_rec_score_thresh,
-            use_table_cells_ocr_results=use_table_cells_ocr_results,
+            use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+            use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+            use_table_orientation_classify=use_table_orientation_classify,
+            use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
             **kwargs,
-        ):
-            result.append(res)
-        return result
+        )
+
+    def predict(
+        self,
+        input,
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_textline_orientation=None,
+        use_seal_recognition=None,
+        use_table_recognition=None,
+        use_formula_recognition=None,
+        use_chart_recognition=False,
+        use_region_detection=None,
+        layout_threshold=None,
+        layout_nms=None,
+        layout_unclip_ratio=None,
+        layout_merge_bboxes_mode=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_det_thresh=None,
+        text_det_box_thresh=None,
+        text_det_unclip_ratio=None,
+        text_rec_score_thresh=None,
+        seal_det_limit_side_len=None,
+        seal_det_limit_type=None,
+        seal_det_thresh=None,
+        seal_det_box_thresh=None,
+        seal_det_unclip_ratio=None,
+        seal_rec_score_thresh=None,
+        use_wired_table_cells_trans_to_html=False,
+        use_wireless_table_cells_trans_to_html=False,
+        use_table_orientation_classify=True,
+        use_ocr_results_with_table_cells=True,
+        use_e2e_wired_table_rec_model=False,
+        use_e2e_wireless_table_rec_model=True,
+        **kwargs,
+    ):
+        return list(
+            self.predict_iter(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
+                use_seal_recognition=use_seal_recognition,
+                use_table_recognition=use_table_recognition,
+                use_formula_recognition=use_formula_recognition,
+                use_chart_recognition=use_chart_recognition,
+                use_region_detection=use_region_detection,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                text_det_limit_side_len=text_det_limit_side_len,
+                text_det_limit_type=text_det_limit_type,
+                text_det_thresh=text_det_thresh,
+                text_det_box_thresh=text_det_box_thresh,
+                text_det_unclip_ratio=text_det_unclip_ratio,
+                text_rec_score_thresh=text_rec_score_thresh,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                use_wired_table_cells_trans_to_html=use_wired_table_cells_trans_to_html,
+                use_wireless_table_cells_trans_to_html=use_wireless_table_cells_trans_to_html,
+                use_table_orientation_classify=use_table_orientation_classify,
+                use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
+                use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
+                use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+                **kwargs,
+            )
+        )
+
+    def concatenate_markdown_pages(self, markdown_list):
+        return self.paddlex_pipeline.concatenate_markdown_pages(markdown_list)
 
     @classmethod
     def get_cli_subcommand_executor(cls):
@@ -169,10 +256,14 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
-            "use_general_ocr": self._params["use_general_ocr"],
+            "SubPipelines.GeneralOCR.use_textline_orientation": self._params[
+                "use_textline_orientation"
+            ],
             "use_seal_recognition": self._params["use_seal_recognition"],
             "use_table_recognition": self._params["use_table_recognition"],
             "use_formula_recognition": self._params["use_formula_recognition"],
+            "use_chart_recognition": self._params["use_chart_recognition"],
+            "use_region_detection": self._params["use_region_detection"],
             "SubModules.LayoutDetection.model_name": self._params[
                 "layout_detection_model_name"
             ],
@@ -186,6 +277,21 @@ class PPStructureV3(PaddleXPipelineWrapper):
             ],
             "SubModules.LayoutDetection.layout_merge_bboxes_mode": self._params[
                 "layout_merge_bboxes_mode"
+            ],
+            "SubModules.ChartRecognition.model_name": self._params[
+                "chart_recognition_model_name"
+            ],
+            "SubModules.ChartRecognition.model_dir": self._params[
+                "chart_recognition_model_dir"
+            ],
+            "SubModules.ChartRecognition.batch_size": self._params[
+                "chart_recognition_batch_size"
+            ],
+            "SubModules.RegionDetection.model_name": self._params[
+                "region_detection_model_name"
+            ],
+            "SubModules.RegionDetection.model_dir": self._params[
+                "region_detection_model_dir"
             ],
             "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
@@ -317,7 +423,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
 class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
-        return "PP-StructureV3"
+        return "pp_structurev3"
 
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
@@ -351,6 +457,33 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--layout_merge_bboxes_mode",
             type=str,
             help="Overlapping box filtering method.",
+        )
+
+        subparser.add_argument(
+            "--chart_recognition_model_name",
+            type=str,
+            help="Name of the chart recognition model.",
+        )
+        subparser.add_argument(
+            "--chart_recognition_model_dir",
+            type=str,
+            help="Path to the chart recognition model directory.",
+        )
+        subparser.add_argument(
+            "--chart_recognition_batch_size",
+            type=int,
+            help="Batch size for the chart recognition model.",
+        )
+
+        subparser.add_argument(
+            "--region_detection_model_name",
+            type=str,
+            help="Name of the region detection model.",
+        )
+        subparser.add_argument(
+            "--region_detection_model_dir",
+            type=str,
+            help="Path to the region detection model directory.",
         )
 
         subparser.add_argument(
@@ -412,17 +545,17 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--textline_orientation_model_name",
             type=str,
-            help="Name of the text tetextline orientation.",
+            help="Name of the text line orientation classification model.",
         )
         subparser.add_argument(
             "--textline_orientation_model_dir",
             type=str,
-            help="Path to the text tetextline orientation directory.",
+            help="Path to the text line orientation classification directory.",
         )
         subparser.add_argument(
             "--textline_orientation_batch_size",
             type=int,
-            help="Batch size for the tetextline orientation model.",
+            help="Batch size for the text line orientation classification model.",
         )
         subparser.add_argument(
             "--text_recognition_model_name",
@@ -571,17 +704,19 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            default=False,
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            default=False,
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
-            "--use_general_ocr",
+            "--use_textline_orientation",
             type=str2bool,
-            help="Whether to use general OCR.",
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
@@ -598,7 +733,26 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str2bool,
             help="Whether to use formula recognition.",
         )
+        subparser.add_argument(
+            "--use_chart_recognition",
+            type=str2bool,
+            default=False,
+            help="Whether to use chart recognition.",
+        )
+        subparser.add_argument(
+            "--use_region_detection",
+            type=str2bool,
+            help="Whether to use region detection.",
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
-        perform_simple_inference(PPStructureV3, params)
+        perform_simple_inference(
+            PPStructureV3,
+            params,
+            predict_param_names={
+                "use_doc_orientation_classify",
+                "use_doc_unwarping",
+                "use_chart_recognition",
+            },
+        )
