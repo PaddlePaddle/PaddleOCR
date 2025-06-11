@@ -14,6 +14,10 @@ Installation for CPU:
 python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 ```
 
+Installation for GPU: 
+
+Since GPU installation requires specific CUDA versions, the following example is for installing NVIDIA GPU on the Linux platform with CUDA 11.8. For other platforms, please refer to the instructions in the [PaddlePaddle official installation documentation](https://www.paddlepaddle.org.cn/install/quick).
+
 #### 2. Install `paddleocr`
 
 ```bash linenums="1"
