@@ -17,13 +17,13 @@ comments: true
 - 您的机器安装的是CUDA 11，请运行以下命令安装
 
   ```bash linenums="1"
-  pip install paddlepaddle-gpu
+  pip install "paddlepaddle-gpu<=2.6"
   ```
 
 - 您的机器是CPU，请运行以下命令安装
 
   ```bash linenums="1"
-  pip install paddlepaddle
+  pip install "paddlepaddle<=2.6"
   ```
 
 更多的版本需求，请参照[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
@@ -31,7 +31,7 @@ comments: true
 ### 1.2 安装PaddleOCR whl包
 
 ```bash linenums="1"
-pip install paddleocr
+pip install "paddleocr<3.0"
 ```
 
 - 对于Windows环境用户：直接通过pip安装的shapely库可能出现`[winRrror 126] 找不到指定模块的问题`。建议从[这里](https://www.lfd.uci.edu/~gohlke/pythonlibs/#shapely)下载shapely安装包完成安装。
