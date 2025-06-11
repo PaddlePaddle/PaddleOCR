@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "paddleocr-local-structure": {
+      "command": "/path/to/your/python_env/bin/python",
+      "args": [
+        "-m",
+        "paddleocr_mcp"
+      ],
+      "cwd": "/path/to/your/PaddleOCR/mcp_server",
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "PP-StructureV3",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+    }
+  }
+} 
