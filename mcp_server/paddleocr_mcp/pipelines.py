@@ -150,6 +150,7 @@ class PipelineHandler(abc.ABC):
         pipeline: str,
         ppocr_source: str,
         pipeline_config: Optional[str],
+        device: Optional[str],
         server_url: Optional[str],
         aistudio_access_token: Optional[str],
         timeout: Optional[int],
@@ -160,6 +161,7 @@ class PipelineHandler(abc.ABC):
             pipeline: Pipeline name.
             ppocr_source: Source of PaddleOCR functionality.
             pipeline_config: Path to pipeline configuration.
+            device: Device to run inference on.
             server_url: Base URL for service mode.
             aistudio_access_token: AI Studio access token.
             timeout: Timeout in seconds.
@@ -173,6 +175,7 @@ class PipelineHandler(abc.ABC):
             raise ValueError(f"Unknown PaddleOCR source {repr(ppocr_source)}")
         self._ppocr_source = ppocr_source
         self._pipeline_config = pipeline_config
+        self._device = device
         self._server_url = server_url
         self._aistudio_access_token = aistudio_access_token
         self._timeout = timeout or 30  # Default timeout of 30 seconds
@@ -457,16 +460,16 @@ class OCRHandler(SimpleInferencePipelineHandler):
             return await self.process(input_data, output_mode, ctx)
 
     def _create_local_engine(self) -> Any:
-        return PaddleOCR(paddlex_config=self._pipeline_config)
+        return PaddleOCR(paddlex_config=self._pipeline_config, device=self._device)
 
     def _get_service_endpoint(self) -> str:
         return "ocr"
 
     def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
         result = local_result[0]
-        texts = result.get("rec_texts", [])
-        scores = result.get("rec_scores", [])
-        boxes = result.get("rec_boxes", []) or result.get("rec_polys", [])
+        texts = result["rec_texts"]
+        scores = result["rec_scores"]
+        boxes = result["rec_boxes"]
 
         # Direct assembly
         clean_texts, confidences, blocks = [], [], []
@@ -476,10 +479,11 @@ class OCRHandler(SimpleInferencePipelineHandler):
                 conf = scores[i] if i < len(scores) else 0
                 clean_texts.append(text.strip())
                 confidences.append(conf)
-
-                block = {"text": text.strip(), "confidence": round(conf, 3)}
-                if i < len(boxes) and boxes[i]:
-                    block["bbox"] = boxes[i]
+                block = {
+                    "text": text.strip(),
+                    "confidence": round(conf, 3),
+                    "bbox": boxes[i].tolist(),
+                }
                 blocks.append(block)
 
         return {
@@ -498,19 +502,20 @@ class OCRHandler(SimpleInferencePipelineHandler):
         for ocr_result in ocr_results:
             pruned = ocr_result["prunedResult"]
 
-            texts = pruned.get("rec_texts", [])
-            scores = pruned.get("rec_scores", [])
-            boxes = pruned.get("rec_boxes", [])
+            texts = pruned["rec_texts"]
+            scores = pruned["rec_scores"]
+            boxes = pruned["rec_boxes"]
 
             for i, text in enumerate(texts):
                 if text and text.strip():
                     conf = scores[i] if i < len(scores) else 0
                     all_texts.append(text.strip())
                     all_confidences.append(conf)
-
-                    block = {"text": text.strip(), "confidence": round(conf, 3)}
-                    if i < len(boxes) and boxes[i]:
-                        block["bbox"] = boxes[i]
+                    block = {
+                        "text": text.strip(),
+                        "confidence": round(conf, 3),
+                        "bbox": boxes[i],
+                    }
                     blocks.append(block)
 
         return {
@@ -572,7 +577,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             return await self.process(input_data, output_mode, ctx)
 
     def _create_local_engine(self) -> Any:
-        return PPStructureV3(paddlex_config=self._pipeline_config)
+        return PPStructureV3(paddlex_config=self._pipeline_config, device=self._device)
 
     def _get_service_endpoint(self) -> str:
         return "layout-parsing"
@@ -581,7 +586,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         markdown_parts, pages = [], []
 
         for i, result in enumerate(local_result):
-            text = result.markdown["text"]
+            text = result.markdown["markdown_texts"]
             markdown_parts.append(text)
             # TODO: Return images
             pages.append({"page": i, "content": text})

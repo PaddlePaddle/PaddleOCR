@@ -69,6 +69,11 @@ def _parse_args() -> argparse.Namespace:
         default=os.getenv("PADDLEOCR_MCP_PIPELINE_CONFIG"),
         help="PaddleOCR pipeline configuration file path (for local mode).",
     )
+    parser.add_argument(
+        "--device",
+        default=os.getenv("PADDLEOCR_MCP_DEVICE"),
+        help="Device to run inference on.",
+    )
 
     # Service mode configuration
     parser.add_argument(
@@ -132,6 +137,7 @@ def main() -> None:
             args.pipeline,
             args.ppocr_source,
             pipeline_config=args.pipeline_config,
+            device=args.device,
             server_url=args.server_url,
             aistudio_access_token=args.aistudio_access_token,
             timeout=args.timeout,
