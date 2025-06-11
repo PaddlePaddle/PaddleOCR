@@ -36,8 +36,8 @@ jobs:
         run: |
           git clone https://github.com/PaddlePaddle/PaddleOCR.git
           cd PaddleOCR
-          git fetch origin pull/${PR_ID}/head:ci_build
-          git checkout ci_build
+          # git fetch origin pull/${PR_ID}/head:ci_build
+          # git checkout ci_build
           cd ../
           tar cf PaddleOCR.tar PaddleOCR
 
@@ -57,7 +57,7 @@ jobs:
           wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
           tar xf bos_new.tar.gz
           ls
-          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
+          python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr
           
   test-pr:
     needs: tar2cloud
