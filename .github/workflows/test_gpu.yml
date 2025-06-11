@@ -49,6 +49,7 @@ jobs:
           python -m pip install bce-python-sdk==0.8.74
           wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
           tar xf bos_new.tar.gz
+          ls
           python BosClient.py PaddleOCR.tar paddle-qa/PaddleOCR/pr/${PR_ID}
           
   test-pr:
