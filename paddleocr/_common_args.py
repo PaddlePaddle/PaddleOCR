@@ -77,9 +77,7 @@ def prepare_common_init_args(model_name, common_args):
                 pp_option.run_mode = "trt_fp16"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
-        if enable_mkldnn:
-            pp_option.run_mode = "mkldnn"
-        else:
+        if not enable_mkldnn:
             pp_option.run_mode = "paddle"
     pp_option.cpu_threads = common_args["cpu_threads"]
     init_kwargs["pp_option"] = pp_option
