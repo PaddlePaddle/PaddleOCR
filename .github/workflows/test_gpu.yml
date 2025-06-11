@@ -35,7 +35,7 @@ jobs:
       - name: clone and fetch
         run: |
           rm -rf PaddleOCR
-          git clone https://github.com/PaddlePaddle/PaddleOCR.git
+          git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
           cd PaddleOCR
           git fetch origin pull/${PR_ID}/head:ci_build
           git checkout ci_build
