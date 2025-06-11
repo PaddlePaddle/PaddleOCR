@@ -34,6 +34,7 @@ jobs:
     steps:
       - name: clone and fetch
         run: |
+          rm -rf PaddleOCR
           git clone https://github.com/PaddlePaddle/PaddleOCR.git
           cd PaddleOCR
           git fetch origin pull/${PR_ID}/head:ci_build
