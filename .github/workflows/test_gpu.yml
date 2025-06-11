@@ -103,7 +103,7 @@ jobs:
             python -m pip install pytest
             if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
             python -m pip install -e .
-            pytest --verbose tests/
+            python -m pytest --verbose tests/
             '
           
           
