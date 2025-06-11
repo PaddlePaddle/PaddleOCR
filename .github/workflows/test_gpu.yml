@@ -2,14 +2,14 @@ name: PaddleOCR PR Tests GPU
 
 on:
   push:
-    branches: ["main", "release/*"]
+    branches: ["main"]
     paths-ignore:
       - '**.md'
       - '**.txt'
  #     - '**.yml'
       - '**.yaml'
   pull_request:
-    branches: ["main", "release/*"]
+    branches: ["main"]
     paths-ignore:
       - '**.md'
       - '**.txt'
@@ -30,6 +30,7 @@ permissions:
 
 jobs:
   tar2cloud:
+    environment: CodeSync
     runs-on: ubuntu-latest
     steps:
       - name: clone and fetch
@@ -46,13 +47,6 @@ jobs:
           AK: ${{ secrets.BOS_AK }}
           SK: ${{ secrets.BOS_SK }}
         run: |
-          if [ -z "$AK" ] || [ -z "$SK" ]; then
-            echo "Error: AK or SK is not set."
-            exit 1
-          else
-            echo "AK and SK are set."
-          fi
-
           python -m pip install bce-python-sdk==0.8.74
           wget -q --no-proxy https://xly-devops.bj.bcebos.com/home/bos_new.tar.gz
           tar xf bos_new.tar.gz
