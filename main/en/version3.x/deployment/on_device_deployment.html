@@ -26,7 +26,7 @@
     
     
       
-        <title>Device-side Deployment - PaddleOCR Documentation</title>
+        <title>On-Device Deployment - PaddleOCR Documentation</title>
       
     
     
@@ -146,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#edge-deployment" class="md-skip">
+        <a href="#ocr-on-device-deployment-demo-usage-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -197,7 +197,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Device-side Deployment
+              On-Device Deployment
             
           </span>
         </div>
@@ -1191,17 +1191,217 @@ You're not viewing the latest version.
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    On-Device Deployment
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="on_device_deployment.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Device-side Deployment
+    On-Device Deployment
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Steps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engineering-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Engineering Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-the-prediction-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating the Prediction Library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#converting-nb-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting .nb Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Converting .nb Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminal-command-method-supports-macubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminal Command Method (Supports Mac/Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-script-method-supports-windowsmacubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Script Method (Supports Windows/Mac/Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-models-label-files-and-prediction-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Models, Label Files, and Prediction Images
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating Models, Label Files, and Prediction Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-label-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Label Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-prediction-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Prediction Images
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-inputoutput-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Input/Output Preprocessing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -2748,7 +2948,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    Device-side Deployment
+    On-Device Deployment
     
   </span>
   
@@ -2979,6 +3179,182 @@ You're not viewing the latest version.
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#material-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Material Preparation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Steps
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#engineering-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      Engineering Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-the-prediction-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating the Prediction Library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#converting-nb-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting .nb Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Converting .nb Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminal-command-method-supports-macubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminal Command Method (Supports Mac/Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python-script-method-supports-windowsmacubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Script Method (Supports Windows/Mac/Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-models-label-files-and-prediction-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Models, Label Files, and Prediction Images
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Updating Models, Label Files, and Prediction Images">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#updating-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Models
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-label-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Label Files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-prediction-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Prediction Images
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-inputoutput-preprocessing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Input/Output Preprocessing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -3009,8 +3385,471 @@ You're not viewing the latest version.
   
 
 
-<h1 id="edge-deployment">Edge Deployment<a class="headerlink" href="#edge-deployment" title="Permanent link">&para;</a></h1>
-<p>The PaddleOCR model can be deployed on edge devices using the <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/edge_deploy.html">PaddleX Edge Deployment Solution</a>. For more information about PaddleX and its relationship with PaddleOCR, please refer to <a href="../paddleocr_and_paddlex.html#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX">Differences and Connections between PaddleOCR and PaddleX</a>.</p>
+<h1 id="ocr-on-device-deployment-demo-usage-guide">OCR On-Device Deployment Demo Usage Guide<a class="headerlink" href="#ocr-on-device-deployment-demo-usage-guide" title="Permanent link">&para;</a></h1>
+<ul>
+<li><a href="#quick-start">Quick Start</a><ul>
+<li><a href="#environment-preparation">Environment Preparation</a></li>
+<li><a href="#deployment-steps">Deployment Steps</a></li>
+</ul>
+</li>
+<li><a href="#code-introduction">Code Introduction</a></li>
+<li><a href="#project-explanation">Project Explanation</a></li>
+<li><a href="#advanced-usage">Advanced Usage</a><ul>
+<li><a href="#update-prediction-library">Update Prediction Library</a> </li>
+<li><a href="#convert-nb-model">Convert NB Model</a> </li>
+<li><a href="#update-model-label-file-and-prediction-image">Update Model, Label File, and Prediction Image</a><ul>
+<li><a href="#update-model">Update Model</a></li>
+<li><a href="#update-label-file">Update Label File</a></li>
+<li><a href="#update-prediction-image">Update Prediction Image</a></li>
+</ul>
+</li>
+<li><a href="#update-inputoutput-preprocessing">Update Input/Output Preprocessing</a></li>
+</ul>
+</li>
+</ul>
+<p>This guide mainly introduces how to run the PaddleX on-device deployment demo for OCR text recognition on an Android shell.</p>
+<p>The following OCR models are supported in this guide:</p>
+<ul>
+<li>PP-OCRv3_mobile (cpu)</li>
+<li>PP-OCRv4_mobile (cpu)</li>
+<li>PP-OCRv5_mobile (cpu)</li>
+</ul>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<h3 id="environment-preparation">Environment Preparation<a class="headerlink" href="#environment-preparation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Install the CMAKE compilation tool in your local environment and download an NDK package for your current system from the <a href="https://developer.android.google.cn/ndk/downloads">Android NDK official website</a>. For example, if developing on a Mac, download the NDK package for the Mac platform from the Android NDK official website.</p>
+<p><strong>Environment Requirements</strong></p>
+<ul>
+<li><code>CMake &gt;= 3.10</code> (the minimum version has not been verified; 3.20 or above is recommended)</li>
+<li><code>Android NDK &gt;= r17c</code> (the minimum version has not been verified; r20b or above is recommended)</li>
+</ul>
+<p><strong>Test Environment Used in This Guide</strong>:</p>
+<ul>
+<li><code>cmake == 3.20.0</code></li>
+<li><code>android-ndk == r20b</code></li>
+</ul>
+</li>
+<li>
+<p>Prepare an Android phone and enable USB debugging mode. Method: <code>Phone Settings -&gt; Find Developer Options -&gt; Enable Developer Options and USB Debugging Mode</code></p>
+</li>
+<li>
+<p>Install the ADB tool on your computer for debugging. The installation methods for ADB are as follows:</p>
+<p>3.1. Install ADB on a Mac:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>brew<span class="w"> </span>cask<span class="w"> </span>install<span class="w"> </span>android-platform-tools
+</span></code></pre></div>
+<p>3.2. Install ADB on Linux:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>wget<span class="w"> </span>adb
+</span></code></pre></div>
+<p>3.3. Install ADB on Windows:</p>
+<p>For installation on Windows, download and install the ADB software package from Google's Android platform: <a href="https://developer.android.com/studio">Link</a></p>
+<p>Open a terminal, connect your phone to the computer, and enter the following command in the terminal:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>adb<span class="w"> </span>devices
+</span></code></pre></div>
+<p>If there is a <code>device</code> output, the installation is successful.</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>List<span class="w"> </span>of<span class="w"> </span>devices<span class="w"> </span>attached
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>744be294<span class="w">    </span>device
+</span></code></pre></div>
+</li>
+</ol>
+<h3 id="material-preparation">Material Preparation<a class="headerlink" href="#material-preparation" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Clone the <code>feature/paddle-x</code> branch of the <code>Paddle-Lite-Demo</code> repository to the <code>PaddleX-Lite-Deploy</code> directory.</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clone<span class="w"> </span>-b<span class="w"> </span>feature/paddle-x<span class="w"> </span>https://github.com/PaddlePaddle/Paddle-Lite-Demo.git<span class="w"> </span>PaddleX-Lite-Deploy
+</span></code></pre></div>
+</li>
+<li>
+<p>Fill out the <a href="https://paddle.wjx.cn/vm/eaaBo0H.aspx#">questionnaire</a> to download the compressed package. Place the compressed package in the specified extraction directory, switch to the specified extraction directory, and execute the extraction command.</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># 1. Switch to the specified extraction directory</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">cd</span><span class="w"> </span>PaddleX-Lite-Deploy/ocr/android/shell/ppocr_demo
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># 2. Execute the extraction command</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>unzip<span class="w"> </span>ocr.zip
+</span></code></pre></div>
+</li>
+</ol>
+<h3 id="deployment-steps">Deployment Steps<a class="headerlink" href="#deployment-steps" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Switch the working directory to <code>PaddleX-Lite-Deploy/libs</code> and run the <code>download.sh</code> script to download the required Paddle Lite prediction library. This step only needs to be executed once to support each demo.</p>
+</li>
+<li>
+<p>Switch the working directory to <code>PaddleX-Lite-Deploy/ocr/assets</code> and run the <code>download.sh</code> script to download the <a href="https://www.paddlepaddle.org.cn/lite/v2.10/user_guides/model_optimize_tool.html">paddle_lite_opt tool</a>-optimized NB model file, prediction images, dictionary files, and other materials.</p>
+</li>
+<li>
+<p>Switch the working directory to <code>PaddleX-Lite-Deploy/ocr/android/shell/cxx/ppocr_demo</code> and run the <code>build.sh</code> script to complete the compilation of the executable file.</p>
+</li>
+<li>
+<p>Switch the working directory to <code>PaddleX-Lite-Deploy/ocr/android/shell/cxx/ppocr_demo</code> and run the <code>run.sh</code> script to complete the on-device prediction.</p>
+</li>
+</ol>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li>Before running the <code>build.sh</code> script, change the path specified by <code>NDK_ROOT</code> to the actual installation path of NDK.</li>
+<li>On Windows systems, you can use Git Bash to execute the deployment steps.</li>
+<li>If compiling on a Windows system, set <code>CMAKE_SYSTEM_NAME</code> to <code>windows</code> in <code>CMakeLists.txt</code>.</li>
+<li>If compiling on a Mac system, set <code>CMAKE_SYSTEM_NAME</code> to <code>darwin</code> in <code>CMakeLists.txt</code>.</li>
+<li>Keep the ADB connection active when running the <code>run.sh</code> script.</li>
+<li>The <code>download.sh</code> and <code>run.sh</code> scripts support passing parameters to specify the model. If no model is specified, the <code>PP-OCRv5_mobile</code> model is used by default. The following models are currently supported:<ul>
+<li><code>PP-OCRv3_mobile</code></li>
+<li><code>PP-OCRv4_mobile</code></li>
+<li><code>PP-OCRv5_mobile</code></li>
+</ul>
+</li>
+</ul>
+<p>Here is an example of the actual operation:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># 1. Download the required Paddle Lite prediction library</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">cd</span><span class="w"> </span>PaddleX-Lite-Deploy/libs
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sh<span class="w"> </span>download.sh
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># 2. Download the paddle_lite_opt tool-optimized NB model file, prediction images, dictionary files, and other materials</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nb">cd</span><span class="w"> </span>../ocr/assets
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>sh<span class="w"> </span>download.sh<span class="w"> </span>PP-OCRv5_mobile
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># 3. Complete the compilation of the executable file</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nb">cd</span><span class="w"> </span>../android/shell/ppocr_demo
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>sh<span class="w"> </span>build.sh
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1"># 4. Prediction</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>sh<span class="w"> </span>run.sh<span class="w"> </span>PP-OCRv5_mobile
+</span></code></pre></div>
+<p>The output is as follows:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>The detection visualized image saved in ./test_img_result.jpg
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>0       纯臻营养护发素  0.998541
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>1       产品信息/参数   0.999094
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>2       (45元/每公斤，100公斤起订）     0.948841
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>3       每瓶22元，1000瓶起订)   0.961245
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>4       【品牌】：代加工方式/OEMODM     0.970401
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>5       【品名】：纯臻营养护发素        0.977496
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>6       ODMOEM  0.955396
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>7       【产品编号】：YM-X-3011 0.977864
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>8       【净含量】：220ml       0.970538
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>9       【适用人群】：适合所有肤质      0.995907
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>10      【主要成分】：鲸蜡硬脂醇、燕麦β-葡聚    0.975813
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>11      糖、椰油酰胺丙基甜菜碱、泛醌    0.964397
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>12      （成品包材）    0.97298
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>13      【主要功能】：可紧致头发磷层，从而达到  0.989097
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>14      即时持久改善头发光泽的效果，给干燥的头  0.990088
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>15      发足够的滋养    0.998037
+</span></code></pre></div>
+<p><img alt="Prediction Result" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipeline_deploy/edge_PP-OCRv5_mobile.jpg" /></p>
+<h2 id="code-introduction">Code Introduction<a class="headerlink" href="#code-introduction" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>.
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── ...
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── ocr 
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│    ├── ...
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│    ├── android
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│    │    ├── ...
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│    │    └── shell
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│    │        └── ppocr_demo
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>│    │            ├── src # Contains prediction code
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>│    │            |   ├── cls_process.cc # Full inference process for orientation classifier, including preprocessing, prediction, and postprocessing
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>│    │            |   ├── rec_process.cc # Full inference process for recognition model CRNN, including preprocessing, prediction, and postprocessing
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>│    │            |   ├── det_process.cc # Full inference process for detection model CRNN, including preprocessing, prediction, and postprocessing
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>│    │            |   ├── det_post_process.cc # Postprocessing file for detection model DB
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>│    │            |   ├── pipeline.cc # Full inference process code for OCR text recognition demo
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>│    │            |   └── MakeFile # MakeFile file for prediction code
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>│    │            |   
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>│    │            ├── CMakeLists.txt # CMake file that defines the compilation method for the executable
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>│    │            ├── README.md
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>│    │            ├── build.sh # Used for compiling the executable
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>│    │            └── run.sh # Used for prediction
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>│    └── assets # Stores models, test images, label files, and config files
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>│        ├── images # Stores test images
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>│        ├── labels # Stores dictionary files (see remarks below for details)
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>│        ├── models # Stores nb models
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>│        ├── config.txt
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>│        └── download.sh # Download script for paddle_lite_opt tool-optimized models
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>└── libs # Stores prediction libraries and OpenCV libraries for different platforms.
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>    ├── ...
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>    └── download.sh # Download script for Paddle Lite prediction libraries and OpenCV libraries
+</span></code></pre></div>
+<p><strong>Remarks</strong>:</p>
+<ul>
+<li>The <code>PaddleX-Lite-Deploy/ocr/assets/labels/</code> directory contains the dictionary files <code>ppocr_keys_v1.txt</code> for PP-OCRv3 and PP-OCRv4 models, and <code>ppocr_keys_ocrv5.txt</code> for the PP-OCRv5 model. The appropriate dictionary file is automatically selected during inference based on the model name, so no manual intervention is required.</li>
+<li>If you are using an English/numeric or other language model, you need to replace it with the corresponding language dictionary. The PaddleOCR repository provides <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.3/ppocr/utils">some dictionary files</a>.</li>
+</ul>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Parameters of the executable in run.sh script:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>adb<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="s2">           &amp;&amp; chmod +x ./ppocr_demo \</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s2">           &amp;&amp; export LD_LIBRARY_PATH=</span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s2">           &amp;&amp; ./ppocr_demo \</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_det.nb\&quot; \</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_rec.nb\&quot; \</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="s2">                ./models/</span><span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="s2">                ./images/test.jpg \</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="s2">                ./test_img_result.jpg \</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="s2">                ./labels/</span><span class="si">${</span><span class="nv">LABEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="s2">                ./config.txt&quot;</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>First<span class="w"> </span>parameter:<span class="w"> </span>ppocr_demo<span class="w"> </span>executable
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>Second<span class="w"> </span>parameter:<span class="w"> </span>./models/<span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span>_det.nb<span class="w">  </span>Detection<span class="w"> </span>model<span class="w"> </span>.nb<span class="w"> </span>file
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>Third<span class="w"> </span>parameter:<span class="w"> </span>./models/<span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span>_rec.nb<span class="w">  </span>Recognition<span class="w"> </span>model<span class="w"> </span>.nb<span class="w"> </span>file
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>Fourth<span class="w"> </span>parameter:<span class="w"> </span>./models/<span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="w"> </span>Text<span class="w"> </span>line<span class="w"> </span>orientation<span class="w"> </span>classification<span class="w"> </span>model<span class="w"> </span>.nb<span class="w"> </span>file<span class="w"> </span><span class="o">(</span>automatically<span class="w"> </span>selected<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>model<span class="w"> </span>name<span class="w"> </span>by<span class="w"> </span>default<span class="o">)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>Fifth<span class="w"> </span>parameter:<span class="w"> </span>./images/test.jpg<span class="w">  </span>Test<span class="w"> </span>image
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>Sixth<span class="w"> </span>parameter:<span class="w"> </span>./test_img_result.jpg<span class="w">  </span>Result<span class="w"> </span>save<span class="w"> </span>file
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>Seventh<span class="w"> </span>parameter:<span class="w"> </span>./labels/<span class="si">${</span><span class="nv">LABEL_FILE</span><span class="si">}</span><span class="w">  </span>Label<span class="w"> </span>file<span class="w"> </span><span class="o">(</span>automatically<span class="w"> </span>selected<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>model<span class="w"> </span>name<span class="w"> </span>by<span class="w"> </span>default<span class="o">)</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>Eighth<span class="w"> </span>parameter:<span class="w"> </span>./config.txt<span class="w">  </span>Configuration<span class="w"> </span>file<span class="w"> </span>containing<span class="w"> </span>hyperparameters<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>detection<span class="w"> </span>and<span class="w"> </span>classification<span class="w"> </span>models
+</span></code></pre></div>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># List of Specific Parameters in config.txt:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>max_side_len<span class="w">  </span><span class="m">960</span><span class="w">         </span><span class="c1"># When the width or height of the input image is greater than 960, the image is scaled proportionally so that the longest side of the image is 960.</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>det_db_thresh<span class="w">  </span><span class="m">0</span>.3<span class="w">        </span><span class="c1"># Used to filter the binarized images predicted by DB; setting it to 0.3 has no significant impact on the results.</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>det_db_box_thresh<span class="w">  </span><span class="m">0</span>.5<span class="w">    </span><span class="c1"># Threshold for filtering boxes in the DB post-processing; if there are missing boxes in detection, you may reduce this value.</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>det_db_unclip_ratio<span class="w">  </span><span class="m">1</span>.6<span class="w">  </span><span class="c1"># Represents the compactness of the text box; the smaller the value, the closer the text box is to the text.</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>use_direction_classify<span class="w">  </span><span class="m">0</span><span class="w">  </span><span class="c1"># Whether to use a direction classifier: 0 means not using it, 1 means using it.</span>
+</span></code></pre></div>
+<h2 id="engineering-details">Engineering Details<a class="headerlink" href="#engineering-details" title="Permanent link">&para;</a></h2>
+<p>The OCR text recognition demo accomplishes the OCR text recognition function using three models collaboratively. First, the input image undergoes detection processing via the <code>${MODEL_NAME}_det.nb</code> model, followed by text direction classification using the <code>ch_ppocr_mobile_v2.0_cls_slim_opt.nb</code> model, and finally, text recognition with the <code>${MODEL_NAME}_rec.nb</code> model.</p>
+<ol>
+<li>
+<p><code>pipeline.cc</code>: Full-process prediction code for the OCR text recognition demo
+  This file handles the entire process control for serial inference of the three models, including scheduling for the entire processing flow.</p>
+<ul>
+<li>The <code>Pipeline::Pipeline(...)</code> method initializes the three model class constructors, accomplishes model loading, thread count, core binding, and predictor creation.</li>
+<li>The <code>Pipeline::Process(...)</code> method manages the entire process control for serial inference of the three models.</li>
+</ul>
+</li>
+<li>
+<p><code>cls_process.cc</code>: Prediction file for the direction classifier
+  This file handles the preprocessing, prediction, and postprocessing for the direction classifier.</p>
+<ul>
+<li>The <code>ClsPredictor::ClsPredictor()</code> method initializes model loading, thread count, core binding, and predictor creation.</li>
+<li>The <code>ClsPredictor::Preprocess()</code> method handles model preprocessing.</li>
+<li>The <code>ClsPredictor::Postprocess()</code> method handles model postprocessing.</li>
+</ul>
+</li>
+<li>
+<p><code>rec_process.cc</code>: Prediction file for the CRNN recognition model
+  This file handles the preprocessing, prediction, and postprocessing for the CRNN recognition model.</p>
+<ul>
+<li>The <code>RecPredictor::RecPredictor()</code> method initializes model loading, thread count, core binding, and predictor creation.</li>
+<li>The <code>RecPredictor::Preprocess()</code> method handles model preprocessing.</li>
+<li>The <code>RecPredictor::Postprocess()</code> method handles model postprocessing.</li>
+</ul>
+</li>
+<li>
+<p><code>det_process.cc</code>: Prediction file for the DB detection model
+  This file handles the preprocessing, prediction, and postprocessing for the DB detection model.</p>
+<ul>
+<li>The <code>DetPredictor::DetPredictor()</code> method initializes model loading, thread count, core binding, and predictor creation.</li>
+<li>The <code>DetPredictor::Preprocess()</code> method handles model preprocessing.</li>
+<li>The <code>DetPredictor::Postprocess()</code> method handles model postprocessing.</li>
+</ul>
+</li>
+<li>
+<p><code>db_post_process</code>: Postprocessing functions for the DB detection model, including calls to the clipper library
+  This file implements third-party library calls and other postprocessing methods for the DB detection model.</p>
+<ul>
+<li>The <code>std::vector&lt;std::vector&lt;std::vector&lt;int&gt;&gt;&gt; BoxesFromBitmap(...)</code> method retrieves detection boxes from a Bitmap.</li>
+<li>The <code>std::vector&lt;std::vector&lt;std::vector&lt;int&gt;&gt;&gt; FilterTagDetRes(...)</code> method retrieves target box positions based on recognition results.</li>
+</ul>
+</li>
+</ol>
+<h2 id="advanced-usage">Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permanent link">&para;</a></h2>
+<p>If the quick start section does not meet your needs, refer to this section for custom modifications to the demo.</p>
+<p>This section mainly includes four parts:</p>
+<ul>
+<li>Updating the prediction library;</li>
+<li>Converting <code>.nb</code> models;</li>
+<li>Updating models, label files, and prediction images;</li>
+<li>Updating input/output preprocessing.</li>
+</ul>
+<h3 id="updating-the-prediction-library">Updating the Prediction Library<a class="headerlink" href="#updating-the-prediction-library" title="Permanent link">&para;</a></h3>
+<p>The prediction library used in this guide is the latest version (214rc), and manual updates are not recommended.</p>
+<p>If you need to use a different version, follow these steps to update the prediction library:</p>
+<ul>
+<li>Paddle Lite project: https://github.com/PaddlePaddle/Paddle-Lite</li>
+<li>Refer to the <a href="https://www.paddlepaddle.org.cn/lite/develop/source_compile/compile_env.html">Paddle Lite Source Code Compilation Documentation</a> to compile the Android prediction library.</li>
+<li>The final compilation output is located in <code>build.lite.xxx.xxx.xxx</code> under <code>inference_lite_lib.xxx.xxx</code>.<ul>
+<li>Replace the C++ library:<ul>
+<li>Header files:
+  Replace the <code>PaddleX-Lite-Deploy/libs/android/cxx/include</code> folder in the demo with the generated <code>build.lite.android.xxx.gcc/inference_lite_lib.android.xxx/cxx/include</code> folder.</li>
+<li>armeabi-v7a:
+  Replace the <code>PaddleX-Lite-Deploy/libs/android/cxx/libs/armeabi-v7a/libpaddle_lite_api_shared.so</code> library in the demo with the generated <code>build.lite.android.armv7.gcc/inference_lite_lib.android.armv7/cxx/libs/libpaddle_lite_api_shared.so</code> library.</li>
+<li>arm64-v8a:
+  Replace the <code>PaddleX-Lite-Deploy/libs/android/cxx/libs/arm64-v8a/libpaddle_lite_api_shared.so</code> library in the demo with the generated <code>build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/cxx/libs/libpaddle_lite_api_shared.so</code> library.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="converting-nb-models">Converting .nb Models<a class="headerlink" href="#converting-nb-models" title="Permanent link">&para;</a></h3>
+<p>If you want to use your own trained models, follow the process below to obtain <code>.nb</code> models.</p>
+<h4 id="terminal-command-method-supports-macubuntu">Terminal Command Method (Supports Mac/Ubuntu)<a class="headerlink" href="#terminal-command-method-supports-macubuntu" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Navigate to the <a href="https://github.com/PaddlePaddle/Paddle-Lite/releases">release interface</a> of the Paddle-Lite GitHub repository and download the corresponding conversion tool, opt, for the desired version (the latest version is recommended).</p>
+</li>
+<li>
+<p>After downloading the opt tool, execute the following command (using the 2.14rc version of the linux_x86 opt tool to convert the PP-OCRv5_mobile_det model as an example):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>./opt_linux_x86<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>--model_file<span class="o">=</span>PP-OCRv5_mobile_det/inference.pdmodel<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>--param_file<span class="o">=</span>PP-OCRv5_mobile_det/inference.pdiparams<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>--optimize_out<span class="o">=</span>PP-OCRv5_mobile_det<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span>--valid_targets<span class="o">=</span>arm
+</span></code></pre></div>
+</li>
+</ol>
+<p>For detailed instructions on converting <code>.nb</code> models using the terminal command method, refer to the <a href="https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/opt/opt_bin.html">Using the Executable opt</a> section in the Paddle-Lite repository.</p>
+<h4 id="python-script-method-supports-windowsmacubuntu">Python Script Method (Supports Windows/Mac/Ubuntu)<a class="headerlink" href="#python-script-method-supports-windowsmacubuntu" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>Install the latest version of the paddlelite wheel package.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--pre<span class="w"> </span>paddlelite
+</span></code></pre></div>
+</li>
+<li>
+<p>Use the Python script to convert the model. Below is an example code snippet for converting the PP-OCRv5_mobile_det model:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlelite.lite</span><span class="w"> </span><span class="kn">import</span> <span class="n">Opt</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># 1. Create an Opt instance</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">opt</span> <span class="o">=</span> <span class="n">Opt</span><span class="p">()</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># 2. Specify the input model paths </span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="n">opt</span><span class="o">.</span><span class="n">set_model_file</span><span class="p">(</span><span class="s2">&quot;./PP-OCRv5_mobile_det/inference.pdmodel&quot;</span><span class="p">)</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="n">opt</span><span class="o">.</span><span class="n">set_param_file</span><span class="p">(</span><span class="s2">&quot;./PP-OCRv5_mobile_det/inference.pdiparams&quot;</span><span class="p">)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="c1"># 3. Specify the target platform for optimization</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="n">opt</span><span class="o">.</span><span class="n">set_valid_places</span><span class="p">(</span><span class="s2">&quot;arm&quot;</span><span class="p">)</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># 4. Specify the output path for the optimized model</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="n">opt</span><span class="o">.</span><span class="n">set_optimize_out</span><span class="p">(</span><span class="s2">&quot;./PP-OCRv5_mobile_det&quot;</span><span class="p">)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1"># 5. Execute model optimization</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="n">opt</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</span></code></pre></div>
+</li>
+</ol>
+<p>For detailed instructions on converting <code>.nb</code> models using the Python script method, refer to the <a href="https://www.paddlepaddle.org.cn/lite/v2.12/api_reference/python_api/opt.html">Python Script opt Usage</a> section in the Paddle-Lite repository.</p>
+<p><strong>Notes</strong></p>
+<ul>
+<li>For detailed information about the model optimization tool <code>opt</code>, refer to Paddle-Lite's <a href="https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/model_optimize_tool.html">Model Optimization Tool opt</a>.</li>
+<li>Currently, only static graph models in <code>.pdmodel</code> format can be converted to <code>.nb</code> format.</li>
+</ul>
+<h3 id="updating-models-label-files-and-prediction-images">Updating Models, Label Files, and Prediction Images<a class="headerlink" href="#updating-models-label-files-and-prediction-images" title="Permanent link">&para;</a></h3>
+<h4 id="updating-models">Updating Models<a class="headerlink" href="#updating-models" title="Permanent link">&para;</a></h4>
+<p>This guide has only validated the <code>PP-OCRv3_mobile</code>, <code>PP-OCRv4_mobile</code>, and <code>PP-OCRv5_mobile</code> models. Other models may not be compatible.</p>
+<p>If you fine-tune the <code>PP-OCRv5_mobile</code> model and generate a new model named <code>PP-OCRv5_mobile_ft</code>, follow these steps to replace the original model with your fine-tuned model:</p>
+<ol>
+<li>
+<p>Place the <code>.nb</code> models of <code>PP-OCRv5_mobile_ft</code> into the directory <code>PaddleX-Lite-Deploy/ocr/assets/models/</code>. The resulting file structure should be:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>.
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>├── ocr 
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>│    ├── ...
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>│    └── assets 
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>│        ├── models
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>│        │   ├── ...
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>│        │   ├── PP-OCRv5_mobile_ft_det.nb 
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>│        │   └── PP-OCRv5_mobile_ft_rec.nb 
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>│        └── ...
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>└── ...
+</span></code></pre></div>
+</li>
+<li>
+<p>Add the model name to the <code>MODEL_LIST</code> in the <code>run.sh</code> script.</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nv">MODEL_LIST</span><span class="o">=</span><span class="s2">&quot;PP-OCRv3_mobile PP-OCRv4_mobile PP-OCRv5_mobile PP-OCRv5_mobile_ft&quot;</span><span class="w"> </span><span class="c1"># Models are separated by spaces</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Specify the model directory name when running the <code>run.sh</code> script.</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sh<span class="w"> </span>run.sh<span class="w"> </span>PP-OCRv5_mobile_ft
+</span></code></pre></div>
+</li>
+</ol>
+<p><strong>Notes</strong>:</p>
+<ul>
+<li>
+<p>If the input Tensor, Shape, or Dtype of the model is updated:</p>
+<ul>
+<li>For the text direction classifier model, update the <code>ClsPredictor::Preprocess</code> function in <code>ppocr_demo/src/cls_process.cc</code>.</li>
+<li>For the detection model, update the <code>DetPredictor::Preprocess</code> function in <code>ppocr_demo/src/det_process.cc</code>.</li>
+<li>For the recognition model, update the <code>RecPredictor::Preprocess</code> function in <code>ppocr_demo/src/rec_process.cc</code>.</li>
+</ul>
+</li>
+<li>
+<p>If the output Tensor or Dtype of the model is updated:</p>
+<ul>
+<li>For the text direction classifier model, update the <code>ClsPredictor::Postprocess</code> function in <code>ppocr_demo/src/cls_process.cc</code>.</li>
+<li>For the detection model, update the <code>DetPredictor::Postprocess</code> function in <code>ppocr_demo/src/det_process.cc</code>.</li>
+<li>For the recognition model, update the <code>RecPredictor::Postprocess</code> function in <code>ppocr_demo/src/rec_process.cc</code>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="updating-label-files">Updating Label Files<a class="headerlink" href="#updating-label-files" title="Permanent link">&para;</a></h4>
+<p>To update the label file, place the new label file in the directory <code>PaddleX-Lite-Deploy/ocr/assets/labels/</code> and update the execution command in <code>PaddleX-Lite-Deploy/ocr/android/shell/ppocr_demo/run.sh</code> following the model update method.</p>
+<p>For example, to update to <code>new_labels.txt</code>:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># File: `PaddleX-Lite-Deploy/ocr/android/shell/ppocr_demo/run.sh`</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Original command</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>adb<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="s2">          &amp;&amp; chmod +x ./ppocr_demo \</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="s2">          &amp;&amp; export LD_LIBRARY_PATH=</span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s2">          &amp;&amp; ./ppocr_demo \</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_det.nb\&quot; \</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_rec.nb\&quot; \</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s2">                ./models/</span><span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s2">                ./images/test.jpg \</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s2">                ./test_img_result.jpg \</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s2">                ./labels/</span><span class="si">${</span><span class="nv">LABEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s2">                ./config.txt&quot;</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="c1"># Updated command</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>adb<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="s2">          &amp;&amp; chmod +x ./ppocr_demo \</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="s2">          &amp;&amp; export LD_LIBRARY_PATH=</span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="s2">          &amp;&amp; ./ppocr_demo \</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_det.nb\&quot; \</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_rec.nb\&quot; \</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="s2">                ./models/</span><span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="s2">                ./images/test.jpg \</span>
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="s2">                ./test_img_result.jpg \</span>
+</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a><span class="s2">                ./labels/new_labels.txt \</span>
+</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="s2">                ./config.txt&quot;</span>
+</span></code></pre></div>
+<h4 id="updating-prediction-images">Updating Prediction Images<a class="headerlink" href="#updating-prediction-images" title="Permanent link">&para;</a></h4>
+<p>If you need to update the prediction images, place the updated images in the <code>PaddleX-Lite-Deploy/ocr/assets/images/</code> directory and update the execution command in the <code>PaddleX-Lite-Deploy/ocr/android/shell/ppocr_demo/run.sh</code> file.</p>
+<p>Here is an example of updating to <code>new_pics.jpg</code>:</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># File: `PaddleX-Lite-Deploy/ocr/android/shell/ppocr_demo/run.sh`</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1">## Original command</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>adb<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="s2">          &amp;&amp; chmod +x ./ppocr_demo \</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="s2">          &amp;&amp; export LD_LIBRARY_PATH=</span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="s2">          &amp;&amp; ./ppocr_demo \</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_det.nb\&quot; \</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_rec.nb\&quot; \</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="s2">                ./models/</span><span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="s2">                ./images/test.jpg \</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="s2">                ./test_img_result.jpg \</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="s2">                ./labels/</span><span class="si">${</span><span class="nv">LABEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="s2">                ./config.txt&quot;</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="c1"># Updated command</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>adb<span class="w"> </span>shell<span class="w"> </span><span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="s2">          &amp;&amp; chmod +x ./ppocr_demo \</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="s2">          &amp;&amp; export LD_LIBRARY_PATH=</span><span class="si">${</span><span class="nv">ppocr_demo_path</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">LD_LIBRARY_PATH</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="s2">          &amp;&amp; ./ppocr_demo \</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_det.nb\&quot; \</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="s2">                \&quot;./models/</span><span class="si">${</span><span class="nv">MODEL_NAME</span><span class="si">}</span><span class="s2">_rec.nb\&quot; \</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="s2">                ./models/</span><span class="si">${</span><span class="nv">CLS_MODEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="s2">                ./images/new_pics.jpg \</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="s2">                ./test_img_result.jpg \</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="s2">                ./labels/</span><span class="si">${</span><span class="nv">LABEL_FILE</span><span class="si">}</span><span class="s2"> \</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="s2">                ./config.txt&quot;</span>
+</span></code></pre></div>
+<h3 id="updating-inputoutput-preprocessing">Updating Input/Output Preprocessing<a class="headerlink" href="#updating-inputoutput-preprocessing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Updating Input Preprocessing</p>
+<ul>
+<li>For the text direction classifier model, update the <code>ClsPredictor::Preprocess</code> function in <code>ppocr_demo/src/cls_process.cc</code>.</li>
+<li>For the detection model, update the <code>DetPredictor::Preprocess</code> function in <code>ppocr_demo/src/det_process.cc</code>.</li>
+<li>For the recognition model, update the <code>RecPredictor::Preprocess</code> function in <code>ppocr_demo/src/rec_process.cc</code>.</li>
+</ul>
+</li>
+<li>
+<p>Updating Output Preprocessing</p>
+<ul>
+<li>For the text direction classifier model, update the <code>ClsPredictor::Postprocess</code> function in <code>ppocr_demo/src/cls_process.cc</code>.</li>
+<li>For the detection model, update the <code>DetPredictor::Postprocess</code> function in <code>ppocr_demo/src/det_process.cc</code>.</li>
+<li>For the recognition model, update the <code>RecPredictor::Postprocess</code> function in <code>ppocr_demo/src/rec_process.cc</code>.</li>
+</ul>
+</li>
+</ul>
 
 
 
@@ -3033,7 +3872,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 11, 2025 10:37:29 UTC">June 11, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 11, 2025 10:39:00 UTC">June 11, 2025</span>
   </span>
 
     
@@ -3043,7 +3882,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 11, 2025 10:37:29 UTC">June 11, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 11, 2025 10:39:00 UTC">June 11, 2025</span>
   </span>
 
     
