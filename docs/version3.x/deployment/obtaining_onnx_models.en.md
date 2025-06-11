@@ -6,7 +6,7 @@ First, install the Paddle2ONNX plugin for PaddleX using the following command vi
 
 ```bash
 # Windows users need to use the following command to install the dev version of paddlepaddle
-python -m pip install --pre paddlepaddle -i https://www.paddlepaddle.org.cn/packages/nightly/cpu/
+# python -m pip install --pre paddlepaddle -i https://www.paddlepaddle.org.cn/packages/nightly/cpu/
 
 paddlex --install paddle2onnx
 ```
