@@ -16,6 +16,7 @@
 # arguments from the pipeline class, to reduce boilerplate and improve
 # maintainability?
 
+import os
 import sys
 import warnings
 
@@ -109,6 +110,20 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 text_detection_model_name = det_model_name
                 text_recognition_model_name = rec_model_name
         else:
+            if (
+                text_detection_model_dir is not None
+                and text_detection_model_name is None
+            ):
+                text_detection_model_name = os.path.basename(text_detection_model_dir)
+
+            if (
+                text_recognition_model_dir is not None
+                and text_recognition_model_name is None
+            ):
+                text_recognition_model_name = os.path.basename(
+                    text_recognition_model_dir
+                )
+
             if lang is not None or ocr_version is not None:
                 warnings.warn(
                     "`lang` and `ocr_version` will be ignored when model names or model directories are not `None`.",
