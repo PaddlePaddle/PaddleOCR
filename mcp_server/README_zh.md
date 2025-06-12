@@ -55,13 +55,13 @@ pip install -e .
     -   获取 您的 `访问令牌`，[通过 https://aistudio.baidu.com/index/accessToken 获取](https://aistudio.baidu.com/index/accessToken)
 
 
-2.  **定位 MCP 配置文件**
+2.  **定位 MCP 配置文件** - 详情请参考[官方开始文档](https://modelcontextprotocol.io/quickstart/user)
     -   **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
     -   **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
     -   **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
-3.  **添加工具配置**
-    打开 `claude_desktop_config.json` 文件，参考 [5.1. AI Studio 星河社区服务配置](#51-ai-studio-星河社区服务配置) 章节选择适合您需求的配置模板，并将其内容复制到 `claude_desktop_config.json` 中。
+3.  **添加MCP服务器配置**
+    打开 `claude_desktop_config.json` 文件，参考 [5.1. AI Studio 星河社区服务配置](#51-ai-studio-星河社区服务配置), 复制其内容到 `claude_desktop_config.json` 中。
 
     **注意**: 请务必填入您自己的 AI Studio 星河社区服务信息。如果 `paddleocr_mcp` 命令不在系统 PATH 中，请将 `command` 设置为可执行文件的绝对路径。
 
@@ -95,15 +95,16 @@ pip install -e .
 -   **适用场景**: 数据隐私性好，无网络依赖。
 -   **准备**:
     1.  必须安装 *飞桨框架* 和 *PaddleOCR*。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
-    2.  请遵循 **[ PaddleOCR 官方快速开始文档](./PaddleOCR/docs/version3.x/installation.md)** 进行安装。
-    3.  参考 [配置示例](#52-本地-python-库配置) 进行配置。
+    2.  请遵循 **[PaddleOCR 官方安装文档](./PaddleOCR/docs/version3.x/installation.md)** 进行安装。
+    3.  参考 [配置示例](#52-本地-python-库配置) 配置 `claude_desktop_config.json` 文件。
+    4.  如您需要进行OCR参数调整或二次开发，请参考[PaddleOCR 官方文档](https://paddlepaddle.github.io/PaddleOCR/latest/) 
 
 #### 模式三：自托管服务 (`self_hosted`)
 此模式调用您自行部署的 PaddleOCR 推理服务。
 -   **适用场景**: 兼具性能与灵活性，适合生产环境。
 -   **准备**:
     1.  请参考 **[ PaddleOCR 服务化部署文档](https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/serving.html)** 完成服务的部署。
-    2.  参考 [配置示例](#53-自托管服务配置) 进行配置。
+    2.  参考 [配置示例](#53-自托管服务配置) 配置 `claude_desktop_config.json` 文件。
     3.  将您的服务地址填入 `PADDLEOCR_MCP_SERVER_URL` (例如: `"http://127.0.0.1:8000"`)。
 
 
@@ -174,8 +175,7 @@ pip install -e .
 
 **使用说明**：
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用默认配置
-- 如需自定义，请将路径替换为您的配置文件绝对路径
-- 如需自定义配置，请参考[PaddleOCR 与 PaddleX 配置说明 3.1章节](https://paddlepaddle.github.io/PaddleOCR/main/version3.x/paddleocr_and_paddlex.html?h=%E5%AF%BC%E5%87%BA#31)导出配置文件
+- 如需自定义，请将路径替换为您的配置文件绝对路径。如何导出配置文件请参考[PaddleOCR 与 PaddleX 配置说明 3.1章节](https://paddlepaddle.github.io/PaddleOCR/main/version3.x/paddleocr_and_paddlex.html?h=%E5%AF%BC%E5%87%BA#31)。
 
 ### 5.3. 自托管服务配置
 
