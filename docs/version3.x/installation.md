@@ -17,13 +17,19 @@ comments: true
 从 PyPI 安装最新版本 PaddleOCR 推理包：
 
 ```bash
+# 只希望使用基础的 OCR 功能
 python -m pip install paddleocr
+# 希望使用版面解析、信息抽取、多模态模型等全部功能
+# python -m pip install "paddleocr[all]"
 ```
 
 或者从源码安装（默认为开发分支）：
 
 ```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# 只希望使用基础的 OCR 功能
+python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# 希望使用版面解析、信息抽取、多模态模型等全部功能
+# python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
 
 ## 2.2 安装训练依赖

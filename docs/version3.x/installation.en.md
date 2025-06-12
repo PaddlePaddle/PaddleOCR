@@ -17,13 +17,19 @@ If you only want to use the inference capabilities of PaddleOCR, please refer to
 Install the latest version of the PaddleOCR inference package from PyPI:
 
 ```bash
+# If you only want to use the basic OCR functionality
 python -m pip install paddleocr
+# If you want to use all features including layout parsing, information extraction, multimodal models, etc.
+# python -m pip install "paddleocr[all]"
 ```
 
 Or install from source (default is the development branch):
 
 ```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you only want to use the basic OCR functionality
+python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you want to use all features including layout parsing, information extraction, multimodal models, etc.
+# python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
 
 ## 2.2 Install Training Dependencies

@@ -47,7 +47,7 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-        pip install -e .
+        pip install -e ".[all]"
     - name: Test with pytest
       run: |
         pytest --verbose tests/
