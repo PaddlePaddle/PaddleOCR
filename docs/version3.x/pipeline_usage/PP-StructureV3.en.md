@@ -1230,6 +1230,18 @@ Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no thre
 <td></td>
 </tr>
 <tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>Name of the wireless table orientation classification model. If not set, the default model will be used.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>Directory of the table orientation classification model. If not set, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>seal_text_detection_model_name</code></td>
 <td>Name of the seal text detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
@@ -1823,6 +1835,18 @@ The above Python script performs the following steps:
 <tr>
 <td><code>wireless_table_cells_detection_model_dir</code></td>
 <td>Directory path of the wireless table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>Name of the wireless table orientation classification model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>Directory of the table orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
