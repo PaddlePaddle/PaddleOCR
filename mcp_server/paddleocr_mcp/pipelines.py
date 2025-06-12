@@ -28,7 +28,8 @@ from urllib.parse import urlparse
 import httpx
 import magic
 import numpy as np
-from fastmcp import Context, FastMCP, Image
+from fastmcp import Context, FastMCP
+from mcp.types import ImageContent, TextContent
 from PIL import Image as PILImage
 from typing_extensions import Literal, Self, assert_never
 
@@ -83,23 +84,6 @@ def _infer_file_type_from_bytes(data: bytes) -> str:
     elif mime == "application/pdf":
         return "PDF"
     return "UNKNOWN"
-
-
-async def _download_images_from_markdown(
-    markdown_text: str, images_mapping: Dict[str, str], timeout: int = 30
-) -> List[Image]:
-    img_pattern = r'<img[^>]+src="([^"]+)"[^>]*>'
-    img_paths = re.findall(img_pattern, markdown_text)
-    if not img_paths:
-        return []
-    images = []
-    for img_path in img_paths:
-        img_data = images_mapping.get(img_path)
-        if img_data:
-            image_data = base64.b64decode(img_data)
-            image_obj = Image(data=image_data, format="jpeg")
-            images.append(image_obj)
-    return images
 
 
 class _EngineWrapper:
@@ -247,7 +231,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
     async def process(
         self, input_data: str, output_mode: OutputMode, ctx: Context, **kwargs: Any
-    ) -> Union[str, List[Dict]]:
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Process input data through the pipeline.
 
         Args:
@@ -365,9 +349,9 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
     def _handle_error(
         self, error_msg: str, output_mode: OutputMode
-    ) -> Union[str, List[Dict]]:
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         if output_mode == "detailed":
-            return [{"error": error_msg}]
+            return [TextContent(type="text", text=f"Error: {error_msg}")]
         return f"Error: {error_msg}"
 
     @abc.abstractmethod
@@ -420,7 +404,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
     @abc.abstractmethod
     def _format_output(
         self, result: Dict[str, Any], detailed: bool, ctx: Context
-    ) -> Union[str, List[Dict]]:
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Format output into simple or detailed format.
 
         Args:
@@ -450,7 +434,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
             input_data: str,
             output_mode: OutputMode,
             ctx: Context,
-        ) -> Union[str, List[Dict]]:
+        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
             """Extract text from images and PDFs.
 
             Args:
@@ -460,7 +444,11 @@ class OCRHandler(SimpleInferencePipelineHandler):
             return await self.process(input_data, output_mode, ctx)
 
     def _create_local_engine(self) -> Any:
-        return PaddleOCR(paddlex_config=self._pipeline_config, device=self._device)
+        return PaddleOCR(
+            paddlex_config=self._pipeline_config,
+            device=self._device,
+            enable_mkldnn=False,
+        )
 
     def _get_service_endpoint(self) -> str:
         return "ocr"
@@ -535,7 +523,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
 
     def _format_output(
         self, result: Dict, detailed: bool, ctx: Context
-    ) -> Union[str, List[Dict]]:
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         if not result["text"].strip():
             return (
                 "❌ No text detected"
@@ -565,14 +553,16 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             input_data: str,
             output_mode: OutputMode,
             ctx: Context,
-        ) -> Union[str, List[Dict]]:
+        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
             """Document layout analysis.
 
             Args:
                 input_data: File path, URL, or Base64 data.
-                output_mode: "simple" for markdown text, "detailed" for JSON with metadata.
+                output_mode: "simple" for markdown text, "detailed" for JSON with metadata + prunedResult.
 
-            Returns: Markdown text + images (if available) or structured JSON.
+            Returns:
+                - Simple: Markdown text + images (if available)
+                - Detailed: prunedResult/local detailed info + markdown text + images
             """
             return await self.process(input_data, output_mode, ctx)
 
@@ -583,19 +573,21 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         return "layout-parsing"
 
     def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
-        markdown_parts, pages = [], []
+        markdown_parts = []
+        detailed_results = []
 
-        for i, result in enumerate(local_result):
+        # TODO return images
+        for result in local_result:
             text = result.markdown["markdown_texts"]
             markdown_parts.append(text)
-            # TODO: Return images
-            pages.append({"page": i, "content": text})
+            detailed_results.append(result)
 
         return {
             # TODO: Page concatenation can be done better via `pipeline.concatenate_markdown_pages`
             "markdown": "\n".join(markdown_parts),
-            "pages": pages,
-            "images": [],
+            "pages": len(local_result),
+            "images_mapping": {},
+            "detailed_results": detailed_results,
         }
 
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
@@ -605,71 +597,112 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         if not layout_results:
             return {
                 "markdown": "",
-                "pages": [],
-                "images": [],
+                "pages": 0,
+                "images_mapping": {},
+                "detailed_results": [],
             }
 
-        markdown_parts, pages = [], []
+        # 简化：直接提取需要的信息
+        markdown_parts = []
         all_images_mapping = {}
+        detailed_results = []
 
-        for i, res in enumerate(layout_results):
-            markdown_data = res["markdown"]
-            text = markdown_data["text"]
-            markdown_parts.append(text)
-            images = markdown_data["images"]
+        for res in layout_results:
+            # 提取markdown文本
+            markdown_parts.append(res["markdown"]["text"])
+            # 提取图片
+            all_images_mapping.update(res["markdown"]["images"])
+            # 保存prunedResult用于L2详细信息
+            detailed_results.append(res["prunedResult"])
 
-            all_images_mapping.update(images)
-
-            page = {
-                "page": i,
-                "content": text,
-                "images": images,
-            }
-            pages.append(page)
-
-        full_markdown = "\n".join(markdown_parts)
-        downloaded_images = await _download_images_from_markdown(
-            full_markdown, all_images_mapping, self._timeout
-        )
         return {
-            "markdown": full_markdown,
-            "pages": pages,
-            "images": downloaded_images,
+            "markdown": "\n".join(markdown_parts),
+            "pages": len(layout_results),  # 简化为页数
+            "images_mapping": all_images_mapping,
+            "detailed_results": detailed_results,
         }
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
-        page_count = len(result["pages"])
+        page_count = result["pages"]  # 现在是数字而不是列表
         await ctx.info(f"Structure analysis completed: {page_count} pages")
 
     def _format_output(
         self, result: Dict, detailed: bool, ctx: Context
-    ) -> Union[str, List]:
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         if not result["markdown"].strip():
             return (
                 "❌ No document content detected"
                 if not detailed
                 else json.dumps({"error": "No content detected"}, ensure_ascii=False)
             )
-        images = result.get("images", [])
+
+        markdown_text = result["markdown"]
+        images_mapping = result.get("images_mapping", {})
 
         if detailed:
-            # L2: JSON text + images (same images as L1)
-            json_text = json.dumps(
-                {
-                    "markdown": result["markdown"],
-                    "pages": result["pages"],
-                    "image_count": len(images),
-                },
-                ensure_ascii=False,
-                indent=2,
+            # L2: 返回统一的详细结果 + markdown混合内容
+            content_list = []
+            if "detailed_results" in result and result["detailed_results"]:
+                for detailed_result in result["detailed_results"]:
+                    content_list.append(
+                        TextContent(
+                            type="text",
+                            text=json.dumps(
+                                detailed_result,
+                                ensure_ascii=False,
+                                indent=2,
+                                default=str,
+                            ),
+                        )
+                    )
+
+            # 添加markdown混合内容
+            content_list.extend(
+                self._parse_markdown_with_images(markdown_text, images_mapping)
             )
 
-            output_list = [json_text] + images
-            return output_list
+            return content_list
         else:
-            # L1: Markdown text + images
-            output_list = [result["markdown"]] + images
-            return output_list
+            # L1: 简化的混合内容格式，只包含markdown和图片
+            return self._parse_markdown_with_images(markdown_text, images_mapping)
+
+    def _parse_markdown_with_images(
+        self, markdown_text: str, images_mapping: Dict[str, str]
+    ) -> List[Union[TextContent, ImageContent]]:
+        """解析markdown文本，返回文字和图片的混合列表"""
+        if not images_mapping:
+            # 没有图片，直接返回文本
+            return [TextContent(type="text", text=markdown_text)]
+
+        content_list = []
+        img_pattern = r'<img[^>]+src="([^"]+)"[^>]*>'
+        last_pos = 0
+
+        for match in re.finditer(img_pattern, markdown_text):
+            # 添加图片前的文本
+            text_before = markdown_text[last_pos : match.start()]
+            if text_before.strip():
+                content_list.append(TextContent(type="text", text=text_before))
+
+            # 添加图片
+            img_src = match.group(1)
+            if img_src in images_mapping:
+                content_list.append(
+                    ImageContent(
+                        type="image",
+                        data=images_mapping[img_src],
+                        mimeType="image/jpeg",
+                    )
+                )
+
+            last_pos = match.end()
+
+        # 添加剩余文本
+        remaining_text = markdown_text[last_pos:]
+        if remaining_text.strip():
+            content_list.append(TextContent(type="text", text=remaining_text))
+
+        return content_list or [TextContent(type="text", text=markdown_text)]
 
 
 _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
