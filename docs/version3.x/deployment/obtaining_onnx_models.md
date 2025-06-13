@@ -5,6 +5,9 @@ PaddleOCR 提供了丰富的预训练模型，这些模型均采用飞桨的静�
 首先，执行如下命令，通过 PaddleX CLI 安装 PaddleX 的 Paddle2ONNX 插件：
 
 ```bash
+# Windows 用户需使用以下命令安装 paddlepaddle dev版本
+# python -m pip install --pre paddlepaddle -i https://www.paddlepaddle.org.cn/packages/nightly/cpu/
+
 paddlex --install paddle2onnx
 ```
 
