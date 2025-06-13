@@ -51,7 +51,7 @@ pip install paddleocr_mcp
     - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
     - 在左侧"更多内容"下的 "PaddleX 产线" 部分，[创建产线] - [OCR] - [通用 OCR] - [直接部署] - [文本识别模块，选择 PP-OCRv5_server_rec] - [开始部署]。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
-    - 获取您的 **访问令牌**，[通过 https://aistudio.baidu.com/index/accessToken 获取](https://aistudio.baidu.com/index/accessToken)。
+    - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
 
 2. **定位 MCP 配置文件** - 详情请参考 [MCP 官方文档](https://modelcontextprotocol.io/quickstart/user)。
     - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
