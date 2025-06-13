@@ -110,7 +110,7 @@ plugins:
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             获取onnx模型: Obtaining ONNX Models
-            端侧部署: Edge Deployment
+            端侧部署: On-Device Deployment
             服务化部署: Serving Deployment
             模块列表: Module List
             文档图像方向分类模块: Document Image Orientation Classification Module
