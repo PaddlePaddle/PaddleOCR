@@ -278,6 +278,7 @@ nav:
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
     - 基于Python或C++预测引擎推理: version3.x/deployment/python_and_cpp_infer.md
+    - MCP 服务器: version3.x/deployment/mcp_server.md
   - 模块列表: 
     - 模块概述: version3.x/module_usage/module_overview.md
     - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
