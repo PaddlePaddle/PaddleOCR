@@ -196,12 +196,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
 <td><code>str</code></td>
@@ -214,6 +208,14 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -231,6 +233,12 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 <td><code>limit_type</code></td>
 <td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
 <td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_side_limit</code></td>
+<td>Limit on the max length of the input image for detection.<code>int</code> Limit the longest side of the image for input detection model. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>

@@ -1062,12 +1062,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for optimizing model subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Computation precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
@@ -1078,6 +1072,14 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1422,12 +1424,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for optimizing model subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Computation precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
@@ -1438,6 +1434,14 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

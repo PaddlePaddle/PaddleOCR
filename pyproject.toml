@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "paddleocr"
 # After each version release, the version number needs to be incremented
 dynamic = ["version"]
-description = "Awesome OCR toolkit based on PaddlePaddle"
+description = "Awesome multilingual OCR and document parsing toolkits based on PaddlePaddle"
 authors = [
     {name = "PaddlePaddle", email = "Paddle-better@baidu.com"},
 ]

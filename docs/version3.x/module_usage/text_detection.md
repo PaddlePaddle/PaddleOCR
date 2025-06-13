@@ -197,12 +197,6 @@ for res in output:
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时，设置的最小子图大小。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
 <td><code>str</code></td>
@@ -215,6 +209,14 @@ for res in output:
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -232,6 +234,12 @@ for res in output:
 <td><code>limit_type</code></td>
 <td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为None, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
 <td><code>str</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_side_limit</code></td>
+<td>检测的图像边长最大值限制：<code>int</code> 限制输入检测模型的图片最长边，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
+<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
