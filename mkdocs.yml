@@ -156,7 +156,7 @@ plugins:
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
             服务化部署: Sever Deployment
-            端侧部署: Device-side Deployment
+            端侧部署: On-Device Deployment
             Android部署: Android Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
             云上飞桨部署工具: Paddle Cloud
