@@ -12,24 +12,28 @@
         <meta name="author" content="PaddleOCR PMC">
       
       
-        <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version2.x/ppstructure/infer_deploy/paddle_server.html">
+        <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/mcp_server.html">
       
       
+        <link rel="prev" href="python_and_cpp_infer.html">
       
       
-      <link rel="icon" href="../../../../version2.x/static/images/logo.jpg">
+        <link rel="next" href="../module_usage/module_overview.html">
+      
+      
+      <link rel="icon" href="../../../version2.x/static/images/logo.jpg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
-        <title>Paddle server - PaddleOCR Documentation</title>
+        <title>MCP 服务器 - PaddleOCR Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
   
@@ -116,7 +120,7 @@
     
       <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -142,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#service-deployment-based-on-paddlehub-serving" class="md-skip">
+        <a href="#paddleocr-mcp-server" class="md-skip">
           Skip to content
         </a>
       
@@ -157,12 +161,12 @@
             <div class="md-banner__inner md-grid md-typeset">
               
 You're not viewing the latest version.
-<a href="../../../../..">
+<a href="../../../..">
     <strong>Click here to go to latest.</strong>
 </a>
 
             </div>
-            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
           </aside>
         
       </div>
@@ -174,9 +178,9 @@ You're not viewing the latest version.
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../index.html" title="PaddleOCR Documentation" class="md-header__button md-logo" aria-label="PaddleOCR Documentation" data-md-component="logo">
+    <a href="../../index.html" title="PaddleOCR Documentation" class="md-header__button md-logo" aria-label="PaddleOCR Documentation" data-md-component="logo">
       
-  <img src="../../../../version2.x/static/images/logo.jpg" alt="logo">
+  <img src="../../../version2.x/static/images/logo.jpg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -193,7 +197,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Paddle server
+              MCP 服务器
             
           </span>
         </div>
@@ -240,13 +244,13 @@ You're not viewing the latest version.
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="../../../../version2.x/ppstructure/infer_deploy/paddle_server.html" hreflang="zh" class="md-select__link">
+            <a href="../../../version3.x/deployment/mcp_server.html" hreflang="zh" class="md-select__link">
               简体中文
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="paddle_server.html" hreflang="en" class="md-select__link">
+            <a href="mcp_server.html" hreflang="en" class="md-select__link">
               English
             </a>
           </li>
@@ -331,7 +335,7 @@ You're not viewing the latest version.
   
   
     <li class="md-tabs__item">
-      <a href="../../../index.html" class="md-tabs__link">
+      <a href="../../index.html" class="md-tabs__link">
         
   
   
@@ -350,7 +354,7 @@ You're not viewing the latest version.
   
   
     <li class="md-tabs__item">
-      <a href="../../../quick_start.html" class="md-tabs__link">
+      <a href="../../quick_start.html" class="md-tabs__link">
         
   
   
@@ -371,7 +375,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/pipeline_usage/OCR.html" class="md-tabs__link">
+        <a href="../pipeline_usage/OCR.html" class="md-tabs__link">
           
   
   
@@ -393,7 +397,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/pipeline_usage/PP-StructureV3.html" class="md-tabs__link">
+        <a href="../pipeline_usage/PP-StructureV3.html" class="md-tabs__link">
           
   
   
@@ -415,7 +419,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/pipeline_usage/PP-ChatOCRv4.html" class="md-tabs__link">
+        <a href="../pipeline_usage/PP-ChatOCRv4.html" class="md-tabs__link">
           
   
   
@@ -433,11 +437,13 @@ You're not viewing the latest version.
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../../version3.x/deployment/high_performance_inference.html" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="high_performance_inference.html" class="md-tabs__link">
           
   
   
@@ -459,7 +465,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/module_usage/module_overview.html" class="md-tabs__link">
+        <a href="../module_usage/module_overview.html" class="md-tabs__link">
           
   
   
@@ -481,7 +487,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/pipeline_usage/pipeline_overview.html" class="md-tabs__link">
+        <a href="../pipeline_usage/pipeline_overview.html" class="md-tabs__link">
           
   
   
@@ -503,7 +509,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/other_devices_support/multi_devices_use_guide.html" class="md-tabs__link">
+        <a href="../other_devices_support/multi_devices_use_guide.html" class="md-tabs__link">
           
   
   
@@ -525,7 +531,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/paddleocr_and_paddlex.html" class="md-tabs__link">
+        <a href="../paddleocr_and_paddlex.html" class="md-tabs__link">
           
   
   
@@ -547,7 +553,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../version3.x/paddlex/overview.html" class="md-tabs__link">
+        <a href="../paddlex/overview.html" class="md-tabs__link">
           
   
   
@@ -569,7 +575,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../data_anno_synth/overview.html" class="md-tabs__link">
+        <a href="../../data_anno_synth/overview.html" class="md-tabs__link">
           
   
   
@@ -589,7 +595,7 @@ You're not viewing the latest version.
   
   
     <li class="md-tabs__item">
-      <a href="../../../update/update.html" class="md-tabs__link">
+      <a href="../../update/update.html" class="md-tabs__link">
         
   
   
@@ -610,7 +616,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../legacy/index.html" class="md-tabs__link">
+        <a href="../../version2.x/legacy/index.html" class="md-tabs__link">
           
   
   
@@ -630,7 +636,7 @@ You're not viewing the latest version.
   
   
     <li class="md-tabs__item">
-      <a href="../../../FAQ.html" class="md-tabs__link">
+      <a href="../../FAQ.html" class="md-tabs__link">
         
   
   
@@ -651,7 +657,7 @@ You're not viewing the latest version.
     
     
       <li class="md-tabs__item">
-        <a href="../../../community/community_contribution.html" class="md-tabs__link">
+        <a href="../../community/community_contribution.html" class="md-tabs__link">
           
   
   
@@ -693,9 +699,9 @@ You're not viewing the latest version.
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../index.html" title="PaddleOCR Documentation" class="md-nav__button md-logo" aria-label="PaddleOCR Documentation" data-md-component="logo">
+    <a href="../../index.html" title="PaddleOCR Documentation" class="md-nav__button md-logo" aria-label="PaddleOCR Documentation" data-md-component="logo">
       
-  <img src="../../../../version2.x/static/images/logo.jpg" alt="logo">
+  <img src="../../../version2.x/static/images/logo.jpg" alt="logo">
 
     </a>
     PaddleOCR Documentation
@@ -722,7 +728,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../index.html" class="md-nav__link">
+      <a href="../../index.html" class="md-nav__link">
         
   
   
@@ -744,7 +750,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../quick_start.html" class="md-nav__link">
+      <a href="../../quick_start.html" class="md-nav__link">
         
   
   
@@ -815,7 +821,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/OCR.html" class="md-nav__link">
+      <a href="../pipeline_usage/OCR.html" class="md-nav__link">
         
   
   
@@ -838,7 +844,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/algorithm/PP-OCRv5/PP-OCRv5.html" class="md-nav__link">
+      <a href="../algorithm/PP-OCRv5/PP-OCRv5.html" class="md-nav__link">
         
   
   
@@ -917,7 +923,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/PP-StructureV3.html" class="md-nav__link">
+      <a href="../pipeline_usage/PP-StructureV3.html" class="md-nav__link">
         
   
   
@@ -940,7 +946,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/algorithm/PP-StructureV3/PP-StructureV3.html" class="md-nav__link">
+      <a href="../algorithm/PP-StructureV3/PP-StructureV3.html" class="md-nav__link">
         
   
   
@@ -1019,7 +1025,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/PP-ChatOCRv4.html" class="md-nav__link">
+      <a href="../pipeline_usage/PP-ChatOCRv4.html" class="md-nav__link">
         
   
   
@@ -1042,7 +1048,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.html" class="md-nav__link">
+      <a href="../algorithm/PP-ChatOCRv4/PP-ChatOCRv4.html" class="md-nav__link">
         
   
   
@@ -1069,8 +1075,10 @@ You're not viewing the latest version.
       
   
   
+    
   
   
+  
     
     
       
@@ -1090,19 +1098,20 @@ You're not viewing the latest version.
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -1115,7 +1124,7 @@ You're not viewing the latest version.
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Model Deploy
@@ -1129,7 +1138,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/high_performance_inference.html" class="md-nav__link">
+      <a href="high_performance_inference.html" class="md-nav__link">
         
   
   
@@ -1152,7 +1161,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/obtaining_onnx_models.html" class="md-nav__link">
+      <a href="obtaining_onnx_models.html" class="md-nav__link">
         
   
   
@@ -1175,7 +1184,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/on_device_deployment.html" class="md-nav__link">
+      <a href="on_device_deployment.html" class="md-nav__link">
         
   
   
@@ -1198,7 +1207,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/serving.html" class="md-nav__link">
+      <a href="serving.html" class="md-nav__link">
         
   
   
@@ -1221,7 +1230,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/python_and_cpp_infer.html" class="md-nav__link">
+      <a href="python_and_cpp_infer.html" class="md-nav__link">
         
   
   
@@ -1241,10 +1250,32 @@ You're not viewing the latest version.
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../../version3.x/deployment/mcp_server.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    MCP 服务器
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="mcp_server.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1255,6 +1286,179 @@ You're not viewing the latest version.
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Quick Start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-mcp-host-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1. MCP Host Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-working-modes-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2. Working Modes Explained
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.2. Working Modes Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-1-ai-studio-service-aistudio" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mode 1: AI Studio Service (aistudio)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-2-local-python-library-local" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mode 2: Local Python Library (local)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-3-self-hosted-service-self_hosted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mode 3: Self-hosted Service (self_hosted)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-parameter-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Parameter Reference
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-configuration-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Configuration Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Configuration Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-ai-studio-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 AI Studio Service Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-local-python-library-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Local Python Library Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-self-hosted-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Self-hosted Service Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1345,7 +1549,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/module_overview.html" class="md-nav__link">
+      <a href="../module_usage/module_overview.html" class="md-nav__link">
         
   
   
@@ -1368,7 +1572,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/doc_img_orientation_classification.html" class="md-nav__link">
+      <a href="../module_usage/doc_img_orientation_classification.html" class="md-nav__link">
         
   
   
@@ -1391,7 +1595,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/doc_vlm.html" class="md-nav__link">
+      <a href="../module_usage/doc_vlm.html" class="md-nav__link">
         
   
   
@@ -1414,7 +1618,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/formula_recognition.html" class="md-nav__link">
+      <a href="../module_usage/formula_recognition.html" class="md-nav__link">
         
   
   
@@ -1437,7 +1641,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/layout_detection.html" class="md-nav__link">
+      <a href="../module_usage/layout_detection.html" class="md-nav__link">
         
   
   
@@ -1460,7 +1664,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/seal_text_detection.html" class="md-nav__link">
+      <a href="../module_usage/seal_text_detection.html" class="md-nav__link">
         
   
   
@@ -1483,7 +1687,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/table_cells_detection.html" class="md-nav__link">
+      <a href="../module_usage/table_cells_detection.html" class="md-nav__link">
         
   
   
@@ -1506,7 +1710,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/table_classification.html" class="md-nav__link">
+      <a href="../module_usage/table_classification.html" class="md-nav__link">
         
   
   
@@ -1529,7 +1733,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/table_structure_recognition.html" class="md-nav__link">
+      <a href="../module_usage/table_structure_recognition.html" class="md-nav__link">
         
   
   
@@ -1552,7 +1756,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/text_detection.html" class="md-nav__link">
+      <a href="../module_usage/text_detection.html" class="md-nav__link">
         
   
   
@@ -1575,7 +1779,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/text_image_unwarping.html" class="md-nav__link">
+      <a href="../module_usage/text_image_unwarping.html" class="md-nav__link">
         
   
   
@@ -1598,7 +1802,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/textline_orientation_classification.html" class="md-nav__link">
+      <a href="../module_usage/textline_orientation_classification.html" class="md-nav__link">
         
   
   
@@ -1621,7 +1825,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/module_usage/text_recognition.html" class="md-nav__link">
+      <a href="../module_usage/text_recognition.html" class="md-nav__link">
         
   
   
@@ -1708,7 +1912,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/pipeline_overview.html" class="md-nav__link">
+      <a href="../pipeline_usage/pipeline_overview.html" class="md-nav__link">
         
   
   
@@ -1731,7 +1935,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/formula_recognition.html" class="md-nav__link">
+      <a href="../pipeline_usage/formula_recognition.html" class="md-nav__link">
         
   
   
@@ -1754,7 +1958,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/doc_preprocessor.html" class="md-nav__link">
+      <a href="../pipeline_usage/doc_preprocessor.html" class="md-nav__link">
         
   
   
@@ -1777,7 +1981,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/doc_understanding.html" class="md-nav__link">
+      <a href="../pipeline_usage/doc_understanding.html" class="md-nav__link">
         
   
   
@@ -1800,7 +2004,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/seal_recognition.html" class="md-nav__link">
+      <a href="../pipeline_usage/seal_recognition.html" class="md-nav__link">
         
   
   
@@ -1823,7 +2027,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/table_recognition_v2.html" class="md-nav__link">
+      <a href="../pipeline_usage/table_recognition_v2.html" class="md-nav__link">
         
   
   
@@ -1904,7 +2108,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/other_devices_support/multi_devices_use_guide.html" class="md-nav__link">
+      <a href="../other_devices_support/multi_devices_use_guide.html" class="md-nav__link">
         
   
   
@@ -1927,7 +2131,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/other_devices_support/paddlepaddle_install_NPU.html" class="md-nav__link">
+      <a href="../other_devices_support/paddlepaddle_install_NPU.html" class="md-nav__link">
         
   
   
@@ -1950,7 +2154,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/other_devices_support/paddlepaddle_install_XPU.html" class="md-nav__link">
+      <a href="../other_devices_support/paddlepaddle_install_XPU.html" class="md-nav__link">
         
   
   
@@ -2033,7 +2237,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/paddleocr_and_paddlex.html" class="md-nav__link">
+      <a href="../paddleocr_and_paddlex.html" class="md-nav__link">
         
   
   
@@ -2056,7 +2260,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../update/upgrade_notes.html" class="md-nav__link">
+      <a href="../../update/upgrade_notes.html" class="md-nav__link">
         
   
   
@@ -2079,7 +2283,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/logging.html" class="md-nav__link">
+      <a href="../logging.html" class="md-nav__link">
         
   
   
@@ -2102,7 +2306,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/pipeline_usage/instructions/parallel_inference.html" class="md-nav__link">
+      <a href="../pipeline_usage/instructions/parallel_inference.html" class="md-nav__link">
         
   
   
@@ -2181,7 +2385,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/paddlex/overview.html" class="md-nav__link">
+      <a href="../paddlex/overview.html" class="md-nav__link">
         
   
   
@@ -2204,7 +2408,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../version3.x/paddlex/quick_start.html" class="md-nav__link">
+      <a href="../paddlex/quick_start.html" class="md-nav__link">
         
   
   
@@ -2297,7 +2501,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../data_anno_synth/overview.html" class="md-nav__link">
+      <a href="../../data_anno_synth/overview.html" class="md-nav__link">
         
   
   
@@ -2320,7 +2524,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../data_anno_synth/data_annotation.html" class="md-nav__link">
+      <a href="../../data_anno_synth/data_annotation.html" class="md-nav__link">
         
   
   
@@ -2343,7 +2547,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../data_anno_synth/data_synthesis.html" class="md-nav__link">
+      <a href="../../data_anno_synth/data_synthesis.html" class="md-nav__link">
         
   
   
@@ -2366,7 +2570,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/datasets.html" class="md-nav__link">
+      <a href="../../datasets/datasets.html" class="md-nav__link">
         
   
   
@@ -2389,7 +2593,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/handwritten_datasets.html" class="md-nav__link">
+      <a href="../../datasets/handwritten_datasets.html" class="md-nav__link">
         
   
   
@@ -2412,7 +2616,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/vertical_and_multilingual_datasets.html" class="md-nav__link">
+      <a href="../../datasets/vertical_and_multilingual_datasets.html" class="md-nav__link">
         
   
   
@@ -2435,7 +2639,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/layout_datasets.html" class="md-nav__link">
+      <a href="../../datasets/layout_datasets.html" class="md-nav__link">
         
   
   
@@ -2458,7 +2662,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/table_datasets.html" class="md-nav__link">
+      <a href="../../datasets/table_datasets.html" class="md-nav__link">
         
   
   
@@ -2481,7 +2685,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../datasets/kie_datasets.html" class="md-nav__link">
+      <a href="../../datasets/kie_datasets.html" class="md-nav__link">
         
   
   
@@ -2511,7 +2715,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../update/update.html" class="md-nav__link">
+      <a href="../../update/update.html" class="md-nav__link">
         
   
   
@@ -2576,7 +2780,7 @@ You're not viewing the latest version.
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../legacy/index.html" class="md-nav__link ">
+            <a href="../../version2.x/legacy/index.html" class="md-nav__link ">
               
   
   
@@ -2611,7 +2815,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/model_list_2.x.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/model_list_2.x.html" class="md-nav__link">
         
   
   
@@ -2634,7 +2838,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/python_infer.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/python_infer.html" class="md-nav__link">
         
   
   
@@ -2657,7 +2861,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/cpp_infer.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/cpp_infer.html" class="md-nav__link">
         
   
   
@@ -2680,7 +2884,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/windows_vs2019_build.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/windows_vs2019_build.html" class="md-nav__link">
         
   
   
@@ -2703,7 +2907,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/paddle_server.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/paddle_server.html" class="md-nav__link">
         
   
   
@@ -2726,7 +2930,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/android_demo.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/android_demo.html" class="md-nav__link">
         
   
   
@@ -2749,7 +2953,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/lite.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/lite.html" class="md-nav__link">
         
   
   
@@ -2772,7 +2976,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/paddle2onnx.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/paddle2onnx.html" class="md-nav__link">
         
   
   
@@ -2795,7 +2999,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/paddle_cloud.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/paddle_cloud.html" class="md-nav__link">
         
   
   
@@ -2818,7 +3022,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../legacy/benchmark.html" class="md-nav__link">
+      <a href="../../version2.x/legacy/benchmark.html" class="md-nav__link">
         
   
   
@@ -2848,7 +3052,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../FAQ.html" class="md-nav__link">
+      <a href="../../FAQ.html" class="md-nav__link">
         
   
   
@@ -2919,7 +3123,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../community/community_contribution.html" class="md-nav__link">
+      <a href="../../community/community_contribution.html" class="md-nav__link">
         
   
   
@@ -2942,7 +3146,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../../community/code_and_doc.html" class="md-nav__link">
+      <a href="../../community/code_and_doc.html" class="md-nav__link">
         
   
   
@@ -2992,74 +3196,92 @@ You're not viewing the latest version.
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-update" class="md-nav__link">
+  <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Update
+      Key Features
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-quick-start-service" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Quick start service
+      Table of Contents
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Quick start service">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Quick Start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Configuration">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21-install-paddlehub" class="md-nav__link">
+  <a href="#31-mcp-host-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      2.1 Install PaddleHub
+      3.1. MCP Host Configuration
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22-download-inference-model" class="md-nav__link">
+  <a href="#32-working-modes-explained" class="md-nav__link">
     <span class="md-ellipsis">
-      2.2 Download inference model
+      3.2. Working Modes Explained
     </span>
   </a>
   
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#23-install-service-module" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.3 Install Service Module
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#24-start-service" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.4 Start service
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.4 Start service">
+    <nav class="md-nav" aria-label="3.2. Working Modes Explained">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#241-start-with-command-line-parameters-cpu-only" class="md-nav__link">
+  <a href="#mode-1-ai-studio-service-aistudio" class="md-nav__link">
     <span class="md-ellipsis">
-      2.4.1 Start with command line parameters (CPU only)
+      Mode 1: AI Studio Service (aistudio)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#242-start-with-configuration-filecpu-and-gpu" class="md-nav__link">
+  <a href="#mode-2-local-python-library-local" class="md-nav__link">
     <span class="md-ellipsis">
-      2.4.2 Start with configuration file（CPU and GPU）
+      Mode 2: Local Python Library (local)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-3-self-hosted-service-self_hosted" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mode 3: Self-hosted Service (self_hosted)
     </span>
   </a>
   
@@ -3076,29 +3298,53 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-send-prediction-requests" class="md-nav__link">
+  <a href="#4-parameter-reference" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Send prediction requests
+      4. Parameter Reference
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-returned-result-format" class="md-nav__link">
+  <a href="#5-configuration-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Returned result format
+      5. Configuration Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Configuration Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-ai-studio-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 AI Studio Service Configuration
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#5-user-defined-service-module-modification" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#52-local-python-library-configuration" class="md-nav__link">
     <span class="md-ellipsis">
-      5. User-defined service module modification
+      5.2 Local Python Library Configuration
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-self-hosted-service-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 Self-hosted Service Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -3118,7 +3364,7 @@ You're not viewing the latest version.
 
 
   
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version2.x/ppstructure/infer_deploy/paddle_server.en.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/deployment/mcp_server.en.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -3127,425 +3373,275 @@ You're not viewing the latest version.
     
       
     
-    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version2.x/ppstructure/infer_deploy/paddle_server.en.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/deployment/mcp_server.en.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
     </a>
   
 
 
-<p>PaddleOCR provides 2 service deployment methods:</p>
+<h1 id="paddleocr-mcp-server">PaddleOCR MCP Server<a class="headerlink" href="#paddleocr-mcp-server" title="Permanent link">&para;</a></h1>
+<p><a href="https://github.com/PaddlePaddle/PaddleOCR"><img alt="PaddleOCR" src="https://img.shields.io/badge/OCR-PaddleOCR-orange" /></a>
+<a href="https://gofastmcp.com"><img alt="FastMCP" src="https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue" /></a></p>
+<p>This project provides a lightweight <a href="https://modelcontextprotocol.io/introduction">Model Context Protocol (MCP)</a> server designed to integrate the powerful capabilities of PaddleOCR into a compatible MCP Host.</p>
+<h3 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Based on <strong>PaddleHub Serving</strong>: Code path is <code>./deploy/hubserving</code>. Please follow this tutorial.</li>
-<li>Based on <strong>PaddleServing</strong>: Code path is <code>./deploy/pdserving</code>. Please refer to the <a href="../../ppocr/infer_deploy/paddle_server.en.md">tutorial</a> for usage.</li>
+<li><strong>Currently Supported Pipelines</strong><ul>
+<li><strong>OCR</strong>: Performs text detection and recognition on images and PDF files.</li>
+<li><strong>PP-StructureV3</strong>: Recognizes and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from an image or PDF file, converting the input into a Markdown document.</li>
 </ul>
-<h1 id="service-deployment-based-on-paddlehub-serving">Service deployment based on PaddleHub Serving<a class="headerlink" href="#service-deployment-based-on-paddlehub-serving" title="Permanent link">&para;</a></h1>
-<p>The hubserving service deployment directory includes seven service packages: text detection, text angle class, text recognition, text detection+text angle class+text recognition three-stage series connection, layout analysis, table recognition, and PP-Structure. Please select the corresponding service package to install and start the service according to your needs. The directory is as follows:</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a>deploy/hubserving/
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a>  └─  ocr_det     text detection module service package
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3"></a>  └─  ocr_cls     text angle class module service package
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a>  └─  ocr_rec     text recognition module service package
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a>  └─  ocr_system  text detection+text angle class+text recognition three-stage series connection service package
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a>  └─  structure_layout  layout analysis service package
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a>  └─  structure_table  table recognition service package
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a>  └─  structure_system  PP-Structure service package
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9"></a>  └─  kie_ser  KIE(SER) service package
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10"></a>  └─  kie_ser_re  KIE(SER+RE) service package
-</span></code></pre></div></td></tr></table></div>
-<p>Each service pack contains 3 files. Take the 2-stage series connection service package as an example, the directory is as follows:</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
-<span class="normal"><a href="#__codelineno-1-2">2</a></span>
-<span class="normal"><a href="#__codelineno-1-3">3</a></span>
-<span class="normal"><a href="#__codelineno-1-4">4</a></span>
-<span class="normal"><a href="#__codelineno-1-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a>deploy/hubserving/ocr_system/
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>  └─  __init__.py    Empty file, required
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>  └─  config.json    Configuration file, optional, passed in as a parameter when using configuration to start the service
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>  └─  module.py      Main module file, required, contains the complete logic of the service
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>  └─  params.py      Parameter file, required, including parameters such as model path, pre and post-processing parameters
-</span></code></pre></div></td></tr></table></div>
-<h2 id="1-update">1. Update<a class="headerlink" href="#1-update" title="Permanent link">&para;</a></h2>
+</li>
+<li><strong>Supports the following working modes</strong>:<ul>
+<li><strong>Local</strong>: Runs the PaddleOCR pipeline directly on your machine using the installed Python library.</li>
+<li><strong>AI Studio</strong>: Calls cloud services provided by the Paddle AI Studio community.</li>
+<li><strong>Self-hosted</strong>: Calls a PaddleOCR service that you deploy yourself (serving).</li>
+</ul>
+</li>
+</ul>
+<h3 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h3>
 <ul>
-<li>2022.10.09 add KIE services.</li>
-<li>2022.08.23 add layout analysis services.</li>
-<li>2022.03.30 add PP-Structure and table recognition services.</li>
-<li>2022.05.05 add PP-OCRv3 text detection and recognition services.</li>
+<li><a href="#1-installation">1. Installation</a></li>
+<li><a href="#2-quick-start">2. Quick Start</a></li>
+<li><a href="#3-configuration">3. Configuration</a></li>
+<li><a href="#31-mcp-host-configuration">3.1. MCP Host Configuration</a></li>
+<li><a href="#32-working-modes-explained">3.2. Working Modes Explained</a><ul>
+<li><a href="#mode-1-ai-studio-service-aistudio">Mode 1: AI Studio Service (<code>aistudio</code>)</a></li>
+<li><a href="#mode-2-local-python-library-local">Mode 2: Local Python Library (<code>local</code>)</a></li>
+<li><a href="#mode-3-self-hosted-service-self_hosted">Mode 3: Self-hosted Service (<code>self_hosted</code>)</a></li>
 </ul>
-<h2 id="2-quick-start-service">2. Quick start service<a class="headerlink" href="#2-quick-start-service" title="Permanent link">&para;</a></h2>
-<p>The following steps take the 2-stage series service as an example. If only the detection service or recognition service is needed, replace the corresponding file path.</p>
-<h3 id="21-install-paddlehub">2.1 Install PaddleHub<a class="headerlink" href="#21-install-paddlehub" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a>pip3<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlehub</span><span class="o">==</span><span class="m">2</span>.1.0<span class="w"> </span>--upgrade
-</span></code></pre></div></td></tr></table></div>
-<h3 id="22-download-inference-model">2.2 Download inference model<a class="headerlink" href="#22-download-inference-model" title="Permanent link">&para;</a></h3>
-<p>Before installing the service module, you need to prepare the inference model and put it in the correct path. By default, the PP-OCRv3 models are used, and the default model path is:</p>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>Path</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>text detection model</td>
-<td>./inference/PP-OCRv3_mobile_det_infer/</td>
-</tr>
-<tr>
-<td>text recognition model</td>
-<td>./inference/PP-OCRv3_mobile_rec_infer/</td>
-</tr>
-<tr>
-<td>text angle classifier</td>
-<td>./inference/ch_ppocr_mobile_v2.0_cls_infer/</td>
-</tr>
-<tr>
-<td>layout parse model</td>
-<td>./inference/picodet_lcnet_x1_0_fgd_layout_infer/</td>
-</tr>
-<tr>
-<td>tanle recognition</td>
-<td>./inference/ch_ppstructure_mobile_v2.0_SLANet_infer/</td>
-</tr>
-<tr>
-<td>KIE(SER)</td>
-<td>./inference/ser_vi_layoutxlm_xfund_infer/</td>
-</tr>
-<tr>
-<td>KIE(SER+RE)</td>
-<td>./inference/re_vi_layoutxlm_xfund_infer/</td>
-</tr>
-</tbody>
-</table>
-<p><strong>The model path can be found and modified in <code>params.py</code>.</strong>
-More models provided by PaddleOCR can be obtained from the <a href="../../ppocr/model_list.html">model library</a>. You can also use models trained by yourself.</p>
-<h3 id="23-install-service-module">2.3 Install Service Module<a class="headerlink" href="#23-install-service-module" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.</p>
-<ul>
-<li>On the Linux platform(replace <code>/</code> with <code>\</code> if using Windows), the examples are as the following table:</li>
+</li>
+<li><a href="#4-parameter-reference">4. Parameter Reference</a></li>
+<li><a href="#5-configuration-examples">5. Configuration Examples</a></li>
+<li><a href="#51-ai-studio-service-configuration">5.1 AI Studio Service Configuration</a></li>
+<li><a href="#52-local-python-library-configuration">5.2 Local Python Library Configuration</a></li>
+<li><a href="#53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration</a></li>
 </ul>
-<p>| Service model | Command |
-| text detection | <code>hub install deploy/hubserving/ocr_det</code> |
-| text angle class: | <code>hub install deploy/hubserving/ocr_cls</code> |
-| text recognition: | <code>hub install deploy/hubserving/ocr_rec</code> |
-| 2-stage series: | <code>hub install deploy/hubserving/ocr_system</code> |
-| table recognition | <code>hub install deploy/hubserving/structure_table</code> |
-| PP-Structure | <code>hub install deploy/hubserving/structure_system</code> |
-| KIE(SER) | <code>hub install deploy/hubserving/kie_ser</code> |
-| KIE(SER+RE) | <code>hub install deploy/hubserving/kie_ser_re</code> |</p>
-<h3 id="24-start-service">2.4 Start service<a class="headerlink" href="#24-start-service" title="Permanent link">&para;</a></h3>
-<h4 id="241-start-with-command-line-parameters-cpu-only">2.4.1 Start with command line parameters (CPU only)<a class="headerlink" href="#241-start-with-command-line-parameters-cpu-only" title="Permanent link">&para;</a></h4>
-<p><strong>start command:</strong></p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
-<span class="normal"><a href="#__codelineno-3-2">2</a></span>
-<span class="normal"><a href="#__codelineno-3-3">3</a></span>
-<span class="normal"><a href="#__codelineno-3-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a>hub<span class="w"> </span>serving<span class="w"> </span>start<span class="w"> </span>--modules<span class="w"> </span><span class="nv">Module1</span><span class="o">==</span>Version1,<span class="w"> </span><span class="nv">Module2</span><span class="o">==</span>Version2,<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">                  </span>--port<span class="w"> </span><span class="m">8866</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">                  </span>--use_multiprocess<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">                  </span>--workers<span class="w"> </span><span class="se">\</span>
-</span></code></pre></div></td></tr></table></div>
-<p><strong>Parameters:</strong>
-|parameters|usage|
-|---|---|
-|<code>--modules</code>/<code>-m</code>|PaddleHub Serving pre-installed model, listed in the form of multiple Module==Version key-value pairs<br><strong>When Version is not specified, the latest version is selected by default</strong>|
-|<code>--port</code>/<code>-p</code>|Service port, default is 8866|
-|<code>--use_multiprocess</code>|Enable concurrent mode, by default using the single-process mode, this mode is recommended for multi-core CPU machines<br><strong>Windows operating system only supports single-process mode</strong>|
-|<code>--workers</code>|The number of concurrent tasks specified in concurrent mode, the default is <code>2*cpu_count-1</code>, where <code>cpu_count</code> is the number of CPU cores|</p>
-<p>For example, start the 2-stage series service:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a>hub<span class="w"> </span>serving<span class="w"> </span>start<span class="w"> </span>-m<span class="w"> </span>ocr_system
-</span></code></pre></div></td></tr></table></div>
-<p>This completes the deployment of a service API, using the default port number 8866.</p>
-<h4 id="242-start-with-configuration-filecpu-and-gpu">2.4.2 Start with configuration file（CPU and GPU）<a class="headerlink" href="#242-start-with-configuration-filecpu-and-gpu" title="Permanent link">&para;</a></h4>
-<p><strong>start command:</strong></p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a>hub<span class="w"> </span>serving<span class="w"> </span>start<span class="w"> </span>--config/-c<span class="w"> </span>config.json
-</span></code></pre></div></td></tr></table></div>
-<p>In which the format of <code>config.json</code> is as follows:</p>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nt">&quot;modules_info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="nt">&quot;ocr_system&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">            </span><span class="nt">&quot;init_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">                </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">                </span><span class="nt">&quot;use_gpu&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">            </span><span class="p">},</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">            </span><span class="nt">&quot;predict_args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">            </span><span class="p">}</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">},</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8868</span><span class="p">,</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="nt">&quot;use_multiprocess&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">&quot;workers&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="p">}</span>
+<h2 id="1-installation">1. Installation<a class="headerlink" href="#1-installation" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install the wheel</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Or, install from source</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># git clone https://github.com/PaddlePaddle/PaddleOCR.git</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># pip install -e mcp_server</span>
 </span></code></pre></div>
+<p>Some <a href="#32-working-modes-explained">working modes</a> may require additional dependencies.</p>
+<h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
+<p>This section guides you through a quick setup using <strong>Claude Desktop</strong> as the MCP Host and the <strong>AI Studio</strong> mode. This mode is recommended for new users as it does not require complex local dependencies. Please refer to <a href="#3-configuration">3. Configuration</a> for other working modes and more configuration options.</p>
+<ol>
+<li>
+<p><strong>Prepare the AI Studio Service</strong></p>
 <ul>
-<li>The configurable parameters in <code>init_args</code> are consistent with the <code>_initialize</code> function interface in <code>module.py</code>.</li>
+<li>Visit the <a href="https://aistudio.baidu.com/pipeline/mine">Paddle AI Studio community</a> and log in.</li>
+<li>In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].</li>
+<li>Once deployed, obtain your <strong>Service Base URL</strong> (e.g., <code>https://xxxxxx.aistudio-hub.baidu.com</code>).</li>
+<li>Get your <strong>Access Token</strong> from <a href="https://aistudio.baidu.com/index/accessToken">this page</a>.</li>
 </ul>
-<p><strong>When <code>use_gpu</code> is <code>true</code>, it means that the GPU is used to start the service</strong>.
-- The configurable parameters in <code>predict_args</code> are consistent with the <code>predict</code> function interface in <code>module.py</code>.</p>
-<p><strong>Note:</strong>
-  - When using the configuration file to start the service, other parameters will be ignored.
-  - If you use GPU prediction (that is, <code>use_gpu</code> is set to <code>true</code>), you need to set the environment variable CUDA_VISIBLE_DEVICES before starting the service, such as:</p>
-<div class="language-text highlight"><pre><span></span><code>```bash linenums=&quot;1&quot;
-export CUDA_VISIBLE_DEVICES=0
-```
-</code></pre></div>
+</li>
+<li>
+<p><strong>Locate the MCP Configuration File</strong> - For details, refer to the <a href="https://modelcontextprotocol.io/quickstart/user">Official MCP Documentation</a>.</p>
 <ul>
-<li><strong><code>use_gpu</code> and <code>use_multiprocess</code> cannot be <code>true</code> at the same time.</strong></li>
+<li><strong>macOS</strong>: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+<li><strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code></li>
+<li><strong>Linux</strong>: <code>~/.config/Claude/claude_desktop_config.json</code></li>
 </ul>
-<p>For example, use GPU card No. 3 to start the 2-stage series service:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
-<span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">3</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a>hub<span class="w"> </span>serving<span class="w"> </span>start<span class="w"> </span>-c<span class="w"> </span>deploy/hubserving/ocr_system/config.json
-</span></code></pre></div></td></tr></table></div>
-<h2 id="3-send-prediction-requests">3. Send prediction requests<a class="headerlink" href="#3-send-prediction-requests" title="Permanent link">&para;</a></h2>
-<p>After the service starts, you can use the following command to send a prediction request to obtain the prediction result:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>python<span class="w"> </span>tools/test_hubserving.py<span class="w"> </span>--server_url<span class="o">=</span>server_url<span class="w"> </span>--image_dir<span class="o">=</span>image_path
-</span></code></pre></div></td></tr></table></div>
-<p>Two parameters need to be passed to the script:</p>
-<ul>
-<li><strong>server_url</strong>:service address, the format of which is
-  <code>http://[ip_address]:[port]/predict/[module_name]</code></li>
-</ul>
-<p>For example, if using the configuration file to start the text angle classification, text detection, text recognition, detection+classification+recognition 3 stages, table recognition and PP-Structure service,</p>
-<p>also modified the port for each service, then the <code>server_url</code> to send the request will be:</p>
-<div class="language-text highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
-<span class="normal"><a href="#__codelineno-10-2">2</a></span>
-<span class="normal"><a href="#__codelineno-10-3">3</a></span>
-<span class="normal"><a href="#__codelineno-10-4">4</a></span>
-<span class="normal"><a href="#__codelineno-10-5">5</a></span>
-<span class="normal"><a href="#__codelineno-10-6">6</a></span>
-<span class="normal"><a href="#__codelineno-10-7">7</a></span>
-<span class="normal"><a href="#__codelineno-10-8">8</a></span>
-<span class="normal"><a href="#__codelineno-10-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1"></a>http://127.0.0.1:8865/predict/ocr_det
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2"></a>http://127.0.0.1:8866/predict/ocr_cls
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3"></a>http://127.0.0.1:8867/predict/ocr_rec
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4"></a>http://127.0.0.1:8868/predict/ocr_system
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5"></a>http://127.0.0.1:8869/predict/structure_table
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6"></a>http://127.0.0.1:8870/predict/structure_system
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7"></a>http://127.0.0.1:8870/predict/structure_layout
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8"></a>http://127.0.0.1:8871/predict/kie_ser
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9"></a>http://127.0.0.1:8872/predict/kie_ser_re
-</span></code></pre></div></td></tr></table></div>
-<ul>
-<li><strong>image_dir</strong>:Test image path, which can be a single image path or an image directory path</li>
-<li><strong>visualize</strong>:Whether to visualize the results, the default value is False</li>
-<li><strong>output</strong>:The folder to save the Visualization result, the default value is <code>./hubserving_result</code></li>
-</ul>
-<p>Example:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1"></a>python<span class="w"> </span>tools/test_hubserving.py<span class="w"> </span>--server_url<span class="o">=</span>http://127.0.0.1:8868/predict/ocr_system<span class="w"> </span>--image_dir<span class="o">=</span>./doc/imgs/<span class="w"> </span>--visualize<span class="o">=</span><span class="nb">false</span><span class="sb">`</span>
-</span></code></pre></div></td></tr></table></div>
-<h2 id="4-returned-result-format">4. Returned result format<a class="headerlink" href="#4-returned-result-format" title="Permanent link">&para;</a></h2>
-<p>The returned result is a list. Each item in the list is a dictionary which may contain three fields. The information is as follows:</p>
+</li>
+<li>
+<p><strong>Add MCP Server Configuration</strong>
+    Open the <code>claude_desktop_config.json</code> file and add the configuration by referring to <a href="#51-ai-studio-service-configuration">5.1 AI Studio Service Configuration</a>.</p>
+<p><strong>Note</strong>:
+- Do not leak your <strong>Access Token</strong>.
+- If <code>paddleocr_mcp</code> is not in your system's <code>PATH</code>, set <code>command</code> to the absolute path of the executable.</p>
+</li>
+<li>
+<p><strong>Restart the MCP Host</strong>
+    Restart Claude Desktop. The new <code>paddleocr-ocr</code> tool should now be available in the application.</p>
+</li>
+</ol>
+<h2 id="3-configuration">3. Configuration<a class="headerlink" href="#3-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="31-mcp-host-configuration">3.1. MCP Host Configuration<a class="headerlink" href="#31-mcp-host-configuration" title="Permanent link">&para;</a></h3>
+<p>In the Host's configuration file (e.g., <code>claude_desktop_config.json</code>), you need to define how to start the tool server. Key fields are:
+- <code>command</code>: <code>paddleocr_mcp</code> (if the executable is in your <code>PATH</code>) or an absolute path.
+- <code>args</code>: Configurable command-line arguments, e.g., <code>["--verbose"]</code>. See <a href="#4-parameter-reference">4. Parameter Reference</a>.
+- <code>env</code>: Configurable environment variables. See <a href="#4-parameter-reference">4. Parameter Reference</a>.</p>
+<h3 id="32-working-modes-explained">3.2. Working Modes Explained<a class="headerlink" href="#32-working-modes-explained" title="Permanent link">&para;</a></h3>
+<p>You can configure the MCP server to run in different modes based on your needs.</p>
+<h4 id="mode-1-ai-studio-service-aistudio">Mode 1: AI Studio Service (<code>aistudio</code>)<a class="headerlink" href="#mode-1-ai-studio-service-aistudio" title="Permanent link">&para;</a></h4>
+<p>This mode calls services from the <a href="https://aistudio.baidu.com/pipeline/mine">Paddle AI Studio community</a>.
+- <strong>Use Case</strong>: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
+- <strong>Procedure</strong>: Please refer to <a href="#2-quick-start">2. Quick Start</a>.
+- In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.</p>
+<h4 id="mode-2-local-python-library-local">Mode 2: Local Python Library (<code>local</code>)<a class="headerlink" href="#mode-2-local-python-library-local" title="Permanent link">&para;</a></h4>
+<p>This mode runs the model directly on your local machine and has certain requirements for the local environment and computer performance. It relies on the installed <code>paddleocr</code> inference package.
+- <strong>Use Case</strong>: Suitable for offline usage and scenarios with strict data privacy requirements.
+- <strong>Procedure</strong>:
+    1.  Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the <em>PaddlePaddle framework</em> and <em>PaddleOCR</em>. <strong>It is strongly recommended to install them in a separate virtual environment</strong> to avoid dependency conflicts.
+    2.  Refer to <a href="#52-local-python-library-configuration">5.2 Local Python Library Configuration</a> to modify the <code>claude_desktop_config.json</code> file.</p>
+<h4 id="mode-3-self-hosted-service-self_hosted">Mode 3: Self-hosted Service (<code>self_hosted</code>)<a class="headerlink" href="#mode-3-self-hosted-service-self_hosted" title="Permanent link">&para;</a></h4>
+<p>This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the <strong>Serving</strong> solutions provided by PaddleX.
+- <strong>Use Case</strong>: Offers the advantages of service-oriented deployment and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.
+- <strong>Procedure</strong>:
+    1.  Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the <em>PaddlePaddle framework</em> and <em>PaddleOCR</em>.
+    2.  Refer to the <a href="serving.html">PaddleOCR Serving Deployment Guide</a> to run the server.
+    3.  Refer to <a href="#53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration</a> to modify the <code>claude_desktop_config.json</code> file.
+    4. Set your service address in <code>PADDLEOCR_MCP_SERVER_URL</code> (e.g., <code>"http://127.0.0.1:8080"</code>).</p>
+<h2 id="4-parameter-reference">4. Parameter Reference<a class="headerlink" href="#4-parameter-reference" title="Permanent link">&para;</a></h2>
+<p>You can control the server's behavior via environment variables or command-line arguments.</p>
 <table>
 <thead>
 <tr>
-<th>field name</th>
-<th>data type</th>
-<th>description</th>
+<th style="text-align: left;">Environment Variable</th>
+<th style="text-align: left;">Command-line Argument</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Options</th>
+<th style="text-align: left;">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>angle</td>
-<td>str</td>
-<td>angle</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_PIPELINE</code></td>
+<td style="text-align: left;"><code>--pipeline</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">The pipeline to run</td>
+<td style="text-align: left;"><code>"OCR"</code>, <code>"PP-StructureV3"</code></td>
+<td style="text-align: left;"><code>"OCR"</code></td>
 </tr>
 <tr>
-<td>text</td>
-<td>str</td>
-<td>text content</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_PPOCR_SOURCE</code></td>
+<td style="text-align: left;"><code>--ppocr_source</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">The source of PaddleOCR capabilities</td>
+<td style="text-align: left;"><code>"local"</code>, <code>"aistudio"</code>, <code>"self_hosted"</code></td>
+<td style="text-align: left;"><code>"local"</code></td>
 </tr>
 <tr>
-<td>confidence</td>
-<td>float</td>
-<td>text recognition confidence</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_SERVER_URL</code></td>
+<td style="text-align: left;"><code>--server_url</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">Base URL of the underlying service (required for <code>aistudio</code> or <code>self_hosted</code> mode)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>None</code></td>
 </tr>
 <tr>
-<td>text_region</td>
-<td>list</td>
-<td>text location coordinates</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</code></td>
+<td style="text-align: left;"><code>--aistudio_access_token</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">AI Studio authentication token (required for <code>aistudio</code> mode)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>None</code></td>
 </tr>
 <tr>
-<td>html</td>
-<td>str</td>
-<td>table HTML string</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_TIMEOUT</code></td>
+<td style="text-align: left;"><code>--timeout</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Request timeout for the underlying service (in seconds)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>30</code></td>
 </tr>
 <tr>
-<td>regions</td>
-<td>list</td>
-<td>The result of layout analysis + table recognition + OCR, each item is a list<br>including <code>bbox</code> indicating area coordinates, <code>type</code> of area type and <code>res</code> of area results</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_DEVICE</code></td>
+<td style="text-align: left;"><code>--device</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">Specify the device for inference (only effective in <code>local</code> mode)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>None</code></td>
 </tr>
 <tr>
-<td>layout</td>
-<td>list</td>
-<td>The result of layout analysis, each item is a dict, including <code>bbox</code> indicating area coordinates, <code>label</code> of area type</td>
+<td style="text-align: left;"><code>PADDLEOCR_MCP_PIPELINE_CONFIG</code></td>
+<td style="text-align: left;"><code>--pipeline_config</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">Path to the PaddleX pipeline configuration file (only effective in <code>local</code> mode)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>None</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>--http</code></td>
+<td style="text-align: left;"><code>bool</code></td>
+<td style="text-align: left;">Use HTTP transport instead of stdio (for remote deployment and multiple clients)</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>False</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>--host</code></td>
+<td style="text-align: left;"><code>str</code></td>
+<td style="text-align: left;">Host address for HTTP mode</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>"127.0.0.1"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>--port</code></td>
+<td style="text-align: left;"><code>int</code></td>
+<td style="text-align: left;">Port for HTTP mode</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>8080</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>--verbose</code></td>
+<td style="text-align: left;"><code>bool</code></td>
+<td style="text-align: left;">Enable verbose logging for debugging</td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;"><code>False</code></td>
 </tr>
 </tbody>
 </table>
-<p>The fields returned by different modules are different. For example, the results returned by the text recognition service module do not contain <code>text_region</code>, detailed table is as follows:</p>
-<table>
-<thead>
-<tr>
-<th>field name/module name</th>
-<th>ocr_det</th>
-<th>ocr_cls</th>
-<th>ocr_rec</th>
-<th>ocr_system</th>
-<th>structure_table</th>
-<th>structure_system</th>
-<th>structure_layout</th>
-<th>kie_ser</th>
-<th>kie_re</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>angle</td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>text</td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td>confidence</td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td>text_region</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-</tr>
-<tr>
-<td>html</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>regions</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td>✔</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>layout</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>ser_res</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-<td></td>
-</tr>
-<tr>
-<td>re_res</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td>✔</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Note:</strong> If you need to add, delete or modify the returned fields, you can modify the file <code>module.py</code> of the corresponding module. For the complete process, refer to the user-defined modification service module in the next section.</p>
-<h2 id="5-user-defined-service-module-modification">5. User-defined service module modification<a class="headerlink" href="#5-user-defined-service-module-modification" title="Permanent link">&para;</a></h2>
-<p>If you need to modify the service logic, the following steps are generally required (take the modification of <code>deploy/hubserving/ocr_system</code> for example):</p>
-<ol>
-<li>Stop service:</li>
-</ol>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1"></a>hub<span class="w"> </span>serving<span class="w"> </span>stop<span class="w"> </span>--port/-p<span class="w"> </span>XXXX
-</span></code></pre></div></td></tr></table></div>
-<ol>
-<li>Modify the code in the corresponding files under <code>deploy/hubserving/ocr_system</code>, such as <code>module.py</code> and <code>params.py</code>, to your actual needs.</li>
-</ol>
-<p>For example, if you need to replace the model used by the deployed service, you need to modify model path parameters <code>det_model_dir</code> and <code>rec_model_dir</code> in <code>params.py</code>. If you want to turn off the text direction classifier, set the parameter <code>use_angle_cls</code> to <code>False</code>.</p>
-<p>Of course, other related parameters may need to be modified at the same time. Please modify and debug according to the actual situation.</p>
-<p><strong>It is suggested to run <code>module.py</code> directly for debugging after modification before starting the service test.</strong></p>
-<p><strong>Note</strong> The image input shape used by the PPOCR-v3 recognition model is <code>3, 48, 320</code>, so you need to modify <code>cfg.rec_image_shape = "3, 48, 320"</code> in <code>params.py</code>, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
-3. (Optional) If you want to rename the module, the following lines should be modified:
-   - <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35"><code>ocr_system</code> within <code>from deploy.hubserving.ocr_system.params import read_params</code></a>
-   - <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39"><code>ocr_system</code> within <code>name="ocr_system",</code></a>
-4. (Optional) It may require you to delete the directory <code>__pycache__</code> to force flush build cache of CPython:</p>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>find<span class="w"> </span>deploy/hubserving/ocr_system<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;__pycache__&#39;</span><span class="w"> </span>-exec<span class="w"> </span>rm<span class="w"> </span>-r<span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span>
-</span></code></pre></div></td></tr></table></div>
-<ol>
-<li>Install modified service module:</li>
-</ol>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1"></a>hub<span class="w"> </span>install<span class="w"> </span>deploy/hubserving/ocr_system/
-</span></code></pre></div></td></tr></table></div>
-<ol>
-<li>Restart service:</li>
-</ol>
-<div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1"></a>hub<span class="w"> </span>serving<span class="w"> </span>start<span class="w"> </span>-m<span class="w"> </span>ocr_system
-</span></code></pre></div></td></tr></table></div>
+<h2 id="5-configuration-examples">5. Configuration Examples<a class="headerlink" href="#5-configuration-examples" title="Permanent link">&para;</a></h2>
+<p>Below are complete configuration examples for different working modes. You can copy and modify them as needed.</p>
+<h3 id="51-ai-studio-service-configuration">5.1 AI Studio Service Configuration<a class="headerlink" href="#51-ai-studio-service-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aistudio&quot;</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-access-token&gt;&quot;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:
+- Replace <code>&lt;your-server-url&gt;</code> with your AI Studio <strong>Service Base URL</strong>, e.g., <code>https://xxxxx.aistudio-hub.baidu.com</code>. Do not include endpoint paths (like <code>/ocr</code>).
+- Replace <code>&lt;your-access-token&gt;</code> with your <strong>Access Token</strong>.</p>
+<h3 id="52-local-python-library-configuration">5.2 Local Python Library Configuration<a class="headerlink" href="#52-local-python-library-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:
+- <code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the <a href="../paddleocr_and_paddlex.html">PaddleOCR and PaddleX documentation</a>, export a pipeline configuration file, and set <code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> to its absolute path.</p>
+<h3 id="53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration<a class="headerlink" href="#53-self-hosted-service-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:
+- Replace <code>&lt;your-server-url&gt;</code> with the base URL of your underlying service (e.g., <code>http://127.0.0.1:8080</code>). </p>
 
 
 
@@ -3590,51 +3686,6 @@ export CUDA_VISIBLE_DEVICES=0
 
 
 
-<h2 id="__comments">Comments</h2>
-<!-- Insert generated snippet here -->
-
-<script src="https://giscus.app/client.js" data-repo="PaddlePaddle/PaddleOCR"
-    data-repo-id="MDEwOlJlcG9zaXRvcnkyNjIyOTYxMjI=" data-category="Q&A" data-category-id="DIC_kwDOD6JSOs4COrbO"
-    data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
-    data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
-</script>
-
-<!-- Synchronize Giscus theme with palette -->
-<script>
-    var giscus = document.querySelector("script[src*=giscus]")
-
-    // Set palette on initial load
-    var palette = __md_get("__palette")
-    if (palette && typeof palette.color === "object") {
-        var theme = palette.color.scheme === "slate"
-            ? "transparent_dark"
-            : "light"
-
-        // Instruct Giscus to set theme
-        giscus.setAttribute("data-theme", theme)
-    }
-
-    // Register event handlers after documented loaded
-    document.addEventListener("DOMContentLoaded", function () {
-        var ref = document.querySelector("[data-md-component=palette]")
-        ref.addEventListener("change", function () {
-            var palette = __md_get("__palette")
-            if (palette && typeof palette.color === "object") {
-                var theme = palette.color.scheme === "slate"
-                    ? "transparent_dark"
-                    : "light"
-
-                // Instruct Giscus to change theme
-                var frame = document.querySelector(".giscus-frame")
-                frame.contentWindow.postMessage(
-                    { giscus: { setConfig: { theme } } },
-                    "https://giscus.app"
-                )
-            }
-        })
-    })
-</script>
-
                 
               </article>
             </div>
@@ -3655,6 +3706,44 @@ export CUDA_VISIBLE_DEVICES=0
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="python_and_cpp_infer.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Python and CPP Inference">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Python and CPP Inference
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../module_usage/module_overview.html" class="md-footer__link md-footer__link--next" aria-label="Next: Module Overview">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Module Overview
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
@@ -3711,12 +3800,12 @@ export CUDA_VISIBLE_DEVICES=0
     
     
       
-      <script id="__config" type="application/json">{"base": "../../../..", "features": ["announce.dismiss", "content.tooltips", "content.code.copy", "content.tabs.link", "content.footnote.tooltips", "content.action.edit", "content.action.view", "navigation.expand", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["announce.dismiss", "content.tooltips", "content.code.copy", "content.tabs.link", "content.footnote.tooltips", "content.action.edit", "content.action.view", "navigation.expand", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
-        <script src="../../../../javascripts/katex.min.js"></script>
+        <script src="../../../javascripts/katex.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
