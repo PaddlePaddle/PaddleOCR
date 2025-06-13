@@ -49,7 +49,7 @@ pip install -e .
 1.  **准备 AI Studio 星河社区服务**
     -   访问 [飞桨AI Studio 星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
     -   在左侧更多内容下的 **PaddleX产线** 部分，- [创建产线] - [ OCR ] - [通用 OCR ] - [直接部署] - [文本识别模块 选择PP-OCRv5_server_rec] - [开始部署]
-    -   部署成功后，获取您的 *API地址* (示例："https://xxxxxx.aistudio-hub.baidu.com/ocr")。
+    -   部署成功后，获取您的 *API地址* (示例："https://xxxxxx.aistudio-hub.baidu.com")。
     -   获取您的 *访问令牌*，[通过 https://aistudio.baidu.com/index/accessToken 获取](https://aistudio.baidu.com/index/accessToken)
 
 2.  **定位 MCP 配置文件** - 详情请参考[官方开始文档](https://modelcontextprotocol.io/quickstart/user)
