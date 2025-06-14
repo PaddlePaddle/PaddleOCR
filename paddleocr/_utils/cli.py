@@ -41,7 +41,6 @@ def add_simple_inference_args(subparser, *, input_help=None):
     subparser.add_argument(
         "--save_path",
         type=str,
-        default="output",
         help="Path to the output directory.",
     )
 

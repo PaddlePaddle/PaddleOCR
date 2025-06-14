@@ -39,12 +39,15 @@ def _merge_dicts(d1, d2):
     return res
 
 
-def _to_plain_dict(d):
-    res = d.copy()
-    for k, v in d.items():
-        if isinstance(v, AttrDict):
-            res[k] = _to_plain_dict(v)
-    return res
+def _to_builtin(obj):
+    if isinstance(obj, AttrDict):
+        return {k: _to_builtin(v) for k, v in obj.items()}
+    elif isinstance(obj, dict):
+        return {k: _to_builtin(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_to_builtin(item) for item in obj]
+    else:
+        return obj
 
 
 class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
@@ -69,7 +72,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
     def export_paddlex_config_to_yaml(self, yaml_path):
         with open(yaml_path, "w", encoding="utf-8") as f:
-            config = _to_plain_dict(self._merged_paddlex_config)
+            config = _to_builtin(self._merged_paddlex_config)
             yaml.safe_dump(config, f)
 
     @classmethod
