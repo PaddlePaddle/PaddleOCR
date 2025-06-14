@@ -1,0 +1,30 @@
+这张图片展示了两个散点图，分别显示了美国各州和前40大都市统计区的微型、小型和中型企业（MSME）业务部门的收入份额和就业份额。
+
+### 上半部分：各州的数据
+- **标题**：Micro-, small, and medium-size enterprises play a sizable role across all US states and metropolitan statistical areas, but with variation.
+- **图表标题**：MSME business sector receipts and employment, by region
+- **X轴**：Share of employment, %（就业份额）
+- **Y轴**：Share of receipts, %（收入份额）
+- **数据点**：各州用不同颜色表示，代表不同的地区（东北部、西部、南部、中西部）。
+- **平均线**：虚线表示美国平均水平。
+- **图例**：颜色代表不同的地区。
+
+### 下半部分：前40大都市统计区的数据
+- **标题**：MSME business sector receipts and employment, by region
+- **图表标题**：Top 40 metropolitan statistical areas
+- **X轴**：Share of employment, %（就业份额）
+- **Y轴**：Share of receipts, %（收入份额）
+- **数据点**：前40大都市统计区用不同颜色表示。
+- **平均线**：虚线表示美国平均水平。
+- **图例**：颜色代表不同的地区。
+
+### 图表底部注释
+- 数据来源：2017年数据，微型、小型和中型企业（MSME）是指员工少于500人的企业。
+- 排除的行业：农业、金融和保险、房地产、公共管理和国防、教育、人类健康和社会工作、艺术和娱乐、家庭活动以及外星组织。
+- 数据来源：非雇主统计，美国人口普查局，更新和扩展的小企业统计，当前商业调查，美国经济分析局，麦肯锡全球研究院分析。
+
+### 其他信息
+- 图片底部有麦肯锡公司（McKinsey & Company）的标志。
+- 页面底部有标题“America's small businesses: Time to think big”和页码19。
+
+这张图片通过两个散点图展示了微型、小型和中型企业在不同地区的重要性和差异。

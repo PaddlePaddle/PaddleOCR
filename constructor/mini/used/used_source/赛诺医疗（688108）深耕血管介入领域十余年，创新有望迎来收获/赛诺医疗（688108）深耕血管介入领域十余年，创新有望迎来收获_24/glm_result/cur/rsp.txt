@@ -1,0 +1,15 @@
+这是一份关于HT Supreme产品的统计分析报告。报告分为两部分，分别展示了HT Supreme的靶病变失败率和次要终点的一年随访统计。
+
+1. **图表41：HT Supreme靶病变失败率一年随访统计**
+   - 图表展示了HT Supreme靶病变失败率随时间的变化情况。横轴表示时间（以月为单位），纵轴表示靶病变失败率。图中曲线显示了HT Supreme和对照组（HT-DES）的靶病变失败率，其中HT Supreme的失败率较低，且在12个月时达到5.3%。
+
+2. **图表42：HT Supreme次要终点一年随访统计**
+   - 图表展示了HT Supreme的次要终点（如CV死亡、TVR、ID-TLR等）的统计结果。每个次要终点的p值和发生率都列在图中，其中HT Supreme在各个次要终点的发生率均低于对照组（HT-DES）。
+
+报告还引用了《Health-Related Quality of Life and Mortality in Heart Failure: The Global Congestive Heart Failure Study of 23000 Patients From 40 Countries》的研究，由Isabelle Johansson等人发表在《Circulation》期刊上。
+
+报告的下半部分讨论了公司的盈利预测及估值，预计2024-2026年公司收入分别为4.80/7.07/9.41亿元，同比增长39.95%/47.20%/33.08%。具体业务预测如下：
+1. 支架业务：预计2024-2026年收入增速分别为30.82%、54.03%、42.15%。
+2. 球囊业务：预计2024-2026年收入增速分别为42.47%、34.62%、12.50%。
+
+最后，报告列出了2024-2026年赛诺医疗的收入预测（单位：百万元），包括营业收入、YOY、毛利率、归母净利润等关键指标。

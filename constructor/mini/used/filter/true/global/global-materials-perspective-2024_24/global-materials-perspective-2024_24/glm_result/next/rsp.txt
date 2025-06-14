@@ -1,0 +1,13 @@
+这张图片展示了一个关于作者的信息页面，标题为“About the authors”。页面中列出了多位作者的名字及其职位。具体包括：
+
+- Karel Eloot，Senior Partner
+- Michel Van Hovey，Senior Partner
+- Michel Foucart，Associate Partner
+- Marcelo Azevedo，Expert Associate Partner
+- Patricia Bingoto，Senior Expert
+- Gustav Hedengren，Specialist
+- Tamas Vass，Specialist
+
+图片下方有一段文字，感谢多位对报告做出贡献的人士，包括Caroline Van den Heuvel、David Ebereowu、Eduardo Mencarini等。
+
+页面底部标注了“Global Materials Perspective 2024”以及页码26。背景为深色，整体设计简洁明了。
