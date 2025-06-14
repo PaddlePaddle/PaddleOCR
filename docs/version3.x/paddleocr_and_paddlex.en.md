@@ -56,6 +56,13 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 
 The above code will generate a pipeline configuration file named `ocr_config.yaml` in the working directory.
 
+You can also obtain the configuration file through the PaddleX CLI. Example:
+
+```bash
+# Specify the pipeline registration name
+paddlex --get_pipeline_config OCR
+```
+
 ### 3.2 Editing Pipeline Configuration Files
 
 The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced configurations. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.

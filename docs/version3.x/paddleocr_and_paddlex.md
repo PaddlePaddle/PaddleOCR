@@ -56,6 +56,13 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 
 上述代码会在工作目录下生成名为 `ocr_config.yaml` 的产线配置文件。
 
+也可以通过 PaddleX CLI 获取配置文件。示例如下：
+
+```bash
+# 指定产线注册名
+paddlex --get_pipeline_config OCR
+```
+
 ### 3.2 编辑产线配置文件
 
 导出的 PaddleX 产线配置文件不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置。请在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
