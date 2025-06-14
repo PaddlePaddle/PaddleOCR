@@ -124,9 +124,13 @@ The formula recognition module is a key component of an OCR (Optical Character R
 > ❗ Before getting started, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly try it out with a single command:
+
 ```bash
 paddleocr formula_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png
 ```
+
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+
 You can also integrate the model inference from the formula recognition module into your own project.Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_formula_rec_001.png) locally.
 
 ```python
