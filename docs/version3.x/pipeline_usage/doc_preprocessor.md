@@ -233,12 +233,6 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
@@ -246,10 +240,18 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -381,12 +383,6 @@ for res in output:
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
@@ -394,10 +390,18 @@ for res in output:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>

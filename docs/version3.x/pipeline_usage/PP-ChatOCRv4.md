@@ -1097,12 +1097,6 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
@@ -1110,10 +1104,18 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1607,12 +1609,6 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>最小子图大小，用于优化模型子图的计算。</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
@@ -1620,10 +1616,18 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速库。
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1823,7 +1827,6 @@ for res in visual_predict_res:
 <th>默认值</th>
 </tr>
 </thead>
-
 <tr>
 <td rowspan = "3"><code>print()</code></td>
 <td rowspan = "3">打印结果到终端</td>
