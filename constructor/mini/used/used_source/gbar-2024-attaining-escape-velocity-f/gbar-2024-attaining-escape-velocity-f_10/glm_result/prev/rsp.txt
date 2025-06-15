@@ -1,0 +1,32 @@
+这张图片展示了美国银行在技术支出增加的情况下，生产力下降和经济规模效益难以实现的情况。图片分为两部分：上面的折线图和下面的散点图。
+
+### 上面的折线图
+- **标题**: US labor productivity, by sector, 2010–22, index (2010 = 100)
+- **三个行业**:
+  1. **Professional, scientific, and technical services**（专业、科学和技术服务）
+     - 显示了从2010年到2022年的增长，复合年增长率（CAGR）为1.9%。
+  2. **Private nonfarm businesses**（私营非农业企业）
+     - 显示了从2010年到2022年的增长，复合年增长率（CAGR）为1.2%。
+  3. **Commercial banking**（商业银行）
+     - 显示了从2010年到2022年的下降，复合年增长率（CAGR）为-0.3%。
+
+### 下面的散点图
+- **标题**: Correlation between revenues and number of employees at US banks, 2023
+- **坐标轴**:
+  - 横轴: Full-time employees, thousands（全职员工，千）
+  - 纵轴: Revenue, $ billion（收入，十亿美元）
+- **数据点**:
+  - 显示了收入与员工数量的正相关关系，相关系数 \( R^2 = 0.9399 \)。
+
+### 其他信息
+- **注释**:
+  - 使用了三年移动平均值来计算专业、科学和技术服务以及商业银行的劳动力生产力。
+  - 包括会计、计算机系统设计、咨询服务、法律服务、科学研究等子行业。
+- **来源**:
+  - US Bureau of Labor Statistics; McKinsey Panorama; McKinsey Value Intelligence
+- **制作单位**:
+  - McKinsey & Company
+- **报告标题**:
+  - Global Banking Annual Review 2024: Attaining escape velocity
+
+这张图片通过图表和数据展示了美国银行在技术投资增加的情况下，生产力下降和经济规模效益难以实现的问题。

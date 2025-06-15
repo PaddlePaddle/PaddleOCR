@@ -1,0 +1,44 @@
+这是一张关于2024年中国医疗大健康产业发展的白皮书的图片，图片中展示了关于中国创新药上市申请审评审批时间、中国制药企业出海项目类型、历年出海项目所处临床阶段的分布的统计图。其中中国创新药上市申请审评审批时间以2018-2022年的天为单位，呈波动下降趋势；中国制药企业出海项目类型以饼状图展示，2018年创新药占比为40%，技术占比为60%，2022年创新药占比为73%，技术占比为4%，微创新占比为23%；历年出海项目所处临床阶段的分布以堆积柱状图展示， offshore clinical stages from 2018 to 2022. The details are as follows:
+
+- **Clinical Stages Breakdown**:
+  - **2018**:
+    - Preclinical: 24%
+    - Phase I: 13%
+    - Phase II: 23%
+    - Phase III: 23%
+    - Approved: 17%
+  - **2019**:
+    - Preclinical: 27%
+    - Phase I: 14%
+    - Phase II: 30%
+    - Phase III: 14%
+    - Approved: 15%
+  - **2020**:
+    - Preclinical: 24%
+    - Phase I: 11%
+    - Phase II: 29%
+    - Phase III: 20%
+    - Approved: 16%
+  - **2021**:
+    - Preclinical: 15%
+    - Phase I: 17%
+    - Phase II: 18%
+    - Phase III: 31%
+    - Approved: 33%
+  - **2022**:
+    - Preclinical: 33%
+    - Phase I: 13%
+    - Phase II: 4%
+    - Phase III: 17%
+    - Approved: 33%
+
+- **Trends and Insights**:
+  - **Increasing Proportion of Approved Drugs**: There is a noticeable increase in the proportion of drugs that have been approved, rising from 17% in 2018 to 33% in 2022.
+  - **Stable Preclinical Phase**: The proportion of drugs in the preclinical phase remains relatively stable, ranging from 24% to 27%.
+  - **Fluctuations in Clinical Trials**: The proportion of drugs in Phase I and Phase II has decreased over the years, while Phase III has seen a slight increase.
+  - **Significant Growth in Approved Drugs**: The significant growth in approved drugs indicates a robust pipeline and successful clinical trial outcomes.
+
+- **Conclusion**:
+  - The data reflects a positive trend in the pharmaceutical industry, with an increasing number of drugs reaching approval. This suggests a strong pipeline and successful clinical trial outcomes.
+
+This analysis provides a comprehensive overview of the clinical stages of drugs over the years, highlighting trends and insights into the pharmaceutical industry's progress.

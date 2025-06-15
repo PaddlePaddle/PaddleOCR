@@ -1,0 +1,2 @@
+Page: 13, Bounding Box: [10, 132, 111, 218], Text: []
+Page: 13, Bounding Box: [5, 103, 110, 130], Text: [{'text': 'McKin', 'confidence': 0.8152373433113098, 'text_region': [[7.0, 119.0], [37.0, 119.0], [37.0, 129.0], [7.0, 129.0]]}]

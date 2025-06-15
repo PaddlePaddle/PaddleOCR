@@ -1,0 +1,17 @@
+这张图片展示了一篇文档的页面，内容涉及一些人的介绍和致谢。具体描述如下：
+
+1. **左侧**：
+   - 有一个二维码，提示可以扫描下载麦肯锡洞察（McKinsey Insights）应用程序。
+   - 旁边有文字说明，包括“扫描”、“下载”和“个性化”等字样。
+
+2. **右侧**：
+   - 文字内容介绍了几个人：
+     - Mona Hammami 是麦肯锡阿布扎比分公司的合伙人，也是麦肯锡健康研究所（MHI）的地理领导者。
+     - Sunny Sun 是里斯本办公室的合伙人，也是MHI的残疾包容性健康工作的共同领导者。
+     - Hannah Kuper 是Missing Billion Initiative的联合创始人，也是伦敦卫生与热带医学院的教授。
+     - Phyllis Hyot 是Missing Billion Initiative的联合创始人。
+   - 文章还感谢了Joy El Hajje、Lena Galison、Nanditha Chandrashekar和Sara Rotenberg对这篇文章的贡献。
+   - 文档底部有版权声明，注明“© 2024 McKinsey & Company. All rights reserved.”，并提到由全球编辑服务（Global Editorial Services）设计。
+   - 页面底部还有一行文字：“Advancing inclusive care pathways for people with disabilities”，意为“推进残疾人包容性护理路径”。
+
+整体来看，这是一篇关于健康和包容性护理的文章，涉及多个专业人士的贡献和致谢。
