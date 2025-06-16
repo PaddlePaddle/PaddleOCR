@@ -39,7 +39,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "paddlex[ocr,ie,multimodal]==3.0.1",
+    "paddlex[ocr-core]==3.0.2",
     "PyYAML>=6",
     "typing-extensions>=4.12",
 ]
@@ -52,6 +52,9 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 
 [project.scripts]
 paddleocr = "paddleocr.__main__:console_entry"
+
+[project.optional-dependencies]
+all = ["paddlex[ocr,ie,multimodal]==3.0.2"]
 
 [tool.setuptools.packages.find]
 where = ["."]
