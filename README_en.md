@@ -4,7 +4,7 @@
   </p>
 
 <!-- language -->
-[中文](./readme_c.md)| English 
+[中文](./README.md) | English | [العربية](./README_ar.md) | [Español](./README_es.md) | [Français](./README_fr.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Русский](./README_ru.md) | [繁体中文](./README_zh_TW.md)
 
 <!-- icon -->
 
@@ -22,7 +22,7 @@
 </div>
 
 ## 🚀 Introduction
-Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
+Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It's already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
 On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the **PaddlePaddle 3.0** framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5T**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**. For the complete usage documentation, please refer to the [PaddleOCR 3.0 Documentation](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
 

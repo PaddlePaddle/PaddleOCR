@@ -4,7 +4,7 @@
   </p>
 
 <!-- language -->
-中文 | [English](./README_en.md)
+中文 | [English](./README_en.md) | [العربية](./README_ar.md) | [Español](./README_es.md) | [Français](./README_fr.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Русский](./README_ru.md) | [繁体中文](./README_zh_TW.md)
 
 <!-- icon -->
 
