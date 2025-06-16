@@ -29,10 +29,12 @@
 1. 在本地环境安装好 CMAKE 编译工具，并在 [Android NDK 官网](https://developer.android.google.cn/ndk/downloads)下载当前系统的某个版本的 NDK 软件包。例如，在 Mac 上开发，需要在 Android NDK 官网下载 Mac 平台的 NDK 软件包
 
     **环境要求**
+
     -  `CMake >= 3.10`（最低版本未经验证，推荐 3.20 及以上）
     -  `Android NDK >= r17c`（最低版本未经验证，推荐 r20b 及以上）
 
     **本指南所使用的测试环境：**
+
     -  `cmake == 3.20.0`
     -  `android-ndk == r20b`
 
@@ -99,12 +101,13 @@
 4. 将工作目录切换到 `PaddleX-Lite-Deploy/ocr/android/shell/cxx/ppocr_demo`，运行 `run.sh` 脚本，完成在端侧的预测。
 
 **注意事项：**
+
 - 在运行 `build.sh` 脚本前，需要更改 `NDK_ROOT` 指定的路径为实际安装的 NDK 路径。
 - 在 Windows 系统上可以使用 Git Bash 执行部署步骤。
 - 若在 Windows 系统上编译，需要将 `CMakeLists.txt` 中的 `CMAKE_SYSTEM_NAME` 设置为 `windows`。
 - 若在 Mac 系统上编译，需要将 `CMakeLists.txt` 中的 `CMAKE_SYSTEM_NAME` 设置为 `darwin`。
 - 在运行 `run.sh` 脚本时需保持 ADB 连接。
-- `download.sh` 和 `run.sh` 支持传入参数来指定模型，若不指定则默认使用 `PP-OCRv5_mobile` 模型。目前适配了以下模型： 
+- `download.sh` 和 `run.sh` 支持传入参数来指定模型，若不指定则默认使用 `PP-OCRv5_mobile` 模型。目前适配了以下模型：
     - `PP-OCRv3_mobile`
     - `PP-OCRv4_mobile`
     - `PP-OCRv5_mobile`
@@ -112,20 +115,20 @@
 以下为实际操作时的示例：
 
 ```shell
- # 1. 下载需要的 Paddle Lite 预测库
- cd PaddleX-Lite-Deploy/libs
- sh download.sh
+# 1. 下载需要的 Paddle Lite 预测库
+cd PaddleX-Lite-Deploy/libs
+sh download.sh
 
- # 2. 下载 paddle_lite_opt 工具优化后的 nb 模型文件及预测图片、字典文件等物料
- cd ../ocr/assets
- sh download.sh PP-OCRv5_mobile
+# 2. 下载 paddle_lite_opt 工具优化后的 nb 模型文件及预测图片、字典文件等物料
+cd ../ocr/assets
+sh download.sh PP-OCRv5_mobile
 
- # 3. 完成可执行文件的编译
- cd ../android/shell/ppocr_demo
- sh build.sh
+# 3. 完成可执行文件的编译
+cd ../android/shell/ppocr_demo
+sh build.sh
 
 # 4. 预测
- sh run.sh PP-OCRv5_mobile
+sh run.sh PP-OCRv5_mobile
 ```
 
 运行结果如下所示：
@@ -231,35 +234,35 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
 1. `pipeline.cc` : OCR 文字识别 demo 预测全流程代码
   该文件完成了三个模型串行推理的全流程控制处理，包含整个处理过程的调度处理。
 
-  - `Pipeline::Pipeline(...)` 方法完成调用三个模型类构造函数，完成模型加载和线程数、绑核处理及 predictor 创建处理
-  - `Pipeline::Process(...)` 方法用于完成这三个模型串行推理的全流程控制处理
+    - `Pipeline::Pipeline(...)` 方法完成调用三个模型类构造函数，完成模型加载和线程数、绑核处理及 predictor 创建处理
+    - `Pipeline::Process(...)` 方法用于完成这三个模型串行推理的全流程控制处理
   
 2. `cls_process.cc` 方向分类器的预测文件
   该文件完成了方向分类器的预处理、预测和后处理过程
 
-  - `ClsPredictor::ClsPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
-  - `ClsPredictor::Preprocess()` 方法用于模型的预处理
-  - `ClsPredictor::Postprocess()` 方法用于模型的后处理
+    - `ClsPredictor::ClsPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
+    - `ClsPredictor::Preprocess()` 方法用于模型的预处理
+    - `ClsPredictor::Postprocess()` 方法用于模型的后处理
 
 3. `rec_process.cc` 识别模型 CRNN 的预测文件
   该文件完成了识别模型 CRNN 的预处理、预测和后处理过程
 
-  - `RecPredictor::RecPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
-  - `RecPredictor::Preprocess()` 方法用于模型的预处理
-  - `RecPredictor::Postprocess()` 方法用于模型的后处理
+    - `RecPredictor::RecPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
+    - `RecPredictor::Preprocess()` 方法用于模型的预处理
+    - `RecPredictor::Postprocess()` 方法用于模型的后处理
 
 4. `det_process.cc` 检测模型 DB 的预测文件
   该文件完成了检测模型 DB 的预处理、预测和后处理过程
 
-  - `DetPredictor::DetPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
-  - `DetPredictor::Preprocess()` 方法用于模型的预处理
-  - `DetPredictor::Postprocess()` 方法用于模型的后处理
+    - `DetPredictor::DetPredictor()`  方法用于完成模型加载和线程数、绑核处理及 predictor 创建处理
+    - `DetPredictor::Preprocess()` 方法用于模型的预处理
+    - `DetPredictor::Postprocess()` 方法用于模型的后处理
 
 5. `db_post_process` 检测模型 DB 的后处理函数，包含 clipper 库的调用
   该文件完成了检测模型 DB 的第三方库调用和其他后处理方法实现
 
-  - `std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(...)` 方法从 Bitmap 图中获取检测框
-  - `std::vector<std::vector<std::vector<int>>> FilterTagDetRes(...)` 方法根据识别结果获取目标框位置
+    - `std::vector<std::vector<std::vector<int>>> BoxesFromBitmap(...)` 方法从 Bitmap 图中获取检测框
+    - `std::vector<std::vector<std::vector<int>>> FilterTagDetRes(...)` 方法根据识别结果获取目标框位置
 
 ## 进阶使用
 
@@ -381,15 +384,15 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
 
 - 如果更新模型中的输入 Tensor、Shape、和 Dtype 发生更新:
 
-  - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Preprocss` 函数
-  - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Preprocss` 函数
-  - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Preprocss` 函数
+    - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Preprocss` 函数
+    - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Preprocss` 函数
+    - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Preprocss` 函数
 
 - 如果更新模型中的输出 Tensor 和 Dtype 发生更新:
 
-  - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Postprocss` 函数
-  - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Postprocss` 函数
-  - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Postprocss` 函数
+    - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Postprocss` 函数
+    - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Postprocss` 函数
+    - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Postprocss` 函数
 
 #### 更新标签文件
 
@@ -462,11 +465,11 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
 ### 更新输入/输出预处理
 
 - 更新输入预处理
-  - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Preprocss` 函数
-  - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Preprocss` 函数
-  - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Preprocss` 函数
+    - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Preprocss` 函数
+    - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Preprocss` 函数
+    - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Preprocss` 函数
 
 - 更新输出预处理
-  - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Postprocss` 函数
-  - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Postprocss` 函数
-  - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Postprocss` 函数
+    - 更新文字方向分类器模型，则需要更新 `ppocr_demo/src/cls_process.cc` 中 `ClsPredictor::Postprocss` 函数
+    - 更新检测模型，则需要更新 `ppocr_demo/src/det_process.cc` 中 `DetPredictor::Postprocss` 函数
+    - 更新识别器模型，则需要更新 `ppocr_demo/src/rec_process.cc` 中 `RecPredictor::Postprocss` 函数

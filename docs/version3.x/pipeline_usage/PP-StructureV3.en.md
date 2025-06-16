@@ -1230,6 +1230,18 @@ Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no thre
 <td></td>
 </tr>
 <tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>Name of the wireless table orientation classification model. If not set, the default model will be used.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>Directory of the table orientation classification model. If not set, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>seal_text_detection_model_name</code></td>
 <td>Name of the seal text detection model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
@@ -1394,15 +1406,12 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use TensorRT for inference acceleration.</td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for optimizing subgraph execution.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
@@ -1412,9 +1421,17 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN.
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1824,6 +1841,18 @@ The above Python script performs the following steps:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>Name of the wireless table orientation classification model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>Directory of the table orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>seal_text_detection_model_name</code></td>
 <td>Name of the seal text detection model. If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str</code></td>
@@ -2009,15 +2038,12 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use TensorRT for accelerated inference.</td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
-</tr>
-<tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size used to optimize model subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
@@ -2027,9 +2053,17 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -2614,7 +2648,6 @@ Below is the API reference and multi-language service invocation examples for ba
 <td>File type. <code>0</code> for PDF, <code>1</code> for image. If omitted, the type is inferred from the URL.</td>
 <td>No</td>
 </tr>
-
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>

@@ -303,209 +303,625 @@ The above data is from:
 * <a href="https://arxiv.org/abs/2412.07626">OmniDocBench: Benchmarking Diverse PDF Document Parsing with Comprehensive Annotations</a>
 
 # End to End Benchmark
-## Requirements
 
+The performance of PP-StructureV3 and MinerU with different configurations under different GPU environments are as follows.
+
+Requirements:
 * Paddle 3.0
 * PaddleOCR 3.0.0
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9
 
-## Data
-1. Local inference
+## Local inference
 
-Data: 15 PDF files, totaling 925 pages, containing elements such as tables, formulas, seals, charts, etc.
+Local inference was tested with both V100 and A100 GPU, evaluating the performance of PP-StructureV3 under 6 different configurations. The test data consists of 15 PDF files, totaling 925 pages, including elements such as tables, formulas, seals, and charts.
 
-Env: NVIDIA Tesla V100 + Intel Xeon Gold 6271C
+In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-OCRv5/PP-OCRv5.en.md) for OCR model details, see [Formula Recognition](../../module_usage/formula_recognition.en.md) for formula recognition model details, and refer to [Text Detection](../../module_usage/text_detection.en.md) for the max_side_limit setting of the text detection module.
 
-<table>
- <colgroup>
-  <col> 
- </colgroup>
- <tbody>
-  <tr> 
-   <td></td> 
-   <td>Pipeline Configurations</td> 
-   <td>Average time per page (s)</td> 
-   <td>Average CPU (%)</td> 
-   <td>Peak RAM Usage (MB)</td> 
-   <td>Average RAM Usage (MB)</td> 
-   <td>Average GPU (%)</td> 
-   <td>Peak VRAM Usage (MB)</td> 
-   <td>Average VRAM Usage (MB)</td> 
-  </tr> 
-  <tr> 
-   <td rowspan="6">PP-StructureV3</td> 
-   <td>Basic</td> 
-   <td>1.77</td> 
-   <td>111.4</td> 
-   <td>6822.4</td> 
-   <td>5278.2</td> 
-   <td>38.9</td> 
-   <td>17403</td> 
-   <td>16909.3</td> 
-  </tr> 
-  <tr> 
-   <td>Use chart recognition pipeline</td> 
-   <td>4.09</td> 
-   <td>105.3</td> 
-   <td>5628</td> 
-   <td>4085.1</td> 
-   <td>24.7</td> 
-   <td>17403</td> 
-   <td>17030.9</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec</td> 
-   <td>1.56</td> 
-   <td>113.7</td> 
-   <td>6712.9</td> 
-   <td>5052</td> 
-   <td>29.1</td> 
-   <td>10929</td> 
-   <td>10840.7</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-FormulaNet_plus-M</td> 
-   <td>1.42</td> 
-   <td>112.9</td> 
-   <td>6944.1</td> 
-   <td>5193.6</td> 
-   <td>38</td> 
-   <td>16390</td> 
-   <td>15840</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M</td> 
-   <td>1.15</td> 
-   <td>114.8</td> 
-   <td>6666.5</td> 
-   <td>5105.4</td> 
-   <td>26.1</td> 
-   <td>8606</td> 
-   <td>8517.2</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M, and max input length of text detection set to 1200</td> 
-   <td>0.99</td> 
-   <td>113</td> 
-   <td>7172.9</td> 
-   <td>5686.4</td> 
-   <td>29.2</td> 
-   <td>8776</td> 
-   <td>8680.8</td> 
-  </tr> 
-  <tr> 
-   <td>MinerU</td> 
-   <td>-</td> 
-   <td>1.57</td> 
-   <td>142.9</td> 
-   <td>13655.8</td> 
-   <td>12083</td> 
-   <td>43.3</td> 
-   <td>32406</td> 
-   <td>9915.4</td> 
-  </tr> 
- </tbody>
+### Env: NVIDIA Tesla V100 + Intel Xeon Gold 6271C
+
+<table border="1">
+ <tr>
+  <td>
+   Methods
+  </td>
+  <td colspan="4">
+   Configurations
+  </td>
+  <td rowspan="2">
+   Average time per
+  page
+    (s)
+  </td>
+  <td rowspan="2">
+   Average CPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak RAM Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average RAM
+  Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average GPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak VRAM Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average VRAM
+  Usage
+    （MB）
+  </td>
+ </tr>
+ <tr>
+  <td rowspan="7">
+   PP-StructureV3
+  </td>
+  <td>
+   OCR Models
+  </td>
+  <td>
+   Formula Recognition Model
+  </td>
+  <td>
+   Chart Recognition Model
+  </td>
+  <td>
+   text detection module max_side_limit
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.77
+  </td>
+  <td>
+   111.4
+  </td>
+  <td>
+   6.7
+  </td>
+  <td>
+   5.2
+  </td>
+  <td>
+   38.9
+  </td>
+  <td>
+   17.0
+  </td>
+  <td>
+   16.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✔
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   4.09
+  </td>
+  <td>
+   105.3
+  </td>
+  <td>
+   5.5
+  </td>
+  <td>
+   4.0
+  </td>
+  <td>
+   24.7
+  </td>
+  <td>
+   17.0
+  </td>
+  <td>
+   16.6
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.56
+  </td>
+  <td>
+   113.7
+  </td>
+  <td>
+   6.6
+  </td>
+  <td>
+   4.9
+  </td>
+  <td>
+   29.1
+  </td>
+  <td>
+   10.7
+  </td>
+  <td>
+   10.6
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.42
+  </td>
+  <td>
+   112.9
+  </td>
+  <td>
+   6.8
+  </td>
+  <td>
+   5.1
+  </td>
+  <td>
+   38
+  </td>
+  <td>
+   16.0
+  </td>
+  <td>
+   15.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.15
+  </td>
+  <td>
+   114.8
+  </td>
+  <td>
+   6.5
+  </td>
+  <td>
+   5.0
+  </td>
+  <td>
+   26.1
+  </td>
+  <td>
+   8.4
+  </td>
+  <td>
+   8.3
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   1200
+  </td>
+  <td>
+   0.99
+  </td>
+  <td>
+   113
+  </td>
+  <td>
+   7.0
+  </td>
+  <td>
+   5.6
+  </td>
+  <td>
+   29.2
+  </td>
+  <td>
+   8.6
+  </td>
+  <td>
+   8.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   MinerU
+  </td>
+  <td colspan="4">
+   -
+  </td>
+  <td>
+   1.57
+  </td>
+  <td>
+   142.9
+  </td>
+  <td>
+   13.3
+  </td>
+  <td>
+   11.8
+  </td>
+  <td>
+   43.3
+  </td>
+  <td>
+   31.6
+  </td>
+  <td>
+   9.7
+  </td>
+ </tr>
 </table>
 
-Env：NVIDIA A100 + Intel Xeon Platinum 8350C
+### NVIDIA A100 + Intel Xeon Platinum 8350C
 
-<table> 
- <colgroup>
-  <col> 
- </colgroup>
- <tbody>
-  <tr> 
-   <td></td> 
-   <td>Pipeline Configurations</td> 
-   <td>Average time per page (s)</td> 
-   <td>Average CPU (%)</td> 
-   <td>Peak RAM Usage (MB)</td> 
-   <td>Average RAM Usage (MB)</td> 
-   <td>Average GPU (%)</td> 
-   <td>Peak VRAM Usage (MB)</td> 
-   <td>Average VRAM Usage (MB)</td> 
-  </tr> 
-  <tr> 
-   <td rowspan="6">PP-StructureV3</td> 
-   <td>Basic</td> 
-   <td>1.12</td> 
-   <td>109.8</td> 
-   <td>9418.3</td> 
-   <td>7977.9</td> 
-   <td>29.8</td> 
-   <td>22294</td> 
-   <td>21638.4</td> 
-  </tr> 
-  <tr> 
-   <td>Use chart recognition pipeline</td> 
-   <td>2.76</td> 
-   <td>103.7</td> 
-   <td>9253.6</td> 
-   <td>7840.6</td> 
-   <td>24</td> 
-   <td>22298</td> 
-   <td>21555.3</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec</td> 
-   <td>1.04</td> 
-   <td>110.7</td> 
-   <td>9520.8</td> 
-   <td>8034.3</td> 
-   <td>22</td> 
-   <td>12490</td> 
-   <td>12383.1</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-FormulaNet_plus-M</td> 
-   <td>0.95</td> 
-   <td>111.4</td> 
-   <td>9272.9</td> 
-   <td>7939.9</td> 
-   <td>28.1</td> 
-   <td>22350</td> 
-   <td>21498.4</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M</td> 
-   <td>0.89</td> 
-   <td>112.1</td> 
-   <td>9457.2</td> 
-   <td>8031.5</td> 
-   <td>18.5</td> 
-   <td>11642</td> 
-   <td>11433.6</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M, and max length of text detection set to 1200</td> 
-   <td>0.64</td> 
-   <td>113.5</td> 
-   <td>10401.1</td> 
-   <td>8688.8</td> 
-   <td>23.7</td> 
-   <td>11716</td> 
-   <td>11453.9</td> 
-  </tr> 
-  <tr"> 
-   <td>MinerU</td> 
-   <td>-</td> 
-   <td>1.06</td> 
-   <td>168.3</td> 
-   <td>18690.4</td> 
-   <td>17213.8</td> 
-   <td>27.5</td> 
-   <td>78760</td> 
-   <td>15119</td> 
-  </tr> 
- </tbody>
+<table border="1">
+ <tr>
+  <td>
+   Methods
+  </td>
+  <td colspan="4">
+   Configurations
+  </td>
+  <td rowspan="2">
+   Average time per
+  page
+    (s)
+  </td>
+  <td rowspan="2">
+   Average CPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak RAM Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average RAM
+  Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average GPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak VRAM Usage
+    （MB）
+  </td>
+  <td rowspan="2">
+   Average VRAM
+  Usage
+    （MB）
+  </td>
+ </tr>
+ <tr>
+  <td rowspan="7">
+   PP-StructureV3
+  </td>
+  <td>
+   OCR Models
+  </td>
+  <td>
+   Formula Recognition Model
+  </td>
+  <td>
+   Chart Recognition Model
+  </td>
+  <td>
+   text detection module max_side_limit
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.12
+  </td>
+  <td>
+   109.8
+  </td>
+  <td>
+   9.2
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   29.8
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✔
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   2.76
+  </td>
+  <td>
+   103.7
+  </td>
+  <td>
+   9.0
+  </td>
+  <td>
+   7.7
+  </td>
+  <td>
+   24
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.04
+  </td>
+  <td>
+   110.7
+  </td>
+  <td>
+   9.3
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   22
+  </td>
+  <td>
+   12.2
+  </td>
+  <td>
+   12.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   0.95
+  </td>
+  <td>
+   111.4
+  </td>
+  <td>
+   9.1
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   28.1
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.0
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   0.89
+  </td>
+  <td>
+   112.1
+  </td>
+  <td>
+   9.2
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   18.5
+  </td>
+  <td>
+   11.4
+  </td>
+  <td>
+   11.2
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   1200
+  </td>
+  <td>
+   0.64
+  </td>
+  <td>
+   113.5
+  </td>
+  <td>
+   10.2
+  </td>
+  <td>
+   8.5
+  </td>
+  <td>
+   23.7
+  </td>
+  <td>
+   11.4
+  </td>
+  <td>
+   11.2
+  </td>
+ </tr>
+ <tr>
+  <td>
+   MinerU
+  </td>
+  <td colspan="4">
+   -
+  </td>
+  <td>
+   1.06
+  </td>
+  <td>
+   168.3
+  </td>
+  <td>
+   18.3
+  </td>
+  <td>
+   16.8
+  </td>
+  <td>
+   27.5
+  </td>
+  <td>
+   76.9
+  </td>
+  <td>
+   14.8
+  </td>
+ </tr>
 </table>
 
-2. Serving
+## Serving Inference
 
-Data: 1500 images, including tables, formulas, seals, charts, and other elements.
-Use default configuration.
+The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 8350C environment, with test data consisting of 1500 images, including tables, formulas, seals, charts, and other elements.
 
 <table>
  <tbody>
@@ -517,18 +933,18 @@ Use default configuration.
    <td>Success Number/Total Number</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs * 1</td> 
+   <td>4 GPUs ✖️ 1实例/卡</td> 
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 
-   <td>1</td> 
+   <td>100%</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs * 4</td> 
+   <td>4 GPUs ✖️ 4实例/卡</td> 
    <td>16</td> 
    <td>4.05</td> 
    <td>3.87</td> 
-   <td>1</td> 
+   <td>100%</td> 
   </tr> 
  </tbody>
 </table>
