@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner_cn.png" alt="PaddleOCR 橫幅"></a>
+      <img width="100%" src="./docs/images/Banner_cn.png" alt="PaddleOCR 橫幅">
   </p>
 
 <!-- language -->
-[簡體中文](./README.md) | [English](./README_en.md) | [العربية](./README_ar.md) | [Español](./README_es.md) | [Français](./README_fr.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Русский](./README_ru.md) | 繁体中文
+[English](./README.md) | [简体中文](./README_cn.md) | 繁體中文 | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 
@@ -15,7 +15,6 @@
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
 
-[![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
@@ -23,17 +22,17 @@
 </div>
 
 ## 🚀 簡介
-PaddleOCR 自發布以來，憑藉其學術前沿的演算法與產業落地實踐，深受產學研各界的喜愛，並廣泛應用於眾多知名開源專案，如 Umi-OCR、OmniParser、MinerU、RAGFlow 等，已成為廣大開發者心中開源 OCR 領域的首選工具。2025 年 5 月 20 日，飛槳團隊發布 **PaddleOCR 3.0**，全面適配**飛槳框架 3.0 正式版**，進一步**提升文字辨識精度**，支援**多種文字類型辨識**和**手寫體辨識**，滿足大型模型應用對**複雜文件高精度解析**的旺盛需求。結合**文心大模型 4.5 Turbo**，顯著提升了關鍵資訊擷取的精度，並新增**對崑崙芯、昇騰等國產硬體**的支援。完整使用說明請參閱 [PaddleOCR 3.0 文檔](https://paddlepaddle.github.io/PaddleOCR/latest/)。
+PaddleOCR 自發布以來，憑藉其學術前沿的演算法與產業落地實踐，深受產學研各界的喜愛，並廣泛應用於眾多知名開源專案，如 Umi-OCR、OmniParser、MinerU、RAGFlow 等，已成為廣大開發者心中開源 OCR 領域的首選工具。2025 年 5 月 20 日，飛槳團隊發布 **PaddleOCR 3.0**，全面適配**飛槳框架 3.0 正式版**，進一步**提升文字辨識精度**，支援**多種文字類型辨識**和**手寫體辨識**，滿足大型模型應用對**複雜文件高精度解析**的旺盛需求。結合**ERNIE 4.5 Turbo**，顯著提升了關鍵資訊擷取的精度，並新增**對崑崙芯、昇騰等國產硬體**的支援。完整使用說明請參閱 [PaddleOCR 3.0 文檔](https://paddlepaddle.github.io/PaddleOCR/latest/)。
 
 PaddleOCR 3.0 **新增**三大特色功能：
 - 全場景文字辨識模型 [PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：單一模型支援五種文字類型和複雜手寫體辨識；整體辨識精度相較前一代**提升 13 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/91660/webUI)
 - 通用文件解析方案 [PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支援多場景、多版式的 PDF 高精度解析，在公開評測集中**領先眾多開源與閉源方案**。[線上體驗](https://aistudio.baidu.com/community/app/518494/webUI)
-- 智慧文件理解方案 [PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支援文心大模型 4.5 Turbo，精度相較前一代**提升 15 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/518493/webUI)
+- 智慧文件理解方案 [PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支援ERNIE 4.5 Turbo，精度相較前一代**提升 15 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/518493/webUI)
 
 除了提供優秀的模型庫，PaddleOCR 3.0 還提供好學易用的工具，涵蓋模型訓練、推論及服務化部署，方便開發者快速將 AI 應用落地。
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch_cn.png" alt="PaddleOCR 架構"></a>
+      <img width="100%" src="./docs/images/Arch_cn.png" alt="PaddleOCR 架構">
   </p>
 </div>
 
@@ -62,7 +61,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 - **PP-ChatOCRv4**: 智慧文件理解方案
    1. 🔥 文件影像（PDF/PNG/JPG）關鍵資訊擷取精度相較前一代**提升 15 個百分點**！
-   2. 💻 原生支援**文心大模型 4.5 Turbo**，並相容 PaddleNLP、Ollama、vLLM 等工具部署的大型模型。
+   2. 💻 原生支援**ERNIE 4.5 Turbo**，並相容 PaddleNLP、Ollama、vLLM 等工具部署的大型模型。
    3. 🤝 整合 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支援印刷體、手寫體、印章、表格、圖表等複雜文件元素的資訊擷取與理解。
 
 
@@ -105,9 +104,11 @@ ocr = PaddleOCR(
     use_doc_orientation_classify=False,
     use_doc_unwarping=False,
     use_textline_orientation=False)
+
 # 對範例圖片執行 OCR 推論
 result = ocr.predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
+    
 # 將結果視覺化並儲存為 JSON
 for res in result:
     res.print()
@@ -230,13 +231,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-       <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
+       <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo">
   </p>
 </div>
 
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
   </p>
 </div>
 

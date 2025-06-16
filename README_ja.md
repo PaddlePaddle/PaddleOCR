@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR Banner"></a>
+      <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR Banner">
   </p>
 
 <!-- language -->
-[中文](./README.md) | [English](./README_en.md) | [العربية](./README_ar.md) | [Español](./README_es.md) | [Français](./README_fr.md) | 日本語 | [한국어](./README_ko.md) | [Русский](./README_ru.md) | [繁体中文](./README_zh_TW.md)
+[English](./README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | 日本語 | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 
@@ -14,7 +14,7 @@
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
-[![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
+
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
@@ -24,19 +24,19 @@
 ## 🚀 概要
 PaddleOCRは、その最先端のアルゴリズムと実世界での応用実績により、初回リリース以来、学術界、産業界、研究コミュニティから広く支持を得ています。Umi-OCR、OmniParser、MinerU、RAGFlowなどの人気オープンソースプロジェクトで既に採用されており、世界中の開発者にとって定番のOCRツールキットとなっています。
 
-2025年5月20日、PaddlePaddleチームは**PaddlePaddle 3.0**フレームワークの公式リリースに完全対応したPaddleOCR 3.0を発表しました。このアップデートでは、**テキスト認識精度**がさらに向上し、**複数テキストタイプの認識**と**手書き文字認識**がサポートされ、大規模モデルアプリケーションからの**複雑なドキュメントの高精度解析**に対する高まる需要に応えます。**ERNIE 4.5T**と組み合わせることで、キー情報抽出の精度が大幅に向上します。また、PaddleOCR 3.0では、**KUNLUNXIN (昆仑芯)** や **Ascend (昇腾)** などの国産ハードウェアプラットフォームのサポートも追加されました。完全な使用方法については、[PaddleOCR 3.0 ドキュメント](https://paddlepaddle.github.io/PaddleOCR/latest/ja/index.html) をご参照ください。
+2025年5月20日、PaddlePaddleチームは**PaddlePaddle 3.0**フレームワークの公式リリースに完全対応したPaddleOCR 3.0を発表しました。このアップデートでは、**テキスト認識精度**がさらに向上し、**複数テキストタイプの認識**と**手書き文字認識**がサポートされ、大規模モデルアプリケーションからの**複雑なドキュメントの高精度解析**に対する高まる需要に応えます。**ERNIE 4.5 Turbo**と組み合わせることで、キー情報抽出の精度が大幅に向上します。完全な使用方法については、[PaddleOCR 3.0 ドキュメント](https://paddlepaddle.github.io/PaddleOCR/latest/ja/index.html) をご参照ください。
 
 PaddleOCR 3.0の3つの主要な新機能：
 - 全シーン対応テキスト認識モデル [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): 1つのモデルで5つの異なるテキストタイプと複雑な手書き文字を処理。全体の認識精度は前世代に比べて13パーセントポイント向上。[オンラインデモ](https://aistudio.baidu.com/community/app/91660/webUI)
 
 - 汎用ドキュメント解析ソリューション [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): 複数レイアウト、複数シーンのPDFの高精度解析を実現し、公開ベンチマークで多くのオープンソースおよびクローズドソースのソリューションを凌駕。[オンラインデモ](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- インテリジェントドキュメント理解ソリューション [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): WenXin Large Model 4.5Tをネイティブでサポートし、前世代よりも15パーセントポイント高い精度を達成。[オンラインデモ](https://aistudio.baidu.com/community/app/518493/webUI)
+- インテリジェントドキュメント理解ソリューション [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): ERNIE 4.5 Turboにネイティブで対応し、前世代よりも15パーセントポイント高い精度を達成。[オンラインデモ](https://aistudio.baidu.com/community/app/518493/webUI)
 
 PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでなく、モデルのトレーニング、推論、サービス展開をカバーする使いやすいツールも提供しており、開発者がAIアプリケーションを迅速に本番環境に導入できるよう支援します。
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch.png" alt="PaddleOCR Architecture"></a>
+      <img width="100%" src="./docs/images/Arch.png" alt="PaddleOCR Architecture">
   </p>
 </div>
 
@@ -119,6 +119,7 @@ paddleocr ocr --help
 **4.1 PP-OCRv5の例**
 ```python
 # PaddleOCRインスタンスの初期化
+from paddleocr import PaddleOCR
 ocr = PaddleOCR(
     use_doc_orientation_classify=False,
     use_doc_unwarping=False,
@@ -142,14 +143,15 @@ for res in result:
 from pathlib import Path
 from paddleocr import PPStructureV3
 
-pipeline = PPStructureV3()
+pipeline = PPStructureV3(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 # 画像の場合
 output = pipeline.predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False
-    )
+)
 
 # 結果を可視化し、JSON形式で保存
 for res in output:
@@ -196,7 +198,7 @@ visual_predict_res = pipeline.visual_predict(
 
 mllm_predict_info = None
 use_mllm = False
-# マルチモーダル大規模モデルを使用する場合、ローカルmllmサービスを起動する必要があります。ドキュメント：https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.md を参照してデプロイを行い、mllm_chat_bot_config設定を更新してください。
+# マルチモーダル大規模モデルを使用する場合、ローカルmllmサービスを起動する必要があります。ドキュメント：https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.en.md を参照してデプロイを行い、mllm_chat_bot_config設定を更新してください。
 if use_mllm:
     mllm_chat_bot_config = {
         "module_name": "chat_bot",
@@ -234,10 +236,6 @@ print(chat_result)
 
 </details>
 
-### 5. 国産AIアクセラレータ
-- [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
-- [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
-
 ## ⛰️ 上級チュートリアル
 - [PP-OCRv5 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
@@ -247,13 +245,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo"></a>
+     <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo">
   </p>
 </div>
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+     <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
   </p>
 </div>
 
@@ -303,5 +301,3 @@ howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
 year={2020}
 }
 ```
-
-</rewritten_file>

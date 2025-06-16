@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner.png" alt="Bannière PaddleOCR"></a>
+      <img width="100%" src="./docs/images/Banner.png" alt="Bannière PaddleOCR">
   </p>
 
 <!-- language -->
-[中文](./README.md) | [English](./README_en.md) | [العربية](./README_ar.md) | [Español](./README_es.md) | Français | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Русский](./README_ru.md) | [繁体中文](./README_zh_TW.md)
+[English](./README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | Français | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 
@@ -14,7 +14,7 @@
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
-[![Website](https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=)](https://www.paddleocr.ai/)
+
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
@@ -24,19 +24,19 @@
 ## 🚀 Introduction
 Depuis sa sortie initiale, PaddleOCR a été largement acclamé par les milieux universitaires, industriels et de la recherche, grâce à ses algorithmes de pointe et à ses performances éprouvées dans des applications réelles. Il alimente déjà des projets open-source populaires tels que Umi-OCR, OmniParser, MinerU et RAGFlow, ce qui en fait la boîte à outils OCR de référence pour les développeurs du monde entier.
 
-Le 20 mai 2025, l'équipe de PaddlePaddle a dévoilé PaddleOCR 3.0, entièrement compatible avec la version officielle du framework **PaddlePaddle 3.0**. Cette mise à jour **améliore encore la précision de la reconnaissance de texte**, ajoute la prise en charge de la **reconnaissance de multiples types de texte** et de la **reconnaissance de l'écriture manuscrite**, et répond à la demande croissante des applications de grands modèles pour l'**analyse de haute précision de documents complexes**. Combiné avec **ERNIE 4.5T**, il améliore considérablement la précision de l'extraction d'informations clés. PaddleOCR 3.0 introduit également le support de plateformes matérielles nationales telles que **KUNLUNXIN** et **Ascend**. Pour la documentation d'utilisation complète, veuillez vous référer à la [Documentation de PaddleOCR 3.0](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
+Le 20 mai 2025, l'équipe de PaddlePaddle a dévoilé PaddleOCR 3.0, entièrement compatible avec la version officielle du framework **PaddlePaddle 3.0**. Cette mise à jour **améliore encore la précision de la reconnaissance de texte**, ajoute la prise en charge de la **reconnaissance de multiples types de texte** et de la **reconnaissance de l'écriture manuscrite**, et répond à la demande croissante des applications de grands modèles pour l'**analyse de haute précision de documents complexes**. Combiné avec **ERNIE 4.5 Turbo**, il améliore considérablement la précision de l'extraction d'informations clés. Pour la documentation d'utilisation complète, veuillez vous référer à la [Documentation de PaddleOCR 3.0](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
 
 Trois nouvelles fonctionnalités majeures dans PaddleOCR 3.0 :
 - Modèle de reconnaissance de texte pour toutes scènes [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md) : Un modèle unique qui gère cinq types de texte différents ainsi que l'écriture manuscrite complexe. La précision globale de la reconnaissance a augmenté de 13 points de pourcentage par rapport à la génération précédente. [Démo en ligne](https://aistudio.baidu.com/community/app/91660/webUI)
 
 - Solution d'analyse de documents générique [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md) : Fournit une analyse de haute précision des PDF multi-mises en page et multi-scènes, surpassant de nombreuses solutions open-source et propriétaires sur les benchmarks publics. [Démo en ligne](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- Solution de compréhension de documents intelligente [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md) : Nativement propulsé par le grand modèle WenXin 4.5T, atteignant une précision supérieure de 15 points de pourcentage à celle de son prédécesseur. [Démo en ligne](https://aistudio.baidu.com/community/app/518493/webUI)
+- Solution de compréhension de documents intelligente [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md) : Nativement propulsé par le grand modèle ERNIE 4.5 Turbo, atteignant une précision supérieure de 15 points de pourcentage à celle de son prédécesseur. [Démo en ligne](https://aistudio.baidu.com/community/app/518493/webUI)
 
 En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 propose également des outils conviviaux couvrant l'entraînement de modèles, l'inférence et le déploiement de services, afin que les développeurs puissent rapidement mettre en production des applications d'IA.
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch.png" alt="Architecture de PaddleOCR"></a>
+      <img width="100%" src="./docs/images/Arch.png" alt="Architecture de PaddleOCR">
   </p>
 </div>
 
@@ -63,7 +63,7 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 
 - **PP-ChatOCRv4** : Compréhension intelligente de documents – Extrayez des informations clés, pas seulement du texte, à partir d'images/PDF.
    1. 🔥 **Gain de précision de 15 points** dans l'extraction d'informations clés sur les fichiers PDF/PNG/JPG par rapport à la génération précédente.
-   2. 💻 Prise en charge native de **ERNIE4.5 Turbo**, avec une compatibilité pour les déploiements de grands modèles via PaddleNLP, Ollama, vLLM, et plus encore.
+   2. 💻 Prise en charge native de **ERNIE 4.5 Turbo**, avec une compatibilité pour les déploiements de grands modèles via PaddleNLP, Ollama, vLLM, et plus encore.
    3. 🤝 Intégration de [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2), permettant l'extraction et la compréhension de texte imprimé, d'écriture manuscrite, de sceaux, de tableaux, de graphiques et d'autres éléments courants dans les documents complexes.
 
 <details>
@@ -115,6 +115,7 @@ paddleocr ocr --help
 **4.1 Exemple PP-OCRv5**
 ```python
 # Initialiser l'instance de PaddleOCR
+from paddleocr import PaddleOCR
 ocr = PaddleOCR(
     use_doc_orientation_classify=False,
     use_doc_unwarping=False,
@@ -138,14 +139,15 @@ for res in result:
 from pathlib import Path
 from paddleocr import PPStructureV3
 
-pipeline = PPStructureV3()
+pipeline = PPStructureV3(
+    use_doc_orientation_classify=False,
+    use_doc_unwarping=False
+)
 
 # Pour une image
 output = pipeline.predict(
     input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False
-    )
+)
 
 # Visualiser les résultats et sauvegarder les résultats JSON
 for res in output:
@@ -192,7 +194,7 @@ visual_predict_res = pipeline.visual_predict(
 
 mllm_predict_info = None
 use_mllm = False
-# Si un grand modèle multimodal est utilisé, le service mllm local doit être démarré. Vous pouvez vous référer à la documentation : https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.md pour effectuer le déploiement et mettre à jour la configuration mllm_chat_bot_config.
+# Si un grand modèle multimodal est utilisé, le service mllm local doit être démarré. Vous pouvez vous référer à la documentation : https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.en.md pour effectuer le déploiement et mettre à jour la configuration mllm_chat_bot_config.
 if use_mllm:
     mllm_chat_bot_config = {
         "module_name": "chat_bot",
@@ -230,10 +232,6 @@ print(chat_result)
 
 </details>
 
-### 5. Accélérateurs d'IA nationaux
-- [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
-- [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
-
 ## ⛰️ Tutoriels avancés
 - [Tutoriel PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [Tutoriel PP-StructureV3](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
@@ -243,13 +241,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/demo.gif" alt="Démo PP-OCRv5"></a>
+     <img width="100%" src="./docs/images/demo.gif" alt="Démo PP-OCRv5">
   </p>
 </div>
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/blue_v3.gif" alt="Démo PP-StructureV3"></a>
+     <img width="100%" src="./docs/images/blue_v3.gif" alt="Démo PP-StructureV3">
   </p>
 </div>
 
