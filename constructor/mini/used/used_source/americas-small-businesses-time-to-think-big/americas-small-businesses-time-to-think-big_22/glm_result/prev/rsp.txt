@@ -1,0 +1,26 @@
+这张图片展示了美国各州和主要都市统计区中小微企业（MSME）在收入和就业方面的贡献。图片分为两部分，分别展示了各州和前40个都市统计区的情况。
+
+### 上半部分：各州情况
+- **标题**：Micro-, small, and medium-size enterprises play a sizable role across all US states and metropolitan statistical areas, but with variation.
+- **图表类型**：散点图
+- **坐标轴**：
+  - 横轴：Share of employment, %（就业份额，%）
+  - 纵轴：Share of receipts, %（收入份额，%）
+- **数据点**：各州以不同颜色表示，代表不同的地区（东北、西部、南部、中西部）。
+- **平均线**：虚线表示美国平均水平的就业份额和收入份额。
+
+### 下半部分：前40个都市统计区情况
+- **标题**：MSME business sector receipts and employment, by region
+- **图表类型**：散点图
+- **坐标轴**：
+  - 横轴：Share of employment, %（就业份额，%）
+  - 纵轴：Share of receipts, %（收入份额，%）
+- **数据点**：前40个都市统计区以不同颜色表示，代表不同的地区。
+- **平均线**：虚线表示美国平均水平的就业份额和收入份额。
+
+### 其他信息
+- **数据来源**：McKinsey Global Institute analysis
+- **数据年份**：2017年
+- **分析排除**：农业、金融和保险、房地产、公共管理和国防、教育、人类健康和社会工作、娱乐、家庭活动、外星组织等行业的分析被排除。
+
+这张图片提供了关于美国中小微企业在不同地区和都市统计区的重要经济贡献的详细视图，并展示了这些贡献的多样性。

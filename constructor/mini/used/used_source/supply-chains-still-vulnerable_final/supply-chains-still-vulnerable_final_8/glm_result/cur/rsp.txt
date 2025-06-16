@@ -1,0 +1,23 @@
+这是一张来自麦肯锡公司（McKinsey & Company）的图片，标题为“Interest is rising in AI-based supply chain tools, especially for demand planning.”（对基于AI的供应链工具的兴趣正在上升，特别是在需求规划方面）。图片中包含一个图表，展示了不同供应链领域对高级数字和AI工具的兴趣百分比。
+
+图表分为三个主要部分：
+1. **Planning and scheduling（规划和调度）**：
+   - 需求规划（Demand planning）：74%
+   - 库存优化（Inventory optimization）：57%
+   - 生产与物料规划（Production and material planning）：49%
+   - S&OP/BP（销售与运营计划/业务计划）：48%
+   - 配送规划（Distribution planning）：36%
+
+2. **Risk and transparency（风险和透明度）**：
+   - 端到端供应链可见性（End-to-end supply chain visibility）：55%
+   - 风险评估和模拟（Risk assessment and simulation）：52%
+   - 早期预警系统（Early-warning system）：33%
+   - 运输管理（Transport management）：33%
+   - 网络建模（Network modeling）：26%
+
+3. **Network and logistics（网络和物流）**：
+   - 仓库管理（Warehouse management）：36%
+   - 网络建模（Network modeling）：35%
+   - 运输管理（Transport management）：26%
+
+图表下方有注释，说明调查的来源和日期。整体来看，这张图片展示了供应链领域对AI工具的兴趣，特别是在需求规划方面的应用。

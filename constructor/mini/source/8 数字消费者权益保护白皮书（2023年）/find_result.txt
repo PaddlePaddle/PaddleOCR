@@ -1,0 +1,6 @@
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_21/8 数字消费者权益保护白皮书（2023年）_21/[90, 75, 503, 240]_0.jpg'
+img_description_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_21/8 数字消费者权益保护白皮书（2023年）_21/glm_result/sub/[90, 75, 503, 240]_0.jpg/rsp.txt'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_18/8 数字消费者权益保护白皮书（2023年）_18/[83, 73, 509, 286]_0.jpg'
+img_description_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_18/8 数字消费者权益保护白皮书（2023年）_18/glm_result/sub/[83, 73, 509, 286]_0.jpg/rsp.txt'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_34/8 数字消费者权益保护白皮书（2023年）_34/[82, 67, 509, 291]_0.jpg'
+img_description_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/8 数字消费者权益保护白皮书（2023年）/8 数字消费者权益保护白皮书（2023年）_34/8 数字消费者权益保护白皮书（2023年）_34/glm_result/sub/[82, 67, 509, 291]_0.jpg/rsp.txt'
