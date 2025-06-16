@@ -1668,8 +1668,7 @@ MKL-DNN 缓存容量。
 <details>
 <summary>Python</summary>
 
-<pre><code class="language-python">
-import base64
+<pre><code class="language-python">import base64
 import requests
 
 API_URL = "http://localhost:8080/ocr"
@@ -1691,6 +1690,385 @@ for i, res in enumerate(result["ocrResults"]):
     with open(ocr_img_path, "wb") as f:
         f.write(base64.b64decode(res["ocrImage"]))
     print(f"Output image saved at {ocr_img_path}")
+</code></pre></details>
+
+<details><summary>C++</summary>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include "cpp-httplib/httplib.h" // https://github.com/Huiyicc/cpp-httplib
+#include "nlohmann/json.hpp" // https://github.com/nlohmann/json
+#include "base64.hpp" // https://github.com/tobiaslocker/base64
+
+int main() {
+    httplib::Client client("localhost", 8080);  
+    const std::string filePath = "./demo.jpg"; 
+
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file) {
+        std::cerr << "Error opening file." << std::endl;
+        return 1;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    std::vector<char> buffer(size);
+
+    if (!file.read(buffer.data(), size)) {
+        std::cerr << "Error reading file." << std::endl;
+        return 1;
+    }
+
+    std::string bufferStr(buffer.data(), static_cast<size_t>(size));
+    std::string encodedFile = base64::to_base64(bufferStr);
+
+
+    nlohmann::json jsonObj;
+    jsonObj["file"] = encodedFile;
+    jsonObj["fileType"] = 1;  
+
+    auto response = client.Post("/ocr", jsonObj.dump(), "application/json");
+
+    if (response && response->status == 200) {
+        nlohmann::json jsonResponse = nlohmann::json::parse(response->body);
+        auto result = jsonResponse["result"];
+
+        if (!result.is_object() || !result["ocrResults"].is_array()) {
+            std::cerr << "Unexpected response structure." << std::endl;
+            return 1;
+        }
+
+        for (size_t i = 0; i < result["ocrResults"].size(); ++i) {
+            auto ocrResult = result["ocrResults"][i];
+            std::cout << ocrResult["prunedResult"] << std::endl;
+
+            std::string ocrImgPath = "ocr_" + std::to_string(i) + ".jpg";
+            std::string encodedImage = ocrResult["ocrImage"];
+            std::string decodedImage = base64::from_base64(encodedImage);
+
+            std::ofstream outputImage(ocrImgPath, std::ios::binary);
+            if (outputImage.is_open()) {
+                outputImage.write(decodedImage.c_str(), static_cast<std::streamsize>(decodedImage.size()));
+                outputImage.close();
+                std::cout << "Output image saved at " << ocrImgPath << std::endl;
+            } else {
+                std::cerr << "Unable to open file for writing: " << ocrImgPath << std::endl;
+            }
+        }
+    } else {
+        std::cerr << "Failed to send HTTP request." << std::endl;
+        if (response) {
+            std::cerr << "HTTP status code: " << response->status << std::endl;
+            std::cerr << "Response body: " << response->body << std::endl;
+        }
+        return 1;
+    }
+
+    return 0;
+}
+</code></pre></details>
+
+<details><summary>Java</summary>
+
+<pre><code class="language-java">import okhttp3.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        String API_URL = "http://localhost:8080/ocr"; 
+        String imagePath = "./demo.jpg"; 
+
+        File file = new File(imagePath);
+        byte[] fileContent = java.nio.file.Files.readAllBytes(file.toPath());
+        String base64Image = Base64.getEncoder().encodeToString(fileContent);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode payload = objectMapper.createObjectNode();
+        payload.put("file", base64Image); 
+        payload.put("fileType", 1); 
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+	RequestBody body = RequestBody.create(JSON, payload.toString());
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JsonNode root = objectMapper.readTree(responseBody);
+                JsonNode result = root.get("result");
+
+                JsonNode ocrResults = result.get("ocrResults");
+                for (int i = 0; i < ocrResults.size(); i++) {
+                    JsonNode item = ocrResults.get(i);
+
+                    JsonNode prunedResult = item.get("prunedResult");
+                    System.out.println("Pruned Result [" + i + "]: " + prunedResult.toString());
+
+                    String ocrImageBase64 = item.get("ocrImage").asText();
+                    byte[] ocrImageBytes = Base64.getDecoder().decode(ocrImageBase64);
+                    String ocrImgPath = "ocr_result_" + i + ".jpg";
+                    try (FileOutputStream fos = new FileOutputStream(ocrImgPath)) {
+                        fos.write(ocrImageBytes);
+                        System.out.println("Saved OCR image to: " + ocrImgPath);
+                    }
+                }
+            } else {
+                System.err.println("Request failed with HTTP code: " + response.code());
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Go</summary>
+
+<pre><code class="language-go">package main
+
+import (
+    "bytes"
+    "encoding/base64"
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+func main() {
+    API_URL := "http://localhost:8080/ocr"
+    filePath := "./demo.jpg"
+
+    fileBytes, err := ioutil.ReadFile(filePath)
+    if err != nil {
+        fmt.Printf("Error reading file: %v\n", err)
+        return
+    }
+    fileData := base64.StdEncoding.EncodeToString(fileBytes)
+
+    payload := map[string]interface{}{
+        "file":     fileData,
+        "fileType": 1,
+    }
+    payloadBytes, err := json.Marshal(payload)
+    if err != nil {
+        fmt.Printf("Error marshaling payload: %v\n", err)
+        return
+    }
+
+    client := &http.Client{}
+    req, err := http.NewRequest("POST", API_URL, bytes.NewBuffer(payloadBytes))
+    if err != nil {
+        fmt.Printf("Error creating request: %v\n", err)
+        return
+    }
+    req.Header.Set("Content-Type", "application/json")
+
+    res, err := client.Do(req)
+    if err != nil {
+        fmt.Printf("Error sending request: %v\n", err)
+        return
+    }
+    defer res.Body.Close()
+
+    if res.StatusCode != http.StatusOK {
+        fmt.Printf("Unexpected status code: %d\n", res.StatusCode)
+        return
+    }
+
+    body, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body: %v\n", err)
+        return
+    }
+
+    type OcrResult struct {
+        PrunedResult map[string]interface{} `json:"prunedResult"` 
+        OcrImage     *string                `json:"ocrImage"`     
+    }
+
+    type Response struct {
+        Result struct {
+            OcrResults []OcrResult `json:"ocrResults"`
+            DataInfo   interface{} `json:"dataInfo"` 
+        } `json:"result"`
+    }
+
+    var respData Response
+    if err := json.Unmarshal(body, &respData); err != nil {
+        fmt.Printf("Error unmarshaling response: %v\n", err)
+        return
+    }
+
+    for i, res := range respData.Result.OcrResults {
+        
+        if res.OcrImage != nil {
+            imgBytes, err := base64.StdEncoding.DecodeString(*res.OcrImage)
+            if err != nil {
+                fmt.Printf("Error decoding image %d: %v\n", i, err)
+                continue
+            }
+            
+            filename := fmt.Sprintf("ocr_%d.jpg", i)
+            if err := ioutil.WriteFile(filename, imgBytes, 0644); err != nil {
+                fmt.Printf("Error saving image %s: %v\n", filename, err)
+                continue
+            }
+            fmt.Printf("Output image saved at %s\n", filename)
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>C#</summary>
+
+<pre><code class="language-csharp">using System;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+class Program
+{
+    static readonly string API_URL = "http://localhost:8080/ocr";
+    static readonly string inputFilePath = "./demo.jpg";
+
+    static async Task Main(string[] args)
+    {
+        var httpClient = new HttpClient();
+
+        byte[] fileBytes = File.ReadAllBytes(inputFilePath);
+        string fileData = Convert.ToBase64String(fileBytes);
+
+        var payload = new JObject
+        {
+            { "file", fileData },
+            { "fileType", 1 }
+        };
+        var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response = await httpClient.PostAsync(API_URL, content);
+        response.EnsureSuccessStatusCode();
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+        JObject jsonResponse = JObject.Parse(responseBody);
+
+        JArray ocrResults = (JArray)jsonResponse["result"]["ocrResults"];
+        for (int i = 0; i < ocrResults.Count; i++)
+        {
+            var res = ocrResults[i];
+            Console.WriteLine($"[{i}] prunedResult:\n{res["prunedResult"]}");
+
+            string base64Image = res["ocrImage"]?.ToString();
+            if (!string.IsNullOrEmpty(base64Image))
+            {
+                string outputPath = $"ocr_{i}.jpg";
+                byte[] imageBytes = Convert.FromBase64String(base64Image);
+                File.WriteAllBytes(outputPath, imageBytes);
+                Console.WriteLine($"OCR image saved to {outputPath}");
+            }
+            else
+            {
+                Console.WriteLine($"OCR image at index {i} is null.");
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Node.js</summary>
+
+<pre><code class="language-js">const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+const API_URL = 'http://localhost:8080/layout-parsing';
+const imagePath = './demo.jpg';  
+const fileType = 1;             
+
+function encodeImageToBase64(filePath) {
+  const bitmap = fs.readFileSync(filePath);
+  return Buffer.from(bitmap).toString('base64');
+}
+
+const payload = {
+  file: encodeImageToBase64(imagePath),
+  fileType: fileType
+};
+
+axios.post(API_URL, payload)
+  .then(response => {
+    const results = response.data.result.layoutParsingResults;
+    results.forEach((res, index) => {
+      console.log(`\n[${index}] prunedResult:`);
+      console.log(res.prunedResult);
+
+      const outputImages = res.outputImages;
+      if (outputImages) {
+        Object.entries(outputImages).forEach(([imgName, base64Img]) => {
+          const imgPath = `${imgName}_${index}.jpg`;
+          fs.writeFileSync(imgPath, Buffer.from(base64Img, 'base64'));
+          console.log(`Output image saved at ${imgPath}`);
+        });
+      } else {
+        console.log(`[${index}] No outputImages.`);
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Error during API request:', error.message || error);
+  });
+</code></pre></details>
+
+<details><summary>PHP</summary>
+
+<pre><code class="language-php">&lt;?php
+
+$API_URL = "http://localhost:8080/ocr"; 
+$image_path = "./demo.jpg"; 
+
+$image_data = base64_encode(file_get_contents($image_path));
+$payload = array(
+    "file" => $image_data,
+    "fileType" => 1 
+);
+
+$ch = curl_init($API_URL);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true)["result"]["ocrResults"];
+
+foreach ($result as $i => $item) {
+    echo "[$i] prunedResult:\n";
+    print_r($item["prunedResult"]);
+
+    if (!empty($item["ocrImage"])) {
+        $output_img_path = "ocr_{$i}.jpg";
+        file_put_contents($output_img_path, base64_decode($item["ocrImage"]));
+        echo "OCR image saved at $output_img_path\n";
+    } else {
+        echo "No ocrImage found for item $i\n";
+    }
+}
+?&gt;
 </code></pre></details>
 </details>
 
