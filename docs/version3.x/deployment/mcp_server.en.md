@@ -83,23 +83,23 @@ In the Host's configuration file (e.g., `claude_desktop_config.json`), you need 
 You can configure the MCP server to run in different modes based on your needs.
 
 #### Mode 1: AI Studio Service (`aistudio`)
-
 This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
+
 - **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
 - **Procedure**: Please refer to [2. Quick Start](#2-quick-start).
 - In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.
 
 #### Mode 2: Local Python Library (`local`)
-
 This mode runs the model directly on your local machine and has certain requirements for the local environment and computer performance. It relies on the installed `paddleocr` inference package.
+
 - **Use Case**: Suitable for offline usage and scenarios with strict data privacy requirements.
 - **Procedure**:
     1.  Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
     2.  Refer to [5.2 Local Python Library Configuration](#52-local-python-library-configuration) to modify the `claude_desktop_config.json` file.
 
 #### Mode 3: Self-hosted Service (`self_hosted`)
-
 This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the **Serving** solutions provided by PaddleX.
+
 - **Use Case**: Offers the advantages of service-oriented deployment and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.
 - **Procedure**:
     1.  Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*.
