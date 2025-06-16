@@ -83,23 +83,23 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 您可以根据需求配置 MCP 服务器，使其运行在不同的工作模式。
 
 #### 模式一：托管在星河社区的服务 (`aistudio`)
-
 此模式调用 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 的服务。
+
 - **适用场景**：适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
 - **操作流程**：请参考 [2. 快速开始](#2-快速开始)。
 - 除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。
 
 #### 模式二：本地 Python 库 (`local`)
-
 此模式直接在本地计算机上运行模型，对本地环境与计算机性能有一定要求。
+
 - **适用场景**：需要离线使用、对数据隐私有严格要求的场景。
 - **操作流程**：
     1. 参考 [PaddleOCR 安装文档](../installation.md) 安装 *飞桨框架* 和 *PaddleOCR*。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
     2. 参考 [配置示例](#52-本地-python-库配置) 更改 `claude_desktop_config.json` 文件内容。
 
 #### 模式三：自托管服务 (`self_hosted`)
-
 此模式调用您自行部署的 PaddleOCR 推理服务。
+
 - **适用场景**：具备服务化部署优势及高度灵活性，较适合生产环境，尤其是适用于需要自定义服务配置的场景。
 - **操作流程**：
     1. 参考 [PaddleOCR 安装文档](../installation.md) 安装 *飞桨框架* 和 *PaddleOCR*。
