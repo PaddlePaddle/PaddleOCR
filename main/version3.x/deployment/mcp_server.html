@@ -3466,24 +3466,34 @@ You're not viewing the latest version.
 <h3 id="32">3.2. 工作模式详解<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
 <p>您可以根据需求配置 MCP 服务器，使其运行在不同的工作模式。</p>
 <h4 id="aistudio">模式一：托管在星河社区的服务 (<code>aistudio</code>)<a class="headerlink" href="#aistudio" title="Permanent link">&para;</a></h4>
-<p>此模式调用 <a href="https://aistudio.baidu.com/pipeline/mine">飞桨星河社区</a> 的服务。
-- <strong>适用场景</strong>：适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
-- <strong>操作流程</strong>：请参考 <a href="#2-快速开始">2. 快速开始</a>。
-- 除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。</p>
+<p>此模式调用 <a href="https://aistudio.baidu.com/pipeline/mine">飞桨星河社区</a> 的服务。</p>
+<ul>
+<li><strong>适用场景</strong>：适合快速体验功能、快速验证方案等，也适用于零代码开发场景。</li>
+<li><strong>操作流程</strong>：请参考 <a href="#2-快速开始">2. 快速开始</a>。</li>
+<li>除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。</li>
+</ul>
 <h4 id="python-local">模式二：本地 Python 库 (<code>local</code>)<a class="headerlink" href="#python-local" title="Permanent link">&para;</a></h4>
-<p>此模式直接在本地计算机上运行模型，对本地环境与计算机性能有一定要求。
-- <strong>适用场景</strong>：需要离线使用、对数据隐私有严格要求的场景。
-- <strong>操作流程</strong>：
-    1. 参考 <a href="../installation.html">PaddleOCR 安装文档</a> 安装 <em>飞桨框架</em> 和 <em>PaddleOCR</em>。为避免依赖冲突，<strong>强烈建议在独立的虚拟环境中安装</strong>。
-    2. 参考 <a href="#52-本地-python-库配置">配置示例</a> 更改 <code>claude_desktop_config.json</code> 文件内容。</p>
+<p>此模式直接在本地计算机上运行模型，对本地环境与计算机性能有一定要求。</p>
+<ul>
+<li><strong>适用场景</strong>：需要离线使用、对数据隐私有严格要求的场景。</li>
+<li><strong>操作流程</strong>：<ol>
+<li>参考 <a href="../installation.html">PaddleOCR 安装文档</a> 安装 <em>飞桨框架</em> 和 <em>PaddleOCR</em>。为避免依赖冲突，<strong>强烈建议在独立的虚拟环境中安装</strong>。</li>
+<li>参考 <a href="#52-本地-python-库配置">配置示例</a> 更改 <code>claude_desktop_config.json</code> 文件内容。</li>
+</ol>
+</li>
+</ul>
 <h4 id="self_hosted">模式三：自托管服务 (<code>self_hosted</code>)<a class="headerlink" href="#self_hosted" title="Permanent link">&para;</a></h4>
-<p>此模式调用您自行部署的 PaddleOCR 推理服务。
-- <strong>适用场景</strong>：具备服务化部署优势及高度灵活性，较适合生产环境，尤其是适用于需要自定义服务配置的场景。
-- <strong>操作流程</strong>：
-    1. 参考 <a href="../installation.html">PaddleOCR 安装文档</a> 安装 <em>飞桨框架</em> 和 <em>PaddleOCR</em>。
-    2. 参考 <a href="serving.html">PaddleOCR 服务化部署文档</a> 运行服务器。
-    3. 参考 <a href="#53-自托管服务配置">配置示例</a> 更改 <code>claude_desktop_config.json</code> 文件内容。
-    4. 将您的服务地址填入 <code>PADDLEOCR_MCP_SERVER_URL</code> (例如：<code>"http://127.0.0.1:8000"</code>)。</p>
+<p>此模式调用您自行部署的 PaddleOCR 推理服务。</p>
+<ul>
+<li><strong>适用场景</strong>：具备服务化部署优势及高度灵活性，较适合生产环境，尤其是适用于需要自定义服务配置的场景。</li>
+<li><strong>操作流程</strong>：<ol>
+<li>参考 <a href="../installation.html">PaddleOCR 安装文档</a> 安装 <em>飞桨框架</em> 和 <em>PaddleOCR</em>。</li>
+<li>参考 <a href="serving.html">PaddleOCR 服务化部署文档</a> 运行服务器。</li>
+<li>参考 <a href="#53-自托管服务配置">配置示例</a> 更改 <code>claude_desktop_config.json</code> 文件内容。</li>
+<li>将您的服务地址填入 <code>PADDLEOCR_MCP_SERVER_URL</code> (例如：<code>"http://127.0.0.1:8000"</code>)。</li>
+</ol>
+</li>
+</ul>
 <h2 id="4">4. 参数参考<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
 <p>您可以通过环境变量或命令行参数来控制服务器的行为。</p>
 <table>
@@ -3664,7 +3674,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月14日 11:36:55 UTC">2025年6月14日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月16日 03:10:59 UTC">2025年6月16日</span>
   </span>
 
     
@@ -3674,7 +3684,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月14日 11:36:55 UTC">2025年6月14日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月16日 03:10:59 UTC">2025年6月16日</span>
   </span>
 
     
