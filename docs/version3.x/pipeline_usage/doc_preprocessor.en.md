@@ -769,6 +769,404 @@ for i, res in enumerate(result["docPreprocessingResults"]):
         f.write(base64.b64decode(res["outputImage"]))
     print(f"Output image saved at {output_img_path}")
 </code></pre></details>
+
+<details><summary>C++</summary>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include "cpp-httplib/httplib.h" // https://github.com/Huiyicc/cpp-httplib
+#include "nlohmann/json.hpp" // https://github.com/nlohmann/json
+#include "base64.hpp" // https://github.com/tobiaslocker/base64
+
+int main() {
+
+    httplib::Client client("localhost", 8080);
+    const std::string filePath = "./demo.jpg";
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file) {
+        std::cerr << "Error opening file: " << filePath << std::endl;
+        return 1;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    std::vector<char> buffer(size);
+    if (!file.read(buffer.data(), size)) {
+        std::cerr << "Error reading file." << std::endl;
+        return 1;
+    }
+
+    std::string bufferStr(buffer.data(), static_cast<size_t>(size));
+    std::string encodedFile = base64::to_base64(bufferStr);
+
+    nlohmann::json jsonObj;
+    jsonObj["file"] = encodedFile;
+    jsonObj["fileType"] = 1;
+
+    auto response = client.Post("/document-preprocessing", jsonObj.dump(), "application/json");
+
+    if (response && response->status == 200) {
+        nlohmann::json jsonResponse = nlohmann::json::parse(response->body);
+        auto result = jsonResponse["result"];
+
+        if (!result.is_object() || !result["docPreprocessingResults"].is_array()) {
+            std::cerr << "Unexpected response format." << std::endl;
+            return 1;
+        }
+
+        for (size_t i = 0; i < result["docPreprocessingResults"].size(); ++i) {
+            auto res = result["docPreprocessingResults"][i];
+
+            if (res.contains("prunedResult")) {
+                std::cout << "Preprocessed result: " << res["prunedResult"].dump() << std::endl;
+            }
+
+            if (res.contains("outputImage")) {
+                std::string outputImgPath = "out_" + std::to_string(i) + ".png";
+                std::string decodedImage = base64::from_base64(res["outputImage"].get<std::string>());
+
+                std::ofstream outFile(outputImgPath, std::ios::binary);
+                if (outFile.is_open()) {
+                    outFile.write(decodedImage.c_str(), decodedImage.size());
+                    outFile.close();
+                    std::cout << "Saved image: " << outputImgPath << std::endl;
+                } else {
+                    std::cerr << "Failed to write image: " << outputImgPath << std::endl;
+                }
+            }
+        }
+    } else {
+        std::cerr << "Request failed." << std::endl;
+        if (response) {
+            std::cerr << "HTTP status: " << response->status << std::endl;
+            std::cerr << "Response body: " << response->body << std::endl;
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
+</code></pre></details>
+
+<details><summary>Java</summary>
+
+<pre><code class="language-java">import okhttp3.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        String API_URL = "http://localhost:8080/document-preprocessing";
+        String imagePath = "./demo.jpg";
+
+        File file = new File(imagePath);
+        byte[] fileContent = java.nio.file.Files.readAllBytes(file.toPath());
+        String base64Image = Base64.getEncoder().encodeToString(fileContent);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode payload = objectMapper.createObjectNode();
+        payload.put("file", base64Image);
+        payload.put("fileType", 1);
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, payload.toString());
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JsonNode root = objectMapper.readTree(responseBody);
+                JsonNode result = root.get("result");
+
+                JsonNode docPreprocessingResults = result.get("docPreprocessingResults");
+                for (int i = 0; i < docPreprocessingResults.size(); i++) {
+                    JsonNode item = docPreprocessingResults.get(i);
+                    int finalI = i;
+
+                    JsonNode prunedResult = item.get("prunedResult");
+                    System.out.println("Pruned Result [" + i + "]: " + prunedResult.toString());
+
+                    String outputImgBase64 = item.get("outputImage").asText();
+                    byte[] outputImgBytes = Base64.getDecoder().decode(outputImgBase64);
+                    String outputImgPath = "out_" + finalI + ".png";
+                    try (FileOutputStream fos = new FileOutputStream(outputImgPath)) {
+                        fos.write(outputImgBytes);
+                        System.out.println("Saved output image: " + outputImgPath);
+                    }
+
+                    JsonNode inputImageNode = item.get("inputImage");
+                    if (inputImageNode != null && !inputImageNode.isNull()) {
+                        String inputImageBase64 = inputImageNode.asText();
+                        byte[] inputImageBytes = Base64.getDecoder().decode(inputImageBase64);
+                        String inputImgPath = "inputImage_" + i + ".jpg";
+                        try (FileOutputStream fos = new FileOutputStream(inputImgPath)) {
+                            fos.write(inputImageBytes);
+                            System.out.println("Saved input image to: " + inputImgPath);
+                        }
+                    }
+                }
+            } else {
+                System.err.println("Request failed with HTTP code: " + response.code());
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Go</summary>
+
+<pre><code class="language-go">package main
+
+import (
+    "bytes"
+    "encoding/base64"
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+    "os"
+)
+
+func main() {
+    API_URL := "http://localhost:8080/document-preprocessing"
+    filePath := "./demo.jpg"
+
+    fileBytes, err := ioutil.ReadFile(filePath)
+    if err != nil {
+        fmt.Printf("Error reading file: %v\n", err)
+        return
+    }
+    fileData := base64.StdEncoding.EncodeToString(fileBytes)
+
+    payload := map[string]interface{}{
+        "file":     fileData,
+        "fileType": 1,
+    }
+    payloadBytes, err := json.Marshal(payload)
+    if err != nil {
+        fmt.Printf("Error marshaling payload: %v\n", err)
+        return
+    }
+
+    client := &http.Client{}
+    req, err := http.NewRequest("POST", API_URL, bytes.NewBuffer(payloadBytes))
+    if err != nil {
+        fmt.Printf("Error creating request: %v\n", err)
+        return
+    }
+    req.Header.Set("Content-Type", "application/json")
+
+    res, err := client.Do(req)
+    if err != nil {
+        fmt.Printf("Error sending request: %v\n", err)
+        return
+    }
+    defer res.Body.Close()
+
+    if res.StatusCode != http.StatusOK {
+        fmt.Printf("Unexpected status code: %d\n", res.StatusCode)
+        return
+    }
+
+    body, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body: %v\n", err)
+        return
+    }
+
+    type DocPreprocessingResult struct {
+        PrunedResult         map[string]interface{} `json:"prunedResult"`
+        OutputImage          string                 `json:"outputImage"`
+        DocPreprocessingImage *string               `json:"docPreprocessingImage"`
+        InputImage           *string                `json:"inputImage"`
+    }
+
+    type Response struct {
+        Result struct {
+            DocPreprocessingResults []DocPreprocessingResult `json:"docPreprocessingResults"`
+            DataInfo                interface{}              `json:"dataInfo"`
+        } `json:"result"`
+    }
+
+    var respData Response
+    if err := json.Unmarshal(body, &respData); err != nil {
+        fmt.Printf("Error unmarshaling response: %v\n", err)
+        return
+    }
+
+    for i, res := range respData.Result.DocPreprocessingResults {
+        fmt.Printf("Result %d - prunedResult: %+v\n", i, res.PrunedResult)
+
+        imgBytes, err := base64.StdEncoding.DecodeString(res.OutputImage)
+        if err != nil {
+            fmt.Printf("Error decoding outputImage at index %d: %v\n", i, err)
+            continue
+        }
+
+        filename := fmt.Sprintf("out_%d.png", i)
+        if err := os.WriteFile(filename, imgBytes, 0644); err != nil {
+            fmt.Printf("Error saving image %s: %v\n", filename, err)
+            continue
+        }
+        fmt.Printf("Saved output image to %s\n", filename)
+    }
+}
+</code></pre></details>
+
+<details><summary>C#</summary>
+
+<pre><code class="language-csharp">using System;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+class Program
+{
+    static readonly string API_URL = "http://localhost:8080/document-preprocessing";
+    static readonly string inputFilePath = "./demo.jpg";
+
+    static async Task Main(string[] args)
+    {
+        var httpClient = new HttpClient();
+
+        byte[] fileBytes = File.ReadAllBytes(inputFilePath);
+        string fileData = Convert.ToBase64String(fileBytes);
+
+        var payload = new JObject
+        {
+            { "file", fileData },
+            { "fileType", 1 }
+        };
+        var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response = await httpClient.PostAsync(API_URL, content);
+        response.EnsureSuccessStatusCode();
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+        JObject jsonResponse = JObject.Parse(responseBody);
+
+        JArray docPreResults = (JArray)jsonResponse["result"]["docPreprocessingResults"];
+        for (int i = 0; i < docPreResults.Count; i++)
+        {
+            var res = docPreResults[i];
+            Console.WriteLine($"[{i}] prunedResult:\n{res["prunedResult"]}");
+
+            string base64Image = res["outputImage"]?.ToString();
+            if (!string.IsNullOrEmpty(base64Image))
+            {
+                string outputPath = $"out_{i}.png";
+                byte[] imageBytes = Convert.FromBase64String(base64Image);
+                File.WriteAllBytes(outputPath, imageBytes);
+                Console.WriteLine($"Output image saved at {outputPath}");
+            }
+            else
+            {
+                Console.WriteLine($"outputImage at index {i} is null.");
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Node.js</summary>
+
+<pre><code class="language-js">const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+const API_URL = 'http://localhost:8080/document-preprocessing';
+const imagePath = './demo.jpg';
+
+function encodeImageToBase64(filePath) {
+  const bitmap = fs.readFileSync(filePath);
+  return Buffer.from(bitmap).toString('base64');
+}
+
+const payload = {
+  file: encodeImageToBase64(imagePath),
+  fileType: 1
+};
+
+axios.post(API_URL, payload, {
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  maxBodyLength: Infinity
+})
+.then((response) => {
+  const results = response.data.result.docPreprocessingResults;
+
+  results.forEach((res, index) => {
+    console.log(`\n[${index}] prunedResult:`);
+    console.log(res.prunedResult);
+
+    const base64Image = res.outputImage;
+    if (base64Image) {
+      const outputImagePath = `out_${index}.png`;
+      const imageBuffer = Buffer.from(base64Image, 'base64');
+      fs.writeFileSync(outputImagePath, imageBuffer);
+      console.log(`Output image saved at ${outputImagePath}`);
+    } else {
+      console.log(`outputImage at index ${index} is null.`);
+    }
+  });
+})
+.catch((error) => {
+  console.error('API error:', error.message);
+});
+</code></pre></details>
+
+<details><summary>PHP</summary>
+
+<pre><code class="language-php">&lt;?php
+
+$API_URL = "http://localhost:8080/document-preprocessing";
+$image_path = "./demo.jpg";
+$output_image_path = "./out_0.png";
+
+$image_data = base64_encode(file_get_contents($image_path));
+$payload = array("file" => $image_data, "fileType" => 1);
+
+$ch = curl_init($API_URL);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true)["result"]["docPreprocessingResults"];
+
+foreach ($result as $i => $item) {
+    echo "[$i] prunedResult:\n";
+    print_r($item["prunedResult"]);
+
+    if (!empty($item["outputImage"])) {
+        $output_image_path = "out_" . $i . ".png";
+        file_put_contents($output_image_path, base64_decode($item["outputImage"]));
+        echo "Output image saved at $output_image_path\n";
+    } else {
+        echo "No outputImage found for item $i\n";
+    }
+}
+?&gt;
+</code></pre></details>
 </details>
 <br/>
 
