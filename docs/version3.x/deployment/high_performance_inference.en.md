@@ -20,7 +20,7 @@ paddleocr install_hpi_deps {device_type}
 The supported device types are:
 
 - `cpu`: For CPU-only inference. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12.
-- `gpu`: For inference using either CPU or NVIDIA GPU. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12. Refer to the next subsection for detailed instructions.
+- `gpu`: For inference using either CPU or NVIDIA GPU. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12. If you want to use the full high-performance inference capabilities, you also need to ensure that a compatible version of TensorRT is installed in your environment. Refer to the next subsection for detailed instructions.
 
 Only one type of device dependency should exist in the same environment. For Windows systems, it is currently recommended to install within a Docker container or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) environment.
 
@@ -48,7 +48,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-Secondly, ensure that the environment has the required TensorRT version installed. Currently, PaddleOCR only supports TensorRT 8.6.1.6. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:
+Secondly, it is recommended to ensure that a compatible version of TensorRT is installed in the environment; otherwise, the Paddle Inference TensorRT subgraph engine will be unavailable, and the program may not achieve optimal inference performance. Currently, PaddleOCR only supports TensorRT 8.6.1.6. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl

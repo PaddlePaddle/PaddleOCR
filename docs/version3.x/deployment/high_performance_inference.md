@@ -20,7 +20,7 @@ paddleocr install_hpi_deps {设备类型}
 支持的设备类型包括：
 
 - `cpu`：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。
-- `gpu`：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。
+- `gpu`：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。如果希望使用完整的高性能推理功能，还需要确保环境中安装有符合要求的 TensorRT。请查看下一小节的详细说明。
 
 同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。
 
@@ -48,7 +48,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-其次，需确保环境中安装有符合要求的 TensorRT。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：
+其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
