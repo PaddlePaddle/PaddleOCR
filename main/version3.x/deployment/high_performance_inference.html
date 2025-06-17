@@ -1253,7 +1253,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    获取onnx模型
+    获取ONNX模型
     
   </span>
   
@@ -3179,7 +3179,7 @@ You're not viewing the latest version.
 <p>支持的设备类型包括：</p>
 <ul>
 <li><code>cpu</code>：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。</li>
-<li><code>gpu</code>：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。</li>
+<li><code>gpu</code>：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。如果希望使用完整的高性能推理功能，还需要确保环境中安装有符合要求的 TensorRT。请查看下一小节的详细说明。</li>
 </ul>
 <p>同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 <a href="https://learn.microsoft.com/zh-cn/windows/wsl/install">WSL</a> 环境中安装。</p>
 <p><strong>推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。</strong> 各设备类型对应的镜像如下：</p>
@@ -3203,7 +3203,7 @@ You're not viewing the latest version.
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># cuDNN 相关 Python 包版本</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>pip<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>nvidia-cudnn
 </span></code></pre></div>
-<p>其次，需确保环境中安装有符合要求的 TensorRT。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：</p>
+<p>其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>/usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
 </span></code></pre></div>
 <p>对于其他环境，请参考 <a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html">TensorRT 文档</a> 安装 TensorRT。示例如下：</p>
@@ -3254,7 +3254,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月16日 10:08:11 UTC">2025年6月16日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月17日 13:29:18 UTC">2025年6月17日</span>
   </span>
 
     
@@ -3264,7 +3264,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月16日 10:08:11 UTC">2025年6月16日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月17日 13:29:18 UTC">2025年6月17日</span>
   </span>
 
     
@@ -3318,13 +3318,13 @@ You're not viewing the latest version.
         
         
           
-          <a href="obtaining_onnx_models.html" class="md-footer__link md-footer__link--next" aria-label="下一页: 获取onnx模型">
+          <a href="obtaining_onnx_models.html" class="md-footer__link md-footer__link--next" aria-label="下一页: 获取ONNX模型">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                获取onnx模型
+                获取ONNX模型
               </div>
             </div>
             <div class="md-footer__button md-icon">
