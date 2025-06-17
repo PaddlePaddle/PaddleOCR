@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "paddleocr"
 # After each version release, the version number needs to be incremented
 dynamic = ["version"]
-description = "Awesome OCR toolkit based on PaddlePaddle"
+description = "Awesome multilingual OCR and document parsing toolkits based on PaddlePaddle"
 authors = [
     {name = "PaddlePaddle", email = "Paddle-better@baidu.com"},
 ]
@@ -39,7 +39,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "paddlex[ocr-core]==3.0.2",
+    "paddlex[ocr-core]==3.0.3",
     "PyYAML>=6",
     "typing-extensions>=4.12",
 ]
@@ -54,7 +54,7 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 paddleocr = "paddleocr.__main__:console_entry"
 
 [project.optional-dependencies]
-all = ["paddlex[ocr,ie,multimodal]==3.0.2"]
+all = ["paddlex[ocr,ie,multimodal]==3.0.3"]
 
 [tool.setuptools.packages.find]
 where = ["."]

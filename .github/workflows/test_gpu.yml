@@ -34,6 +34,7 @@ jobs:
     steps:
       - name: clone and fetch
         run: |
+          rm -rf $PR_ID
           mkdir $PR_ID
           cd $PR_ID
           git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main

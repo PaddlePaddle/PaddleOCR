@@ -12,10 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DEFAULT_DEVICE = None
-DEFAULT_USE_TENSORRT = False
-DEFAULT_PRECISION = "fp32"
-DEFAULT_ENABLE_MKLDNN = True
-DEFAULT_MKLDNN_CACHE_CAPACITY = 10
-DEFAULT_CPU_THREADS = 10
-SUPPORTED_PRECISION_LIST = ["fp32", "fp16"]
+__version__ = "0.1.0"
