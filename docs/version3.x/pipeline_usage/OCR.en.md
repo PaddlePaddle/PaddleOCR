@@ -740,19 +740,21 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use. Please refer to the detailed list of languages below.
+<td>OCR model language to use.
+The table in the appendix lists all the supported languages.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
+<td>Version of OCR models.
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;
 <li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
 </ul>
+Please note that not every <code>ocr_version</code> supports all <code>lang</code> options. Please refer to the correspondence table in the appendix for details.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -858,12 +860,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for optimizing model subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
@@ -871,10 +867,18 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library.
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -920,126 +924,6 @@ Results are printed to the terminal:
 If `save_path` is specified, the visualization results will be saved under `save_path`. The visualization output is shown below:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png"/>
-<details><summary><b>Supported Language List</b></summary>
-<table>
-<thead>
-<tr>
-<th><code>OCR_version</code></th>
-<th>Languages</th>
-</tr>
-<tr>
-<td>PP-OCRv5</td>
-<td>PP-OCRv5 support the following languages:
-<ul>
-<li><b>ch</b>: Simplified Chinese;</li>
-<li><b>chinese_cht</b>: Traditional Chinese;</li>
-<li><b>en</b>: English;</li>
-<li><b>japan</b>: Japanese;</li>
-<li><b>korean</b>: Korean;</li>
-<li><b>te</b>: Telugu;</li>
-<li><b>ka</b>: Kannada;</li>
-<li><b>ta</b>: Tamil.</li>
-</ul></td>
-</tr>
-<tr>
-<td>PP-OCRv4</td>
-<td>PP-OCRv4 support the following languages:
-<ul>
-<li><b>ch</b>: Simplified Chinese;</li>
-<li><b>en</b>: English.</li>
-</ur></td>
-</tr>
-<tr>
-<td>PP-OCRv3</td>
-<td>PP-OCRv3 support the following languages:
-<details>
-<summary>Language List</summary>
-<ul>
-<li><b>af</b>: Afrikaans;</li>
-<li><b>az</b>: Azerbaijani;</li>
-<li><b>bs</b>: Bosnian;</li>
-<li><b>cs</b>: Czech;</li>
-<li><b>cy</b>: Welsh;</li>
-<li><b>da</b>: Danish;</li>
-<li><b>de</b>: German;</li>
-<li><b>es</b>: Spanish;</li>
-<li><b>et</b>: Estonian;</li>
-<li><b>fr</b>: French;</li>
-<li><b>ga</b>: Irish;</li>
-<li><b>hr</b>: Croatian;</li>
-<li><b>hu</b>: Hungarian;</li>
-<li><b>id</b>: Indonesian;</li>
-<li><b>is</b>: Icelandic;</li>
-<li><b>it</b>: Italian;</li>
-<li><b>ku</b>: Kurdish;</li>
-<li><b>la</b>: Latin;</li>
-<li><b>lt</b>: Lithuanian;</li>
-<li><b>lv</b>: Latvian;</li>
-<li><b>mi</b>: Maori;</li>
-<li><b>ms</b>: Malay;</li>
-<li><b>mt</b>: Maltese;</li>
-<li><b>nl</b>: Dutch;</li>
-<li><b>no</b>: Norwegian;</li>
-<li><b>oc</b>: Occitan;</li>
-<li><b>pi</b>: Pali;</li>
-<li><b>pl</b>: Polish;</li>
-<li><b>pt</b>: Portuguese;</li>
-<li><b>ro</b>: Romanian;</li>
-<li><b>rs_latin</b>: Serbian (Latin);</li>
-<li><b>sk</b>: Slovak;</li>
-<li><b>sl</b>: Slovenian;</li>
-<li><b>sq</b>: Albanian;</li>
-<li><b>sv</b>: Swedish;</li>
-<li><b>sw</b>: Swahili;</li>
-<li><b>tl</b>: Tagalog;</li>
-<li><b>tr</b>: Turkish;</li>
-<li><b>uz</b>: Uzbek;</li>
-<li><b>vi</b>: Vietnamese;</li>
-<li><b>french</b>: French;</li>
-<li><b>german</b>: German;</li>
-<li><b>ar</b>: Arabic;</li>
-<li><b>fa</b>: Persian;</li>
-<li><b>ug</b>: Uighur;</li>
-<li><b>ur</b>: Urdu;</li>
-<li><b>ru</b>: Russian;</li>
-<li><b>rs_cyrillic</b>: Serbian (Cyrillic);</li>
-<li><b>be</b>: Belarusian;</li>
-<li><b>bg</b>: Bulgarian;</li>
-<li><b>uk</b>: Ukrainian;</li>
-<li><b>mn</b>: Mongolian;</li>
-<li><b>abq</b>: Abkhaz;</li>
-<li><b>ady</b>: Adyghe;</li>
-<li><b>kbd</b>: Kabardian;</li>
-<li><b>ava</b>: Avar;</li>
-<li><b>dar</b>: Dargwa;</li>
-<li><b>inh</b>: Ingush;</li>
-<li><b>che</b>: Chechen;</li>
-<li><b>lbe</b>: Lak;</li>
-<li><b>lez</b>: Lezgian;</li>
-<li><b>tab</b>: Tabasaran;</li>
-<li><b>hi</b>: Hindi;</li>
-<li><b>mr</b>: Marathi;</li>
-<li><b>ne</b>: Nepali;</li>
-<li><b>bh</b>: Bhojpuri;</li>
-<li><b>mai</b>: Maithili;</li>
-<li><b>ang</b>: Angika;</li>
-<li><b>bho</b>: Bhojpuri;</li>
-<li><b>mah</b>: Magahi;</li>
-<li><b>sck</b>: Nagpur;</li>
-<li><b>new</b>: Newar;</li>
-<li><b>gom</b>: Goan Konkani;</li>
-<li><b>sa</b>: Sanskrit;</li>
-<li><b>bgc</b>: Haryanvi.</li>
-</ul>
-</details></td>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-</details>
-<br />
-
 
 ### 2.2 Python Script Integration  
 
@@ -1250,19 +1134,21 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>OCR model language to use. Please refer to the detailed list of languages above.
+<td>OCR model language to use.
+The table in the appendix lists all the supported languages.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR version, note that not every <code>ocr_version</code> supports all <code>lang</code>.
+<td>Version of OCR models.
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;</li>
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;</li>
 <li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
 </ul>
+Please note that not every <code>ocr_version</code> supports all <code>lang</code> options. Please refer to the correspondence table in the appendix for details.
 </td>
 <td><code>str</code></td>
 <td><code>None</code></td>
@@ -1299,12 +1185,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size for optimizing subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
@@ -1312,9 +1192,17 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -1777,8 +1665,7 @@ Below are the API reference for basic service deployment and examples of multi-l
 <details>
 <summary>Python</summary>
 
-<pre><code class="language-python">
-import base64
+<pre><code class="language-python">import base64
 import requests
 
 API_URL = "http://localhost:8080/ocr"
@@ -1800,6 +1687,385 @@ for i, res in enumerate(result["ocrResults"]):
     with open(ocr_img_path, "wb") as f:
         f.write(base64.b64decode(res["ocrImage"]))
     print(f"Output image saved at {ocr_img_path}")
+</code></pre></details>
+
+<details><summary>C++</summary>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include "cpp-httplib/httplib.h" // https://github.com/Huiyicc/cpp-httplib
+#include "nlohmann/json.hpp" // https://github.com/nlohmann/json
+#include "base64.hpp" // https://github.com/tobiaslocker/base64
+
+int main() {
+    httplib::Client client("localhost", 8080);  
+    const std::string filePath = "./demo.jpg"; 
+
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file) {
+        std::cerr << "Error opening file." << std::endl;
+        return 1;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    std::vector<char> buffer(size);
+
+    if (!file.read(buffer.data(), size)) {
+        std::cerr << "Error reading file." << std::endl;
+        return 1;
+    }
+
+    std::string bufferStr(buffer.data(), static_cast<size_t>(size));
+    std::string encodedFile = base64::to_base64(bufferStr);
+
+
+    nlohmann::json jsonObj;
+    jsonObj["file"] = encodedFile;
+    jsonObj["fileType"] = 1;  
+
+    auto response = client.Post("/ocr", jsonObj.dump(), "application/json");
+
+    if (response && response->status == 200) {
+        nlohmann::json jsonResponse = nlohmann::json::parse(response->body);
+        auto result = jsonResponse["result"];
+
+        if (!result.is_object() || !result["ocrResults"].is_array()) {
+            std::cerr << "Unexpected response structure." << std::endl;
+            return 1;
+        }
+
+        for (size_t i = 0; i < result["ocrResults"].size(); ++i) {
+            auto ocrResult = result["ocrResults"][i];
+            std::cout << ocrResult["prunedResult"] << std::endl;
+
+            std::string ocrImgPath = "ocr_" + std::to_string(i) + ".jpg";
+            std::string encodedImage = ocrResult["ocrImage"];
+            std::string decodedImage = base64::from_base64(encodedImage);
+
+            std::ofstream outputImage(ocrImgPath, std::ios::binary);
+            if (outputImage.is_open()) {
+                outputImage.write(decodedImage.c_str(), static_cast<std::streamsize>(decodedImage.size()));
+                outputImage.close();
+                std::cout << "Output image saved at " << ocrImgPath << std::endl;
+            } else {
+                std::cerr << "Unable to open file for writing: " << ocrImgPath << std::endl;
+            }
+        }
+    } else {
+        std::cerr << "Failed to send HTTP request." << std::endl;
+        if (response) {
+            std::cerr << "HTTP status code: " << response->status << std::endl;
+            std::cerr << "Response body: " << response->body << std::endl;
+        }
+        return 1;
+    }
+
+    return 0;
+}
+</code></pre></details>
+
+<details><summary>Java</summary>
+
+<pre><code class="language-java">import okhttp3.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        String API_URL = "http://localhost:8080/ocr"; 
+        String imagePath = "./demo.jpg"; 
+
+        File file = new File(imagePath);
+        byte[] fileContent = java.nio.file.Files.readAllBytes(file.toPath());
+        String base64Image = Base64.getEncoder().encodeToString(fileContent);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode payload = objectMapper.createObjectNode();
+        payload.put("file", base64Image); 
+        payload.put("fileType", 1); 
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+	RequestBody body = RequestBody.create(JSON, payload.toString());
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JsonNode root = objectMapper.readTree(responseBody);
+                JsonNode result = root.get("result");
+
+                JsonNode ocrResults = result.get("ocrResults");
+                for (int i = 0; i < ocrResults.size(); i++) {
+                    JsonNode item = ocrResults.get(i);
+
+                    JsonNode prunedResult = item.get("prunedResult");
+                    System.out.println("Pruned Result [" + i + "]: " + prunedResult.toString());
+
+                    String ocrImageBase64 = item.get("ocrImage").asText();
+                    byte[] ocrImageBytes = Base64.getDecoder().decode(ocrImageBase64);
+                    String ocrImgPath = "ocr_result_" + i + ".jpg";
+                    try (FileOutputStream fos = new FileOutputStream(ocrImgPath)) {
+                        fos.write(ocrImageBytes);
+                        System.out.println("Saved OCR image to: " + ocrImgPath);
+                    }
+                }
+            } else {
+                System.err.println("Request failed with HTTP code: " + response.code());
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Go</summary>
+
+<pre><code class="language-go">package main
+
+import (
+    "bytes"
+    "encoding/base64"
+    "encoding/json"
+    "fmt"
+    "io/ioutil"
+    "net/http"
+)
+
+func main() {
+    API_URL := "http://localhost:8080/ocr"
+    filePath := "./demo.jpg"
+
+    fileBytes, err := ioutil.ReadFile(filePath)
+    if err != nil {
+        fmt.Printf("Error reading file: %v\n", err)
+        return
+    }
+    fileData := base64.StdEncoding.EncodeToString(fileBytes)
+
+    payload := map[string]interface{}{
+        "file":     fileData,
+        "fileType": 1,
+    }
+    payloadBytes, err := json.Marshal(payload)
+    if err != nil {
+        fmt.Printf("Error marshaling payload: %v\n", err)
+        return
+    }
+
+    client := &http.Client{}
+    req, err := http.NewRequest("POST", API_URL, bytes.NewBuffer(payloadBytes))
+    if err != nil {
+        fmt.Printf("Error creating request: %v\n", err)
+        return
+    }
+    req.Header.Set("Content-Type", "application/json")
+
+    res, err := client.Do(req)
+    if err != nil {
+        fmt.Printf("Error sending request: %v\n", err)
+        return
+    }
+    defer res.Body.Close()
+
+    if res.StatusCode != http.StatusOK {
+        fmt.Printf("Unexpected status code: %d\n", res.StatusCode)
+        return
+    }
+
+    body, err := ioutil.ReadAll(res.Body)
+    if err != nil {
+        fmt.Printf("Error reading response body: %v\n", err)
+        return
+    }
+
+    type OcrResult struct {
+        PrunedResult map[string]interface{} `json:"prunedResult"` 
+        OcrImage     *string                `json:"ocrImage"`     
+    }
+
+    type Response struct {
+        Result struct {
+            OcrResults []OcrResult `json:"ocrResults"`
+            DataInfo   interface{} `json:"dataInfo"` 
+        } `json:"result"`
+    }
+
+    var respData Response
+    if err := json.Unmarshal(body, &respData); err != nil {
+        fmt.Printf("Error unmarshaling response: %v\n", err)
+        return
+    }
+
+    for i, res := range respData.Result.OcrResults {
+        
+        if res.OcrImage != nil {
+            imgBytes, err := base64.StdEncoding.DecodeString(*res.OcrImage)
+            if err != nil {
+                fmt.Printf("Error decoding image %d: %v\n", i, err)
+                continue
+            }
+            
+            filename := fmt.Sprintf("ocr_%d.jpg", i)
+            if err := ioutil.WriteFile(filename, imgBytes, 0644); err != nil {
+                fmt.Printf("Error saving image %s: %v\n", filename, err)
+                continue
+            }
+            fmt.Printf("Output image saved at %s\n", filename)
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>C#</summary>
+
+<pre><code class="language-csharp">using System;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+class Program
+{
+    static readonly string API_URL = "http://localhost:8080/ocr";
+    static readonly string inputFilePath = "./demo.jpg";
+
+    static async Task Main(string[] args)
+    {
+        var httpClient = new HttpClient();
+
+        byte[] fileBytes = File.ReadAllBytes(inputFilePath);
+        string fileData = Convert.ToBase64String(fileBytes);
+
+        var payload = new JObject
+        {
+            { "file", fileData },
+            { "fileType", 1 }
+        };
+        var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response = await httpClient.PostAsync(API_URL, content);
+        response.EnsureSuccessStatusCode();
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+        JObject jsonResponse = JObject.Parse(responseBody);
+
+        JArray ocrResults = (JArray)jsonResponse["result"]["ocrResults"];
+        for (int i = 0; i < ocrResults.Count; i++)
+        {
+            var res = ocrResults[i];
+            Console.WriteLine($"[{i}] prunedResult:\n{res["prunedResult"]}");
+
+            string base64Image = res["ocrImage"]?.ToString();
+            if (!string.IsNullOrEmpty(base64Image))
+            {
+                string outputPath = $"ocr_{i}.jpg";
+                byte[] imageBytes = Convert.FromBase64String(base64Image);
+                File.WriteAllBytes(outputPath, imageBytes);
+                Console.WriteLine($"OCR image saved to {outputPath}");
+            }
+            else
+            {
+                Console.WriteLine($"OCR image at index {i} is null.");
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Node.js</summary>
+
+<pre><code class="language-js">const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+const API_URL = 'http://localhost:8080/layout-parsing';
+const imagePath = './demo.jpg';  
+const fileType = 1;             
+
+function encodeImageToBase64(filePath) {
+  const bitmap = fs.readFileSync(filePath);
+  return Buffer.from(bitmap).toString('base64');
+}
+
+const payload = {
+  file: encodeImageToBase64(imagePath),
+  fileType: fileType
+};
+
+axios.post(API_URL, payload)
+  .then(response => {
+    const results = response.data.result.layoutParsingResults;
+    results.forEach((res, index) => {
+      console.log(`\n[${index}] prunedResult:`);
+      console.log(res.prunedResult);
+
+      const outputImages = res.outputImages;
+      if (outputImages) {
+        Object.entries(outputImages).forEach(([imgName, base64Img]) => {
+          const imgPath = `${imgName}_${index}.jpg`;
+          fs.writeFileSync(imgPath, Buffer.from(base64Img, 'base64'));
+          console.log(`Output image saved at ${imgPath}`);
+        });
+      } else {
+        console.log(`[${index}] No outputImages.`);
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Error during API request:', error.message || error);
+  });
+</code></pre></details>
+
+<details><summary>PHP</summary>
+
+<pre><code class="language-php">&lt;?php
+
+$API_URL = "http://localhost:8080/ocr"; 
+$image_path = "./demo.jpg"; 
+
+$image_data = base64_encode(file_get_contents($image_path));
+$payload = array(
+    "file" => $image_data,
+    "fileType" => 1 
+);
+
+$ch = curl_init($API_URL);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true)["result"]["ocrResults"];
+
+foreach ($result as $i => $item) {
+    echo "[$i] prunedResult:\n";
+    print_r($item["prunedResult"]);
+
+    if (!empty($item["ocrImage"])) {
+        $output_img_path = "ocr_{$i}.jpg";
+        file_put_contents($output_img_path, base64_decode($item["ocrImage"]));
+        echo "OCR image saved at $output_img_path\n";
+    } else {
+        echo "No ocrImage found for item $i\n";
+    }
+}
+?&gt;
 </code></pre></details>
 </details>
 
@@ -1941,3 +2207,139 @@ from paddleocr import PaddleOCR
 
 pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")  
 ```
+
+## 5. Appendix
+
+<details><summary><b>Supported Languages</b></summary>
+
+<table border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th><code>lang</code></th>
+      <th>Language Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>abq</code></td><td>Abaza</td></tr>
+    <tr><td><code>af</code></td><td>Afrikaans</td></tr>
+    <tr><td><code>ang</code></td><td>Old English</td></tr>
+    <tr><td><code>ar</code></td><td>Arabic</td></tr>
+    <tr><td><code>ava</code></td><td>Avaric</td></tr>
+    <tr><td><code>az</code></td><td>Azerbaijani</td></tr>
+    <tr><td><code>be</code></td><td>Belarusian</td></tr>
+    <tr><td><code>bg</code></td><td>Bulgarian</td></tr>
+    <tr><td><code>bgc</code></td><td>Haryanvi</td></tr>
+    <tr><td><code>bh</code></td><td>Bihari</td></tr>
+    <tr><td><code>bho</code></td><td>Bhojpuri</td></tr>
+    <tr><td><code>bs</code></td><td>Bosnian</td></tr>
+    <tr><td><code>ch</code></td><td>Chinese (Simplified)</td></tr>
+    <tr><td><code>che</code></td><td>Chechen</td></tr>
+    <tr><td><code>chinese_cht</code></td><td>Chinese (Traditional)</td></tr>
+    <tr><td><code>cs</code></td><td>Czech</td></tr>
+    <tr><td><code>cy</code></td><td>Welsh</td></tr>
+    <tr><td><code>da</code></td><td>Danish</td></tr>
+    <tr><td><code>dar</code></td><td>Dargwa</td></tr>
+    <tr><td><code>de</code> or <code>german</code></td><td>German</td></tr>
+    <tr><td><code>en</code></td><td>English</td></tr>
+    <tr><td><code>es</code></td><td>Spanish</td></tr>
+    <tr><td><code>et</code></td><td>Estonian</td></tr>
+    <tr><td><code>fa</code></td><td>Persian</td></tr>
+    <tr><td><code>fr</code> or <code>french</code></td><td>French</td></tr>
+    <tr><td><code>ga</code></td><td>Irish</td></tr>
+    <tr><td><code>gom</code></td><td>Konkani</td></tr>
+    <tr><td><code>hi</code></td><td>Hindi</td></tr>
+    <tr><td><code>hr</code></td><td>Croatian</td></tr>
+    <tr><td><code>hu</code></td><td>Hungarian</td></tr>
+    <tr><td><code>id</code></td><td>Indonesian</td></tr>
+    <tr><td><code>inh</code></td><td>Ingush</td></tr>
+    <tr><td><code>is</code></td><td>Icelandic</td></tr>
+    <tr><td><code>it</code></td><td>Italian</td></tr>
+    <tr><td><code>japan</code></td><td>Japanese</td></tr>
+    <tr><td><code>ka</code></td><td>Georgian</td></tr>
+    <tr><td><code>kbd</code></td><td>Kabardian</td></tr>
+    <tr><td><code>korean</code></td><td>Korean</td></tr>
+    <tr><td><code>ku</code></td><td>Kurdish</td></tr>
+    <tr><td><code>la</code></td><td>Latin</td></tr>
+    <tr><td><code>lbe</code></td><td>Lak</td></tr>
+    <tr><td><code>lez</code></td><td>Lezghian</td></tr>
+    <tr><td><code>lt</code></td><td>Lithuanian</td></tr>
+    <tr><td><code>lv</code></td><td>Latvian</td></tr>
+    <tr><td><code>mah</code></td><td>Magahi</td></tr>
+    <tr><td><code>mai</code></td><td>Maithili</td></tr>
+    <tr><td><code>mi</code></td><td>Maori</td></tr>
+    <tr><td><code>mn</code></td><td>Mongolian</td></tr>
+    <tr><td><code>mr</code></td><td>Marathi</td></tr>
+    <tr><td><code>ms</code></td><td>Malay</td></tr>
+    <tr><td><code>mt</code></td><td>Maltese</td></tr>
+    <tr><td><code>ne</code></td><td>Nepali</td></tr>
+    <tr><td><code>new</code></td><td>Newari</td></tr>
+    <tr><td><code>nl</code></td><td>Dutch</td></tr>
+    <tr><td><code>no</code></td><td>Norwegian</td></tr>
+    <tr><td><code>oc</code></td><td>Occitan</td></tr>
+    <tr><td><code>pi</code></td><td>Pali</td></tr>
+    <tr><td><code>pl</code></td><td>Polish</td></tr>
+    <tr><td><code>pt</code></td><td>Portuguese</td></tr>
+    <tr><td><code>ro</code></td><td>Romanian</td></tr>
+    <tr><td><code>rs_cyrillic</code></td><td>Serbian (Cyrillic)</td></tr>
+    <tr><td><code>rs_latin</code></td><td>Serbian (Latin)</td></tr>
+    <tr><td><code>ru</code></td><td>Russian</td></tr>
+    <tr><td><code>sa</code></td><td>Sanskrit</td></tr>
+    <tr><td><code>sck</code></td><td>Sadri</td></tr>
+    <tr><td><code>sk</code></td><td>Slovak</td></tr>
+    <tr><td><code>sl</code></td><td>Slovenian</td></tr>
+    <tr><td><code>sq</code></td><td>Albanian</td></tr>
+    <tr><td><code>sv</code></td><td>Swedish</td></tr>
+    <tr><td><code>sw</code></td><td>Swahili</td></tr>
+    <tr><td><code>tab</code></td><td>Tabassaran</td></tr>
+    <tr><td><code>ta</code></td><td>Tamil</td></tr>
+    <tr><td><code>te</code></td><td>Telugu</td></tr>
+    <tr><td><code>tl</code></td><td>Tagalog</td></tr>
+    <tr><td><code>tr</code></td><td>Turkish</td></tr>
+    <tr><td><code>ug</code></td><td>Uyghur</td></tr>
+    <tr><td><code>uk</code></td><td>Ukrainian</td></tr>
+    <tr><td><code>ur</code></td><td>Urdu</td></tr>
+    <tr><td><code>uz</code></td><td>Uzbek</td></tr>
+    <tr><td><code>vi</code></td><td>Vietnamese</td></tr>
+  </tbody>
+</table>
+
+</details>
+
+<details><summary><b>Correspondence Between OCR Model Versions and Supported Languages</b></summary>
+
+<table border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th><code>ocr_version</code></th>
+      <th>Supported <code>lang</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>PP-OCRv5</code></td>
+      <td><code>ch</code>, <code>chinese_cht</code>, <code>en</code>, <code>japan</code></td>
+    </tr>
+    <tr>
+      <td><code>PP-OCRv4</code></td>
+      <td><code>ch</code>, <code>en</code></td>
+    </tr>
+    <tr>
+      <td><code>PP-OCRv3</code></td>
+      <td>
+        <code>abq</code>, <code>af</code>, <code>ady</code>, <code>ang</code>, <code>ar</code>, <code>ava</code>, <code>az</code>, <code>be</code>,
+        <code>bg</code>, <code>bgc</code>, <code>bh</code>, <code>bho</code>, <code>bs</code>, <code>ch</code>, <code>che</code>,
+        <code>chinese_cht</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>dar</code>, <code>de</code>, <code>german</code>,
+        <code>en</code>, <code>es</code>, <code>et</code>, <code>fa</code>, <code>fr</code>, <code>french</code>, <code>ga</code>, <code>gom</code>,
+        <code>hi</code>, <code>hr</code>, <code>hu</code>, <code>id</code>, <code>inh</code>, <code>is</code>, <code>it</code>, <code>japan</code>,
+        <code>ka</code>, <code>kbd</code>, <code>korean</code>, <code>ku</code>, <code>la</code>, <code>lbe</code>, <code>lez</code>, <code>lt</code>,
+        <code>lv</code>, <code>mah</code>, <code>mai</code>, <code>mi</code>, <code>mn</code>, <code>mr</code>, <code>ms</code>, <code>mt</code>,
+        <code>ne</code>, <code>new</code>, <code>nl</code>, <code>no</code>, <code>oc</code>, <code>pi</code>, <code>pl</code>, <code>pt</code>,
+        <code>ro</code>, <code>rs_cyrillic</code>, <code>rs_latin</code>, <code>ru</code>, <code>sa</code>, <code>sck</code>, <code>sk</code>,
+        <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>ta</code>, <code>tab</code>, <code>te</code>, <code>tl</code>,
+        <code>tr</code>, <code>ug</code>, <code>uk</code>, <code>ur</code>, <code>uz</code>, <code>vi</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</details>

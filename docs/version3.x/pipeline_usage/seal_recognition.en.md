@@ -331,12 +331,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>The minimum subgraph size, used to optimize the computation of model subgraphs.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
@@ -344,9 +338,17 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable the MKL-DNN acceleration library.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -659,12 +661,6 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>min_subgraph_size</code></td>
-<td>Minimum subgraph size used to optimize model subgraph computation.</td>
-<td><code>int</code></td>
-<td><code>3</code></td>
-</tr>
-<tr>
 <td><code>precision</code></td>
 <td>Computation precision, e.g., fp32, fp16.</td>
 <td><code>str</code></td>
@@ -672,9 +668,17 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration.</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
@@ -875,34 +879,743 @@ Whether to use the layout detection module during inference. </td>
 </tr>
 </table>
 
-## 4. Secondary Development
+- The prediction results obtained through the `json` attribute are of dict type, with content consistent with what is saved by calling the `save_to_json()` method.
+- The prediction results returned by the `img` attribute are of dict type. The keys are `layout_det_res`, `seal_res_region1`, and `preprocessed_img`, corresponding to three `Image.Image` objects: one for visualizing layout detection, one for visualizing seal text recognition results, and one for visualizing image preprocessing. If the image preprocessing sub-module is not used, `preprocessed_img` will not be included in the dictionary. If the layout region detection module is not used, `layout_det_res` will not be included.
 
-If the above models are still not ideal for your scenario, you can try the following steps for secondary development. Here, training `SLANet_plus` is used as an example, and for other models, just replace the corresponding configuration file. First, you need to prepare a dataset for table structure recognition, which can be prepared with reference to the format of the [table structure recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar). Once ready, you can train and export the model as follows. After exporting, you can quickly integrate the model into the above API. Here, the table structure recognition demo data is used as an example. Before training the model, please make sure you have installed the dependencies required by PaddleOCR according to the [installation documentation](../installation.en.md).
+## 3. Development Integration/Deployment
+If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.
+
+If you need to integrate the pipeline into your Python project, you can refer to the example code in [2.2 Python Script Method](#22-python脚本方式集成).
+
+In addition, PaddleOCR also provides three other deployment methods, which are detailed as follows:
+
+🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance requirements for deployment strategies, especially in terms of response speed, to ensure efficient system operation and a smooth user experience. To address this, PaddleOCR offers high-performance inference capabilities aimed at deeply optimizing the performance of model inference and pre/post-processing, thereby significantly accelerating the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
+
+☁️ Service Deployment: Service deployment is a common form of deployment in real-world production environments. By encapsulating inference functionality into a service, clients can access these services via network requests to obtain inference results. For detailed production service deployment procedures, please refer to [Serving](../deployment/serving.md).
+
+Below are the API references for basic serving deployment and multi-language service invocation examples:
+
+<details><summary>API Reference</summary>
+<p>For the main operations provided by the service:</p>
+<ul>
+<li>The HTTP request method is POST.</li>
+<li>The request body and response body are both JSON data (JSON objects).</li>
+<li>When the request is processed successfully, the response status code is <code>200</code>, and the attributes of the response body are as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>The UUID of the request.</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>Error code. Fixed as <code>0</code>.</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>Error message. Fixed as <code>"Success"</code>.</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td><code>object</code></td>
+<td>The result of the operation.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>When the request is not processed successfully, the attributes of the response body are as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>The UUID of the request.</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>Error code. Same as the response status code.</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>Error message.</td>
+</tr>
+</tbody>
+</table>
+<p>The main operations provided by the service are as follows:</p>
+<ul>
+<li><b><code>infer</code></b></li>
+</ul>
+<p>Obtain the seal text recognition result.</p>
+<p><code>POST /seal-recognition</code></p>
+<ul>
+<li>The attributes of the request body are as follows:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td><code>string</code></td>
+<td>The URL of an image or PDF file accessible by the server, or the Base64-encoded content of the file. By default, for PDF files exceeding 10 pages, only the content of the first 10 pages will be processed.<br />
+To remove the page limit, please add the following configuration to the pipeline configuration file:
+<pre><code>Serving:
+  extra:
+    max_num_input_imgs: null
+</code></pre></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>fileType</code></td>
+<td><code>integer</code> | <code>null</code></td>
+<td>The type of file. <code>0</code> indicates a PDF file, <code>1</code> indicates an image file. If this attribute is not present in the request body, the file type will be inferred from the URL.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useDocOrientationClassify</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useDocUnwarping</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useLayoutDetection</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_layout_detection</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>layoutThreshold</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>layout_threshold</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>layoutNms</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>layout_nms</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>layoutUnclipRatio</code></td>
+<td><code>number</code> | <code>array</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>layout_unclip_ratio</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>layoutMergeBboxesMode</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>layout_merge_bboxes_mode</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealDetLimitSideLen</code></td>
+<td><code>integer</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_det_limit_side_len</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealDetLimitType</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_det_limit_type</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealDetThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_det_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealDetBoxThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_det_box_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealDetUnclipRatio</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_det_unclip_ratio</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>sealRecScoreThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>seal_rec_score_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>When the request is processed successfully, the <code>result</code> in the response body has the following properties:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sealRecResults</code></td>
+<td><code>object</code></td>
+<td>The seal text recognition result. The array length is 1 (for image input) or the actual number of document pages processed (for PDF input). For PDF input, each element in the array represents the result of each page actually processed in the PDF file.</td>
+</tr>
+<tr>
+<td><code>dataInfo</code></td>
+<td><code>object</code></td>
+<td>Information about the input data.</td>
+</tr>
+</tbody>
+</table>
+<p>Each element in <code>sealRecResults</code> is an <code>object</code> with the following properties:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prunedResult</code></td>
+<td><code>object</code></td>
+<td>A simplified version of the <code>res</code> field in the JSON representation generated by the <code>predict</code> method of the production object, where the <code>input_path</code> and the <code>page_index</code> fields are removed.</td>
+</tr>
+<tr>
+<td><code>outputImages</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>See the description of the <code>img</code> attribute of the result of the pipeline prediction. The images are in JPEG format and encoded in Base64.</td>
+</tr>
+<tr>
+<td><code>inputImage</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>The input image. The image is in JPEG format and encoded in Base64.</td>
+</tr>
+</tbody>
+</table></details>
+<details><summary>Multi-language Service Invocation Example</summary>
+<details>
+<summary>Python</summary>
+
+<pre><code class="language-python">import base64
+import requests
+
+API_URL = "http://localhost:8080/seal-recognition"
+file_path = "./demo.jpg"
+
+with open(file_path, "rb") as file:
+    file_bytes = file.read()
+    file_data = base64.b64encode(file_bytes).decode("ascii")
+
+payload = {"file": file_data, "fileType": 1}
+
+response = requests.post(API_URL, json=payload)
+
+assert response.status_code == 200
+result = response.json()["result"]
+for i, res in enumerate(result["sealRecResults"]):
+    print(res["prunedResult"])
+    for img_name, img in res["outputImages"].items():
+        img_path = f"{img_name}_{i}.jpg"
+        with open(img_path, "wb") as f:
+            f.write(base64.b64decode(img))
+        print(f"Output image saved at {img_path}")
+</code></pre></details>
+
+<details><summary>C++</summary>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include "cpp-httplib/httplib.h" // https://github.com/Huiyicc/cpp-httplib
+#include "nlohmann/json.hpp" // https://github.com/nlohmann/json
+#include "base64.hpp" // https://github.com/tobiaslocker/base64
+
+int main() {
+    httplib::Client client("localhost", 8080);
+
+    const std::string filePath = "./demo.jpg";
+
+    std::ifstream file(filePath, std::ios::binary | std::ios::ate);
+    if (!file) {
+        std::cerr << "Error opening file: " << filePath << std::endl;
+        return 1;
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    std::vector<char> buffer(size);
+    if (!file.read(buffer.data(), size)) {
+        std::cerr << "Error reading file." << std::endl;
+        return 1;
+    }
+
+    std::string bufferStr(buffer.data(), static_cast<size_t>(size));
+    std::string encodedFile = base64::to_base64(bufferStr);
+
+    nlohmann::json jsonObj;
+    jsonObj["file"] = encodedFile;
+    jsonObj["fileType"] = 1;
+
+    auto response = client.Post("/seal-recognition", jsonObj.dump(), "application/json");
+
+    if (response && response->status == 200) {
+        nlohmann::json jsonResponse = nlohmann::json::parse(response->body);
+        auto result = jsonResponse["result"];
+
+        if (!result.is_object() || !result["sealRecResults"].is_array()) {
+            std::cerr << "Unexpected response format." << std::endl;
+            return 1;
+        }
+
+        for (size_t i = 0; i < result["sealRecResults"].size(); ++i) {
+            auto res = result["sealRecResults"][i];
+
+            if (res.contains("prunedResult")) {
+                std::cout << "Recognized seal result: " << res["prunedResult"].dump() << std::endl;
+            }
+
+            if (res.contains("outputImages") && res["outputImages"].is_object()) {
+                for (auto& [imgName, imgData] : res["outputImages"].items()) {
+                    std::string outputPath = imgName + "_" + std::to_string(i) + ".jpg";
+                    std::string decodedImage = base64::from_base64(imgData.get<std::string>());
+
+                    std::ofstream outFile(outputPath, std::ios::binary);
+                    if (outFile.is_open()) {
+                        outFile.write(decodedImage.c_str(), decodedImage.size());
+                        outFile.close();
+                        std::cout << "Saved image: " << outputPath << std::endl;
+                    } else {
+                        std::cerr << "Failed to write image: " << outputPath << std::endl;
+                    }
+                }
+            }
+        }
+    } else {
+        std::cerr << "Request failed." << std::endl;
+        if (response) {
+            std::cerr << "HTTP status: " << response->status << std::endl;
+            std::cerr << "Response body: " << response->body << std::endl;
+        }
+        return 1;
+    }
+
+    return 0;
+}
+</code></pre></details>
+
+<details><summary>Java</summary>
+
+<pre><code class="language-java">import okhttp3.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        String API_URL = "http://localhost:8080/seal-recognition";
+        String imagePath = "./demo.jpg";
+
+        File file = new File(imagePath);
+        byte[] fileContent = java.nio.file.Files.readAllBytes(file.toPath());
+        String base64Image = Base64.getEncoder().encodeToString(fileContent);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode payload = objectMapper.createObjectNode();
+        payload.put("file", base64Image);
+        payload.put("fileType", 1);
+
+        OkHttpClient client = new OkHttpClient();
+        MediaType JSON = MediaType.get("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, payload.toString());
+
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                JsonNode root = objectMapper.readTree(responseBody);
+                JsonNode result = root.get("result");
+
+                JsonNode sealRecResults = result.get("sealRecResults");
+                for (int i = 0; i < sealRecResults.size(); i++) {
+                    JsonNode item = sealRecResults.get(i);
+                    int finalI = i;
+
+                    JsonNode prunedResult = item.get("prunedResult");
+                    System.out.println("Pruned Result [" + i + "]: " + prunedResult.toString());
+
+                    JsonNode outputImages = item.get("outputImages");
+                    if (outputImages != null && outputImages.isObject()) {
+                        outputImages.fieldNames().forEachRemaining(imgName -> {
+                            try {
+                                String imgBase64 = outputImages.get(imgName).asText();
+                                byte[] imgBytes = Base64.getDecoder().decode(imgBase64);
+                                String imgPath = imgName + "_" + finalI + ".jpg";
+                                try (FileOutputStream fos = new FileOutputStream(imgPath)) {
+                                    fos.write(imgBytes);
+                                    System.out.println("Saved image: " + imgPath);
+                                }
+                            } catch (IOException e) {
+                                System.err.println("Failed to save image: " + e.getMessage());
+                            }
+                        });
+                    }
+                }
+            } else {
+                System.err.println("Request failed with HTTP code: " + response.code());
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Go</summary>
+
+<pre><code class="language-go">package main
+
+import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func main() {
+	API_URL := "http://localhost:8080/seal-recognition"
+	filePath := "./demo.jpg"
+
+	fileBytes, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		fmt.Printf("Error reading file: %v\n", err)
+		return
+	}
+	fileData := base64.StdEncoding.EncodeToString(fileBytes)
+
+	payload := map[string]interface{}{
+		"file":     fileData,
+		"fileType": 1,
+	}
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		fmt.Printf("Error marshaling payload: %v\n", err)
+		return
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", API_URL, bytes.NewBuffer(payloadBytes))
+	if err != nil {
+		fmt.Printf("Error creating request: %v\n", err)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("Error sending request: %v\n", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Unexpected status code: %d\n", resp.StatusCode)
+		return
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Error reading response body: %v\n", err)
+		return
+	}
+
+	type SealResult struct {
+		PrunedResult map[string]interface{}   `json:"prunedResult"`
+		OutputImages map[string]string        `json:"outputImages"`
+		InputImage   *string                  `json:"inputImage"`
+	}
+
+	type Response struct {
+		Result struct {
+			SealRecResults []SealResult  `json:"sealRecResults"`
+			DataInfo       interface{}   `json:"dataInfo"`
+		} `json:"result"`
+	}
+
+	var respData Response
+	if err := json.Unmarshal(body, &respData); err != nil {
+		fmt.Printf("Error unmarshaling response: %v\n", err)
+		return
+	}
+
+	for i, res := range respData.Result.SealRecResults {
+		fmt.Printf("Pruned Result %d: %+v\n", i, res.PrunedResult)
+
+		for name, imgBase64 := range res.OutputImages {
+			imgBytes, err := base64.StdEncoding.DecodeString(imgBase64)
+			if err != nil {
+				fmt.Printf("Error decoding image %s: %v\n", name, err)
+				continue
+			}
+
+			filename := fmt.Sprintf("%s_%d.jpg", name, i)
+			if err := ioutil.WriteFile(filename, imgBytes, 0644); err != nil {
+				fmt.Printf("Error saving image %s: %v\n", filename, err)
+				continue
+			}
+			fmt.Printf("Output image saved at %s\n", filename)
+		}
+	}
+}
+</code></pre></details>
+
+<details><summary>C#</summary>
+
+<pre><code class="language-csharp">using System;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+class Program
+{
+    static readonly string API_URL = "http://localhost:8080/seal-recognition";
+    static readonly string inputFilePath = "./demo.jpg";
+
+    static async Task Main(string[] args)
+    {
+        var httpClient = new HttpClient();
+
+        byte[] fileBytes = File.ReadAllBytes(inputFilePath);
+        string fileData = Convert.ToBase64String(fileBytes);
+
+        var payload = new JObject
+        {
+            { "file", fileData },
+            { "fileType", 1 }
+        };
+        var content = new StringContent(payload.ToString(), Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response = await httpClient.PostAsync(API_URL, content);
+        response.EnsureSuccessStatusCode();
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+        JObject jsonResponse = JObject.Parse(responseBody);
+
+        JArray sealRecResults = (JArray)jsonResponse["result"]["sealRecResults"];
+        for (int i = 0; i < sealRecResults.Count; i++)
+        {
+            var res = sealRecResults[i];
+            Console.WriteLine($"[{i}] prunedResult:\n{res["prunedResult"]}");
+
+            JObject outputImages = res["outputImages"] as JObject;
+            if (outputImages != null)
+            {
+                foreach (var img in outputImages)
+                {
+                    string imgName = img.Key;
+                    string base64Img = img.Value?.ToString();
+                    if (!string.IsNullOrEmpty(base64Img))
+                    {
+                        string imgPath = $"{imgName}_{i}.jpg";
+                        byte[] imageBytes = Convert.FromBase64String(base64Img);
+                        File.WriteAllBytes(imgPath, imageBytes);
+                        Console.WriteLine($"Output image saved at {imgPath}");
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre></details>
+
+<details><summary>Node.js</summary>
+
+<pre><code class="language-js">const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+const API_URL = 'http://localhost:8080/seal-recognition';
+const imagePath = './demo.jpg';
+
+function encodeImageToBase64(filePath) {
+  const bitmap = fs.readFileSync(filePath);
+  return Buffer.from(bitmap).toString('base64');
+}
+
+const payload = {
+  file: encodeImageToBase64(imagePath),
+  fileType: 1
+};
+
+axios.post(API_URL, payload)
+  .then((response) => {
+    const result = response.data["result"];
+    const sealRecResults = result["sealRecResults"];
+
+    sealRecResults.forEach((res, i) => {
+      console.log(`\n[${i}] prunedResult:\n`, res["prunedResult"]);
+
+      const outputImages = res["outputImages"];
+      if (outputImages) {
+        for (const [imgName, base64Img] of Object.entries(outputImages)) {
+          const imgBuffer = Buffer.from(base64Img, 'base64');
+          const fileName = `${imgName}_${i}.jpg`;
+          fs.writeFileSync(fileName, imgBuffer);
+          console.log(`Output image saved at ${fileName}`);
+        }
+      } else {
+        console.log(`[${i}] No outputImages found.`);
+      }
+    });
+  })
+  .catch((error) => {
+    console.error('Error occurred while calling the API:', error.message);
+  });
+</code></pre></details>
+
+<details><summary>PHP</summary>
+
+<pre><code class="language-php">&lt;?php
+
+$API_URL = "http://localhost:8080/seal-recognition";
+$image_path = "./demo.jpg";
+
+$image_data = base64_encode(file_get_contents($image_path));
+$payload = array("file" => $image_data, "fileType" => 1);
+
+$ch = curl_init($API_URL);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true)["result"]["sealRecResults"];
+
+foreach ($result as $i => $item) {
+    echo "[$i] prunedResult:\n";
+    print_r($item["prunedResult"]);
+
+    if (!empty($item["outputImages"])) {
+        foreach ($item["outputImages"] as $img_name => $base64_img) {
+            if (!empty($base64_img)) {
+                $output_path = "{$img_name}_{$i}.jpg";
+                file_put_contents($output_path, base64_decode($base64_img));
+                echo "Output image saved at $output_path\n";
+            }
+        }
+    } else {
+        echo "No outputImages found for item $i\n";
+    }
+}
+?&gt;
+</code></pre></details>
+</details>
+<br/>
 
 
-## 4.1 Dataset and Pretrained Model Preparation
+## 4. Custom Development
+If the default model weights provided by the seal text recognition pipeline do not meet your requirements in terms of accuracy or speed, you can try to <b>fine-tune</b> the existing models using <b>your own domain-specific or application data</b> to improve the recognition performance of the seal text recognition pipeline in your scenario.
 
-### 4.1.1 Prepare Dataset
+### 4.1 Model Fine-Tuning
+Since the seal text recognition pipeline consists of several modules, if the pipeline's performance does not meet expectations, the issue may arise from any one of these modules. You can analyze images with poor recognition results to identify which module is problematic and refer to the corresponding fine-tuning tutorial links in the table below for model fine-tuning.
 
-```shell
-# Download sample dataset
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar
-tar -xf table_rec_dataset_examples.tar
-```
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Fine-Tuning Module</th>
+<th>Fine-Tuning Reference Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inaccurate or missing seal position detection</td>
+<td>Layout Detection Module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Missing text detection</td>
+<td>Text Detection Module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_detection.html#4-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate text content</td>
+<td>Text Recognition Module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/text_recognition.html#41-dataset-and-pre-trained-model-preparation">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate full-image rotation correction</td>
+<td>Document Image Orientation Classification Module</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development">Link</a></td>
+</tr>
+<tr>
+<td>Inaccurate image distortion correction</td>
+<td>Text Image Correction Module</td>
+<td>Not supported for fine-tuning</td>
+</tr>
+</tbody>
+</table>
 
-### 4.1.2 Download Pretrained Model
 
-```shell
-# Download SLANet_plus pretrained model
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams
-```
+### 4.2 Model Application
 
-### 4.2 Model Training
+After you complete the fine-tuning training with a private dataset, you can obtain the local model weight files. You can then use the fine-tuned model weights by specifying the local model save path through parameters or by using a custom pipeline configuration file.
 
-PaddleOCR is modularized. When training the `SLANet_plus` recognition model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml) of `SLANet_plus`.
+#### 4.2.1 Specify Local Model Path via Parameters
 
+When initializing the pipeline object, specify the local model path through parameters. Taking the usage of fine-tuned weights for a text detection model as an example, the demonstration is as follows:
 
-The training commands are as follows:
+Command line method:
 
 ```bash
 # Single card training (default training method)
