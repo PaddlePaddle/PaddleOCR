@@ -528,7 +528,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
                 input_data: The file to process (file path, URL, or Base64 string).
                 output_mode: The desired output format.
                     - "simple": (Default) Clean, readable text suitable for most users. This is the recommended setting.
-                    - "detailed": A technical JSON output including text, confidence, and precise bounding box coordinates. Only use this for development or when coordinates are specifically required.
+                    - "detailed": A technical JSON output including text, confidence, and precise bounding box coordinates. Only use this when coordinates are specifically required.
             """
             await ctx.info(
                 f"--- OCR tool received input_data: {str(input_data)[:200]}... ---"
@@ -664,7 +664,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                 input_data: The file to process (file path, URL, or Base64 string).
                 output_mode: The desired output format.
                     - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
-                    - "detailed": Raw technical JSON data about document structure, plus markdown. This is a specialized mode for developers.
+                    - "detailed": Raw technical JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
             """
             return await self.process(input_data, output_mode, ctx)
 
