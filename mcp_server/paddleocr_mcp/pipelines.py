@@ -66,14 +66,63 @@ def _is_url(s: str) -> bool:
 
 def _infer_file_type_from_url(url: str) -> str:
     url_parts = urlparse(url)
+
+    potential_query_parts = []
+    if url_parts.query:
+        potential_query_parts.append(url_parts.query)
+
+    last_path_segment = url_parts.path.split("/")[-1]
+    if "=" in last_path_segment:
+        potential_query_parts.append(last_path_segment)
+
+    if potential_query_parts:
+        from urllib.parse import parse_qs
+
+        query_params = parse_qs("&".join(potential_query_parts))
+
+        format_params = ["f", "format", "type", "ext", "filetype", "mime"]
+        for param in format_params:
+            if param in query_params:
+                format_value = query_params[param][0].lower()
+                if format_value in [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "bmp",
+                    "webp",
+                    "tiff",
+                    "tif",
+                ]:
+                    return "IMAGE"
+                elif format_value in ["pdf"]:
+                    return "PDF"
+        for param_values in query_params.values():
+            for value in param_values:
+                value_lower = value.lower()
+                if value_lower in [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "bmp",
+                    "webp",
+                    "tiff",
+                    "tif",
+                    "image",
+                ]:
+                    return "IMAGE"
+                elif value_lower in ["pdf", "document"]:
+                    return "PDF"
+
     filename = url_parts.path.split("/")[-1]
     file_type = mimetypes.guess_type(filename)[0]
-    if not file_type:
-        return "UNKNOWN"
-    if file_type.startswith("image/"):
-        return "IMAGE"
-    elif file_type == "application/pdf":
-        return "PDF"
+    if file_type:
+        if file_type.startswith("image/"):
+            return "IMAGE"
+        elif file_type == "application/pdf":
+            return "PDF"
+
     return "UNKNOWN"
 
 
@@ -162,7 +211,7 @@ class PipelineHandler(abc.ABC):
         self._device = device
         self._server_url = server_url
         self._aistudio_access_token = aistudio_access_token
-        self._timeout = timeout or 30  # Default timeout of 30 seconds
+        self._timeout = timeout or 60
 
         if self._mode == "local":
             if not LOCAL_OCR_AVAILABLE:
@@ -225,141 +274,36 @@ class PipelineHandler(abc.ABC):
         """
         raise NotImplementedError
 
-
-class SimpleInferencePipelineHandler(PipelineHandler):
-    """Base class for simple inference pipeline handlers."""
-
-    async def process(
-        self, input_data: str, output_mode: OutputMode, ctx: Context, **kwargs: Any
-    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-        """Process input data through the pipeline.
-
-        Args:
-            input_data: Input data (file path, URL, or Base64).
-            output_mode: Output mode ("simple" or "detailed").
-            ctx: MCP context.
-            **kwargs: Additional pipeline-specific arguments.
-
-        Returns:
-            Processed result in the requested output format.
-        """
-        try:
-            await ctx.info(
-                f"Starting {self._pipeline} processing (source: {self._ppocr_source})"
-            )
-
-            if self._mode == "local":
-                processed_input = self._process_input_for_local(input_data)
-                raw_result = await self._predict_with_local_engine(
-                    processed_input, ctx, **kwargs
-                )
-                result = self._parse_local_result(raw_result, ctx)
-            else:
-                processed_input, file_type = self._process_input_for_service(input_data)
-                raw_result = await self._call_service(
-                    processed_input, file_type, ctx, **kwargs
-                )
-                result = await self._parse_service_result(raw_result, ctx)
-
-            await self._log_completion_stats(result, ctx)
-            return self._format_output(result, output_mode == "detailed", ctx)
-
-        except Exception as e:
-            await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
-            return self._handle_error(str(e), output_mode)
-
-    def _process_input_for_local(self, input_data: str) -> Union[str, np.ndarray]:
-        if _is_file_path(input_data) or _is_url(input_data):
-            return input_data
-        elif _is_base64(input_data):
-            if input_data.startswith("data:"):
-                base64_data = input_data.split(",", 1)[1]
-            else:
-                base64_data = input_data
-            try:
-                image_bytes = base64.b64decode(base64_data)
-                image_pil = PILImage.open(io.BytesIO(image_bytes))
-                image_arr = np.array(image_pil.convert("RGB"))
-                # Convert RGB to BGR
-                return np.ascontiguousarray(image_arr[..., ::-1])
-            except Exception as e:
-                raise ValueError(f"Failed to decode Base64 image: {e}")
-        else:
-            raise ValueError("Invalid input data format")
-
-    def _process_input_for_service(self, input_data: str) -> tuple[str, str]:
-        if _is_file_path(input_data):
-            try:
-                with open(input_data, "rb") as f:
-                    bytes_ = f.read()
-                input_data = base64.b64encode(bytes_).decode("ascii")
-                file_type = _infer_file_type_from_bytes(bytes_)
-            except Exception as e:
-                raise ValueError(f"Failed to read file: {e}")
-        elif _is_url(input_data):
-            file_type = _infer_file_type_from_url(input_data)
-        elif _is_base64(input_data):
-            try:
-                if input_data.startswith("data:"):
-                    base64_data = input_data.split(",", 1)[1]
-                else:
-                    base64_data = input_data
-                bytes_ = base64.b64decode(base64_data)
-                file_type = _infer_file_type_from_bytes(bytes_)
-            except Exception as e:
-                raise ValueError(f"Failed to decode Base64 data: {e}")
-        else:
-            raise ValueError("Invalid input data format")
-
-        return input_data, file_type
-
-    async def _call_service(
-        self, processed_input: str, file_type: str, ctx: Context, **kwargs: Any
-    ) -> Dict[str, Any]:
-        if not self._server_url:
-            raise RuntimeError("Server URL not configured")
-
-        endpoint = self._get_service_endpoint()
-        url = f"{self._server_url.rstrip('/')}/{endpoint.lstrip('/')}"
-
-        payload = self._prepare_service_payload(processed_input, file_type, **kwargs)
-        headers = {"Content-Type": "application/json"}
-
-        if self._ppocr_source == "aistudio":
-            if not self._aistudio_access_token:
-                raise RuntimeError("Missing AI Studio access token")
-            headers["Authorization"] = f"token {self._aistudio_access_token}"
-
-        try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
-                response = await client.post(url, json=payload, headers=headers)
-                response.raise_for_status()
-                return response.json()
-        except httpx.HTTPError as e:
-            raise RuntimeError(f"Service call failed: {str(e)}")
-        except json.JSONDecodeError as e:
-            raise RuntimeError(f"Invalid service response: {str(e)}")
-
-    def _prepare_service_payload(
-        self, processed_input: str, file_type: str, **kwargs: Any
-    ) -> Dict[str, Any]:
-        api_file_type = 1 if file_type == "IMAGE" else 0
-        payload = {"file": processed_input, "fileType": api_file_type, **kwargs}
-        return payload
-
-    def _handle_error(
-        self, error_msg: str, output_mode: OutputMode
-    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-        if output_mode == "detailed":
-            return [TextContent(type="text", text=f"Error: {error_msg}")]
-        return f"Error: {error_msg}"
-
     @abc.abstractmethod
     def _get_service_endpoint(self) -> str:
         """Get the service endpoint.
 
         Returns:
             Service endpoint path.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Transform keyword arguments for local execution.
+
+        Args:
+            kwargs: Keyword arguments.
+
+        Returns:
+            Transformed keyword arguments.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """Transform keyword arguments for service execution.
+
+        Args:
+            kwargs: Keyword arguments.
+
+        Returns:
+            Transformed keyword arguments.
         """
         raise NotImplementedError
 
@@ -427,31 +371,190 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         )
 
 
+class SimpleInferencePipelineHandler(PipelineHandler):
+    """Base class for simple inference pipeline handlers."""
+
+    async def process(
+        self, input_data: str, output_mode: OutputMode, ctx: Context, **kwargs: Any
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
+        """Process input data through the pipeline.
+
+        Args:
+            input_data: Input data (file path, URL, or Base64).
+            output_mode: Output mode ("simple" or "detailed").
+            ctx: MCP context.
+            **kwargs: Additional pipeline-specific arguments.
+
+        Returns:
+            Processed result in the requested output format.
+        """
+        try:
+            await ctx.info(
+                f"Starting {self._pipeline} processing (source: {self._ppocr_source})"
+            )
+
+            if self._mode == "local":
+                processed_input = self._process_input_for_local(input_data)
+                kwargs = self._transform_local_kwargs(kwargs)
+                raw_result = await self._predict_with_local_engine(
+                    processed_input, ctx, **kwargs
+                )
+                result = self._parse_local_result(raw_result, ctx)
+            else:
+                processed_input, file_type = self._process_input_for_service(input_data)
+                kwargs = self._transform_service_kwargs(kwargs)
+                raw_result = await self._call_service(
+                    processed_input, file_type, ctx, **kwargs
+                )
+                result = await self._parse_service_result(raw_result, ctx)
+
+            await self._log_completion_stats(result, ctx)
+            return self._format_output(result, output_mode == "detailed", ctx)
+
+        except Exception as e:
+            await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
+            return self._handle_error(str(e), output_mode)
+
+    def _process_input_for_local(self, input_data: str) -> Union[str, np.ndarray]:
+        if _is_file_path(input_data) or _is_url(input_data):
+            return input_data
+        elif _is_base64(input_data):
+            if input_data.startswith("data:"):
+                base64_data = input_data.split(",", 1)[1]
+            else:
+                base64_data = input_data
+            try:
+                image_bytes = base64.b64decode(base64_data)
+                image_pil = PILImage.open(io.BytesIO(image_bytes))
+                image_arr = np.array(image_pil.convert("RGB"))
+                # Convert RGB to BGR
+                return np.ascontiguousarray(image_arr[..., ::-1])
+            except Exception as e:
+                raise ValueError(f"Failed to decode Base64 image: {e}")
+        else:
+            raise ValueError("Invalid input data format")
+
+    def _process_input_for_service(self, input_data: str) -> tuple[str, Optional[str]]:
+        if _is_url(input_data):
+            file_type = _infer_file_type_from_url(input_data)
+        elif _is_file_path(input_data):
+            try:
+                with open(input_data, "rb") as f:
+                    bytes_ = f.read()
+                input_data = base64.b64encode(bytes_).decode("ascii")
+                file_type = _infer_file_type_from_bytes(bytes_)
+            except Exception as e:
+                raise ValueError(f"Failed to read file: {e}")
+        elif _is_base64(input_data):
+            try:
+                if input_data.startswith("data:"):
+                    base64_data = input_data.split(",", 1)[1]
+                else:
+                    base64_data = input_data
+                bytes_ = base64.b64decode(base64_data)
+                file_type = _infer_file_type_from_bytes(bytes_)
+            except Exception as e:
+                raise ValueError(f"Failed to decode Base64 data: {e}")
+        else:
+            raise ValueError("Invalid input data format")
+        return input_data, file_type
+
+    async def _call_service(
+        self,
+        processed_input: str,
+        file_type: Optional[str],
+        ctx: Context,
+        **kwargs: Any,
+    ) -> Dict[str, Any]:
+        if file_type == "UNKNOWN":
+            raise ValueError("Cannot determine file type from the provided data.")
+
+        if not self._server_url:
+            raise RuntimeError("Server URL not configured")
+
+        endpoint = self._get_service_endpoint()
+        url = f"{self._server_url.rstrip('/')}/{endpoint.lstrip('/')}"
+
+        payload = self._prepare_service_payload(processed_input, file_type, **kwargs)
+        headers = {"Content-Type": "application/json"}
+
+        if self._ppocr_source == "aistudio":
+            if not self._aistudio_access_token:
+                raise RuntimeError("Missing AI Studio access token")
+            headers["Authorization"] = f"token {self._aistudio_access_token}"
+
+        try:
+            timeout = httpx.Timeout(
+                connect=30.0, read=self._timeout, write=30.0, pool=30.0
+            )
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.post(url, json=payload, headers=headers)
+                response.raise_for_status()
+                return response.json()
+        except httpx.HTTPError as e:
+            raise RuntimeError(f"HTTP request failed: {type(e).__name__}: {str(e)}")
+        except json.JSONDecodeError as e:
+            raise RuntimeError(f"Invalid service response: {str(e)}")
+
+    def _prepare_service_payload(
+        self, processed_input: str, file_type: Optional[str], **kwargs: Any
+    ) -> Dict[str, Any]:
+        payload: Dict[str, Any] = {"file": processed_input, **kwargs}
+        if file_type:
+            api_file_type = 1 if file_type == "IMAGE" else 0
+            payload["fileType"] = api_file_type
+        return payload
+
+    def _handle_error(
+        self, error_msg: str, output_mode: OutputMode
+    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
+        if output_mode == "detailed":
+            return [TextContent(type="text", text=f"Error: {error_msg}")]
+        return f"Error: {error_msg}"
+
+
 class OCRHandler(SimpleInferencePipelineHandler):
     def register_tools(self, mcp: FastMCP) -> None:
         @mcp.tool()
         async def _ocr(
             input_data: str,
-            output_mode: OutputMode,
+            output_mode: OutputMode = "simple",
+            *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extract text from images and PDFs.
+            """Extracts text from images and PDFs.
 
             Args:
-                input_data: File path, URL, or Base64 data.
-                output_mode: "simple" for clean text, "detailed" for JSON with positioning.
+                input_data: The file to process (file path, URL, or Base64 string).
+                output_mode: The desired output format.
+                    - "simple": (Default) Clean, readable text suitable for most users. This is the recommended setting.
+                    - "detailed": A technical JSON output including text, confidence, and precise bounding box coordinates. Only use this for development or when coordinates are specifically required.
             """
+            await ctx.info(
+                f"--- OCR tool received input_data: {str(input_data)[:200]}... ---"
+            )
             return await self.process(input_data, output_mode, ctx)
 
     def _create_local_engine(self) -> Any:
         return PaddleOCR(
             paddlex_config=self._pipeline_config,
             device=self._device,
-            enable_mkldnn=False,
         )
 
     def _get_service_endpoint(self) -> str:
         return "ocr"
+
+    def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "use_doc_unwarping": False,
+            "use_doc_orientation_classify": False,
+        }
+
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "useDocUnwarping": False,
+            "useDocOrientationClassify": False,
+        }
 
     def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
         result = local_result[0]
@@ -551,26 +654,40 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         @mcp.tool()
         async def _pp_structurev3(
             input_data: str,
-            output_mode: OutputMode,
+            output_mode: OutputMode = "simple",
+            *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Document layout analysis.
+            """Extracts structured markdown from complex documents (images/PDFs), including tables and layouts.
 
             Args:
-                input_data: File path, URL, or Base64 data.
-                output_mode: "simple" for markdown text, "detailed" for JSON with metadata + prunedResult.
-
-            Returns:
-                - Simple: Markdown text + images (if available)
-                - Detailed: prunedResult/local detailed info + markdown text + images
+                input_data: The file to process (file path, URL, or Base64 string).
+                output_mode: The desired output format.
+                    - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
+                    - "detailed": Raw technical JSON data about document structure, plus markdown. This is a specialized mode for developers.
             """
             return await self.process(input_data, output_mode, ctx)
 
     def _create_local_engine(self) -> Any:
-        return PPStructureV3(paddlex_config=self._pipeline_config, device=self._device)
+        return PPStructureV3(
+            paddlex_config=self._pipeline_config,
+            device=self._device,
+        )
 
     def _get_service_endpoint(self) -> str:
         return "layout-parsing"
+
+    def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "use_doc_unwarping": False,
+            "use_doc_orientation_classify": False,
+        }
+
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "useDocUnwarping": False,
+            "useDocOrientationClassify": False,
+        }
 
     def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
         markdown_parts = []

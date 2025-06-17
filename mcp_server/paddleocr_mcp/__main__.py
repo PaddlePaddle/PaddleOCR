@@ -89,7 +89,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--timeout",
         type=int,
-        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "30")),
+        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "60")),
         help="API request timeout in seconds for the underlying server.",
     )
 
