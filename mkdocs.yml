@@ -109,7 +109,7 @@ plugins:
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
-            获取onnx模型: Obtaining ONNX Models
+            获取ONNX模型: Obtaining ONNX Models
             端侧部署: On-Device Deployment
             服务化部署: Serving Deployment
             模块列表: Module List
@@ -275,7 +275,7 @@ nav:
     - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
   - 推理部署: 
     - 高性能推理: version3.x/deployment/high_performance_inference.md
-    - 获取onnx模型: version3.x/deployment/obtaining_onnx_models.md
+    - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
     - 基于Python或C++预测引擎推理: version3.x/deployment/python_and_cpp_infer.md
