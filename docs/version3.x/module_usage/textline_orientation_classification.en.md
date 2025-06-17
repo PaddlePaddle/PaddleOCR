@@ -95,6 +95,8 @@ You can quickly experience the functionality with a single command:
 paddleocr textline_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
 ```  
 
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+
 You can also integrate the text line orientation classification model into your project. Run the following code after downloading the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg) to your local machine. 
 
 ```bash
