@@ -59,12 +59,22 @@ def prepare_common_init_args(model_name, common_args):
     device = common_args["device"]
     if device is None:
         device = get_default_device()
-    device_type, _ = parse_device(device)
+    device_type, device_ids = parse_device(device)
+    if device_ids is not None:
+        device_id = device_ids[0]
+    else:
+        device_id = None
 
-    init_kwargs = {"device": device}
+    init_kwargs = {}
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
+    init_kwargs["hpi_config"] = {
+        "device_type": device_type,
+        "device_id": device_id,
+    }
 
-    pp_option = PaddlePredictorOption(model_name)
+    pp_option = PaddlePredictorOption(
+        model_name, device_type=device_type, device_id=device_id
+    )
     if device_type == "gpu":
         if common_args["use_pptrt"]:
             if common_args["pptrt_precision"] == "fp32":
@@ -74,13 +84,17 @@ def prepare_common_init_args(model_name, common_args):
                     "pptrt_precision"
                 ]
                 pp_option.run_mode = "trt_fp16"
+        else:
+            pp_option.run_mode = "paddle"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn:
             pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
         else:
             pp_option.run_mode = "paddle"
-    pp_option.cpu_threads = common_args["cpu_threads"]
+        pp_option.cpu_threads = common_args["cpu_threads"]
+    else:
+        pp_option.run_mode = "paddle"
     init_kwargs["pp_option"] = pp_option
 
     return init_kwargs
