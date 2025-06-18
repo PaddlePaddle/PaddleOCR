@@ -134,7 +134,7 @@ class PipelineHandler(abc.ABC):
             device: Device to run inference on.
             server_url: Base URL for service mode.
             aistudio_access_token: AI Studio access token.
-            timeout: Timeout in seconds.
+            timeout: Read timeout in seconds for HTTP requests.
         """
         self._pipeline = pipeline
         if ppocr_source == "local":
@@ -325,7 +325,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             input_data: Input data (file path, URL, or Base64).
             output_mode: Output mode ("simple" or "detailed").
             ctx: MCP context.
-            file_type: File type for URLs ("image", "pdf", or "None" for auto-detection).
+            file_type: File type for URLs ("image", "pdf", or None for auto-detection).
             **kwargs: Additional pipeline-specific arguments.
 
         Returns:
@@ -397,6 +397,11 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                     bytes_ = f.read()
                 input_data = base64.b64encode(bytes_).decode("ascii")
                 file_type_str = _infer_file_type_from_bytes(bytes_)
+                if file_type_str is None:
+                    raise ValueError(
+                        f"Unsupported file type for '{input_data}'. "
+                        "Only image files (JPEG, PNG, etc.) and PDF documents are supported."
+                    )
                 return input_data, file_type_str
             except Exception as e:
                 raise ValueError(f"Failed to read file: {e}")
@@ -408,6 +413,11 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                     base64_data = input_data
                 bytes_ = base64.b64decode(base64_data)
                 file_type_str = _infer_file_type_from_bytes(bytes_)
+                if file_type_str is None:
+                    raise ValueError(
+                        "Unsupported file type in Base64 data. "
+                        "Only image files (JPEG, PNG, etc.) and PDF documents are supported."
+                    )
                 return input_data, file_type_str
             except Exception as e:
                 raise ValueError(f"Failed to decode Base64 data: {e}")
@@ -484,12 +494,12 @@ class OCRHandler(SimpleInferencePipelineHandler):
             Args:
                 input_data: The file to process (file path, URL, or Base64 string).
                 output_mode: The desired output format.
-                    - "simple": (Default) Clean, readable text suitable for most users. This is the recommended setting.
-                    - "detailed": A technical JSON output including text, confidence, and precise bounding box coordinates. Only use this when coordinates are specifically required.
-                file_type: File type specification, ONLY required when input_data is a URL.
+                    - "simple": (Default) Clean, readable text suitable for most use cases.
+                    - "detailed": A JSON output including text, confidence, and precise bounding box coordinates. Only use this when coordinates are specifically required.
+                file_type: File type. This parameter is REQUIRED when `input_data` is a URL and should be omitted for other types.
                     - "image": For image files
                     - "pdf": For PDF documents
-                    - "None": For unknown file types
+                    - None: For unknown file types
             """
             await ctx.info(
                 f"--- OCR tool received input_data: {str(input_data)[:200]}... ---"
@@ -626,11 +636,11 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                 input_data: The file to process (file path, URL, or Base64 string).
                 output_mode: The desired output format.
                     - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
-                    - "detailed": Raw technical JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
-                file_type: File type specification, ONLY required when input_data is a URL.
+                    - "detailed": JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
+                file_type: File type. This parameter is REQUIRED when `input_data` is a URL and should be omitted for other types.
                     - "image": For image files
                     - "pdf": For PDF documents
-                    - "None": For unknown file types
+                    - None: For unknown file types
             """
             return await self.process(input_data, output_mode, ctx, file_type)
 
