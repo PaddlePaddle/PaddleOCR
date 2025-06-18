@@ -244,6 +244,12 @@ MKL-DNN cache capacity.
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>max_side_limit</code></td>
+<td>Limit on the max length of the input image for detection.<code>int</code> Limit the longest side of the image for input detection model. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
+<td><code>int</code> / <code>None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>thresh</code></td>
 <td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. Accepts any float value greater than 0. If set to <code>None</code>, the default value from the official PaddleOCR model configuration will be used.</td>
 <td><code>float</code> / <code>None</code></td>
