@@ -32,23 +32,19 @@ jobs:
   test-pr-gpu:
     runs-on: [self-hosted, GPU-2Card-OCR]
     steps:
-      - name: clone and fetch
-        run: |
-          rm -rf $PR_ID
-          mkdir $PR_ID
-          cd $PR_ID
-          git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
-          cd PaddleOCR
-          git fetch origin pull/${PR_ID}/head:ci_build
-          git checkout ci_build
-          
       - name: run test
         env:
           py_version: "3.10"
           paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
           docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
         run: |
-          cd $PR_ID/PaddleOCR
+          work_dir=$RANDOM
+          mkdir $work_dir
+          cd $work_dir
+          git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
+          cd PaddleOCR
+          git fetch origin pull/${PR_ID}/head:ci_build
+          git checkout ci_build
           docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
             --shm-size=128g --net=host \
             -v $PWD:/workspace -w /workspace  \
