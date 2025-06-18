@@ -70,7 +70,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
   - 润色PP-StructureV3在不同配置下的benchmark指标。
 
 - **其他：**
-  - 放松numpy、pandas、等依赖的版本限制，恢复对Python 3.12的支持。
+  - 放松numpy、pandas等依赖的版本限制，恢复对Python 3.12的支持。
 
 <details>
     <summary><strong>历史日志</strong></summary>

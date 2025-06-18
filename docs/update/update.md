@@ -37,7 +37,7 @@ hide:
     - 润色PP-StructureV3在不同配置下的benchmark指标。
 
 - **其他：**
-    - 放松numpy、pandas、等依赖的版本限制，恢复对Python 3.12的支持。
+    - 放松numpy、pandas等依赖的版本限制，恢复对Python 3.12的支持。
 
 #### **🔥🔥2025.06.05: PaddleOCR v3.0.1 版本发布，包含：**
 - **优化部分模型和模型配置：**
