@@ -46,13 +46,10 @@ Some [working modes](#32-working-modes-explained) may require additional depende
 
 ## 2. Quick Start
 
-This section guides you through a quick setup using **Claude Desktop** as the MCP Host and the **AI Studio** mode. This mode is recommended for new users as it does not require complex local dependencies. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
+This section guides you through a quick setup using **Claude Desktop** as the MCP Host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
 
-1. **Prepare the AI Studio Service**
-    - Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in.
-    - In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].
-    - Once deployed, obtain your **Service Base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
-    - Get your **Access Token** from [this page](https://aistudio.baidu.com/index/accessToken).
+1. **Prepare the Local Python Library PaddleOCR**
+    - Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
 
 2. **Locate the MCP Configuration File** - For details, refer to the [Official MCP Documentation](https://modelcontextprotocol.io/quickstart/user).
     - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
@@ -60,10 +57,9 @@ This section guides you through a quick setup using **Claude Desktop** as the MC
     - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 3. **Add MCP Server Configuration**
-    Open the `claude_desktop_config.json` file and add the configuration by referring to [5.1 AI Studio Service Configuration](#51-ai-studio-service-configuration).
+    Open the `claude_desktop_config.json` file and add the configuration by referring to [5.2 Local Python Library Configuration](#52-local-python-library-configuration)
 
     **Note**:
-    - Do not leak your **Access Token**.
     - If `paddleocr_mcp` is not in your system's `PATH`, set `command` to the absolute path of the executable.
 
 4. **Restart the MCP Host**
@@ -82,20 +78,22 @@ In the Host's configuration file (e.g., `claude_desktop_config.json`), you need 
 
 You can configure the MCP server to run in different modes based on your needs.
 
-#### Mode 1: AI Studio Service (`aistudio`)
+#### Mode 1: AI Studio Service (`aistudio`) - **Registration only available for Chinese phone numbers**
 This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
 
 - **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
-- **Procedure**: Please refer to [2. Quick Start](#2-quick-start).
+- **Procedure**:
+  1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in.
+  2. In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].
+  3. Once deployed, obtain your **Service Base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
+  4. Get your **Access Token** from [this page](https://aistudio.baidu.com/index/accessToken).
 - In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.
 
 #### Mode 2: Local Python Library (`local`)
 This mode runs the model directly on your local machine and has certain requirements for the local environment and computer performance. It relies on the installed `paddleocr` inference package.
 
 - **Use Case**: Suitable for offline usage and scenarios with strict data privacy requirements.
-- **Procedure**:
-    1.  Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
-    2.  Refer to [5.2 Local Python Library Configuration](#52-local-python-library-configuration) to modify the `claude_desktop_config.json` file.
+- **Procedure**: Please refer to [2. Quick Start](#2-quick-start).
 
 #### Mode 3: Self-hosted Service (`self_hosted`)
 This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the **Serving** solutions provided by PaddleX.
@@ -117,7 +115,7 @@ You can control the server's behavior via environment variables or command-line 
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | The source of PaddleOCR capabilities | `"local"`, `"aistudio"`, `"self_hosted"` | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | Base URL of the underlying service (required for `aistudio` or `self_hosted` mode) | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio authentication token (required for `aistudio` mode) | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | Request timeout for the underlying service (in seconds) | - | `30` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | Request timeout for the underlying service (in seconds) | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | Specify the device for inference (only effective in `local` mode) | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | Path to the PaddleX pipeline configuration file (only effective in `local` mode) | - | `None` |
 | - | `--http` | `bool` | Use HTTP transport instead of stdio (for remote deployment and multiple clients) | - | `False` |
@@ -151,6 +149,7 @@ Below are complete configuration examples for different working modes. You can c
 **Note**:
 - Replace `<your-server-url>` with your AI Studio **Service Base URL**, e.g., `https://xxxxx.aistudio-hub.baidu.com`. Do not include endpoint paths (like `/ocr`).
 - Replace `<your-access-token>` with your **Access Token**.
+- Do not leak your **Access Token**.
 
 ### 5.2 Local Python Library Configuration
 

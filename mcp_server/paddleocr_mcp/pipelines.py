@@ -17,7 +17,6 @@ import asyncio
 import base64
 import io
 import json
-import mimetypes
 import re
 from pathlib import PurePath
 from queue import Queue
@@ -64,75 +63,13 @@ def _is_url(s: str) -> bool:
     return all([result.scheme, result.netloc]) and result.scheme in ("http", "https")
 
 
-def _infer_file_type_from_url(url: str) -> str:
-    url_parts = urlparse(url)
-
-    potential_query_parts = []
-    if url_parts.query:
-        potential_query_parts.append(url_parts.query)
-
-    last_path_segment = url_parts.path.split("/")[-1]
-    if "=" in last_path_segment:
-        potential_query_parts.append(last_path_segment)
-
-    if potential_query_parts:
-        from urllib.parse import parse_qs
-
-        query_params = parse_qs("&".join(potential_query_parts))
-
-        format_params = ["f", "format", "type", "ext", "filetype", "mime"]
-        for param in format_params:
-            if param in query_params:
-                format_value = query_params[param][0].lower()
-                if format_value in [
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "gif",
-                    "bmp",
-                    "webp",
-                    "tiff",
-                    "tif",
-                ]:
-                    return "IMAGE"
-                elif format_value in ["pdf"]:
-                    return "PDF"
-        for param_values in query_params.values():
-            for value in param_values:
-                value_lower = value.lower()
-                if value_lower in [
-                    "jpg",
-                    "jpeg",
-                    "png",
-                    "gif",
-                    "bmp",
-                    "webp",
-                    "tiff",
-                    "tif",
-                    "image",
-                ]:
-                    return "IMAGE"
-                elif value_lower in ["pdf", "document"]:
-                    return "PDF"
-
-    filename = url_parts.path.split("/")[-1]
-    file_type = mimetypes.guess_type(filename)[0]
-    if file_type:
-        if file_type.startswith("image/"):
-            return "IMAGE"
-        elif file_type == "application/pdf":
-            return "PDF"
-
-    return "UNKNOWN"
-
-
-def _infer_file_type_from_bytes(data: bytes) -> str:
+def _infer_file_type_from_bytes(data: bytes) -> Optional[str]:
     mime = magic.from_buffer(data, mime=True)
     if mime.startswith("image/"):
-        return "IMAGE"
+        return "image"
     elif mime == "application/pdf":
-        return "PDF"
-    return "UNKNOWN"
+        return "pdf"
+    return None
 
 
 class _EngineWrapper:
@@ -375,7 +312,12 @@ class SimpleInferencePipelineHandler(PipelineHandler):
     """Base class for simple inference pipeline handlers."""
 
     async def process(
-        self, input_data: str, output_mode: OutputMode, ctx: Context, **kwargs: Any
+        self,
+        input_data: str,
+        output_mode: OutputMode,
+        ctx: Context,
+        file_type: Optional[str] = None,
+        **kwargs: Any,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Process input data through the pipeline.
 
@@ -383,6 +325,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             input_data: Input data (file path, URL, or Base64).
             output_mode: Output mode ("simple" or "detailed").
             ctx: MCP context.
+            file_type: File type for URLs ("image", "pdf", or "None" for auto-detection).
             **kwargs: Additional pipeline-specific arguments.
 
         Returns:
@@ -401,10 +344,12 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 )
                 result = self._parse_local_result(raw_result, ctx)
             else:
-                processed_input, file_type = self._process_input_for_service(input_data)
+                processed_input, inferred_file_type = self._process_input_for_service(
+                    input_data, file_type
+                )
                 kwargs = self._transform_service_kwargs(kwargs)
                 raw_result = await self._call_service(
-                    processed_input, file_type, ctx, **kwargs
+                    processed_input, inferred_file_type, ctx, **kwargs
                 )
                 result = await self._parse_service_result(raw_result, ctx)
 
@@ -434,15 +379,25 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         else:
             raise ValueError("Invalid input data format")
 
-    def _process_input_for_service(self, input_data: str) -> tuple[str, Optional[str]]:
+    def _process_input_for_service(
+        self, input_data: str, file_type: Optional[str] = None
+    ) -> tuple[str, Optional[str]]:
         if _is_url(input_data):
-            file_type = _infer_file_type_from_url(input_data)
+            # Normalize string "None" (case-insensitive) to Python None
+            norm_ft = None
+            if isinstance(file_type, str):
+                if file_type.lower() in ("None", "none", "null", "unknown", ""):
+                    norm_ft = None
+                else:
+                    norm_ft = file_type.lower()
+            return input_data, norm_ft
         elif _is_file_path(input_data):
             try:
                 with open(input_data, "rb") as f:
                     bytes_ = f.read()
                 input_data = base64.b64encode(bytes_).decode("ascii")
-                file_type = _infer_file_type_from_bytes(bytes_)
+                file_type_str = _infer_file_type_from_bytes(bytes_)
+                return input_data, file_type_str
             except Exception as e:
                 raise ValueError(f"Failed to read file: {e}")
         elif _is_base64(input_data):
@@ -452,12 +407,12 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 else:
                     base64_data = input_data
                 bytes_ = base64.b64decode(base64_data)
-                file_type = _infer_file_type_from_bytes(bytes_)
+                file_type_str = _infer_file_type_from_bytes(bytes_)
+                return input_data, file_type_str
             except Exception as e:
                 raise ValueError(f"Failed to decode Base64 data: {e}")
         else:
             raise ValueError("Invalid input data format")
-        return input_data, file_type
 
     async def _call_service(
         self,
@@ -466,9 +421,6 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         ctx: Context,
         **kwargs: Any,
     ) -> Dict[str, Any]:
-        if file_type == "UNKNOWN":
-            raise ValueError("Cannot determine file type from the provided data.")
-
         if not self._server_url:
             raise RuntimeError("Server URL not configured")
 
@@ -500,9 +452,13 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         self, processed_input: str, file_type: Optional[str], **kwargs: Any
     ) -> Dict[str, Any]:
         payload: Dict[str, Any] = {"file": processed_input, **kwargs}
-        if file_type:
-            api_file_type = 1 if file_type == "IMAGE" else 0
-            payload["fileType"] = api_file_type
+        if file_type == "image":
+            payload["fileType"] = 1
+        elif file_type == "pdf":
+            payload["fileType"] = 0
+        else:
+            payload["fileType"] = None
+
         return payload
 
     def _handle_error(
@@ -519,6 +475,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
         async def _ocr(
             input_data: str,
             output_mode: OutputMode = "simple",
+            file_type: Optional[str] = None,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
@@ -529,11 +486,15 @@ class OCRHandler(SimpleInferencePipelineHandler):
                 output_mode: The desired output format.
                     - "simple": (Default) Clean, readable text suitable for most users. This is the recommended setting.
                     - "detailed": A technical JSON output including text, confidence, and precise bounding box coordinates. Only use this when coordinates are specifically required.
+                file_type: File type specification, ONLY required when input_data is a URL.
+                    - "image": For image files
+                    - "pdf": For PDF documents
+                    - "None": For unknown file types
             """
             await ctx.info(
                 f"--- OCR tool received input_data: {str(input_data)[:200]}... ---"
             )
-            return await self.process(input_data, output_mode, ctx)
+            return await self.process(input_data, output_mode, ctx, file_type)
 
     def _create_local_engine(self) -> Any:
         return PaddleOCR(
@@ -655,6 +616,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         async def _pp_structurev3(
             input_data: str,
             output_mode: OutputMode = "simple",
+            file_type: Optional[str] = None,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
@@ -665,8 +627,12 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                 output_mode: The desired output format.
                     - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
                     - "detailed": Raw technical JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
+                file_type: File type specification, ONLY required when input_data is a URL.
+                    - "image": For image files
+                    - "pdf": For PDF documents
+                    - "None": For unknown file types
             """
-            return await self.process(input_data, output_mode, ctx)
+            return await self.process(input_data, output_mode, ctx, file_type)
 
     def _create_local_engine(self) -> Any:
         return PPStructureV3(

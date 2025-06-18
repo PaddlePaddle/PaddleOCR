@@ -117,7 +117,7 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源 | `"local"`, `"aistudio"`, `"self_hosted"` | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio` 或 `self_hosted` 模式下必需） | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 认证令牌（`aistudio` 模式下必需） | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的超时时间（秒） | - | `30` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的超时时间（秒） | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效） | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 模式下生效） | - | `None` |
 | - | `--http` | `bool` | 使用 HTTP 传输而非 stdio（适用于远程部署和多客户端） | - | `False` |
