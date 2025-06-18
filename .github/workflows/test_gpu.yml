@@ -31,7 +31,7 @@ permissions:
 jobs:
   test-pr-gpu:
     runs-on: [self-hosted, GPU-2Card-OCR]
-    steps:          
+    steps:
       - name: run test
         env:
           py_version: "3.10"
