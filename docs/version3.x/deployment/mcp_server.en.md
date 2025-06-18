@@ -115,7 +115,7 @@ You can control the server's behavior via environment variables or command-line 
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | The source of PaddleOCR capabilities | `"local"`, `"aistudio"`, `"self_hosted"` | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | Base URL of the underlying service (required for `aistudio` or `self_hosted` mode) | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio authentication token (required for `aistudio` mode) | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | Request timeout for the underlying service (in seconds) | - | `60` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | HTTP read timeout in seconds for API requests to the underlying server. | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | Specify the device for inference (only effective in `local` mode) | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | Path to the PaddleX pipeline configuration file (only effective in `local` mode) | - | `None` |
 | - | `--http` | `bool` | Use HTTP transport instead of stdio (for remote deployment and multiple clients) | - | `False` |
