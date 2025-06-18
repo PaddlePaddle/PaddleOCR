@@ -372,7 +372,6 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 image_bytes = base64.b64decode(base64_data)
                 image_pil = PILImage.open(io.BytesIO(image_bytes))
                 image_arr = np.array(image_pil.convert("RGB"))
-                # Convert RGB to BGR
                 return np.ascontiguousarray(image_arr[..., ::-1])
             except Exception as e:
                 raise ValueError(f"Failed to decode Base64 image: {e}")
@@ -383,7 +382,6 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         self, input_data: str, file_type: Optional[str] = None
     ) -> tuple[str, Optional[str]]:
         if _is_url(input_data):
-            # Normalize string "None" (case-insensitive) to Python None
             norm_ft = None
             if isinstance(file_type, str):
                 if file_type.lower() in ("None", "none", "null", "unknown", ""):
@@ -489,7 +487,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extracts text from images and PDFs.
+            """Extracts text from images and PDFs, accepts file path, URL, or Base64.
 
             Args:
                 input_data: The file to process (file path, URL, or Base64 string).
@@ -533,7 +531,6 @@ class OCRHandler(SimpleInferencePipelineHandler):
         scores = result["rec_scores"]
         boxes = result["rec_boxes"]
 
-        # Direct assembly
         clean_texts, confidences, blocks = [], [], []
 
         for i, text in enumerate(texts):
@@ -558,7 +555,6 @@ class OCRHandler(SimpleInferencePipelineHandler):
         result_data = service_result.get("result", service_result)
         ocr_results = result_data.get("ocrResults")
 
-        # Direct extraction and assembly
         all_texts, all_confidences, blocks = [], [], []
 
         for ocr_result in ocr_results:
@@ -606,10 +602,8 @@ class OCRHandler(SimpleInferencePipelineHandler):
             )
 
         if detailed:
-            # L2: Return all data
             return json.dumps(result, ensure_ascii=False, indent=2)
         else:
-            # L1: Core text + key statistics
             confidence = result["confidence"]
             block_count = len(result["blocks"])
 
@@ -630,7 +624,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extracts structured markdown from complex documents (images/PDFs), including tables and layouts.
+            """Extracts structured markdown from complex documents (images/PDFs), including tables and layouts. Accepts file path, URL, or Base64.
 
             Args:
                 input_data: The file to process (file path, URL, or Base64 string).
@@ -695,28 +689,24 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                 "detailed_results": [],
             }
 
-        # 简化：直接提取需要的信息
         markdown_parts = []
         all_images_mapping = {}
         detailed_results = []
 
         for res in layout_results:
-            # 提取markdown文本
             markdown_parts.append(res["markdown"]["text"])
-            # 提取图片
             all_images_mapping.update(res["markdown"]["images"])
-            # 保存prunedResult用于L2详细信息
             detailed_results.append(res["prunedResult"])
 
         return {
             "markdown": "\n".join(markdown_parts),
-            "pages": len(layout_results),  # 简化为页数
+            "pages": len(layout_results),
             "images_mapping": all_images_mapping,
             "detailed_results": detailed_results,
         }
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
-        page_count = result["pages"]  # 现在是数字而不是列表
+        page_count = result["pages"]
         await ctx.info(f"Structure analysis completed: {page_count} pages")
 
     def _format_output(
@@ -733,7 +723,6 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         images_mapping = result.get("images_mapping", {})
 
         if detailed:
-            # L2: 返回统一的详细结果 + markdown混合内容
             content_list = []
             if "detailed_results" in result and result["detailed_results"]:
                 for detailed_result in result["detailed_results"]:
@@ -749,22 +738,19 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                         )
                     )
 
-            # 添加markdown混合内容
             content_list.extend(
                 self._parse_markdown_with_images(markdown_text, images_mapping)
             )
 
             return content_list
         else:
-            # L1: 简化的混合内容格式，只包含markdown和图片
             return self._parse_markdown_with_images(markdown_text, images_mapping)
 
     def _parse_markdown_with_images(
         self, markdown_text: str, images_mapping: Dict[str, str]
     ) -> List[Union[TextContent, ImageContent]]:
-        """解析markdown文本，返回文字和图片的混合列表"""
+        """Parse markdown text and return mixed list of text and images."""
         if not images_mapping:
-            # 没有图片，直接返回文本
             return [TextContent(type="text", text=markdown_text)]
 
         content_list = []
@@ -772,12 +758,10 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         last_pos = 0
 
         for match in re.finditer(img_pattern, markdown_text):
-            # 添加图片前的文本
             text_before = markdown_text[last_pos : match.start()]
             if text_before.strip():
                 content_list.append(TextContent(type="text", text=text_before))
 
-            # 添加图片
             img_src = match.group(1)
             if img_src in images_mapping:
                 content_list.append(
@@ -790,7 +774,6 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
 
             last_pos = match.end()
 
-        # 添加剩余文本
         remaining_text = markdown_text[last_pos:]
         if remaining_text.strip():
             content_list.append(TextContent(type="text", text=remaining_text))
