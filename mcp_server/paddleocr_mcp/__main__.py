@@ -63,6 +63,7 @@ def _parse_args() -> argparse.Namespace:
         "--verbose", action="store_true", help="Enable verbose logging for debugging."
     )
 
+    # Local mode configuration
     parser.add_argument(
         "--pipeline_config",
         default=os.getenv("PADDLEOCR_MCP_PIPELINE_CONFIG"),
@@ -74,6 +75,12 @@ def _parse_args() -> argparse.Namespace:
         help="Device to run inference on.",
     )
 
+    # Service mode configuration
+    parser.add_argument(
+        "--server_url",
+        default=os.getenv("PADDLEOCR_MCP_SERVER_URL"),
+        help="Base URL of the underlying server (required in service mode).",
+    )
     parser.add_argument(
         "--aistudio_access_token",
         default=os.getenv("PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN"),
