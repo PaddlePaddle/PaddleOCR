@@ -24,6 +24,7 @@ PaddleOCR 和 PaddleX 的版本存在如下对应关系：
 | --- | --- |
 | `3.0.0` | `3.0.0` |
 | `3.0.1` | `3.0.1` |
+| `3.0.2` | `3.0.2` |
 
 ## 2. PaddleOCR 产线与 PaddleX 产线注册名的对应关系
 
@@ -54,6 +55,13 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 ```
 
 上述代码会在工作目录下生成名为 `ocr_config.yaml` 的产线配置文件。
+
+也可以通过 PaddleX CLI 获取配置文件。示例如下：
+
+```bash
+# 指定产线注册名
+paddlex --get_pipeline_config OCR
+```
 
 ### 3.2 编辑产线配置文件
 

@@ -24,6 +24,7 @@ The version correspondence between PaddleOCR and PaddleX is as follows:
 | --- | --- |
 | `3.0.0` | `3.0.0` |
 | `3.0.1` | `3.0.1` |
+| `3.0.2` | `3.0.2` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
@@ -54,6 +55,13 @@ pipeline.export_paddlex_config_to_yaml("ocr_config.yaml")
 ```
 
 The above code will generate a pipeline configuration file named `ocr_config.yaml` in the working directory.
+
+You can also obtain the configuration file through the PaddleX CLI. Example:
+
+```bash
+# Specify the pipeline registration name
+paddlex --get_pipeline_config OCR
+```
 
 ### 3.2 Editing Pipeline Configuration Files
 

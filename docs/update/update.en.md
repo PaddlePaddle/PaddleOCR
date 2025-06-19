@@ -6,26 +6,61 @@ hide:
 ---
 
 ### Recently Update
+#### **🔥🔥 2025.06.19: Release of PaddleOCR v3.0.2, which includes:**
+
+- **New Features:**
+
+    - The default download source has been changed from `BOS` to `HuggingFace`. Users can also change the environment variable `PADDLE_PDX_MODEL_SOURCE` to `BOS` to set the model download source back to Baidu Object Storage (BOS).
+    - Added service invocation examples for six languages—C++, Java, Go, C#, Node.js, and PHP—for pipelines like PP-OCRv5, PP-StructureV3, and PP-ChatOCRv4.
+    - Improved the layout partition sorting algorithm in the PP-StructureV3 pipeline, enhancing the sorting logic for complex vertical layouts to deliver better results.
+    - Enhanced model selection logic: when a language is specified but a model version is not, the system will automatically select the latest model version supporting that language. 
+    - Set a default upper limit for MKL-DNN cache size to prevent unlimited growth, while also allowing users to configure cache capacity.
+    - Updated default configurations for high-performance inference to support Paddle MKL-DNN acceleration and optimized the logic for automatic configuration selection for smarter choices.
+    - Adjusted the logic for obtaining the default device to consider the actual support for computing devices by the installed Paddle framework, making program behavior more intuitive.
+    - Added Android example for PP-OCRv5. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/on_device_deployment.html).
+
+- **Bug Fixes:**
+
+    - Fixed an issue with some CLI parameters in PP-StructureV3 not taking effect.
+    - Resolved an issue where `export_paddlex_config_to_yaml` would not function correctly in certain cases.
+    - Corrected the discrepancy between the actual behavior of `save_path` and its documentation description.
+    - Fixed potential multithreading errors when using MKL-DNN in basic service deployment.
+    - Corrected channel order errors in image preprocessing for the Latex-OCR model.
+    - Fixed channel order errors in saving visualized images within the text recognition module.
+    - Resolved channel order errors in visualized table results within PP-StructureV3 pipeline.
+    - Fixed an overflow issue in the calculation of `overlap_ratio` under extremely special circumstances in the PP-StructureV3 pipeline.
+
+- **Documentation Improvements:**
+
+    - Updated the description of the `enable_mkldnn` parameter in the documentation to accurately reflect the program's actual behavior.
+    - Fixed errors in the documentation regarding the `lang` and `ocr_version` parameters.
+    - Added instructions for exporting production line configuration files via CLI.
+    - Fixed missing columns in the performance data table for PP-OCRv5.
+    - Refined benchmark metrics for PP-StructureV3 pipeline across different configurations.
+
+- **Others:**
+
+    - Relaxed version restrictions on dependencies like numpy and pandas, restoring support for Python 3.12.
 
 #### **🔥🔥 2025.06.05: Release of PaddleOCR v3.0.1, which includes:**
 
 - **Optimisation of certain models and model configurations:**
-  - Updated the default model configuration for PP-OCRv5, changing both detection and recognition from mobile to server models. To improve default performance in most scenarios, the parameter `limit_side_len` in the configuration has been changed from 736 to 64.
-  - Added a new text line orientation classification model `PP-LCNet_x1_0_textline_ori` with an accuracy of 99.42%. The default text line orientation classifier for OCR, PP-StructureV3, and PP-ChatOCRv4 pipelines has been updated to this model.
-  - Optimised the text line orientation classification model `PP-LCNet_x0_25_textline_ori`, improving accuracy by 3.3 percentage points to a current accuracy of 98.85%.
+    - Updated the default model configuration for PP-OCRv5, changing both detection and recognition from mobile to server models. To improve default performance in most scenarios, the parameter `limit_side_len` in the configuration has been changed from 736 to 64.
+    - Added a new text line orientation classification model `PP-LCNet_x1_0_textline_ori` with an accuracy of 99.42%. The default text line orientation classifier for OCR, PP-StructureV3, and PP-ChatOCRv4 pipelines has been updated to this model.
+    - Optimised the text line orientation classification model `PP-LCNet_x0_25_textline_ori`, improving accuracy by 3.3 percentage points to a current accuracy of 98.85%.
 
 - **Optimisation of issues present in version 3.0.0:**
-  - **Improved CLI usage experience:** When using the PaddleOCR CLI without passing any parameters, a usage prompt is now provided.
-  - **New parameters added:** PP-ChatOCRv3 and PP-StructureV3 now support the `use_textline_orientation` parameter.
-  - **CPU inference speed optimisation:** All pipeline CPU inferences now enable MKL-DNN by default.
-  - **Support for C++ inference:** The detection and recognition concatenation part of PP-OCRv5 now supports C++ inference.
+    - **Improved CLI usage experience:** When using the PaddleOCR CLI without passing any parameters, a usage prompt is now provided.
+    - **New parameters added:** PP-ChatOCRv3 and PP-StructureV3 now support the `use_textline_orientation` parameter.
+    - **CPU inference speed optimisation:** All pipeline CPU inferences now enable MKL-DNN by default.
+    - **Support for C++ inference:** The detection and recognition concatenation part of PP-OCRv5 now supports C++ inference.
 
 - **Fixes for issues present in version 3.0.0:**
-  - Fixed an issue where PP-StructureV3 encountered CPU inference errors due to the inability to use MKL-DNN with formula and table recognition models.
-  - Fixed an issue where GPU environments encountered the error `FatalError: Process abort signal is detected by the operating system` during inference.
-  - Fixed type hint issues in some Python 3.8 environments.
-  - Fixed the issue where the method `PPStructureV3.concatenate_markdown_pages` was missing.
-  - Fixed an issue where specifying both `lang` and `model_name` when instantiating `paddleocr.PaddleOCR` resulted in `model_name` being ineffective.
+    - Fixed an issue where PP-StructureV3 encountered CPU inference errors due to the inability to use MKL-DNN with formula and table recognition models.
+    - Fixed an issue where GPU environments encountered the error `FatalError: Process abort signal is detected by the operating system` during inference.
+    - Fixed type hint issues in some Python 3.8 environments.
+    - Fixed the issue where the method `PPStructureV3.concatenate_markdown_pages` was missing.
+    - Fixed an issue where specifying both `lang` and `model_name` when instantiating `paddleocr.PaddleOCR` resulted in `model_name` being ineffective.
 
 #### **🔥🔥 2025.05.20: PaddleOCR 3.0 Official Release Highlights**
 
@@ -44,7 +79,7 @@ hide:
 - **Rebuilt Deployment Capabilities with Unified Inference Interface:**  
   - Integrates PaddleX3.0's core features for a comprehensive upgrade of the inference and deployment modules.  
   - Optimizes the design from version 2.x and unifies the Python API and CLI.  
-  - Supports high-performance inference, serving, and edge deployment scenarios.
+  - Supports high-performance inference, serving, and on-device deployment scenarios.
 
 - **Optimized Training with PaddlePaddle Framework 3.0:**  
   - Compatible with the latest features such as the CINN compiler.  
@@ -76,7 +111,7 @@ hide:
   * PaddleX, an All-in-One development tool based on PaddleOCR's advanced technology, supports low-code full-process development capabilities in the OCR field:
      * 🎨 [**Rich Model One-Click Call**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html): Integrates **17 models** related to text image intelligent analysis, general OCR, general layout parsing, table recognition, formula recognition, and seal recognition into 6 pipelines, which can be quickly experienced through a simple **Python API one-click call**. In addition, the same set of APIs also supports a total of **200+ models** in image classification, object detection, image segmentation, and time series forecasting, forming 20+ single-function modules, making it convenient for developers to use **model combinations**.
 
-     * 🚀 [**High Efficiency and Low barrier of entry**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html): Provides two methods based on **unified commands** and **GUI** to achieve simple and efficient use, combination, and customization of models. Supports multiple deployment methods such as **high-performance inference, service-oriented deployment, and edge deployment**. Additionally, for various mainstream hardware such as **NVIDIA GPU, Kunlunxin XPU, Ascend NPU, Cambricon MLU, and Haiguang DCU**, models can be developed with **seamless switching**.
+     * 🚀 [**High Efficiency and Low barrier of entry**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/overview.html): Provides two methods based on **unified commands** and **GUI** to achieve simple and efficient use, combination, and customization of models. Supports multiple deployment methods such as **high-performance inference, service-oriented deployment, and on-device deployment**. Additionally, for various mainstream hardware such as **NVIDIA GPU, Kunlunxin XPU, Ascend NPU, Cambricon MLU, and Haiguang DCU**, models can be developed with **seamless switching**.
 
   * Supports [PP-ChatOCRv3-doc](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_en.md), [high-precision layout detection model based on RT-DETR](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/layout_detection_en.md) and [high-efficiency layout area detection model based on PicoDet](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/layout_detection_en.md), [high-precision table structure recognition model](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/table_structure_recognition_en.md), text image unwarping model [UVDoc](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/text_image_unwarping_en.md), formula recognition model [LatexOCR](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/formula_recognition_en.md), and [document image orientation classification model based on PP-LCNet](https://github.com/PaddlePaddle/PaddleX/blob/release/3.0-beta1/docs/module_usage/tutorials/ocr_modules/doc_img_orientation_classification_en.md).
   
