@@ -216,3 +216,5 @@ ImportError: failed to find libmagic.  Check your installation
 
 1. 在 `local` 模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
 2. 在 `local` 模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
+3. 在 `local` 模式下，PP-StructureV3 产线暂不支持返回从输入文件中提取到的图像。
+4. 对于 PP-StructureV3 产线，当输入文件中包含的图像数量较多时，返回结果可能导致较高的 token 使用量。

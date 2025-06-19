@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: Reuse `httpx` client
+
 import abc
 import asyncio
 import base64
@@ -73,12 +75,6 @@ def _infer_file_type_from_bytes(data: bytes) -> Optional[str]:
     return None
 
 
-class _EngineRuntimeError(Exception):
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
-        self.paddleocr_stderr: Optional[str] = None
-
-
 class _EngineWrapper:
     def __init__(self, engine: Any) -> None:
         self._engine = engine
@@ -113,23 +109,20 @@ class _EngineWrapper:
                 break
             func, args, kwargs, fut = item
             try:
-                stderr_capture = io.StringIO()
-                with contextlib.redirect_stdout(
-                    io.StringIO()
-                ), contextlib.redirect_stderr(stderr_capture):
+                # FIXME: PaddleX currently writes to stdout erroneously when
+                # downloading files, which conflicts with the MCP server’s use
+                # of stdout. As a temporary workaround, we use
+                # `redirect_stdout`, but since this redirection is global, it
+                # should not be used inside a worker thread—it may
+                # unintentionally interfere with the MCP server’s normal stdout
+                # behavior. Although we haven’t observed any issues in testing
+                # so far, this workaround should be removed once the PaddleX bug
+                # is fixed.
+                with contextlib.redirect_stdout(io.StringIO()):
                     result = func(*args, **kwargs)
                 self._loop.call_soon_threadsafe(fut.set_result, result)
             except Exception as e:
-                # Attach stderr content to exception for debugging without modifying the message
-                stderr_content = stderr_capture.getvalue()
-                func_name = getattr(func, "__name__", repr(func))
-                new_exc = _EngineRuntimeError(
-                    f"Failed to execute function '{func_name}': {e}"
-                )
-                new_exc.__cause__ = e
-                if stderr_content.strip():
-                    new_exc.paddleocr_stderr = stderr_content.strip()
-                self._loop.call_soon_threadsafe(fut.set_exception, new_exc)
+                self._loop.call_soon_threadsafe(fut.set_exception, e)
             finally:
                 self._queue.task_done()
 
@@ -175,29 +168,19 @@ class PipelineHandler(abc.ABC):
         if self._mode == "local":
             if not LOCAL_OCR_AVAILABLE:
                 raise RuntimeError("PaddleOCR is not locally available")
+            try:
+                self._engine = self._create_local_engine()
+            except Exception as e:
+                raise RuntimeError(
+                    f"Failed to create PaddleOCR engine: {str(e)}"
+                ) from e
 
         self._status: Literal["initialized", "started", "stopped"] = "initialized"
 
     async def start(self) -> None:
         if self._status == "initialized":
             if self._mode == "local":
-                stderr_capture = io.StringIO()
-                try:
-                    with contextlib.redirect_stdout(
-                        io.StringIO()
-                    ), contextlib.redirect_stderr(stderr_capture):
-                        self._engine = self._create_local_engine()
-                    self._engine_wrapper = _EngineWrapper(self._engine)
-                except Exception as e:
-                    stderr_content = stderr_capture.getvalue()
-                    if stderr_content.strip():
-                        raise RuntimeError(
-                            f"Failed to create PaddleOCR engine: {str(e)}\nStderr: {stderr_content.strip()}"
-                        ) from e
-                    else:
-                        raise RuntimeError(
-                            f"Failed to create PaddleOCR engine: {str(e)}"
-                        ) from e
+                self._engine_wrapper = _EngineWrapper(self._engine)
             self._status = "started"
         elif self._status == "started":
             pass
@@ -395,10 +378,6 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
         except Exception as e:
             await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
-            if isinstance(e, _EngineRuntimeError):
-                stderr_content = e.paddleocr_stderr
-                if stderr_content:
-                    await ctx.error(f"PaddleOCR stderr output: {stderr_content}")
             return self._handle_error(str(e), output_mode)
 
     def _process_input_for_local(
@@ -555,7 +534,6 @@ class OCRHandler(SimpleInferencePipelineHandler):
         return PaddleOCR(
             paddlex_config=self._pipeline_config,
             device=self._device,
-            enable_mkldnn=False,
         )
 
     def _get_service_endpoint(self) -> str:
@@ -711,7 +689,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         markdown_parts = []
         detailed_results = []
 
-        # TODO return images
+        # TODO: Return images
         for result in local_result:
             text = result.markdown["markdown_texts"]
             markdown_parts.append(text)
