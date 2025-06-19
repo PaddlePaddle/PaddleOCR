@@ -62,7 +62,7 @@ ImportError: failed to find libmagic.  Check your installation
 
 ## 2. 快速开始
 
-本节将以 **Claude Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
+本节将以 **Claude for Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
 
 1. **准备星河社区服务**
     - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
@@ -83,7 +83,7 @@ ImportError: failed to find libmagic.  Check your installation
     - 如果 `paddleocr_mcp` 无法在系统 `PATH` 中找到，请将 `command` 设置为可执行文件的绝对路径。
 
 4. **重启 MCP Host**
-    重启 Claude Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
+    重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
 
 ## 3. 配置说明
 
@@ -143,7 +143,7 @@ ImportError: failed to find libmagic.  Check your installation
 
 ## 5. 配置示例
 
-以下是针对不同工作模式的完整配置示例，您可以直接复制并根据需要修改：
+以下是针对不同工作模式的 Claude for Desktop 完整配置示例，您可以直接复制并根据需要修改：
 
 ### 5.1 星河社区服务配置
 

@@ -62,7 +62,7 @@ In addition, some [working modes](#32-working-modes-explained) may require extra
 
 ## 2. Quick Start
 
-This section guides you through a quick setup using **Claude Desktop** as the MCP Host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
+This section guides you through a quick setup using **Claude for Desktop** as the MCP Host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
 
 1. **Prepare the Local Python Library PaddleOCR**
     - Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
@@ -79,7 +79,7 @@ This section guides you through a quick setup using **Claude Desktop** as the MC
     - If `paddleocr_mcp` is not in your system's `PATH`, set `command` to the absolute path of the executable.
 
 4. **Restart the MCP Host**
-    Restart Claude Desktop. The new `paddleocr-ocr` tool should now be available in the application.
+    Restart Claude for Desktop. The new `paddleocr-ocr` tool should now be available in the application.
 
 ## 3. Configuration
 
@@ -141,7 +141,7 @@ You can control the server's behavior via environment variables or command-line 
 
 ## 5. Configuration Examples
 
-Below are complete configuration examples for different working modes. You can copy and modify them as needed.
+Below are complete Claude for Desktop configuration examples for different working modes. You can copy and modify them as needed.
 
 ### 5.1 AI Studio Service Configuration
 

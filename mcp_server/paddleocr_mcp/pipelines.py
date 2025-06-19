@@ -18,9 +18,7 @@ import base64
 import contextlib
 import io
 import json
-import os
 import re
-import sys
 from pathlib import PurePath
 from queue import Queue
 from threading import Thread
@@ -75,6 +73,12 @@ def _infer_file_type_from_bytes(data: bytes) -> Optional[str]:
     return None
 
 
+class _EngineRuntimeError(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+        self.paddleocr_stderr: Optional[str] = None
+
+
 class _EngineWrapper:
     def __init__(self, engine: Any) -> None:
         self._engine = engine
@@ -118,9 +122,14 @@ class _EngineWrapper:
             except Exception as e:
                 # Attach stderr content to exception for debugging without modifying the message
                 stderr_content = stderr_capture.getvalue()
+                func_name = getattr(func, "__name__", repr(func))
+                new_exc = _EngineRuntimeError(
+                    f"Failed to execute function '{func_name}': {e}"
+                )
+                new_exc.__cause__ = e
                 if stderr_content.strip():
-                    e.paddleocr_stderr = stderr_content.strip()
-                self._loop.call_soon_threadsafe(fut.set_exception, e)
+                    new_exc.paddleocr_stderr = stderr_content.strip()
+                self._loop.call_soon_threadsafe(fut.set_exception, new_exc)
             finally:
                 self._queue.task_done()
 
@@ -385,11 +394,11 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             return self._format_output(result, output_mode == "detailed", ctx)
 
         except Exception as e:
-            stderr_content = getattr(e, "paddleocr_stderr", None)
-            if stderr_content:
-                await ctx.error(f"PaddleOCR stderr output: {stderr_content}")
-
             await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
+            if isinstance(e, _EngineRuntimeError):
+                stderr_content = e.paddleocr_stderr
+                if stderr_content:
+                    await ctx.error(f"PaddleOCR stderr output: {stderr_content}")
             return self._handle_error(str(e), output_mode)
 
     def _process_input_for_local(
@@ -517,7 +526,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
 class OCRHandler(SimpleInferencePipelineHandler):
     def register_tools(self, mcp: FastMCP) -> None:
-        @mcp.tool()
+        @mcp.tool("ocr")
         async def _ocr(
             input_data: str,
             output_mode: OutputMode = "simple",
@@ -655,7 +664,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
 
 class PPStructureV3Handler(SimpleInferencePipelineHandler):
     def register_tools(self, mcp: FastMCP) -> None:
-        @mcp.tool()
+        @mcp.tool("pp_structurev3")
         async def _pp_structurev3(
             input_data: str,
             output_mode: OutputMode = "simple",
@@ -719,7 +728,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
         if "content" in service_result and isinstance(service_result["content"], list):
             markdown_parts = []
-            images_mapping = {}
+            images_mapping: Dict[str, str] = {}
 
             for item in service_result["content"]:
                 if item.get("type") == "text":
