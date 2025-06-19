@@ -116,18 +116,11 @@ class _EngineWrapper:
                     result = func(*args, **kwargs)
                 self._loop.call_soon_threadsafe(fut.set_result, result)
             except Exception as e:
+                # Attach stderr content to exception for debugging without modifying the message
                 stderr_content = stderr_capture.getvalue()
                 if stderr_content.strip():
-                    enhanced_exception = RuntimeError(
-                        f"{str(e)}\nPaddleOCR stderr: {stderr_content.strip()}"
-                    )
-                    enhanced_exception.__cause__ = e
-                    enhanced_exception.paddleocr_stderr = stderr_content.strip()
-                    self._loop.call_soon_threadsafe(
-                        fut.set_exception, enhanced_exception
-                    )
-                else:
-                    self._loop.call_soon_threadsafe(fut.set_exception, e)
+                    e.paddleocr_stderr = stderr_content.strip()
+                self._loop.call_soon_threadsafe(fut.set_exception, e)
             finally:
                 self._queue.task_done()
 
@@ -179,11 +172,23 @@ class PipelineHandler(abc.ABC):
     async def start(self) -> None:
         if self._status == "initialized":
             if self._mode == "local":
-                with contextlib.redirect_stdout(
-                    io.StringIO()
-                ), contextlib.redirect_stderr(io.StringIO()):
-                    self._engine = self._create_local_engine()
-                self._engine_wrapper = _EngineWrapper(self._engine)
+                stderr_capture = io.StringIO()
+                try:
+                    with contextlib.redirect_stdout(
+                        io.StringIO()
+                    ), contextlib.redirect_stderr(stderr_capture):
+                        self._engine = self._create_local_engine()
+                    self._engine_wrapper = _EngineWrapper(self._engine)
+                except Exception as e:
+                    stderr_content = stderr_capture.getvalue()
+                    if stderr_content.strip():
+                        raise RuntimeError(
+                            f"Failed to create PaddleOCR engine: {str(e)}\nStderr: {stderr_content.strip()}"
+                        ) from e
+                    else:
+                        raise RuntimeError(
+                            f"Failed to create PaddleOCR engine: {str(e)}"
+                        ) from e
             self._status = "started"
         elif self._status == "started":
             pass
