@@ -65,20 +65,25 @@ In addition, some [working modes](#32-working-modes-explained) may require extra
 This section guides you through a quick setup using **Claude for Desktop** as the MCP Host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
 
 1. **Prepare the Local Python Library PaddleOCR**
-    - Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
+
+    - Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the PaddlePaddle framework and PaddleOCR. **It is strongly recommended to install them in a separate virtual environment** to avoid dependency conflicts.
 
 2. **Locate the MCP Configuration File** - For details, refer to the [Official MCP Documentation](https://modelcontextprotocol.io/quickstart/user).
+
     - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
     - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
     - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
 3. **Add MCP Server Configuration**
+
     Open the `claude_desktop_config.json` file and add the configuration by referring to [5.2 Local Python Library Configuration](#52-local-python-library-configuration)
 
     **Note**:
+
     - If `paddleocr_mcp` is not in your system's `PATH`, set `command` to the absolute path of the executable.
 
 4. **Restart the MCP Host**
+
     Restart Claude for Desktop. The new `paddleocr-ocr` tool should now be available in the application.
 
 ## 3. Configuration
@@ -86,6 +91,7 @@ This section guides you through a quick setup using **Claude for Desktop** as th
 ### 3.1. MCP Host Configuration
 
 In the Host's configuration file (e.g., `claude_desktop_config.json`), you need to define how to start the tool server. Key fields are:
+
 - `command`: `paddleocr_mcp` (if the executable is in your `PATH`) or an absolute path.
 - `args`: Configurable command-line arguments, e.g., `["--verbose"]`. See [4. Parameter Reference](#4-parameter-reference).
 - `env`: Configurable environment variables. See [4. Parameter Reference](#4-parameter-reference).
@@ -99,10 +105,12 @@ This mode calls services from the [Paddle AI Studio community](https://aistudio.
 
 - **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
 - **Procedure**:
+
   1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
   2. In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].
   3. Once deployed, obtain your **Service Base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
   4. Get your **Access Token** from [this page](https://aistudio.baidu.com/index/accessToken).
+
 - In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.
 
 #### Mode 2: Local Python Library (`local`)
@@ -114,11 +122,12 @@ This mode runs the model directly on your local machine and has certain requirem
 #### Mode 3: Self-hosted Service (`self_hosted`)
 This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the **Serving** solutions provided by PaddleX.
 
-- **Use Case**: Offers the advantages of service-oriented deployment and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.
+- **Use Case**: Offers the advantages of serving and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.
 - **Procedure**:
-    1.  Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the *PaddlePaddle framework* and *PaddleOCR*.
-    2.  Refer to the [PaddleOCR Serving Deployment Guide](./serving.en.md) to run the server.
-    3.  Refer to [5.3 Self-hosted Service Configuration](#53-self-hosted-service-configuration) to modify the `claude_desktop_config.json` file.
+
+    1. Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the PaddlePaddle framework and PaddleOCR.
+    2. Refer to the [PaddleOCR Serving Guide](./serving.en.md) to run the server. Currently, only the basic serving solution is supported.
+    3. Refer to [5.3 Self-hosted Service Configuration](#53-self-hosted-service-configuration) to modify the `claude_desktop_config.json` file.
     4. Set your service address in `PADDLEOCR_MCP_SERVER_URL` (e.g., `"http://127.0.0.1:8080"`).
 
 ## 4. Parameter Reference
@@ -163,6 +172,7 @@ Below are complete Claude for Desktop configuration examples for different worki
 ```
 
 **Note**:
+
 - Replace `<your-server-url>` with your AI Studio **Service Base URL**, e.g., `https://xxxxx.aistudio-hub.baidu.com`. Do not include endpoint paths (like `/ocr`).
 - Replace `<your-access-token>` with your **Access Token**.
 - Do not leak your **Access Token**.
@@ -185,6 +195,7 @@ Below are complete Claude for Desktop configuration examples for different worki
 ```
 
 **Note**:
+
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the [PaddleOCR and PaddleX documentation](../paddleocr_and_paddlex.en.md), export a pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to its absolute path.
 - **CPU Inference Performance Tip**:
   - **OCR Pipeline**: If you are running in a CPU environment, it is recommended to switch to the `mobile` series models for better performance. You can change the detection and recognition models in your pipeline configuration file to `text_detection_model_name="PP-OCRv5_mobile_det"` and `text_recognition_model_name="PP-OCRv5_mobile_rec"` respectively.
@@ -209,6 +220,7 @@ Below are complete Claude for Desktop configuration examples for different worki
 ```
 
 **Note**:
+
 - Replace `<your-server-url>` with the base URL of your underlying service (e.g., `http://127.0.0.1:8080`). 
 
 ## 6. Known Limitations
