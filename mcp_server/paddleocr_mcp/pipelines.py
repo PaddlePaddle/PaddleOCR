@@ -337,7 +337,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             )
 
             if self._mode == "local":
-                processed_input = self._process_input_for_local(input_data)
+                processed_input = self._process_input_for_local(input_data, file_type)
                 kwargs = self._transform_local_kwargs(kwargs)
                 raw_result = await self._predict_with_local_engine(
                     processed_input, ctx, **kwargs
@@ -360,7 +360,10 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
             return self._handle_error(str(e), output_mode)
 
-    def _process_input_for_local(self, input_data: str) -> Union[str, np.ndarray]:
+    def _process_input_for_local(
+        self, input_data: str, file_type: Optional[str]
+    ) -> Union[str, np.ndarray]:
+        # TODO: Use `file_type` to handle more cases.
         if _is_file_path(input_data) or _is_url(input_data):
             return input_data
         elif _is_base64(input_data):
@@ -370,6 +373,9 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 base64_data = input_data
             try:
                 image_bytes = base64.b64decode(base64_data)
+                file_type = _infer_file_type_from_bytes(image_bytes)
+                if file_type != "image":
+                    raise ValueError("Currently, only images can be passed via Base64.")
                 image_pil = PILImage.open(io.BytesIO(image_bytes))
                 image_arr = np.array(image_pil.convert("RGB"))
                 return np.ascontiguousarray(image_arr[..., ::-1])
@@ -379,7 +385,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             raise ValueError("Invalid input data format")
 
     def _process_input_for_service(
-        self, input_data: str, file_type: Optional[str] = None
+        self, input_data: str, file_type: Optional[str]
     ) -> tuple[str, Optional[str]]:
         if _is_url(input_data):
             norm_ft = None
@@ -500,7 +506,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
                     - None: For unknown file types
             """
             await ctx.info(
-                f"--- OCR tool received input_data: {str(input_data)[:200]}... ---"
+                f"--- OCR tool received `input_data`: {str(input_data)[:200]}... ---"
             )
             return await self.process(input_data, output_mode, ctx, file_type)
 
@@ -531,31 +537,31 @@ class OCRHandler(SimpleInferencePipelineHandler):
         scores = result["rec_scores"]
         boxes = result["rec_boxes"]
 
-        clean_texts, confidences, blocks = [], [], []
+        clean_texts, confidences, instances = [], [], []
 
         for i, text in enumerate(texts):
             if text and text.strip():
                 conf = scores[i] if i < len(scores) else 0
                 clean_texts.append(text.strip())
                 confidences.append(conf)
-                block = {
+                instance = {
                     "text": text.strip(),
                     "confidence": round(conf, 3),
                     "bbox": boxes[i].tolist(),
                 }
-                blocks.append(block)
+                instances.append(instance)
 
         return {
             "text": "\n".join(clean_texts),
             "confidence": sum(confidences) / len(confidences) if confidences else 0,
-            "blocks": blocks,
+            "instances": instances,
         }
 
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
         result_data = service_result.get("result", service_result)
         ocr_results = result_data.get("ocrResults")
 
-        all_texts, all_confidences, blocks = [], [], []
+        all_texts, all_confidences, instances = [], [], []
 
         for ocr_result in ocr_results:
             pruned = ocr_result["prunedResult"]
@@ -569,26 +575,26 @@ class OCRHandler(SimpleInferencePipelineHandler):
                     conf = scores[i] if i < len(scores) else 0
                     all_texts.append(text.strip())
                     all_confidences.append(conf)
-                    block = {
+                    instance = {
                         "text": text.strip(),
                         "confidence": round(conf, 3),
                         "bbox": boxes[i],
                     }
-                    blocks.append(block)
+                    instances.append(instance)
 
         return {
             "text": "\n".join(all_texts),
             "confidence": (
                 sum(all_confidences) / len(all_confidences) if all_confidences else 0
             ),
-            "blocks": blocks,
+            "instances": instances,
         }
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
         text_length = len(result["text"])
-        block_count = len(result["blocks"])
+        instance_count = len(result["instances"])
         await ctx.info(
-            f"OCR completed: {text_length} characters, {block_count} text blocks"
+            f"OCR completed: {text_length} characters, {instance_count} text instances"
         )
 
     def _format_output(
@@ -605,11 +611,11 @@ class OCRHandler(SimpleInferencePipelineHandler):
             return json.dumps(result, ensure_ascii=False, indent=2)
         else:
             confidence = result["confidence"]
-            block_count = len(result["blocks"])
+            instance_count = len(result["instances"])
 
             output = result["text"]
             if confidence > 0:
-                output += f"\n\n📊 Confidence: {(confidence * 100):.1f}% | {block_count} text blocks"
+                output += f"\n\n📊 Confidence: {(confidence * 100):.1f}% | {instance_count} text instances"
 
             return output
 
@@ -707,7 +713,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
         page_count = result["pages"]
-        await ctx.info(f"Structure analysis completed: {page_count} pages")
+        await ctx.info(f"Layout parsing completed: {page_count} pages")
 
     def _format_output(
         self, result: Dict, detailed: bool, ctx: Context
