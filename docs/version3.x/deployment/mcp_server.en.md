@@ -30,6 +30,7 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
   - [5.1 AI Studio Service Configuration](#51-ai-studio-service-configuration)
   - [5.2 Local Python Library Configuration](#52-local-python-library-configuration)
   - [5.3 Self-hosted Service Configuration](#53-self-hosted-service-configuration)
+- [6. Known Limitations](#6-known-limitations)
 
 ## 1. Installation
 
@@ -191,3 +192,8 @@ Below are complete configuration examples for different working modes. You can c
 
 **Note**:
 - Replace `<your-server-url>` with the base URL of your underlying service (e.g., `http://127.0.0.1:8080`). 
+
+## 6. Known Limitations
+
+1. In `local` mode, the currently provided tools cannot handle Base64-encoded PDF document input.
+2. In `local` mode, the currently provided tools do not infer the file type based on the model-specified `file_type` and may fail to process some complex URLs.

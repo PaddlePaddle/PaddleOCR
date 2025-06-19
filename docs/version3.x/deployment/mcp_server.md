@@ -30,6 +30,7 @@
   - [5.1 星河社区服务配置](#51-ai-studio-星河社区服务配置)
   - [5.2 本地 Python 库配置](#52-本地-python-库配置)
   - [5.3 自托管服务配置](#53-自托管服务配置)
+- [6. 已知局限性](#6-已知局限性)
 
 ## 1. 安装
 
@@ -192,3 +193,8 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 
 **说明**：
 - 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8000`）。
+
+## 6. 已知局限性
+
+1. 在 `local` 模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
+2. 在 `local` 模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
