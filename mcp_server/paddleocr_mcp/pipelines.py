@@ -99,19 +99,35 @@ class _EngineWrapper:
         if not self._closed:
             self._queue.put(None)
             await self._loop.run_in_executor(None, self._thread.join)
+            self._closed = True
 
     def _worker(self) -> None:
         while not self._closed:
             item = self._queue.get()
             if item is None:
+                self._closed = True
                 break
             func, args, kwargs, fut = item
             try:
-                with contextlib.redirect_stdout(io.StringIO()):
+                stderr_capture = io.StringIO()
+                with contextlib.redirect_stdout(
+                    io.StringIO()
+                ), contextlib.redirect_stderr(stderr_capture):
                     result = func(*args, **kwargs)
                 self._loop.call_soon_threadsafe(fut.set_result, result)
             except Exception as e:
-                self._loop.call_soon_threadsafe(fut.set_exception, e)
+                stderr_content = stderr_capture.getvalue()
+                if stderr_content.strip():
+                    enhanced_exception = RuntimeError(
+                        f"{str(e)}\nPaddleOCR stderr: {stderr_content.strip()}"
+                    )
+                    enhanced_exception.__cause__ = e
+                    enhanced_exception.paddleocr_stderr = stderr_content.strip()
+                    self._loop.call_soon_threadsafe(
+                        fut.set_exception, enhanced_exception
+                    )
+                else:
+                    self._loop.call_soon_threadsafe(fut.set_exception, e)
             finally:
                 self._queue.task_done()
 
@@ -310,12 +326,9 @@ class PipelineHandler(abc.ABC):
     ) -> Dict:
         if not hasattr(self, "_engine_wrapper"):
             raise RuntimeError("Engine wrapper has not been initialized")
-        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(
-            io.StringIO()
-        ):
-            return await self._engine_wrapper.call(
-                self._engine_wrapper.engine.predict, processed_input, **kwargs
-            )
+        return await self._engine_wrapper.call(
+            self._engine_wrapper.engine.predict, processed_input, **kwargs
+        )
 
 
 class SimpleInferencePipelineHandler(PipelineHandler):
@@ -367,6 +380,10 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             return self._format_output(result, output_mode == "detailed", ctx)
 
         except Exception as e:
+            stderr_content = getattr(e, "paddleocr_stderr", None)
+            if stderr_content:
+                await ctx.error(f"PaddleOCR stderr output: {stderr_content}")
+
             await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
             return self._handle_error(str(e), output_mode)
 
@@ -524,6 +541,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
         return PaddleOCR(
             paddlex_config=self._pipeline_config,
             device=self._device,
+            enable_mkldnn=False,
         )
 
     def _get_service_endpoint(self) -> str:
