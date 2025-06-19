@@ -694,6 +694,29 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         }
 
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
+        if "content" in service_result and isinstance(service_result["content"], list):
+            markdown_parts = []
+            images_mapping = {}
+
+            for item in service_result["content"]:
+                if item.get("type") == "text":
+                    markdown_parts.append(item.get("text", ""))
+                elif item.get("type") == "image":
+                    img_data = item.get("data", "")
+                    if img_data:
+                        img_key = f"img_{len(images_mapping)}"
+                        images_mapping[img_key] = await self._process_image_data(
+                            img_data, ctx
+                        )
+                        markdown_parts.append(f'<img src="{img_key}">')
+
+            return {
+                "markdown": "\n".join(markdown_parts),
+                "pages": 1,
+                "images_mapping": images_mapping,
+                "detailed_results": [],
+            }
+
         result_data = service_result.get("result", service_result)
         layout_results = result_data.get("layoutParsingResults")
 
@@ -711,7 +734,13 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
 
         for res in layout_results:
             markdown_parts.append(res["markdown"]["text"])
-            all_images_mapping.update(res["markdown"]["images"])
+            images = res["markdown"]["images"]
+            processed_images = {}
+            for img_key, img_data in images.items():
+                processed_images[img_key] = await self._process_image_data(
+                    img_data, ctx
+                )
+            all_images_mapping.update(processed_images)
             detailed_results.append(res["prunedResult"])
 
         return {
@@ -720,6 +749,24 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             "images_mapping": all_images_mapping,
             "detailed_results": detailed_results,
         }
+
+    async def _process_image_data(self, img_data: str, ctx: Context) -> str:
+        if _is_url(img_data):
+            try:
+                timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
+                async with httpx.AsyncClient(timeout=timeout) as client:
+                    response = await client.get(img_data)
+                    response.raise_for_status()
+                    img_bytes = response.content
+                    return base64.b64encode(img_bytes).decode("ascii")
+            except Exception as e:
+                await ctx.error(f"Failed to download image from URL {img_data}: {e}")
+                return img_data
+        elif _is_base64(img_data):
+            return img_data
+        else:
+            await ctx.error(f"Unknown image data format: {img_data[:50]}...")
+            return img_data
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
         page_count = result["pages"]
