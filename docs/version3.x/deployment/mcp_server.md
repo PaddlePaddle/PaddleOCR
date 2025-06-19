@@ -43,7 +43,22 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # pip install -e mcp_server
 ```
 
-部分 [工作模式](#32-工作模式详解) 可能需要安装额外依赖。
+可通过以下命令检查是否安装成功：
+
+```bash
+paddleocr_mcp --help
+```
+
+如果执行上述命令后打印出了帮助信息，则说明安装成功。本项目依赖 python-magic 库。如果在执行上述命令时出现如下错误提示：
+
+```
+...
+ImportError: failed to find libmagic.  Check your installation
+```
+
+很可能是因为缺少 python-magic 库所需的底层库。请参考 [python-magic 官方文档](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) 完成相应依赖库的安装。
+
+此外，部分 [工作模式](#32-工作模式详解) 可能需要安装额外依赖，详情请参考后续说明。
 
 ## 2. 快速开始
 
@@ -121,9 +136,9 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒） | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效） | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 模式下生效） | - | `None` |
-| - | `--http` | `bool` | 使用 HTTP 传输而非 stdio（适用于远程部署和多客户端） | - | `False` |
-| - | `--host` | `str` | HTTP 模式的主机地址 | - | `"127.0.0.1"` |
-| - | `--port` | `int` | HTTP 模式的端口 | - | `8000` |
+| - | `--http` | `bool` | 使用 Streamable HTTP 传输而非 stdio（适用于远程部署和多客户端） | - | `False` |
+| - | `--host` | `str` | Streamable HTTP 模式的主机地址 | - | `"127.0.0.1"` |
+| - | `--port` | `int` | Streamable HTTP 模式的端口 | - | `8000` |
 | - | `--verbose` | `bool` | 启用详细日志记录，便于调试 | - | `False` |
 
 ## 5. 配置示例

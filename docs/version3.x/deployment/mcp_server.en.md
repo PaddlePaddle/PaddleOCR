@@ -43,7 +43,22 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # pip install -e mcp_server
 ```
 
-Some [working modes](#32-working-modes-explained) may require additional dependencies.
+You can check whether the installation was successful by running the following command:
+
+```bash
+paddleocr_mcp --help
+```
+
+If running the above command prints the help information, the installation was successful. This project depends on the `python-magic` library. If you see an error like the following when executing the command:
+
+```
+...
+ImportError: failed to find libmagic.  Check your installation
+```
+
+it is likely due to missing underlying libraries required by `python-magic`. Please refer to the [official python-magic documentation](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) to install the necessary dependencies.
+
+In addition, some [working modes](#32-working-modes-explained) may require extra dependencies. For more details, please refer to the following sections.
 
 ## 2. Quick Start
 
@@ -119,9 +134,9 @@ You can control the server's behavior via environment variables or command-line 
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | HTTP read timeout in seconds for API requests to the underlying server. | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | Specify the device for inference (only effective in `local` mode) | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | Path to the PaddleX pipeline configuration file (only effective in `local` mode) | - | `None` |
-| - | `--http` | `bool` | Use HTTP transport instead of stdio (for remote deployment and multiple clients) | - | `False` |
-| - | `--host` | `str` | Host address for HTTP mode | - | `"127.0.0.1"` |
-| - | `--port` | `int` | Port for HTTP mode | - | `8080` |
+| - | `--http` | `bool` | Use Streamable HTTP transport instead of stdio (for remote deployment and multiple clients) | - | `False` |
+| - | `--host` | `str` | Host address for Streamable HTTP mode | - | `"127.0.0.1"` |
+| - | `--port` | `int` | Port for Streamable HTTP mode | - | `8080` |
 | - | `--verbose` | `bool` | Enable verbose logging for debugging | - | `False` |
 
 ## 5. Configuration Examples
