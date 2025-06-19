@@ -813,6 +813,7 @@ class TextRecognizer(object):
                     for output_tensor in self.output_tensors:
                         output = output_tensor.copy_to_cpu()
                         outputs.append(output)
+                    self.predictor.try_shrink_memory()
                     if self.benchmark:
                         self.autolog.times.stamp()
                     if len(outputs) != 1:
