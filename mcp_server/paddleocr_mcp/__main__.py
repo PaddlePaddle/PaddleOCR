@@ -160,7 +160,6 @@ def main() -> None:
         mcp = FastMCP(
             name=server_name,
             lifespan=_lifespan,
-            log_level="INFO" if args.verbose else "WARNING",
         )
 
         pipeline_handler.register_tools(mcp)
@@ -170,6 +169,7 @@ def main() -> None:
                 transport="streamable-http",
                 host=args.host,
                 port=args.port,
+                log_level="INFO" if args.verbose else "WARNING",
             )
         else:
             mcp.run()

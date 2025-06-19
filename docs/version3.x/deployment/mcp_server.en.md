@@ -171,6 +171,9 @@ Below are complete configuration examples for different working modes. You can c
 
 **Note**:
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the [PaddleOCR and PaddleX documentation](../paddleocr_and_paddlex.en.md), export a pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to its absolute path.
+- **CPU Inference Performance Tip**:
+  - **OCR Pipeline**: If you are running in a CPU environment, it is recommended to switch to the `mobile` series models for better performance. You can change the detection and recognition models in your pipeline configuration file to `text_detection_model_name="PP-OCRv5_mobile_det"` and `text_recognition_model_name="PP-OCRv5_mobile_rec"` respectively.
+  - **PP-StructureV3 Pipeline**: Due to its model complexity, using this pipeline in an environment without a GPU is not recommended.
 
 ### 5.3 Self-hosted Service Configuration
 

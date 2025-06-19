@@ -172,6 +172,9 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 
 **说明**：
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
+- **CPU 推理性能提示**：
+  - **OCR 产线**：若您在 CPU 环境下运行，为获得更佳性能，建议更换为 `mobile` 系列模型。您可以在产线配置文件中将检测和识别模型分别修改为 `text_detection_model_name="PP-OCRv5_mobile_det"` 和 `text_recognition_model_name="PP-OCRv5_mobile_rec"`。
+  - **PP-StructureV3 产线**：由于模型复杂度较高，不建议在没有 GPU 的环境中使用此产线。
 
 ### 5.3 自托管服务配置
 

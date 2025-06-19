@@ -15,9 +15,12 @@
 import abc
 import asyncio
 import base64
+import contextlib
 import io
 import json
+import os
 import re
+import sys
 from pathlib import PurePath
 from queue import Queue
 from threading import Thread
@@ -104,7 +107,8 @@ class _EngineWrapper:
                 break
             func, args, kwargs, fut = item
             try:
-                result = func(*args, **kwargs)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    result = func(*args, **kwargs)
                 self._loop.call_soon_threadsafe(fut.set_result, result)
             except Exception as e:
                 self._loop.call_soon_threadsafe(fut.set_exception, e)
@@ -153,13 +157,16 @@ class PipelineHandler(abc.ABC):
         if self._mode == "local":
             if not LOCAL_OCR_AVAILABLE:
                 raise RuntimeError("PaddleOCR is not locally available")
-            self._engine = self._create_local_engine()
 
         self._status: Literal["initialized", "started", "stopped"] = "initialized"
 
     async def start(self) -> None:
         if self._status == "initialized":
             if self._mode == "local":
+                with contextlib.redirect_stdout(
+                    io.StringIO()
+                ), contextlib.redirect_stderr(io.StringIO()):
+                    self._engine = self._create_local_engine()
                 self._engine_wrapper = _EngineWrapper(self._engine)
             self._status = "started"
         elif self._status == "started":
@@ -303,9 +310,12 @@ class PipelineHandler(abc.ABC):
     ) -> Dict:
         if not hasattr(self, "_engine_wrapper"):
             raise RuntimeError("Engine wrapper has not been initialized")
-        return await self._engine_wrapper.call(
-            self._engine_wrapper.engine.predict, processed_input, **kwargs
-        )
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(
+            io.StringIO()
+        ):
+            return await self._engine_wrapper.call(
+                self._engine_wrapper.engine.predict, processed_input, **kwargs
+            )
 
 
 class SimpleInferencePipelineHandler(PipelineHandler):
