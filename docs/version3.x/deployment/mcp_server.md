@@ -50,7 +50,7 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 本节将以 **Claude Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
 
 1. **准备星河社区服务**
-    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
+    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
     - 在左侧"更多内容"下的 "PaddleX 产线" 部分，[创建产线] - [OCR] - [通用 OCR] - [直接部署] - [文本识别模块，选择 PP-OCRv5_server_rec] - [开始部署]。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
