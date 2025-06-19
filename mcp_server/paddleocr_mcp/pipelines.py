@@ -105,7 +105,6 @@ class _EngineWrapper:
         while not self._closed:
             item = self._queue.get()
             if item is None:
-                self._closed = True
                 break
             func, args, kwargs, fut = item
             try:
@@ -384,9 +383,7 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         self, input_data: str, file_type: Optional[str]
     ) -> Union[str, np.ndarray]:
         # TODO: Use `file_type` to handle more cases.
-        if _is_file_path(input_data) or _is_url(input_data):
-            return input_data
-        elif _is_base64(input_data):
+        if _is_base64(input_data):
             if input_data.startswith("data:"):
                 base64_data = input_data.split(",", 1)[1]
             else:
@@ -401,6 +398,8 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 return np.ascontiguousarray(image_arr[..., ::-1])
             except Exception as e:
                 raise ValueError(f"Failed to decode Base64 image: {e}")
+        elif _is_file_path(input_data) or _is_url(input_data):
+            return input_data
         else:
             raise ValueError("Invalid input data format")
 
@@ -415,20 +414,6 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 else:
                     norm_ft = file_type.lower()
             return input_data, norm_ft
-        elif _is_file_path(input_data):
-            try:
-                with open(input_data, "rb") as f:
-                    bytes_ = f.read()
-                input_data = base64.b64encode(bytes_).decode("ascii")
-                file_type_str = _infer_file_type_from_bytes(bytes_)
-                if file_type_str is None:
-                    raise ValueError(
-                        f"Unsupported file type for '{input_data}'. "
-                        "Only image files (JPEG, PNG, etc.) and PDF documents are supported."
-                    )
-                return input_data, file_type_str
-            except Exception as e:
-                raise ValueError(f"Failed to read file: {e}")
         elif _is_base64(input_data):
             try:
                 if input_data.startswith("data:"):
@@ -445,6 +430,20 @@ class SimpleInferencePipelineHandler(PipelineHandler):
                 return input_data, file_type_str
             except Exception as e:
                 raise ValueError(f"Failed to decode Base64 data: {e}")
+        elif _is_file_path(input_data):
+            try:
+                with open(input_data, "rb") as f:
+                    bytes_ = f.read()
+                input_data = base64.b64encode(bytes_).decode("ascii")
+                file_type_str = _infer_file_type_from_bytes(bytes_)
+                if file_type_str is None:
+                    raise ValueError(
+                        f"Unsupported file type for '{input_data}'. "
+                        "Only image files (JPEG, PNG, etc.) and PDF documents are supported."
+                    )
+                return input_data, file_type_str
+            except Exception as e:
+                raise ValueError(f"Failed to read file: {e}")
         else:
             raise ValueError("Invalid input data format")
 
