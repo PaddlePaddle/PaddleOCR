@@ -533,7 +533,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extracts text from images and PDFs, accepts file path, URL, or Base64.
+            """Extracts text from images and PDFs. Accepts file path, URL, or Base64.
 
             Args:
                 input_data: The file to process (file path, URL, or Base64 string).
