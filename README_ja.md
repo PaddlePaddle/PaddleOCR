@@ -44,6 +44,38 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
 
 ## 📣 最近のアップデート
 
+#### 🔥🔥**2025.06.19: PaddleOCR 3.0.2のリリース、以下の内容を含みます：**
+
+- **新機能：**
+  - デフォルトのダウンロード元が`BOS`から`HuggingFace`に変更されました。ユーザーは環境変数 `PADDLE_PDX_MODEL_SOURCE` を `BOS` に変更することで、モデルのダウンロード元をBaidu Object Storage (BOS)に戻すこともできます。
+  - PP-OCRv5、PP-StructureV3、PP-ChatOCRv4などのパイプラインに、C++、Java、Go、C#、Node.js、PHPの6言語のサービス呼び出し例を追加しました。
+  - PP-StructureV3パイプラインのレイアウト分割ソートアルゴリズムを改善し、複雑な縦書きレイアウトのソートロジックを強化して、より良い結果を提供します。
+  - モデル選択ロジックを強化：言語が指定されているがモデルのバージョンが指定されていない場合、システムはその言語をサポートする最新のモデルバージョンを自動的に選択します。
+  - MKL-DNNキャッシュサイズにデフォルトの上限を設定し、無制限の増加を防ぎます。同時に、ユーザーがキャッシュ容量を設定することも可能です。
+  - 高性能推論のデフォルト設定を更新し、Paddle MKL-DNNアクセラレーションをサポートし、よりスマートな選択のための自動設定選択ロジックを最適化しました。
+  - インストールされているPaddleフレームワークによる計算デバイスの実際のサポートを考慮するようにデフォルトデバイスの取得ロジックを調整し、プログラムの動作をより直感的にしました。
+  - PP-OCRv5のAndroidサンプルを追加しました。[詳細](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/on_device_deployment.html)。
+- **バグ修正：**
+  - PP-StructureV3の一部のCLIパラメータが有効にならない問題を修正しました。
+  - 特定のケースで`export_paddlex_config_to_yaml`が正しく機能しない問題を解決しました。
+  - `save_path`の実際の動作とそのドキュメントの記述との間の不一致を修正しました。
+  - 基本的なサービス展開でMKL-DNNを使用する際の潜在的なマルチスレッドエラーを修正しました。
+  - Latex-OCRモデルの画像前処理におけるチャネル順序のエラーを修正しました。
+  - テキスト認識モジュールで可視化画像を保存する際のチャネル順序のエラーを修正しました。
+  - PP-StructureV3パイプラインで可視化されたテーブル結果のチャネル順序のエラーを解決しました。
+  - PP-StructureV3パイプラインで非常に特殊な状況下で`overlap_ratio`を計算する際のオーバーフロー問題を修正しました。
+- **ドキュメントの改善：**
+  - ドキュメント内の`enable_mkldnn`パラメータの説明を更新し、プログラムの実際の動作を正確に反映するようにしました。
+  - `lang`および`ocr_version`パラメータに関するドキュメントのエラーを修正しました。
+  - CLIを介してプロダクションライン設定ファイルをエクスポートする手順を追加しました。
+  - PP-OCRv5のパフォーマンスデータテーブルで欠落していた列を修正しました。
+  - さまざまな構成におけるPP-StructureV3のベンチマーク指標を洗練しました。
+- **その他：**
+  - numpyやpandasなどの依存関係のバージョン制限を緩和し、Python 3.12のサポートを復元しました。
+
+<details>
+    <summary><strong>更新履歴</strong></summary>
+
 #### **🔥🔥 2025.06.05: PaddleOCR 3.0.1のリリース、以下の内容を含みます：**
 
 - **一部のモデルとモデル設定の最適化：**
@@ -68,20 +100,7 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
    2. 💻 **ERNIE 4.5 Turbo**をネイティブサポートし、PaddleNLP、Ollama、vLLMなどを介した大規模モデルのデプロイメントとの互換性あり。
    3. 🤝 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2) と統合し、印刷テキスト、手書き文字、印鑑、テーブル、グラフなど、複雑な文書内の一般的な要素の抽出と理解をサポート。
 
-<details>
-   <summary><strong>更新履歴</strong></summary>
-
-
-- 🔥🔥2025.03.07: **PaddleOCR v2.10**のリリース、以下の内容を含みます：
-
-  - **12種類の新しい自社開発モデル：**
-    - **[レイアウト検出シリーズ](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)**(3モデル): PP-DocLayout-L、M、S -- 英語と中国語の多様なドキュメント形式（論文、レポート、試験、書籍、雑誌、契約書など）で23種類の一般的なレイアウトタイプを検出可能。最大**90.4% mAP@0.5**を達成し、軽量な特徴で毎秒100ページ以上を処理できます。
-    - **[数式認識シリーズ](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/formula_recognition.html)**(2モデル): PP-FormulaNet-L、S -- 50,000以上のLaTeX表現の認識をサポートし、印刷された数式と手書きの数式の両方に対応。PP-FormulaNet-Lは同等のモデルより**6%高い精度**を提供し、PP-FormulaNet-Sは同等の精度を維持しつつ16倍高速です。
-    - **[テーブル構造認識シリーズ](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_structure_recognition.html)**(2モデル): SLANeXt_wired、SLANeXt_wireless -- 新開発モデルで、複雑なテーブル認識においてSLANet_plusより**6%の精度向上**。
-    - **[テーブル分類](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html)**(1モデル): 
-PP-LCNet_x1_0_table_cls -- 有線および無線テーブル用の超軽量分類器。
-
-[詳細はこちら](https://paddlepaddle.github.io/PaddleOCR/latest/ja/update.html)
+[更新履歴](https://paddlepaddle.github.io/PaddleOCR/latest/ja/update/update.html)
 
 </details>
 

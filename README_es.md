@@ -42,6 +42,45 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 
 ## 📣 Últimas actualizaciones
 
+#### 🔥🔥**2025.06.19: Lanzamiento de PaddleOCR 3.0.2, incluye:**
+
+- **Nuevas características:**
+
+  - La fuente de descarga predeterminada se ha cambiado de `BOS` a `HuggingFace`. Los usuarios también pueden cambiar la variable de entorno `PADDLE_PDX_MODEL_SOURCE` a `BOS` para volver a establecer la fuente de descarga del modelo en Baidu Object Storage (BOS).
+  - Se agregaron ejemplos de invocación de servicios para seis idiomas (C++, Java, Go, C#, Node.js y PHP) para pipelines como PP-OCRv5, PP-StructureV3 y PP-ChatOCRv4.
+  - Se mejoró el algoritmo de ordenación de particiones de diseño en el pipeline PP-StructureV3, mejorando la lógica de ordenación para diseños verticales complejos para ofrecer mejores resultados.
+  - Lógica de selección de modelo mejorada: cuando se especifica un idioma pero no una versión del modelo, el sistema seleccionará automáticamente la última versión del modelo que admita ese idioma.
+  - Se estableció un límite superior predeterminado para el tamaño de la caché de MKL-DNN para evitar un crecimiento ilimitado, al tiempo que se permite a los usuarios configurar la capacidad de la caché.
+  - Se actualizaron las configuraciones predeterminadas para la inferencia de alto rendimiento para admitir la aceleración de Paddle MKL-DNN y se optimizó la lógica para la selección automática de configuración para elecciones más inteligentes.
+  - Se ajustó la lógica para obtener el dispositivo predeterminado para considerar el soporte real de los dispositivos de computación por parte del framework Paddle instalado, lo que hace que el comportamiento del programa sea más intuitivo.
+  - Añadido ejemplo de Android para PP-OCRv5. [Detalles](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/on_device_deployment.html).
+
+- **Corrección de errores:**
+
+  - Se solucionó un problema con algunos parámetros de CLI en PP-StructureV3 que no tenían efecto.
+  - Se resolvió un problema por el cual `export_paddlex_config_to_yaml` no funcionaba correctamente en ciertos casos.
+  - Se corrigió la discrepancia entre el comportamiento real de `save_path` y la descripción de su documentación.
+  - Se corrigieron posibles errores de subprocesos múltiples al usar MKL-DNN en la implementación de servicios básicos.
+  - Se corrigieron errores en el orden de los canales en el preprocesamiento de imágenes para el modelo Latex-OCR.
+  - Se corrigieron errores en el orden de los canales al guardar imágenes visualizadas dentro del módulo de reconocimiento de texto.
+  - Se resolvieron errores de orden de canales en los resultados de tablas visualizadas dentro del pipeline de PP-StructureV3.
+  - Se solucionó un problema de desbordamiento en el cálculo de `overlap_ratio` en circunstancias extremadamente especiales en el pipeline PP-StructureV3.
+
+- **Mejoras en la documentación:**
+
+  - Se actualizó la descripción del parámetro `enable_mkldnn` en la documentación para reflejar con precisión el comportamiento real del programa.
+  - Se corrigieron errores en la documentación con respecto a los parámetros `lang` y `ocr_version`.
+  - Se agregaron instrucciones para exportar archivos de configuración de la línea de producción a través de CLI.
+  - Se corrigieron las columnas que faltaban en la tabla de datos de rendimiento para PP-OCRv5.
+  - Se refinaron las métricas de referencia para PP-StructureV3 en diferentes configuraciones.
+
+- **Otros:**
+
+  - Se flexibilizaron las restricciones de versión en dependencias como numpy y pandas, restaurando el soporte para Python 3.12.
+
+<details>
+    <summary><strong>Historial de actualizaciones</strong></summary>
+
 #### **🔥🔥 2025.06.05: Lanzamiento de PaddleOCR 3.0.1, incluye:**
 
 - **Optimización de ciertos modelos y configuraciones de modelos:**
@@ -66,19 +105,7 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
    2. 💻 Soporte nativo para **ERNIE 4.5 Turbo**, con compatibilidad para despliegues de modelos grandes a través de PaddleNLP, Ollama, vLLM y más.
    3. 🤝 Integrado con [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2), permitiendo la extracción y comprensión de texto impreso, escritura a mano, sellos, tablas, gráficos y otros elementos comunes en documentos complejos.
 
-<details>
-   <summary><strong>El historial de actualizaciones</strong></summary>
-
-- 🔥🔥2025.03.07: Lanzamiento de **PaddleOCR v2.10**, incluyendo:
-
-  - **12 nuevos modelos de desarrollo propio:**
-    - **Serie [Detección de Diseño (Layout Detection)](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)**(3 modelos): PP-DocLayout-L, M y S -- capaces de detectar 23 tipos de diseño comunes en diversos formatos de documentos (artículos, informes, exámenes, libros, revistas, contratos, etc.) en inglés y chino. Alcanza hasta un **90.4% de mAP@0.5**, y sus características ligeras pueden procesar más de 100 páginas por segundo.
-    - **Serie [Reconocimiento de Fórmulas (Formula Recognition)](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/formula_recognition.html)**(2 modelos): PP-FormulaNet-L y S -- soporta el reconocimiento de más de 50,000 expresiones LaTeX, manejando tanto fórmulas impresas como escritas a mano. PP-FormulaNet-L ofrece un **6% más de precisión** que modelos comparables; PP-FormulaNet-S es 16 veces más rápido manteniendo una precisión similar.
-    - **Serie [Reconocimiento de Estructura de Tablas (Table Structure Recognition)](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_structure_recognition.html)**(2 modelos): SLANeXt_wired y SLANeXt_wireless -- modelos de nuevo desarrollo con una **mejora de precisión del 6%** sobre SLANet_plus en el reconocimiento de tablas complejas.
-    - **[Clasificación de Tablas (Table Classification)](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_classification.html)**(1 modelo): 
-PP-LCNet_x1_0_table_cls -- un clasificador ultraligero para tablas con y sin bordes.
-
-[Aprenda más](https://paddlepaddle.github.io/PaddleOCR/latest/en/update.html)
+[Historial de actualizaciones](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
 </details>
 

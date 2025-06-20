@@ -38,6 +38,42 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 
 ## 📣 最新動態
+
+🔥🔥2025.06.19: **PaddleOCR 3.0.2** 發布，包含：
+
+- **功能新增：**
+  - 模型預設下載來源從`BOS`改為`HuggingFace`，同時也支援使用者透過更改環境變數`PADDLE_PDX_MODEL_SOURCE`為`BOS`，將模型下載來源設定為百度雲端物件儲存 BOS。
+  - PP-OCRv5、PP-StructureV3、PP-ChatOCRv4 等 pipeline 新增 C++、Java、Go、C#、Node.js、PHP 6 種語言的服務呼叫範例。
+  - 優化 PP-StructureV3 產線中版面分區排序演算法，對複雜直書版面排序邏輯進行完善，進一步提升了複雜版面排序效果。
+  - 優化模型選擇邏輯，當指定語言、未指定模型版本時，自動選擇支援該語言的最新版本的模型。
+  - 為 MKL-DNN 快取大小設定預設上限，防止快取無限增長。同時，支援使用者設定快取容量。
+  - 更新高效能推論預設設定，支援 Paddle MKL-DNN 加速。優化高效能推論自動設定邏輯，支援更智慧的設定選擇。
+  - 調整預設裝置取得邏輯，考量環境中安裝的 Paddle 框架對運算裝置的實際支援情況，使程式行為更符合直覺。
+  - 新增 PP-OCRv5 的 Android 端範例，[詳情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/on_device_deployment.html)。
+
+- **錯誤修復：**
+  - 修復 PP-StructureV3 部分 CLI 參數不生效的問題。
+  - 修復部分情況下 `export_paddlex_config_to_yaml` 無法正常運作的問題。
+  - 修復 save_path 實際行為與文件描述不符的問題。
+  - 修復基礎服務化部署在使用 MKL-DNN 時可能出現的多執行緒錯誤。
+  - 修復 Latex-OCR 模型的影像預處理通道順序錯誤。
+  - 修復文字辨識模組儲存視覺化影像的通道順序錯誤。
+  - 修復 PP-StructureV3 中表格視覺化結果通道順序錯誤。
+  - 修復 PP-StructureV3 產線中極特殊情況下，計算 overlap_ratio 時，變數溢位問題。
+
+- **文件優化：**
+  - 更新文件中對 `enable_mkldnn` 參數的說明，使其更準確地描述程式的實際行為。
+  - 修復文件中對 `lang` 和 `ocr_version` 參數描述的錯誤。
+  - 補充透過 CLI 匯出產線設定檔案的說明。
+  - 修復 PP-OCRv5 效能資料表格中的欄位缺失問題。
+  - 潤飾 PP-StructureV3 在不同設定下的 benchmark 指標。
+
+- **其他：**
+  - 放寬 numpy、pandas 等依賴項的版本限制，恢復對 Python 3.12 的支援。
+
+<details>
+    <summary><strong>歷史日誌</strong></summary>
+
 🔥🔥2025.06.05: **PaddleOCR 3.0.1** 發布，包含：
 
 - **優化部分模型和模型設定：**
@@ -64,6 +100,9 @@ PaddleOCR 3.0 **新增**三大特色功能：
    2. 💻 原生支援**ERNIE 4.5 Turbo**，並相容 PaddleNLP、Ollama、vLLM 等工具部署的大型模型。
    3. 🤝 整合 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支援印刷體、手寫體、印章、表格、圖表等複雜文件元素的資訊擷取與理解。
 
+[更多日誌](https://paddlepaddle.github.io/PaddleOCR/latest/update/update.html)
+
+</details>
 
 ## ⚡ 快速入門
 ### 1. 線上體驗
