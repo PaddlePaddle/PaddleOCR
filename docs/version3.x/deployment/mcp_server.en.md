@@ -103,7 +103,7 @@ You can configure the MCP server to run in different modes based on your needs.
 #### Mode 1: AI Studio Service (`aistudio`)
 This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
 
-- **Use Case**: Ideal for quickly trying out features, validating solutions, and for low-code development scenarios.
+- **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
 - **Procedure**:
 
   1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
@@ -122,7 +122,7 @@ This mode runs the model directly on your local machine and has certain requirem
 #### Mode 3: Self-hosted Service (`self_hosted`)
 This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the **Serving** solutions provided by PaddleX.
 
-- **Use Case**: Offers the advantages of serving and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.
+- **Use Case**: Offers the advantages of serving and high flexibility, making it well-suited for scenarios requiring custom service configurations.
 - **Procedure**:
 
     1. Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the PaddlePaddle framework and PaddleOCR.

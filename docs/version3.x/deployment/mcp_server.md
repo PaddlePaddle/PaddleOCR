@@ -107,7 +107,7 @@ ImportError: failed to find libmagic.  Check your installation
 #### 模式一：托管在星河社区的服务 (`aistudio`)
 此模式调用 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 的服务。
 
-- **适用场景**：适合快速体验功能、快速验证方案等，也适用于低代码开发场景。
+- **适用场景**：适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
 - **操作流程**：请参考 [2. 快速开始](#2-快速开始)。
 - 除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。
 
@@ -123,7 +123,7 @@ ImportError: failed to find libmagic.  Check your installation
 #### 模式三：自托管服务 (`self_hosted`)
 此模式调用您自行部署的 PaddleOCR 推理服务。
 
-- **适用场景**：具备服务化部署优势及高度灵活性，较适合生产环境，尤其是适用于需要自定义服务配置的场景。
+- **适用场景**：具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景。
 - **操作流程**：
 
     1. 参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。
