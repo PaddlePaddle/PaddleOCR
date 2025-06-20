@@ -103,7 +103,7 @@ You can configure the MCP server to run in different modes based on your needs.
 #### Mode 1: AI Studio Service (`aistudio`)
 This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
 
-- **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
+- **Use Case**: Ideal for quickly trying out features, validating solutions, and for low-code development scenarios.
 - **Procedure**:
 
   1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
@@ -227,5 +227,4 @@ Below are complete Claude for Desktop configuration examples for different worki
 
 1. In `local` mode, the currently provided tools cannot handle Base64-encoded PDF document input.
 2. In `local` mode, the currently provided tools do not infer the file type based on the model-specified `file_type` and may fail to process some complex URLs.
-3. In `local` mode, the PP-StructureV3 pipeline currently does not support returning images extracted from the input file.
-4. For the PP-StructureV3 pipeline, if the input file contains a large number of images, the returned result may lead to high token usage.
+3. For the PP-StructureV3 pipeline, if the input file contains images, the returned result may significantly increase token usage. If image content is not needed, you can explicitly exclude it through the prompt to reduce resource consumption.

@@ -107,7 +107,7 @@ ImportError: failed to find libmagic.  Check your installation
 #### 模式一：托管在星河社区的服务 (`aistudio`)
 此模式调用 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 的服务。
 
-- **适用场景**：适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
+- **适用场景**：适合快速体验功能、快速验证方案等，也适用于低代码开发场景。
 - **操作流程**：请参考 [2. 快速开始](#2-快速开始)。
 - 除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。
 
@@ -227,5 +227,4 @@ ImportError: failed to find libmagic.  Check your installation
 
 1. 在 `local` 模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
 2. 在 `local` 模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
-3. 在 `local` 模式下，PP-StructureV3 产线暂不支持返回从输入文件中提取到的图像。
-4. 对于 PP-StructureV3 产线，当输入文件中包含的图像数量较多时，返回结果可能导致较高的 token 使用量。
+3. 对于 PP-StructureV3 产线，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。

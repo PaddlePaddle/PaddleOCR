@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO: Reuse `httpx` client
+# TODO:
+# 1. Reuse `httpx` client.
+# 2. Use `contextvars` to manage MCP context objects.
+# 3. Implement structured logging, log stack traces, and log operation timing.
+# 4. Report progress for long-running operations.
 
 import abc
 import asyncio
@@ -24,7 +28,7 @@ import re
 from pathlib import PurePath
 from queue import Queue
 from threading import Thread
-from typing import Any, Callable, Dict, List, Optional, Type, Union
+from typing import Any, Callable, Dict, List, NoReturn, Optional, Type, Union
 from urllib.parse import urlparse
 
 import httpx
@@ -73,6 +77,14 @@ def _infer_file_type_from_bytes(data: bytes) -> Optional[str]:
     elif mime == "application/pdf":
         return "pdf"
     return None
+
+
+def get_str_with_max_len(obj: object, max_len: int) -> str:
+    s = str(obj)
+    if len(s) > max_len:
+        return s[:max_len] + "..."
+    else:
+        return s
 
 
 class _EngineWrapper:
@@ -264,7 +276,9 @@ class PipelineHandler(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict[str, Any]:
+    async def _parse_local_result(
+        self, local_result: Dict, ctx: Context
+    ) -> Dict[str, Any]:
         """Parse raw result from local engine into a unified format.
 
         Args:
@@ -302,8 +316,12 @@ class PipelineHandler(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def _format_output(
-        self, result: Dict[str, Any], detailed: bool, ctx: Context
+    async def _format_output(
+        self,
+        result: Dict[str, Any],
+        detailed: bool,
+        ctx: Context,
+        **kwargs: Any,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Format output into simple or detailed format.
 
@@ -311,6 +329,7 @@ class PipelineHandler(abc.ABC):
             result: Processing result.
             detailed: Whether to use detailed format.
             ctx: MCP context.
+            **kwargs: Additional arguments.
 
         Returns:
             Formatted output in requested format.
@@ -336,7 +355,8 @@ class SimpleInferencePipelineHandler(PipelineHandler):
         output_mode: OutputMode,
         ctx: Context,
         file_type: Optional[str] = None,
-        **kwargs: Any,
+        infer_kwargs: Optional[Dict[str, Any]] = None,
+        format_kwargs: Optional[Dict[str, Any]] = None,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Process input data through the pipeline.
 
@@ -345,11 +365,14 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             output_mode: Output mode ("simple" or "detailed").
             ctx: MCP context.
             file_type: File type for URLs ("image", "pdf", or None for auto-detection).
-            **kwargs: Additional pipeline-specific arguments.
+            infer_kwargs: Additional arguments for performing pipeline inference.
+            format_kwargs: Additional arguments for formatting the output.
 
         Returns:
             Processed result in the requested output format.
         """
+        infer_kwargs = infer_kwargs or {}
+        format_kwargs = format_kwargs or {}
         try:
             await ctx.info(
                 f"Starting {self._pipeline} processing (source: {self._ppocr_source})"
@@ -357,27 +380,29 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
             if self._mode == "local":
                 processed_input = self._process_input_for_local(input_data, file_type)
-                kwargs = self._transform_local_kwargs(kwargs)
+                infer_kwargs = self._transform_local_kwargs(infer_kwargs)
                 raw_result = await self._predict_with_local_engine(
-                    processed_input, ctx, **kwargs
+                    processed_input, ctx, **infer_kwargs
                 )
-                result = self._parse_local_result(raw_result, ctx)
+                result = await self._parse_local_result(raw_result, ctx)
             else:
                 processed_input, inferred_file_type = self._process_input_for_service(
                     input_data, file_type
                 )
-                kwargs = self._transform_service_kwargs(kwargs)
+                infer_kwargs = self._transform_service_kwargs(infer_kwargs)
                 raw_result = await self._call_service(
-                    processed_input, inferred_file_type, ctx, **kwargs
+                    processed_input, inferred_file_type, ctx, **infer_kwargs
                 )
                 result = await self._parse_service_result(raw_result, ctx)
 
             await self._log_completion_stats(result, ctx)
-            return self._format_output(result, output_mode == "detailed", ctx)
+            return await self._format_output(
+                result, output_mode == "detailed", ctx, **format_kwargs
+            )
 
         except Exception as e:
             await ctx.error(f"{self._pipeline} processing failed: {str(e)}")
-            return self._handle_error(str(e), output_mode)
+            self._handle_error(e, output_mode)
 
     def _process_input_for_local(
         self, input_data: str, file_type: Optional[str]
@@ -494,12 +519,8 @@ class SimpleInferencePipelineHandler(PipelineHandler):
 
         return payload
 
-    def _handle_error(
-        self, error_msg: str, output_mode: OutputMode
-    ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-        if output_mode == "detailed":
-            return [TextContent(type="text", text=f"Error: {error_msg}")]
-        return f"Error: {error_msg}"
+    def _handle_error(self, exc: Exception, output_mode: OutputMode) -> NoReturn:
+        raise exc
 
 
 class OCRHandler(SimpleInferencePipelineHandler):
@@ -525,7 +546,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
                     - None: For unknown file types
             """
             await ctx.info(
-                f"--- OCR tool received `input_data`: {str(input_data)[:200]}... ---"
+                f"--- OCR tool received `input_data`: {get_str_with_max_len(input_data, 50)} ---"
             )
             return await self.process(input_data, output_mode, ctx, file_type)
 
@@ -550,7 +571,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
             "useDocOrientationClassify": False,
         }
 
-    def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
+    async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
         result = local_result[0]
         texts = result["rec_texts"]
         scores = result["rec_scores"]
@@ -616,8 +637,12 @@ class OCRHandler(SimpleInferencePipelineHandler):
             f"OCR completed: {text_length} characters, {instance_count} text instances"
         )
 
-    def _format_output(
-        self, result: Dict, detailed: bool, ctx: Context
+    async def _format_output(
+        self,
+        result: Dict,
+        detailed: bool,
+        ctx: Context,
+        **kwargs: Any,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         if not result["text"].strip():
             return (
@@ -646,10 +671,11 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             input_data: str,
             output_mode: OutputMode = "simple",
             file_type: Optional[str] = None,
+            return_images: bool = True,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extracts structured markdown from complex documents (images/PDFs), including tables and layouts. Accepts file path, URL, or Base64.
+            """Extracts structured markdown from complex documents (images/PDFs), including tables, formulas, etc. Accepts file path, URL, or Base64.
 
             Args:
                 input_data: The file to process (file path, URL, or Base64 string).
@@ -660,8 +686,15 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                     - "image": For image files
                     - "pdf": For PDF documents
                     - None: For unknown file types
+                return_images: Whether to return the images extracted from the document.
             """
-            return await self.process(input_data, output_mode, ctx, file_type)
+            return await self.process(
+                input_data,
+                output_mode,
+                ctx,
+                file_type,
+                format_kwargs={"return_images": return_images},
+            )
 
     def _create_local_engine(self) -> Any:
         return PPStructureV3(
@@ -684,48 +717,33 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
             "useDocOrientationClassify": False,
         }
 
-    def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
+    async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
         markdown_parts = []
+        all_images_mapping = {}
         detailed_results = []
 
-        # TODO: Return images
         for result in local_result:
-            text = result.markdown["markdown_texts"]
+            markdown = result.markdown
+            text = markdown["markdown_texts"]
             markdown_parts.append(text)
+            images = markdown["markdown_images"]
+            processed_images = {}
+            for img_key, img_data in images.items():
+                with io.BytesIO() as buffer:
+                    img_data.save(buffer, format="JPEG")
+                    processed_images[img_key] = base64.b64encode(buffer.getvalue())
+            all_images_mapping.update(processed_images)
             detailed_results.append(result)
 
         return {
             # TODO: Page concatenation can be done better via `pipeline.concatenate_markdown_pages`
             "markdown": "\n".join(markdown_parts),
             "pages": len(local_result),
-            "images_mapping": {},
+            "images_mapping": all_images_mapping,
             "detailed_results": detailed_results,
         }
 
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
-        if "content" in service_result and isinstance(service_result["content"], list):
-            markdown_parts = []
-            images_mapping: Dict[str, str] = {}
-
-            for item in service_result["content"]:
-                if item.get("type") == "text":
-                    markdown_parts.append(item.get("text", ""))
-                elif item.get("type") == "image":
-                    img_data = item.get("data", "")
-                    if img_data:
-                        img_key = f"img_{len(images_mapping)}"
-                        images_mapping[img_key] = await self._process_image_data(
-                            img_data, ctx
-                        )
-                        markdown_parts.append(f'<img src="{img_key}">')
-
-            return {
-                "markdown": "\n".join(markdown_parts),
-                "pages": 1,
-                "images_mapping": images_mapping,
-                "detailed_results": [],
-            }
-
         result_data = service_result.get("result", service_result)
         layout_results = result_data.get("layoutParsingResults")
 
@@ -774,15 +792,21 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         elif _is_base64(img_data):
             return img_data
         else:
-            await ctx.error(f"Unknown image data format: {img_data[:50]}...")
+            await ctx.error(
+                f"Unknown image data format: {get_str_with_max_len(img_data, 50)}"
+            )
             return img_data
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
         page_count = result["pages"]
         await ctx.info(f"Layout parsing completed: {page_count} pages")
 
-    def _format_output(
-        self, result: Dict, detailed: bool, ctx: Context
+    async def _format_output(
+        self,
+        result: Dict,
+        detailed: bool,
+        ctx: Context,
+        **kwargs: Any,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         if not result["markdown"].strip():
             return (
@@ -794,8 +818,14 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         markdown_text = result["markdown"]
         images_mapping = result.get("images_mapping", {})
 
+        if kwargs.get("return_images"):
+            content_list = self._parse_markdown_with_images(
+                markdown_text, images_mapping
+            )
+        else:
+            content_list = [TextContent(type="text", text=markdown_text)]
+
         if detailed:
-            content_list = []
             if "detailed_results" in result and result["detailed_results"]:
                 for detailed_result in result["detailed_results"]:
                     content_list.append(
@@ -810,13 +840,7 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
                         )
                     )
 
-            content_list.extend(
-                self._parse_markdown_with_images(markdown_text, images_mapping)
-            )
-
-            return content_list
-        else:
-            return self._parse_markdown_with_images(markdown_text, images_mapping)
+        return content_list
 
     def _parse_markdown_with_images(
         self, markdown_text: str, images_mapping: Dict[str, str]

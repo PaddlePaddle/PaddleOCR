@@ -160,6 +160,7 @@ def main() -> None:
         mcp = FastMCP(
             name=server_name,
             lifespan=_lifespan,
+            mask_error_details=True,
         )
 
         pipeline_handler.register_tools(mcp)
