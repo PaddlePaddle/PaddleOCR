@@ -1455,6 +1455,15 @@ You're not viewing the latest version.
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Known Limitations
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3348,6 +3357,15 @@ You're not viewing the latest version.
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-known-limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Known Limitations
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3415,6 +3433,7 @@ You're not viewing the latest version.
 <li><a href="#51-ai-studio-service-configuration">5.1 AI Studio Service Configuration</a></li>
 <li><a href="#52-local-python-library-configuration">5.2 Local Python Library Configuration</a></li>
 <li><a href="#53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration</a></li>
+<li><a href="#6-known-limitations">6. Known Limitations</a></li>
 </ul>
 <h2 id="1-installation">1. Installation<a class="headerlink" href="#1-installation" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install the wheel</span>
@@ -3424,17 +3443,22 @@ You're not viewing the latest version.
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># git clone https://github.com/PaddlePaddle/PaddleOCR.git</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># pip install -e mcp_server</span>
 </span></code></pre></div>
-<p>Some <a href="#32-working-modes-explained">working modes</a> may require additional dependencies.</p>
+<p>You can check whether the installation was successful by running the following command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>paddleocr_mcp<span class="w"> </span>--help
+</span></code></pre></div>
+<p>If running the above command prints the help information, the installation was successful. This project depends on the <code>python-magic</code> library. If you see an error like the following when executing the command:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>...
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>ImportError: failed to find libmagic.  Check your installation
+</span></code></pre></div>
+<p>it is likely due to missing underlying libraries required by <code>python-magic</code>. Please refer to the <a href="https://github.com/ahupp/python-magic?tab=readme-ov-file#installation">official python-magic documentation</a> to install the necessary dependencies.</p>
+<p>In addition, some <a href="#32-working-modes-explained">working modes</a> may require extra dependencies. For more details, please refer to the following sections.</p>
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
-<p>This section guides you through a quick setup using <strong>Claude Desktop</strong> as the MCP Host and the <strong>AI Studio</strong> mode. This mode is recommended for new users as it does not require complex local dependencies. Please refer to <a href="#3-configuration">3. Configuration</a> for other working modes and more configuration options.</p>
+<p>This section guides you through a quick setup using <strong>Claude for Desktop</strong> as the MCP Host and the <strong>Local Python Library</strong> mode. Please refer to <a href="#3-configuration">3. Configuration</a> for other working modes and more configuration options.</p>
 <ol>
 <li>
-<p><strong>Prepare the AI Studio Service</strong></p>
+<p><strong>Prepare the Local Python Library PaddleOCR</strong></p>
 <ul>
-<li>Visit the <a href="https://aistudio.baidu.com/pipeline/mine">Paddle AI Studio community</a> and log in.</li>
-<li>In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].</li>
-<li>Once deployed, obtain your <strong>Service Base URL</strong> (e.g., <code>https://xxxxxx.aistudio-hub.baidu.com</code>).</li>
-<li>Get your <strong>Access Token</strong> from <a href="https://aistudio.baidu.com/index/accessToken">this page</a>.</li>
+<li>Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the PaddlePaddle framework and PaddleOCR. <strong>It is strongly recommended to install them in a separate virtual environment</strong> to avoid dependency conflicts.</li>
 </ul>
 </li>
 <li>
@@ -3446,49 +3470,62 @@ You're not viewing the latest version.
 </ul>
 </li>
 <li>
-<p><strong>Add MCP Server Configuration</strong>
-    Open the <code>claude_desktop_config.json</code> file and add the configuration by referring to <a href="#51-ai-studio-service-configuration">5.1 AI Studio Service Configuration</a>.</p>
-<p><strong>Note</strong>:
-- Do not leak your <strong>Access Token</strong>.
-- If <code>paddleocr_mcp</code> is not in your system's <code>PATH</code>, set <code>command</code> to the absolute path of the executable.</p>
+<p><strong>Add MCP Server Configuration</strong></p>
+<p>Open the <code>claude_desktop_config.json</code> file and add the configuration by referring to <a href="#52-local-python-library-configuration">5.2 Local Python Library Configuration</a></p>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>If <code>paddleocr_mcp</code> is not in your system's <code>PATH</code>, set <code>command</code> to the absolute path of the executable.</li>
+</ul>
 </li>
 <li>
-<p><strong>Restart the MCP Host</strong>
-    Restart Claude Desktop. The new <code>paddleocr-ocr</code> tool should now be available in the application.</p>
+<p><strong>Restart the MCP Host</strong></p>
+<p>Restart Claude for Desktop. The new <code>paddleocr-ocr</code> tool should now be available in the application.</p>
 </li>
 </ol>
 <h2 id="3-configuration">3. Configuration<a class="headerlink" href="#3-configuration" title="Permanent link">&para;</a></h2>
 <h3 id="31-mcp-host-configuration">3.1. MCP Host Configuration<a class="headerlink" href="#31-mcp-host-configuration" title="Permanent link">&para;</a></h3>
-<p>In the Host's configuration file (e.g., <code>claude_desktop_config.json</code>), you need to define how to start the tool server. Key fields are:
-- <code>command</code>: <code>paddleocr_mcp</code> (if the executable is in your <code>PATH</code>) or an absolute path.
-- <code>args</code>: Configurable command-line arguments, e.g., <code>["--verbose"]</code>. See <a href="#4-parameter-reference">4. Parameter Reference</a>.
-- <code>env</code>: Configurable environment variables. See <a href="#4-parameter-reference">4. Parameter Reference</a>.</p>
+<p>In the Host's configuration file (e.g., <code>claude_desktop_config.json</code>), you need to define how to start the tool server. Key fields are:</p>
+<ul>
+<li><code>command</code>: <code>paddleocr_mcp</code> (if the executable is in your <code>PATH</code>) or an absolute path.</li>
+<li><code>args</code>: Configurable command-line arguments, e.g., <code>["--verbose"]</code>. See <a href="#4-parameter-reference">4. Parameter Reference</a>.</li>
+<li><code>env</code>: Configurable environment variables. See <a href="#4-parameter-reference">4. Parameter Reference</a>.</li>
+</ul>
 <h3 id="32-working-modes-explained">3.2. Working Modes Explained<a class="headerlink" href="#32-working-modes-explained" title="Permanent link">&para;</a></h3>
 <p>You can configure the MCP server to run in different modes based on your needs.</p>
 <h4 id="mode-1-ai-studio-service-aistudio">Mode 1: AI Studio Service (<code>aistudio</code>)<a class="headerlink" href="#mode-1-ai-studio-service-aistudio" title="Permanent link">&para;</a></h4>
 <p>This mode calls services from the <a href="https://aistudio.baidu.com/pipeline/mine">Paddle AI Studio community</a>.</p>
 <ul>
 <li><strong>Use Case</strong>: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.</li>
-<li><strong>Procedure</strong>: Please refer to <a href="#2-quick-start">2. Quick Start</a>.</li>
-<li>In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.</li>
+<li>
+<p><strong>Procedure</strong>:</p>
+</li>
+<li>
+<p>Visit the <a href="https://aistudio.baidu.com/pipeline/mine">Paddle AI Studio community</a> and log in. <strong>Please note that AI Studio currently requires users to bind a mainland China phone number.</strong> If you do not meet this requirement, please consider using an alternative working mode.</p>
+</li>
+<li>In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].</li>
+<li>Once deployed, obtain your <strong>Service Base URL</strong> (e.g., <code>https://xxxxxx.aistudio-hub.baidu.com</code>).</li>
+<li>
+<p>Get your <strong>Access Token</strong> from <a href="https://aistudio.baidu.com/index/accessToken">this page</a>.</p>
+</li>
+<li>
+<p>In addition to using the platform's preset model solutions, you can also train and deploy custom models on the platform.</p>
+</li>
 </ul>
 <h4 id="mode-2-local-python-library-local">Mode 2: Local Python Library (<code>local</code>)<a class="headerlink" href="#mode-2-local-python-library-local" title="Permanent link">&para;</a></h4>
 <p>This mode runs the model directly on your local machine and has certain requirements for the local environment and computer performance. It relies on the installed <code>paddleocr</code> inference package.</p>
 <ul>
 <li><strong>Use Case</strong>: Suitable for offline usage and scenarios with strict data privacy requirements.</li>
-<li><strong>Procedure</strong>:<ol>
-<li>Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the <em>PaddlePaddle framework</em> and <em>PaddleOCR</em>. <strong>It is strongly recommended to install them in a separate virtual environment</strong> to avoid dependency conflicts.</li>
-<li>Refer to <a href="#52-local-python-library-configuration">5.2 Local Python Library Configuration</a> to modify the <code>claude_desktop_config.json</code> file.</li>
-</ol>
-</li>
+<li><strong>Procedure</strong>: Please refer to <a href="#2-quick-start">2. Quick Start</a>.</li>
 </ul>
 <h4 id="mode-3-self-hosted-service-self_hosted">Mode 3: Self-hosted Service (<code>self_hosted</code>)<a class="headerlink" href="#mode-3-self-hosted-service-self_hosted" title="Permanent link">&para;</a></h4>
 <p>This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the <strong>Serving</strong> solutions provided by PaddleX.</p>
 <ul>
-<li><strong>Use Case</strong>: Offers the advantages of service-oriented deployment and high flexibility, making it well-suited for production environments, especially for scenarios requiring custom service configurations.</li>
-<li><strong>Procedure</strong>:<ol>
-<li>Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the <em>PaddlePaddle framework</em> and <em>PaddleOCR</em>.</li>
-<li>Refer to the <a href="serving.html">PaddleOCR Serving Deployment Guide</a> to run the server.</li>
+<li><strong>Use Case</strong>: Offers the advantages of serving and high flexibility, making it well-suited for scenarios requiring custom service configurations.</li>
+<li>
+<p><strong>Procedure</strong>:</p>
+<ol>
+<li>Refer to the <a href="../installation.html">PaddleOCR Installation Guide</a> to install the PaddlePaddle framework and PaddleOCR.</li>
+<li>Refer to the <a href="serving.html">PaddleOCR Serving Guide</a> to run the server. Currently, only the basic serving solution is supported.</li>
 <li>Refer to <a href="#53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration</a> to modify the <code>claude_desktop_config.json</code> file.</li>
 <li>Set your service address in <code>PADDLEOCR_MCP_SERVER_URL</code> (e.g., <code>"http://127.0.0.1:8080"</code>).</li>
 </ol>
@@ -3544,9 +3581,9 @@ You're not viewing the latest version.
 <td style="text-align: left;"><code>PADDLEOCR_MCP_TIMEOUT</code></td>
 <td style="text-align: left;"><code>--timeout</code></td>
 <td style="text-align: left;"><code>int</code></td>
-<td style="text-align: left;">Request timeout for the underlying service (in seconds)</td>
+<td style="text-align: left;">HTTP read timeout in seconds for API requests to the underlying server.</td>
 <td style="text-align: left;">-</td>
-<td style="text-align: left;"><code>30</code></td>
+<td style="text-align: left;"><code>60</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>PADDLEOCR_MCP_DEVICE</code></td>
@@ -3568,7 +3605,7 @@ You're not viewing the latest version.
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>--http</code></td>
 <td style="text-align: left;"><code>bool</code></td>
-<td style="text-align: left;">Use HTTP transport instead of stdio (for remote deployment and multiple clients)</td>
+<td style="text-align: left;">Use Streamable HTTP transport instead of stdio (for remote deployment and multiple clients)</td>
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>False</code></td>
 </tr>
@@ -3576,7 +3613,7 @@ You're not viewing the latest version.
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>--host</code></td>
 <td style="text-align: left;"><code>str</code></td>
-<td style="text-align: left;">Host address for HTTP mode</td>
+<td style="text-align: left;">Host address for Streamable HTTP mode</td>
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>"127.0.0.1"</code></td>
 </tr>
@@ -3584,7 +3621,7 @@ You're not viewing the latest version.
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>--port</code></td>
 <td style="text-align: left;"><code>int</code></td>
-<td style="text-align: left;">Port for HTTP mode</td>
+<td style="text-align: left;">Port for Streamable HTTP mode</td>
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>8080</code></td>
 </tr>
@@ -3599,43 +3636,8 @@ You're not viewing the latest version.
 </tbody>
 </table>
 <h2 id="5-configuration-examples">5. Configuration Examples<a class="headerlink" href="#5-configuration-examples" title="Permanent link">&para;</a></h2>
-<p>Below are complete configuration examples for different working modes. You can copy and modify them as needed.</p>
+<p>Below are complete Claude for Desktop configuration examples for different working modes. You can copy and modify them as needed.</p>
 <h3 id="51-ai-studio-service-configuration">5.1 AI Studio Service Configuration<a class="headerlink" href="#51-ai-studio-service-configuration" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aistudio&quot;</span><span class="p">,</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span><span class="p">,</span><span class="w"> </span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-access-token&gt;&quot;</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="p">}</span>
-</span></code></pre></div>
-<p><strong>Note</strong>:
-- Replace <code>&lt;your-server-url&gt;</code> with your AI Studio <strong>Service Base URL</strong>, e.g., <code>https://xxxxx.aistudio-hub.baidu.com</code>. Do not include endpoint paths (like <code>/ocr</code>).
-- Replace <code>&lt;your-access-token&gt;</code> with your <strong>Access Token</strong>.</p>
-<h3 id="52-local-python-library-configuration">5.2 Local Python Library Configuration<a class="headerlink" href="#52-local-python-library-configuration" title="Permanent link">&para;</a></h3>
-<div class="language-json highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
-</span></code></pre></div>
-<p><strong>Note</strong>:
-- <code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the <a href="../paddleocr_and_paddlex.html">PaddleOCR and PaddleX documentation</a>, export a pipeline configuration file, and set <code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> to its absolute path.</p>
-<h3 id="53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration<a class="headerlink" href="#53-self-hosted-service-configuration" title="Permanent link">&para;</a></h3>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -3643,15 +3645,66 @@ You're not viewing the latest version.
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="p">}</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aistudio&quot;</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-access-token&gt;&quot;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="p">}</span>
 </span></code></pre></div>
-<p><strong>Note</strong>:
-- Replace <code>&lt;your-server-url&gt;</code> with the base URL of your underlying service (e.g., <code>http://127.0.0.1:8080</code>). </p>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>Replace <code>&lt;your-server-url&gt;</code> with your AI Studio <strong>Service Base URL</strong>, e.g., <code>https://xxxxx.aistudio-hub.baidu.com</code>. Do not include endpoint paths (like <code>/ocr</code>).</li>
+<li>Replace <code>&lt;your-access-token&gt;</code> with your <strong>Access Token</strong>.</li>
+<li>Do not leak your <strong>Access Token</strong>.</li>
+</ul>
+<h3 id="52-local-python-library-configuration">5.2 Local Python Library Configuration<a class="headerlink" href="#52-local-python-library-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:</p>
+<ul>
+<li><code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the <a href="../paddleocr_and_paddlex.html">PaddleOCR and PaddleX documentation</a>, export a pipeline configuration file, and set <code>PADDLEOCR_MCP_PIPELINE_CONFIG</code> to its absolute path.</li>
+<li><strong>CPU Inference Performance Tip</strong>:</li>
+<li><strong>OCR Pipeline</strong>: If you are running in a CPU environment, it is recommended to switch to the <code>mobile</code> series models for better performance. You can change the detection and recognition models in your pipeline configuration file to <code>text_detection_model_name="PP-OCRv5_mobile_det"</code> and <code>text_recognition_model_name="PP-OCRv5_mobile_rec"</code> respectively.</li>
+<li><strong>PP-StructureV3 Pipeline</strong>: Due to its model complexity, using this pipeline in an environment without a GPU is not recommended.</li>
+</ul>
+<h3 id="53-self-hosted-service-configuration">5.3 Self-hosted Service Configuration<a class="headerlink" href="#53-self-hosted-service-configuration" title="Permanent link">&para;</a></h3>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>Replace <code>&lt;your-server-url&gt;</code> with the base URL of your underlying service (e.g., <code>http://127.0.0.1:8080</code>). </li>
+</ul>
+<h2 id="6-known-limitations">6. Known Limitations<a class="headerlink" href="#6-known-limitations" title="Permanent link">&para;</a></h2>
+<ol>
+<li>In <code>local</code> mode, the currently provided tools cannot handle Base64-encoded PDF document input.</li>
+<li>In <code>local</code> mode, the currently provided tools do not infer the file type based on the model-specified <code>file_type</code> and may fail to process some complex URLs.</li>
+<li>For the PP-StructureV3 pipeline, if the input file contains images, the returned result may significantly increase token usage. If image content is not needed, you can explicitly exclude it through the prompt to reduce resource consumption.</li>
+</ol>
 
 
 
@@ -3674,7 +3727,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 20, 2025 14:05:54 UTC">June 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 21, 2025 11:55:59 UTC">June 21, 2025</span>
   </span>
 
     
@@ -3684,7 +3737,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 20, 2025 14:05:54 UTC">June 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 21, 2025 11:55:59 UTC">June 21, 2025</span>
   </span>
 
     
