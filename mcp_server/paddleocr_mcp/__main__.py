@@ -89,8 +89,8 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--timeout",
         type=int,
-        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "30")),
-        help="API request timeout in seconds for the underlying server.",
+        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "60")),
+        help="HTTP read timeout in seconds for API requests to the underlying server.",
     )
 
     args = parser.parse_args()
@@ -161,6 +161,7 @@ def main() -> None:
             name=server_name,
             lifespan=_lifespan,
             log_level="INFO" if args.verbose else "WARNING",
+            mask_error_details=True,
         )
 
         pipeline_handler.register_tools(mcp)

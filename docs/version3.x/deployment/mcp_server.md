@@ -30,6 +30,7 @@
   - [5.1 星河社区服务配置](#51-ai-studio-星河社区服务配置)
   - [5.2 本地 Python 库配置](#52-本地-python-库配置)
   - [5.3 自托管服务配置](#53-自托管服务配置)
+- [6. 已知局限性](#6-已知局限性)
 
 ## 1. 安装
 
@@ -42,38 +43,59 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # pip install -e mcp_server
 ```
 
-部分 [工作模式](#32-工作模式详解) 可能需要安装额外依赖。
+可通过以下命令检查是否安装成功：
+
+```bash
+paddleocr_mcp --help
+```
+
+如果执行上述命令后打印出了帮助信息，则说明安装成功。本项目依赖 python-magic 库。如果在执行上述命令时出现如下错误提示：
+
+```
+...
+ImportError: failed to find libmagic.  Check your installation
+```
+
+很可能是因为缺少 python-magic 库所需的底层库。请参考 [python-magic 官方文档](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) 完成相应依赖库的安装。
+
+此外，部分 [工作模式](#32-工作模式详解) 可能需要安装额外依赖，详情请参考后续说明。
 
 ## 2. 快速开始
 
-本节将以 **Claude Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
+本节将以 **Claude for Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
 
 1. **准备星河社区服务**
-    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
+
+    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
     - 在左侧"更多内容"下的 "PaddleX 产线" 部分，[创建产线] - [OCR] - [通用 OCR] - [直接部署] - [文本识别模块，选择 PP-OCRv5_server_rec] - [开始部署]。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
 
 2. **定位 MCP 配置文件** - 详情请参考 [MCP 官方文档](https://modelcontextprotocol.io/quickstart/user)。
+
     - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
     - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
     - **Linux**：`~/.config/Claude/claude_desktop_config.json`
 
 3. **添加 MCP 服务器配置**
+
     打开 `claude_desktop_config.json` 文件，参考 [5.1 星河社区服务配置](#51-星河社区服务配置) 调整配置，填充到 `claude_desktop_config.json` 中。
 
     **注意**：
+
     - 请勿泄漏您的 **访问令牌**。
     - 如果 `paddleocr_mcp` 无法在系统 `PATH` 中找到，请将 `command` 设置为可执行文件的绝对路径。
 
 4. **重启 MCP Host**
-    重启 Claude Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
+
+    重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
 
 ## 3. 配置说明
 
 ### 3.1. MCP Host 配置
 
 在 Host 的配置文件中（如 `claude_desktop_config.json`），您需要定义工具服务器的启动方式。关键字段如下：
+
 - `command`：`paddleocr_mcp`（如果可执行文件可在 `PATH` 中找到）或绝对路径。
 - `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数参考](#4-参数参考)。
 - `env`：可配置环境变量。详见 [4. 参数参考](#4-参数参考)。
@@ -94,16 +116,18 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 
 - **适用场景**：需要离线使用、对数据隐私有严格要求的场景。
 - **操作流程**：
-    1. 参考 [PaddleOCR 安装文档](../installation.md) 安装 *飞桨框架* 和 *PaddleOCR*。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
+
+    1. 参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
     2. 参考 [配置示例](#52-本地-python-库配置) 更改 `claude_desktop_config.json` 文件内容。
 
 #### 模式三：自托管服务 (`self_hosted`)
 此模式调用您自行部署的 PaddleOCR 推理服务。
 
-- **适用场景**：具备服务化部署优势及高度灵活性，较适合生产环境，尤其是适用于需要自定义服务配置的场景。
+- **适用场景**：具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景。
 - **操作流程**：
-    1. 参考 [PaddleOCR 安装文档](../installation.md) 安装 *飞桨框架* 和 *PaddleOCR*。
-    2. 参考 [PaddleOCR 服务化部署文档](./serving.md) 运行服务器。
+
+    1. 参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。
+    2. 参考 [PaddleOCR 服务化部署文档](./serving.md) 运行服务器。**目前暂时只支持基础服务化部署方案。**
     3. 参考 [配置示例](#53-自托管服务配置) 更改 `claude_desktop_config.json` 文件内容。
     4. 将您的服务地址填入 `PADDLEOCR_MCP_SERVER_URL` (例如：`"http://127.0.0.1:8000"`)。
 
@@ -117,17 +141,17 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源 | `"local"`, `"aistudio"`, `"self_hosted"` | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio` 或 `self_hosted` 模式下必需） | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 认证令牌（`aistudio` 模式下必需） | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的超时时间（秒） | - | `30` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒） | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效） | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 模式下生效） | - | `None` |
-| - | `--http` | `bool` | 使用 HTTP 传输而非 stdio（适用于远程部署和多客户端） | - | `False` |
-| - | `--host` | `str` | HTTP 模式的主机地址 | - | `"127.0.0.1"` |
-| - | `--port` | `int` | HTTP 模式的端口 | - | `8000` |
+| - | `--http` | `bool` | 使用 Streamable HTTP 传输而非 stdio（适用于远程部署和多客户端） | - | `False` |
+| - | `--host` | `str` | Streamable HTTP 模式的主机地址 | - | `"127.0.0.1"` |
+| - | `--port` | `int` | Streamable HTTP 模式的端口 | - | `8000` |
 | - | `--verbose` | `bool` | 启用详细日志记录，便于调试 | - | `False` |
 
 ## 5. 配置示例
 
-以下是针对不同工作模式的完整配置示例，您可以直接复制并根据需要修改：
+以下是针对不同工作模式的 Claude for Desktop 完整配置示例，您可以直接复制并根据需要修改：
 
 ### 5.1 星河社区服务配置
 
@@ -149,6 +173,7 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 ```
 
 **说明**：
+
 - 将 `<your-server-url>` 替换为您的星河社区服务的 **服务基础 URL**，例如 `https://xxxxx.aistudio-hub.baidu.com`，注意不要带有端点路径（如 `/ocr`）。
 - 将 `<your-access-token>` 替换为您的 **访问令牌**。
 
@@ -170,7 +195,11 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 ```
 
 **说明**：
+
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
+- **CPU 推理性能提示**：
+  - **OCR 产线**：若您在 CPU 环境下运行，为获得更佳性能，建议更换为 `mobile` 系列模型。您可以在产线配置文件中将检测和识别模型分别修改为 `text_detection_model_name="PP-OCRv5_mobile_det"` 和 `text_recognition_model_name="PP-OCRv5_mobile_rec"`。
+  - **PP-StructureV3 产线**：由于模型复杂度较高，不建议在没有 GPU 的环境中使用此产线。
 
 ### 5.3 自托管服务配置
 
@@ -191,4 +220,11 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 ```
 
 **说明**：
+
 - 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8000`）。
+
+## 6. 已知局限性
+
+1. 在 `local` 模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
+2. 在 `local` 模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
+3. 对于 PP-StructureV3 产线，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。
