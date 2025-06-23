@@ -327,7 +327,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>83.28</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
-<td>88 M</td>
+<td>10.5 M</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
@@ -336,7 +336,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>85.19 </td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
-<td>151 M</td>
+<td>173 M</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
@@ -346,7 +346,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>70.39</td>
 <td>4.81 / 1.23</td>
 <td>17.20 / 4.18</td>
-<td>66 M</td>
+<td>7.5 M</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
@@ -413,7 +413,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>86.58</td>
 <td>8.69 / 2.78</td>
 <td>37.93 / 37.93</td>
-<td>91 M</td>
+<td>182 M</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
@@ -422,7 +422,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>83.28</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
-<td>11 M</td>
+<td>10.5 M</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
@@ -431,7 +431,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>85.19 </td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
-<td>87 M</td>
+<td>173 M</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
@@ -441,7 +441,7 @@ PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>75.43</td>
 <td>3.89 / 1.16</td>
 <td>8.72 / 3.56</td>
-<td>11 M</td>
+<td>10.3 M</td>
 <td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 </table>
@@ -461,7 +461,7 @@ PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>68.81</td>
 <td>10.38 / 8.31</td>
 <td>66.52 / 30.83</td>
-<td>73.9 M</td>
+<td>80.5 M</td>
 <td rowspan="1">
 SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
 </td>
@@ -483,7 +483,7 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 <td>65.07</td>
 <td>6.29 / 1.57</td>
 <td>20.64 / 5.40</td>
-<td>22.1 M</td>
+<td>48.8 M</td>
 <td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
 </tr>
 </table>
@@ -505,7 +505,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td> 70.39</td>
 <td>4.81 / 1.23</td>
 <td>17.20 / 4.18</td>
-<td>6.8 M</td>
+<td>7.5 M</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 <tr>
@@ -515,7 +515,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>70.69</td>
 <td>3.56 / 0.78</td>
 <td>8.44 / 5.78</td>
-<td>7.8 M </td>
+<td>17.3 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
@@ -538,7 +538,7 @@ korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-m
 <td>60.21</td>
 <td>3.73 / 0.98</td>
 <td>8.76 / 2.91</td>
-<td>8.6 M</td>
+<td>9.6 M</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
 </tr>
 <tr>
@@ -548,7 +548,7 @@ japan_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-mo
 <td>45.69</td>
 <td>3.86 / 1.01</td>
 <td>8.62 / 2.92</td>
-<td>8.8 M </td>
+<td>9.8 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量日文识别模型，支持日文、数字识别</td>
 </tr>
 <tr>
@@ -558,7 +558,7 @@ chinese_cht_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://pad
 <td>82.06</td>
 <td>3.90 / 1.16</td>
 <td>9.24 / 3.18</td>
-<td>9.7 M </td>
+<td>10.8 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量繁体中文识别模型，支持繁体中文、数字识别</td>
 </tr>
 <tr>
@@ -568,7 +568,7 @@ te_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>95.88</td>
 <td>3.59 / 0.81</td>
 <td>8.28 / 6.21</td>
-<td>7.8 M </td>
+<td>8.7 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量泰卢固文识别模型，支持泰卢固文、数字识别</td>
 </tr>
 <tr>
@@ -578,7 +578,7 @@ ka_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>96.96</td>
 <td>3.49 / 0.89</td>
 <td>8.63 / 2.77</td>
-<td>8.0 M </td>
+<td>17.4 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量卡纳达文识别模型，支持卡纳达文、数字识别</td>
 </tr>
 <tr>
@@ -588,7 +588,7 @@ ta_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td>76.83</td>
 <td>3.49 / 0.86</td>
 <td>8.35 / 3.41</td>
-<td>8.0 M </td>
+<td>8.7 M </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量泰米尔文识别模型，支持泰米尔文、数字识别</td>
 </tr>
 <tr>
@@ -598,7 +598,7 @@ latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-mo
 <td>76.93</td>
 <td>3.53 / 0.78</td>
 <td>8.50 / 6.83</td>
-<td>7.8 M</td>
+<td>8.7 M</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
 </tr>
 <tr>
@@ -608,7 +608,7 @@ arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-m
 <td>73.55</td>
 <td>3.60 / 0.83</td>
 <td>8.44 / 4.69</td>
-<td>7.8 M</td>
+<td>17.3 M</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
 </tr>
 <tr>
@@ -618,7 +618,7 @@ cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle
 <td>94.28</td>
 <td>3.56 / 0.79</td>
 <td>8.22 / 2.76</td>
-<td>7.9 M  </td>
+<td>8.7 M  </td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量斯拉夫字母识别模型，支持斯拉夫字母、数字识别</td>
 </tr>
 <tr>
@@ -628,7 +628,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>96.44</td>
 <td>3.60 / 0.78</td>
 <td>6.95 / 2.87</td>
-<td>7.9 M</td>
+<td>8.7 M</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
 </tr>
 </table>
@@ -656,7 +656,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>95.54</td>
 <td>2.16 / 0.41</td>
 <td>2.37 / 0.73</td>
-<td>0.32</td>
+<td>0.96</td>
 <td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
 </tbody>
@@ -686,7 +686,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>40.01</td>
 <td>1088.89 / 1088.89</td>
 <td>- / -</td>
-<td>89.7 M</td>
+<td>99 M</td>
 </tr>
 </tbody>
 </table>
@@ -721,7 +721,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>96.47</td>
 <td>9.70 / 3.56</td>
 <td>50.38 / 19.64</td>
-<td>4.6</td>
+<td>4.7</td>
 <td>PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署</td>
 </tr>
 </tbody>

@@ -208,7 +208,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>86.58</td>
 <td>8.69 / 2.78</td>
 <td>37.93 / 37.93</td>
-<td>91 M</td>
+<td>182 M</td>
 <td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
@@ -217,7 +217,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>83.28</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
-<td>11 M</td>
+<td>10.5 M</td>
 <td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
@@ -226,7 +226,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>85.19 </td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
-<td>87 M</td>
+<td>173 M</td>
 <td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
@@ -236,7 +236,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>70.39</td>
 <td>4.81 / 1.23</td>
 <td>17.20 / 4.18</td>
-<td>7.3 M</td>
+<td>7.5 M</td>
 <td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
 </tr>
 </table>
@@ -303,7 +303,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>86.58</td>
 <td>8.69 / 2.78</td>
 <td>37.93 / 37.93</td>
-<td>181 M</td>
+<td>182 M</td>
 <td>PP-OCRv4_server_rec_doc is based on PP-OCRv4_server_rec, trained with a mix of more Chinese document data and PP-OCR training data, increasing the recognition capabilities for some Traditional Chinese, Japanese, and special characters, supporting recognition of over 15,000 characters. In addition to improving the document-related text recognition capabilities, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
@@ -312,7 +312,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>83.28</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
-<td>88 M</td>
+<td>10.5 M</td>
 <td>PP-OCRv4's lightweight recognition model has high inference efficiency and can be deployed on various hardware, including edge devices.</td>
 </tr>
 <tr>
@@ -321,7 +321,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>85.19 </td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
-<td>151 M</td>
+<td>173 M</td>
 <td>PP-OCRv4's server-side model has high inference accuracy and can be deployed on various servers.</td>
 </tr>
 <tr>
@@ -331,7 +331,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>75.43</td>
 <td>3.89 / 1.16</td>
 <td>8.72 / 3.56</td>
-<td>138 M</td>
+<td>10.3 M</td>
 <td>PP-OCRv3's lightweight recognition model has high inference efficiency and can be deployed on various hardware, including edge devices.</td>
 </tr>
 </table>
@@ -351,7 +351,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>68.81</td>
 <td>10.38 / 8.31</td>
 <td>66.52 / 30.83</td>
-<td>126 M</td>
+<td>80.5 M</td>
 <td rowspan="1">SVTRv2 is a server-side text recognition model developed by the OpenOCR team at Fudan University's Vision and Learning Laboratory (FVL). It won first place in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, achieving a 6% improvement in end-to-end recognition accuracy compared to PP-OCRv4.</td>
 </tr>
 </table>
@@ -371,7 +371,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>65.07</td>
 <td>6.29 / 1.57</td>
 <td>20.64 / 5.40</td>
-<td>70 M</td>
+<td>48.8 M</td>
 <td rowspan="1">RepSVTR is a mobile text recognition model based on SVTRv2, which won first place in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, achieving a 2.5% improvement in end-to-end recognition accuracy compared to PP-OCRv4, while maintaining the same inference speed.</td>
 </tr>
 </table>
@@ -393,7 +393,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td> 70.39</td>
 <td>4.81 / 1.23</td>
 <td>17.20 / 4.18</td>
-<td>66 M</td>
+<td>7.5 M</td>
 <td>This ultra-lightweight English recognition model is trained based on the PP-OCRv4 recognition model, supporting English and digit recognition.</td>
 </tr>
 <tr>
@@ -403,7 +403,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>70.69</td>
 <td>3.56 / 0.78</td>
 <td>8.44 / 5.78</td>
-<td>85 M </td>
+<td>17.3 M </td>
 <td>This ultra-lightweight English recognition model is trained based on the PP-OCRv3 recognition model, supporting English and digit recognition.</td>
 </tr>
 </table>
@@ -425,7 +425,7 @@ korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddl
 <td>60.21</td>
 <td>3.73 / 0.98</td>
 <td>8.76 / 2.91</td>
-<td>114 M</td>
+<td>9.6 M</td>
 <td>This ultra-lightweight Korean recognition model is trained based on the PP-OCRv3 recognition model, supporting Korean and digit recognition.</td>
 </tr>
 <tr>
@@ -435,7 +435,7 @@ japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>45.69</td>
 <td>3.86 / 1.01</td>
 <td>8.62 / 2.92</td>
-<td>120 M </td>
+<td>9.8 M </td>
 <td>This ultra-lightweight Japanese recognition model is trained based on the PP-OCRv3 recognition model, supporting Japanese and digit recognition.</td>
 </tr>
 <tr>
@@ -445,7 +445,7 @@ chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://
 <td>82.06</td>
 <td>3.90 / 1.16</td>
 <td>9.24 / 3.18</td>
-<td>152 M </td>
+<td>10.8 M </td>
 <td>This ultra-lightweight Traditional Chinese recognition model is trained based on the PP-OCRv3 recognition model, supporting Traditional Chinese and digit recognition.</td>
 </tr>
 <tr>
@@ -465,7 +465,7 @@ ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>96.96</td>
 <td>3.49 / 0.89</td>
 <td>8.63 / 2.77</td>
-<td>85 M </td>
+<td>17.4 M </td>
 <td>This ultra-lightweight Kannada recognition model is trained based on the PP-OCRv3 recognition model, supporting Kannada and digit recognition.</td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@ ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>76.83</td>
 <td>3.49 / 0.86</td>
 <td>8.35 / 3.41</td>
-<td>85 M </td>
+<td>8.7 M </td>
 <td>This ultra-lightweight Tamil recognition model is trained based on the PP-OCRv3 recognition model, supporting Tamil and digit recognition.</td>
 </tr>
 <tr>
@@ -485,7 +485,7 @@ latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>76.93</td>
 <td>3.53 / 0.78</td>
 <td>8.50 / 6.83</td>
-<td>85 M</td>
+<td>8.7 M</td>
 <td>This ultra-lightweight Latin recognition model is trained based on the PP-OCRv3 recognition model, supporting Latin and digit recognition.</td>
 </tr>
 <tr>
@@ -495,7 +495,7 @@ arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddl
 <td>73.55</td>
 <td>3.60 / 0.83</td>
 <td>8.44 / 4.69</td>
-<td>85 M</td>
+<td>17.3 M</td>
 <td>This ultra-lightweight Arabic alphabet recognition model is trained based on the PP-OCRv3 recognition model, supporting Arabic letters and digit recognition.</td>
 </tr>
 <tr>
@@ -505,7 +505,7 @@ cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://pad
 <td>94.28</td>
 <td>3.56 / 0.79</td>
 <td>8.22 / 2.76</td>
-<td>85 M  </td>
+<td>8.7 M  </td>
 <td>This ultra-lightweight Slavic alphabet recognition model is trained based on the PP-OCRv3 recognition model, supporting Slavic letters and digit recognition.</td>
 </tr>
 <tr>
@@ -515,7 +515,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>96.44</td>
 <td>3.60 / 0.78</td>
 <td>6.95 / 2.87</td>
-<td>85 M</td>
+<td>8.7 M</td>
 <td>This ultra-lightweight Devanagari alphabet recognition model is trained based on the PP-OCRv3 recognition model, supporting Devanagari letters and digit recognition.</td>
 </tr>
 </table>

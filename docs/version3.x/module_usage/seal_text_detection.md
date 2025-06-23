@@ -37,7 +37,7 @@ comments: true
 <td>96.36</td>
 <td>9.70 / 3.56</td>
 <td>50.38 / 19.64</td>
-<td>4.6</td>
+<td>4.7</td>
 <td>PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署</td>
 </tr>
 </tbody>
