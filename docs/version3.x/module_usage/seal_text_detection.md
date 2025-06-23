@@ -145,24 +145,24 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称。所有支持的印章文本检测模型名称，如 <code>PP-OCRv4_mobile_seal_det</code>。</td>
-<td><code>str</code></td>
-<td><code>"PP-OCRv4_mobile_seal_det"</code></td>
+<td>模型名称。模型名称。如果设置为<code>None</code>，则使用<code>PP-OCRv4_mobile_seal_det</code>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
+<td>模型存储路径。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>用于推理的设备。<br/>
-<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+<b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -182,9 +182,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -210,38 +210,38 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>int</code> / <code>None</code></td>
+<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><code>int|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为None, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>str</code> / <code>None</code></td>
+<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><code>str|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数。如果设置为<code>None</code>。将使用模型默认配置。</td>
+<td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>input_shape</code></td>
-<td>模型输入图像尺寸，格式为 <code>(C, H, W)</code>。若为 <code>None</code> 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>tuple</code> / <code>None</code></td>
+<td>模型输入图像尺寸，格式为 <code>(C, H, W)</code>。若为 <code>None</code>，将使用模型默认配置。</td>
+<td><code>tuple|None</td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -281,32 +281,32 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 如果设置为None, 将默认使用模型初始化的该参数值。</td>
-<td><code>int</code> / <code>None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为None, 将默认使用模型初始化的该参数值。</td>
-<td><code>str</code> / <code>None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数，如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将默认使用模型初始化的该参数值。</td>
-<td><code>float</code> / <code>None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>

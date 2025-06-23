@@ -133,24 +133,24 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
-<td><code>PP-LCNet_x1_0_doc_ori</code></td>
+<td>模型名称。如果设置为<code>None</code>，则使用<code>PP-LCNet_x1_0_doc_ori</code>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
+<td>模型存储路径。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>用于推理的设备。<br/>
-<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+<b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -170,9 +170,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -193,13 +193,13 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>cpu_threads</code></td>
 <td>在 CPU 上推理时使用的线程数量。</td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>top_k</code></td>
-<td>预测结果的前topk值，如果不指定，将默认使用PaddleOCR官方模型配置。若值为5，表示打印（返回）预测结果的前5个类别和对应的分类概率</td>
-<td><code>int</code></td>
+<td>预测前<code>topk</code>个预测结果。如果指定为<code>None</code>，将使用模型默认配置。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -240,8 +240,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>top_k</code></td>
-<td>预测结果的前topk值，如果不指定，将默认使用实例化模型的值。若实例化也没有指定，则默认使用PaddleOCR官方模型配置。</td>
-<td><code>int</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>

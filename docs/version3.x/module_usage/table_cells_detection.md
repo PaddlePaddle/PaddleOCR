@@ -137,24 +137,24 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
-<td><code>PP-DocLayout-L</code></td>
+<td>模型名称。如果设置为<code>None</code>，则使用<code>RT-DETR-L_wired_table_cell_det</code>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
+<td>模型存储路径。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>用于推理的设备。<br/>
-<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+<b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -174,9 +174,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -202,24 +202,25 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，将默认使用PaddleOCR官方模型配置<br/><b>可选示例:</b>
+<td>输入图像大小。
 <ul>
-<li><b>int</b>:如 640 , 表示将输入图像resize到640x640大小</li>
-<li><b>list</b>: 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
+<li><b>int</b>：如<code>640</code>，表示将输入图像resize到640x640大小。</li>
+<li><b>list</b>：如<code>[640, 512]</code>，表示将输入图像resize到宽为640，高为512大小。</li>
 </ul>
 </td>
-<td><code>int/list/None</code></td>
+<td><code>int|list|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleOCR官方模型配置。在表格单元格检测任务中，适当降低阈值可能有助于获得更准确的结果<br/><b>可选示例:</b>
+<td>用于过滤掉低置信度预测结果的阈值。
 <ul>
-<li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
+<li><b>float</b>：如<code>0.2</code>，表示过滤掉所有阈值小于0.2的目标框。/li>
+<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>float</code>类型阈值。如<code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对类别ID为0的类别应用阈值0.45、类别ID为1的类别应用阈值0.48、类别ID为7的类别应用阈值0.4。</li>
+<li><b>None</b>：使用模型默认配置。
 </ul>
 </td>
-<td><code>float/dict/None</code></td>
+<td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 </table>
