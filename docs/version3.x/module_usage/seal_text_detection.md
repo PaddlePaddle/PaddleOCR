@@ -216,8 +216,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制,检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于det_limit_side_len,<code>"max"</code>表示保证图像最长边不大于limit_side_len。如果设置为<code>None</code>, 将使用模型默认配置。</td>
-<td><code>str|None</td>
+<td>检测的图像边长限制，检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于 det_limit_side_len，<code>"max"</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果设置为 <code>None</code>，将使用模型默认配置。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>

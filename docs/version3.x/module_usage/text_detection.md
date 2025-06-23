@@ -240,14 +240,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>max_side_limit</code></td>
-<td>检测的图像边长最大值限制：<code>int</code> 限制输入检测模型的图片最长边。如果设置为<code>None</code>，将使用模型默认配置。</td>
+<td>检测的图像边长最大值限制：<code>int</code> 限制输入检测模型的图片最长边。如果设置为 <code>None</code>，将使用模型默认配置。</td>
 <td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>max_side_limit</code></td>
-<td>检测的图像边长最大值限制：<code>int</code> 限制输入检测模型的图片最长边，如果设置为<code>None</code>, 将默认使用PaddleOCR官方模型配置中的该参数值。</td>
-<td><code>int</code> / <code>None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>

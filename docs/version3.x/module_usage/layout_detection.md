@@ -421,19 +421,19 @@ MKL-DNN 缓存容量。
 </ul>
 </td>
 <td><code>int|list|None</code></td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
 <td>用于过滤掉低置信度预测结果的阈值。</b>
 <ul>
 <li><b>float</b>：如<code>0.2</code>，表示过滤掉所有阈值小于0.2的目标框。</li>
-<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为float类型阈值。如<code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对ID为0的类别应用阈值0.45、ID为1的类别应用阈值0.48、ID为7的类别应用阈值0.4。</li>
+<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>float</code>类型阈值。如<code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对ID为0的类别应用阈值0.45、ID为1的类别应用阈值0.48、ID为7的类别应用阈值0.4。</li>
 <li><b>None</b>：使用模型默认的配置。</li>
 </ul>
 </td>
 <td><code>float|dict|None</code></td>
-<td>None</td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
