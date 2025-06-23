@@ -496,8 +496,6 @@ For Paddle with CUDA 12.6, the compatible TensorRT version is 10.x (x>=5), recom
 </tbody>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleOCR are used. On this basis, when `model_dir` is specified, the user-defined model is used.
-
 * Call the `predict()` method of the text recognition model for inference. This method returns a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step. It is suitable for scenarios where large datasets need to be processed or memory savings are desired. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method include `input` and `batch_size`, with specific descriptions as follows:
 
 <table>
@@ -515,7 +513,7 @@ For Paddle with CUDA 12.6, the compatible TensorRT version is 10.x (x>=5), recom
 <ul>
 <li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
 <li><b>str</b>: Local path of image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>: Network URL of image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a>; <b>Local directory</b>: The directory should contain the images to be predicted, such as <code>/root/data/</code> (currently, prediction of PDF files in the directory is not supported, PDF files need to be specified to a specific file path)</li>
-<li><b>List</b>: The elements of the list should be data of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>list</b>: The elements of the list should be data of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>

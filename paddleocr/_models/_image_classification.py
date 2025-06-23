@@ -42,6 +42,12 @@ class ImageClassificationSubcommandExecutor(PredictorCLISubcommandExecutor):
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
 
+        subparser.add_argument(
+            "--topk",
+            type=int,
+            help="Top-k value for prediction results.",
+        )
+
     @property
     @abc.abstractmethod
     def wrapper_cls(self):
